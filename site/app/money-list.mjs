@@ -1,6 +1,11 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
+import {
+  procurementLocationHref,
+  procurementModeHref,
+  PROCUREMENT_MODE_KEYS,
+} from "../procurement_facet_links.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -8,6 +13,32 @@ let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyActi
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
   return moneyActionLocationToolsPromise||=import("../money_action_location_ui.mjs").then(module=>(globalThis.MoneyActionLocations=module)).catch(()=>null);
+}
+function syncProcurementFacetRails(){
+  const activeMode = PROCUREMENT_MODE_KEYS.includes(String($("#mode")?.value || ""))
+    ? String($("#mode").value)
+    : "open";
+  const modeRail = document.getElementById(["money", "mode", "rail"].join("-"));
+  modeRail?.querySelectorAll("a").forEach((link) => {
+    const modeKey = link.dataset.moneyMode;
+    if (!modeKey) return;
+    link.href = procurementModeHref(modeKey);
+    const active = modeKey === activeMode;
+    link.classList.toggle("on", active);
+    link.setAttribute("aria-current", active ? "page" : "false");
+  });
+  const activeBasis = moneyLocationFilter.layer === "contract_action_address"
+    ? (moneyLocationFilter.basis || "contract_action_address")
+    : "";
+  const locationRail = document.getElementById(["money", "location", "rail"].join("-"));
+  locationRail?.querySelectorAll("a").forEach((link) => {
+    const basis = link.dataset.moneyLocationBasis;
+    if (!basis) return;
+    link.href = procurementLocationHref(basis);
+    const active = basis === activeBasis;
+    link.classList.toggle("on", active);
+    link.setAttribute("aria-current", active ? "page" : "false");
+  });
 }
 async function initializeMoneyLocationFilters(){
   const tools=await moneyActionLocationTools();
@@ -128,7 +159,6 @@ function renderMoneyActiveFilters(){
 function updateMoneyMoreFiltersState(){
   const nl=moneyNlResolved&&typeof moneyNlResolved==="object"?moneyNlResolved:{};
   const active=[
-    mode!=="open",
     !!$("#agency").value,
     mode==="award"&&!!$("#minamt").value,
     closingWeek,
@@ -136,7 +166,6 @@ function updateMoneyMoreFiltersState(){
     nl.maxAmount!=null,
     nl.months!=null,
     !!nl.excludeSpecial,
-    moneyLocationFilter.layer==="contract_action_address",
     !!moneyLocationFilter.borough,
     !!moneyLocationFilter.communityDistrict,
     !!moneyLocationFilter.councilDistrict,
@@ -198,6 +227,7 @@ async function search(){
     $("#minwrap").style.display="none";
     $("#minamt").disabled=true;
   }
+  syncProcurementFacetRails();
   renderMoneyActiveFilters();
   updateMoneyMoreFiltersState();
   if(locationTools){

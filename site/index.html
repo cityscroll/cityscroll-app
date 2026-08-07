@@ -688,6 +688,9 @@
   .lens-more-content .lens-controls-grid .field{flex:1 1 46%}
   .lens-more-content .chiprow{margin-top:0}
   .lens-primary-rail{margin-top:var(--space-2)}
+  .money-facet-rails{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4);margin:var(--space-3) 0 0}
+  .money-facet-rail{min-width:0}
+  .money-facet-rail .chip{max-width:100%;white-space:normal;text-align:start}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
@@ -699,6 +702,7 @@
   /* Small-multiples collapse card (Tufte): one frame carrying the count + date range. */
   @media(max-width:680px){
     .lens-more-content{width:min(94vw,440px)}
+    .money-facet-rails{grid-template-columns:minmax(0,1fr)}
     .money-method-slot{min-height:0}
   }
   .tax-lien-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--oxblood);border-radius:10px;box-shadow:var(--shadow)}
@@ -1601,26 +1605,8 @@
           <div class="utility-overflow-content lens-more-content">
             <div class="lens-controls-grid">
               <div class="field">
-                <label for="mode" data-i18n="show_label">Show</label>
-                <select id="mode">
-                  <option value="open" data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</option>
-                  <option value="allrfp" data-i18n="mode_allrfp">All RFPs</option>
-                  <option value="award" data-i18n="mode_award">Recent Awards ($)</option>
-                </select>
-              </div>
-              <div class="field">
                 <label for="agency" data-i18n="agency_label">Agency</label>
                 <select id="agency"><option value="" data-i18n="all_agencies_loading">All agencies — loading…</option></select>
-              </div>
-              <div class="field">
-                <label for="moneylocationbasis" data-i18n="money_location_basis_label">Response location basis</label>
-                <select id="moneylocationbasis">
-                  <option value="" data-i18n="money_location_basis_any">Any location basis</option>
-                  <option value="contract_action_address" data-i18n="money_location_basis_response">Any response address</option>
-                  <option value="submission_address" data-i18n="money_location_basis_submission">Located by submission address</option>
-                  <option value="pre_bid_venue" data-i18n="money_location_basis_prebid">Located by pre-bid venue</option>
-                  <option value="document_pickup" data-i18n="money_location_basis_pickup">Located by document-pickup address</option>
-                </select>
               </div>
               <div class="field">
                 <label for="moneyboro" data-i18n="borough_label">Borough</label>
@@ -1655,6 +1641,27 @@
         </details>
         <button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Watch this search</button>
         <a class="act mini" href="/near-you/lens/money/" data-near-you-link data-lens="money" data-i18n="near_you_map_scope">See on map</a>
+      </div>
+    </div>
+    <input type="hidden" id="mode" value="open">
+    <input type="hidden" id="moneylocationbasis" value="">
+    <div class="money-facet-rails" aria-label="Contract scope facets">
+      <div class="money-facet-rail">
+        <div class="property-rail-label lens-primary-label" data-i18n="show_label">Show</div>
+        <nav class="chiprow lens-primary-rail" id="money-mode-rail" aria-label="Contract status">
+          <a class="chip" data-money-mode="open" data-scope-edge="money.mode.open" href="/browse/contracts/?mode=open" data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</a>
+          <a class="chip" data-money-mode="allrfp" data-scope-edge="money.mode.allrfp" href="/browse/contracts/?mode=allrfp" data-i18n="mode_allrfp">All RFPs</a>
+          <a class="chip" data-money-mode="award" data-scope-edge="money.mode.award" href="/browse/contracts/?mode=award" data-i18n="mode_award">Recent Awards ($)</a>
+        </nav>
+      </div>
+      <div class="money-facet-rail">
+        <div class="property-rail-label lens-primary-label" data-i18n="money_location_basis_label">Response location basis</div>
+        <nav class="chiprow lens-primary-rail" id="money-location-rail" aria-label="Response location basis">
+          <a class="chip" data-money-location-basis="contract_action_address" data-scope-edge="money.location.contract_action_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%7D" data-i18n="money_location_basis_response">Any response address</a>
+          <a class="chip" data-money-location-basis="submission_address" data-scope-edge="money.location.submission_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22submission_address%22%7D" data-i18n="money_location_basis_submission">Located by submission address</a>
+          <a class="chip" data-money-location-basis="pre_bid_venue" data-scope-edge="money.location.pre_bid_venue" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22pre_bid_venue%22%7D" data-i18n="money_location_basis_prebid">Located by pre-bid venue</a>
+          <a class="chip" data-money-location-basis="document_pickup" data-scope-edge="money.location.document_pickup" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22document_pickup%22%7D" data-i18n="money_location_basis_pickup">Located by document-pickup address</a>
+        </nav>
       </div>
     </div>
     <div class="money-method-slot">

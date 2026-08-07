@@ -903,7 +903,7 @@ function applyHash(){
       $("#moneycouncil").value="";
       const actionBasis=["submission_address","pre_bid_venue","document_pickup"].includes(q.get("actionBasis"))?q.get("actionBasis"):"";
       const hasActionLocation=q.get("basis")==="contract_action_address";
-      forceSelect("#moneylocationbasis",hasActionLocation?(actionBasis||"contract_action_address"):"");
+      $("#moneylocationbasis").value=hasActionLocation?(actionBasis||"contract_action_address"):"";
       forceSelect("#moneyboro",hasActionLocation&&DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
       forceSelect("#moneycd",hasActionLocation&&/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"");
       forceSelect("#moneycouncil",hasActionLocation&&/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"");

@@ -135,6 +135,17 @@ test("district filtering uses the same locations that are counted", () => {
   assert.equal(rowMatchesContractActionFilter(row, { borough: "Queens" }), false);
 });
 
+test("a committed multi-basis record does not infer an unrelated response basis", () => {
+  const row = JSON.parse(readFileSync(
+    new URL("../site/data/contract_action_address_locations.json", import.meta.url),
+    "utf8",
+  )).rows.find((candidate) => candidate.request_id === "20260723025");
+  assert.ok(row);
+  assert.equal(rowMatchesContractActionFilter(row, { basis: ACTION_LOCATION_BASES.SUBMISSION }), true);
+  assert.equal(rowMatchesContractActionFilter(row, { basis: ACTION_LOCATION_BASES.PRE_BID }), true);
+  assert.equal(rowMatchesContractActionFilter(row, { basis: ACTION_LOCATION_BASES.DOCUMENT_PICKUP }), false);
+});
+
 test("district facet rails paint only registry-resolvable keys from resolved locations", () => {
   const selects = {
     "#moneycd": {
