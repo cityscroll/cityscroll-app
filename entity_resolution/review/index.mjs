@@ -11,21 +11,6 @@ export {
   buildInvestigationWorkspace,
 } from "./investigation_workspace.mjs";
 
-export {
-  ALIAS_ACCEPTED_STATUS,
-  ALIAS_PROPOSAL_STATUS,
-  ALIAS_PROPOSAL_PROMPT_VERSION,
-  ALIAS_PROPOSAL_VERSION,
-  ALIAS_REJECTED_STATUS,
-  appendProposedAliases,
-  buildAliasProposalPrompt,
-  generateAliasProposals,
-  parseAliasProposalResponse,
-  promoteAliasProposal,
-  readAliasRegistry,
-  reviewAliasProposal,
-} from "./llm_alias_proposals.mjs";
-
 const clampConfidence = (value) => {
   const n = Number(value);
   return Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : null;

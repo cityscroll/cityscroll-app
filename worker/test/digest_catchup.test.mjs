@@ -27,8 +27,8 @@ class MockKV {
 
 const DAY = () => new Date().toISOString().slice(0, 10);
 
-function seedSub(env, key, { lastsent = null, lens = "money", filter = { minAmount: 500000, keywords: ["construction"] } } = {}) {
-  const rec = { email: key.replace("sub:", "").replace(/:\w+$/, "") + "@example.com", lens, filter, freq: "daily", channel: "email", createdAt: "2026-07-01T00:00:00.000Z", lang: "en" };
+function seedSub(env, key, { lastsent = null, lens = "money", filter = { minAmount: 500000, keywords: ["construction"] }, paused = false } = {}) {
+  const rec = { email: `test-recipient-${key.replace("sub:", "").replace(/:\w+$/, "")}`, lens, filter, freq: "daily", channel: "email", createdAt: "2026-07-01T00:00:00.000Z", lang: "en", ...(paused ? { paused: true } : {}) };
   env.SUBS.store.set(key, JSON.stringify(rec));
   if (lastsent) env.ALERT_STATE.store.set(`lastsent:${key}`, lastsent);
 }
@@ -89,6 +89,48 @@ test("catch-up selection: sub with lastsent >= minLagDays is targeted", async ()
     assert.ok(targetedKeys.some((s) => s.includes("la***")), "lagging sub is targeted");
     assert.ok(!targetedKeys.some((s) => s.includes("fr***") && !s.includes("la***")), "fresh sub is NOT targeted");
     assert.equal(r.candidates, 1, "exactly one lagging sub");
+  } finally { globalThis.fetch = realFetch; }
+});
+
+test("catch-up covers the active entitlement set and does not advance on no-match", async () => {
+  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
+  const activeKey = "sub:active-a01";
+  const pausedKey = "sub:paused-p01";
+  seedSub({ SUBS, ALERT_STATE }, activeKey, { lastsent: "2026-07-28" });
+  seedSub({ SUBS, ALERT_STATE }, pausedKey, { lastsent: "2026-07-28", paused: true });
+  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = mockFetch([]);
+  try {
+    const r = await runCatchUpDigests(env, { minLagDays: 2 });
+    assert.equal(r.candidates, 1, "paused watches are not entitled to recovery mail");
+    assert.equal(r.results[0].status, "no_matches");
+    assert.equal(r.receipt.status, "no_matches");
+    assert.equal(r.receipt.outcomes.no_matches, 1);
+    assert.equal(await ALERT_STATE.get(`lastsent:${activeKey}`), "2026-07-28", "no-match recovery cannot advance the watermark");
+    assert.equal(await ALERT_STATE.get(`lastsent:${pausedKey}`), "2026-07-28", "paused watermark remains untouched");
+  } finally { globalThis.fetch = realFetch; }
+});
+
+test("catch-up send failure is an error receipt and preserves the last successful watermark", async () => {
+  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
+  const key = "sub:failed-f01";
+  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
+  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
+  const notices = [{ request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed construction", contract_amount: "900000", section_name: "Procurement" }];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
+    if (u.includes("api.resend.com")) throw new Error("resend unavailable");
+    throw new Error("unexpected fetch: " + u);
+  };
+  try {
+    const r = await runCatchUpDigests(env, { minLagDays: 2 });
+    assert.equal(r.receipt.status, "error");
+    assert.equal(r.receipt.outcomes.error, 1);
+    assert.equal(r.results[0].status, "error");
+    assert.equal(await ALERT_STATE.get(`lastsent:${key}`), "2026-07-28", "failed delivery cannot advance the watermark");
   } finally { globalThis.fetch = realFetch; }
 });
 
