@@ -27,6 +27,7 @@ import {
   emitUlurpStatutoryPredictions,
   stageModelName,
   statutoryDeadlinesFromCertification,
+  validateUlurpStatutoryPredictionSet,
 } from "../worker/src/lib/ulurp_statutory_predictions.mjs";
 import { validatePrediction } from "../worker/src/lib/prediction_contract.mjs";
 
@@ -90,6 +91,7 @@ test("fixture project certified on D renders CB/BP/CPC/Council due dates D+60/90
     generatedAt: "2024-01-16T12:00:00Z",
   });
   assert.ok(predictions.length >= 5);
+  assert.equal(validateUlurpStatutoryPredictionSet(predictions), predictions);
   for (const p of predictions) {
     validatePrediction(p);
     assert.equal(p.basis.method, "statutory_clock");
@@ -118,6 +120,23 @@ test("fixture project certified on D renders CB/BP/CPC/Council due dates D+60/90
   });
   assert.equal(attached.statutory_clock.phases[0].due_date, expected.community_board);
   assert.equal(attached.predictions.length, predictions.length);
+});
+
+test("statutory prediction sets fail closed on missing or duplicated phase rows", () => {
+  const record = JSON.parse(
+    readFileSync(join(ROOT, "test/fixtures/ulurp_statutory_clock/certified_d.json"), "utf8"),
+  );
+  const predictions = emitUlurpStatutoryPredictions(record, {
+    generatedAt: "2024-01-16T12:00:00Z",
+  });
+  assert.throws(
+    () => validateUlurpStatutoryPredictionSet(predictions.slice(1)),
+    /must contain exactly 6 rows/,
+  );
+  assert.throws(
+    () => validateUlurpStatutoryPredictionSet([...predictions.slice(0, -1), predictions[0]]),
+    /duplicate ULURP statutory model/,
+  );
 });
 
 test("withdrawn fixture project's open predictions resolve to withdrawn", () => {
