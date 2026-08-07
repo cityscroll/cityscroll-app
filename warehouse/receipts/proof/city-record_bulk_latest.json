@@ -163,6 +163,22 @@
     "start_date_max": "2026-08-04T00:00:00.000",
     "start_date_min": "2003-01-02T00:00:00.000"
   },
+  "source_summary": {
+    "row_count": 1098994,
+    "start_date_min": "2003-01-02T00:00:00.000",
+    "start_date_max": "2026-08-04T00:00:00.000",
+    "section_counts": {
+      "Agency Rules": 3062,
+      "Changes in Personnel": 961832,
+      "Contract Award Hearings": 10506,
+      "Court Notices": 155,
+      "Procurement": 105158,
+      "Property Disposition": 243,
+      "Public Comment on Contract Awards": 955,
+      "Public Hearings and Meetings": 8938,
+      "Special Materials": 8145
+    }
+  },
   "socrata_dataset_id": "dg92-zbpx",
   "source_contract_id": "city-record",
   "table_name": "city_record",
