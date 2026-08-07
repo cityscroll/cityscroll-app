@@ -1,6 +1,10 @@
 import { emptyScope, routeHashFromScope } from "./scope_v0.mjs";
 
 export const EXAM_FACETS = Object.freeze({
+  interest: Object.freeze({ routeKey: "interest", values: [
+    "public-safety", "health-care", "engineering-construction", "technology-science",
+    "community-social-services", "administration-finance", "trades-operations", "other",
+  ] }),
   window: Object.freeze({ routeKey: "window", values: ["actionable", "open", "upcoming", "closed"] }),
   format: Object.freeze({ routeKey: "format", values: [
     "education_experience", "multiple_choice", "physical", "mixed", "written", "oral", "practical", "other",
@@ -22,6 +26,7 @@ function dateStatus(exam, today) {
 /** Return only a publisher-backed or date-derived facet value. Missing facts stay unknown. */
 export function examFacetValue(exam, facet, { today = "", statusFor = null } = {}) {
   if (!exam || !EXAM_FACETS[facet]) return UNKNOWN;
+  if (facet === "interest") return String(exam.interest_area || "").trim() || UNKNOWN;
   if (facet === "window") {
     const status = typeof statusFor === "function" ? statusFor(exam, today) : dateStatus(exam, today);
     return ["open", "upcoming", "closed"].includes(status) ? status : UNKNOWN;

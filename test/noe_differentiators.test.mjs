@@ -23,6 +23,7 @@ import {
   examFacetOptionValues,
   examFacetValue,
 } from "../site/exam_detail_facets.mjs";
+import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
@@ -219,6 +220,7 @@ test("exam facet links use exact record keys and preserve unknowns", () => {
   const caseworker = byExam("7016");
   const police = byExam("7312");
   assert.equal(examFacetValue(auto, "format"), "education_experience");
+  assert.equal(examFacetValue(auto, "interest"), "trades-operations");
   assert.equal(examFacetValue(police, "fee"), "none");
   assert.equal(examFacetValue(caseworker, "experience"), "yes");
   assert.equal(examFacetValue({ application_start: null, application_end: null }, "window", { today }), "unknown");
@@ -233,6 +235,23 @@ test("exam facet links use exact record keys and preserve unknowns", () => {
   assert.equal(
     examFacetHref({ window: "open", interest: "all" }, "format", "multiple_choice"),
     "#people?view=guide&window=open&format=multiple_choice",
+  );
+  const interestHref = examFacetHref({
+    interest: "all",
+    eligibility: "promotion",
+    window: "open",
+    salary_band: "45k_60k",
+    fee_level: "none",
+    no_experience: "yes",
+  }, "interest", "technology-science");
+  assert.equal(
+    interestHref,
+    "#people?view=guide&interest=technology-science&eligibility=promotion&window=open&salary=45k_60k&fee=none&experience=yes",
+  );
+  assert.equal(
+    routeHashFromScope(scopeFromRouteHash(interestHref), { surface: "people" }),
+    interestHref,
+    "interest links reopen the same canonical scope with other facets intact",
   );
 });
 
@@ -252,6 +271,11 @@ test("applyNoeDifferentiatorRecord is fill-only for fee/salary", () => {
 });
 
 test("UI: differentiator filters and card lead surface exist", () => {
+  assert.match(SITE_SOURCE, /data-career-facets="interest"/);
+  assert.match(SITE_SOURCE, /id="career-interest-facets"[^>]*role="group"/);
+  assert.match(SITE_SOURCE, /aria-labelledby="career-interest-facets-label"/);
+  assert.doesNotMatch(SITE_SOURCE, /<select[^>]*id="career-interest"/);
+  assert.match(SITE_SOURCE, /id="career-query" type="text"/);
   assert.match(SITE_SOURCE, /data-career-facets="window"/);
   assert.match(SITE_SOURCE, /data-career-facets="format"/);
   assert.match(SITE_SOURCE, /data-career-facets="salary"/);
@@ -262,7 +286,7 @@ test("UI: differentiator filters and card lead surface exist", () => {
   assert.doesNotMatch(SITE_SOURCE, /id="career-fee-level"[^>]*>/);
   assert.doesNotMatch(SITE_SOURCE, /id="career-no-experience"[^>]*>/);
   assert.doesNotMatch(SITE_SOURCE, /<label[^>]*data-i18n="career_(?:window|format|salary_band|fee_level|no_experience)_label"/);
-  for (const facet of ["window", "format", "salary-band", "fee-level", "no-experience"]) {
+  for (const facet of ["interest", "window", "format", "salary-band", "fee-level", "no-experience"]) {
     assert.match(SITE_SOURCE, new RegExp(`id="career-${facet}-facets"[^>]*role="group"`));
     assert.match(SITE_SOURCE, new RegExp(`aria-labelledby="career-${facet}-facets-label"`));
   }
