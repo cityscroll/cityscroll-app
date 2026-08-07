@@ -115,6 +115,29 @@ test("backtests fail closed when a prediction was not emitted for a matter open 
   );
 });
 
+test("backtests fail closed when opening and terminal vocabularies are ambiguous", () => {
+  const duplicateOpen = structuredClone(fixtureById.get("well_calibrated").backtest);
+  duplicateOpen.open_event_kinds.push(duplicateOpen.open_event_kinds[0]);
+  assert.throws(
+    () => evaluatePredictionBacktest(duplicateOpen),
+    /open_event_kinds must not contain duplicates/,
+  );
+
+  const duplicateTerminal = structuredClone(fixtureById.get("well_calibrated").backtest);
+  duplicateTerminal.terminal_event_kinds.push(duplicateTerminal.terminal_event_kinds[0]);
+  assert.throws(
+    () => evaluatePredictionBacktest(duplicateTerminal),
+    /terminal_event_kinds must not contain duplicates/,
+  );
+
+  const overlapping = structuredClone(fixtureById.get("well_calibrated").backtest);
+  overlapping.open_event_kinds.push(overlapping.terminal_event_kinds[0]);
+  assert.throws(
+    () => evaluatePredictionBacktest(overlapping),
+    /open_event_kinds and terminal_event_kinds overlap/,
+  );
+});
+
 test("only post-split exact subject and event-kind joins resolve a prediction", () => {
   const fixture = structuredClone(fixtureById.get("well_calibrated").backtest);
   const prediction = fixture.predictions.find((row) => row.claim === "timing");
