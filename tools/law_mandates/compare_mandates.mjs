@@ -11,6 +11,7 @@ function clean(value, max = 2000) { return sanitizeText(value, max); }
 function rowsFromPayload(payload) {
   if (Array.isArray(payload)) return payload.flatMap((item) => Array.isArray(item?.mandates) ? item.mandates : [item]);
   if (Array.isArray(payload?.mandates)) return payload.mandates;
+  if (Array.isArray(payload?.obligations)) return payload.obligations;
   if (Array.isArray(payload?.rows)) return payload.rows;
   if (Array.isArray(payload?.laws)) return payload.laws.flatMap((law) => law.mandates || []);
   return [];
@@ -28,7 +29,7 @@ function mattersFromPayload(payload) {
 }
 
 function sequenceKey(row, index) {
-  const match = String(row?.mandate_id ?? row?.mandateId ?? "").match(/-(\d+)$/);
+  const match = String(row?.mandate_id ?? row?.mandateId ?? row?.obligation_id ?? "").match(/-(\d+)$/);
   return match ? `seq:${Number(match[1])}` : `seq:${index + 1}`;
 }
 
@@ -45,7 +46,7 @@ function fieldValue(row, field) {
 
 function publicRow(row) {
   return {
-    mandate_id: clean(row?.mandate_id ?? row?.mandateId, 120) || null,
+    mandate_id: clean(row?.mandate_id ?? row?.mandateId ?? row?.obligation_id, 120) || null,
     matter_id: clean(row?.matter_id ?? row?.matterId, 120) || null,
     agency: clean(fieldValue(row, "agency"), 240),
     duty_text: clean(row?.duty_text ?? row?.action_summary, 2000),

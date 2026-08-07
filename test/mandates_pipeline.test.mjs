@@ -131,6 +131,18 @@ test("comparator emits agreement, our-only, reference-only, and field disagreeme
   assert.equal(review.methodology.trust_rule, TRUST_RULE);
 });
 
+test("comparator accepts the private oracle obligations envelope", () => {
+  const review = compareMandates(
+    { laws: [{ matter_id: "m-1", provenance: { source_url: "https://law.test/m-1", sha256: "abc" }, mandates: [] }], mandates: [
+      { mandate_id: "m-1-001", matter_id: "m-1", agency: "HPD", deliverable_type: "program", deadline: { computed_date: "2027-01-01" } },
+    ] },
+    { obligations: [{ obligation_id: "m-1-01", matter_id: "m-1", agency: "HPD", deliverable_type: "program", deadline_date: "2027-01-01", quote_verified: true }] },
+    { generatedAt: "2026-08-07T00:00:00Z" },
+  );
+  assert.equal(review.receipt.agreement_count, 1);
+  assert.equal(review.receipt.review_count, 0);
+});
+
 test("reference path guard rejects repository paths and accepts private paths", async () => {
   const outside = await mkdtemp(join(tmpdir(), "crol-private-reference-"));
   assert.equal(assertReferencePathOutsideRepo(join(outside, "reference.json"), process.cwd()).startsWith("/"), true);

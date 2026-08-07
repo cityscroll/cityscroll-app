@@ -92,6 +92,7 @@ export async function fetchEnactedLaws({
   limit = null,
   cacheDir = DEFAULT_LAW_CACHE_DIR,
   fetchedAt = new Date().toISOString(),
+  onProgress = null,
 } = {}) {
   if (!token) throw new Error("LEGISTAR_API_TOKEN is required");
   const matters = await fetchLegistarMatters({ token, fetchImpl, startYear, endYear, limit });
@@ -99,9 +100,12 @@ export async function fetchEnactedLaws({
   const skipped = [];
   await mkdir(join(cacheDir, "laws"), { recursive: true });
   await mkdir(join(cacheDir, "text"), { recursive: true });
-  for (const row of matters) {
+  for (const [index, row] of matters.entries()) {
     const matterId = String(row?.MatterId ?? "");
-    if (!matterId) continue;
+    if (!matterId) {
+      if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: null, status: "skipped_missing_id" });
+      continue;
+    }
     const detail = await fetchLegistarMatter({ matterId, token, fetchImpl }) || row;
     const attachments = await fetchLegistarMatterAttachments({ matterId, token, fetchImpl });
     const textInfo = lawTextFromMatter(detail, attachments);
@@ -110,6 +114,7 @@ export async function fetchEnactedLaws({
     const text = textInfo.text || fetchedReportText;
     if (!text) {
       skipped.push({ ...metadata, text_status: textInfo.text_status || "unavailable", source_url: textInfo.source_url });
+      if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "skipped_missing_text" });
       continue;
     }
     const textValue = String(text);
@@ -129,6 +134,7 @@ export async function fetchEnactedLaws({
     await writeFile(join(cacheDir, "text", `${matterId}.txt`), textValue, "utf8");
     await writeFile(join(cacheDir, "laws", `${matterId}.json`), `${JSON.stringify(law, null, 2)}\n`, "utf8");
     laws.push(law);
+    if (typeof onProgress === "function") await onProgress({ index: index + 1, total: matters.length, matter_id: matterId, status: "cached" });
   }
   return { laws, skipped, fetched_at: fetchedAt, source: "nyc_legistar_web_api" };
 }
