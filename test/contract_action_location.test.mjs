@@ -135,20 +135,60 @@ test("district filtering uses the same locations that are counted", () => {
   assert.equal(rowMatchesContractActionFilter(row, { borough: "Queens" }), false);
 });
 
-test("district controls populate only from resolved sidecar locations", () => {
+test("district facet rails paint only registry-resolvable keys from resolved locations", () => {
   const selects = {
-    "#moneycd": { value: "", options: [], appendChild(option) { this.options.push(option); } },
-    "#moneycouncil": { value: "", options: [], appendChild(option) { this.options.push(option); } },
+    "#moneycd": {
+      value: "",
+      options: [],
+      get innerHTML() { return this._html || ""; },
+      set innerHTML(html) {
+        this._html = html;
+        this.options = [...String(html).matchAll(/value="([^"]*)"/g)].map((match) => ({
+          value: match[1],
+          textContent: match[1],
+        }));
+      },
+    },
+    "#moneycouncil": {
+      value: "",
+      options: [],
+      get innerHTML() { return this._html || ""; },
+      set innerHTML(html) {
+        this._html = html;
+        this.options = [...String(html).matchAll(/value="([^"]*)"/g)].map((match) => ({
+          value: match[1],
+          textContent: match[1],
+        }));
+      },
+    },
+  };
+  const rails = {
+    "#moneycd-facets": { innerHTML: "" },
+    "#moneycouncil-facets": { innerHTML: "" },
   };
   const documentRef = {
-    querySelector: (selector) => selects[selector],
-    createElement: () => ({ value: "", textContent: "" }),
+    querySelector: (selector) => selects[selector] || rails[selector] || null,
   };
   fillContractActionLocationSelects({ rows: [{ locations: [
     { community_district: "M01", council_district: "1" },
     { community_district: "M01", council_district: "1" },
     { community_district: "K02", council_district: "33" },
+    // Fail closed: label without borough, and non-registry council id, never become chips.
+    { community_district: "Community District 4", council_district: "99" },
   ] }] }, { documentRef, councilLabel: (value) => `Council ${value}` });
-  assert.deepEqual(selects["#moneycd"].options.map((option) => option.value), ["K02", "M01"]);
-  assert.deepEqual(selects["#moneycouncil"].options.map((option) => option.textContent), ["Council 1", "Council 33"]);
+  assert.deepEqual(
+    selects["#moneycd"].options.map((option) => option.value).filter(Boolean),
+    ["K02", "M01"],
+  );
+  assert.deepEqual(
+    selects["#moneycouncil"].options.map((option) => option.value).filter(Boolean),
+    ["1", "33"],
+  );
+  assert.match(rails["#moneycd-facets"].innerHTML, /data-district-id="K02"/);
+  assert.match(rails["#moneycd-facets"].innerHTML, /data-district-id="M01"/);
+  assert.doesNotMatch(rails["#moneycd-facets"].innerHTML, /Community District 4/);
+  assert.match(rails["#moneycouncil-facets"].innerHTML, /data-district-id="33"/);
+  assert.doesNotMatch(rails["#moneycouncil-facets"].innerHTML, /data-district-id="99"/);
+  assert.match(rails["#moneycd-facets"].innerHTML, /#money\?basis=contract_action_address&amp;cd=K02/);
+  assert.match(rails["#moneycouncil-facets"].innerHTML, /district-map-pivot/);
 });

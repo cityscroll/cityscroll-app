@@ -1109,6 +1109,11 @@
   #land-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
   .land-control-button{align-self:flex-end}
   #land-status-rail .chip[aria-pressed="true"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
+  .district-facet-rail{margin-top:6px;gap:8px}
+  .district-facet-rail .chip[aria-pressed="true"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
+  .district-facet-rail .chip[aria-pressed="true"] .ct{color:var(--color-surface)}
+  .district-facet-option{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .district-map-pivot{font:600 11px/1.2 var(--font-interface);color:var(--color-action);text-decoration:underline;text-underline-offset:2px}
   #land-resultbar{margin-top:var(--space-3)}
   .land-result-heading{font:600 13px/1.35 var(--font-interface);color:var(--color-text-soft)}
   #land-status:empty{display:none}
@@ -1621,13 +1626,15 @@
                 <label for="moneyboro" data-i18n="borough_label">Borough</label>
                 <select id="moneyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option></select>
               </div>
-              <div class="field">
-                <label for="moneycd" data-i18n="money_community_district_label">Community district</label>
-                <select id="moneycd"><option value="" data-i18n="money_district_any">Any district</option></select>
+              <div class="field money-district-facet" data-district-facet="community">
+                <div class="field-label" id="moneycd-label" data-i18n="money_community_district_label">Community district</div>
+                <div id="moneycd-facets" class="chiprow district-facet-rail" role="group" aria-labelledby="moneycd-label"></div>
+                <select id="moneycd" hidden aria-hidden="true" tabindex="-1" aria-label="Community district" data-i18n-aria="money_community_district_label"><option value="" data-i18n="money_district_any">Any district</option></select>
               </div>
-              <div class="field">
-                <label for="moneycouncil" data-i18n="money_council_district_label">Council district</label>
-                <select id="moneycouncil"><option value="" data-i18n="money_district_any">Any district</option></select>
+              <div class="field money-district-facet" data-district-facet="council">
+                <div class="field-label" id="moneycouncil-label" data-i18n="money_council_district_label">Council district</div>
+                <div id="moneycouncil-facets" class="chiprow district-facet-rail" role="group" aria-labelledby="moneycouncil-label"></div>
+                <select id="moneycouncil" hidden aria-hidden="true" tabindex="-1" aria-label="Council district" data-i18n-aria="money_council_district_label"><option value="" data-i18n="money_district_any">Any district</option></select>
               </div>
               <div class="field" id="minwrap">
                 <label for="minamt" data-i18n="min_award_label">Min award $</label>

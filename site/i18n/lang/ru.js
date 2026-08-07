@@ -210,6 +210,7 @@
     money_community_district_label: "Общественный округ",
     money_council_district_label: "Округ городского совета",
     money_district_any: "Любой округ",
+    money_district_map_pivot: "Карта",
     money_location_filter_interpretation: "Показана процедура закупки, а не место выполнения работ:",
     money_response_location_heading: "Контракты с определённым местом процедуры",
     money_response_location_heading_place: "Контракты с местом процедуры в {place}",
