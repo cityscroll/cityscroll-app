@@ -39,14 +39,20 @@ test("Contracts follows the shared lens hierarchy with exact search and its prim
   assert.match(moneySection, /class="lens-method money-method"[\s\S]*?class="contract-example-list"/);
 });
 
-test("Contracts keeps keyword and method visible while secondary controls stay in one disclosure", () => {
+test("Contracts keeps keyword, mode, and response-location facets visible while secondary controls stay in one disclosure", () => {
   const disclosureStart = moneySection.indexOf('id="money-more-filters"');
   const disclosureEnd = moneySection.indexOf('</details>', disclosureStart);
   const disclosure = moneySection.slice(disclosureStart, disclosureEnd);
   assert.ok(moneySection.indexOf('id="kw"') < disclosureStart);
-  for (const id of ["mode", "agency", "minamt", "closingweek"]) {
+  for (const id of ["agency", "minamt", "closingweek"]) {
     assert.match(disclosure, new RegExp(`id="${id}"`));
   }
+  assert.match(moneySection, /id="money-mode-rail"[\s\S]*?data-scope-edge="money\.mode\.award"/);
+  assert.match(moneySection, /id="money-location-rail"[\s\S]*?data-scope-edge="money\.location\.submission_address"/);
+  assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-mode-label"[\s\S]*?id="money-mode-rail"[^>]*aria-labelledby="money-mode-label"/);
+  assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-location-label"[\s\S]*?id="money-location-rail"[^>]*aria-labelledby="money-location-label"/);
+  assert.doesNotMatch(moneySection, /class="money-facet-rails" aria-label=/);
+  assert.doesNotMatch(disclosure, /<select[^>]+id="mode"|<select[^>]+id="moneylocationbasis"/);
   assert.doesNotMatch(disclosure, /id="sort"|id="methodfacet"/);
   assert.ok(moneySection.indexOf('id="methodfacet"') > disclosureEnd);
   assert.match(moneySection, /id="rescount"[\s\S]*?id="sort"/);
@@ -106,7 +112,6 @@ test("All RFPs keeps current deadlines first and preserves every counted row", (
 
 test("secondary-filter badge names active state and hides at the default", () => {
   const update = extractFunction(moneySource, "updateMoneyMoreFiltersState");
-  assert.match(update, /mode!=="open"/);
   assert.match(update, /closingWeek/);
   assert.match(update, /property_filters_active/);
   assert.match(update, /badge\.hidden=active===0/);
