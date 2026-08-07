@@ -38,6 +38,9 @@ $("#moneylocationbasis").addEventListener("change",async()=>{
   if($("#moneylocationbasis").value) await initializeMoneyLocationFilters();
   search();
 });
+$("#money-more-filters").addEventListener("toggle",async(event)=>{
+  if(event.target.open) await initializeMoneyLocationFilters();
+});
 // District facet chips are join-backed hypertext (shareable scope hashes). Hash
 // navigation owns selection; map-pivot links leave the Contracts surface.
 $("#moneyboro").addEventListener("change",async()=>{
@@ -45,7 +48,14 @@ $("#moneyboro").addEventListener("change",async()=>{
     await initializeMoneyLocationFilters();
   }
 });
-$("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
+$("#closingweek").addEventListener("click", (event)=>{
+  if(!closingWeek) return;
+  event.preventDefault();
+  const hash=location.hash.startsWith("#money") ? location.hash : "#money";
+  const scope=CrolScope.scopeFromRouteHash(hash,{language:window.LANG||"en"});
+  scope.time_window.preset=null;
+  location.hash=CrolScope.routeHashFromScope(scope,{surface:"money"});
+});
 
 $("#staffing-query").addEventListener("input",debounce(()=>{
   staffingFilters.query=$("#staffing-query").value.trim();

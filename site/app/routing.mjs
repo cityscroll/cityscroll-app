@@ -889,7 +889,8 @@ function applyHash(){
       };
       closingWeek = q.get("closing") === "week";
       $("#closingweek").classList.toggle("on", closingWeek);
-      $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
+      if(closingWeek) $("#closingweek").setAttribute("aria-current", "page");
+      else $("#closingweek").removeAttribute("aria-current");
       methodSel = q.get("m") || "";
       $("#moneylocationbasis").value="";
       $("#moneyboro").value="";
@@ -1155,6 +1156,8 @@ async function noticeAttachmentMetadata(id){
   return {request_id:String(id),n_attachments:attachments.length,attachments};
 }
 async function showNotice(id, watch){
+  await globalThis.ensureMoneyHistory?.();
+  await globalThis.ensureRules?.();
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");

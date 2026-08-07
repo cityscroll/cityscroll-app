@@ -14,6 +14,7 @@ import {
   normalizeCouncilDistrictId,
 } from "./council_district_lookup.mjs";
 import { nearYouUrlFromScope, scopeFromLensState } from "./scope_v0.mjs";
+import { moneyActionLocationHash, moneyActionLocationScope } from "./money_scope_links.mjs";
 
 export { COMMUNITY_DISTRICT_ID_RE, COUNCIL_DISTRICT_ID_RE };
 
@@ -91,11 +92,27 @@ export function councilDistrictFacetOptions(locations = [], { labelFor } = {}) {
  * Shareable Money contract-action scope hash for district / borough filters.
  * Returns null when no place constraint is present (empty is not a scope edge).
  */
-export function moneyDistrictScopeHash(filter = {}) {
+export function moneyDistrictScopeHash(filter = {}, { scope = null } = {}) {
   const cd = communityDistrictKey(filter.communityDistrict || filter.cd || filter.community_district);
   const council = councilDistrictKey(filter.councilDistrict || filter.council || filter.council_district);
   const borough = filter.borough || filter.boro || "";
   const actionBasis = filter.actionBasis || filter.basis || "";
+  if (scope) {
+    return moneyActionLocationHash(scope, {
+      ...(Object.prototype.hasOwnProperty.call(filter, "actionBasis") || Object.prototype.hasOwnProperty.call(filter, "basis")
+        ? { actionBasis }
+        : {}),
+      ...(Object.prototype.hasOwnProperty.call(filter, "borough") || Object.prototype.hasOwnProperty.call(filter, "boro")
+        ? { borough }
+        : {}),
+      ...(Object.prototype.hasOwnProperty.call(filter, "communityDistrict") || Object.prototype.hasOwnProperty.call(filter, "cd") || Object.prototype.hasOwnProperty.call(filter, "community_district")
+        ? { communityDistrict: cd || "" }
+        : {}),
+      ...(Object.prototype.hasOwnProperty.call(filter, "councilDistrict") || Object.prototype.hasOwnProperty.call(filter, "council") || Object.prototype.hasOwnProperty.call(filter, "council_district")
+        ? { councilDistrict: council || "" }
+        : {}),
+    });
+  }
   if (!cd && !council && !borough && !actionBasis) return null;
   const q = new URLSearchParams();
   q.set("basis", "contract_action_address");
@@ -112,24 +129,28 @@ export function moneyDistrictScopeHash(filter = {}) {
  * Near-you / map pivot for a registry-backed district.
  * Fail closed when the id does not resolve.
  */
-export function districtMapPivotHref({ kind, id, lens = "money", basis = "contract_action_address" } = {}) {
+export function districtMapPivotHref({ kind, id, lens = "money", basis = "contract_action_address", scope = null } = {}) {
   if (kind === "community_district") {
     const cd = communityDistrictKey(id);
     if (!cd) return null;
-    const scope = scopeFromLensState(lens, {
+    const nextScope = scope
+      ? moneyActionLocationScope(scope, { communityDistrict: cd })
+      : scopeFromLensState(lens, {
       communityDistrict: cd,
       basis: lens === "money" ? basis : undefined,
     });
-    return nearYouUrlFromScope(scope, { base: "/near-you/" });
+    return nearYouUrlFromScope(nextScope, { base: "/near-you/" });
   }
   if (kind === "council_district") {
     const council = councilDistrictKey(id);
     if (!council) return null;
-    const scope = scopeFromLensState(lens, {
+    const nextScope = scope
+      ? moneyActionLocationScope(scope, { councilDistrict: council })
+      : scopeFromLensState(lens, {
       councilDistrict: council,
       basis: lens === "money" ? basis : undefined,
     });
-    return nearYouUrlFromScope(scope, { base: "/near-you/" });
+    return nearYouUrlFromScope(nextScope, { base: "/near-you/" });
   }
   return null;
 }
@@ -160,6 +181,7 @@ export function districtFacetRailHTML({
   baseFilter = {},
   anyLabel = "Any district",
   mapPivotLabel = "Map",
+  scope = null,
   escape = escText,
   escapeAttr = escAttr,
 } = {}) {
@@ -178,7 +200,7 @@ export function districtFacetRailHTML({
   const clearHash = moneyDistrictScopeHash({
     ...clearFilter,
     actionBasis: clearFilter.actionBasis || "contract_action_address",
-  }) || "#money?basis=contract_action_address";
+  }, { scope }) || "#money?basis=contract_action_address";
 
   const chips = [];
   chips.push(
@@ -204,13 +226,13 @@ export function districtFacetRailHTML({
     if (!nextFilter.actionBasis && !nextFilter.borough) {
       nextFilter.actionBasis = "contract_action_address";
     }
-    const href = moneyDistrictScopeHash(nextFilter);
+    const href = moneyDistrictScopeHash(nextFilter, { scope });
     if (!href) continue;
     const pressed = selectedKey === id ? "true" : "false";
     const count = Number(option.count) > 0
       ? ` <span class="ct">${escape(String(option.count))}</span>`
       : "";
-    const mapHref = districtMapPivotHref({ kind, id, lens: "money" });
+    const mapHref = districtMapPivotHref({ kind, id, lens: "money", scope });
     const mapLink = mapHref
       ? ` <a class="district-map-pivot" href="${escapeAttr(mapHref)}" data-district-map-pivot="${escapeAttr(kind)}:${escapeAttr(id)}">${escape(mapPivotLabel)}</a>`
       : "";
@@ -277,6 +299,7 @@ export function paintDistrictFacetRails(doc, options = {}) {
       options: community.options,
       selected: baseFilter.communityDistrict,
       baseFilter,
+      scope: options.scope,
       anyLabel: options.anyLabel || "Any district",
       mapPivotLabel: options.mapPivotLabel || "Map",
       escape: options.escape,

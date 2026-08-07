@@ -141,7 +141,8 @@ async function nlTranslate(){
   $("#kw").value=(p.keywords||[]).join(" "); forceAmountSelect(p.minAmount);
   closingWeek=!!p.closingWeek && !wantsAward;
   $("#closingweek").classList.toggle("on", closingWeek);
-  $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
+  if(closingWeek) $("#closingweek").setAttribute("aria-current", "page");
+  else $("#closingweek").removeAttribute("aria-current");
   await search();
   if(btn) btn.disabled=false;
   $("#nltrans").innerHTML=nlqResolvedActionsHTML(deepLink);
@@ -677,7 +678,7 @@ function bindClearSearchState(lens, root){
       moneyNlResolved={};
       $("#mode").value="open"; $("#agency").value=""; $("#kw").value=""; $("#sort").value="deadline";
       forceAmountSelect(null); closingWeek=false; methodSel="";
-      $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false");
+      $("#closingweek").classList.remove("on"); $("#closingweek").removeAttribute("aria-current");
       $("#nltrans").innerHTML=""; search(); return;
     }
     if(lens==="people"){

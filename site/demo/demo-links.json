@@ -299,8 +299,8 @@
           },
           {
             "selector": "#closingweek",
-            "attribute": "aria-pressed",
-            "equals": "true"
+            "attribute": "aria-current",
+            "equals": "page"
           }
         ]
       }
@@ -330,8 +330,8 @@
         "states": [
           {
             "selector": "#closingweek",
-            "attribute": "aria-pressed",
-            "equals": "true"
+            "attribute": "aria-current",
+            "equals": "page"
           }
         ]
       }
