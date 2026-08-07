@@ -28,6 +28,8 @@ export const MAX_VOTE_PROBES_PER_EVENT = 6;
 export const MAX_TOTAL_VOTE_PROBES = 240;
 export const MAX_ATTACHMENT_PROBES_PER_EVENT = 8;
 export const MAX_TOTAL_ATTACHMENT_PROBES = 320;
+export const MATTERS_PAGE_SIZE = 200;
+export const MATTERS_MAX_PAGES = 20;
 
 /**
  * Stitch the token into a URL without ever materializing it in a log line.
@@ -56,7 +58,10 @@ async function fetchJson(fetchImpl, url, timeoutMs = 15000) {
       throw err;
     }
     const body = await res.json();
-    return Array.isArray(body) ? body : (body.value || body.d || []);
+    if (Array.isArray(body)) return body;
+    if (Array.isArray(body?.value)) return body.value;
+    if (Array.isArray(body?.d)) return body.d;
+    return body;
   } finally {
     clearTimeout(timer);
   }
@@ -83,6 +88,56 @@ export async function fetchLegistarBodies({ token, fetchImpl = fetch } = {}) {
     if (batch.length < BODIES_PAGE_SIZE) break;
   }
   return rows;
+}
+
+/**
+ * Fetch enacted Introductions in a bounded date range. The API's Matter rows
+ * include MatterText1..MatterText5 and report URLs; callers can fetch the
+ * nested matter attachments separately when the text fields are empty.
+ */
+export async function fetchLegistarMatters({
+  token,
+  fetchImpl = fetch,
+  startYear = 2014,
+  endYear = new Date().getUTCFullYear(),
+  limit = null,
+} = {}) {
+  if (!token) return [];
+  const start = `${Number(startYear)}-01-01T00:00:00Z`;
+  const end = `${Number(endYear) + 1}-01-01T00:00:00Z`;
+  const filter = [
+    "MatterTypeName eq 'Introduction'",
+    "MatterStatusName eq 'Enacted'",
+    `MatterEnactmentDate ge datetime'${start}'`,
+    `MatterEnactmentDate lt datetime'${end}'`,
+  ].join(" and ");
+  const rows = [];
+  for (let page = 0; page < MATTERS_MAX_PAGES; page += 1) {
+    const remaining = limit == null ? MATTERS_PAGE_SIZE : Math.max(0, Number(limit) - rows.length);
+    if (!remaining) break;
+    const batch = await fetchJson(fetchImpl, authedUrl("Matters", token, {
+      $top: String(Math.min(MATTERS_PAGE_SIZE, remaining)),
+      $skip: String(page * MATTERS_PAGE_SIZE),
+      $orderby: "MatterEnactmentDate asc,MatterId asc",
+      $filter: filter,
+    }));
+    if (!batch.length) break;
+    rows.push(...batch);
+    if (batch.length < Math.min(MATTERS_PAGE_SIZE, remaining)) break;
+  }
+  return limit == null ? rows : rows.slice(0, Number(limit));
+}
+
+/** Fetch one complete Matter row, including the inline MatterText fields. */
+export async function fetchLegistarMatter({ matterId, token, fetchImpl = fetch } = {}) {
+  if (!token || !matterId) return null;
+  return fetchJson(fetchImpl, authedUrl(`Matters/${encodeURIComponent(matterId)}`, token));
+}
+
+/** Fetch the available-for-web matter attachments for one enacted law. */
+export async function fetchLegistarMatterAttachments({ matterId, token, fetchImpl = fetch } = {}) {
+  if (!token || !matterId) return [];
+  return fetchJson(fetchImpl, authedUrl(`Matters/${encodeURIComponent(matterId)}/Attachments`, token, { $top: "100" }));
 }
 
 /**
