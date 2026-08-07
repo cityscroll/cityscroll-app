@@ -1,6 +1,7 @@
 -- Entity resolution schema sketch (design reference).
 -- Authoritative decision record: docs/adr/entity-resolution-taxonomy.md
 -- Applied subset (er-07): worker/migrations/0009_entity_link.sql
+-- Provenance/lineage extension: worker/migrations/0017_resolution_provenance.sql
 --   resolution_run, canonical_entity, entity_link
 -- Applied subset (er-02): worker/migrations/0008_source_records.sql
 --   source_records (composite PK; soft-referenced by entity_link.source_record_id)
@@ -21,6 +22,13 @@ CREATE TABLE IF NOT EXISTS resolution_run (
   started_at       TEXT NOT NULL,
   finished_at      TEXT,
   metrics_json     TEXT,
+  model_artifact_hash TEXT,
+  gold_version     TEXT,
+  feature_version  TEXT,
+  blocking_version TEXT,
+  policy_version   TEXT,
+  watermarks_json  TEXT,
+  provenance_json  TEXT,
   status           TEXT NOT NULL DEFAULT 'running'
 );
 
@@ -63,6 +71,8 @@ CREATE TABLE IF NOT EXISTS entity_link (
   evidence_json       TEXT,
   resolution_run_id   TEXT REFERENCES resolution_run(id),
   review_status       TEXT,
+  supersedes_link_id  TEXT REFERENCES entity_link(id),
+  supersession_reason TEXT,
   created_at          TEXT NOT NULL,
   UNIQUE (source_record_id, method, matcher_version, decision, canonical_entity_id)
 );
@@ -72,6 +82,20 @@ CREATE INDEX IF NOT EXISTS idx_entity_link_decision
   ON entity_link(decision);
 CREATE INDEX IF NOT EXISTS idx_entity_link_run
   ON entity_link(resolution_run_id);
+
+CREATE TABLE IF NOT EXISTS entity_link_supersession (
+  id                  TEXT PRIMARY KEY,
+  superseding_link_id TEXT NOT NULL REFERENCES entity_link(id),
+  superseded_link_id  TEXT NOT NULL REFERENCES entity_link(id),
+  reason              TEXT NOT NULL,
+  resolution_run_id   TEXT REFERENCES resolution_run(id),
+  created_at          TEXT NOT NULL,
+  UNIQUE (superseding_link_id, superseded_link_id)
+);
+CREATE INDEX IF NOT EXISTS idx_entity_link_supersession_new
+  ON entity_link_supersession(superseding_link_id);
+CREATE INDEX IF NOT EXISTS idx_entity_link_supersession_old
+  ON entity_link_supersession(superseded_link_id);
 
 CREATE TABLE IF NOT EXISTS candidate_pair (
   id                TEXT PRIMARY KEY,

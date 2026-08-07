@@ -34,6 +34,12 @@ import {
 } from "../entity_resolution/index.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const PROVENANCE_FIXTURE = join(
+  WAREHOUSE_DIR,
+  "fixtures",
+  "er-batch",
+  "provenance_lineage.json",
+);
 
 function pyBin() {
   const venv = join(WAREHOUSE_DIR, ".venv", "bin", "python");
@@ -80,6 +86,34 @@ describe("WH-04 pure ER batch (reuse entity_resolution)", () => {
     assert.ok(
       batch.canonical_entities.some((e) => e.id === "vendor:stem:ACME WIDGETS")
     );
+    assert.match(batch.resolution_run.model_artifact_hash, /^[a-f0-9]{64}$/);
+    assert.equal(batch.resolution_run.gold_version, "not_used");
+    assert.equal(batch.resolution_run.feature_version, "pair_features_v2");
+    assert.equal(batch.resolution_run.blocking_version, "token_v0_v0");
+    assert.equal(batch.resolution_run.policy_version, "conservative_v1");
+    assert.deepEqual(JSON.parse(batch.resolution_run.watermarks_json), {});
+  });
+
+  it("records append-only supersession lineage when a source link changes", () => {
+    const fixture = JSON.parse(readFileSync(PROVENANCE_FIXTURE, "utf8"));
+    const prior = runErBatch({
+      ocpRows: [{ request_id: fixture.request_id, vendor_name: fixture.prior_vendor_name }],
+      now: "2026-08-02T00:00:00.000Z",
+    });
+    const current = runErBatch({
+      ocpRows: [{ request_id: fixture.request_id, vendor_name: fixture.current_vendor_name }],
+      priorEntityLinks: prior.entity_links,
+      watermarks: fixture.watermarks,
+      now: "2026-08-03T00:00:00.000Z",
+    });
+    assert.equal(current.entity_link_supersessions.length, 1);
+    assert.equal(current.entity_link_supersessions[0].superseded_link_id, prior.entity_links[0].id);
+    assert.equal(current.entity_link_supersessions[0].superseding_link_id, current.entity_links[0].id);
+    assert.equal(current.entity_link_supersessions[0].reason, fixture.expected_supersession_reason);
+    assert.equal(current.entity_links[0].supersedes_link_id, prior.entity_links[0].id);
+    assert.equal(current.entity_links[0].supersession_reason, fixture.expected_supersession_reason);
+    assert.deepEqual(current.provenance.watermarks, fixture.watermarks);
+    assert.equal(current.resolution_run.provenance_json.includes("watermarks"), true);
   });
 
   it("links agencies via canonicalAgency (DoITT/OTI-style alias surface)", () => {
@@ -185,6 +219,7 @@ describe("WH-04 fixtures + capped runner layout", () => {
         join(WAREHOUSE_DIR, "fixtures", "er-batch", "doing_business_sample.csv")
       )
     );
+    assert.ok(existsSync(PROVENANCE_FIXTURE));
     assert.ok(existsSync(join(WAREHOUSE_DIR, "scripts", "er_batch.mjs")));
     assert.ok(existsSync(join(WAREHOUSE_DIR, "scripts", "er_batch_run.py")));
     assert.ok(existsSync(join(WAREHOUSE_DIR, "scripts", "materialize_er_batch.py")));

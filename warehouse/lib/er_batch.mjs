@@ -31,7 +31,15 @@ import {
   VENDOR_STEM_VERSION,
   canonicalAgency,
   agencyCanonicalId,
+  FEATURES_VERSION,
+  POLICIES_VERSION,
+  conventionalV2Scorer,
 } from "../../entity_resolution/index.mjs";
+import {
+  buildLinkSupersessions,
+  annotateLinkSupersession,
+  buildResolutionRunProvenance,
+} from "../../entity_resolution/provenance.mjs";
 
 export const ER_BATCH_VERSION = "wh04_er_batch_v1";
 export const OCP_SOURCE_SYSTEM = "ocp-recent-contract-awards";
@@ -39,6 +47,7 @@ export const DOING_BUSINESS_SOURCE_SYSTEM = "doing-business-entities";
 export const AGENCY_METHOD = "agency_canonical_v1";
 export const AGENCY_MATCHER_VERSION = "1";
 export const PAIR_METHOD = "conventional_pair_v1";
+export const ER_PROVENANCE_POLICY_VERSION = POLICIES_VERSION;
 
 /** FNV-1a 32-bit opaque id (same shape as entity_link.mjs). */
 export function opaqueId(prefix, parts) {
@@ -372,6 +381,7 @@ export function dedupeLinkCases(cases) {
  * @param {number} [input.limit] - cap OCP rows (default no extra cap beyond array)
  * @param {string} [input.now] - ISO timestamp
  * @param {string} [input.scopeNote]
+ * @param {Array<object>} [input.priorEntityLinks] - prior links for lineage
  */
 export function runErBatch(input = {}) {
   const now = input.now || new Date().toISOString();
@@ -503,6 +513,12 @@ export function runErBatch(input = {}) {
     };
   });
 
+  const supersessions = buildLinkSupersessions(
+    entityLinkRows,
+    input.priorEntityLinks,
+  );
+  const annotatedEntityLinkRows = annotateLinkSupersession(entityLinkRows, supersessions);
+
   const canonicalRows = entities.map((e) => ({
     id: e.id,
     entity_type: e.entity_type,
@@ -528,6 +544,40 @@ export function runErBatch(input = {}) {
     status: "completed",
   };
 
+  const provenance = buildResolutionRunProvenance({
+    model_artifact_hash:
+      input.modelArtifactHash || input.model_artifact_hash || conventionalV2Scorer.artifact_hash,
+    gold_version: input.goldVersion || input.gold_version,
+    feature_version: input.featureVersion || input.feature_version || FEATURES_VERSION,
+    blocking_version:
+      input.blockingVersion || input.blocking_version || CANDIDATE_GENERATION_VERSION,
+    policy_version: input.policyVersion || input.policy_version || POLICIES_VERSION,
+    watermarks: input.watermarks,
+  });
+  Object.assign(runRow, {
+    model_artifact_hash: provenance.model_artifact_hash,
+    gold_version: provenance.gold_version,
+    feature_version: provenance.feature_version,
+    blocking_version: provenance.blocking_version,
+    policy_version: provenance.policy_version,
+    watermarks_json: JSON.stringify(provenance.watermarks),
+    provenance_json: JSON.stringify(provenance),
+  });
+
+  const supersessionRows = supersessions.map((lineage, index) => ({
+    id: opaqueId("sup", [
+      lineage.superseding_link_id,
+      lineage.superseded_link_id,
+      lineage.reason,
+      index,
+    ]),
+    ...lineage,
+    resolution_run_id: runId,
+    created_at: now,
+  }));
+  metrics.link_supersessions = supersessionRows.length;
+  runRow.metrics_json = JSON.stringify(metrics);
+
   const pairRows = pairs.map((p, i) => ({
     id: opaqueId("pair", [
       p.left_source_record_id,
@@ -552,9 +602,11 @@ export function runErBatch(input = {}) {
 
   return {
     resolution_run: runRow,
-    entity_links: entityLinkRows,
+    entity_links: annotatedEntityLinkRows,
     canonical_entities: canonicalRows,
     pair_receipts: pairRows,
+    entity_link_supersessions: supersessionRows,
+    provenance,
     metrics,
     observations: vendorObs,
   };

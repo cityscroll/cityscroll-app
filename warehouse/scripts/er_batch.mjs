@@ -167,6 +167,19 @@ function loadWarehouseDoingBusiness(limit) {
   }
 }
 
+function loadWarehousePriorLinks() {
+  if (!catalogExists()) return [];
+  try {
+    return queryWarehouse(
+      `SELECT id, source_record_id, canonical_entity_id, decision, method, matcher_version
+         FROM er_entity_link`
+    );
+  } catch {
+    // The first ER run has no prior link view yet.
+    return [];
+  }
+}
+
 function snapshotDateUtc() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -305,6 +318,18 @@ Prefer the capped runner:
     doingBusinessRows = loadWarehouseDoingBusiness(args.limit);
   }
 
+  const sourceFetch = args.fromFixture ? null : loadSourceFetchReceipt(snap);
+  const watermarks = {
+    [OCP_SOURCE_SYSTEM]: {
+      snapshot_date: sourceFetch?.snapshot_date || snap,
+      observed_at: sourceFetch?.observed_at || null,
+      source_sha256: sourceFetch?.sha256 || null,
+      last_modified: sourceFetch?.last_modified || null,
+    },
+    ...(doingBusinessRows.length
+      ? { [DOING_BUSINESS_SOURCE_SYSTEM]: { snapshot_date: snap } }
+      : {}),
+  };
   const batch = runErBatch({
     ocpRows,
     doingBusinessRows,
@@ -313,8 +338,9 @@ Prefer the capped runner:
       mode === "fixture"
         ? "WH-04 fixture proof (OCP sample + vendor variants + optional DB sample)"
         : `WH-04 warehouse slice limit=${args.limit}`,
+    priorEntityLinks: args.fromFixture ? [] : loadWarehousePriorLinks(),
+    watermarks,
   });
-  const sourceFetch = args.fromFixture ? null : loadSourceFetchReceipt(snap);
   const qualityReview = loadQualityReview(args.reviewReceipt, {
     metrics: batch.metrics,
     sourceFetch,
@@ -338,6 +364,10 @@ Prefer the capped runner:
     batch.resolution_run,
   ]);
   writeJsonl(path.join(stageDir, "pair_receipt.jsonl"), batch.pair_receipts);
+  writeJsonl(
+    path.join(stageDir, "entity_link_supersession.jsonl"),
+    batch.entity_link_supersessions,
+  );
   writeFileSync(
     path.join(stageDir, "metrics.json"),
     `${JSON.stringify(batch.metrics, null, 2)}\n`,
@@ -383,6 +413,8 @@ Prefer the capped runner:
     runtime_ms: Number(process.hrtime.bigint() - startedNs) / 1_000_000,
     source_fetch: sourceFetch,
     metrics: batch.metrics,
+    provenance: batch.provenance,
+    link_supersessions: batch.entity_link_supersessions,
     resolution_run_id: batch.resolution_run.id,
     stage_dir: path.relative(ROOT, stageDir),
     materialize,
