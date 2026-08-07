@@ -1,131 +1,17 @@
-name: Live civic-data source contracts
+name: Live civic-data source contracts (manual tranche only)
 
+# The scheduled source-contract check and its issue loop are owned by the
+# independent external-schedule runner. The authenticated roll-call tranche is
+# a separate, explicitly manual acquisition path and remains here.
 on:
-  schedule:
-    - cron: "23 10 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
-  issues: write
-
-concurrency:
-  group: live-civic-data-source-contracts
-  cancel-in-progress: false
 
 jobs:
-  verify:
-    name: Alert on upstream contract drift
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Verify live source contracts
-        id: live
-        continue-on-error: true
-        env:
-          # Optional: enables authenticated Legistar Bodies probe. Without it the
-          # monitor still asserts the auth gate answers (HTTP 403), not 404/DNS.
-          LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
-        run: |
-          set -o pipefail
-          node tools/verify_source_contracts.mjs --live 2>&1 | tee source-contract-live.log
-      - name: Report upstream drift
-        if: steps.live.outcome == 'failure'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require("fs");
-            const output = fs.readFileSync("source-contract-live.log", "utf8");
-            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const failures = [...output.matchAll(/^error ([a-z0-9-]+): (.+)$/gm)].map((match) => ({
-              id: match[1],
-              detail: match[2],
-            }));
-            const healthy = new Set([...output.matchAll(/^ok ([a-z0-9-]+):/gm)].map((match) => match[1]));
-            const classify = (detail) => {
-              if (/stale/i.test(detail)) return "stale";
-              if (/fetch failed|HTTP 5\d\d|ENOTFOUND|timed out|DNS/i.test(detail)) return "outage";
-              return "schema drift";
-            };
-            const bodyFor = ({ id, detail }) => [
-              `Classification: ${classify(detail)}.`,
-              `Source contract: ${id}.`,
-              `Detail: ${detail}`,
-              "",
-              `Verification run: ${runUrl}`,
-            ].join("\n");
-            const { data: issues } = await github.rest.issues.listForRepo({
-              ...context.repo,
-              state: "open",
-              per_page: 100,
-            });
-            for (const failure of failures) {
-              const title = `Live civic-data source contract drift: ${failure.id}`;
-              // The first run used one shared title; match its source line so issue 627
-              // is updated and resolved instead of leaving a duplicate behind.
-              const existing = issues.find((issue) =>
-                issue.title === title
-                || (issue.title === "Live civic-data source contract drift"
-                  && issue.body?.includes(`error ${failure.id}:`)));
-              const body = bodyFor(failure);
-              if (existing) {
-                await github.rest.issues.createComment({ ...context.repo, issue_number: existing.number, body });
-              } else {
-                await github.rest.issues.create({ ...context.repo, title, body });
-              }
-            }
-
-            // Resolve managed issues once every source named in the issue is healthy.
-            for (const issue of issues) {
-              if (!issue.title.startsWith("Live civic-data source contract drift")) continue;
-              const ids = [...new Set([
-                ...[...issue.title.matchAll(/drift: ([a-z0-9-]+)/g)].map((match) => match[1]),
-                ...[...issue.body?.matchAll(/(?:error|ok) ([a-z0-9-]+):/g) || []].map((match) => match[1]),
-              ])];
-              if (!ids.length || !ids.every((id) => healthy.has(id))) continue;
-              await github.rest.issues.createComment({
-                ...context.repo,
-                issue_number: issue.number,
-                body: `Classification: resolved. The source contract is healthy again. Verification run: ${runUrl}`,
-              });
-              await github.rest.issues.update({ ...context.repo, issue_number: issue.number, state: "closed" });
-            }
-      - name: Resolve recovered source issues
-        if: steps.live.outcome == 'success'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require("fs");
-            const output = fs.readFileSync("source-contract-live.log", "utf8");
-            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const healthy = new Set([...output.matchAll(/^ok ([a-z0-9-]+):/gm)].map((match) => match[1]));
-            const { data: issues } = await github.rest.issues.listForRepo({ ...context.repo, state: "open", per_page: 100 });
-            for (const issue of issues) {
-              if (!issue.title.startsWith("Live civic-data source contract drift")) continue;
-              const ids = [...new Set([
-                ...[...issue.title.matchAll(/drift: ([a-z0-9-]+)/g)].map((match) => match[1]),
-                ...[...issue.body?.matchAll(/(?:error|ok) ([a-z0-9-]+):/g) || []].map((match) => match[1]),
-              ])];
-              if (!ids.length || !ids.every((id) => healthy.has(id))) continue;
-              await github.rest.issues.createComment({
-                ...context.repo,
-                issue_number: issue.number,
-                body: `Classification: resolved. The source contract is healthy again. Verification run: ${runUrl}`,
-              });
-              await github.rest.issues.update({ ...context.repo, issue_number: issue.number, state: "closed" });
-            }
-      - name: Fail on upstream drift
-        if: always() && steps.live.outcome == 'failure'
-        run: exit 1
-
   acquire_official_roll_call_tranche:
     name: Acquire authenticated official roll-call tranche
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

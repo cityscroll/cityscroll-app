@@ -22,6 +22,7 @@ PAPERCUTS.md
 # Local browser performance results
 test/performance/artifacts/
 .artifacts/
+.external-schedule-state/
 
 # Cloudflare Wrangler local cache (never commit)
 .wrangler/
