@@ -92,7 +92,8 @@ export function propertyDispositionFacetRailsHTML(opts) {
     const href = escape(item.href || "#property");
     const id = escape(item.id);
     const attr = escape(item.data_attr || "facet");
-    return `<a class="chip${on}" href="${href}" data-${attr}="${id}" aria-pressed="${pressed}"${item.pressed ? ` aria-current="true"` : ""}>${escape(t(item.label_key))}<span class="ct">${item.count}</span></a>`;
+    const edge = item.scope_edge ? ` data-scope-edge="${escape(item.scope_edge)}"` : "";
+    return `<a class="chip${on}" href="${href}" data-${attr}="${id}"${edge} aria-pressed="${pressed}"${item.pressed ? ` aria-current="true"` : ""}>${escape(t(item.label_key))}<span class="ct">${item.count}</span></a>`;
   };
   const rail = (kind, model) => propertyFacetChipItems(model, kind).map(chip).join("");
 

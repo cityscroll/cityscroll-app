@@ -100,10 +100,12 @@ export function boroughScopeLinksHTML(opts = {}) {
   const links = ids.map((id) => {
     const active = selected === id;
     const href = boroughScopeHref(surface, id, currentHash);
-    return `<a class="chip borough-scope-link${active ? " on" : ""}" href="${escape(href)}" data-borough-scope-link="${escape(id || "all")}"${active ? ' aria-current="page"' : ""}>${escape(labelFor(id, t))}</a>`;
+    const edge = `${surface}.borough.${id || "all"}`;
+    return `<a class="chip borough-scope-link${active ? " on" : ""}" href="${escape(href)}" data-borough-scope-link="${escape(id || "all")}" data-scope-edge="${escape(edge)}"${active ? ' aria-current="page"' : ""}>${escape(labelFor(id, t))}</a>`;
   }).join("");
   const mapHref = boroughMapPivotHref(surface, selected, currentHash);
-  return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}</div><a class="act mini borough-map-pivot" data-borough-map-pivot="${escape(surface)}" data-near-you-link data-lens="${escape(surface)}" href="${escape(mapHref)}">${escape(t("near_you_map_scope"))}</a>`;
+  const mapEdge = `${surface}.map.borough.${selected || "all"}`;
+  return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}</div><a class="act mini borough-map-pivot" data-borough-map-pivot="${escape(surface)}" data-scope-edge="${escape(mapEdge)}" data-near-you-link data-lens="${escape(surface)}" href="${escape(mapHref)}">${escape(t("near_you_map_scope"))}</a>`;
 }
 
 export function normalizeBoroughScope(value) {
