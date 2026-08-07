@@ -197,8 +197,12 @@ node entity_resolution/eval/run_labeling_function_accounting.mjs \
   --out-dir entity_resolution/eval/bakeoff/2026-08-06
 ```
 
-For the two optional adapters and their isolated dependency environment, see
-`eval/contenders/README.md` and `eval/optional-requirements.txt`.
+For the optional adapters (Splink, Dedupe, GoldenMatch) and their isolated
+dependency environment, see `eval/contenders/README.md` and
+`eval/optional-requirements.txt`. GoldenMatch is an eval-only spike contender
+(`--goldenmatch-output`); it is not a production scorer and does not join the
+Worker path. A measured comparison receipt lives under
+`eval/bakeoff/2026-08-06-goldenmatch-spike/`.
 
 The 2026-08-06 clerical batch extends the gold to v2 (158 cases) with 102
 determinate labels from 103 ranked candidates. One parent/program case remains

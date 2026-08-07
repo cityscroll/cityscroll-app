@@ -172,9 +172,10 @@ node entity_resolution/eval/run_bakeoff.mjs --gold entity_resolution/eval/gold_v
 
 The bake-off report records scorer name, model/artifact hash, config hash, feature
 version, calibration by score band, pair metrics, cluster fragmentation, negative
-constraint violations, and incremental-scoring status. Splink/DuckDB and Dedupe
-Gazetteer adapters are optional eval-only tools under `eval/contenders/`; they are
-never part of the site build or production Worker path. See `eval/README.md`.
+constraint violations, and incremental-scoring status. Splink/DuckDB, Dedupe
+Gazetteer, and GoldenMatch adapters are optional eval-only tools under
+`eval/contenders/`; they are never part of the site build or production Worker
+path. See `eval/README.md`.
 
 ## Related cards
 
