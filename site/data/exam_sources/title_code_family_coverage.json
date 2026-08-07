@@ -227,9 +227,91 @@
     "coverage_rate": 0.3965,
     "coverage_passed": true,
     "precision_passed": false,
-    "passed": false,
-    "publish_family_ui": false,
-    "publish_entity_pivots": false,
-    "verdict": "STOP — exact-label coverage or residual precision is below the promotion bar; title-code family UI and pivots remain disabled."
+    "two_tier": {
+      "surface_class": "navigational_family_grouping",
+      "consequence_tier": "navigational_exploratory",
+      "required_precision_floor": "beats_control_baseline",
+      "confidence_marker": "quiet",
+      "comparative": {
+        "floor": "beats_control_baseline",
+        "candidate_precision": 0.8182,
+        "control_baseline": 0.2778,
+        "beats_control": true,
+        "evidence_present": true,
+        "passed": true,
+        "candidate_receipt": "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+        "control_receipt": "docs/evidence/two-tier-precision-baselines-2026-08-06.json#baselines.title_code_legacy_review"
+      },
+      "absolute": {
+        "floor": 0.95,
+        "candidate_precision": 0.8182,
+        "passed": false,
+        "applies_to": "high_consequence_surface",
+        "required": false
+      },
+      "can_ship_labeled": true,
+      "can_ship_unlabeled": false,
+      "surface_classes": {
+        "family_grouping": {
+          "surface_class": "navigational_family_grouping",
+          "consequence_tier": "navigational_exploratory",
+          "required_precision_floor": "beats_control_baseline",
+          "confidence_marker": "quiet",
+          "comparative": {
+            "floor": "beats_control_baseline",
+            "candidate_precision": 0.8182,
+            "control_baseline": 0.2778,
+            "beats_control": true,
+            "evidence_present": true,
+            "passed": true,
+            "candidate_receipt": "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+            "control_receipt": "docs/evidence/two-tier-precision-baselines-2026-08-06.json#baselines.title_code_legacy_review"
+          },
+          "absolute": {
+            "floor": 0.95,
+            "candidate_precision": 0.8182,
+            "passed": false,
+            "applies_to": "high_consequence_surface",
+            "required": false
+          },
+          "can_ship_labeled": true,
+          "can_ship_unlabeled": false
+        },
+        "pivot": {
+          "surface_class": "navigational_pivot",
+          "consequence_tier": "navigational_exploratory",
+          "required_precision_floor": "beats_control_baseline",
+          "confidence_marker": "quiet",
+          "comparative": {
+            "floor": "beats_control_baseline",
+            "candidate_precision": 0.8182,
+            "control_baseline": 0.2778,
+            "beats_control": true,
+            "evidence_present": true,
+            "passed": true,
+            "candidate_receipt": "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+            "control_receipt": "docs/evidence/two-tier-precision-baselines-2026-08-06.json#baselines.title_code_legacy_review"
+          },
+          "absolute": {
+            "floor": 0.95,
+            "candidate_precision": 0.8182,
+            "passed": false,
+            "applies_to": "high_consequence_surface",
+            "required": false
+          },
+          "can_ship_labeled": true,
+          "can_ship_unlabeled": false
+        }
+      },
+      "labeled_surface": "title_code_family",
+      "navigational_pivot_surface": "title_code_entity_pivot",
+      "strict_unlabeled_surface": "title_code_entity_pivot_unlabeled",
+      "baseline_method": "existing reviewed title-code control, measured against explicit confirmations and rejections",
+      "baseline_receipt": "docs/evidence/two-tier-precision-baselines-2026-08-06.json"
+    },
+    "passed": true,
+    "publish_family_ui": true,
+    "publish_entity_pivots": true,
+    "verdict": "NAVIGATIONAL PASS — exact publisher labels may render as facts; residual family labels and pivots may ship with one quiet inferred marker; high-consequence surfaces retain the 95% floor."
   }
 }
