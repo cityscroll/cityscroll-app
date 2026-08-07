@@ -32,6 +32,8 @@ import {
   propertyTemporalControlModel,
   propertyTemporalKey,
 } from "../site/property_disposition_facets.mjs";
+import { scopeFromRouteHash } from "../site/scope_v0.mjs";
+import { boroughScopeHref } from "../site/borough_scope_links.mjs";
 import { groupDispositionSpines } from "../worker/src/lib/property_disposition_spine.mjs";
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
@@ -97,6 +99,27 @@ test("propertyDispositionScopeHref emits typed shareable property scope edges", 
     propertyDispositionScopeHref({ process: "hearing" }, { priceBand: "under_10k" }),
     "#property?price=under_10k&process=hearing",
   );
+});
+
+test("all five Property pivots replace one axis and preserve the composed scope", () => {
+  const currentHash = "#property?agency=HPD&boro=Brooklyn&asset=real_property&method=online_auction&price=100k_plus&process=hearing&stage=soon&sort=newest&view=archive&facet=%7B%22entity_refs_all%22%3A%5B%22bbl%3A1020260015%22%5D%7D";
+  const cases = [
+    ["borough", "#property?agency=HPD&asset=real_property&method=online_auction&price=100k_plus&process=hearing&stage=soon&sort=newest&view=archive&facet=%7B%22entity_refs_all%22%3A%5B%22bbl%3A1020260015%22%5D%7D&boro=Queens", { currentHash, borough: "Queens" }],
+    ["sale method", "#property?agency=HPD&boro=Brooklyn&asset=real_property&method=sealed_bid&price=100k_plus&sort=newest&process=hearing&stage=soon&view=archive&facet=%7B%22entity_refs_all%22%3A%5B%22bbl%3A1020260015%22%5D%7D", { currentHash, saleMethod: "sealed_bid" }],
+    ["price band", "#property?agency=HPD&boro=Brooklyn&asset=real_property&method=online_auction&price=under_10k&sort=newest&process=hearing&stage=soon&view=archive&facet=%7B%22entity_refs_all%22%3A%5B%22bbl%3A1020260015%22%5D%7D", { currentHash, priceBand: "under_10k" }],
+    ["disposition stage", "#property?agency=HPD&boro=Brooklyn&asset=real_property&method=online_auction&price=100k_plus&sort=newest&process=award_or_conveyance&stage=soon&view=archive&facet=%7B%22entity_refs_all%22%3A%5B%22bbl%3A1020260015%22%5D%7D", { currentHash, process: "award_or_conveyance" }],
+    ["When", "#property?agency=HPD&boro=Brooklyn&asset=real_property&method=online_auction&price=100k_plus&sort=newest&process=hearing&stage=past&view=archive&facet=%7B%22entity_refs_all%22%3A%5B%22bbl%3A1020260015%22%5D%7D", { currentHash, stage: "past" }],
+  ];
+  for (const [label, expected, patch] of cases) {
+    const href = label === "borough"
+      ? boroughScopeHref("property", "Queens", currentHash)
+      : propertyDispositionScopeHref({ currentHash }, Object.fromEntries(Object.entries(patch).filter(([key]) => key !== "currentHash")));
+    const scope = scopeFromRouteHash(href);
+    assert.equal(href, expected, `${label} emits canonical Property scope`);
+    assert.deepEqual(scope.facets.values.entity_refs_all, ["bbl:1020260015"], `${label} preserves opaque entity constraint`);
+    assert.equal(scope.facets.agencies[0], "HPD", `${label} preserves agency`);
+    assert.equal(scope.place.boroughs[0], label === "borough" ? "Queens" : "Brooklyn", `${label} preserves or replaces borough deliberately`);
+  }
 });
 
 test("obtainable-key test: unknown sale method / price / process / temporal never invent", () => {
@@ -315,6 +338,7 @@ test("property app renders disposition facet rails as scope-link chips, not butt
   assert.match(SITE_SOURCE, /pricerail/);
   assert.match(SITE_SOURCE, /liferail/);
   assert.match(SITE_SOURCE, /processrail/);
+  assert.match(ui, /data-scope-edge/);
 });
 
 test("markup still hosts the four disposition facet rails under More filters", () => {
@@ -326,4 +350,9 @@ test("markup still hosts the four disposition facet rails under More filters", (
   // The borough scope rail remains adjacent to the landed disposition facets.
   assert.match(index, /id="property-borough-rail"/);
   assert.match(index, /id="propertyagency"/);
+  assert.doesNotMatch(index, /id="propertyboro"/);
+  assert.doesNotMatch(index, /id="property-sale-method"/);
+  assert.doesNotMatch(index, /id="property-price-band"/);
+  assert.doesNotMatch(index, /id="property-process-stage"/);
+  assert.doesNotMatch(index, /id="property-when"/);
 });
