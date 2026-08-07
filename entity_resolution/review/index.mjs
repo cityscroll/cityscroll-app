@@ -4,6 +4,8 @@
 export const REVIEW_VERSION = "possibly_same_v1";
 export const REVIEW_DECISION = "review";
 
+export { ACTIVE_REVIEW_VERSION, activeReviewItems, rankActiveReviewItems } from "./active_review.mjs";
+
 export {
   INVESTIGATION_WORKSPACE_VERSION,
   buildInvestigationWorkspace,

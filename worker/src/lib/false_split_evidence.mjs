@@ -11,10 +11,11 @@ export function dispositionInput(body = {}) {
   const actor = clean(body.actor);
   const decision = clean(body.decision).toLowerCase();
   const note = clean(body.note).slice(0, 2000);
+  const sessionId = clean(body.review_session || body.session_id).slice(0, 120);
   if (!pairId) return { error: "pair-required" };
   if (!actor || actor.length > 120) return { error: "actor-required" };
   if (!FALSE_SPLIT_DECISIONS.has(decision)) return { error: "invalid-decision" };
-  return { pairId, actor, decision, note };
+  return { pairId, actor, decision, note, sessionId };
 }
 
 export function evidenceSnapshot(pair) {
@@ -37,6 +38,7 @@ export async function appendFalseSplitDisposition(db, pair, input, opts = {}) {
   const createdAt = opts.now || new Date().toISOString();
   const eventId = opts.id || crypto.randomUUID();
   const snapshot = evidenceSnapshot(pair);
+  snapshot.review_session = parsed.sessionId || null;
   await db.prepare(
     `INSERT INTO false_split_disposition_event
        (id, pair_id, left_record_id, right_record_id, actor, decision, note,
@@ -60,6 +62,7 @@ export async function appendFalseSplitDisposition(db, pair, input, opts = {}) {
     actor: parsed.actor,
     decision: parsed.decision,
     note: parsed.note,
+    review_session: parsed.sessionId || null,
     evidence_version: FALSE_SPLIT_EVIDENCE_VERSION,
     created_at: createdAt,
   };

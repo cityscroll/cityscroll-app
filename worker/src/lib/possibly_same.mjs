@@ -8,6 +8,7 @@ import {
 } from "../../../entity_resolution/candidate_generation/index.mjs";
 import { extractFeatures } from "../../../entity_resolution/features/index.mjs";
 import { buildAssertionEvidence } from "../../../entity_resolution/review/assertion_evidence.mjs";
+import { activeReviewItems } from "../../../entity_resolution/review/active_review.mjs";
 
 export const POSSIBLY_SAME_LOOKBACK_DAYS = 30;
 export const POSSIBLY_SAME_RECORD_LIMIT = 250;
@@ -159,6 +160,10 @@ export function reviewPairsFromDualWriteRows(rows = [], opts = {}) {
       || b.observed_at.localeCompare(a.observed_at)
       || a.id.localeCompare(b.id))
     .slice(0, pairLimit);
+}
+
+export function orderPossiblySameItems(items = []) {
+  return activeReviewItems(items);
 }
 
 /** Read recent dual-write observations and return desk review leads. */
