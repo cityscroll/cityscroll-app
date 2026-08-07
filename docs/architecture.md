@@ -1,13 +1,16 @@
 ---
 summary: >-
-  CityScroll is a dependency-free static site (`site/index.html` markup/CSS plus
+  CityScroll-owned materialized read models are the primary delivery path;
+  public-source access and durable snapshots provide graceful degradation and
+  reproducibility. The static site (`site/index.html` markup/CSS plus
   browser-native modules under `site/app/`) plus a Cloudflare
-  Worker backend that makes NYC's City Record searchable by interest: seven
+  Worker backend makes NYC's City Record searchable by interest: seven
   lenses (Money/People/Land/Property/Rules/Meetings plus an alert system) over
-  live Socrata open-data APIs, with a Wave-5 forecasting layer that estimates
+  scheduled materialized projections over Socrata open-data sources, with a Wave-5 forecasting layer that estimates
   contract renewals from Checkbook NYC durations,
   and labels separately sourced public-authority awards on agency profiles.
-  The core site works without the worker; the worker adds Checkbook lookups,
+  The static shell remains deployable without the worker, while ordinary reads use
+  CityScroll-owned projections; the worker adds Checkbook lookups,
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
   identity headers, resilient public coverage stats, private aggregate first-party usage
   analytics, and a Wave-4 process-spine layer (`process_id` / `project_id` /
@@ -104,7 +107,7 @@ sources_hash: 7f0757028addd02281f90cdfe852940a80008cf8ced62a54792488986f3d15a3
 
 ## What & why
 
-The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and estimates contract-renewal timing from historical Checkbook terms. The constraint is no accounts, no per-user tracking, no hard backend dependency — every feature degrades gracefully when the worker is absent.
+The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and estimates contract-renewal timing from historical Checkbook terms. The constraint is no accounts and no per-user tracking. CityScroll-owned materialized read models are the primary delivery path; public-source access and durable snapshots provide graceful degradation and reproducibility.
 
 ## System map
 
@@ -112,11 +115,9 @@ The NYC City Record publishes every agency contract, hearing, rule change, rezon
 Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
   site/index.html  (inline CSS + static markup)
   site/app/main.mjs → browser-native feature modules (vanilla JS, no build step)
-        ├──►  site/data/staffing_exams.json (build-time materialized DCAS exam view)
-        │  most queries go direct — CORS-open, no key needed
-        ├──►  NYC Open Data / Socrata SODA (City Record dg92-zbpx, payroll, civil service, ZAP)
-        ├──►  NYS Open Data / Socrata SODA (ABO awards 8w5p-k45m, d84c-dk28, ehig-g5x3)
-        ├──►  NYC GeoSearch / MapPLUTO (BBL lookups, rezoning polygons)
+        ├──►  site/data/* + page-specific materialized read models (ordinary reads)
+        ├──►  api.cityscroll.org (D1/KV projections and edge-cached read endpoints)
+        ├──►  public sources for ingestion, verification, exceptional refreshes, and gaps
         │
         │  secret / server-side routes only
         ▼
@@ -240,10 +241,10 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## TL;DR
 
-1 static site (`site/index.html` + window-sized `site/app/` modules + `site/data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → cache precomputation → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles, and no hard backend dependency; everything degrades gracefully when the worker is absent.
+1 static site (`site/index.html` + window-sized `site/app/` modules + `site/data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → normalization/materialization → edge prewarm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles; CityScroll-owned materialized read models serve ordinary views, while public-source access and durable snapshots provide graceful degradation and reproducibility.
 
 1. A visitor loads `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs` at canonical `cityscroll.org`, mirrored from the static GitHub Pages origin — no application backend or build step required.
-2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices and ABO awards, plus GeoSearch/MapPLUTO for BBL and rezoning geometry. Checkbook queries use the schema-agnostic worker proxy.
+2. Picking a lens consumes page-specific materialized read models and edge-cached Worker projections. Public APIs remain useful for ingestion, verification, exceptional refreshes, request-dependent search, and graceful degradation; Checkbook queries use the schema-agnostic worker proxy.
 3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, rate-limited, fails closed without token/send secrets), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback` (rate-limited; notifies `feedback@cityscroll.org`), keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC contract terms into estimated expirations (`fc:<stem>` in `ALERT_STATE`) and renders them in the profile timeline. Official procurement-plan rows are disabled; the cleanup job removes stale `plan:` keys.
 5. Subscriptions land in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the double-opted-in subscription email.
