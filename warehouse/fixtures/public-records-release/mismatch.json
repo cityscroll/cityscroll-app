@@ -1,0 +1,16 @@
+{
+  "schema": "cityscroll.public_records_release_manifest.v1",
+  "release_id": "foil-fixture-mismatch",
+  "source": {
+    "type": "public-records request (FOIL)",
+    "body": "Department of Public Records",
+    "request_identifier": "FOIL-2026-002",
+    "received_date": "2026-08-06"
+  },
+  "artifact": {
+    "path": "records.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "format": "json"
+  },
+  "gap_id": "fixture-class-b-gap"
+}
