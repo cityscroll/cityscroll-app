@@ -400,19 +400,22 @@ test("authenticated operator override releases only a digest named by the redlin
   assert.equal((await invalid.json()).error, "hold-override-failed");
 });
 
-test("cron, D1 migration, and scheduled wake monitor are wired", () => {
+test("Worker cron, D1 migration, and independent scheduled wake monitor are wired", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
   const migration = readFileSync(new URL("../migrations/0014_digest_shadow.sql", import.meta.url), "utf8");
   const holdMigration = readFileSync(new URL("../migrations/0015_digest_shadow_hold.sql", import.meta.url), "utf8");
   const workflow = readFileSync(new URL("../../.github/workflows/digest-shadow-monitor.yml", import.meta.url), "utf8");
+  const runner = readFileSync(new URL("../../tools/external_schedule_runner.mjs", import.meta.url), "utf8");
   assert.match(wrangler, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_states/);
-  assert.match(workflow, /cron: "10 13 \* \* \*"/);
-  assert.match(workflow, /degraded_receipt/);
+  const schedules = readFileSync(new URL("../../tools/external_schedule_jobs.json", import.meta.url), "utf8");
+  assert.match(schedules, /"id": "digest-shadow-monitor"/);
+  assert.match(schedules, /"10 13 \* \* \*"/);
+  assert.match(runner, /degraded_receipt/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_overrides/);
-  assert.match(workflow, /cron: "10 10 \* \* \*"/);
-  assert.match(workflow, /Wake the repair loop/);
-  assert.match(workflow, /issues\.create/);
+  assert.match(schedules, /"10 10 \* \* \*"/);
+  assert.doesNotMatch(workflow, /schedule:|issues:\s*write|issues\.create/);
+  assert.match(schedules, /"runner": "digest-shadow"/);
 });

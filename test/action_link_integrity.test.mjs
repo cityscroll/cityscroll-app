@@ -194,14 +194,11 @@ test("audit health degrades immediately, escalates on the second consecutive fai
   assert.deepEqual(recovered.summary.recovered_patterns, ["contracts-city-record-notice"]);
 });
 
-test("scheduled audit persists verdict state, deploys it, escalates persistent failures, and clears recovered issues", () => {
+test("external scheduler owns persisted verdict state and issue recovery", () => {
   const workflow = readFileSync(new URL("../.github/workflows/action-links-live.yml", import.meta.url), "utf8");
-  assert.match(workflow, /actions\/cache\/restore@v4/);
-  assert.match(workflow, /update-action-link-health\.mjs/);
-  assert.match(workflow, /action_link_health\.json/);
-  assert.match(workflow, /actions\/cache\/save@v4/);
-  assert.match(workflow, /pages deploy _site/);
-  assert.match(workflow, /newly_escalated_patterns/);
-  assert.match(workflow, /recovered_patterns/);
-  assert.match(workflow, /state_reason:\s*"completed"/);
+  const jobs = readFileSync(new URL("../tools/external_schedule_jobs.json", import.meta.url), "utf8");
+  assert.doesNotMatch(workflow, /schedule:|actions\/github-script|issues:\s*write/);
+  assert.match(jobs, /"id": "action-links-live"/);
+  assert.match(jobs, /"runner": "action-links"/);
+  assert.match(new URL("../tools/external_schedule_runner.mjs", import.meta.url).pathname, /external_schedule_runner/);
 });

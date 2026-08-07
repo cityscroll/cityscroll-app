@@ -1,133 +1,15 @@
-name: Digest shadow monitor
+name: Digest shadow monitor (manual legacy entry point)
 
+# The twice-daily monitor and recovery issue loop are owned by the independent
+# external-schedule runner. This manual entry point is retained as a visible
+# migration marker; it deliberately performs no scheduled or issue mutation.
 on:
-  schedule:
-    # The Worker builds previews at 10:00 UTC; allow ten minutes for the full live-data pass.
-    - cron: "10 10 * * *"
-    # Re-read after the 13:00 UTC send so degraded send-time receipts wake the same repair loop.
-    - cron: "10 13 * * *"
   workflow_dispatch:
-    inputs:
-      build:
-        description: Build today's digest shadow run before verification
-        type: boolean
-        default: false
 
-permissions:
-  contents: read
-  issues: write
-
-concurrency:
-  group: digest-shadow-monitor
-  cancel-in-progress: false
+permissions: {}
 
 jobs:
-  inspect:
-    name: Wake on digest redlines
+  retired:
     runs-on: ubuntu-latest
     steps:
-      - name: Build today's digest shadow run
-        if: github.event_name == 'workflow_dispatch' && inputs.build
-        env:
-          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-        run: |
-          curl --fail --silent --show-error \
-            -X POST \
-            -H "Authorization: Bearer ${CITYSCROLL_ADMIN_KEY}" \
-            https://api.cityscroll.org/admin/digest-shadow
-
-          today=$(date -u +%F)
-          for attempt in $(seq 1 30); do
-            if curl --fail --silent --show-error \
-              --output digest-shadow-build.json \
-              --header "Authorization: Bearer ${CITYSCROLL_ADMIN_KEY}" \
-              https://api.cityscroll.org/admin/digest-shadow \
-              && test "$(jq -r '.summary.run_day // empty' digest-shadow-build.json)" = "$today"; then
-              exit 0
-            fi
-            if test "$attempt" -lt 30; then
-              sleep 10
-            fi
-          done
-          echo "Digest shadow run for ${today} was not ready within 5 minutes" >&2
-          exit 1
-      - name: Read the machine contract
-        id: shadow
-        continue-on-error: true
-        env:
-          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-        run: |
-          http_status=$(curl --silent --show-error \
-            --output digest-shadow.json \
-            --write-out '%{http_code}' \
-            --header "Authorization: Bearer ${CITYSCROLL_ADMIN_KEY}" \
-            https://api.cityscroll.org/admin/digest-shadow)
-          test "$http_status" = "200"
-          test "$(jq -r '.summary.run_day // empty' digest-shadow.json)" = "$(date -u +%F)"
-          test "$(jq -r '.summary.status // empty' digest-shadow.json)" = "READY"
-      - name: Upload private monitor evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: digest-shadow-summary
-          path: digest-shadow.json
-          retention-days: 14
-      - name: Wake the repair loop
-        if: steps.shadow.outcome == 'failure'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require("fs");
-            const title = "Digest shadow run needs attention";
-            let report = { error: "shadow endpoint unavailable" };
-            try { report = JSON.parse(fs.readFileSync("digest-shadow.json", "utf8")); } catch {}
-            const summary = report.summary || report;
-            const redlines = Array.isArray(summary.redlines) ? summary.redlines : [];
-            const sanitize = (value) => {
-              if (Array.isArray(value)) return value.map(sanitize);
-              if (value && typeof value === "object") {
-                return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, sanitize(item)]));
-              }
-              if (typeof value !== "string") return value;
-              return value
-                .replace(/([?&](?:token|s)=)[^&\s]+/gi, "$1[redacted]")
-                .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[redacted-email]");
-            };
-            const publicRedlines = redlines.map(({ code, digest_id, watch_id, reason, evidence }) => ({
-              code, digest_id, watch_id, reason, evidence: sanitize(evidence),
-            }));
-            const degradedReceipt = sanitize(report.degraded_receipt || null);
-            const attention = degradedReceipt?.attention_status === "open"
-              ? `The send-time safety policy used its ${degradedReceipt.decision || "degraded"} path.`
-              : "The digest rehearsal reported a redline or unavailable status.";
-            const body = [
-              attention,
-              "Review the structured status, repair the underlying condition, and re-run the digest rehearsal when needed.",
-              "",
-              `Workflow: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              "",
-              "```json",
-              JSON.stringify({
-                contract: summary.contract || null,
-                run_day: summary.run_day || null,
-                status: summary.status || "UNAVAILABLE",
-                affected_digest_ids: summary.affected_digest_ids || [],
-                redlines: publicRedlines,
-                degraded_receipt: degradedReceipt,
-              }, null, 2).slice(0, 18000),
-              "```",
-            ].join("\n");
-            const { data: issues } = await github.rest.issues.listForRepo({
-              ...context.repo,
-              state: "open",
-              per_page: 100,
-            });
-            const existing = issues.find((issue) => issue.title === title);
-            if (existing) {
-              await github.rest.issues.createComment({ ...context.repo, issue_number: existing.number, body });
-            } else {
-              await github.rest.issues.create({ ...context.repo, title, body });
-            }
-      - name: Keep the redline visible to scheduled monitoring
-        if: always() && steps.shadow.outcome == 'failure'
-        run: exit 1
+      - run: echo "The scheduled digest-shadow monitor runs through tools/external_schedule_runner.mjs."

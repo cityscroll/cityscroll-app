@@ -1,0 +1,36 @@
+{
+  "schema": "cityscroll.external-schedule-jobs.v1",
+  "scheduler": {
+    "provider": "launchd-or-cron",
+    "ownership": "independent",
+    "poll_interval_seconds": 60,
+    "state_env": "CROL_EXTERNAL_SCHEDULE_STATE_DIR"
+  },
+  "repository": "cityscroll/crol-list",
+  "jobs": [
+    {
+      "id": "action-links-live",
+      "schedule": ["41 11 * * *"],
+      "runner": "action-links",
+      "issue_title": "Outbound action-link integrity drift"
+    },
+    {
+      "id": "source-contracts-live",
+      "schedule": ["23 10 * * *"],
+      "runner": "source-contracts",
+      "issue_title_prefix": "Live civic-data source contract drift"
+    },
+    {
+      "id": "digest-shadow-monitor",
+      "schedule": ["10 10 * * *", "10 13 * * *"],
+      "runner": "digest-shadow",
+      "issue_title": "Digest shadow run needs attention"
+    }
+  ],
+  "follow_up_jobs": [
+    "attachment-metadata",
+    "land-upcoming-hearings",
+    "surface-load-live",
+    "multi-flywheel"
+  ]
+}
