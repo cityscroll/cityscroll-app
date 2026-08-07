@@ -255,6 +255,36 @@ select {
   line-height: 1.1;
 }
 
+.exam-facet-pivot-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.exam-facet-pivot {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: var(--color-text);
+  text-decoration: none;
+  font: 600 12px/1.25 ui-sans-serif, system-ui, sans-serif;
+}
+
+.exam-facet-pivot:hover,
+.exam-facet-pivot:focus-visible {
+  border-color: var(--color-action);
+  color: var(--color-action);
+  background: var(--color-surface-alt);
+}
+
+.exam-facet-pivot.unknown {
+  border-style: dashed;
+  color: var(--color-text-muted);
+}
+
 .exam-facts,
 .exam-metrics {
   display: grid;

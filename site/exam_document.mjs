@@ -1,6 +1,7 @@
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { renderCivicDocumentAssets, renderCivicDocumentMast } from "./civic_document_chrome.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
 
 const DCAS_AGENCY_NAME = "Citywide Administrative Services";
 const DCAS_AGENCY_REF = entityRouteRef("agency", DCAS_AGENCY_NAME);
@@ -71,6 +72,34 @@ function outcomeHTML(outcome) {
     ? [["Eligible list", outcome.list_count], ["List established", date(outcome.established_date)]]
     : [["Applicants", outcome.applicant_count], ["Eligible list", outcome.list_establishment], ["Certified", outcome.certification_count], ["Hired", outcome.hire_count]];
   return `<dl class="exam-metrics">${rows.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${typeof value === "number" ? value.toLocaleString("en-US") : esc(value)}</dd></div>`).join("")}</dl><p class="exam-muted">${outcome.published_on ? `Published ${date(outcome.published_on)}. ` : ""}These are aggregate public counts; individual scores and ranks are not public.</p>`;
+}
+
+function examFacetDocumentHref(facet, value) {
+  const hash = examFacetHref({}, facet, value);
+  const query = String(hash).split("?", 2)[1] || "";
+  return `/browse/staffing/${query ? `?${query}` : ""}`;
+}
+
+function examFacetPivotsHTML(exam, today) {
+  const labels = {
+    window: { open: "Open now", upcoming: "Upcoming", closed: "Closed" },
+    format: {
+      education_experience: "Education and experience", multiple_choice: "Multiple choice",
+      physical: "Physical", mixed: "Mixed / multi-part", written: "Written", oral: "Oral", practical: "Practical", other: "Other",
+    },
+    salary: { under_45k: "Under $45,000", "45k_60k": "$45,000–$60,000", "60k_80k": "$60,000–$80,000", "80k_plus": "$80,000+" },
+    fee: { none: "No fee", low: "$1–$40", "fee-bearing": "$41+" },
+    experience: { yes: "No prior experience required", no: "Experience required" },
+  };
+  const rows = ["window", "format", "salary", "fee", "experience"].map((facet) => {
+    const value = examFacetValue(exam, facet, { today });
+    const label = labels[facet][value] || "Not published";
+    const edge = ["people", facet, value].join(":");
+    if (value === "unknown") return `<span class="exam-facet-pivot unknown" data-facet-value="unknown"><b>${esc(facet)}</b> ${esc(label)}</span>`;
+    const href = examFacetDocumentHref(facet, value);
+    return `<a class="exam-facet-pivot" data-scope-edge="${esc(edge)}" href="${esc(href)}"><b>${esc(facet)}</b> ${esc(label)}</a>`;
+  });
+  return `<section class="exam-section exam-facet-pivots" aria-labelledby="exam-facet-heading"><h2 id="exam-facet-heading">Explore exam cohorts</h2><p class="exam-muted">These links use the exact values published for this exam; unpublished values remain unlinked.</p><div class="exam-facet-pivot-list">${rows.join("")}</div></section>`;
 }
 
 function predictionHTML(exam) {
@@ -164,6 +193,7 @@ export function renderExamDocument(exam, options = {}) {
   </nav>
   <section class="exam-section" aria-labelledby="exam-facts-heading" data-export-class="exam_facts"><h2 id="exam-facts-heading">At a glance</h2><dl class="exam-facts">${facts.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>${exam.summary ? `<p class="exam-summary" lang="en" dir="ltr">${esc(exam.summary)}</p>` : ""}</section>
   <section class="exam-section" aria-labelledby="exam-details-heading" data-export-class="exam_facts"><h2 id="exam-details-heading">What the notice says</h2>${exam.test_method || exam.exam_format ? `<p><strong>Test format:</strong> ${esc(exam.test_method || exam.exam_format)}</p>` : ""}${exam.qualifications ? `<p><strong>Qualifications:</strong> ${esc(exam.qualifications)}</p>` : ""}${exam.residency ? `<p><strong>Residency:</strong> ${esc(exam.residency)}</p>` : ""}${feeSalary.fee_waiver ? `<p><strong>Fee waiver:</strong> ${esc(feeSalary.fee_waiver)}</p>` : ""}<p class="exam-note" data-export-class="exam_disclaimer">Official details are in English. Read the full official exam notice before applying.</p></section>
+  ${examFacetPivotsHTML(exam, today)}
   <section class="exam-section" aria-labelledby="exam-prediction-heading" data-export-class="exam_prediction"><h2 id="exam-prediction-heading">What may happen next</h2>${predictionHTML(exam)}</section>
   <section class="exam-section" aria-labelledby="exam-process-heading" data-export-class="exam_process"><h2 id="exam-process-heading">Application to appointment</h2>${processHTML(options.phaseView)}</section>
   <section class="exam-section" aria-labelledby="exam-outcomes-heading" data-export-class="exam_outcomes"><h2 id="exam-outcomes-heading">Public outcomes</h2>${outcomeHTML(outcome)}</section>
