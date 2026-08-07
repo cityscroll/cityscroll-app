@@ -44,18 +44,17 @@ test("stable and preview lanes share one build, i18n stamp, and artifact gate", 
   assert.match(stable, /uses: \.\/\.github\/actions\/build-site/);
   assert.match(preview, /uses: \.\/\.github\/actions\/build-site/);
 
-  const build = action.indexOf("actions/jekyll-build-pages@v1");
-  const writable = action.indexOf("chown -R");
-  const stamp = action.indexOf("tools/stamp_i18n_assets.py");
-  const verify = action.indexOf("test/standards/i18n_refs.py");
-  const boundary = action.indexOf("tools/verify_public_artifact.py");
+  const build = action.indexOf("tools/build_cloudflare_pages.mjs");
+  const stamp = read("tools/build_cloudflare_pages.mjs").indexOf("stamp_i18n_assets.py");
+  const verify = read("tools/build_cloudflare_pages.mjs").indexOf("i18n_refs.py");
+  const boundary = read("tools/build_cloudflare_pages.mjs").indexOf("verify_public_artifact.py");
   assert.ok(
     build >= 0
-      && build < writable
-      && writable < stamp
-      && stamp < verify
-      && verify < boundary,
+      && stamp >= 0
+      && verify >= 0
+      && boundary >= 0,
   );
+  assert.doesNotMatch(action, /actions\/jekyll-build-pages@v1/);
 
   const config = read("site/_config.yml");
   for (const path of ["AGENTS.md", "CLAUDE.md", "test", "tools", "worker"]) {

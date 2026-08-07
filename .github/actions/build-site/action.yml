@@ -1,10 +1,10 @@
 name: Build verified site artifact
-description: Build the site once, derive its i18n stamp, and verify the public artifact.
+description: Build the public artifact through the provider-neutral release script.
 
 outputs:
   data-source-graph-dir:
     description: Directory containing the generated authenticated-desk graph artifacts.
-    value: ${{ steps.data-source-graph.outputs.path }}
+    value: ${{ steps.build.outputs.data-source-graph-dir }}
 
 inputs:
   source-dir:
@@ -31,185 +31,26 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Resolve public site source
-      id: public-source
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        if [ -f "$SOURCE_DIR/site/index.html" ]; then
-          echo "path=$SOURCE_DIR/site" >> "$GITHUB_OUTPUT"
-        else
-          echo "path=$SOURCE_DIR" >> "$GITHUB_OUTPUT"
-        fi
-    # Map density payload must rebuild with the code that ships — otherwise a
-    # locator fix can merge while district_activity.json stays pre-fix (zero
-    # choropleth for place-based lenses). Pure offline rebuild from committed
-    # corpora + boundary layer; no live GIS.
-    # Node 22+: wrangler 4.x (pages deploy in the same job) requires >=22.
-    # setup-node persists on PATH for later steps — do not pin Node 20 here.
     - name: Setup Node for generated artifacts
       uses: actions/setup-node@v4
       with:
         node-version: 22
-    - name: Refresh static-first decision outcomes
-      if: inputs.refresh-decision-outcomes == 'true'
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        node "$SOURCE_DIR/tools/build_batch_precompute_snapshots.mjs" --land-only
-        node "$SOURCE_DIR/tools/build_meeting_outcomes_snapshot.mjs"
-        node --test \
-          "$SOURCE_DIR/test/batch_precompute_snapshots.test.mjs" \
-          "$SOURCE_DIR/test/zap_outcomes.test.mjs" \
-          "$SOURCE_DIR/test/meeting_outcomes_static.test.mjs"
-    - name: Build authenticated-desk data-source graph
-      id: data-source-graph
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        if [ -f "$SOURCE_DIR/tools/data_source_graph.mjs" ]; then
-          source_root="$(cd "$SOURCE_DIR" && pwd)"
-          graph_dir="$source_root/docs"
-          node "$source_root/tools/data_source_graph.mjs" --output-dir "$graph_dir"
-          node "$source_root/tools/data_source_graph.mjs" --check --output-dir "$graph_dir"
-          echo "path=$graph_dir" >> "$GITHUB_OUTPUT"
-        else
-          echo "skip data-source graph build (tool missing)"
-        fi
-    - name: Rebuild district activity (map density)
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        if [ -f "$SOURCE_DIR/tools/build_district_activity.mjs" ]; then
-          node "$SOURCE_DIR/tools/build_district_activity.mjs"
-          node "$SOURCE_DIR/tools/build_district_activity.mjs" --check
-          echo "district_activity rebuilt at $(node -e "console.log(JSON.parse(require('fs').readFileSync('$SOURCE_DIR/site/data/district_activity.json','utf8')).built_at)")"
-        else
-          echo "skip district_activity rebuild (tool missing)"
-        fi
-    - name: Build static-first Near-you documents
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        node "$SOURCE_DIR/tools/build_near_you_pages.mjs"
-        node "$SOURCE_DIR/tools/build_near_you_pages.mjs" --check
-    - name: Build static-first Following document
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        node "$SOURCE_DIR/tools/build_following_page.mjs"
-        node "$SOURCE_DIR/tools/build_following_page.mjs" --check
-    - name: Build static-first Now and Browse documents
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        node "$SOURCE_DIR/tools/build_primary_documents.mjs"
-        node "$SOURCE_DIR/tools/build_primary_documents.mjs" --check
-        node "$SOURCE_DIR/tools/build_url_migration_map.mjs" --check
-    - name: Build static-first exam documents
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        node "$SOURCE_DIR/tools/build_exam_documents.mjs"
-        node "$SOURCE_DIR/tools/build_exam_documents.mjs" --check
-    - name: Build agency index
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        node "$SOURCE_DIR/tools/build_agency_documents.mjs"
-        node "$SOURCE_DIR/tools/build_agency_documents.mjs" --check
-    - name: Check civic token contract for built documents
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: python3 "$SOURCE_DIR/test/standards/civic_token_contract.py"
-    # Land upcoming-hearings payload: production rows must be ZAP-traceable.
-    # Live sweep is scheduled separately; deploy only re-checks the committed
-    # snapshot so synthetic padding cannot re-enter the public site.
-    - name: Check land upcoming hearings (no synthetic rows)
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        if [ -f "$SOURCE_DIR/tools/build_land_upcoming_hearings.mjs" ]; then
-          node "$SOURCE_DIR/tools/build_land_upcoming_hearings.mjs" --check
-        else
-          echo "skip land_upcoming_hearings check (tool missing)"
-        fi
-    # DCAS fleet rows are an official goods-surplus sidecar. The detector keeps
-    # them bounded and prevents parcel/map/export semantics from leaking in.
-    - name: Check DCAS fleet auction inventory
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: |
-        set -euo pipefail
-        if [ -f "$SOURCE_DIR/warehouse/scripts/dcas_vehicle_auctions.mjs" ]; then
-          node "$SOURCE_DIR/warehouse/scripts/dcas_vehicle_auctions.mjs" --check
-        else
-          echo "skip DCAS vehicle auction check (tool missing)"
-        fi
-    - name: Check public payload integrity
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-      run: node "$SOURCE_DIR/tools/check_public_payload_integrity.mjs"
-    - name: Build with GitHub Pages
-      uses: actions/jekyll-build-pages@v1
-      with:
-        source: ${{ steps.public-source.outputs.path }}
-        destination: ${{ inputs.site-dir }}
-    - name: Make generated artifact writable
-      shell: bash
-      env:
-        SITE_DIR: ${{ inputs.site-dir }}
-      run: |
-        sudo chown -R "$(id -u):$(id -g)" "$SITE_DIR"
-        chmod -R u+rwX "$SITE_DIR"
-    - name: Derive i18n cache stamp from deployed content
+    - name: Build provider-neutral public artifact
+      id: build
       shell: bash
       env:
         SOURCE_DIR: ${{ inputs.source-dir }}
         SITE_DIR: ${{ inputs.site-dir }}
-      run: python3 "$SOURCE_DIR/tools/stamp_i18n_assets.py" --site-root "$SITE_DIR" --stamp
-    - name: Verify the built cache-skew guard
-      shell: bash
-      env:
-        SOURCE_DIR: ${{ inputs.source-dir }}
-        SITE_DIR: ${{ inputs.site-dir }}
-      run: python3 "$SOURCE_DIR/test/standards/i18n_refs.py" --root "$SITE_DIR" --built
-    - name: Prepare public review metadata
-      if: ${{ inputs.review-channel != '' }}
-      shell: bash
-      env:
         REVIEW_CHANNEL: ${{ inputs.review-channel }}
-        REVIEW_COMMIT_SHA: ${{ inputs.commit-sha }}
-        SITE_DIR: ${{ inputs.site-dir }}
+        COMMIT_SHA: ${{ inputs.commit-sha }}
+        REFRESH_DECISION_OUTCOMES: ${{ inputs.refresh-decision-outcomes }}
       run: |
-        python3 "$GITHUB_ACTION_PATH/../../../tools/prepare_review_artifact.py" \
-          --site-root "$SITE_DIR" \
-          --channel "$REVIEW_CHANNEL" \
-          --commit "$REVIEW_COMMIT_SHA"
-    - name: Verify public artifact boundary
-      shell: bash
-      env:
-        SITE_DIR: ${{ inputs.site-dir }}
-      run: python3 "$GITHUB_ACTION_PATH/../../../tools/verify_public_artifact.py" --site-root "$SITE_DIR"
+        set -euo pipefail
+        args=(--source-dir "$SOURCE_DIR" --site-dir "$SITE_DIR")
+        if [ "$REFRESH_DECISION_OUTCOMES" = "true" ]; then
+          args+=(--refresh-decision-outcomes)
+        fi
+        if [ -n "$REVIEW_CHANNEL" ]; then
+          args+=(--review-channel "$REVIEW_CHANNEL" --commit-sha "$COMMIT_SHA")
+        fi
+        node "$SOURCE_DIR/tools/build_cloudflare_pages.mjs" "${args[@]}"
