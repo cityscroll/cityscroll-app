@@ -1643,10 +1643,6 @@
                   <option value="100000000">$100M+</option>
                 </select>
               </div>
-              <div class="field" id="moneyquick">
-                <label>&nbsp;</label>
-                <button type="button" class="chip" id="closingweek" aria-pressed="false" data-i18n="closing_this_week">Closing this week</button>
-              </div>
             </div>
           </div>
         </details>
@@ -1672,6 +1668,11 @@
           <a class="chip" data-money-location-basis="submission_address" data-scope-edge="money.location.submission_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22submission_address%22%7D" data-i18n="money_location_basis_submission">Located by submission address</a>
           <a class="chip" data-money-location-basis="pre_bid_venue" data-scope-edge="money.location.pre_bid_venue" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22pre_bid_venue%22%7D" data-i18n="money_location_basis_prebid">Located by pre-bid venue</a>
           <a class="chip" data-money-location-basis="document_pickup" data-scope-edge="money.location.document_pickup" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22document_pickup%22%7D" data-i18n="money_location_basis_pickup">Located by document-pickup address</a>
+        </nav>
+      </div>
+      <div class="money-facet-rail" id="moneyquick" role="group" aria-label="Contract timing">
+        <nav class="chiprow lens-primary-rail" id="money-temporal-rail" aria-label="Contract timing">
+          <a class="chip" id="closingweek" data-money-temporal="closing_week" data-scope-edge="money.time.closing_week" href="#money?closing=week" data-i18n="closing_this_week">Closing this week</a>
         </nav>
       </div>
     </div>

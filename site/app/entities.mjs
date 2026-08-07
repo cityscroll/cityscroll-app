@@ -101,6 +101,7 @@ function officialVotesTableHTML(votes, opts){
  * Never invents votes.
  */
 async function showOfficial(personId, opts){
+  await globalThis.ensureMoneyHistory?.();
   showTab("entity");
   const box = $("#entityview");
   delete box.dataset.vendorStem;
@@ -395,17 +396,19 @@ function forecastPaneHTML(forecasts){
 // notice, since most agencies don't have forecast data computed yet.
 async function agencyForecastTeaser(r, el){
   if(!el || !r.agency_name) return;
+  el.innerHTML = `<div class="chain-h">${t("agency_forecast_heading")}</div><div class="note"><span class="loading"></span></div>`;
   let data = null;
   try{ data = await workerFetch("/inv/" + encodeURIComponent(r.agency_name), null, 8000).then(x => x.ok ? x.json() : null); }catch(e){}
   if(!document.contains(el)) return; // a newer selection replaced this panel
   const forecasts = data ? (data.forecasts || []) : [];
-  if(!forecasts.length) return;
+  if(!forecasts.length){ el.innerHTML = ""; return; }
   el.innerHTML = `<div class="chain-h">${t("agency_forecast_heading")}</div>
     <div class="note">${tn("agency_forecast_count", forecasts.length)} <a class="pivot" href="${agencyHref(r.agency_name,"forecast")}">${t("agency_forecast_link")}</a></div>
     <div class="note">${t("forecast_honesty_note")}</div>`;
 }
 
 async function showAgency(name, initialTab){
+  await globalThis.ensureMoneyHistory?.();
   showTab("entity");
   const box = $("#entityview");
   delete box.dataset.vendorStem;
@@ -1110,6 +1113,7 @@ async function showVendorLive(name, initialTab, box){
 }
 
 async function showVendor(name, initialTab){
+  await globalThis.ensureMoneyHistory?.();
   showTab("entity");
   const box = $("#entityview");
   delete box.dataset.vendorStem;
