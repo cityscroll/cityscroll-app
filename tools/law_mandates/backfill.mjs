@@ -332,7 +332,7 @@ export async function runBackfill(rawOptions = {}) {
   const heartbeatTimer = setInterval(() => { context.lastHeartbeat = Date.now(); logHeartbeat(context); }, HEARTBEAT_MS);
   heartbeatTimer.unref();
   try {
-    const railReceipt = options.railReceipt || await probeRail({ endpoint: options.endpoint, model: options.model });
+    const railReceipt = options.railReceipt || await probeRail({ endpoint: options.endpoint, model: options.model, rail: options.rail, repoRoot: options.repoRoot });
     options.modelOptions = { endpoint: options.endpoint, model: options.model, rail: options.rail, repoRoot: options.repoRoot };
     await atomicWrite(join(options.outputDir, "rail_receipt.json"), railReceipt);
     const manifest = await ensureManifest(options, context);
