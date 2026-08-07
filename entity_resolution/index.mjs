@@ -62,6 +62,19 @@ export {
 } from "./matchers/index.mjs";
 
 export {
+  SCORER_CONTRACT_VERSION,
+  SCORE_RESULT_SCHEMA_VERSION,
+  createScorer,
+  hashJson,
+  pairId,
+  scoreCandidatePairs,
+  scorerIdentity,
+  sha256,
+  stableJson,
+  conventionalV2Scorer,
+} from "./scorers/index.mjs";
+
+export {
   POLICIES_VERSION,
   lookupAlias,
   routeDecision,

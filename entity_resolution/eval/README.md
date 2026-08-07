@@ -12,7 +12,9 @@ creates links.
 | `review_action_export.mjs` | Pure export of privacy-safe desk/action-log reviews into gold-ready candidates |
 | `fixtures/review_actions_v0.json` | Characterization fixture for review-action export |
 | `run_metrics.mjs` | Load gold, run predictions, and print metric keys |
+| `run_bakeoff.mjs` | Run the scorer bake-off and write machine-readable + readable reports |
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
+| `contenders/` | Optional Splink/DuckDB and Dedupe/Gazetteer adapters |
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
 | `fixtures/source_records_authority_v0.jsonl` | Representative source-record rows for characterization only |
 | `run_entity_components.mjs` | Sample whole components and score entity-level fragmentation / constraint violations |
@@ -92,7 +94,7 @@ node tools/run_er_shadow_monitor.mjs --fixture \
 Production mode runs bounded D1 `SELECT` statements only:
 
 ```bash
-node tools/run_er_shadow_monitor.mjs --live --out /tmp/er-shadow-receipt.json
+node tools/run_er_shadow_monitor.mjs --live --out er-shadow-receipt.json
 ```
 
 Receipts report score distributions, candidate recall, unresolved and false-split
@@ -151,6 +153,33 @@ Dry-run without `--blocker` leaves scorer metrics and `candidate_recall` as
 `null`. `--blocker token_v0` fills `candidate_recall` only.
 
 Characterization: `node --test test/entity_resolution_blocker.test.mjs`.
+
+## Scorer bake-off
+
+The score-stage contract is `scorer_contract_v1`: candidate pairs carry a
+versioned feature row, and a scorer returns a probability plus evidence. The
+existing `conventional_v2` implementation is the baseline. The compatibility
+export from `matchers/` remains for existing callers; policy, review,
+link-not-merge, alias-registry, and materialization behavior are unchanged.
+
+Run the baseline-only bake-off (optional contenders are recorded as `not_run`):
+
+```bash
+node entity_resolution/eval/run_bakeoff.mjs \
+  --gold entity_resolution/eval/gold_v1.jsonl \
+  --out-dir entity_resolution/eval/bakeoff/2026-08-06
+```
+
+The report measures candidate recall, pair precision/recall, false merges and
+splits, cluster fragmentation, negative constraints, calibration bands, and
+incremental-vs-full status. Metrics are evaluated after the unchanged policy
+router; raw scorer probabilities and evidence remain in the report for
+calibration. The current 56-case gold set saturates the baseline pair metrics,
+so the report deliberately recommends extending the gold set from unresolved
+clerical-review candidates before choosing a production scorer.
+
+For the two optional adapters and their isolated dependency environment, see
+`eval/contenders/README.md` and `eval/optional-requirements.txt`.
 
 ## Silver authority evaluation
 

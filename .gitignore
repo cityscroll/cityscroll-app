@@ -37,6 +37,7 @@ warehouse/receipts/**
 !warehouse/receipts/proof/
 !warehouse/receipts/proof/**
 warehouse/.venv/
+entity_resolution/eval/.venv/
 warehouse/.ingest.lock
 warehouse/**/__pycache__/
 *.duckdb
