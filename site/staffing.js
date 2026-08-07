@@ -134,7 +134,9 @@
       if (view.salary_band !== filters.salary_band) return false;
     }
     if (filters.fee_level && filters.fee_level !== "all") {
-      if (view.fee_level !== filters.fee_level) return false;
+      if (filters.fee_level === "fee-bearing") {
+        if (!["mid", "high"].includes(view.fee_level)) return false;
+      } else if (view.fee_level !== filters.fee_level) return false;
     }
     if (filters.no_experience === "yes") {
       if (view.no_experience_required !== true) return false;
@@ -154,6 +156,7 @@
       if (filters.window === "actionable" && !["open", "upcoming"].includes(status) && !continuous) return false;
       if (filters.window === "open" && status !== "open") return false;
       if (filters.window === "upcoming" && status !== "upcoming") return false;
+      if (filters.window === "closed" && status !== "closed") return false;
       if (!examMatchesDifferentiatorFilters(exam, filters)) return false;
       if (q && !`${exam.title} ${exam.exam_number} ${exam.summary || ""} ${exam.qualifications || ""} ${exam.test_method || ""}`.toLowerCase().includes(q)) return false;
       return true;
