@@ -470,7 +470,10 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
     }));
     const superseded = lifecycles.length > 0
       && lifecycles.every((lifecycle) => lifecycle.program_state === "superseded");
+    const hasUndatedDefaultAction = (entry?.default_qualification?.exposed_actions || [])
+      .some((action) => action?.status === "undated");
     const closed = !superseded
+      && !hasUndatedDefaultAction
       && lifecycles.length > 0
       && lifecycles.every((lifecycle) => lifecycle.state === "closed");
     const open = lifecycles.some((lifecycle) => lifecycle.state === "open");
@@ -561,15 +564,24 @@ export function propertyEntryDefaultQualification(entry, opts = {}) {
     // The recurring City Record announcement is provenance for the live fleet
     // stream, not evidence that this old notice is itself an open bid.
     if (row?.commercial?.source_role === "provenance_pointer") continue;
-    if (lifecycles[index]?.state === "closed" || lifecycles[index]?.program_state === "superseded") continue;
+    const actions = rowReaderActions(row, opts);
+    if (lifecycles[index]?.program_state === "superseded") continue;
+    if (lifecycles[index]?.state === "closed") {
+      for (const action of actions) {
+        if (action?.kind === "inquire_claim" && exposedPropertyAction(action)) {
+          exposedActions.push({ request_id: row?.request_id || null, kind: action.kind, status: action.status });
+        }
+      }
+      continue;
+    }
     for (const event of rowTimedEvents(row, opts)) {
       if (livePropertyEvent(event, today)) {
         liveEvents.push({ request_id: row?.request_id || null, kind: event?.kind || null });
       }
     }
-    for (const action of rowReaderActions(row, opts)) {
+    for (const action of actions) {
       if (exposedPropertyAction(action)) {
-        exposedActions.push({ request_id: row?.request_id || null, kind: action.kind });
+        exposedActions.push({ request_id: row?.request_id || null, kind: action.kind, status: action.status });
       }
     }
   }

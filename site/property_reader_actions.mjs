@@ -389,6 +389,9 @@ function actionStatus(kind, row, byWhen, today, lifecycle) {
   if (lifecycle?.program_state === "superseded") return "historical";
   // Published records can remain useful after a hearing or sale closes.
   if (kind === "review_documents" && !isoDay(byWhen?.value)) return "undated";
+  // A City Record publication end is not a claimant deadline. Keep a literal,
+  // undated claim/contact route usable unless the notice supplies its own date.
+  if (kind === "inquire_claim" && !isoDay(byWhen?.value)) return "undated";
   if (lifecycle?.state === "closed") return "historical";
   const endDay = isoDay(byWhen?.value);
   if (endDay) return endDay < today ? "historical" : "current";
@@ -399,7 +402,7 @@ function actionStatus(kind, row, byWhen, today, lifecycle) {
     const hearingDay = isoDay(row?.event_date);
     if (hearingDay) return hearingDay < today ? "historical" : "undated";
   }
-  if (kind === "inquire_claim" || kind === "review_documents") return "undated";
+  if (kind === "review_documents") return "undated";
   const text = sourceFields(row).map((entry) => entry.text).join(" ");
   if (kind === "bid" && /\b(?:currently|every week|ongoing)\b/i.test(text)) return "undated";
   const published = isoDay(row?.start_date);
