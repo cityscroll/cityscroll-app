@@ -1,34 +1,28 @@
-# Deploys the verified static site to the public Cloudflare Pages origin.
-# GitHub Pages remains deployed as the fallback origin.
-#
-# Pull requests deploy a numbered preview branch and smoke that preview only.
-# Production alias + cityscroll.org parity run on main (and manual dispatch),
-# never as a PR gate against live production.
+# Manual fallback for the Cloudflare Pages Git integration.
+# Cloudflare-native Pages builds are canonical for production and previews.
+# GitHub Pages remains deployed as an independent public fallback origin.
+# This workflow is intentionally non-required and does not run on pushes.
 name: Deploy Cloudflare Pages
 
 on:
-  schedule:
-    # The Worker refreshes the ZAP read model at 13:00 UTC; copy it into the
-    # static Land document after that bounded materialization completes.
-    - cron: "17 14 * * *"
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
+    inputs:
+      refresh_decision_outcomes:
+        description: Refresh bounded Land and meeting outcomes before the fallback deploy
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
 
 concurrency:
-  group: cloudflare-pages-${{ github.event.pull_request.number || github.ref }}
+  group: cloudflare-pages-manual-fallback
   cancel-in-progress: false
 
 jobs:
   deploy:
     name: Deploy public Cloudflare Pages origin
-    if: >-
-      github.event_name != 'pull_request' ||
-      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     outputs:
       deployment_url: ${{ steps.deploy.outputs.deployment-url }}
@@ -44,16 +38,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            branch="pr-${{ github.event.pull_request.number }}"
-            is_preview=true
-            # Immutable deployment URL is filled after deploy; alias is stable per PR.
-            smoke_base="https://pr-${{ github.event.pull_request.number }}.cityscroll.pages.dev/"
-          else
-            branch="main"
-            is_preview=false
-            smoke_base="https://cityscroll.pages.dev/"
-          fi
+          branch="main"
+          is_preview=false
+          smoke_base="https://cityscroll.pages.dev/"
           {
             echo "branch=${branch}"
             echo "is_preview=${is_preview}"
@@ -64,11 +51,10 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: node tools/ensure_stable_pages.mjs project
-      - uses: actions/configure-pages@v5
       - name: Build verified site artifact
         uses: ./.github/actions/build-site
         with:
-          refresh-decision-outcomes: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
+          refresh-decision-outcomes: ${{ inputs.refresh_decision_outcomes }}
       - name: Deploy to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v3.14.1
@@ -94,19 +80,11 @@ jobs:
           {
             echo "## Cloudflare Pages"
             echo
-            if [ "$IS_PREVIEW" = "true" ]; then
-              echo "Pull-request preview (not production)."
-              echo
-              echo "Stable preview alias: [$SMOKE_BASE]($SMOKE_BASE)"
-              if [ -n "${PAGES_ALIAS:-}" ]; then
-                echo
-                echo "Wrangler alias: [$PAGES_ALIAS]($PAGES_ALIAS)"
-              fi
-            else
-              echo "Production alias: [$PAGES_URL]($PAGES_URL)"
-              echo
-              echo "cityscroll.org and www.cityscroll.org use this Pages project. GitHub Pages remains deployed as the fallback origin."
-            fi
+            echo "Manual production fallback (Cloudflare-native Pages builds are canonical)."
+            echo
+            echo "Production alias: [$PAGES_URL]($PAGES_URL)"
+            echo
+            echo "cityscroll.org and www.cityscroll.org use this Pages project. GitHub Pages remains the independent fallback origin."
             echo
             echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
           } >> "$GITHUB_STEP_SUMMARY"

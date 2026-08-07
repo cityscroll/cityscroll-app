@@ -428,7 +428,7 @@ list renders them as labeled rows at every level; district detail also notes
 citywide items that apply city-scale without counting them into polygons.
 
 **Deploy wiring (load-bearing):** `tools/build_district_activity.mjs` runs inside
-`.github/actions/build-site` before the Jekyll/Pages artifact is assembled, so
+`.github/actions/build-site` before the provider-neutral Pages artifact is assembled, so
 map density never ships stale against locator code. `built_at` advances on every
 site deploy. Committed `site/data/district_activity.json` (+ worker twin) is the
 offline source of truth; rebuild after densifying domain observations.
