@@ -102,8 +102,11 @@ test("propStage: lifecycle derivation", () => {
   const far = new Date(Date.now() + 90 * 86400000).toISOString();
   assert.equal(propEnv.propStage({ event_date: soon }), "soon");
   assert.equal(propEnv.propStage({ event_date: far }), "upcoming");
+  // Fixed historical source date is always past (no wall-clock dependency).
+  assert.equal(propEnv.propStage({ event_date: "2015-10-28" }), "past");
   assert.equal(propEnv.propStage({ type_of_notice_description: "Public Hearings" }), "proposed");
-  assert.equal(propEnv.propStage({ type_of_notice_description: "Sale" }), "past");
+  // Undated non-hearing rows stay outside temporal bands (fail closed — never invent "past").
+  assert.equal(propEnv.propStage({ type_of_notice_description: "Sale" }), null);
 });
 test("dollarBadge: labeled figures only, never a bare number", () => {
   const b = (t) => propEnv.dollarBadge({ short_title: "", additional_description_1: t });
