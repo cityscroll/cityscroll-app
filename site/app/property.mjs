@@ -1273,6 +1273,7 @@ async function renderPropExplorer(){
     currentCountFor, countProcessStages:tools?.countPropertyProcessStages, t, escape:escUiHtml,
     saleMethod:propSaleMethod, priceBand:propPriceBand, process:propProcessSel, temporal:propStageSel,
     baseState:{
+      currentHash:location.hash,
       agency:propAgency||null, asset:propAsset!=="all"?propAsset:null,
       saleMethod:propSaleMethod!=="all"?propSaleMethod:null, priceBand:propPriceBand!=="all"?propPriceBand:null,
       process:propProcessSel!=="all"?propProcessSel:null, stage:propStageSel!=="all"?propStageSel:null,

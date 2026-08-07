@@ -16,6 +16,13 @@
 
 export const PROPERTY_DISPOSITION_FACETS_SCHEMA = "cityscroll.property_disposition_facets.v1";
 
+import {
+  intersectScopes,
+  routeHashFromScope,
+  scopeFromLensState,
+  scopeFromRouteHash,
+} from "./scope_v0.mjs";
+
 /** Canonical sale-method keys (parity with property_commercial.SALE_METHODS). */
 export const SALE_METHODS = Object.freeze([
   "online_auction",
@@ -210,35 +217,37 @@ export function propertyEntryProcessKey(entry) {
  * @param {object} [patch]
  */
 export function propertyDispositionScopeHref(baseState = {}, patch = {}) {
-  const state = { ...(baseState || {}), ...(patch || {}) };
-  const params = new URLSearchParams();
-  const set = (key, value, skip = new Set(["all", ""])) => {
-    if (value == null || value === false) return;
-    const s = String(value).trim();
-    if (!s || skip.has(s)) return;
-    params.set(key, s);
+  const base = baseState && typeof baseState === "object" ? baseState : {};
+  const next = patch && typeof patch === "object" ? patch : {};
+  const currentHash = base.currentHash || base.hash || "";
+  const current = String(currentHash).startsWith("#property")
+    ? scopeFromRouteHash(currentHash)
+    : scopeFromLensState("property", base);
+
+  // A facet pivot replaces only its own axis, then intersects the replacement
+  // with the parsed scope. This is the shared composable-graph operation: all
+  // unrelated place, topic, agency, and opaque entity constraints survive.
+  const cleared = {
+    ...current,
+    facets: {
+      ...current.facets,
+      values: { ...(current.facets?.values || {}) },
+    },
   };
+  const axis = next.saleMethod !== undefined || next.method !== undefined
+    ? "saleMethod"
+    : next.priceBand !== undefined || next.price !== undefined
+      ? "priceBand"
+      : next.process !== undefined
+        ? "process"
+        : next.stage !== undefined || next.temporal !== undefined
+          ? "stage"
+          : null;
+  if (axis) delete cleared.facets.values[axis];
 
-  set("agency", state.agency);
-  set("asset", state.asset);
-  const method = normalizeSaleMethodKey(state.saleMethod || state.method);
-  if (method !== "all") set("method", method);
-  const price = normalizePriceBandKey(state.priceBand || state.price);
-  if (price !== "all") set("price", price);
-  const process = normalizePropertyProcess(state.process);
-  if (process !== "all") set("process", process);
-  const stage = normalizePropertyTemporal(state.stage || state.temporal);
-  if (stage !== "all") set("stage", stage);
-  set("sort", state.sort, new Set(["all", "", "closing_soon"]));
-  set("boro", state.borough || state.boro);
-  set("neighborhood", state.neighborhood);
-  set("cd", state.communityDistrict || state.cd);
-  set("council", state.councilDistrict || state.council);
-  set("q", state.q || state.query);
-  set("view", state.view);
-
-  const q = params.toString();
-  return q ? `#property?${q}` : "#property";
+  const constraint = scopeFromLensState("property", next);
+  const composed = intersectScopes(cleared, constraint);
+  return routeHashFromScope(composed, { surface: "property" });
 }
 
 function entryRows(entry) {
@@ -317,8 +326,9 @@ export function propertySaleMethodControlModel(counts = {}, selected = "all", ba
     count: Number(counts[id]) || 0,
     pressed: current === id,
     href: propertyDispositionScopeHref(baseState, { saleMethod: id }),
-    // data-m matches the pre-conversion sale-method rail contract (facet-count parity).
+    // Retain the short data key for local binding; the typed edge is the public contract.
     data_attr: "m",
+    scope_edge: `property.sale_method.${id}`,
   });
   const methods = SALE_METHODS
     .filter((id) => (Number(counts[id]) || 0) > 0)
@@ -334,8 +344,9 @@ export function propertyPriceBandControlModel(counts = {}, selected = "all", bas
     count: Number(counts[id]) || 0,
     pressed: current === id,
     href: propertyDispositionScopeHref(baseState, { priceBand: id }),
-    // data-p matches the pre-conversion price-band rail contract.
+    // Retain the short data key for local binding; the typed edge is the public contract.
     data_attr: "p",
+    scope_edge: `property.price_band.${id}`,
   });
   const bands = PRICE_BANDS
     .filter((id) => id !== "all")
@@ -355,8 +366,9 @@ export function propertyProcessControlModel(counts = {}, selected = "all", baseS
     count: Number(counts[id]) || 0,
     pressed: current === id,
     href: propertyDispositionScopeHref(baseState, { process: id }),
-    // data-p matches the pre-conversion process-rail contract (distinct #processrail).
+    // Retain the short data key for local binding; the typed edge is the public contract.
     data_attr: "p",
+    scope_edge: `property.disposition_stage.${id}`,
   });
   return {
     all: item("all"),
@@ -373,8 +385,9 @@ export function propertyTemporalControlModel(counts = {}, selected = "all", base
     count: Number(counts[id]) || 0,
     pressed: current === id,
     href: propertyDispositionScopeHref(baseState, { stage: id }),
-    // data-s matches the pre-conversion When/temporal rail contract.
+    // Retain the short data key for local binding; the typed edge is the public contract.
     data_attr: "s",
+    scope_edge: `property.when.${id}`,
   });
   const stages = PROPERTY_TEMPORAL_STAGES
     .filter(([id]) => id !== "all")

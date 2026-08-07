@@ -51,7 +51,9 @@ test("rails expose native links with a named group and one current state", () =>
   assert.match(html, /data-borough-scope="property"/);
   assert.match(html, /role="group"/);
   assert.match(html, /data-borough-scope-link="Brooklyn"[^>]*aria-current="page"/);
+  assert.match(html, /data-borough-scope-link="Brooklyn"[^>]*data-scope-edge="property\.borough\.Brooklyn"/);
   assert.match(html, /data-borough-map-pivot="property"/);
+  assert.match(html, /data-borough-map-pivot="property"[^>]*data-scope-edge="property\.map\.borough\.Brooklyn"/);
   assert.equal((html.match(/data-borough-scope-link=/g) || []).length, BOROUGHS.length + 1);
   assert.doesNotMatch(html, /<button|<select/);
 });
