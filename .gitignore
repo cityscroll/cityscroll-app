@@ -29,6 +29,10 @@ test/performance/artifacts/
 # CityScroll warehouse bulk data (WH-01) — code/fixtures stay tracked; bulk never in git
 warehouse/raw/**
 !warehouse/raw/.gitkeep
+# Public-records captures are deliberately committed with their provenance;
+# bulk source downloads remain ignored by the rule above.
+!warehouse/raw/public-records/
+!warehouse/raw/public-records/**
 warehouse/parquet/**
 !warehouse/parquet/.gitkeep
 warehouse/duckdb/**
@@ -37,6 +41,8 @@ warehouse/receipts/**
 !warehouse/receipts/.gitkeep
 !warehouse/receipts/proof/
 !warehouse/receipts/proof/**
+!warehouse/receipts/public-records/
+!warehouse/receipts/public-records/**
 warehouse/.venv/
 entity_resolution/eval/.venv/
 warehouse/.ingest.lock

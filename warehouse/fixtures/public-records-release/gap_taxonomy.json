@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "generated_document": "gap-taxonomy.md",
+  "doctrine": {
+    "class_a": {
+      "id": "not_yet_ingested",
+      "register": "Not yet shown here — this lives in <source>.",
+      "meaning": "A public source publishes this field."
+    },
+    "class_b": {
+      "id": "not_published",
+      "register": "The city does not publish this — it would appear in <where> if released.",
+      "meaning": "No public, joinable release is known."
+    }
+  },
+  "sources": [],
+  "crosswalks": [],
+  "gaps": [
+    {
+      "id": "fixture-class-b-gap",
+      "surface": "fixture record release",
+      "class": "not_published",
+      "disposition": "open",
+      "would_appear_in": "the public records warehouse if released"
+    }
+  ],
+  "ranked_ingest_list": [],
+  "operational_messages_not_in_taxonomy": []
+}
