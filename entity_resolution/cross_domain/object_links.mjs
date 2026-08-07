@@ -33,6 +33,10 @@ import {
 // Reuse land-side strict ULURP token extractor (same as joinCityRecordLandNotices).
 import { extractUlurpKeys } from "../../worker/src/lib/ulurp_recommendations_join.mjs";
 import { buildEpinIndex, joinPinToEpin, normId } from "../../worker/src/lib/passport_join.mjs";
+import {
+  buildPassportCheckbookCrosswalk,
+  PROCUREMENT_CROSSWALK_METHOD,
+} from "./procurement_crosswalk.mjs";
 // Franchise/concession party + eligibility (pure; only depends on vendorStem).
 import {
   extractCounterparties as extractFranchiseCounterparties,
@@ -161,6 +165,11 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
   },
   contract_published_by_agency: {
     description: "Registered contract subject is published by an agency (award join)",
+    domains: Object.freeze(["money"]),
+    registry: false,
+  },
+  corroborates_contract: {
+    description: "Checkbook contract is corroborated by a PASSPort contract through a strict key",
     domains: Object.freeze(["money"]),
     registry: false,
   },
@@ -2155,6 +2164,7 @@ const SIDE_LINK_TYPES = new Set([
   "references_contract",
   "payment_on_contract",
   "contract_published_by_agency",
+  "corroborates_contract",
   "decides_land_project",
 ]);
 
@@ -2282,6 +2292,51 @@ export function procurementContractLinksForObservations(observations = []) {
   }
   const epinIndex = buildEpinIndex(passportEpinRows);
   const linksByObservation = new Map();
+
+  // Rank-11 residual crosswalk: connect the two publisher contract subjects
+  // before processing notices. Direct contract IDs win; otherwise the strict
+  // PIN↔EPIN strategy is the only accepted bridge. No vendor-name fallback.
+  const checkbookContracts = contracts.filter((contract) =>
+    /^checkbook(?:-|_)/i.test(contract.source_system || ""),
+  );
+  const passportContracts = contracts.filter((contract) =>
+    /^passport(?:-|_)/i.test(contract.source_system || ""),
+  );
+  const crosswalk = buildPassportCheckbookCrosswalk({
+    passportContracts,
+    checkbookContracts,
+  });
+  const contractBySourceId = new Map(contracts.map((contract) => [contract.source_record_id, contract]));
+  for (const row of crosswalk.rows.filter((candidate) => candidate.status === "matched")) {
+    const checkbook = contractBySourceId.get(row.checkbook_source_record_id);
+    const passport = contractBySourceId.get(row.passport_source_record_id);
+    if (!checkbook?.subject_ref || !passport?.subject_ref) continue;
+    const provenance = makeProvenance({
+      source_system: checkbook.source_system,
+      source_record_id: checkbook.source_record_id,
+      source_fields: row.join_method === "contract_id_exact" ? ["contract_id"] : ["pin"],
+      basis: `procurement_${row.join_method}`,
+      input_value: row.input_value,
+      related_source_system: passport.source_system,
+      related_source_record_id: passport.source_record_id,
+    });
+    if (!provenance) continue;
+    const edge = makeObjectLink({
+      type: "corroborates_contract",
+      from: checkbook.subject_ref,
+      to: passport.subject_ref,
+      domain: "money",
+      confidence: "strong",
+      method: PROCUREMENT_CROSSWALK_METHOD,
+      method_version: "1",
+      provenance,
+    });
+    if (!edge) continue;
+    for (const key of [checkbook.source_record_id, passport.source_record_id]) {
+      if (!linksByObservation.has(key)) linksByObservation.set(key, []);
+      linksByObservation.get(key).push(edge);
+    }
+  }
 
   for (const notice of list) {
     if (notice?.domain !== "money" || notice.object_kind === "contract") continue;
