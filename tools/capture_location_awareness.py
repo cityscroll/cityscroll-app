@@ -380,7 +380,7 @@ def verify_denial_and_replay(browser: Browser) -> None:
         open_land(denied, base_url)
         before = {
             "url": denied.url,
-            "borough": denied.locator("#lboro").input_value(),
+            "borough": denied.locator("#land-borough-rail [aria-current='page']").inner_text(),
             "keyword": denied.locator("#lkw").input_value(),
             "state": denied.locator("#searchstate-land").inner_text(),
         }
@@ -389,7 +389,7 @@ def verify_denial_and_replay(browser: Browser) -> None:
         assert denied.locator("#landlocation").is_enabled()
         assert {
             "url": denied.url,
-            "borough": denied.locator("#lboro").input_value(),
+            "borough": denied.locator("#land-borough-rail [aria-current='page']").inner_text(),
             "keyword": denied.locator("#lkw").input_value(),
             "state": denied.locator("#searchstate-land").inner_text(),
         } == before

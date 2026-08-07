@@ -1,4 +1,5 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
+import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -7,6 +8,7 @@ const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:
 // ZAP action labels live in i18n.js (zapact_* keys) — see ZAPACT_KEY in landSelect().
 let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
 let landResolvedArea=null;
+let landBorough="";
 let landCommunityDistrict="";
 let landCouncilDistrict="";
 const mihOn = v => v===true || v==="true";
@@ -85,6 +87,17 @@ function landHearingModeFieldSync(){
   const status=$("#lstatus")?$("#lstatus").value:"";
   if(field) field.hidden=status!=="hearings";
 }
+function renderLandBoroughScopeLinks(){
+  const host=$("#land-borough-rail");
+  if(!host) return;
+  host.innerHTML=boroughScopeLinksHTML({
+    surface:"land",
+    selected:landBorough,
+    currentHash:location.hash,
+    t,
+    escape:escUiHtml,
+  });
+}
 async function syncLandLensControls(){
   const tools=await landStatusFacetTools();
   const status=$("#lstatus")?.value||"all";
@@ -110,8 +123,9 @@ async function syncLandLensControls(){
     button.setAttribute("aria-pressed",String(button.dataset.landStatus===selectedId));
   });
   landHearingModeFieldSync();
+  renderLandBoroughScopeLinks();
   const active=[
-    !!$("#lboro")?.value,
+    !!landBorough,
     status!=="all",
     status==="hearings"&&!!$("#lhearingmode")?.value,
     !!landResolvedArea,
@@ -137,16 +151,16 @@ function setLandResultCount(count){
   if(element) element.textContent=t("results_count",{n:fmtNumber(countWithScopeReceipt(count))});
 }
 function landHasAppliedFilters(){
-  return !!($("#lkw")?.value.trim() || $("#lboro")?.value || landCommunityDistrict
+  return !!($("#lkw")?.value.trim() || landBorough || landCommunityDistrict
     || landCouncilDistrict || landResolvedArea || $("#lstatus")?.value!=="all"
     || $("#lhearingmode")?.value);
 }
 function resetLandFilters(){
   landResolvedArea=null;
+  landBorough="";
   landCommunityDistrict="";
   landCouncilDistrict="";
   $("#lkw").value="";
-  $("#lboro").value="";
   $("#lstatus").value="all";
   if($("#lhearingmode")) $("#lhearingmode").value="";
   $("#nltrans-land").innerHTML="";
@@ -216,7 +230,7 @@ function landHearingRowHTML(row, i){
 }
 async function landSearchHearings(stale){
   landHearingModeFieldSync();
-  const boro=$("#lboro").value;
+  const boro=landBorough;
   const kw=$("#lkw").value.trim();
   const mode=$("#lhearingmode")?$("#lhearingmode").value:"";
   $("#lreshead").textContent=t("land_hearings_heading")+(boro?" · "+boro:"")+(mode?` · ${t(mode==="in_person"?"land_hearings_mode_in_person":"land_hearings_mode_livestream")}`:"");
@@ -289,7 +303,7 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   }
 }
 async function landSearch(){
-  let boro=$("#lboro").value, kw=$("#lkw").value.trim();
+  let boro=landBorough, kw=$("#lkw").value.trim();
   const status=$("#lstatus").value;
   if(kw){
     try{
@@ -297,7 +311,7 @@ async function landSearch(){
       const place=await neighborhoodTools.resolveNeighborhoodQuery(kw);
       if(place){
         boro=place.borough||"";
-        $("#lboro").value=boro;
+        landBorough=normalizeBoroughScope(boro);
         landCommunityDistrict=place.community_districts?.[0]||"";
         $("#lkw").value="";
         kw="";
@@ -540,7 +554,7 @@ async function showLandEntry(id){
   landSelectionSeq++; // invalidate any map/detail hydration still finishing for the prior entry
   landLoaded=true; // suppress the ordinary list fetch while the exact project loads
   showTab("land");
-  $("#lboro").value="";
+  landBorough="";
   $("#lkw").value="";
   // A project deep link is still part of the default review view; retain the
   // lens default so the surrounding route state remains stable while detail loads.
@@ -1519,6 +1533,7 @@ globalThis.zapWhere = zapWhere;
 Object.defineProperty(globalThis, "lRows", { configurable: true, get: () => lRows, set: value => { lRows = value; } });
 Object.defineProperty(globalThis, "landAutoLocationChecked", { configurable: true, get: () => landAutoLocationChecked, set: value => { landAutoLocationChecked = value; } });
 Object.defineProperty(globalThis, "landBanner", { configurable: true, get: () => landBanner, set: value => { landBanner = value; } });
+Object.defineProperty(globalThis, "landBorough", { configurable: true, get: () => landBorough, set: value => { landBorough = normalizeBoroughScope(value); } });
 Object.defineProperty(globalThis, "landCommunityDistrict", { configurable: true, get: () => landCommunityDistrict, set: value => { landCommunityDistrict = value; } });
 Object.defineProperty(globalThis, "landCouncilDistrict", { configurable: true, get: () => landCouncilDistrict, set: value => { landCouncilDistrict = value; } });
 Object.defineProperty(globalThis, "landDefaultSnapshotPromise", { configurable: true, get: () => landDefaultSnapshotPromise, set: value => { landDefaultSnapshotPromise = value; } });

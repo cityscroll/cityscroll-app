@@ -35,7 +35,10 @@
   }
 
   function currentArea() {
-    const value = document.querySelector("#lboro")?.value?.trim().toLowerCase();
+    const selected = document.querySelector(".tabpane.active [data-borough-scope-link][aria-current=\"page\"]");
+    const value = selected?.dataset?.boroughScopeLink === "all"
+      ? ""
+      : selected?.textContent?.trim().toLowerCase();
     return AREAS.get(value) || undefined;
   }
 
@@ -131,8 +134,9 @@
     });
   });
 
-  document.addEventListener("change", (event) => {
-    if (event.target.id !== "lboro" || !event.target.value) return;
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest?.("[data-borough-scope-link]");
+    if (!link || link.dataset.boroughScopeLink === "all") return;
     record("search_run", {
       lens: "land", detail: "filters", geography: currentArea(), surface: "home",
     });

@@ -30,7 +30,7 @@ function districtBagTools(){
 }
 function feedDistrictFilter(key){
   if(key==="property") return {
-    borough:$("#propertyboro")?.value||null,
+    borough:globalThis.propertyBorough||null,
     communityDistrict:globalThis.propertyCommunityDistrict||null,
     councilDistrict:globalThis.propertyCouncilDistrict||null,
   };

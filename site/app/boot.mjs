@@ -328,7 +328,7 @@ function currentLensFilterState(tab){
   if(tab === "land"){
     return adapt({
       q: $("#lkw") && $("#lkw").value.trim() || "",
-      boro: $("#lboro") && $("#lboro").value || "",
+      boro: landBorough || "",
       status: $("#lstatus") && $("#lstatus").value || "all",
     });
   }
@@ -359,7 +359,7 @@ function currentLensFilterState(tab){
       if(typeof propSort !== "undefined" && propSort && propSort !== "closing_soon") state.sort = propSort;
       if(typeof propProcessSel !== "undefined" && propProcessSel && propProcessSel !== "all") state.process = propProcessSel;
       if(typeof propStageSel !== "undefined" && propStageSel && propStageSel !== "all") state.stage = propStageSel;
-      const boro = $("#propertyboro") && $("#propertyboro").value || "";
+      const boro = propertyBorough || "";
       if(boro) state.borough = boro;
       if($("#propertyneighborhood") && $("#propertyneighborhood").value.trim()){
         state.neighborhood = $("#propertyneighborhood").value.trim();
@@ -497,7 +497,6 @@ $("#apreview").addEventListener("click", async ()=>{
 $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
 const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — a touch lazier
 $("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; debouncedLandSearch(); });
-$("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; landSearch(); });
 $("#lstatus").addEventListener("change", landSearch);
 $("#land-status-rail").addEventListener("click",event=>{
   const button=event.target.closest("[data-land-status]");
@@ -514,7 +513,7 @@ const landLocationOptions={
     landResolvedArea=area;
     landCommunityDistrict=area.communityDistrict||"";
     landCouncilDistrict=area.councilDistrict||"";
-    $("#lboro").value=area.borough;
+    landBorough=area.borough;
     $("#lkw").value="";
     landSearch();
   },
@@ -526,7 +525,7 @@ bindLocationControl($("#propertylocation"), {
   mapPlutoEndpoint:MAPPLUTO_QUERY,
   onResolved:area=>{
     propertyCouncilDistrict="";
-    $("#propertyboro").value=area.borough||"";
+    propertyBorough=area.borough||"";
     $("#propertyneighborhood").value=area.neighbourhood||"";
     renderPropExplorer();
     updateHash();
@@ -555,14 +554,6 @@ bindLocationControl($("#meetingslocation"), {
 $("#meetingsboro").addEventListener("change",()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); },500));
-$("#propertyboro").addEventListener("change",()=>{ propertyCommunityDistrict=""; propertyCouncilDistrict=""; renderPropExplorer(); updateHash(); renderSearchComponents("property"); });
-const rulesBoroSel=$("#rulesboro");
-if(rulesBoroSel) rulesBoroSel.addEventListener("change",()=>{
-  if(typeof renderRulesExplorer==="function") renderRulesExplorer();
-  else loadSection("rules");
-  updateHash();
-  renderSearchComponents("rules");
-});
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
 $("#propertyneighborhood").addEventListener("input",debounce(()=>{ propertyCouncilDistrict=""; renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
 loadAgencies();
