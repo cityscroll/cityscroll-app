@@ -166,6 +166,10 @@ export async function ingestNotices(env) {
   // outside the City Record, so these Solicitations never become City Record Award notices.
   const nychaRequestIds = [];
   const NYCHA_IDS_CAP = 200;
+  // Fresh notice ids feed the edge prewarm after the durable D1 upsert. The cap keeps a
+  // large catch-up run bounded; uncached rows remain available from the same read model.
+  const noticeRequestIds = [];
+  const NOTICE_IDS_CAP = 200;
 
   const insert = env.DB.prepare(
     `INSERT INTO notices
@@ -213,6 +217,7 @@ export async function ingestNotices(env) {
     for (const row of rows) {
       const m = mapRow(row);
       if (!m.request_id) continue;
+      if (noticeRequestIds.length < NOTICE_IDS_CAP) noticeRequestIds.push(m.request_id);
       if (m.start_date && m.start_date > maxStart) maxStart = m.start_date;
       if (m.type_of_notice === "Award" && awardRequestIds.length < AWARD_IDS_CAP) {
         awardRequestIds.push(m.request_id);
@@ -285,5 +290,5 @@ export async function ingestNotices(env) {
   }
 
   await stateSet(env.DB, "ingest_cursor", maxStart);
-  return { fetched, upserted, cursor: maxStart, awardRequestIds, nychaRequestIds };
+  return { fetched, upserted, cursor: maxStart, noticeRequestIds, awardRequestIds, nychaRequestIds };
 }
