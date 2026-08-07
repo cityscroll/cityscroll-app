@@ -1,6 +1,7 @@
 import { noticeDocumentUrl } from "../notice_permalink.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
+import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -77,14 +78,7 @@ function facetValuesFromRouteRaw(raw){
 }
 
 function agencyFromRouteFacet(values){
-  const refs = Array.isArray(values?.entity_refs_all) ? values.entity_refs_all : [];
-  for(const ref of refs){
-    const match = String(ref || "").match(/^agency:(?:id:)?(.+)$/);
-    if(!match) continue;
-    const resolved = resolveAgencyIdentity(match[1]);
-    if(resolved?.canonical_name) return resolved.canonical_name;
-  }
-  return "";
+  return agencyNameFromEntityFacet(values);
 }
 
 // Hash navigation changes both the visual viewport and the assistive-technology reading point.
@@ -993,7 +987,7 @@ function applyHash(){
       else { const was = landLoaded; showTab("land"); if(was) landSearch(); }
     } else if(SECTIONS[tab]){
       $("#"+tab+"agency").value="";
-      forceSelect("#"+tab+"agency", q.get("agency"));
+      forceSelect("#"+tab+"agency", q.get("agency") || agencyFromRouteFacet(activeRouteFacetValues));
       $("#"+tab+"kw").value = q.get("q") || "";
       const w=$("#"+tab+"when");
       if(w){

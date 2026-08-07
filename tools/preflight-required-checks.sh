@@ -374,6 +374,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/22_same_consolidation.py
   run_and_fail python3 test/functional/25_property_facet_count_parity.py
   run_and_fail python3 test/functional/26_vendor_footprint_scope_count.py
+  run_and_fail python3 test/functional/28_agency_scope_links.py
 else
   echo
   echo "Skipping full browser gates by default."
