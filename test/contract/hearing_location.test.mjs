@@ -80,3 +80,26 @@ test("participation and audience clues are extracted only when the notice suppli
   assert.deepEqual(unlocated.affects, []);
   assert.deepEqual(unlocated.participation.links, []);
 });
+
+test("meeting access facts distinguish in-person, remote, hybrid, and unknown", () => {
+  const inPerson = normalizeHearing(fixtures[1].row);
+  assert.equal(inPerson.meeting_access.mode, "in-person");
+  assert.match(inPerson.meeting_access.in_person_location, /120 Broadway/);
+  assert.equal(inPerson.meeting_access.remote_join_url, null);
+
+  const remote = normalizeHearing(fixtures[0].row);
+  assert.equal(remote.meeting_access.mode, "remote");
+  assert.equal(remote.meeting_access.in_person_location, null);
+  assert.equal(remote.meeting_access.remote_join_url, null);
+
+  const hybrid = normalizeHearing(fixtures[4].row);
+  assert.equal(hybrid.meeting_access.mode, "hybrid");
+  assert.match(hybrid.meeting_access.in_person_location, /Room 120/);
+  assert.equal(hybrid.meeting_access.remote_join_url, "https://zoom.us/j/123456789");
+
+  const missing = normalizeHearing(fixtures[5].row);
+  assert.equal(missing.meeting_access.mode, "unknown");
+  assert.equal(missing.meeting_access.in_person_location, null);
+  assert.equal(missing.meeting_access.remote_join_url, null);
+
+});

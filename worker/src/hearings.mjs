@@ -5,6 +5,7 @@
 
 import { applyGeocode, normalizeHearing } from "./lib/hearings.mjs";
 import { withDistricts } from "./lib/council_district.mjs";
+import { hearingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -152,4 +153,45 @@ export async function handleHearings(request, env, ctx) {
     }
   }
   return response(raw);
+}
+
+/**
+ * GET /meeting.ics?id=… — one meeting event from the daily hearing materialization.
+ * This is intentionally a read-model route: it never performs a per-notice
+ * City Record lookup, and a stale cached view remains usable while refresh is attempted.
+ */
+export async function handleMeetingICS(request, env) {
+  if (request.method !== "GET") {
+    return new Response("method not allowed", { status: 405, headers: { "Content-Type": "text/plain" } });
+  }
+  if (!env?.ALERT_STATE) return new Response("not configured", { status: 503 });
+  const id = new URL(request.url).searchParams.get("id") || "";
+  if (!/^[A-Za-z0-9_-]{4,40}$/.test(id)) return new Response("invalid meeting id", { status: 400 });
+
+  let parsed = null;
+  try {
+    const raw = await env.ALERT_STATE.get(HEARINGS_KV_KEY);
+    parsed = raw ? JSON.parse(raw) : null;
+  } catch { parsed = null; }
+  if (!parsed) {
+    try { parsed = await buildHearingView(fetch, new Date()); } catch { parsed = null; }
+  }
+  const record = (parsed?.hearings || []).find((hearing) => hearing?.request_id === id);
+  if (!record) return new Response("meeting not found", { status: 404 });
+  const ics = hearingCalendarICS({
+    ...record,
+    short_title: record.title,
+    agency_name: record.agency,
+    source_url: record.source_url,
+  });
+  if (!ics) return new Response("meeting has no event time", { status: 404 });
+  return new Response(ics, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/calendar; charset=utf-8",
+      "Content-Disposition": `attachment; filename="meeting-${id}.ics"`,
+      "Cache-Control": "public, max-age=900",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
 }
