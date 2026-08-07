@@ -6,7 +6,7 @@
  * location bases remain separate from performance geography.
  */
 
-import { nearYouUrlFromScope } from "./near_you_scope.mjs";
+import { nearYouUrlFromScope } from "./scope_v0.mjs";
 import { normalizeScope, routeHashFromScope, scopeFromLensState } from "./scope_v0.mjs";
 
 export const PROCUREMENT_MODE_KEYS = Object.freeze(["open", "allrfp", "award"]);

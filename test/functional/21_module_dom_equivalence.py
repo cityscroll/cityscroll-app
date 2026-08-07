@@ -16,6 +16,7 @@ import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -193,9 +194,22 @@ def normalized_html(page, selector: str) -> str:
     )
 
 
-def capture(page, base: str, route: str, ready: str, root: str, action=None) -> str:
-    page.goto(base + route, wait_until="load", timeout=30_000)
-    page.locator(ready).first.wait_for(state="visible", timeout=20_000)
+def capture(page, base: str, route: str, ready: str, root: str, action=None, errors=None) -> str:
+    # A merge-group runner can lose one module-graph wakeup while Chromium is
+    # cold. Retry the bounded readiness check once; a persistent syntax or
+    # rendering error still fails below with the collected page errors.
+    for attempt in range(2):
+        try:
+            page.goto(base + route, wait_until="load", timeout=30_000)
+            page.locator(ready).first.wait_for(state="visible", timeout=20_000)
+            break
+        except PlaywrightTimeoutError as error:
+            if attempt == 1:
+                detail = f"; page errors: {errors}" if errors else ""
+                raise AssertionError(
+                    f"{route}: readiness selector {ready!r} did not settle after a retry{detail}"
+                ) from error
+            print(f"WARN {route}: readiness timeout; retrying once", flush=True)
     if route == "#notice/20241112003":
         assert page.locator('#nactions .next-action-list > a[href*="zola.planning.nyc.gov"]').count() == 1, (
             "Property deep link painted before its BBL-backed action was hydrated"
@@ -231,8 +245,8 @@ def main() -> None:
                     pages.append((base, page, errors))
 
                 for name, route, ready, root, action in SURFACES:
-                    before = capture(pages[0][1], pages[0][0], route, ready, root, action)
-                    after = capture(pages[1][1], pages[1][0], route, ready, root, action)
+                    before = capture(pages[0][1], pages[0][0], route, ready, root, action, pages[0][2])
+                    after = capture(pages[1][1], pages[1][0], route, ready, root, action, pages[1][2])
                     if before != after:
                         offset = next(
                             (index for index, pair in enumerate(zip(before, after)) if pair[0] != pair[1]),
