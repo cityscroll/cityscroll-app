@@ -1,0 +1,1514 @@
+[
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7509722222222222,
+    "incremental_probability": 0.7509722222222222,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-001"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.6472222222222221,
+    "incremental_probability": 0.6472222222222221,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-002"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.98,
+    "incremental_probability": 0.98,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-003"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.990909090909091,
+    "incremental_probability": 0.990909090909091,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-004"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9571428571428571,
+    "incremental_probability": 0.9571428571428571,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-005"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9857142857142858,
+    "incremental_probability": 0.9857142857142858,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-006"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7440476190476191,
+    "incremental_probability": 0.7440476190476191,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-007"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 1.0,
+    "incremental_probability": 1.0,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-008"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 1.0,
+    "incremental_probability": 1.0,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-009"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9888888888888889,
+    "incremental_probability": 0.9888888888888889,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-010"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9966666666666668,
+    "incremental_probability": 0.9966666666666668,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-011"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 1.0,
+    "incremental_probability": 1.0,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-012"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.991304347826087,
+    "incremental_probability": 0.991304347826087,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-013"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7586613592805542,
+    "incremental_probability": 0.7586613592805542,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-014"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7101790281329924,
+    "incremental_probability": 0.7101790281329924,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-015"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.785,
+    "incremental_probability": 0.785,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-016"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7703081232492996,
+    "incremental_probability": 0.7703081232492996,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-017"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9436950146627567,
+    "incremental_probability": 0.9436950146627567,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-018"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.6459435626102292,
+    "incremental_probability": 0.6459435626102292,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-019"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.98,
+    "incremental_probability": 0.98,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-020"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8985507246376812,
+    "incremental_probability": 0.8985507246376812,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-021"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9612903225806453,
+    "incremental_probability": 0.9612903225806453,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-022"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7238095238095238,
+    "incremental_probability": 0.7238095238095238,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-023"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8668376068376069,
+    "incremental_probability": 0.8668376068376069,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-024"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7181964573268922,
+    "incremental_probability": 0.7181964573268922,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-025"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7912907268170426,
+    "incremental_probability": 0.7912907268170426,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-026"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8072258533042846,
+    "incremental_probability": 0.8072258533042846,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-027"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8591503267973857,
+    "incremental_probability": 0.8591503267973857,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-028"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8764957264957265,
+    "incremental_probability": 0.8764957264957265,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-029"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8214550264550264,
+    "incremental_probability": 0.8214550264550264,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-030"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.687962962962963,
+    "incremental_probability": 0.687962962962963,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-031"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9579773321708807,
+    "incremental_probability": 0.9579773321708807,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-032"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.8260647454050754,
+    "incremental_probability": 0.8260647454050754,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-033"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.5982771970576848,
+    "incremental_probability": 0.5982771970576848,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-034"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.5225662194702443,
+    "incremental_probability": 0.5225662194702443,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-035"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7,
+    "incremental_probability": 0.7,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv0-036"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7670995670995671,
+    "incremental_probability": 0.7670995670995671,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-037"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7952380952380953,
+    "incremental_probability": 0.7952380952380953,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-038"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7958333333333334,
+    "incremental_probability": 0.7958333333333334,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-039"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7896551724137931,
+    "incremental_probability": 0.7896551724137931,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-040"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7862068965517242,
+    "incremental_probability": 0.7862068965517242,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-041"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7894736842105263,
+    "incremental_probability": 0.7894736842105263,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-042"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7506060606060605,
+    "incremental_probability": 0.7506060606060605,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-043"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7739130434782608,
+    "incremental_probability": 0.7739130434782608,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-044"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7135981912144702,
+    "incremental_probability": 0.7135981912144702,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-045"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.5680260047281324,
+    "incremental_probability": 0.5680260047281324,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-046"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.76,
+    "incremental_probability": 0.76,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-047"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.756055900621118,
+    "incremental_probability": 0.756055900621118,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-048"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9855462184873951,
+    "incremental_probability": 0.9855462184873951,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-049"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.9857142857142858,
+    "incremental_probability": 0.9857142857142858,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-050"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7446839080459771,
+    "incremental_probability": 0.7446839080459771,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-051"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7538082437275986,
+    "incremental_probability": 0.7538082437275986,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-052"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7337782805429864,
+    "incremental_probability": 0.7337782805429864,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-053"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7486858974358974,
+    "incremental_probability": 0.7486858974358974,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-054"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7337958532695374,
+    "incremental_probability": 0.7337958532695374,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-055"
+  },
+  {
+    "adapter_version": "goldenmatch_adapter_v1",
+    "engine": "goldenmatch",
+    "field_spec": [
+      {
+        "field": "display_name",
+        "scorer": "jaro_winkler",
+        "weight": 0.5
+      },
+      {
+        "field": "stem",
+        "scorer": "exact",
+        "weight": 0.2
+      },
+      {
+        "field": "authority_key",
+        "scorer": "exact",
+        "weight": 0.3
+      }
+    ],
+    "full_probability": 0.7488795986622073,
+    "incremental_probability": 0.7488795986622073,
+    "matchkey": "vendor_pair_weighted",
+    "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "package_version": "3.12.0",
+    "pair_id": "gv1-056"
+  }
+]

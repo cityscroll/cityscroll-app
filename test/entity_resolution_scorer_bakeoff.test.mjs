@@ -103,3 +103,54 @@ test("report refuses to declare a winner when baseline pair metrics saturate", (
   assert.equal(report.recommendation.decision, "insufficient_evidence");
   assert.match(report.recommendation.text, /unresolved clerical-review stratum/);
 });
+
+test("optional GoldenMatch envelope evaluates as a measured contender without becoming baseline", () => {
+  const baselineScores = scoreGoldWithScorer(gold.cases, blocked.candidateIds, conventionalV2Scorer);
+  const baseline = evaluateScorer({
+    cases: gold.cases,
+    candidateIds: blocked.candidateIds,
+    scores: baselineScores,
+    scorer: conventionalV2Scorer,
+  });
+  // Synthetic envelope shaped like contenders/goldenmatch_adapter.py output.
+  const goldenmatchScores = gold.cases.map((row) => ({
+    pair_id: row.id,
+    probability: row.label === "same" ? 0.7 : 0.2,
+    evidence: { engine: "goldenmatch", path: "test_fixture" },
+  }));
+  const goldenmatch = evaluateScorer({
+    cases: gold.cases,
+    candidateIds: blocked.candidateIds,
+    scores: goldenmatchScores,
+    scorer: {
+      contract_version: "scorer_contract_v1",
+      name: "goldenmatch",
+      version: "test",
+      artifact_hash: "test",
+      config_hash: "test",
+      supports_incremental: true,
+    },
+    threshold: 0.9,
+    incrementalConsistency: {
+      supported: true,
+      status: "measured",
+      pairs_compared: gold.cases.length,
+      mismatch_count: 0,
+      mismatches: [],
+    },
+    trainingOverlap: false,
+  });
+  assert.equal(goldenmatch.status, "measured");
+  assert.equal(goldenmatch.metrics.false_merge, 0);
+  assert.ok(goldenmatch.metrics.false_split > 0);
+  assert.equal(goldenmatch.incremental_consistency.mismatch_count, 0);
+  const report = buildBakeoffReport({
+    gold,
+    contentHash: gold.contentHash,
+    candidateIds: blocked.candidateIds,
+    contenders: [baseline, goldenmatch],
+  });
+  assert.equal(report.honesty.baseline_pair_metrics_saturated, true);
+  assert.equal(report.recommendation.decision, "insufficient_evidence");
+  assert.equal(report.contenders.find((row) => row.scorer?.name === "goldenmatch")?.status, "measured");
+});

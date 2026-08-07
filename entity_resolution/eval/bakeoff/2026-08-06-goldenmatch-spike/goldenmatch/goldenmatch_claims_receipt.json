@@ -1,0 +1,44 @@
+{
+  "claims_under_test": [
+    "accuracy_on_messy_customer_records",
+    "incremental_resolution",
+    "merge_split_control_plane"
+  ],
+  "gold_pair_count": 56,
+  "merge_split": {
+    "absorbed_status": "merged_into",
+    "after_merge_record_ids": [
+      "spike-r1",
+      "spike-r2",
+      "spike-r3"
+    ],
+    "after_split_record_ids": [
+      "spike-r1",
+      "spike-r2"
+    ],
+    "merge": {
+      "absorbed": "019fd9ca-7040-7cfa-99ae-ae0bad1045eb",
+      "at": "2026-08-06T21:15:50.722702",
+      "keep": "019fd9ca-7040-7f82-881e-9b0fb4a7665a"
+    },
+    "note": "Control-plane API smoke only. Merge/split does not score gold pairs; accuracy claims still come from pair metrics.",
+    "ok": true,
+    "split": {
+      "at": "2026-08-06T21:15:50.723309",
+      "moved": [
+        "spike-r3"
+      ],
+      "new_entity_id": "019fd9ca-7043-75ed-93fd-7cd7038e47e1"
+    },
+    "status": "measured",
+    "supported": true
+  },
+  "scoring_path": "explicit_score_pair_plus_match_one",
+  "zero_config": {
+    "attempted": true,
+    "error": "'Field \"__title_key__\" does not exist in schema'",
+    "error_type": "KeyError",
+    "note": "Zero-config auto-configure did not complete on the gold-shaped vendor corpus. Pair scoring uses the explicit FIELD_SPEC matchkey.",
+    "ok": false
+  }
+}

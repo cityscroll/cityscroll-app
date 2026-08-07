@@ -22,12 +22,20 @@ import {
 
 function usage(message) {
   if (message) console.error(`error: ${message}`);
-  console.error("Usage: node entity_resolution/eval/run_bakeoff.mjs --gold <path> --out-dir <dir> [--blocker token_v0|none] [--splink-output <path.json>] [--dedupe-output <path.json>] [--threshold 0.9]");
+  console.error("Usage: node entity_resolution/eval/run_bakeoff.mjs --gold <path> --out-dir <dir> [--blocker token_v0|none] [--splink-output <path.json>] [--dedupe-output <path.json>] [--goldenmatch-output <path.json>] [--threshold 0.9]");
   process.exit(1);
 }
 
 function args(argv) {
-  const out = { gold: null, outDir: null, blocker: "token_v0", threshold: 0.9, splink: null, dedupe: null };
+  const out = {
+    gold: null,
+    outDir: null,
+    blocker: "token_v0",
+    threshold: 0.9,
+    splink: null,
+    dedupe: null,
+    goldenmatch: null,
+  };
   for (let i = 2; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--gold") out.gold = argv[++i];
@@ -36,6 +44,7 @@ function args(argv) {
     else if (arg === "--threshold") out.threshold = Number(argv[++i]);
     else if (arg === "--splink-output") out.splink = argv[++i];
     else if (arg === "--dedupe-output") out.dedupe = argv[++i];
+    else if (arg === "--goldenmatch-output") out.goldenmatch = argv[++i];
     else usage(`unknown argument ${arg}`);
   }
   if (!out.gold || !out.outDir) usage("--gold and --out-dir are required");
@@ -80,6 +89,7 @@ function main() {
     }),
     loadContender(options.splink, "splink_duckdb", gold, candidateIds, options.threshold),
     loadContender(options.dedupe, "dedupe_gazetteer", gold, candidateIds, options.threshold),
+    loadContender(options.goldenmatch, "goldenmatch", gold, candidateIds, options.threshold),
   ];
   const report = buildBakeoffReport({
     gold,
