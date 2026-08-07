@@ -32,14 +32,19 @@ def scalar(value: Any) -> str:
     return str(value)
 
 
+def optional_scalar(value: Any) -> str | None:
+    value = scalar(value)
+    return value or None
+
+
 def shaped(side: dict[str, Any], features: dict[str, Any], pair_id: str, stem_key: str) -> dict[str, Any]:
     attrs = side.get("attrs") or {}
     return {
         "name": scalar(side.get("display_name")),
-        "stem": scalar(features.get(stem_key)),
-        "family": scalar(features.get("family")),
-        "authority_key": scalar(attrs.get("authority_keys") or attrs.get("pin") or attrs.get("epin")),
-        "contract_id": scalar(attrs.get("contract_id") or attrs.get("contract_ids")),
+        "stem": optional_scalar(features.get(stem_key)),
+        "family": optional_scalar(features.get("family")),
+        "authority_key": optional_scalar(attrs.get("authority_keys") or attrs.get("pin") or attrs.get("epin")),
+        "contract_id": optional_scalar(attrs.get("contract_id") or attrs.get("contract_ids")),
         "_pair_id": pair_id,
     }
 
@@ -58,7 +63,9 @@ def run(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
         dedupe.variables.String("authority_key", has_missing=True),
         dedupe.variables.String("contract_id", has_missing=True),
     ]
-    matcher = dedupe.Gazetteer(variables, num_cores=0, in_memory=True)
+    # Dedupe 3 persists its SQLite index across connections during search;
+    # in_memory=True drops the indexed_records table before the next query.
+    matcher = dedupe.Gazetteer(variables, num_cores=0, in_memory=False)
     canonical: dict[str, dict[str, Any]] = dict()
     incoming: dict[str, dict[str, Any]] = dict()
     labeled = dict(match=list(), distinct=list())
@@ -79,8 +86,10 @@ def run(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
 
     def match_map(match_groups: Any) -> dict[str, tuple[float, dict[str, Any]]]:
         result: dict[str, tuple[float, dict[str, Any]]] = dict()
-        for match_group in match_groups:
-            for (incoming_id, canonical_id), probability in match_group:
+        # Dedupe 3 formats Gazetteer.search() as
+        # (incoming_id, ((canonical_id, probability), ...)).
+        for incoming_id, match_group in match_groups:
+            for canonical_id, probability in match_group:
                 pair_id = str(incoming_id)
                 result[pair_id] = (
                     float(probability),
@@ -101,7 +110,7 @@ def run(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
         matcher.write_settings(handle)
     settings_hash = digest(settings_path.read_bytes())
     with settings_path.open("rb") as handle:
-        rebuilt = StaticGazetteer(handle, num_cores=0, in_memory=True)
+        rebuilt = StaticGazetteer(handle, num_cores=0, in_memory=False)
     rebuilt.index(canonical)
     full_by_pair = match_map(rebuilt.search(incoming, threshold=0.0, n_matches=None))
     incremental_mismatches = list()

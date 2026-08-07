@@ -37,6 +37,7 @@ Export options:
   --auto-link-size N                 default 30
   --near-miss-size N                 default 60 (false-split priority)
   --near-miss-min-similarity 0..1    default 0.3
+  --source-systems CSV               live source systems to include (vendor-bearing only)
   --limit N                          live input row cap; default 1000
   --database NAME                    default crol-notices
   --replace                          replace a differing audit artifact
@@ -61,6 +62,7 @@ function parseArgs(argv) {
     nearMissSize: undefined,
     nearMissMinSimilarity: undefined,
     limit: DEFAULT_LIMIT,
+    sourceSystems: null,
     database: DEFAULT_DATABASE,
     replace: false,
     promote: null,
@@ -79,6 +81,7 @@ function parseArgs(argv) {
     ["--near-miss-size", "nearMissSize"],
     ["--near-miss-min-similarity", "nearMissMinSimilarity"],
     ["--limit", "limit"],
+    ["--source-systems", "sourceSystems"],
     ["--database", "database"],
     ["--promote", "promote"],
     ["--base-gold", "baseGold"],
@@ -155,7 +158,23 @@ function wranglerSelect(database, sql) {
   return parseWranglerResults(command.stdout);
 }
 
-function fetchLiveObservations(database, limit) {
+const VENDOR_SOURCE_SYSTEMS = new Set([
+  "city_record",
+  "checkbook_contracts",
+  "checkbook_spending",
+  "passport_public_contracts",
+]);
+
+function parseSourceSystems(value) {
+  if (!value) return null;
+  const systems = [...new Set(String(value).split(",").map((item) => item.trim()).filter(Boolean))];
+  if (!systems.length || systems.some((system) => !VENDOR_SOURCE_SYSTEMS.has(system))) {
+    throw new Error(`--source-systems accepts only: ${[...VENDOR_SOURCE_SYSTEMS].join(", ")}`);
+  }
+  return systems;
+}
+
+function fetchLiveObservations(database, limit, sourceSystems = null) {
   const status = wranglerSelect(
     database,
     `SELECT
@@ -166,6 +185,12 @@ function fetchLiveObservations(database, limit) {
        (SELECT COUNT(*) FROM entity_link WHERE decision = 'auto_link') AS stored_auto_links`,
   )[0] || {};
   const useShadow = Number(status.source_records) > 0;
+  const sourceFilter = sourceSystems?.length
+    ? `WHERE source_system IN (${sourceSystems.map((system) => `'${system}'`).join(", ")})`
+    : "";
+  const noticeFilter = sourceSystems && !sourceSystems.includes("city_record")
+    ? "WHERE 1 = 0 AND TRIM(COALESCE(vendor_name,'')) <> ''"
+    : "WHERE TRIM(COALESCE(vendor_name,'')) <> ''";
   const sql = useShadow
     ? `SELECT recent.source_system, recent.source_system_id, recent.content_hash,
               recent.normalized_snapshot, recent.ingested_at,
@@ -176,7 +201,8 @@ function fetchLiveObservations(database, limit) {
          FROM (
            SELECT source_system, source_system_id, content_hash,
                   normalized_snapshot, ingested_at
-             FROM source_records
+           FROM source_records
+          ${sourceFilter}
             ORDER BY ingested_at DESC, source_system_id DESC
             LIMIT ${limit}
          ) AS recent
@@ -191,7 +217,7 @@ function fetchLiveObservations(database, limit) {
               request_id AS source_record_id, vendor_name, pin, ingested_at,
               0 AS link_state_available
          FROM notices
-        WHERE TRIM(COALESCE(vendor_name,'')) <> ''
+        ${noticeFilter}
         ORDER BY ingested_at DESC, request_id DESC
         LIMIT ${limit}`;
   const rows = wranglerSelect(database, sql);
@@ -211,6 +237,7 @@ function fetchLiveObservations(database, limit) {
       },
       selected_rows: rows.length,
       row_limit: limit,
+      source_systems: sourceSystems,
     },
   };
 }
@@ -250,7 +277,7 @@ function exportAudit(args) {
     throw new Error("choose exactly one input: --live or --input");
   }
   if (!args.outDir) throw new Error("--out-dir is required for export");
-  const live = args.live ? fetchLiveObservations(args.database, args.limit) : null;
+  const live = args.live ? fetchLiveObservations(args.database, args.limit, parseSourceSystems(args.sourceSystems)) : null;
   const rows = live?.rows || readOfflineObservations(args.input);
   const { sample, receipt: baseReceipt } = buildClericalAudit(rows, {
     observedOn: args.observedOn,
