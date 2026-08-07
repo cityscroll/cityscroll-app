@@ -94,7 +94,14 @@ test("contract fails closed on unregistered event kinds and source-clock fields"
     /unknown predicted_event_kind/,
   );
 
-  for (const clock of ["valid_at", "published_at", "observed_at"]) {
+  for (const clock of [
+    "valid_at",
+    "valid_from",
+    "valid_to",
+    "published_at",
+    "observed_at",
+    "processed_at",
+  ]) {
     assert.throws(
       () => prediction({ [clock]: "2026-08-02" }),
       new RegExp(`prediction must not carry source clock ${clock}`),
