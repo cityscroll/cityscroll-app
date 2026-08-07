@@ -1000,6 +1000,7 @@
   .career-controls{display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(3,minmax(145px,.7fr));gap:10px;margin:14px 0 12px}
   .career-controls .field{min-width:0}
   .career-facet-field{display:flex;flex-direction:column;gap:6px}
+  .career-facet-label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .career-facet-links{display:flex;flex-wrap:wrap;align-content:flex-start;gap:5px;min-height:30px}
   .career-facet-chip{display:inline-flex;align-items:center;max-width:100%;border:1px solid var(--rule);border-radius:999px;padding:5px 8px;background:var(--card);color:var(--ink-soft);font:650 11px/1.25 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
   .career-facet-chip:hover,.career-facet-chip:focus-visible,.career-facet-chip.current{border-color:var(--blue);color:var(--blue);background:#eef2ff}
@@ -1743,24 +1744,24 @@
             </select>
           </div>
           <div class="field career-facet-field">
-            <label data-i18n="career_window_label">Application window</label>
-            <div id="career-window-facets" class="career-facet-links" data-career-facets="window"></div>
+            <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
+            <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
           </div>
           <div class="field career-facet-field">
-            <label data-i18n="career_format_label">Exam format</label>
-            <div id="career-format-facets" class="career-facet-links" data-career-facets="format"></div>
+            <span class="career-facet-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</span>
+            <div id="career-format-facets" class="career-facet-links" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
           </div>
           <div class="field career-facet-field">
-            <label data-i18n="career_salary_band_label">Starting salary</label>
-            <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary"></div>
+            <span class="career-facet-label" id="career-salary-band-facets-label" data-i18n="career_salary_band_label">Starting salary</span>
+            <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary" role="group" aria-labelledby="career-salary-band-facets-label"></div>
           </div>
           <div class="field career-facet-field">
-            <label data-i18n="career_fee_level_label">Application fee</label>
-            <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee"></div>
+            <span class="career-facet-label" id="career-fee-level-facets-label" data-i18n="career_fee_level_label">Application fee</span>
+            <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee" role="group" aria-labelledby="career-fee-level-facets-label"></div>
           </div>
           <div class="field career-facet-field">
-            <label data-i18n="career_no_experience_label">Experience</label>
-            <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience"></div>
+            <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
+            <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
           </div>
         </div>
         <div class="career-source" id="career-source" role="status">
