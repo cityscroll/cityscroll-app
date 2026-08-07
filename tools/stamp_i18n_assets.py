@@ -25,7 +25,7 @@ PAGES = (
 )
 VERSION_MARKER = "__I18N_ASSET_VERSION__"
 VERSION_LENGTH = 12
-SCRIPT_RE = re.compile(r'(src="i18n\.js\?v=)([^"]+)(")')
+SCRIPT_RE = re.compile(r'(src="(?:/)?i18n\.js\?v=)([^"]+)(")')
 SHIPPING_RE = re.compile(r"SHIPPING_LANGS\s*=\s*\[(.*?)\]", re.S)
 
 
@@ -63,6 +63,27 @@ def i18n_asset_version(root: Path) -> str:
     return digest.hexdigest()[:VERSION_LENGTH]
 
 
+def pages_with_i18n(root: Path) -> list[Path]:
+    """Return every HTML artifact that loads the shared i18n runtime.
+
+    Primary documents are generated below the site root after the static source
+    pages are validated. They inherit the shell's marker and must receive the
+    same content-derived stamp as the root pages.
+    """
+
+    return sorted(
+        path
+        for path in root.rglob("*.html")
+        if path.is_file() and SCRIPT_RE.search(path.read_text())
+    )
+
+
+def pages_to_stamp(root: Path) -> list[Path]:
+    """Include required root pages even if a built artifact omitted their script."""
+
+    return sorted({root / page for page in PAGES} | set(pages_with_i18n(root)))
+
+
 def verify_source(root: Path) -> str:
     """Require every source page to carry the merge-stable build token."""
 
@@ -83,8 +104,7 @@ def stamp_site(root: Path) -> str:
     """Replace source tokens in a built artifact, leaving the source tree alone."""
 
     version = verify_source(root)
-    for page in PAGES:
-        path = root / page
+    for path in pages_to_stamp(root):
         source = path.read_text()
         stamped = SCRIPT_RE.sub(rf"\g<1>{version}\g<3>", source, count=1)
         path.write_text(stamped)
@@ -96,8 +116,9 @@ def verify_built(root: Path) -> str:
 
     version = i18n_asset_version(root)
     stale: list[tuple[str, str]] = list()
-    for page in PAGES:
-        source = (root / page).read_text()
+    for path in pages_to_stamp(root):
+        page = path.relative_to(root).as_posix()
+        source = path.read_text()
         matches = SCRIPT_RE.findall(source)
         if len(matches) != 1:
             raise StampError(f"{page} must load i18n.js exactly once with ?v=<version>")
