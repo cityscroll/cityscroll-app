@@ -46,6 +46,11 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /data-exam-export="json"/);
   assert.match(html, /data-exam-export="xlsx"/);
   assert.match(html, /data-subject-ref="exam:7016"/);
+  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:format:education_experience"/);
+  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:salary:45k_60k"/);
+  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:fee:fee-bearing"/);
+  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:experience:yes"/);
+  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:window:open"/);
   assert.doesNotMatch(html, /href="#exam\/7016/);
 });
 
