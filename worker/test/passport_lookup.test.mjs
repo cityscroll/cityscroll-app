@@ -142,6 +142,20 @@ test("lookup exact EPIN hit returns contracts with ok status", async () => {
   assert.deepEqual(out.contractJoin, { method: "exact", epin: "84125B0005001" });
 });
 
+test("concurrent schema repair is single-flight per D1 binding", async () => {
+  const db = fakePassportDB({ missingTables: true });
+  const [a, b, c] = await Promise.all([
+    ensurePassportSchema({ DB: db }),
+    ensurePassportSchema({ DB: db }),
+    ensurePassportSchema({ DB: db }),
+  ]);
+  assert.deepEqual(a, { ok: true });
+  assert.deepEqual(b, { ok: true });
+  assert.deepEqual(c, { ok: true });
+  assert.equal(db._tables.has("passport_contracts"), true);
+  assert.equal(db._tables.has("passport_rfx"), true);
+});
+
 test("lookup without DB is skipped, not error", async () => {
   const out = await lookupPassportForPin({}, "84125B0005001");
   assert.deepEqual(out.lookupStatus, { contracts: "skipped", rfx: "skipped" });
@@ -179,6 +193,31 @@ test("query failure mid-lookup surfaces error status (not confident empty)", asy
   assert.deepEqual(out.lookupStatus, { contracts: "error", rfx: "error" });
   assert.equal(out.contracts.length, 0);
   assert.ok(out.lookupError);
+});
+
+test("contract and RFx lookup statuses remain independent", async () => {
+  const db = fakePassportDB({
+    rowsByTable: {
+      passport_contracts: [{ epin: "84125B0005001", epin_norm: "84125B0005001", status: "Registered" }],
+      passport_rfx: [],
+    },
+  });
+  const originalPrepare = db.prepare;
+  db.prepare = (sql) => {
+    const q = String(sql);
+    if (/FROM passport_rfx/.test(q)) {
+      return {
+        bind() { return this; },
+        async all() { throw new Error("D1_ERROR: database is locked"); },
+        async run() { return { success: true }; },
+      };
+    }
+    return originalPrepare(sql);
+  };
+  const out = await lookupPassportForPin({ DB: db }, "84125B0005001");
+  assert.deepEqual(out.lookupStatus, { contracts: "ok", rfx: "error" });
+  assert.equal(out.contracts.length, 1);
+  assert.equal(out.lookupErrors.rfx, "query_failed");
 });
 
 test("enrichment on lookup error marks pending/registered unavailable, not gap_sources miss", () => {
