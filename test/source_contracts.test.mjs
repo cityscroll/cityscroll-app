@@ -92,18 +92,18 @@ test("recorded fixtures reject missing fields and non-tabular source shapes", ()
   );
 });
 
-test("pull-request CI requires fixtures while live drift runs on a daily alerting lane", () => {
+test("pull-request CI requires fixtures while independent scheduling runs live drift", () => {
   const ci = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
   const live = readFileSync(
     new URL("../.github/workflows/source-contracts-live.yml", import.meta.url),
     "utf8",
   );
+  const schedules = readFileSync(new URL("../tools/external_schedule_jobs.json", import.meta.url), "utf8");
   assert.match(ci, /name: Recorded civic-data source contracts[\s\S]*node tools\/verify_source_contracts\.mjs/);
   assert.doesNotMatch(ci, /verify_source_contracts\.mjs --live/);
-  assert.match(live, /schedule:[\s\S]*cron:/);
-  assert.match(live, /node tools\/verify_source_contracts\.mjs --live/);
-  assert.match(live, /issues: write/);
-  assert.match(live, /Report upstream drift[\s\S]*issues\.create/);
+  assert.doesNotMatch(live, /schedule:|verify_source_contracts\.mjs --live|issues: write|issues\.create/);
+  assert.match(schedules, /"id": "source-contracts-live"/);
+  assert.match(schedules, /"runner": "source-contracts"/);
 });
 
 test("ABO source contracts match the runtime registry and derive coverage prose", () => {

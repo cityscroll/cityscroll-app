@@ -29,6 +29,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   (`test/ci_no_prod_origin_gates.test.mjs`); scheduled cutover-regression owns live prod.
 - After a gate-fixing merge to `main`, `.github/workflows/rerun-stale-pr-checks.yml`
   re-queues open PRs whose failing CI run predates that merge.
+- Independent scheduled correctness monitors use `tools/external_schedule_runner.mjs`
+  and the idempotent local outbox in `tools/external_schedule_outbox.mjs`; the manifest
+  and ownership audit are `tools/external_schedule_jobs.json` and
+  `node tools/audit_scheduler_ownership.mjs --check`. The targeted Actions files are
+  manual migration markers only; do not restore their schedules or issue loops.
 - Elder merge-slot policy (oldest ready PR reservation) is `tools/elder_merge_slot.mjs` +
   `elder_slot` in `tools/merge_queue_policy.json`. The one-auto-merge seat cap itself
   lives outside this repo and should call that policy before seating a younger PR.
