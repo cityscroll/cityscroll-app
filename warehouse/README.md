@@ -5,7 +5,7 @@ sources and batch joins. Public browser routes stay **precompute-first** — the
 warehouse is the factory; the Worker is the shop window.
 
 Design authority: estate vision report
-`cityscroll-data-warehouse-vision` (cards WH-01…WH-05). Captain constraints:
+`cityscroll-data-warehouse-vision` (cards WH-01…WH-05). Project constraints:
 
 1. **Inside crol-list** — `warehouse/` (not a sibling repo).
 2. **Incremental** — WH-01 scaffold; WH-02 packs **one** full Socrata export at
@@ -265,6 +265,32 @@ conditioning belongs in a separate model.
 
 This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
 models; warehouse SQL feeds materialization jobs and batch ER.
+
+## Public-records release capture
+
+The acquisition boundary for a record obtained through a public-records request
+(FOIL) is a small JSON manifest. Its versioned contract is
+`warehouse/schemas/public_records_release_manifest.v1.schema.json`; the artifact
+path is relative to the manifest file. A capture writes the immutable artifact
+under `warehouse/raw/public-records/<release_id>/`, a provenance receipt under
+`warehouse/receipts/public-records/<release_id>.json`, and a closure receipt on
+the matching `site/data/gap_taxonomy.json` row. The generated
+`docs/gap-taxonomy.md` table then links to that receipt.
+
+The `public-records` namespaces are tracked so a released artifact and its
+receipt can travel together in the public repository. Other raw source
+downloads remain ignored as described above.
+
+```bash
+node warehouse/scripts/release_capture.mjs \
+  --manifest path/to/public-records-release.json
+```
+
+The receipt records the source body, request identifier, received date, format,
+artifact SHA-256, and gap transition. Re-delivering the same release is
+idempotent; a changed artifact hash or provenance is refused before any new
+artifact is written. A class-B gap becomes class A with `disposition: landed`
+only when the manifest names an existing gap and the receipt is written.
 
 ## Entity-intelligence edge index (join layer)
 
