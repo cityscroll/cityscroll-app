@@ -178,8 +178,12 @@ calibration. The current 56-case gold set saturates the baseline pair metrics,
 so the report deliberately recommends extending the gold set from unresolved
 clerical-review candidates before choosing a production scorer.
 
-For the two optional adapters and their isolated dependency environment, see
-`eval/contenders/README.md` and `eval/optional-requirements.txt`.
+For the optional adapters (Splink, Dedupe, GoldenMatch) and their isolated
+dependency environment, see `eval/contenders/README.md` and
+`eval/optional-requirements.txt`. GoldenMatch is an eval-only spike contender
+(`--goldenmatch-output`); it is not a production scorer and does not join the
+Worker path. A measured comparison receipt lives under
+`eval/bakeoff/2026-08-06-goldenmatch-spike/`.
 
 ## Silver authority evaluation
 
