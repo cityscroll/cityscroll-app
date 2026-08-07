@@ -56,24 +56,39 @@ function sha256(value) {
 }
 
 function attachmentKind(attachment = {}) {
+  attachment ||= {};
   const type = String(attachment.content_type || "").toLowerCase();
   const url = String(attachment.url || attachment.MatterAttachmentHyperlink || "").toLowerCase();
   if (type.includes("wordprocessingml") || /\.docx(?:$|\?)/u.test(url)) return "docx";
+  if (type.includes("msword") || /\.doc(?:$|\?)/u.test(url)) return "doc";
   if (type.includes("pdf") || /\.pdf(?:$|\?)/u.test(url)) return "pdf";
   return null;
 }
 
 export function primaryLawAttachment(attachments = []) {
-  return attachments.find((attachment) => {
+  const usable = attachments.filter((attachment) => {
     const name = String(attachment.name || attachment.MatterAttachmentName || "").trim();
-    return /^int\.?\s*no\.?/iu.test(name) && attachmentKind({
+    return attachmentKind({
       content_type: attachment.content_type,
       url: attachment.url || attachment.MatterAttachmentHyperlink,
-    });
-  }) || null;
+    }) && /^(?:int\.?\s*no\.?|local law\b|law\b)/iu.test(name);
+  });
+  return usable.find((attachment) => /^int\.?\s*no\.?/iu.test(String(attachment.name || attachment.MatterAttachmentName || "")))
+    || usable.find((attachment) => /^local law\b/iu.test(String(attachment.name || attachment.MatterAttachmentName || "")))
+    || usable.find((attachment) => /^law\b/iu.test(String(attachment.name || attachment.MatterAttachmentName || "")))
+    || null;
 }
 
 function decodeAttachmentBytes(data, kind) {
+  if (kind === "doc") {
+    const result = spawnSync("textutil", ["-convert", "txt", "-stdout", "-stdin"], {
+      input: data,
+      encoding: "buffer",
+      maxBuffer: 5_200_000,
+    });
+    if (result.status === 0 && result.stdout.length) return result.stdout.toString("utf8").trim() || null;
+    return null;
+  }
   const extractor = resolve(dirname(new URL(import.meta.url).pathname), "../../warehouse/lib/attachment_text_extract.py");
   const result = spawnSync("python3", [extractor, "--kind", kind], {
     input: data,
