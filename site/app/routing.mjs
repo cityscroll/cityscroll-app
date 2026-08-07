@@ -1164,7 +1164,7 @@ async function showNotice(id, watch){
   let r = null;
   try{
     const [rows, attachmentData] = await Promise.all([
-      api(API+"/notice",{id},5e3).then(x=>x.row?[x.row]:0),
+      import("../notice-read.mjs").then(m=>m.read(id)),
       noticeAttachmentMetadata(id),
     ]);
     r = rows[0];
