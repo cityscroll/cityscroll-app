@@ -16,6 +16,7 @@ const DEFAULT_CONCURRENCY = 4;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const HEARTBEAT_MS = 180_000;
 const JOURNAL_SCRIPT = "/Users/james/dev/fiduciary-heartbeat/tools/autonomy_journal.py";
+const EXTRACTION_ADAPTER_VERSION = "codex-stdin-v1";
 
 function parseArgs(argv) {
   const args = {};
@@ -104,7 +105,7 @@ async function postHttpModel({ endpoint, model, prompt }) {
 
 async function postCodexModel({ model, prompt, repoRoot }) {
   return new Promise((resolvePromise, reject) => {
-    const child = spawn("codex", ["exec", "-m", model, "--sandbox", "read-only", "--ephemeral", "--skip-git-repo-check", "--json", "-C", repoRoot], {
+    const child = spawn("codex", ["exec", "-m", model, "--sandbox", "read-only", "--ephemeral", "--skip-git-repo-check", "--json", "-C", repoRoot, "-"], {
       cwd: repoRoot,
       env: Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "LEGISTAR_API_TOKEN" && key !== "KIMI_API_KEY")),
       stdio: ["pipe", "pipe", "pipe"],
@@ -171,7 +172,7 @@ async function writeLawOutput(outputDir, law, envelope, model) {
   }));
   const payload = {
     ...envelope,
-    extraction: { model, prompt_version: EXTRACTION_PROMPT_VERSION, extracted_at: stamp() },
+    extraction: { model, prompt_version: EXTRACTION_PROMPT_VERSION, adapter_version: EXTRACTION_ADAPTER_VERSION, extracted_at: stamp() },
     quote_receipts: quoteReceipts,
   };
   await atomicWrite(join(outputDir, "laws", `${law.matter_id}.json`), payload);
@@ -250,7 +251,12 @@ async function runExtraction(options, manifest, railReceipt, context) {
   state.attempts ||= {};
   const complete = new Set(state.completed_ids || []);
   const failedById = new Map((state.failed || []).map((row) => [row.matter_id, row]));
-  const pending = manifest.matter_ids.filter((matterId) => !complete.has(matterId));
+  const pending = [];
+  for (const matterId of manifest.matter_ids) {
+    const existing = await readJson(join(options.outputDir, "laws", `${matterId}.json`));
+    if (complete.has(matterId) && existing?.extraction?.model === options.model && existing?.extraction?.adapter_version === EXTRACTION_ADAPTER_VERSION) continue;
+    pending.push(matterId);
+  }
   context.total = manifest.matter_ids.length;
   context.completed = complete.size;
   context.failed = failedById.size;
@@ -264,7 +270,8 @@ async function runExtraction(options, manifest, railReceipt, context) {
         const toExtract = [];
         for (const matterId of batch) {
           const outputPath = join(options.outputDir, "laws", `${matterId}.json`);
-          if (await readJson(outputPath)) { complete.add(matterId); continue; }
+          const existing = await readJson(outputPath);
+          if (existing?.extraction?.model === options.model && existing?.extraction?.adapter_version === EXTRACTION_ADAPTER_VERSION) { complete.add(matterId); continue; }
           const law = await loadLaw(options.cacheDir, matterId);
           if (!law?.text) throw new Error(`missing_cached_text:${matterId}`);
           state.attempts[matterId] = (state.attempts[matterId] || 0) + 1;
