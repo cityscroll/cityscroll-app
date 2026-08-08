@@ -1,6 +1,7 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
+import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -187,6 +188,7 @@ function renderRulesAgencyScopeLinks(){
     t,
     escape:escUiHtml,
   });
+  bindCardinalityAdaptiveFacets(host);
 }
 
 async function renderRulesExplorer(){
