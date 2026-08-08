@@ -97,7 +97,21 @@ const BROWSE_SCOPE_POLICY = Object.freeze({
 
 const KNOWN_SCOPE_FILTER_KEYS = new Set(["facet"]);
 
-const EDGE_FILTERS = new Set(["q", "agency", "boro", "closing", "when", "status"]);
+// Edge-applied query keys for the static Browse document. Keys not listed here
+// surface as liveOnlyFilters (SPA must still honor them after hydrate).
+// `mode` stays live-only: the contracts document snapshot is open solicitations;
+// award / all-RFP modes load a different universe after hydrate.
+const EDGE_FILTERS = new Set([
+  "q",
+  "agency",
+  "boro",
+  "closing",
+  "when",
+  "status",
+  "cd",
+  "community_district",
+  "council",
+]);
 const DOCUMENT_FILTERS = new Set(["lang", "legacy"]);
 
 function parseDispositionRef(value) {
@@ -281,12 +295,155 @@ function rowDate(facet, row) {
   return row.start_date || row.event_date || null;
 }
 
+function asPlaceObject(value) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+}
+
+/**
+ * Collect structured borough labels from every place bag a lens stores.
+ * Multi-value bags (meetings affected_area, property_location, money place)
+ * must contribute every borough so a shareable boro= link is not a silent miss.
+ */
+function rowBoroughs(facet, row) {
+  if (facet === "zoning") {
+    return row?.borough ? [String(row.borough)] : [];
+  }
+  const bags = [
+    asPlaceObject(row?.affected_area),
+    asPlaceObject(row?.rule_location),
+    asPlaceObject(row?.place),
+    asPlaceObject(row?.property_location),
+    asPlaceObject(row?._location),
+  ].filter(Boolean);
+  const out = [];
+  if (row?.borough) out.push(String(row.borough));
+  for (const bag of bags) {
+    if (bag.borough) out.push(String(bag.borough));
+    if (Array.isArray(bag.boroughs)) {
+      for (const borough of bag.boroughs) {
+        if (borough) out.push(String(borough));
+      }
+    }
+  }
+  return out;
+}
+
+function rowMatchesBorough(facet, row, borough) {
+  if (!borough) return true;
+  const target = String(borough).trim().toLocaleLowerCase();
+  if (!target) return true;
+  const structured = rowBoroughs(facet, row)
+    .map((value) => String(value).trim().toLocaleLowerCase())
+    .filter(Boolean);
+  if (structured.length) {
+    // Exact label match (case-insensitive). Multi-borough rows match any member.
+    return structured.some((value) => value === target);
+  }
+  // Fallback for free-text place lines that never received a structured bag.
+  return rowPlace(facet, row).toLocaleLowerCase().includes(target);
+}
+
 function rowPlace(facet, row) {
-  if (facet === "zoning") return row.borough || row.community_district || "";
-  const area = row.affected_area || row.rule_location || {};
-  const boroughs = Array.isArray(area.boroughs) ? area.boroughs : [];
-  return [row.borough, row.property_location, row.street_address_1, area.borough, ...boroughs]
-    .filter(Boolean).join(" ");
+  if (facet === "zoning") {
+    return [row.borough, row.community_district, row.cc_district].filter(Boolean).join(" ");
+  }
+  const area = asPlaceObject(row.affected_area)
+    || asPlaceObject(row.rule_location)
+    || asPlaceObject(row.place)
+    || {};
+  const propertyLoc = asPlaceObject(row.property_location) || asPlaceObject(row._location);
+  const placeLoc = asPlaceObject(row.place);
+  const boroughs = rowBoroughs(facet, row);
+  const addressish = [
+    typeof row.property_location === "string" ? row.property_location : null,
+    propertyLoc?.addresses?.[0]?.label,
+    placeLoc?.addresses?.[0]?.label,
+    row.street_address_1,
+  ];
+  return [row.borough, area.borough, ...boroughs, ...addressish].filter(Boolean).join(" ");
+}
+
+function rowStatusHaystack(row) {
+  return [
+    row?.public_status,
+    row?.project_status,
+    row?.disposition_stage,
+    row?.status,
+    row?.type_of_notice_description,
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).toLocaleLowerCase())
+    .join(" ");
+}
+
+function rowMatchesStatus(row, status) {
+  if (!status) return true;
+  const target = String(status).trim().toLocaleLowerCase();
+  if (!target) return true;
+  // Accept land-status facet ids ("project:Active" / "public:Completed") as well
+  // as bare status tokens used on shareable Browse links.
+  const match = target.match(/^(project|public):(.*)$/);
+  if (match) {
+    const field = match[1] === "project" ? "project_status" : "public_status";
+    return String(row?.[field] || "").toLocaleLowerCase() === match[2];
+  }
+  return rowStatusHaystack(row).includes(target);
+}
+
+/**
+ * Pure procurement-mode predicate for detector / SPA parity checks.
+ * Not applied by buildBrowseView — mode is a live-only control because the
+ * edge contracts document is an open-solicitation snapshot.
+ */
+export function rowMatchesProcurementMode(row, mode) {
+  if (!mode) return true;
+  const target = String(mode).trim().toLocaleLowerCase();
+  if (!target || target === "allrfp") {
+    const type = String(row?.type_of_notice_description || "").toLocaleLowerCase();
+    return !type || type.includes("solicitation");
+  }
+  if (target === "open") {
+    const type = String(row?.type_of_notice_description || "").toLocaleLowerCase();
+    return !type || type.includes("solicitation");
+  }
+  if (target === "award") {
+    return String(row?.type_of_notice_description || "").toLocaleLowerCase().includes("award");
+  }
+  return true;
+}
+
+function rowMatchesCommunityDistrict(row, cd) {
+  if (!cd) return true;
+  const target = String(cd).trim().toUpperCase();
+  if (!target) return true;
+  const candidates = [
+    row?.community_district,
+    row?._communityDistrict,
+    ...(Array.isArray(row?.community_districts) ? row.community_districts : []),
+    ...(Array.isArray(row?.place?.community_districts) ? row.place.community_districts : []),
+    ...(Array.isArray(row?.affected_area?.community_districts) ? row.affected_area.community_districts : []),
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).trim().toUpperCase());
+  if (!candidates.length) return false;
+  return candidates.some((value) => value === target || value.includes(target));
+}
+
+function rowMatchesCouncilDistrict(row, council) {
+  if (!council) return true;
+  const target = String(council).trim().replace(/^0+/, "");
+  if (!target) return true;
+  const candidates = [
+    row?.cc_district,
+    row?.council_district,
+    row?._councilDistrict,
+    ...(Array.isArray(row?.council_districts) ? row.council_districts : []),
+    ...(Array.isArray(row?.place?.council_districts) ? row.place.council_districts : []),
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).trim().replace(/^0+/, ""));
+  if (!candidates.length) return false;
+  return candidates.some((value) => value === target || value.split(/[,\s]+/).includes(target));
 }
 
 function rowHref(facet, row) {
@@ -467,8 +624,10 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
   const query = String(search.get("q") || "").trim().toLocaleLowerCase();
   const agency = String(search.get("agency") || "").trim().toLocaleLowerCase();
-  const borough = String(search.get("boro") || "").trim().toLocaleLowerCase();
-  const status = String(search.get("status") || "").trim().toLocaleLowerCase();
+  const borough = String(search.get("boro") || "").trim();
+  const status = String(search.get("status") || "").trim();
+  const communityDistrict = String(search.get("cd") || search.get("community_district") || "").trim();
+  const councilDistrict = String(search.get("council") || "").trim();
   const asOf = payload.open_as_of || payload.generated_at || payload.retrieved_at || null;
   const rows = Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
   const limit = Number.isFinite(options.limit) ? Math.max(1, Math.floor(options.limit)) : 40;
@@ -478,8 +637,10 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     const text = corpus(row);
     if (query && !text.includes(query)) return false;
     if (agency && !rowAgencyFilterMatches(row, facet, agency)) return false;
-    if (borough && !rowPlace(facet, row).toLocaleLowerCase().includes(borough)) return false;
-    if (status && !String(row.public_status || row.project_status || row.disposition_stage || "").toLocaleLowerCase().includes(status)) return false;
+    if (borough && !rowMatchesBorough(facet, row, borough)) return false;
+    if (status && !rowMatchesStatus(row, status)) return false;
+    if (communityDistrict && !rowMatchesCommunityDistrict(row, communityDistrict)) return false;
+    if (councilDistrict && !rowMatchesCouncilDistrict(row, councilDistrict)) return false;
     if (facet === "contracts" && !matchesClosing(row, search.get("closing"), asOf)) return false;
     return true;
   });
