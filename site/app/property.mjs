@@ -24,44 +24,6 @@ function franchiseStageLabel(kind){
   if(kind==="award") return t("franchise_stage_award");
   return kind || "—";
 }
-function lifecycleJoinReference(join){
-  const keys=Array.isArray(join&&join.keys)?join.keys:[];
-  const key=keys.find(k=>/^(?:solicitation|concession):/i.test(k))
-    ||keys.find(k=>/^bbl:/i.test(k))
-    ||keys.find(k=>/^taxlot:/i.test(k))
-    ||keys.find(k=>/^party:/i.test(k))
-    ||keys.find(k=>/^plan:/i.test(k))
-    ||keys.find(k=>/^rules:/i.test(k));
-  if(!key) return null;
-  const parts=String(key).split(":");
-  const kind=parts.shift().toLowerCase();
-  const value=parts.join(":");
-  if(kind==="solicitation"||kind==="concession") return t("join_reference_solicitation",{value:escUiHtml(value.toUpperCase())});
-  if(kind==="bbl") return t("join_reference_bbl",{value:escUiHtml(bblReaderLabel(value)||value)});
-  if(kind==="taxlot") return t("join_reference_taxlot",{value:escUiHtml(value.replace(/:/g," / "))});
-  if(kind==="party") return t("join_reference_party",{value:escUiHtml(value.replace(/[-_]+/g," "))});
-  if(kind==="plan") return t("join_reference_plan",{value:escUiHtml(value.toUpperCase())});
-  if(kind==="rules") return t("join_reference_rules");
-  return null;
-}
-function lifecycleJoinMethod(method){
-  const keys={
-    exact_concession_id:"join_method_solicitation",
-    exact_party:"join_method_party",
-    exact_plan_year:"join_method_plan_year",
-    exact_rules_subject:"join_method_rules_subject",
-    exact_bbl:"join_method_bbl",
-    exact_borough_block_lot:"join_method_taxlot"
-  };
-  return t(keys[method]||"join_method_shared_reference");
-}
-function lifecycleJoinDetailsHTML(join,provenance){
-  const reference=lifecycleJoinReference(join);
-  const evidence=reference
-    ?t("join_evidence_html",{reference,method:escUiHtml(lifecycleJoinMethod(join&&join.method))})
-    :t("join_evidence_singleton_html");
-  return `<details class="inline-disclose lc-how join-evidence"><summary>${t("join_evidence_summary")}</summary><div class="inline-disclose-body">${evidence}<div class="note" style="margin-top:8px">${provenance}</div></div></details>`;
-}
 function lifecycleNoticeEventsHTML(events){
   return (Array.isArray(events)?events:[]).map(event=>{
     const id=String(event&&event.request_id||"");
@@ -87,8 +49,6 @@ function franchisePhaseSpineTools(){
 }
 function franchiseConcessionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
-  const join = spine.join || {};
-  const how=lifecycleJoinDetailsHTML(join,t("franchise_provenance_html"));
 
   // Phase-grouped compact stepper (same pattern as property / land / rules) when the pure module loads.
   if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
@@ -119,7 +79,6 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
       ${actionLead}
       ${stepper}
       <div class="chain franchise-phase-cards">${cards}</div>
-      ${how}
     </section>`;
   }
 
@@ -138,7 +97,6 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
   return `<section class="franchise-spine" data-franchise-spine="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
     <div class="chain-h">${t("franchise_spine_heading")}</div>
     <div class="chain">${chain}</div>
-    ${how}
   </section>`;
 }
 async function loadFranchiseConcessionSpine(r, el){
@@ -289,8 +247,6 @@ function propertyDispositionTimingHTML(estimate){
 }
 function propertyDispositionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
-  const join = spine.join || {};
-  const how=lifecycleJoinDetailsHTML(join,t("disposition_provenance_html"));
   const timingEstimate=phaseView && phaseView.disposition_timing_estimate
     ? propertyDispositionTimingHTML(phaseView.disposition_timing_estimate)
     : "";
@@ -328,8 +284,7 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
       ${actionLead}
       ${stepper}
       ${timingEstimate}
-      ${cards?`<div class="chain disposition-phase-cards">${cards}</div>`:""}
-      ${how}`;
+      ${cards?`<div class="chain disposition-phase-cards">${cards}</div>`:""}`;
   }
 
   // Flat fallback when the phase module is unavailable — matched stages only.
@@ -344,8 +299,7 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     if(idx < stages.length - 1) chain += '<div class="connector">→</div>';
   });
   return `<div class="chain-h">${t("disposition_spine_heading")}</div>
-    ${chain?`<div class="chain">${chain}</div>`:""}
-    ${how}`;
+    ${chain?`<div class="chain">${chain}</div>`:""}`;
 }
 function propertyCommercialDetailHTML(commercial){
   return renderPropertyCommercialDetail(commercial,{

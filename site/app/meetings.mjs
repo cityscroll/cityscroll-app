@@ -621,18 +621,13 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     ? `<a class="view" href="${escUiHtml(event.event_url)}" ${EXT_ATTRS}>${escUiHtml(eventName)}${extSR()}</a>`
     : escUiHtml(eventName);
   const matchedNote=eventLink&&eventDate
-    ? `<div class="note">${t("meeting_outcomes_matched_html",{event:eventLink,date:eventDate})}</div>`
-    : "";
-  const how = usePhase
-    ? `<details class="inline-disclose lc-how"><summary>${t("meeting_phase_how_summary")}</summary><div class="inline-disclose-body">${t("meeting_phase_how_html")}</div></details>`
+    ? `<div class="note">${eventLink} (${eventDate})</div>`
     : "";
   return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
     ${matchedNote}
     ${chips.length?`<div class="meeting-summary" role="group" aria-label="${escUiHtml(t("meeting_outcomes_summary_lbl"))}">${chips.join("")}</div>`:""}
     ${eventDocHTML}
-    ${listHTML}
-    ${how}
-    <div class="note">${t("meeting_outcomes_provenance_html")}</div>`;
+    ${listHTML}`;
 }
 
 async function loadMeetingOutcomes(r, el){

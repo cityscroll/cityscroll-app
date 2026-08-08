@@ -236,14 +236,6 @@ function lifecyclePhaseTimelineHTML(view, data, notice){
     ).join("");
   }
 
-  const howBody = noPin ? "" : t("lifecycle_provenance_note_html",{
-        city_record:`<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`,
-        checkbook:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`,
-        passport:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`,
-        pin:`<code>${escUiHtml(data.pin)}</code>`
-      });
-  const howHTML = noPin ? "" : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
-
   if(noPin && !currentPanel && !historyPanels){
     return "";
   }
@@ -271,8 +263,7 @@ function lifecyclePhaseTimelineHTML(view, data, notice){
     ${historyWrap}
     ${amendmentsHTML}
     ${rfxHTML}
-    ${ocpHTML}
-    ${howHTML}`;
+    ${ocpHTML}`;
 }
 
 function bindProcurementPhaseUI(root){
@@ -332,14 +323,6 @@ function lifecycleTimelineHTMLFlat(data, notice){
     ).join("");
   }
 
-  const howBody = noPin ? "" : t("lifecycle_provenance_note_html",{
-        city_record:`<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`,
-        checkbook:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`,
-        passport:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`,
-        pin:`<code>${escUiHtml(data.pin)}</code>`
-      });
-  const howHTML = noPin ? "" : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
-
   if(noPin && !stages){
     return "";
   }
@@ -364,8 +347,7 @@ function lifecycleTimelineHTMLFlat(data, notice){
     ${stages ? `<div class="lc-stage-detail"><div class="chain">${stages}</div></div>` : ""}
     ${amendmentsHTML}
     ${rfxHTML}
-    ${ocpHTML}
-    ${howHTML}`;
+    ${ocpHTML}`;
 }
 
 function lifecycleTimelineHTML(data, notice, phaseTools){
@@ -401,8 +383,6 @@ function lifecycleDollarsHTML(data, notice){
     // Entity-resolution match (stem + truncation/token overlap) — warn only on genuine mismatch.
     const sameVendor = !notice.vendor_name || !d.vendor || vendorNamesMatch(d.vendor, notice.vendor_name);
     const vendorMismatch = notice.vendor_name && d.vendor && !sameVendor;
-    const displayDiffers = notice.vendor_name && d.vendor && sameVendor
-      && cleanText(d.vendor).toLowerCase() !== cleanText(notice.vendor_name).toLowerCase();
     const payPublic = pay ? lifecyclePublicStatus(pay, data.timeline) : "";
     // Dollars owns paid-to-date detail. Never re-emit payments gap copy here when the
     // registration join already supplies Paid to date (one owner; gap only if join absent).
@@ -427,9 +407,7 @@ function lifecycleDollarsHTML(data, notice){
       : `<code>—</code>`;
     const vendorNote = vendorMismatch
       ? `<div class="note warn" style="margin-top:10px">${t("lifecycle_dollars_vendor_mismatch_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
-      : displayDiffers
-        ? `<div class="note" style="margin-top:10px">${t("lifecycle_dollars_vendor_variant_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
-        : "";
+      : "";
     const paidRow = payState === "unavailable" ? "" : `<dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${lifecycleMoney(spent)}</b>${pct != null ? ` (${pct}%)` : ""}<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct || 0}%"></span></div></dd>`;
     const lagNote = (payState === "verified_zero" || (payState !== "unavailable" && spent === 0))
       ? `<div class="note" style="margin-top:10px">${t("lifecycle_payment_zero_lag_html")}</div>`
@@ -449,10 +427,7 @@ function lifecycleDollarsHTML(data, notice){
       ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
       ${lagNote}
       ${ceilingNote}
-      <div class="pnote">${t("lifecycle_dollars_provenance_html",{
-        link:`<a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
-        pin:`<code>${escUiHtml(data.pin||notice.pin||"")}</code>`
-      })}</div>
+      <div class="pnote"><a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>
     </div></div>`;
   }
 
@@ -503,14 +478,11 @@ function solicitationMwbeDetailHTML(view){
       ${view.floor.rule_cite ? `<div class="note muted">${t("mwbe_sol_floor_cite_html",{cite:escUiHtml(view.floor.rule_cite)})}</div>` : ""}
     </div>`;
   }
-  const how = `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("mwbe_sol_provenance_html")}</div></details>`;
   return `<section class="mwbe-sol-detail apply" data-mwbe-sol-detail="1" aria-label="${escUiHtml(t("mwbe_sol_heading"))}">
     <h3 class="chain-h" style="margin-top:0">${t("mwbe_sol_heading")}</h3>
-    <p class="note" style="margin:0 0 8px">${t("mwbe_sol_persona_html")}</p>
     ${chipRow}
     ${goalBlock}
     ${floorBlock}
-    ${how}
   </section>`;
 }
 

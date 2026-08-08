@@ -996,18 +996,14 @@ function landPhaseSpineHTML(view, tools, record){
     </details>`;
   }).join("");
   const chrono=(view.chronological||[]).map(e=>landSpineEventRowHTML(e, view.portal_url, isPortalUrl)).join("");
-  const how=`<details class="land-spine-how lc-how">
+  const chronology=`<details class="land-spine-how lc-how">
     <summary>${t("land_spine_show_all")}</summary>
     <div class="land-spine land-spine-chrono">${chrono}</div>
-  </details>
-  <details class="land-spine-how lc-how">
-    <summary>${t("land_spine_how_summary")}</summary>
-    <div class="land-spine-how-body">${t("land_spine_how_html")}</div>
   </details>`;
   const lagHTML=landSpineLagHTML(view.lag?.open_data_vs_portal || {});
   const gaps=landSpineGapsHTML(view.gaps);
   const baseRate=landZoningStatisticsHTML(record);
-  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${panels}${baseRate}${how}${lagHTML}${gaps}`;
+  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${panels}${baseRate}${chronology}${lagHTML}${gaps}`;
 }
 /** Flat fallback if phase module fails to load — still dedupes project portal links. */
 function landSpineHTMLFlat(spine, record){
@@ -1358,22 +1354,9 @@ function loadZapProjectJoinIndex(){
   })();
   return zapProjectJoinIndexPromise;
 }
-function noticeLandMethodLabel(method){
-  if(method==="exact_project_id") return t("notice_land_join_method_project_id");
-  if(method==="exact_ulurp_token") return t("notice_land_join_method_ulurp");
-  return method || "—";
-}
 function noticeLandSpineHTML(record, phaseTools, joinMeta){
   if(!record) return "";
   const projectId=record.project_id || joinMeta?.project_id || "";
-  const projectName=cleanText(record.project_name || record.open_data?.project_name || projectId) || projectId;
-  const methodLabel=noticeLandMethodLabel(joinMeta?.method);
-  const keys=(joinMeta?.keys||[]).map(k=>escUiHtml(k)).join(", ") || "—";
-  const joinNote=`<div class="note notice-land-join" data-notice-land-join="${escUiHtml(joinMeta?.method||"")}">${t("notice_land_join_matched_html",{
-    project:escUiHtml(projectName+(projectId?` (${projectId})`:"")),
-    method:escUiHtml(methodLabel),
-    keys
-  })} ${t("notice_land_this_notice_html")}</div>`;
   const landLink=projectId
     ?`<div class="lc-pct"><a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_land_open_land_detail")}</a></div>`
     :"";
@@ -1383,12 +1366,11 @@ function noticeLandSpineHTML(record, phaseTools, joinMeta){
   const headed=spineHTML
     ? spineHTML.replace(
         `<div class="chain-h">${t("land_spine_heading")}</div>`,
-        `<div class="chain-h">${t("notice_land_spine_heading")}</div>${joinNote}${landLink}`
+        `<div class="chain-h">${t("notice_land_spine_heading")}</div>${landLink}`
       )
-    : `<div class="chain-h">${t("notice_land_spine_heading")}</div>${joinNote}${landLink}`;
-  return `<section class="notice-land-spine" data-notice-land-spine="1" data-zap-project="${escUiHtml(projectId)}" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
+    : `<div class="chain-h">${t("notice_land_spine_heading")}</div>${landLink}`;
+  return `<section class="notice-land-spine notice-land-join" data-notice-land-spine="1" data-zap-project="${escUiHtml(projectId)}" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
     ${headed}
-    <div class="note">${t("notice_land_provenance_html")}</div>
   </section>`;
 }
 async function loadNoticeLandSpine(r, el){
@@ -1499,7 +1481,6 @@ globalThis.loadNoticeLandSpine = loadNoticeLandSpine;
 globalThis.loadZapOutcomes = loadZapOutcomes;
 globalThis.loadZapProjectJoinIndex = loadZapProjectJoinIndex;
 globalThis.mihOn = mihOn;
-globalThis.noticeLandMethodLabel = noticeLandMethodLabel;
 globalThis.noticeLandSpineHTML = noticeLandSpineHTML;
 globalThis.paintLandRows = paintLandRows;
 globalThis.prefetchZapOutcomesForList = prefetchZapOutcomesForList;

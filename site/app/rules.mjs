@@ -585,13 +585,6 @@ function ruleEventSpineHTMLPhase(view, rec){
   const historyWrap=historyPanels
     ? `<details class="lc-phase-history"><summary>${t("rule_phase_show_history")}</summary>${historyPanels}</details>`
     : "";
-  const joined=view.joined;
-  const official=joined?(view.official_url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
-  const provenance=joined
-    ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
-    : "";
-  const howBody=view.multi_notice?t("rule_phase_how_multi_html"):t("rule_phase_how_html");
-  const how=`<details class="inline-disclose lc-how"><summary>${t("rule_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
   // Ghost estimate sits after comment_close context (stepper + current public-process
   // panel), before future adoption phase panels — never as an event card/dot.
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
@@ -601,9 +594,7 @@ function ruleEventSpineHTMLPhase(view, rec){
     ${currentPanel}
     ${estimate}
     ${futurePanels}
-    ${historyWrap}
-    ${how}
-    ${provenance?`<div class="note">${provenance}</div>`:""}`;
+    ${historyWrap}`;
 }
 
 /** Flat fallback if the phase module fails to load — still renders all five event cards. */
@@ -611,14 +602,8 @@ function ruleEventSpineHTMLFlat(rec){
   const events=new Map((rec&&Array.isArray(rec.events)?rec.events:[]).map(event=>[event.event_type,event]));
   const types=Object.keys(RULE_EVENT_CFG);
   const cards=types.map(type=>ruleEventCardHTML(type,events.get(type)||null,rec,{showSourceLink:true,joined:!!(rec&&rec.nyc_rules)})).filter(Boolean);
-  const joined=!!(rec&&rec.nyc_rules);
-  const official=joined?(rec.nyc_rules.url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
-  const provenance=joined
-    ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
-    : "";
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
-    <div class="chain rule-chain">${cards.join('<div class="connector">→</div>')}</div>
-    ${provenance?`<div class="note">${provenance}</div>`:""}`;
+    <div class="chain rule-chain">${cards.join('<div class="connector">→</div>')}</div>`;
 }
 
 let rulesAdoptionLagModelPromise=null;

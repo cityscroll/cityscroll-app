@@ -91,7 +91,6 @@ function buildExternalAwardHTML() {
     extractFn("checkbookNychaLink"),
     extractFn("checkbookNychaContractsLink"),
     extractFn("sourceUpdatedHTML"),
-    extractFn("aboEvidenceHTML"),
     extractFn("aboAwardsTimelineHTML"),
     extractFn("nychaAwardBoxHTML"),
     extractFn("awardWatchOfferHTML"),
@@ -231,7 +230,7 @@ test("externalAwardHTML: exact NYCHA match renders a confident award box with th
   const html = externalAwardHTML(resp, notice);
   assert.match(html, /class="box award"/, "exact match reads as a confident award, not a maybe");
   assert.match(html, /TAVARES RESTAURANT #2/);
-  assert.match(html, /exact PIN <code>340881<\/code>/);
+  assert.doesNotMatch(html, /exact PIN|contract date after this solicitation/);
   assert.doesNotMatch(html, /Possible awards/);
   assert.match(html, /<a href="https:\/\/www\.checkbooknyc\.com\/nycha_contract_details\/agency\/162\/datasource\/checkbook_nycha\/contract\/PO1125076"[^>]*>Checkbook NYC/);
 });
@@ -252,8 +251,8 @@ test("externalAwardHTML: fuzzy ABO awards (real SCA fixture) render as a 'possib
   assert.doesNotMatch(html, /class="box award"/);
   assert.match(html, /Likely the same award, reported in the state authorities' annual filings/);
   assert.match(html, /<a href="https:\/\/data\.ny\.gov\/d\/8w5p-k45m"[^>]*>NYS Authorities Budget Office/);
-  assert.match(html, /<details class="inline-disclose lc-how"><summary>How this was matched<\/summary>/);
-  assert.match(html, /Matched by vendor and award date/);
+  assert.doesNotMatch(html, /<details class="inline-disclose lc-how">|How this was matched/);
+  assert.doesNotMatch(html, /Matched by vendor and award date/);
   assert.match(html, /Source updated 2025-12-01/);
 });
 
