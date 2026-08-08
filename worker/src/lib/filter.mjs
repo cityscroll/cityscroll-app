@@ -44,6 +44,10 @@ export const LENSES = {
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
+  // World-state agency mandates (statutory duties / approaching deadlines). Not a City
+  // Record document match — compileSub loads agency_obligations_lookup.json. Optional
+  // deliverable_type + windowDays narrow the free watch; agency_id is the join key.
+  obligations: ["agency_id", "agency", "deliverable_type", "windowDays"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/
   // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
@@ -57,6 +61,15 @@ export const LENSES = {
   award:    ["requestId", "agency"],
 };
 
+/** Deliverable types stamped by the enacted-law mandate extract (user-facing: mandates). */
+export const MANDATE_DELIVERABLE_TYPES = Object.freeze([
+  "report",
+  "rulemaking",
+  "program",
+  "data publication",
+  "other",
+]);
+
 const BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
 
 // Clamp one field to a safe, well-formed value. Anything unexpected → null / empty.
@@ -66,6 +79,22 @@ function clampField(name, v) {
       return Array.isArray(v) ? v.map((k) => String(k).toLowerCase().trim()).filter(Boolean).slice(0, 4) : [];
     case "agency":
       return typeof v === "string" && v.trim() ? v.trim() : null;
+    case "agency_id": {
+      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
+      // Canonical agency slugs (parks-and-recreation) — letters, digits, hyphens.
+      return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s) ? s : null;
+    }
+    case "deliverable_type": {
+      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
+      return MANDATE_DELIVERABLE_TYPES.includes(s) ? s : null;
+    }
+    case "windowDays": {
+      const n = typeof v === "number" ? v : (typeof v === "string" && v.trim() ? Number(v) : NaN);
+      if (!Number.isFinite(n)) return null;
+      const days = Math.round(n);
+      // Free mandate watch: 1–365 day approaching-deadline window (default 90 in compile).
+      return days >= 1 && days <= 365 ? days : null;
+    }
     case "minAmount":
       return typeof v === "number" && v >= 1000 ? Math.round(v) : null;
     case "maxAmount":

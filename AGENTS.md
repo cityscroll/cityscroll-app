@@ -2331,23 +2331,29 @@ both the live and restored databases.
   Demo: `/agencies/parks-and-recreation/` and demo-links
   `agency-edge-provenance-parks`.
 
-## Agency statutory obligations (v1)
+## Agency statutory mandates (v1 free-watch)
 
-- Pure model: `site/agency_obligations.mjs`. Shape: **agency → duty → deadline →
-  recurrence**. Deadlines are statutory timed events — **never** compliance
-  verdicts. Observation status stays `not_adjudicated` (Process Conformance seam).
+- User-facing term is **mandates**; storage lens remains `obligations` (upstream
+  source vocabulary). Pure model: `site/agency_obligations.mjs`. Shape:
+  **agency → duty → deadline → recurrence**. Deadlines are statutory timed
+  events — **never** compliance verdicts. Observation status stays
+  `not_adjudicated`.
 - Certification: **auto-certified** via mechanical quote verification
   (`auto_certified_quote_verify_v1`); quote-miss rows remain `auto_candidate`.
-  No public human-review gate; no private comparison/oracle artifacts in-repo.
 - Materialize from independent backfill `tools/law_mandates/output/our.json`
   (gitignored): `node tools/build_agency_obligations.mjs --input <our.json>`.
   Committed public artifact: `site/data/agency_obligations_lookup.json`.
   Fixture: `test/fixtures/agency_obligations/our_sample.json` (`--fixture`).
-- Free watch: `lens: "obligations"` + `{ agency_id, agency }` via
-  `agencyObligationsFollowHref` → Following / digest compile world-state path
-  (`worker/src/lib/compile.mjs` loads the lookup; not a City Record document match).
-- Provenance: each row links `source.legistar_url` (obligation → source law).
-- Rebuild constellation after obligations refresh so agency pages pick up the facet.
+- Free watch (world-state, not document keyword match):
+  `lens: "obligations"` + `{ agency_id, agency }` via
+  `agencyObligationsFollowHref` → Following / `compileSub` loads the lookup.
+  Optional refinements: `deliverable_type` (report|rulemaking|program|data
+  publication|other) and `windowDays` (1–365). Sanitize fields live in
+  `worker/src/lib/filter.mjs` (`LENSES.obligations`); feed preview uses
+  `feedItems("obligation", …)`. Confirm copy: `describeFilter` mandates line.
+- Provenance: each row links `source.legistar_url` (mandate → source law).
+- Rebuild constellation after obligations refresh so agency pages pick up the
+  facet: `node tools/build_agency_constellation_documents.mjs`.
 
 ## Civic Time Ledger (as-of view)
 

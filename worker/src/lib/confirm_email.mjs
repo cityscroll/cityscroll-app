@@ -12,7 +12,7 @@ const LENS_LABEL = {
   rules: "rules & notices",
   meetings: "public meetings",
   district: "council district",
-  obligations: "agency duties",
+  obligations: "agency mandates",
 };
 const usd = (n) => "$" + Number(n).toLocaleString("en-US");
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
@@ -25,7 +25,9 @@ export function describeFilter(lens, filter) {
   }
   if (lens === "obligations") {
     const who = f.agency || f.agency_id || "?";
-    return `duties for “${who}” — deadlines only, not compliance findings`;
+    const type = f.deliverable_type ? ` (${f.deliverable_type})` : "";
+    const window = typeof f.windowDays === "number" ? ` · next ${f.windowDays} days` : "";
+    return `mandates for “${who}”${type}${window} — statutory deadlines only, not compliance findings`;
   }
   if (lens === "people" && f.view === "guide" && f.examNumber) {
     return `civil-service exam ${f.examNumber} — exact exam updates`;
