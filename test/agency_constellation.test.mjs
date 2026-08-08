@@ -132,7 +132,7 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /Watch mandates and deadlines/);
   assert.match(html, /Mandates · expected vs observed|Statutory mandates/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
-  assert.match(html, /entity intelligence|civil-service certification|provenance inspector/);
+  assert.doesNotMatch(html, /civil-service certification|provenance inspector/i);
   assert.deepEqual(detectNodePageCruft(html), []);
 });
 
@@ -168,7 +168,7 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   assert.doesNotMatch(html, /Confidence is not identity/i);
   assert.doesNotMatch(html, /not a confirmed identity|not counted as a verified/i);
   assert.match(html, new RegExp(`data-edge-claim="${claimId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
-  assert.match(html, /Not yet attached/);
+  assert.doesNotMatch(html, /Not yet attached|How it was derived|Joined by an exact publisher key/i);
   assert.match(html, /Share this claim/);
   assert.match(html, new RegExp(`claim=${encodeURIComponent(claimId).replace(/%/g, "%")}`));
   assert.doesNotMatch(html, /fabricat/i);

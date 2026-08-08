@@ -1,0 +1,25 @@
+{
+  "agency": "fire-department",
+  "claim": "rules:notice:20260522005",
+  "phase": "before",
+  "viewports": [
+    390,
+    1440
+  ],
+  "selectors": [
+    "#mandates-conformance",
+    "#edge-provenance"
+  ],
+  "forbidden_copy": [
+    "awaiting detector",
+    "this pass matches",
+    "corpus checked",
+    "this pass covers",
+    "not yet attached",
+    "later enrichment",
+    "later iterations",
+    "how it was derived",
+    "publisher civil-service certification record",
+    "joined by an exact publisher key"
+  ]
+}

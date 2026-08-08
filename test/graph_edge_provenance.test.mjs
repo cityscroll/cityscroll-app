@@ -42,7 +42,7 @@ test("warrant class maps exact publisher methods and keeps tentative probabilist
 test("identity stance labels standable publisher and linkage connections", () => {
   const strong = identityStanceForEdge({ method: "agency_canonical_v1", confidence: "strong" });
   assert.equal(strong.id, "publisher_key");
-  assert.match(strong.reader, /publisher record names this agency/i);
+  assert.equal(strong.label, "Publisher key match");
 
   const possible = identityStanceForEdge({ method: "agency_canonical_v1", confidence: "tentative" });
   assert.equal(possible.id, "possible_link");
@@ -71,7 +71,7 @@ test("identity stance labels standable publisher and linkage connections", () =>
   assert.equal(claim.how.warrant_class, "exact");
 });
 
-test("missing enrichment fields stay labeled, not invented", () => {
+test("missing enrichment fields are omitted, not invented", () => {
   const claim = buildEdgeProvenanceClaim({
     id: "x",
     subject_ref: "notice:x",
@@ -88,12 +88,14 @@ test("missing enrichment fields stay labeled, not invented", () => {
   assert.ok(claim.enrichment.missing_fields.includes("resolution_run_id"));
 
   const html = renderEdgeProvenanceInspector(claim, { open: true });
-  assert.match(html, /Not yet attached/);
+  assert.doesNotMatch(html, /Not yet attached/);
+  assert.doesNotMatch(html, /Link record|Resolution run|Source excerpt/);
   assert.match(html, /Why do we believe this\?/);
   assert.doesNotMatch(html, /Confidence is not identity/i);
   assert.doesNotMatch(html, /entity_link:[a-z0-9-]+/i);
   assert.doesNotMatch(html, /Source detail still to attach/);
   assert.doesNotMatch(html, /Later iterations may attach/i);
+  assert.doesNotMatch(html, /How it was derived|Method:/i);
 });
 
 test("deep-link grammar is shareable and parseable", () => {
@@ -197,6 +199,7 @@ test("inspector panel and why-control render warrant classes without fabricating
   assert.doesNotMatch(panel, /Confidence is not identity/i);
   assert.doesNotMatch(panel, /not counted as a verified/i);
   assert.match(panel, /data-edge-provenance-panel/);
+  assert.doesNotMatch(panel, /How it was derived|Joined by an exact publisher key|Method:/i);
   assert.equal(normalizePublicConfidence("publisher_record"), "strong");
   assert.equal(WARRANT_CLASSES.exact.id, "exact");
   assert.equal(WARRANT_CLASSES.exact.token, "exact");
