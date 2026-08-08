@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { buildDistrictDigestView, buildMonitorPackView, buildParcelBiographyView, districtDigestPath, districtDigestSubjectRef, districtPivotHref, monitorPackPath, monitorPackSubjectRef, parcelPath, parcelSectionLabel, renderComposedObjectDocument } from "../site/composed_object_documents.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
@@ -58,11 +59,26 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.match(html, /class="[^"]*node-actions/);
   assert.match(html, /class="[^"]*node-action[^"]*primary/);
   assert.match(html, /data-node-document="1"/);
-  // Each source group is its own labeled card; ll48 must not reuse "Land projects".
-  assert.match(html, /data-parcel-biography-domain="land"[^>]*>[\s\S]*?<h2>Land projects<\/h2>/);
-  assert.match(html, /data-parcel-biography-domain="ll48"[^>]*>[\s\S]*?<h2>City-owned or leased property suitability<\/h2>/);
+  // Populated source groups render as labeled cards; empty groups are omitted.
+  const populated = Object.entries(view.sections).filter(([, section]) => section.items?.length);
+  assert.ok(populated.length >= 1, "demo parcel should have at least one populated section");
+  for (const [kind] of populated) {
+    const label = parcelSectionLabel(kind);
+    assert.match(html, new RegExp(`data-parcel-biography-domain="${kind}"[^>]*>[\\s\\S]*?<h2>${label}<\\/h2>`));
+  }
+  for (const [kind, section] of Object.entries(view.sections)) {
+    if (section.items?.length) continue;
+    assert.doesNotMatch(html, new RegExp(`data-parcel-biography-domain="${kind}"`));
+  }
+  assert.doesNotMatch(html, /No .* listed for this parcel/i);
+  assert.doesNotMatch(html, /No linked record is listed/i);
+  assert.deepEqual(detectNodePageCruft(html), []);
   const landHeadings = html.match(/>Land projects</g) || [];
-  assert.equal(landHeadings.length, 1, "Land projects section must appear exactly once");
+  if (view.sections.land?.items?.length) {
+    assert.equal(landHeadings.length, 1, "Land projects section must appear exactly once when populated");
+  } else {
+    assert.equal(landHeadings.length, 0, "empty land section must be omitted");
+  }
   assert.equal(parcelSectionLabel("ll48"), "City-owned or leased property suitability");
   assert.equal(parcelSectionLabel("land"), "Land projects");
   assert.equal(parcelSectionLabel("unknown"), null);
