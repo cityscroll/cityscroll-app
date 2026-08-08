@@ -17,24 +17,28 @@ export const WARRANT_CLASSES = Object.freeze({
     id: "exact",
     label: "Exact match",
     short: "Exact",
+    token: "exact",
     reader: "Joined by an exact publisher key or a named identity registry match.",
   }),
   probabilistic: Object.freeze({
     id: "probabilistic",
     label: "Record-linkage match",
     short: "Linked",
+    token: "probable",
     reader: "Joined by record-linkage features or a similarity score.",
   }),
   reviewed: Object.freeze({
     id: "reviewed",
     label: "Person-accepted",
     short: "Reviewed",
+    token: "reviewed",
     reader: "A person accepted this link after inspecting the evidence.",
   }),
   not_yet_classified: Object.freeze({
     id: "not_yet_classified",
     label: "Not yet classified",
     short: "Unclassified",
+    token: "unclassified",
     reader: "Warrant class is not stamped on this edge yet.",
   }),
 });
@@ -128,7 +132,7 @@ const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
 const MISSING = Object.freeze({
   available: false,
   label: "Not yet attached",
-  note: "This field is not populated on the public graph edge yet. Later enrichment may add it without inventing a trail.",
+  note: null,
 });
 
 /**
@@ -403,9 +407,7 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
     enrichment: {
       entity_link_id: entityLinkId ? fieldOrMissing(entityLinkId) : { ...MISSING },
       resolution_run_id: resolutionRunId ? fieldOrMissing(resolutionRunId) : { ...MISSING },
-      next: missing.length
-        ? "Later iterations may attach link-record and resolution-run ids and fuller source excerpts."
-        : null,
+      next: null,
       missing_fields: missing,
     },
     inspect_href: href,
@@ -447,7 +449,7 @@ export function summarizeCategoryWarrants(items = []) {
 
 function renderFieldRow(label, field, { mono = false, reader = false } = {}) {
   if (!field || field.available === false) {
-    return `<div class="edge-prov-row" data-available="false"><dt>${esc(label)}</dt><dd class="muted node-muted"><span class="edge-prov-missing">${esc(field?.label || "Not yet attached")}</span>${field?.note ? ` — ${esc(field.note)}` : ""}</dd></div>`;
+    return `<div class="edge-prov-row" data-available="false"><dt>${esc(label)}</dt><dd class="muted node-muted"><span class="edge-prov-missing">${esc(field?.label || "Not yet attached")}</span></dd></div>`;
   }
   let display = field.value;
   if (reader && !Array.isArray(display)) {
@@ -461,29 +463,20 @@ function renderFieldRow(label, field, { mono = false, reader = false } = {}) {
   return `<div class="edge-prov-row" data-available="true"><dt>${esc(label)}</dt><dd>${value}</dd></div>`;
 }
 
-/** Compact control that deep-links into the inspector for one claim. */
+/** Subtle warrant token that deep-links into the inspector for one claim. */
 export function renderWhyBelieveControl(claim, { className = "" } = {}) {
   if (!claim?.claim_id) return "";
   const href = claim.inspect_href || `#claim-${encodeURIComponent(claim.claim_id)}`;
   const warrant = WARRANT_CLASSES[claim.how?.warrant_class] || WARRANT_CLASSES.not_yet_classified;
-  const classes = ["edge-prov-why", className].filter(Boolean).join(" ");
-  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" href="${esc(href)}">Why do we believe this? · ${esc(warrant.short)}</a>`;
+  const token = warrant.token || warrant.short?.toLowerCase() || warrant.id;
+  const classes = ["edge-prov-why", `edge-prov-why-${warrant.id}`, className].filter(Boolean).join(" ");
+  const aria = `Connection evidence: ${warrant.label}`;
+  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" href="${esc(href)}" aria-label="${esc(aria)}" title="${esc(aria)}"><span class="edge-prov-token">${esc(token)}</span></a>`;
 }
 
-/** Warrant-class key for the host page (standable classes). */
+/** Optional compact warrant key (not always-on chrome). */
 export function renderWarrantClassLegend() {
-  const items = WARRANT_CLASS_ORDER
-    .filter((id) => id === "exact" || id === "reviewed" || id === "probabilistic")
-    .map((id) => {
-      const warrant = WARRANT_CLASSES[id];
-      return `<li data-warrant-class="${esc(warrant.id)}"><strong class="edge-prov-warrant edge-prov-warrant-${esc(warrant.id)}">${esc(warrant.label)}</strong> — ${esc(warrant.reader)}</li>`;
-    })
-    .join("");
-  return `<section class="edge-prov-legend node-section civic-object-section" data-export-class="object_provenance" aria-labelledby="edge-prov-legend-heading">
-    <h2 id="edge-prov-legend-heading">How links are warranted</h2>
-    <p class="node-muted muted">Each listed connection names its warrant class so you can see how it was joined.</p>
-    <ul class="edge-prov-legend-list">${items}</ul>
-  </section>`;
+  return "";
 }
 
 /**
@@ -542,19 +535,7 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
           : ""}
       </dl>
     </section>
-    <section class="edge-prov-block" aria-labelledby="edge-prov-enrich-${esc(claim.claim_id)}">
-      <h3 id="edge-prov-enrich-${esc(claim.claim_id)}">Source detail still to attach</h3>
-      <dl class="edge-prov-dl">
-        ${renderFieldRow("Link record id", claim.enrichment.entity_link_id)}
-        ${renderFieldRow("Resolution run id", claim.enrichment.resolution_run_id)}
-      </dl>
-      ${claim.enrichment.next
-        ? `<p class="muted node-muted">${esc(String(claim.enrichment.next)
-          .replace(/entity_link/g, "link record")
-          .replace(/resolution_run/g, "resolution run"))}</p>`
-        : ""}
-    </section>
-    ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}">Shareable link to this claim</a></p>` : ""}
+    ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}">Share this claim</a></p>` : ""}
   </article>`;
 }
 
@@ -571,12 +552,11 @@ export function renderEdgeProvenancePanel(claims = [], { activeClaimId = null } 
   const body = active
     ? renderEdgeProvenanceInspector(active, { open: true })
     : `<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1">
-        <p>Choose <strong>Why do we believe this?</strong> on any linked record to open its source and warrant class.</p>
+        <p>Open a warrant chip on a connection to inspect its source.</p>
       </div>`;
   const claimPayload = JSON.stringify(list).replace(/<\/script/gi, "<\\/script");
-  return `${renderWarrantClassLegend()}
-  <section class="edge-prov-panel node-section node-card civic-object-section" id="edge-provenance" data-edge-provenance-panel="1" data-export-class="object_provenance" aria-labelledby="edge-prov-panel-heading">
-    <h2 id="edge-prov-panel-heading">Inspect a connection</h2>
+  return `<section class="edge-prov-panel node-section node-card civic-object-section" id="edge-provenance" data-edge-provenance-panel="1" data-export-class="object_provenance" aria-labelledby="edge-prov-panel-heading">
+    <h2 id="edge-prov-panel-heading">Connection evidence</h2>
     <div class="edge-prov-panel-body" data-edge-prov-body="1">${body}</div>
     <script type="application/json" id="edge-provenance-claims">${claimPayload}</script>
   </section>`;
@@ -597,7 +577,7 @@ export function edgeProvenanceClientScript() {
 
   const render = (claim) => {
     if (!claim) {
-      body.innerHTML = '<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1"><p>Choose <strong>Why do we believe this?</strong> on any linked record to open its source and warrant class.</p></div>';
+      body.innerHTML = '<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1"><p>Open a warrant chip on a connection to inspect its source.</p></div>';
       panel.removeAttribute("data-active-claim");
       return;
     }
@@ -631,7 +611,7 @@ export function edgeProvenanceClientScript() {
     };
     const field = (label, f, opts = {}) => {
       if (!f || f.available === false) {
-        return '<div class="edge-prov-row" data-available="false"><dt>' + label + '</dt><dd class="muted node-muted"><span class="edge-prov-missing">' + (f?.label || "Not yet attached") + '</span>' + (f?.note ? " — " + f.note : "") + '</dd></div>';
+        return '<div class="edge-prov-row" data-available="false"><dt>' + label + '</dt><dd class="muted node-muted"><span class="edge-prov-missing">' + (f?.label || "Not yet attached") + '</span></dd></div>';
       }
       let raw = f.value;
       if (opts.source && !Array.isArray(raw)) raw = sourceLabel(raw);
@@ -659,12 +639,7 @@ export function edgeProvenanceClientScript() {
       + field("Warrant class", { available: true, value: claim.how?.warrant_label || warrant })
       + (claim.how?.decision ? field("Review decision", { available: true, value: claim.how.decision }) : "")
       + "</dl></section>"
-      + '<section class="edge-prov-block"><h3>Source detail still to attach</h3><dl class="edge-prov-dl">'
-      + field("Link record id", claim.enrichment?.entity_link_id)
-      + field("Resolution run id", claim.enrichment?.resolution_run_id) + "</dl>"
-      + (claim.enrichment?.next ? '<p class="muted node-muted">' + escText(String(claim.enrichment.next).replace(/entity_link/g, "link record").replace(/resolution_run/g, "resolution run")) + "</p>" : "")
-      + "</section>"
-      + (claim.share_href ? '<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="' + escText(claim.claim_id) + '" href="' + escText(claim.share_href) + '">Shareable link to this claim</a></p>' : "")
+      + (claim.share_href ? '<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="' + escText(claim.claim_id) + '" href="' + escText(claim.share_href) + '">Share this claim</a></p>' : "")
       + "</article>";
     panel.setAttribute("data-active-claim", claim.claim_id);
     body.querySelector(".edge-prov-inspector")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
