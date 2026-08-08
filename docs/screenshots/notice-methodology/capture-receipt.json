@@ -1,0 +1,35 @@
+{
+  "notice_id": "20260808003",
+  "before_revision": "ca6fedcb",
+  "live_rendered_route": "/notices/20260808003",
+  "captures": [
+    {
+      "state": "before",
+      "width": 390,
+      "methodology_panels": 1,
+      "dollars_methodology_line": true,
+      "file": "docs/screenshots/notice-methodology/before-390.png"
+    },
+    {
+      "state": "after",
+      "width": 390,
+      "methodology_panels": 0,
+      "dollars_methodology_line": false,
+      "file": "docs/screenshots/notice-methodology/after-390.png"
+    },
+    {
+      "state": "before",
+      "width": 1440,
+      "methodology_panels": 1,
+      "dollars_methodology_line": true,
+      "file": "docs/screenshots/notice-methodology/before-1440.png"
+    },
+    {
+      "state": "after",
+      "width": 1440,
+      "methodology_panels": 0,
+      "dollars_methodology_line": false,
+      "file": "docs/screenshots/notice-methodology/after-1440.png"
+    }
+  ]
+}

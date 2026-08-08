@@ -81,7 +81,6 @@ export function subsidyProjectPanelHTML(payloadOrView, opts = {}) {
   return `<section class="notice-fact-detail sub-outreach-detail" data-subsidy-project-panel="1" data-project-count="${view.count}" aria-label="${esc(t("subsidy_project_heading"))}">
     <div class="chain-h">${esc(t("subsidy_project_heading"))} <span class="count">${view.count}</span></div>
     <div class="notice-fact-list">${projects}</div>
-    <details class="inline-disclose lc-how"><summary>${esc(t("subsidy_project_how_summary"))}</summary><div class="inline-disclose-body">${esc(t("subsidy_project_provenance"))}</div></details>
   </section>`;
 }
 
@@ -145,8 +144,6 @@ function defaultT(key) {
     subsidy_stage_closing: "Closing",
     subsidy_stage_compliance: "Compliance",
     subsidy_project_documents_link: "Official project documents",
-    subsidy_project_how_summary: "Where these facts come from",
-    subsidy_project_provenance: "Published project records from the Economic Development Corporation, Industrial Development Agency, or Build NYC, joined to this City Record notice.",
   };
   return values[key] || key;
 }

@@ -244,6 +244,7 @@ test("public Property Disposition notice detail mounts the spine; temporal filte
   assert.match(index, /disposition_stage_auction_or_rfp/);
   assert.match(index, /disposition_stage_award_or_conveyance/);
   assert.match(index, /lifecycleNoticeEventsHTML\(p\.events\)/);
-  assert.match(index, /join_evidence_summary/);
+  assert.doesNotMatch(index, /join_evidence_summary/);
+  assert.doesNotMatch(index, /join-evidence/);
   assert.doesNotMatch(index, /disposition_join_matched_html/);
 });

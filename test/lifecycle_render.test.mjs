@@ -297,10 +297,9 @@ test("lifecycle: full lifecycle renders all stages with dates, amounts, and sour
   assert.match(html, /\$5\.00M/);
   assert.match(html, /\$750K/);
 
-  // One actionable source link on the current phase (payments → Checkbook)
+  // One actionable source link on the current phase (payments → Checkbook).
   assert.match(html, /checkbooknyc\.com/);
-  // City Record is named in methodology; outbound link only when that stage is current
-  assert.match(html, /City Record/);
+  assert.doesNotMatch(html, /Explain timeline|This timeline brings together/);
 });
 
 test("lifecycle: matched stages have green box class", () => {
@@ -355,20 +354,11 @@ test("lifecycle: payment stage shows payment count, summary, and dollars link", 
   assert.match(html, /Follow the dollars/);
 });
 
-test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {
+test("lifecycle: methodology disclosure is absent from notice detail", () => {
   const html = renderLifecycle(FULL_LIFECYCLE, notice);
-  // Methodology is demoted to a disclosure — names sources without duplicating outbound links
-  assert.match(html, /Explain timeline/);
-  assert.match(html, /This timeline brings together/);
-  assert.match(html, /City Record/);
-  assert.match(html, /Checkbook NYC/);
-  assert.match(html, /PASSPort Public/);
-  assert.match(html, /<code>08250R0001001<\/code>/);
-  assert.match(html, /<details class="inline-disclose lc-how">/);
-  // Disclosure body uses text names, not a second set of source URLs
-  const howBody = html.match(/inline-disclose-body">([\s\S]*?)<\/div><\/details>/);
-  assert.ok(howBody);
-  assert.doesNotMatch(howBody[1], /href=/);
+  assert.doesNotMatch(html, /Explain timeline/);
+  assert.doesNotMatch(html, /This timeline brings together/);
+  assert.doesNotMatch(html, /<details class="inline-disclose lc-how">/);
 });
 
 // ---------------------------------------------------------------------------

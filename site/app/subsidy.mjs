@@ -371,10 +371,8 @@ function subsidyLifecycleHTMLFlat(data, notice){
 }
 
 function subsidyJoinAndFieldChrome(data, notice){
-  if(!data) return { joinNote: "", feedNote: "", fieldGaps: "", howHTML: "" };
+  if(!data) return { joinNote: "", feedNote: "", fieldGaps: "" };
   const join = data.join || {};
-  const anchor = subsidyAnchorFromNotice(notice, data);
-  const feedStatus = join.feed_status || null;
 
   let joinNote = "";
   if(join.matched){
@@ -401,16 +399,9 @@ function subsidyJoinAndFieldChrome(data, notice){
 
   const feedNote = "";
 
-  const howBody = t("subsidy_provenance_note_html",{
-    source:`<a href="https://edc.nyc/about-nycedc/financial-public-documents-recordings" ${EXT_ATTRS}>${t("subsidy_source_build_nyc")}${extSR()}</a>`
-  });
-  const howHTML = join.matched
-    ? `<details class="inline-disclose lc-how"><summary>${t("subsidy_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`
-    : "";
-
   const fieldsWrap = fieldGaps;
 
-  return { joinNote, feedNote, fieldGaps: fieldsWrap, howHTML };
+  return { joinNote, feedNote, fieldGaps: fieldsWrap };
 }
 
 function subsidyLifecycleHTML(data, notice, phaseTools, projectTools){
@@ -447,8 +438,7 @@ function subsidyLifecycleHTML(data, notice, phaseTools, projectTools){
     ${chrome.joinNote?`<div class="note" data-subsidy-join-note="1">${chrome.joinNote}</div>`:""}
     ${body}
     ${chrome.feedNote?`<div class="note lc-secondary" data-subsidy-feed-secondary="1">${chrome.feedNote}</div>`:""}
-    ${chrome.fieldGaps}
-    ${chrome.howHTML}`;
+    ${chrome.fieldGaps}`;
 }
 
 async function loadSubsidyLifecycle(r, el){
