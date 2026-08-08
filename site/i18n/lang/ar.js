@@ -850,6 +850,8 @@
     bid_guide_due_label: "الموعد النهائي",
     copy_value: "نسخ",
     bid_guide_passport_search_step: "افتح قائمة RFx وابحث عن EPIN أو اسم المشتريات الموضح أعلاه.",
+    bid_guide_passport_open_matched_step: "افتح RFx المرتبط (أو ابحث في القائمة العامة باستخدام EPIN أعلاه إذا كان تسجيل الدخول مطلوبًا).",
+    bid_guide_passport_ambiguous_step: "أكثر من RFx عام يستخدم هذا EPIN. افتح قائمة RFx وابحث عن EPIN أعلاه وأكد اسم المشتريات قبل الرد.",
     bid_guide_passport_released_step: "حالة RFx هذا هي Released، وهي الحالة التي تسمح بالرد بعد تسجيل الدخول إلى PASSPort.",
     bid_guide_passport_not_released_step: "الحالة هي {status} وليست Released. تصفحه للسياق، لكن لا تفترض أن PASSPort يقبل الردود.",
     bid_guide_passport_unmatched_step: "افتح قائمة RFx وابحث عن EPIN أو اسم المشتريات الموضح أعلاه.",

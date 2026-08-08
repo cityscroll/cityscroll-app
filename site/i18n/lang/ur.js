@@ -850,6 +850,8 @@
     bid_guide_due_label: "آخری تاریخ",
     copy_value: "کاپی",
     bid_guide_passport_search_step: "RFx فہرست کھولیں اور اوپر دیا گیا EPIN یا خریداری کا نام تلاش کریں۔",
+    bid_guide_passport_open_matched_step: "منسلک RFx کھولیں (اگر سائن اِن درکار ہو تو اوپر والے EPIN سے عوامی فہرست میں تلاش کریں)۔",
+    bid_guide_passport_ambiguous_step: "اس EPIN پر ایک سے زیادہ عوامی RFx ہیں۔ RFx فہرست کھولیں، اوپر والا EPIN تلاش کریں، اور جواب سے پہلے خریداری کا نام تصدیق کریں۔",
     bid_guide_passport_released_step: "اس RFx کی حیثیت Released ہے، جس میں سائن اِن کے بعد PASSPort جواب قبول کرتا ہے۔",
     bid_guide_passport_not_released_step: "حیثیت {status} ہے، Released نہیں۔ معلومات کے لیے دیکھیں، مگر یہ نہ سمجھیں کہ PASSPort جواب قبول کر رہا ہے۔",
     bid_guide_passport_unmatched_step: "RFx فہرست کھولیں اور اوپر دیا گیا EPIN یا خریداری کا نام تلاش کریں۔",

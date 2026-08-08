@@ -845,6 +845,8 @@
     bid_guide_due_label: "Срок",
     copy_value: "Копировать",
     bid_guide_passport_search_step: "Откройте список RFx и найдите EPIN или название закупки, указанные выше.",
+    bid_guide_passport_open_matched_step: "Откройте связанный RFx (или найдите его в публичном списке по EPIN выше, если требуется вход).",
+    bid_guide_passport_ambiguous_step: "Несколько публичных RFx используют этот EPIN. Откройте список RFx, найдите EPIN выше и подтвердите название перед ответом.",
     bid_guide_passport_released_step: "Этот RFx имеет статус Released — после входа PASSPort принимает ответы.",
     bid_guide_passport_not_released_step: "Статус — {status}, а не Released. Просматривайте для справки, но не считайте, что PASSPort принимает ответы.",
     bid_guide_passport_unmatched_step: "Откройте список RFx и найдите EPIN или название закупки, указанные выше.",

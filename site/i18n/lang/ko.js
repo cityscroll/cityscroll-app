@@ -845,6 +845,8 @@
     bid_guide_due_label: "마감",
     copy_value: "복사",
     bid_guide_passport_search_step: "RFx 목록을 열고 위에 표시된 EPIN 또는 조달명으로 검색하세요.",
+    bid_guide_passport_open_matched_step: "연결된 RFx를 여세요(로그인이 필요하면 위의 EPIN으로 공개 목록에서 검색).",
+    bid_guide_passport_ambiguous_step: "이 EPIN을 쓰는 공개 RFx가 둘 이상입니다. RFx 목록을 열고 위의 EPIN을 검색한 뒤 응답 전에 조달명을 확인하세요.",
     bid_guide_passport_released_step: "이 RFx는 Released 상태이며, 로그인 후 PASSPort에서 응답할 수 있습니다.",
     bid_guide_passport_not_released_step: "상태가 Released가 아닌 {status}입니다. 참고로 열람할 수 있지만 PASSPort가 응답을 받는다고 가정하지 마세요.",
     bid_guide_passport_unmatched_step: "RFx 목록을 열고 위에 표시된 EPIN 또는 조달명으로 검색하세요.",

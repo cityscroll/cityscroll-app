@@ -844,6 +844,8 @@
     bid_guide_due_label: "Dat limit",
     copy_value: "Kopye",
     bid_guide_passport_search_step: "Louvri lis RFx la epi chèche ak EPIN oswa non acha ki anwo a.",
+    bid_guide_passport_open_matched_step: "Louvri RFx ki lyen an (oswa chèche nan lis piblik la ak EPIN ki anwo a si ou bezwen konekte).",
+    bid_guide_passport_ambiguous_step: "Plizyè RFx piblik itilize EPIN sa a. Louvri lis RFx la, chèche EPIN ki anwo a, epi konfime non acha a anvan ou reponn.",
     bid_guide_passport_released_step: "RFx sa a gen estati Released, ki pèmèt repons nan PASSPort apre koneksyon.",
     bid_guide_passport_not_released_step: "Estati a se {status}, li pa Released. Gade li pou enfòmasyon, men pa sipoze PASSPort ap aksepte repons.",
     bid_guide_passport_unmatched_step: "Louvri lis RFx la epi chèche ak EPIN oswa non acha ki anwo a.",

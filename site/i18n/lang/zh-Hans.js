@@ -845,6 +845,8 @@
     bid_guide_due_label: "截止时间",
     copy_value: "复制",
     bid_guide_passport_search_step: "打开 RFx 列表，按上方所示的 EPIN 或采购名称搜索。",
+    bid_guide_passport_open_matched_step: "打开所链接的 RFx（如需登录，也可按上方 EPIN 在公开列表中搜索）。",
+    bid_guide_passport_ambiguous_step: "多个公开 RFx 使用此 EPIN。打开 RFx 列表，搜索上方 EPIN，并在响应前确认采购名称。",
     bid_guide_passport_released_step: "此 RFx 的状态为 Released；登录后 PASSPort 才接受响应。",
     bid_guide_passport_not_released_step: "当前状态为 {status}，并非 Released。可以浏览了解情况，但不要假定 PASSPort 正在接受响应。",
     bid_guide_passport_unmatched_step: "打开 RFx 列表，按上方所示的 EPIN 或采购名称搜索。",

@@ -845,6 +845,8 @@
     bid_guide_due_label: "শেষ সময়",
     copy_value: "কপি",
     bid_guide_passport_search_step: "RFx তালিকা খুলে উপরের EPIN বা ক্রয়ের নাম দিয়ে খুঁজুন।",
+    bid_guide_passport_open_matched_step: "লিঙ্ক করা RFx খুলুন (সাইন-ইন লাগলে উপরের EPIN দিয়ে পাবলিক তালিকায় খুঁজুন)।",
+    bid_guide_passport_ambiguous_step: "একাধিক পাবলিক RFx এই EPIN ব্যবহার করে। RFx তালিকা খুলে উপরের EPIN খুঁজুন এবং সাড়া দেওয়ার আগে ক্রয়ের নাম নিশ্চিত করুন।",
     bid_guide_passport_released_step: "এই RFx-এর অবস্থা Released; সাইন ইন করার পর PASSPort সাড়া গ্রহণ করে।",
     bid_guide_passport_not_released_step: "অবস্থা {status}, Released নয়। তথ্যের জন্য দেখুন, তবে PASSPort সাড়া নিচ্ছে ধরে নেবেন না।",
     bid_guide_passport_unmatched_step: "RFx তালিকা খুলে উপরের EPIN বা ক্রয়ের নাম দিয়ে খুঁজুন।",

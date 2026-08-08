@@ -845,6 +845,8 @@
     bid_guide_due_label: "Fecha límite",
     copy_value: "Copiar",
     bid_guide_passport_search_step: "Abra la lista de RFx y busque por el EPIN o el nombre de la compra indicado arriba.",
+    bid_guide_passport_open_matched_step: "Abra la RFx vinculada (o busque en la lista pública por el EPIN de arriba si debe iniciar sesión).",
+    bid_guide_passport_ambiguous_step: "Más de una RFx pública usa este EPIN. Abra la lista de RFx, busque el EPIN de arriba y confirme el nombre de la compra antes de responder.",
     bid_guide_passport_released_step: "Esta RFx está Released, el estado de PASSPort que permite responder tras iniciar sesión.",
     bid_guide_passport_not_released_step: "El estado es {status}, no Released. Consúltela, pero no suponga que PASSPort acepta respuestas.",
     bid_guide_passport_unmatched_step: "Abra la lista de RFx y busque por el EPIN o el nombre de la compra indicado arriba.",

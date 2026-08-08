@@ -853,6 +853,8 @@
     bid_guide_due_label: "Termin",
     copy_value: "Kopiuj",
     bid_guide_passport_search_step: "Otwórz listę RFx i wyszukaj po EPIN lub nazwie zamówienia podanej powyżej.",
+    bid_guide_passport_open_matched_step: "Otwórz powiązane RFx (lub wyszukaj na liście publicznej po EPIN powyżej, jeśli wymagane jest logowanie).",
+    bid_guide_passport_ambiguous_step: "Więcej niż jedno publiczne RFx używa tego EPIN. Otwórz listę RFx, wyszukaj EPIN powyżej i potwierdź nazwę przed odpowiedzią.",
     bid_guide_passport_released_step: "To RFx ma status Released, który po zalogowaniu pozwala składać odpowiedzi w PASSPort.",
     bid_guide_passport_not_released_step: "Status to {status}, a nie Released. Możesz przeglądać RFx, ale nie zakładaj, że PASSPort przyjmuje odpowiedzi.",
     bid_guide_passport_unmatched_step: "Otwórz listę RFx i wyszukaj po EPIN lub nazwie zamówienia podanej powyżej.",

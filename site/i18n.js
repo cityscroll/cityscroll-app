@@ -1317,9 +1317,11 @@ const STRINGS = {
     bid_guide_due_label: "Due",
     copy_value: "Copy",
     bid_guide_passport_search_step: "Open the RFx list and search by the EPIN or procurement name shown above.",
+    bid_guide_passport_open_matched_step: "Open the linked RFx (or search the public list by the EPIN above if sign-in is required).",
+    bid_guide_passport_ambiguous_step: "More than one public RFx uses this EPIN. Open the RFx list, search the EPIN above, and confirm the procurement name before responding.",
     bid_guide_passport_released_step: "This RFx is Released, the PASSPort status that accepts responses after sign-in.",
     bid_guide_passport_not_released_step: "Status is {status}, not Released. Browse it for context, but do not assume PASSPort is accepting responses.",
-    // Unused on the public guide (absence/methodology); kept so locale packs stay key-complete.
+    // Kept for locale key completeness; public guide never uses join-failure language.
     bid_guide_passport_unmatched_step: "Open the RFx list and search by the EPIN or procurement name shown above.",
     bid_guide_passport_submit_step: "Sign in to PASSPort, open the matching RFx, acknowledge it, and complete the response there before the deadline.",
     bid_guide_nycha_register_step: "Open the housing authority's iSupplier registration guide and sign in or register. This notice does not use PASSPort.",

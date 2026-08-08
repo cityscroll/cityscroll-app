@@ -910,6 +910,8 @@
     bid_guide_due_label: "Échéance",
     copy_value: "Copier",
     bid_guide_passport_search_step: "Ouvrez la liste RFx et recherchez l'EPIN ou le nom indiqué ci-dessus.",
+    bid_guide_passport_open_matched_step: "Ouvrez la RFx liée (ou recherchez dans la liste publique avec l'EPIN ci-dessus si une connexion est requise).",
+    bid_guide_passport_ambiguous_step: "Plusieurs RFx publiques utilisent cet EPIN. Ouvrez la liste RFx, recherchez l'EPIN ci-dessus et confirmez le nom avant de répondre.",
     bid_guide_passport_released_step: "Cette RFx est Released, le statut PASSPort qui autorise les réponses après connexion.",
     bid_guide_passport_not_released_step: "Le statut est {status}, et non Released. Consultez-la, mais ne supposez pas que PASSPort accepte les réponses.",
     bid_guide_passport_unmatched_step: "Ouvrez la liste RFx et recherchez l'EPIN ou le nom indiqué ci-dessus.",
