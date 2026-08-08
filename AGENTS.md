@@ -2391,6 +2391,22 @@ both the live and restored databases.
 - Verify: `node --test test/process_conformance.test.mjs`. Demo Parks:
   `/agencies/parks-and-recreation/#mandates-conformance`.
 
+## Mandates → Rules constellation card (v1)
+
+- Agency-level bridge from **rulemaking** mandates (`deliverable_type =
+  rulemaking`) to the agency's **Rules-lens** City Record filings on the
+  constellation. Join path: mandate → agency identity → Rules records;
+  per-mandate observed filings reuse process-conformance topic joins when they hit.
+- Pure model: `site/mandate_rules_bridge.mjs` (`buildMandateRulesBridgeView` /
+  `renderMandateRulesBridgeSection`). Wired from
+  `site/agency_constellation.mjs` as `view.mandates_rules`. Shareable
+  `/agencies/<id>/#mandates-rules`. Scopes: Open in Rules (browse facet),
+  Watch rulemaking mandates (obligations free-watch), Follow Rules activity.
+- Rebuild: `node tools/build_agency_constellation_documents.mjs`. Capture:
+  `python3 tools/capture_mandate_rules_bridge.py`. Verify:
+  `node --test test/mandate_rules_bridge.test.mjs`. Demo Parks:
+  `/agencies/parks-and-recreation/#mandates-rules`.
+
 ## Ontology delta · what's new in the graph (v1)
 
 - Living Civic Graph first praxis wave: structural inventory growth (new edge
