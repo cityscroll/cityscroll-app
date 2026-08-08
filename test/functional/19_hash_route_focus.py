@@ -83,9 +83,11 @@ def main():
                 ("#notice/20260701099", "#noticeview .route-item"),
                 ("#land/P2026K0001", "#land-item-card"),
                 (
-                    # Default agency document is the static constellation surface.
+                    # This harness serves the SPA shell for /agencies/ so the
+                    # enhancement island can own focus (production edge uses the
+                    # static constellation document for the same path without ?tab=).
                     "#agency/Housing%20Preservation%20and%20Development",
-                    "[data-civic-object-kind='agency-constellation']",
+                    "#entityview .route-item",
                 ),
                 ("#matter/8502026HP0001", "#entityview .route-item"),
             )
@@ -101,7 +103,7 @@ def main():
             page.wait_for_url(
                 "**/agencies/housing-preservation-and-development/"
             )
-            assert_item_landing(page, "[data-civic-object-kind='agency-constellation']")
+            assert_item_landing(page, "#entityview .route-item")
             page.go_forward()
             page.wait_for_function(
                 "() => location.hash === '#matter/8502026HP0001'"
