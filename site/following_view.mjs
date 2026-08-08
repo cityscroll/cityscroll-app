@@ -18,7 +18,7 @@ const LENS_LABELS = Object.freeze({
   meetings: "Hearings and meetings",
   district: "District digest",
   entity: "Agency or vendor",
-  obligations: "Duties",
+  obligations: "Mandates",
 });
 const BOROUGHS = Object.freeze(["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]);
 
@@ -119,6 +119,8 @@ function scopeSummary(lens, filter) {
     ["time", filter.dateWindow || filter.when],
     ["name", filter.name],
     ["agency id", filter.agency_id],
+    ["deliverable type", filter.deliverable_type],
+    ["deadline window", typeof filter.windowDays === "number" ? `next ${filter.windowDays} days` : null],
     ["exam number", Array.isArray(filter.examNumber) ? filter.examNumber.join(", ") : filter.examNumber],
     ["subject ref", Array.isArray(filter.subject_refs_all) && filter.subject_refs_all.length ? filter.subject_refs_all.join(", ") : null],
   ];

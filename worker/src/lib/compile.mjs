@@ -84,12 +84,19 @@ export function compileSub(sub, todayISO) {
   }
 
   if (sub.lens === "obligations") {
-    // World-state predicate: agency statutory duties / approaching deadlines from
+    // World-state predicate: agency statutory mandates / approaching deadlines from
     // the precomputed obligations lookup — not a City Record document match.
+    // User-facing term is "mandates"; "obligations" is the storage lens + upstream source.
     const agencyId = typeof f.agency_id === "string" && f.agency_id.trim()
       ? f.agency_id.trim()
       : (typeof f.agency === "string" && f.agency.trim() ? f.agency.trim() : null);
     if (!agencyId) return null;
+    const windowDays = typeof f.windowDays === "number" && f.windowDays >= 1 && f.windowDays <= 365
+      ? Math.round(f.windowDays)
+      : 90;
+    const deliverableType = typeof f.deliverable_type === "string" && f.deliverable_type.trim()
+      ? f.deliverable_type.trim().toLowerCase()
+      : null;
     return {
       url: AGENCY_OBLIGATIONS,
       params: {},
@@ -97,8 +104,9 @@ export function compileSub(sub, todayISO) {
       kind: "obligation",
       transformRows: (payload) => obligationDigestRowsForAgency(payload, agencyId, {
         todayISO,
-        windowDays: 90,
+        windowDays,
         pastDays: 30,
+        deliverableType,
       }),
     };
   }

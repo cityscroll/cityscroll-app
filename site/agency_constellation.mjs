@@ -88,11 +88,11 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({
     id: "obligations",
     domain: "rules",
-    label: "Statutory obligations",
+    label: "Statutory mandates",
     browse_facet: "rules",
     surface: "rules",
     relation: "statute_duty",
-    empty_note: "No statutory obligations are linked to this agency in the current materialization.",
+    empty_note: "No statutory mandates are linked to this agency in the current materialization.",
   }),
   Object.freeze({
     id: "staffing",
@@ -165,7 +165,7 @@ export function agencyCategoryFollowHref(id, categoryId, { frequency = "weekly" 
   const ref = agencySubjectRef(identity.canonical_id || id);
   if (!category || !identity.canonical_name) return "/following/";
   if (category.id === "obligations") {
-    // World-state predicate on statutory duties / deadlines — not a City Record document match.
+    // World-state free-watch on statutory mandates / deadlines — not a City Record document match.
     return agencyObligationsFollowHref(identity.canonical_id || id, { frequency });
   }
   if (category.id === "staffing") {
@@ -393,7 +393,14 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
       er_match_basis: AGENCY_OBLIGATIONS_ER_BASIS,
       view_all_href: "",
       follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
-      honesty: "Statutory duties with published deadlines from enacted local law.",
+      honesty: "Statutory mandates with published deadlines from enacted local law.",
+      // Free mandate watch (deliverable-type scoped links are optional refinements).
+      mandate_follow_hrefs: {
+        all: agencyObligationsFollowHref(identity.canonical_id),
+        report: agencyObligationsFollowHref(identity.canonical_id, { deliverableType: "report" }),
+        rulemaking: agencyObligationsFollowHref(identity.canonical_id, { deliverableType: "rulemaking" }),
+        window_90: agencyObligationsFollowHref(identity.canonical_id, { windowDays: 90 }),
+      },
     };
   }
 
@@ -511,7 +518,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         AGENCY_CONSTELLATION_METHOD,
         "graph_edge_provenance_v1",
       ],
-      note: "Joins City Record agency identity (entity intelligence), publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Each listed connection opens a provenance inspector with source and warrant class.",
+      note: "Joins City Record agency identity (entity intelligence), publisher civil-service certification edges, and auto-certified enacted-law statutory mandates. Each listed connection opens a provenance inspector with source and warrant class.",
     },
   };
 }
@@ -540,7 +547,7 @@ function categorySection(category) {
     return "";
   }
   const status = category.id === "obligations"
-    ? `${category.count} statutory duties`
+    ? `${category.count} mandates`
     : (categoryStatusLabel(category) || `${category.count} linked`);
   const list = `<ul class="node-record-list">${category.items.map((item) => {
     const warrant = item.claim?.how?.warrant_class || "";
@@ -570,8 +577,21 @@ function categorySection(category) {
     ? `<p class="node-muted muted">${esc(category.honesty)}</p>`
     : "";
   const followLabel = category.id === "obligations"
-    ? "Watch obligations and deadlines"
+    ? "Watch mandates and deadlines"
     : `Follow ${category.label.toLowerCase()}`;
+  const refine = category.id === "obligations" && category.mandate_follow_hrefs
+    ? [
+      category.mandate_follow_hrefs.report
+        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report mandates</a>`
+        : "",
+      category.mandate_follow_hrefs.rulemaking
+        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rulemaking mandates</a>`
+        : "",
+      category.mandate_follow_hrefs.window_90
+        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch deadlines in 90 days</a>`
+        : "",
+    ].filter(Boolean).join("")
+    : "";
   const actions = [
     category.view_all_href
       ? `<a class="node-action civic-object-action" href="${esc(category.view_all_href)}">Open in ${esc(category.label)}</a>`
@@ -579,6 +599,7 @@ function categorySection(category) {
     category.follow_href
       ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">${esc(followLabel)}</a>`
       : "",
+    refine,
   ].filter(Boolean).join("");
   const body = [
     honesty,
@@ -645,8 +666,8 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ? `As of ${asOf}, this as-of view keeps linked records whose publisher or event date is on or before that day (${matched} of ${displayView.summary.category_count} categories still show links). System-time history of the composed graph is not retained in this iteration. Open “Why do we believe this?” on any connection for its source and warrant class.`
       : `As of ${asOf}, no linked record in this sample has a publisher or event date on or before that day. Public records appear here when joins carry a date on or before the chosen day.`)
     : (matched
-      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory obligations, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
-      : "Public records for this agency appear here when contracts, meetings, rules, statutory obligations, or staffing exams join to its published identity.");
+      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory mandates, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
+      : "Public records for this agency appear here when contracts, meetings, rules, statutory mandates, or staffing exams join to its published identity.");
   const kicker = asOf
     ? `Agency constellation · as of ${asOf} (valid / publication)`
     : "Agency constellation";
@@ -670,7 +691,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const actions = renderNodeActions([
     { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
     obligationsFollow
-      ? { kind: "link", label: "Watch obligations and deadlines", href: obligationsFollow, className: "civic-object-action" }
+      ? { kind: "link", label: "Watch mandates and deadlines", href: obligationsFollow, className: "civic-object-action" }
       : null,
     { kind: "link", label: "Inspect connection evidence", href: "#edge-provenance", className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
@@ -683,7 +704,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   // Plain-English provenance only — no pipeline method keys or match-basis codes.
   const provenance = renderNodeProvenance({
-    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams from publisher certification records; statutory obligations from enacted-law extraction with source-law links. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only; it does not invent historical system-time snapshots.",
+    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory mandates. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams from publisher certification records; statutory mandates from enacted-law extraction with source-law links. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only; it does not invent historical system-time snapshots.",
     exportClass: "object_provenance",
     extraClass: "civic-object-section",
   });
@@ -695,7 +716,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${esc(title)}${asOf ? ` · as of ${esc(asOf)}` : ""} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory obligations, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory mandates, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}

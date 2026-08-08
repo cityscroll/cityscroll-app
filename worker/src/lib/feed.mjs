@@ -38,6 +38,25 @@ export function feedItems(kind, rows) {
         eventDate: null,
       };
     }
+    if (kind === "obligation") {
+      // World-state mandate rows: alert_id is the idempotency key; link the agency constellation.
+      const agencySlug = r.agency_id
+        || String(r.agency_name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const deadline = r.deadline_date
+        ? `statutory deadline ${d10(r.deadline_date)}`
+        : (r.deadline_text ? `deadline: ${stripHtml(r.deadline_text)}` : "no computed deadline");
+      return {
+        id: String(r.alert_id || r.obligation_id || ""),
+        url: agencySlug
+          ? `https://cityscroll.org/agencies/${encodeURIComponent(agencySlug)}/`
+          : "https://cityscroll.org/agencies/",
+        title: stripHtml(r.duty_text || r.short_title || "Statutory mandate"),
+        date: r.deadline_date || r.start_date || null,
+        summary: [r.agency_name, r.deliverable_type, deadline, r.recurrence, r.citation]
+          .filter(Boolean).map((part) => stripHtml(part)).join(" · "),
+        eventDate: r.deadline_date || null,
+      };
+    }
     return {
       id: String(r.request_id || ""),
       url: `https://cityscroll.org/notices/${encodeURIComponent(r.request_id || "")}`,
