@@ -79,7 +79,7 @@ test("classifyItemTemporal never invents system time from materialisation vintag
   assert.equal(clocks.filter_basis, "valid_or_publication");
 });
 
-test("Parks as-of valid projection keeps earlier records and drops later ones", () => {
+test("Parks as-of valid as-of filter keeps earlier records and drops later ones", () => {
   const now = buildAgencyConstellationView(PARKS, { intelligence, certification });
   assert.ok(now);
   const asOf = projectAgencyConstellationAsOf(now, "2024-06-01", { axis: "valid" });
@@ -116,7 +116,7 @@ test("Parks as-of valid projection keeps earlier records and drops later ones", 
   assert.ok(summary.now.item_count >= summary.as_of_counts.item_count);
 });
 
-test("system-axis projection does not invent membership without observation clocks", () => {
+test("system-axis filter does not invent membership without observation clocks", () => {
   const now = buildAgencyConstellationView(PARKS, { intelligence, certification });
   const asOf = projectAgencyConstellationAsOf(now, "2024-06-01", { axis: "system" });
   const systemKnown = now.categories.flatMap((c) => c.items).some((item) => item.observed_at || item.system_time);
@@ -151,7 +151,7 @@ test("notice temporal facts label publication vs system honestly", () => {
   assert.equal(system.basis, "system_time_not_retained");
 });
 
-test("agency document embeds ledger panel and runtime; asOf pre-projects", () => {
+test("agency document embeds ledger panel and runtime; asOf pre-filters", () => {
   const now = buildAgencyConstellationView(PARKS, { intelligence, certification });
   const htmlNow = renderAgencyConstellationDocument(now);
   assert.match(htmlNow, /data-civic-time-ledger="1"/);
@@ -165,7 +165,7 @@ test("agency document embeds ledger panel and runtime; asOf pre-projects", () =>
   assert.match(htmlAsOf, /as of 2024-06-01/i);
   assert.match(htmlAsOf, /canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\/\?as_of=2024-06-01"/);
   assert.match(htmlAsOf, /data-as-of="2024-06-01"/);
-  // Full now payload remains for client re-projection.
+  // Full now payload remains for client re-filter.
   assert.match(htmlAsOf, /"kind":"agency-constellation"/);
 });
 
