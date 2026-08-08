@@ -64,17 +64,8 @@ function rulesExplorerCardHTML(entry, terms){
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const agency=entry.agency||r.agency_name||"";
   const scopeHtml=excerptHtml(entry.excerpt||r.additional_description_1,200);
-  const chainChip=entry.notice_count>1
-    ? `<span class="tag asset">${escUiHtml(t("rules_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
-    : "";
-  const commentEnded=fineStage==="comment-closed"
-    ? `<span class="tag closed" role="status">${escUiHtml(t("rule_stage_comment_closed"))}${entry.comment_by_date?` · ${escUiHtml(ruleDateLabel(entry.comment_by_date))}`:""}</span>`
-    : "";
   const processLine=`<div class="rules-process-line">
     <span class="tag open" data-card-fact="stage:${escUiHtml(processStage||"unstaged")}">${escUiHtml(processLabel)}</span>
-    ${commentEnded}
-    ${chainChip}
-    ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:`<span class="tag place">${escUiHtml(t("rules_list_no_agency"))}</span>`}
   </div>`;
   // Next-action lead: concrete comment / hearing when data supports it; honest open-notice otherwise.
   const actionKey=entry.action_key||"rule_action_open_notice";
