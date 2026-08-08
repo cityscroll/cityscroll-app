@@ -435,8 +435,29 @@ jobs:
       - name: Serve site locally
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
-          python3 tools/local_site_server.py --directory _site --port 8000 &
-          sleep 1
+          ready_file="$(mktemp)"
+          python3 tools/local_site_server.py --directory _site --port 8000 --ready-file "$ready_file" &
+          server_pid=$!
+          server_up=0
+          for _ in {1..40}; do
+            if [[ -s "$ready_file" ]]; then
+              IFS= read -r local_base < "$ready_file"
+              if curl --fail --silent --show-error "$local_base" >/dev/null; then
+                server_up=1
+                break
+              fi
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo "local site server exited before becoming ready" >&2
+              exit 1
+            fi
+            sleep 0.25
+          done
+          if [[ "$server_up" != "1" ]]; then
+            echo "timed out waiting for the local site server" >&2
+            exit 1
+          fi
+          echo "local site ready at $local_base"
       - name: Mobile viewport contract (360px overflow, targets, and interaction)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
@@ -465,10 +486,6 @@ jobs:
       # pre-merge production, and a gate verdict only depends on the code under test.
       - name: Public demo-link regression contract
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        # The local contract remains blocking on PRs. In merge_group, combined queue
-        # revisions can expose cross-PR fixture timing/state races; keep the evidence
-        # visible without ejecting an otherwise-green PR from the queue.
-        continue-on-error: ${{ github.event_name == 'merge_group' }}
         env:
           CROL_BASE: http://127.0.0.1:8000/
         run: python3 test/functional/20_demo_links.py
