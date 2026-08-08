@@ -398,28 +398,79 @@ select {
   margin-block-start: var(--space-1);
 }
 
-/* Civic Time Ledger as-of panel (agency constellation first iteration). */
+/* Civic Time Ledger as-of panel — compact valid-time filter. */
 .ctl-panel {
   background: var(--color-surface);
+  padding-block: var(--space-3);
+}
+
+.ctl-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-1);
+}
+
+.ctl-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.ctl-how {
+  position: relative;
+  margin: 0;
+}
+
+.ctl-how > summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  font: 600 .75rem/1 ui-sans-serif, system-ui, sans-serif;
+  user-select: none;
+}
+
+.ctl-how > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ctl-how[open] > summary {
+  border-color: var(--color-action);
+  color: var(--color-action);
+}
+
+.ctl-how > p {
+  margin: var(--space-2) 0 0;
+  max-width: 48ch;
+  color: var(--color-text-muted);
+  font-size: .875rem;
+  line-height: 1.4;
 }
 
 .ctl-lede {
-  margin: 0 0 var(--space-4);
-  max-width: 62ch;
-  color: var(--color-text);
-  line-height: 1.45;
+  margin: 0 0 var(--space-2);
+  max-width: 48ch;
+  color: var(--color-text-muted);
+  font-size: .9375rem;
+  line-height: 1.35;
 }
 
 .ctl-form {
   display: grid;
-  gap: var(--space-2);
-  margin-block-end: var(--space-4);
+  gap: var(--space-1);
+  margin-block-end: var(--space-2);
 }
 
 .ctl-label {
   font-weight: 600;
-  font-size: 0.9375rem;
-  color: var(--color-text);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
 }
 
 .ctl-form-row {
@@ -430,8 +481,8 @@ select {
 }
 
 .ctl-input {
-  min-height: 2.75rem;
-  padding: 0.5rem 0.75rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.6rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm, 6px);
   background: var(--color-canvas);
@@ -444,61 +495,25 @@ select {
   outline-offset: 2px;
 }
 
-.ctl-axes {
-  display: grid;
-  gap: var(--space-3);
-  margin: 0 0 var(--space-4);
-}
-
-.ctl-axes > div {
-  margin: 0;
-  padding: var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm, 6px);
-  background: var(--color-canvas);
-}
-
-.ctl-axes dt {
-  margin: 0 0 var(--space-1);
-  font-weight: 700;
-  font-size: 0.9375rem;
-  color: var(--color-text);
-}
-
-.ctl-axes dd {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.9375rem;
-  line-height: 1.45;
-}
-
-.ctl-axis-state {
-  display: block;
-  margin-block-start: var(--space-1);
-  color: var(--color-text);
-}
-
 .ctl-comparison {
-  margin: 0 0 var(--space-3);
-  line-height: 1.45;
+  margin: 0;
+  font-size: .9375rem;
+  line-height: 1.4;
 }
 
 .ctl-arrived {
-  margin: 0 0 var(--space-3);
+  margin: var(--space-2) 0 0;
 }
 
 .ctl-arrived summary {
   cursor: pointer;
   font-weight: 600;
+  font-size: .875rem;
   color: var(--color-action);
 }
 
 .ctl-arrived-list {
   margin-block-start: var(--space-2);
-}
-
-.ctl-honesty {
-  margin: 0;
 }
 
 @media (max-width: 680px) {
@@ -640,55 +655,43 @@ select {
   font-size: .875rem;
 }
 
-/* Evidence-bearing edge provenance inspector (host: agency constellation, general claim model) */
+/* Evidence-bearing edge provenance — subtle warrant chips + inspector */
 .node-record-why {
-  margin-block-start: var(--space-2);
+  display: inline;
+  margin: 0;
 }
 
 .edge-prov-why {
   display: inline-flex;
   align-items: center;
-  gap: .35rem;
-  padding: 5px 10px;
-  border: 1px solid var(--color-border);
+  vertical-align: middle;
+  margin-inline-start: .35rem;
+  padding: 1px 6px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
   border-radius: 999px;
-  background: var(--color-surface-alt, var(--color-canvas-subtle));
-  color: var(--color-action);
-  font: 600 .8125rem/1.3 ui-sans-serif, system-ui, sans-serif;
+  background: transparent;
+  color: var(--color-text-muted);
+  font: 500 .6875rem/1.2 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .02em;
   text-decoration: none;
+  text-transform: lowercase;
 }
 
 .edge-prov-why:hover,
 .edge-prov-why:focus-visible {
   border-color: var(--color-action);
-  text-decoration: underline;
+  color: var(--color-action);
+  text-decoration: none;
 }
 
 .edge-prov-why[aria-current="true"] {
   border-color: var(--color-action);
-  background: color-mix(in srgb, var(--color-action) 12%, var(--color-canvas));
+  color: var(--color-action);
+  background: color-mix(in srgb, var(--color-action) 8%, var(--color-canvas));
 }
 
-.edge-prov-why.is-possible {
-  border-style: dashed;
-  color: var(--color-text);
-}
-
-.edge-prov-legend-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-2);
-}
-
-.edge-prov-legend-list li {
-  padding: var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-canvas);
-  font-size: .9375rem;
-  line-height: 1.45;
+.edge-prov-token {
+  font-variant-numeric: tabular-nums;
 }
 
 .edge-prov-panel .edge-prov-panel-body {

@@ -2,12 +2,12 @@
  * Browser runtime for Civic Time Ledger as-of view on agency documents.
  * Static HTML already embeds the full constellation payload; this module
  * re-filters categories when ?as_of=YYYY-MM-DD is present and keeps the URL
- * shareable without inventing system-time history. Claim (?claim=) is preserved
- * alongside as_of so the edge provenance inspector stays deep-linkable.
+ * shareable. Claim (?claim=) is preserved alongside as_of so the edge
+ * provenance inspector stays deep-linkable.
  */
 import {
   AS_OF_QUERY_KEY,
-  asOfHref,
+  asOfFilterCanNarrow,
   buildLedgerSummary,
   normalizeAsOfDay,
   parseAsOfFromSearch,
@@ -71,7 +71,7 @@ function sharePath(basePath, { asOf = null, claim = null } = {}) {
 }
 
 function categorySectionHtml(category) {
-  // Omit empty categories — same show-only-when-present rule as #684 node pages.
+  // Omit empty categories — same show-only-when-present rule as node pages.
   if (!category?.items?.length || category.status === "empty" || category.status === "not_yet_ingested") {
     return "";
   }
@@ -89,30 +89,21 @@ function categorySectionHtml(category) {
         item.deliverable_type,
         item.date ? `deadline ${item.date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : null),
         item.recurrence,
-        item.certification_status === "auto_certified" ? "auto-certified" : null,
         publicProvenanceLabel(item.source) || item.source,
-        item.claim?.how?.warrant_label || null,
       ].filter(Boolean).join(" · ");
       return `<li class="node-record" data-obligation-id="${esc(item.id)}" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
-        <div class="node-record-main">${esc(item.label)}</div>
+        <div class="node-record-main">${esc(item.label)}${why ? ` ${why}` : ""}</div>
         <span class="muted node-muted">${esc(meta)}${sourceLink}</span>
-        ${why ? `<div class="node-record-why">${why}</div>` : ""}
       </li>`;
     }
     const clocks = item.temporal;
     const bits = [
       sourceSystemReaderLabel(item.source) || publicProvenanceLabel(item.source) || item.source,
-      clocks?.valid_day
-        ? `valid/publication ${clocks.valid_day}`
-        : clocks?.system_day
-          ? `system ${clocks.system_day}`
-          : item.date || "",
-      item.claim?.how?.warrant_label || null,
+      clocks?.valid_day || item.date || "",
     ].filter(Boolean);
     return `<li class="node-record" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
-      <div class="node-record-main">${itemLink(item)}</div>
+      <div class="node-record-main">${itemLink(item)}${why ? ` ${why}` : ""}</div>
       ${bits.length ? `<span class="muted node-muted">${esc(bits.join(" · "))}</span>` : ""}
-      ${why ? `<div class="node-record-why">${why}</div>` : ""}
     </li>`;
   }).join("")}</ul>`;
   const honesty = category.id === "obligations" && category.honesty
@@ -157,14 +148,14 @@ function updateHero(root, nowView, asOfView, day) {
   const lede = root.querySelector(".node-lede");
   if (day && asOfView) {
     if (kicker) {
-      kicker.textContent = `Agency constellation · as of ${day} (valid / publication)`;
+      kicker.textContent = `Agency constellation · as of ${day}`;
     }
     if (lede) {
       const matched = asOfView.summary?.matched_categories ?? 0;
       const total = asOfView.summary?.category_count ?? nowView.summary?.category_count ?? 0;
       lede.textContent = matched
-        ? `As of ${day}, this as-of view keeps linked records whose publisher or event date is on or before that day (${matched} of ${total} categories still show links). System-time history of the composed graph is not retained in this iteration. Open “Why do we believe this?” on any connection for its source and warrant class.`
-        : `As of ${day}, no linked record in this sample has a publisher or event date on or before that day. Public records appear here when joins carry a date on or before the chosen day.`;
+        ? `Records dated on or before ${day} · ${matched} of ${total} categories.`
+        : `No linked records dated on or before ${day}.`;
     }
   } else {
     if (kicker) kicker.textContent = "Agency constellation";
@@ -172,14 +163,18 @@ function updateHero(root, nowView, asOfView, day) {
       const matched = nowView.summary?.matched_categories ?? 0;
       const total = nowView.summary?.category_count ?? 0;
       lede.textContent = matched
-        ? `Public records connected with this agency across ${matched} of ${total} categories (contracts, meetings, rules, statutory obligations, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
-        : "Public records for this agency appear here when contracts, meetings, rules, statutory obligations, or staffing exams join to its published identity.";
+        ? `Public records connected with this agency across ${matched} of ${total} categories.`
+        : "Public records for this agency appear here when contracts, meetings, rules, mandates, or staffing exams join to its published identity.";
     }
   }
 }
 
-function updateLedgerPanel(root, nowView, asOfView, day) {
+function updateLedgerPanel(root, nowView, asOfView, day, useful) {
   const existing = root.querySelector("[data-civic-time-ledger]");
+  if (!useful) {
+    if (existing) existing.remove();
+    return;
+  }
   const summary = day && asOfView
     ? buildLedgerSummary(nowView, asOfView)
     : null;
@@ -187,21 +182,16 @@ function updateLedgerPanel(root, nowView, asOfView, day) {
     path: nowView.path,
     asOfDay: day,
     summary,
-    materializationVintage: dayStampFromView(nowView),
-    systemTimeStatus: asOfView?.as_of?.system_time_status || "current_snapshot_only",
   });
   if (existing) existing.outerHTML = html;
-}
-
-function dayStampFromView(view) {
-  const raw = view.summary?.generated_at
-    || view.provenance?.intelligence_generated_at
-    || view.provenance?.certification_generated_at
-    || view.provenance?.obligations_generated_at
-    || null;
-  if (!raw) return null;
-  const match = String(raw).match(/\d{4}-\d{2}-\d{2}/);
-  return match ? match[0] : null;
+  else {
+    const actions = root.querySelector(".node-actions, .civic-object-actions");
+    if (actions) actions.insertAdjacentHTML("afterend", html);
+    else {
+      const hero = root.querySelector(".node-hero, .civic-object-hero");
+      if (hero) hero.insertAdjacentHTML("afterend", html);
+    }
+  }
 }
 
 function wireForm(root, nowView) {
@@ -243,12 +233,13 @@ function wireCopy(root) {
 }
 
 function applyAsOf(root, nowView, day) {
-  const asOf = normalizeAsOfDay(day);
+  const useful = asOfFilterCanNarrow(nowView);
+  const asOf = useful ? normalizeAsOfDay(day) : null;
   const asOfView = asOf
     ? projectAgencyConstellationAsOf(nowView, asOf, { axis: "valid" })
     : null;
   updateHero(root, nowView, asOfView, asOf);
-  updateLedgerPanel(root, nowView, asOfView, asOf);
+  updateLedgerPanel(root, nowView, asOfView, asOf, useful);
   // Static HTML already embeds the full process-conformance mandates surface.
   // Only rewrite category sections when an as-of filter changes membership —
   // re-rendering "now" from the JSON payload would drop #mandates-conformance.
@@ -264,6 +255,7 @@ function applyAsOf(root, nowView, day) {
     }
   }
   root.dataset.asOf = asOf || "";
+  root.dataset.ctlUseful = useful ? "1" : "0";
   const canonical = root.ownerDocument.querySelector('link[rel="canonical"]');
   if (canonical) {
     const origin = location.origin || "https://cityscroll.org";
@@ -294,7 +286,7 @@ export function mountAgencyCivicTimeLedger(root = document) {
 
   main.querySelector("[data-object-print]")?.addEventListener("click", () => window.print());
   main.querySelector('[data-object-export="json"]')?.addEventListener("click", () => {
-    const day = normalizeAsOfDay(main.dataset.asOf);
+    const day = asOfFilterCanNarrow(nowView) ? normalizeAsOfDay(main.dataset.asOf) : null;
     const payload = day
       ? projectAgencyConstellationAsOf(nowView, day, { axis: "valid" })
       : nowView;

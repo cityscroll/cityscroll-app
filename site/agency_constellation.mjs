@@ -61,23 +61,21 @@ import {
   renderNodeActions,
   renderNodeBack,
   renderNodeFooter,
-  renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import {
   buildEdgeProvenanceClaim,
   edgeProvenanceClientScript,
   isStandablePublicClaim,
-  methodReaderLabel,
   renderEdgeProvenancePanel,
   renderWhyBelieveControl,
   sourceSystemReaderLabel,
   summarizeCategoryWarrants,
 } from "./graph_edge_provenance.mjs";
 import {
+  asOfFilterCanNarrow,
   asOfHref,
   buildLedgerSummary,
-  dayStamp,
   normalizeAsOfDay,
   projectAgencyConstellationAsOf,
   renderCivicTimeLedgerPanel,
@@ -690,7 +688,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         AGENCY_CONSTELLATION_METHOD,
         "graph_edge_provenance_v1",
       ],
-      note: "Joins City Record agency identity, civil-service certification edges, enacted-law mandates, expected-vs-observed City Record matches, rulemaking mandates to Rules-lens filings, report mandates to filing receipts, and deadline/recurrence expected-event predictions. Each listed connection opens a provenance inspector with source and warrant class.",
+      note: null,
     },
   };
 }
@@ -702,16 +700,14 @@ function itemLink(item) {
 }
 
 function obligationMeta(item) {
-  // Reader-facing meta only: drop internal method keys and absence fillers.
+  // Reader-facing meta only: drop internal method keys, warrants (chip owns that), absence fillers.
   return [
     item.observation_label || null,
     item.expected_event_label || null,
     item.deliverable_type,
     item.date ? `deadline ${item.date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : null),
     item.recurrence,
-    item.certification_status === "auto_certified" ? "auto-certified" : null,
     item.source,
-    item.claim?.how?.warrant_label || null,
   ].filter(Boolean).join(" · ");
 }
 
@@ -762,20 +758,17 @@ function categorySection(category) {
         ? ` · <a href="${esc(item.href)}" rel="noopener">Source law</a>`
         : "";
       return `<li class="node-record" data-obligation-id="${esc(item.id)}" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
-        <div class="node-record-main">${esc(item.label)}</div>
+        <div class="node-record-main">${esc(item.label)}${why ? ` ${why}` : ""}</div>
         <span class="muted node-muted">${esc(obligationMeta(item))}${sourceLink}</span>
-        ${why ? `<div class="node-record-why">${why}</div>` : ""}
       </li>`;
     }
     const meta = [
       sourceSystemReaderLabel(item.source) || item.source,
       item.date,
-      item.claim?.how?.warrant_label || null,
     ].filter(Boolean).join(" · ");
     return `<li class="node-record" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
-      <div class="node-record-main">${itemLink(item)}</div>
+      <div class="node-record-main">${itemLink(item)}${why ? ` ${why}` : ""}</div>
       ${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}
-      ${why ? `<div class="node-record-why">${why}</div>` : ""}
     </li>`;
   }).join("")}</ul>`;
   const honesty = category.id === "obligations" && category.honesty
@@ -856,25 +849,27 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     throw new Error("Unknown agency constellation view");
   }
   const asOf = normalizeAsOfDay(options.asOf);
-  const displayView = asOf
-    ? projectAgencyConstellationAsOf(view, asOf, { axis: options.asOfAxis || "valid" })
+  const showAsOf = asOfFilterCanNarrow(view);
+  const displayView = asOf && showAsOf
+    ? projectAgencyConstellationAsOf(view, asOf, { axis: "valid" })
     : view;
   const title = view.display_name;
   const activeClaimId = clean(options.activeClaimId || options.claim, 200) || null;
-  const sharePath = agencyConstellationSharePath(view.path, { claim: activeClaimId, asOf });
+  const effectiveAsOf = showAsOf ? asOf : null;
+  const sharePath = agencyConstellationSharePath(view.path, { claim: activeClaimId, asOf: effectiveAsOf });
   const canonical = `https://cityscroll.org${sharePath}`;
   // Payload is always the full "now" materialisation; runtime re-filters as-of.
   const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
   const matched = displayView.summary.matched_categories;
-  const lead = asOf
+  const lead = effectiveAsOf
     ? (matched
-      ? `As of ${asOf}, this as-of view keeps linked records whose publisher or event date is on or before that day (${matched} of ${displayView.summary.category_count} categories still show links). System-time history of the composed graph is not retained in this iteration. Open “Why do we believe this?” on any connection for its source and warrant class.`
-      : `As of ${asOf}, no linked record in this sample has a publisher or event date on or before that day. Public records appear here when joins carry a date on or before the chosen day.`)
+      ? `Records dated on or before ${effectiveAsOf} · ${matched} of ${displayView.summary.category_count} categories.`
+      : `No linked records dated on or before ${effectiveAsOf}.`)
     : (matched
-      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, mandates expected vs observed, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
-      : "Public records for this agency appear here when contracts, meetings, rules, statutory mandates, or staffing exams join to its published identity.");
-  const kicker = asOf
-    ? `Agency constellation · as of ${asOf} (valid / publication)`
+      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories.`
+      : "Public records for this agency appear here when contracts, meetings, rules, mandates, or staffing exams join to its published identity.");
+  const kicker = effectiveAsOf
+    ? `Agency constellation · as of ${effectiveAsOf}`
     : "Agency constellation";
   const categorySections = displayView.categories.map(categorySection).filter(Boolean).join("");
   // Mandates bridges sit with the mandates facet (shareable anchors).
@@ -893,19 +888,14 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const mandatesReportsHref = view.mandates_reports_href || agencyMandateReportsPath(view.canonical_id);
   const mandatesPredictionsHref = view.mandates_predictions_href
     || agencyMandatePredictionsPath(view.canonical_id);
-  const ledgerSummary = asOf ? buildLedgerSummary(view, displayView) : null;
-  const materializationVintage = dayStamp(view.summary?.generated_at)
-    || dayStamp(view.provenance?.intelligence_generated_at)
-    || dayStamp(view.provenance?.certification_generated_at)
-    || dayStamp(view.provenance?.obligations_generated_at)
-    || null;
-  const ledgerPanel = renderCivicTimeLedgerPanel({
-    path: view.path,
-    asOfDay: asOf,
-    summary: ledgerSummary,
-    materializationVintage,
-    systemTimeStatus: displayView.as_of?.system_time_status || "current_snapshot_only",
-  });
+  const ledgerSummary = effectiveAsOf ? buildLedgerSummary(view, displayView) : null;
+  const ledgerPanel = showAsOf
+    ? renderCivicTimeLedgerPanel({
+      path: view.path,
+      asOfDay: effectiveAsOf,
+      summary: ledgerSummary,
+    })
+    : "";
   const showMandatesRulesNav = bridgeSource?.status === "matched";
   const showMandatesReportsNav = reportsSource?.status === "matched";
   const showMandatesPredictionsNav = predictionsSource?.status === "matched";
@@ -926,7 +916,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     obligationsFollow
       ? { kind: "link", label: "Watch mandates and deadlines", href: obligationsFollow, className: "civic-object-action" }
       : null,
-    { kind: "link", label: "Inspect connection evidence", href: "#edge-provenance", className: "civic-object-action" },
+    { kind: "link", label: "Connection evidence", href: "#edge-provenance", className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
     { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
     { kind: "button", label: "Download JSON", attrs: { "data-object-export": "json" }, className: "civic-object-action" },
@@ -935,21 +925,18 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     exportClass: "object_actions",
     extraClass: "civic-object-actions",
   });
-  // Plain-English provenance only — no pipeline method keys or match-basis codes.
-  const provenance = renderNodeProvenance({
-    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, enacted-law mandates, expected-vs-observed City Record matches, deadline and recurrence expected-event predictions, rulemaking mandates to Rules-lens filings, and report mandates to filing receipts. Contracts, meetings, and rules come from entity intelligence; staffing exams from publisher certification records; mandates from enacted-law extraction. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only.",
-    exportClass: "object_provenance",
-    extraClass: "civic-object-section",
-  });
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
+  const demoAsOfLink = showAsOf
+    ? ` · <a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>As of ${esc(DEMO_AS_OF_DAY)}</a>`
+    : "";
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${esc(title)}${asOf ? ` · as of ${esc(asOf)}` : ""} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, expected mandate events, report and rulemaking mandates, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
+  <title>${esc(title)}${effectiveAsOf ? ` · as of ${esc(effectiveAsOf)}` : ""} · Agency constellation · CityScroll</title>
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, mandates, and staffing exams.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
@@ -958,7 +945,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
 <body>
   <a class="skip" href="#main">Skip to content</a>
   ${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
-  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(asOf || "")}">
+  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(effectiveAsOf || "")}" data-ctl-useful="${showAsOf ? "1" : "0"}">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
     <header class="node-hero civic-object-hero" data-export-class="object_identity">
       <p class="node-kicker civic-object-kicker">${esc(kicker)}</p>
@@ -971,15 +958,13 @@ export function renderAgencyConstellationDocument(view, options = {}) {
         ${showMandatesReportsNav ? `· <a href="${esc(mandatesReportsHref)}">Report mandates · Filing receipts</a>` : ""}
         ${showMandatesRulesNav ? `· <a href="${esc(mandatesRulesHref)}">Rulemaking mandates · Rules activity</a>` : ""}
         · <a href="${esc(view.interactive_profile_href)}">Interactive profile</a>
-        · <a href="#edge-provenance">Why do we believe these links?</a>
-        · <a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>Demo as-of ${esc(DEMO_AS_OF_DAY)}</a>
+        · <a href="#edge-provenance">Connection evidence</a>${demoAsOfLink}
       </p>
     </header>
     ${actions}
     ${ledgerPanel}
     ${sections}
     ${provenancePanel}
-    ${provenance}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
   <script id="civic-object-payload" type="application/json">${payload}</script>

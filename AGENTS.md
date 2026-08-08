@@ -2321,11 +2321,11 @@ both the live and restored databases.
   `agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1`.
 - Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
 - **Provenance inspector (EBCG general):** pure `site/graph_edge_provenance.mjs`
-  attaches where/how/warrant-class claims to each listed edge. Deep-link
-  `?claim=<category>:<subject_ref>` (e.g.
+  attaches where/how/warrant-class claims to each listed edge. Always-on chrome
+  is a subtle warrant token (`exact` / `probable` / `reviewed`); full where/how
+  lives in the inspector. Deep-link `?claim=<category>:<subject_ref>` (e.g.
   `/agencies/parks-and-recreation/?claim=contracts:notice:20030224002`).
-  Public list = standable edges only (tentative links stay off the page);
-  missing link-record / resolution-run fields stay labeled as not yet attached.
+  Public list = standable edges only (tentative links stay off the page).
   Capture: `python3 tools/capture_edge_provenance_inspector.py`.
 - Verify: `node --test test/agency_constellation.test.mjs test/agency_obligations.test.mjs test/graph_edge_provenance.test.mjs`.
   Demo: `/agencies/parks-and-recreation/` and demo-links
@@ -2357,15 +2357,19 @@ both the live and restored databases.
 
 ## Civic Time Ledger (as-of view)
 
-- First iteration lives on agency constellation documents: pure `site/civic_time_ledger.mjs`
-  + browser `site/civic_time_ledger_runtime.mjs`, shareable `?as_of=YYYY-MM-DD`.
-- Filters on **valid / publication** clocks retained on linked records; historical
-  **system-time** snapshots of the composed graph are not retained yet and must stay
-  labeled (never invent knowledge-time membership). Rebuild pages with
-  `node tools/build_agency_constellation_documents.mjs`. Verify:
-  `node --test test/civic_time_ledger.test.mjs test/agency_constellation.test.mjs`.
+- Compact valid-time filter on agency constellation documents: pure
+  `site/civic_time_ledger.mjs` + browser `site/civic_time_ledger_runtime.mjs`,
+  shareable `?as_of=YYYY-MM-DD`. UI is one-line purpose + date picker + result;
+  deeper copy stays behind a `?` details affordance.
+- Filters on **valid / publication** clocks on linked records only. System-time
+  is not a public axis (history not retained — do not invent or surface it).
+  Render the control only when `asOfFilterCanNarrow(view)` is true (≥2 dated
+  items across ≥2 days); inert controls stay off the page.
+- Rebuild pages with `node tools/build_agency_constellation_documents.mjs`.
+  Verify: `node --test test/civic_time_ledger.test.mjs test/agency_constellation.test.mjs`.
   Capture: `python3 tools/capture_civic_time_ledger.py`. Demo:
-  `/agencies/parks-and-recreation/?as_of=2024-06-01`.
+  `/agencies/parks-and-recreation/?as_of=2024-06-01`,
+  `/agencies/probation/?as_of=2024-06-01`.
 
 
 ## Process conformance · expected vs observed (v1)

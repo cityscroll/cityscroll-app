@@ -1,34 +1,28 @@
 /**
- * Civic Time Ledger — first-iteration as-of / "what did we know when" helpers.
+ * Civic Time Ledger — as-of filter for agency constellation pages.
  *
- * Snodgrass-style bitemporality: keep **valid time** (when a fact held in the
- * world) separate from **system / transaction time** (when CityScroll learned
- * or materialised it). See docs/adr/civic-time-event-contract.md.
- *
- * v1 honesty: daily materialisations retain publisher / event dates on linked
- * records (valid or publication axis) plus a single current materialisation
- * vintage. Historical system-time snapshots of the composed graph are **not**
- * retained yet — never invent them. Filter as-of on the available axis and
- * label the missing one explicitly.
+ * Public surface: **valid / publication time** only (publisher or event dates
+ * on linked records). System-time history of the composed graph is not retained
+ * and is not offered as a UI axis. See docs/adr/civic-time-event-contract.md.
  */
 
 export const CIVIC_TIME_LEDGER_SCHEMA = "cityscroll.civic_time_ledger.v1";
 export const CIVIC_TIME_LEDGER_METHOD = "civic_time_ledger_as_of_v1";
 export const AS_OF_QUERY_KEY = "as_of";
 
-/** Bounded vocabulary for the two Snodgrass axes. */
+/** Library axes (projection helpers). Public UI uses valid only. */
 export const TIME_AXES = Object.freeze({
   valid: Object.freeze({
     id: "valid",
     label: "Valid time",
     short: "Valid",
-    meaning: "When the civic fact held or occurred in the world (or when the city published it, when that is the only stored clock).",
+    meaning: "When the civic fact held or was published.",
   }),
   system: Object.freeze({
     id: "system",
     label: "System time",
     short: "System",
-    meaning: "When CityScroll first observed or materialised the assertion (transaction / knowledge time).",
+    meaning: "When CityScroll materialised the assertion (not retained for public as-of).",
   }),
 });
 
@@ -178,11 +172,31 @@ function cloneCategory(category) {
 }
 
 /**
+ * Whether a constellation has enough dated spread for a useful as-of filter.
+ * Inert controls are worse than no control — require ≥2 dated items on ≥2 days.
+ */
+export function asOfFilterCanNarrow(view) {
+  if (!view || view.kind !== "agency-constellation") return false;
+  const days = new Set();
+  let dated = 0;
+  for (const category of view.categories || []) {
+    for (const item of category.items || []) {
+      const day = itemValidDay(item);
+      if (!day) continue;
+      dated += 1;
+      days.add(day);
+      if (dated >= 2 && days.size >= 2) return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Project an agency constellation view as-of a calendar day.
  *
  * Default axis is **valid** (publisher / event dates retained on items).
- * System-axis projection only keeps items that carry a real observation clock;
- * when none do, the projection is empty and `system_time_status` explains why.
+ * System-axis projection is library-only (no public UI) and only keeps items
+ * that carry a real observation clock.
  *
  * @param {object} view - buildAgencyConstellationView result
  * @param {string} asOfDay - YYYY-MM-DD
@@ -273,9 +287,6 @@ export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
     next.count = kept.length;
     next.status = kept.length ? "matched" : (category.status === "not_yet_ingested" ? "not_yet_ingested" : "empty");
     if (!kept.length && category.status === "matched") {
-      next.note = axis === "system"
-        ? "No linked record in this category carries a retained system-time observation on or before the as-of day."
-        : "No linked record in this category has a publisher or event date on or before the as-of day.";
       next.gap_class = "empty_as_of";
     }
     return next;
@@ -299,14 +310,6 @@ export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
       axis,
       axis_label: TIME_AXES[axis].label,
       system_time_status: systemTimeStatus,
-      system_time_note: systemTimeStatus === "per_item_observation"
-        ? "Some linked records carry observed_at (or equivalent) clocks; system-time as-of uses those only."
-        : systemTimeStatus === "current_snapshot_only"
-          ? `Historical system-time snapshots of this composed graph are not retained yet. The current materialisation vintage is ${materializationVintage}; it is not used as a per-record "learned on" date.`
-          : "System / knowledge time is not retained for these linked records in this materialisation.",
-      valid_time_note: itemsWithValidClock
-        ? "Valid/publication filtering uses each record's stored publisher or event date. That is not the same as when CityScroll learned the fact."
-        : "No publisher or event dates are available on the linked sample; valid-time as-of cannot filter membership.",
       materialization_vintage: materializationVintage,
       counts: {
         matched_categories: matched,
@@ -360,8 +363,6 @@ export function buildLedgerSummary(nowView, asOfView) {
     axis: asOf.axis,
     axis_label: asOf.axis_label,
     system_time_status: asOf.system_time_status,
-    system_time_note: asOf.system_time_note,
-    valid_time_note: asOf.valid_time_note,
     materialization_vintage: asOf.materialization_vintage,
     now: {
       matched_categories: nowView.summary?.matched_categories ?? 0,
@@ -378,77 +379,61 @@ export function buildLedgerSummary(nowView, asOfView) {
 }
 
 /**
- * Static-first panel: as-of control, Snodgrass axis legend, honesty notes.
- * Works without JS via GET form; runtime module upgrades in place.
+ * Compact as-of control: one-line purpose + date picker + result counts.
+ * Deeper explanation lives behind a details affordance, not theory boxes.
+ * Works without JS via GET form; runtime upgrades in place.
  */
 export function renderCivicTimeLedgerPanel({
   path,
   asOfDay = null,
   summary = null,
-  materializationVintage = null,
-  systemTimeStatus = "current_snapshot_only",
 } = {}) {
   const day = normalizeAsOfDay(asOfDay);
   const action = esc(path || "/");
-  const vintage = materializationVintage || summary?.materialization_vintage || null;
-  const status = systemTimeStatus || summary?.system_time_status || "current_snapshot_only";
   const nowCount = summary?.now?.item_count;
   const asOfCount = summary?.as_of_counts?.item_count;
   const arrived = summary?.as_of_counts?.excluded_after_as_of
     ?? summary?.arrived_after?.length
     ?? null;
 
-  const statusLine = status === "per_item_observation"
-    ? "System time is available on some linked records (observed clocks)."
-    : status === "current_snapshot_only"
-      ? `System-time history of this composed graph is not retained yet. Current materialisation vintage${vintage ? `: ${esc(vintage)}` : " is unknown"}. That vintage is not treated as a per-record "learned on" date.`
-      : "System / knowledge time is not retained for these linked records.";
-
   const comparison = day && summary
     ? `<p class="ctl-comparison" data-ctl-comparison>
-        <strong>As of ${esc(day)}</strong> (valid / publication axis):
-        ${esc(String(asOfCount ?? 0))} listed record${asOfCount === 1 ? "" : "s"} across
-        ${esc(String(summary.as_of_counts?.matched_categories ?? 0))} categor${(summary.as_of_counts?.matched_categories ?? 0) === 1 ? "y" : "ies"}
-        · <strong>Now</strong>: ${esc(String(nowCount ?? 0))} listed
-        ${arrived != null ? ` · ${esc(String(arrived))} entered the sample after that day` : ""}
+        <strong>${esc(String(asOfCount ?? 0))}</strong> of
+        <strong>${esc(String(nowCount ?? 0))}</strong> dated records on or before
+        <strong>${esc(day)}</strong>${arrived != null && arrived > 0
+          ? ` · ${esc(String(arrived))} later` : ""}
       </p>`
-    : `<p class="ctl-comparison muted node-muted" data-ctl-comparison>
-        Choose a day to project this agency's linked sample as it stood in the world by that date (publisher / event clocks). The system-time axis stays labeled until historical knowledge snapshots exist.
+    : `<p class="ctl-comparison muted node-muted" data-ctl-comparison data-ctl-idle>
+        Pick a day to keep only records published or dated on or before that day.
       </p>`;
 
   const arrivedList = day && Array.isArray(summary?.arrived_after) && summary.arrived_after.length
     ? `<details class="ctl-arrived">
         <summary>Later records (${esc(String(summary.arrived_after.length))}${summary.arrived_after.length >= 40 ? "+" : ""})</summary>
-        <p class="muted node-muted">Listed in today's sample with a publisher or event date after ${esc(day)}.</p>
         <ul class="node-record-list ctl-arrived-list">${summary.arrived_after.map((row) =>
-          `<li class="node-record"><div class="node-record-main">${esc(row.label || row.id)}</div><span class="muted node-muted">${esc(row.category_id || "")}${row.date ? ` · valid/publication ${esc(row.date)}` : " · date unknown"}</span></li>`).join("")}</ul>
+          `<li class="node-record"><div class="node-record-main">${esc(row.label || row.id)}</div><span class="muted node-muted">${esc(row.category_id || "")}${row.date ? ` · ${esc(row.date)}` : ""}</span></li>`).join("")}</ul>
       </details>`
     : "";
 
-  return `<section class="node-section node-card civic-object-section ctl-panel" data-civic-time-ledger="1" data-as-of="${esc(day || "")}" data-system-time-status="${esc(status)}" data-export-class="object_provenance" aria-labelledby="ctl-heading">
-    <h2 id="ctl-heading">As-of view · Civic Time Ledger</h2>
-    <p class="ctl-lede">First iteration of bitemporal read-back: <strong>valid time</strong> (when the fact held or was published) versus <strong>system time</strong> (when CityScroll knew it). Share the URL to reopen the same day.</p>
+  return `<section class="node-section node-card civic-object-section ctl-panel" data-civic-time-ledger="1" data-as-of="${esc(day || "")}" data-export-class="object_provenance" aria-labelledby="ctl-heading">
+    <div class="ctl-head">
+      <h2 id="ctl-heading">As of day</h2>
+      <details class="ctl-how">
+        <summary aria-label="How as-of works">?</summary>
+        <p>Shows only linked records whose publisher or event date is on or before the day you pick. Share the URL to reopen the same day.</p>
+      </details>
+    </div>
+    <p class="ctl-lede">Filter this agency’s linked records by date.</p>
     <form class="ctl-form" method="get" action="${action}" data-ctl-form>
-      <label class="ctl-label" for="ctl-as-of">As of day</label>
+      <label class="ctl-label" for="ctl-as-of">As of</label>
       <div class="ctl-form-row">
         <input class="ctl-input" id="ctl-as-of" name="${esc(AS_OF_QUERY_KEY)}" type="date" value="${esc(day || "")}" data-ctl-as-of>
-        <button class="node-action civic-object-action primary ctl-submit" type="submit">Show as-of</button>
-        <a class="node-action civic-object-action ctl-clear" href="${action}" data-ctl-clear${day ? "" : " hidden"}>Clear (now)</a>
+        <button class="node-action civic-object-action primary ctl-submit" type="submit">Apply</button>
+        <a class="node-action civic-object-action ctl-clear" href="${action}" data-ctl-clear${day ? "" : " hidden"}>Clear</a>
       </div>
     </form>
-    <dl class="ctl-axes">
-      <div>
-        <dt>${esc(TIME_AXES.valid.label)}</dt>
-        <dd>${esc(TIME_AXES.valid.meaning)} <span class="ctl-axis-state" data-ctl-valid-state>Available on linked records that carry a publisher or event date — this as-of filter uses that axis.</span></dd>
-      </div>
-      <div>
-        <dt>${esc(TIME_AXES.system.label)}</dt>
-        <dd>${esc(TIME_AXES.system.meaning)} <span class="ctl-axis-state" data-ctl-system-state>${statusLine}</span></dd>
-      </div>
-    </dl>
     ${comparison}
     ${arrivedList}
-    <p class="muted node-muted ctl-honesty">Missing clocks stay unlabeled rather than filled. Valid-time membership is not claimed as system-time knowledge.</p>
   </section>`;
 }
 
@@ -479,15 +464,9 @@ export function buildNoticeTemporalFacts(notice = {}) {
     },
     system_time_status: observed ? "per_item_observation" : "not_retained",
     notes: {
-      valid: valid
-        ? "Event / hearing date from the notice fields."
-        : "No separate valid-time event date is stored on this notice.",
-      publication: published
-        ? "City Record publication (start_date) is a publication clock, not system time."
-        : "Publication date is not available on this notice.",
-      system: observed
-        ? "Observation clock retained on this record."
-        : "CityScroll system-time history is not retained for this notice in the public materialisation.",
+      valid: valid ? "Event / hearing date from the notice fields." : null,
+      publication: published ? "City Record publication date." : null,
+      system: observed ? "Observation clock on this record." : null,
     },
   };
 }
