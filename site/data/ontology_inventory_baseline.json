@@ -1,0 +1,281 @@
+{
+  "schema": "cityscroll.ontology_inventory.v1",
+  "role": "baseline",
+  "label": "entity_intelligence_prior_franchise_densify",
+  "as_of": "2026-08-02T19:27:42.561Z",
+  "source": {
+    "materialization": "entity_intelligence_lookup",
+    "git_commit": "456b591c",
+    "entity_intelligence_generated_at": "2026-08-02T19:27:42.561Z",
+    "entity_intelligence_version": "cross_domain_object_link_v2",
+    "entity_count": 40
+  },
+  "root_kinds": [
+    "agency",
+    "vendor"
+  ],
+  "domains": [
+    "franchise",
+    "land",
+    "meetings",
+    "money",
+    "people",
+    "property",
+    "rules"
+  ],
+  "object_kinds": [
+    "award",
+    "committee_meeting",
+    "disposition",
+    "hearing",
+    "project",
+    "public_hearing",
+    "rule",
+    "solicitation",
+    "vote"
+  ],
+  "edge_types": [
+    "applicant_agency",
+    "applicant_vendor",
+    "contract_published_by_agency",
+    "decides_land_project",
+    "hosts_meeting",
+    "issued_rule",
+    "named_franchisee",
+    "published_by_agency",
+    "references_contract",
+    "reviews_franchise",
+    "shares_authority_key",
+    "sited_on_parcel",
+    "votes_as_official"
+  ],
+  "agency_ids": [
+    "board-meetings",
+    "board-of-correction",
+    "board-of-education-retirement-system",
+    "board-of-standards-and-appeals",
+    "borough-president-bronx",
+    "borough-president-brooklyn",
+    "borough-president-queens",
+    "buildings",
+    "charter-revision-commission",
+    "city-council",
+    "city-planning",
+    "city-planning-commission",
+    "city-university",
+    "citywide-administrative-services",
+    "community-boards",
+    "comptroller",
+    "conflicts-of-interest-board",
+    "consumer-and-worker-protection",
+    "economic-development-corporation",
+    "edc-economic-development-corporation-for-nyc",
+    "finance",
+    "fire-department",
+    "franchise-and-concession-review-committee",
+    "health-and-mental-hygiene",
+    "housing-authority",
+    "housing-preservation-and-development",
+    "information-technology-and-telecommunications",
+    "landmarks-preservation-commission",
+    "lpc-nyc-landmarks-preservation-commission",
+    "mayors-office-of-contract-services",
+    "parks-and-recreation",
+    "police-department",
+    "rent-guidelines-board",
+    "sanitation",
+    "small-business-services",
+    "taxi-and-limousine-commission",
+    "transportation"
+  ],
+  "agencies": [
+    {
+      "id": "board-meetings",
+      "display_name": "Board Meetings",
+      "subject_ref": "agency:id:board-meetings"
+    },
+    {
+      "id": "board-of-correction",
+      "display_name": "Board of Correction",
+      "subject_ref": "agency:id:board-of-correction"
+    },
+    {
+      "id": "board-of-education-retirement-system",
+      "display_name": "Board of Education Retirement System",
+      "subject_ref": "agency:id:board-of-education-retirement-system"
+    },
+    {
+      "id": "board-of-standards-and-appeals",
+      "display_name": "Board of Standards and Appeals",
+      "subject_ref": "agency:id:board-of-standards-and-appeals"
+    },
+    {
+      "id": "borough-president-bronx",
+      "display_name": "Borough President - Bronx",
+      "subject_ref": "agency:id:borough-president-bronx"
+    },
+    {
+      "id": "borough-president-brooklyn",
+      "display_name": "Borough President - Brooklyn",
+      "subject_ref": "agency:id:borough-president-brooklyn"
+    },
+    {
+      "id": "borough-president-queens",
+      "display_name": "Borough President - Queens",
+      "subject_ref": "agency:id:borough-president-queens"
+    },
+    {
+      "id": "buildings",
+      "display_name": "Buildings",
+      "subject_ref": "agency:id:buildings"
+    },
+    {
+      "id": "charter-revision-commission",
+      "display_name": "Charter Revision Commission",
+      "subject_ref": "agency:id:charter-revision-commission"
+    },
+    {
+      "id": "city-council",
+      "display_name": "City Council",
+      "subject_ref": "agency:id:city-council"
+    },
+    {
+      "id": "city-planning",
+      "display_name": "City Planning",
+      "subject_ref": "agency:id:city-planning"
+    },
+    {
+      "id": "city-planning-commission",
+      "display_name": "City Planning Commission",
+      "subject_ref": "agency:id:city-planning-commission"
+    },
+    {
+      "id": "city-university",
+      "display_name": "City University",
+      "subject_ref": "agency:id:city-university"
+    },
+    {
+      "id": "citywide-administrative-services",
+      "display_name": "Citywide Administrative Services",
+      "subject_ref": "agency:id:citywide-administrative-services"
+    },
+    {
+      "id": "community-boards",
+      "display_name": "Community Boards",
+      "subject_ref": "agency:id:community-boards"
+    },
+    {
+      "id": "comptroller",
+      "display_name": "Comptroller",
+      "subject_ref": "agency:id:comptroller"
+    },
+    {
+      "id": "conflicts-of-interest-board",
+      "display_name": "Conflicts of Interest Board",
+      "subject_ref": "agency:id:conflicts-of-interest-board"
+    },
+    {
+      "id": "consumer-and-worker-protection",
+      "display_name": "Consumer and Worker Protection",
+      "subject_ref": "agency:id:consumer-and-worker-protection"
+    },
+    {
+      "id": "economic-development-corporation",
+      "display_name": "Economic Development Corporation",
+      "subject_ref": "agency:id:economic-development-corporation"
+    },
+    {
+      "id": "edc-economic-development-corporation-for-nyc",
+      "display_name": "EDC - Economic Development Corporation for NYC",
+      "subject_ref": "agency:id:edc-economic-development-corporation-for-nyc"
+    },
+    {
+      "id": "finance",
+      "display_name": "Finance",
+      "subject_ref": "agency:id:finance"
+    },
+    {
+      "id": "fire-department",
+      "display_name": "Fire Department",
+      "subject_ref": "agency:id:fire-department"
+    },
+    {
+      "id": "franchise-and-concession-review-committee",
+      "display_name": "Franchise and Concession Review Committee",
+      "subject_ref": "agency:id:franchise-and-concession-review-committee"
+    },
+    {
+      "id": "health-and-mental-hygiene",
+      "display_name": "Health and Mental Hygiene",
+      "subject_ref": "agency:id:health-and-mental-hygiene"
+    },
+    {
+      "id": "housing-authority",
+      "display_name": "Housing Authority",
+      "subject_ref": "agency:id:housing-authority"
+    },
+    {
+      "id": "housing-preservation-and-development",
+      "display_name": "Housing Preservation and Development",
+      "subject_ref": "agency:id:housing-preservation-and-development"
+    },
+    {
+      "id": "information-technology-and-telecommunications",
+      "display_name": "Information Technology and Telecommunications",
+      "subject_ref": "agency:id:information-technology-and-telecommunications"
+    },
+    {
+      "id": "landmarks-preservation-commission",
+      "display_name": "Landmarks Preservation Commission",
+      "subject_ref": "agency:id:landmarks-preservation-commission"
+    },
+    {
+      "id": "lpc-nyc-landmarks-preservation-commission",
+      "display_name": "LPC - NYC Landmarks Preservation Commission",
+      "subject_ref": "agency:id:lpc-nyc-landmarks-preservation-commission"
+    },
+    {
+      "id": "mayors-office-of-contract-services",
+      "display_name": "Mayor's Office of Contract Services",
+      "subject_ref": "agency:id:mayors-office-of-contract-services"
+    },
+    {
+      "id": "parks-and-recreation",
+      "display_name": "Parks and Recreation",
+      "subject_ref": "agency:id:parks-and-recreation"
+    },
+    {
+      "id": "police-department",
+      "display_name": "Police Department",
+      "subject_ref": "agency:id:police-department"
+    },
+    {
+      "id": "rent-guidelines-board",
+      "display_name": "Rent Guidelines Board",
+      "subject_ref": "agency:id:rent-guidelines-board"
+    },
+    {
+      "id": "sanitation",
+      "display_name": "Sanitation",
+      "subject_ref": "agency:id:sanitation"
+    },
+    {
+      "id": "small-business-services",
+      "display_name": "Small Business Services",
+      "subject_ref": "agency:id:small-business-services"
+    },
+    {
+      "id": "taxi-and-limousine-commission",
+      "display_name": "Taxi and Limousine Commission",
+      "subject_ref": "agency:id:taxi-and-limousine-commission"
+    },
+    {
+      "id": "transportation",
+      "display_name": "Transportation",
+      "subject_ref": "agency:id:transportation"
+    }
+  ],
+  "vendor_count": 3,
+  "constellation_categories": [],
+  "deliverable_types": []
+}
