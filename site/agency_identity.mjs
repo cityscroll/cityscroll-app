@@ -47,6 +47,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "Fire Department": ["FIRE DEPARTMENT"],
   "Health and Mental Hygiene": ["DEPT OF HEALTH/MENTAL HYGIENE", "DEPT OF MH MR AND ALC SVCS"],
   "Homeless Services": ["DEPT. OF HOMELESS SERVICES"],
+  "Housing Authority": ["NYCHA", "N.Y.C. HOUSING AUTHORITY", "NEW YORK CITY HOUSING AUTHORITY"],
   "Housing Preservation and Development": ["HOUSING PRESERVATION & DVLPMNT", "Department of Housing Preservation and Development", "HPD - NYC Dept of Housing Preservation & Development", "HPD - NYC Dept of Housing Preservation and Development"],
   "Human Resources Administration": ["HRA/DEPT OF SOCIAL SERVICES", "Dept. of Social Svcs/Human Resources Administration"],
   "Independent Budget Office": ["INDEPENDENT BUDGET OFFICE"],
