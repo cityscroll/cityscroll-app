@@ -37,7 +37,6 @@ NOTICE = {
     ),
     "address_to_request": "PASSPort Public RFx",
     "contact_name": "Procurement",
-    "email": "example@example.com",
 }
 
 LIFECYCLE = {
