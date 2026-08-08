@@ -291,7 +291,7 @@ test("UI: differentiator filters and card lead surface exist", () => {
   assert.doesNotMatch(SITE_SOURCE, /id="career-fee-level"[^>]*>/);
   assert.doesNotMatch(SITE_SOURCE, /id="career-no-experience"[^>]*>/);
   assert.doesNotMatch(SITE_SOURCE, /<label[^>]*data-i18n="career_(?:window|format|salary_band|fee_level|no_experience)_label"/);
-  for (const facet of ["interest", "window", "format", "salary-band", "fee-level", "no-experience"]) {
+  for (const facet of ["interest", "eligibility", "window", "format", "salary-band", "fee-level", "no-experience"]) {
     assert.match(SITE_SOURCE, new RegExp(`id="career-${facet}-facets"[^>]*role="group"`));
     assert.match(SITE_SOURCE, new RegExp(`aria-labelledby="career-${facet}-facets-label"`));
   }

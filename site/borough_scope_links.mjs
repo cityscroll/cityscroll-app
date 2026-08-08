@@ -20,6 +20,7 @@ export const BOROUGHS = Object.freeze([
 
 const SURFACE_ALIASES = Object.freeze({ zoning: "land" });
 const SURFACES = new Set(["land", "property", "rules"]);
+const GEOGRAPHIC_MAP_SURFACES = new Set(["land", "property"]);
 
 function clean(value) {
   if (value == null) return "";
@@ -81,7 +82,8 @@ function labelFor(id, t) {
 }
 
 /**
- * Render a compact, keyboard-friendly borough link rail and one map pivot.
+ * Render a compact, keyboard-friendly borough link rail. Map pivots are only
+ * offered for geographic lenses; this is separate from merely having a place facet.
  * @param {object} opts
  * @param {string} opts.surface — land/zoning, property, or rules
  * @param {string} [opts.selected]
@@ -105,7 +107,10 @@ export function boroughScopeLinksHTML(opts = {}) {
   }).join("");
   const mapHref = boroughMapPivotHref(surface, selected, currentHash);
   const mapEdge = `${surface}.map.borough.${selected || "all"}`;
-  return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}</div><a class="act mini borough-map-pivot" data-borough-map-pivot="${escape(surface)}" data-scope-edge="${escape(mapEdge)}" data-near-you-link data-lens="${escape(surface)}" href="${escape(mapHref)}">${escape(t("near_you_map_scope"))}</a>`;
+  const map = GEOGRAPHIC_MAP_SURFACES.has(surface)
+    ? `<a class="act mini borough-map-pivot" data-borough-map-pivot="${escape(surface)}" data-scope-edge="${escape(mapEdge)}" data-near-you-link data-lens="${escape(surface)}" href="${escape(mapHref)}">${escape(t("near_you_map_scope"))}</a>`
+    : "";
+  return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}</div>${map}`;
 }
 
 export function normalizeBoroughScope(value) {
