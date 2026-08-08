@@ -398,6 +398,121 @@ select {
   margin-block-start: var(--space-1);
 }
 
+/* Civic Time Ledger as-of panel (agency constellation first iteration). */
+.ctl-panel {
+  background: var(--color-surface);
+}
+
+.ctl-lede {
+  margin: 0 0 var(--space-4);
+  max-width: 62ch;
+  color: var(--color-text);
+  line-height: 1.45;
+}
+
+.ctl-form {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-end: var(--space-4);
+}
+
+.ctl-label {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+}
+
+.ctl-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.ctl-input {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.ctl-input:focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+.ctl-axes {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-4);
+}
+
+.ctl-axes > div {
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--color-canvas);
+}
+
+.ctl-axes dt {
+  margin: 0 0 var(--space-1);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+}
+
+.ctl-axes dd {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.ctl-axis-state {
+  display: block;
+  margin-block-start: var(--space-1);
+  color: var(--color-text);
+}
+
+.ctl-comparison {
+  margin: 0 0 var(--space-3);
+  line-height: 1.45;
+}
+
+.ctl-arrived {
+  margin: 0 0 var(--space-3);
+}
+
+.ctl-arrived summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-action);
+}
+
+.ctl-arrived-list {
+  margin-block-start: var(--space-2);
+}
+
+.ctl-honesty {
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .ctl-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ctl-input,
+  .ctl-form-row .node-action {
+    width: 100%;
+  }
+}
+
 .exam-facet-pivot-list {
   display: flex;
   flex-wrap: wrap;
