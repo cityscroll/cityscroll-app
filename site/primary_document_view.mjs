@@ -173,7 +173,7 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
   const view = buildBrowseView(facet, payload, params);
   let html = pageMetadata(shell, {
     title: `${config.label} · Browse · CityScroll`,
-    description: `Browse bounded NYC ${config.label.toLowerCase()} public records, then refine with the full source controls.`,
+    description: `Browse NYC ${config.label.toLowerCase()} public records by agency, place, status, date, or keyword.`,
     canonical: canonicalRoute(route),
     primaryHref: "/browse/",
     primaryContext: "browse",

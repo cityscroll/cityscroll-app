@@ -219,25 +219,19 @@ async function showOfficial(personId, opts){
           id: escUiHtml(String(resolvedEventId || "—")),
           date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date ? fdate(String(event.event_date).slice(0,10)) : (scopedVotes[0]?.event_date ? fdate(String(scopedVotes[0].event_date).slice(0,10)) : "—"))
         })}</p>`
-      : `<p class="ei-lead">${t("official_event_scoped_note")}</p>`)
-    : `<p class="ei-lead">${t("official_recent_lead_html",{
+      : "")
+    : (recentVotes.length ? `<p class="ei-lead">${t("official_recent_lead_html",{
         n: String(recentVotes.length || 0)
-      })}</p>`;
+      })}</p>` : "");
 
   let body = "";
   // Section A: this hearing (when scoped)
   if(hasScoped){
-    let scopedBody = "";
     if(loadError && !record && !preHearing.length){
-      scopedBody = `<div class="note">${t("official_load_error_html")}</div>`;
-    } else if(!scopedVotes.length){
-      scopedBody = `<div class="note" data-person-votes-gap="empty">${t("official_no_votes_html",{
-        name: escUiHtml(name)
-      })}</div>`;
-    } else {
-      scopedBody = officialVotesTableHTML(scopedVotes, { hideHearing: true });
+      body += `<div class="chain-h">${t("official_votes_heading")}</div><div class="note">${t("official_load_error_html")}</div>`;
+    } else if(scopedVotes.length){
+      body += `<div class="chain-h">${t("official_votes_heading")}</div>${officialVotesTableHTML(scopedVotes, { hideHearing: true })}`;
     }
-    body += `<div class="chain-h">${t("official_votes_heading")}</div>${scopedBody}`;
   }
 
   // Section B: recent votes across matters (precompute)
@@ -250,10 +244,6 @@ async function showOfficial(personId, opts){
       formatDate:fdate, escapeHtml:escUiHtml, translate:t, votesTableHTML:officialVotesTableHTML,
     })
       || officialVotesTableHTML(recentVotes, { hideHearing: false });
-  } else if(!hasScoped){
-    body = `<div class="note" data-person-votes-gap="empty">${t("official_no_recent_html",{
-      name: escUiHtml(name)
-    })}</div>`;
   }
 
   const kicker = hasScoped ? t("official_skim_kicker") : t("official_page_kicker");
@@ -263,7 +253,7 @@ async function showOfficial(personId, opts){
       <div class="ftype" style="margin-bottom:6px">${kicker}</div>
       <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(name)}</h2>
       ${eventLine}
-      ${officialConnections.renderOfficialCoverageHTML(officialView, { translate:t, escapeHtml:escUiHtml })}
+      ${recentVotes.length || scopedVotes.length ? officialConnections.renderOfficialCoverageHTML(officialView, { translate:t }) : ""}
       ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
@@ -271,7 +261,6 @@ async function showOfficial(personId, opts){
         ${officialView?.view_all_href ? `<a class="act official-view-all" href="${escUiHtml(officialView.view_all_href)}">${t("official_view_all_scope")}</a>` : ""}
         <a class="view" href="${agencyHref("City Council")}">${t("official_city_council_profile")}</a>
       </div>
-      <p class="aidprov" style="margin-top:14px">${t("official_provenance_html")}</p>
     </div>
   </div>`;
   focusItemRouteTarget(box.querySelector(".route-item"));
@@ -514,9 +503,9 @@ async function showAgency(name, initialTab){
         ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
         <button class="act" type="button" data-aw="rules">${t("agency_watch_rules_btn")}</button>
         <button class="act" type="button" data-aw="meetings">${t("agency_watch_meetings_btn")}</button>
+        <a class="view" href="/agencies/${encodeURIComponent(identity.canonical_id)}/">Agency records</a>
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}
       </div>
-      <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag. Watch this agency for City Record notices across sections; the <a href="/agencies/${encodeURIComponent(identity.canonical_id)}/">cross-category constellation</a> also surfaces staffing exam certifications when the publisher lists them.</div>
     </div></div>`;
 
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
@@ -909,15 +898,11 @@ function vendorPhaseTimelineHTML(view){
     : "";
   // No always-on "not yet shown" absence note for future phases — paint only present facts.
   const chronoRows = (view.chronological || []).map(vendorChronoRowHTML).join("");
-  const how = `<details class="inline-disclose lc-how">
+  const allDates = `<details class="inline-disclose lc-how">
     <summary>${t("vendor_phase_show_all")}</summary>
     <div class="timeline vendor-phase-chrono">${chronoRows}</div>
-  </details>
-  <details class="inline-disclose lc-how">
-    <summary>${t("vendor_phase_how_summary")}</summary>
-    <div class="inline-disclose-body">${t("vendor_phase_how_html")}</div>
   </details>`;
-  return `${lead}${stepper}${currentPanel}${historyWrap}${how}`;
+  return `${lead}${stepper}${currentPanel}${historyWrap}${allDates}`;
 }
 
 function bindVendorPhaseTimeline(root){
@@ -1000,9 +985,6 @@ function vendorProfileHTML(profile, details, hydrating){
         <div class="chain-h">${t("vendor_mentions_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
         <div class="chain-h">${t("forecast_section_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
       </div>` : "";
-  const footprintAbsent = !details?.footprint
-    ? `<div class="eicard vendor-footprint vendor-footprint-absent"><div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div><p class="ei-empty">This summary is not available yet.</p></div>`
-    : "";
   // Checkbook outbound is only in the phase lead (one per profile) — note names the source only.
   return `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
@@ -1016,7 +998,7 @@ function vendorProfileHTML(profile, details, hydrating){
 
       <div id="overview-content">
         ${agencies.length?`<div class="chain-h">${t("vendor_agencies_heading")}</div><div class="chiprow" style="margin-top:6px">${agChips}</div>${agencyIntersectHost}`:""}
-        <div id="vendor-footprint">${footprintAbsent}</div>
+        <div id="vendor-footprint"></div>
         ${onTheRecord}
         ${mentions.length?`<div class="chain-h">${t("vendor_mentions_heading")}</div><div class="timeline">${mentionItems}</div>`:""}
         ${loadingSections}

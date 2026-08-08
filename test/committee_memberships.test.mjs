@@ -19,7 +19,7 @@ test("committee memberships join only exact member_id values", () => {
   assert.equal(committeeMembershipsForId(doc, "7801")[0].provenance.join_key, "member_id");
 });
 
-test("committee membership panel is explicit for linked and gap states", () => {
+test("committee membership panel shows populated rows and omits gap and methodology copy", () => {
   const html = renderCommitteeMembershipsHTML({
     rows: [{ committee: "Land Use", appointment_type: "Member", start_date: "2024-01-01", end_date: "2025-12-31" }],
     coverage: { eligible_rows: 5358, linked_rows: 308, row_rate: 0.0575 },
@@ -27,5 +27,6 @@ test("committee membership panel is explicit for linked and gap states", () => {
   }, { translate: (key, values = {}) => `${key}:${JSON.stringify(values)}`, escapeHtml: (value) => String(value) });
   assert.match(html, /data-membership-status="linked"/);
   assert.match(html, /Land Use/);
-  assert.match(renderCommitteeMembershipsHTML({ rows: [] }), /data-membership-status="gap"/);
+  assert.doesNotMatch(html, /coverage|cohort|source|vintage|5358|308|5\.8%/i);
+  assert.equal(renderCommitteeMembershipsHTML({ rows: [] }), "");
 });

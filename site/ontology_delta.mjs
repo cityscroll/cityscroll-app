@@ -22,7 +22,6 @@ import {
   renderCivicDocumentMast,
   renderNodeBack,
   renderNodeFooter,
-  renderNodeProvenance,
 } from "./civic_document_chrome.mjs";
 
 export const ONTOLOGY_DELTA_SCHEMA = "cityscroll.ontology_delta.v1";
@@ -119,9 +118,8 @@ export const ONTOLOGY_DELTA_COPY = Object.freeze({
   kicker: "Living civic graph",
   title: "What's new in the graph",
   lead:
-    "New kinds of things and connections that appear in the civic graph since the baseline inventory — agencies, relationship types, object kinds, and mandate categories.",
-  empty:
-    "No new entity kinds, relationship types, agencies, or categories appear since the baseline inventory.",
+    "New agencies, relationship types, object kinds, and mandate categories in CityScroll.",
+  empty: "",
   watch_hint:
     "Follow an agency from its constellation page to get email when that agency's linked records change.",
 });
@@ -467,11 +465,10 @@ export function buildOntologyDeltaLookup({
   };
 }
 
-function renderDimensionSection(dimension, items, { limit = 80 } = {}) {
+function renderDimensionSection(dimension, items) {
   if (!items?.length) return "";
   const title = DIMENSION_LABELS[dimension] || prettifyId(dimension);
-  const shown = items.slice(0, limit);
-  const list = shown.map((item) => {
+  const list = items.map((item) => {
     const label = item.label || item.display_name || item.id;
     const href = item.href
       || (dimension === "agencies" && item.id ? `/agencies/${encodeURIComponent(item.id)}/` : null);
@@ -486,13 +483,9 @@ function renderDimensionSection(dimension, items, { limit = 80 } = {}) {
       <div class="node-record-main">${main}${meta}</div>
     </li>`;
   }).join("");
-  const more = items.length > shown.length
-    ? `<p class="node-muted muted">${esc(String(items.length - shown.length))} more in this materialization.</p>`
-    : "";
   return `<section class="node-section node-card civic-object-section ontology-delta-dimension" data-dimension="${esc(dimension)}" aria-labelledby="od-${esc(dimension)}">
     <h2 id="od-${esc(dimension)}">${esc(title)} <span class="muted node-muted">(${esc(String(items.length))} new)</span></h2>
     <ul class="node-record-list ontology-delta-list">${list}</ul>
-    ${more}
   </section>`;
 }
 
@@ -503,17 +496,7 @@ export function renderOntologyDeltaDocument(lookup, { assetPrefix = "/" } = {}) 
   const copy = lookup?.copy || ONTOLOGY_DELTA_COPY;
   const added = lookup?.added || {};
   const total = Number(lookup?.total_added) || 0;
-  const baselineAsOf = lookup?.baseline?.as_of
-    ? String(lookup.baseline.as_of).slice(0, 10)
-    : null;
-  const currentAt = lookup?.current?.generated_at || lookup?.generated_at || null;
-  const currentDay = currentAt ? String(currentAt).slice(0, 10) : null;
-
-  const summaryBits = [
-    total ? `${total} new type${total === 1 ? "" : "s"} or agencies` : null,
-    baselineAsOf ? `baseline ${baselineAsOf}` : null,
-    currentDay ? `inventory ${currentDay}` : null,
-  ].filter(Boolean);
+  const summary = total ? `${total} new type${total === 1 ? "" : "s"} or agencies` : "";
 
   const sections = [
     "edge_types",
@@ -525,12 +508,7 @@ export function renderOntologyDeltaDocument(lookup, { assetPrefix = "/" } = {}) 
     "agencies",
   ].map((dim) => renderDimensionSection(dim, added[dim] || [])).join("");
 
-  const body = total > 0
-    ? sections
-    : `<section class="node-section node-card civic-object-section" id="ontology-delta-empty">
-        <h2>Inventory unchanged</h2>
-        <p class="node-muted">${esc(copy.empty || ONTOLOGY_DELTA_COPY.empty)}</p>
-      </section>`;
+  const body = total > 0 ? sections : "";
 
   const watch = `<section class="node-section node-card civic-object-section" id="ontology-delta-watch">
     <h2>Watch linked records</h2>
@@ -550,15 +528,6 @@ export function renderOntologyDeltaDocument(lookup, { assetPrefix = "/" } = {}) 
     counts.deliverable_types ? `${counts.deliverable_types} deliverable types` : null,
     counts.domains ? `${counts.domains} domains` : null,
   ].filter(Boolean).join(" · ");
-
-  const provenance = renderNodeProvenance({
-    note: "Compares the live graph inventory to a frozen prior inventory of the same materializations.",
-    sourceItems: [
-      baselineAsOf ? `Baseline inventory as of ${baselineAsOf}` : "Baseline inventory",
-      currentDay ? `Current graph inventory as of ${currentDay}` : "Current graph inventory",
-      "Entity intelligence, agency constellation, and statutory mandates",
-    ].filter(Boolean),
-  });
 
   return gateNodePageRender(`<!doctype html>
 <html lang="en">
@@ -600,12 +569,11 @@ ${renderNodeBack({ href: "/agencies/", label: "Back to agencies" })}
   <p class="node-kicker civic-object-kicker">${esc(copy.kicker || ONTOLOGY_DELTA_COPY.kicker)}</p>
   <h1>${esc(copy.title || ONTOLOGY_DELTA_COPY.title)}</h1>
   <p class="node-lede">${esc(copy.lead || ONTOLOGY_DELTA_COPY.lead)}</p>
-  ${summaryBits.length ? `<p class="node-muted muted">${esc(summaryBits.join(" · "))}</p>` : ""}
+  ${summary ? `<p class="node-muted muted">${esc(summary)}</p>` : ""}
   ${chipLine ? `<ul class="ontology-delta-summary-chips" aria-label="New inventory counts">${chipLine.split(" · ").map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
 </header>
 ${body}
 ${watch}
-${provenance}
 </article>
 </main>
 ${renderNodeFooter({ aboutHref: "/about.html" })}

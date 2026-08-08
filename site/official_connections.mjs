@@ -226,43 +226,13 @@ export function buildOfficialConnectionView(
 
 export function renderOfficialCoverageHTML(
   view,
-  { translate, escapeHtml } = {},
+  { translate } = {},
 ) {
   const t = typeof translate === "function" ? translate : (key) => key;
-  const esc = typeof escapeHtml === "function" ? escapeHtml : (value) => String(value ?? "");
   const coverage = view?.coverage || {};
-  const gate = coverage.gate || {};
-  const audit = coverage.retention_audit || {};
   if (!coverage.cohort) return "";
-  const events = Number(coverage.retained_event_count) || 0;
-  const target = Number(gate.minimum_distinct_events) || 30;
-  const eventProgress = Math.min(100, Math.round((events / target) * 100));
-  const retention = Number(audit.rate);
-  const retentionPct = Number.isFinite(retention) ? Math.round(retention * 1000) / 10 : null;
-  const retentionMin = Math.round((Number(gate.minimum_retention_rate) || .95) * 100);
-  const held = gate.promoted !== true;
-  return `<aside class="official-coverage" role="note" data-official-coverage-status="${held ? "hold" : "promoted"}">
-    <div class="chain-h">${t("official_coverage_heading")}</div>
-    <p><strong>${held ? t("official_coverage_bounded_label") : t("official_coverage_promoted_label")}</strong></p>
-    <div class="official-coverage-measure" data-gate="events">
-      <span>${t("official_coverage_events", { observed:String(events), required:String(target) })}</span>
-      <progress value="${eventProgress}" max="100" aria-label="${esc(t("official_coverage_events_progress"))}">${eventProgress}%</progress>
-    </div>
-    <div class="official-coverage-measure" data-gate="retention">
-      <span>${t("official_coverage_retention", {
-        retained:String(audit.retained_person_id_rows ?? "—"),
-        eligible:String(audit.eligible_vote_rows ?? "—"),
-        rate:retentionPct == null ? "—" : `${retentionPct}%`,
-        minimum:String(retentionMin),
-      })}</span>
-      <progress value="${retentionPct == null ? 0 : Math.min(100, retentionPct)}" max="100" aria-label="${esc(t("official_coverage_retention_progress"))}">${retentionPct ?? 0}%</progress>
-    </div>
-    <p class="aidprov">${t("official_coverage_basis", {
-      retained:String(coverage.retained_event_count ?? 0),
-      eligible:String(coverage.eligible_event_count ?? 0),
-      matters:String(coverage.distinct_matter_count ?? 0),
-    })}</p>
-  </aside>`;
+  const promoted = view?.reader_label === "official_decision_constellation";
+  return `<p class="official-reader-label" data-official-reader-label="${promoted ? "promoted" : "published-roll-calls"}"><strong>${promoted ? t("official_coverage_promoted_label") : t("official_coverage_bounded_label")}</strong></p>`;
 }
 
 export function renderOfficialDecisionTrailHTML(

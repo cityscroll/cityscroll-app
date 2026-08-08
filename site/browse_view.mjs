@@ -45,7 +45,7 @@ export const BROWSE_FACETS = Object.freeze({
     label: "Property",
     route: "/browse/property/",
     countLabel: "observed property records",
-    description: "Disposition notices joined by parcel, with hearings, sales, conveyances, and tax-lien context.",
+    description: "Property dispositions, hearings, sales, conveyances, and tax-lien context.",
     sources: "City Record · parcel data · published tax-lien lists",
     container: "propertyfeed",
     dataPath: "/data/property_domain_observations.json",
@@ -735,15 +735,11 @@ export function renderBrowseLanding(landing) {
       <a class="browse-source-action" href="${esc(card.route)}">Browse ${esc(card.label.toLowerCase())} <span aria-hidden="true">→</span></a>
     </article>`;
   }).join("");
-  const range = landing?.oldestSnapshot && landing?.newestSnapshot
-    ? `Records updated between ${esc(landing.oldestSnapshot)} and ${esc(landing.newestSnapshot)}.`
-    : "Update dates are shown for each source.";
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
       <p>Choose a source view, then narrow it by agency, place, status, date, or keyword.</p>
-      <p class="browse-landing-disclosure"><strong>Current public records.</strong> Counts describe the records shown here, not each source’s full historical history. ${range}</p>
     </header>
     <div class="browse-source-grid">${cards}</div>
   </div>`;
@@ -758,7 +754,7 @@ function renderedDate(value) {
 export function renderBrowseView(view) {
   if (!view) return "";
   const disclosure = view.liveOnlyFilters.length
-    ? `<p class="note warn browse-filter-disclosure" role="status">These filters need the live Browse controls: ${esc(view.liveOnlyFilters.join(", "))}. The bounded default is shown until the page is enhanced.</p>`
+    ? `<p class="note warn browse-filter-disclosure" role="status" aria-label="Loading requested filters"><span class="loading" aria-hidden="true"></span></p>`
     : "";
   const scopeChip = renderScopeChip(view.scope, view.config, view.scopeSearch);
   const contextualSuggestions = renderContextualSuggestions(view.contextualSuggestions);

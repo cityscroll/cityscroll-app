@@ -198,6 +198,7 @@ test("renderOntologyDeltaDocument paints deltas without disclaimerslop", () => {
   assert.match(html, /href="\/agencies\/new-agency-demo\/"/);
   assert.match(html, /canonical" href="\/graph\/ontology-delta\/"/);
   assert.doesNotMatch(html, DISCLAIMERSLOP);
+  assert.doesNotMatch(html, /materialization|frozen prior inventory|baseline \d|inventory \d|Sources and limits/i);
   // Machine subject_ref must not print as body text.
   assert.doesNotMatch(html, />agency:id:/);
   assert.ok(Object.keys(DIMENSION_LABELS).length >= 5);
@@ -233,6 +234,7 @@ test("committed baseline + built artifacts exist and show real deltas", () => {
     assert.match(html, /id="ontology-delta"/);
     assert.match(html, /data-has-deltas="1"/);
     assert.doesNotMatch(html, DISCLAIMERSLOP);
+    assert.doesNotMatch(html, /materialization|frozen prior inventory|baseline \d|inventory \d|Sources and limits/i);
     assert.match(html, /Relationship types|Object kinds|Agencies in the graph/);
   }
 });

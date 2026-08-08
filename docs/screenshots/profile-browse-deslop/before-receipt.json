@@ -1,0 +1,15 @@
+{
+  "phase": "before",
+  "viewports": [
+    390,
+    1440
+  ],
+  "profile": "deterministic CAMBA vendor footprint rendered through the live application",
+  "browse": "build-rendered Browse landing hydrated by the live application",
+  "forbidden_copy": [
+    "identity not yet confirmed",
+    "this summary groups the public records",
+    "counts describe the records shown here",
+    "bounded default is shown until the page is enhanced"
+  ]
+}
