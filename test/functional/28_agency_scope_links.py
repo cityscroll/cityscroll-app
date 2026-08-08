@@ -53,10 +53,9 @@ def main():
             ),
         )
 
-        # Interactive SPA agency profile (entity-intelligence scope links).
-        # Bare /agencies/<id>/ serves the static constellation document.
+        # Interactive SPA profile (?tab=). Default /agencies/<id>/ is constellation.
         page.goto(
-            BASE.rstrip("/") + "/agencies/citywide-administrative-services/?tab=overview",
+            BASE.rstrip("/") + "/agencies/citywide-administrative-services/?tab=forecast",
             wait_until="domcontentloaded",
             timeout=30000,
         )

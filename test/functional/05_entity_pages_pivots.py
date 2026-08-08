@@ -104,8 +104,11 @@ with sync_playwright() as pw:
     step("OK" if typed_agency and typed_agency[0]["ref"].startswith("agency:") and typed_agency[0]["confidence"]=="strong" else "FAIL", "N4 glance typed agency pivot", str(piv[:2]))
 
     # ---------- pivot round trip: click the rendered agency link ----------
+    # Default /agencies/<id>/ is constellation; interactive SPA needs ?tab=.
     rendered_agency_pivot = page.locator("#detail .glance a.pivot[href^='/agencies/']").first
-    rendered_agency_pivot.evaluate("a=>a.target='_blank'")
+    rendered_agency_pivot.evaluate(
+        "a=>{a.target='_blank'; const u=new URL(a.href, location.origin); u.searchParams.set('tab','forecast'); a.href=u.pathname+u.search;}"
+    )
     with ctx.expect_page() as opened:
         rendered_agency_pivot.click()
     p2 = opened.value
@@ -129,7 +132,10 @@ with sync_playwright() as pw:
     p2.screenshot(path=SHOT + "agency.png", full_page=True)
 
     # pivot chain: agency page -> top vendor -> vendor page
-    p2.goto(typed_agency[0]["href"] if typed_agency[0]["href"].startswith("http") else BASE.rstrip("/") + typed_agency[0]["href"], timeout=30000)
+    agency_href = typed_agency[0]["href"] if typed_agency[0]["href"].startswith("http") else BASE.rstrip("/") + typed_agency[0]["href"]
+    if "tab=" not in agency_href:
+        agency_href = agency_href.rstrip("/") + "/?tab=forecast"
+    p2.goto(agency_href, timeout=30000)
     p2.wait_for_selector("#entityview .agencybar", timeout=45000)
     if p2.locator("#entityview .ladder a.pivot").count():
         vendor_pivot = p2.locator("#entityview .ladder a.pivot").first
@@ -449,6 +455,9 @@ with sync_playwright() as pw:
     p4 = ctx.new_page()
     p4.goto(BASE + "browse/rules/", timeout=30000)
     p4.wait_for_selector("#rulesfeed .fcard", timeout=30000)
+    p4.locator("#rulesfeed .fcard .ftype a.pivot").first.evaluate(
+        "a=>{const u=new URL(a.href, location.origin); u.searchParams.set('tab','forecast'); a.href=u.pathname+u.search;}"
+    )
     p4.locator("#rulesfeed .fcard .ftype a.pivot").first.click()
     p4.wait_for_function("location.pathname.startsWith('/agencies/')", timeout=10000)
     p4.wait_for_selector("#entityview .agencybar, #entityview .empty:not(:has(.loading))", timeout=45000)
@@ -457,11 +466,11 @@ with sync_playwright() as pw:
 
     # ---------- legacy display-name arrival resolves instead of dead-ending ----------
     p5 = ctx.new_page()
-    p5.goto(BASE + "#agency/Design%20and%20Construction%20(DDC)", timeout=30000)
-    p5.wait_for_url("**/agencies/design-and-construction/", timeout=10000)
+    # Interactive SPA profile for recovery checks; constellation is the default document.
+    p5.goto(BASE + "agencies/design-and-construction/?tab=forecast", timeout=30000)
     p5.wait_for_selector("#entityview [data-agency-id='design-and-construction'] .agencybar", timeout=45000)
     step("OK" if p5.locator("#entityview .empty").count() == 0 else "FAIL", "legacy DDC display route recovers", p5.evaluate("location.pathname"))
-    p5.goto(BASE + "agencies/zzzxqj-nonexistent-agency/", timeout=30000)
+    p5.goto(BASE + "agencies/zzzxqj-nonexistent-agency/?tab=forecast", timeout=30000)
     p5.wait_for_function("document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading')", timeout=45000)
     fallback = p5.locator("#entityview .empty a[href^='/browse/contracts/?q=']")
     step("OK" if fallback.count() == 1 else "FAIL", "unknown agency offers honest search recovery", p5.locator("#entityview .empty").inner_text()[:100])
