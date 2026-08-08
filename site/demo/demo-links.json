@@ -1070,7 +1070,7 @@
       "id": "agency-edge-provenance-parks",
       "url": "agencies/parks-and-recreation/?claim=contracts%3Anotice%3A20030224002",
       "feature": "edge-provenance-inspector",
-      "description": "Inspect why a Parks contracts connection is linked: source record, warrant class, and confidence is not identity.",
+      "description": "Inspect why a Parks contracts connection is linked: source record and warrant class.",
       "expectations": {
         "pathname": "/agencies/parks-and-recreation/",
         "visible": [
@@ -1085,8 +1085,8 @@
             "selector": "[data-warrant-class=\"exact\"]"
           },
           {
-            "selector": ".edge-prov-honesty",
-            "text": "Confidence is not identity"
+            "selector": ".edge-prov-stance",
+            "text": "Publisher key match"
           }
         ],
         "notVisible": [

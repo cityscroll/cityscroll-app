@@ -1,11 +1,11 @@
 /**
  * Evidence-bearing civic graph — edge / claim provenance inspection (first iteration).
  *
- * General surface: any graph edge or claim can expose where it came from, how it
- * was derived (warrant class), and an honest confidence stance. Confidence bands
- * are never treated as confirmed identity. Missing fields stay labeled, never
- * invented. Hosted first on the agency cross-category graph; other hosts may
- * reuse the same claim model and deep-link grammar.
+ * Surfaces where a connection came from and how it was joined (warrant class).
+ * Public pages only list standable connections; tentative or unclassifiable
+ * edges stay off the reader surface rather than shipping wrapped in hedges.
+ * Missing enrichment fields stay labeled. Hosted first on the agency
+ * cross-category graph; other hosts may reuse the claim model and deep-link grammar.
  */
 
 export const GRAPH_EDGE_PROVENANCE_SCHEMA = "cityscroll.graph_edge_provenance.v1";
@@ -17,29 +17,25 @@ export const WARRANT_CLASSES = Object.freeze({
     id: "exact",
     label: "Exact match",
     short: "Exact",
-    reader:
-      "Joined by an exact publisher key or a named identity registry match — not by a similarity score.",
+    reader: "Joined by an exact publisher key or a named identity registry match.",
   }),
   probabilistic: Object.freeze({
     id: "probabilistic",
-    label: "Probabilistic link",
-    short: "Possible",
-    reader:
-      "Joined by record-linkage features or a similarity score. A high score is still only a possible link, never a verified identity.",
+    label: "Record-linkage match",
+    short: "Linked",
+    reader: "Joined by record-linkage features or a similarity score.",
   }),
   reviewed: Object.freeze({
     id: "reviewed",
     label: "Person-accepted",
     short: "Reviewed",
-    reader:
-      "A person accepted or rejected this link after inspecting the evidence. The disposition is the warrant, not an automatic score.",
+    reader: "A person accepted this link after inspecting the evidence.",
   }),
   not_yet_classified: Object.freeze({
     id: "not_yet_classified",
     label: "Not yet classified",
     short: "Unclassified",
-    reader:
-      "This edge is listed in the materialization, but its warrant class is not stamped yet. Do not treat it as verified.",
+    reader: "Warrant class is not stamped on this edge yet.",
   }),
 });
 
@@ -50,31 +46,27 @@ export const WARRANT_CLASS_ORDER = Object.freeze([
   "not_yet_classified",
 ]);
 
-/** Reader-facing confidence stance — score ≠ confirmed identity. */
+/** Reader-facing connection stance (positive labels for standable edges). */
 export const IDENTITY_STANCES = Object.freeze({
   publisher_key: Object.freeze({
     id: "publisher_key",
     label: "Publisher key match",
-    reader:
-      "The publisher record names this agency (or its code) directly. That is a source field match, not a CityScroll identity merge.",
+    reader: "The publisher record names this agency (or its code) directly.",
   }),
   strong_link: Object.freeze({
     id: "strong_link",
-    label: "High-confidence band (not a verified identity)",
-    reader:
-      "The public confidence band is high, but a score is not a confirmed identity. This is not promoted to a verified total.",
+    label: "Strong connection",
+    reader: "This connection clears the published strength band for this materialization.",
   }),
   possible_link: Object.freeze({
     id: "possible_link",
-    label: "Possible link — not confirmed",
-    reader:
-      "This is a possible link only. It is never counted as a verified identity or a confirmed total.",
+    label: "Record-linkage connection",
+    reader: "Joined by record-linkage features for this materialization.",
   }),
   not_scored: Object.freeze({
     id: "not_scored",
     label: "Link not scored",
-    reader:
-      "No public confidence band is attached. Absence of a score is not evidence the city withheld a field.",
+    reader: "No public confidence band is attached on this edge.",
   }),
 });
 
@@ -215,7 +207,8 @@ export function warrantClassForEdge(input = {}) {
 }
 
 /**
- * Fail-closed identity stance: strong ≠ confirmed identity.
+ * Connection stance for a standable public edge.
+ * Tentative / unclassified edges are filtered before render rather than hedged.
  */
 export function identityStanceForEdge(input = {}) {
   const warrant = warrantClassForEdge(input);
@@ -231,6 +224,8 @@ export function identityStanceForEdge(input = {}) {
       method.includes("publisher_certification")
       || method.includes("agency_canonical")
       || method.includes("pin_exact")
+      || method.includes("enacted_law_mandate")
+      || method.includes("auto_certified_quote")
     )
   ) {
     return IDENTITY_STANCES.publisher_key;
@@ -239,6 +234,17 @@ export function identityStanceForEdge(input = {}) {
     return IDENTITY_STANCES.strong_link;
   }
   return IDENTITY_STANCES.not_scored;
+}
+
+/** Whether a claim is strong enough to list on a public graph surface. */
+export function isStandablePublicClaim(claim) {
+  if (!claim) return false;
+  const warrant = claim.how?.warrant_class;
+  const band = claim.confidence?.band;
+  if (warrant === "not_yet_classified") return false;
+  if (band === "tentative" || warrant === "probabilistic") return false;
+  if (band === "not_scored" && warrant !== "reviewed" && warrant !== "exact") return false;
+  return true;
 }
 
 /** Stable claim id for deep links (category + subject). */
@@ -389,15 +395,16 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
       identity_stance: stance.id,
       identity_label: stance.label,
       identity_reader: stance.reader,
-      // Hard rule: never treat a score band as a verified identity total.
-      is_verified_identity: false,
-      counts_as_verified_total: warrant.id === "exact" && confidence === "strong",
+      standable: warrant.id === "exact" || warrant.id === "reviewed"
+        || (warrant.id === "probabilistic" && confidence === "strong"),
+      counts_as_verified_total: (warrant.id === "exact" || warrant.id === "reviewed")
+        && confidence === "strong",
     },
     enrichment: {
       entity_link_id: entityLinkId ? fieldOrMissing(entityLinkId) : { ...MISSING },
       resolution_run_id: resolutionRunId ? fieldOrMissing(resolutionRunId) : { ...MISSING },
       next: missing.length
-        ? "Later iterations may attach shadow link-record and resolution-run ids and fuller source excerpts when those fields are public."
+        ? "Later iterations may attach link-record and resolution-run ids and fuller source excerpts."
         : null,
       missing_fields: missing,
     },
@@ -407,8 +414,8 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
 }
 
 /**
- * Summarize category membership with fail-closed totals:
- * possible (probabilistic / tentative) edges never inflate verified counts.
+ * Summarize category membership for standable public edges.
+ * Tentative / probabilistic edges are counted separately so hosts can drop them.
  */
 export function summarizeCategoryWarrants(items = []) {
   const summary = {
@@ -419,6 +426,7 @@ export function summarizeCategoryWarrants(items = []) {
     verified_total: 0,
     possible_total: 0,
     listed_total: 0,
+    standable_total: 0,
   };
   for (const item of Array.isArray(items) ? items : []) {
     const claim = item?.claim || buildEdgeProvenanceClaim(item);
@@ -427,8 +435,12 @@ export function summarizeCategoryWarrants(items = []) {
     const warrant = claim.how?.warrant_class || "not_yet_classified";
     if (summary[warrant] != null) summary[warrant] += 1;
     else summary.not_yet_classified += 1;
-    if (claim.confidence?.counts_as_verified_total) summary.verified_total += 1;
-    else summary.possible_total += 1;
+    if (isStandablePublicClaim(claim)) {
+      summary.standable_total += 1;
+      summary.verified_total += 1;
+    } else {
+      summary.possible_total += 1;
+    }
   }
   return summary;
 }
@@ -454,20 +466,14 @@ export function renderWhyBelieveControl(claim, { className = "" } = {}) {
   if (!claim?.claim_id) return "";
   const href = claim.inspect_href || `#claim-${encodeURIComponent(claim.claim_id)}`;
   const warrant = WARRANT_CLASSES[claim.how?.warrant_class] || WARRANT_CLASSES.not_yet_classified;
-  const possible = claim.how?.warrant_class === "probabilistic"
-    || claim.confidence?.identity_stance === "possible_link";
-  const classes = [
-    "edge-prov-why",
-    className,
-    possible ? "is-possible" : "",
-  ].filter(Boolean).join(" ");
+  const classes = ["edge-prov-why", className].filter(Boolean).join(" ");
   return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" href="${esc(href)}">Why do we believe this? · ${esc(warrant.short)}</a>`;
 }
 
-/** Warrant-class key for the host page (all three classes visible even when unused). */
+/** Warrant-class key for the host page (standable classes). */
 export function renderWarrantClassLegend() {
   const items = WARRANT_CLASS_ORDER
-    .filter((id) => id !== "not_yet_classified")
+    .filter((id) => id === "exact" || id === "reviewed" || id === "probabilistic")
     .map((id) => {
       const warrant = WARRANT_CLASSES[id];
       return `<li data-warrant-class="${esc(warrant.id)}"><strong class="edge-prov-warrant edge-prov-warrant-${esc(warrant.id)}">${esc(warrant.label)}</strong> — ${esc(warrant.reader)}</li>`;
@@ -475,7 +481,7 @@ export function renderWarrantClassLegend() {
     .join("");
   return `<section class="edge-prov-legend node-section civic-object-section" data-export-class="object_provenance" aria-labelledby="edge-prov-legend-heading">
     <h2 id="edge-prov-legend-heading">How links are warranted</h2>
-    <p class="node-muted muted">Every connection carries a warrant class. A score or high-confidence band is never the same thing as a confirmed identity — possible links stay possible and are not promoted into verified totals.</p>
+    <p class="node-muted muted">Each listed connection names its warrant class so you can see how it was joined.</p>
     <ul class="edge-prov-legend-list">${items}</ul>
   </section>`;
 }
@@ -488,13 +494,12 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
   if (!claim?.claim_id) return "";
   const warrant = WARRANT_CLASSES[claim.how?.warrant_class] || WARRANT_CLASSES.not_yet_classified;
   const stance = IDENTITY_STANCES[claim.confidence?.identity_stance] || IDENTITY_STANCES.not_scored;
-  const possible = warrant.id === "probabilistic" || stance.id === "possible_link";
   const openAttr = open ? " open" : "";
   const objectLink = claim.object_href
     ? `<p class="edge-prov-object"><a href="${esc(claim.object_href)}">${esc(claim.label)}</a></p>`
     : `<p class="edge-prov-object"><strong>${esc(claim.label)}</strong></p>`;
 
-  return `<article class="edge-prov-inspector" id="claim-${esc(claim.claim_id)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-identity-stance="${esc(stance.id)}" data-verified-identity="false"${openAttr ? ' data-open="true"' : ""}>
+  return `<article class="edge-prov-inspector" id="claim-${esc(claim.claim_id)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-identity-stance="${esc(stance.id)}"${openAttr ? ' data-open="true"' : ""}>
     <header class="edge-prov-header">
       <p class="edge-prov-kicker">Why do we believe this?</p>
       ${objectLink}
@@ -506,11 +511,8 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
         <span class="edge-prov-warrant edge-prov-warrant-${esc(warrant.id)}" data-warrant-class="${esc(warrant.id)}">${esc(warrant.label)}</span>
         <span class="edge-prov-stance edge-prov-stance-${esc(stance.id)}" data-identity-stance="${esc(stance.id)}">${esc(stance.label)}</span>
       </p>
+      <p class="edge-prov-stance-reader muted node-muted">${esc(stance.reader)}</p>
     </header>
-    <div class="edge-prov-honesty${possible ? " is-possible" : ""}" data-fail-closed="1">
-      <p><strong>Confidence is not identity.</strong> ${esc(stance.reader)}</p>
-      ${possible ? `<p class="edge-prov-possible-note">This possible link is <strong>not</strong> counted as a verified total.</p>` : ""}
-    </div>
     <section class="edge-prov-block" aria-labelledby="edge-prov-where-${esc(claim.claim_id)}">
       <h3 id="edge-prov-where-${esc(claim.claim_id)}">Where it came from</h3>
       <dl class="edge-prov-dl">
@@ -537,11 +539,11 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
         ${renderFieldRow("Warrant class", { available: true, value: warrant.label })}
         ${claim.how.decision
           ? renderFieldRow("Review decision", { available: true, value: claim.how.decision })
-          : renderFieldRow("Review decision", { ...MISSING, note: "No person-accepted disposition is attached to this public edge." })}
+          : ""}
       </dl>
     </section>
     <section class="edge-prov-block" aria-labelledby="edge-prov-enrich-${esc(claim.claim_id)}">
-      <h3 id="edge-prov-enrich-${esc(claim.claim_id)}">Next enrichment</h3>
+      <h3 id="edge-prov-enrich-${esc(claim.claim_id)}">Source detail still to attach</h3>
       <dl class="edge-prov-dl">
         ${renderFieldRow("Link record id", claim.enrichment.entity_link_id)}
         ${renderFieldRow("Resolution run id", claim.enrichment.resolution_run_id)}
@@ -569,7 +571,7 @@ export function renderEdgeProvenancePanel(claims = [], { activeClaimId = null } 
   const body = active
     ? renderEdgeProvenanceInspector(active, { open: true })
     : `<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1">
-        <p>Choose <strong>Why do we believe this?</strong> on any linked record to inspect where it came from, how it was joined, and its warrant class (exact, probabilistic, or reviewed).</p>
+        <p>Choose <strong>Why do we believe this?</strong> on any linked record to open its source and warrant class.</p>
       </div>`;
   const claimPayload = JSON.stringify(list).replace(/<\/script/gi, "<\\/script");
   return `${renderWarrantClassLegend()}
@@ -595,12 +597,10 @@ export function edgeProvenanceClientScript() {
 
   const render = (claim) => {
     if (!claim) {
-      body.innerHTML = '<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1"><p>Choose <strong>Why do we believe this?</strong> on any linked record to inspect where it came from, how it was joined, and its warrant class (exact, probabilistic, or reviewed).</p></div>';
+      body.innerHTML = '<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1"><p>Choose <strong>Why do we believe this?</strong> on any linked record to open its source and warrant class.</p></div>';
       panel.removeAttribute("data-active-claim");
       return;
     }
-    // Prefer the pre-rendered open inspector when present in the document for the active claim;
-    // otherwise rebuild from the JSON payload (same fields the server used).
     const existing = document.getElementById("claim-" + CSS.escape(claim.claim_id));
     if (existing && existing.closest("[data-edge-prov-body]")) {
       existing.setAttribute("data-open", "true");
@@ -610,7 +610,6 @@ export function edgeProvenanceClientScript() {
     }
     const warrant = claim.how?.warrant_class || "not_yet_classified";
     const stance = claim.confidence?.identity_stance || "not_scored";
-    const possible = warrant === "probabilistic" || stance === "possible_link";
     const where = claim.where || {};
     const methodLabel = (m) => {
       const map = {
@@ -620,12 +619,13 @@ export function edgeProvenanceClientScript() {
         vendor_stem_v1: "Exact vendor-name stem match",
         pin_exact: "Exact PIN match",
         manual_review: "Person-accepted match",
+        enacted_law_mandate_extract_v1: "Enacted-law mandate extraction",
       };
       const key = String(m || "").trim();
       return map[key] || key.replace(/_/g, " ").replace(/\\s+v\\d+$/i, "").trim() || key;
     };
     const sourceLabel = (s) => {
-      const map = { city_record: "City Record", warehouse: "Warehouse materialization", socrata: "NYC Open Data" };
+      const map = { city_record: "City Record", warehouse: "Warehouse materialization", socrata: "NYC Open Data", enacted_local_law: "Enacted local law" };
       const key = String(s || "").trim();
       return map[key] || key.replace(/_/g, " ");
     };
@@ -644,13 +644,12 @@ export function edgeProvenanceClientScript() {
     const objectHtml = claim.object_href
       ? '<p class="edge-prov-object"><a href="' + escText(claim.object_href) + '">' + escText(claim.label) + "</a></p>"
       : '<p class="edge-prov-object"><strong>' + escText(claim.label) + "</strong></p>";
-    body.innerHTML = '<article class="edge-prov-inspector" id="claim-' + escText(claim.claim_id) + '" data-edge-claim="' + escText(claim.claim_id) + '" data-warrant-class="' + escText(warrant) + '" data-identity-stance="' + escText(stance) + '" data-verified-identity="false" data-open="true">'
+    body.innerHTML = '<article class="edge-prov-inspector" id="claim-' + escText(claim.claim_id) + '" data-edge-claim="' + escText(claim.claim_id) + '" data-warrant-class="' + escText(warrant) + '" data-identity-stance="' + escText(stance) + '" data-open="true">'
       + '<header class="edge-prov-header"><p class="edge-prov-kicker">Why do we believe this?</p>' + objectHtml
       + '<p class="edge-prov-meta muted node-muted">' + (claim.relation ? "Relation: " + escText(String(claim.relation).replace(/_/g, " ")) + " · " : "") + "Claim id: " + escText(claim.claim_id) + "</p>"
       + '<p class="edge-prov-warrants"><span class="edge-prov-warrant edge-prov-warrant-' + escText(warrant) + '">' + escText(claim.how?.warrant_label || warrant) + '</span> '
-      + '<span class="edge-prov-stance edge-prov-stance-' + escText(stance) + '">' + escText(claim.confidence?.identity_label || stance) + "</span></p></header>"
-      + '<div class="edge-prov-honesty' + (possible ? " is-possible" : "") + '" data-fail-closed="1"><p><strong>Confidence is not identity.</strong> ' + escText(claim.confidence?.identity_reader || "") + "</p>"
-      + (possible ? '<p class="edge-prov-possible-note">This possible link is <strong>not</strong> counted as a verified total.</p>' : "") + "</div>"
+      + '<span class="edge-prov-stance edge-prov-stance-' + escText(stance) + '">' + escText(claim.confidence?.identity_label || stance) + "</span></p>"
+      + '<p class="edge-prov-stance-reader muted node-muted">' + escText(claim.confidence?.identity_reader || "") + "</p></header>"
       + '<section class="edge-prov-block"><h3>Where it came from</h3><dl class="edge-prov-dl">'
       + field("Source", where.source_system, { source: true }) + field("Source record", where.source_record_id)
       + field("Source fields", where.source_fields, { fields: true }) + field("Publisher value matched", where.input_value)
@@ -658,11 +657,9 @@ export function edgeProvenanceClientScript() {
       + '<section class="edge-prov-block"><h3>How it was derived</h3><p>' + escText(claim.how?.warrant_reader || "") + '</p><dl class="edge-prov-dl">'
       + field("Method", claim.how?.method, { reader: true })
       + field("Warrant class", { available: true, value: claim.how?.warrant_label || warrant })
-      + (claim.how?.decision
-        ? field("Review decision", { available: true, value: claim.how.decision })
-        : field("Review decision", { available: false, label: "Not yet attached", note: "No person-accepted disposition is attached to this public edge." }))
+      + (claim.how?.decision ? field("Review decision", { available: true, value: claim.how.decision }) : "")
       + "</dl></section>"
-      + '<section class="edge-prov-block"><h3>Next enrichment</h3><dl class="edge-prov-dl">'
+      + '<section class="edge-prov-block"><h3>Source detail still to attach</h3><dl class="edge-prov-dl">'
       + field("Link record id", claim.enrichment?.entity_link_id)
       + field("Resolution run id", claim.enrichment?.resolution_run_id) + "</dl>"
       + (claim.enrichment?.next ? '<p class="muted node-muted">' + escText(String(claim.enrichment.next).replace(/entity_link/g, "link record").replace(/resolution_run/g, "resolution run")) + "</p>" : "")

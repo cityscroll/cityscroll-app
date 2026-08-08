@@ -36,6 +36,7 @@ import {
 import {
   buildEdgeProvenanceClaim,
   edgeProvenanceClientScript,
+  isStandablePublicClaim,
   methodReaderLabel,
   renderEdgeProvenancePanel,
   renderWhyBelieveControl,
@@ -300,36 +301,42 @@ function staffingItems(certification, agencyRef, limit = 8) {
 }
 
 function obligationItems(obligationsLookup, identity, limit = 8) {
-  const view = buildAgencyObligationsView(identity.canonical_id, obligationsLookup, { limit });
+  // Pull a wide window so standable filtering still leaves a full category total.
+  const view = buildAgencyObligationsView(identity.canonical_id, obligationsLookup, { limit: 500 });
   if (!view || view.status !== "matched") return { total: 0, items: [], view };
+  const mapped = view.items.map((item) => ({
+    id: item.obligation_id,
+    subject_ref: `obligation:${item.obligation_id}`,
+    label: item.duty_text,
+    date: item.deadline_date || null,
+    source: item.citation || "Enacted local law",
+    relation: "statute_duty",
+    // Auto-certified quote-verify rows are public-strong; quote-miss candidates stay off-list.
+    confidence: item.quote_verified || item.certification_status === "auto_certified"
+      ? "strong"
+      : "tentative",
+    method: AGENCY_OBLIGATIONS_METHOD,
+    href: item.href,
+    deliverable_type: item.deliverable_type,
+    recurrence: item.recurrence,
+    deadline_text: item.deadline_text,
+    certification_status: item.certification_status,
+    observation_status: item.observation_status,
+    kind: "obligation",
+    provenance: {
+      source_system: "enacted_local_law",
+      source_record_id: item.obligation_id || null,
+      source_fields: ["duty_text", "deadline", "citation"],
+      basis: AGENCY_OBLIGATIONS_CERTIFICATION || "auto_certified_quote_verify_v1",
+      observed_at: item.deadline_date || null,
+      input_value: item.citation || null,
+    },
+  }));
   return {
-    total: view.count,
+    total: Number(view.count) || mapped.length,
     view,
-    items: view.items.map((item) => ({
-      id: item.obligation_id,
-      subject_ref: `obligation:${item.obligation_id}`,
-      label: item.duty_text,
-      date: item.deadline_date || null,
-      source: item.citation || "Enacted local law",
-      relation: "statute_duty",
-      confidence: item.quote_verified ? "strong" : "tentative",
-      method: AGENCY_OBLIGATIONS_METHOD,
-      href: item.href,
-      deliverable_type: item.deliverable_type,
-      recurrence: item.recurrence,
-      deadline_text: item.deadline_text,
-      certification_status: item.certification_status,
-      observation_status: item.observation_status,
-      kind: "obligation",
-      provenance: {
-        source_system: "enacted_local_law",
-        source_record_id: item.obligation_id || null,
-        source_fields: ["duty_text", "deadline", "citation"],
-        basis: AGENCY_OBLIGATIONS_CERTIFICATION || "auto_certified_quote_verify_v1",
-        observed_at: item.deadline_date || null,
-        input_value: item.citation || null,
-      },
-    })),
+    items: mapped.slice(0, limit),
+    all_items: mapped,
   };
 }
 
@@ -342,23 +349,35 @@ function categoryStatusLabel(category) {
   return `${total} linked`;
 }
 
+/** Keep only standable public edges (drop tentative rather than hedge them). */
+function standableItems(items = []) {
+  return (Array.isArray(items) ? items : []).filter((item) => {
+    if (!item?.claim) return true;
+    return isStandablePublicClaim(item.claim);
+  });
+}
+
 function categoryFromDomain(spec, intelligence, identity, certification, obligationsLookup) {
   if (spec.id === "obligations") {
-    const { total, items: rawItems, view } = obligationItems(obligationsLookup, identity);
-    const items = rawItems.map((item) => attachClaim(item, {
+    const { total, items: preview, all_items, view } = obligationItems(obligationsLookup, identity);
+    const claimAll = (all_items || preview).map((item) => attachClaim(item, {
       categoryId: spec.id,
       relation: spec.relation,
       identity,
     }));
-    const warrant_summary = summarizeCategoryWarrants(items);
+    // Keep auto-certified duties; drop quote-miss candidates rather than hedge them.
+    const standable = standableItems(claimAll);
+    const items = standable.slice(0, 8);
+    const warrant_summary = summarizeCategoryWarrants(standable);
+    const shown = standable.length || 0;
     return {
       id: spec.id,
       label: spec.label,
       relation: spec.relation,
-      status: items.length || total ? "matched" : "empty",
-      gap_class: items.length || total ? null : "empty_in_corpus",
-      note: items.length || total ? null : (view?.note || spec.empty_note),
-      count: total,
+      status: shown || total ? "matched" : "empty",
+      gap_class: shown || total ? null : "empty_in_corpus",
+      note: shown || total ? null : (view?.note || spec.empty_note),
+      count: shown || total,
       items,
       warrant_summary,
       method: AGENCY_OBLIGATIONS_METHOD,
@@ -372,12 +391,12 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
 
   if (spec.id === "staffing") {
     const agencyRef = `agency:id:${identity.canonical_id}`;
-    const rawItems = staffingItems(certification, agencyRef);
-    const items = rawItems.map((item) => attachClaim(item, {
+    const claimed = staffingItems(certification, agencyRef).map((item) => attachClaim(item, {
       categoryId: spec.id,
       relation: spec.relation,
       identity,
     }));
+    const items = standableItems(claimed);
     const agencyRow = (Array.isArray(certification?.by_agency) ? certification.by_agency : [])
       .find((row) => row.agency_id === identity.canonical_id || row.ref === agencyRef);
     const total = Number(agencyRow?.edge_count) || items.length;
@@ -399,12 +418,12 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
   }
 
   const block = intelligence?.domains?.[spec.domain] || {};
-  const rawItems = domainItems(block);
-  const items = rawItems.map((item) => attachClaim(item, {
+  const claimed = domainItems(block).map((item) => attachClaim(item, {
     categoryId: spec.id,
     relation: spec.relation,
     identity,
   }));
+  const items = standableItems(claimed);
   const matched = block.status === "matched" && (Number(block.count) > 0 || items.length > 0);
   const warrant_summary = summarizeCategoryWarrants(items);
   return {
@@ -414,7 +433,7 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
     status: matched ? "matched" : (block.status === "not_yet_ingested" ? "not_yet_ingested" : "empty"),
     gap_class: matched ? null : (block.gap_class || "empty_in_corpus"),
     note: matched ? null : (block.note || spec.empty_note),
-    count: Number(block.count) || items.length,
+    count: items.length || Number(block.count) || 0,
     items,
     warrant_summary,
     method: items[0]?.method || "agency_canonical_v1",

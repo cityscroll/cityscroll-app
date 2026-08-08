@@ -2324,8 +2324,8 @@ both the live and restored databases.
   attaches where/how/warrant-class claims to each listed edge. Deep-link
   `?claim=<category>:<subject_ref>` (e.g.
   `/agencies/parks-and-recreation/?claim=contracts:notice:20030224002`).
-  Confidence band ≠ verified identity; possible links never inflate verified
-  totals; missing link-record / resolution-run fields stay labeled.
+  Public list = standable edges only (tentative links stay off the page);
+  missing link-record / resolution-run fields stay labeled as not yet attached.
   Capture: `python3 tools/capture_edge_provenance_inspector.py`.
 - Verify: `node --test test/agency_constellation.test.mjs test/agency_obligations.test.mjs test/graph_edge_provenance.test.mjs`.
   Demo: `/agencies/parks-and-recreation/` and demo-links

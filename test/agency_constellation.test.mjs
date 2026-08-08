@@ -142,7 +142,7 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   const sample = contracts.items[0];
   assert.ok(sample.claim, "each linked item gets a claim");
   assert.equal(sample.claim.how.warrant_class, "exact");
-  assert.equal(sample.claim.confidence.is_verified_identity, false);
+  assert.equal(sample.claim.confidence.standable, true);
   assert.ok(sample.provenance?.source_record_id || sample.claim.where.source_record_id.available);
   assert.match(sample.claim.inspect_href, /\/agencies\/parks-and-recreation\/\?claim=/);
 
@@ -159,9 +159,9 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   assert.match(html, /data-edge-provenance-panel/);
   assert.match(html, /data-warrant-class="exact"/);
   assert.match(html, /Exact match/);
-  assert.match(html, /Probabilistic link/);
-  assert.match(html, /Person-accepted/);
-  assert.match(html, /Confidence is not identity/);
+  assert.match(html, /Record-linkage match|Person-accepted/);
+  assert.doesNotMatch(html, /Confidence is not identity/i);
+  assert.doesNotMatch(html, /not a confirmed identity|not counted as a verified/i);
   assert.match(html, new RegExp(`data-edge-claim="${claimId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
   assert.match(html, /Not yet attached/);
   assert.match(html, /Link record id/);
@@ -170,7 +170,7 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   assert.doesNotMatch(html, /fabricat/i);
 });
 
-test("possible links never read as verified category totals", () => {
+test("tentative edges stay off the public list rather than shipping with hedges", () => {
   const view = buildAgencyConstellationView(PARKS, {
     intelligence: {
       by_ref: {
@@ -221,11 +221,14 @@ test("possible links never read as verified category totals", () => {
     certification: { edges: [], by_agency: [], by_exam: [] },
   });
   const contracts = view.categories.find((category) => category.id === "contracts");
-  assert.equal(contracts.warrant_summary.verified_total, 1);
-  assert.equal(contracts.warrant_summary.possible_total, 1);
+  assert.equal(contracts.items.length, 1);
+  assert.equal(contracts.items[0].id, "strong1");
+  assert.equal(contracts.warrant_summary.standable_total, 1);
+  assert.equal(contracts.warrant_summary.possible_total, 0);
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /1 linked · 1 possible \(not verified\)/);
-  assert.match(html, /data-warrant-class="probabilistic"/);
+  assert.match(html, /1 linked/);
+  assert.doesNotMatch(html, /not verified/i);
+  assert.doesNotMatch(html, /maybe1|Possible award/);
 });
 
 test("lookup materialization includes Parks multi-category demo when built", () => {
