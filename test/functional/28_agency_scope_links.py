@@ -53,7 +53,13 @@ def main():
             ),
         )
 
-        page.goto(BASE.rstrip("/") + "/agencies/citywide-administrative-services/", wait_until="domcontentloaded", timeout=30000)
+        # Interactive SPA agency profile (entity-intelligence scope links).
+        # Bare /agencies/<id>/ serves the static constellation document.
+        page.goto(
+            BASE.rstrip("/") + "/agencies/citywide-administrative-services/?tab=overview",
+            wait_until="domcontentloaded",
+            timeout=30000,
+        )
         page.wait_for_selector("#entityview .agencybar", timeout=45000)
         links = page.evaluate(
             """[...document.querySelectorAll('#entity-intelligence a.ei-view-all')]

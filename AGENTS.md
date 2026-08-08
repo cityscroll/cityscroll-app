@@ -2320,8 +2320,16 @@ both the live and restored databases.
   (publisher `certified_to_agency` edges). Match basis stamped
   `agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1`.
 - Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
-- Verify: `node --test test/agency_constellation.test.mjs test/agency_obligations.test.mjs`.
-  Demo: `/agencies/parks-and-recreation/`.
+- **Provenance inspector (EBCG general):** pure `site/graph_edge_provenance.mjs`
+  attaches where/how/warrant-class claims to each listed edge. Deep-link
+  `?claim=<category>:<subject_ref>` (e.g.
+  `/agencies/parks-and-recreation/?claim=contracts:notice:20030224002`).
+  Public list = standable edges only (tentative links stay off the page);
+  missing link-record / resolution-run fields stay labeled as not yet attached.
+  Capture: `python3 tools/capture_edge_provenance_inspector.py`.
+- Verify: `node --test test/agency_constellation.test.mjs test/agency_obligations.test.mjs test/graph_edge_provenance.test.mjs`.
+  Demo: `/agencies/parks-and-recreation/` and demo-links
+  `agency-edge-provenance-parks`.
 
 ## Agency statutory obligations (v1)
 

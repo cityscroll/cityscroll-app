@@ -1,0 +1,19 @@
+{
+  "agency": "parks-and-recreation",
+  "claim_id": "contracts:notice:20030224002",
+  "path": "/agencies/parks-and-recreation/?claim=contracts:notice:20030224002",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "frames": [
+    "site/media/review/edge-provenance-inspector/parks-claim-inspector-390.png",
+    "site/media/review/edge-provenance-inspector/parks-claim-inspector-1440.png"
+  ]
+}

@@ -33,6 +33,16 @@ import {
   renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import {
+  buildEdgeProvenanceClaim,
+  edgeProvenanceClientScript,
+  isStandablePublicClaim,
+  methodReaderLabel,
+  renderEdgeProvenancePanel,
+  renderWhyBelieveControl,
+  sourceSystemReaderLabel,
+  summarizeCategoryWarrants,
+} from "./graph_edge_provenance.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -172,6 +182,17 @@ export function agencyConstellationFollowHref(id, { frequency = "weekly" } = {})
   );
 }
 
+function attachClaim(item, { categoryId, relation, identity }) {
+  if (!item) return null;
+  const claim = buildEdgeProvenanceClaim(item, {
+    category_id: categoryId,
+    relation: relation || item.relation,
+    root_ref: `agency:id:${identity.canonical_id}`,
+    document_path: agencyPath(identity.canonical_id),
+  });
+  return claim ? { ...item, claim } : item;
+}
+
 function domainItems(block, limit = 8) {
   const objects = Array.isArray(block?.objects) ? block.objects : [];
   return objects
@@ -182,16 +203,33 @@ function domainItems(block, limit = 8) {
       const subjectRef = clean(object.subject_ref, 120)
         || (requestId ? `notice:${requestId}` : "");
       if (!subjectRef) return null;
+      const provenance = object.provenance && typeof object.provenance === "object"
+        ? {
+          source_system: clean(object.provenance.source_system, 120) || null,
+          source_record_id: clean(object.provenance.source_record_id, 200) || null,
+          source_fields: Array.isArray(object.provenance.source_fields)
+            ? object.provenance.source_fields.map((field) => clean(field, 80)).filter(Boolean)
+            : [],
+          basis: clean(object.provenance.basis, 120) || null,
+          observed_at: clean(object.provenance.observed_at, 40) || null,
+          input_value: clean(object.provenance.input_value, 240) || null,
+        }
+        : null;
       return {
         id: requestId || subjectRef,
         subject_ref: subjectRef,
         label: clean(object.label || subjectRef, 240),
         date: clean(object.when, 40) || null,
-        source: clean(object.provenance?.source_system || "City Record", 80),
+        source: clean(provenance?.source_system || object.provenance?.source_system || "City Record", 80),
         relation: clean(object.link_type, 80) || null,
         confidence,
         method: clean(object.method || object.provenance?.basis || "agency_canonical_v1", 80),
         href: clean(object.href, 200) || (requestId ? `#notice/${encodeURIComponent(requestId)}` : null),
+        provenance,
+        // Shadow ER ids are not on this public materialization — leave unset
+        // so the inspector labels them as next enrichment rather than inventing them.
+        entity_link_id: clean(object.entity_link_id, 120) || null,
+        resolution_run_id: clean(object.resolution_run_id, 120) || null,
       };
     })
     .filter(Boolean)
@@ -212,6 +250,33 @@ function staffingItems(certification, agencyRef, limit = 8) {
       const examNo = examRef.replace(/^exam:/, "");
       if (!examNo) return null;
       const through = clean(edge.observed?.through || edge.observed?.from, 40) || null;
+      const evidence = edge.evidence && typeof edge.evidence === "object" ? edge.evidence : null;
+      const provenance = evidence
+        ? {
+          source_system: clean(evidence.source_system, 120) || "socrata",
+          source_record_id: clean(evidence.source_record_id, 200) || null,
+          source_fields: Array.isArray(evidence.source_fields)
+            ? evidence.source_fields.map((field) => clean(field, 80)).filter(Boolean)
+            : [],
+          basis: clean(evidence.basis, 120) || "publisher_certification_record",
+          observed_at: clean(evidence.observed_at || through, 40) || null,
+          input_value: clean(
+            evidence.input_value
+              || (Array.isArray(edge.source_agency_labels) ? edge.source_agency_labels[0] : null),
+            240,
+          ) || null,
+        }
+        : {
+          source_system: "socrata",
+          source_record_id: null,
+          source_fields: [],
+          basis: "publisher_certification_record",
+          observed_at: through,
+          input_value: clean(
+            Array.isArray(edge.source_agency_labels) ? edge.source_agency_labels[0] : null,
+            240,
+          ) || null,
+        };
       return {
         id: examNo,
         subject_ref: examRef,
@@ -219,10 +284,15 @@ function staffingItems(certification, agencyRef, limit = 8) {
         date: through,
         source: "Civil Service List certification (Open Data)",
         relation: "certified_to_agency",
-        confidence: "strong",
+        // publisher_record is a publisher stamp; publicConfidence maps it to strong.
+        confidence: clean(edge.confidence, 40) || "publisher_record",
         method: clean(edge.method || "publisher_certification_record_v1", 80),
         href: `/exams/${encodeURIComponent(examNo)}/`,
         counts: edge.counts || null,
+        provenance,
+        evidence,
+        entity_link_id: null,
+        resolution_run_id: null,
       };
     })
     .filter(Boolean)
@@ -231,58 +301,106 @@ function staffingItems(certification, agencyRef, limit = 8) {
 }
 
 function obligationItems(obligationsLookup, identity, limit = 8) {
-  const view = buildAgencyObligationsView(identity.canonical_id, obligationsLookup, { limit });
+  // Pull a wide window so standable filtering still leaves a full category total.
+  const view = buildAgencyObligationsView(identity.canonical_id, obligationsLookup, { limit: 500 });
   if (!view || view.status !== "matched") return { total: 0, items: [], view };
+  const mapped = view.items.map((item) => ({
+    id: item.obligation_id,
+    subject_ref: `obligation:${item.obligation_id}`,
+    label: item.duty_text,
+    date: item.deadline_date || null,
+    source: item.citation || "Enacted local law",
+    relation: "statute_duty",
+    // Auto-certified quote-verify rows are public-strong; quote-miss candidates stay off-list.
+    confidence: item.quote_verified || item.certification_status === "auto_certified"
+      ? "strong"
+      : "tentative",
+    method: AGENCY_OBLIGATIONS_METHOD,
+    href: item.href,
+    deliverable_type: item.deliverable_type,
+    recurrence: item.recurrence,
+    deadline_text: item.deadline_text,
+    certification_status: item.certification_status,
+    observation_status: item.observation_status,
+    kind: "obligation",
+    provenance: {
+      source_system: "enacted_local_law",
+      source_record_id: item.obligation_id || null,
+      source_fields: ["duty_text", "deadline", "citation"],
+      basis: AGENCY_OBLIGATIONS_CERTIFICATION || "auto_certified_quote_verify_v1",
+      observed_at: item.deadline_date || null,
+      input_value: item.citation || null,
+    },
+  }));
   return {
-    total: view.count,
+    total: Number(view.count) || mapped.length,
     view,
-    items: view.items.map((item) => ({
-      id: item.obligation_id,
-      subject_ref: `obligation:${item.obligation_id}`,
-      label: item.duty_text,
-      date: item.deadline_date || null,
-      source: item.citation || "Enacted local law",
-      relation: "statute_duty",
-      confidence: item.quote_verified ? "strong" : "tentative",
-      method: AGENCY_OBLIGATIONS_METHOD,
-      href: item.href,
-      deliverable_type: item.deliverable_type,
-      recurrence: item.recurrence,
-      deadline_text: item.deadline_text,
-      certification_status: item.certification_status,
-      observation_status: item.observation_status,
-      kind: "obligation",
-    })),
+    items: mapped.slice(0, limit),
+    all_items: mapped,
   };
+}
+
+function categoryStatusLabel(category) {
+  if (category.status !== "matched") return "";
+  if (category.id === "obligations") {
+    return `${category.count} statutory duties`;
+  }
+  const total = Number(category.count) || category.items?.length || 0;
+  return `${total} linked`;
+}
+
+/** Keep only standable public edges (drop tentative rather than hedge them). */
+function standableItems(items = []) {
+  return (Array.isArray(items) ? items : []).filter((item) => {
+    if (!item?.claim) return true;
+    return isStandablePublicClaim(item.claim);
+  });
 }
 
 function categoryFromDomain(spec, intelligence, identity, certification, obligationsLookup) {
   if (spec.id === "obligations") {
-    const { total, items, view } = obligationItems(obligationsLookup, identity);
+    const { total, items: preview, all_items, view } = obligationItems(obligationsLookup, identity);
+    const claimAll = (all_items || preview).map((item) => attachClaim(item, {
+      categoryId: spec.id,
+      relation: spec.relation,
+      identity,
+    }));
+    // Keep auto-certified duties; drop quote-miss candidates rather than hedge them.
+    const standable = standableItems(claimAll);
+    const items = standable.slice(0, 8);
+    const warrant_summary = summarizeCategoryWarrants(standable);
+    const shown = standable.length || 0;
     return {
       id: spec.id,
       label: spec.label,
       relation: spec.relation,
-      status: items.length || total ? "matched" : "empty",
-      gap_class: items.length || total ? null : "empty_in_corpus",
-      note: items.length || total ? null : (view?.note || spec.empty_note),
-      count: total,
+      status: shown || total ? "matched" : "empty",
+      gap_class: shown || total ? null : "empty_in_corpus",
+      note: shown || total ? null : (view?.note || spec.empty_note),
+      count: shown || total,
       items,
+      warrant_summary,
       method: AGENCY_OBLIGATIONS_METHOD,
       certification_basis: AGENCY_OBLIGATIONS_CERTIFICATION,
       er_match_basis: AGENCY_OBLIGATIONS_ER_BASIS,
       view_all_href: "",
       follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
-      honesty: "Deadlines are statutory timed events, not compliance verdicts. Observation is not adjudicated in this iteration.",
+      honesty: "Statutory duties with published deadlines from enacted local law.",
     };
   }
 
   if (spec.id === "staffing") {
     const agencyRef = `agency:id:${identity.canonical_id}`;
-    const items = staffingItems(certification, agencyRef);
+    const claimed = staffingItems(certification, agencyRef).map((item) => attachClaim(item, {
+      categoryId: spec.id,
+      relation: spec.relation,
+      identity,
+    }));
+    const items = standableItems(claimed);
     const agencyRow = (Array.isArray(certification?.by_agency) ? certification.by_agency : [])
       .find((row) => row.agency_id === identity.canonical_id || row.ref === agencyRef);
     const total = Number(agencyRow?.edge_count) || items.length;
+    const warrant_summary = summarizeCategoryWarrants(items);
     return {
       id: spec.id,
       label: spec.label,
@@ -292,6 +410,7 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
       note: items.length || total ? null : spec.empty_note,
       count: total,
       items,
+      warrant_summary,
       method: "publisher_certification_record_v1",
       view_all_href: agencyCategoryBrowseHref(identity.canonical_id, spec.id),
       follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
@@ -299,8 +418,14 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
   }
 
   const block = intelligence?.domains?.[spec.domain] || {};
-  const items = domainItems(block);
+  const claimed = domainItems(block).map((item) => attachClaim(item, {
+    categoryId: spec.id,
+    relation: spec.relation,
+    identity,
+  }));
+  const items = standableItems(claimed);
   const matched = block.status === "matched" && (Number(block.count) > 0 || items.length > 0);
+  const warrant_summary = summarizeCategoryWarrants(items);
   return {
     id: spec.id,
     label: spec.label,
@@ -308,8 +433,9 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
     status: matched ? "matched" : (block.status === "not_yet_ingested" ? "not_yet_ingested" : "empty"),
     gap_class: matched ? null : (block.gap_class || "empty_in_corpus"),
     note: matched ? null : (block.note || spec.empty_note),
-    count: Number(block.count) || items.length,
+    count: items.length || Number(block.count) || 0,
     items,
+    warrant_summary,
     method: items[0]?.method || "agency_canonical_v1",
     view_all_href: matched ? agencyCategoryBrowseHref(identity.canonical_id, spec.id) : "",
     follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
@@ -337,6 +463,8 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     categoryFromDomain(spec, intelligence, identity, certification, obligations));
 
   const matched = categories.filter((category) => category.status === "matched").length;
+  const claims = categories.flatMap((category) =>
+    (category.items || []).map((item) => item.claim).filter(Boolean));
   return {
     schema: AGENCY_CONSTELLATION_SCHEMA,
     kind: "agency-constellation",
@@ -346,9 +474,11 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     display_name: identity.canonical_name,
     canonical_id: identity.canonical_id,
     categories,
+    claims,
     summary: {
       matched_categories: matched,
       category_count: categories.length,
+      claim_count: claims.length,
       generated_at: sources.generated_at
         || intelligence?.materialization_meta?.generated_at
         || sources.intelligence?.generated_at
@@ -371,8 +501,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         "publisher_certification_record_v1",
         AGENCY_OBLIGATIONS_METHOD,
         AGENCY_CONSTELLATION_METHOD,
+        "graph_edge_provenance_v1",
       ],
-      note: "v1 joins City Record agency identity (entity intelligence), publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Deadlines are not compliance verdicts. Later graph and process-conformance work may refine coverage; empty categories are honest absences in this materialization.",
+      note: "Joins City Record agency identity (entity intelligence), publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Each listed connection opens a provenance inspector with source and warrant class.",
     },
   };
 }
@@ -391,6 +522,7 @@ function obligationMeta(item) {
     item.recurrence,
     item.certification_status === "auto_certified" ? "auto-certified" : null,
     item.source,
+    item.claim?.how?.warrant_label || null,
   ].filter(Boolean).join(" · ");
 }
 
@@ -401,17 +533,30 @@ function categorySection(category) {
   }
   const status = category.id === "obligations"
     ? `${category.count} statutory duties`
-    : `${category.count} linked`;
-  // Drop internal method tokens (agency_canonical_v1, …) from reader rows.
+    : (categoryStatusLabel(category) || `${category.count} linked`);
   const list = `<ul class="node-record-list">${category.items.map((item) => {
+    const warrant = item.claim?.how?.warrant_class || "";
+    const why = item.claim ? renderWhyBelieveControl(item.claim) : "";
     if (category.id === "obligations" || item.kind === "obligation") {
       const sourceLink = item.href
         ? ` · <a href="${esc(item.href)}" rel="noopener">Source law</a>`
         : "";
-      return `<li class="node-record" data-obligation-id="${esc(item.id)}"><div class="node-record-main">${esc(item.label)}</div><span class="muted node-muted">${esc(obligationMeta(item))}${sourceLink}</span></li>`;
+      return `<li class="node-record" data-obligation-id="${esc(item.id)}" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
+        <div class="node-record-main">${esc(item.label)}</div>
+        <span class="muted node-muted">${esc(obligationMeta(item))}${sourceLink}</span>
+        ${why ? `<div class="node-record-why">${why}</div>` : ""}
+      </li>`;
     }
-    const meta = [item.source, item.date].filter(Boolean).join(" · ");
-    return `<li class="node-record"><div class="node-record-main">${itemLink(item)}</div>${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}</li>`;
+    const meta = [
+      sourceSystemReaderLabel(item.source) || item.source,
+      item.date,
+      item.claim?.how?.warrant_label || null,
+    ].filter(Boolean).join(" · ");
+    return `<li class="node-record" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
+      <div class="node-record-main">${itemLink(item)}</div>
+      ${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}
+      ${why ? `<div class="node-record-why">${why}</div>` : ""}
+    </li>`;
   }).join("")}</ul>`;
   const honesty = category.id === "obligations" && category.honesty
     ? `<p class="node-muted muted">${esc(category.honesty)}</p>`
@@ -453,19 +598,25 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     throw new Error("Unknown agency constellation view");
   }
   const title = view.display_name;
-  const canonical = `https://cityscroll.org${view.path}`;
+  const activeClaimId = clean(options.activeClaimId || options.claim, 200) || null;
+  const pathWithClaim = activeClaimId
+    ? `${view.path}${view.path.endsWith("/") ? "" : "/"}?claim=${encodeURIComponent(activeClaimId)}`
+    : view.path;
+  const canonical = `https://cityscroll.org${pathWithClaim}`;
   const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
   const matched = view.summary.matched_categories;
   const lead = matched
-    ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory obligations, staffing exams). Links keep the agency scope so each category view can reuse it.`
+    ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory obligations, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
     : "Public records for this agency appear here when contracts, meetings, rules, statutory obligations, or staffing exams join to its published identity.";
   const sections = view.categories.map(categorySection).filter(Boolean).join("");
+  const provenancePanel = renderEdgeProvenancePanel(view.claims || [], { activeClaimId });
   const obligationsFollow = view.categories.find((category) => category.id === "obligations" && category.items?.length)?.follow_href || "";
   const actions = renderNodeActions([
     { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
     obligationsFollow
       ? { kind: "link", label: "Watch obligations and deadlines", href: obligationsFollow, className: "civic-object-action" }
       : null,
+    { kind: "link", label: "Inspect connection evidence", href: "#edge-provenance", className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
     { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
     { kind: "button", label: "Download JSON", attrs: { "data-object-export": "json" }, className: "civic-object-action" },
@@ -476,7 +627,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   // Plain-English provenance only — no pipeline method keys or match-basis codes.
   const provenance = renderNodeProvenance({
-    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Deadlines are statutory timed events, not compliance verdicts. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams come from publisher certification records; statutory obligations come from independent enacted-law extraction with inspectable source-law links.",
+    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams from publisher certification records; statutory obligations from enacted-law extraction with source-law links. Each listed connection opens a shareable provenance inspector.",
     exportClass: "object_provenance",
     extraClass: "civic-object-section",
   });
@@ -486,7 +637,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${esc(title)} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory obligations, and staffing exams.`)}">
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory obligations, and staffing exams — with inspectable connection provenance.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(options.assetPrefix || "/")}
@@ -494,7 +645,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
 <body>
   <a class="skip" href="#main">Skip to content</a>
   ${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
-  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-node-document="1">
+  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
     <header class="node-hero civic-object-hero" data-export-class="object_identity">
       <p class="node-kicker civic-object-kicker">Agency constellation</p>
@@ -503,10 +654,12 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       <p class="node-pivot civic-object-pivot">
         <a data-subject-ref="${esc(view.subject_ref)}" href="${esc(view.scope_href)}">Open this agency in Contracts</a>
         · <a href="${esc(view.interactive_profile_href)}">Interactive profile</a>
+        · <a href="#edge-provenance">Why do we believe these links?</a>
       </p>
     </header>
     ${actions}
     ${sections}
+    ${provenancePanel}
     ${provenance}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
@@ -515,20 +668,28 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <script type="module">
     const root = document.querySelector("[data-civic-object-kind='agency-constellation']");
     const payload = JSON.parse(document.getElementById("civic-object-payload")?.textContent || "null");
-    const canonical = document.querySelector('link[rel="canonical"]')?.href || location.href;
+    const copyTarget = () => {
+      const claim = new URLSearchParams(location.search).get("claim");
+      if (claim) {
+        const url = new URL(location.href);
+        return url.origin + url.pathname + "?claim=" + encodeURIComponent(claim);
+      }
+      return document.querySelector('link[rel="canonical"]')?.href || location.href;
+    };
     root?.querySelector("[data-object-copy]")?.addEventListener("click", async (event) => {
-      try { await navigator.clipboard.writeText(canonical); event.currentTarget.textContent = "Copied"; }
+      try { await navigator.clipboard.writeText(copyTarget()); event.currentTarget.textContent = "Copied"; }
       catch { event.currentTarget.textContent = "Copy failed"; }
     });
     root?.querySelector("[data-object-print]")?.addEventListener("click", () => window.print());
     root?.querySelector('[data-object-export="json"]')?.addEventListener("click", () => {
       window.CrolExports?.downloadFile(
         \`cityscroll-agency-constellation-\${payload.id}.json\`,
-        JSON.stringify({ ...payload, canonical_url: canonical }, null, 2),
+        JSON.stringify({ ...payload, canonical_url: copyTarget() }, null, 2),
         "application/json",
       );
     });
   </script>
+  <script>${edgeProvenanceClientScript()}</script>
 </body>
 </html>`;
 }

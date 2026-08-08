@@ -18,7 +18,27 @@ class QuietHandler(SimpleHTTPRequestHandler):
         # Pages supplies the shared shell for edge-rendered notice documents. Local browser
         # gates exercise the enhancement island against that shell; response HTML is tested
         # separately against the edge renderer.
-        route = self.path.split("?", 1)[0].rstrip("/")
+        raw = self.path
+        route = raw.split("?", 1)[0].rstrip("/")
+        query = raw.split("?", 1)[1] if "?" in raw else ""
+
+        # Prefer static agency constellation documents when present (production edge
+        # does the same). ?tab= keeps the interactive SPA profile.
+        if route.startswith("/agencies/") and "tab=" not in query:
+            root = Path(self.directory)
+            agency_id = route.split("/")[2] if len(route.split("/")) >= 3 else ""
+            if agency_id:
+                document = root / "agencies" / agency_id / "index.html"
+                if document.is_file():
+                    try:
+                        probe = document.read_text(encoding="utf-8", errors="ignore")
+                    except OSError:
+                        probe = ""
+                    if 'data-civic-object-kind="agency-constellation"' in probe:
+                        # Keep the query string (e.g. ?claim=) on the static document.
+                        self.path = f"/agencies/{agency_id}/index.html" + (f"?{query}" if query else "")
+                        return super().do_GET()
+
         if (
             route.startswith("/notices/")
             or route.startswith("/agencies/")
