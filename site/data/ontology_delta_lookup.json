@@ -6,8 +6,8 @@
   "copy": {
     "kicker": "Living civic graph",
     "title": "What's new in the graph",
-    "lead": "New kinds of things and connections that appear in the civic graph since the baseline inventory — agencies, relationship types, object kinds, and mandate categories.",
-    "empty": "No new entity kinds, relationship types, agencies, or categories appear since the baseline inventory.",
+    "lead": "New agencies, relationship types, object kinds, and mandate categories in CityScroll.",
+    "empty": "",
     "watch_hint": "Follow an agency from its constellation page to get email when that agency's linked records change."
   },
   "baseline": {
@@ -32,13 +32,13 @@
     }
   },
   "current": {
-    "generated_at": "2026-08-07T23:52:53.226Z",
+    "generated_at": "2026-08-08T12:15:15.003Z",
     "source": {
-      "entity_intelligence_generated_at": "2026-08-06T19:05:45.517Z",
+      "entity_intelligence_generated_at": "2026-08-08T12:15:15.003Z",
       "entity_intelligence_version": "cross_domain_object_link_v2",
       "entity_count": 200,
-      "constellation_generated_at": "2026-08-06T00:00:00Z|2026-08-06T19:05:45.517Z|2026-08-06T19:05:45.517Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z",
-      "constellation_agency_count": 102,
+      "constellation_generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-08T12:15:15.003Z",
+      "constellation_agency_count": 100,
       "obligations_generated_at": "2026-08-07T23:52:53.226Z",
       "obligations_agency_count": 49
     },
@@ -47,10 +47,10 @@
       "domains": 7,
       "object_kinds": 8,
       "edge_types": 15,
-      "agencies": 116,
+      "agencies": 106,
       "constellation_categories": 5,
       "deliverable_types": 5,
-      "vendor_count": 116
+      "vendor_count": 134
     }
   },
   "added": {
@@ -128,13 +128,6 @@
         "href": "/agencies/borough-president-manhattan/"
       },
       {
-        "id": "build-nyc-resource-corporation",
-        "label": "Build NYC Resource Corporation",
-        "display_name": "Build NYC Resource Corporation",
-        "subject_ref": "agency:id:build-nyc-resource-corporation",
-        "href": "/agencies/build-nyc-resource-corporation/"
-      },
-      {
         "id": "business-integrity-commission",
         "label": "Business Integrity Commission",
         "display_name": "Business Integrity Commission",
@@ -154,13 +147,6 @@
         "display_name": "City Clerk",
         "subject_ref": "agency:id:city-clerk",
         "href": "/agencies/city-clerk/"
-      },
-      {
-        "id": "civic-engagement-commission",
-        "label": "Civic Engagement Commission",
-        "display_name": "Civic Engagement Commission",
-        "subject_ref": "agency:id:civic-engagement-commission",
-        "href": "/agencies/civic-engagement-commission/"
       },
       {
         "id": "civil-service-commission",
@@ -212,25 +198,18 @@
         "href": "/agencies/cultural-affairs/"
       },
       {
-        "id": "dcas-nyc-department-of-citywide-administrative-services",
-        "label": "DCAS - NYC Department of Citywide Administrative Services",
-        "display_name": "DCAS - NYC Department of Citywide Administrative Services",
-        "subject_ref": "agency:id:dcas-nyc-department-of-citywide-administrative-services",
-        "href": "/agencies/dcas-nyc-department-of-citywide-administrative-services/"
+        "id": "dcasdivision-of-municipal-supply-service",
+        "label": "Dcasdivision Of Municipal Supply Service",
+        "display_name": "Dcasdivision Of Municipal Supply Service",
+        "subject_ref": "agency:id:dcasdivision-of-municipal-supply-service",
+        "href": "/agencies/dcasdivision-of-municipal-supply-service/"
       },
       {
-        "id": "dep-new-york-city-department-of-environmental-protection",
-        "label": "DEP - New York City Department of Environmental Protection",
-        "display_name": "DEP - New York City Department of Environmental Protection",
-        "subject_ref": "agency:id:dep-new-york-city-department-of-environmental-protection",
-        "href": "/agencies/dep-new-york-city-department-of-environmental-protection/"
-      },
-      {
-        "id": "department-of-employment",
-        "label": "Department Of Employment",
-        "display_name": "Department Of Employment",
-        "subject_ref": "agency:id:department-of-employment",
-        "href": "/agencies/department-of-employment/"
+        "id": "department-of-social-services",
+        "label": "Department Of Social Services",
+        "display_name": "Department Of Social Services",
+        "subject_ref": "agency:id:department-of-social-services",
+        "href": "/agencies/department-of-social-services/"
       },
       {
         "id": "design-and-construction",
@@ -303,13 +282,6 @@
         "href": "/agencies/emergency-management/"
       },
       {
-        "id": "employees-retirement-system",
-        "label": "Employees' Retirement System",
-        "display_name": "Employees' Retirement System",
-        "subject_ref": "agency:id:employees-retirement-system",
-        "href": "/agencies/employees-retirement-system/"
-      },
-      {
         "id": "environmental-control-board",
         "label": "Environmental Control Board",
         "display_name": "Environmental Control Board",
@@ -329,13 +301,6 @@
         "display_name": "Equal Employment Practices Commission",
         "subject_ref": "agency:id:equal-employment-practices-commission",
         "href": "/agencies/equal-employment-practices-commission/"
-      },
-      {
-        "id": "fdny-fire-department-of-nyc",
-        "label": "FDNY - Fire Department of NYC",
-        "display_name": "FDNY - Fire Department of NYC",
-        "subject_ref": "agency:id:fdny-fire-department-of-nyc",
-        "href": "/agencies/fdny-fire-department-of-nyc/"
       },
       {
         "id": "financial-information-services-agency",
@@ -373,13 +338,6 @@
         "href": "/agencies/independent-budget-office/"
       },
       {
-        "id": "industrial-development-agency",
-        "label": "Industrial Development Agency",
-        "display_name": "Industrial Development Agency",
-        "subject_ref": "agency:id:industrial-development-agency",
-        "href": "/agencies/industrial-development-agency/"
-      },
-      {
         "id": "investigation",
         "label": "Investigation",
         "display_name": "Investigation",
@@ -394,13 +352,6 @@
         "href": "/agencies/law-department/"
       },
       {
-        "id": "loft-board",
-        "label": "Loft Board",
-        "display_name": "Loft Board",
-        "subject_ref": "agency:id:loft-board",
-        "href": "/agencies/loft-board/"
-      },
-      {
         "id": "management-and-budget",
         "label": "Management and Budget",
         "display_name": "Management and Budget",
@@ -408,18 +359,18 @@
         "href": "/agencies/management-and-budget/"
       },
       {
+        "id": "mayoralty",
+        "label": "Mayoralty",
+        "display_name": "Mayoralty",
+        "subject_ref": "agency:id:mayoralty",
+        "href": "/agencies/mayoralty/"
+      },
+      {
         "id": "mayors-office-of-criminal-justice",
         "label": "Mayor's Office of Criminal Justice",
         "display_name": "Mayor's Office of Criminal Justice",
         "subject_ref": "agency:id:mayors-office-of-criminal-justice",
         "href": "/agencies/mayors-office-of-criminal-justice/"
-      },
-      {
-        "id": "mayors-office-of-environmental-coordination",
-        "label": "Mayor's Office of Environmental Coordination",
-        "display_name": "Mayor's Office of Environmental Coordination",
-        "subject_ref": "agency:id:mayors-office-of-environmental-coordination",
-        "href": "/agencies/mayors-office-of-environmental-coordination/"
       },
       {
         "id": "n-y-c-housing-authority",
@@ -450,18 +401,11 @@
         "href": "/agencies/new-york-city-fire-pension-fund/"
       },
       {
-        "id": "new-york-state-department-of-transportation",
-        "label": "New York State Department Of Transportation",
-        "display_name": "New York State Department Of Transportation",
-        "subject_ref": "agency:id:new-york-state-department-of-transportation",
-        "href": "/agencies/new-york-state-department-of-transportation/"
-      },
-      {
-        "id": "ny-state-department-of-transporation",
-        "label": "Ny State Department Of Transporation",
-        "display_name": "Ny State Department Of Transporation",
-        "subject_ref": "agency:id:ny-state-department-of-transporation",
-        "href": "/agencies/ny-state-department-of-transporation/"
+        "id": "new-york-city-police-department",
+        "label": "New York City Police Department",
+        "display_name": "New York City Police Department",
+        "subject_ref": "agency:id:new-york-city-police-department",
+        "href": "/agencies/new-york-city-police-department/"
       },
       {
         "id": "nyc-department-of-veterans-services",
@@ -476,13 +420,6 @@
         "display_name": "NYC DOT Department of Transportation",
         "subject_ref": "agency:id:nyc-dot-department-of-transportation",
         "href": "/agencies/nyc-dot-department-of-transportation/"
-      },
-      {
-        "id": "nyc-dot-new-york-city-dept-of-transportation-bridges",
-        "label": "NYC DOT New York City Dept. of Transportation - Bridges",
-        "display_name": "NYC DOT New York City Dept. of Transportation - Bridges",
-        "subject_ref": "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges",
-        "href": "/agencies/nyc-dot-new-york-city-dept-of-transportation-bridges/"
       },
       {
         "id": "nyc-employees-retirement-system",
@@ -513,16 +450,9 @@
         "href": "/agencies/nyc-workforce-development-board/"
       },
       {
-        "id": "off-track-betting-corp",
-        "label": "Off Track Betting Corp.",
-        "display_name": "Off Track Betting Corp.",
-        "subject_ref": "agency:id:off-track-betting-corp",
-        "href": "/agencies/off-track-betting-corp/"
-      },
-      {
         "id": "office-of-administrative-trials-and-hearings",
-        "label": "office-of-administrative-trials-and-hearings",
-        "display_name": "office-of-administrative-trials-and-hearings",
+        "label": "Office Of Administrative Trials And Hearings",
+        "display_name": "Office Of Administrative Trials And Hearings",
         "subject_ref": "agency:id:office-of-administrative-trials-and-hearings",
         "href": "/agencies/office-of-administrative-trials-and-hearings/"
       },
@@ -532,6 +462,20 @@
         "display_name": "Office of Collective Bargaining",
         "subject_ref": "agency:id:office-of-collective-bargaining",
         "href": "/agencies/office-of-collective-bargaining/"
+      },
+      {
+        "id": "office-of-contract-services",
+        "label": "Office Of Contract Services",
+        "display_name": "Office Of Contract Services",
+        "subject_ref": "agency:id:office-of-contract-services",
+        "href": "/agencies/office-of-contract-services/"
+      },
+      {
+        "id": "office-of-criminal-justice-002",
+        "label": "Office Of Criminal Justice (002)",
+        "display_name": "Office Of Criminal Justice (002)",
+        "subject_ref": "agency:id:office-of-criminal-justice-002",
+        "href": "/agencies/office-of-criminal-justice-002/"
       },
       {
         "id": "office-of-labor-relations",
@@ -555,6 +499,13 @@
         "href": "/agencies/office-of-the-actuary/"
       },
       {
+        "id": "office-of-the-chief-medical-examiner",
+        "label": "Office Of The Chief Medical Examiner",
+        "display_name": "Office Of The Chief Medical Examiner",
+        "subject_ref": "agency:id:office-of-the-chief-medical-examiner",
+        "href": "/agencies/office-of-the-chief-medical-examiner/"
+      },
+      {
         "id": "office-of-the-mayor",
         "label": "Office of the Mayor",
         "display_name": "Office of the Mayor",
@@ -567,13 +518,6 @@
         "display_name": "Probation",
         "subject_ref": "agency:id:probation",
         "href": "/agencies/probation/"
-      },
-      {
-        "id": "procurement-policy-board",
-        "label": "Procurement Policy Board",
-        "display_name": "Procurement Policy Board",
-        "subject_ref": "agency:id:procurement-policy-board",
-        "href": "/agencies/procurement-policy-board/"
       },
       {
         "id": "public-administrator-new-york-county",
@@ -602,13 +546,6 @@
         "display_name": "Records and Information Services",
         "subject_ref": "agency:id:records-and-information-services",
         "href": "/agencies/records-and-information-services/"
-      },
-      {
-        "id": "sca-new-york-city-school-construction-authority",
-        "label": "SCA - New York City School Construction Authority",
-        "display_name": "SCA - New York City School Construction Authority",
-        "subject_ref": "agency:id:sca-new-york-city-school-construction-authority",
-        "href": "/agencies/sca-new-york-city-school-construction-authority/"
       },
       {
         "id": "tax-commission",
@@ -689,21 +626,21 @@
     "domains": 0,
     "object_kinds": 2,
     "edge_types": 4,
-    "agencies": 79,
+    "agencies": 70,
     "constellation_categories": 5,
     "deliverable_types": 5
   },
-  "total_added": 95,
+  "total_added": 86,
   "has_deltas": true,
   "inventory": {
     "schema": "cityscroll.ontology_inventory.v1",
     "role": "current",
     "source": {
-      "entity_intelligence_generated_at": "2026-08-06T19:05:45.517Z",
+      "entity_intelligence_generated_at": "2026-08-08T12:15:15.003Z",
       "entity_intelligence_version": "cross_domain_object_link_v2",
       "entity_count": 200,
-      "constellation_generated_at": "2026-08-06T00:00:00Z|2026-08-06T19:05:45.517Z|2026-08-06T19:05:45.517Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z",
-      "constellation_agency_count": 102,
+      "constellation_generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-08T12:15:15.003Z",
+      "constellation_agency_count": 100,
       "obligations_generated_at": "2026-08-07T23:52:53.226Z",
       "obligations_agency_count": 49
     },
@@ -761,7 +698,6 @@
       "borough-president-brooklyn",
       "borough-president-manhattan",
       "borough-president-queens",
-      "build-nyc-resource-corporation",
       "buildings",
       "business-integrity-commission",
       "campaign-finance-board",
@@ -772,7 +708,6 @@
       "city-planning-commission",
       "city-university",
       "citywide-administrative-services",
-      "civic-engagement-commission",
       "civil-service-commission",
       "civilian-complaint-review-board",
       "commission-on-human-rights",
@@ -784,9 +719,8 @@
       "correction",
       "criminal-justice-coordinator",
       "cultural-affairs",
-      "dcas-nyc-department-of-citywide-administrative-services",
-      "dep-new-york-city-department-of-environmental-protection",
-      "department-of-employment",
+      "dcasdivision-of-municipal-supply-service",
+      "department-of-social-services",
       "design-and-construction",
       "district-attorney-bronx-county",
       "district-attorney-kings-county",
@@ -799,15 +733,12 @@
       "edc-economic-development-corporation-for-nyc",
       "education",
       "emergency-management",
-      "employees-retirement-system",
       "environmental-control-board",
       "environmental-protection",
       "equal-employment-practices-commission",
-      "fdny-fire-department-of-nyc",
       "finance",
       "financial-information-services-agency",
       "fire-department",
-      "franchise-and-concession-review-committee",
       "health-and-mental-hygiene",
       "homeless-services",
       "housing-authority",
@@ -815,48 +746,44 @@
       "hra-department-of-social-services",
       "human-resources-administration",
       "independent-budget-office",
-      "industrial-development-agency",
       "information-technology-and-telecommunications",
       "investigation",
       "landmarks-preservation-commission",
       "law-department",
-      "loft-board",
       "lpc-nyc-landmarks-preservation-commission",
       "management-and-budget",
+      "mayoralty",
       "mayors-office-of-contract-services",
       "mayors-office-of-criminal-justice",
-      "mayors-office-of-environmental-coordination",
       "n-y-c-housing-authority",
       "n-y-c-transit-authority",
       "new-york-city-department-of-city-planning",
       "new-york-city-fire-pension-fund",
-      "new-york-state-department-of-transportation",
-      "ny-state-department-of-transporation",
+      "new-york-city-police-department",
       "nyc-department-of-veterans-services",
       "nyc-dot-department-of-transportation",
-      "nyc-dot-new-york-city-dept-of-transportation-bridges",
       "nyc-employees-retirement-system",
       "nyc-health-and-hospitals-corporation",
       "nyc-police-pension-fund",
       "nyc-workforce-development-board",
-      "off-track-betting-corp",
       "office-of-administrative-trials-and-hearings",
       "office-of-collective-bargaining",
+      "office-of-contract-services",
+      "office-of-criminal-justice-002",
       "office-of-labor-relations",
       "office-of-payroll-administration",
       "office-of-the-actuary",
+      "office-of-the-chief-medical-examiner",
       "office-of-the-mayor",
       "parks-and-recreation",
       "police-department",
       "probation",
-      "procurement-policy-board",
       "public-administrator-new-york-county",
       "public-advocate",
       "public-design-commission",
       "records-and-information-services",
       "rent-guidelines-board",
       "sanitation",
-      "sca-new-york-city-school-construction-authority",
       "small-business-services",
       "tax-commission",
       "taxi-and-limousine-commission",
@@ -865,7 +792,7 @@
       "triborough-bridge-and-tunnel-authority",
       "youth-and-community-development"
     ],
-    "vendor_count": 116,
+    "vendor_count": 134,
     "constellation_categories": [
       "contracts",
       "meetings",
@@ -880,9 +807,9 @@
       "report",
       "rulemaking"
     ],
-    "agency_count": 116
+    "agency_count": 106
   },
-  "generated_at": "2026-08-07T23:52:53.226Z",
+  "generated_at": "2026-08-08T12:15:15.003Z",
   "provenance": {
     "method": "ontology_inventory_diff_v1",
     "iteration": "v1",

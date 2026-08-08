@@ -8,6 +8,7 @@ import {
   buildOfficialConnectionView,
   measureOfficialCoverage,
   officialConnectionScopeHash,
+  renderOfficialCoverageHTML,
 } from "../site/official_connections.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
@@ -107,6 +108,19 @@ test("official decision trail groups exact votes by event and keeps strong confi
   )));
   assert.equal(view.coverage.gate.promoted, receipt.promotion_gate?.promoted ?? false);
   assert.equal(view.reader_label, EXPECTED_READER_LABEL);
+});
+
+test("official reader label omits promotion thresholds and audit methodology", () => {
+  const bag = lookup.by_person_id["7801"];
+  const view = buildOfficialConnectionView(bag, lookup.coverage, { scope: CrolScope });
+  const html = renderOfficialCoverageHTML(view, {
+    translate: (key) => ({
+      official_coverage_bounded_label: "Published roll calls in this corpus",
+      official_coverage_promoted_label: "Official decision constellation",
+    })[key] || key,
+  });
+  assert.match(html, /Published roll calls in this corpus|Official decision constellation/);
+  assert.doesNotMatch(html, /Coverage gate|promotion|retention|committed cohort|<progress/i);
 });
 
 test("official scope links round-trip the exact person identity and votes_on relation", () => {

@@ -381,9 +381,9 @@ with sync_playwright() as pw:
     # ---------- bounded official decision trail + composable vote scope ----------
     p7 = ctx.new_page()
     p7.goto(BASE + "#official/7801", timeout=30000)
-    p7.wait_for_selector('#official-skim [data-official-coverage-status="hold"]', timeout=30000)
+    p7.wait_for_selector('#official-skim [data-official-reader-label]', timeout=30000)
     coverage = p7.evaluate("""(() => ({
-      text:document.querySelector('.official-coverage').innerText,
+      text:document.querySelector('.official-reader-label').innerText,
       events:document.querySelectorAll('.official-decision-trail .official-event').length,
       confidence:[...document.querySelectorAll('.official-decision-trail tbody tr')]
         .every(row=>row.dataset.linkConfidence==='strong' && row.dataset.relation==='votes_on'),
@@ -396,7 +396,7 @@ with sync_playwright() as pw:
         relation:s.facets.values.connection_relation};
     })()""")
     step(
-        "OK" if "6 of 30" in coverage["text"] and "388 of 388" in coverage["text"]
+        "OK" if "Published roll calls in this corpus" in coverage["text"]
         and coverage["events"] >= 1 and coverage["confidence"]
         and coverage["href"].startswith("#meetings?")
         and scoped == {"domains":["meetings"], "refs":["entity:official:7801"],
