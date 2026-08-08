@@ -152,6 +152,40 @@ test("enrichment: solicitation gains RFx detail on exact EPIN join", () => {
   assert.equal(enriched.rfx_detail.status, "matched");
 });
 
+test("enrichment: zero RFx rows stamps root unmatched (not null) so pending ≠ miss", () => {
+  const { notice } = cases.joined_solicitation;
+  const base = assembleLifecycle(notice, [], [], [], {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const enriched = enrichLifecycleWithPassport(base, notice, {
+    contracts: [],
+    rfx: [],
+    lookupStatus: { contracts: "ok", rfx: "ok" },
+  });
+  assert.ok(enriched.rfx_detail, "root rfx_detail must be present after lookup");
+  assert.equal(enriched.rfx_detail.status, "unmatched");
+  assert.equal(enriched.rfx_detail.reason, "no_epin_pin_join");
+  assert.equal(enriched.passport.rfx_found, 0);
+});
+
+test("enrichment: multi-row same EPIN stamps root ambiguous with candidates", () => {
+  const { notice, passport_rfx } = cases.joined_solicitation;
+  const twin = { ...passport_rfx, rfp_id: String(Number(passport_rfx.rfp_id || 1) + 1), procurement_name: "Twin RFx" };
+  const base = assembleLifecycle(notice, [], [], [], {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const enriched = enrichLifecycleWithPassport(base, notice, {
+    contracts: [],
+    rfx: [passport_rfx, twin],
+    lookupStatus: { contracts: "ok", rfx: "ok" },
+  });
+  assert.equal(enriched.rfx_detail.status, "ambiguous");
+  assert.equal(enriched.rfx_detail.candidates.length, 2);
+  assert.equal(enriched.passport.rfx_found, 2);
+});
+
 test("enrichment: registered stage filled from PASSPort Registered when Checkbook unmatched", () => {
   const { notice, passport_contract } = cases.joined_award;
   const base = assembleLifecycle(notice, [], [], [], {

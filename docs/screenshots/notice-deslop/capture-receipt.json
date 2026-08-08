@@ -1,0 +1,18 @@
+{
+  "notice_id": "20260708001",
+  "viewports": [
+    390,
+    1440
+  ],
+  "cuts": [
+    "absence caveat: no earlier award matches this title",
+    "guide: official action link is not published here",
+    "guide: CityScroll could not match this notice",
+    "guide: PASSPort does not publish a stable link"
+  ],
+  "shared_component_fixes": [
+    "site/app/money-history.mjs priorCycleNoneHTML / priorCycleHTML / nearMatchHTML",
+    "site/app/feed-actions.mjs actionRailGuideHTML PASSPort steps",
+    "site/i18n.js bid_guide_passport_search_step + retired absence keys"
+  ]
+}

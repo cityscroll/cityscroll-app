@@ -83,11 +83,32 @@ export function enrichLifecycleWithPassport(lifecycle, notice, passport = {}) {
   // Solicitation-only notices: inject solicitation stage RFx enrichment already handled.
   // If there is no solicitation stage but we have RFx (award notice that still has live RFx),
   // attach rfx_detail on the lifecycle root for the surface to read.
+  // Never leave root rfx_detail null after a completed lookup — pending (no lifecycle yet)
+  // vs confirmed miss must be distinguishable on the client (null was both).
   const rfxDetail = matchedRfx.length === 1
     ? rfxDetailFrom(matchedRfx[0], rfxJoin)
     : matchedRfx.length > 1
-      ? { status: "ambiguous", join_method: rfxJoin?.method || null, candidates: matchedRfx.map(slimRfx) }
-      : null;
+      ? {
+          status: "ambiguous",
+          source: "passport-public-rfx",
+          portal: RFX_PORTAL,
+          join_method: rfxJoin?.method || null,
+          candidates: matchedRfx.map(slimRfx),
+        }
+      : lookup.rfx === "error"
+        ? {
+            status: "unavailable",
+            source: "passport-public-rfx",
+            portal: RFX_PORTAL,
+            reason: "lookup_error",
+          }
+        : {
+            status: "unmatched",
+            source: "passport-public-rfx",
+            portal: RFX_PORTAL,
+            reason: rfxJoin ? "epin_joined_no_row" : "no_epin_pin_join",
+            join_method: rfxJoin?.method || null,
+          };
 
   // PASSPort may fill registered after Checkbook left payment unknown/unavailable.
   // Recover paid-to-date from registration so the payments card and Follow-the-Dollars

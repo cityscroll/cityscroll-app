@@ -380,7 +380,10 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     contact_phone:r.contact_phone||null,
     address_to_request:r.address_to_request||null,
     selection_method:r.selection_method_description||null,
-    rfx_detail:lifecycleData&&lifecycleData.rfx_detail,
+    // lifecycle_loaded false on first paint so PASSPort handoff stays pending (never
+    // "could not match") until /contract-lifecycle repaints with a resolved rfx_detail.
+    lifecycle_loaded:!!lifecycleData,
+    rfx_detail:lifecycleData?lifecycleData.rfx_detail??null:null,
     // Award rail: Checkbook registration/payment + OCP side-car already on /contract-lifecycle.
     lifecycle_pin:lifecycleData&&lifecycleData.pin||null,
     registration:stageOf("registered"),
@@ -771,21 +774,46 @@ function actionRailGuideHTML(actions){
         steps.push(t("bid_guide_notice_fallback_step"));
       }
     }else{
-      steps=[t("bid_guide_passport_search_step")];
-      if(guide.mode==="matched"){
-        steps.push(String(guide.status||"").toLowerCase()==="released"
-          ? t("bid_guide_passport_released_step")
-          : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`);
-        steps.push(t("bid_guide_passport_submit_step"));
-      }else steps.push(
-        t("bid_guide_passport_unmatched_step"),
-        t("bid_guide_passport_submit_step")
-      );
+      // PASSPort modes: pending | matched | ambiguous | search_only.
+      // Never narrate join failure. Deep-linked matches skip the "search the list" step.
+      if(guide.mode==="matched" && guide.deep_link){
+        steps=[
+          t("bid_guide_passport_open_matched_step"),
+          String(guide.status||"").toLowerCase()==="released"
+            ? t("bid_guide_passport_released_step")
+            : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`,
+          t("bid_guide_passport_submit_step"),
+        ];
+      }else if(guide.mode==="matched"){
+        steps=[
+          t("bid_guide_passport_search_step"),
+          String(guide.status||"").toLowerCase()==="released"
+            ? t("bid_guide_passport_released_step")
+            : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`,
+          t("bid_guide_passport_submit_step"),
+        ];
+      }else if(guide.mode==="ambiguous"){
+        steps=[
+          t("bid_guide_passport_ambiguous_step"),
+          t("bid_guide_passport_submit_step"),
+        ];
+      }else if(guide.mode==="pending"){
+        // First paint before lifecycle: constructive recipe only — no miss claim.
+        steps=[
+          t("bid_guide_passport_search_step"),
+          t("bid_guide_passport_submit_step"),
+        ];
+      }else{
+        // Confirmed miss after lookup: still find + submit; no "could not match".
+        steps=[
+          t("bid_guide_passport_search_step"),
+          t("bid_guide_passport_submit_step"),
+        ];
+      }
     }
   }
-  if(guide.upstream_unavailable_note_key){
-    steps.unshift(`<span class="guide-warning">${t(guide.upstream_unavailable_note_key)}</span>`);
-  }
+  // upstream_unavailable_note_key remains an internal signal (suppresses broken package
+  // URLs); never surface "link not published here" / match-failure chrome in the guide.
   const renderedSteps=guide.system==="property_reader_actions"
     ? `<div class="property-action-sections">${steps.filter(Boolean).join("")}</div>`
     : `<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>`;
@@ -799,7 +827,11 @@ function actionRailHTML(actions){
   let primaryUsed=false;
   const items=actions.map((action,index)=>{
     const label=actionRailLabel(action);
-    if(action.delivery==="unavailable") return `<div class="next-action-unavailable" role="status">${label}</div>`;
+    // Skip empty / "link not published" absence status — show nothing when nothing to do.
+    if(action.delivery==="unavailable"){
+      if(!label || action.label_key==="next_action_unavailable_handoff") return "";
+      return `<div class="next-action-unavailable" role="status">${label}</div>`;
+    }
     if(action.type==="bid_checklist"){
       // Guide lead — steps render below; do not dump the reader into watch alerts.
       return `<div class="next-action-guide-lead" role="status">${label}</div>`;

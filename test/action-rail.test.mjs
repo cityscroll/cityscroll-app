@@ -133,12 +133,90 @@ test("unmatched citywide EPIN gets a search recipe instead of a fake deep link",
     pin: "85726B0060",
     title: "Tub Grinder - Parks",
     deadline: "2026-08-05T10:00:00.000",
+    lifecycle_loaded: true,
     rfx_detail: {status: "unmatched", reason: "no_epin_pin_join"},
   }, {today: "2026-08-01"});
   assert.equal(action.label_key, "search_passport_rfx");
   assert.equal(action.guide.mode, "search_only");
   assert.equal(action.guide.identifier, "85726B0060");
   assert.equal(new URL(action.destination).pathname, "/rfx.html");
+});
+
+test("first paint before lifecycle is pending, not a confirmed miss", () => {
+  const handoff = solicitationHandoff({
+    kind: "solicitation",
+    pin: "81026B0003",
+    title: "Records Remediation Project",
+    deadline: "2026-08-18T13:00:00.000",
+    lifecycle_loaded: false,
+    rfx_detail: null,
+  });
+  assert.equal(handoff.system, "passport");
+  assert.equal(handoff.mode, "pending");
+  assert.equal(handoff.identifier, "81026B0003");
+  assert.equal(new URL(handoff.destination).pathname, "/rfx.html");
+  // Must not claim a join failure before /contract-lifecycle resolves.
+  assert.notEqual(handoff.mode, "search_only");
+});
+
+test("ambiguous multi-row EPIN is a search recipe, not could-not-match", () => {
+  const handoff = solicitationHandoff({
+    kind: "solicitation",
+    pin: "82626B0045",
+    title: "Environmental services",
+    deadline: "2026-08-18T13:00:00.000",
+    lifecycle_loaded: true,
+    rfx_detail: {
+      status: "ambiguous",
+      portal: "https://a0333-passportpublic.nyc.gov/rfx.html",
+      candidates: [
+        {epin: "82626B0045", procurement_name: "Env A", rfp_id: "100"},
+        {epin: "82626B0045", procurement_name: "Env B", rfp_id: "101"},
+      ],
+    },
+  });
+  assert.equal(handoff.system, "passport");
+  assert.equal(handoff.mode, "ambiguous");
+  assert.equal(handoff.identifier, "82626B0045");
+  assert.equal(handoff.candidate_count, 2);
+  assert.equal(new URL(handoff.destination).pathname, "/rfx.html");
+  // Product joined the EPIN — never fall through to failure language modes.
+  assert.notEqual(handoff.mode, "search_only");
+});
+
+test("matched with rfp_id stamps deep_link for the guide (no stable-link caveat path)", () => {
+  const handoff = solicitationHandoff({
+    kind: "solicitation",
+    pin: "81026B0003",
+    title: "Records Remediation Project",
+    lifecycle_loaded: true,
+    rfx_detail: {
+      status: "matched",
+      portal: "https://a0333-passportpublic.nyc.gov/rfx.html",
+      detail: {
+        epin: "81026B0003",
+        procurement_name: "Records remediation",
+        rfx_status: "Released",
+        rfp_id: "36426",
+      },
+    },
+  });
+  assert.equal(handoff.mode, "matched");
+  assert.equal(handoff.deep_link, true);
+  assert.equal(handoff.rfp_id, "36426");
+  assert.match(handoff.destination, /process_manage_extranet\/36426$/);
+});
+
+test("confirmed miss after lifecycle stays constructive search_only", () => {
+  const handoff = solicitationHandoff({
+    kind: "solicitation",
+    pin: "85726B0060",
+    title: "Tub Grinder",
+    lifecycle_loaded: true,
+    rfx_detail: {status: "unmatched", reason: "no_epin_pin_join"},
+  });
+  assert.equal(handoff.mode, "search_only");
+  assert.equal(handoff.identifier, "85726B0060");
 });
 
 test("a notice-named agency portal is used only with matching system and approved host evidence", () => {

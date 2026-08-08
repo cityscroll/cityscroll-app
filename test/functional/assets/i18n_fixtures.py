@@ -866,15 +866,11 @@ FORECAST_ROWS = {"forecasts": [
      "release_quarter": "Q3 2026"},
 ]}
 
-# Phase 1b (prior-cycle client swap): index.html's priorCycleAwards() now reads the precomputed
-# GET /priorcycle/<request_id> endpoint instead of firing its own SODA queries. With the worker
-# API otherwise dead in fixtures, that fetch would abort and the panel would render nothing —
-# silently dropping the prior_cycle_*/near_match_* strings out of the guard's coverage. A minimal
-# real response (empty strict + a positive eligibleCount + one near match) makes the notice-detail
-# panel render the low-confidence none-note (a prior_cycle_* string) and the "look for looser
-# matches" reveal summary (a near_match_* string), so both string families stay guard-walked. The
-# near candidate's own text sits inside the collapsed <details> body (never visible → never walked)
-# and needs no data_values() registration.
+# Phase 1b (prior-cycle client swap): priorCycleAwards() reads GET /priorcycle/<request_id>.
+# With the worker API otherwise dead in fixtures, that fetch would abort and paint nothing.
+# Absence no longer renders prior_cycle_none_* disclaimer copy; a response with empty strict +
+# one near match still paints the "Find possible matches" reveal (near_match_reveal_btn), so the
+# near_match_* family stays guard-walked. Collapsed near-match body text is not walked.
 PRIOR_CYCLE_MATCHES = {
     "id": "20260701099",
     "strict": [],
