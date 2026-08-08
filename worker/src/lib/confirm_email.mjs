@@ -12,6 +12,7 @@ const LENS_LABEL = {
   rules: "rules & notices",
   meetings: "public meetings",
   district: "council district",
+  obligations: "agency duties",
 };
 const usd = (n) => "$" + Number(n).toLocaleString("en-US");
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
@@ -21,6 +22,10 @@ export function describeFilter(lens, filter) {
   const f = filter || {};
   if (lens === "district") {
     return `Council District ${f.councilDistrict || "?"} — weekly civic actions`;
+  }
+  if (lens === "obligations") {
+    const who = f.agency || f.agency_id || "?";
+    return `duties for “${who}” — deadlines only, not compliance findings`;
   }
   if (lens === "people" && f.view === "guide" && f.examNumber) {
     return `civil-service exam ${f.examNumber} — exact exam updates`;

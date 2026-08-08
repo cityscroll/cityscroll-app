@@ -69,7 +69,7 @@ and [Following](https://cityscroll.org/following/?lens=property&filter=%7B%22key
 
 The links on a record can be combined instead of starting a new search. Try an [HPD contract scope](https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D), a [Timbale Terrace project constellation](https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%2C%22project%3A2022M0258%22%5D%7D), or [follow that HPD scope](https://cityscroll.org/following/?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D). Each link keeps the typed connection in the URL so the next view can use it.
 
-Cross-category agency constellations (first iteration) gather one agency across contracts, meetings, rules, and staffing exams — same parcel-style “records by source” shape. Demo: [Parks and Recreation](https://cityscroll.org/agencies/parks-and-recreation/) (`agency:id:parks-and-recreation`), with per-category Browse scopes and a City Record entity follow.
+Cross-category agency constellations (first iteration) gather one agency across contracts, meetings, rules, statutory obligations, and staffing exams — same parcel-style “records by source” shape. Demo: [Parks and Recreation](https://cityscroll.org/agencies/parks-and-recreation/) (`agency:id:parks-and-recreation`), with per-category Browse scopes, auto-certified statutory duties (agency → duty → deadline → recurrence; deadlines are not compliance verdicts), and free watches for City Record notices or obligation deadlines.
 
 ### Honest about missing data
 

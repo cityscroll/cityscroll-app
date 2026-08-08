@@ -10,12 +10,14 @@ import {
   extractPropertyCommercial,
   normalizeAssetFilter,
 } from "./property_commercial.mjs";
+import { obligationDigestRowsForAgency } from "../../../site/agency_obligations.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
 const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
 const DISTRICT_WEEKLY_DIGESTS = "https://cityscroll.org/data/district_weekly_digests.json";
+const AGENCY_OBLIGATIONS = "https://cityscroll.org/data/agency_obligations_lookup.json";
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
 // type_of_notice_description + address/method feed digest action rails (handoffs).
@@ -78,6 +80,26 @@ export function compileSub(sub, todayISO) {
         const rows = Array.isArray(record?.items) ? record.items.filter((row) => row?.district_item_id) : [];
         return record?.total === rows.length ? rows : [];
       },
+    };
+  }
+
+  if (sub.lens === "obligations") {
+    // World-state predicate: agency statutory duties / approaching deadlines from
+    // the precomputed obligations lookup — not a City Record document match.
+    const agencyId = typeof f.agency_id === "string" && f.agency_id.trim()
+      ? f.agency_id.trim()
+      : (typeof f.agency === "string" && f.agency.trim() ? f.agency.trim() : null);
+    if (!agencyId) return null;
+    return {
+      url: AGENCY_OBLIGATIONS,
+      params: {},
+      idField: "alert_id",
+      kind: "obligation",
+      transformRows: (payload) => obligationDigestRowsForAgency(payload, agencyId, {
+        todayISO,
+        windowDays: 90,
+        pastDays: 30,
+      }),
     };
   }
 

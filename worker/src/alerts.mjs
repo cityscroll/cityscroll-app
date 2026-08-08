@@ -95,9 +95,11 @@ export function digestRunDayKey(day) {
 }
 export { digestDayLogKey };
 
-/** District presets are honest-absent: no all-empty weekly filler email. */
+/** District and obligations presets are honest-absent: no all-empty weekly filler email. */
 export function subDigestDecision({ lens, freshCount, freq, lastSentDate, today, heartbeatDays } = {}) {
-  if (lens === "district") return { action: Number(freshCount) > 0 ? "match" : "none" };
+  if (lens === "district" || lens === "obligations") {
+    return { action: Number(freshCount) > 0 ? "match" : "none" };
+  }
   return digestDecision({ freshCount, freq, lastSentDate, today, heartbeatDays });
 }
 
@@ -2053,6 +2055,26 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>${noe}
         <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` &nbsp; <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
+    }
+    if (itemKind === "obligation") {
+      // Statutory duty world-state: never assert compliance / non-compliance.
+      const agencySlug = r.agency_id
+        || String(r.agency_name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const agencyPath = agencySlug
+        ? `https://cityscroll.org/agencies/${encodeURIComponent(agencySlug)}/`
+        : "https://cityscroll.org/agencies/";
+      const deadline = r.deadline_date
+        ? `Statutory deadline ${String(r.deadline_date).slice(0, 10)}`
+        : (r.deadline_text ? `Deadline: ${r.deadline_text}` : "No computed deadline");
+      const meta = [r.agency_name, r.deliverable_type, deadline, r.recurrence, r.citation]
+        .filter(Boolean).map(esc).join(" · ");
+      const source = r.legistar_url
+        ? `<a href="${esc(r.legistar_url)}">Source law</a>`
+        : "";
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b>${esc(r.duty_text || r.short_title || "Statutory obligation")}</b><br>
+        <span style="color:#555;font-size:13px">${meta}</span><br>
+        <span style="color:#666;font-size:12px;font-style:italic">Statutory deadline only — not a compliance finding. Observation is not adjudicated.</span><br>
+        <span style="font-size:13px"><a href="${agencyPath}">↗ Agency constellation</a>${source ? ` &nbsp; ${source}` : ""}</span></li>`;
     }
     if (itemKind === "rezone") {
       // ZAP rows: project_name/public_status shape. Action rail uses zoningHandoff via
