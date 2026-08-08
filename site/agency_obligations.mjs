@@ -620,7 +620,7 @@ export function renderAgencyObligationsSection(view) {
 
   return `<section class="node-section node-card civic-object-section" data-agency-constellation-category="obligations" data-status="${esc(view.status)}" data-export-class="object_members" data-certification-basis="${esc(view.certification_basis || AGENCY_OBLIGATIONS_CERTIFICATION)}">
     <h2>Statutory mandates <span class="muted node-muted">(${esc(status)})</span></h2>
-    <p class="node-muted muted">Agency → duty → deadline → recurrence. Deadlines are statutory timed events, not compliance verdicts. Observation of expected events is not adjudicated in this iteration.</p>
+    <p class="node-muted muted">Agency → duty → deadline → recurrence. Deadlines are statutory timed events, not compliance verdicts. Observation status stays not adjudicated in this iteration.</p>
     ${list}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
