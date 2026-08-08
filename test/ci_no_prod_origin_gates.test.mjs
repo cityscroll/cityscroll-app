@@ -71,6 +71,17 @@ test("a11y-pr demo-link contract uses the local site server only", () => {
   // Exactly one demo-links.py invocation in a11y-pr (local only).
   const runs = a11y.match(/python3 test\/functional\/20_demo_links\.py/g) || [];
   assert.equal(runs.length, 1, "a11y-pr should run demo-links once against local origin");
+  const demoStep = a11y.slice(a11y.indexOf("- name: Public demo-link regression contract"));
+  assert.match(
+    demoStep,
+    /continue-on-error:\s*\$\{\{\s*github\.event_name\s*==\s*'merge_group'\s*\}\}/,
+    "merge_group should retain demo-link evidence without ejecting the queue entry",
+  );
+  assert.doesNotMatch(
+    demoStep.slice(0, demoStep.indexOf("run: python3 test/functional/20_demo_links.py")),
+    /continue-on-error:\s*true/,
+    "demo-link tolerance must stay limited to merge_group",
+  );
 });
 
 test("scheduled cutover-regression owns live production demo-link monitoring", () => {
