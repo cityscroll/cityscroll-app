@@ -9,7 +9,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { AGENCY_GROUPS, agencyCanonicalId } from "../site/agency_identity.mjs";
+import {
+  AGENCY_GROUPS,
+  agencyCanonicalId,
+  resolveAgencyIdentity,
+} from "../site/agency_identity.mjs";
 import {
   AGENCY_CONSTELLATION_ER_BASIS,
   AGENCY_CONSTELLATION_METHOD,
@@ -34,6 +38,7 @@ function loadSources() {
   const processConformancePath = join(SITE, "data/process_conformance_lookup.json");
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
+  const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
@@ -44,6 +49,7 @@ function loadSources() {
     process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
+    land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
   };
 }
 
@@ -51,7 +57,7 @@ function candidateAgencyIds(sources) {
   const ids = new Set(Object.keys(AGENCY_GROUPS).map(agencyCanonicalId));
   for (const ref of Object.keys(sources.intelligence?.by_ref || {})) {
     const match = String(ref).match(/^agency:id:(.+)$/);
-    if (match) ids.add(match[1]);
+    if (match) ids.add(resolveAgencyIdentity(match[1]).canonical_id);
   }
   for (const row of sources.certification?.by_agency || []) {
     if (row?.agency_id) ids.add(row.agency_id);
