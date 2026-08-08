@@ -278,7 +278,6 @@ function careerFacetFilters(){
   };
 }
 function careerFacetLabel(facet,value){
-  if(value==="unknown") return t("career_not_published");
   if(value==="all") return t({interest:"career_all_interests",window:"career_all_windows_option",format:"career_format_all",salary:"career_salary_band_all",fee:"career_fee_level_all",experience:"career_experience_all"}[facet]);
   if(facet==="interest") return t(CAREER_AREA_KEYS[value]||"career_area_other");
   if(facet==="window") return value==="actionable" ? t("career_actionable_option") : careerStatusLabel(value);
@@ -295,7 +294,6 @@ function careerFacetLabel(facet,value){
 }
 function careerFacetLinkHTML(facet,value,filters,sourceValue=""){
   const label=careerFacetLabel(facet,value);
-  if(value==="unknown") return `<span class="career-facet-unknown" data-facet-value="unknown">${escUiHtml(label)}</span>`;
   const href=examFacetHref(filters,facet,value,{language:window.LANG||"en"});
   if(!href) return "";
   const edge=["people",facet,value].join(":");
@@ -320,6 +318,8 @@ function careerFacetControlsHTML(){
     const values=facet==="interest"
       ? careerData.interest_areas.filter(area=>careerData.exams.some(exam=>exam.interest_area===area))
       : examFacetOptionValues(careerData.exams,facet,{today,statusFor:CrolStaffing.statusFor});
+    box.closest(".career-facet-field").hidden=values.length===0;
+    if(!values.length){ box.innerHTML=""; continue; }
     const all="all";
     const links=[careerFacetLinkHTML(facet,all,filters)];
     if(facet==="window") links.push(careerFacetLinkHTML(facet,"actionable",filters));
@@ -424,9 +424,7 @@ function careerSourceHTML(){
   const lead=stale
     ? t("career_source_stale",{date:careerDate(current?.verified_at||careerData.generated_at)})
     : t("career_source_current",{date:careerDate(current?.verified_at||careerData.generated_at),annual:careerDate(annual?.data_current_as_of)});
-  box.innerHTML=`<span>${lead}</span><details><summary>${t("career_source_details")}</summary>
-    <ul>${careerData.sources.map(source=>`<li><span lang="en" dir="ltr">${escUiHtml(source.name)}</span> — ${escUiHtml(source.refresh_cadence||"")}</li>`).join("")}</ul>
-    <p>${t("career_city_record_finding")}</p></details>`;
+  box.innerHTML=`<span>${lead}</span>`;
 }
 function careerCount(value){
   return Number.isFinite(Number(value)) ? fmtNumber(Number(value)) : t("career_not_published");
@@ -763,26 +761,26 @@ function careerCardHTML(exam){
     </div>
   </article>`;
 }
-function careerAreaWatchesHTML(){
+function careerInterestContextHTML(){
   const index=careerData?.interest_taxonomy;
-  if(!index || !Array.isArray(index.areas)) return "";
+  const selected=careerFacetState.interest;
+  if(!index || !Array.isArray(index.areas) || !selected || selected==="all") return "";
+  const area=index.areas.find(item=>item.id===selected && item.subscribable);
+  if(!area) return "";
   const today=careerToday();
-  return index.areas.filter(area=>area.subscribable).map(area=>{
-    const rows=careerData.exams.filter(exam=>exam.interest_area===area.id);
-    const bands={far:0,approaching:0,imminent:0};
-    rows.forEach(exam=>{ const band=CrolStaffing.openWindowBand(exam,today); if(band) bands[band]+=1; });
-    const noe=rows.filter(exam=>exam.notice_url).length;
-    const label=t(CAREER_AREA_KEYS[area.id]||"career_area_other");
-    const href=examFacetHref(careerFacetFilters(),"interest",area.id,{language:window.LANG||"en"});
-    const chips=["far","approaching","imminent"].filter(band=>bands[band]>0)
-      .map(band=>`<span class="tag" data-open-window-band="${band}" lang="en" dir="ltr">${band} ${bands[band]}</span>`);
-    if(noe>0) chips.push(`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted ${noe}</span>`);
-    return `<article class="career-area-watch" data-interest-area="${escUiHtml(area.id)}">
-      <div class="career-area-watch-head"><a class="career-area-watch-title" data-scope-edge="people:interest:${escUiHtml(area.id)}" href="${escUiHtml(href)}">${escUiHtml(label)}</a></div>
-      <div class="career-area-watch-meta">${chips.join("")}</div>
-      <button class="act" type="button" data-follow-exam-area="${escUiHtml(area.id)}" data-follow-exam-label="${escUiHtml(label)}">${t("mini_subscribe_btn")}</button>
-    </article>`;
-  }).join("");
+  const rows=careerData.exams.filter(exam=>exam.interest_area===area.id);
+  const bands={far:0,approaching:0,imminent:0};
+  rows.forEach(exam=>{ const band=CrolStaffing.openWindowBand(exam,today); if(band) bands[band]+=1; });
+  const noe=rows.filter(exam=>exam.notice_url).length;
+  const label=t(CAREER_AREA_KEYS[area.id]||"career_area_other");
+  const chips=["far","approaching","imminent"].filter(band=>bands[band]>0)
+    .map(band=>`<span class="tag" data-open-window-band="${band}" lang="en" dir="ltr">${band} ${bands[band]}</span>`);
+  if(noe>0) chips.push(`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted ${noe}</span>`);
+  return `<div class="career-interest-context" data-interest-context="${escUiHtml(area.id)}">
+    <b>${escUiHtml(label)}</b>
+    <div class="career-interest-context-meta">${chips.join("")}</div>
+    <button class="act" type="button" data-follow-exam-area="${escUiHtml(area.id)}" data-follow-exam-label="${escUiHtml(label)}">${t("mini_subscribe_btn")}</button>
+  </div>`;
 }
 function careerActionGroup(exam, today){
   const status=CrolStaffing.statusFor(exam,today);
@@ -838,10 +836,10 @@ function renderCareerGuide(){
   $("#career-upcoming-count").textContent=fmtNumber(upcoming);
   careerSourceHTML();
   careerFacetControlsHTML();
-  const areaWatches=$("#career-area-watches");
-  if(areaWatches){
-    areaWatches.innerHTML=careerAreaWatchesHTML();
-    areaWatches.querySelectorAll("[data-follow-exam-area]").forEach(button=>button.addEventListener("click",async()=>{
+  const interestContext=$("#career-interest-context");
+  if(interestContext){
+    interestContext.innerHTML=careerInterestContextHTML();
+    interestContext.querySelectorAll("[data-follow-exam-area]").forEach(button=>button.addEventListener("click",async()=>{
       const carry=await import("../alerts_context_carry.mjs");
       location.assign(carry.alertsHref({lens:"people",filter:{
         view:"guide",
