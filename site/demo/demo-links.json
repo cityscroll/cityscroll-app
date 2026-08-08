@@ -1196,6 +1196,33 @@
       }
     },
     {
+      "id": "agency-parks-mandates-reports",
+      "url": "agencies/parks-and-recreation/",
+      "feature": "mandate-reports-receipt",
+      "description": "Parks report mandates with City Record filing receipts on the agency constellation when observed.",
+      "expectations": {
+        "pathname": "/agencies/parks-and-recreation/",
+        "visible": [
+          {
+            "selector": "#mandates-reports",
+            "text": "Report mandates"
+          },
+          {
+            "selector": "#mandates-reports [data-bridge-side='report-mandates']"
+          },
+          {
+            "selector": "#mandates-reports",
+            "text": "Watch report mandates"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview"
+          }
+        ]
+      }
+    },
+    {
       "id": "ontology-delta-whats-new",
       "url": "graph/ontology-delta/",
       "feature": "living-civic-graph-ontology-delta",
