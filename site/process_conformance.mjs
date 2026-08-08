@@ -44,6 +44,9 @@ export const OBSERVATION_LABELS = Object.freeze({
  */
 export const DETECTABLE_DELIVERABLES = Object.freeze(["rulemaking", "report"]);
 
+/** Maximum tolerated lag after a known obligation deadline for an automatic match. */
+export const MAX_POST_DEADLINE_PLAUSIBILITY_DAYS = 365;
+
 /** Expected civic-event kind from mandate deliverable_type. */
 export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
   rulemaking: {
@@ -279,10 +282,7 @@ export function collectAgencyObservationCandidates({
   return out.sort((left, right) => String(right.when || "").localeCompare(String(left.when || "")));
 }
 
-/**
- * Score whether a candidate notice is a topic match for a mandate duty.
- * Requires ≥2 shared content tokens, or 1 rare long token (≥8 chars).
- */
+/** Score whether a candidate notice is a topic match for a mandate duty. */
 export function scoreTopicMatch(dutyText, candidate) {
   const dutyTokens = contentTokens(dutyText);
   const noticeTokens = Array.isArray(candidate?.tokens)
@@ -296,11 +296,16 @@ export function scoreTopicMatch(dutyText, candidate) {
   if (shared.length >= 2) {
     return { score: shared.length, shared, method: "topic_token_overlap_v1" };
   }
-  const rare = shared.filter((token) => token.length >= 8);
-  if (rare.length >= 1) {
-    return { score: 1, shared: rare, method: "topic_rare_token_v1" };
-  }
   return { score: 0, shared: [], method: null };
+}
+
+function candidateWithinDeadlinePlausibility(candidate, deadlineDate) {
+  if (!deadlineDate || !candidate?.when) return true;
+  const deadlineMs = Date.parse(`${deadlineDate}T12:00:00Z`);
+  const candidateMs = Date.parse(`${candidate.when}T12:00:00Z`);
+  if (!Number.isFinite(deadlineMs) || !Number.isFinite(candidateMs)) return true;
+  const daysAfterDeadline = Math.floor((candidateMs - deadlineMs) / 86_400_000);
+  return daysAfterDeadline <= MAX_POST_DEADLINE_PLAUSIBILITY_DAYS;
 }
 
 function candidateFitsExpected(candidate, expectedKind) {
@@ -352,6 +357,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
   let best = null;
   for (const candidate of candidates) {
     if (!candidateFitsExpected(candidate, expected.kind)) continue;
+    if (!candidateWithinDeadlinePlausibility(candidate, deadlineDate)) continue;
     const match = scoreTopicMatch(duty, candidate);
     if (match.score <= 0) continue;
     if (!best || match.score > best.match.score) {
