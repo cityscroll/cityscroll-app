@@ -115,8 +115,10 @@ with sync_playwright() as pw:
     assert not any("/entity-intelligence?" in url for url in requests), requests
 
     footprint_text = page.locator("#vendor-footprint").inner_text()
-    assert "273 records mention this name — identity not yet confirmed" in footprint_text
+    assert "273 records mention this name" in footprint_text
     forbidden = (
+        "identity not yet confirmed",
+        "this summary groups",
         "strongly linked",
         "in this build",
         "coverage not measured",

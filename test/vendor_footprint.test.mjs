@@ -159,6 +159,7 @@ test("vendor footprint renders populated groups and strong objects only", () => 
   assert.match(html, /Strong award/);
   assert.doesNotMatch(html, /Weak candidate/);
   assert.doesNotMatch(html, /strongly linked|in this build|coverage not measured|View this vendor as/i);
+  assert.doesNotMatch(html, /This summary groups|identity not yet confirmed/i);
   assert.match(html, /Acme &amp; Co\./);
 });
 
@@ -174,7 +175,7 @@ test("view-all links compose a typed vendor constraint through scope v0", () => 
   assert.equal(vendorFootprintScopeHref(REF, "franchise"), "");
 });
 
-test("zero confirmed links surface name mentions instead of a dead section", () => {
+test("zero confirmed links surface populated name-mention counts without methodology copy", () => {
   const html = renderVendorFootprintHTML({
     root: { kind: "vendor", ref: REF, display_name: "Acme" },
     domains: { money: { objects: [] } },
@@ -187,8 +188,18 @@ test("zero confirmed links surface name mentions instead of a dead section", () 
     },
   });
   assert.match(html, /Awards <span class="ct">273<\/span>/);
-  assert.match(html, /273 records mention this name — identity not yet confirmed/);
+  assert.match(html, /273 records mention this name/);
+  assert.doesNotMatch(html, /identity not yet confirmed|This summary groups/i);
   assert.match(html, /See Acme&#39;s awards \(273\)/);
+});
+
+test("an empty footprint paints no card", () => {
+  const html = renderVendorFootprintHTML({
+    root: { kind: "vendor", ref: REF, display_name: "Acme" },
+    domains: {},
+    vendor_footprint: { section_counts: {} },
+  });
+  assert.equal(html, "");
 });
 
 test("promotion removes qualifier labels but never admits tentative rows", () => {
