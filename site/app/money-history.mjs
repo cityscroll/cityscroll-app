@@ -477,9 +477,18 @@ function entityIntelligenceHTML(resp){
   }).join("");
 
   const rootName = escUiHtml(resp.root.display_name || resp.root.ref || "");
+  const constellationId = String(resp.root.canonical_id || resp.root.ref || "")
+    .replace(/^agency:id:/, "");
+  const constellationHref = constellationId
+    ? `/agencies/${encodeURIComponent(constellationId)}/`
+    : "";
+  const constellationLink = constellationHref
+    ? `<a class="act ei-constellation" href="${escUiHtml(constellationHref)}">Cross-category constellation</a>`
+    : "";
   return `<div class="eicard" id="entity-intelligence" data-root="${escUiHtml(resp.root.ref||"")}">
       <div class="ei-heading-row"><div class="chain-h">${t("entity_intel_heading")}</div>
-        <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("entity_intel_apply_scope")}</a></div>
+        <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("entity_intel_apply_scope")}</a>
+        ${constellationLink}</div>
       <p class="ei-lead">${t("entity_intel_lead", {name: rootName})}</p>
       <div class="ei-domains">${domainBlocks}</div>
     </div>`;

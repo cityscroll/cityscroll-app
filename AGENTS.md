@@ -2287,6 +2287,19 @@ behavior. Keep ranked retrieval limited to explicitly adopted routes; run
 Before D1 export, use `worker/sql/notice_fts_export_prepare.sql`, then replay migration `0016` on
 both the live and restored databases.
 
+## Agency cross-category constellation (v1)
+
+- Pure model: `site/agency_constellation.mjs`. Build:
+  `node tools/build_agency_constellation_documents.mjs` (+ `--check`).
+- Artifact: `site/data/agency_constellation_lookup.json` and static
+  `site/agencies/<canonical_id>/` documents (parcel-biography shape).
+- Categories: contracts + meetings + rules (entity-intelligence agency edges) and
+  staffing exams (publisher `certified_to_agency` edges). Match basis stamped
+  `agency_canonical_v1+publisher_certification_record_v1` for later graph refinement.
+- Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
+- Verify: `node --test test/agency_constellation.test.mjs`. Demo:
+  `/agencies/parks-and-recreation/`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

@@ -507,7 +507,7 @@ async function showAgency(name, initialTab){
         <button class="act" type="button" data-aw="meetings">${t("agency_watch_meetings_btn")}</button>
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}
       </div>
-      <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>
+      <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag. Watch this agency for City Record notices across sections; the <a href="/agencies/${encodeURIComponent(identity.canonical_id)}/">cross-category constellation</a> also surfaces staffing exam certifications when the publisher lists them.</div>
     </div></div>`;
 
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
