@@ -296,7 +296,15 @@ async function handleEntity(request, env, entity) {
     if (document.ok) {
       const probe = await document.clone().text();
       if (probe.includes('data-civic-object-kind="agency-constellation"')) {
-        return handleComposedObject(request, env, documentPath, documentPath);
+        // Preserve shareable as_of + claim query params on the composed document canonical.
+        const params = new URLSearchParams();
+        const asOf = String(url.searchParams.get("as_of") || "").trim();
+        if (/^\d{4}-\d{2}-\d{2}$/.test(asOf)) params.set("as_of", asOf);
+        const claim = String(url.searchParams.get("claim") || "").trim().slice(0, 200);
+        if (claim) params.set("claim", claim);
+        const query = params.toString();
+        const canonicalPath = query ? `${documentPath}?${query}` : documentPath;
+        return handleComposedObject(request, env, documentPath, canonicalPath);
       }
     }
   }

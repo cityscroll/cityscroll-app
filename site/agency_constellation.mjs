@@ -43,6 +43,14 @@ import {
   sourceSystemReaderLabel,
   summarizeCategoryWarrants,
 } from "./graph_edge_provenance.mjs";
+import {
+  asOfHref,
+  buildLedgerSummary,
+  dayStamp,
+  normalizeAsOfDay,
+  projectAgencyConstellationAsOf,
+  renderCivicTimeLedgerPanel,
+} from "./civic_time_ledger.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -592,25 +600,73 @@ function categorySection(category) {
   });
 }
 
-/** Static-first civic document for one agency constellation (shared node layout). */
+/** Demo as-of day for Parks: linked sample includes later 2025–2026 publisher dates. */
+// source: site/data/entity_intelligence_lookup.json agency:id:parks-and-recreation item dates
+const DEMO_AS_OF_DAY = "2024-06-01";
+
+/**
+ * Build a shareable constellation path with optional claim + as_of query params.
+ * Claim inspects one edge; as_of filters the valid/publication axis.
+ */
+export function agencyConstellationSharePath(viewPath, { claim = null, asOf = null } = {}) {
+  const base = String(viewPath || "/");
+  const params = new URLSearchParams();
+  const day = normalizeAsOfDay(asOf);
+  const claimId = clean(claim, 200);
+  if (day) params.set("as_of", day);
+  if (claimId) params.set("claim", claimId);
+  const query = params.toString();
+  if (!query) return base;
+  return `${base}${base.includes("?") ? "&" : "?"}${query}`;
+}
+
+/**
+ * Static-first civic document for one agency constellation (shared node layout).
+ * Optional `options.asOf` (YYYY-MM-DD) pre-filters the valid/publication axis.
+ * Optional `options.claim` deep-links the graph edge provenance inspector.
+ */
 export function renderAgencyConstellationDocument(view, options = {}) {
   if (!view || view.kind !== "agency-constellation") {
     throw new Error("Unknown agency constellation view");
   }
+  const asOf = normalizeAsOfDay(options.asOf);
+  const displayView = asOf
+    ? projectAgencyConstellationAsOf(view, asOf, { axis: options.asOfAxis || "valid" })
+    : view;
   const title = view.display_name;
   const activeClaimId = clean(options.activeClaimId || options.claim, 200) || null;
-  const pathWithClaim = activeClaimId
-    ? `${view.path}${view.path.endsWith("/") ? "" : "/"}?claim=${encodeURIComponent(activeClaimId)}`
-    : view.path;
-  const canonical = `https://cityscroll.org${pathWithClaim}`;
+  const sharePath = agencyConstellationSharePath(view.path, { claim: activeClaimId, asOf });
+  const canonical = `https://cityscroll.org${sharePath}`;
+  // Payload is always the full "now" materialisation; runtime re-filters as-of.
   const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
-  const matched = view.summary.matched_categories;
-  const lead = matched
-    ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory obligations, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
-    : "Public records for this agency appear here when contracts, meetings, rules, statutory obligations, or staffing exams join to its published identity.";
-  const sections = view.categories.map(categorySection).filter(Boolean).join("");
+  const matched = displayView.summary.matched_categories;
+  const lead = asOf
+    ? (matched
+      ? `As of ${asOf}, this as-of view keeps linked records whose publisher or event date is on or before that day (${matched} of ${displayView.summary.category_count} categories still show links). System-time history of the composed graph is not retained in this iteration. Open “Why do we believe this?” on any connection for its source and warrant class.`
+      : `As of ${asOf}, no linked record in this sample has a publisher or event date on or before that day. Public records appear here when joins carry a date on or before the chosen day.`)
+    : (matched
+      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory obligations, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
+      : "Public records for this agency appear here when contracts, meetings, rules, statutory obligations, or staffing exams join to its published identity.");
+  const kicker = asOf
+    ? `Agency constellation · as of ${asOf} (valid / publication)`
+    : "Agency constellation";
+  const sections = displayView.categories.map(categorySection).filter(Boolean).join("");
+  // Provenance inspector uses the full claim set; as-of only filters listed members.
   const provenancePanel = renderEdgeProvenancePanel(view.claims || [], { activeClaimId });
   const obligationsFollow = view.categories.find((category) => category.id === "obligations" && category.items?.length)?.follow_href || "";
+  const ledgerSummary = asOf ? buildLedgerSummary(view, displayView) : null;
+  const materializationVintage = dayStamp(view.summary?.generated_at)
+    || dayStamp(view.provenance?.intelligence_generated_at)
+    || dayStamp(view.provenance?.certification_generated_at)
+    || dayStamp(view.provenance?.obligations_generated_at)
+    || null;
+  const ledgerPanel = renderCivicTimeLedgerPanel({
+    path: view.path,
+    asOfDay: asOf,
+    summary: ledgerSummary,
+    materializationVintage,
+    systemTimeStatus: displayView.as_of?.system_time_status || "current_snapshot_only",
+  });
   const actions = renderNodeActions([
     { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
     obligationsFollow
@@ -627,68 +683,49 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   // Plain-English provenance only — no pipeline method keys or match-basis codes.
   const provenance = renderNodeProvenance({
-    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams from publisher certification records; statutory obligations from enacted-law extraction with source-law links. Each listed connection opens a shareable provenance inspector.",
+    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams from publisher certification records; statutory obligations from enacted-law extraction with source-law links. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only; it does not invent historical system-time snapshots.",
     exportClass: "object_provenance",
     extraClass: "civic-object-section",
   });
+  const assetPrefix = options.assetPrefix || "/";
+  const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${esc(title)} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory obligations, and staffing exams — with inspectable connection provenance.`)}">
+  <title>${esc(title)}${asOf ? ` · as of ${esc(asOf)}` : ""} · Agency constellation · CityScroll</title>
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory obligations, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
-  ${renderCivicDocumentAssets(options.assetPrefix || "/")}
+  ${renderCivicDocumentAssets(assetPrefix)}
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   ${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
-  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1">
+  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(asOf || "")}">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
     <header class="node-hero civic-object-hero" data-export-class="object_identity">
-      <p class="node-kicker civic-object-kicker">Agency constellation</p>
+      <p class="node-kicker civic-object-kicker">${esc(kicker)}</p>
       <h1>${esc(title)}</h1>
       <p class="node-lede">${esc(lead)}</p>
       <p class="node-pivot civic-object-pivot">
         <a data-subject-ref="${esc(view.subject_ref)}" href="${esc(view.scope_href)}">Open this agency in Contracts</a>
         · <a href="${esc(view.interactive_profile_href)}">Interactive profile</a>
         · <a href="#edge-provenance">Why do we believe these links?</a>
+        · <a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>Demo as-of ${esc(DEMO_AS_OF_DAY)}</a>
       </p>
     </header>
     ${actions}
+    ${ledgerPanel}
     ${sections}
     ${provenancePanel}
     ${provenance}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
   <script id="civic-object-payload" type="application/json">${payload}</script>
-  <script defer src="/export_workflows.js"></script>
-  <script type="module">
-    const root = document.querySelector("[data-civic-object-kind='agency-constellation']");
-    const payload = JSON.parse(document.getElementById("civic-object-payload")?.textContent || "null");
-    const copyTarget = () => {
-      const claim = new URLSearchParams(location.search).get("claim");
-      if (claim) {
-        const url = new URL(location.href);
-        return url.origin + url.pathname + "?claim=" + encodeURIComponent(claim);
-      }
-      return document.querySelector('link[rel="canonical"]')?.href || location.href;
-    };
-    root?.querySelector("[data-object-copy]")?.addEventListener("click", async (event) => {
-      try { await navigator.clipboard.writeText(copyTarget()); event.currentTarget.textContent = "Copied"; }
-      catch { event.currentTarget.textContent = "Copy failed"; }
-    });
-    root?.querySelector("[data-object-print]")?.addEventListener("click", () => window.print());
-    root?.querySelector('[data-object-export="json"]')?.addEventListener("click", () => {
-      window.CrolExports?.downloadFile(
-        \`cityscroll-agency-constellation-\${payload.id}.json\`,
-        JSON.stringify({ ...payload, canonical_url: copyTarget() }, null, 2),
-        "application/json",
-      );
-    });
-  </script>
+  <script defer src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`) + "export_workflows.js")}"></script>
+  <script type="module" src="${esc(runtimeSrc)}"></script>
   <script>${edgeProvenanceClientScript()}</script>
 </body>
 </html>`;

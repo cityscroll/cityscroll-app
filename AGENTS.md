@@ -2349,6 +2349,18 @@ both the live and restored databases.
 - Provenance: each row links `source.legistar_url` (obligation → source law).
 - Rebuild constellation after obligations refresh so agency pages pick up the facet.
 
+## Civic Time Ledger (as-of view)
+
+- First iteration lives on agency constellation documents: pure `site/civic_time_ledger.mjs`
+  + browser `site/civic_time_ledger_runtime.mjs`, shareable `?as_of=YYYY-MM-DD`.
+- Filters on **valid / publication** clocks retained on linked records; historical
+  **system-time** snapshots of the composed graph are not retained yet and must stay
+  labeled (never invent knowledge-time membership). Rebuild pages with
+  `node tools/build_agency_constellation_documents.mjs`. Verify:
+  `node --test test/civic_time_ledger.test.mjs test/agency_constellation.test.mjs`.
+  Capture: `python3 tools/capture_civic_time_ledger.py`. Demo:
+  `/agencies/parks-and-recreation/?as_of=2024-06-01`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

@@ -14,31 +14,46 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _format, *_args):
         return
 
+    def _static_agency_constellation(self, route: str, query: str) -> bool:
+        """Serve committed agency constellation documents like production edge.
+
+        Interactive SPA profiles stay available via ?tab= or when no static
+        constellation page exists for the id.
+        """
+        if not route.startswith("/agencies/"):
+            return False
+        if "tab=" in query:
+            return False
+        # Path segments for /agencies/<id> only (routing grammar, not a data table).
+        segments = [segment for segment in route.split("/") if segment]  # source: URL path grammar
+        if len(segments) != 2 or segments[0] != "agencies":
+            return False
+        agency_id = segments[1]
+        if not agency_id or ".." in agency_id or "/" in agency_id:
+            return False
+        directory = Path(self.directory)
+        document = directory / "agencies" / agency_id / "index.html"
+        if not document.is_file():
+            return False
+        try:
+            probe = document.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            return False
+        return 'data-civic-object-kind="agency-constellation"' in probe
+
     def do_GET(self):
         # Pages supplies the shared shell for edge-rendered notice documents. Local browser
         # gates exercise the enhancement island against that shell; response HTML is tested
         # separately against the edge renderer.
         raw = self.path
-        route = raw.split("?", 1)[0].rstrip("/")
-        query = raw.split("?", 1)[1] if "?" in raw else ""
-
-        # Prefer static agency constellation documents when present (production edge
-        # does the same). ?tab= keeps the interactive SPA profile.
-        if route.startswith("/agencies/") and "tab=" not in query:
-            root = Path(self.directory)
-            agency_id = route.split("/")[2] if len(route.split("/")) >= 3 else ""
-            if agency_id:
-                document = root / "agencies" / agency_id / "index.html"
-                if document.is_file():
-                    try:
-                        probe = document.read_text(encoding="utf-8", errors="ignore")
-                    except OSError:
-                        probe = ""
-                    if 'data-civic-object-kind="agency-constellation"' in probe:
-                        # Keep the query string (e.g. ?claim=) on the static document.
-                        self.path = f"/agencies/{agency_id}/index.html" + (f"?{query}" if query else "")
-                        return super().do_GET()
-
+        path_only, _, query = raw.partition("?")
+        route = path_only.rstrip("/")
+        if self._static_agency_constellation(route, query):
+            # Preserve query string (as_of, claim) for shareable views; serve
+            # the directory index under /agencies/<id>/.
+            self.path = f"{route}/" + (f"?{query}" if query else "")
+            super().do_GET()
+            return
         if (
             route.startswith("/notices/")
             or route.startswith("/agencies/")
