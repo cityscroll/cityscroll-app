@@ -1161,6 +1161,33 @@
       }
     },
     {
+      "id": "agency-homeless-services-mandates-contracts",
+      "url": "agencies/homeless-services/",
+      "feature": "mandate-contracts-bridge",
+      "description": "Homeless Services mandates connected through procurement records to registered contract subjects.",
+      "expectations": {
+        "pathname": "/agencies/homeless-services/",
+        "visible": [
+          {
+            "selector": "#mandates-contracts",
+            "text": "Mandates · Contracts and procurement"
+          },
+          {
+            "selector": "#mandates-contracts [data-edge-type='implemented_by_contract']"
+          },
+          {
+            "selector": "#mandates-contracts",
+            "text": "Open procurement record"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview"
+          }
+        ]
+      }
+    },
+    {
       "id": "agency-parks-mandates-rules",
       "url": "agencies/parks-and-recreation/",
       "feature": "mandate-rules-bridge",
