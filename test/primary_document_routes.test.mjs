@@ -61,17 +61,38 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
   assert.deepEqual(browseRoute("/browse/"), { kind: "landing", facet: null });
 });
 
-test("entity routes serve the real application shell and the agency index has resolving links", async () => {
-  const home = new Response("<title>CityScroll · track RFPs, rezonings, meetings</title><div id=\"entityview\">Agency profile</div>", {
-    headers: { "Content-Type": "text/html" },
-  });
-  const env = { ASSETS: { fetch: async () => home.clone() } };
+test("entity routes serve agency constellation documents when present, else the SPA shell", async () => {
+  const home = "<title>CityScroll · track RFPs, rezonings, meetings</title><div id=\"entityview\">Agency profile</div>";
+  const constellation = '<main data-civic-object-kind="agency-constellation" data-subject-ref="agency:id:housing-preservation-and-development"><h1>Housing Preservation and Development</h1><h2>Records by category</h2></main>';
+  const env = {
+    ASSETS: {
+      fetch: async (request) => {
+        const path = new URL(request.url).pathname.replace(/\/+$/, "") || "/";
+        if (path === "/agencies/housing-preservation-and-development" || path === "/agencies/parks-and-recreation") {
+          return new Response(constellation, { headers: { "Content-Type": "text/html" } });
+        }
+        if (path.startsWith("/agencies/") && path !== "/agencies") {
+          // Unknown agency ids fall through to the SPA shell.
+          return new Response(home, { headers: { "Content-Type": "text/html" } });
+        }
+        return new Response(home, { headers: { "Content-Type": "text/html" } });
+      },
+    },
+  };
   const entity = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/"), env);
   assert.equal(entity.status, 200);
   assert.match(await entity.text(), /id="entityview"/);
+  const parks = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/parks-and-recreation/"), env);
+  assert.equal(parks.status, 200);
+  const parksBody = await parks.text();
+  assert.match(parksBody, /data-civic-object-kind="agency-constellation"/);
+  assert.match(parksBody, /Records by category/);
   const entityHead = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/", { method: "HEAD" }), env);
   assert.equal(entityHead.status, 200);
   assert.equal(await entityHead.text(), "");
+  const interactive = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/parks-and-recreation/?tab=forecast"), env);
+  assert.equal(interactive.status, 200);
+  assert.match(await interactive.text(), /id="entityview"/);
 
   const agencyIndex = read("../site/agencies/index.html");
   assert.equal(agencyIndex, renderAgencyIndex());
@@ -80,7 +101,8 @@ test("entity routes serve the real application shell and the agency index has re
   for (const href of links.slice(0, 5)) {
     const response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
     assert.equal(response.status, 200, href);
-    assert.match(await response.text(), /id="entityview"/, href);
+    const body = await response.text();
+    assert.match(body, /id="entityview"|data-civic-object-kind="agency-constellation"/, href);
   }
 
   const land = await edgeWorker.fetch(new Request("https://cityscroll.org/browse/land/"), env);
@@ -102,13 +124,27 @@ test("generated agency pivots round-trip to content-bearing entity routes", asyn
     for (const match of html.matchAll(/href="(\/agencies\/[^\"?#]+\/?)(?:\?[^\"]*)?"/g)) hrefs.set(match[1], path);
   }
   assert.ok(hrefs.size > 0, "generated surfaces must emit agency pivots");
-  const env = { ASSETS: { fetch: async () => new Response("<main id=\"entityview\">Agency profile</main>", {
-    headers: { "Content-Type": "text/html" },
-  }) } };
+  const home = "<main id=\"entityview\">Agency profile</main>";
+  const env = {
+    ASSETS: {
+      fetch: async (request) => {
+        const path = new URL(request.url).pathname.replace(/\/+$/, "") || "/";
+        if (path.startsWith("/agencies/") && path !== "/agencies") {
+          const id = path.slice("/agencies/".length);
+          return new Response(
+            `<main data-civic-object-kind="agency-constellation" data-subject-ref="agency:id:${id}"><h2>Records by category</h2></main>`,
+            { headers: { "Content-Type": "text/html" } },
+          );
+        }
+        return new Response(home, { headers: { "Content-Type": "text/html" } });
+      },
+    },
+  };
   for (const [href, source] of hrefs) {
     const response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
     assert.equal(response.status, 200, `${source}: ${href}`);
-    assert.match(await response.text(), /id="entityview"/, `${source}: ${href}`);
+    const body = await response.text();
+    assert.match(body, /id="entityview"|data-civic-object-kind="agency-constellation"|Records by category/, `${source}: ${href}`);
   }
 });
 
