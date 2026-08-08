@@ -61,8 +61,13 @@ composed objects keep `civic-object-*`; both inherit the shared rules. Rebuild:
 `node tools/build_composed_object_documents.mjs`,
 `node tools/build_agency_constellation_documents.mjs`,
 `node tools/build_agency_documents.mjs`.
-Parcel source labels: `parcelSectionLabel` in `site/composed_object_documents.mjs`
-(do not inline a partial ternary — `ll48` must not fall through to "Land projects").
+**Agency constellation HTML** (`site/agencies/<id>/index.html`) is a **build/deploy
+artifact** — gitignored; never commit the regenerated pages in capability PRs.
+Production emits them through `tools/build_cloudflare_pages.mjs`. Commit only the
+lookup (`site/data/agency_constellation_lookup.json`) and the directory index
+(`site/agencies/index.html`). Parcel source labels: `parcelSectionLabel` in
+`site/composed_object_documents.mjs` (do not inline a partial ternary — `ll48`
+must not fall through to "Land projects").
 Evidence captures: `python3 tools/capture_node_page_design.py --label after`.
 
 **Reader surface (same shape as `sub_outreach.mjs` / property commercial sale-gate):**
@@ -2324,8 +2329,14 @@ both the live and restored databases.
 
 - Pure model: `site/agency_constellation.mjs`. Build:
   `node tools/build_agency_constellation_documents.mjs` (+ `--check`).
-- Artifact: `site/data/agency_constellation_lookup.json` and static
-  `site/agencies/<canonical_id>/` documents (parcel-biography shape).
+- **Committed:** `site/data/agency_constellation_lookup.json` only (plus the
+  directory listing `site/agencies/index.html` from
+  `build_agency_documents.mjs`).
+- **Build artifact (gitignored):** `site/agencies/<canonical_id>/index.html`
+  — emit at build/deploy via `tools/build_cloudflare_pages.mjs` (same generator).
+  Do **not** regenerate and commit these ~100 pages in capability PRs; they were
+  the main rebase-collision surface. Local/static servers serve them when present
+  after a local build; missing pages fall through to the interactive SPA (`?tab=`).
 - Categories: contracts + meetings + rules (entity-intelligence agency edges),
   **mandates** (rules → obligations facet + process-conformance expected vs observed), and staffing exams
   (publisher `certified_to_agency` edges). Match basis stamped
