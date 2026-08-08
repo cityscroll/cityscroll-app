@@ -144,7 +144,7 @@ export function rollupBodySections(sections = []) {
     // Composite district watches use honest-absent action groups. When the
     // materialized district list has no fresh items, omit the whole watch from
     // a sibling-triggered rollup instead of rendering "nothing this week".
-    if (s.lens === "district") return (Number(s.new) || 0) > 0;
+    if (s.lens === "district" || s.lens === "obligations") return (Number(s.new) || 0) > 0;
     return true;
   });
 }
