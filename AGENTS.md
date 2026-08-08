@@ -2335,8 +2335,12 @@ both the live and restored databases.
 - **Build artifact (gitignored):** `site/agencies/<canonical_id>/index.html`
   — emit at build/deploy via `tools/build_cloudflare_pages.mjs` (same generator).
   Do **not** regenerate and commit these ~100 pages in capability PRs; they were
-  the main rebase-collision surface. Local/static servers serve them when present
-  after a local build; missing pages fall through to the interactive SPA (`?tab=`).
+  the main rebase-collision surface. **CI / prepush full:** generate before the
+  local site server (`tools/preflight-required-checks.sh --full` and the
+  Accessibility job in `.github/workflows/ci.yml`) so axe, demo-links, and
+  agency-scope gates hit constellation HTML — not the SPA fallback. Local
+  servers serve them when present after a build; missing pages fall through to
+  the interactive SPA (`?tab=`).
 - Categories: contracts + meetings + rules (entity-intelligence agency edges),
   **mandates** (rules → obligations facet + process-conformance expected vs observed), and staffing exams
   (publisher `certified_to_agency` edges). Match basis stamped
