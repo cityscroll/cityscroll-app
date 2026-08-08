@@ -80,7 +80,7 @@ test("Meetings paints an exact count and keeps absent results unpainted", () => 
   assert.match(filters, /\["month","upcoming","past"\]/, "when=all is an internal map-drill sentinel, not a counted filter");
   assert.match(feedSource, /filterMeetingRowsByAffectedArea\(rows, filter\)/, "borough-only filtering must use current affected-area rows");
   assert.match(meetingsSection, /id="meetings-agency-scope"/, "agency scope must be a link rail");
-  assert.match(feedSource, /agencyScopeHref\("meetings",name,current\)/, "agency links must use the shared scope grammar");
+  assert.match(feedSource, /agencyScopeLinksHTML\(\{[\s\S]*?surface:"meetings"/, "agency links must use the shared cardinality-adaptive scope grammar");
 });
 
 test("Meetings paints lifecycle material only when it is published", () => {

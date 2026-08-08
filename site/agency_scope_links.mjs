@@ -2,6 +2,7 @@
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { routeHashFromScope, scopeFromRouteHash, scopeWithEntity } from "./scope_v0.mjs";
+import { renderCardinalityAdaptiveFacet } from "./cardinality_adaptive_facets.mjs";
 
 export const AGENCY_SCOPE_LINKS_SCHEMA = "cityscroll.agency_scope_links.v1";
 
@@ -73,15 +74,20 @@ export function agencyScopeLinksHTML({
 } = {}) {
   const selectedIdentity = resolveAgencyIdentity(selected);
   const selectedId = selectedIdentity?.matched ? selectedIdentity.canonical_id : "";
-  const choices = canonicalAgencyChoices(agencies);
+  const choices = canonicalAgencyChoices(agencies).map((choice) => ({
+    ...choice,
+    scopeEdge: `${surface}.agency.${choice.id}`,
+  }));
   const allHref = agencyScopeHref(surface, "", currentHash);
-  const allActive = !selectedId;
-  const all = `<a class="chip agency-scope-link${allActive ? " on" : ""}" href="${escape(allHref)}" data-agency-scope-link="all" data-scope-edge="${escape(`${surface}.agency.all`)}"${allActive ? ' aria-current="page"' : ""}>${escape(t("all_agencies"))}</a>`;
-  const links = choices.map((choice) => {
-    const active = choice.id === selectedId;
-    const href = agencyScopeHref(surface, choice.label, currentHash);
-    const edge = `${surface}.agency.${choice.id}`;
-    return `<a class="chip agency-scope-link${active ? " on" : ""}" href="${escape(href)}" data-agency-scope-link="${escape(choice.id)}" data-scope-edge="${escape(edge)}"${active ? ' aria-current="page"' : ""}>${escape(choice.label)}</a>`;
-  }).join("");
-  return `<div class="agency-scope-links" data-agency-scope="${escape(surface)}" role="group" aria-label="${escape(t("agency_label"))}">${all}${links}</div>`;
+  return renderCardinalityAdaptiveFacet({
+    id: `${surface}-agency`,
+    label: t("agency_label"),
+    choices,
+    selectedId,
+    allLabel: t("all_agencies"),
+    allHref,
+    entityHref: (choice) => `/agencies/${encodeURIComponent(choice.id)}/`,
+    scopeHref: (choice) => agencyScopeHref(surface, choice.label, currentHash),
+    escape,
+  });
 }

@@ -215,7 +215,7 @@ test("the map island adopts server markup and is absent from unrelated routes", 
   assert.doesNotMatch(index, /<script[^>]+app\/map\.mjs/);
   assert.doesNotMatch(island, /data-near-you-root[^\n]*(?:innerHTML|replaceChildren)/);
   assert.match(island, /querySelector\("\[data-near-you-root\]"\)/);
-  assert.match(index, /href="\/near-you\/"[^>]+data-near-you-link/);
+  assert.match(index, /data-near-you-link[^>]+data-lens="(?:land|property)"|data-lens="(?:land|property)"[^>]+data-near-you-link/);
   assert.match(routing, /forwardLegacyMapToNearYou/);
 });
 

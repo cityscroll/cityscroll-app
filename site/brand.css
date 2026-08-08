@@ -92,6 +92,28 @@
   --radius-pill: 999px;
 }
 
+/* Unified affordance grammar: graph travel, official sources, filters, static facts. */
+.ui-constellation-link{display:inline-flex;align-items:baseline;gap:.38em;color:var(--color-action,#1b3a8f);text-decoration-line:underline;text-decoration-style:solid;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.ui-constellation-link:hover{text-decoration-thickness:2.5px}
+.ui-official-source-link{display:inline-flex;align-items:baseline;gap:.3em;color:var(--color-text,#171a21);text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.ui-official-source-link:hover{text-decoration-style:solid}
+.ui-filter-chip{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 11px;border:1px solid var(--color-action,#1b3a8f);border-radius:999px;background:transparent;color:var(--color-action,#1b3a8f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer;text-decoration:none}
+.ui-filter-chip[aria-pressed="true"]{background:var(--color-action,#1b3a8f);color:var(--color-surface,#fff)}
+.ui-filter-chip:hover{box-shadow:0 0 0 2px color-mix(in srgb,var(--color-action,#1b3a8f),transparent 78%)}
+.ui-constellation-link:focus-visible,.ui-official-source-link:focus-visible,.ui-filter-chip:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}
+.ui-static-fact{color:var(--color-text-muted,#606776);text-decoration:none;cursor:default}
+
+/* Shared cardinality-adaptive facet layout. */
+.cardinality-facet{min-width:min(100%,320px)}
+.agency-scope-field:has(.cardinality-facet-large){flex:1 1 320px}
+.facet-typeahead-head{display:flex;align-items:center;gap:var(--space-1,6px);flex-wrap:wrap}
+.facet-typeahead-input{flex:1 1 220px;min-width:0}
+.facet-typeahead-list{list-style:none;margin:var(--space-1,6px) 0 0;padding:0;border:1px solid var(--color-border,#d5d9e0);border-radius:6px;max-height:260px;overflow:auto;background:var(--color-surface,#fff)}
+.facet-typeahead-option{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-2,10px);align-items:center;padding:7px 9px;border-bottom:1px solid var(--color-border,#d5d9e0)}
+.facet-typeahead-option:last-child{border-bottom:0}
+.facet-entity-link{min-width:0;font-weight:650}
+.facet-typeahead-empty{margin:var(--space-1,6px) 0 0}
+
 body {
   accent-color: var(--color-action);
 }

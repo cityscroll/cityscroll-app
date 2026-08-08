@@ -3,7 +3,8 @@ import {
   isFranchiseConcessionNoticeEligible,
 } from "../franchise_notice.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
-import { agencyScopeHref } from "../agency_scope_route.mjs";
+import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
+import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -242,10 +243,15 @@ function renderMeetingsAgencyScope(records){
   const current=location.hash.startsWith("#meetings")
     ? location.hash
     : (globalThis.serializeState?.()||"#meetings");
-  rail.innerHTML=[["",t("all_agencies")],...names.map(name=>[name,name])].map(([name,label])=>{
-    const active=name===selected;
-    return `<a class="chip${active?" on":""}" href="${escUiHtml(agencyScopeHref("meetings",name,current))}" data-meetings-agency="${escUiHtml(name||"all")}"${active?' aria-current="page"':''}>${escUiHtml(label)}</a>`;
-  }).join("");
+  rail.innerHTML=agencyScopeLinksHTML({
+    surface:"meetings",
+    agencies:names,
+    selected,
+    currentHash:current,
+    t,
+    escape:escUiHtml,
+  });
+  bindCardinalityAdaptiveFacets(rail);
 }
 function hearingFilterKey(filter){
   return JSON.stringify([
