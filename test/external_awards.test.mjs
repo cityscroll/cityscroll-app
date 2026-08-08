@@ -257,21 +257,18 @@ test("externalAwardHTML: fuzzy ABO awards (real SCA fixture) render as a 'possib
   assert.match(html, /Source updated 2025-12-01/);
 });
 
-test("externalAwardHTML: covered ABO source with zero rows uses not-yet-ingested register naming the source, linked and dated", () => {
+test("externalAwardHTML: covered ABO source with zero rows omits the award slot", () => {
   const externalAwardHTML = buildExternalAwardHTML();
   const resp = { coverage: "fuzzy", agencyAwards: [], source: { kind: "abo", dataset: "d84c-dk28", authority: "New York City Economic Development Corporation", refreshed: "2025-12-01" } };
   const html = externalAwardHTML(resp, null);
-  assert.match(html, /Not yet shown here — matching awards live in/);
-  assert.match(html, /<a href="https:\/\/data\.ny\.gov\/d\/d84c-dk28"[^>]*>NYS Authorities Budget Office/);
-  assert.match(html, /Source updated 2025-12-01/, "the precomputed source-refresh date remains available in the evidence disclosure");
+  assert.equal(html, "");
 });
 
-test("externalAwardHTML: NYCHA with no match, but a usable PIN, uses not-yet-ingested register — linked to NYCHA's contracts view", () => {
+test("externalAwardHTML: NYCHA with no match omits the award slot", () => {
   const externalAwardHTML = buildExternalAwardHTML();
   const eligible = { type_of_notice_description: "Solicitation", pin: "510394" };
   const html = externalAwardHTML({ coverage: "exact", matches: [] }, eligible);
-  assert.match(html, /Not yet shown here — Housing Authority registrations live in/);
-  assert.match(html, /<a href="https:\/\/www\.checkbooknyc\.com\/nycha_contracts\/datasource\/checkbook_nycha\/agency\/162"[^>]*>Checkbook NYC/);
+  assert.equal(html, "");
 });
 
 test("externalAwardHTML: a NYCHA notice with no usable PIN renders nothing here (can't have been searched) — the agency-scoped fallback still surfaces via agencyAwardsNote/noticeAgencyBar", () => {
@@ -280,12 +277,11 @@ test("externalAwardHTML: a NYCHA notice with no usable PIN renders nothing here 
   assert.equal(externalAwardHTML({ coverage: "exact", matches: [] }, noPin), "");
 });
 
-test("externalAwardHTML / aboSourceLink: malformed registry data (missing authority) fails soft to unlinked source-name text, never a broken href", () => {
+test("externalAwardHTML: malformed empty registry data also omits the award slot", () => {
   const externalAwardHTML = buildExternalAwardHTML();
   const resp = { coverage: "fuzzy", agencyAwards: [], source: { kind: "abo", dataset: "8w5p-k45m", refreshed: "2025-12-01" } };
   const html = externalAwardHTML(resp, null);
-  assert.doesNotMatch(html, /<a /, "no authority to scope the link to — render plain text, not a broken/unscoped href");
-  assert.match(html, /NYS Authorities Budget Office/);
+  assert.equal(html, "");
 });
 
 test("externalAwardForNotice: absent/unknown agencies fetch nothing (claim lives in the note)", async () => {

@@ -75,6 +75,7 @@ const sandbox = new Function(
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
+  extractFn("lifecycleEntryHasRenderableData") +
   extractFn("lifecycleCurrentStageKey") +
   extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
@@ -309,9 +310,9 @@ test("lifecycle: matched stages have green box class", () => {
 
 test("lifecycle: phase stepper groups stages; connectors only within a phase", () => {
   const html = renderLifecycle(FULL_LIFECYCLE, notice);
-  // Phase stepper: Solicitation → Selection → Award → Payments (4 chips)
+  // The inferred empty Selection phase is omitted; three populated phases remain.
   assert.match(html, /class="lc-stepper lc-phase-stepper"/);
-  assert.equal((html.match(/class="lc-step /g) || []).length, 4);
+  assert.equal((html.match(/class="lc-step /g) || []).length, 3);
   // Current phase is payments (open panel); earlier phases under history disclosure
   assert.match(html, /data-lc-phase-panel="payments"/);
   assert.match(html, /lc-phase-history/);
@@ -321,7 +322,7 @@ test("lifecycle: phase stepper groups stages; connectors only within a phase", (
 
 test("lifecycle: receipt-passed plan renders the optional planning phase and published facts", () => {
   const html = renderLifecycle(LIFECYCLE_WITH_PLAN, notice);
-  assert.equal((html.match(/class="lc-step /g) || []).length, 5);
+  assert.equal((html.match(/class="lc-step /g) || []).length, 4);
   assert.match(html, /data-lc-phase="planning"/);
   assert.match(html, /data-lc-phase-panel="planning"/);
   assert.match(html, /Organics collection services/);
@@ -374,13 +375,13 @@ test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the
 // 2. UNMATCHED: future stages collapse into grey stepper chips (no gap paragraphs)
 // ---------------------------------------------------------------------------
 
-test("lifecycle: unmatched future stages are greyed stepper chips, not gap paragraphs", () => {
+test("lifecycle: unmatched future stages are omitted", () => {
   const html = renderLifecycle(UNMATCHED_LIFECYCLE, notice);
-  // Phase stepper names the four procurement phases
+  // Only the populated solicitation phase remains.
   assert.match(html, /class="lc-stepper lc-phase-stepper"/);
   assert.match(html, /Solicit/);
-  assert.match(html, /data-lc-phase="payments"/);
-  // Future unmatched: grey chips only — no class-(a) paragraphs or unmatched boxes
+  assert.doesNotMatch(html, /data-lc-phase="payments"|data-lc-phase="selection"|data-lc-phase="award_registration"/);
+  // Future unmatched: no paragraphs, boxes, or chips.
   assert.doesNotMatch(html, /class="box unmatched"/);
   assert.doesNotMatch(html, /Not yet shown here/);
   assert.doesNotMatch(html, /pending contracts live in/);
@@ -610,10 +611,10 @@ test("lifecycle: intermediate City Record stages group under Selection phase", (
 });
 
 // ---------------------------------------------------------------------------
-// 9. NO PIN: no-pin note
+// 9. NO PIN: populated notice stage survives; dependent slots stay empty
 // ---------------------------------------------------------------------------
 
-test("lifecycle: no PIN renders the no-pin note instead of the provenance note", () => {
+test("lifecycle: no PIN keeps the populated notice stage and omits dependent absence copy", () => {
   const noPinLifecycle = {
     pin: null, pin_strategy: "none", ok: true, amendments: [],
     timeline: [
@@ -628,8 +629,8 @@ test("lifecycle: no PIN renders the no-pin note instead of the provenance note",
     ],
   };
   const html = renderLifecycle(noPinLifecycle, { request_id: "X", agency_name: "A", pin: null });
-  assert.match(html, /does not publish a Procurement ID \(PIN\)/);
-  assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
+  assert.match(html, /Solicitation/);
+  assert.doesNotMatch(html, /does not publish a Procurement ID \(PIN\)|would appear in Checkbook NYC/);
   assert.doesNotMatch(html, /matched by PIN/);
   // Dependent Checkbook stages collapse into the single no-PIN explanation
   assert.doesNotMatch(html, /Could not reach/);
@@ -675,7 +676,7 @@ test("lifecycle: solicitation with joined package documents renders real links",
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
-test("lifecycle: solicitation without package documents uses short not-published caveat", () => {
+test("lifecycle: solicitation without package documents omits the document sub-slot", () => {
   const gapLifecycle = {
     pin: "85726B0067", pin_strategy: "exact", ok: true, amendments: [],
     timeline: [
@@ -700,8 +701,8 @@ test("lifecycle: solicitation without package documents uses short not-published
   const html = renderLifecycle(gapLifecycle, {
     request_id: "20260709023", agency_name: "Citywide Administrative Services", pin: "85726B0067",
   });
-  assert.match(html, /The city does not publish package documents as an open feed/);
-  // With request_id known, deep-link RequestDetail (not bare GetFile search)
+  assert.doesNotMatch(html, /does not publish package documents|lc-docs-gap/i);
+  // The populated solicitation keeps its City Record source link.
   assert.match(html, /a856-cityrecord\.nyc\.gov\/RequestDetail\/20260709023/);
   assert.match(html, /City Record/);
   assert.doesNotMatch(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);

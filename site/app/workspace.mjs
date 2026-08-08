@@ -297,9 +297,7 @@ function matterMilestoneMeta(m){
     return term;
   }
   if(m.kind === "registered"){
-    if(m.status === "unmatched"){
-      return t("lifecycle_unmatched_registered_html",{source:t("lifecycle_source_checkbook")});
-    }
+    if(m.status === "unmatched") return "";
     return `${t("lifecycle_dollars_committed_lbl")} ${money(m.current_amount) || "—"}`;
   }
   const bits = [];
@@ -493,15 +491,6 @@ function matterTimelineHTMLFlat(rows, pin, regDetail, lifecycle){
       label: `<b>${t("lifecycle_stage_registered")}</b> — <code>${escUiHtml(regDetail.contract_id||"")}</code> (${t("lifecycle_source_checkbook")})`,
       extra: `${t("lifecycle_dollars_committed_lbl")} ${money(regDetail.current_amount)||"—"}`
     });
-  } else if(lifecycle && Array.isArray(lifecycle.timeline)){
-    const regEntry = lifecycle.timeline.find(e => e.stage === "registered");
-    if(regEntry && regEntry.status === "unmatched"){
-      items.push({
-        date: null,
-        label: `<b>${t("lifecycle_stage_registered")}</b>`,
-        extra: t("lifecycle_unmatched_registered_html",{source:t("lifecycle_source_checkbook")})
-      });
-    }
   }
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(regDetail){

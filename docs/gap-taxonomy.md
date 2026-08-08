@@ -190,7 +190,7 @@ Class **a** keys use the “Not yet shown here” register with per-slot specifi
 
 Class **b** keys use the “The city does not publish this” register with a concrete “would appear in …” pointer.
 
-Operational keys unchanged: `lifecycle_unknown_html`, `lifecycle_ambiguous_html`, `subsidy_source_unavailable_html`.
+Operational failures stay silent on notice detail; ambiguous matched candidates remain explicit.
 
 ## Depot refresh
 

@@ -227,8 +227,6 @@ test("i18n ships notice-land spine strings without internal vocabulary", () => {
     "notice_land_spine_heading",
     "notice_land_join_matched_html",
     "notice_land_open_land_detail",
-    "notice_land_no_match_html",
-    "notice_land_no_match_with_keys_html",
     "notice_land_ambiguous_html",
     "notice_land_provenance_html",
   ]) {
@@ -236,9 +234,9 @@ test("i18n ships notice-land spine strings without internal vocabulary", () => {
   }
   // Reader-facing land-spine copy must not leak internal join machinery.
   assert.doesNotMatch(i18n, /warehouse join resolves/i);
-  assert.doesNotMatch(i18n, /notice_land_no_match_html:[^,]{0,200}warehouse/i);
+  assert.doesNotMatch(i18n, /notice_land_no_match_html:/i);
   assert.doesNotMatch(i18n, /notice_land_provenance_html:[^,]{0,300}warehouse/i);
-  assert.doesNotMatch(i18n, /notice_land_unavailable_html:[^,]{0,200}edge cache/i);
+  assert.doesNotMatch(i18n, /notice_land_unavailable_html:/i);
 });
 
 test("measureNoticeLandJoinResolution separates malformed from genuine misses", () => {
