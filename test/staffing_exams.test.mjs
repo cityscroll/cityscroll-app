@@ -104,6 +104,23 @@ test("exam cards reuse the approved open-window bands and thresholds", () => {
   assert.match(html, /career-confidence-marker/);
 });
 
+test("the interest filter owns one compact subscribe context", () => {
+  assert.doesNotMatch(html, /id="career-area-watches"|class="career-area-watch"/);
+  assert.match(html, /id="career-interest-context"/);
+  assert.match(html, /data-interest-context/);
+  assert.match(html, /data-follow-exam-area/);
+  assert.match(html, /data-open-window-band/);
+  assert.match(html, /data-noe-state="posted"/);
+});
+
+test("the Staffing source line omits refresh-policy debug copy", () => {
+  const sourceStart = html.indexOf("function careerSourceHTML()");
+  const sourceEnd = html.indexOf("function careerCount", sourceStart);
+  const source = html.slice(sourceStart, sourceEnd);
+  assert.doesNotMatch(source, /<details>|refresh_cadence|career_source_details|career_city_record_finding/);
+  assert.doesNotMatch(html, /Sources and refresh rules/);
+});
+
 test("new-hire notices parse, sort newest-first, and refine without a gatekeeping search", () => {
   const rows = [
     {
