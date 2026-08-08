@@ -22,6 +22,11 @@ test("monitor packs are independently addressable typed documents", () => {
   assert.match(html, /data-object-export="xlsx"/);
 });
 
+test("composed-object rendering fails closed on reader-facing cruft", () => {
+  const view = { ...buildMonitorPackView(registry, "restaurants"), title: "No data" };
+  assert.throws(() => renderComposedObjectDocument(view), /reader-facing cruft/i);
+});
+
 test("district digests preserve the canonical district identity through scope", () => {
   const view = buildDistrictDigestView(digests, "33");
   assert.equal(districtDigestPath("33"), "/districts/council/33/digest/");
@@ -31,7 +36,7 @@ test("district digests preserve the canonical district identity through scope", 
   const html = renderComposedObjectDocument(view);
   assert.match(html, /data-civic-object-kind="district-digest"/);
   assert.match(html, /data-subject-ref="district:council-33"/);
-  assert.match(html, /data-export-class="object_provenance"/);
+  assert.doesNotMatch(html, /Sources and limits|CityScroll groups public records/i);
 });
 
 test("parcel biographies are complete civic-object documents with exact-BBL watches", () => {
@@ -46,11 +51,11 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   // Watch filter is URL-encoded in the href (colon → %3A).
   assert.match(html, new RegExp(`subject_refs_all(?:.|\\n)*?bbl(?:%3A|:)${bbl}`));
   assert.match(html, /reader-friendly record of public information connected with this parcel/);
-  assert.match(html, /public records that name this exact parcel/);
+  assert.doesNotMatch(html, /public records that name this exact parcel/i);
   assert.match(html, /data-export-class="object_identity"/);
   assert.match(html, /data-export-class="object_actions"/);
   assert.match(html, /data-export-class="object_members"/);
-  assert.match(html, /data-export-class="object_provenance"/);
+  assert.doesNotMatch(html, /data-export-class="object_provenance"/);
   assert.match(html, /href="#land\/[A-Za-z0-9_-]+"/);
   assert.doesNotMatch(html, /#land\?project=/);
   // Shared node-page layout (same grammar as exam documents).
@@ -72,6 +77,7 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   }
   assert.doesNotMatch(html, /No .* listed for this parcel/i);
   assert.doesNotMatch(html, /No linked record is listed/i);
+  assert.doesNotMatch(html, /date not published|Sources and limits/i);
   assert.deepEqual(detectNodePageCruft(html), []);
   const landHeadings = html.match(/>Land projects</g) || [];
   if (view.sections.land?.items?.length) {
