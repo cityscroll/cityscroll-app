@@ -771,21 +771,18 @@ function actionRailGuideHTML(actions){
         steps.push(t("bid_guide_notice_fallback_step"));
       }
     }else{
+      // PASSPort: find (search EPIN/name) + submit. No absence/methodology caveats.
       steps=[t("bid_guide_passport_search_step")];
       if(guide.mode==="matched"){
         steps.push(String(guide.status||"").toLowerCase()==="released"
           ? t("bid_guide_passport_released_step")
           : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`);
-        steps.push(t("bid_guide_passport_submit_step"));
-      }else steps.push(
-        t("bid_guide_passport_unmatched_step"),
-        t("bid_guide_passport_submit_step")
-      );
+      }
+      steps.push(t("bid_guide_passport_submit_step"));
     }
   }
-  if(guide.upstream_unavailable_note_key){
-    steps.unshift(`<span class="guide-warning">${t(guide.upstream_unavailable_note_key)}</span>`);
-  }
+  // upstream_unavailable_note_key remains an internal signal (suppresses broken package
+  // URLs); never surface "link not published here" / match-failure chrome in the guide.
   const renderedSteps=guide.system==="property_reader_actions"
     ? `<div class="property-action-sections">${steps.filter(Boolean).join("")}</div>`
     : `<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>`;
@@ -799,7 +796,11 @@ function actionRailHTML(actions){
   let primaryUsed=false;
   const items=actions.map((action,index)=>{
     const label=actionRailLabel(action);
-    if(action.delivery==="unavailable") return `<div class="next-action-unavailable" role="status">${label}</div>`;
+    // Skip empty / "link not published" absence status — show nothing when nothing to do.
+    if(action.delivery==="unavailable"){
+      if(!label || action.label_key==="next_action_unavailable_handoff") return "";
+      return `<div class="next-action-unavailable" role="status">${label}</div>`;
+    }
     if(action.type==="bid_checklist"){
       // Guide lead — steps render below; do not dump the reader into watch alerts.
       return `<div class="next-action-guide-lead" role="status">${label}</div>`;

@@ -211,52 +211,33 @@ test("nearMatchReasons: agency and title reasons are always present; PIN/amount 
   assert.deepEqual(kinds, ["agency", "title", "amount"]);
 });
 
-// ---------- priorCycleNoneHTML: pre-loaded reveal gate (Phase 1b) ----------
-// Phase 1b: the /priorcycle endpoint returns near matches alongside the strict tier, so the
-// reveal is no longer a lazy dead-end gated on nearMatchPossible() — priorCycleNoneHTML shows it
-// ONLY when the endpoint already found near matches (near.length > 0), and its body is populated
-// up front. So the reveal appears iff there is something to reveal, never a spin-then-nothing.
-test("priorCycleNoneHTML: no reveal rendered when the endpoint returned no near matches", () => {
+// ---------- priorCycleNoneHTML: no absence caveats; optional near-match reveal only ----------
+// Public doctrine: when there is no confident prior cycle, show nothing. Do not narrate
+// "no earlier match" / match-method speculation. Near matches still open behind a reveal.
+test("priorCycleNoneHTML: empty when the endpoint returned no near matches", () => {
   const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, 1, []); // eligibleCount=1, but the endpoint found no near matches
-  assert.ok(!html.includes("near-match-reveal"), "no reveal markup expected when near is empty");
-  assert.ok(html.includes("prior_cycle_none_low_confidence_html"), "a prior-eligible candidate existed but none matched closely");
+  const html = priorCycleNoneHTML(r, 1, []);
+  assert.equal(html, "", "absence must not paint disclaimer copy");
+  assert.ok(!html.includes("near-match-reveal"));
+  assert.ok(!html.includes("prior_cycle_none"));
 });
 test("priorCycleNoneHTML: reveal IS rendered when the endpoint returned near matches", () => {
   const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
   const near = [{ c: { request_id: "C1", short_title: "Guide Rail Barrier Repair", start_date: "2016-01-01" }, score: 0.4, reasons: [{ kind: "agency" }] }];
   const html = priorCycleNoneHTML(r, 1, near);
   assert.ok(html.includes("near-match-reveal"), "reveal markup expected when near is non-empty");
+  assert.ok(!html.includes("prior_cycle_none"), "no absence note beside the reveal");
 });
-test("priorCycleNoneHTML: a missing/undefined near argument renders no reveal (defensive)", () => {
+test("priorCycleNoneHTML: a missing/undefined near argument renders nothing (defensive)", () => {
   const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  assert.ok(!priorCycleNoneHTML(r, 1, undefined).includes("near-match-reveal"));
+  assert.equal(priorCycleNoneHTML(r, 1, undefined), "");
 });
-
-// ---------- priorCycleNoneHTML: 3 resolved "none" cases, now driven by eligibleCount (Phase 1b) ----------
-// The 3-way message from 67 is preserved, but the no_candidates-vs-low_confidence split is now
-// driven by the eligibleCount the endpoint computed server-side (priorCycleEligibleCount over the
-// strict-tier rows), not a local recompute — the client no longer fetches those rows.
-test("priorCycleNoneHTML: title too generic (<2 significant words) selects the generic key", () => {
+test("priorCycleNoneHTML: generic title with no near matches is silent", () => {
   const r = { short_title: "Services", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, 0, []);
-  assert.ok(html.includes("prior_cycle_none_generic"));
+  assert.equal(priorCycleNoneHTML(r, 0, []), "");
 });
-test("priorCycleNoneHTML: eligibleCount 0 selects the no-candidates key, with {agency} interpolated", () => {
+test("priorCycleNoneHTML: eligibleCount does not force absence copy", () => {
   const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, 0, []);
-  assert.ok(html.includes("prior_cycle_none_no_candidates_html"));
-  assert.ok(html.includes("Parks and Recreation"), "{agency} should be interpolated into the rendered note");
-});
-test("priorCycleNoneHTML: a positive eligibleCount selects the low-confidence key", () => {
-  const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, 2, []);
-  assert.ok(html.includes("prior_cycle_none_low_confidence_html"));
-  assert.ok(html.includes("Parks and Recreation"));
-});
-test("priorCycleNoneHTML: the interpolated English agency name is bidi-isolated (lang=en dir=ltr)", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, 0, []);
-  assert.ok(html.includes('lang=\\"en\\" dir=\\"ltr\\"') || html.includes('lang="en" dir="ltr"'),
-    "agency interpolation should carry the w8-03 isolation span");
+  assert.equal(priorCycleNoneHTML(r, 0, []), "");
+  assert.equal(priorCycleNoneHTML(r, 2, []), "");
 });
