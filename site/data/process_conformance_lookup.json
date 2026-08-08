@@ -14,7 +14,7 @@
     "agency_count": 49,
     "mandate_count": 2931,
     "detectable_mandate_count": 703,
-    "observed_count": 22,
+    "observed_count": 2,
     "detectable_deliverables": [
       "rulemaking",
       "report"
@@ -2635,8 +2635,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 234,
-        "observed": 4,
-        "expected_not_yet_observed": 58,
+        "observed": 0,
+        "expected_not_yet_observed": 62,
         "on_track": 0,
         "enrichment_pending": 172,
         "detectable": 62
@@ -2644,114 +2644,6 @@
       "share_path": "/agencies/buildings/#mandates-conformance",
       "candidate_corpus_size": 9,
       "observations": {
-        "55695-001": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260407013",
-            "label": "Final Rule - Rules relating to Safety Standards for Refrigeration",
-            "when": "2026-04-15",
-            "href": "#notice/20260407013",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "standards"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "59468-002": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260407013",
-            "label": "Final Rule - Rules relating to Safety Standards for Refrigeration",
-            "when": "2026-04-15",
-            "href": "#notice/20260407013",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "standards"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "59535-001": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260407013",
-            "label": "Final Rule - Rules relating to Safety Standards for Refrigeration",
-            "when": "2026-04-15",
-            "href": "#notice/20260407013",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "standards"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "74157-004": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260728026",
-            "label": "Proposed Rule - Rule relating to Incomplete Inspections",
-            "when": "2026-08-04",
-            "href": "#notice/20260728026",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "inspections"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "54944-001": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -3232,6 +3124,21 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "55695-001": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "55695-002": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -3337,6 +3244,21 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "59468-002": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "59468-003": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -3353,6 +3275,21 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "59468-004": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "59535-001": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
           "expected_event": {
@@ -3614,6 +3551,21 @@
             "kind": "report_or_study",
             "label": "Report, study, or plan publication or filing",
             "deliverable_type": "report",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "74157-004": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
             "deadline_date": null
           },
           "observed_record": null,
@@ -10726,8 +10678,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 160,
-        "observed": 7,
-        "expected_not_yet_observed": 25,
+        "observed": 0,
+        "expected_not_yet_observed": 32,
         "on_track": 0,
         "enrichment_pending": 128,
         "detectable": 32
@@ -10736,190 +10688,16 @@
       "candidate_corpus_size": 19,
       "observations": {
         "54944-003": {
-          "status": "observed",
-          "label": "Observed in City Record",
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
           "expected_event": {
             "kind": "rule_filing",
             "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
             "deliverable_type": "rulemaking",
             "deadline_date": "2016-06-28"
           },
-          "observed_record": {
-            "request_id": "20260715045",
-            "label": "Notice of Change of Effective Date for SHIELD rules",
-            "when": "2026-07-22",
-            "href": "#notice/20260715045",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "effective"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "53949-006": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260609003",
-            "label": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
-            "when": "2026-06-16",
-            "href": "#notice/20260609003",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "delivery"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "55202-001": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260327020",
-            "label": "DCWP NOH Licensing Laws",
-            "when": "2026-04-03",
-            "href": "#notice/20260327020",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "licensing"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "60249-006": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260715045",
-            "label": "Notice of Change of Effective Date for SHIELD rules",
-            "when": "2026-07-22",
-            "href": "#notice/20260715045",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "effective"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "61976-002": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260715045",
-            "label": "Notice of Change of Effective Date for SHIELD rules",
-            "when": "2026-07-22",
-            "href": "#notice/20260715045",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "effective"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "65538-002": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260713006",
-            "label": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
-            "when": "2026-07-20",
-            "href": "#notice/20260713006",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "licenses"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "75906-011": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260626034",
-            "label": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
-            "when": "2026-07-06",
-            "href": "#notice/20260626034",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "requirements"
-            ]
-          },
+          "observed_record": null,
+          "match": null,
           "is_compliance_verdict": false,
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
@@ -11104,6 +10882,21 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "53949-006": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "54164-005": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -11134,6 +10927,21 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "55202-001": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "55833-002": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -11141,6 +10949,21 @@
             "kind": "report_or_study",
             "label": "Report, study, or plan publication or filing",
             "deliverable_type": "report",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "60249-006": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
             "deadline_date": null
           },
           "observed_record": null,
@@ -11179,6 +11002,21 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "61976-002": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "64160-020": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -11195,6 +11033,21 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "65536-001": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "65538-002": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
           "expected_event": {
@@ -11285,6 +11138,21 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "75906-001": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "75906-011": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
           "expected_event": {
@@ -18718,8 +18586,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 128,
-        "observed": 1,
-        "expected_not_yet_observed": 34,
+        "observed": 0,
+        "expected_not_yet_observed": 35,
         "on_track": 1,
         "enrichment_pending": 92,
         "detectable": 36
@@ -18727,33 +18595,6 @@
       "share_path": "/agencies/environmental-protection/#mandates-conformance",
       "candidate_corpus_size": 2,
       "observations": {
-        "56761-006": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260423016",
-            "label": "Construction Noise Monitoring Penalty Rule",
-            "when": "2026-05-01",
-            "href": "#notice/20260423016",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "construction"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "75059-002": {
           "status": "on_track",
           "label": "On track — deadline still ahead",
@@ -19100,6 +18941,21 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "56761-005": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "56761-006": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
           "expected_event": {
@@ -20668,8 +20524,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 147,
-        "observed": 1,
-        "expected_not_yet_observed": 22,
+        "observed": 0,
+        "expected_not_yet_observed": 23,
         "on_track": 0,
         "enrichment_pending": 124,
         "detectable": 23
@@ -20677,33 +20533,6 @@
       "share_path": "/agencies/finance/#mandates-conformance",
       "candidate_corpus_size": 11,
       "observations": {
-        "65915-005": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260710033",
-            "label": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
-            "when": "2026-07-14",
-            "href": "#notice/20260710033",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "property"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "53810-010": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -20966,6 +20795,21 @@
             "kind": "report_or_study",
             "label": "Report, study, or plan publication or filing",
             "deliverable_type": "report",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "65915-005": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
             "deadline_date": null
           },
           "observed_record": null,
@@ -23791,8 +23635,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 259,
-        "observed": 5,
-        "expected_not_yet_observed": 57,
+        "observed": 0,
+        "expected_not_yet_observed": 62,
         "on_track": 1,
         "enrichment_pending": 196,
         "detectable": 63
@@ -23800,141 +23644,6 @@
       "share_path": "/agencies/health-and-mental-hygiene/#mandates-conformance",
       "candidate_corpus_size": 6,
       "observations": {
-        "65854-008": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": "2020-08-02"
-          },
-          "observed_record": {
-            "request_id": "20260522008",
-            "label": "Amendment of Rules Relating to Lead Dust",
-            "when": "2026-05-29",
-            "href": "#notice/20260522008",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "relating"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "65854-010": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": "2020-08-02"
-          },
-          "observed_record": {
-            "request_id": "20260522008",
-            "label": "Amendment of Rules Relating to Lead Dust",
-            "when": "2026-05-29",
-            "href": "#notice/20260522008",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "relating"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "54963-001": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260406002",
-            "label": "Amendment of Rules Relating to Reporting Requirements for Cooling Towers",
-            "when": "2026-04-08",
-            "href": "#notice/20260406002",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "reporting"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "60651-004": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260406002",
-            "label": "Amendment of Rules Relating to Reporting Requirements for Cooling Towers",
-            "when": "2026-04-08",
-            "href": "#notice/20260406002",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "requirements"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "61508-006": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260522008",
-            "label": "Amendment of Rules Relating to Lead Dust",
-            "when": "2026-05-29",
-            "href": "#notice/20260522008",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "relating"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "75478-004": {
           "status": "on_track",
           "label": "On track — deadline still ahead",
@@ -24130,6 +23839,36 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "65854-008": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": "2020-08-02"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "65854-010": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": "2020-08-02"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "69512-003": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -24265,6 +24004,21 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "54963-001": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "57368-001": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -24341,6 +24095,36 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "60651-003": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "60651-004": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "61508-006": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
           "expected_event": {
@@ -42064,8 +41848,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 65,
-        "observed": 1,
-        "expected_not_yet_observed": 17,
+        "observed": 0,
+        "expected_not_yet_observed": 18,
         "on_track": 0,
         "enrichment_pending": 47,
         "detectable": 18
@@ -42073,33 +41857,6 @@
       "share_path": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
       "candidate_corpus_size": 2,
       "observations": {
-        "60519-004": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": "2020-08-21"
-          },
-          "observed_record": {
-            "request_id": "20260617037",
-            "label": "Taxi and Limousine Commission Regulatory Agenda",
-            "when": "2026-06-25",
-            "href": "#notice/20260617037",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "commission"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "52169-003": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -42243,6 +42000,21 @@
             "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
             "deliverable_type": "rulemaking",
             "deadline_date": "2020-01-10"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "60519-004": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": "2020-08-21"
           },
           "observed_record": null,
           "match": null,
@@ -43069,8 +42841,8 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 124,
-        "observed": 1,
-        "expected_not_yet_observed": 26,
+        "observed": 0,
+        "expected_not_yet_observed": 27,
         "on_track": 0,
         "enrichment_pending": 97,
         "detectable": 27
@@ -43078,33 +42850,6 @@
       "share_path": "/agencies/transportation/#mandates-conformance",
       "candidate_corpus_size": 12,
       "observations": {
-        "55689-007": {
-          "status": "observed",
-          "label": "Observed in City Record",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": {
-            "request_id": "20260714029",
-            "label": "Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
-            "when": "2026-07-22",
-            "href": "#notice/20260714029",
-            "signal_kind": "rule_filing"
-          },
-          "match": {
-            "method": "topic_rare_token_v1",
-            "score": 1,
-            "shared_tokens": [
-              "commercial"
-            ]
-          },
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
         "57846-005": {
           "status": "expected_not_yet_observed",
           "label": "Expected, not yet in City Record",
@@ -43262,6 +43007,21 @@
             "kind": "report_or_study",
             "label": "Report, study, or plan publication or filing",
             "deliverable_type": "report",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "55689-007": {
+          "status": "expected_not_yet_observed",
+          "label": "Expected, not yet in City Record",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
             "deadline_date": null
           },
           "observed_record": null,
