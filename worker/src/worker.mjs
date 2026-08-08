@@ -49,7 +49,7 @@ import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleMirror } from "./mirror.mjs";
-import { handleHearings, refreshHearings } from "./hearings.mjs";
+import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleFranchiseConcessions, refreshFranchiseConcessions } from "./franchise_concession.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
@@ -114,6 +114,7 @@ export default {
     if (pathname === "/contract-lifecycle") return handleContractLifecycle(request, env, ctx);
     if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
+    if (pathname === "/meeting.ics") return handleMeetingICS(request, env);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
     if (pathname === "/franchise-concessions") return handleFranchiseConcessions(request, env, ctx);
     if (pathname === "/meeting-outcomes") return handleMeetingOutcomes(request, env, ctx);

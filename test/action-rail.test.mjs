@@ -481,6 +481,27 @@ test("explicit UTC hearing instants convert to New York while date-only hearings
   const dateOnly = hearingCalendarICS({event_date: "2026-08-10", request_id: "day"}, {now: "2026-08-03T12:00:00Z"});
   assert.match(dateOnly, /DTSTART;VALUE=DATE:20260810/);
   assert.doesNotMatch(dateOnly, /DTSTART;TZID=/);
+  assert.match(dateOnly, /DTEND;VALUE=DATE:20260811/);
+});
+
+test("meeting calendar carries the published remote join URL and both hybrid details", () => {
+  const ics = hearingCalendarICS({
+    request_id: "hybrid-001",
+    event_date: "2026-08-10T14:30:00.000",
+    title: "Hybrid public hearing",
+    agency: "City Planning Commission",
+    meeting_access: {
+      mode: "hybrid",
+      in_person_location: "Municipal Building, Room 120 · 1 Centre Street, New York, NY 10007",
+      remote_join_url: "https://zoom.us/j/123456789",
+      dial_in: ["555-0100"],
+    },
+  }, {now: "2026-08-03T12:00:00Z"});
+  const unfolded = ics.replace(/\r\n[ \t]/g, "");
+  assert.match(unfolded, /LOCATION:Municipal Building\\, Room 120 · 1 Centre Street\\, New York\\, NY 10007/);
+  assert.match(unfolded, /URL:https:\/\/zoom\.us\/j\/123456789/);
+  assert.match(unfolded, /Join online: https:\/\/zoom\.us\/j\/123456789/);
+  assert.match(unfolded, /Dial-in: 555-0100/);
 });
 
 test("testimony pack is neutral, Spanish-first ready, and honest when participation facts are absent", () => {
