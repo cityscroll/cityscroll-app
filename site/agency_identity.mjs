@@ -53,7 +53,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "Information Technology and Telecommunications": ["DEPT OF INFO TECH & TELECOMM", "TECHNOLOGY & INNOVATION", "Office of Technology and Innovation", "Office of Technology & Innovation"],
   "Investigation": ["DEPARTMENT OF INVESTIGATION"],
   "Juvenile Justice": ["DEPARTMENT OF JUVENILE JUSTICE"],
-  "Landmarks Preservation Commission": ["LANDMARKS PRESERVATION COMM"],
+  "Landmarks Preservation Commission": ["LANDMARKS PRESERVATION COMM", "LPC - NYC Landmarks Preservation Commission"],
   "Law Department": ["LAW DEPARTMENT"],
   "Management and Budget": ["OFFICE OF MANAGEMENT AND BUDGET", "OFFICE OF MANAGEMENT & BUDGET"],
   "Mayor's Office of Contract Services": ["MAYORS OFFICE OF CONTRACT SVCS"],
