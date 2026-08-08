@@ -2,6 +2,7 @@ import { noticeDocumentUrl } from "../notice_permalink.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
+import { entityRouteRef } from "../entity_pivot.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -53,6 +54,11 @@ function documentUrlForHash(hash){
   return mapped.migrated?mapped.target:null;
 }
 function routeUrlForHash(hash){ return documentUrlForHash(hash)||hash; }
+function routeFocusKey(){
+  return location.hash
+    ? routeUrlForHash(location.hash)
+    : `${location.pathname}${location.search}`;
+}
 const noticeLink = id => currentLanguageURL(noticeDocumentUrl(id, location.origin));
 const landLink = id => currentLanguageURL(location.origin + location.pathname + "#land/" + encodeURIComponent(id));
 let hashLock = false;
@@ -87,12 +93,14 @@ function agencyFromRouteFacet(values){
 // yank the reader to the item top and erase "where you came from."
 function focusItemRouteTarget(target){
   if(!target) return;
-  const routeKey=location.hash||`${location.pathname}${location.search}`;
+  const routeKey=routeFocusKey();
   requestAnimationFrame(()=>{
-    if((location.hash||`${location.pathname}${location.search}`)!==routeKey || focusedItemRouteHash===routeKey ||
+    if(routeFocusKey()!==routeKey || focusedItemRouteHash===routeKey ||
        !target.isConnected || !target.closest(".tabpane.active")) return;
     const restoring=isRestoringHistoryRouteScroll();
     if(!restoring) target.scrollIntoView({block:"start"});
+    if(target.getAttribute("tabindex")!=="-1") target.setAttribute("tabindex","-1");
+    target.setAttribute("aria-current","page");
     target.focus({preventScroll:true});
     focusedItemRouteHash=routeKey;
     if(restoring) applyActiveHistoryRouteScroll();
@@ -188,8 +196,7 @@ function serializeState(){
     if(landCouncilDistrict) q.set("council", landCouncilDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
     if($("#lstatus").value !== "all") q.set("status", $("#lstatus").value);
-    const hm=$("#lhearingmode");
-    if(hm && $("#lstatus").value==="hearings" && hm.value) q.set("attendance", hm.value);
+    if($("#lstatus").value==="hearings" && landAttendance) q.set("attendance", landAttendance);
   } else if(SECTIONS[tab]){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
@@ -222,6 +229,7 @@ function serializeState(){
       if(globalThis.propertyParcelScopeBbl) q.set("facet",JSON.stringify({entity_refs_all:[`bbl:${globalThis.propertyParcelScopeBbl}`]}));
     }
     if(tab === "rules"){
+      if(rulesAgency) q.set("agency", rulesAgency);
       if(rulesProcessSel !== "all") q.set("process", rulesProcessSel);
       if(rulesBorough==="citywide") q.set("scope","citywide");
       else if(rulesBorough) q.set("boro", rulesBorough);
@@ -235,6 +243,16 @@ function serializeState(){
   const rawHash="#" + tab + (qs ? "?" + qs : "");
   const scope=CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
   scope.facets.values={...scope.facets.values,...activeRouteFacetValues};
+  if(tab === "rules" && rulesAgency){
+    const ref=entityRouteRef("agency", rulesAgency);
+    if(ref){
+      scope.facets.agencies=[];
+      const refs=Array.isArray(scope.facets.values.entity_refs_all)
+        ? scope.facets.values.entity_refs_all.filter(item=>!/^agency:/.test(String(item)))
+        : [];
+      scope.facets.values.entity_refs_all=[...new Set([...refs, ref])];
+    }
+  }
   return CrolScope.routeHashFromScope(scope,{surface:tab});
 }
 function nearYouHref(scope){
@@ -971,11 +989,8 @@ function applyHash(){
       $("#lkw").value = q.get("q") || "";
       const landStatus=q.get("status");
       $("#lstatus").value = landStatus==="all"||landStatus==="hearings"||/^(?:project|public):.+$/.test(landStatus||"") ? landStatus : "active";
-      const hm=$("#lhearingmode");
-      if(hm){
-        const att=q.get("attendance");
-        hm.value=att==="in_person"||att==="livestream"?att:"";
-      }
+      const att=q.get("attendance");
+      landAttendance=landStatus==="hearings" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
       let scopedProjectId="";
       try{
         const facet=JSON.parse(q.get("facet")||"{}");
@@ -986,8 +1001,15 @@ function applyHash(){
       if(scopedProjectId) showLandEntry(scopedProjectId);
       else { const was = landLoaded; showTab("land"); if(was) landSearch(); }
     } else if(SECTIONS[tab]){
-      $("#"+tab+"agency").value="";
-      forceSelect("#"+tab+"agency", q.get("agency") || agencyFromRouteFacet(activeRouteFacetValues));
+      const agency=q.get("agency") || agencyFromRouteFacet(activeRouteFacetValues);
+      if(tab === "rules") rulesAgency=agency || "";
+      else {
+        const agencyControl=$("#"+tab+"agency");
+        if(agencyControl){
+          agencyControl.value="";
+          forceSelect("#"+tab+"agency", agency);
+        }
+      }
       $("#"+tab+"kw").value = q.get("q") || "";
       const w=$("#"+tab+"when");
       if(w){
@@ -1305,6 +1327,7 @@ globalThis.pushHash = pushHash;
 globalThis.rememberItemRouteContext = rememberItemRouteContext;
 globalThis.restoreHistoryRouteScroll = restoreHistoryRouteScroll;
 globalThis.routeBackHTML = routeBackHTML;
+globalThis.routeFocusKey = routeFocusKey;
 globalThis.routeBackLabel = routeBackLabel;
 globalThis.routeBackViewName = routeBackViewName;
 globalThis.routeHistoryEntry = routeHistoryEntry;
