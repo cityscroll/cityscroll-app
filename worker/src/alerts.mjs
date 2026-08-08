@@ -62,6 +62,7 @@ import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
 import { landProjectDisplayTitle } from "../../site/display_title.mjs";
+import { normalizeHearing } from "./lib/hearings.mjs";
 import {
   forecastSentIdentity,
   forecastIsDeliverableOn,
@@ -1788,6 +1789,25 @@ function temporalActionHtml(row, esc, lang = "en", opts = {}) {
   return itemAwarenessHtml(row, esc, lang, opts);
 }
 
+function digestMeetingDetailsHtml(row, esc, calendarBase = "https://api.cityscroll.org") {
+  const isMeeting = row?.section_name === "Public Hearings and Meetings"
+    || (row?.section_name === "Agency Rules" && row?.type_of_notice_description === "Public Hearings");
+  if (!isMeeting || !row?.event_date) return "";
+  const normalized = normalizeHearing(row);
+  const access = normalized.meeting_access || {};
+  const mode = access.mode === "remote" ? "Remote" : access.mode === "hybrid" ? "Hybrid" : access.mode === "in-person" ? "In person" : "Mode not stated";
+  const facts = [`Mode: ${mode}`];
+  if (access.in_person_location) facts.push(`Location: ${access.in_person_location}`);
+  const join = access.remote_join_url;
+  if (join) facts.push(`<a href="${esc(join)}">Join online</a>`);
+  if (access.dial_in?.length) facts.push(`Dial-in: ${access.dial_in.join(", ")}`);
+  const calendar = row.request_id
+    ? `${calendarBase}/meeting.ics?id=${encodeURIComponent(row.request_id)}`
+    : null;
+  if (calendar) facts.push(`<a href="${esc(calendar)}">Add to calendar</a>`);
+  return `<div data-meeting-access="1" style="color:#444;font-size:13px;margin:3px 0">${facts.map((fact) => fact.includes("<a ") ? fact : esc(fact)).join(" · ")}</div>`;
+}
+
 function digestHtml(w, rows) {
   const money = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
@@ -1807,6 +1827,7 @@ function digestHtml(w, rows) {
       return `<li data-digest-item="1" style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${sub}</span><br>
         ${temporalActionHtml(r, esc, "en", { kind: digestKind, today })}
+        ${digestMeetingDetailsHtml(r, esc)}
         ${evidenceLineHtml(ev, esc, "en")}
         <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
     })
@@ -2081,6 +2102,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       <span style="color:#555;font-size:13px">${meta}</span><br>
       ${propertyStage}
       ${temporalActionHtml(r, esc, lang, { kind: itemKind, today })}
+      ${digestMeetingDetailsHtml(r, esc, base)}
       ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
@@ -2275,6 +2297,7 @@ function rollupDigestHtml({
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${propertyStage}
         ${temporalActionHtml(r, esc, lang, { kind: rowKind, today })}
+        ${digestMeetingDetailsHtml(r, esc, base)}
         ${evidenceLineHtml(ev, esc, lang)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
     };

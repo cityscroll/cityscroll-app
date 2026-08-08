@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   buildHearingView,
   handleHearings,
+  handleMeetingICS,
   HEARINGS_KV_KEY,
   refreshHearings,
 } from "../src/hearings.mjs";
@@ -86,4 +87,34 @@ test("refresh writes one materialized view and the read route serves it", async 
   assert.equal(response.headers.get("access-control-allow-origin"), "*");
   const body = await response.json();
   assert.equal(body.hearings[0].request_id, "fixture-hearing-view");
+});
+
+test("meeting ICS is built from the materialized hearing record", async () => {
+  const kv = memoryKV();
+  await kv.put(HEARINGS_KV_KEY, JSON.stringify({
+    generated_at: TEST_NOW.toISOString(),
+    hearings: [{
+      request_id: "fixture-calendar",
+      title: "Hybrid hearing",
+      agency: "City Planning Commission",
+      event_date: "2026-08-10T14:30:00.000",
+      venue: { mode: "hybrid", building: "Room 120", address: "1 Centre Street, New York, NY 10007" },
+      meeting_access: {
+        mode: "hybrid",
+        in_person_location: "Room 120 · 1 Centre Street, New York, NY 10007",
+        remote_join_url: "https://zoom.us/j/123456789",
+        dial_in: [],
+      },
+      source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/fixture-calendar",
+    }],
+  }));
+  const response = await handleMeetingICS(
+    new Request("https://api.cityscroll.org/meeting.ics?id=fixture-calendar"),
+    { ALERT_STATE: kv },
+  );
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") || "", /text\/calendar/);
+  const body = await response.text();
+  assert.match(body, /URL:https:\/\/zoom\.us\/j\/123456789/);
+  assert.match(body, /LOCATION:Room 120/);
 });

@@ -220,14 +220,16 @@ function normalizeHearingRow(row) {
   ].filter(Boolean).join(" "));
   var source = "https://a856-cityrecord.nyc.gov/RequestDetail/" + encodeURIComponent(row.request_id || "");
   var audience = HEARING_AUDIENCES.find(function (entry) { return entry[0].test((row.short_title || "") + " " + body); });
+  var venue = row.venue || hearingVenue(row);
+  var participation = hearingParticipationFromBody(body, source);
   return {
     request_id: String(row.request_id || ""), source_section: row.section_name || null,
     agency: row.agency_name || null, notice_type: row.type_of_notice_description || null,
     title: hearingPlainText(row.short_title) || "Hearing " + String(row.request_id || "").trim(), event_date: row.event_date || null,
     published_at: row.start_date || null, decides: hearingDecision(row, body),
     affects: audience ? [audience[1]] : [], affected_area: row.affected_area || hearingAffectedArea(row),
-    venue: row.venue || hearingVenue(row),
-    participation: hearingParticipationFromBody(body, source),
+    venue: venue,
+    participation: participation,
     source_url: source, description: body.slice(0, 1200),
   };
 }
@@ -267,6 +269,7 @@ function hearingParticipationFromBody(body, source) {
   });
   return {
     links: ranked.slice(0, 1),
+    remote_join_url: ranked.find(function (link) { return link.label === "Join online"; })?.url || null,
     emails: hearingUnique(Array.from(String(body || "").matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi)).map(function (match) { return match[0]; })).slice(0, 4),
     phones: hearingUnique(Array.from(String(body || "").matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)).map(function (match) { return match[0]; })).slice(0, 4),
     source_url: source,

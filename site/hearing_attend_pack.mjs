@@ -54,7 +54,15 @@ export function hearingCalendarICS(record, options = {}) {
   const title = String(r.short_title || r.title || "Public hearing").trim();
   const agency = String(r.agency_name || r.agency || "").trim();
   const venue = r.venue || {};
-  const location = [venue.building || r.building_name, venue.address || [r.street_address_1, r.street_address_2, r.city, r.state, r.zip_code].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
+  const access = r.meeting_access || {};
+  const location = access.in_person_location
+    || [venue.building || r.building_name, venue.address || [r.street_address_1, r.street_address_2, r.city, r.state, r.zip_code].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
+  const joinUrl = access.remote_join_url
+    || r.remote_join_url
+    || r.participation?.remote_join_url
+    || r.participation?.links?.find((link) => link?.label === "Join online")?.url
+    || null;
+  const dialIn = access.dial_in || r.participation?.phones || [];
   const source = httpsUrl(r.official_notice_url) || httpsUrl(r.source_url) || null;
   const now = options.now ? new Date(options.now) : new Date();
   const dtstamp = (Number.isNaN(now.getTime()) ? new Date() : now).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
@@ -68,13 +76,16 @@ export function hearingCalendarICS(record, options = {}) {
   if (start.dateOnly) {
     const pad = value => String(value).padStart(2, "0");
     lines.push(`DTSTART;VALUE=DATE:${start.year}${pad(start.month)}${pad(start.day)}`);
+    const end = new Date(Date.UTC(start.year, start.month - 1, start.day + 1));
+    lines.push(`DTEND;VALUE=DATE:${end.getUTCFullYear()}${pad(end.getUTCMonth() + 1)}${pad(end.getUTCDate())}`);
   } else {
     const value = new Date(Date.UTC(start.year, start.month - 1, start.day, start.hour + 1, start.minute, start.second));
     const end = {year: value.getUTCFullYear(), month: value.getUTCMonth() + 1, day: value.getUTCDate(), hour: value.getUTCHours(), minute: value.getUTCMinutes(), second: value.getUTCSeconds()};
     lines.push(`DTSTART;TZID=America/New_York:${stamp(start)}`, `DTEND;TZID=America/New_York:${stamp(end)}`);
   }
   lines.push(`SUMMARY:${esc(title)}`, ...(location ? [`LOCATION:${esc(location)}`] : []),
-    `DESCRIPTION:${esc([agency, source ? `Official source: ${source}` : null].filter(Boolean).join("\n"))}`,
+    ...(joinUrl ? [`URL:${esc(joinUrl)}`] : []),
+    `DESCRIPTION:${esc([agency, location ? `Location: ${location}` : null, joinUrl ? `Join online: ${joinUrl}` : null, dialIn.length ? `Dial-in: ${dialIn.join(", ")}` : null, source ? `Official source: ${source}` : null].filter(Boolean).join("\n"))}`,
     "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Hearing tomorrow", "END:VALARM", "END:VEVENT", "END:VCALENDAR", "");
   return lines.map(fold).join("\r\n");
 }

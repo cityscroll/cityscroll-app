@@ -277,6 +277,26 @@ function participationLabel(url) {
   return "Participation link";
 }
 
+function meetingAccessFromParts(venue, participation) {
+  const mode = venue?.mode === "virtual"
+    ? "remote"
+    : venue?.mode === "hybrid"
+      ? "hybrid"
+      : venue?.mode === "in-person"
+        ? "in-person"
+        : "unknown";
+  const location = [venue?.building, venue?.address].filter(Boolean).join(" · ") || null;
+  const joinUrl = participation?.remote_join_url
+    || participation?.links?.find((link) => link?.label === "Join online")?.url
+    || null;
+  return {
+    mode,
+    in_person_location: location,
+    remote_join_url: joinUrl,
+    dial_in: unique(participation?.phones || []),
+  };
+}
+
 // One outbound participation affordance per notice: prefer a live join URL, else the
 // most specific cleaned URL the body published (longest path wins among equals).
 function participationFromRow(row, body, sourceUrl) {
@@ -298,6 +318,7 @@ function participationFromRow(row, body, sourceUrl) {
   const phones = unique([...body.matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)].map((match) => match[0])).slice(0, 4);
   return {
     links,
+    remote_join_url: links.find((link) => link.label === "Join online")?.url || null,
     emails,
     phones,
     source_url: sourceUrl,
@@ -318,6 +339,8 @@ export function normalizeHearing(row) {
   ].filter(Boolean).join(" "));
   const sourceUrl = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(row.request_id || "")}`;
   const audience = AUDIENCES.find(([pattern]) => pattern.test(`${row.short_title || ""} ${body}`));
+  const venue = venueFromRow(row);
+  const participation = participationFromRow(row, body, sourceUrl);
   return {
     request_id: String(row.request_id || ""),
     source_section: row.section_name || null,
@@ -329,8 +352,9 @@ export function normalizeHearing(row) {
     decides: decisionSummary(row, body),
     affects: audience ? [audience[1]] : [],
     affected_area: affectedAreaFromRow(row),
-    venue: venueFromRow(row),
-    participation: participationFromRow(row, body, sourceUrl),
+    venue,
+    participation,
+    meeting_access: meetingAccessFromParts(venue, participation),
     source_url: sourceUrl,
     description: body.slice(0, 1200),
   };
