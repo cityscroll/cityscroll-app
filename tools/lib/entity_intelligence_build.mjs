@@ -27,9 +27,14 @@ import {
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
 } from "../../entity_resolution/cross_domain/index.mjs";
 import { vendorStem } from "../../entity_resolution/normalizers/vendor_stem.mjs";
+import { buildEpinIndex, joinPinToEpin } from "../../worker/src/lib/passport_join.mjs";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
+/** Population-backed PASSPort contracts admitted into the EI graph (not the 2-row crosswalk demo). */
+export const DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP = 500;
+/** OCP awards admitted into the EI graph; selection prefers PIN↔EPIN joins to the passport slice. */
+export const DEFAULT_OCP_AWARD_MATERIALIZATION_CAP = 500;
 
 export const VENDOR_FOOTPRINT_PROMOTION_GATES = Object.freeze({
   award_linkage_rate: 0.95,
@@ -366,14 +371,137 @@ export function loadJsonIfExists(filePath) {
 }
 
 /**
+ * Select population-backed PASSPort contracts for the entity-intelligence graph.
+ *
+ * The full census lives in `rows.passport_contracts` (award-corroborated). The
+ * 2-row `passport_contracts_materialization` slice is only a Checkbook-crosswalk
+ * compatibility demo — it must not starve money multi-kind edges. Cap keeps the
+ * 200-root graph and cold payload within budget; compatibility examples are
+ * always included first so demos stay stable.
+ *
+ * @param {object} doc procurement_spine_sources.json
+ * @param {{ cap?: number }} [opts]
+ * @returns {{ rows: object[], census_rows: number, cap: number, strategy: string }}
+ */
+export function selectPassportContractsForMaterialization(doc, opts = {}) {
+  const cap = Math.max(1, Number(opts.cap) || DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP);
+  const census = Array.isArray(doc?.rows?.passport_contracts) ? doc.rows.passport_contracts : [];
+  const compatibility = Array.isArray(doc?.rows?.passport_contracts_materialization)
+    ? doc.rows.passport_contracts_materialization
+    : [];
+  const seen = new Set();
+  const rows = [];
+  const push = (row) => {
+    if (!row || typeof row !== "object") return;
+    const id = clean(row.ctr_id || row.contract_id || row.epin || row.epin_norm);
+    if (!id || seen.has(id)) return;
+    seen.add(id);
+    rows.push(row);
+  };
+  for (const row of compatibility) {
+    push(row);
+    if (rows.length >= cap) break;
+  }
+  for (const row of census) {
+    if (rows.length >= cap) break;
+    push(row);
+  }
+  return {
+    rows,
+    census_rows: census.length,
+    compatibility_rows: compatibility.length,
+    selected_rows: rows.length,
+    cap,
+    strategy:
+      "population-backed census (rows.passport_contracts) capped for entity-intelligence; "
+      + "compatibility examples (passport_contracts_materialization) included first",
+  };
+}
+
+/**
+ * Select OCP award rows for the EI graph, preferring awards that join the
+ * already-selected PASSPort contract slice via the existing PIN↔EPIN join.
+ * No new matcher — only materialization ordering within the award cap.
+ *
+ * @param {object[]} awardRows
+ * @param {object[]} passportRows
+ * @param {{ cap?: number }} [opts]
+ */
+export function selectOcpAwardsForMaterialization(awardRows, passportRows, opts = {}) {
+  const cap = Math.max(1, Number(opts.cap) || DEFAULT_OCP_AWARD_MATERIALIZATION_CAP);
+  const list = Array.isArray(awardRows) ? awardRows : [];
+  const epinIndex = buildEpinIndex(
+    (Array.isArray(passportRows) ? passportRows : [])
+      .map((row) => row?.epin || row?.epin_norm)
+      .filter(Boolean),
+  );
+  const joined = [];
+  const rest = [];
+  for (const row of list) {
+    const pin = clean(row?.pin);
+    if (pin && joinPinToEpin(pin, epinIndex)) joined.push(row);
+    else rest.push(row);
+  }
+  // Joined first (multi-kind money edges), then reverse-chronological fill so
+  // modern awards outrank the historical head of the warehouse lookup.
+  const ordered = [...joined, ...rest.slice().reverse()];
+  const seen = new Set();
+  const rows = [];
+  for (const row of ordered) {
+    const id = clean(row?.request_id || row?.pin);
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    rows.push(row);
+    if (rows.length >= cap) break;
+  }
+  return {
+    rows,
+    joined_available: joined.length,
+    selected_rows: rows.length,
+    selected_joined: rows.filter((row) => {
+      const pin = clean(row?.pin);
+      return Boolean(pin && joinPinToEpin(pin, epinIndex));
+    }).length,
+    cap,
+    strategy:
+      "prefer awards whose PIN joins the selected PASSPort slice (existing passport_join); "
+      + "fill remaining cap newest-first from the OCP warehouse lookup",
+  };
+}
+
+/**
+ * Receipt form of materialization selection — counts and strategy only.
+ * Never embed the full row payloads into the published EI lookup.
+ */
+export function slimProcurementMaterializationReceipt(materialization) {
+  if (!materialization || typeof materialization !== "object") return null;
+  const slimPart = (part) => {
+    if (!part || typeof part !== "object") return null;
+    const { rows: _rows, ...meta } = part;
+    void _rows;
+    return meta;
+  };
+  return {
+    passport_contracts: slimPart(materialization.passport_contracts),
+    ocp_awards: slimPart(materialization.ocp_awards),
+  };
+}
+
+/**
  * Load procurement-spine observations without turning source keys into vendor
  * identity claims. The materialization carries a measured PASSPort award rate,
  * while Checkbook coverage remains null until its population denominator exists.
  */
-export function collectProcurementSpineObservations(root) {
+export function collectProcurementSpineObservations(root, opts = {}) {
   const doc = loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"));
   if (!doc?.rows || typeof doc.rows !== "object") {
-    return { observations: [], coverage: {}, row_counts: {}, observed_on: null };
+    return {
+      observations: [],
+      coverage: {},
+      row_counts: {},
+      observed_on: null,
+      materialization: null,
+    };
   }
 
   const observations = [];
@@ -383,16 +511,13 @@ export function collectProcurementSpineObservations(root) {
       if (observation) observations.push(observation);
     }
   };
-  // The source is population-backed, but the public entity graph is an
-  // intentionally bounded materialization. Keep the census in the receipt and
-  // feed only the explicit bounded compatibility slice into the graph so one
-  // large source cannot evict the other domains from the 200-root cap.
-  const passportRows = Array.isArray(doc.rows.passport_contracts_materialization)
-    ? doc.rows.passport_contracts_materialization
-    : (Array.isArray(doc.rows.passport_contracts)
-      ? doc.rows.passport_contracts.slice(0, 500)
-      : []);
-  add(passportRows, observationFromPassportContractRow, "passport-public-contracts");
+  // Population-backed census → capped graph materialization. The 2-row
+  // compatibility slice stays available for Checkbook crosswalk demos but no
+  // longer is the sole graph feed.
+  const passportSelection = selectPassportContractsForMaterialization(doc, {
+    cap: opts.passport_contract_cap || DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP,
+  });
+  add(passportSelection.rows, observationFromPassportContractRow, "passport-public-contracts");
   add(doc.rows.checkbook_contracts, observationFromCheckbookContractRow, "checkbook-contracts");
   add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
 
@@ -400,6 +525,10 @@ export function collectProcurementSpineObservations(root) {
     observations,
     coverage: doc.sources || {},
     observed_on: doc.observed_on || null,
+    passport_rows: passportSelection.rows,
+    materialization: {
+      passport_contracts: passportSelection,
+    },
     row_counts: Object.fromEntries(
       Object.entries(doc.rows).map(([name, rows]) => [name, Array.isArray(rows) ? rows.length : 0]),
     ),
@@ -417,7 +546,7 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // --- Procurement spine: PASSPort contracts + Checkbook rows ---
   // PIN/EPIN/contract ids become typed evidence edges; they never become
   // vendor ids or legal-name merge assertions.
-  const procurementSpine = collectProcurementSpineObservations(root);
+  const procurementSpine = collectProcurementSpineObservations(root, opts);
   observations.push(...procurementSpine.observations);
 
   // --- Money: warehouse OCP fixtures + product lookup ---
@@ -440,10 +569,20 @@ export function collectCrossDomainObservations(root, opts = {}) {
   );
   if (ocpLookup && Array.isArray(ocpLookup.rows)) {
     const ocpSource = cleanSourceSystem(ocpLookup.source, "ocp-recent-contract-awards");
-    for (const row of ocpLookup.rows.slice(0, 500)) {
+    const ocpSelection = selectOcpAwardsForMaterialization(
+      ocpLookup.rows,
+      procurementSpine.passport_rows || [],
+      { cap: opts.ocp_award_cap || DEFAULT_OCP_AWARD_MATERIALIZATION_CAP },
+    );
+    for (const row of ocpSelection.rows) {
       const obs = observationFromMoneyRow(row, { sourceSystem: ocpSource });
       if (obs) observations.push(obs);
     }
+    // Stash for the procurement_spine receipt on the materialization doc.
+    procurementSpine.materialization = {
+      ...(procurementSpine.materialization || {}),
+      ocp_awards: ocpSelection,
+    };
   }
 
   // --- Land: warehouse ZAP fixtures + land default + zap lookup ---
@@ -738,7 +877,22 @@ export function collectCrossDomainObservations(root, opts = {}) {
  */
 export function buildEntityIntelligenceDoc(root, opts = {}) {
   const observations = collectCrossDomainObservations(root, opts);
-  const procurementSpine = collectProcurementSpineObservations(root);
+  const procurementSpine = collectProcurementSpineObservations(root, opts);
+  // Receipt only: recompute OCP selection against the same passport slice so the
+  // materialization doc records joined/fill counts without a second observation pass.
+  const ocpLookup = loadJsonIfExists(
+    path.join(root, "site/data/ocp_awards_warehouse_lookup.json"),
+  );
+  if (ocpLookup && Array.isArray(ocpLookup.rows)) {
+    procurementSpine.materialization = {
+      ...(procurementSpine.materialization || {}),
+      ocp_awards: selectOcpAwardsForMaterialization(
+        ocpLookup.rows,
+        procurementSpine.passport_rows || [],
+        { cap: opts.ocp_award_cap || DEFAULT_OCP_AWARD_MATERIALIZATION_CAP },
+      ),
+    };
+  }
   const corpus = buildIntelligenceCorpus(observations, {
     max_per_domain: opts.max_per_domain || 6,
     // The former fixture-era cap of 40 hid roots discovered by bulk lookups.
@@ -747,7 +901,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
   });
   const vendorFootprint = buildVendorFootprintCoverage(
     corpus,
-    loadJsonIfExists(path.join(root, "site/data/ocp_awards_warehouse_lookup.json")) || {},
+    ocpLookup || {},
     loadJsonIfExists(path.join(root, "warehouse/receipts/proof/wh04_er_batch_latest.json")) || {},
     procurementSpine,
   );
@@ -796,6 +950,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
       observed_on: procurementSpine.observed_on || null,
       coverage: procurementSpine.coverage,
       row_counts: procurementSpine.row_counts,
+      materialization: slimProcurementMaterializationReceipt(procurementSpine.materialization),
       note: "Procurement keys attach contract and payment evidence; they do not assert legal-vendor identity.",
     },
     provenance: {

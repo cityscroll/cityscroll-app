@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "title": "PASSPort contract spine → entity-intelligence densify",
+  "observed_on": "2026-08-08",
+  "change": "Wire population-backed rows.passport_contracts into EI graph materialization (capped), prefer OCP awards that join via existing PIN↔EPIN. No new join strategy.",
+  "policy": {
+    "passport_contract_cap": 500,
+    "ocp_award_cap": 500,
+    "entity_root_cap": 200,
+    "graph_source": "site/data/procurement_spine_sources.json#rows.passport_contracts",
+    "compatibility_examples_remain": "rows.passport_contracts_materialization (Checkbook crosswalk demos only)"
+  },
+  "before": {
+    "observation_count": 1334,
+    "money_object_kinds": {
+      "award": 250,
+      "payment": 1,
+      "contract": 4
+    },
+    "money_join_edges": {
+      "corroborates_contract": 2,
+      "references_contract": 6,
+      "paid_to_vendor": 1,
+      "payment_on_contract": 1,
+      "contract_published_by_agency": 4
+    },
+    "multi_kind_vendors_in_graph": 2,
+    "vendors_with_contract": 2,
+    "passport_feed": 2
+  },
+  "after": {
+    "observation_count": 1979,
+    "money_object_kinds": {
+      "award": 433,
+      "contract": 249,
+      "payment": 1
+    },
+    "money_join_edges": {
+      "corroborates_contract": 2,
+      "references_contract": 804,
+      "paid_to_vendor": 1,
+      "payment_on_contract": 1,
+      "contract_published_by_agency": 4,
+      "named_vendor": 597,
+      "shares_authority_key": 1598
+    },
+    "multi_kind_vendors_in_graph": 125,
+    "vendors_with_contract": 125,
+    "passport_feed": 500,
+    "ocp_selected_joined": 500
+  },
+  "deltas": {
+    "contract_objects": 245,
+    "references_contract": 798,
+    "multi_kind_vendors": 123,
+    "named_vendor": 447
+  },
+  "notes": [
+    "corroborates_contract / paid_to_vendor / payment_on_contract remain sparse because Checkbook contracts+spending in the spine are still single-row compatibility examples — only PASSPort was densified.",
+    "Vendor-footprint multi_kind_vendor_rate (full-corpus award corroboration, 0.2546) was already population-backed; this change densifies the 200-root EI graph that the prior 2-row fixture starved."
+  ],
+  "reproduce": [
+    "node --test test/procurement_spine_ei_densify.test.mjs",
+    "node tools/build_entity_intelligence.mjs",
+    "node -e 'const e=require(\"./site/data/entity_intelligence_lookup.json\"); console.log(e.procurement_spine.materialization)'"
+  ]
+}
