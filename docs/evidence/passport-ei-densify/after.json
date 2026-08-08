@@ -1,0 +1,43 @@
+{
+  "label": "after",
+  "generated_at": "2026-08-08T12:15:15.003Z",
+  "observation_count": 1979,
+  "entity_count": 200,
+  "multi_domain_count": 30,
+  "money_object_kinds": {
+    "award": 433,
+    "contract": 249,
+    "payment": 1
+  },
+  "money_join_edges": {
+    "corroborates_contract": 2,
+    "references_contract": 804,
+    "paid_to_vendor": 1,
+    "payment_on_contract": 1,
+    "contract_published_by_agency": 4,
+    "named_vendor": 597,
+    "shares_authority_key": 1598
+  },
+  "vendors_with_contract": 125,
+  "vendors_with_award": 132,
+  "multi_kind_vendors_in_graph": 125,
+  "agencies_with_contract": 13,
+  "passport_contracts_census_rows": 12782,
+  "materialization": {
+    "passport_contracts": {
+      "census_rows": 12782,
+      "compatibility_rows": 2,
+      "selected_rows": 500,
+      "cap": 500,
+      "strategy": "population-backed census (rows.passport_contracts) capped for entity-intelligence; compatibility examples (passport_contracts_materialization) included first"
+    },
+    "ocp_awards": {
+      "joined_available": 585,
+      "selected_rows": 500,
+      "selected_joined": 500,
+      "cap": 500,
+      "strategy": "prefer awards whose PIN joins the selected PASSPort slice (existing passport_join); fill remaining cap newest-first from the OCP warehouse lookup"
+    }
+  },
+  "file_bytes": 7199026
+}

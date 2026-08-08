@@ -1,0 +1,24 @@
+{
+  "label": "before",
+  "generated_at": "2026-08-06T19:05:45.517Z",
+  "observation_count": 1334,
+  "entity_count": 200,
+  "multi_domain_count": 29,
+  "money_object_kinds": {
+    "award": 250,
+    "payment": 1,
+    "contract": 4
+  },
+  "money_join_edges": {
+    "corroborates_contract": 2,
+    "references_contract": 6,
+    "paid_to_vendor": 1,
+    "payment_on_contract": 1,
+    "contract_published_by_agency": 4
+  },
+  "vendors_with_contract": 2,
+  "vendors_with_award": 68,
+  "multi_kind_vendors_in_graph": 2,
+  "passport_contracts_materialization_rows": 2,
+  "passport_contracts_census_rows": 12782
+}
