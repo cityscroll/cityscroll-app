@@ -70,7 +70,7 @@ test("entity chips link accepted refs, band tentative matches, and suppress revi
     link_confidence: "strong",
     relation: "named_vendor",
   });
-  assert.match(strong, /<a class="pivot entity-pivot" href="\/vendors\/CAMBA\/"/);
+  assert.match(strong, /<a class="ui-constellation-link pivot entity-pivot" href="\/vendors\/CAMBA\/"[^>]*><span aria-hidden="true">◆<\/span>/);
   assert.match(strong, /CAMBA &amp; Co/);
   assert.doesNotMatch(strong, /Possible match/);
 

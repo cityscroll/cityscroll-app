@@ -1,3 +1,5 @@
+import { officialSourceLink } from "../affordance_grammar.mjs";
+
 /* ===================== CONTRACT LIFECYCLE TIMELINE (PROC-001) =====================
     A compact horizontal timeline on notice detail showing the full procurement journey:
     solicitation/award → pending → registered → payment. Consumes the precomputed read model
@@ -132,7 +134,7 @@ function lifecycleDocumentsHTML(entry){
   if(docsStatus!=="matched") return "";
   if(docsStatus === "matched" && Array.isArray(d.documents) && d.documents.length){
     const links = d.documents.map((url, i) =>
-      `<a class="view" href="${escUiHtml(url)}" ${EXT_ATTRS}>${t("lifecycle_document_link",{n:i+1})}${extSR()}</a>`
+      officialSourceLink({ href: url, label: t("lifecycle_document_link",{n:i+1}), className: "view", escape: escUiHtml })
     ).join(" · ");
     const due = d.due_date ? `<div class="lc-due">${t("lifecycle_due_html",{date:fdate(d.due_date)})}</div>` : "";
     return `<div class="lc-docs"><div class="lc-docs-h">${tn("lifecycle_documents_count", d.documents.length)}</div>${due}<div class="lc-docs-links">${links}</div></div>`;
@@ -145,39 +147,39 @@ function lifecycleDocumentsHTML(entry){
 function lifecycleSourceLink(entry, ctx){
   ctx = ctx || {};
   if(entry.source === "city-record" && entry.detail && entry.detail.request_id){
-    return `<a class="view" href="${REQ_URL(entry.detail.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`;
+    return officialSourceLink({ href: REQ_URL(entry.detail.request_id), label: t("lifecycle_source_city_record"), className: "view", escape: escUiHtml });
   }
   if(entry.source === "ocp-current-solicitations"){
     const rid = entry.detail && entry.detail.request_id;
     if(rid){
-      return `<a class="view" href="${REQ_URL(rid)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`
-        + ` · <a class="view" href="${CURRENT_SOLICITATIONS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_current_solicitations")}${extSR()}</a>`;
+      return officialSourceLink({ href: REQ_URL(rid), label: t("lifecycle_source_city_record"), className: "view", escape: escUiHtml })
+        + ` · ${officialSourceLink({ href: CURRENT_SOLICITATIONS_URL, label: t("lifecycle_source_current_solicitations"), className: "view", escape: escUiHtml })}`;
     }
-    return `<a class="view" href="${CURRENT_SOLICITATIONS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_current_solicitations")}${extSR()}</a>`;
+    return officialSourceLink({ href: CURRENT_SOLICITATIONS_URL, label: t("lifecycle_source_current_solicitations"), className: "view", escape: escUiHtml });
   }
   if(entry.source === "checkbook-contracts"){
     const d = entry.detail || {};
     const id = d.contract_id || ctx.contractId;
-    return `<a class="view" href="${checkbookSearchUrl({
+    return officialSourceLink({ href: checkbookSearchUrl({
       contractId:id, pin:ctx.pin, vendor:ctx.vendor,
       agid:d.agid || d.checkbook_agid, documentCode:d.document_code || d.doctype,
       detailUrl:d.checkbook_detail_url,
-    })}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    }), label: t("lifecycle_source_checkbook"), className: "view", escape: escUiHtml });
   }
   if(entry.source === "checkbook-spending"){
     const d = entry.detail || {};
     const id = d.contract_id || ctx.contractId;
-    return `<a class="view" href="${checkbookSearchUrl({
+    return officialSourceLink({ href: checkbookSearchUrl({
       contractId:id, pin:ctx.pin, vendor:ctx.vendor, kind:"spending",
       agid:d.agid || d.checkbook_agid, documentCode:d.document_code || d.doctype,
       detailUrl:d.checkbook_detail_url,
-    })}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    }), label: t("lifecycle_source_checkbook"), className: "view", escape: escUiHtml });
   }
   if(entry.source === "passport-public-contracts"){
-    return `<a class="view" href="${entry.portal || PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`;
+    return officialSourceLink({ href: entry.portal || PASSPORT_CONTRACTS_URL, label: t("lifecycle_source_passport"), className: "view", escape: escUiHtml });
   }
   if(entry.source === "passport-public-rfx"){
-    return `<a class="view" href="${entry.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`;
+    return officialSourceLink({ href: entry.portal || PASSPORT_RFX_URL, label: t("lifecycle_source_passport"), className: "view", escape: escUiHtml });
   }
   return "";
 }
@@ -512,7 +514,7 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
 function lifecycleOcpAwardHTML(data){
   const ocp = data && data.ocp_award;
   if(!ocp) return "";
-  const srcLink = `<a href="${OCP_AWARDS_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_ocp")}</span>${extSR()}</a>`;
+  const srcLink = officialSourceLink({ href: OCP_AWARDS_URL, label: t("lifecycle_source_ocp"), escape: escUiHtml });
   const srcName = `<span lang="en" dir="ltr">${t("lifecycle_source_ocp")}</span>`;
   const cityName = `<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`;
 

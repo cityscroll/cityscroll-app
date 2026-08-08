@@ -27,6 +27,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../site/display_title.mjs";
 import { constellationLink } from "../site/affordance_grammar.mjs";
+import { officialSourceLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -70,7 +71,7 @@ const {
   matchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink",
+  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -114,7 +115,7 @@ const {
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +
   "return { matchEvidence, matchText, digTitleHTML, digEvidenceHTML, moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML };"
-)(t, tn, fmtNumber, windowStub, () => "", landProjectDisplayTitle, noticeDisplayTitle, constellationLink);
+)(t, tn, fmtNumber, windowStub, () => "", landProjectDisplayTitle, noticeDisplayTitle, constellationLink, officialSourceLink);
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
 // is genuinely blank on this row -- other_info_1 carries all the real text.
