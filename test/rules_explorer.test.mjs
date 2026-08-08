@@ -517,8 +517,14 @@ test("public Rules domain presents chain membership as an ordinary facet", () =>
   assert.doesNotMatch(cardTemplate, /ruleStageChip\(/);
   assert.doesNotMatch(cardTemplate, /rules-action-lead/);
   assert.match(cardTemplate, /data-card-fact/);
-  assert.match(cardTemplate, /rule_stage_comment_closed/);
-  assert.match(cardTemplate, /role="status"/);
+  const processLineTemplate = cardTemplate.slice(
+    cardTemplate.indexOf('const processLine='),
+    cardTemplate.indexOf('// Next-action lead'),
+  );
+  assert.match(processLineTemplate, /class="rules-process-line"/);
+  assert.match(processLineTemplate, /class="tag open"/);
+  assert.doesNotMatch(processLineTemplate, /tag place|ui-constellation-link|rules_list_no_agency/);
+  assert.match(cardTemplate, /<div class="ftype">\$\{r\.type_of_notice_description[^\n]+pivotA\(agencyHref\(agency\), agency\)/);
 
   const processControlTemplate = RULES_APP_SOURCE.slice(
     RULES_APP_SOURCE.indexOf("function rulesProcessControlHTML"),
