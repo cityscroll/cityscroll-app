@@ -30,6 +30,11 @@ import {
   buildMandateRulesBridgeView,
 } from "./mandate_rules_bridge.mjs";
 import {
+  MANDATE_MEETINGS_METHOD,
+  agencyMandateMeetingsPath,
+  buildMandateMeetingsView,
+} from "./mandate_meetings_bridge.mjs";
+import {
   MANDATE_REPORTS_RECEIPT_METHOD,
   agencyMandateReportsPath,
   buildMandateReportsReceiptView,
@@ -578,6 +583,15 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     limit: 12,
   });
 
+  const mandatesMeetings = buildMandateMeetingsView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    meetingsDomain: sources.meetings_domain || null,
+    generatedAt: sources.meetings_domain?.generated_at
+      || sources.generated_at
+      || sources.process_conformance?.generated_at,
+    perMandateLimit: 3,
+  });
+
   // Mandates → Required Reports receipt: report duties with City Record
   // filing receipt when process-conformance observes a matching publication.
   const mandatesReports = buildMandateReportsReceiptView(identity.canonical_id, {
@@ -595,6 +609,11 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     includeCadenceOnly: true,
   });
 
+  const allClaims = [
+    ...claims,
+    ...(mandatesMeetings?.edges || []).map((edge) => edge.claim).filter(Boolean),
+  ];
+
   return {
     schema: AGENCY_CONSTELLATION_SCHEMA,
     kind: "agency-constellation",
@@ -604,15 +623,18 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     display_name: identity.canonical_name,
     canonical_id: identity.canonical_id,
     categories,
-    claims,
+    claims: allClaims,
     mandates_conformance: conformanceView,
     mandates_rules: mandatesRules,
+    ...(mandatesMeetings?.status === "matched"
+      ? { mandates_meetings: mandatesMeetings }
+      : {}),
     mandates_reports: mandatesReports,
     mandates_predictions: mandatesPredictions,
     summary: {
       matched_categories: matched,
       category_count: categories.length,
-      claim_count: claims.length,
+      claim_count: allClaims.length,
       generated_at: sources.generated_at
         || intelligence?.materialization_meta?.generated_at
         || sources.intelligence?.generated_at
@@ -628,6 +650,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     scope_href: agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
     mandates_href: agencyMandatesConformancePath(identity.canonical_id),
     mandates_rules_href: agencyMandateRulesPath(identity.canonical_id),
+    ...(mandatesMeetings?.status === "matched"
+      ? { mandates_meetings_href: agencyMandateMeetingsPath(identity.canonical_id) }
+      : {}),
     mandates_reports_href: agencyMandateReportsPath(identity.canonical_id),
     mandates_predictions_href: agencyMandatePredictionsPath(identity.canonical_id),
     interactive_profile_href: `/#agency/${encodeURIComponent(identity.canonical_name)}`,
@@ -642,6 +667,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         AGENCY_OBLIGATIONS_METHOD,
         PROCESS_CONFORMANCE_METHOD,
         MANDATE_RULES_BRIDGE_METHOD,
+        ...(mandatesMeetings?.status === "matched" ? [MANDATE_MEETINGS_METHOD] : []),
         MANDATE_REPORTS_RECEIPT_METHOD,
         MANDATE_PREDICTION_METHOD,
         AGENCY_CONSTELLATION_METHOD,
