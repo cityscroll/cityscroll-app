@@ -100,7 +100,7 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
   assert.ok(byId.obligations.items.length >= 1);
   assert.equal(byId.obligations.method, AGENCY_OBLIGATIONS_METHOD);
   assert.equal(byId.obligations.certification_basis, AGENCY_OBLIGATIONS_CERTIFICATION);
-  assert.match(byId.obligations.honesty, /not compliance/i);
+  assert.match(byId.obligations.honesty, /statutory duties|deadlines from enacted/i);
   assert.ok(view.summary.matched_categories >= 5);
 
   const html = renderAgencyConstellationDocument(view);

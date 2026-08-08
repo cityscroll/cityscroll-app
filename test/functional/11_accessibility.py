@@ -321,15 +321,24 @@ def run_index_states(pw, lang, viewport, failures):
         restore_url=BASE, restore_hash=project_hash,
     )
 
-    # entity profile via permalink hash
+    # entity profile via permalink hash — may forward to the static agency
+    # constellation document (primary) or keep the SPA profile (?tab= / shell).
     agency_hash = "#agency/Housing Preservation and Development"
     page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
-    page.wait_for_selector("#entityview .agencybar", state="visible", timeout=15000)
+    page.wait_for_selector(
+        '[data-civic-object-kind="agency-constellation"], #entityview .agencybar',
+        state="visible",
+        timeout=15000,
+    )
     page.wait_for_selector("main", state="visible", timeout=15000)
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures,
         restore_url=BASE, restore_hash=agency_hash,
     )
+    # Constellation documents leave the SPA shell — return before SPA-only states.
+    page.goto(BASE, timeout=30000)
+    page.wait_for_load_state("load", timeout=20000)
+    page.wait_for_timeout(400)
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
     page.evaluate("location.hash = '#investigation'")
