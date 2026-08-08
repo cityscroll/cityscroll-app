@@ -24,7 +24,7 @@ test("edition strip and scenario grid are gone", () => {
   assert.doesNotMatch(index, /data-i18n="scenario_heading"/);
 });
 
-test("page order is masthead CTA then Browse source shortcuts", () => {
+test("page order is masthead CTA then Browse domain shortcuts", () => {
   const cta = index.indexOf('id="homeCta"');
   const tabs = index.indexOf('class="browse-child-nav"');
   const money = index.indexOf('id="tab-money"');

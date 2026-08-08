@@ -318,7 +318,7 @@ test("meeting records that are not hearings carry the Meeting event kind", () =>
   assert.equal(surface.happening_soon.items.find((item) => item.id === "meetings:meeting-next")?.kind, "meeting");
 });
 
-test("Now is promoted as a document route while source lenses remain Browse facets", () => {
+test("Now is promoted as a document route while civic domains remain Browse facets", () => {
   const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
   const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
   const main = readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8");
