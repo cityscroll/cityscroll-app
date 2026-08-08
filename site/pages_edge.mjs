@@ -133,11 +133,13 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
     </div>`;
   }
   const identity = resolveAgencyIdentity(agency);
-  const agencyLink = constellationLink({
-    href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
-    label: agency,
-    className: "notice-agency-link",
-  });
+  const agencyLink = identity.matched
+    ? constellationLink({
+      href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
+      label: agency,
+      className: "notice-agency-link",
+    })
+    : esc(agency);
   const facts = [
     ["Published", row.start_date], ["Event", row.event_date],
     ["Responses due", row.due_date], ["PIN", row.pin], ["Category", row.category_description],

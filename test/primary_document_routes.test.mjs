@@ -276,6 +276,26 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
   assert.doesNotMatch(html, /class="loading"/);
 });
 
+test("notice agency facts link only to reviewed agency pages", () => {
+  const nycha = renderEdgeNotice({
+    request_id: "20260626002",
+    short_title: "Housing authority notice",
+    agency_name: "Housing Authority",
+    type_of_notice_description: "Solicitation",
+  }, "20260626002");
+  assert.match(nycha, /class="ui-constellation-link notice-agency-link"[^>]*href="\/agencies\/housing-authority\/"/);
+  assert.match(nycha, /<dt>Agency<\/dt><dd[^>]*>.*aria-hidden="true">◆<\/span>Housing Authority/);
+
+  const unresolved = renderEdgeNotice({
+    request_id: "20260626003",
+    short_title: "Unresolved notice",
+    agency_name: "Agency Without A Profile",
+    type_of_notice_description: "Solicitation",
+  }, "20260626003");
+  assert.match(unresolved, /<dt>Agency<\/dt><dd[^>]*>Agency Without A Profile<\/dd>/);
+  assert.doesNotMatch(unresolved, /href="\/agencies\/agency-without-a-profile\//);
+});
+
 test("missing notice response is a CityScroll object shell with internal continuation", () => {
   const html = renderEdgeNotice(null, "20991231999");
   assert.match(html, /data-edge-rendered="notice-unavailable"/);
