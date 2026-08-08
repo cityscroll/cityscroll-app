@@ -446,7 +446,7 @@ test("offered-facet-actually-filters: exhaustive inventory across all offered fa
     }
   }
 
-  // --- 4. Staffing exam facets (interest / window / format / salary / fee / experience) ---
+  // --- 4. Staffing exam facets (eligibility / interest / window / format / salary / fee / experience) ---
   {
     const exams = readPayload("staffing_exams").exams || [];
     assert.ok(exams.length > 0, "staffing exams fixture has rows");
@@ -455,6 +455,7 @@ test("offered-facet-actually-filters: exhaustive inventory across all offered fa
       for (const value of values) {
         const id = `staffing/exam/${facet}/${value}`;
         const filterKey = {
+          eligibility: "eligibility",
           interest: "interest",
           window: "window",
           format: "format",

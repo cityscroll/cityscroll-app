@@ -67,8 +67,11 @@ test("legacy map hashes forward and no-JavaScript area paths stay keyboard nativ
 });
 
 test("map drill-throughs carry the shared scope into server-owned area documents", () => {
-  for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
+  for (const lens of ["land", "property"]) {
     assert.match(index, new RegExp(`data-near-you-link[^>]+data-lens="${lens}"|data-lens="${lens}"[^>]+data-near-you-link`));
+  }
+  for (const lens of ["money", "people", "rules", "meetings"]) {
+    assert.doesNotMatch(index, new RegExp(`data-near-you-link[^>]+data-lens="${lens}"|data-lens="${lens}"[^>]+data-near-you-link`));
   }
   assert.match(island, /fetch\(href, \{ headers: \{ Accept: "text\/html" \} \}\)/);
   assert.match(island, /current\.replaceWith\(document\.importNode\(replacement, true\)\)/);

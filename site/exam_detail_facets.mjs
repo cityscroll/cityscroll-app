@@ -1,6 +1,7 @@
 import { emptyScope, routeHashFromScope } from "./scope_v0.mjs";
 
 export const EXAM_FACETS = Object.freeze({
+  eligibility: Object.freeze({ routeKey: "eligibility", values: ["open_competitive", "promotion"] }),
   interest: Object.freeze({ routeKey: "interest", values: [
     "public-safety", "health-care", "engineering-construction", "technology-science",
     "community-social-services", "administration-finance", "trades-operations", "other",
@@ -25,6 +26,7 @@ function dateStatus(exam, today) {
 
 export function examFacetValue(exam, facet, { today = "", statusFor = null } = {}) {
   if (!exam || !EXAM_FACETS[facet]) return UNKNOWN;
+  if (facet === "eligibility") return String(exam.eligibility || "").trim() || UNKNOWN;
   if (facet === "interest") return String(exam.interest_area || "").trim() || UNKNOWN;
   if (facet === "window") {
     const status = typeof statusFor === "function" ? statusFor(exam, today) : dateStatus(exam, today);

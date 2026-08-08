@@ -45,8 +45,9 @@ test("Rules Agency uses a canonical typed edge while preserving other Rules face
     selected: "Department of Buildings",
     currentHash: current,
   });
-  assert.match(html, /data-agency-scope-link="buildings"[^>]*data-scope-edge="rules\.agency\.buildings"[^>]*aria-current="page"/);
-  assert.doesNotMatch(html, /<select|<button/);
+  assert.match(html, /class="ui-filter-chip[^"]*agency-scope-link" aria-pressed="true"[^>]*data-agency-scope-link="buildings"[^>]*data-filter-href=/);
+  assert.match(html, /data-scope-edge="rules\.agency\.buildings"/);
+  assert.doesNotMatch(html, /<select/);
   assert.doesNotMatch(index, /id="rulesagency"/);
   assert.match(index, /id="rules-agency-rail"/);
 });
