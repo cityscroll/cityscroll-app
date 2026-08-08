@@ -234,7 +234,7 @@ test("UI: city-record-hearing with parsed cost shows amount, never false not-pub
   assert.match(html, /total project cost/i);
   assert.match(html, /\$10\.67M|\$10,667,606|\$10667606/i);
   assert.match(html, /City Record hearing notice/i);
-  assert.match(html, /Could not reach/i);
+  assert.doesNotMatch(html, /Could not reach/i);
   assert.doesNotMatch(html, /does not publish this .* on the Build NYC record/i);
   assert.doesNotMatch(html, /does not publish this estimated public cost/i);
 
@@ -247,11 +247,7 @@ test("UI: city-record-hearing with parsed cost shows amount, never false not-pub
     /data-subsidy-phase-lead="1"[\s\S]*?data-subsidy-matched-money="1"[\s\S]*?(\$10\.67M|\$10,667,606|\$10667606)/i,
   );
   assert.ok(leadMatch, "matched money must appear inside the phase lead");
-  // Feed-down is secondary chrome after the timeline, not the headline join note.
-  assert.match(html, /data-subsidy-feed-secondary="1"/);
-  const feedIdx = html.indexOf("data-subsidy-feed-secondary");
-  const moneyIdx = html.indexOf("data-subsidy-matched-money");
-  assert.ok(moneyIdx >= 0 && feedIdx > moneyIdx, "matched money must appear before feed-down note");
+  assert.doesNotMatch(html, /data-subsidy-feed-secondary="1"/);
   const joinNote = (html.match(/data-subsidy-join-note="1"[^>]*>([\s\S]*?)<\/div>/) || [])[1] || "";
   assert.doesNotMatch(joinNote, /Could not reach/i);
   // Matched cost must not live only inside the optional fields disclosure.
@@ -263,7 +259,7 @@ test("UI: city-record-hearing with parsed cost shows amount, never false not-pub
   }
 });
 
-test("UI: city-record-hearing without body cost uses not-yet-ingested, not withheld", () => {
+test("UI: city-record-hearing without body cost omits the money slot", () => {
   const row = {
     request_id: "20231004016",
     short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING",
@@ -278,11 +274,11 @@ test("UI: city-record-hearing without body cost uses not-yet-ingested, not withh
   lc.join = { ...lc.join, feed_status: "unavailable" };
   assert.equal(lc.money.estimated_cost.status, "unknown");
   const html = subsidyLifecycleHTML(lc, row);
-  assert.match(html, /Not yet shown here/);
-  assert.doesNotMatch(html, /does not publish this .* on the Build NYC record/i);
+  assert.doesNotMatch(html, /Not yet shown here|does not publish this .* on the Build NYC record/i);
+  assert.doesNotMatch(html, /public cost|requested benefit/i);
 });
 
-test("UI: real Build NYC match with blank money still uses class (b) not-published", () => {
+test("UI: real Build NYC match with blank money omits the money slot", () => {
   const html = subsidyLifecycleHTML({
     join: { matched: true, method: "request_id", source: "Build NYC" },
     project: { id: "BND-1", name: "Sample", company: "Co" },
@@ -295,6 +291,6 @@ test("UI: real Build NYC match with blank money still uses class (b) not-publish
     stage: "hearing",
     timeline: [],
   }, { request_id: "x", short_title: "Sample" });
-  assert.match(html, /does not publish this .* on the Build NYC record/i);
-  assert.doesNotMatch(html, /Not yet shown here — .* figures live in/i);
+  assert.doesNotMatch(html, /does not publish|Not yet shown here|requested benefit|public cost/i);
+  assert.match(html, /Sample|Brooklyn/);
 });

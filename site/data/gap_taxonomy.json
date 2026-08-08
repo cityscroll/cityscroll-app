@@ -2712,7 +2712,6 @@
     {
       "id": "procurement-registered-unmatched",
       "surface": "contract lifecycle · registered stage",
-      "i18n_key": "lifecycle_unmatched_registered_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
       "closure_receipt": "https://github.com/cityscroll/crol-list/pull/141",
@@ -2767,7 +2766,6 @@
     {
       "id": "procurement-no-pin",
       "surface": "contract lifecycle · provenance when PIN missing",
-      "i18n_key": "lifecycle_no_pin_note_html",
       "class": "not_published",
       "disposition": "publication_blocked",
       "would_appear_in": "Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID",
@@ -2777,7 +2775,6 @@
     {
       "id": "procurement-solicitation-documents",
       "surface": "contract lifecycle · tender / package documents",
-      "i18n_key": "lifecycle_documents_not_published_html",
       "class": "not_published",
       "disposition": "measured_stop",
       "notices_affected_estimate": "~1,550 Solicitation notices since 2025-01-01 with empty modern document feeds.",
@@ -2854,7 +2851,6 @@
     {
       "id": "subsidy-stage-unmatched",
       "surface": "subsidy lifecycle · per-stage empty slot",
-      "i18n_key": "subsidy_stage_unmatched_html",
       "class": "not_yet_ingested",
       "disposition": "open",
       "public_source": {
@@ -2875,7 +2871,6 @@
     {
       "id": "subsidy-outcome-absent",
       "surface": "subsidy lifecycle · stage outcome",
-      "i18n_key": "subsidy_outcome_unknown_html",
       "class": "not_published",
       "disposition": "publication_blocked",
       "would_appear_in": "Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released",
@@ -2885,7 +2880,6 @@
     {
       "id": "subsidy-project-unmatched",
       "surface": "subsidy lifecycle · no project join",
-      "i18n_key": "subsidy_unmatched_html",
       "class": "not_published",
       "disposition": "open",
       "would_appear_in": "NYCIDA/Build NYC financial public documents page if a project record is released for the notice",
@@ -3003,7 +2997,6 @@
     {
       "id": "rules-event-spine-unmatched",
       "surface": "Agency Rules notice detail · lifecycle event slots without an NYC Rules join",
-      "i18n_key": "rule_event_not_yet_ingested_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
       "closure_receipt": "https://github.com/cityscroll/crol-list/pull/252",
@@ -3024,7 +3017,6 @@
     {
       "id": "rules-event-date-unpublished",
       "surface": "Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule",
-      "i18n_key": "rule_event_not_published_html",
       "class": "not_published",
       "disposition": "publication_blocked",
       "would_appear_in": "the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date",
@@ -3100,7 +3092,6 @@
     {
       "id": "external-awards-abo-none",
       "surface": "notice external-award empty after ABO check",
-      "i18n_key": "external_award_none_note_html",
       "class": "not_yet_ingested",
       "disposition": "measured_stop",
       "public_source": {
@@ -3143,7 +3134,6 @@
     {
       "id": "land-outcome-detail",
       "surface": "land / ZAP · final decision documents beyond status",
-      "i18n_key": "land_outcomes_unmatched_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
       "closure_receipt": "https://github.com/cityscroll/crol-list/pull/188",
@@ -3262,7 +3252,7 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-06",
+    "observed_on": "2026-08-08",
     "source_contracts_fingerprint": "e7971f8ef07a349303d8ee5cadddb2b6fe9dcb860a9635f37021440672e6b5db",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 75,

@@ -42,8 +42,8 @@
       "id": "subsidy-stage-feed-backed",
       "field": "board / closing / compliance stages",
       "surface": "notice_detail.subsidy_lifecycle later stages",
-      "render": "subsidy_stage_not_published_html after lag",
-      "i18n_keys": ["subsidy_stage_not_published_html", "subsidy_outcome_unknown_html"],
+      "render": "Unpopulated subsidy stages are omitted",
+      "i18n_keys": [],
       "gap_id": "subsidy-outcome-absent",
       "visibility": "high",
       "sample": {
@@ -160,7 +160,7 @@
       "id": "procurement-no-pin",
       "field": "PIN on notice",
       "surface": "contract lifecycle provenance",
-      "i18n_keys": ["lifecycle_no_pin_note_html"],
+      "i18n_keys": [],
       "gap_id": "procurement-no-pin",
       "visibility": "medium",
       "sample": {

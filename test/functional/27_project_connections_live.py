@@ -24,13 +24,10 @@ def main() -> None:
                 f"window.CROL_API_FALLBACK_ORIGIN = {json.dumps(api_origin)};"
             )
         page.goto(f"{BASE}#land/{PROJECT_ID}", wait_until="domcontentloaded", timeout=60_000)
-        selector = (
-            f'.project-connections[data-project-ref="project:{PROJECT_ID}"], '
-            '[data-project-connections-state="unavailable"]'
-        )
-        page.wait_for_selector(selector, state="visible", timeout=60_000)
+        page.wait_for_selector("#project-connections", state="attached", timeout=60_000)
+        page.wait_for_timeout(2_000)
         available = page.locator(f'.project-connections[data-project-ref="project:{PROJECT_ID}"]')
-        unavailable = page.locator('[data-project-connections-state="unavailable"]')
+        host = page.locator("#project-connections")
         if available.count():
             expected_groups = {
                 "applicant": "Applied by",
@@ -80,10 +77,10 @@ def main() -> None:
                 if "could not connect" in pivot_page.locator("body").inner_text().lower():
                     raise AssertionError(f"agency pivot destination is unresolved: {href}")
             pivot_page.close()
-        elif unavailable.count() and unavailable.inner_text().strip():
-            print("project-connections browser smoke OK state=unavailable")
+        elif not host.inner_html().strip():
+            print("project-connections browser smoke OK state=omitted")
         else:
-            raise AssertionError("project connections rendered neither data nor an honest unavailable state")
+            raise AssertionError("project connections rendered an unpopulated placeholder")
         browser.close()
 
 

@@ -1,9 +1,8 @@
 /* ===================== SUBSIDY LIFECYCLE (SUB-001) =====================
    NYCIDA/Build NYC stages on the notice detail where users actually look. Consumes
    GET /subsidy-lifecycle?id= — edge-materialized, no live EDC fetch from the client.
-   Phase-group presentation (Money-collapse): lead with current stage + action, compact
-   stepper of all five ontology stages, detail only for material stages, empty future
-   stages collapse into one "not yet reached" indicator. Pure model:
+   Phase-group presentation (Money-collapse): lead with current stage + action, then
+   render only populated milestones. Pure model:
    site/subsidy_phase_spine.mjs. */
 let subsidyPhaseSpineToolsPromise = null;
 let subsidyProjectPanelToolsPromise = null;
@@ -89,46 +88,13 @@ function subsidyAnchorFromNotice(notice, data){
 /** Matched-stage detail card only. Unmatched/future stages return "" (Money-collapse). */
 function subsidyStageHTML(entry, anchorDate, opts){
   opts = opts || {};
-  const feedStatus = opts.feedStatus;
-  // Collapse: never emit a verbose gap card for empty future / unmatched stages.
-  // Those surface as stepper chips + one aggregate "not yet reached" indicator.
-  if(!entry || entry.status !== "matched"){
-    if(opts.forceDetail){
-      // Disclosure-only substance for feed-down class-(a) honesty (not primary chrome).
-      let kind = entry.gap_kind || subsidyGapKindClient(entry.stage, anchorDate, false);
-      if(feedStatus === "unavailable" && kind === "not_published") kind = "not_yet_ingested";
-      const label = subsidyStageLabel(entry.stage);
-      let detailHTML = "";
-      if(kind === "too_soon"){
-        detailHTML = `<div class="lc-norecord">${t("subsidy_stage_too_soon_html",{
-          stage: label,
-          date: fdate(anchorDate) || "—",
-          weeks: String(subsidyLagWeeks(entry.stage))
-        })}</div>`;
-      } else if(kind === "not_yet_ingested" || kind === "unavailable"){
-        detailHTML = `<div class="lc-norecord" data-subsidy-gap="${escUiHtml(kind)}">${t("subsidy_stage_unmatched_html",{
-          stage: label,
-          source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-        })}</div>`;
-      } else {
-        detailHTML = `<div class="lc-norecord" data-subsidy-gap="not_published">${t("subsidy_stage_not_published_html",{
-          stage: label,
-          source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-        })}</div>`;
-      }
-      return `<div class="stage"><div class="box unmatched">
-        <div class="stage-name">${label}</div>
-        ${detailHTML}
-      </div></div>`;
-    }
-    return "";
-  }
+  if(!entry||entry.status!=="matched") return "";
   const label = subsidyStageLabel(entry.stage);
-  const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
+  const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : "";
   const action = entry.official_action ? `<div class="lc-pct">${t("subsidy_action_html",{action:escUiHtml(String(entry.official_action).replace(/_/g," "))})}</div>` : "";
   const outcome = entry.outcome && entry.outcome !== "unknown"
     ? `<div class="lc-pct">${t("subsidy_outcome_html",{outcome:escUiHtml(entry.outcome)})}</div>`
-    : `<div class="lc-norecord">${t("subsidy_outcome_unknown_html")}</div>`;
+    : "";
   const amt = entry.detail && entry.detail.amount != null ? `<div class="amt">${money(entry.detail.amount)}</div>` : "";
   const detailHTML = amt + action + outcome;
   let link = "";
@@ -160,10 +126,11 @@ function subsidyPhaseActionHTML(view){
 
 function subsidyPhaseStepperHTML(view){
   if(!view || !view.phases || !view.phases.length) return "";
-  const items = view.phases.map((p, i) => {
+  const populated = view.phases.filter(p => p && p.event_count);
+  const items = populated.map((p, i) => {
     const cls = p.state === "current" ? "current" : p.state === "passed" ? "passed" : "future";
     const aria = p.state === "current" ? ` aria-current="step"` : "";
-    const arrow = i < view.phases.length - 1
+    const arrow = i < populated.length - 1
       ? `<span class="lc-step-arrow" aria-hidden="true">→</span>`
       : "";
     return `<li><button type="button" class="lc-step ${cls}" data-subsidy-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(subsidyPhaseLabel(p))}">${escUiHtml(p.short || subsidyPhaseLabel(p))}</button>${arrow}</li>`;
@@ -172,22 +139,11 @@ function subsidyPhaseStepperHTML(view){
 }
 
 function subsidyPhaseNotYetHTML(view){
-  if(!view || !view.future_empty_count) return "";
-  const labels = (view.future_empty_phase_ids || []).map(id => subsidyStageLabel(id)).filter(Boolean);
-  if(!labels.length) return "";
-  const list = labels.length === 1
-    ? labels[0]
-    : labels.slice(0, -1).join(", ") + " " + t("subsidy_phase_and") + " " + labels[labels.length - 1];
-  return `<div class="subsidy-phase-not-yet" data-subsidy-not-yet="${view.future_empty_count}">${t("subsidy_phase_not_yet_reached_html",{
-    stages: escUiHtml(list),
-    n: String(view.future_empty_count)
-  })}</div>`;
+  return "";
 }
 
 function subsidyPhasePanelHTML(phase, anchorDate, opts){
-  if(!phase) return "";
-  if(phase.state === "future" && !phase.event_count) return "";
-  if(phase.state === "passed" && !phase.event_count) return "";
+  if(!phase || !phase.event_count) return "";
   const open = phase.state === "current" ? " open" : "";
   const stateWord = phase.state === "current"
     ? t("subsidy_phase_current")
@@ -201,8 +157,6 @@ function subsidyPhasePanelHTML(phase, anchorDate, opts){
       : fdate(phase.first);
   } else if(phase.event_count){
     summary = t("subsidy_phase_milestones_count", { n: String(phase.event_count) });
-  } else {
-    summary = t("subsidy_phase_empty");
   }
   let body = "";
   const entries = (phase.milestones || []).map(m => m.entry).filter(Boolean);
@@ -219,7 +173,7 @@ function subsidyPhasePanelHTML(phase, anchorDate, opts){
     }
   });
   if(stages) body = `<div class="lc-stage-detail"><div class="chain">${stages}</div></div>`;
-  if(!body) body = `<div class="lc-phase-summary">${t("subsidy_phase_empty")}</div>`;
+  if(!body) return "";
   return `<details class="lc-phase${phase.state === "current" ? " current-phase" : ""}"${open} id="subsidy-phase-${escUiHtml(phase.id)}" data-subsidy-phase-panel="${escUiHtml(phase.id)}">
     <summary>
       <span class="lc-phase-name">${escUiHtml(subsidyPhaseLabel(phase))}</span>
@@ -317,7 +271,6 @@ function subsidyPhaseTimelineHTML(view, data, notice){
     <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || subsidyStageLabel(cur.stage) || "—")}${cur.since ? ` · ${t("subsidy_phase_since", { date: fdate(cur.since) })}` : ""}</p>
     ${matchedFacts}
     ${actionHTML ? `<p class="lc-phase-action">${actionHTML}</p>` : ""}
-    ${view.next ? `<p class="lc-phase-next">${t("subsidy_phase_next_html", { phase: escUiHtml(subsidyPhaseLabel(view.next)) })}</p>` : ""}
   </div>`;
   const stepper = subsidyPhaseStepperHTML(view);
   const notYet = subsidyPhaseNotYetHTML(view);
@@ -329,20 +282,7 @@ function subsidyPhaseTimelineHTML(view, data, notice){
     ? `<details class="lc-phase-history"><summary>${t("subsidy_phase_show_history")}</summary>${historyPanels}</details>`
     : "";
 
-  // Substance for empty future gaps (class-a/b copy) lives under disclosure — not N cards.
-  const futureEmpty = (view.phases || []).filter(p => p.state === "future" && !p.event_count);
-  let futureDetail = "";
-  if(futureEmpty.length){
-    futureDetail = futureEmpty.map(p => {
-      const entry = p.entry || { stage: p.id, status: "unmatched", gap_kind: p.gap_kind };
-      return subsidyStageHTML(entry, anchor, { feedStatus, forceDetail: true });
-    }).filter(Boolean).join("");
-  }
-  const stagesDisclosure = futureDetail
-    ? `<details class="inline-disclose lc-how" data-subsidy-future-gaps="1"><summary>${t("subsidy_phase_show_future_gaps")}</summary><div class="inline-disclose-body"><div class="chain">${futureDetail}</div></div></details>`
-    : "";
-
-  return `${lead}${stepper}${notYet}${currentPanel}${historyWrap}${stagesDisclosure}`;
+  return `${lead}${stepper}${notYet}${currentPanel}${historyWrap}`;
 }
 
 function bindSubsidyPhaseUI(root){
@@ -375,17 +315,18 @@ function subsidyLifecycleHTMLFlat(data, notice){
   for(const e of tl){
     if(e && e.status === "matched") currentKey = e.stage;
   }
-  // Compact stepper of ontology stages (real stages kept).
+  // Compact stepper of populated stages only.
   const order = ["application","hearing","board_decision","closing","compliance"];
   const byStage = Object.fromEntries(tl.filter(e => e && e.stage).map(e => [e.stage, e]));
-  const stepperItems = order.map((id, i) => {
+  const populatedOrder = order.filter(id => byStage[id] && byStage[id].status === "matched");
+  const stepperItems = populatedOrder.map((id, i) => {
     const e = byStage[id];
     let cls = "future";
     if(id === currentKey) cls = "current";
     else if(e && e.status === "matched") cls = "passed";
     else if(currentKey && (STAGE_ORDER[id] ?? 99) < (STAGE_ORDER[currentKey] ?? -1)) cls = "passed";
     const aria = id === currentKey ? ` aria-current="step"` : "";
-    const arrow = i < order.length - 1 ? `<span class="lc-step-arrow" aria-hidden="true">→</span>` : "";
+    const arrow = i < populatedOrder.length - 1 ? `<span class="lc-step-arrow" aria-hidden="true">→</span>` : "";
     return `<li><span class="lc-step ${cls}"${aria}>${subsidyStageLabel(id)}</span>${arrow}</li>`;
   }).join("");
   const stepper = join.matched
@@ -411,29 +352,9 @@ function subsidyLifecycleHTMLFlat(data, notice){
     const e = byStage[id];
     return !e || e.status !== "matched";
   });
-  let notYet = "";
-  if(join.matched && futureEmpty.length){
-    const labels = futureEmpty.map(subsidyStageLabel);
-    const list = labels.length === 1
-      ? labels[0]
-      : labels.slice(0, -1).join(", ") + " " + t("subsidy_phase_and") + " " + labels[labels.length - 1];
-    notYet = `<div class="subsidy-phase-not-yet" data-subsidy-not-yet="${futureEmpty.length}">${t("subsidy_phase_not_yet_reached_html",{
-      stages: escUiHtml(list),
-      n: String(futureEmpty.length)
-    })}</div>`;
-  }
+  const notYet = "";
 
-  // Future gap substance behind disclosure (class-a/b honesty preserved, not N primary cards).
-  let futureDisclosure = "";
-  if(join.matched && futureEmpty.length){
-    const detail = futureEmpty.map(id => {
-      const entry = byStage[id] || { stage: id, status: "unmatched" };
-      return subsidyStageHTML(entry, anchor, { feedStatus, forceDetail: true });
-    }).filter(Boolean).join("");
-    if(detail){
-      futureDisclosure = `<details class="inline-disclose lc-how" data-subsidy-future-gaps="1"><summary>${t("subsidy_phase_show_future_gaps")}</summary><div class="inline-disclose-body"><div class="chain">${detail}</div></div></details>`;
-    }
-  }
+  const futureDisclosure = "";
 
   const curLabel = subsidyStageLabel(currentKey || data.stage || "");
   const matchedFacts = subsidyMatchedFactsHTML(data);
@@ -456,23 +377,7 @@ function subsidyJoinAndFieldChrome(data, notice){
   const feedStatus = join.feed_status || null;
 
   let joinNote = "";
-  if(data.source_status === "unavailable"){
-    joinNote = t("subsidy_source_unavailable_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`});
-  } else if(join.matched === false){
-    const kind = join.gap_kind || subsidyGapKindClient("project_record", anchor, false);
-    if(kind === "too_soon"){
-      joinNote = t("subsidy_join_too_soon_html",{
-        date: fdate(anchor) || "—",
-        weeks: String(subsidyLagWeeks("project_record")),
-        title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
-      });
-    } else {
-      joinNote = t("subsidy_unmatched_html",{
-        reason: escUiHtml(join.reason || t("subsidy_unmatched_default_reason")),
-        title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
-      });
-    }
-  } else if(join.matched){
+  if(join.matched){
     const proj = data.project || {};
     // Matched join only — feed-down is secondary chrome (feedNote), not the headline.
     joinNote = t("subsidy_matched_html",{
@@ -482,70 +387,28 @@ function subsidyJoinAndFieldChrome(data, notice){
     });
   }
 
-  const cityRecordHearing = join.method === "city-record-hearing";
-  const feedUnavailable = join.feed_status === "unavailable";
-  const moneyGapClassA = cityRecordHearing || feedUnavailable;
-  // Only unmatched/gap field rows go here. Matched money + place live in the lead
-  // (subsidyMatchedFactsHTML) so they are never buried under a closed disclosure.
   let fieldGaps = "";
   if(join.matched){
-    if(data.company && data.company.status !== "matched"){
-      fieldGaps += moneyGapClassA
-        ? `<div class="lc-norecord">${t("subsidy_company_not_yet_ingested_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`})}</div>`
-        : `<div class="lc-norecord">${t("subsidy_company_unknown_html")}</div>`;
-    }
-    if(data.place && data.place.status !== "matched"){
-      fieldGaps += moneyGapClassA
-        ? `<div class="lc-norecord">${t("subsidy_place_not_yet_ingested_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`})}</div>`
-        : `<div class="lc-norecord">${t("subsidy_place_unknown_html")}</div>`;
-    }
     if(data.money){
-      // Gap only when no matched project/development cost is present on money.
-      const costSlot = subsidyPreferredCostSlot(data.money);
-      if(!costSlot){
-        const field = t("subsidy_money_total_project_cost_lbl");
-        fieldGaps += moneyGapClassA
-          ? `<div class="lc-norecord">${t("subsidy_money_not_yet_ingested_html",{
-              field,
-              source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-            })}</div>`
-          : `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field})}</div>`;
-      }
-      // Matched requested benefit is still rare — surface it if present; gaps stay quiet
-      // under feed-down (class-a) so we don't invent "city does not publish" noise.
       if(data.money.requested_benefit && data.money.requested_benefit.status === "matched" && data.money.requested_benefit.value != null){
         fieldGaps += `<div class="lc-detail">${t("subsidy_money_matched_html",{
           field: t("subsidy_money_requested_lbl"),
           amount: lifecycleMoney(data.money.requested_benefit.value)
         })}</div>`;
-      } else if(data.money.requested_benefit && data.money.requested_benefit.status !== "matched"){
-        if(!moneyGapClassA){
-          fieldGaps += `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field:t("subsidy_money_requested_lbl")})}</div>`;
-        }
       }
     }
   }
 
-  let feedNote = "";
-  if(join.matched && feedUnavailable){
-    feedNote = t("subsidy_feed_unavailable_html",{
-      source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-    });
-  }
+  const feedNote = "";
 
   const howBody = t("subsidy_provenance_note_html",{
     source:`<a href="https://edc.nyc/about-nycedc/financial-public-documents-recordings" ${EXT_ATTRS}>${t("subsidy_source_build_nyc")}${extSR()}</a>`
   });
   const howHTML = join.matched
     ? `<details class="inline-disclose lc-how"><summary>${t("subsidy_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`
-    : `<div class="note">${howBody}</div>`;
-
-  // Remaining field gaps only (matched money/place are already in the lead).
-  const fieldsWrap = fieldGaps
-    ? (join.matched
-      ? `<details class="inline-disclose lc-how" data-subsidy-field-gaps="1"><summary>${t("subsidy_phase_show_fields")}</summary><div class="inline-disclose-body">${fieldGaps}</div></details>`
-      : fieldGaps)
     : "";
+
+  const fieldsWrap = fieldGaps;
 
   return { joinNote, feedNote, fieldGaps: fieldsWrap, howHTML };
 }
@@ -563,6 +426,7 @@ function subsidyLifecycleHTML(data, notice, phaseTools, projectTools){
         externalSuffixHTML: typeof extSR === "function" ? extSR : undefined,
       })
     : "";
+  if(!join.matched&&!projectPanel) return "";
 
   let body = "";
   if(join.matched && data.source_status !== "unavailable"){
@@ -597,12 +461,7 @@ async function loadSubsidyLifecycle(r, el){
   }catch(e){}
   if(!document.contains(el)) return;
   if(!data || data.ok === false){
-    // Specific gap even when the endpoint cannot resolve a notice row.
-    el.innerHTML = `<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
-      <div class="note">${t("subsidy_unmatched_html",{
-        reason: escUiHtml(t("subsidy_unmatched_default_reason")),
-        title: escUiHtml(cleanText(r.short_title) || r.request_id || "")
-      })}</div>`;
+    el.innerHTML = "";
     return;
   }
   const [phaseTools, projectTools] = await Promise.all([

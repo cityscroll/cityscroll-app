@@ -2,9 +2,8 @@
     A compact horizontal timeline on notice detail showing the full procurement journey:
     solicitation/award → pending → registered → payment. Consumes the precomputed read model
     from GET /contract-lifecycle?id=<request_id> (worker/src/checkbook_lifecycle.mjs) — no
-    live upstream fetch from the client. Unmatched/ambiguous/unknown stages render as specific
-    statements in the established "no record found" register, never blank. Each stage links to
-    its authoritative source page (City Record or Checkbook NYC). OCP Recent Contract Awards
+    live upstream fetch from the client. Unmatched/ambiguous/unknown stages stay empty. Each
+    populated stage links to its authoritative source page (City Record or Checkbook NYC). OCP Recent Contract Awards
     (qyyg-4tf5) rides the same precomputed payload as an award side-car for date/amount
     corroboration — disagreements name both sources.
 
@@ -123,9 +122,6 @@ function lifecycleSourceName(source){
 
 // Package-documents sub-slot on the solicitation stage.
 // Matched → real document links (historical City Record GetFile / OCP when present).
-// Unmatched → class (b) not-published: modern public feeds do not publish package docs
-// (measured 2026-07-30; RFx dump has no document URLs; OCP/City Record 2025+ fill 0%).
-// Unknown → reachability only.
 const CITY_RECORD_GETFILE_URL = "https://a856-cityrecord.nyc.gov/Search/GetFile";
 
 function lifecycleDocumentsHTML(entry){
@@ -133,7 +129,7 @@ function lifecycleDocumentsHTML(entry){
   const d = entry.detail || {};
   const docsStatus = entry.documents_status || d.documents_status || null;
   if(!docsStatus) return "";
-  const src = `<span lang="en" dir="ltr">${t("lifecycle_source_current_solicitations")}</span>`;
+  if(docsStatus!=="matched") return "";
   if(docsStatus === "matched" && Array.isArray(d.documents) && d.documents.length){
     const links = d.documents.map((url, i) =>
       `<a class="view" href="${escUiHtml(url)}" ${EXT_ATTRS}>${t("lifecycle_document_link",{n:i+1})}${extSR()}</a>`
@@ -141,21 +137,7 @@ function lifecycleDocumentsHTML(entry){
     const due = d.due_date ? `<div class="lc-due">${t("lifecycle_due_html",{date:fdate(d.due_date)})}</div>` : "";
     return `<div class="lc-docs"><div class="lc-docs-h">${tn("lifecycle_documents_count", d.documents.length)}</div>${due}<div class="lc-docs-links">${links}</div></div>`;
   }
-  if(docsStatus === "unknown"){
-    return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_unknown_html",{source:src})}</div>`;
-  }
-  if(docsStatus === "ambiguous"){
-    return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_ambiguous_html")}</div>`;
-  }
-  // unmatched — class (b) not-published. One short line + one outbound pointer
-  // (never a multi-clause hedge with two outbound links). When the notice request_id
-  // is known, deep-link City Record RequestDetail (the notice that would carry GetFile
-  // attachments). Bare GetFile without DocumentID is a hunt page — only when no request_id.
-  const rid = d.request_id || (entry.detail && entry.detail.request_id) || null;
-  const where = rid
-    ? `<a class="view" href="${REQ_URL(rid)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>${extSR()}</a>`
-    : `<a class="view" href="${CITY_RECORD_GETFILE_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record_getfile")}</span>${extSR()}</a>`;
-  return `<div class="lc-docs-caveat lc-docs-gap">${t("lifecycle_documents_not_published_html",{where})}</div>`;
+  return "";
 }
 
 // ctx: optional {contractId, pin, vendor} when the stage detail lacks a join key but the
@@ -320,20 +302,17 @@ function lifecyclePaymentSummaryHTML(paid, committed, opts){
   const committedN = committed != null ? Number(committed) : 0;
   const state = opts.paymentState || null;
   const includeZeroLag = opts.includeZeroLag !== false;
+  if(state === "unavailable") return "";
   let html = "";
-  if(state === "unavailable"){
-    html += `<div class="lc-pct">${t("lifecycle_payment_unavailable_html")}</div>`;
-  } else {
-    const paidN = paid != null ? Number(paid) : 0;
-    html += `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
-      paid: lifecycleMoney(paidN),
-      committed: lifecycleMoney(committedN)
-    })}</div>`;
-    if(paidN === 0 && opts.zeroLag !== false && includeZeroLag){
-      html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
-    } else if(opts.ceilingNote){
-      html += `<div class="lc-pct">${t("lifecycle_committed_ceiling_note_html")}</div>`;
-    }
+  const paidN = paid != null ? Number(paid) : 0;
+  html += `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
+    paid: lifecycleMoney(paidN),
+    committed: lifecycleMoney(committedN)
+  })}</div>`;
+  if(paidN === 0 && opts.zeroLag !== false && includeZeroLag){
+    html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+  } else if(opts.ceilingNote){
+    html += `<div class="lc-pct">${t("lifecycle_committed_ceiling_note_html")}</div>`;
   }
   if(opts.link !== false){
     html += `<div class="lc-pct">${t("lifecycle_payment_details_link_html",{
@@ -343,25 +322,39 @@ function lifecyclePaymentSummaryHTML(paid, committed, opts){
   return html;
 }
 
-// Last matched stage (or first ambiguous needing attention) is the reader's "current" step.
+// Only stages backed by reader-visible data belong in the lifecycle. In particular,
+// a matched payment envelope with an unavailable amount is still an empty slot.
+function lifecycleEntryHasRenderableData(entry, timeline){
+  if(!entry) return false;
+  const status = lifecyclePublicStatus(entry, timeline);
+  if(status === "ambiguous") return true;
+  if(status !== "matched") return false;
+  if(entry.stage !== "payment") return true;
+  const resolved = lifecycleResolvedPayment(
+    lifecycleMatchedRegisteredDetail(timeline),
+    entry.detail || null,
+  );
+  return resolved.state !== "unavailable";
+}
+
+// Last populated stage (or first ambiguous needing attention) is the reader's "current" step.
 function lifecycleCurrentStageKey(timeline){
   const raw = timeline || [];
   for(const e of raw){
-    if(lifecyclePublicStatus(e, raw) === "ambiguous") return e.stage;
+    if(lifecyclePublicStatus(e, raw) === "ambiguous" && lifecycleEntryHasRenderableData(e, raw)) return e.stage;
   }
   let lastMatched = null;
   for(const e of raw){
-    if(lifecyclePublicStatus(e, raw) === "matched") lastMatched = e.stage;
-    // Payment with a registered join is treated as matched for display.
-    if(e && e.stage === "payment" && lifecycleMatchedRegisteredDetail(raw)) lastMatched = "payment";
+    if(lifecycleEntryHasRenderableData(e, raw)) lastMatched = e.stage;
   }
   return lastMatched;
 }
 
-// Compact progress chips for every stage. Future/unmatched steps are greyed — no prose.
+// Compact progress chips for populated stages only.
 function lifecycleStepperHTML(entries, timeline, currentKey){
   if(!entries || !entries.length) return "";
-  const items = entries.map((entry, idx) => {
+  const populated = entries.filter(entry => lifecycleEntryHasRenderableData(entry, timeline));
+  const items = populated.map((entry, idx) => {
     let status = lifecyclePublicStatus(entry, timeline);
     if(entry.stage === "payment" && lifecycleMatchedRegisteredDetail(timeline) && status === "unmatched"){
       status = "matched";
@@ -373,7 +366,7 @@ function lifecycleStepperHTML(entries, timeline, currentKey){
     else if(status === "ambiguous") cls = isCurrent ? "ambiguous current" : "ambiguous";
     else if(status === "unmatched" || status === "unknown") cls = "future";
     const aria = isCurrent ? ` aria-current="step"` : "";
-    const arrow = idx < entries.length - 1 ? `<span class="lc-step-arrow" aria-hidden="true">→</span>` : "";
+    const arrow = idx < populated.length - 1 ? `<span class="lc-step-arrow" aria-hidden="true">→</span>` : "";
     return `<li><span class="lc-step ${cls}"${aria}>${lifecycleStageLabel(entry.stage)}</span>${arrow}</li>`;
   }).join("");
   return `<ol class="lc-stepper" aria-label="${escUiHtml(t("lifecycle_heading"))}">${items}</ol>`;
@@ -386,6 +379,7 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
   opts = opts || {};
   let publicStatus = lifecyclePublicStatus(entry, timeline);
   if(publicStatus === "not_applicable") return "";
+  if(!lifecycleEntryHasRenderableData(entry, timeline)) return "";
 
   // Future empty stages: stepper only.
   if(publicStatus === "unmatched" || publicStatus === "unknown") return "";
@@ -608,6 +602,7 @@ globalThis.lifecycleCommittedUnderrun = lifecycleCommittedUnderrun;
 globalThis.lifecycleCurrentStageKey = lifecycleCurrentStageKey;
 globalThis.lifecycleDocumentsHTML = lifecycleDocumentsHTML;
 globalThis.lifecycleDollarsFocusHref = lifecycleDollarsFocusHref;
+globalThis.lifecycleEntryHasRenderableData = lifecycleEntryHasRenderableData;
 globalThis.lifecycleGapSourceName = lifecycleGapSourceName;
 globalThis.lifecycleHasLaterMatched = lifecycleHasLaterMatched;
 globalThis.lifecycleMatchedRegisteredDetail = lifecycleMatchedRegisteredDetail;

@@ -123,11 +123,7 @@ function lifecyclePhaseAggregateHTML(agg){
 }
 
 function lifecyclePhasePanelHTML(phase, raw, notice, currentKey){
-  if(!phase) return "";
-  // Future empty phases: chip only (no empty panel clutter).
-  if(phase.state === "future" && !phase.event_count) return "";
-  // Passed empty: omit.
-  if(phase.state === "passed" && !phase.event_count) return "";
+  if(!phase || !phase.event_count) return "";
 
   const open = phase.state === "current" ? " open" : "";
   const stateWord = phase.state === "current"
@@ -144,8 +140,6 @@ function lifecyclePhasePanelHTML(phase, raw, notice, currentKey){
         : (phase.first ? fdate(phase.first) : ""),
     ].filter(Boolean);
     summary = parts.join(" · ");
-  } else {
-    summary = t("lifecycle_phase_empty");
   }
 
   // Material milestones as stage cards; one outbound source link on the phase's chosen stage
@@ -170,7 +164,7 @@ function lifecyclePhasePanelHTML(phase, raw, notice, currentKey){
     }
   });
   if(stages) body += `<div class="lc-stage-detail"><div class="chain">${stages}</div></div>`;
-  if(!body) body = `<div class="lc-phase-summary">${t("lifecycle_phase_empty")}</div>`;
+  if(!body) return "";
 
   return `<details class="lc-phase${phase.state === "current" ? " current-phase" : ""}"${open} id="lc-phase-${escUiHtml(phase.id)}" data-lc-phase-panel="${escUiHtml(phase.id)}">
     <summary>
@@ -209,19 +203,24 @@ function lifecyclePhaseTimelineHTML(view, data, notice){
     <p class="lc-phase-now-phase">${escUiHtml(phaseName)}</p>
     <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || lifecycleStageLabel(cur.stage) || "—")}${cur.since ? ` · ${t("lifecycle_phase_since", { date: fdate(cur.since) })}` : ""}</p>
     ${actionHTML ? `<p class="lc-phase-action">${actionHTML}</p>` : ""}
-    ${view.next ? `<p class="lc-phase-next">${t("lifecycle_phase_next_html", { phase: escUiHtml(lifecyclePhaseLabel(view.next)) })}</p>` : ""}
   </div>`;
 
-  const stepper = noPin ? "" : lifecyclePhaseStepperHTML(view);
+  const renderedPhases = (view.phases || []).map(phase => ({
+    phase,
+    html: lifecyclePhasePanelHTML(phase, raw, notice, currentKey),
+  })).filter(item => item.html);
+  const stepper = noPin ? "" : lifecyclePhaseStepperHTML({
+    ...view,
+    phases: renderedPhases.map(item => item.phase),
+  });
 
-  // Current phase first (open); earlier phases collapsed under "Earlier phases" disclosure.
-  const currentPanel = (view.phases || []).filter(p => p.state === "current")
-    .map(p => lifecyclePhasePanelHTML(p, raw, notice, currentKey)).join("");
-  const historyPanels = (view.phases || []).filter(p => p.state === "passed")
-    .map(p => lifecyclePhasePanelHTML(p, raw, notice, currentKey)).filter(Boolean).join("");
-  // Future phases with planned material (rare) still expand below.
-  const futurePanels = (view.phases || []).filter(p => p.state === "future" && p.event_count)
-    .map(p => lifecyclePhasePanelHTML(p, raw, notice, currentKey)).join("");
+  // Current phase first (open); earlier populated phases collapse under history.
+  const currentPanel = renderedPhases.filter(item => item.phase.state === "current")
+    .map(item => item.html).join("");
+  const historyPanels = renderedPhases.filter(item => item.phase.state === "passed")
+    .map(item => item.html).join("");
+  const futurePanels = renderedPhases.filter(item => item.phase.state === "future")
+    .map(item => item.html).join("");
   const historyWrap = historyPanels
     ? `<details class="lc-phase-history"><summary>${t("lifecycle_phase_show_history")}</summary>${historyPanels}</details>`
     : "";
@@ -237,21 +236,16 @@ function lifecyclePhaseTimelineHTML(view, data, notice){
     ).join("");
   }
 
-  const howBody = noPin
-    ? t("lifecycle_no_pin_note_html")
-    : t("lifecycle_provenance_note_html",{
+  const howBody = noPin ? "" : t("lifecycle_provenance_note_html",{
         city_record:`<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`,
         checkbook:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`,
         passport:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`,
         pin:`<code>${escUiHtml(data.pin)}</code>`
       });
-  const howHTML = noPin
-    ? `<div class="note">${howBody}</div>`
-    : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
+  const howHTML = noPin ? "" : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
 
   if(noPin && !currentPanel && !historyPanels){
-    return `<div class="chain-h">${t("lifecycle_heading")}</div>
-      <div class="note">${howBody}</div>`;
+    return "";
   }
 
   let rfxHTML = "";
@@ -338,21 +332,16 @@ function lifecycleTimelineHTMLFlat(data, notice){
     ).join("");
   }
 
-  const howBody = noPin
-    ? t("lifecycle_no_pin_note_html")
-    : t("lifecycle_provenance_note_html",{
+  const howBody = noPin ? "" : t("lifecycle_provenance_note_html",{
         city_record:`<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`,
         checkbook:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`,
         passport:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`,
         pin:`<code>${escUiHtml(data.pin)}</code>`
       });
-  const howHTML = noPin
-    ? `<div class="note">${howBody}</div>`
-    : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
+  const howHTML = noPin ? "" : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
 
   if(noPin && !stages){
-    return `<div class="chain-h">${t("lifecycle_heading")}</div>
-      <div class="note">${howBody}</div>`;
+    return "";
   }
 
   let rfxHTML = "";
@@ -441,9 +430,7 @@ function lifecycleDollarsHTML(data, notice){
       : displayDiffers
         ? `<div class="note" style="margin-top:10px">${t("lifecycle_dollars_vendor_variant_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
         : "";
-    const paidDd = payState === "unavailable"
-      ? `<dd>${t("lifecycle_dollars_paid_unavailable_html")}</dd>`
-      : `<dd><b>${lifecycleMoney(spent)}</b>${pct != null ? ` (${pct}%)` : ""}<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct || 0}%"></span></div></dd>`;
+    const paidRow = payState === "unavailable" ? "" : `<dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${lifecycleMoney(spent)}</b>${pct != null ? ` (${pct}%)` : ""}<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct || 0}%"></span></div></dd>`;
     const lagNote = (payState === "verified_zero" || (payState !== "unavailable" && spent === 0))
       ? `<div class="note" style="margin-top:10px">${t("lifecycle_payment_zero_lag_html")}</div>`
       : "";
@@ -454,7 +441,7 @@ function lifecycleDollarsHTML(data, notice){
       <dl>
         <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd>${contractIdHtml} · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
         <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${lifecycleMoney(current)}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:lifecycleMoney(original)})}</span>`:""}</dd>
-        <dt>${t("lifecycle_dollars_paid_lbl")}</dt>${paidDd}
+        ${paidRow}
         <dt>${t("lifecycle_dollars_term_lbl")}</dt><dd>${fdate(d.start_date)||"—"} → ${fdate(d.end_date)||"—"}</dd>
         ${d.mwbe?`<dt>${t("lifecycle_dollars_mwbe_lbl")}</dt><dd>${escUiHtml(d.mwbe)}</dd>`:""}
       </dl>
@@ -469,21 +456,7 @@ function lifecycleDollarsHTML(data, notice){
     </div></div>`;
   }
 
-  // Registration not matched — taxonomy gap only (never transient "could not reach").
-  const regPublic = reg ? lifecyclePublicStatus(reg, data.timeline) : "";
-  const regNote = !reg ? ""
-    : regPublic === "unmatched"
-      ? t("lifecycle_unmatched_registered_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook_registered")}</span>`})
-      : regPublic === "ambiguous"
-        ? t("lifecycle_ambiguous_html")
-        : "";
-  if(!regNote) return "";
-  const fallbackCheckbook = checkbookSearchUrl({
-    pin: data.pin || notice.pin,
-    vendor: notice.vendor_name,
-  });
-  return `<div class="note" style="margin-top:12px"><b>${t("lifecycle_dollars_heading")}</b> ${regNote}
-    <a href="${fallbackCheckbook}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
+  return "";
 }
 
 
@@ -632,11 +605,7 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
   if(el && !document.contains(el)) return;
   if(dollarsEl && !document.contains(dollarsEl)) return;
   if(!data){
-    // No PIN → explicit class-(b) gap on the lifecycle slot for procurement notices.
-    if(el && /^(Solicitation|Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"") && !usablePin(r.pin)){
-      el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div><div class="note">${t("lifecycle_no_pin_note_html")}</div>`;
-    }
-    // Network / total failure: say nothing — never "Could not reach" as a data gap.
+    if(el) el.innerHTML = "";
     if(subEl) subEl.innerHTML = "";
     return;
   }
