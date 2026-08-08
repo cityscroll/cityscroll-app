@@ -81,6 +81,11 @@ export const CROSS_DOMAIN_DOMAINS = Object.freeze([
  * otherwise stay local and never claim a registry edge for invalid kind pairs).
  */
 export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
+  implemented_by_contract: {
+    description: "Statutory mandate is implemented through an evidence-linked procurement contract",
+    domains: Object.freeze(["money"]),
+    registry: true,
+  },
   published_by_agency: {
     description: "Procurement / property / rules / hearing notice published by an agency",
     domains: Object.freeze(["money", "property", "rules", "meetings"]),

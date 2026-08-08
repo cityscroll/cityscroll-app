@@ -35,6 +35,11 @@ import {
   buildMandateMeetingsView,
 } from "./mandate_meetings_bridge.mjs";
 import {
+  MANDATE_CONTRACTS_METHOD,
+  agencyMandateContractsPath,
+  buildMandateContractsBridgeView,
+} from "./mandate_contracts_bridge.mjs";
+import {
   MANDATE_REPORTS_RECEIPT_METHOD,
   agencyMandateReportsPath,
   buildMandateReportsReceiptView,
@@ -609,9 +614,22 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     includeCadenceOnly: true,
   });
 
+  // Mandates → procurement records → contracts. The bridge accepts only an
+  // agency block + procurement duty + subject overlap + exact PIN/EPIN path.
+  const contractsCategory = categories.find((category) => category.id === "contracts") || null;
+  const mandatesContracts = buildMandateContractsBridgeView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    intelligenceDossier: intelligence,
+    contractsBrowseHref: contractsCategory?.view_all_href
+      || agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
+    contractsFollowHref: contractsCategory?.follow_href,
+    limit: 16,
+  });
+
   const allClaims = [
     ...claims,
     ...(mandatesMeetings?.edges || []).map((edge) => edge.claim).filter(Boolean),
+    ...(mandatesContracts?.edges || []).map((edge) => edge.claim).filter(Boolean),
   ];
 
   return {
@@ -631,6 +649,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       : {}),
     mandates_reports: mandatesReports,
     mandates_predictions: mandatesPredictions,
+    ...(mandatesContracts?.status === "matched" ? { mandates_contracts: mandatesContracts } : {}),
     summary: {
       matched_categories: matched,
       category_count: categories.length,
@@ -655,6 +674,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       : {}),
     mandates_reports_href: agencyMandateReportsPath(identity.canonical_id),
     mandates_predictions_href: agencyMandatePredictionsPath(identity.canonical_id),
+    ...(mandatesContracts?.status === "matched"
+      ? { mandates_contracts_href: agencyMandateContractsPath(identity.canonical_id) }
+      : {}),
     interactive_profile_href: `/#agency/${encodeURIComponent(identity.canonical_name)}`,
     provenance: {
       intelligence_generated_at: sources.intelligence?.generated_at || null,
@@ -670,6 +692,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         ...(mandatesMeetings?.status === "matched" ? [MANDATE_MEETINGS_METHOD] : []),
         MANDATE_REPORTS_RECEIPT_METHOD,
         MANDATE_PREDICTION_METHOD,
+        ...(mandatesContracts?.status === "matched" ? [MANDATE_CONTRACTS_METHOD] : []),
         AGENCY_CONSTELLATION_METHOD,
         "graph_edge_provenance_v1",
       ],

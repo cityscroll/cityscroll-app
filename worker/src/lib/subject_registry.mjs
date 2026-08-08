@@ -27,6 +27,7 @@ export const SUBJECT_KINDS = Object.freeze({
   exam: { description: "DCAS civil-service exam number" },
   "monitor-pack": { description: "Curated multi-watch monitor pack" },
   "district-digest": { description: "Council-district weekly digest" },
+  mandate: { description: "Statutory mandate extracted from enacted local law" },
   contract: { description: "Checkbook / PASSPort contract id" },
   project: { description: "ZAP land-use project" },
   parcel: { description: "NYC tax lot (10-digit BBL)" },
@@ -46,6 +47,11 @@ export const SUBJECT_KINDS = Object.freeze({
  * lifecycle registration joins.
  */
 export const SUBJECT_LINK_TYPES = Object.freeze({
+  implemented_by_contract: {
+    description: "Statutory mandate is implemented through a linked procurement contract",
+    from_kinds: Object.freeze(["mandate"]),
+    to_kinds: Object.freeze(["contract"]),
+  },
   references_contract: {
     description: "Notice references a contract id (publisher or join evidence)",
     from_kinds: Object.freeze(["notice"]),
