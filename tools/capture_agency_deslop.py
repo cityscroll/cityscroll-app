@@ -80,11 +80,13 @@ def main() -> None:
                     page.wait_for_selector("#edge-provenance .edge-prov-inspector", timeout=30_000)
 
                     body = page.locator("body").inner_text().lower()
-                    matches = [text for text in FORBIDDEN if text in body]
                     if args.phase == "before":
-                        assert matches, "baseline page did not reproduce the unwanted copy"
+                        assert any(text in body for text in FORBIDDEN), (
+                            "baseline page did not reproduce the unwanted copy"
+                        )
                     else:
-                        assert not matches, f"unwanted agency copy remains: {matches}"
+                        for text in FORBIDDEN:
+                            assert text not in body, f"unwanted agency copy remains: {text}"
 
                     for name, selector in (
                         ("conformance", "#mandates-conformance"),
