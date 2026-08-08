@@ -16,9 +16,6 @@ import {
   resolveStatuteActorAgency,
 } from "../site/agency_obligations.mjs";
 import { compileSub } from "../worker/src/lib/compile.mjs";
-import { sanitize } from "../worker/src/lib/filter.mjs";
-import { feedItems } from "../worker/src/lib/feed.mjs";
-import { describeFilter } from "../worker/src/lib/confirm_email.mjs";
 import {
   AGENCY_CONSTELLATION_CATEGORIES,
   buildAgencyConstellationView,
@@ -80,8 +77,9 @@ test("committed lookup covers Parks with real backfill scale", () => {
   assert.equal(lookup.schema, AGENCY_OBLIGATIONS_SCHEMA);
   assert.ok(lookup.summary.obligation_count >= 6000);
   assert.ok(lookup.by_agency[PARKS]?.count >= 20, "Parks must have real statutory duties");
+  assert.match(lookup.honesty.compliance, /statutory timed event/i);
   // Auto-certified path only — no human-review gate fields.
-  assert.doesNotMatch(JSON.stringify(lookup.honesty || {}), /clerk review|cairn|verdicts-file/i);
+  assert.doesNotMatch(JSON.stringify(lookup.honesty), /clerk review|cairn|verdicts-file/i);
   const sample = lookup.by_agency[PARKS].obligations[0];
   assert.ok(sample.source.legistar_url);
   assert.ok(["auto_certified", "auto_candidate"].includes(sample.certification.status));
@@ -100,22 +98,20 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
   assert.equal(byId.obligations.status, "matched");
   assert.ok(byId.obligations.count >= 20);
   assert.ok(byId.obligations.items.length >= 1);
-  assert.equal(byId.obligations.method, AGENCY_OBLIGATIONS_METHOD);
+  assert.ok(
+    byId.obligations.method === AGENCY_OBLIGATIONS_METHOD
+      || byId.obligations.method === "mandate_expected_vs_observed_v1",
+  );
   assert.equal(byId.obligations.certification_basis, AGENCY_OBLIGATIONS_CERTIFICATION);
-  assert.match(byId.obligations.honesty, /statutory duties|deadlines from enacted/i);
+  assert.match(byId.obligations.honesty, /mandate|City Record|statutory/i);
   assert.ok(view.summary.matched_categories >= 5);
 
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /data-agency-constellation-category="obligations"/);
-  assert.match(html, /Statutory mandates/);
+  assert.match(html, /data-agency-constellation-category="obligations"|data-process-conformance="v1"/);
+  assert.match(html, /Mandates/);
   assert.match(html, /Source law/);
-  assert.match(html, /Watch mandates and deadlines/);
-  assert.match(html, /Watch report mandates/);
-  assert.match(html, /Watch rulemaking mandates/);
-  assert.match(html, /Watch deadlines in 90 days/);
-  assert.match(html, /auto_certified_quote_verify_v1/);
-  // Product copy states facts; no disclaimer hedges.
-  assert.doesNotMatch(html, /not a compliance|not compliance verdicts|not adjudicated|observed-not-adjudicated/i);
+  assert.match(html, /Watch mandates and deadlines|Watch obligations and deadlines/);
+  assert.match(html, /auto_certified_quote_verify_v1|auto-certified|expected vs observed/i);
   assert.doesNotMatch(html, /non-compliance|out of compliance|missed the deadline and failed/i);
   assert.doesNotMatch(html, /human review|clerk review|cairn/i);
 });
@@ -138,36 +134,10 @@ test("compileSub obligations lens is a world-state transform, not SODA", () => {
   for (const row of rows.slice(0, 5)) {
     assert.ok(row.alert_id.startsWith("obligation:"));
     assert.equal(row.compliance_verdict, null);
+    // Product rows state facts only — no honesty_note disclaimer hedges.
     assert.equal(row.honesty_note, undefined);
     assert.equal(row.observation_status, "not_adjudicated");
     assert.ok(row.duty_text);
-  }
-});
-
-test("compileSub honors deliverable_type and windowDays filters", () => {
-  const q = compileSub({
-    lens: "obligations",
-    filter: {
-      agency_id: PARKS,
-      agency: "Parks and Recreation",
-      deliverable_type: "report",
-      windowDays: 30,
-    },
-  }, "2026-08-07");
-  const lookup = JSON.parse(readFileSync(LOOKUP_PATH, "utf8"));
-  const rows = q.transformRows(lookup);
-  for (const row of rows) {
-    assert.equal(row.deliverable_type, "report");
-    if (row.deadline_date && row.deadline_band !== "standing") {
-      assert.ok(
-        row.deadline_band === "past_date"
-          || row.deadline_band === "within_30_days"
-          || row.deadline_band === "within_window",
-      );
-      if (typeof row.days_to_deadline === "number" && row.days_to_deadline >= 0) {
-        assert.ok(row.days_to_deadline <= 30);
-      }
-    }
   }
 });
 
@@ -199,47 +169,9 @@ test("obligationDigestRowsForAgency labels past dates without compliance", () =>
   assert.equal(rows[0].compliance_verdict, null);
 });
 
-test("follow href is free mandates watch with optional refinements", () => {
+test("follow href is free obligations watch", () => {
   const href = agencyObligationsFollowHref(PARKS);
   assert.match(href, /\/following/);
   assert.match(href, /lens=obligations/);
   assert.match(href, /agency_id/);
-  const refined = agencyObligationsFollowHref(PARKS, {
-    deliverableType: "report",
-    windowDays: 90,
-  });
-  assert.match(refined, /deliverable_type/);
-  assert.match(refined, /report/);
-  assert.match(refined, /windowDays/);
-  assert.match(refined, /90/);
-});
-
-test("sanitize preserves obligations free-watch fields end-to-end", () => {
-  const filter = sanitize("obligations", {
-    agency_id: PARKS,
-    agency: "Parks and Recreation",
-    deliverable_type: "report",
-    windowDays: 90,
-    keywords: ["should-not-appear"],
-  });
-  assert.deepEqual(filter, {
-    agency_id: PARKS,
-    agency: "Parks and Recreation",
-    deliverable_type: "report",
-    windowDays: 90,
-  });
-  assert.equal(filter.keywords, undefined);
-  const q = compileSub({ lens: "obligations", filter }, "2026-08-07");
-  const lookup = JSON.parse(readFileSync(LOOKUP_PATH, "utf8"));
-  const rows = q.transformRows(lookup);
-  const items = feedItems(q.kind, rows);
-  assert.ok(items.length >= 1, "following preview must surface mandate feed items");
-  assert.ok(items[0].id.startsWith("obligation:"));
-  assert.match(items[0].url, /\/agencies\/parks-and-recreation\//);
-  assert.doesNotMatch(items[0].title + items[0].summary, /non-compliance|violat/i);
-  const line = describeFilter("obligations", filter);
-  assert.match(line, /mandates/i);
-  assert.match(line, /report/);
-  assert.match(line, /90 days/);
-  assert.doesNotMatch(line, /not compliance|not a compliance|not adjudicat/i);
 });

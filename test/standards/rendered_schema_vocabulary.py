@@ -70,27 +70,19 @@ def main():
                 page.wait_for_timeout(600)
                 census(page, f"{name} [money:notice-detail]", failures)
 
-                # Agency constellation is the public document; interactive SPA
-                # profile remains on ?tab=. Census both, then return to the SPA
-                # shell before task-first hashes (legacy #agency/* replaces into
-                # the document route).
-                page.goto(BASE + "agencies/housing-preservation-and-development/", timeout=30_000)
+                # Interactive SPA profile (?tab=). Default /agencies/<id>/ is the
+                # static constellation document and intentionally lists method
+                # tokens in provenance — censused separately via civic document
+                # standards, not this SPA visible-copy walk.
+                page.goto(
+                    BASE + "agencies/housing-preservation-and-development/?tab=forecast",
+                    timeout=30_000,
+                )
                 page.wait_for_load_state("load", timeout=20_000)
-                page.wait_for_selector("[data-civic-object-kind='agency-constellation']", timeout=15_000)
-                census(page, "agency-constellation [entity:agency-document]", failures)
-
-                page.goto(BASE + "agencies/housing-preservation-and-development/?tab=1", timeout=30_000)
-                page.wait_for_load_state("load", timeout=20_000)
-                page.wait_for_selector("#entityview .agencybar", timeout=15_000)
+                page.wait_for_timeout(800)
                 census(page, f"{name} [entity:agency]", failures)
-                # Agency hash may forward to a static constellation document; SPA
-                # states below need the shell again.
-                page.goto(BASE, wait_until="load", timeout=30_000)
-                page.wait_for_timeout(400)
-
                 page.goto(BASE, timeout=30_000)
                 page.wait_for_load_state("load", timeout=20_000)
-                page.wait_for_timeout(600)
 
                 for task_hash, task_name in (
                     ("#task/can-i-bid", "task:can-i-bid"),

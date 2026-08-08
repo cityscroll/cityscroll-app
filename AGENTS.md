@@ -2316,7 +2316,7 @@ both the live and restored databases.
 - Artifact: `site/data/agency_constellation_lookup.json` and static
   `site/agencies/<canonical_id>/` documents (parcel-biography shape).
 - Categories: contracts + meetings + rules (entity-intelligence agency edges),
-  **statutory obligations** (rules → obligations facet), and staffing exams
+  **mandates** (rules → obligations facet + process-conformance expected vs observed), and staffing exams
   (publisher `certified_to_agency` edges). Match basis stamped
   `agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1`.
 - Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
@@ -2366,6 +2366,30 @@ both the live and restored databases.
   `node --test test/civic_time_ledger.test.mjs test/agency_constellation.test.mjs`.
   Capture: `python3 tools/capture_civic_time_ledger.py`. Demo:
   `/agencies/parks-and-recreation/?as_of=2024-06-01`.
+
+
+## Process conformance · expected vs observed (v1)
+
+- First praxis surface for process mining / conformance-checking on civic
+  lifecycles: per-mandate **expected** civic event (rule filing, report, …) +
+  deadline vs whether that event is **observed** in City Record.
+- Pure model: `site/process_conformance.mjs`. Build:
+  `node tools/build_process_conformance.mjs` (+ `--check`). Artifact:
+  `site/data/process_conformance_lookup.json`. Capture:
+  `python3 tools/capture_process_conformance.py`.
+- Reader labels: observed in City Record · expected, not yet in City Record ·
+  on track · awaiting a City Record detector. Join only when the public-record
+  signal is reliable; otherwise leave enrichment pending — never invent
+  observations. User-facing copy states the observation plainly (no
+  disclaimer hedges).
+- v1 detectors: `rulemaking` and `report` against Agency Rules / report-shaped
+  City Record notices (agency identity + topic-token join). Other deliverable
+  types wait for a stronger detector.
+- Surface: agency constellation `#mandates-conformance` (shareable
+  `/agencies/<id>/#mandates-conformance`). Seams left for full event logs and
+  Process Mining Manifesto enrichment later.
+- Verify: `node --test test/process_conformance.test.mjs`. Demo Parks:
+  `/agencies/parks-and-recreation/#mandates-conformance`.
 
 ## Maintaining this file
 

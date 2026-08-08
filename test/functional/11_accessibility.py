@@ -321,24 +321,32 @@ def run_index_states(pw, lang, viewport, failures):
         restore_url=BASE, restore_hash=project_hash,
     )
 
-    # entity profile via permalink hash — may forward to the static agency
-    # constellation document (primary) or keep the SPA profile (?tab= / shell).
+    # Agency profile: legacy #agency/… hash forwards to the static constellation
+    # document (/agencies/<id>/) when present — same as production edge. Prefer
+    # the constellation markers; fall back to the interactive SPA entity shell
+    # only when no static document is served (older local servers / missing page).
     agency_hash = "#agency/Housing Preservation and Development"
     page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
-    page.wait_for_selector(
-        '[data-civic-object-kind="agency-constellation"], #entityview .agencybar',
-        state="visible",
-        timeout=15000,
-    )
+    try:
+        page.wait_for_selector(
+            "[data-civic-object-kind='agency-constellation'] main, "
+            "main[data-civic-object-kind='agency-constellation'], "
+            "#entityview .agencybar",
+            state="visible",
+            timeout=15000,
+        )
+    except Exception:
+        page.wait_for_selector("#entityview .agencybar", state="visible", timeout=5000)
     page.wait_for_selector("main", state="visible", timeout=15000)
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures,
-        restore_url=BASE, restore_hash=agency_hash,
+        # Do not restore the #agency hash: it re-forwards into /agencies/<id>/ and
+        # leaves the page off the SPA shell used by later investigation states.
+        restore_url=BASE, restore_hash="#money",
     )
-    # Constellation documents leave the SPA shell — return before SPA-only states.
+    # Ensure we are back on the SPA home document before investigation.
     page.goto(BASE, timeout=30000)
     page.wait_for_load_state("load", timeout=20000)
-    page.wait_for_timeout(400)
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
     page.evaluate("location.hash = '#investigation'")

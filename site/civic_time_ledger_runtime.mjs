@@ -249,7 +249,20 @@ function applyAsOf(root, nowView, day) {
     : null;
   updateHero(root, nowView, asOfView, asOf);
   updateLedgerPanel(root, nowView, asOfView, asOf);
-  replaceCategorySections(root, asOfView ? asOfView.categories : nowView.categories);
+  // Static HTML already embeds the full process-conformance mandates surface.
+  // Only rewrite category sections when an as-of filter changes membership —
+  // re-rendering "now" from the JSON payload would drop #mandates-conformance.
+  if (asOfView) {
+    replaceCategorySections(root, asOfView.categories);
+  } else if (root.dataset.asOf) {
+    // Clearing as-of: hard-navigate so the static document (with process-
+    // conformance HTML) is restored, not a stripped JSON re-render.
+    const path = sharePath(nowView.path, { asOf: null, claim: currentClaimId() });
+    if (`${location.pathname}${location.search}` !== path) {
+      location.assign(path);
+      return;
+    }
+  }
   root.dataset.asOf = asOf || "";
   const canonical = root.ownerDocument.querySelector('link[rel="canonical"]');
   if (canonical) {

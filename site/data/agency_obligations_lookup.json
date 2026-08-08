@@ -7,8 +7,8 @@
   "as_of": "2026-08-07",
   "iteration": "v1",
   "honesty": {
-    "compliance": "A deadline is a statutory timed event, not a compliance or non-compliance verdict.",
-    "observation": "v1 does not adjudicate whether the expected event appeared in City Record or Required Reports.",
+    "compliance": "Deadlines are statutory timed events from enacted local law.",
+    "observation": "Expected-vs-observed City Record matching lives on the mandates process-conformance surface.",
     "certification": "Rows are auto-certified by mechanical quote verification against fetched law text."
   },
   "source_receipt": {

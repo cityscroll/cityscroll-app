@@ -397,7 +397,9 @@ def run_lang(pw, lang):
     # full body text (a separate, larger translation gap outside this card's L1-L6 scope).
     # Runs BEFORE the investigation states below, which overwrite #entityview and are what
     # regression_fixtures() inspects afterward.
-    page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
+    # Interactive SPA agency profile (?tab=) — default /agencies/<id>/ is constellation.
+    page.goto(BASE + "agencies/housing-preservation-and-development/?tab=forecast", timeout=30000)
+    page.wait_for_load_state("load", timeout=20000)
     page.wait_for_timeout(1000)
     collect_srstatus_and_aria(page, "entity-agency", frags, violations, seen)
 
@@ -420,7 +422,8 @@ def run_lang(pw, lang):
     # mapped SCA profile against the official-source fixture, then scope the walk to the new
     # panel so this gate covers its translated provenance without reopening the profile's
     # larger pre-existing chrome gap.
-    page.evaluate("location.hash = '#agency/School Construction Authority'")
+    page.goto(BASE + "agencies/school-construction-authority/?tab=forecast", timeout=30000)
+    page.wait_for_load_state("load", timeout=20000)
     page.wait_for_timeout(1000)
     if page.locator("#external-awards-content").count():
         collect_within(page, "#external-awards-content", "entity-agency-external-awards", frags, violations, seen)
