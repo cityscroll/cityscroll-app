@@ -2335,12 +2335,16 @@ both the live and restored databases.
   attaches where/how/warrant-class claims to each listed edge. Always-on chrome
   is a subtle warrant token (`exact` / `probable` / `reviewed`); full where/how
   lives in the inspector. Deep-link `?claim=<category>:<subject_ref>` (e.g.
-  `/agencies/parks-and-recreation/?claim=contracts:notice:20030224002`).
+  `/agencies/parks-and-recreation/?claim=contracts:notice:20210514115`).
   Public list = standable edges only (tentative links stay off the page).
   Capture: `python3 tools/capture_edge_provenance_inspector.py`.
 - Verify: `node --test test/agency_constellation.test.mjs test/agency_obligations.test.mjs test/graph_edge_provenance.test.mjs`.
   Demo: `/agencies/parks-and-recreation/` and demo-links
   `agency-edge-provenance-parks`.
+- Agency constellation capability HTML lives in
+  `site/agency_constellation_sections/`. Each module exports a section descriptor
+  and is registered in `site/agency_constellation_section_registry.mjs`; keep
+  `site/agency_constellation.mjs` limited to the shared document frame.
 
 ## Agency statutory mandates (v1 free-watch)
 

@@ -1,0 +1,653 @@
+/**
+ * Agency cross-category constellation view model (first iteration).
+ *
+ * Parcel biographies group property + land + tax for one BBL. This module does
+ * the same shape for one agency across contracts, meetings, rules, and staffing
+ * exams — using existing entity-intelligence edges plus publisher exam
+ * certification rows. Match methods stay labeled so later graph work can refine
+ * coverage without inventing a second ontology.
+ */
+
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import {
+  AGENCY_OBLIGATIONS_CERTIFICATION,
+  AGENCY_OBLIGATIONS_ER_BASIS,
+  AGENCY_OBLIGATIONS_METHOD,
+  agencyObligationsFollowHref,
+  buildAgencyObligationsView,
+} from "./agency_obligations.mjs";
+import {
+  CONFORMANCE_COPY,
+  OBSERVATION_LABELS,
+  PROCESS_CONFORMANCE_METHOD,
+  agencyMandatesConformancePath,
+  buildAgencyConformanceView,
+} from "./process_conformance.mjs";
+import {
+  MANDATE_RULES_BRIDGE_METHOD,
+  agencyMandateRulesPath,
+  agencyRulesFollowHref,
+  buildMandateRulesBridgeView,
+} from "./mandate_rules_bridge.mjs";
+import {
+  MANDATE_REPORTS_RECEIPT_METHOD,
+  agencyMandateReportsPath,
+  buildMandateReportsReceiptView,
+} from "./mandate_reports_receipt.mjs";
+import {
+  MANDATE_PREDICTION_METHOD,
+  agencyMandatePredictionsPath,
+  buildAgencyMandatePredictionsView,
+} from "./mandate_prediction_alerts.mjs";
+import { followingUrlFromWatch } from "./following_view.mjs";
+import { canonicalizeBrowseUrl } from "./route_migration.mjs";
+import {
+  emptyScope,
+  normalizeScope,
+  routeHashFromScope,
+  scopeWithEntity,
+} from "./scope_v0.mjs";
+import {
+  buildEdgeProvenanceClaim,
+  isStandablePublicClaim,
+  summarizeCategoryWarrants,
+} from "./graph_edge_provenance.mjs";
+
+export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
+export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
+export const AGENCY_CONSTELLATION_ER_BASIS = "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1";
+
+/** v1 slice categories — contracts / meetings / rules / obligations / staffing. */
+export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
+  Object.freeze({
+    id: "contracts",
+    domain: "money",
+    label: "Contracts",
+    browse_facet: "contracts",
+    surface: "money",
+    relation: "published_by_agency",
+    empty_note: "No contract or award notices are linked to this agency in the current materialization.",
+  }),
+  Object.freeze({
+    id: "meetings",
+    domain: "meetings",
+    label: "Meetings and hearings",
+    browse_facet: "meetings",
+    surface: "meetings",
+    relation: "hosts_meeting",
+    empty_note: "No meeting or hearing notices are linked to this agency in the current materialization.",
+  }),
+  Object.freeze({
+    id: "rules",
+    domain: "rules",
+    label: "Rules",
+    browse_facet: "rules",
+    surface: "rules",
+    relation: "issued_rule",
+    empty_note: "No Agency Rules notices are linked to this agency in the current materialization.",
+  }),
+  Object.freeze({
+    id: "obligations",
+    domain: "rules",
+    label: "Mandates",
+    browse_facet: "rules",
+    surface: "rules",
+    relation: "statute_duty",
+    empty_note: "No statutory mandates are linked to this agency in the current materialization.",
+  }),
+  Object.freeze({
+    id: "staffing",
+    domain: "staffing",
+    label: "Staffing exams",
+    browse_facet: "staffing",
+    surface: "people",
+    relation: "certified_to_agency",
+    empty_note: "No civil-service certification edges name this agency in the current materialization.",
+  }),
+]);
+
+const clean = (value, max = 500) => String(value ?? "")
+  .replace(/[\u0000-\u001f\u007f]/g, " ")
+  .replace(/\s+/g, " ")
+  .trim()
+  .slice(0, max);
+
+const publicConfidence = (value) => {
+  const confidence = String(value || "").trim().toLowerCase();
+  if (confidence === "strong" || confidence === "tentative") return confidence;
+  if (confidence === "publisher_record") return "strong";
+  return null;
+};
+
+export function agencyPath(id) {
+  const identity = resolveAgencyIdentity(id);
+  return identity?.canonical_id
+    ? `/agencies/${encodeURIComponent(identity.canonical_id)}/`
+    : "/agencies/";
+}
+
+export function agencySubjectRef(id) {
+  const identity = resolveAgencyIdentity(id);
+  return identity?.canonical_id ? `agency:id:${identity.canonical_id}` : null;
+}
+
+/** Compose the shared agency entity constraint (scope grammar). */
+export function agencyConstellationScope(id, { language = "en", domain = null } = {}) {
+  const identity = resolveAgencyIdentity(id);
+  const ref = agencySubjectRef(identity.canonical_id || id);
+  let scope = emptyScope(language);
+  if (identity.canonical_name) scope.facets.agencies = [identity.canonical_name];
+  if (ref) scope = scopeWithEntity(scope, ref);
+  if (domain) scope.facets.domains = [domain];
+  return normalizeScope(scope, { language });
+}
+
+function browseHrefFromScope(scope, browseFacet, surface) {
+  const hash = routeHashFromScope(scope, { surface });
+  const query = String(hash).includes("?") ? String(hash).split("?", 2)[1] : "";
+  return canonicalizeBrowseUrl(`/browse/${browseFacet}/${query ? `?${query}` : ""}`);
+}
+
+export function agencyCategoryBrowseHref(id, categoryId, { language = "en" } = {}) {
+  const category = AGENCY_CONSTELLATION_CATEGORIES.find((entry) => entry.id === categoryId);
+  if (!category) return "";
+  const scope = agencyConstellationScope(id, { language, domain: category.surface });
+  scope.facets.values.connection_relation = category.relation;
+  return browseHrefFromScope(normalizeScope(scope, { language }), category.browse_facet, category.surface);
+}
+
+export function agencyCategoryFollowHref(id, categoryId, { frequency = "weekly" } = {}) {
+  const category = AGENCY_CONSTELLATION_CATEGORIES.find((entry) => entry.id === categoryId);
+  const identity = resolveAgencyIdentity(id);
+  const ref = agencySubjectRef(identity.canonical_id || id);
+  if (!category || !identity.canonical_name) return "/following/";
+  if (category.id === "obligations") {
+    // World-state free-watch on statutory mandates / deadlines — not a City Record document match.
+    return agencyObligationsFollowHref(identity.canonical_id || id, { frequency });
+  }
+  if (category.id === "staffing") {
+    // Exam certifications are publisher list edges; entity watches cover City
+    // Record staffing notices (Changes in Personnel) for the same agency.
+    return followingUrlFromWatch(
+      { lens: "entity", filter: { kind: "agency", name: identity.canonical_name } },
+      { frequency },
+    );
+  }
+  const filter = { agency: identity.canonical_name };
+  if (ref) filter.entity_refs_all = [ref];
+  return followingUrlFromWatch({ lens: category.surface, filter }, { frequency });
+}
+
+export function agencyConstellationFollowHref(id, { frequency = "weekly" } = {}) {
+  const identity = resolveAgencyIdentity(id);
+  if (!identity.canonical_name) return "/following/";
+  return followingUrlFromWatch(
+    { lens: "entity", filter: { kind: "agency", name: identity.canonical_name } },
+    { frequency },
+  );
+}
+
+function attachClaim(item, { categoryId, relation, identity }) {
+  if (!item) return null;
+  const claim = buildEdgeProvenanceClaim(item, {
+    category_id: categoryId,
+    relation: relation || item.relation,
+    root_ref: `agency:id:${identity.canonical_id}`,
+    document_path: agencyPath(identity.canonical_id),
+  });
+  return claim ? { ...item, claim } : item;
+}
+
+function domainItems(block, limit = 8) {
+  const objects = Array.isArray(block?.objects) ? block.objects : [];
+  return objects
+    .map((object) => {
+      const confidence = publicConfidence(object?.confidence);
+      if (!confidence) return null;
+      const requestId = clean(object.request_id, 80);
+      const subjectRef = clean(object.subject_ref, 120)
+        || (requestId ? `notice:${requestId}` : "");
+      if (!subjectRef) return null;
+      const provenance = object.provenance && typeof object.provenance === "object"
+        ? {
+          source_system: clean(object.provenance.source_system, 120) || null,
+          source_record_id: clean(object.provenance.source_record_id, 200) || null,
+          source_fields: Array.isArray(object.provenance.source_fields)
+            ? object.provenance.source_fields.map((field) => clean(field, 80)).filter(Boolean)
+            : [],
+          basis: clean(object.provenance.basis, 120) || null,
+          observed_at: clean(object.provenance.observed_at, 40) || null,
+          input_value: clean(object.provenance.input_value, 240) || null,
+        }
+        : null;
+      return {
+        id: requestId || subjectRef,
+        subject_ref: subjectRef,
+        label: clean(object.label || subjectRef, 240),
+        date: clean(object.when, 40) || null,
+        source: clean(provenance?.source_system || object.provenance?.source_system || "City Record", 80),
+        relation: clean(object.link_type, 80) || null,
+        confidence,
+        method: clean(object.method || object.provenance?.basis || "agency_canonical_v1", 80),
+        href: clean(object.href, 200) || (requestId ? `#notice/${encodeURIComponent(requestId)}` : null),
+        provenance,
+        // Shadow ER ids are not on this public materialization — leave unset
+        // so the inspector labels them as next enrichment rather than inventing them.
+        entity_link_id: clean(object.entity_link_id, 120) || null,
+        resolution_run_id: clean(object.resolution_run_id, 120) || null,
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")))
+    .slice(0, limit);
+}
+
+function staffingItems(certification, agencyRef, limit = 8) {
+  const edges = (Array.isArray(certification?.edges) ? certification.edges : [])
+    .filter((edge) => edge?.to === agencyRef && edge?.type === "certified_to_agency");
+  const titles = new Map(
+    (Array.isArray(certification?.by_exam) ? certification.by_exam : [])
+      .map((exam) => [String(exam.exam_no || "").trim(), clean(exam.title, 200) || null]),
+  );
+  return edges
+    .map((edge) => {
+      const examRef = clean(edge.from, 40);
+      const examNo = examRef.replace(/^exam:/, "");
+      if (!examNo) return null;
+      const through = clean(edge.observed?.through || edge.observed?.from, 40) || null;
+      const evidence = edge.evidence && typeof edge.evidence === "object" ? edge.evidence : null;
+      const provenance = evidence
+        ? {
+          source_system: clean(evidence.source_system, 120) || "socrata",
+          source_record_id: clean(evidence.source_record_id, 200) || null,
+          source_fields: Array.isArray(evidence.source_fields)
+            ? evidence.source_fields.map((field) => clean(field, 80)).filter(Boolean)
+            : [],
+          basis: clean(evidence.basis, 120) || "publisher_certification_record",
+          observed_at: clean(evidence.observed_at || through, 40) || null,
+          input_value: clean(
+            evidence.input_value
+              || (Array.isArray(edge.source_agency_labels) ? edge.source_agency_labels[0] : null),
+            240,
+          ) || null,
+        }
+        : {
+          source_system: "socrata",
+          source_record_id: null,
+          source_fields: [],
+          basis: "publisher_certification_record",
+          observed_at: through,
+          input_value: clean(
+            Array.isArray(edge.source_agency_labels) ? edge.source_agency_labels[0] : null,
+            240,
+          ) || null,
+        };
+      return {
+        id: examNo,
+        subject_ref: examRef,
+        label: titles.get(examNo) || `Exam ${examNo}`,
+        date: through,
+        source: "Civil Service List certification (Open Data)",
+        relation: "certified_to_agency",
+        // publisher_record is a publisher stamp; publicConfidence maps it to strong.
+        confidence: clean(edge.confidence, 40) || "publisher_record",
+        method: clean(edge.method || "publisher_certification_record_v1", 80),
+        href: `/exams/${encodeURIComponent(examNo)}/`,
+        counts: edge.counts || null,
+        provenance,
+        evidence,
+        entity_link_id: null,
+        resolution_run_id: null,
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")))
+    .slice(0, limit);
+}
+
+function obligationItems(obligationsLookup, identity, limit = 8, conformanceView = null) {
+  // Pull a wide window so standable filtering still leaves a full category total.
+  const view = buildAgencyObligationsView(identity.canonical_id, obligationsLookup, { limit: 500 });
+  if (!view || view.status !== "matched") {
+    return { total: 0, items: [], view, conformance: conformanceView, all_items: [] };
+  }
+  const confById = new Map(
+    (conformanceView?.items || []).map((row) => [row.mandate_id || row.obligation_id, row]),
+  );
+  const mapped = view.items.map((item) => {
+    const conf = confById.get(item.obligation_id)?.observation || null;
+    return {
+      id: item.obligation_id,
+      subject_ref: `obligation:${item.obligation_id}`,
+      label: item.duty_text,
+      date: item.deadline_date || null,
+      source: item.citation || "Enacted local law",
+      relation: "statute_duty",
+      confidence: item.quote_verified || item.certification_status === "auto_certified"
+        ? "strong"
+        : "tentative",
+      method: conf ? PROCESS_CONFORMANCE_METHOD : AGENCY_OBLIGATIONS_METHOD,
+      href: item.href,
+      deliverable_type: item.deliverable_type,
+      recurrence: item.recurrence,
+      deadline_text: item.deadline_text,
+      certification_status: item.certification_status,
+      observation_status: conf?.status || item.observation_status || null,
+      observation_label: conf?.label || (conf?.status ? OBSERVATION_LABELS[conf.status] : null) || null,
+      expected_event_label: conf?.expected_event?.label || null,
+      observed_record: conf?.observed_record || null,
+      kind: "obligation",
+      provenance: {
+        source_system: "enacted_local_law",
+        source_record_id: item.obligation_id || null,
+        source_fields: ["duty_text", "deadline", "citation"],
+        basis: AGENCY_OBLIGATIONS_CERTIFICATION || "auto_certified_quote_verify_v1",
+        observed_at: item.deadline_date || null,
+        input_value: item.citation || null,
+      },
+    };
+  });
+  if (conformanceView?.items?.length) {
+    const rank = {
+      observed: 0,
+      on_track: 1,
+      expected_not_yet_observed: 2,
+      enrichment_pending: 3,
+    };
+    mapped.sort((left, right) => {
+      const leftRank = rank[left.observation_status] ?? 9;
+      const rightRank = rank[right.observation_status] ?? 9;
+      if (leftRank !== rightRank) return leftRank - rightRank;
+      return String(left.date || "9999").localeCompare(String(right.date || "9999"));
+    });
+  }
+  return {
+    total: Number(conformanceView?.counts?.total) || Number(view.count) || mapped.length,
+    view,
+    conformance: conformanceView,
+    items: mapped.slice(0, limit),
+    all_items: mapped,
+  };
+}
+
+/** Keep only standable public edges (drop tentative rather than hedge them). */
+function standableItems(items = []) {
+  return (Array.isArray(items) ? items : []).filter((item) => {
+    if (!item?.claim) return true;
+    return isStandablePublicClaim(item.claim);
+  });
+}
+
+function categoryFromDomain(spec, intelligence, identity, certification, obligationsLookup, conformanceView = null) {
+  if (spec.id === "obligations") {
+    const { total, items: preview, all_items, view, conformance } = obligationItems(obligationsLookup, identity, 12, conformanceView);
+    const claimAll = (all_items || preview).map((item) => attachClaim(item, {
+      categoryId: spec.id,
+      relation: spec.relation,
+      identity,
+    }));
+    // Keep auto-certified duties; drop quote-miss candidates rather than hedge them.
+    const standable = standableItems(claimAll);
+    const items = standable.slice(0, 8);
+    const warrant_summary = summarizeCategoryWarrants(standable);
+    const shown = standable.length || 0;
+    // Reader count is the materialization total (obligations / conformance corpus);
+    // the list preview is standable-only so candidates are not hedged in public HTML.
+    const readerCount = total || shown;
+    return {
+      id: spec.id,
+      label: spec.label,
+      relation: spec.relation,
+      status: readerCount ? "matched" : "empty",
+      gap_class: readerCount ? null : "empty_in_corpus",
+      note: readerCount ? null : (view?.note || spec.empty_note),
+      count: readerCount,
+      items,
+      warrant_summary,
+      method: conformance ? PROCESS_CONFORMANCE_METHOD : AGENCY_OBLIGATIONS_METHOD,
+      certification_basis: AGENCY_OBLIGATIONS_CERTIFICATION,
+      er_match_basis: AGENCY_OBLIGATIONS_ER_BASIS,
+      view_all_href: agencyMandatesConformancePath(identity.canonical_id),
+      follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
+      honesty: CONFORMANCE_COPY.lead,
+      conformance,
+      conformance_counts: conformance?.counts || null,
+      // Free mandate watch (deliverable-type scoped links are optional refinements).
+      mandate_follow_hrefs: {
+        all: agencyObligationsFollowHref(identity.canonical_id),
+        report: agencyObligationsFollowHref(identity.canonical_id, { deliverableType: "report" }),
+        rulemaking: agencyObligationsFollowHref(identity.canonical_id, { deliverableType: "rulemaking" }),
+        window_90: agencyObligationsFollowHref(identity.canonical_id, { windowDays: 90 }),
+      },
+    };
+  }
+
+  if (spec.id === "staffing") {
+    const agencyRef = `agency:id:${identity.canonical_id}`;
+    const claimed = staffingItems(certification, agencyRef).map((item) => attachClaim(item, {
+      categoryId: spec.id,
+      relation: spec.relation,
+      identity,
+    }));
+    const items = standableItems(claimed);
+    const agencyRow = (Array.isArray(certification?.by_agency) ? certification.by_agency : [])
+      .find((row) => row.agency_id === identity.canonical_id || row.ref === agencyRef);
+    const total = Number(agencyRow?.edge_count) || items.length;
+    const warrant_summary = summarizeCategoryWarrants(items);
+    return {
+      id: spec.id,
+      label: spec.label,
+      relation: spec.relation,
+      status: items.length || total ? "matched" : "empty",
+      gap_class: items.length || total ? null : "empty_in_corpus",
+      note: items.length || total ? null : spec.empty_note,
+      count: total,
+      items,
+      warrant_summary,
+      method: "publisher_certification_record_v1",
+      view_all_href: agencyCategoryBrowseHref(identity.canonical_id, spec.id),
+      follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
+    };
+  }
+
+  const block = intelligence?.domains?.[spec.domain] || {};
+  const claimed = domainItems(block).map((item) => attachClaim(item, {
+    categoryId: spec.id,
+    relation: spec.relation,
+    identity,
+  }));
+  const items = standableItems(claimed);
+  const matched = block.status === "matched" && (Number(block.count) > 0 || items.length > 0);
+  const warrant_summary = summarizeCategoryWarrants(items);
+  return {
+    id: spec.id,
+    label: spec.label,
+    relation: spec.relation,
+    status: matched ? "matched" : (block.status === "not_yet_ingested" ? "not_yet_ingested" : "empty"),
+    gap_class: matched ? null : (block.gap_class || "empty_in_corpus"),
+    note: matched ? null : (block.note || spec.empty_note),
+    count: items.length || Number(block.count) || 0,
+    items,
+    warrant_summary,
+    method: items[0]?.method || "agency_canonical_v1",
+    view_all_href: matched ? agencyCategoryBrowseHref(identity.canonical_id, spec.id) : "",
+    follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
+  };
+}
+
+/**
+ * Build one agency constellation view from committed materializations.
+ * @param {string} idOrName
+ * @param {{ intelligence?: object, certification?: object, obligations?: object, generated_at?: string }} sources
+ */
+export function buildAgencyConstellationView(idOrName, sources = {}) {
+  const identity = resolveAgencyIdentity(idOrName);
+  if (!identity?.canonical_id) return null;
+
+  const ref = `agency:id:${identity.canonical_id}`;
+  const intelligence = sources.intelligence?.by_ref?.[ref]
+    || sources.intelligence?.by_subject_ref?.[ref]
+    || (sources.intelligence?.root?.ref === ref ? sources.intelligence : null)
+    || null;
+  const certification = sources.certification || null;
+  const obligations = sources.obligations || null;
+
+  let conformanceView = null;
+  const committed = sources.process_conformance?.by_agency?.[identity.canonical_id] || null;
+  if (committed && obligations) {
+    const live = buildAgencyConformanceView(identity.canonical_id, {
+      obligationsLookup: obligations,
+      rulesDomain: sources.rules_domain || null,
+      meetingsDomain: sources.meetings_domain || null,
+      entityIntelligence: sources.intelligence || null,
+    });
+    const obsMap = committed.observations || null;
+    if (live && obsMap) {
+      const items = (live.items || []).map((item) => {
+        const mid = item.mandate_id || item.obligation_id;
+        const obs = obsMap[mid];
+        if (!obs) return item;
+        return {
+          ...item,
+          observation: {
+            ...item.observation,
+            ...obs,
+            is_compliance_verdict: false,
+            adjudication: "not_adjudicated",
+          },
+        };
+      });
+      const rank = {
+        observed: 0,
+        on_track: 1,
+        expected_not_yet_observed: 2,
+        enrichment_pending: 3,
+      };
+      items.sort((left, right) => {
+        const leftRank = rank[left.observation?.status] ?? 9;
+        const rightRank = rank[right.observation?.status] ?? 9;
+        if (leftRank !== rightRank) return leftRank - rightRank;
+        return String(left.deadline_date || "9999").localeCompare(String(right.deadline_date || "9999"));
+      });
+      conformanceView = {
+        ...live,
+        method: sources.process_conformance.method || PROCESS_CONFORMANCE_METHOD,
+        as_of: committed.as_of || live.as_of,
+        counts: committed.counts || live.counts,
+        candidate_corpus: {
+          size: committed.candidate_corpus_size || live.candidate_corpus?.size || 0,
+          sources: live.candidate_corpus?.sources || [],
+          sample: live.candidate_corpus?.sample || [],
+        },
+        items,
+        items_total: committed.counts?.total || items.length,
+        copy: sources.process_conformance.copy || sources.process_conformance.honesty || CONFORMANCE_COPY,
+        honesty: sources.process_conformance.copy || sources.process_conformance.honesty || CONFORMANCE_COPY,
+        share_path: committed.share_path || agencyMandatesConformancePath(identity.canonical_id),
+      };
+    } else {
+      conformanceView = live;
+    }
+  } else if (obligations) {
+    conformanceView = buildAgencyConformanceView(identity.canonical_id, {
+      obligationsLookup: obligations,
+      rulesDomain: sources.rules_domain || null,
+      meetingsDomain: sources.meetings_domain || null,
+      entityIntelligence: sources.intelligence || null,
+    });
+  }
+
+  const categories = AGENCY_CONSTELLATION_CATEGORIES.map((spec) =>
+    categoryFromDomain(spec, intelligence, identity, certification, obligations, conformanceView));
+
+  const matched = categories.filter((category) => category.status === "matched").length;
+  const claims = categories.flatMap((category) =>
+    (category.items || []).map((item) => item.claim).filter(Boolean));
+
+  // Mandates → Rules bridge: rulemaking duties joined to Rules-lens filings
+  // via agency identity; per-mandate observed filings when topic join hits.
+  const rulesCategory = categories.find((category) => category.id === "rules") || null;
+  const mandatesRules = buildMandateRulesBridgeView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    rulesItems: rulesCategory?.items || [],
+    rulesCount: rulesCategory?.count || 0,
+    rulesBrowseHref: rulesCategory?.view_all_href
+      || agencyCategoryBrowseHref(identity.canonical_id, "rules"),
+    rulesFollowHref: agencyRulesFollowHref(identity.canonical_id),
+    conformanceItems: conformanceView?.items || [],
+    limit: 12,
+  });
+
+  // Mandates → Required Reports receipt: report duties with City Record
+  // filing receipt when process-conformance observes a matching publication.
+  const mandatesReports = buildMandateReportsReceiptView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    conformanceItems: conformanceView?.items || [],
+    limit: 12,
+  });
+
+  // Mandates prediction-alerts: expected public-record events timed from
+  // deadline + recurrence (earlier-stage watch path for free-watch digests).
+  const mandatesPredictions = buildAgencyMandatePredictionsView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    conformanceItems: conformanceView?.items || [],
+    limit: 16,
+    includeCadenceOnly: true,
+  });
+
+  return {
+    schema: AGENCY_CONSTELLATION_SCHEMA,
+    kind: "agency-constellation",
+    id: identity.canonical_id,
+    path: agencyPath(identity.canonical_id),
+    subject_ref: ref,
+    display_name: identity.canonical_name,
+    canonical_id: identity.canonical_id,
+    categories,
+    claims,
+    mandates_conformance: conformanceView,
+    mandates_rules: mandatesRules,
+    mandates_reports: mandatesReports,
+    mandates_predictions: mandatesPredictions,
+    summary: {
+      matched_categories: matched,
+      category_count: categories.length,
+      claim_count: claims.length,
+      generated_at: sources.generated_at
+        || intelligence?.materialization_meta?.generated_at
+        || sources.intelligence?.generated_at
+        || certification?.generated_at
+        || obligations?.generated_at
+        || sources.process_conformance?.generated_at
+        || null,
+      er_match_basis: AGENCY_CONSTELLATION_ER_BASIS,
+      method: AGENCY_CONSTELLATION_METHOD,
+      iteration: "v1",
+    },
+    follow_href: agencyConstellationFollowHref(identity.canonical_id),
+    scope_href: agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
+    mandates_href: agencyMandatesConformancePath(identity.canonical_id),
+    mandates_rules_href: agencyMandateRulesPath(identity.canonical_id),
+    mandates_reports_href: agencyMandateReportsPath(identity.canonical_id),
+    mandates_predictions_href: agencyMandatePredictionsPath(identity.canonical_id),
+    interactive_profile_href: `/#agency/${encodeURIComponent(identity.canonical_name)}`,
+    provenance: {
+      intelligence_generated_at: sources.intelligence?.generated_at || null,
+      certification_generated_at: certification?.generated_at || null,
+      obligations_generated_at: obligations?.generated_at || null,
+      process_conformance_generated_at: sources.process_conformance?.generated_at || null,
+      methods: [
+        "agency_canonical_v1",
+        "publisher_certification_record_v1",
+        AGENCY_OBLIGATIONS_METHOD,
+        PROCESS_CONFORMANCE_METHOD,
+        MANDATE_RULES_BRIDGE_METHOD,
+        MANDATE_REPORTS_RECEIPT_METHOD,
+        MANDATE_PREDICTION_METHOD,
+        AGENCY_CONSTELLATION_METHOD,
+        "graph_edge_provenance_v1",
+      ],
+      note: null,
+    },
+  };
+}
