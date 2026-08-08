@@ -55,6 +55,7 @@ jobs:
           filters: |
             frontend:
               - 'site/**'
+              - '.github/workflows/ci.yml'
               - '.github/actions/build-site/**'
               - '.github/actions/setup-playwright/**'
               - '.github/workflows/deploy-pages.yml'
