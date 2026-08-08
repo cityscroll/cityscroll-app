@@ -1169,6 +1169,33 @@
       }
     },
     {
+      "id": "agency-parks-mandates-rules",
+      "url": "agencies/parks-and-recreation/",
+      "feature": "mandate-rules-bridge",
+      "description": "Parks rulemaking mandates joined to Rules-lens City Record filings on the agency constellation.",
+      "expectations": {
+        "pathname": "/agencies/parks-and-recreation/",
+        "visible": [
+          {
+            "selector": "#mandates-rules",
+            "text": "Rulemaking mandates"
+          },
+          {
+            "selector": "#mandates-rules [data-bridge-side='rules']"
+          },
+          {
+            "selector": "#mandates-rules",
+            "text": "Open in Rules"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview"
+          }
+        ]
+      }
+    },
+    {
       "id": "ontology-delta-whats-new",
       "url": "graph/ontology-delta/",
       "feature": "living-civic-graph-ontology-delta",
