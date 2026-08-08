@@ -752,7 +752,7 @@
       "id": "alerts-builder",
       "url": "following/",
       "feature": "alert-builder",
-      "description": "Open Following with saved-watch management first and watch-creation controls below.",
+      "description": "Open Following with create-first watch controls and saved-watch management below.",
       "expectations": {
         "visible": [
           {
@@ -760,7 +760,7 @@
           },
           {
             "selector": "[data-following-subscribe-panel]",
-            "text": "Pick filters to see matches."
+            "text": "Pick a topic or place to see matches."
           },
           {
             "selector": "[data-personal-watch-list]"
@@ -779,7 +779,7 @@
       "url": "following/",
       "feature": "alerts-rollup-prefs",
       "localOnly": true,
-      "description": "Show the saved-watch management surface at the top of Following.",
+      "description": "Show the saved-watch management surface on Following.",
       "expectations": {
         "visible": [
           {
@@ -969,7 +969,7 @@
           },
           {
             "selector": "[data-following-subscribe-panel]",
-            "text": "Pick filters to see matches."
+            "text": "Pick a topic or place to see matches."
           },
           {
             "selector": "[data-following-preview-form]"

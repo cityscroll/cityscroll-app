@@ -133,7 +133,7 @@ for value in bad:
 good = [
     "Manage your watches",
     "Watch sets",
-    "Pick filters to see matches.",
+    "Pick a topic or place to see matches.",
     "Each email includes a link to stop a watch.",
 ]
 for value in good:

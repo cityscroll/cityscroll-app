@@ -6,7 +6,10 @@ import test from "node:test";
 import { alertsHref } from "../site/alerts_context_carry.mjs";
 import {
   buildFollowingViewModel,
+  canonicalFollowingLens,
+  followingUrlFromWatch,
   renderFollowingDocument,
+  watchFromFollowingParams,
 } from "../site/following_view.mjs";
 
 const templates = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
@@ -63,19 +66,67 @@ test("Following has a useful server-rendered empty state before personalization"
 
   assert.match(html, /data-personal-watch-list/);
   assert.match(html, /Open a CityScroll email to see your watches/);
-  assert.match(html, /Pick filters to see matches/);
+  assert.match(html, /Pick a topic or place to see matches|Pick a topic or place/);
   assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first/);
 });
 
-test("Following puts saved watches before every watch-creation flow", () => {
-  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
-  const personal = html.indexOf('id="your-following"');
-  const create = html.indexOf('id="create"');
-  const packs = html.indexOf('id="packs"');
+test("Following leads with create flow; saved watches are secondary", () => {
+  const empty = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  const createEmpty = empty.indexOf('id="create"');
+  const personalEmpty = empty.indexOf('id="your-following"');
+  const packsEmpty = empty.indexOf('id="packs"');
+  assert.ok(
+    createEmpty > 0 && personalEmpty > createEmpty && packsEmpty > personalEmpty,
+    `empty order create=${createEmpty} personal=${personalEmpty} packs=${packsEmpty}`,
+  );
+  assert.match(empty, /data-following-layout="browse"/);
+  assert.match(empty, /data-following-topic-scope/);
+  assert.match(empty, /data-following-place-scope/);
+  assert.doesNotMatch(empty, /<select name="lens"/);
+  assert.doesNotMatch(empty, /<label>Borough<select name="boro"/);
 
-  assert.ok(personal > 0 && create > personal && packs > create, `personal=${personal} create=${create} packs=${packs}`);
-  assert.doesNotMatch(html, /All your watches|Save a set of filters once|Monitor packs|District digests|One digest/);
-  assert.doesNotMatch(html, /Saved filters|What this watch follows|preview and each email use these same terms/i);
+  const createView = buildFollowingViewModel({
+    lens: "mandates",
+    filter: { agency_id: "parks-and-recreation", agency: "Parks and Recreation" },
+    frequency: "weekly",
+    requested: true,
+    matchCount: 2,
+    previewItems: [{ id: "m1", title: "Mandate row", url: "/agencies/parks-and-recreation/" }],
+  }, templates);
+  const midCreate = renderFollowingDocument(createView);
+  const createMid = midCreate.indexOf('id="create"');
+  const personalMid = midCreate.indexOf('id="your-following"');
+  const workspace = midCreate.indexOf("data-following-workspace");
+  assert.ok(
+    createMid > 0 && workspace > createMid && personalMid > workspace,
+    `mid-create order create=${createMid} workspace=${workspace} personal=${personalMid}`,
+  );
+  assert.match(midCreate, /data-following-layout="create-first"/);
+  assert.match(midCreate, /data-following-personal-mode="demoted"/);
+  assert.match(midCreate, /following-personal-details/);
+  assert.match(midCreate, /name="lens"[^>]+value="mandates"/);
+  assert.doesNotMatch(midCreate, /All your watches|Save a set of filters once|Monitor packs|District digests|One digest/);
+  assert.doesNotMatch(midCreate, /Saved filters|What this watch follows|preview and each email use these same terms/i);
+});
+
+test("Following accepts legacy obligations lens and emits canonical mandates", () => {
+  assert.equal(canonicalFollowingLens("obligations"), "mandates");
+  assert.equal(canonicalFollowingLens("mandates"), "mandates");
+  const parsed = watchFromFollowingParams(
+    new URLSearchParams({
+      lens: "obligations",
+      filter: JSON.stringify({ agency_id: "parks-and-recreation", agency: "Parks and Recreation" }),
+      freq: "weekly",
+    }),
+  );
+  assert.equal(parsed.lens, "mandates");
+  assert.equal(parsed.requested, true);
+  const url = new URL(followingUrlFromWatch(parsed, { frequency: "weekly" }));
+  assert.equal(url.searchParams.get("lens"), "mandates");
+  assert.doesNotMatch(url.search, /lens=obligations/);
+  const html = renderFollowingDocument(buildFollowingViewModel(parsed, templates));
+  assert.match(html, /name="lens"[^>]+value="mandates"/);
+  assert.match(html, /data-following-scope-value="mandates"[^>]*aria-current="page"|aria-current="page"[^>]*data-following-scope-value="mandates"/);
 });
 
 test("Following gives every visible heading a distinct navigation label", () => {

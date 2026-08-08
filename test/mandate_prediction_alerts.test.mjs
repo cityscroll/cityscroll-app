@@ -124,7 +124,7 @@ test("live Parks materialization yields standable predictions", () => {
   assert.equal(far.expected_deadline, "2029-10-01");
   assert.equal(far.prediction_band, PREDICTION_BANDS.FAR);
   assert.match(view.share_path, /#mandates-predictions$/);
-  assert.match(view.follow_href, /lens=obligations/);
+  assert.match(view.follow_href, /lens=mandates/);
   assert.doesNotMatch(JSON.stringify(view), /not X but Y|may not be complete|disclaimer/i);
 });
 
