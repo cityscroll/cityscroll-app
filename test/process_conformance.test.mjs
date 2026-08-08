@@ -13,6 +13,7 @@ import {
   buildAgencyConformanceView,
   buildProcessConformanceLookup,
   contentTokens,
+  renderMandatesConformanceSection,
   resolveMandateObservation,
   scoreTopicMatch,
 } from "../site/process_conformance.mjs";
@@ -115,6 +116,47 @@ test("shareable path anchors mandates conformance", () => {
   );
 });
 
+test("mandates conformance omits zero-observed views and absence rows", () => {
+  const html = renderMandatesConformanceSection({
+    status: "matched",
+    counts: { observed: 0, expected_not_yet_observed: 22, on_track: 0 },
+    items: [{
+      mandate_id: "dcas-001",
+      duty_text: "Publish an annual report",
+      observation: {
+        status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
+        label: "Expected, not yet in City Record",
+      },
+    }],
+  });
+  assert.equal(html, "");
+});
+
+test("mandates conformance renders matched rows without absence placeholders", () => {
+  const html = renderMandatesConformanceSection({
+    status: "matched",
+    counts: { observed: 1, expected_not_yet_observed: 1, on_track: 0 },
+    items: [{
+      mandate_id: "dob-observed",
+      duty_text: "Publish the matched report",
+      observation: {
+        status: OBSERVATION_STATUS.OBSERVED,
+        label: "Observed in City Record",
+        observed_record: { href: "/notices/1", label: "Matched report" },
+      },
+    }, {
+      mandate_id: "dob-absent",
+      duty_text: "Publish the unmatched report",
+      observation: {
+        status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
+        label: "Expected, not yet in City Record",
+      },
+    }],
+  });
+  assert.match(html, /Publish the matched report/);
+  assert.doesNotMatch(html, /Publish the unmatched report|Expected, not yet in City Record/);
+});
+
 test("Parks conformance view labels real mandates without compliance verdicts", () => {
   assert.ok(existsSync(OBLIGATIONS), "obligations lookup required");
   const obligations = JSON.parse(readFileSync(OBLIGATIONS, "utf8"));
@@ -156,12 +198,12 @@ test("committed process_conformance lookup covers Parks", () => {
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
 });
 
-test("constellation surfaces mandates conformance for Parks", () => {
+test("constellation surfaces only observed mandates conformance rows for Buildings", () => {
   const intelligence = JSON.parse(readFileSync(join(ROOT, "site/data/entity_intelligence_lookup.json"), "utf8"));
   const certification = JSON.parse(readFileSync(join(ROOT, "site/data/exam_certification_constellation.json"), "utf8"));
   const obligations = JSON.parse(readFileSync(OBLIGATIONS, "utf8"));
   const process_conformance = JSON.parse(readFileSync(LOOKUP, "utf8"));
-  const view = buildAgencyConstellationView(PARKS, {
+  const view = buildAgencyConstellationView("buildings", {
     intelligence,
     certification,
     obligations,
@@ -177,7 +219,10 @@ test("constellation surfaces mandates conformance for Parks", () => {
   const html = renderAgencyConstellationDocument(view);
   assert.match(html, /id="mandates-conformance"/);
   assert.match(html, /Mandates · expected vs observed|data-process-conformance="v1"/);
-  assert.match(html, /data-observation-status=/);
+  const section = html.match(/<section id="mandates-conformance"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.match(section, /data-observation-status=/);
+  assert.doesNotMatch(section, /data-observation-status="expected_not_yet_observed"/);
+  assert.doesNotMatch(section, /Expected, not yet in City Record/);
   assert.match(html, /expected vs observed|City Record/i);
   assert.match(html, /Share this mandates view|Mandates expected vs observed/);
   assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);
