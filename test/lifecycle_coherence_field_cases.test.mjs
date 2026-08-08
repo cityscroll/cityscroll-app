@@ -17,6 +17,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { assembleLifecycle } from "../worker/src/lib/checkbook_lifecycle.mjs";
+import { officialSourceLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -43,7 +44,7 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 const sandbox = new Function(
-  "t", "tn", "window",
+  "t", "tn", "window", "officialSourceLink",
   extractFn("money") +
   extractFn("fdate") +
   extractConst("escUiHtml") +
@@ -107,7 +108,7 @@ const {
   lifecycleCommittedUnderrun,
   lifecyclePaymentSummaryHTML,
   isContractLifecycleEligible,
-} = sandbox(t, tn, windowStub);
+} = sandbox(t, tn, windowStub, officialSourceLink);
 
 // Live-shaped fixture: HNTB award #notice/20260623008 (registered matched, payment was unknown)
 const HNTB_NOTICE = {

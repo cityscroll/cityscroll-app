@@ -16,6 +16,7 @@ import {
   parseNYCIDAProjects,
 } from "../worker/src/lib/subsidy_lifecycle.mjs";
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
+import { officialSourceLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -62,7 +63,7 @@ function escUiHtml(s) {
 }
 
 const sandbox = new Function(
-  "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml",
+  "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink",
   extractConst("escUiHtml").replace(/^const escUiHtml = /, "const escUiHtmlLocal = ") + "\n" +
   // Prefer the real extracted escUiHtml if present; fall back to injected one.
   "const _esc = (typeof escUiHtmlLocal === 'function') ? escUiHtmlLocal : escUiHtml;\n" +
@@ -160,11 +161,11 @@ const sandbox = new Function(
 
 let helpers;
 try {
-  helpers = sandbox(t, tn, windowStub, money, fdate, cleanText, vendorStem, escUiHtml);
+  helpers = sandbox(t, tn, windowStub, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink);
 } catch (err) {
   // Fallback: extract with simpler sandbox that injects all deps as args
   const simple = new Function(
-    "t", "tn", "money", "fdate", "cleanText", "vendorStem", "escUiHtml",
+    "t", "tn", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink",
     `
     const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
     const REQ_URL = (id) => 'https://a856-cityrecord.nyc.gov/RequestDetail/' + encodeURIComponent(id);
@@ -257,7 +258,7 @@ try {
     };
     `
   );
-  helpers = simple(t, tn, money, fdate, cleanText, vendorStem, escUiHtml);
+  helpers = simple(t, tn, money, fdate, cleanText, vendorStem, escUiHtml, officialSourceLink);
 }
 
 const {
