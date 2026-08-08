@@ -30,12 +30,14 @@ function readJson(path) {
 function loadSources() {
   const intelligencePath = join(SITE, "data/entity_intelligence_lookup.json");
   const certificationPath = join(SITE, "data/exam_certification_constellation.json");
+  const obligationsPath = join(SITE, "data/agency_obligations_lookup.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
   return {
     intelligence: readJson(intelligencePath),
     certification: existsSync(certificationPath) ? readJson(certificationPath) : null,
+    obligations: existsSync(obligationsPath) ? readJson(obligationsPath) : null,
   };
 }
 
@@ -57,6 +59,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
   const generatedAt = [
     sources.intelligence?.generated_at,
     sources.certification?.generated_at,
+    sources.obligations?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const byId = {};
   const documents = [];

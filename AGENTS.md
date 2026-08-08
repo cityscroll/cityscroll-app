@@ -2293,12 +2293,31 @@ both the live and restored databases.
   `node tools/build_agency_constellation_documents.mjs` (+ `--check`).
 - Artifact: `site/data/agency_constellation_lookup.json` and static
   `site/agencies/<canonical_id>/` documents (parcel-biography shape).
-- Categories: contracts + meetings + rules (entity-intelligence agency edges) and
-  staffing exams (publisher `certified_to_agency` edges). Match basis stamped
-  `agency_canonical_v1+publisher_certification_record_v1` for later graph refinement.
+- Categories: contracts + meetings + rules (entity-intelligence agency edges),
+  **statutory obligations** (rules → obligations facet), and staffing exams
+  (publisher `certified_to_agency` edges). Match basis stamped
+  `agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1`.
 - Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
-- Verify: `node --test test/agency_constellation.test.mjs`. Demo:
-  `/agencies/parks-and-recreation/`.
+- Verify: `node --test test/agency_constellation.test.mjs test/agency_obligations.test.mjs`.
+  Demo: `/agencies/parks-and-recreation/`.
+
+## Agency statutory obligations (v1)
+
+- Pure model: `site/agency_obligations.mjs`. Shape: **agency → duty → deadline →
+  recurrence**. Deadlines are statutory timed events — **never** compliance
+  verdicts. Observation status stays `not_adjudicated` (Process Conformance seam).
+- Certification: **auto-certified** via mechanical quote verification
+  (`auto_certified_quote_verify_v1`); quote-miss rows remain `auto_candidate`.
+  No public human-review gate; no private comparison/oracle artifacts in-repo.
+- Materialize from independent backfill `tools/law_mandates/output/our.json`
+  (gitignored): `node tools/build_agency_obligations.mjs --input <our.json>`.
+  Committed public artifact: `site/data/agency_obligations_lookup.json`.
+  Fixture: `test/fixtures/agency_obligations/our_sample.json` (`--fixture`).
+- Free watch: `lens: "obligations"` + `{ agency_id, agency }` via
+  `agencyObligationsFollowHref` → Following / digest compile world-state path
+  (`worker/src/lib/compile.mjs` loads the lookup; not a City Record document match).
+- Provenance: each row links `source.legistar_url` (obligation → source law).
+- Rebuild constellation after obligations refresh so agency pages pick up the facet.
 
 ## Maintaining this file
 

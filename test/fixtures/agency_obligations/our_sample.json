@@ -1,0 +1,103 @@
+{
+  "schema_version": "cityscroll-mandates-backfill-v1",
+  "generated_at": "2026-08-07T23:52:53.226Z",
+  "model": "fixture-slice",
+  "prompt_version": "cityscroll-mandates-prompt-v1",
+  "laws": [],
+  "mandates": [
+    {
+      "mandate_id": "52278-001",
+      "matter_id": "52278",
+      "agency": "Department of Parks and Recreation",
+      "duty_text": "Inform the Department of Transportation of the locations of any tree plantings planned for the immediately subsequent tree planting season within seven days following the selection of any such location.",
+      "deliverable_type": "other",
+      "deadline": {
+        "kind": "days_after_enactment",
+        "computed_date": "2018-01-07",
+        "text": "not more than seven days following the selection of any such location",
+        "is_compliance_verdict": false
+      },
+      "recurrence": "ongoing",
+      "citation": "Administrative Code § 18-106.1(b)",
+      "quote_verified": false,
+      "status": "candidate",
+      "file_number": "Int 0231-2014"
+    },
+    {
+      "mandate_id": "60950-001",
+      "matter_id": "60950",
+      "agency": "Department of Parks and Recreation",
+      "duty_text": "The commissioner shall promulgate rules identifying at least six parks in each borough under the department's jurisdiction and determining the quantity and location of automated external defibrillators to be placed in such parks.",
+      "deliverable_type": "rulemaking",
+      "deadline": {
+        "kind": "fixed_date",
+        "computed_date": "2020-01-01",
+        "text": "before such date",
+        "is_compliance_verdict": false
+      },
+      "recurrence": "one-time",
+      "citation": "Section 2; Section 4",
+      "quote_verified": false,
+      "status": "candidate",
+      "file_number": "Int 1009-2018"
+    },
+    {
+      "mandate_id": "68613-002",
+      "matter_id": "68613",
+      "agency": "Department of Parks and Recreation",
+      "duty_text": "Submit a report to the mayor and the council regarding park features under the department’s jurisdiction that received an unacceptable inspection rating.",
+      "deliverable_type": "report",
+      "deadline": {
+        "kind": "fixed_date",
+        "computed_date": "2022-12-31",
+        "text": "On December 31, 2022 and every six months thereafter",
+        "is_compliance_verdict": false
+      },
+      "recurrence": "one-time",
+      "citation": "§ 18-158(c)",
+      "quote_verified": true,
+      "status": "verified",
+      "file_number": "Int 0173-2022"
+    },
+    {
+      "mandate_id": "51886-001",
+      "matter_id": "51886",
+      "agency": "Commissioner of Housing Preservation and Development",
+      "duty_text": "Take actions necessary for implementation, including promulgation of rules, before the local law takes effect.",
+      "deliverable_type": "rulemaking",
+      "deadline": {
+        "kind": "on_effective_date",
+        "computed_date": "2014-09-30",
+        "text": "prior to such effective date",
+        "is_compliance_verdict": false
+      },
+      "recurrence": "one-time",
+      "citation": "Section 2",
+      "quote_verified": true,
+      "status": "verified",
+      "file_number": "Int 0048-2014"
+    },
+    {
+      "mandate_id": "58193-001",
+      "matter_id": "58193",
+      "agency": "commissioner of housing preservation and development",
+      "duty_text": "Take measures necessary for implementation of the local law, including promulgation of rules.",
+      "deliverable_type": "rulemaking",
+      "deadline": {
+        "kind": "on_effective_date",
+        "computed_date": "2017-12-31",
+        "text": "before such effective date",
+        "is_compliance_verdict": false
+      },
+      "recurrence": "one-time",
+      "citation": "§ 3",
+      "quote_verified": true,
+      "status": "verified",
+      "file_number": "Int 1721-2017"
+    }
+  ],
+  "receipt": {
+    "law_count": 0,
+    "mandate_count": 5
+  }
+}
