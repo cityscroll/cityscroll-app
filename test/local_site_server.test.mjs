@@ -20,7 +20,7 @@ async function waitForReady(path, child) {
   throw new Error("local server did not publish its address");
 }
 
-test("full preflight allocates its own port without touching existing listeners", () => {
+test("full preflight and CI use the route-aware server without touching existing listeners", () => {
   const source = read("tools/preflight-required-checks.sh");
   assert.match(source, /tools\/local_site_server\.py/);
   assert.match(source, /CROL_TEST_PORT:-0/);
@@ -34,8 +34,10 @@ test("full preflight allocates its own port without touching existing listeners"
   assert.doesNotMatch(functional, /http\.server 8000|lsof -tiTCP:8000/);
 
   const ci = read(".github/workflows/ci.yml");
-  assert.match(ci, /tools\/local_site_server\.py --directory site --port 8000/);
-  assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory site/);
+  const build = ci.indexOf("uses: ./.github/actions/build-site");
+  const serve = ci.indexOf("tools/local_site_server.py --directory _site --port 8000");
+  assert.ok(build >= 0 && build < serve, "CI must build the deploy artifact before serving it");
+  assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory _site/);
 });
 
 test("performance interaction waits for the canonical Contracts document URL", () => {
