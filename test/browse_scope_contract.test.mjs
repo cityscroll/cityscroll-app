@@ -174,6 +174,58 @@ test("contracts conformance: a three-way typed scope is an all-ref intersection 
   }
 });
 
+test("meetings field regression: agency and borough scopes keep affected-area matches", () => {
+  const payload = {
+    rows: [
+      {
+        request_id: "parks-brooklyn",
+        agency_name: "Parks and Recreation",
+        short_title: "Seasonal ice rink at McCarren Park Pool, Brooklyn",
+        event_date: "2026-08-10",
+        affected_area: { scope: "local", boroughs: ["Brooklyn"] },
+      },
+      {
+        request_id: "parks-manhattan-brooklyn",
+        agency_name: "Parks and Recreation",
+        short_title: "Seasonal ice rink program, Manhattan · Brooklyn",
+        event_date: "2026-08-11",
+        affected_area: { scope: "local", boroughs: ["Manhattan", "Brooklyn"] },
+      },
+      {
+        request_id: "parks-queens",
+        agency_name: "Parks and Recreation",
+        short_title: "Queens recreation hearing",
+        event_date: "2026-08-12",
+        affected_area: { scope: "local", boroughs: ["Queens"] },
+      },
+    ],
+  };
+  const facet = JSON.stringify({ entity_refs_all: ["agency:id:parks-and-recreation"] });
+  const unfiltered = buildBrowseView("meetings", payload, new URLSearchParams({ when: "all", facet }), { limit: 1000 });
+  assert.equal(unfiltered.total, 3, "the agency scope contains the field-style meeting set");
+
+  for (const borough of ["Brooklyn", "Manhattan"]) {
+    const filtered = buildBrowseView(
+      "meetings",
+      payload,
+      new URLSearchParams({ when: "all", boro: borough, facet }),
+      { limit: 1000 },
+    );
+    assert.ok(filtered.total > 0, `${borough} must not collapse to zero when present in the unfiltered set`);
+  }
+
+  const brooklyn = buildBrowseView(
+    "meetings",
+    payload,
+    new URLSearchParams({ when: "all", boro: "Brooklyn", facet }),
+    { limit: 1000 },
+  );
+  assert.deepEqual(
+    brooklyn.rows.map((row) => row.request_id),
+    ["parks-brooklyn", "parks-manhattan-brooklyn"],
+  );
+});
+
 test("captain six scope URLs with DCWP exhibit explicit scope/empty state by lens", () => {
   const target = "consumer-and-worker-protection";
   const targetName = resolveAgencyIdentity(target).canonical_name;
