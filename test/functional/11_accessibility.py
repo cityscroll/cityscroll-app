@@ -292,8 +292,7 @@ def run_index_states(pw, lang, viewport, failures):
         restore_url=BASE,
     )
 
-    # Project-connections responses may be honestly unavailable during read-model or route
-    # propagation. Wait for that asynchronous state and scan the reader-visible fallback.
+    # An unavailable optional read model leaves no reader-visible placeholder.
     project_row = {
         "project_id": "2022M0258", "project_name": "Timbale Terrace",
         "primary_applicant": "Housing Preservation and Development",
@@ -308,16 +307,27 @@ def run_index_states(pw, lang, viewport, failures):
             status=200, content_type="application/json", body=json.dumps([project_row]),
         ),
     )
+    unavailable_payload = {
+        "ok": True,
+        "sections": {"project_connections": {
+            "schema_version": 1, "status": "unavailable", "reason": "read_model_unavailable",
+        }},
+        "record": {"project_id": "2022M0258"},
+    }
+    page.route(
+        "**/zap-outcomes?id=2022M0258",
+        lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps(unavailable_payload),
+        ),
+    )
     project_hash = "#land/2022M0258"
     page.goto(BASE + project_hash, timeout=30000)
     page.wait_for_load_state("load", timeout=20000)
-    page.wait_for_selector(
-        '.project-connections[data-project-connections-state="unavailable"]',
-        state="visible",
-        timeout=15000,
-    )
+    page.wait_for_selector("#project-connections", state="attached", timeout=15000)
+    page.wait_for_timeout(800)
+    assert page.locator("#project-connections").inner_html().strip() == ""
     run_axe(
-        page, f"index.html [{lang}] [{viewport_name}] [land:project-connections-unavailable]", failures,
+        page, f"index.html [{lang}] [{viewport_name}] [land:project-connections-omitted]", failures,
         restore_url=BASE, restore_hash=project_hash,
     )
 

@@ -144,7 +144,7 @@ test("buildSubsidyPhaseView: ontology-complete when timeline only has hearing", 
 test("public Land/Money surface files exist for subsidy phase module", () => {
   const index = SITE_SOURCE;
   assert.match(index, /subsidy_phase_spine|buildSubsidyPhaseView|subsidyPhaseTimelineHTML/);
-  assert.match(index, /subsidy_phase_not_yet_reached|future_empty/);
+  assert.doesNotMatch(index, /subsidy_phase_not_yet_reached/);
   assert.match(index, /subsidyMatchedFactsHTML|data-subsidy-matched-facts/);
 });
 

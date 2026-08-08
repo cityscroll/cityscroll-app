@@ -106,22 +106,14 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
         return `<li><span class="lc-step lc-step-help ${cls}" tabindex="0" aria-label="${escUiHtml(label)}"${aria} title="${escUiHtml(label)}">${escUiHtml(p.short||label)}</span>${arrow}</li>`;
       }).join("")
     }</ol>`;
-    // Detail only for matched phases + current (collapse pure-future empties to stepper chips).
-    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)).map(p=>{
-      if(!p.matched){
-        return `<div class="stage"><div class="box">
-          <div class="stage-name">${franchiseStageLabel(p.id)}</div>
-          <div class="lc-norecord">${t("franchise_stage_not_yet_ingested_html",{
-            source:`<span lang="en" dir="ltr">${t("franchise_source_city_record")}</span>`
-          })}</div>
-        </div></div>`;
-      }
+    const cards=phaseView.phases.filter(p=>p.matched).map(p=>{
       const notices=lifecycleNoticeEventsHTML(p.events);
       return `<div class="stage"><div class="box matched">
         <div class="stage-name">${franchiseStageLabel(p.id)}</div>
         ${notices}
       </div></div>`;
     }).join('<div class="connector" aria-hidden="true">→</div>');
+    if(!cards) return "";
     return `<section class="franchise-spine" data-franchise-spine="1" data-franchise-phase="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
       <div class="chain-h">${t("franchise_spine_heading")}</div>
       ${actionLead}
@@ -132,26 +124,17 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
   }
 
   // Flat fallback when the phase module is unavailable.
-  const stages = Array.isArray(spine.stages) ? spine.stages : [];
+  const stages = Array.isArray(spine.stages) ? spine.stages.filter(stage=>stage&&stage.matched) : [];
   let chain = "";
   stages.forEach((stage, idx) => {
-    const matched = stage && stage.matched;
     const stageEvents = Array.isArray(stage.events) ? stage.events : [];
-    if(matched){
-      chain += `<div class="stage"><div class="box matched">
-        <div class="stage-name">${franchiseStageLabel(stage.kind)}</div>
-        ${lifecycleNoticeEventsHTML(stageEvents)}
-      </div></div>`;
-    } else {
-      chain += `<div class="stage"><div class="box">
-        <div class="stage-name">${franchiseStageLabel(stage.kind)}</div>
-        <div class="lc-norecord">${t("franchise_stage_not_yet_ingested_html",{
-          source:`<span lang="en" dir="ltr">${t("franchise_source_city_record")}</span>`
-        })}</div>
-      </div></div>`;
-    }
+    chain += `<div class="stage"><div class="box matched">
+      <div class="stage-name">${franchiseStageLabel(stage.kind)}</div>
+      ${lifecycleNoticeEventsHTML(stageEvents)}
+    </div></div>`;
     if(idx < stages.length - 1) chain += '<div class="connector" aria-hidden="true">→</div>';
   });
+  if(!chain) return "";
   return `<section class="franchise-spine" data-franchise-spine="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
     <div class="chain-h">${t("franchise_spine_heading")}</div>
     <div class="chain">${chain}</div>
@@ -255,13 +238,7 @@ async function loadFranchiseConcessionSpine(r, el){
   }
   if(!document.contains(el)) return;
   if(!spine){
-    // Honest empty: City Record is the source; we simply have no chain for this notice yet.
-    el.innerHTML = `<section class="franchise-spine" data-franchise-spine="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
-      <div class="chain-h">${t("franchise_spine_heading")}</div>
-      <div class="note">${t("franchise_spine_unavailable_html",{
-        source:`<span lang="en" dir="ltr">${t("franchise_source_city_record")}</span>`
-      })}</div>
-    </section>`;
+    el.innerHTML = "";
     return;
   }
   // Stamp current stage for the action rail when the spine resolves a later matched stage.
@@ -526,11 +503,7 @@ async function loadPropertyDispositionSpine(r, el){
   }catch(e){}
   if(!document.contains(el)) return;
   if(!spine){
-    // Honest empty: City Record is the source; we simply have no chain for this notice yet.
-    el.innerHTML = `<div class="chain-h">${t("disposition_spine_heading")}</div>
-      <div class="note">${t("disposition_spine_unavailable_html",{
-        source:`<span lang="en" dir="ltr">${t("disposition_source_city_record")}</span>`
-      })}</div>`;
+    el.innerHTML = "";
     return;
   }
   const phaseTools = await propertyPhaseSpineTools();
@@ -603,9 +576,7 @@ function parcelPivotHTML(bbl,label){
 async function observedParcelBiographyHTML(bbl,crossDomain,taxLien,cofo){
   const tools=await parcelScopeTools();
   const view=tools?.buildObservedParcelBiography?.({bbl,crossDomain,taxLien,cofo});
-  if(!view?.ok) return `<div class="chain-h">${t("property_xd_heading")}</div>
-    <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bblReaderLabel(bbl)||bbl)})}</div>
-    <div class="note">${t("property_xd_provenance_html")}</div>`;
+  if(!view?.ok) return "";
   const ui=await import("../parcel_biography_ui.mjs").catch(()=>null);
   if(!ui?.observedParcelBiographyHTML) return "";
   return ui.observedParcelBiographyHTML(view,{
@@ -631,8 +602,7 @@ async function loadPropertyCrossDomain(r, el){
     }catch(_e){}
   }
   if(!bbl || !/^\d{10}$/.test(String(bbl))){
-    el.innerHTML = `<div class="chain-h">${t("property_xd_heading")}</div>
-      <div class="note">${t("property_xd_no_bbl_html")}</div>`;
+    el.innerHTML = "";
     return;
   }
   let crossDomain = null, taxLien = null;

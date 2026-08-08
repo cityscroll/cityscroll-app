@@ -78,6 +78,7 @@ const sandbox = new Function(
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
+  extractFn("lifecycleEntryHasRenderableData") +
   extractFn("lifecycleCurrentStageKey") +
   extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
@@ -311,11 +312,12 @@ test("IDA hearing is wrong-universe for contract lifecycle modules (category gat
   }), false);
 });
 
-test("procurement no-PIN: single no-PIN explanation; dependent slots collapse", () => {
+test("procurement no-PIN: populated City Record stage remains and empty dependent slots disappear", () => {
   assert.equal(isContractLifecycleEligible(PROCUREMENT_NO_PIN), true);
   const html = lifecycleTimelineHTML(PROCUREMENT_NO_PIN_LIFECYCLE, PROCUREMENT_NO_PIN);
-  assert.match(html, /does not publish a Procurement ID \(PIN\)/);
-  assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
+  assert.match(html, /Solicitation/);
+  assert.match(html, /City Record/);
+  assert.doesNotMatch(html, /does not publish|would appear if|would appear in/i);
   assert.doesNotMatch(html, TRANSIENT, "no stacked could-not-reach cards");
   assert.doesNotMatch(html, CLASS_A, "no not-yet-shown cards when no-PIN rules");
   // No pending/registered/payment stage boxes
@@ -424,7 +426,7 @@ test("assembleLifecycle: spending transactions → paid state with summed total"
   assert.equal(pay.detail.total_payments, 2);
 });
 
-test("UI: unavailable payment does not show confident $0", () => {
+test("UI: unavailable payment slot is omitted instead of showing a placeholder", () => {
   const data = {
     pin: "84124P0003001",
     pin_strategy: "exact",
@@ -449,11 +451,11 @@ test("UI: unavailable payment does not show confident $0", () => {
   };
   const timeline = lifecycleTimelineHTML(data, HNTB_NOTICE);
   const dollars = lifecycleDollarsHTML(data, HNTB_NOTICE);
-  assert.match(timeline, /Payment data unavailable right now/i);
+  assert.doesNotMatch(timeline, />Payments</i);
+  assert.doesNotMatch(timeline, /unavailable right now/i);
   assert.doesNotMatch(timeline, /\$0 paid of/i);
-  assert.match(dollars, /Unavailable right now/i);
-  // Paid cell is unavailable — not a dollar amount (lag copy lives only on verified $0)
-  assert.match(dollars, /Paid to date<\/dt><dd>Unavailable right now<\/dd>/);
+  assert.match(dollars, /Contract|Committed/);
+  assert.doesNotMatch(dollars, /Paid to date|Unavailable right now/i);
   assert.doesNotMatch(dollars, /\$0 paid on a freshly registered/);
 });
 
@@ -776,9 +778,7 @@ test("source coherence: unmatched future stages collapse; i18n still names disti
   assert.doesNotMatch(html, CLASS_A);
   assert.doesNotMatch(html, TRANSIENT);
   assert.match(html, /class="lc-stepper"/);
-  assert.match(html, /Pending contract/);
-  assert.match(html, /Registered contract/);
-  assert.match(html, /Payments/);
+  assert.doesNotMatch(html, /Pending contract|Registered contract|Payments/);
   // Dictionary still carries distinct dataset wording (for gaps inventory / other surfaces)
   assert.match(t("lifecycle_source_checkbook_pending"), /pending contracts/i);
   assert.match(t("lifecycle_source_checkbook_registered"), /registered contracts/i);

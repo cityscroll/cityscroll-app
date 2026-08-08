@@ -97,6 +97,7 @@ const sandbox = new Function(
   extractFn("lifecyclePaymentSummaryHTML") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
   extractFn("lifecycleDocumentsHTML") + "\n" +
+  extractFn("lifecycleEntryHasRenderableData") + "\n" +
   extractFn("lifecycleCurrentStageKey") + "\n" +
   extractFn("lifecycleStepperHTML") + "\n" +
   extractFn("lifecycleStageHTML") + "\n" +
@@ -201,6 +202,7 @@ try {
     extractFn("lifecyclePaymentSummaryHTML") +
     extractFn("lifecycleSourceLink") +
     extractFn("lifecycleDocumentsHTML") +
+    extractFn("lifecycleEntryHasRenderableData") +
     extractFn("lifecycleCurrentStageKey") +
     extractFn("lifecycleStepperHTML") +
     extractFn("lifecycleStageHTML") +
@@ -341,8 +343,8 @@ test("procurement detail: HNTB lifecycle fills award + registration; pending/pay
   assert.match(html, /Award/);
   assert.match(html, /Registered contract/);
   assert.match(html, /CT184120268807929|13\.53M|\$13/);
-  // Stage succession: pending is passed when registered is matched (not not-yet-shown)
-  assert.match(html, /Passed — the contract has registered/);
+  // The inferred pending slot is omitted; populated registration remains.
+  assert.doesNotMatch(html, /Pending contract|Passed — the contract has registered/);
   assert.doesNotMatch(html, /Not yet shown here — pending contracts live in/);
   // Transient-error register never surfaces on notice detail
   assert.doesNotMatch(html, /Could not reach/);
@@ -437,17 +439,14 @@ test("subsidy detail: matched project renders stage, action, and outcome", () =>
   assert.match(html, /lc-stepper|subsidy-phase-stepper/);
 });
 
-test("subsidy detail: unmatched non-IDA notice renders specific gap, never generic unknown", () => {
+test("subsidy detail: unmatched non-IDA notice renders no empty lifecycle slot", () => {
   const notice = {
     request_id: "20260101099",
     short_title: "Parks concession award — no subsidy project link",
   };
   assert.equal(unmatchedSubsidy.join.matched, false);
   const html = subsidyLifecycleHTML(unmatchedSubsidy, notice);
-  assert.match(html, /Subsidy lifecycle/);
-  assert.match(html, /does not publish a linked subsidy project for/);
-  assert.match(html, /20260101099|Parks concession|would appear on the Build NYC|No matching NYCIDA/i);
-  assert.doesNotMatch(html, />\s*unknown\s*</i);
+  assert.equal(html, "");
 });
 
 test("subsidy detail: young IDA hearing joins City Record hearing; later stages not unavailable", () => {
@@ -463,7 +462,7 @@ test("subsidy detail: young IDA hearing joins City Record hearing; later stages 
   assert.doesNotMatch(html, /Could not reach/i);
 });
 
-test("subsidy detail: feed_status=unavailable never uses city-does-not-publish for later stages", () => {
+test("subsidy detail: feed_status=unavailable omits empty later stages", () => {
   // Production shape for aged City Record hearing joins when Build NYC feed is down.
   const feedDown = {
     ...youngIdaSubsidy,
@@ -485,29 +484,20 @@ test("subsidy detail: feed_status=unavailable never uses city-does-not-publish f
     event_date: "2022-06-09T10:00:00.000",
   });
   assert.match(html, /Subsidy lifecycle/);
-  // Primary chrome: compact not-yet-reached (not N gap cards). Class-(a) substance
-  // remains under the future-gaps disclosure when feed is down.
-  assert.match(html, /data-subsidy-not-yet|Not yet reached/i);
-  assert.match(html, /data-subsidy-future-gaps|Not yet shown here/);
-  assert.match(html, /data-subsidy-gap="not_yet_ingested"/);
-  assert.doesNotMatch(html, /The city does not publish this Board decision/i);
-  assert.doesNotMatch(html, /The city does not publish this Closing/i);
-  assert.doesNotMatch(html, /The city does not publish this Compliance/i);
-  // Feed-down is secondary context, not the lead headline.
-  assert.match(html, /data-subsidy-feed-secondary="1"/);
-  assert.match(html, /Could not reach/i);
+  assert.doesNotMatch(html, /Not yet|does not publish|Could not reach/i);
+  assert.doesNotMatch(html, /Board decision|Closing|Compliance/);
 });
 
-test("subsidy detail: empty future stages collapse into one not-yet-reached indicator", () => {
+test("subsidy detail: empty future stages are omitted", () => {
   const html = subsidyLifecycleHTML(youngIdaSubsidy, {
     request_id: "20260617040",
     short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
     event_date: "2026-07-16T10:00:00.000",
   });
-  assert.match(html, /data-subsidy-not-yet=/);
-  assert.match(html, /Not yet reached/i);
+  assert.doesNotMatch(html, /data-subsidy-not-yet=|Not yet reached/i);
   // Matched stages still render detail (application/hearing).
   assert.match(html, /Hearing|Application/i);
+  assert.doesNotMatch(html, /Board decision|Closing|Compliance/);
   // Primary path must not emit a chain of N lc-norecord gap cards for every future stage.
   const primary = html.split('data-subsidy-future-gaps')[0];
   const gapCards = (primary.match(/data-subsidy-gap=/g) || []).length;
