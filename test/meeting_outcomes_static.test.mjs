@@ -24,6 +24,8 @@ test("meeting snapshot renders documents and outcomes on first paint", () => {
   assert.match(html, /data-meeting-outcomes-first-paint="1"/);
   assert.match(html, /data-meeting-outcomes-state="present"/);
   assert.match(html, /Decision documents and outcomes/);
+  assert.match(html, /node-source-disclosure/);
+  assert.match(html, /meeting-source-link/);
   assert.doesNotMatch(html, /class="loading"/);
 });
 

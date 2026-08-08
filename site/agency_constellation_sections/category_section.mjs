@@ -4,7 +4,7 @@ import {
   sourceSystemReaderLabel,
 } from "../graph_edge_provenance.mjs";
 import { renderMandatesConformanceSection } from "../process_conformance.mjs";
-import { constellationLink, officialSourceLink } from "../affordance_grammar.mjs";
+import { constellationLink, officialSourceDisclosure } from "../affordance_grammar.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -79,16 +79,16 @@ export function renderAgencyCategorySection(category) {
   const status = category.id === "obligations"
     ? `${category.count} mandates`
     : (statusLabel(category) || `${category.count} linked`);
+  const sourceItems = category.id === "obligations"
+    ? category.items.filter((item) => item.href).map((item) => ({ href: item.href, label: item.label || "Source law" }))
+    : [];
   const list = `<ul class="node-record-list">${category.items.map((item) => {
     const warrant = item.claim?.how?.warrant_class || "";
     const why = item.claim ? renderWhyBelieveControl(item.claim) : "";
     if (category.id === "obligations" || item.kind === "obligation") {
-      const sourceLink = item.href
-        ? ` · ${officialSourceLink({ href: item.href, label: "Source law", className: "agency-source-link", escape: esc })}`
-        : "";
       return `<li class="node-record" data-obligation-id="${esc(item.id)}" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
         <div class="node-record-main">${esc(item.label)}${why ? ` ${why}` : ""}</div>
-        <span class="muted node-muted">${esc(obligationMeta(item))}${sourceLink}</span>
+        <span class="muted node-muted">${esc(obligationMeta(item))}</span>
       </li>`;
     }
     const meta = [sourceSystemReaderLabel(item.source) || item.source, item.date]
@@ -129,6 +129,7 @@ export function renderAgencyCategorySection(category) {
   const body = [
     honesty,
     list,
+    officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc }),
     actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : "",
   ].join("");
   return renderNodeSection({

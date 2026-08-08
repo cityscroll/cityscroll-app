@@ -1,4 +1,4 @@
-import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+import { constellationLink, officialSourceDisclosure } from "./affordance_grammar.mjs";
 
 /**
  * Mandates → Required Reports receipt card (first iteration).
@@ -201,19 +201,17 @@ export function renderMandateReportsReceiptSection(view) {
         const receiptLine = receipt?.href
           ? ` · ${constellationLink({ href: receipt.href, label: `${FILING_RECEIPT_LABEL}: ${receipt.label || receipt.request_id}`, className: "mandate-filing-receipt-link agency-edge-link", attributes: { "data-filing-receipt": "1" }, escape: esc })}${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
           : "";
-        const source = item.source_href
-          ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
-          : "";
         const chip = receipt
           ? `<span class="mandate-obs-chip mandate-obs-observed mandate-filing-receipt-chip" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-filing-receipt="1">${esc(FILING_RECEIPT_LABEL)}</span>`
           : "";
         return `<li class="node-record mandate-reports-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="report"${receipt ? ` data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-has-filing-receipt="1"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
-          <span class="muted node-muted">${meta}${receiptLine}${source}</span>
+          <span class="muted node-muted">${meta}${receiptLine}</span>
         </li>`;
       }).join("")
     }</ul>`
     : "";
+  const sourceItems = (view.mandates || []).filter((item) => item.source_href).map((item) => ({ href: item.source_href, label: item.duty_text || "Source law" }));
 
   const actions = [
     view.report_mandates_follow_href
@@ -229,6 +227,7 @@ export function renderMandateReportsReceiptSection(view) {
     <h2>Report mandates · Filing receipts <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || MANDATE_REPORTS_RECEIPT_COPY.lead)}</p>
     ${mandateList}
+    ${officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc })}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
 }
