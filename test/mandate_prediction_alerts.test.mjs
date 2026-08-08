@@ -44,15 +44,15 @@ test("normalizeRecurrence maps common extract tokens", () => {
 test("projectExpectedDeadline rolls annual and quarterly cycles forward", () => {
   const annual = projectExpectedDeadline("2015-09-30", "annual", TODAY);
   assert.equal(annual.expected_deadline, "2026-09-30");
-  assert.equal(annual.projection, "rolled_forward");
+  assert.equal(annual.deadline_source, "rolled_forward");
 
   const quarterly = projectExpectedDeadline("2015-11-12", "quarterly", TODAY);
   assert.equal(quarterly.expected_deadline, "2026-08-12");
-  assert.equal(quarterly.projection, "rolled_forward");
+  assert.equal(quarterly.deadline_source, "rolled_forward");
 
   const future = projectExpectedDeadline("2029-10-01", "one-time", TODAY);
   assert.equal(future.expected_deadline, "2029-10-01");
-  assert.equal(future.projection, "as_stated");
+  assert.equal(future.deadline_source, "as_stated");
 
   // Past one-time has no standable next window.
   assert.equal(projectExpectedDeadline("2020-01-01", "one-time", TODAY), null);
@@ -117,7 +117,7 @@ test("live Parks materialization yields standable predictions", () => {
   assert.ok(view.counts.predictions >= 1, "Parks has predictable mandates");
   assert.ok(view.predictions.every((p) => p.duty_text));
   assert.ok(view.predictions.every((p) => p.expected_event?.kind));
-  assert.ok(view.predictions.some((p) => p.expected_deadline || p.projection === "cadence_only"));
+  assert.ok(view.predictions.some((p) => p.expected_deadline || p.deadline_source === "cadence_only"));
   // Future dated Parks report (2029-10-01) appears as a far-band prediction.
   const far = view.predictions.find((p) => p.mandate_id === "78458-003");
   assert.ok(far, "pilot report mandate is present");
@@ -145,7 +145,7 @@ test("NYPD digest path surfaces earlier-stage predicted report events on real da
   }
   // Known annual roll-forward: 2015-09-30 → 2026-09-30 (53 days).
   const annual = rows.find((r) => r.obligation_id === "53408-003");
-  assert.ok(annual, "annual report projection is in the digest window");
+  assert.ok(annual, "annual report deadline_source is in the digest window");
   assert.equal(annual.deadline_date, "2026-09-30");
   assert.equal(annual.days_to_deadline, 53);
   assert.match(annual.expected_event_label, /Report/i);

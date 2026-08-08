@@ -120,7 +120,7 @@ export function normalizeRecurrence(raw) {
  * @param {string|null} computedDate YYYY-MM-DD
  * @param {string|null} recurrence
  * @param {string} todayISO
- * @returns {{ expected_deadline: string, projection: "as_stated"|"rolled_forward", recurrence: string }|null}
+ * @returns {{ expected_deadline: string, deadline_source: "as_stated"|"rolled_forward", recurrence: string }|null}
  */
 export function projectExpectedDeadline(computedDate, recurrence, todayISO) {
   const today = validDate(todayISO) || new Date().toISOString().slice(0, 10);
@@ -135,7 +135,7 @@ export function projectExpectedDeadline(computedDate, recurrence, todayISO) {
   if (stated >= today) {
     return {
       expected_deadline: stated,
-      projection: "as_stated",
+      deadline_source: "as_stated",
       recurrence: cadence,
     };
   }
@@ -158,7 +158,7 @@ export function projectExpectedDeadline(computedDate, recurrence, todayISO) {
     if (next >= today) {
       return {
         expected_deadline: next,
-        projection: "rolled_forward",
+        deadline_source: "rolled_forward",
         recurrence: cadence,
       };
     }
@@ -196,7 +196,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
   const today = validDate(opts.todayISO) || new Date().toISOString().slice(0, 10);
   const expected = expectedEventForDeliverable(deliverable);
   const cadence = normalizeRecurrence(row.recurrence);
-  const projected = projectExpectedDeadline(
+  const resolved = projectExpectedDeadline(
     row.deadline?.computed_date || row.deadline_date,
     row.recurrence,
     today,
@@ -210,7 +210,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
 
   // Cadence-only: recurring predictable duty with no computable date — surface
   // the expected event + recurrence without inventing a calendar day.
-  if (!projected) {
+  if (!resolved) {
     if (!opts.includeCadenceOnly) return null;
     if (cadence === "one-time" || cadence === "ongoing") return null;
     return {
@@ -234,7 +234,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
       days_to_deadline: null,
       prediction_band: null,
       prediction_band_label: null,
-      projection: "cadence_only",
+      deadline_source: "cadence_only",
       basis: {
         method: MANDATE_PREDICTION_METHOD,
         recurrence: cadence,
@@ -249,10 +249,10 @@ export function buildMandatePrediction(row = {}, opts = {}) {
     };
   }
 
-  const expectedDeadline = projected.expected_deadline;
+  const expectedDeadline = resolved.expected_deadline;
   const days = Math.round(dayNumber(expectedDeadline) - dayNumber(today));
   const band = predictionBandFromDays(days);
-  // Predicted window: p50 = statutory/projected deadline; p10/p90 bracket early notice.
+  // Predicted window: p50 = statutory/resolved deadline; p10/p90 bracket early notice.
   const window = {
     p10: addCalendarDays(expectedDeadline, -30),
     p50: expectedDeadline,
@@ -268,7 +268,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
     duty_text: duty,
     deliverable_type: deliverable,
     citation: clean(row.citation, 200) || null,
-    recurrence: projected.recurrence,
+    recurrence: resolved.recurrence,
     source_href: clean(row.source?.legistar_url || row.legistar_url || row.href, 400) || null,
     expected_event: {
       kind: expected.kind,
@@ -280,14 +280,14 @@ export function buildMandatePrediction(row = {}, opts = {}) {
     days_to_deadline: days,
     prediction_band: band,
     prediction_band_label: PREDICTION_BAND_LABELS[band] || null,
-    projection: projected.projection,
+    deadline_source: resolved.deadline_source,
     basis: {
       method: MANDATE_PREDICTION_METHOD,
-      recurrence: projected.recurrence,
+      recurrence: resolved.recurrence,
       statute_deadline: validDate(row.deadline?.computed_date) || expectedDeadline,
       enrichment: null,
     },
-    // Cycle identity: each projected deadline is one digest fire.
+    // Cycle identity: each resolved deadline is one digest fire.
     alert_id: `obligation:${mandateId}:${expectedDeadline}`,
     observation_status: opts.observation?.status || null,
     observed_record: opts.observation?.observed_record || null,
@@ -437,7 +437,7 @@ export function buildAgencyMandatePredictionsView(agencyIdOrName, sources = {}) 
 
 /**
  * World-state digest rows: predicted mandate events inside the watch window.
- * Prefer projected next cycle over raw past statute dates for recurring duties.
+ * Prefer resolved next cycle over raw past statute dates for recurring duties.
  * Never invents compliance.
  *
  * @param {object} lookup agency_obligations_lookup
@@ -529,13 +529,13 @@ function digestRowFromPrediction(pred, today) {
     prediction_band: pred.prediction_band,
     prediction_band_label: pred.prediction_band_label,
     prediction_method: MANDATE_PREDICTION_METHOD,
-    projection: pred.projection,
+    deadline_source: pred.deadline_source,
   };
 }
 
 /**
  * Merge prediction-aware rows into the free-watch digest set.
- * Dated predictable mandates use projected next cycles; other mandates keep
+ * Dated predictable mandates use resolved next cycles; other mandates keep
  * the classic deadline / standing path from obligationDigestRowsForAgency.
  *
  * @param {object[]} baseRows from obligationDigestRowsForAgency
@@ -597,7 +597,7 @@ export function renderMandatePredictionsSection(view) {
         ].filter(Boolean).map(esc).join(" · ");
         const chip = item.prediction_band_label
           ? `<span class="mandate-pred-chip mandate-pred-${esc(item.prediction_band || "far")}" data-prediction-band="${esc(item.prediction_band || "")}">${esc(item.prediction_band_label)}</span>`
-          : (item.projection === "cadence_only"
+          : (item.deadline_source === "cadence_only"
             ? `<span class="mandate-pred-chip mandate-pred-cadence" data-prediction-band="cadence">Recurring</span>`
             : "");
         const source = item.source_href
