@@ -248,7 +248,7 @@ export function renderOfficialDecisionTrailHTML(
     ${events.map((event) => {
       const date = event.event_date ? fdate(event.event_date) : "—";
       const hearing = event.notice_id
-        ? `<a class="view" href="#notice/${encodeURIComponent(event.notice_id)}">${t("official_open_hearing")}</a>`
+        ? constellationLink({ href: `#notice/${encodeURIComponent(event.notice_id)}`, label: t("official_open_hearing"), className: "view official-hearing-link", escape: esc })
         : "";
       return `<section class="official-event" data-event-id="${esc(event.event_id)}" data-notice-id="${esc(event.notice_id || "")}">
         <div class="chain-h" style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -260,3 +260,4 @@ export function renderOfficialDecisionTrailHTML(
     }).join("")}
   </div>`;
 }
+import { constellationLink } from "./affordance_grammar.mjs";

@@ -15,6 +15,7 @@ import {
 } from "./council_district_lookup.mjs";
 import { nearYouUrlFromScope, scopeFromLensState } from "./scope_v0.mjs";
 import { moneyActionLocationHash, moneyActionLocationScope } from "./money_scope_links.mjs";
+import { constellationLink, filterChip, installFilterChipNavigation } from "./affordance_grammar.mjs";
 
 export { COMMUNITY_DISTRICT_ID_RE, COUNCIL_DISTRICT_ID_RE };
 
@@ -204,7 +205,13 @@ export function districtFacetRailHTML({
 
   const chips = [];
   chips.push(
-    `<a class="chip district-facet-chip" href="${escapeAttr(clearHash)}" data-district-kind="${escapeAttr(kind)}" data-district-id="" aria-pressed="${selectedKey ? "false" : "true"}">${escape(anyLabel)}</a>`,
+    filterChip({
+      label: anyLabel,
+      pressed: !selectedKey,
+      className: "district-facet-chip",
+      attributes: { "data-filter-href": clearHash, "data-district-kind": kind, "data-district-id": "" },
+      escape: escapeAttr,
+    }),
   );
 
   for (const option of options) {
@@ -229,16 +236,19 @@ export function districtFacetRailHTML({
     const href = moneyDistrictScopeHash(nextFilter, { scope });
     if (!href) continue;
     const pressed = selectedKey === id ? "true" : "false";
-    const count = Number(option.count) > 0
-      ? ` <span class="ct">${escape(String(option.count))}</span>`
-      : "";
     const mapHref = districtMapPivotHref({ kind, id, lens: "money", scope });
     const mapLink = mapHref
-      ? ` <a class="district-map-pivot" href="${escapeAttr(mapHref)}" data-district-map-pivot="${escapeAttr(kind)}:${escapeAttr(id)}">${escape(mapPivotLabel)}</a>`
+      ? ` ${constellationLink({ href: mapHref, label: mapPivotLabel, className: "district-map-pivot", attributes: { "data-district-map-pivot": `${kind}:${id}` }, escape: escapeAttr })}`
       : "";
     chips.push(
       `<span class="district-facet-option" data-district-kind="${escapeAttr(kind)}" data-district-id="${escapeAttr(id)}">`
-      + `<a class="chip district-facet-chip" href="${escapeAttr(href)}" data-district-kind="${escapeAttr(kind)}" data-district-id="${escapeAttr(id)}" aria-pressed="${pressed}">${escape(option.label || id)}${count}</a>`
+      + filterChip({
+        label: `${option.label || id}${Number(option.count) > 0 ? ` ${option.count}` : ""}`,
+        pressed: pressed === "true",
+        className: "district-facet-chip",
+        attributes: { "data-filter-href": href, "data-district-kind": kind, "data-district-id": id },
+        escape: escapeAttr,
+      })
       + mapLink
       + `</span>`,
     );
@@ -318,6 +328,8 @@ export function paintDistrictFacetRails(doc, options = {}) {
       escapeAttr: options.escapeAttr,
     });
   }
+
+  installFilterChipNavigation(documentRef);
 
   return { community, council };
 }

@@ -1,3 +1,5 @@
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+
 /**
  * Mandates → Rules constellation card (first iteration).
  *
@@ -229,10 +231,10 @@ export function renderMandateRulesBridgeSection(view) {
           item.citation,
         ].filter(Boolean).map(esc).join(" · ");
         const observed = item.observed_record?.href
-          ? ` · <a href="${esc(item.observed_record.href)}">City Record: ${esc(item.observed_record.label || item.observed_record.request_id)}</a>`
+          ? ` · ${constellationLink({ href: item.observed_record.href, label: `City Record: ${item.observed_record.label || item.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
           : "";
         const source = item.source_href
-          ? ` · <a href="${esc(item.source_href)}" rel="noopener">Source law</a>`
+          ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
           : "";
         const chip = item.observation_status === OBSERVATION_STATUS.OBSERVED
           ? `<span class="mandate-obs-chip mandate-obs-observed" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}">${esc(item.observation_label || "Observed in City Record")}</span>`
@@ -249,7 +251,7 @@ export function renderMandateRulesBridgeSection(view) {
     ? `<ul class="node-record-list mandate-rules-filings" data-bridge-side="rules">${
       view.rules_items.map((item) => {
         const label = item.href
-          ? `<a data-subject-ref="${esc(item.subject_ref || "")}" href="${esc(item.href)}">${esc(item.label)}</a>`
+          ? constellationLink({ href: item.href, label: item.label, className: "agency-edge-link", attributes: { "data-subject-ref": item.subject_ref || "" }, escape: esc })
           : esc(item.label);
         const meta = [item.source, item.date].filter(Boolean).map(esc).join(" · ");
         return `<li class="node-record mandate-rules-filing" data-request-id="${esc(item.id || "")}">

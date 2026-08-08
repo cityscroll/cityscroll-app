@@ -1,3 +1,5 @@
+import { officialSourceLink } from "./affordance_grammar.mjs";
+
 // Receipt-backed community-board decision panel for non-Council meeting notices.
 // The committed lookup may remain empty. Rendering requires the artifact-level
 // receipt gate plus the collector's exact body/date/matter-token join.
@@ -75,9 +77,6 @@ export function nonCouncilOutcomePanelHTML(payloadOrView, requestId, opts = {}) 
   const t = localizedT(opts.lang);
   const esc = typeof opts.esc === "function" ? opts.esc : defaultEsc;
   const date = typeof opts.date === "function" ? opts.date : defaultDate;
-  const externalSuffixHTML = typeof opts.externalSuffixHTML === "function"
-    ? opts.externalSuffixHTML()
-    : "";
   const action = t(`non_council_outcome_action_${view.action}`);
   const tally = view.tally
     ? `<div class="notice-fact-row" data-field="published-vote">
@@ -104,7 +103,7 @@ export function nonCouncilOutcomePanelHTML(payloadOrView, requestId, opts = {}) 
           <time datetime="${esc(view.meeting_date)}">${esc(date(view.meeting_date))}</time>
         </div>
         ${tally}
-        <a class="view" href="${esc(view.minutes_url)}" target="_blank" rel="noopener noreferrer">${esc(t("non_council_outcome_minutes_link"))}${externalSuffixHTML}</a>
+        ${officialSourceLink({ href: view.minutes_url, label: t("non_council_outcome_minutes_link"), className: "view meeting-source-link", escape: esc })}
       </article>
     </div>
   </section>`;

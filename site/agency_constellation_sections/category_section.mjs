@@ -4,6 +4,7 @@ import {
   sourceSystemReaderLabel,
 } from "../graph_edge_provenance.mjs";
 import { renderMandatesConformanceSection } from "../process_conformance.mjs";
+import { constellationLink, officialSourceLink } from "../affordance_grammar.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -12,7 +13,13 @@ const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
 function itemLink(item) {
   const label = esc(item.label || item.subject_ref || item.id);
   if (!item.href) return label;
-  return `<a data-subject-ref="${esc(item.subject_ref || "")}" href="${esc(item.href)}">${label}</a>`;
+  return constellationLink({
+    href: item.href,
+    label: item.label || item.subject_ref || item.id,
+    className: "agency-edge-link",
+    attributes: { "data-subject-ref": item.subject_ref || "" },
+    escape: esc,
+  });
 }
 
 function obligationMeta(item) {
@@ -77,7 +84,7 @@ export function renderAgencyCategorySection(category) {
     const why = item.claim ? renderWhyBelieveControl(item.claim) : "";
     if (category.id === "obligations" || item.kind === "obligation") {
       const sourceLink = item.href
-        ? ` · <a href="${esc(item.href)}" rel="noopener">Source law</a>`
+        ? ` · ${officialSourceLink({ href: item.href, label: "Source law", className: "agency-source-link", escape: esc })}`
         : "";
       return `<li class="node-record" data-obligation-id="${esc(item.id)}" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
         <div class="node-record-main">${esc(item.label)}${why ? ` ${why}` : ""}</div>

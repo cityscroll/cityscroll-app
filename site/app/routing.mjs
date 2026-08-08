@@ -3,6 +3,7 @@ import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mj
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
+import { officialSourceLink } from "../affordance_grammar.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -1267,7 +1268,7 @@ async function showNotice(id, watch){
         <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
         <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
+        ${officialSourceLink({ href: REQ_URL(r.request_id), label: t("view_in_city_record"), className: "notice-source-link", escape: taskEsc })}
       </div>
       ${scope?`<details class="fulltext" data-export-class="official_notice_text"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div class="xlate" id="nxlate" data-export-class="unofficial_translation"></div>

@@ -1,3 +1,5 @@
+import { officialSourceLink } from "./affordance_grammar.mjs";
+
 /**
  * Mandates prediction-alerts (capstone): deadline/recurrence → expected civic event.
  *
@@ -601,7 +603,7 @@ export function renderMandatePredictionsSection(view) {
             ? `<span class="mandate-pred-chip mandate-pred-cadence" data-prediction-band="cadence">Recurring</span>`
             : "");
         const source = item.source_href
-          ? ` · <a href="${esc(item.source_href)}" rel="noopener">Source law</a>`
+          ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
           : "";
         return `<li class="node-record mandate-prediction" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="${esc(item.deliverable_type)}" data-expected-event-kind="${esc(item.expected_event?.kind || "")}"${item.expected_deadline ? ` data-expected-deadline="${esc(item.expected_deadline)}"` : ""}${item.prediction_band ? ` data-prediction-band="${esc(item.prediction_band)}"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>

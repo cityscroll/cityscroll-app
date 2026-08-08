@@ -36,6 +36,7 @@ import {
   normalizeAsOfDay,
   projectAgencyConstellationAsOf,
 } from "./civic_time_ledger.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -137,7 +138,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const demoAsOfLink = showAsOf
-    ? ` · <a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>As of ${esc(DEMO_AS_OF_DAY)}</a>`
+    ? ` · ${constellationLink({ href: asOfHref(view.path, DEMO_AS_OF_DAY), label: `As of ${DEMO_AS_OF_DAY}`, className: "agency-pivot-link", attributes: { "data-ctl-demo-as-of": "" }, escape: esc })}`
     : "";
   return gateNodePageRender(`<!doctype html>
 <html lang="en">
@@ -161,13 +162,13 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       <h1>${esc(title)}</h1>
       <p class="node-lede">${esc(lead)}</p>
       <p class="node-pivot civic-object-pivot">
-        <a data-subject-ref="${esc(view.subject_ref)}" href="${esc(view.scope_href)}">Open this agency in Contracts</a>
-        · <a href="${esc(mandatesHref)}">Mandates expected vs observed</a>
-        ${showMandatesPredictionsNav ? `· <a href="${esc(mandatesPredictionsHref)}">Expected mandate events</a>` : ""}
-        ${showMandatesReportsNav ? `· <a href="${esc(mandatesReportsHref)}">Report mandates · Filing receipts</a>` : ""}
-        ${showMandatesRulesNav ? `· <a href="${esc(mandatesRulesHref)}">Rulemaking mandates · Rules activity</a>` : ""}
-        · <a href="${esc(view.interactive_profile_href)}">Interactive profile</a>
-        · <a href="#edge-provenance">Connection evidence</a>${demoAsOfLink}
+        ${constellationLink({ href: view.scope_href, label: "Open this agency in Contracts", className: "agency-pivot-link", attributes: { "data-subject-ref": view.subject_ref }, escape: esc })}
+        · ${constellationLink({ href: mandatesHref, label: "Mandates expected vs observed", className: "agency-pivot-link", escape: esc })}
+        ${showMandatesPredictionsNav ? `· ${constellationLink({ href: mandatesPredictionsHref, label: "Expected mandate events", className: "agency-pivot-link", escape: esc })}` : ""}
+        ${showMandatesReportsNav ? `· ${constellationLink({ href: mandatesReportsHref, label: "Report mandates · Filing receipts", className: "agency-pivot-link", escape: esc })}` : ""}
+        ${showMandatesRulesNav ? `· ${constellationLink({ href: mandatesRulesHref, label: "Rulemaking mandates · Rules activity", className: "agency-pivot-link", escape: esc })}` : ""}
+        · ${constellationLink({ href: view.interactive_profile_href, label: "Interactive profile", className: "agency-pivot-link", escape: esc })}
+        · ${constellationLink({ href: "#edge-provenance", label: "Connection evidence", className: "agency-pivot-link", escape: esc })}${demoAsOfLink}
       </p>
     </header>
     ${actions}

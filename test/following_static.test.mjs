@@ -35,6 +35,9 @@ test("Following renders the public control center and a complete no-JavaScript f
     ],
   }, templates);
   const html = renderFollowingDocument(view);
+  assert.match(html, /class="chip following-scope-link/);
+  assert.match(html, /class="chip following-scope-link on"[^>]*href=/);
+  assert.match(html, /class="ui-constellation-link following-record-link"/);
   const visible = html.replace(/<[^>]+>/g, " ");
 
   assert.match(html, /<h1[^>]*>Following<\/h1>/);

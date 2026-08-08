@@ -15,6 +15,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { constellationLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -41,7 +42,7 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 const { chainHTML, pinBase } = new Function(
-  "t", "tn", "window",
+  "t", "tn", "window", "constellationLink",
   extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") +
   extractFn("cleanText") + extractFn("boxClass") + extractFn("money") + extractFn("fdate") +
   extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +
@@ -57,7 +58,7 @@ const { chainHTML, pinBase } = new Function(
   extractFn("chainHTMLFlat") +
   extractFn("chainHTML") +
   "return { chainHTML, pinBase };"
-)(t, tn, windowStub);
+)(t, tn, windowStub, constellationLink);
 
 // Real pattern from the research: ACS "Housing Navigation and Stabilization Services", same
 // vendor, PIN suffix "R001" marking the renewal round.

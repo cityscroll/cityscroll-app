@@ -10,6 +10,7 @@ import {
 } from "./civic_document_chrome.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
+import { constellationLink, filterChip, installFilterChipNavigation, officialSourceLink, staticFact } from "./affordance_grammar.mjs";
 
 const DCAS_AGENCY_NAME = "Citywide Administrative Services";
 const DCAS_AGENCY_REF = entityRouteRef("agency", DCAS_AGENCY_NAME);
@@ -48,7 +49,7 @@ function statusFor(exam, today) {
 }
 
 function sourceLink(url, label) {
-  return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : "";
+  return url ? officialSourceLink({ href: url, label, className: "exam-process-source", escape: esc }) : "";
 }
 
 function processHTML(phaseView) {
@@ -110,7 +111,20 @@ function examFacetPivotsHTML(exam, today) {
     if (value === "unknown" || !label) return "";
     const edge = ["people", facet, value].join(":");
     const href = examFacetDocumentHref(facet, value);
-    return `<a class="exam-facet-pivot" data-scope-edge="${esc(edge)}" href="${esc(href)}"><b>${esc(facet)}</b> ${esc(label)}</a>`;
+    const actionLabel = {
+      window: "Browse timing cohort",
+      format: "Browse format cohort",
+      salary: "Browse salary cohort",
+      fee: "Browse fee cohort",
+      experience: "Browse experience cohort",
+    }[facet];
+    return `<span class="exam-facet-pivot-item">${staticFact({ label, className: "exam-facet-value", escape: esc })}${filterChip({
+      label: actionLabel,
+      pressed: true,
+      className: "exam-facet-pivot",
+      attributes: { "data-scope-edge": edge, "data-filter-href": href },
+      escape: esc,
+    })}</span>`;
   }).filter(Boolean);
   return renderNodeSection({
     heading: "Explore exam cohorts",
@@ -189,8 +203,8 @@ export function renderExamDocument(exam, options = {}) {
   ].filter(([, value]) => value !== "" && value != null);
   const script = options.includeScript === false ? "" : `<script defer src="/export_workflows.js"></script><script type="module" src="/exam_document.mjs"></script>`;
   const actions = renderNodeActions([
-    { kind: "link", label: "Apply through the official site", href: applicationURL, primary: true, external: true, className: "exam-action", attrs: { "data-exam-action": "apply" } },
-    { kind: "link", label: "Read the official exam notice", href: noticeURL, external: true, className: "exam-action", attrs: { "data-exam-action": "source" } },
+    { kind: "source", label: "Apply through the official site", href: applicationURL, primary: true, className: "exam-action", attrs: { "data-exam-action": "apply" } },
+    { kind: "source", label: "Read the official exam notice", href: noticeURL, className: "exam-action", attrs: { "data-exam-action": "source" } },
     { kind: "link", label: "Watch this exam", href: watchURL, className: "exam-action", attrs: { "data-exam-watch": id } },
     { kind: "button", label: "Copy link", className: "exam-action", attrs: { "data-exam-copy": true } },
     { kind: "button", label: "Print / save PDF", className: "exam-action", attrs: { "data-exam-print": true } },
@@ -215,7 +229,7 @@ export function renderExamDocument(exam, options = {}) {
   ${renderNodeBack({ href: "/browse/staffing/", label: "Back to Staffing and exams", extraClass: "exam-back" })}
   <header class="node-hero exam-hero" data-export-class="exam_identity">
     <p class="node-kicker exam-kicker">Civil-service exam</p><h1>${esc(title)}</h1>
-    <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · ${DCAS_AGENCY_HREF ? `<a href="${esc(DCAS_AGENCY_HREF)}" data-subject-ref="${esc(DCAS_AGENCY_REF)}">Published by DCAS</a>` : "Published by DCAS"}</p>
+    <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · ${DCAS_AGENCY_HREF ? constellationLink({ href: DCAS_AGENCY_HREF, label: "Published by DCAS", className: "exam-publisher-link", attributes: { "data-subject-ref": DCAS_AGENCY_REF }, escape: esc }) : "Published by DCAS"}</p>
     <div class="exam-status-row"><span class="exam-status exam-status-${esc(status.toLowerCase())}" data-exam-status="${esc(status.toLowerCase())}">${esc(status)}</span>${exam.application_start && exam.application_end ? `<span>Application window: ${esc(`${date(exam.application_start)}–${date(exam.application_end)}`)}</span>` : ""}</div>
   </header>
   ${actions}
@@ -264,6 +278,7 @@ if (typeof window !== "undefined") {
   let exam = null;
   try { exam = JSON.parse(payloadNode?.textContent || "null"); } catch { exam = null; }
   const canonical = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
+  installFilterChipNavigation(root);
   const copy = async (button) => {
     let ok = false;
     try { await navigator.clipboard.writeText(canonical); ok = true; } catch {
