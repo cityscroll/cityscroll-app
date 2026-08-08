@@ -2407,6 +2407,20 @@ both the live and restored databases.
   `node --test test/mandate_rules_bridge.test.mjs`. Demo Parks:
   `/agencies/parks-and-recreation/#mandates-rules`.
 
+## Mandates → Required Reports receipt card (v1)
+
+- Agency-level bridge from **report** mandates (`deliverable_type = report`) to
+  an observed City Record **filing receipt** when process-conformance topic join
+  hits. Unmatched mandates list duty + deadline only — no absence caveats.
+- Pure model: `site/mandate_reports_receipt.mjs` (`buildMandateReportsReceiptView`
+  / `renderMandateReportsReceiptSection`). Wired from
+  `site/agency_constellation.mjs` as `view.mandates_reports`. Shareable
+  `/agencies/<id>/#mandates-reports`. Watch scope: report free-watch.
+- Rebuild: `node tools/build_agency_constellation_documents.mjs`. Capture:
+  `python3 tools/capture_mandate_reports_receipt.py`. Verify:
+  `node --test test/mandate_reports_receipt.test.mjs`. Demo Parks:
+  `/agencies/parks-and-recreation/#mandates-reports`.
+
 ## Ontology delta · what's new in the graph (v1)
 
 - Living Civic Graph first praxis wave: structural inventory growth (new edge
