@@ -89,11 +89,12 @@ test("scheduled cutover-regression owns live production demo-link monitoring", (
   assert.doesNotMatch(fullEnv, /CROL_DEMO_LINK_IDS/);
 });
 
-test("Cloudflare Pages fallback is manual while native builds own preview and production releases", () => {
+test("Cloudflare Pages production deploy is push-triggered and not a PR gate", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /workflow_dispatch:/);
-  assert.doesNotMatch(workflow, /^\s+(?:push|pull_request|schedule):/m);
-  // The manual fallback always deploys the production branch.
+  assert.match(workflow, /^\s+push:\n\s+branches:\s*\[main\]/m);
+  assert.doesNotMatch(workflow, /^\s+(?:pull_request|schedule):/m);
+  // Both automatic and manual releases deploy the production branch.
   assert.match(workflow, /branch="main"/);
   assert.match(workflow, /--branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
   assert.match(workflow, /is_preview/);

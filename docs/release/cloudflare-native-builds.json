@@ -4,13 +4,15 @@
   "source_control": "github",
   "pages": {
     "project": "cityscroll",
+    "release_control_plane": "github_actions",
+    "automatic_deploy_workflow": ".github/workflows/deploy-cloudflare-pages.yml",
     "production_branch": "main",
     "root_directory": "/",
     "build_command": "if [ \"$CF_PAGES_BRANCH\" = \"main\" ]; then node tools/build_cloudflare_pages.mjs --site-dir _site --refresh-decision-outcomes; else node tools/build_cloudflare_pages.mjs --site-dir _site; fi",
     "build_output_directory": "_site",
     "preview_deployments": true,
     "path_includes": ["site/**", "tools/**", "test/**", "warehouse/**", "docs/**"],
-    "manual_fallback_workflow": ".github/workflows/deploy-cloudflare-pages.yml"
+    "native_git_integration_required": false
   },
   "worker": {
     "name": "crol-worker",
