@@ -181,6 +181,7 @@ test("constellation surfaces mandates conformance for Parks", () => {
   assert.match(html, /expected vs observed|City Record/i);
   assert.match(html, /Share this mandates view|Mandates expected vs observed/);
   assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);
+  assert.doesNotMatch(html, /awaiting detector|This pass matches|corpus checked|This pass covers/i);
 });
 
 test("buildProcessConformanceLookup is pure over fixture inputs", () => {
