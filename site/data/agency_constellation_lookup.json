@@ -1763,7 +1763,7 @@
     },
     "housing-authority": {
       "subject_ref": "agency:id:housing-authority",
-      "display_name": "housing-authority",
+      "display_name": "Housing Authority",
       "path": "/agencies/housing-authority/",
       "matched_categories": 1,
       "categories": {
@@ -2191,9 +2191,9 @@
       }
     },
     "n-y-c-housing-authority": {
-      "subject_ref": "agency:id:n-y-c-housing-authority",
-      "display_name": "n-y-c-housing-authority",
-      "path": "/agencies/n-y-c-housing-authority/",
+      "subject_ref": "agency:id:housing-authority",
+      "display_name": "Housing Authority",
+      "path": "/agencies/housing-authority/",
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -2202,8 +2202,8 @@
           "method": "agency_canonical_v1"
         },
         "meetings": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 3,
           "method": "agency_canonical_v1"
         },
         "rules": {
@@ -2217,8 +2217,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 399,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
