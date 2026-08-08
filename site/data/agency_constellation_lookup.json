@@ -35,7 +35,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 68,
+          "count": 65,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -101,7 +101,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 29,
+          "count": 25,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -266,7 +266,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 58,
+          "count": 57,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -497,7 +497,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 234,
+          "count": 221,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -530,7 +530,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
+          "count": 7,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -563,7 +563,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 73,
+          "count": 62,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -662,7 +662,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 24,
+          "count": 23,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -695,7 +695,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 9,
+          "count": 8,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -794,7 +794,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 72,
+          "count": 64,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -926,7 +926,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 45,
+          "count": 36,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1025,7 +1025,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 37,
+          "count": 32,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1091,7 +1091,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 160,
+          "count": 149,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1124,7 +1124,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 205,
+          "count": 196,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1157,7 +1157,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 14,
+          "count": 7,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1487,7 +1487,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 123,
+          "count": 107,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1619,7 +1619,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 128,
+          "count": 112,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1685,7 +1685,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 147,
+          "count": 131,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1751,7 +1751,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 58,
+          "count": 50,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1817,7 +1817,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 259,
+          "count": 232,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1850,7 +1850,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 46,
+          "count": 42,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1916,7 +1916,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 145,
+          "count": 132,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -1982,7 +1982,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 102,
+          "count": 94,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2015,7 +2015,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 5,
+          "count": 4,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2081,7 +2081,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 29,
+          "count": 24,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2114,7 +2114,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 21,
+          "count": 19,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2180,7 +2180,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 27,
+          "count": 20,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2246,7 +2246,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2279,7 +2279,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
+          "count": 6,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2807,7 +2807,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 197,
+          "count": 174,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2840,7 +2840,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 59,
+          "count": 53,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2873,7 +2873,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 133,
+          "count": 124,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -2906,7 +2906,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 15,
+          "count": 13,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -3005,7 +3005,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
+          "count": 5,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -3137,7 +3137,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 51,
+          "count": 46,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -3170,7 +3170,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 58,
+          "count": 54,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -3236,7 +3236,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 65,
+          "count": 61,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -3302,7 +3302,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 124,
+          "count": 116,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
@@ -3368,7 +3368,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 11,
+          "count": 10,
           "method": "enacted_law_mandate_extract_v1"
         },
         "staffing": {
