@@ -40,20 +40,34 @@ export function feedItems(kind, rows) {
     }
     if (kind === "obligation") {
       // World-state mandate rows: alert_id is the idempotency key; link the agency constellation.
+      // Prediction branch deep-links expected-event surface and names the event + window.
       const agencySlug = r.agency_id
         || String(r.agency_name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const isPredicted = r.predicted_event === true || !!r.expected_event_kind;
       const deadline = r.deadline_date
-        ? `statutory deadline ${d10(r.deadline_date)}`
+        ? (isPredicted
+          ? (Number.isFinite(r.days_to_deadline) && r.days_to_deadline >= 0
+            ? `expected by ${d10(r.deadline_date)} · ${r.days_to_deadline} day${r.days_to_deadline === 1 ? "" : "s"}`
+            : `expected by ${d10(r.deadline_date)}`)
+          : `statutory deadline ${d10(r.deadline_date)}`)
         : (r.deadline_text ? `deadline: ${stripHtml(r.deadline_text)}` : "no computed deadline");
+      const agencyUrl = agencySlug
+        ? `https://cityscroll.org/agencies/${encodeURIComponent(agencySlug)}/${isPredicted ? "#mandates-predictions" : ""}`
+        : "https://cityscroll.org/agencies/";
       return {
         id: String(r.alert_id || r.obligation_id || ""),
-        url: agencySlug
-          ? `https://cityscroll.org/agencies/${encodeURIComponent(agencySlug)}/`
-          : "https://cityscroll.org/agencies/",
+        url: agencyUrl,
         title: stripHtml(r.duty_text || r.short_title || "Statutory mandate"),
         date: r.deadline_date || r.start_date || null,
-        summary: [r.agency_name, r.deliverable_type, deadline, r.recurrence, r.citation]
-          .filter(Boolean).map((part) => stripHtml(part)).join(" · "),
+        summary: [
+          r.agency_name,
+          isPredicted ? r.expected_event_label : null,
+          r.deliverable_type,
+          deadline,
+          isPredicted ? (r.prediction_band_label || r.prediction_band) : null,
+          r.recurrence,
+          r.citation,
+        ].filter(Boolean).map((part) => stripHtml(part)).join(" · "),
         eventDate: r.deadline_date || null,
       };
     }

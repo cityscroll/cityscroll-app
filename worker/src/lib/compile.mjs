@@ -11,6 +11,10 @@ import {
   normalizeAssetFilter,
 } from "./property_commercial.mjs";
 import { obligationDigestRowsForAgency } from "../../../site/agency_obligations.mjs";
+import {
+  mandatePredictionDigestRowsForAgency,
+  mergeObligationDigestWithPredictions,
+} from "../../../site/mandate_prediction_alerts.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
@@ -87,6 +91,8 @@ export function compileSub(sub, todayISO) {
     // World-state predicate: agency statutory mandates / approaching deadlines from
     // the precomputed obligations lookup — not a City Record document match.
     // User-facing term is "mandates"; "obligations" is the storage lens + upstream source.
+    // Prediction branch: rulemaking/report duties roll recurrence forward into an
+    // expected-event window so watchers get an earlier-stage alert ahead of deadline.
     const agencyId = typeof f.agency_id === "string" && f.agency_id.trim()
       ? f.agency_id.trim()
       : (typeof f.agency === "string" && f.agency.trim() ? f.agency.trim() : null);
@@ -102,12 +108,21 @@ export function compileSub(sub, todayISO) {
       params: {},
       idField: "alert_id",
       kind: "obligation",
-      transformRows: (payload) => obligationDigestRowsForAgency(payload, agencyId, {
-        todayISO,
-        windowDays,
-        pastDays: 30,
-        deliverableType,
-      }),
+      transformRows: (payload) => {
+        const base = obligationDigestRowsForAgency(payload, agencyId, {
+          todayISO,
+          windowDays,
+          pastDays: 30,
+          deliverableType,
+        });
+        const predicted = mandatePredictionDigestRowsForAgency(payload, agencyId, {
+          todayISO,
+          windowDays,
+          pastDays: 14,
+          deliverableType,
+        });
+        return mergeObligationDigestWithPredictions(base, predicted);
+      },
     };
   }
 
