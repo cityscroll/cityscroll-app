@@ -1204,7 +1204,7 @@ async function showNotice(id, watch){
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
-  const edgeNotice=box.querySelector(`[data-edge-rendered="notice"][data-notice-id="${CSS.escape(String(id))}"]`);
+  const edgeNotice=box.querySelector(`[data-edge-rendered][data-notice-id="${CSS.escape(String(id))}"]`);
   const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
   if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
@@ -1223,6 +1223,11 @@ async function showNotice(id, watch){
   }catch(e){}
   if(!r){
     lastNoticeContext = null;
+    if(edgeNotice){
+      applyActiveHistoryRouteScroll();
+      if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
+      return;
+    }
     const cityRecordUrl = cityRecordRequestUrl(id);
     const cityRecordAction = cityRecordUrl
       ? ` · <a href="${cityRecordUrl}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a>`
