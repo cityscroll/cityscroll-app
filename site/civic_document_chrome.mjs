@@ -119,15 +119,11 @@ export function renderNodeSection({
   return `<section class="${esc(classNames("node-section", extraClass))}"${labelled}${exportAttr}${attrPairs}>${h2}${content}</section>`;
 }
 
-/**
- * Reader-facing "Sources and limits" block: plain-English note + optional
- * human-readable source links. Never includes pipeline source keys or
- * subject_ref identifiers.
- */
+/** Reader-facing source links and context, when a document needs them. */
 export function renderNodeProvenance({
   note,
   sourceItems = [],
-  heading = "Sources and limits",
+  heading = "",
   headingId = "",
   exportClass = "object_provenance",
   extraClass = "",
@@ -167,6 +163,9 @@ export function renderNodeProvenance({
  * surface-load sampling — not for silent auto-rewrites of free text.
  */
 export const NODE_PAGE_ABSENCE_PHRASES = Object.freeze([
+  "not published",
+  "sources and limits",
+  "unpublished values remain unlinked",
   "not yet shown",
   "not yet shown here",
   "not available yet",
@@ -184,4 +183,13 @@ export const NODE_PAGE_ABSENCE_PHRASES = Object.freeze([
 export function detectNodePageCruft(html) {
   const text = String(html || "").toLowerCase();
   return NODE_PAGE_ABSENCE_PHRASES.filter((phrase) => text.includes(phrase));
+}
+
+/** Fail closed at the final node-document render boundary. */
+export function gateNodePageRender(html) {
+  const cruft = detectNodePageCruft(html);
+  if (cruft.length) {
+    throw new Error(`Node page contains reader-facing cruft: ${cruft.join(", ")}`);
+  }
+  return html;
 }

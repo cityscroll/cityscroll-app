@@ -17,6 +17,7 @@
  */
 
 import {
+  gateNodePageRender,
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
   renderNodeBack,
@@ -559,7 +560,7 @@ export function renderOntologyDeltaDocument(lookup, { assetPrefix = "/" } = {}) 
     ].filter(Boolean),
   });
 
-  return `<!doctype html>
+  return gateNodePageRender(`<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -609,7 +610,7 @@ ${provenance}
 </main>
 ${renderNodeFooter({ aboutHref: "/about.html" })}
 </body>
-</html>`;
+</html>`);
 }
 
 export function ontologyDeltaSharePath() {
