@@ -9,7 +9,9 @@
  *
  * Seams for later workstreams:
  * - Evidence-Bearing Civic Graph: agency_match method / confidence
- * - Process Conformance: observation.status is machine-only in v1
+ * - Process Conformance: expected-vs-observed lives in site/process_conformance.mjs
+ *   (lookup site/data/process_conformance_lookup.json). Row-level observation
+ *   here stays a neutral placeholder; the public mandates surface owns labels.
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
@@ -615,8 +617,8 @@ export function renderAgencyObligationsSection(view) {
   ].filter(Boolean).join("");
 
   return `<section class="node-section node-card civic-object-section" data-agency-constellation-category="obligations" data-status="${esc(view.status)}" data-export-class="object_members" data-certification-basis="${esc(view.certification_basis || AGENCY_OBLIGATIONS_CERTIFICATION)}">
-    <h2>Statutory mandates <span class="muted node-muted">(${esc(status)})</span></h2>
-    <p class="node-muted muted">Agency duties with statutory deadlines and recurrence, linked to source law.</p>
+    <h2>Mandates <span class="muted node-muted">(${esc(status)})</span></h2>
+    <p class="node-muted muted">Agency → duty → deadline → recurrence from enacted local law.</p>
     ${list}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;

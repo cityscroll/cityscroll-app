@@ -31,6 +31,9 @@ function loadSources() {
   const intelligencePath = join(SITE, "data/entity_intelligence_lookup.json");
   const certificationPath = join(SITE, "data/exam_certification_constellation.json");
   const obligationsPath = join(SITE, "data/agency_obligations_lookup.json");
+  const processConformancePath = join(SITE, "data/process_conformance_lookup.json");
+  const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
+  const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
@@ -38,6 +41,9 @@ function loadSources() {
     intelligence: readJson(intelligencePath),
     certification: existsSync(certificationPath) ? readJson(certificationPath) : null,
     obligations: existsSync(obligationsPath) ? readJson(obligationsPath) : null,
+    process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
+    rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
+    meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
   };
 }
 
@@ -60,6 +66,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.intelligence?.generated_at,
     sources.certification?.generated_at,
     sources.obligations?.generated_at,
+    sources.process_conformance?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const byId = {};
   const documents = [];
@@ -105,7 +112,9 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     provenance: {
       intelligence_generated_at: sources.intelligence?.generated_at || null,
       certification_generated_at: sources.certification?.generated_at || null,
-      note: "Precomputed last-known-good rollup over entity-intelligence + exam certification edges.",
+      obligations_generated_at: sources.obligations?.generated_at || null,
+      process_conformance_generated_at: sources.process_conformance?.generated_at || null,
+      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, mandates, and process-conformance expected-vs-observed.",
     },
   };
 

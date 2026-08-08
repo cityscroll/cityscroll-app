@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-06T00:00:00Z|2026-08-06T19:05:45.517Z|2026-08-07T23:52:53.226Z",
+  "generated_at": "2026-08-06T00:00:00Z|2026-08-06T19:05:45.517Z|2026-08-06T19:05:45.517Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -35,8 +35,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 65,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 68,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -69,7 +69,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -101,8 +101,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 25,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 29,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -135,7 +135,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -168,7 +168,7 @@
         "obligations": {
           "status": "matched",
           "count": 14,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -201,7 +201,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -234,7 +234,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -266,8 +266,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 57,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 58,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -300,7 +300,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -333,7 +333,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -366,7 +366,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -399,7 +399,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -432,7 +432,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -465,7 +465,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -497,8 +497,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 221,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 234,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -530,8 +530,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 8,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -563,8 +563,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 62,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 73,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -597,7 +597,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -630,7 +630,7 @@
         "obligations": {
           "status": "matched",
           "count": 2,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -662,8 +662,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 23,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 24,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -695,8 +695,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 9,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -729,7 +729,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -762,7 +762,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -794,8 +794,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 64,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 72,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -828,7 +828,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -861,7 +861,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -894,7 +894,7 @@
         "obligations": {
           "status": "matched",
           "count": 3,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -926,8 +926,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 36,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 45,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -960,7 +960,7 @@
         "obligations": {
           "status": "matched",
           "count": 16,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -993,7 +993,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -1025,8 +1025,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 32,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 37,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1059,7 +1059,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1091,8 +1091,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 149,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 160,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1124,8 +1124,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 196,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 205,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1157,8 +1157,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 14,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1191,7 +1191,7 @@
         "obligations": {
           "status": "matched",
           "count": 6,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1224,7 +1224,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -1257,7 +1257,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1290,7 +1290,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1323,7 +1323,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1356,7 +1356,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1389,7 +1389,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1422,7 +1422,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1455,7 +1455,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1487,8 +1487,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 107,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 123,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1521,7 +1521,7 @@
         "obligations": {
           "status": "matched",
           "count": 12,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1554,7 +1554,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -1587,7 +1587,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -1619,8 +1619,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 112,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 128,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1653,7 +1653,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1685,8 +1685,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 131,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 147,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1719,7 +1719,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1751,8 +1751,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 50,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 58,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1785,7 +1785,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -1817,8 +1817,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 232,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 259,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1850,8 +1850,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 42,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 46,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1884,7 +1884,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -1916,8 +1916,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 132,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 145,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1950,7 +1950,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -1982,8 +1982,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 94,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 102,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2015,8 +2015,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 4,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 5,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2049,7 +2049,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2081,8 +2081,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 24,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 29,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2114,8 +2114,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 19,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 21,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2148,7 +2148,7 @@
         "obligations": {
           "status": "matched",
           "count": 6,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2180,8 +2180,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 20,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 27,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2214,7 +2214,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2246,8 +2246,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 2,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 3,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2279,8 +2279,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 6,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 8,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2313,7 +2313,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2346,7 +2346,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2379,7 +2379,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2412,7 +2412,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2445,7 +2445,7 @@
         "obligations": {
           "status": "matched",
           "count": 10,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2478,7 +2478,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2511,7 +2511,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2544,7 +2544,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2577,7 +2577,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2610,7 +2610,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2643,7 +2643,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2676,7 +2676,7 @@
         "obligations": {
           "status": "matched",
           "count": 2,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2709,7 +2709,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2742,7 +2742,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2775,7 +2775,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2807,8 +2807,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 174,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 197,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2840,8 +2840,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 53,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 59,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2873,8 +2873,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 124,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 133,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2906,8 +2906,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 13,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 15,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -2940,7 +2940,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -2973,7 +2973,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3005,8 +3005,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 5,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 7,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -3039,7 +3039,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -3072,7 +3072,7 @@
         "obligations": {
           "status": "matched",
           "count": 1,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3105,7 +3105,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "empty",
@@ -3137,8 +3137,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 46,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 51,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3170,8 +3170,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 54,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 58,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3204,7 +3204,7 @@
         "obligations": {
           "status": "matched",
           "count": 2,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3236,8 +3236,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 61,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 65,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3270,7 +3270,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3302,8 +3302,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 116,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 124,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3336,7 +3336,7 @@
         "obligations": {
           "status": "empty",
           "count": 0,
-          "method": "enacted_law_mandate_extract_v1"
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3368,8 +3368,8 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 10,
-          "method": "enacted_law_mandate_extract_v1"
+          "count": 11,
+          "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
           "status": "matched",
@@ -3382,6 +3382,8 @@
   "provenance": {
     "intelligence_generated_at": "2026-08-06T19:05:45.517Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
-    "note": "Precomputed last-known-good rollup over entity-intelligence + exam certification edges."
+    "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+    "process_conformance_generated_at": "2026-08-06T19:05:45.517Z|2026-08-07T23:52:53.226Z",
+    "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, mandates, and process-conformance expected-vs-observed."
   }
 }

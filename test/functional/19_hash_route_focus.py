@@ -83,6 +83,9 @@ def main():
                 ("#notice/20260701099", "#noticeview .route-item"),
                 ("#land/P2026K0001", "#land-item-card"),
                 (
+                    # This harness serves the SPA shell for /agencies/ so the
+                    # enhancement island can own focus (production edge uses the
+                    # static constellation document for the same path without ?tab=).
                     "#agency/Housing%20Preservation%20and%20Development",
                     "#entityview .route-item",
                 ),
