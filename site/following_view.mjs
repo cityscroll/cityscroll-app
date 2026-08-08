@@ -8,7 +8,7 @@ import {
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
-const LENSES = Object.freeze(["money", "people", "land", "property", "rules", "meetings", "district", "entity"]);
+const LENSES = Object.freeze(["money", "people", "land", "property", "rules", "meetings", "district", "entity", "obligations"]);
 const LENS_LABELS = Object.freeze({
   money: "Contracts and RFPs",
   people: "Staffing and exams",
@@ -18,6 +18,7 @@ const LENS_LABELS = Object.freeze({
   meetings: "Hearings and meetings",
   district: "District digest",
   entity: "Agency or vendor",
+  obligations: "Duties",
 });
 const BOROUGHS = Object.freeze(["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]);
 
@@ -117,6 +118,7 @@ function scopeSummary(lens, filter) {
     ["stage", filter.process || filter.stage],
     ["time", filter.dateWindow || filter.when],
     ["name", filter.name],
+    ["agency id", filter.agency_id],
     ["exam number", Array.isArray(filter.examNumber) ? filter.examNumber.join(", ") : filter.examNumber],
     ["subject ref", Array.isArray(filter.subject_refs_all) && filter.subject_refs_all.length ? filter.subject_refs_all.join(", ") : null],
   ];
