@@ -1,10 +1,12 @@
-# Manual fallback for the Cloudflare Pages Git integration.
-# Cloudflare-native Pages builds are canonical for production and previews.
+# Deploy the verified static site to the public Cloudflare Pages origin.
+# GitHub Actions is the canonical production path so every main push has an
+# observable deploy receipt. Cloudflare's native Git integration is optional.
 # GitHub Pages remains deployed as an independent public fallback origin.
-# This workflow is intentionally non-required and does not run on pushes.
 name: Deploy Cloudflare Pages
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       refresh_decision_outcomes:
@@ -17,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: cloudflare-pages-manual-fallback
+  group: cloudflare-pages-production
   cancel-in-progress: false
 
 jobs:
@@ -54,7 +56,7 @@ jobs:
       - name: Build verified site artifact
         uses: ./.github/actions/build-site
         with:
-          refresh-decision-outcomes: ${{ inputs.refresh_decision_outcomes }}
+          refresh-decision-outcomes: ${{ github.event_name == 'push' || inputs.refresh_decision_outcomes }}
       - name: Deploy to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v3.14.1
@@ -80,7 +82,7 @@ jobs:
           {
             echo "## Cloudflare Pages"
             echo
-            echo "Manual production fallback (Cloudflare-native Pages builds are canonical)."
+            echo "Production deployment from the canonical GitHub Actions release path."
             echo
             echo "Production alias: [$PAGES_URL]($PAGES_URL)"
             echo
