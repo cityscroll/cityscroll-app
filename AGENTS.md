@@ -7,6 +7,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Browse document facets are edge-rendered first and then hydrated by the SPA. Agency
   `entity_refs_all` links must be passed into the live lens agency control before feed
   loading; see `site/agency_scope_route.mjs` and `test/functional/28_agency_scope_links.py`.
+- **Staffing agency scope:** hydrate `staffingFilters.agency` from the typed facet (same as
+  Money), identity-match City Record spellings (`DEPT OF PARKS & RECREATION` ↔
+  `agency:id:parks-and-recreation`), and re-query SODA when scoped — the citywide 80-row
+  hires snapshot is not agency-complete. Under an agency scope, lead with appointments;
+  exams only when publisher certification edges join them (`site/staffing_agency_scope.mjs`).
+  Detector: `test/offered_facet_actually_filters.test.mjs` (strict non-empty subset for every
+  offered Browse agency facet + agency section chips).
 
 ## PR and CI preflight
 

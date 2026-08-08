@@ -917,7 +917,11 @@ function applyHash(){
       // The secondary ledger remains a hires-only historical view.
       staffingFilters.query=q.get("q")||"";
       staffingFilters.role=q.get("role")||"";
-      staffingFilters.agency=q.get("agency")||"";
+      // Typed agency:id:* facets (document Browse URLs) must hydrate the same
+      // agency control as legacy ?agency= — otherwise offered scopes are lies.
+      const scopedAgency=q.get("agency")||agencyFromRouteFacet(activeRouteFacetValues)||"";
+      const agencyScopeChanged=staffingFilters.agency!==scopedAgency;
+      staffingFilters.agency=scopedAgency;
       $("#staffing-query").value=staffingFilters.query;
       // A guide route is not an exam detail route — clear any prior #exam/ selection.
       careerSelected=null;
@@ -959,10 +963,16 @@ function applyHash(){
           format:"all", salary_band:"all", fee_level:"all", no_experience:"all",
         };
       }
+      // Agency scope reloads the appointment corpus (citywide snapshot is not
+      // agency-complete) and re-applies exam certification filtering.
+      if(agencyScopeChanged && typeof globalThis.reloadStaffingForAgencyScope==="function"){
+        globalThis.reloadStaffingForAgencyScope();
+      }
       showTab("people");
       const ledgerRoute=!!(staffingFilters.query||staffingFilters.role||staffingFilters.agency);
+      // Agency-scoped Staffing leads with appointments, not the citywide exam guide.
       scrollStaffingView(legacyExamRoute?"guide":ledgerRoute?"notices":q.get("view"));
-      if(q.get("view")==="guide" || legacyExamRoute || careerRouteFilters) loadCareerGuide();
+      if(q.get("view")==="guide" || legacyExamRoute || careerRouteFilters || staffingFilters.agency) loadCareerGuide();
     } else if(tab === "land"){
       landResolvedArea=null;
       landBorough = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";

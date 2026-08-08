@@ -3,6 +3,13 @@ import {
   examFacetOptionValues,
   examFacetValue,
 } from "../exam_detail_facets.mjs";
+import {
+  examNumbersForAgency,
+  filterExamsByAgencyScope,
+  hireMatchesAgencyScope,
+  sodaAgencyNameClause,
+  staffingAgencyScopePresentation,
+} from "../staffing_agency_scope.mjs";
 
 /* ===================== PEOPLE ===================== */
 let SameConsolidation=null;
@@ -32,6 +39,10 @@ function prepareCareerHow(){
   careerHowPrepared=true;
 }
 let staffingNotices = [], staffingLoaded = false, staffingLoadPromise = null;
+let staffingLoadedScopeKey = "";
+// null = no agency scope; Set = publisher-certified exam numbers for that agency.
+let staffingAgencyExamNumbers = null;
+let staffingExamScopePromise = null;
 const staffingFilters = {query:"", role:"", agency:""};
 const CAREER_AREA_KEYS = {
   "public-safety": "career_area_public_safety",
@@ -43,8 +54,22 @@ const CAREER_AREA_KEYS = {
   "trades-operations": "career_area_trades",
   "other": "career_area_other",
 };
+const EXAM_CERTIFICATION_URL = "data/exam_certification_constellation.json";
+function staffingScopeKey(){
+  return String(staffingFilters.agency || "").trim();
+}
+function staffingHireFilters(){
+  const agency = staffingScopeKey();
+  if(!agency) return {...staffingFilters};
+  return {
+    ...staffingFilters,
+    // Exact City Record spellings on chip filters stay in staffingFilters.agency;
+    // identity-aware matching covers canonical facet hydration (Parks vs DEPT OF…).
+    agencyMatch: (agencyName) => hireMatchesAgencyScope(agencyName, agency),
+  };
+}
 function staffingVisibleItems(){
-  return CrolStaffing.filterHireNotices(staffingNotices,staffingFilters);
+  return CrolStaffing.filterHireNotices(staffingNotices,staffingHireFilters());
 }
 function staffingFacetHTML(kind, allKey, field){
   return SameConsolidation.facetHTML(kind,allKey,field,staffingNotices,staffingFilters,CrolStaffing.topValues);
@@ -55,7 +80,10 @@ function bindStaffingFacets(){
     renderStaffingFeed(); updateHash();
   }));
   $("#staffing-agency-filters").querySelectorAll("[data-staffing-agency]").forEach(button=>button.addEventListener("click",()=>{
-    staffingFilters.agency=button.dataset.staffingAgency||"";
+    const next=button.dataset.staffingAgency||"";
+    if(staffingFilters.agency===next) return;
+    staffingFilters.agency=next;
+    reloadStaffingForAgencyScope();
     renderStaffingFeed(); updateHash();
   }));
 }
@@ -63,12 +91,17 @@ function syncStaffingModeUI(){
   const examDetail=!!careerSelected;
   const guide=$("#career-guide");
   const feed=$("#staffing-feed");
+  const ledger=$("#staffing-ledger");
   const heading=$("#staffing-feed-meta-heading");
+  const presentation=staffingAgencyScopePresentation(staffingFilters.agency, staffingAgencyExamNumbers);
   if(feed) feed.hidden=examDetail;
   if(heading) heading.textContent=t("staffing_appointments_heading");
+  if(presentation.leadWithAppointments && ledger) ledger.open=true;
   if(guide){
-    guide.hidden=false;
-    if(examDetail) prepareCareerHow();
+    // Under an agency scope, never headline the citywide exam guide. Show only
+    // exams the publisher certified to that agency once those edges load.
+    guide.hidden=examDetail ? false : !presentation.showExamGuide;
+    if(examDetail || presentation.showExamGuide) prepareCareerHow();
   }
 }
 function renderStaffingFeed(){
@@ -99,21 +132,90 @@ function loadStaffingHiresSnapshot(){
   }
   return staffingHiresSnapshotPromise;
 }
+async function loadStaffingExamAgencyScope(agency){
+  const key=String(agency||"").trim();
+  if(!key){
+    staffingAgencyExamNumbers=null;
+    staffingExamScopePromise=null;
+    return null;
+  }
+  if(staffingExamScopePromise && staffingExamScopePromise.key===key){
+    return staffingExamScopePromise.promise;
+  }
+  const promise=(async()=>{
+    try{
+      const payload=await fetch(EXAM_CERTIFICATION_URL).then(r=>r.ok?r.json():null);
+      return examNumbersForAgency(payload, key);
+    }catch(_e){
+      return new Set();
+    }
+  })();
+  staffingExamScopePromise={key, promise};
+  staffingAgencyExamNumbers=await promise;
+  return staffingAgencyExamNumbers;
+}
+function reloadStaffingForAgencyScope(){
+  staffingLoaded=false;
+  staffingLoadPromise=null;
+  staffingNotices=[];
+  staffingLoadedScopeKey="";
+  staffingExamScopePromise=null;
+  staffingAgencyExamNumbers=null;
+  loadStaffingFeed();
+  if(careerData) renderCareerGuide();
+  else loadCareerGuide();
+}
 async function loadStaffingFeed(){
-  if(staffingLoaded){ renderStaffingFeed(); return staffingNotices; }
-  if(staffingLoadPromise) return staffingLoadPromise;
-  staffingLoadPromise=(async()=>{
+  const scopeKey=staffingScopeKey();
+  if(staffingLoaded && staffingLoadedScopeKey===scopeKey){
+    renderStaffingFeed();
+    return staffingNotices;
+  }
+  if(staffingLoadPromise && staffingLoadPromise.scopeKey===scopeKey) return staffingLoadPromise.promise;
+  const promise=(async()=>{
     let paintedFromSnapshot=false;
+    await loadSameConsolidation();
+    // Agency scope: query City Record for that agency's appointments. The
+    // citywide 80-row snapshot is not a substitute for a scoped personnel list.
+    if(scopeKey){
+      try{
+        const agencyClause=sodaAgencyNameClause(scopeKey);
+        const where=agencyClause
+          ? `section_name='Changes in Personnel' AND short_title='APPOINTED' AND ${agencyClause}`
+          : "section_name='Changes in Personnel' AND short_title='APPOINTED'";
+        const [rows, crosswalk]=await Promise.all([
+          soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
+            "$where":where,
+            "$order":"start_date DESC, request_id DESC","$limit":"80"}),
+          fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
+          loadStaffingExamAgencyScope(scopeKey),
+        ]);
+        if(staffingScopeKey()!==scopeKey) return staffingNotices;
+        staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
+        staffingLoaded=true;
+        staffingLoadedScopeKey=scopeKey;
+        renderStaffingFeed();
+        if(careerData) renderCareerGuide();
+        return staffingNotices;
+      }catch(e){
+        if(staffingScopeKey()!==scopeKey) return staffingNotices;
+        $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
+        staffingLoaded=true;
+        staffingLoadedScopeKey=scopeKey;
+        return [];
+      }
+    }
     try{
       const [snap, crosswalk]=await Promise.all([
         loadStaffingHiresSnapshot(),
         fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
-        loadSameConsolidation(),
       ]);
       const notices=snap&&Array.isArray(snap.notices)?snap.notices:[];
       if(notices.length){
         staffingNotices=CrolStaffing.hireNotices(notices,crosswalk);
         staffingLoaded=true;
+        staffingLoadedScopeKey="";
+        staffingAgencyExamNumbers=null;
         renderStaffingFeed();
         paintedFromSnapshot=true;
       }
@@ -125,8 +227,11 @@ async function loadStaffingFeed(){
           "$order":"start_date DESC, request_id DESC","$limit":"80"}),
         fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
       ]);
+      if(staffingScopeKey()) return staffingNotices;
       staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
       staffingLoaded=true;
+      staffingLoadedScopeKey="";
+      staffingAgencyExamNumbers=null;
       renderStaffingFeed();
       return staffingNotices;
     }catch(e){
@@ -137,7 +242,8 @@ async function loadStaffingFeed(){
       return staffingNotices;
     }
   })();
-  return staffingLoadPromise;
+  staffingLoadPromise={scopeKey, promise};
+  return promise;
 }
 function careerToday(){ return new Date().toISOString().slice(0,10); }
 function careerDate(value){ return value ? fdt(value+"T12:00:00Z") : t("career_date_unknown"); }
@@ -709,11 +815,25 @@ function careerFilters(){
     ...careerFacetState,
   };
 }
+function careerExamsForActiveScope(baseExams){
+  const exams=Array.isArray(baseExams)?baseExams:[];
+  if(!staffingScopeKey()) return exams;
+  if(staffingAgencyExamNumbers instanceof Set){
+    return filterExamsByAgencyScope(exams, staffingAgencyExamNumbers);
+  }
+  // Certification edges still loading — do not paint citywide exams under a scope.
+  loadStaffingExamAgencyScope(staffingScopeKey()).then(()=>{
+    if(careerData) renderCareerGuide();
+    syncStaffingModeUI();
+  });
+  return [];
+}
 function renderCareerGuide(){
   if(!careerData) return;
   const today=careerToday();
-  const open=careerData.exams.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="open").length;
-  const upcoming=careerData.exams.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="upcoming").length;
+  const scopedPool=careerExamsForActiveScope(careerData.exams);
+  const open=scopedPool.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="open").length;
+  const upcoming=scopedPool.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="upcoming").length;
   $("#career-open-count").textContent=fmtNumber(open);
   $("#career-upcoming-count").textContent=fmtNumber(upcoming);
   careerSourceHTML();
@@ -735,8 +855,11 @@ function renderCareerGuide(){
     const selected=careerData.exams.find(exam=>exam.exam_number===careerSelected);
     exams=selected?[selected]:[];
   }else{
-    exams=CrolStaffing.filterExams(careerData.exams,careerFilters(),today);
+    // Agency scope: only exams the publisher certified to that agency — never
+    // the full citywide guide under a claimed agency facet.
+    exams=CrolStaffing.filterExams(scopedPool,careerFilters(),today);
   }
+  syncStaffingModeUI();
   const shown=exams.slice(0,careerLimit);
   $("#career-results").innerHTML=shown.length
     ? (careerSelected?shown.map(careerCardHTML).join(""):careerResultsHTML(shown))+(exams.length>shown.length?`<div class="career-more"><button type="button" id="career-more">${t("career_show_more",{n:fmtNumber(exams.length-shown.length)})}</button></div>`:"")
@@ -1198,6 +1321,8 @@ globalThis.examStageSourceLabel = examStageSourceLabel;
 globalThis.loadCareerGuide = loadCareerGuide;
 globalThis.loadStaffingFeed = loadStaffingFeed;
 globalThis.loadStaffingHiresSnapshot = loadStaffingHiresSnapshot;
+globalThis.reloadStaffingForAgencyScope = reloadStaffingForAgencyScope;
+globalThis.staffingVisibleItems = staffingVisibleItems;
 globalThis.pExample = pExample;
 globalThis.pSearch = pSearch;
 globalThis.pSearchPeople = pSearchPeople;
