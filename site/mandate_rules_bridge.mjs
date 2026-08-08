@@ -14,6 +14,7 @@ import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs"
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import { noticeDocumentPath } from "./notice_permalink.mjs";
 import { OBSERVATION_LABELS, OBSERVATION_STATUS } from "./process_conformance.mjs";
 
 export const MANDATE_RULES_BRIDGE_SCHEMA = "cityscroll.mandate_rules_bridge.v1";
@@ -35,6 +36,21 @@ const clean = (value, max = 500) => String(value ?? "")
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
+
+const noticeHref = (href, requestId) => {
+  const value = clean(href, 240);
+  if (value.startsWith("#notice/")) {
+    const fragmentId = value.slice("#notice/".length).split(/[?#]/, 1)[0];
+    let id = fragmentId;
+    try {
+      id = decodeURIComponent(fragmentId);
+    } catch {
+      // Keep the raw fragment id; noticeDocumentPath will still encode it safely.
+    }
+    return noticeDocumentPath(id || requestId);
+  }
+  return value || noticeDocumentPath(requestId);
+};
 
 /** Shareable constellation anchor for the Mandates → Rules card. */
 export function agencyMandateRulesPath(agencyIdOrName) {
@@ -94,10 +110,7 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
         request_id: clean(obs.observed_record.request_id, 40) || null,
         label: clean(obs.observed_record.label, 240) || null,
         when: clean(obs.observed_record.when, 40) || null,
-        href: clean(obs.observed_record.href, 240)
-          || (obs.observed_record.request_id
-            ? `#notice/${encodeURIComponent(obs.observed_record.request_id)}`
-            : null),
+        href: noticeHref(obs.observed_record.href, obs.observed_record.request_id),
         signal_kind: clean(obs.observed_record.signal_kind, 40) || "rule_filing",
       }
       : null;
@@ -129,10 +142,7 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
         || (item.id || item.request_id ? `notice:${item.id || item.request_id}` : null),
       label: clean(item.label, 240) || clean(item.id || item.request_id, 40),
       date: clean(item.date || item.when, 40) || null,
-      href: clean(item.href, 240)
-        || (item.id || item.request_id
-          ? `#notice/${encodeURIComponent(item.id || item.request_id)}`
-          : null),
+      href: noticeHref(item.href, item.id || item.request_id),
       source: clean(item.source, 80) || "City Record",
     }))
     .filter((item) => item.label);
