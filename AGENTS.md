@@ -2421,6 +2421,25 @@ both the live and restored databases.
   `node --test test/mandate_reports_receipt.test.mjs`. Demo Parks:
   `/agencies/parks-and-recreation/#mandates-reports`.
 
+## Mandates prediction-alerts (capstone)
+
+- Deadline/recurrence → expected public-record event for **rulemaking** and
+  **report** mandates so free-watch digests fire earlier-stage alerts ahead of
+  the deadline (scenario: mandate → predicted event → alert → later observed).
+- Pure model: `site/mandate_prediction_alerts.mjs` (`projectExpectedDeadline`,
+  `buildMandatePrediction`, `mandatePredictionDigestRowsForAgency`,
+  `renderMandatePredictionsSection`). Method `mandate_deadline_cadence_v1` —
+  no ML; seam for richer models later. Never invents undated calendar days.
+- Digest: `compileSub` obligations lens merges prediction rows into the free-watch
+  transform; email HTML + feed summary name expected event + days-to-deadline.
+- Surface: `view.mandates_predictions` on agency constellation; shareable
+  `/agencies/<id>/#mandates-predictions`. Rebuild constellation after model
+  edits: `node tools/build_agency_constellation_documents.mjs`.
+- Capture: `python3 tools/capture_mandate_prediction_alerts.py`. Verify:
+  `node --test test/mandate_prediction_alerts.test.mjs`. Real-data digest
+  field case: NYPD annual/quarterly report roll-forward within 90 days.
+  Demo Parks: `/agencies/parks-and-recreation/#mandates-predictions`.
+
 ## Ontology delta · what's new in the graph (v1)
 
 - Living Civic Graph first praxis wave: structural inventory growth (new edge

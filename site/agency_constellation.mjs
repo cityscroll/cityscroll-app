@@ -40,6 +40,13 @@ import {
   buildMandateReportsReceiptView,
   renderMandateReportsReceiptSection,
 } from "./mandate_reports_receipt.mjs";
+import {
+  MANDATE_PREDICTION_METHOD,
+  MANDATE_PREDICTION_STYLE,
+  agencyMandatePredictionsPath,
+  buildAgencyMandatePredictionsView,
+  renderMandatePredictionsSection,
+} from "./mandate_prediction_alerts.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import {
@@ -622,6 +629,15 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     limit: 12,
   });
 
+  // Mandates prediction-alerts: expected public-record events timed from
+  // deadline + recurrence (earlier-stage watch path for free-watch digests).
+  const mandatesPredictions = buildAgencyMandatePredictionsView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    conformanceItems: conformanceView?.items || [],
+    limit: 16,
+    includeCadenceOnly: true,
+  });
+
   return {
     schema: AGENCY_CONSTELLATION_SCHEMA,
     kind: "agency-constellation",
@@ -635,6 +651,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     mandates_conformance: conformanceView,
     mandates_rules: mandatesRules,
     mandates_reports: mandatesReports,
+    mandates_predictions: mandatesPredictions,
     summary: {
       matched_categories: matched,
       category_count: categories.length,
@@ -655,6 +672,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     mandates_href: agencyMandatesConformancePath(identity.canonical_id),
     mandates_rules_href: agencyMandateRulesPath(identity.canonical_id),
     mandates_reports_href: agencyMandateReportsPath(identity.canonical_id),
+    mandates_predictions_href: agencyMandatePredictionsPath(identity.canonical_id),
     interactive_profile_href: `/#agency/${encodeURIComponent(identity.canonical_name)}`,
     provenance: {
       intelligence_generated_at: sources.intelligence?.generated_at || null,
@@ -668,10 +686,11 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         PROCESS_CONFORMANCE_METHOD,
         MANDATE_RULES_BRIDGE_METHOD,
         MANDATE_REPORTS_RECEIPT_METHOD,
+        MANDATE_PREDICTION_METHOD,
         AGENCY_CONSTELLATION_METHOD,
         "graph_edge_provenance_v1",
       ],
-      note: "Joins City Record agency identity, civil-service certification edges, enacted-law mandates, expected-vs-observed City Record matches, rulemaking mandates to Rules-lens filings, and report mandates to filing receipts. Each listed connection opens a provenance inspector with source and warrant class.",
+      note: "Joins City Record agency identity, civil-service certification edges, enacted-law mandates, expected-vs-observed City Record matches, rulemaking mandates to Rules-lens filings, report mandates to filing receipts, and deadline/recurrence expected-event predictions. Each listed connection opens a provenance inspector with source and warrant class.",
     },
   };
 }
@@ -858,18 +877,22 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     ? `Agency constellation · as of ${asOf} (valid / publication)`
     : "Agency constellation";
   const categorySections = displayView.categories.map(categorySection).filter(Boolean).join("");
-  // Mandates bridges sit with the mandates facet (shareable #mandates-rules / #mandates-reports).
+  // Mandates bridges sit with the mandates facet (shareable anchors).
   const bridgeSource = displayView.mandates_rules || view.mandates_rules || null;
   const reportsSource = displayView.mandates_reports || view.mandates_reports || null;
+  const predictionsSource = displayView.mandates_predictions || view.mandates_predictions || null;
   const mandatesRulesSection = renderMandateRulesBridgeSection(bridgeSource);
   const mandatesReportsSection = renderMandateReportsReceiptSection(reportsSource);
-  const sections = `${mandatesReportsSection}${mandatesRulesSection}${categorySections}`;
+  const mandatesPredictionsSection = renderMandatePredictionsSection(predictionsSource);
+  const sections = `${mandatesPredictionsSection}${mandatesReportsSection}${mandatesRulesSection}${categorySections}`;
   // Provenance inspector uses the full claim set; as-of only filters listed members.
   const provenancePanel = renderEdgeProvenancePanel(view.claims || [], { activeClaimId });
   const obligationsFollow = view.categories.find((category) => category.id === "obligations" && (category.items?.length || category.conformance))?.follow_href || "";
   const mandatesHref = view.mandates_href || agencyMandatesConformancePath(view.canonical_id);
   const mandatesRulesHref = view.mandates_rules_href || agencyMandateRulesPath(view.canonical_id);
   const mandatesReportsHref = view.mandates_reports_href || agencyMandateReportsPath(view.canonical_id);
+  const mandatesPredictionsHref = view.mandates_predictions_href
+    || agencyMandatePredictionsPath(view.canonical_id);
   const ledgerSummary = asOf ? buildLedgerSummary(view, displayView) : null;
   const materializationVintage = dayStamp(view.summary?.generated_at)
     || dayStamp(view.provenance?.intelligence_generated_at)
@@ -885,10 +908,14 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   const showMandatesRulesNav = bridgeSource?.status === "matched";
   const showMandatesReportsNav = reportsSource?.status === "matched";
+  const showMandatesPredictionsNav = predictionsSource?.status === "matched";
   const actions = renderNodeActions([
     { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
     mandatesHref
       ? { kind: "link", label: "Mandates expected vs observed", href: mandatesHref, className: "civic-object-action" }
+      : null,
+    showMandatesPredictionsNav
+      ? { kind: "link", label: "Expected mandate events", href: mandatesPredictionsHref, className: "civic-object-action" }
       : null,
     showMandatesReportsNav
       ? { kind: "link", label: "Report mandates · Filing receipts", href: mandatesReportsHref, className: "civic-object-action" }
@@ -910,7 +937,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   // Plain-English provenance only — no pipeline method keys or match-basis codes.
   const provenance = renderNodeProvenance({
-    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, enacted-law mandates, expected-vs-observed City Record matches, rulemaking mandates to Rules-lens filings, and report mandates to filing receipts. Contracts, meetings, and rules come from entity intelligence; staffing exams from publisher certification records; mandates from enacted-law extraction. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only.",
+    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, enacted-law mandates, expected-vs-observed City Record matches, deadline and recurrence expected-event predictions, rulemaking mandates to Rules-lens filings, and report mandates to filing receipts. Contracts, meetings, and rules come from entity intelligence; staffing exams from publisher certification records; mandates from enacted-law extraction. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only.",
     exportClass: "object_provenance",
     extraClass: "civic-object-section",
   });
@@ -922,11 +949,11 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${esc(title)}${asOf ? ` · as of ${esc(asOf)}` : ""} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, report and rulemaking mandates, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, expected mandate events, report and rulemaking mandates, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
-  <style>${MANDATE_CONFORMANCE_STYLE}${MANDATE_RULES_BRIDGE_STYLE}${MANDATE_REPORTS_RECEIPT_STYLE}</style>
+  <style>${MANDATE_CONFORMANCE_STYLE}${MANDATE_RULES_BRIDGE_STYLE}${MANDATE_REPORTS_RECEIPT_STYLE}${MANDATE_PREDICTION_STYLE}</style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -940,6 +967,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       <p class="node-pivot civic-object-pivot">
         <a data-subject-ref="${esc(view.subject_ref)}" href="${esc(view.scope_href)}">Open this agency in Contracts</a>
         · <a href="${esc(mandatesHref)}">Mandates expected vs observed</a>
+        ${showMandatesPredictionsNav ? `· <a href="${esc(mandatesPredictionsHref)}">Expected mandate events</a>` : ""}
         ${showMandatesReportsNav ? `· <a href="${esc(mandatesReportsHref)}">Report mandates · Filing receipts</a>` : ""}
         ${showMandatesRulesNav ? `· <a href="${esc(mandatesRulesHref)}">Rulemaking mandates · Rules activity</a>` : ""}
         · <a href="${esc(view.interactive_profile_href)}">Interactive profile</a>

@@ -1223,6 +1223,33 @@
       }
     },
     {
+      "id": "agency-parks-mandates-predictions",
+      "url": "agencies/parks-and-recreation/",
+      "feature": "mandate-prediction-alerts",
+      "description": "Parks expected mandate events: rulemaking and report duties timed from statutory deadline and recurrence for earlier-stage alerts.",
+      "expectations": {
+        "pathname": "/agencies/parks-and-recreation/",
+        "visible": [
+          {
+            "selector": "#mandates-predictions",
+            "text": "Expected mandate events"
+          },
+          {
+            "selector": "#mandates-predictions [data-bridge-side='predicted-events']"
+          },
+          {
+            "selector": "#mandates-predictions",
+            "text": "Watch expected mandate events"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview"
+          }
+        ]
+      }
+    },
+    {
       "id": "ontology-delta-whats-new",
       "url": "graph/ontology-delta/",
       "feature": "living-civic-graph-ontology-delta",
