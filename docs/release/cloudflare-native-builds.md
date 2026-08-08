@@ -1,16 +1,20 @@
-# Cloudflare-native release builds
+# Cloudflare release builds
 
-Cloudflare is the canonical release control plane for the production Pages site
-and Worker. The machine-readable settings in
+GitHub Actions is the canonical release control plane for the production Pages
+site: every push to `main` builds the provider-neutral `_site` artifact and
+deploys it to the `cityscroll` Cloudflare Pages project. Cloudflare's native Git
+integration is optional and production freshness does not depend on it. Workers
+Builds remains the canonical release path for the Worker. The machine-readable settings in
 [`cloudflare-native-builds.json`](./cloudflare-native-builds.json) are the
 repository contract for the corresponding Cloudflare dashboard integrations.
 
 ## Activation checklist
 
-The site owner must connect the `cityscroll/crol-list` repository to the existing
-`cityscroll` Pages project through Pages Git integration and set the Pages fields
-from the JSON contract. Enable preview deployments and keep `main` as the
-production branch.
+The repository must retain the `CLOUDFLARE_API_TOKEN` Actions secret. The
+`Deploy Cloudflare Pages` workflow resolves its single authorized account,
+builds `_site`, deploys branch `main`, and smokes the immutable deployment before
+checking route parity. The manual trigger is a recovery path for redeploying a
+selected `main` revision; it is not required for normal merges.
 
 The site owner must connect the repository to the existing `crol-worker` Worker
 through Workers Builds, set its root directory to `worker`, and configure the
@@ -18,16 +22,17 @@ production and preview commands from the JSON contract. The Worker build token
 authorizes deployment; `LEGISTAR_API_TOKEN` remains a separately managed
 Cloudflare secret and is never written by the build.
 
-Before enabling either production integration, run one preview build and compare
-its artifact or Worker version with the current public release. Then enable the
-production branch and observe one release end to end. Cloudflare’s build history
-and the public smoke commands are the release receipt.
+Before enabling the Worker production integration, run one preview build and
+compare its version with the current public release. Then enable the production
+branch and observe one release end to end. Cloudflare's build history is the
+Worker release receipt; GitHub Actions plus the post-deploy smoke are the Pages
+release receipt.
 
-The old Cloudflare deploy workflows remain manual, non-required fallback paths
-while the native builds are observed. They do not run on pushes and therefore
-cannot race the canonical Cloudflare build. The beta preview and promotion lanes
-remain explicit manual workflows because they publish selected review channels,
-not the production release.
+The Cloudflare Pages workflow runs on pushes to `main`. If the native Pages Git
+integration is also connected, disable its production-branch builds to avoid
+duplicate deployments. The beta preview and promotion lanes remain explicit
+manual workflows because they publish selected review channels, not the
+production release.
 
 ## GitHub Pages fallback decision
 

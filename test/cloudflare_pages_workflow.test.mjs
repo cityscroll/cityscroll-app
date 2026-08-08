@@ -76,10 +76,15 @@ test("deploy uses the shared verified build action", () => {
   assert.match(workflow, /secrets\.CLOUDFLARE_API_TOKEN/);
 });
 
-test("production Pages fallback is manual while native builds own automatic releases", () => {
+test("production Pages deploys automatically for every main push", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /workflow_dispatch:/);
-  assert.doesNotMatch(workflow, /^\s+(?:push|pull_request|schedule):/m);
+  assert.match(workflow, /^\s+push:\n\s+branches:\s*\[main\]/m);
+  assert.doesNotMatch(workflow, /^\s+(?:pull_request|schedule):/m);
   assert.match(workflow, /branch="main"/);
-  assert.match(workflow, /Cloudflare-native Pages builds are canonical/);
+  assert.match(workflow, /GitHub Actions is the canonical production path/);
+  assert.match(
+    workflow,
+    /refresh-decision-outcomes:\s*\$\{\{\s*github\.event_name\s*==\s*'push'\s*\|\|\s*inputs\.refresh_decision_outcomes\s*\}\}/,
+  );
 });
