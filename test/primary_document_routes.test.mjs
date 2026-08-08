@@ -12,6 +12,7 @@ import {
 } from "../site/browse_view.mjs";
 import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
 import edgeWorker, { edgeRequestKind, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
+import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
@@ -263,8 +264,23 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
   assert.match(html, /<dt>Responses due<\/dt>/);
   assert.match(html, /RequestDetail\/20240515016/);
   assert.match(html, /class="ui-constellation-link notice-agency-link"[^>]*href="\/agencies\/parks-and-recreation\/"/);
-  assert.match(html, /class="ui-official-source-link act primary"[^>]*target="_blank" rel="noopener noreferrer"[^>]*>View City Record<span aria-hidden="true">↗<\/span>/);
+  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(html, /class="ui-official-source-link"[^>]*>Official record<span aria-hidden="true">↗<\/span>/);
+  assert.doesNotMatch(html, /ui-official-source-link act primary|class="act primary"[^>]+a856-cityrecord/);
   assert.doesNotMatch(html, /class="loading"/);
+});
+
+test("missing notice response is a CityScroll object shell with internal continuation", () => {
+  const html = renderEdgeNotice(null, "20991231999");
+  assert.match(html, /data-edge-rendered="notice-unavailable"/);
+  assert.match(html, /data-notice-id="20991231999"/);
+  assert.match(html, /<p class="ftype">Public record<\/p>/);
+  assert.match(html, /<h2 class="rolename">CityScroll public record 20991231999<\/h2>/);
+  assert.match(html, /ui-constellation-link act primary[^>]+href="\/browse\/"/);
+  assert.match(html, /ui-constellation-link[^>]+href="\/following\/"/);
+  assert.match(html, /ui-official-source-link[^>]+>Official record<span aria-hidden="true">↗<\/span>/);
+  assert.doesNotMatch(html, /City Record notice|View City Record|ui-official-source-link act primary/);
+  assert.deepEqual(detectNodePageCruft(html), []);
 });
 
 test("notice response renderer includes a known meeting outcome or honest absence", () => {
