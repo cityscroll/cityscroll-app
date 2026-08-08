@@ -41,9 +41,16 @@ function loadSources() {
 
 export function writeProcessConformanceArtifacts({ check = false } = {}) {
   const sources = loadSources();
+  // Stable across rebuilds when inputs are unchanged (deploy --check gate).
+  const generatedAt = [
+    sources.obligationsLookup?.generated_at,
+    sources.rulesDomain?.generated_at,
+    sources.meetingsDomain?.generated_at,
+    sources.entityIntelligence?.generated_at,
+  ].filter(Boolean).sort().join("|") || "unknown";
   const lookup = buildProcessConformanceLookup({
     ...sources,
-    generatedAt: new Date().toISOString(),
+    generatedAt,
   });
   if (lookup.schema !== PROCESS_CONFORMANCE_SCHEMA) {
     throw new Error(`unexpected schema ${lookup.schema}`);

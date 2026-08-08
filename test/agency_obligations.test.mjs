@@ -130,10 +130,14 @@ test("compileSub obligations lens is a world-state transform, not SODA", () => {
   const lookup = JSON.parse(readFileSync(LOOKUP_PATH, "utf8"));
   const rows = q.transformRows(lookup);
   assert.ok(Array.isArray(rows));
+  assert.ok(rows.length >= 1, "Parks free-watch should surface standing or dated mandates");
   for (const row of rows.slice(0, 5)) {
     assert.ok(row.alert_id.startsWith("obligation:"));
     assert.equal(row.compliance_verdict, null);
-    assert.match(row.honesty_note, /statutory deadline|enacted law/i);
+    // Product rows state facts only — no honesty_note disclaimer hedges.
+    assert.equal(row.honesty_note, undefined);
+    assert.equal(row.observation_status, "not_adjudicated");
+    assert.ok(row.duty_text);
   }
 });
 

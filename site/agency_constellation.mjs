@@ -412,14 +412,17 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
     const items = standable.slice(0, 8);
     const warrant_summary = summarizeCategoryWarrants(standable);
     const shown = standable.length || 0;
+    // Reader count is the materialization total (obligations / conformance corpus);
+    // the list preview is standable-only so candidates are not hedged in public HTML.
+    const readerCount = total || shown;
     return {
       id: spec.id,
       label: spec.label,
       relation: spec.relation,
-      status: shown || total ? "matched" : "empty",
-      gap_class: shown || total ? null : "empty_in_corpus",
-      note: shown || total ? null : (view?.note || spec.empty_note),
-      count: shown || total,
+      status: readerCount ? "matched" : "empty",
+      gap_class: readerCount ? null : "empty_in_corpus",
+      note: readerCount ? null : (view?.note || spec.empty_note),
+      count: readerCount,
       items,
       warrant_summary,
       method: conformance ? PROCESS_CONFORMANCE_METHOD : AGENCY_OBLIGATIONS_METHOD,
@@ -650,8 +653,16 @@ function obligationMeta(item) {
 }
 
 function categorySection(category) {
+  // Omit empty / not-yet-ingested categories entirely — no absence disclaimers.
+  if (
+    category.status === "empty"
+    || category.status === "not_yet_ingested"
+    || (!(category?.items?.length) && !(category?.conformance?.items?.length))
+  ) {
+    return "";
+  }
   // Full process-conformance surface for mandates when materialization is present.
-  if (category.id === "obligations" && category.conformance) {
+  if (category.id === "obligations" && category.conformance?.items?.length) {
     const refine = category.mandate_follow_hrefs
       ? [
         category.mandate_follow_hrefs.report
@@ -676,10 +687,6 @@ function categorySection(category) {
       );
     }
     return body;
-  }
-  // Omit empty / not-yet-ingested categories entirely — no absence disclaimers.
-  if (!category?.items?.length || category.status === "empty" || category.status === "not_yet_ingested") {
-    return "";
   }
   const status = category.id === "obligations"
     ? `${category.count} mandates`
