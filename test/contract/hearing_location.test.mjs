@@ -10,6 +10,7 @@ import {
 
 const require = createRequire(import.meta.url);
 const {
+  filterMeetingRowsByAffectedArea,
   hearingMatchesArea,
   normalizeHearingRow,
 } = require("../../site/hearing_location.js");
@@ -63,6 +64,39 @@ test("citywide matters match every borough while unlocated matters remain explic
   assert.equal(unlocated.affected_area.scope, "unlocated");
   assert.equal(hearingMatchesLocation(unlocated, { borough: "Manhattan" }), false);
   assert.equal(hearingMatchesLocation(unlocated, { locationScope: "citywide-unlocated" }), true);
+});
+
+test("field regression: an agency borough filter keeps single- and multi-borough meetings", () => {
+  const records = [
+    {
+      request_id: "parks-brooklyn",
+      agency: "Parks and Recreation",
+      event_date: "2026-08-10",
+      affected_area: { scope: "local", boroughs: ["Brooklyn"] },
+    },
+    {
+      request_id: "parks-manhattan-brooklyn",
+      agency: "Parks and Recreation",
+      event_date: "2026-08-11",
+      affected_area: { scope: "local", boroughs: ["Manhattan", "Brooklyn"] },
+    },
+    {
+      request_id: "parks-queens",
+      agency: "Parks and Recreation",
+      event_date: "2026-08-12",
+      affected_area: { scope: "local", boroughs: ["Queens"] },
+    },
+  ];
+  const unfiltered = records.filter((record) => record.agency === "Parks and Recreation");
+  assert.ok(unfiltered.length > 0, "the unfiltered agency set must contain meetings");
+  for (const borough of ["Brooklyn", "Manhattan", "Queens"]) {
+    const filtered = filterMeetingRowsByAffectedArea(unfiltered, { borough });
+    assert.ok(filtered.length > 0, `${borough} must not collapse to zero when present in the set`);
+  }
+  assert.deepEqual(
+    filterMeetingRowsByAffectedArea(unfiltered, { borough: "Brooklyn" }).map((record) => record.request_id),
+    ["parks-brooklyn", "parks-manhattan-brooklyn"],
+  );
 });
 
 test("participation and audience clues are extracted only when the notice supplies them", () => {
