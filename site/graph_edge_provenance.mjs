@@ -4,7 +4,7 @@
  * Surfaces where a connection came from and how it was joined (warrant class).
  * Public pages only list standable connections; tentative or unclassifiable
  * edges stay off the reader surface rather than shipping wrapped in hedges.
- * Missing enrichment fields stay labeled. Hosted first on the agency
+ * Missing enrichment fields stay omitted. Hosted first on the agency
  * cross-category graph; other hosts may reuse the claim model and deep-link grammar.
  */
 
@@ -18,28 +18,24 @@ export const WARRANT_CLASSES = Object.freeze({
     label: "Exact match",
     short: "Exact",
     token: "exact",
-    reader: "Joined by an exact publisher key or a named identity registry match.",
   }),
   probabilistic: Object.freeze({
     id: "probabilistic",
     label: "Record-linkage match",
     short: "Linked",
     token: "probable",
-    reader: "Joined by record-linkage features or a similarity score.",
   }),
   reviewed: Object.freeze({
     id: "reviewed",
     label: "Person-accepted",
     short: "Reviewed",
     token: "reviewed",
-    reader: "A person accepted this link after inspecting the evidence.",
   }),
   not_yet_classified: Object.freeze({
     id: "not_yet_classified",
     label: "Not yet classified",
     short: "Unclassified",
     token: "unclassified",
-    reader: "Warrant class is not stamped on this edge yet.",
   }),
 });
 
@@ -55,22 +51,18 @@ export const IDENTITY_STANCES = Object.freeze({
   publisher_key: Object.freeze({
     id: "publisher_key",
     label: "Publisher key match",
-    reader: "The publisher record names this agency (or its code) directly.",
   }),
   strong_link: Object.freeze({
     id: "strong_link",
     label: "Strong connection",
-    reader: "This connection clears the published strength band for this materialization.",
   }),
   possible_link: Object.freeze({
     id: "possible_link",
     label: "Record-linkage connection",
-    reader: "Joined by record-linkage features for this materialization.",
   }),
   not_scored: Object.freeze({
     id: "not_scored",
     label: "Link not scored",
-    reader: "No public confidence band is attached on this edge.",
   }),
 });
 
@@ -79,31 +71,6 @@ const clean = (value, max = 500) => String(value ?? "")
   .replace(/\s+/g, " ")
   .trim()
   .slice(0, max);
-
-/** Reader labels for known methods — never dump raw method ids into body copy. */
-const METHOD_READER_LABELS = Object.freeze({
-  agency_canonical_v1: "Agency identity registry match",
-  publisher_certification_record_v1: "Publisher civil-service certification record",
-  publisher_certification_record: "Publisher civil-service certification record",
-  vendor_stem_v1: "Exact vendor-name stem match",
-  pin_exact: "Exact PIN match",
-  manual_review: "Person-accepted match",
-  graph_edge_provenance_v1: "Graph edge provenance",
-  agency_constellation_v1: "Agency cross-category materialization",
-  enacted_law_mandate_extract_v1: "Enacted-law mandate extraction",
-  auto_certified_quote_verify_v1: "Auto-certified quote verification",
-  statute_actor_alias_v1: "Statute actor alias match",
-});
-
-export function methodReaderLabel(method) {
-  const key = clean(method, 120);
-  if (!key) return null;
-  if (METHOD_READER_LABELS[key]) return METHOD_READER_LABELS[key];
-  const lower = key.toLowerCase();
-  if (METHOD_READER_LABELS[lower]) return METHOD_READER_LABELS[lower];
-  // Soften unknown method tokens rather than printing snake_case to readers.
-  return key.replace(/_/g, " ").replace(/\s+v\d+$/i, "").trim() || null;
-}
 
 const SOURCE_SYSTEM_READER_LABELS = Object.freeze({
   city_record: "City Record",
@@ -131,8 +98,6 @@ const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
 
 const MISSING = Object.freeze({
   available: false,
-  label: "Not yet attached",
-  note: null,
 });
 
 /**
@@ -351,6 +316,10 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
     provenance.observed_at || evidence.observed_at || item.date,
     40,
   ) || null;
+  const sourceExcerpt = clean(
+    provenance.source_excerpt || evidence.source_excerpt || item.source_excerpt,
+    500,
+  ) || null;
 
   // Shadow ER tables (entity_link / resolution_run) are not public consumers yet.
   const entityLinkId = clean(item.entity_link_id || item.link_id, 120) || null;
@@ -363,6 +332,7 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
   if (!sourceRecordId) missing.push("source_record_id");
   if (!sourceFields.length) missing.push("source_fields");
   if (!inputValue) missing.push("input_value");
+  if (!sourceExcerpt) missing.push("source_excerpt");
   if (!entityLinkId) missing.push("entity_link_id");
   if (!resolutionRunId) missing.push("resolution_run_id");
 
@@ -386,19 +356,18 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
       input_value: inputValue ? fieldOrMissing(inputValue) : { ...MISSING },
       observed_at: observedAt ? fieldOrMissing(observedAt) : { ...MISSING },
       basis: basis ? fieldOrMissing(basis) : { ...MISSING },
+      source_excerpt: sourceExcerpt ? fieldOrMissing(sourceExcerpt, 500) : { ...MISSING },
     },
     how: {
       method: method ? fieldOrMissing(method) : { ...MISSING },
       warrant_class: warrant.id,
       warrant_label: warrant.label,
-      warrant_reader: warrant.reader,
       decision: clean(item.decision || item.review_status, 80) || null,
     },
     confidence: {
       band: confidence,
       identity_stance: stance.id,
       identity_label: stance.label,
-      identity_reader: stance.reader,
       standable: warrant.id === "exact" || warrant.id === "reviewed"
         || (warrant.id === "probabilistic" && confidence === "strong"),
       counts_as_verified_total: (warrant.id === "exact" || warrant.id === "reviewed")
@@ -447,19 +416,14 @@ export function summarizeCategoryWarrants(items = []) {
   return summary;
 }
 
-function renderFieldRow(label, field, { mono = false, reader = false } = {}) {
+function renderFieldRow(label, field) {
   if (!field || field.available === false) {
-    return `<div class="edge-prov-row" data-available="false"><dt>${esc(label)}</dt><dd class="muted node-muted"><span class="edge-prov-missing">${esc(field?.label || "Not yet attached")}</span></dd></div>`;
+    return "";
   }
-  let display = field.value;
-  if (reader && !Array.isArray(display)) {
-    display = methodReaderLabel(display) || display;
-  }
+  const display = field.value;
   const value = Array.isArray(display)
     ? display.map((entry) => esc(entry)).join(", ")
-    : mono
-      ? esc(display)
-      : esc(display);
+    : esc(display);
   return `<div class="edge-prov-row" data-available="true"><dt>${esc(label)}</dt><dd>${value}</dd></div>`;
 }
 
@@ -496,15 +460,9 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
     <header class="edge-prov-header">
       <p class="edge-prov-kicker">Why do we believe this?</p>
       ${objectLink}
-      <p class="edge-prov-meta muted node-muted">
-        ${claim.relation ? `Relation: ${esc(String(claim.relation).replace(/_/g, " "))} · ` : ""}
-        Claim id: ${esc(claim.claim_id)}
-      </p>
       <p class="edge-prov-warrants">
         <span class="edge-prov-warrant edge-prov-warrant-${esc(warrant.id)}" data-warrant-class="${esc(warrant.id)}">${esc(warrant.label)}</span>
-        <span class="edge-prov-stance edge-prov-stance-${esc(stance.id)}" data-identity-stance="${esc(stance.id)}">${esc(stance.label)}</span>
       </p>
-      <p class="edge-prov-stance-reader muted node-muted">${esc(stance.reader)}</p>
     </header>
     <section class="edge-prov-block" aria-labelledby="edge-prov-where-${esc(claim.claim_id)}">
       <h3 id="edge-prov-where-${esc(claim.claim_id)}">Where it came from</h3>
@@ -513,26 +471,10 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
           ? { available: true, value: sourceSystemReaderLabel(claim.where.source_system.value) || claim.where.source_system.value }
           : claim.where.source_system)}
         ${renderFieldRow("Source record", claim.where.source_record_id)}
-        ${renderFieldRow("Source fields", {
-          ...claim.where.source_fields,
-          value: Array.isArray(claim.where.source_fields?.value)
-            ? claim.where.source_fields.value.map((field) => String(field).replace(/_/g, " "))
-            : claim.where.source_fields?.value,
-        })}
-        ${renderFieldRow("Publisher value matched", claim.where.input_value)}
         ${renderFieldRow("Observed", claim.where.observed_at)}
-        ${renderFieldRow("Basis", claim.where.basis, { reader: true })}
-      </dl>
-    </section>
-    <section class="edge-prov-block" aria-labelledby="edge-prov-how-${esc(claim.claim_id)}">
-      <h3 id="edge-prov-how-${esc(claim.claim_id)}">How it was derived</h3>
-      <p>${esc(warrant.reader)}</p>
-      <dl class="edge-prov-dl">
-        ${renderFieldRow("Method", claim.how.method, { reader: true })}
-        ${renderFieldRow("Warrant class", { available: true, value: warrant.label })}
-        ${claim.how.decision
-          ? renderFieldRow("Review decision", { available: true, value: claim.how.decision })
-          : ""}
+        ${renderFieldRow("Source excerpt", claim.where.source_excerpt)}
+        ${renderFieldRow("Link record", claim.enrichment?.entity_link_id)}
+        ${renderFieldRow("Resolution run", claim.enrichment?.resolution_run_id)}
       </dl>
     </section>
     ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}">Share this claim</a></p>` : ""}
@@ -591,54 +533,33 @@ export function edgeProvenanceClientScript() {
     const warrant = claim.how?.warrant_class || "not_yet_classified";
     const stance = claim.confidence?.identity_stance || "not_scored";
     const where = claim.where || {};
-    const methodLabel = (m) => {
-      const map = {
-        agency_canonical_v1: "Agency identity registry match",
-        publisher_certification_record_v1: "Publisher civil-service certification record",
-        publisher_certification_record: "Publisher civil-service certification record",
-        vendor_stem_v1: "Exact vendor-name stem match",
-        pin_exact: "Exact PIN match",
-        manual_review: "Person-accepted match",
-        enacted_law_mandate_extract_v1: "Enacted-law mandate extraction",
-      };
-      const key = String(m || "").trim();
-      return map[key] || key.replace(/_/g, " ").replace(/\\s+v\\d+$/i, "").trim() || key;
-    };
     const sourceLabel = (s) => {
       const map = { city_record: "City Record", warehouse: "Warehouse materialization", socrata: "NYC Open Data", enacted_local_law: "Enacted local law" };
       const key = String(s || "").trim();
       return map[key] || key.replace(/_/g, " ");
     };
+    const escText = (s) => String(s ?? "").replace(/[<>&]/g, (c) => ({ "<":"&lt;",">":"&gt;","&":"&amp;" }[c]));
     const field = (label, f, opts = {}) => {
       if (!f || f.available === false) {
-        return '<div class="edge-prov-row" data-available="false"><dt>' + label + '</dt><dd class="muted node-muted"><span class="edge-prov-missing">' + (f?.label || "Not yet attached") + '</span></dd></div>';
+        return "";
       }
       let raw = f.value;
       if (opts.source && !Array.isArray(raw)) raw = sourceLabel(raw);
-      if (opts.reader && !Array.isArray(raw)) raw = methodLabel(raw);
-      if (opts.fields && Array.isArray(raw)) raw = raw.map((v) => String(v).replace(/_/g, " "));
-      const val = Array.isArray(raw) ? raw.map((v) => String(v)).join(", ") : String(raw);
-      return '<div class="edge-prov-row" data-available="true"><dt>' + label + '</dt><dd>' + val + '</dd></div>';
+      const val = Array.isArray(raw) ? raw.map((v) => escText(v)).join(", ") : escText(raw);
+      return '<div class="edge-prov-row" data-available="true"><dt>' + escText(label) + '</dt><dd>' + val + '</dd></div>';
     };
-    const escText = (s) => String(s ?? "").replace(/[<>&]/g, (c) => ({ "<":"&lt;",">":"&gt;","&":"&amp;" }[c]));
     const objectHtml = claim.object_href
       ? '<p class="edge-prov-object"><a href="' + escText(claim.object_href) + '">' + escText(claim.label) + "</a></p>"
       : '<p class="edge-prov-object"><strong>' + escText(claim.label) + "</strong></p>";
     body.innerHTML = '<article class="edge-prov-inspector" id="claim-' + escText(claim.claim_id) + '" data-edge-claim="' + escText(claim.claim_id) + '" data-warrant-class="' + escText(warrant) + '" data-identity-stance="' + escText(stance) + '" data-open="true">'
       + '<header class="edge-prov-header"><p class="edge-prov-kicker">Why do we believe this?</p>' + objectHtml
-      + '<p class="edge-prov-meta muted node-muted">' + (claim.relation ? "Relation: " + escText(String(claim.relation).replace(/_/g, " ")) + " · " : "") + "Claim id: " + escText(claim.claim_id) + "</p>"
       + '<p class="edge-prov-warrants"><span class="edge-prov-warrant edge-prov-warrant-' + escText(warrant) + '">' + escText(claim.how?.warrant_label || warrant) + '</span> '
-      + '<span class="edge-prov-stance edge-prov-stance-' + escText(stance) + '">' + escText(claim.confidence?.identity_label || stance) + "</span></p>"
-      + '<p class="edge-prov-stance-reader muted node-muted">' + escText(claim.confidence?.identity_reader || "") + "</p></header>"
+      + "</p></header>"
       + '<section class="edge-prov-block"><h3>Where it came from</h3><dl class="edge-prov-dl">'
       + field("Source", where.source_system, { source: true }) + field("Source record", where.source_record_id)
-      + field("Source fields", where.source_fields, { fields: true }) + field("Publisher value matched", where.input_value)
-      + field("Observed", where.observed_at) + field("Basis", where.basis, { reader: true }) + "</dl></section>"
-      + '<section class="edge-prov-block"><h3>How it was derived</h3><p>' + escText(claim.how?.warrant_reader || "") + '</p><dl class="edge-prov-dl">'
-      + field("Method", claim.how?.method, { reader: true })
-      + field("Warrant class", { available: true, value: claim.how?.warrant_label || warrant })
-      + (claim.how?.decision ? field("Review decision", { available: true, value: claim.how.decision }) : "")
-      + "</dl></section>"
+      + field("Observed", where.observed_at) + field("Source excerpt", where.source_excerpt)
+      + field("Link record", claim.enrichment?.entity_link_id)
+      + field("Resolution run", claim.enrichment?.resolution_run_id) + "</dl></section>"
       + (claim.share_href ? '<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="' + escText(claim.claim_id) + '" href="' + escText(claim.share_href) + '">Share this claim</a></p>' : "")
       + "</article>";
     panel.setAttribute("data-active-claim", claim.claim_id);

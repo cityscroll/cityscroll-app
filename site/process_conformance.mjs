@@ -30,6 +30,7 @@ export const OBSERVATION_LABELS = Object.freeze({
   [OBSERVATION_STATUS.OBSERVED]: "Observed in City Record",
   [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: "Expected, not yet in City Record",
   [OBSERVATION_STATUS.ON_TRACK]: "On track — deadline still ahead",
+  // Internal-only status: the public renderer filters these items before display.
   [OBSERVATION_STATUS.ENRICHMENT_PENDING]: "Awaiting a City Record detector",
 });
 
@@ -79,8 +80,6 @@ export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
 export const CONFORMANCE_COPY = Object.freeze({
   lead:
     "Statutory mandates with expected public-record events — rule filings, reports — and matching City Record notices when they appear.",
-  coverage:
-    "This pass matches rulemaking and report duties against City Record Agency Rules and report-shaped notice titles. Other duty types wait for a stronger public signal.",
 });
 
 /** @deprecated use CONFORMANCE_COPY — kept as alias for older call sites. */
@@ -637,11 +636,16 @@ export function buildProcessConformanceLookup({
 export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   if (!view) return "";
   const counts = view.counts || {};
-  const statusLine = view.status === "matched"
-    ? `${counts.total || 0} mandates · ${counts.observed || 0} observed · ${counts.expected_not_yet_observed || 0} expected, not yet in City Record · ${counts.on_track || 0} on track · ${counts.enrichment_pending || 0} awaiting detector`
-    : "none in this materialization";
+  const publicItems = (view.items || []).filter((item) => (
+    item.observation?.status !== OBSERVATION_STATUS.ENRICHMENT_PENDING
+  ));
+  if (!publicItems.length) return "";
+  const visibleTotal = (counts.observed || 0)
+    + (counts.expected_not_yet_observed || 0)
+    + (counts.on_track || 0);
+  const statusLine = `${visibleTotal} mandates · ${counts.observed || 0} observed · ${counts.expected_not_yet_observed || 0} expected, not yet in City Record · ${counts.on_track || 0} on track`;
 
-  const items = (view.items || []).slice(0, limit);
+  const items = publicItems.slice(0, limit);
   const list = items.length
     ? `<ul class="node-record-list mandates-conformance-list">${items.map((item) => {
       const obs = item.observation || {};
@@ -650,7 +654,7 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
       const expected = obs.expected_event || {};
       const deadline = expected.deadline_date
         ? `deadline ${expected.deadline_date}`
-        : (expected.deadline_text ? `deadline: ${expected.deadline_text}` : "no computed deadline");
+        : (expected.deadline_text ? `deadline: ${expected.deadline_text}` : null);
       const observedLink = obs.observed_record?.href
         ? ` · <a href="${esc(obs.observed_record.href)}">City Record: ${esc(obs.observed_record.label || obs.observed_record.request_id)}</a>`
         : "";
@@ -673,10 +677,6 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
     }).join("")}</ul>`
     : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency in the current materialization.")}</p>`;
 
-  const corpusNote = view.candidate_corpus
-    ? `<p class="node-muted muted">City Record corpus checked for this agency: ${esc(String(view.candidate_corpus.size))} Agency Rules / meetings notice(s). This pass covers rulemaking and report duties.</p>`
-    : "";
-
   const share = view.share_path
     ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this mandates view</a>`
     : "";
@@ -685,8 +685,6 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
     <h2>Mandates · expected vs observed <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
-    <p class="node-muted muted">${esc(copy.coverage || CONFORMANCE_COPY.coverage)}</p>
-    ${corpusNote}
     ${list}
     ${share ? `<p class="node-inline-actions civic-object-inline-actions">${share}</p>` : ""}
   </section>`;
@@ -714,11 +712,6 @@ export const MANDATE_CONFORMANCE_STYLE = `
 }
 .mandates-conformance .mandate-obs-expected_not_yet_observed {
   background: color-mix(in srgb, var(--color-text, #222) 4%, transparent);
-}
-.mandates-conformance .mandate-obs-enrichment_pending {
-  background: transparent;
-  font-weight: 500;
-  color: var(--color-muted, #666);
 }
 .mandates-conformance .mandate-conformance-item .node-record-main {
   line-height: 1.45;
