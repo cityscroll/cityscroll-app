@@ -100,7 +100,7 @@ test("fixture materialization yields Parks duties with provenance", () => {
   assert.equal(view.status, "matched");
   assert.ok(view.items[0].duty_text);
   assert.ok(view.items[0].href || view.items[0].source?.legistar_url);
-  assert.match(view.follow_href, /lens=obligations/);
+  assert.match(view.follow_href, /lens=mandates/);
   assert.match(view.follow_href, /parks-and-recreation|Parks/);
 });
 
@@ -151,7 +151,7 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
 
 test("compileSub obligations lens is a world-state transform, not SODA", () => {
   const q = compileSub({
-    lens: "obligations",
+    lens: "mandates",
     filter: { agency_id: PARKS, agency: "Parks and Recreation" },
   }, "2026-08-07");
   assert.ok(q);
@@ -205,6 +205,6 @@ test("obligationDigestRowsForAgency labels past dates without compliance", () =>
 test("follow href is free obligations watch", () => {
   const href = agencyObligationsFollowHref(PARKS);
   assert.match(href, /\/following/);
-  assert.match(href, /lens=obligations/);
+  assert.match(href, /lens=mandates/);
   assert.match(href, /agency_id/);
 });

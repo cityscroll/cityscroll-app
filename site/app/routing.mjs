@@ -322,6 +322,7 @@ const DEEPLINK_LENSES = {
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
+  mandates: ["agency_id", "agency", "deliverable_type", "windowDays"],
   obligations: ["agency_id", "agency", "deliverable_type", "windowDays"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   award:    ["requestId", "agency"],

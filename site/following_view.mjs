@@ -8,7 +8,15 @@ import {
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
-const LENSES = Object.freeze(["money", "people", "land", "property", "rules", "meetings", "district", "entity", "obligations"]);
+
+/** Canonical public watch lenses (product identity). */
+const LENSES = Object.freeze([
+  "money", "people", "land", "property", "rules", "meetings", "district", "entity", "mandates",
+]);
+/** Legacy URL / storage aliases → canonical lens. */
+const LENS_ALIASES = Object.freeze({
+  obligations: "mandates", // upstream extract vocabulary; product term is mandates
+});
 const LENS_LABELS = Object.freeze({
   money: "Contracts and RFPs",
   people: "Staffing and exams",
@@ -18,7 +26,7 @@ const LENS_LABELS = Object.freeze({
   meetings: "Hearings and meetings",
   district: "District digest",
   entity: "Agency or vendor",
-  obligations: "Mandates",
+  mandates: "Mandates",
 });
 const BOROUGHS = Object.freeze(["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]);
 
@@ -48,14 +56,23 @@ function cleanFrequency(value) {
   return String(value || "").toLowerCase() === "weekly" ? "weekly" : "daily";
 }
 
-function first(values) {
-  return Array.isArray(values) && values.length ? values[0] : null;
+/** Normalize a public or legacy lens to the product identity. */
+export function canonicalFollowingLens(lens) {
+  const raw = String(lens || "").trim().toLowerCase();
+  const mapped = LENS_ALIASES[raw] || raw;
+  return LENSES.includes(mapped) ? mapped : "money";
+}
+
+/** True when the raw URL lens is a known alias that should redirect to the canonical name. */
+export function followingLensNeedsRedirect(lens) {
+  const raw = String(lens || "").trim().toLowerCase();
+  return Object.prototype.hasOwnProperty.call(LENS_ALIASES, raw);
 }
 
 function normalizedWatch(lens, filter) {
-  const wantedLens = LENSES.includes(lens) ? lens : "money";
+  const wantedLens = canonicalFollowingLens(lens);
   const watch = watchFromScope(scopeFromWatch({ lens: wantedLens, filter: compact(filter) }), { lens: wantedLens });
-  return { lens: watch.lens, filter: compact(watch.filter) };
+  return { lens: canonicalFollowingLens(watch.lens), filter: compact(watch.filter) };
 }
 
 export function watchFromFollowingParams(input) {
@@ -67,7 +84,7 @@ export function watchFromFollowingParams(input) {
     const parsed = JSON.parse(params.get("filter") || "{}");
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) filter = parsed;
   } catch { /* malformed scope fails soft to the visible fields */ }
-  const lens = LENSES.includes(params.get("lens")) ? params.get("lens") : "money";
+  const lens = canonicalFollowingLens(params.get("lens") || "money");
   const setOrDelete = (name, value) => {
     if (value == null || value === "") delete filter[name];
     else filter[name] = value;
@@ -153,12 +170,82 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
   };
 }
 
-function lensOptions(current) {
-  return LENSES.map((lens) => `<option value="${lens}"${lens === current ? " selected" : ""}>${esc(LENS_LABELS[lens])}</option>`).join("");
+function placeBorough(filter) {
+  return filter.borough || filter.boro || "";
 }
 
-function boroughOptions(current) {
-  return `<option value="">Any borough</option>${BOROUGHS.map((borough) => `<option${borough === current ? " selected" : ""}>${borough}</option>`).join("")}`;
+function withTopic(view, lens) {
+  const nextFilter = { ...view.filter };
+  // Land uses `boro`; other place-aware lenses use `borough`.
+  if (lens === "land" && nextFilter.borough && !nextFilter.boro) {
+    nextFilter.boro = nextFilter.borough;
+  } else if (lens !== "land" && nextFilter.boro && !nextFilter.borough) {
+    nextFilter.borough = nextFilter.boro;
+  }
+  if (lens === "land") delete nextFilter.borough;
+  else delete nextFilter.boro;
+  return followingUrlFromWatch({
+    lens,
+    filter: nextFilter,
+    matchCount: view.matchCount,
+  }, { frequency: view.frequency, matchCount: view.matchCount });
+}
+
+function withPlace(view, borough) {
+  const nextFilter = { ...view.filter };
+  if (!borough) {
+    delete nextFilter.borough;
+    delete nextFilter.boro;
+  } else if (view.lens === "land") {
+    nextFilter.boro = borough;
+    delete nextFilter.borough;
+  } else {
+    nextFilter.borough = borough;
+    delete nextFilter.boro;
+  }
+  return followingUrlFromWatch({
+    lens: view.lens,
+    filter: nextFilter,
+    matchCount: view.matchCount,
+  }, { frequency: view.frequency, matchCount: view.matchCount });
+}
+
+function scopeLinkChip(href, label, { active = false, axis = "", value = "" } = {}) {
+  const on = active ? " on" : "";
+  const current = active ? ' aria-current="page"' : "";
+  return `<a class="chip following-scope-link${on}" href="${esc(href)}" data-following-scope-axis="${esc(axis)}" data-following-scope-value="${esc(value)}" data-scope-edge="following.${esc(axis)}.${esc(value || "all")}"${current}>${esc(label)}</a>`;
+}
+
+/** Topic + place as shareable scope-link chips (not bare selects). */
+function topicPlacePickersHtml(view) {
+  const topic = LENSES.map((lens) => scopeLinkChip(
+    withTopic(view, lens),
+    LENS_LABELS[lens],
+    { active: view.lens === lens, axis: "topic", value: lens },
+  )).join("");
+  const currentBorough = placeBorough(view.filter);
+  const place = [
+    scopeLinkChip(withPlace(view, ""), "Any place", {
+      active: !currentBorough,
+      axis: "place",
+      value: "all",
+    }),
+    ...BOROUGHS.map((borough) => scopeLinkChip(withPlace(view, borough), borough, {
+      active: currentBorough === borough,
+      axis: "place",
+      value: borough,
+    })),
+  ].join("");
+  return `<div class="following-scope-pickers">
+    <div class="following-scope-rail" role="group" aria-label="Topic">
+      <p class="following-scope-rail-label">Topic</p>
+      <div class="following-scope-links" data-following-topic-scope>${topic}</div>
+    </div>
+    <div class="following-scope-rail" role="group" aria-label="Place">
+      <p class="following-scope-rail-label">Place</p>
+      <div class="following-scope-links" data-following-place-scope>${place}</div>
+    </div>
+  </div>`;
 }
 
 function scopeHtml(view) {
@@ -191,7 +278,7 @@ function previewHtml(view) {
 }
 
 function subscribeHtml(view) {
-  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Pick filters to see matches.</p></section>`;
+  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Pick a topic or place to see matches.</p></section>`;
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
@@ -215,13 +302,14 @@ function templateHtml(template) {
 
 function controlsHtml(view) {
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
-  const borough = view.filter.borough || view.filter.boro || "";
-  return `<form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
+  const borough = placeBorough(view.filter);
+  return `${topicPlacePickersHtml(view)}
+  <form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
+    <input type="hidden" name="lens" value="${esc(view.lens)}">
     <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
-    <label>Topic<select name="lens">${lensOptions(view.lens)}</select></label>
+    ${borough ? `<input type="hidden" name="boro" value="${esc(borough)}">` : ""}
     <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…"></label>
     <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency"></label>
-    <label>Borough<select name="boro">${boroughOptions(borough)}</select></label>
     <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51"></label>
     <label>Cadence<select name="freq"><option value="daily"${view.frequency === "daily" ? " selected" : ""}>Daily</option><option value="weekly"${view.frequency === "weekly" ? " selected" : ""}>Weekly, Mondays</option></select></label>
     <button type="submit">See matches</button>
@@ -229,8 +317,40 @@ function controlsHtml(view) {
   </form>`;
 }
 
+function personalSectionHtml(view) {
+  // Mid-create: collapse the (often empty) saved-watches region so it is not
+  // dead weight above the criteria → matches → create flow.
+  const demoted = !!view.requested;
+  const list = `<div data-personal-watch-list><p>Open a CityScroll email to see your watches.</p></div><p data-personal-status role="status" aria-live="polite"></p>`;
+  if (demoted) {
+    return `<section id="your-following" class="following-personal following-personal--demoted" data-following-personal-mode="demoted" aria-labelledby="following-personal-heading">
+      <details class="following-personal-details">
+        <summary><span class="following-kicker">Saved</span> <span id="following-personal-heading">Your watches</span></summary>
+        ${list}
+      </details>
+    </section>`;
+  }
+  return `<section id="your-following" class="following-personal" data-following-personal-mode="secondary" aria-labelledby="following-personal-heading">
+    <p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2>${list}
+  </section>`;
+}
+
+function createSectionHtml(view) {
+  return `<section id="create" class="following-create" aria-labelledby="following-create-heading">
+    <p class="following-kicker">Create</p>
+    <h2 id="following-create-heading">Pick a topic or place</h2>
+    ${controlsHtml(view)}
+  </section>`;
+}
+
 export function renderFollowingBody(view) {
+  const create = createSectionHtml(view);
+  const workspace = `<div class="following-workspace" data-following-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
+  const personal = personalSectionHtml(view);
+  const packs = `<section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
+  // Create flow leads; saved watches are secondary (collapsed when mid-create).
   return `<main id="main" data-following-root data-personal-url="${API_BASE}/following/personal"
+    data-following-layout="${view.requested ? "create-first" : "browse"}"
     data-msg-duplicate="You already follow these filters. Manage the saved watch instead of making a copy."
     data-msg-preview-loading="Updating the preview…"
     data-msg-preview-ready="Preview updated."
@@ -244,10 +364,10 @@ export function renderFollowingBody(view) {
     <section class="following-hero">
       <h1>Following</h1>
     </section>
-    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list><p>Open a CityScroll email to see your watches.</p></div><p data-personal-status role="status" aria-live="polite"></p></section>
-    <section id="create" class="following-create" aria-labelledby="following-create-heading"><p class="following-kicker">Create</p><h2 id="following-create-heading">Pick a topic or place</h2>${controlsHtml(view)}</section>
-    <div class="following-workspace" data-following-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>
-    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>
+    ${create}
+    ${workspace}
+    ${personal}
+    ${packs}
   </main>`;
 }
 

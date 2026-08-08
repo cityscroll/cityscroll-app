@@ -2333,8 +2333,8 @@ both the live and restored databases.
 
 ## Agency statutory mandates (v1 free-watch)
 
-- User-facing term is **mandates**; storage lens remains `obligations` (upstream
-  source vocabulary). Pure model: `site/agency_obligations.mjs`. Shape:
+- User-facing term and public lens is **mandates**; legacy `obligations`
+  remains as alias/storage for upstream vocabulary and old watches. Pure model: `site/agency_obligations.mjs`. Shape:
   **agency → duty → deadline → recurrence**. Product copy states those facts
   plainly; machine fields (`observation.status`, quote-verify certification)
   stay off the public surface.
@@ -2345,12 +2345,13 @@ both the live and restored databases.
   Committed public artifact: `site/data/agency_obligations_lookup.json`.
   Fixture: `test/fixtures/agency_obligations/our_sample.json` (`--fixture`).
 - Free watch (world-state, not document keyword match):
-  `lens: "obligations"` + `{ agency_id, agency }` via
-  `agencyObligationsFollowHref` → Following / `compileSub` loads the lookup.
-  Optional refinements: `deliverable_type` (report|rulemaking|program|data
-  publication|other) and `windowDays` (1–365). Sanitize fields live in
-  `worker/src/lib/filter.mjs` (`LENSES.obligations`); feed preview uses
-  `feedItems("obligation", …)`. Confirm copy: `describeFilter` mandates line.
+  public `lens: "mandates"` (+ legacy `obligations` alias/redirect) +
+  `{ agency_id, agency }` via `agencyObligationsFollowHref` → Following /
+  `compileSub` loads the lookup. Optional refinements: `deliverable_type`
+  (report|rulemaking|program|data publication|other) and `windowDays` (1–365).
+  Sanitize fields live in `worker/src/lib/filter.mjs` (`LENSES.mandates` /
+  `LENSES.obligations`); feed preview uses `feedItems("obligation", …)`.
+  Confirm copy: `describeFilter` mandates line.
 - Provenance: each row links `source.legistar_url` (mandate → source law) via
   `legistarMatterUrl` — Gateway `M=L&ID=` for matter ids (never
   `LegislationDetail.aspx?ID=&G=S`, which returns Invalid parameters).

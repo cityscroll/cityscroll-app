@@ -47,6 +47,8 @@ export const LENSES = {
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
   // Record document match — compileSub loads agency_obligations_lookup.json. Optional
   // deliverable_type + windowDays narrow the free watch; agency_id is the join key.
+  // Product lens is "mandates"; "obligations" is the legacy/upstream alias (storage + old links).
+  mandates: ["agency_id", "agency", "deliverable_type", "windowDays"],
   obligations: ["agency_id", "agency", "deliverable_type", "windowDays"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/
@@ -219,11 +221,18 @@ function clampField(name, v) {
   }
 }
 
+/** Map legacy public/storage lens names to the product identity. */
+export function resolveLens(lens) {
+  const raw = String(lens || "").trim().toLowerCase();
+  if (raw === "obligations") return "mandates";
+  return raw;
+}
+
 // Clamp the model's tool output to exactly the lens's fields, in the expected shapes — so
 // malformed/out-of-range/oversized model output can never propagate to the browser. This is
 // part of the defense in depth: even a misbehaving model yields a small, well-formed object.
 export function sanitize(lens, input) {
-  const fields = LENSES[lens] || LENSES.money;
+  const fields = LENSES[resolveLens(lens)] || LENSES[lens] || LENSES.money;
   const f = input || {};
   const out = {};
   for (const name of fields) out[name] = clampField(name, f[name]);
@@ -238,7 +247,7 @@ export function sanitize(lens, input) {
 // or schema change and stays inside the existing Haiku metering. Additive to /nl's response shape
 // (a new sibling field, nothing existing changes) so a client that doesn't read it is unaffected.
 export function filterConfidence(lens, filter) {
-  const fields = LENSES[lens] || LENSES.money;
+  const fields = LENSES[resolveLens(lens)] || LENSES[lens] || LENSES.money;
   const f = filter || {};
   const hasSignal = fields.some((name) => {
     const v = f[name];
@@ -255,8 +264,9 @@ export function filterConfidence(lens, filter) {
 // fills every schema field, most of them unset for a given watch) to keep the link short and to
 // give the client's own clamp step, which iterates the SAME schema, nothing extra to ignore.
 export function encodeWatchFilter(lens, filter) {
-  if (!lens || !LENSES[lens]) return null;
-  const clamped = sanitize(lens, filter);
+  const resolved = resolveLens(lens);
+  if (!resolved || !(LENSES[resolved] || LENSES[lens])) return null;
+  const clamped = sanitize(resolved, filter);
   const compact = {};
   for (const [name, v] of Object.entries(clamped)) {
     if (v === null || v === false || (Array.isArray(v) && v.length === 0)) continue;
@@ -264,7 +274,7 @@ export function encodeWatchFilter(lens, filter) {
   }
   if (!Object.keys(compact).length) return null; // nothing worth carrying
   try {
-    return encodeURIComponent(JSON.stringify({ lens, filter: compact }));
+    return encodeURIComponent(JSON.stringify({ lens: resolved, filter: compact }));
   } catch {
     return null;
   }

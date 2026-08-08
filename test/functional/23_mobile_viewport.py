@@ -220,16 +220,26 @@ def run(base: str) -> None:
               scopeCount: Number(document.querySelector('[data-scope-count]')?.dataset.scopeCount || 0),
               previewRows: document.querySelectorAll('[data-following-preview-panel] [data-record-id]').length,
               criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
-              quietPrompt: document.querySelector('[data-following-subscribe-panel]')?.textContent
-                .includes('Pick filters to see matches.'),
+              quietPrompt: /Pick a topic or place to see matches/.test(
+                document.querySelector('[data-following-subscribe-panel]')?.textContent || ''
+              ),
+              topicChips: document.querySelectorAll('[data-following-topic-scope] a.chip').length,
+              placeChips: document.querySelectorAll('[data-following-place-scope] a.chip').length,
+              lensSelects: document.querySelectorAll('select[name="lens"]').length,
               sectionOrder: [...document.querySelectorAll('#your-following, #create, #packs')]
                 .map(el => el.id),
+              layout: document.querySelector('[data-following-root]')?.dataset.followingLayout || '',
             })"""
         )
         assert following_contract["scopeCount"] == following_contract["previewRows"], following_contract
         assert following_contract["criteriaMethod"] == "get", following_contract
         assert following_contract["quietPrompt"], following_contract
-        assert following_contract["sectionOrder"] == ["your-following", "create", "packs"], following_contract
+        assert following_contract["topicChips"] >= 5, following_contract
+        assert following_contract["placeChips"] >= 5, following_contract
+        assert following_contract["lensSelects"] == 0, following_contract
+        # Create leads; saved watches are secondary (not a fixed top invariant).
+        assert following_contract["sectionOrder"] == ["create", "your-following", "packs"], following_contract
+        assert following_contract["layout"] == "browse", following_contract
         no_js.close()
         browser.close()
 

@@ -1351,10 +1351,92 @@ select {
   padding-block: var(--space-6);
 }
 
+.following-scope-pickers {
+  display: grid;
+  gap: var(--space-4);
+  margin-block-end: var(--space-4);
+}
+
+.following-scope-rail-label {
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-soft);
+  font: 600 .8125rem/1.4 var(--font-label);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.following-scope-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.following-scope-link,
+a.chip.following-scope-link {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  font: 600 .8125rem/1.2 var(--font-label);
+  text-decoration: none;
+}
+
+.following-scope-link:hover,
+a.chip.following-scope-link:hover {
+  border-color: var(--color-action);
+  color: var(--color-action);
+}
+
+.following-scope-link.on,
+a.chip.following-scope-link.on,
+.following-scope-link[aria-current="page"],
+a.chip.following-scope-link[aria-current="page"] {
+  border-color: var(--color-action);
+  background: var(--color-action);
+  color: var(--color-surface);
+}
+
 .following-form {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3);
+}
+
+.following-personal--demoted {
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.following-personal-details {
+  padding: var(--space-4) var(--space-5);
+}
+
+.following-personal-details > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--color-text);
+  font: 600 1.1rem/1.2 var(--font-display);
+}
+
+.following-personal-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.following-personal-details > summary .following-kicker {
+  margin: 0;
+}
+
+.following-personal-details[open] > summary {
+  margin-block-end: var(--space-3);
 }
 
 .following-workspace {
