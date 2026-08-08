@@ -272,17 +272,10 @@ export function subOutreachHTML(awardPrimeGoalOrView, opts = {}) {
       </div>`
     : "";
 
-  // No methodology disclosure about goal gaps — empty-state axe.
-  // Optional how-toggle only when we have a positive fact list.
-  const how = rows.length
-    ? `<details class="inline-disclose lc-how"><summary>${esc(t("sub_outreach_how_summary"))}</summary><div class="inline-disclose-body">${t("sub_outreach_provenance_html")}</div></details>`
-    : "";
-
   const html = `<section class="notice-fact-detail sub-outreach-detail" data-sub-outreach="1" aria-label="${esc(t("sub_outreach_heading"))}">
     <div class="chain-h">${esc(t("sub_outreach_heading"))}</div>
     ${rows.join("\n")}
     ${callout}
-    ${how}
   </section>`;
 
   // Final guard: characterization + runtime refuse apology phrases.

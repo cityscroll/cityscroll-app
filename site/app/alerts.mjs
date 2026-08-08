@@ -1076,8 +1076,7 @@ async function awardContext(r){
     }catch(e){}
   }
   if(!bits.length) return "";
-  // Inline disclosure keeps the reader on the notice; full methodology stays one click away.
-  return `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>${t("context_strip_lbl")}</b><span>${bits.join(" · ")} · <details class="inline-disclose"><summary>${t("context_how_computed_summary")}</summary><div class="inline-disclose-body">${t("context_how_computed_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></span></div></div>`;
+  return `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>${t("context_strip_lbl")}</b><span>${bits.join(" · ")}</span></div></div>`;
 }
 
 /* Address / parcel cross-links: street-address geocode first; for Property Disposition,
@@ -1220,7 +1219,7 @@ async function fillContext(r, el){
   if(!document.contains(el)) return; // a newer selection replaced this panel
   let html = attachmentHTML;
   if(relatedHTML) html += relatedHTML;
-  if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
+  if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`;
   html += ctx;
   if(html) el.innerHTML = html;
   // Paint deferred table disclosure into the host (or append if host was dropped).
