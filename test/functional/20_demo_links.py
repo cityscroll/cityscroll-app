@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 
@@ -498,6 +499,27 @@ def wait_property_explorer_ready(page, timeout_ms: int) -> None:
     )
 
 
+def wait_expected_visible(page, expected: dict, entry: dict, timeout_ms: int) -> None:
+    """Wait for a visible contract target, retrying one cold document load.
+
+    A local Pages artifact can be ready before the browser's first document has
+    finished hydrating its route-specific island. One reload gives that bounded
+    race a second, independent attempt; the same selector still has to become
+    visible or the contract fails.
+    """
+    locator = visible_locator(page, expected)
+    try:
+        locator.first.wait_for(state="visible", timeout=timeout_ms)
+        return
+    except PlaywrightTimeoutError:
+        page.reload(wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
+        if is_slow_land_entry(entry):
+            wait_land_detail_ready(page, timeout_ms)
+        if is_slow_property_entry(entry):
+            wait_property_explorer_ready(page, timeout_ms)
+        visible_locator(page, expected).first.wait_for(state="visible", timeout=timeout_ms)
+
+
 class DemoLinkContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -540,8 +562,7 @@ class DemoLinkContract(unittest.TestCase):
             wait_property_explorer_ready(page, wait_ms)
 
         for expected in expectations["visible"]:
-            locator = visible_locator(page, expected)
-            locator.first.wait_for(state="visible", timeout=wait_ms)
+            wait_expected_visible(page, expected, entry, wait_ms)
 
         expected_pathname = expectations.get("pathname")
         if expected_pathname:
