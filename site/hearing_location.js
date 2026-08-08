@@ -306,6 +306,11 @@ function hearingMatchesArea(record, filter) {
   }
   return true;
 }
+function filterMeetingRowsByAffectedArea(records, filter) {
+  return (records || []).filter(function (record) {
+    return hearingMatchesArea(record, filter);
+  });
+}
 function hearingDateWindowEnd(today, windowName) {
   var date = new Date(String(today).slice(0, 10) + "T00:00:00Z");
   if (windowName === "week") date.setUTCDate(date.getUTCDate() + 7);
@@ -377,6 +382,7 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     hearingDateWindowEnd: hearingDateWindowEnd,
     hearingIsVirtualOnly: hearingIsVirtualOnly,
     hearingMatchesArea: hearingMatchesArea,
+    filterMeetingRowsByAffectedArea: filterMeetingRowsByAffectedArea,
     hearingPlainText: hearingPlainText,
     hearingRowsInScope: hearingRowsInScope,
     hearingScopeLadder: hearingScopeLadder,

@@ -3,6 +3,7 @@ import {
   isFranchiseConcessionNoticeEligible,
 } from "../franchise_notice.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
+import { agencyScopeHref } from "../agency_scope_route.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -52,6 +53,14 @@ function hasFeedDistrictFilter(filter){
 async function filterFeedRowsToDistrictBag(key,rows){
   const filter=feedDistrictFilter(key);
   if(!hasFeedDistrictFilter(filter)) return rows;
+  // The stamped district bag is a map read model, not the Meetings list's source
+  // of truth. A borough-only list scope must match every current affected-area
+  // record, including newly published and multi-borough hearings that have not
+  // reached the next map build yet.
+  if(key==="meetings" && (filter.borough || filter.locationScope)
+    && !filter.communityDistrict && !filter.councilDistrict){
+    return filterMeetingRowsByAffectedArea(rows, filter);
+  }
   const tools=await districtBagTools();
   if(!tools?.materializeDistrictBagRowsFromFiles) return [];
   const materialized=await tools.materializeDistrictBagRowsFromFiles(key,rows,filter);
@@ -223,6 +232,19 @@ function hearingViewFilter(){
     keyword:$("#meetingskw").value.trim(),
     ...hearingFilter(),
   };
+}
+function renderMeetingsAgencyScope(records){
+  const rail=$("#meetings-agency-scope");
+  if(!rail) return;
+  const selected=$("#meetingsagency")?.value||"";
+  const names=[...new Set((records||[]).map(record=>record?.agency).filter(Boolean).concat(selected||[]))].sort((a,b)=>String(a).localeCompare(String(b)));
+  const current=location.hash.startsWith("#meetings")
+    ? location.hash
+    : (globalThis.serializeState?.()||"#meetings");
+  rail.innerHTML=[["",t("all_agencies")],...names.map(name=>[name,name])].map(([name,label])=>{
+    const active=name===selected;
+    return `<a class="chip${active?" on":""}" href="${escUiHtml(agencyScopeHref("meetings",name,current))}" data-meetings-agency="${escUiHtml(name||"all")}"${active?' aria-current="page"':''}>${escUiHtml(label)}</a>`;
+  }).join("");
 }
 function hearingFilterKey(filter){
   return JSON.stringify([
@@ -1167,7 +1189,7 @@ function renderHearingGroup(scope, entries){
 function updateMeetingsMoreFiltersState(){
   const badge=$("#meetings-filter-badge");
   if(!badge) return;
-  const active=Number(($("#meetingswhen")?.value||"week")!=="week")
+  const active=Number(["month","upcoming","past"].includes($("#meetingswhen")?.value||""))
     +Number(!!$("#meetingsboro")?.value)
     +Number(!!meetingsCommunityDistrict)
     +Number(!!meetingsCouncilDistrict)
@@ -1186,6 +1208,7 @@ async function renderHearingExplorer(){
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
   let records=await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
+  renderMeetingsAgencyScope(hearingAll||[]);
   let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
   // when=all (map drill) and past / empty-widen need the past SODA slice.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
@@ -1194,6 +1217,7 @@ async function renderHearingExplorer(){
       const past=await loadPastHearings(filter);
       if(seq!==hearingRenderSeq) return;
       records=await filterFeedRowsToDistrictBag("meetings",records.concat(past));
+      renderMeetingsAgencyScope(hearingAll||[]);
       selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
@@ -1336,6 +1360,7 @@ async function loadHearings(){
     }
     if(stale()) return;
     hearingAll=records;
+    renderMeetingsAgencyScope(hearingAll);
     unbusy("#meetingsfeed");
     await renderHearingExplorer();
   }catch(e){

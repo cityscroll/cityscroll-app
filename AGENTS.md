@@ -53,6 +53,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Browse scope uses the pure `site/scope_v0.mjs` adapter; existing DOM controls, hashes,
   map state, presets, and watch drafts remain the state owners. Do not add a parallel scope
   store. Verify cross-surface round trips with `node --test test/scope_v0.test.mjs`.
+- Hydrated Meetings borough/location scopes must filter the current hearing rows through
+  `filterMeetingRowsByAffectedArea` before any stamped district-bag materialization. The map
+  artifact is a read model and can lag newly published or multi-borough hearings; community-
+  district and council-district scopes may still use the stamped bag for their finer geometry.
 - Property is route-lazy through `site/app/main.mjs`'s activation registry. Keep routing state
   eager; initial Property/notice deep links load the lens before `routing.mjs`, and later hash or
   tab activation passes through the existing router/tab owner rather than adding another store.

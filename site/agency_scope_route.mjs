@@ -1,4 +1,5 @@
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { routeHashFromScope, scopeFromRouteHash } from "./scope_v0.mjs";
 
 /**
  * Resolve the agency display value needed by the live feed controls from a
@@ -14,4 +15,14 @@ export function agencyNameFromEntityFacet(values = {}) {
     if (resolved?.canonical_name) return resolved.canonical_name;
   }
   return "";
+}
+
+/** Preserve the current lens scope while replacing its agency axis. */
+export function agencyScopeHref(surface, agency, currentHash = "") {
+  const lens = String(surface || "meetings").trim() || "meetings";
+  const raw = String(currentHash || `#${lens}`);
+  const hash = raw.startsWith("#") ? raw : `#${raw}`;
+  const scope = scopeFromRouteHash(hash, { language: "en" });
+  scope.facets.agencies = agency ? [String(agency)] : [];
+  return routeHashFromScope(scope, { surface: lens });
 }
