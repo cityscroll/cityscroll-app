@@ -5,6 +5,7 @@ import {
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
+import { officialSourceLink } from "../affordance_grammar.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -1154,7 +1155,7 @@ function meetingsExplorerCardHTML(entry){
   const secondaryActions=[];
   // City Record official notice — REQ_URL only so link_targets classifies as external
   // (mixed source_url||REQ_URL expressions are unclassified by that gate).
-  secondaryActions.push(`<a class="act" href="${REQ_URL(record.request_id)}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`);
+  secondaryActions.push(officialSourceLink({ href: REQ_URL(record.request_id), label: t("read_official_notice"), className: "act", escape: escUiHtml }));
   if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("meetings_action_agency_profile")}</a>`);
   const participationAction=participationLinksHTML({ participation });
   if(participationAction) secondaryActions.push(participationAction);

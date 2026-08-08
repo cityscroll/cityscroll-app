@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import * as procurementPhaseSpine from "../site/procurement_phase_spine.mjs";
 import { attachPlanningPhase } from "../site/procurement_planning_surface.mjs";
+import { officialSourceLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -40,7 +41,7 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 const sandbox = new Function(
-  "t", "tn", "window",
+  "t", "tn", "window", "officialSourceLink",
   extractFn("money") +
   extractFn("fdate") +
   extractConst("escUiHtml") +
@@ -102,7 +103,7 @@ const {
   checkbookSearchUrl,
   lifecycleDollarsFocusHref,
   lifecyclePaymentSummaryHTML,
-} = sandbox(t, tn, windowStub);
+} = sandbox(t, tn, windowStub, officialSourceLink);
 
 /** Production path: phase-group tools always available in characterization tests. */
 const phaseTools = procurementPhaseSpine;

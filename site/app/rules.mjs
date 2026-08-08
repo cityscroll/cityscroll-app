@@ -2,6 +2,7 @@ import { noticeDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
+import { officialSourceLink } from "../affordance_grammar.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -105,11 +106,11 @@ function rulesExplorerCardHTML(entry, terms){
     acts=`<a class="act primary"${primaryFactAttr} href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   }
   const primaryAction=acts;
-  const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
+  const secondaryActions=[officialSourceLink({ href: REQ_URL(r.request_id), label: t("city_record_link"), className: "act", escape: escUiHtml })];
   if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("rules_action_agency_profile")}</a>`);
   // Secondary official rule page when primary was the comment portal (not already the rule URL).
   if(entry.rule_url && !(wantRulePrimary || (wantCommentPrimary && !entry.comment_url))){
-    secondaryActions.push(`<a class="act" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`);
+    secondaryActions.push(officialSourceLink({ href: entry.rule_url, label: t("rule_event_official_source"), className: "act", escape: escUiHtml }));
   }
   secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
   const ev=r.event_date;
@@ -389,7 +390,7 @@ function ruleEventCardHTML(type, event, rec, opts){
   const fromNr=nr?(type==="comment_close"?(nr.comment_url||nr.url):nr.url):null;
   const official=fromNr||opts.phaseSourceUrl||null;
   const sourceLink=showSource&&official
-    ? `<a class="view" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`
+    ? officialSourceLink({ href: official, label: t("rule_event_official_source"), className: "view", escape: escUiHtml })
     : "";
   const href=nr?(nr.comment_url||nr.url):official;
   const commentAction=type==="comment_close"&&scheduled&&href
@@ -497,10 +498,10 @@ function rulePhaseLeadHTML(view, rec){
       + (date?` <button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(date)})}</button>`:"");
   }else if(cur.lead_action==="hearing" && (view.official_url||nr?.url)){
     const official=view.official_url||nr.url;
-    actionHTML=`<a class="act" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_phase_action_attend_hearing")}${extSR()}</a>`;
+    actionHTML=officialSourceLink({ href: official, label: t("rule_phase_action_attend_hearing"), className: "act", escape: escUiHtml });
   }else if(view.official_url||nr?.url){
     const official=view.official_url||nr.url;
-    actionHTML=`<a class="act" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`;
+    actionHTML=officialSourceLink({ href: official, label: t("rule_event_official_source"), className: "act", escape: escUiHtml });
   }else{
     actionHTML=t(cur.action_key||"rule_phase_action_proposal");
   }
@@ -874,7 +875,7 @@ function feedCardHTML(key, r, terms){
   // primary action sits first in the row (matches the hearing-card join/participation lead).
   const ruleAct=key==="rules"?ruleCommentAction(r._ruleStage):"";
   // Primary in-app action first (Open notice), then the external City Record citation.
-  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`+`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
+  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`+officialSourceLink({ href: REQ_URL(r.request_id), label: t("city_record_link"), className: "act", escape: escUiHtml });
   acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
   if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
   const geometry=key==="property"&&r._location?.geometry;
