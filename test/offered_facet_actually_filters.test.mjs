@@ -90,7 +90,8 @@ test("offered-facet-actually-filters: every Browse lens narrows when the fixture
     assert.ok(present.size > 0, `${facet} fixture has at least one agency edge`);
 
     // Sample up to three agencies present in the unfiltered set.
-    const sample = [...present.entries()]
+    // Top-N agencies from the committed Browse fixture rows for this lens (see BY_FACET_SOURCE).
+    const sample = [...present.entries()] // source: fixture agency frequency in site/data/*_default_*.json / domain observations
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3);
 
