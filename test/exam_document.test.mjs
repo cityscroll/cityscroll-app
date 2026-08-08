@@ -33,6 +33,10 @@ test("exam documents have typed identity, attached context, and static-first aff
     phaseView: buildExamPhaseView(buildExamProcessSpine(exam)),
   });
   assert.match(html, /data-exam-document="1"/);
+  assert.match(html, /data-node-document="1"/);
+  assert.match(html, /class="node-document exam-document"/);
+  assert.match(html, /class="node-hero exam-hero"/);
+  assert.match(html, /class="[^"]*node-actions/);
   assert.match(html, /data-subject-ref="exam:7016"/);
   assert.match(html, /Published by DCAS/);
   assert.match(html, /data-exam-watch="7016"/);
