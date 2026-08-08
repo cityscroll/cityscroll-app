@@ -638,14 +638,16 @@ export function buildProcessConformanceLookup({
 export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   if (!view) return "";
   const counts = view.counts || {};
+  if (!(counts.observed > 0)) return "";
   const publicItems = (view.items || []).filter((item) => (
-    item.observation?.status !== OBSERVATION_STATUS.ENRICHMENT_PENDING
+    item.observation?.status === OBSERVATION_STATUS.OBSERVED
+    || item.observation?.status === OBSERVATION_STATUS.ON_TRACK
   ));
   if (!publicItems.length) return "";
-  const visibleTotal = (counts.observed || 0)
-    + (counts.expected_not_yet_observed || 0)
-    + (counts.on_track || 0);
-  const statusLine = `${visibleTotal} mandates · ${counts.observed || 0} observed · ${counts.expected_not_yet_observed || 0} expected, not yet in City Record · ${counts.on_track || 0} on track`;
+  const statusLine = [
+    `${counts.observed || 0} observed`,
+    counts.on_track > 0 ? `${counts.on_track} on track` : null,
+  ].filter(Boolean).join(" · ");
 
   const items = publicItems.slice(0, limit);
   const list = items.length
@@ -694,6 +696,9 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
 
 /** Minimal CSS fragment for observation chips (injected via civic-documents or inline). */
 export const MANDATE_CONFORMANCE_STYLE = `
+main:not(:has(#mandates-conformance)) a[href$="#mandates-conformance"] {
+  display: none;
+}
 .mandates-conformance .mandate-obs-chip {
   display: inline-block;
   margin-inline-end: 0.5rem;
@@ -711,9 +716,6 @@ export const MANDATE_CONFORMANCE_STYLE = `
 }
 .mandates-conformance .mandate-obs-on_track {
   background: color-mix(in srgb, var(--color-text, #222) 6%, transparent);
-}
-.mandates-conformance .mandate-obs-expected_not_yet_observed {
-  background: color-mix(in srgb, var(--color-text, #222) 4%, transparent);
 }
 .mandates-conformance .mandate-conformance-item .node-record-main {
   line-height: 1.45;

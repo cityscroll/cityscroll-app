@@ -140,7 +140,8 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
   assert.ok(view.summary.matched_categories >= 5);
 
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /data-agency-constellation-category="obligations"|data-process-conformance="v1"/);
+  assert.doesNotMatch(html, /id="mandates-conformance"/);
+  assert.match(html, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
   assert.match(html, /Mandates/);
   assert.match(html, /Source law/);
   assert.match(html, /Watch mandates and deadlines|Watch obligations and deadlines/);

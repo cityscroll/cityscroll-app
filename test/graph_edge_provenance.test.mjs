@@ -204,4 +204,9 @@ test("inspector panel and why-control render warrant classes without fabricating
   assert.equal(WARRANT_CLASSES.exact.id, "exact");
   assert.equal(WARRANT_CLASSES.exact.token, "exact");
   assert.equal(WARRANT_CLASSES.probabilistic.token, "probable");
+
+  const inactivePanel = renderEdgeProvenancePanel([exact, reviewed]);
+  assert.match(inactivePanel, /data-edge-provenance-panel="1"[^>]* hidden/);
+  assert.match(inactivePanel, /data-edge-prov-body="1"><\/div>/);
+  assert.doesNotMatch(inactivePanel, /Open a warrant chip/);
 });

@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.agency_constellation_capture.v1",
+  "captured_on": "2026-08-08",
+  "baseline_revision": "05bdcd27",
+  "viewports": [390, 1440],
+  "agencies": {
+    "zero_observed": "citywide-administrative-services",
+    "observed": "buildings"
+  },
+  "checks": {
+    "zero_observed_section_omitted": true,
+    "zero_observed_navigation_hidden": true,
+    "absence_rows_omitted": true,
+    "provenance_hidden_before_warrant_selection": true,
+    "provenance_visible_after_warrant_selection": true,
+    "observed_rows_preserved": true
+  }
+}
