@@ -2058,22 +2058,39 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     }
     if (itemKind === "obligation") {
       // Statutory mandate world-state: never assert compliance / non-compliance.
+      // Prediction branch frames the expected public-record event + window plainly.
       const agencySlug = r.agency_id
         || String(r.agency_name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       const agencyPath = agencySlug
         ? `https://cityscroll.org/agencies/${encodeURIComponent(agencySlug)}/`
         : "https://cityscroll.org/agencies/";
+      const predictionsPath = agencySlug
+        ? `https://cityscroll.org/agencies/${encodeURIComponent(agencySlug)}/#mandates-predictions`
+        : agencyPath;
+      const isPredicted = r.predicted_event === true || !!r.expected_event_kind;
       const deadline = r.deadline_date
-        ? `Statutory deadline ${String(r.deadline_date).slice(0, 10)}`
+        ? (isPredicted
+          ? (Number.isFinite(r.days_to_deadline) && r.days_to_deadline >= 0
+            ? `Expected by ${String(r.deadline_date).slice(0, 10)} · ${r.days_to_deadline} day${r.days_to_deadline === 1 ? "" : "s"}`
+            : `Expected by ${String(r.deadline_date).slice(0, 10)}`)
+          : `Statutory deadline ${String(r.deadline_date).slice(0, 10)}`)
         : (r.deadline_text ? `Deadline: ${r.deadline_text}` : "No computed deadline");
-      const meta = [r.agency_name, r.deliverable_type, deadline, r.recurrence, r.citation]
+      const eventLine = isPredicted && r.expected_event_label
+        ? r.expected_event_label
+        : null;
+      const band = isPredicted
+        ? (r.prediction_band_label || r.prediction_band || null)
+        : null;
+      const meta = [r.agency_name, eventLine, r.deliverable_type, deadline, band, r.recurrence, r.citation]
         .filter(Boolean).map(esc).join(" · ");
       const source = r.legistar_url
         ? `<a href="${esc(r.legistar_url)}">Source law</a>`
         : "";
-      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b>${esc(r.duty_text || r.short_title || "Statutory mandate")}</b><br>
+      const openLabel = isPredicted ? "↗ Expected mandate events" : "↗ Agency constellation";
+      const openHref = isPredicted ? predictionsPath : agencyPath;
+      return `<li data-digest-item="1"${itemClass}${isPredicted ? ' data-predicted-event="1"' : ""} style="margin:0 0 14px"><b>${esc(r.duty_text || r.short_title || "Statutory mandate")}</b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
-        <span style="font-size:13px"><a href="${agencyPath}">↗ Agency constellation</a>${source ? ` &nbsp; ${source}` : ""}</span></li>`;
+        <span style="font-size:13px"><a href="${openHref}">${openLabel}</a>${source ? ` &nbsp; ${source}` : ""}</span></li>`;
     }
     if (itemKind === "rezone") {
       // ZAP rows: project_name/public_status shape. Action rail uses zoningHandoff via
