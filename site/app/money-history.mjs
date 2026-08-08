@@ -297,10 +297,8 @@ function externalAwardHTML(resp, notice){
   if(resp.coverage==="exact"){
     const matches = resp.matches||[];
     if(matches.length) return nychaAwardBoxHTML(matches[0], notice?notice.pin:"");
-    // Nothing found — say we checked, but only when this notice actually carried a usable PIN.
-    // Link to NYCHA's own Checkbook contracts list (no single matched contract to point at yet).
     if(notice && notice.type_of_notice_description==="Solicitation" && usablePin(notice.pin)){
-      return `<div class="note">${t("external_award_nycha_none_note_html",{link:checkbookNychaContractsLink()})}</div>${awardWatchOfferHTML(notice)}`;
+      return awardWatchOfferHTML(notice);
     }
     return "";
   }
@@ -308,8 +306,7 @@ function externalAwardHTML(resp, notice){
     const awards = resp.agencyAwards||[];
     const source = resp.source||{};
     if(awards.length) return aboAwardsTimelineHTML(awards, source);
-    // Covered by an ABO source but nothing on file there — name + link + date the source checked.
-    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset, source.authority)})}</div>${aboEvidenceHTML(source)}${awardWatchOfferHTML(notice)}`;
+    return awardWatchOfferHTML(notice);
   }
   return "";
 }

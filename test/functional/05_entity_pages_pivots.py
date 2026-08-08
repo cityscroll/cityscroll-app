@@ -407,8 +407,7 @@ with sync_playwright() as pw:
     p7.screenshot(path=SHOT + "official-coverage.png", full_page=True)
     p7.close()
 
-    # A complete outcome response may still declare this optional read model unavailable.
-    # The UI must render that state instead of leaving the host silently empty.
+    # An unavailable optional read model leaves the reader slot empty.
     p8 = ctx.new_page()
     unavailable_payload = {
         "ok": True,
@@ -422,10 +421,11 @@ with sync_playwright() as pw:
     p8.route("**/zap-outcomes?id=2022M0258", lambda route: route.fulfill(
         status=200, content_type="application/json", body=json.dumps(unavailable_payload)))
     p8.goto(BASE + "#land/2022M0258", wait_until="domcontentloaded", timeout=30000)
-    p8.wait_for_selector('[data-project-connections-state="unavailable"]', timeout=30000)
-    unavailable_text = p8.locator('[data-project-connections-state="unavailable"]').inner_text()
-    step("OK" if unavailable_text.strip() else "FAIL", "gc-05 unavailable read model renders honestly",
-         unavailable_text[:160].replace("\n", " | "))
+    p8.wait_for_selector("#project-connections", state="attached", timeout=30000)
+    p8.wait_for_timeout(800)
+    unavailable_html = p8.locator("#project-connections").inner_html().strip()
+    step("OK" if not unavailable_html else "FAIL", "gc-05 unavailable read model is omitted",
+         unavailable_html[:160].replace("\n", " | "))
     p8.close()
 
     # ---------- vendor page direct, with variant resolution ----------

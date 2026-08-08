@@ -1142,24 +1142,18 @@ function landOutcomesHTML(record, phaseTools){
 }
 
 function landOutcomeAbsentHTML(record){
-  const portal=record?.portal_url
-    ? ` <a class="view" href="${escUiHtml(record.portal_url)}" ${EXT_ATTRS}>${t("land_outcomes_portal_link")}${extSR()}</a>`
-    : "";
-  return `<div class="land-outcomes-absent" data-zap-outcomes-state="absent">
-    <div class="chain-h">${t("land_outcomes_heading")}</div>
-    <div class="note">${t("land_outcomes_unmatched_html",{reason:t("land_outcomes_unmatched_default")})}${portal}</div>
-  </div>`;
+  return "";
 }
 
 function landOutcomeFirstPaintHTML(r){
   const hit=r?.project_id?zapOutcomesMemGet(r.project_id):null;
   const record=hit?.data?.record;
-  if(!record) return "";
+  if(!record||record.snapshot_state==="absent") return "";
   return landOutcomeSnapshotHTML(record,null);
 }
 function landOutcomeSnapshotHTML(record,phaseTools){
-  const state=record.snapshot_state==="absent"?"absent":"present";
-  return `<section data-zap-outcomes-first-paint="1" data-zap-outcomes-state="${state}">${landOutcomesHTML(record,phaseTools)}</section>`;
+  if(!record||record.snapshot_state==="absent") return "";
+  return `<section data-zap-outcomes-first-paint="1" data-zap-outcomes-state="present">${landOutcomesHTML(record,phaseTools)}</section>`;
 }
 
 /* Session cache + list prefetch for zap-outcomes. Daily edge prewarm keeps the Worker KV
@@ -1194,27 +1188,12 @@ function projectConnectionItemHTML(item, projectScope){
   return escUiHtml(item.label||"");
 }
 function projectConnectionsHTML(evidence, tools){
-  if(evidence?.status==="unavailable"){
-    return `<div class="eicard project-connections project-connections-unavailable" data-project-connections-state="unavailable" data-project-ref="${escUiHtml(evidence.project_ref||"")}">
-      <div class="chain-h">${t("project_connections_heading")}</div>
-      <p class="pc-gap">${t("project_connections_gap_source")}</p>
-    </div>`;
-  }
+  if(evidence?.status==="unavailable") return "";
   if(!evidence||evidence.status!=="bounded"||!tools) return "";
   const view=tools.buildProjectConnectionView(evidence,{currentHash:"#land",language:window.LANG||"en"});
   let projectScope=CrolScope.emptyScope(window.LANG||"en");
   projectScope=CrolScope.scopeWithEntity(projectScope,evidence.project_ref);
   projectScope.facets.domains=["land"];
-  const gapLabels={
-    applicant_not_published:"project_connections_gap_applicant",
-    no_exact_bbl_edge:"project_connections_gap_parcels",
-    no_exact_meeting_edge_in_bounded_corpus:"project_connections_gap_meetings",
-    decision_documents_not_published:"project_connections_gap_decisions",
-    not_published:"project_connections_gap_notices",
-    source_unavailable:"project_connections_gap_source",
-    no_exact_notice_edge_in_bounded_corpus:"project_connections_gap_notices",
-    no_exact_mih_edge_in_bounded_corpus:"project_connections_gap_mih",
-  };
   const groups=view.groups.filter(group=>group.status==="matched").map(group=>{
     const itemRows=(group.items||[]).slice(0,12).map(item=>{
       const label=projectConnectionItemHTML(item,projectScope);
@@ -1226,18 +1205,16 @@ function projectConnectionsHTML(evidence, tools){
     const docs=(group.documents||[]).filter(doc=>doc.href).slice(0,6).map(doc=>
       `<a class="view" href="${escUiHtml(doc.href)}" ${EXT_ATTRS}>${escUiHtml(doc.label)}${extSR()}</a>`
     ).join("");
-    const gapKey=gapLabels[group.gap];
-    const empty=!itemRows&&!docs?`<p class="pc-gap">${t(gapKey||"project_connections_gap_bounded")}</p>`:"";
-    const docGap=group.id==="decisions"&&group.gap==="decision_documents_not_published"&&itemRows
-      ?`<p class="pc-gap">${t("project_connections_gap_decisions")}</p>`:"";
+    if(!itemRows&&!docs) return "";
     const viewAll=group.view_all_href
       ?`<a class="ei-view-all" href="${escUiHtml(group.view_all_href)}">${t("entity_intel_view_all_scope")}</a>`:"";
     return `<section class="pc-group" data-project-group="${escUiHtml(group.id)}" data-status="${escUiHtml(group.status)}">
       <h3>${t("project_connections_group_"+group.id)} <span class="ei-status ${group.status==="matched"?"ei-status-matched":""}">${group.status==="matched"?t("entity_intel_status_matched"):t("entity_intel_status_empty")}</span></h3>
-      ${itemRows?`<ul>${itemRows}</ul>`:""}${docs?`<div class="pc-docs">${docs}</div>`:""}${empty}${docGap}
+      ${itemRows?`<ul>${itemRows}</ul>`:""}${docs?`<div class="pc-docs">${docs}</div>`:""}
       ${projectConnectionsCoverageHTML(group.coverage)}${viewAll}
     </section>`;
-  }).join("");
+  }).filter(Boolean).join("");
+  if(!groups) return "";
   return `<div class="eicard project-connections" data-project-ref="${escUiHtml(evidence.project_ref)}">
     <div class="ei-heading-row"><div class="chain-h">${t("project_connections_heading")}</div>
       <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("project_connections_apply_scope")}</a></div>
@@ -1444,17 +1421,7 @@ async function loadNoticeLandSpine(r, el){
   }
 
   if(!resolution || !resolution.matched || !resolution.project_id){
-    // Class-(a): plausible ULURP/ZAP refs but no unique portal project yet.
-    // Invalid extractions never reach here (extractor + eligibility filter them out).
-    const portalHint=`<a href="https://zap.planning.nyc.gov/" ${EXT_ATTRS}>Zoning Application Portal${extSR()}</a>`;
-    const hasKeys=keysLabel && keysLabel!=="—";
-    const note=hasKeys
-      ? t("notice_land_no_match_with_keys_html",{keys:keysLabel, portal:portalHint})
-      : t("notice_land_no_match_html",{portal:portalHint});
-    el.innerHTML=`<section class="notice-land-spine" data-notice-land-spine="1" data-notice-land-state="unmatched" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
-      <div class="chain-h">${t("notice_land_spine_heading")}</div>
-      <div class="note">${note}</div>
-    </section>`;
+    el.innerHTML="";
     return;
   }
 
@@ -1473,11 +1440,7 @@ async function loadNoticeLandSpine(r, el){
   ]);
   if(!document.contains(el)) return;
   if(!data || data.ok===false || !data.record){
-    el.innerHTML=`<section class="notice-land-spine" data-notice-land-spine="1" data-notice-land-state="unavailable" data-zap-project="${escUiHtml(resolution.project_id)}" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
-      <div class="chain-h">${t("notice_land_spine_heading")}</div>
-      <div class="note">${t("notice_land_unavailable_html")}</div>
-      <div class="lc-pct"><a class="view" href="#land/${escUiHtml(resolution.project_id)}">${t("notice_land_open_land_detail")}</a></div>
-    </section>`;
+    el.innerHTML="";
     return;
   }
   el.innerHTML=noticeLandSpineHTML(data.record, phaseTools, {

@@ -94,6 +94,7 @@ const helpers = new Function(
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
+  extractFn("lifecycleEntryHasRenderableData") +
   extractFn("lifecycleCurrentStageKey") +
   extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
@@ -213,9 +214,9 @@ test("gap taxonomy report is present and names both registers", () => {
 // Class (a) — real procurement field case: unmatched pending/registered/payment
 // ---------------------------------------------------------------------------
 
-test("class a: unmatched Checkbook stages collapse in UI; dictionary keeps not-yet-ingested register", () => {
-  // Notice-detail presentation collapses empty future stages into the stepper so a fresh
-  // award does not paint three "Not yet shown here" paragraphs. The class-(a) strings stay
+test("class a: unmatched Checkbook stages collapse in UI", () => {
+  // Notice-detail presentation omits empty future stages so a fresh award does not paint
+  // placeholders. The class-(a) strings stay
   // in the English dictionary (and gap inventory) for other surfaces / precompute fill-in.
   const html = lifecycleTimelineHTML({
     pin: "84124P0003001",
@@ -235,15 +236,12 @@ test("class a: unmatched Checkbook stages collapse in UI; dictionary keeps not-y
 
   assert.doesNotMatch(html, CLASS_A_PREFIX);
   assert.match(html, /class="lc-stepper"/);
-  assert.match(html, /Pending contract/);
-  assert.match(html, /Registered contract/);
-  assert.match(html, /Payments/);
+  assert.doesNotMatch(html, /Pending contract|Registered contract|Payments/);
   assert.doesNotMatch(html, CLASS_B_PREFIX);
   assert.doesNotMatch(html, /Disclaimer|This page does not/i);
-  // Inventory / i18n still pin the class-(a) register with per-stage specificity
+  // Dormant taxonomy copy remains only for gaps still owned by another surface.
   assert.match(t("lifecycle_unmatched_pending_html", { source: "Checkbook NYC pending contracts" }), CLASS_A_PREFIX);
   assert.match(t("lifecycle_unmatched_pending_html", { source: "x" }), /pending contracts live in/);
-  assert.match(t("lifecycle_unmatched_registered_html", { source: "x" }), /registered contracts live in/);
   assert.match(t("lifecycle_unmatched_payment_html", { source: "x" }), /payments live in/);
 });
 
@@ -251,7 +249,7 @@ test("class a: unmatched Checkbook stages collapse in UI; dictionary keeps not-y
 // Class (b) — real field case: no PIN on the notice
 // ---------------------------------------------------------------------------
 
-test("class b: no-PIN provenance uses not-published register with Checkbook pointer", () => {
+test("no-PIN lifecycle keeps populated notice data and omits dependent gaps", () => {
   const html = lifecycleTimelineHTML({
     pin: null,
     pin_strategy: "none",
@@ -268,9 +266,8 @@ test("class b: no-PIN provenance uses not-published register with Checkbook poin
     ],
   }, { request_id: "X", agency_name: "A", pin: null });
 
-  assert.match(html, CLASS_B_PREFIX);
-  assert.match(html, /Procurement ID \(PIN\)/);
-  assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
+  assert.match(html, /Solicitation/);
+  assert.doesNotMatch(html, /Procurement ID \(PIN\)|would appear in Checkbook NYC/);
 });
 
 // ---------------------------------------------------------------------------
@@ -278,7 +275,7 @@ test("class b: no-PIN provenance uses not-published register with Checkbook poin
 // (IDA hearings now derive a City Record hearing-stage join; unmatched is for non-hearing cases.)
 // ---------------------------------------------------------------------------
 
-test("class b: unmatched subsidy project uses not-published register", () => {
+test("unmatched subsidy project omits the lifecycle slot", () => {
   const [lifecycle] = assembleSubsidyLifecycle([{
     request_id: "20260101099",
     short_title: "Parks concession award — unrelated to subsidy projects",
@@ -290,9 +287,7 @@ test("class b: unmatched subsidy project uses not-published register", () => {
     short_title: "Parks concession award — unrelated to subsidy projects",
   });
   assert.equal(lifecycle.join.matched, false);
-  assert.match(html, CLASS_B_PREFIX);
-  assert.match(html, /linked subsidy project/);
-  assert.match(html, /NYCIDA\/Build NYC|would appear/i);
+  assert.equal(html, "");
 });
 
 // ---------------------------------------------------------------------------
@@ -347,7 +342,7 @@ test("matter without votes keeps the published matter and omits a vote gap", () 
 // Class (b) — subsidy outcome and field gaps on a matched project with blanks
 // ---------------------------------------------------------------------------
 
-test("class b: matched subsidy stage with unknown outcome uses not-published register", () => {
+test("matched subsidy stage keeps facts and omits unknown outcome and fields", () => {
   const html = subsidyLifecycleHTML({
     ok: true,
     join: { matched: true, confidence: "confirmed" },
@@ -370,24 +365,17 @@ test("class b: matched subsidy stage with unknown outcome uses not-published reg
     }],
   }, { request_id: "20260010002", short_title: "Sample" });
 
-  assert.match(html, CLASS_B_PREFIX);
-  assert.match(html, /does not publish this outcome/);
-  // Company/place field gaps stay in substance (disclosure) but keep class-(b) copy.
-  assert.match(html, /does not publish a company name/);
-  assert.match(html, /does not publish a project address or BBL/);
+  assert.match(html, /Sample|Hearing|held/i);
+  assert.doesNotMatch(html, /does not publish this outcome|does not publish a company name|does not publish a project address or BBL/i);
 });
 
 // ---------------------------------------------------------------------------
 // English dictionary pins both registers; all ten shipping locales carry keys
 // ---------------------------------------------------------------------------
 
-test("English dictionary pins both gap registers for lifecycle keys", () => {
+test("English dictionary retains only gap registers still owned by active surfaces", () => {
   assert.match(t("lifecycle_unmatched_pending_html", { source: "Checkbook NYC" }), CLASS_A_PREFIX);
-  assert.match(t("lifecycle_unmatched_registered_html", { source: "Checkbook NYC" }), CLASS_A_PREFIX);
   assert.match(t("lifecycle_unmatched_payment_html", { source: "Checkbook NYC" }), CLASS_A_PREFIX);
-  assert.match(t("lifecycle_no_pin_note_html"), CLASS_B_PREFIX);
-  assert.match(t("lifecycle_documents_not_published_html", { where: "City Record file attachments" }), CLASS_B_PREFIX);
-  assert.match(t("subsidy_outcome_unknown_html"), CLASS_B_PREFIX);
   assert.match(t("agency_awards_none_open_data_html"), CLASS_B_PREFIX);
   assert.match(t("meeting_outcomes_no_votes_html", { matter: "Int 1" }), CLASS_A_PREFIX);
 });
@@ -396,7 +384,7 @@ test("procurement-solicitation-documents is class (b) after RFx document-URL kil
   const gap = registry.gaps.find((g) => g.id === "procurement-solicitation-documents");
   assert.ok(gap);
   assert.equal(gap.class, "not_published");
-  assert.equal(gap.i18n_key, "lifecycle_documents_not_published_html");
+  assert.equal(gap.i18n_key, undefined);
   assert.match(gap.would_appear_in, /GetFile|City Record/i);
   assert.match(gap.evidence, /0%|0\/50|document/i);
   assert.equal(gap.class_change?.to, "not_published");
@@ -430,7 +418,7 @@ test("DCAS non-fleet surplus stays partnership-blocked while fleet uses official
   assert.doesNotMatch(gap.evidence, /scrape GovDeals/i);
 });
 
-test("unmatched package-documents sub-slot uses not-published register with RequestDetail deep link", () => {
+test("unmatched package-documents sub-slot is omitted while the notice source remains", () => {
   const html = lifecycleTimelineHTML({
     ok: true,
     pin: "81026B0003",
@@ -453,21 +441,17 @@ test("unmatched package-documents sub-slot uses not-published register with Requ
       },
     }],
   }, { request_id: "20260707026", pin: "81026B0003" });
-  assert.match(html, CLASS_B_PREFIX);
-  assert.match(html, /package documents|does not publish/i);
-  // With request_id known, deep-link the City Record notice — not bare GetFile search
+  assert.doesNotMatch(html, /package documents|does not publish/i);
+  // Populated solicitation data keeps its City Record source link.
   assert.match(html, /a856-cityrecord\.nyc\.gov\/RequestDetail\/20260707026/);
   assert.doesNotMatch(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile"/);
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
-test("all ten shipping locales define the gap taxonomy keys", () => {
+test("all ten shipping locales define the remaining gap taxonomy keys", () => {
   const keys = [
     "lifecycle_unmatched_pending_html",
-    "lifecycle_unmatched_registered_html",
     "lifecycle_unmatched_payment_html",
-    "lifecycle_no_pin_note_html",
-    "lifecycle_documents_not_published_html",
     "lifecycle_source_city_record_getfile",
     "lifecycle_passed_pending_html",
     "lifecycle_passed_registered_html",
@@ -479,13 +463,6 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "lifecycle_source_checkbook_pending",
     "lifecycle_source_checkbook_registered",
     "lifecycle_source_checkbook_spending",
-    "subsidy_outcome_unknown_html",
-    "subsidy_stage_unmatched_html",
-    "subsidy_unmatched_html",
-    "subsidy_unmatched_default_reason",
-    "subsidy_company_unknown_html",
-    "subsidy_place_unknown_html",
-    "subsidy_money_unknown_html",
     "meeting_outcomes_unmatched_html",
     "meeting_outcomes_no_votes_html",
     "meeting_outcomes_no_matters_html",
@@ -493,7 +470,6 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "meeting_outcomes_non_council_where",
     "meeting_outcomes_heading_non_council",
     "agency_awards_none_open_data_html",
-    "external_award_none_note_html",
     "career_not_published",
     "career_outcomes_list_joined_note",
     "career_outcomes_list_source_name",

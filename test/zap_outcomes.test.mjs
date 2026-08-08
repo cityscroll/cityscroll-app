@@ -214,11 +214,12 @@ test("index land detail loads outcomes from worker path only", () => {
   assert.match(src, /ZAP_OUTCOMES_MEM/);
 });
 
-test("default Land outcomes paint from the daily snapshot without spinner-to-empty", () => {
+test("default Land outcomes omit an absent daily snapshot without spinner-to-empty", () => {
   const src = SITE_SOURCE;
   assert.match(src, /landOutcomeFirstPaintHTML/);
   assert.match(src, /data-zap-outcomes-first-paint/);
-  assert.match(src, /data-zap-outcomes-state="absent"/);
+  assert.doesNotMatch(src, /data-zap-outcomes-state="absent"/);
+  assert.match(src, /record\.snapshot_state==="absent"\) return ""/);
   assert.doesNotMatch(
     src,
     /id="land-outcomes"[^>]*><div class="note"><span class="loading"><\/span>/,

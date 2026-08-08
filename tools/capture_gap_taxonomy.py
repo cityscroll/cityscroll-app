@@ -61,8 +61,8 @@ function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function renderCase(kind){
   const t = window.t;
   document.getElementById('case-title').textContent =
-    kind === 'class-a' ? 'Class A — not yet shown here (pending / registered / payments)'
-                       : 'Class B — city does not publish (no PIN + subsidy outcome)';
+    kind === 'class-a' ? 'Class A — not yet shown here (pending / payments)'
+                       : 'Class B — city does not publish';
   if(kind === 'class-a'){
     const src = '<span lang="en" dir="ltr">'+t('lifecycle_source_checkbook')+'</span>';
     document.getElementById('body').innerHTML = `
@@ -75,12 +75,6 @@ function renderCase(kind){
         </div></div>
         <div class="connector">→</div>
         <div class="stage"><div class="box unmatched">
-          <div class="stage-name">${t('lifecycle_stage_registered')}</div>
-          <div class="when">—</div>
-          <div class="lc-norecord">${t('lifecycle_unmatched_registered_html',{source:src})}</div>
-        </div></div>
-        <div class="connector">→</div>
-        <div class="stage"><div class="box unmatched">
           <div class="stage-name">${t('lifecycle_stage_payment')}</div>
           <div class="when">—</div>
           <div class="lc-norecord">${t('lifecycle_unmatched_payment_html',{source:src})}</div>
@@ -90,14 +84,6 @@ function renderCase(kind){
     `;
   } else {
     document.getElementById('body').innerHTML = `
-      <div class="chain-h">${t('lifecycle_heading')}</div>
-      <div class="note">${t('lifecycle_no_pin_note_html')}</div>
-      <div class="chain-h">${t('subsidy_lifecycle_heading')}</div>
-      <div class="note">${t('subsidy_unmatched_html',{
-        title: esc('NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING'),
-        reason: t('subsidy_unmatched_default_reason')
-      })}</div>
-      <div class="lc-norecord" style="margin-top:10px">${t('subsidy_outcome_unknown_html')}</div>
       <div class="lc-norecord" style="margin-top:8px">${t('agency_awards_none_open_data_html')}</div>
     `;
   }

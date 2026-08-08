@@ -386,16 +386,7 @@ function ruleEventCardHTML(type, event, rec, opts){
   if(!cfg) return "";
   opts=opts||{};
   const nr=rec&&rec.nyc_rules;
-  if(!event){
-    const linked=!!nr || opts.joined;
-    const gap=linked
-      ? t("rule_event_not_published_html",{event:t(cfg.label)})
-      : t("rule_event_not_yet_ingested_html",{event:t(cfg.label),source:`<span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>`});
-    return `<div class="stage"><div class="box ${linked?"unmatched":"unknown"}">
-      <div class="stage-name">${t(cfg.label)}</div>
-      <div class="lc-norecord">${gap}</div>
-    </div></div>`;
-  }
+  if(!event) return "";
   const eventDate=event.valid_at||event.published_at;
   const scheduled=event.status==="scheduled";
   const boxClass=scheduled?"matched":"passed";
@@ -435,11 +426,7 @@ function rulePhaseAggregateHTML(agg){
 }
 
 function rulePhasePanelHTML(phase, rec, view){
-  if(!phase) return "";
-  // Future empty phases: stepper chips only (no gap-card clutter).
-  if(phase.state==="future" && !phase.event_count) return "";
-  // Passed empty: omit (later stages already mark progress).
-  if(phase.state==="passed" && !phase.event_count) return "";
+  if(!phase || !phase.event_count) return "";
 
   const open=phase.state==="current"?" open":"";
   const stateWord=phase.state==="current"
@@ -456,8 +443,6 @@ function rulePhasePanelHTML(phase, rec, view){
         : (phase.first?ruleDateLabel(phase.first):""),
     ].filter(Boolean);
     summary=parts.join(" · ");
-  }else{
-    summary=t("rule_phase_empty");
   }
 
   let body="";
@@ -479,19 +464,8 @@ function rulePhasePanelHTML(phase, rec, view){
       if(idx<material.length-1) stages+='<div class="connector">→</div>';
     }
   });
-  // Current phase with missing event types: show class-(a)/(b) gap slots so readers
-  // still see which official dates have not been published (not invented stages).
-  if(phase.state==="current" && (phase.missing_types||[]).length){
-    (phase.missing_types||[]).forEach(type=>{
-      const gap=ruleEventCardHTML(type, null, rec, {joined:view.joined, showSourceLink:false});
-      if(gap){
-        if(stages) stages+='<div class="connector">→</div>';
-        stages+=gap;
-      }
-    });
-  }
   if(stages) body+=`<div class="lc-stage-detail"><div class="chain rule-chain rule-phase-cards">${stages}</div></div>`;
-  if(!body) body=`<div class="lc-phase-summary">${t("rule_phase_empty")}</div>`;
+  if(!body) return "";
 
   return `<details class="lc-phase${phase.state==="current"?" current-phase":""}"${open} id="rule-phase-${escUiHtml(phase.id)}" data-rule-phase-panel="${escUiHtml(phase.id)}">
     <summary>
@@ -615,7 +589,7 @@ function ruleEventSpineHTMLPhase(view, rec){
   const official=joined?(view.official_url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
   const provenance=joined
     ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
-    : t("rule_event_join_gap_html",{source:`<a href="${RULES_PUBLIC_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`});
+    : "";
   const howBody=view.multi_notice?t("rule_phase_how_multi_html"):t("rule_phase_how_html");
   const how=`<details class="inline-disclose lc-how"><summary>${t("rule_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
   // Ghost estimate sits after comment_close context (stepper + current public-process
@@ -629,22 +603,22 @@ function ruleEventSpineHTMLPhase(view, rec){
     ${futurePanels}
     ${historyWrap}
     ${how}
-    <div class="note">${provenance}</div>`;
+    ${provenance?`<div class="note">${provenance}</div>`:""}`;
 }
 
 /** Flat fallback if the phase module fails to load — still renders all five event cards. */
 function ruleEventSpineHTMLFlat(rec){
   const events=new Map((rec&&Array.isArray(rec.events)?rec.events:[]).map(event=>[event.event_type,event]));
   const types=Object.keys(RULE_EVENT_CFG);
-  const cards=types.map(type=>ruleEventCardHTML(type,events.get(type)||null,rec,{showSourceLink:true,joined:!!(rec&&rec.nyc_rules)}));
+  const cards=types.map(type=>ruleEventCardHTML(type,events.get(type)||null,rec,{showSourceLink:true,joined:!!(rec&&rec.nyc_rules)})).filter(Boolean);
   const joined=!!(rec&&rec.nyc_rules);
   const official=joined?(rec.nyc_rules.url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
   const provenance=joined
     ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
-    : t("rule_event_join_gap_html",{source:`<a href="${RULES_PUBLIC_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`});
+    : "";
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
     <div class="chain rule-chain">${cards.join('<div class="connector">→</div>')}</div>
-    <div class="note">${provenance}</div>`;
+    ${provenance?`<div class="note">${provenance}</div>`:""}`;
 }
 
 let rulesAdoptionLagModelPromise=null;
