@@ -134,6 +134,100 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.deepEqual(detectNodePageCruft(html), []);
 });
 
+test("Parks edges carry real provenance and a shareable why-inspector", () => {
+  const view = buildAgencyConstellationView(PARKS, { intelligence, certification });
+  assert.ok(view.claims.length >= 4);
+
+  const contracts = view.categories.find((category) => category.id === "contracts");
+  const sample = contracts.items[0];
+  assert.ok(sample.claim, "each linked item gets a claim");
+  assert.equal(sample.claim.how.warrant_class, "exact");
+  assert.equal(sample.claim.confidence.is_verified_identity, false);
+  assert.ok(sample.provenance?.source_record_id || sample.claim.where.source_record_id.available);
+  assert.match(sample.claim.inspect_href, /\/agencies\/parks-and-recreation\/\?claim=/);
+
+  const staffing = view.categories.find((category) => category.id === "staffing");
+  assert.equal(staffing.items[0].claim.how.warrant_class, "exact");
+  assert.ok(
+    staffing.items[0].provenance?.input_value
+      || staffing.items[0].claim.where.input_value.available,
+  );
+
+  const claimId = sample.claim.claim_id;
+  const html = renderAgencyConstellationDocument(view, { activeClaimId: claimId });
+  assert.match(html, /Why do we believe this\?/);
+  assert.match(html, /data-edge-provenance-panel/);
+  assert.match(html, /data-warrant-class="exact"/);
+  assert.match(html, /Exact match/);
+  assert.match(html, /Probabilistic link/);
+  assert.match(html, /Person-accepted/);
+  assert.match(html, /Confidence is not identity/);
+  assert.match(html, new RegExp(`data-edge-claim="${claimId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
+  assert.match(html, /Not yet attached/);
+  assert.match(html, /Link record id/);
+  assert.match(html, /Shareable link to this claim/);
+  assert.match(html, new RegExp(`claim=${encodeURIComponent(claimId).replace(/%/g, "%")}`));
+  assert.doesNotMatch(html, /fabricat/i);
+});
+
+test("possible links never read as verified category totals", () => {
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence: {
+      by_ref: {
+        "agency:id:parks-and-recreation": {
+          domains: {
+            money: {
+              status: "matched",
+              count: 2,
+              objects: [
+                {
+                  subject_ref: "notice:strong1",
+                  request_id: "strong1",
+                  label: "Strong award",
+                  when: "2026-01-01",
+                  link_type: "published_by_agency",
+                  confidence: "strong",
+                  method: "agency_canonical_v1",
+                  provenance: {
+                    source_system: "city_record",
+                    source_record_id: "city_record:strong1",
+                    source_fields: ["agency_name"],
+                    basis: "money_agency_name",
+                    input_value: "Parks and Recreation",
+                  },
+                },
+                {
+                  subject_ref: "notice:maybe1",
+                  request_id: "maybe1",
+                  label: "Possible award",
+                  when: "2026-01-02",
+                  link_type: "published_by_agency",
+                  confidence: "tentative",
+                  method: "agency_canonical_v1",
+                  provenance: {
+                    source_system: "city_record",
+                    source_record_id: "city_record:maybe1",
+                    source_fields: ["agency_name"],
+                    basis: "money_agency_name",
+                    input_value: "Parks Dept approx",
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+    certification: { edges: [], by_agency: [], by_exam: [] },
+  });
+  const contracts = view.categories.find((category) => category.id === "contracts");
+  assert.equal(contracts.warrant_summary.verified_total, 1);
+  assert.equal(contracts.warrant_summary.possible_total, 1);
+  const html = renderAgencyConstellationDocument(view);
+  assert.match(html, /1 linked · 1 possible \(not verified\)/);
+  assert.match(html, /data-warrant-class="probabilistic"/);
+});
+
 test("lookup materialization includes Parks multi-category demo when built", () => {
   const path = join(ROOT, "site/data/agency_constellation_lookup.json");
   if (!existsSync(path)) {

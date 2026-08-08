@@ -114,8 +114,14 @@ def forecast_strings_translate_in_a_sampled_language(pw, lang="es"):
     if "next predicted bid windows" in teaser_text.lower():
         failures.append("es notice teaser still shows the English heading")
 
-    page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
-    page.wait_for_timeout(1200)
+    # Interactive SPA profile (Forecast subtab). Bare /agencies/<id>/ is the
+    # static constellation document; ?tab= keeps the profile shell.
+    page.goto(
+        f"{BASE}agencies/housing-preservation-and-development/?tab=forecast",
+        timeout=30000,
+    )
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1500)
     btn = page.locator("#btn-forecast")
     if btn.count() == 0:
         failures.append("es agency profile: no Forecast subtab rendered")

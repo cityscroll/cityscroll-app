@@ -73,6 +73,10 @@ def main():
                 page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
                 page.wait_for_timeout(800)
                 census(page, f"{name} [entity:agency]", failures)
+                # Agency hash may forward to a static constellation document; SPA
+                # states below need the shell again.
+                page.goto(BASE, wait_until="load", timeout=30_000)
+                page.wait_for_timeout(400)
 
                 for task_hash, task_name in (
                     ("#task/can-i-bid", "task:can-i-bid"),
