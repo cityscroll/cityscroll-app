@@ -1167,6 +1167,32 @@
           }
         ]
       }
+    },
+    {
+      "id": "ontology-delta-whats-new",
+      "url": "graph/ontology-delta/",
+      "feature": "living-civic-graph-ontology-delta",
+      "description": "What's new in the graph: new relationship types, object kinds, agencies, and categories since the baseline inventory.",
+      "expectations": {
+        "pathname": "/graph/ontology-delta/",
+        "visible": [
+          {
+            "selector": "#ontology-delta",
+            "text": "What's new in the graph"
+          },
+          {
+            "selector": "#ontology-delta[data-has-deltas='1']"
+          },
+          {
+            "selector": ".ontology-delta-dimension"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview"
+          }
+        ]
+      }
     }
   ]
 }
