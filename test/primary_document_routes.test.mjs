@@ -163,7 +163,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(now, /data-build-rendered="now"/);
   assert.match(now, /data-now-item=/);
   assert.match(now, /href="\/notices\/[A-Za-z0-9_-]+"/);
-  assert.match(now, />Browse civic domains<\/a>/);
+  assert.match(now, />Browse city topics<\/a>/);
   assert.doesNotMatch(now, /Browse every source/i);
   assert.doesNotMatch(now, /class="browse-child-nav"[^>]*>[\s\S]{0,300}data-tab=/);
   const landing = output("/site/browse/index.html");
@@ -172,7 +172,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(landing, /href="\/browse\/contracts\/"/);
   assert.match(landing, /40 open opportunities/);
   assert.match(landing, /228 civil-service exams/);
-  assert.match(landing, /Explore contracts, rules, meetings, property, staffing, and zoning/);
+  assert.match(landing, /Pick a city topic\. Filter by agency, place, status, date, or search term\./);
   assert.match(landing, /<details class="browse-source-disclosure"><summary>Official data from…<\/summary>/);
   assert.doesNotMatch(landing, /every source|source view|source lenses/i);
   assert.deepEqual(detectNodePageCruft(landing), []);

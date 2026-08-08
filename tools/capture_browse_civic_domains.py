@@ -95,11 +95,15 @@ def capture_tree(browser, tree: Path, phase: str) -> list[dict]:
 
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    manifest_path = OUTPUT / "manifest.json"
+    baseline_revision = "HEAD"
+    if manifest_path.exists():
+        baseline_revision = json.loads(manifest_path.read_text(encoding="utf-8")).get("before_revision", "HEAD")
     generated = (ROOT / "site" / "now", ROOT / "site" / "browse")
     existed = {path: path.exists() for path in generated}  # Source: generated paths before this run.
     with tempfile.TemporaryDirectory(prefix="crol-domain-before-") as tmp:
         before = Path(tmp)
-        revision_snapshot("HEAD", before)
+        revision_snapshot(baseline_revision, before)
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             records = capture_tree(browser, before, "before")
@@ -119,13 +123,13 @@ def main() -> None:
     manifest = {
         "schema_version": 1,
         "before_revision": subprocess.check_output(
-            ["git", "rev-parse", "--short=12", "HEAD"], cwd=ROOT, text=True
+            ["git", "rev-parse", "--short=12", baseline_revision], cwd=ROOT, text=True
         ).strip(),
         "javascript": "disabled (no-JS document parity)",
         "viewports": [list(viewport) for viewport in VIEWPORTS],
         "captures": records,
     }
-    (OUTPUT / "manifest.json").write_text(
+    manifest_path.write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )
     print(f"Wrote {len(records)} captures to {OUTPUT.relative_to(ROOT)}")

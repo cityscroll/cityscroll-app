@@ -49,7 +49,7 @@ Open [Following](https://cityscroll.org/following/), or a
 
 ### Browse — six civic domains
 
-Browse brings together six civic domains — each with its full filters, exports, and record details:
+Browse groups city work into six civic domains. Each one has its own filters, exports, and record details:
 
 [Contracts](https://cityscroll.org/browse/) · [Staffing](https://cityscroll.org/browse/staffing/) · [Zoning](https://cityscroll.org/browse/zoning/) · [Property](https://cityscroll.org/browse/property/) · [Rules](https://cityscroll.org/browse/rules/) · [Meetings](https://cityscroll.org/browse/meetings/)
 

@@ -740,7 +740,7 @@ export function renderBrowseLanding(landing) {
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
-      <p>Explore contracts, rules, meetings, property, staffing, and zoning. Narrow any domain by agency, place, status, date, or keyword.</p>
+      <p>Pick a city topic. Filter by agency, place, status, date, or search term.</p>
     </header>
     <div class="browse-source-grid">${cards}</div>
   </div>`;
