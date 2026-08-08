@@ -184,6 +184,34 @@ test("hearing awareness: closing-soon event + join / testimony steps", () => {
   assert.match(html, new RegExp(`Next step:|Join|testimony|${FIX_EMAIL.replace(".", "\\.")}`, "i"));
 });
 
+test("meeting digest entries carry access facts and a materialized calendar link", () => {
+  const html = subDigestHtml(
+    "Upcoming meetings",
+    "meetings",
+    [{
+      request_id: "FIX-MEETING-1",
+      short_title: "Hybrid public hearing",
+      section_name: "Public Hearings and Meetings",
+      type_of_notice_description: "Public Hearings",
+      agency_name: "City Planning Commission",
+      event_date: "2026-08-20T10:00:00.000",
+      building_name: "Room 120",
+      street_address_1: "1 Centre Street",
+      city: "New York",
+      state: "NY",
+      zip_code: "10007",
+      additional_description_1: "Join the hearing on Zoom: https://zoom.us/j/123456789.",
+    }],
+    "https://example.com/unsubscribe",
+    "2026-08-01",
+  );
+  assert.match(html, /data-meeting-access="1"/);
+  assert.match(html, /Mode: Hybrid/);
+  assert.match(html, /Location: Room 120 · 1 Centre Street/);
+  assert.match(html, /Join online/);
+  assert.match(html, /meeting\.ics\?id=FIX-MEETING-1/);
+});
+
 // ---- land / rezone: ZAP public status + project handoff -------------------
 
 const rezone = {
