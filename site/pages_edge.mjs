@@ -100,6 +100,12 @@ async function handleComposedObject(request, env, pathname, canonicalPath) {
   if (!asset.ok) return asset;
   const canonical = `https://cityscroll.org${canonicalPath}`;
   const response = rewrittenResponse(asset, 200, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  // Node unit tests do not provide the Workers HTMLRewriter runtime.
+  if (typeof HTMLRewriter === "undefined") {
+    return request.method === "HEAD"
+      ? new Response(null, { status: 200, headers: response.headers })
+      : response;
+  }
   const transformed = new HTMLRewriter()
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
@@ -278,6 +284,22 @@ function unavailableBrowseResponse(facet) {
 async function handleEntity(request, env, entity) {
   let id = entity.id;
   try { id = decodeURIComponent(entity.id); } catch (_error) { return new Response("Invalid entity id", { status: 400 }); }
+  const url = new URL(request.url);
+  const wantsInteractive = url.searchParams.has("tab");
+  // Agency constellation documents are static-first (parcel-biography shape).
+  // ?tab= keeps the interactive SPA profile for forecast/deep tabs. Only treat
+  // a path hit as a constellation when the body is that document — ASSETS may
+  // fall through to the SPA shell for unknown agency ids.
+  if (entity.family === "agencies" && !wantsInteractive) {
+    const documentPath = `/agencies/${encodeURIComponent(id)}/`;
+    const document = await staticAsset(env, request, documentPath);
+    if (document.ok) {
+      const probe = await document.clone().text();
+      if (probe.includes('data-civic-object-kind="agency-constellation"')) {
+        return handleComposedObject(request, env, documentPath, documentPath);
+      }
+    }
+  }
   const asset = await staticAsset(env, request, "/");
   if (!asset.ok) return asset;
   const canonical = `https://cityscroll.org/${entity.family}/${encodeURIComponent(id)}/`;
