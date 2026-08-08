@@ -14,6 +14,7 @@ import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
+import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -105,8 +106,12 @@ test("empty categories stay honest and never invent items", () => {
     assert.ok(category.note);
   }
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /none in this materialization/);
+  // Empty categories are omitted from the reader surface (no absence disclaimers).
+  assert.doesNotMatch(html, /data-agency-constellation-category=/);
+  assert.doesNotMatch(html, /none in this materialization/i);
+  assert.doesNotMatch(html, /not yet shown/i);
   assert.doesNotMatch(html, /fabricat/i);
+  assert.deepEqual(detectNodePageCruft(html), []);
 });
 
 test("rendered document is a parcel-shaped civic object with ER basis stamp", () => {
@@ -114,8 +119,10 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   const html = renderAgencyConstellationDocument(view);
   assert.match(html, /data-civic-object-kind="agency-constellation"/);
   assert.match(html, /data-subject-ref="agency:id:parks-and-recreation"/);
+  // Machine ER basis stays on a data attribute, not as reader-facing copy.
   assert.match(html, /data-er-match-basis="/);
-  assert.match(html, /Records by category/);
+  assert.doesNotMatch(html, /Match basis for this iteration/);
+  assert.doesNotMatch(html, /Materialization methods:/i);
   assert.match(html, /data-agency-constellation-category="contracts"/);
   assert.match(html, /data-agency-constellation-category="meetings"/);
   assert.match(html, /data-agency-constellation-category="rules"/);
@@ -123,7 +130,8 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /data-agency-constellation-category="staffing"/);
   assert.match(html, /Watch this agency across City Record/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
-  assert.match(html, /agency_canonical_v1\+publisher_certification_record_v1/);
+  assert.match(html, /entity-intelligence lookup/);
+  assert.deepEqual(detectNodePageCruft(html), []);
 });
 
 test("lookup materialization includes Parks multi-category demo when built", () => {
