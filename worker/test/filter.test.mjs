@@ -160,6 +160,28 @@ test("limits + lens registry are sane", () => {
   assert.ok(MAX_INPUT > 0 && MAX_INPUT <= 2000);
   assert.ok(MAX_CALLS_PER_DAY > 0 && MAX_CALLS_PER_DAY <= 1000);
   assert.ok(Object.keys(LENSES).length >= 7, "all lenses registered");
+  assert.ok(Array.isArray(LENSES.obligations), "mandates free-watch lens registered");
+});
+
+test("obligations: free-watch fields survive sanitize; junk is dropped", () => {
+  const out = sanitize("obligations", {
+    agency_id: "parks-and-recreation",
+    agency: "Parks and Recreation",
+    deliverable_type: "report",
+    windowDays: 90,
+    keywords: ["noise"],
+    minAmount: 9999,
+  });
+  assert.deepEqual(out, {
+    agency_id: "parks-and-recreation",
+    agency: "Parks and Recreation",
+    deliverable_type: "report",
+    windowDays: 90,
+  });
+  assert.equal(sanitize("obligations", { agency_id: "../evil", deliverable_type: "banana", windowDays: 999 }).agency_id, null);
+  assert.equal(sanitize("obligations", { deliverable_type: "rulemaking" }).deliverable_type, "rulemaking");
+  assert.equal(sanitize("obligations", { windowDays: 0 }).windowDays, null);
+  assert.equal(sanitize("obligations", { windowDays: "30" }).windowDays, 30);
 });
 
 // w12-12: digest deep-links. Before, a digest item's link carried nothing about the watch

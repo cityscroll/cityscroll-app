@@ -322,6 +322,7 @@ const DEEPLINK_LENSES = {
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
+  obligations: ["agency_id", "agency", "deliverable_type", "windowDays"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   award:    ["requestId", "agency"],
 };
@@ -332,6 +333,14 @@ function deeplinkClampField(name, v){
   switch(name){
     case "keywords": return Array.isArray(v) ? v.map(k=>String(k).toLowerCase().trim()).filter(Boolean).slice(0,4) : [];
     case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
+    case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
+    case "deliverable_type": { const s=typeof v==="string"?v.trim().toLowerCase():""; return ["report","rulemaking","program","data publication","other"].includes(s)?s:null; }
+    case "windowDays": {
+      const n=typeof v==="number"?v:(typeof v==="string"&&v.trim()?Number(v):NaN);
+      if(!Number.isFinite(n)) return null;
+      const days=Math.round(n);
+      return days>=1&&days<=365?days:null;
+    }
     case "minAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
     case "maxAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
     case "category": return DEEPLINK_CATEGORIES.includes(v) ? v : null;

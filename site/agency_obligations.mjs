@@ -1,14 +1,15 @@
 /**
- * Agency statutory obligations (first iteration).
+ * Agency statutory mandates (first iteration).
  *
  * Materializes enacted-law duties as an agency-scoped read model:
- * agency → duty → deadline → recurrence. Deadlines are timed events, not
- * compliance verdicts. Certification is automatic (quote-verify + schema);
- * there is no public human-review gate.
+ * agency → duty → deadline → recurrence. Certification is automatic
+ * (quote-verify + schema); there is no public human-review gate.
+ * Product surfaces state duty/deadline facts; machine observation fields
+ * stay out of reader-facing copy.
  *
  * Seams for later workstreams:
  * - Evidence-Bearing Civic Graph: agency_match method / confidence
- * - Process Conformance: observation.status remains not_adjudicated in v1
+ * - Process Conformance: observation.status is machine-only in v1
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
@@ -295,10 +296,9 @@ export function normalizeObligationRow(raw = {}, opts = {}) {
       law_number_display: lawNumber,
     },
     certification,
-    // Process-conformance seam: v1 never adjudicates observed vs expected.
+    // Process-conformance seam (machine only): observation status is not a product claim.
     observation: {
       status: "not_adjudicated",
-      label: "Observed vs expected is not adjudicated in this iteration",
       expected_event: deliverable,
     },
     // Digest identity for approaching-deadline watches (world-state, not document match).
@@ -387,10 +387,10 @@ export function buildAgencyObligationsLookup(payload = {}, { generatedAt = null,
     generated_at: generatedAt || payload.generated_at || new Date().toISOString(),
     as_of: asOf || validDate(payload.generated_at?.slice(0, 10)) || null,
     iteration: "v1",
+    // Machine policy (not user-facing copy): surface standable duty/deadline facts only.
     honesty: {
-      compliance: "A deadline is a statutory timed event, not a compliance or non-compliance verdict.",
-      observation: "v1 does not adjudicate whether the expected event appeared in City Record or Required Reports.",
-      certification: "Rows are auto-certified by mechanical quote verification against fetched law text.",
+      surface: "duty_deadline_recurrence",
+      certification: "auto_certified_quote_verify_v1",
     },
     source_receipt: {
       schema_version: payload.schema_version || null,
@@ -442,7 +442,7 @@ export function buildAgencyObligationsView(agencyIdOrName, lookup, { limit = 12,
     honesty: lookup?.honesty || null,
     note: obligations.length
       ? null
-      : "No statutory obligations are linked to this agency in the current materialization.",
+      : "No statutory mandates are linked to this agency in the current materialization.",
   };
 }
 
@@ -480,21 +480,35 @@ function publicObligationItem(row, today) {
 }
 
 /**
- * World-state rows for digest compile: approaching / recent deadlines for one agency.
+ * World-state rows for digest compile: approaching / recent mandate deadlines for one agency.
  * Never invents compliance; past dates stay labeled as past statutory dates.
+ * Optional deliverableType / windowDays refine the free-watch scope.
  */
-export function obligationDigestRowsForAgency(lookup, agencyId, { todayISO, windowDays = 90, pastDays = 30 } = {}) {
+export function obligationDigestRowsForAgency(lookup, agencyId, {
+  todayISO,
+  windowDays = 90,
+  pastDays = 30,
+  deliverableType = null,
+} = {}) {
   const identity = resolveAgencyIdentity(agencyId);
   const id = identity?.canonical_id || clean(agencyId, 120);
   const bucket = lookup?.by_agency?.[id];
   if (!bucket) return [];
   const today = validDate(todayISO) || new Date().toISOString().slice(0, 10);
   const todayMs = Date.parse(`${today}T12:00:00Z`);
+  const window = Number.isFinite(Number(windowDays))
+    ? Math.max(1, Math.min(365, Math.round(Number(windowDays))))
+    : 90;
+  const past = Number.isFinite(Number(pastDays))
+    ? Math.max(0, Math.min(3650, Math.round(Number(pastDays))))
+    : 30;
+  const typeFilter = clean(deliverableType, 40).toLowerCase() || null;
   const rows = [];
   for (const row of bucket.obligations || []) {
+    if (typeFilter && clean(row.deliverable_type, 40).toLowerCase() !== typeFilter) continue;
     const date = row.deadline?.computed_date;
     if (!date) {
-      // Standing / undated duties surface once as watchable world-state, not a document match.
+      // Standing / undated mandates surface once as watchable world-state, not a document match.
       if (row.recurrence && row.recurrence !== "one-time") {
         rows.push(digestRowFromObligation(row, { band: "standing", today }));
       }
@@ -502,7 +516,7 @@ export function obligationDigestRowsForAgency(lookup, agencyId, { todayISO, wind
     }
     const days = Math.round((Date.parse(`${date}T12:00:00Z`) - todayMs) / 86400000);
     if (!Number.isFinite(days)) continue;
-    if (days > windowDays || days < -pastDays) continue;
+    if (days > window || days < -past) continue;
     const band = days < 0 ? "past_date" : days <= 30 ? "within_30_days" : "within_window";
     rows.push(digestRowFromObligation(row, { band, today, days }));
   }
@@ -533,22 +547,39 @@ function digestRowFromObligation(row, { band, today, days = null } = {}) {
     legistar_url: row.source?.legistar_url || null,
     certification_status: row.certification?.status || "auto_candidate",
     observation_status: "not_adjudicated",
-    // Explicit non-compliance copy for digest renderers.
     compliance_verdict: null,
-    honesty_note: "Statutory deadline only — not a compliance finding.",
     start_date: row.deadline?.computed_date || today,
   };
 }
 
-export function agencyObligationsFollowHref(agencyIdOrName, { frequency = "weekly" } = {}) {
+/**
+ * Free-watch scope URL for an agency's mandates (world-state digest path).
+ * Optional deliverableType (report|rulemaking|program|data publication|other)
+ * and windowDays (1–365) refine the shareable scope; omit for the full agency watch.
+ */
+export function agencyObligationsFollowHref(agencyIdOrName, {
+  frequency = "weekly",
+  deliverableType = null,
+  windowDays = null,
+} = {}) {
   const identity = resolveAgencyIdentity(agencyIdOrName);
   if (!identity?.canonical_id) return "/following/";
+  const filter = {
+    agency_id: identity.canonical_id,
+    agency: identity.canonical_name,
+  };
+  const type = clean(deliverableType, 40).toLowerCase();
+  if (type && ["report", "rulemaking", "program", "data publication", "other"].includes(type)) {
+    filter.deliverable_type = type;
+  }
+  const window = Number(windowDays);
+  if (Number.isFinite(window)) {
+    const days = Math.round(window);
+    if (days >= 1 && days <= 365) filter.windowDays = days;
+  }
   return followingUrlFromWatch({
     lens: "obligations",
-    filter: {
-      agency_id: identity.canonical_id,
-      agency: identity.canonical_name,
-    },
+    filter,
   }, { frequency });
 }
 
@@ -556,7 +587,7 @@ export function agencyObligationsFollowHref(agencyIdOrName, { frequency = "weekl
 export function renderAgencyObligationsSection(view) {
   if (!view) return "";
   const status = view.status === "matched"
-    ? `${view.count} statutory duties`
+    ? `${view.count} mandates`
     : "none in this materialization";
   const list = view.items?.length
     ? `<ul class="node-record-list">${view.items.map((item) => {
@@ -565,8 +596,6 @@ export function renderAgencyObligationsSection(view) {
         item.deliverable_type,
         item.deadline_date ? `deadline ${item.deadline_date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : "no computed deadline"),
         item.recurrence,
-        item.certification_status === "auto_certified" ? "auto-certified" : "auto-candidate",
-        "not adjudicated",
       ].filter(Boolean).map(esc).join(" · ");
       const source = item.href
         ? `<a href="${esc(item.href)}" rel="noopener">Source law</a>`
@@ -577,17 +606,17 @@ export function renderAgencyObligationsSection(view) {
         <span class="muted node-muted">${meta}${citation} · ${source}</span>
       </li>`;
     }).join("")}</ul>`
-    : `<p class="node-muted">${esc(view.note || "No statutory obligations are linked to this agency in the current materialization.")}</p>`;
+    : `<p class="node-muted">${esc(view.note || "No statutory mandates are linked to this agency in the current materialization.")}</p>`;
 
   const actions = [
     view.follow_href
-      ? `<a class="node-action civic-object-action" href="${esc(view.follow_href)}">Watch obligations and deadlines</a>`
+      ? `<a class="node-action civic-object-action" href="${esc(view.follow_href)}">Watch mandates and deadlines</a>`
       : "",
   ].filter(Boolean).join("");
 
   return `<section class="node-section node-card civic-object-section" data-agency-constellation-category="obligations" data-status="${esc(view.status)}" data-export-class="object_members" data-certification-basis="${esc(view.certification_basis || AGENCY_OBLIGATIONS_CERTIFICATION)}">
-    <h2>Statutory obligations <span class="muted node-muted">(${esc(status)})</span></h2>
-    <p class="node-muted muted">Rules → obligations facet: agency → duty → deadline → recurrence. Deadlines are statutory timed events, not compliance verdicts. Observation of expected events is not adjudicated in this iteration.</p>
+    <h2>Statutory mandates <span class="muted node-muted">(${esc(status)})</span></h2>
+    <p class="node-muted muted">Agency duties with statutory deadlines and recurrence, linked to source law.</p>
     ${list}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
