@@ -552,17 +552,24 @@ function bindMatterPhaseUI(root){
 }
 
 async function showMatter(pin){
-  await globalThis.ensureMoneyHistory?.();
-  await globalThis.ensureRules?.();
+  const renderGeneration=(globalThis.__entityRouteGeneration||0)+1;
+  globalThis.__entityRouteGeneration=renderGeneration;
+  const isCurrentRender=()=>globalThis.__entityRouteGeneration===renderGeneration;
+  const routeKeyAtStart=globalThis.routeFocusKey?.()||location.hash||`${location.pathname}${location.search}`;
+  const safe = String(pin).replace(/[<>&]/g,"");
   showTab("entity");
-  const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
+  const box = $("#entityview");
   delete box.dataset.vendorStem;
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("matter_loading",{pin:safe})}</div>`;
+  await globalThis.ensureMoneyHistory?.();
+  await globalThis.ensureRules?.();
+  if(!isCurrentRender()) return;
   const phaseToolsP = ensureMatterPhaseSpineTools();
   let rows = [];
   try{
     rows = await soda({"$select":SELECT,"$where":`pin='${String(pin).replace(/'/g,"''")}'`,"$order":"start_date ASC","$limit":"60"}, 15000);
   }catch(e){}
+  if(!isCurrentRender()) return;
   // Whichever renewal-suffixed PIN a link used to reach this page, widen to the same base+agency
   // prefix match loadChain() uses, so the matter page shows the same combined history regardless
   // of which specific suffix (…R001, …R002, …) got the reader here.
@@ -575,6 +582,7 @@ async function showMatter(pin){
         "$order":"start_date ASC","$limit":"60"}, 15000);
       const seen = new Set(rows.map(x=>x.request_id));
       more.forEach(x=>{ if(!seen.has(x.request_id)){ rows.push(x); seen.add(x.request_id); } });
+      if(!isCurrentRender()) return;
     }catch(e){}
   }
   if(!rows.length){
@@ -594,11 +602,13 @@ async function showMatter(pin){
     const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(latestId), null, 8000);
     if(resp && resp.ok) lifecycle = await resp.json();
   }catch(e){}
+  if(!isCurrentRender()) return;
   const reg = lifecycle && Array.isArray(lifecycle.timeline)
     ? lifecycle.timeline.find(e => e.stage === "registered" && e.status === "matched")
     : null;
   const regDetail = reg && reg.detail ? reg.detail : null;
   const phaseTools = await phaseToolsP;
+  if(!isCurrentRender()) return;
   let view = null;
   if(phaseTools && typeof phaseTools.buildMatterPhaseView === "function"){
     view = phaseTools.buildMatterPhaseView(rows, { pin, regDetail, lifecycle });
@@ -637,8 +647,10 @@ async function showMatter(pin){
   bindQRShare($("#eqr"), link);
   bindMatterPhaseUI(box.querySelector(".matter-phase-timeline") || box);
   announce(t("meta_matter_timeline_announce",{n:eventCount}));
-  focusItemRouteTarget(box.querySelector(".route-item"));
-  applyActiveHistoryRouteScroll();
+  if(isCurrentRender() && (globalThis.routeFocusKey?.()||location.hash||`${location.pathname}${location.search}`)===routeKeyAtStart){
+    focusItemRouteTarget(box.querySelector(".route-item"));
+    applyActiveHistoryRouteScroll();
+  }
 }
 
 // Publish live bindings for neighboring modules and legacy inline handlers.
