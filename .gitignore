@@ -5,6 +5,12 @@ __pycache__/
 docs/data-source-graph.json
 docs/data-source-graph.html
 
+# Agency constellation HTML (build/deploy artifact only).
+# Built by tools/build_agency_constellation_documents.mjs during
+# tools/build_cloudflare_pages.mjs — never commit per-agency pages.
+# Keep site/agencies/index.html (directory listing) tracked.
+site/agencies/*/index.html
+
 # Local notes and planning dirs (not part of the product tree)
 # Internal-only planning locations. Gitignore prevents future adds, but CI is
 # the enforcement layer for tracked-path introductions in PRs.
