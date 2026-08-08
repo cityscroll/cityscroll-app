@@ -75,6 +75,48 @@ test("does not attach the 2026 Lead Dust notice to 2020 outdoor-dining or food-v
   }
 });
 
+test("does not attach the DOT FHV parking notice to pedestrian-plaza rulemaking, while genuine subject matches survive", () => {
+  const pedestrianPlazaDuty =
+    "In developing pedestrian plaza-specific rules, consider specified factors including the plaza’s needs, traffic and congestion, public safety, size, usage demands, aesthetics or special character, tourism or economic development, and regulation of commercial activity or expressive matter vending.";
+  const fhvParkingCandidate = {
+    request_id: "20260714029",
+    label: "Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+    when: "2026-07-22",
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    signal_kind: "rule_filing",
+    href: "#notice/20260714029",
+    tokens: contentTokens("Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings"),
+  };
+  const falseObservation = resolveMandateObservation({
+    obligation_id: "55689-007",
+    agency_id: "transportation",
+    duty_text: pedestrianPlazaDuty,
+    deliverable_type: "rulemaking",
+    deadline: { computed_date: null },
+    citation: "§ 19-157(c)(2)",
+  }, [fhvParkingCandidate], { asOf: "2026-08-08" });
+  assert.equal(falseObservation.status, OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED);
+  assert.equal(falseObservation.observed_record, null);
+
+  const genuineObservation = resolveMandateObservation({
+    obligation_id: "55689-007",
+    agency_id: "transportation",
+    duty_text: pedestrianPlazaDuty,
+    deliverable_type: "rulemaking",
+    deadline: { computed_date: null },
+    citation: "§ 19-157(c)(2)",
+  }, [{
+    ...fhvParkingCandidate,
+    request_id: "20260601001",
+    label: "Proposed Rules for Pedestrian Plaza Commercial Activity",
+    href: "#notice/20260601001",
+    tokens: contentTokens("Proposed Rules for Pedestrian Plaza Commercial Activity"),
+  }], { asOf: "2026-08-08" });
+  assert.equal(genuineObservation.status, OBSERVATION_STATUS.OBSERVED);
+  assert.equal(genuineObservation.observed_record.request_id, "20260601001");
+});
+
 test("rejects a strong subject match when the notice is implausibly late", () => {
   const observation = resolveMandateObservation({
     duty_text: "Promulgate rules for outdoor dining safety",
