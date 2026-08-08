@@ -68,6 +68,7 @@ test("bridge joins Parks rulemaking mandates to Rules-lens filings", () => {
   assert.ok(view.counts.rules_filings >= 1, "Parks has Rules-lens filings");
   assert.ok(view.mandates.every((m) => m.deliverable_type === "rulemaking"));
   assert.ok(view.rules_items.length >= 1);
+  assert.equal(view.rules_items[0].href, "/notices/" + encodeURIComponent(view.rules_items[0].id));
   assert.match(view.share_path, /#mandates-rules$/);
   assert.match(view.rulemaking_mandates_follow_href, /lens=mandates|deliverable/);
   assert.match(view.rules_follow_href, /lens=rules/);
@@ -96,10 +97,14 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
         id: "20260407013",
         label: "Final Rule - Rules relating to Safety Standards for Refrigeration Systems",
         when: "2026-04-07",
-        href: "#notice/20260407013",
+      },
+      {
+        id: "20260407014",
+        label: "Related rule filing",
+        href: "/custom/notice/20260407014",
       },
     ],
-    rulesCount: 1,
+    rulesCount: 2,
     conformanceItems: [
       {
         mandate_id: "demo-rm-1",
@@ -120,10 +125,13 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
   assert.equal(view.status, "matched");
   assert.equal(view.counts.observed_links, 1);
   assert.equal(view.mandates[0].observed_record.request_id, "20260407013");
+  assert.equal(view.mandates[0].observed_record.href, "/notices/20260407013");
+  assert.equal(view.rules_items[0].href, "/notices/20260407013");
+  assert.equal(view.rules_items[1].href, "/custom/notice/20260407014");
   const html = renderMandateRulesBridgeSection(view);
   assert.match(html, /id="mandates-rules"/);
   assert.match(html, /City Record: Final Rule/);
-  assert.match(html, /#notice\/20260407013/);
+  assert.match(html, /href="\/notices\/20260407013"/);
   assert.match(html, /Open in Rules|Follow Rules activity|Watch rulemaking mandates/);
   assert.doesNotMatch(html, /not X but Y|not yet shown|fabricat|disclaimer/i);
   // Reader headings use "mandates", not upstream "obligations" labels.
