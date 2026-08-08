@@ -5,6 +5,8 @@ import {
   renderNodeActions,
   renderNodeBack,
   renderNodeFooter,
+  renderNodeProvenance,
+  renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
@@ -51,7 +53,7 @@ function sourceLink(url, label) {
 
 function processHTML(phaseView) {
   const phases = Array.isArray(phaseView?.phases) ? phaseView.phases : [];
-  if (!phases.length) return `<p class="exam-muted">No process stages are available in the current snapshot.</p>`;
+  if (!phases.length) return "";
   const labels = {
     application: "Application",
     list_establishment: "Eligible list",
@@ -60,20 +62,23 @@ function processHTML(phaseView) {
   };
   const steps = phases.map((phase) => {
     const state = phase.matched ? "done" : "todo";
+    // Matched stages show dates; unmatched stages stay unlabeled (no absence copy).
     const when = phase.primary?.when
       ? phase.primary.when_to ? `${date(phase.primary.when)}–${date(phase.primary.when_to)}` : date(phase.primary.when)
-      : "Not yet in this snapshot";
+      : "";
     const count = phase.count != null ? `<span>${Number(phase.count).toLocaleString("en-US")} observed</span>` : "";
     const source = sourceLink(phase.source_url, "Source");
-    return `<li class="exam-process-step ${state}" data-phase="${esc(phase.id)}"><strong>${esc(labels[phase.id] || phase.id)}</strong><span>${esc(when)}</span>${count}${source}</li>`;
+    return `<li class="exam-process-step ${state}" data-phase="${esc(phase.id)}"><strong>${esc(labels[phase.id] || phase.id)}</strong>${when ? `<span>${esc(when)}</span>` : ""}${count}${source}</li>`;
   }).join("");
-  return `<ol class="exam-process-list">${steps}</ol><p class="exam-muted">Empty stages mean the public aggregate has not reached this precomputed guide; they do not mean the city withheld a source.</p>`;
+  return `<ol class="exam-process-list">${steps}</ol>`;
 }
 
+/**
+ * Public outcomes body only when post-cycle aggregates exist.
+ * World-fact limit ("individual scores… not public") rides on the populated card only.
+ */
 function outcomeHTML(outcome) {
-  if (!outcome || outcome.kind === "not_yet_ingested") {
-    return `<p class="exam-muted">Post-cycle aggregates are not yet shown for this exam. Individual scores and ranks are not public.</p>`;
-  }
+  if (!outcome || outcome.kind === "not_yet_ingested" || !outcome.kind) return "";
   const rows = outcome.kind === "list_joined"
     ? [["Eligible list", outcome.list_count], ["List established", date(outcome.established_date)]]
     : [["Applicants", outcome.applicant_count], ["Eligible list", outcome.list_establishment], ["Certified", outcome.certification_count], ["Hired", outcome.hire_count]];
@@ -110,7 +115,7 @@ function examFacetPivotsHTML(exam, today) {
 
 function predictionHTML(exam) {
   const forecast = exam?.list_establishment_forecast;
-  if (!forecast) return `<p class="exam-muted">No eligible-list timing range is available for this exam.</p>`;
+  if (!forecast) return "";
   const months = Number(forecast.median_months);
   const window = forecast.prediction?.predicted_window;
   const basis = Number.isFinite(Number(forecast.n))
@@ -168,7 +173,6 @@ export function renderExamDocument(exam, options = {}) {
   const applicationURL = exam.official_application_url || OASYS_URL;
   const noticeURL = exam.notice_url || DCAS_SCHEDULE_URL;
   const watchURL = examWatchUrl(id);
-  const sourceNames = Array.isArray(exam.sources) ? exam.sources : [];
   const facts = [
     ["Exam number", id],
     ["Application window", exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : "Not published"],
@@ -186,6 +190,14 @@ export function renderExamDocument(exam, options = {}) {
     { kind: "button", label: "Download JSON", className: "exam-action", attrs: { "data-exam-export": "json" } },
     { kind: "button", label: "Download XLSX", className: "exam-action", attrs: { "data-exam-export": "xlsx" } },
   ], { ariaLabel: "Exam actions", exportClass: "exam_actions", extraClass: "exam-actions" });
+  const noticeDetails = [
+    exam.test_method || exam.exam_format ? `<p><strong>Test format:</strong> ${esc(exam.test_method || exam.exam_format)}</p>` : "",
+    exam.qualifications ? `<p><strong>Qualifications:</strong> ${esc(exam.qualifications)}</p>` : "",
+    exam.residency ? `<p><strong>Residency:</strong> ${esc(exam.residency)}</p>` : "",
+    feeSalary.fee_waiver ? `<p><strong>Fee waiver:</strong> ${esc(feeSalary.fee_waiver)}</p>` : "",
+    `<p class="exam-note" data-export-class="exam_disclaimer">Official details are in English. Read the full official exam notice before applying.</p>`,
+  ].join("");
+  // Machine identity stays on data-subject-ref only — never printed as reader copy.
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · Exam ${esc(id)} · CityScroll</title>
@@ -200,13 +212,54 @@ export function renderExamDocument(exam, options = {}) {
     <div class="exam-status-row"><span class="exam-status exam-status-${esc(status.toLowerCase())}" data-exam-status="${esc(status.toLowerCase())}">${esc(status)}</span><span>Application window: ${esc(exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : "Not published")}</span></div>
   </header>
   ${actions}
-  <section class="node-section exam-section" aria-labelledby="exam-facts-heading" data-export-class="exam_facts"><h2 id="exam-facts-heading">At a glance</h2><dl class="exam-facts">${facts.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>${exam.summary ? `<p class="exam-summary" lang="en" dir="ltr">${esc(exam.summary)}</p>` : ""}</section>
-  <section class="node-section exam-section" aria-labelledby="exam-details-heading" data-export-class="exam_facts"><h2 id="exam-details-heading">What the notice says</h2>${exam.test_method || exam.exam_format ? `<p><strong>Test format:</strong> ${esc(exam.test_method || exam.exam_format)}</p>` : ""}${exam.qualifications ? `<p><strong>Qualifications:</strong> ${esc(exam.qualifications)}</p>` : ""}${exam.residency ? `<p><strong>Residency:</strong> ${esc(exam.residency)}</p>` : ""}${feeSalary.fee_waiver ? `<p><strong>Fee waiver:</strong> ${esc(feeSalary.fee_waiver)}</p>` : ""}<p class="exam-note" data-export-class="exam_disclaimer">Official details are in English. Read the full official exam notice before applying.</p></section>
+  ${renderNodeSection({
+    heading: "At a glance",
+    headingId: "exam-facts-heading",
+    exportClass: "exam_facts",
+    extraClass: "exam-section",
+    body: `<dl class="exam-facts">${facts.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>${exam.summary ? `<p class="exam-summary" lang="en" dir="ltr">${esc(exam.summary)}</p>` : ""}`,
+  })}
+  ${renderNodeSection({
+    heading: "What the notice says",
+    headingId: "exam-details-heading",
+    exportClass: "exam_facts",
+    extraClass: "exam-section",
+    body: noticeDetails,
+  })}
   ${examFacetPivotsHTML(exam, today)}
-  <section class="node-section exam-section" aria-labelledby="exam-prediction-heading" data-export-class="exam_prediction"><h2 id="exam-prediction-heading">What may happen next</h2>${predictionHTML(exam)}</section>
-  <section class="node-section exam-section" aria-labelledby="exam-process-heading" data-export-class="exam_process"><h2 id="exam-process-heading">Application to appointment</h2>${processHTML(options.phaseView)}</section>
-  <section class="node-section exam-section" aria-labelledby="exam-outcomes-heading" data-export-class="exam_outcomes"><h2 id="exam-outcomes-heading">Public outcomes</h2>${outcomeHTML(outcome)}</section>
-  <section class="node-section exam-section exam-provenance" aria-labelledby="exam-provenance-heading" data-export-class="exam_provenance"><h2 id="exam-provenance-heading">Sources and limits</h2><p>CityScroll joined public DCAS exam schedule, Notice of Examination, Civil Service List, and annual outcome materializations by exam number. This page is an unofficial reading aid.</p><ul><li>${sourceLink(noticeURL, "DCAS exam schedule / Notice of Examination")}</li>${sourceNames.length ? `<li>Snapshot source keys: <code>${esc(sourceNames.join(", "))}</code></li>` : ""}<li>Subject reference: <code>${esc(examSubjectRef(id))}</code></li></ul></section>
+  ${renderNodeSection({
+    heading: "What may happen next",
+    headingId: "exam-prediction-heading",
+    exportClass: "exam_prediction",
+    extraClass: "exam-section",
+    body: predictionHTML(exam),
+  })}
+  ${renderNodeSection({
+    heading: "Application to appointment",
+    headingId: "exam-process-heading",
+    exportClass: "exam_process",
+    extraClass: "exam-section",
+    body: processHTML(options.phaseView),
+  })}
+  ${renderNodeSection({
+    heading: "Public outcomes",
+    headingId: "exam-outcomes-heading",
+    exportClass: "exam_outcomes",
+    extraClass: "exam-section",
+    body: outcomeHTML(outcome),
+  })}
+  ${renderNodeProvenance({
+    heading: "Sources and limits",
+    headingId: "exam-provenance-heading",
+    exportClass: "exam_provenance",
+    extraClass: "exam-section exam-provenance",
+    note: "CityScroll joined public DCAS exam schedule, Notice of Examination, Civil Service List, and annual outcome materializations by exam number. This page is an unofficial reading aid.",
+    sourceItems: [
+      noticeURL
+        ? { html: sourceLink(noticeURL, "DCAS exam schedule / Notice of Examination") }
+        : { label: "DCAS exam schedule / Notice of Examination" },
+    ],
+  })}
 </main>${renderNodeFooter({ text: "CityScroll is an unofficial interface to public data.", extraClass: "exam-footer" })}${payloadScript(exam)}${script}</body></html>`;
 }
 
@@ -234,7 +287,7 @@ if (typeof window !== "undefined") {
       ["Exam number", (row) => row.exam_number], ["Title", (row) => row.title], ["Status", () => root.dataset.examStatus || ""],
       ["Application start", (row) => row.application_start], ["Application end", (row) => row.application_end],
       ["Fee", (row) => row.fee], ["Starting salary", (row) => row.salary_min], ["Official application", (row) => row.official_application_url || OASYS_URL],
-      ["Official notice", (row) => row.notice_url || DCAS_SCHEDULE_URL], ["Permalink", () => canonical], ["Subject reference", (row) => examSubjectRef(row.exam_number)],
+      ["Official notice", (row) => row.notice_url || DCAS_SCHEDULE_URL], ["Permalink", () => canonical],
     ];
     const bytes = window.CrolExports.buildListWorkbook("Exam", columns, [exam]);
     window.CrolExports.downloadFile(`cityscroll-exam-${exam.exam_number}.xlsx`, new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
