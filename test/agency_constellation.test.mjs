@@ -39,6 +39,7 @@ test("section registry composes every capability in stable order", () => {
       ["mandate-predictions", 10],
       ["mandate-reports", 20],
       ["mandate-rules", 30],
+      ["mandate-meetings", 35],
       ["contracts", 40],
       ["meetings", 50],
       ["rules", 60],
