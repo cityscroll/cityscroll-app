@@ -41,7 +41,8 @@ export function readSiteSource() {
   const sourceOnly = SOURCE_ONLY_MODULES.map((name) =>
     readFileSync(new URL(`../../site/app/${name}`, import.meta.url), "utf8"),
   );
-  return [html, ...modules, ...sourceOnly].join("\n");
+  const listPivots = readFileSync(new URL("../../site/list_entity_pivots.mjs", import.meta.url), "utf8");
+  return [html, ...modules, ...sourceOnly, listPivots].join("\n");
 }
 
 export const SITE_SOURCE = readSiteSource();
