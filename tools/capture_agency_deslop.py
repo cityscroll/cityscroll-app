@@ -16,6 +16,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "agency-deslop"
 VIEWPORTS = ((390, 844), (1440, 1000))
+# Source: City Record notice 20260522005 in the committed Fire Department constellation.
 CLAIM = "rules:notice:20260522005"
 PATH = f"agencies/fire-department/?claim={CLAIM}#mandates-conformance"
 FORBIDDEN = (
