@@ -1134,12 +1134,12 @@
       }
     },
     {
-      "id": "agency-buildings-mandates-conformance",
-      "url": "agencies/buildings/",
+      "id": "agency-sanitation-mandates-conformance",
+      "url": "agencies/sanitation/",
       "feature": "process-conformance-mandates",
-      "description": "Buildings mandates expected vs observed: City Record filings matched to statutory duties.",
+      "description": "Sanitation mandates expected vs observed: City Record filings matched to statutory duties.",
       "expectations": {
-        "pathname": "/agencies/buildings/",
+        "pathname": "/agencies/sanitation/",
         "visible": [
           {
             "selector": "#mandates-conformance",
