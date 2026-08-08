@@ -907,9 +907,7 @@ function vendorPhaseTimelineHTML(view){
   const historyWrap = historyPanels
     ? `<details class="vendor-phase-history"><summary>${t("vendor_phase_show_history")}</summary>${historyPanels}</details>`
     : "";
-  const futureNote = (view.phases || []).some(p => p.state === "future" && !p.event_count)
-    ? `<p class="vendor-phase-gap">${t("vendor_phase_future_gap_html")}</p>`
-    : "";
+  // No always-on "not yet shown" absence note for future phases — paint only present facts.
   const chronoRows = (view.chronological || []).map(vendorChronoRowHTML).join("");
   const how = `<details class="inline-disclose lc-how">
     <summary>${t("vendor_phase_show_all")}</summary>
@@ -919,7 +917,7 @@ function vendorPhaseTimelineHTML(view){
     <summary>${t("vendor_phase_how_summary")}</summary>
     <div class="inline-disclose-body">${t("vendor_phase_how_html")}</div>
   </details>`;
-  return `${lead}${stepper}${currentPanel}${historyWrap}${futureNote}${how}`;
+  return `${lead}${stepper}${currentPanel}${historyWrap}${how}`;
 }
 
 function bindVendorPhaseTimeline(root){
