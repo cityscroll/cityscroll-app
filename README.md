@@ -47,9 +47,9 @@ accounts with several watches get one consolidated morning email.
 Open [Following](https://cityscroll.org/following/), or a
 [Council District 33 weekly brief](https://cityscroll.org/following/?lens=district&filter=%7B%22councilDistrict%22%3A%2233%22%7D&freq=weekly).
 
-### Browse — six lenses
+### Browse — six civic domains
 
-Browse holds the six source lenses — each with its full filters, exports, and record details:
+Browse brings together six civic domains — each with its full filters, exports, and record details:
 
 [Contracts](https://cityscroll.org/browse/) · [Staffing](https://cityscroll.org/browse/staffing/) · [Zoning](https://cityscroll.org/browse/zoning/) · [Property](https://cityscroll.org/browse/property/) · [Rules](https://cityscroll.org/browse/rules/) · [Meetings](https://cityscroll.org/browse/meetings/)
 

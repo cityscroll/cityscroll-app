@@ -731,8 +731,8 @@ export function renderBrowseLanding(landing) {
       <p class="browse-source-count">${esc(primary)}${secondary}</p>
       <h3>${constellationLink({ href: card.route, label: card.label, className: "browse-card-link", escape: esc })}</h3>
       <p class="browse-source-description">${esc(card.description)}</p>
-      <p class="browse-source-systems">${staticFact({ label: card.sources, className: "browse-card-sources", escape: esc })}</p>
       <p class="browse-source-asof">${staticFact({ label: card.asOf ? `Updated ${card.asOf}` : "Update date unavailable", className: "browse-card-date", escape: esc })}</p>
+      <details class="browse-source-disclosure"><summary>Official data from…</summary><p>${staticFact({ label: card.sources, className: "browse-card-sources", escape: esc })}</p></details>
       ${constellationLink({ href: card.route, label: `Browse ${card.label.toLowerCase()}`, className: "browse-source-action", escape: esc })}
     </article>`;
   }).join("");
@@ -740,7 +740,7 @@ export function renderBrowseLanding(landing) {
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
-      <p>Choose a source view, then narrow it by agency, place, status, date, or keyword.</p>
+      <p>Explore contracts, rules, meetings, property, staffing, and zoning. Narrow any domain by agency, place, status, date, or keyword.</p>
     </header>
     <div class="browse-source-grid">${cards}</div>
   </div>`;

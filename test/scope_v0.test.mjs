@@ -102,7 +102,7 @@ test("Now geography socket narrows existing compiled items and empty scope stays
   assert.equal(routeHashFromScope(bronx, { surface: "now" }), "#now?boro=Bronx");
 });
 
-test("one qualifying scope survives Now, Map, and source Browse view switches", () => {
+test("one qualifying scope survives Now, Map, and civic-domain Browse view switches", () => {
   const browseScope = scopeFromRouteHash("#property?boro=Bronx&q=auction&asset=vehicle");
   const nowHash = routeHashFromScope(browseScope, { surface: "now" });
   const mapHash = routeHashFromScope(browseScope, { surface: "map" });
