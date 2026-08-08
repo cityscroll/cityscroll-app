@@ -14,6 +14,7 @@ import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
+import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
@@ -29,6 +30,27 @@ const obligations = existsSync(join(ROOT, "site/data/agency_obligations_lookup.j
   : null;
 
 const PARKS = "parks-and-recreation";
+
+test("section registry composes every capability in stable order", () => {
+  assert.deepEqual(
+    AGENCY_CONSTELLATION_SECTIONS.map(({ id, order }) => [id, order]),
+    [
+      ["as-of", 0],
+      ["mandate-predictions", 10],
+      ["mandate-reports", 20],
+      ["mandate-rules", 30],
+      ["contracts", 40],
+      ["meetings", 50],
+      ["rules", 60],
+      ["obligations", 70],
+      ["staffing", 80],
+      ["provenance", 90],
+    ],
+  );
+  for (const section of AGENCY_CONSTELLATION_SECTIONS) {
+    assert.equal(typeof section.render, "function", `${section.id} exposes render(view)`);
+  }
+});
 
 test("agency path and subject ref are stable", () => {
   assert.equal(agencyPath(PARKS), "/agencies/parks-and-recreation/");
