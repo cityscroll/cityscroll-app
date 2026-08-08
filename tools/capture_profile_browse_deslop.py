@@ -122,8 +122,8 @@ def main() -> None:
     parser.add_argument("phase", choices=("before", "after"))
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    generated_dirs = [ROOT / "site" / "now", ROOT / "site" / "browse"]
-    cleanup_dirs = [directory for directory in generated_dirs if not directory.exists()]
+    generated_paths = (ROOT / "site" / "now", ROOT / "site" / "browse")
+    cleanup_paths = tuple(path for path in generated_paths if not path.exists())
     subprocess.run(
         ["node", "tools/build_primary_documents.mjs"],
         cwd=ROOT,
@@ -161,8 +161,8 @@ def main() -> None:
     (OUT / f"{args.phase}-receipt.json").write_text(
         json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
     )
-    for directory in cleanup_dirs:
-        shutil.rmtree(directory, ignore_errors=True)
+    for path in cleanup_paths:
+        shutil.rmtree(path, ignore_errors=True)
     print(f"captured {args.phase} evidence under {OUT.relative_to(ROOT)}")
 
 
