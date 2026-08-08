@@ -204642,8 +204642,12 @@
   },
   "materialization": {
     "passport_contracts": {
-      "rows": 2,
-      "strategy": "bounded compatibility examples; population census remains in rows.passport_contracts"
+      "graph_cap": 500,
+      "graph_source": "rows.passport_contracts",
+      "compatibility_examples": 2,
+      "compatibility_source": "rows.passport_contracts_materialization",
+      "strategy": "Entity-intelligence selects up to graph_cap rows from the population-backed census (compatibility examples first). Cap matches the OCP award materialization budget so money multi-kind edges densify without crowding the 200-root graph. Checkbook crosswalk demos still use the bounded compatibility examples only.",
+      "census_rows": 12782
     }
   }
 }
