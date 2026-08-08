@@ -19918,7 +19918,7 @@
             "text": "Not later than January thirtieth in each year",
             "is_compliance_verdict": false
           },
-          "recurrence": "one-time",
+          "recurrence": "annual",
           "citation": null,
           "file_number": "Int 1503-2025",
           "law_number_display": null,
@@ -19941,7 +19941,7 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "report"
           },
-          "alert_id": "obligation:76891-001:one-time"
+          "alert_id": "obligation:76891-001:annual"
         },
         {
           "obligation_id": "76891-003",
@@ -63199,7 +63199,7 @@
             "text": "Beginning no later than January 31, 2015, and no later than every January 31 thereafter",
             "is_compliance_verdict": false
           },
-          "recurrence": "one-time",
+          "recurrence": "annual",
           "citation": "Administrative Code § 21-907(a)",
           "file_number": "Int 1205-2016",
           "law_number_display": null,
@@ -63222,7 +63222,7 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "report"
           },
-          "alert_id": "obligation:56104-001:one-time"
+          "alert_id": "obligation:56104-001:annual"
         },
         {
           "obligation_id": "56799-001",
@@ -102017,7 +102017,7 @@
             "text": "by March 1",
             "is_compliance_verdict": false
           },
-          "recurrence": "one-time",
+          "recurrence": "annual",
           "citation": "Section 1, amending Administrative Code § 8-105(10)",
           "file_number": "Int 0421-2014",
           "law_number_display": null,
@@ -102040,7 +102040,7 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "report"
           },
-          "alert_id": "obligation:53107-001:one-time"
+          "alert_id": "obligation:53107-001:annual"
         },
         {
           "obligation_id": "53583-003",

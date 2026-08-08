@@ -69,10 +69,57 @@ function normalizeType(value) {
   return DELIVERABLE_TYPES.includes(type) ? type : "other";
 }
 
-function normalizeRecurrence(value) {
+const RECURRING_SIGNAL = /\b(?:annually(?:\s+thereafter)?|annual\s+reports?|each\s+year|every\s+year|yearly|thereafter|quarterly|every\s+(?:three|3)\s+months?|monthly|every\s+month|biennial|every\s+(?:two|2)\s+years?|every\s+(?:five|5)\s+years?)\b/iu;
+const OFFSET_AFTER_EFFECTIVE = /\b(?:no\s+later\s+than|within|not\s+later\s+than|no\s+more\s+than)?\s*(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:calendar\s+)?(?:days?|months?|years?)\s+(?:after|from)\s+(?:the\s+)?(?:effective|enactment|passage|adoption)\s+date\b/iu;
+
+function recurrenceToken(value) {
   const recurrence = sanitizeText(value || "one-time", 80).toLowerCase();
+  if (recurrence === "every 1 year" || recurrence === "every 1 years") return "annual";
+  if (recurrence === "every 2 years") return "biennial";
   if (RECURRENCES.includes(recurrence) || /^every \d+ years?$/.test(recurrence)) return recurrence;
   return "one-time";
+}
+
+function explicitRecurrence(evidence, deliverableType) {
+  const text = sanitizeText(evidence, 12000);
+  if (!text) return null;
+  if (/\b(?:quarterly|every\s+(?:three|3)\s+months?)\b/iu.test(text)) return "quarterly";
+  if (/\b(?:monthly|every\s+month)\b/iu.test(text)) return "monthly";
+  if (/\b(?:biennial|every\s+(?:two|2)\s+years?)\b/iu.test(text)) return "biennial";
+  if (/\b(?:every\s+(?:five|5)\s+years?|quinquennial)\b/iu.test(text)) return "every 5 years";
+  if (deliverableType !== "report") return null;
+  // “Annual” describes the cadence of a report; it does not turn a one-time
+  // rulemaking duty into an annual duty merely because the rule concerns
+  // annual limits or filings.
+  if (RECURRING_SIGNAL.test(text)) return "annual";
+  if (/\b(?:annually|each\s+year|every\s+year|yearly|thereafter)\b/iu.test(text)) return "annual";
+  return null;
+}
+
+/**
+ * Resolve recurrence from the model token plus the verified statutory passage.
+ * A bare offset from an effective/enactment date is a one-time deadline, not
+ * evidence of an annual cycle. The quote is the relevant slice of the full
+ * Legistar law text, so unrelated annual language elsewhere in the law cannot
+ * promote the mandate.
+ */
+export function normalizeRecurrence(value, {
+  deadlineText = "",
+  dutyText = "",
+  verbatimQuote = "",
+  quoteVerified = false,
+  deliverableType = "",
+} = {}) {
+  const token = recurrenceToken(value);
+  const deadline = sanitizeText(deadlineText, 2000);
+  const duty = sanitizeText(dutyText, 2000);
+  const quote = quoteVerified ? sanitizeText(verbatimQuote, 12000) : "";
+  const evidence = [quote, deadline, duty].filter(Boolean).join(" ");
+  const explicit = explicitRecurrence(evidence, sanitizeText(deliverableType, 80).toLowerCase());
+
+  if (OFFSET_AFTER_EFFECTIVE.test(deadline) && !explicit) return "one-time";
+  if (explicit && (token === "one-time" || (token === "annual" && explicit !== "annual"))) return explicit;
+  return token;
 }
 
 export function normalizeMandate(raw = {}, {
@@ -99,7 +146,13 @@ export function normalizeMandate(raw = {}, {
     duty_text: sanitizeField("duty_text", raw.duty_text ?? raw.action_summary ?? ""),
     deliverable_type: normalizeType(raw.deliverable_type),
     deadline,
-    recurrence: normalizeRecurrence(raw.recurrence),
+    recurrence: normalizeRecurrence(raw.recurrence, {
+      deadlineText: deadline.text,
+      dutyText: raw.duty_text ?? raw.action_summary,
+      verbatimQuote: quote,
+      quoteVerified: verification.verified,
+      deliverableType: raw.deliverable_type,
+    }),
     citation: sanitizeField("citation", raw.citation),
     verbatim_quote: quote,
     quote_verified: verification.verified,
