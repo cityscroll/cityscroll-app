@@ -11,6 +11,7 @@ function clean(value, max = 2000) { return sanitizeText(value, max); }
 function rowsFromPayload(payload) {
   if (Array.isArray(payload)) return payload.flatMap((item) => Array.isArray(item?.mandates) ? item.mandates : [item]);
   if (Array.isArray(payload?.mandates)) return payload.mandates;
+  if (Array.isArray(payload?.obligations)) return payload.obligations;
   if (Array.isArray(payload?.rows)) return payload.rows;
   if (Array.isArray(payload?.laws)) return payload.laws.flatMap((law) => law.mandates || []);
   return [];
@@ -19,7 +20,7 @@ function rowsFromPayload(payload) {
 function mattersFromPayload(payload) {
   const byMatter = new Map();
   for (const row of rowsFromPayload(payload)) {
-    const matterId = clean(row?.matter_id ?? row?.matterId, 120);
+    const matterId = clean(row?.file_number ?? row?.matter_file ?? row?.matter_id ?? row?.matterId, 120);
     if (!matterId) continue;
     if (!byMatter.has(matterId)) byMatter.set(matterId, []);
     byMatter.get(matterId).push(row);
@@ -28,7 +29,7 @@ function mattersFromPayload(payload) {
 }
 
 function sequenceKey(row, index) {
-  const match = String(row?.mandate_id ?? row?.mandateId ?? "").match(/-(\d+)$/);
+  const match = String(row?.mandate_id ?? row?.mandateId ?? row?.obligation_id ?? "").match(/-(\d+)$/);
   return match ? `seq:${Number(match[1])}` : `seq:${index + 1}`;
 }
 
@@ -45,7 +46,7 @@ function fieldValue(row, field) {
 
 function publicRow(row) {
   return {
-    mandate_id: clean(row?.mandate_id ?? row?.mandateId, 120) || null,
+    mandate_id: clean(row?.mandate_id ?? row?.mandateId ?? row?.obligation_id, 120) || null,
     matter_id: clean(row?.matter_id ?? row?.matterId, 120) || null,
     agency: clean(fieldValue(row, "agency"), 240),
     duty_text: clean(row?.duty_text ?? row?.action_summary, 2000),
@@ -57,11 +58,11 @@ function publicRow(row) {
 }
 
 function statuteSource(payload, matterId) {
-  const law = (payload?.laws || []).find((row) => String(row?.matter_id) === matterId);
-  const row = rowsFromPayload(payload).find((item) => String(item?.matter_id) === matterId);
+  const law = (payload?.laws || []).find((row) => [row?.file_number, row?.matter_file, row?.matter_id].some((value) => String(value || "") === matterId));
+  const row = rowsFromPayload(payload).find((item) => [item?.file_number, item?.matter_file, item?.matter_id].some((value) => String(value || "") === matterId));
   return {
-    url: clean(law?.provenance?.source_url ?? row?.source?.url ?? row?.source_url, 1000) || null,
-    sha256: clean(law?.provenance?.sha256 ?? row?.source?.sha256, 128) || null,
+    url: clean(law?.provenance?.source_url ?? law?.source?.url ?? row?.source?.url ?? row?.source_url, 1000) || null,
+    sha256: clean(law?.provenance?.sha256 ?? law?.source?.sha256 ?? row?.source?.sha256, 128) || null,
   };
 }
 
@@ -114,7 +115,7 @@ export function compareMandates(ourPayload, referencePayload, { generatedAt = ne
     status: "candidate_compilation_for_future_review",
     public_surfaces_changed: false,
     operative_links_enabled: false,
-    methodology: { keyed_by: "matter_id", compared_fields: ["agency", "deadline", "deliverable_type"], human_review_required: true, trust_rule: TRUST_RULE },
+    methodology: { keyed_by: "file_number_or_matter_id", compared_fields: ["agency", "deadline", "deliverable_type"], human_review_required: true, trust_rule: TRUST_RULE },
     queue,
     candidates: queue,
     receipt: { matter_count: queue.length, agreement_count: queue.filter((item) => item.state === "agreement").length, review_count: queue.filter((item) => item.state === "needs_review").length },
