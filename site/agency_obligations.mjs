@@ -594,7 +594,7 @@ export function agencyObligationsFollowHref(agencyIdOrName, {
     if (days >= 1 && days <= 365) filter.windowDays = days;
   }
   return followingUrlFromWatch({
-    lens: "obligations",
+    lens: "mandates",
     filter,
   }, { frequency });
 }

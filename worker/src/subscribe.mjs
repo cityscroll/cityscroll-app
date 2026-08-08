@@ -9,7 +9,7 @@
 // Cloudflare Turnstile was removed from this path for UX (feedback still uses it). Re-add
 // behind an explicit env flag if the sends dashboard shows abuse.
 
-import { sanitize } from "./lib/filter.mjs";
+import { resolveLens, sanitize } from "./lib/filter.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { signToken } from "optin-token";
 import { confirmSubject, confirmEmailHtml, htmlPage } from "./lib/confirm_email.mjs";
@@ -18,7 +18,11 @@ import { overActorLimit } from "./lib/meter.mjs";
 
 // Subscribable lenses = the content tabs + entity follows. "alerts" is the delivery wrapper.
 // "award" is the one-notice award-arrival watch (see lib/filter.mjs's LENSES.award comment).
-const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings", "district", "entity", "award"]);
+// "mandates" is the free-watch world-state lens; "obligations" is the legacy alias.
+const SUBSCRIBABLE = new Set([
+  "money", "people", "land", "property", "rules", "meetings", "district", "entity", "award",
+  "mandates", "obligations",
+]);
 const CONFIRM_TTL = 24 * 3600;       // confirm link lifetime (s)
 const MAX_SUB_PER_IP_DAY = 20;
 const MAX_SUB_PER_ADDR_DAY = 5;
@@ -45,7 +49,8 @@ export async function handleSubscribe(req, env) {
   } catch { return reply(req, { ok: false, reason: "bad-request" }, 400, cors); }
 
   const email = String(body.email || "");
-  const lens = SUBSCRIBABLE.has(body.lens) ? body.lens : null;
+  const requestedLens = String(body.lens || "");
+  const lens = SUBSCRIBABLE.has(requestedLens) ? resolveLens(requestedLens) : null;
   if (!isValidEmail(email)) return reply(req, { ok: false, reason: "bad-email" }, 400, cors);
   if (!lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
   if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors); // SMS later

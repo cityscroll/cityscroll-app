@@ -87,10 +87,10 @@ export function compileSub(sub, todayISO) {
     };
   }
 
-  if (sub.lens === "obligations") {
+  if (sub.lens === "mandates" || sub.lens === "obligations") {
     // World-state predicate: agency statutory mandates / approaching deadlines from
     // the precomputed obligations lookup — not a City Record document match.
-    // User-facing term is "mandates"; "obligations" is the storage lens + upstream source.
+    // Product lens is "mandates"; "obligations" remains for legacy stored watches.
     // Prediction branch: rulemaking/report duties roll recurrence forward into an
     // expected-event window so watchers get an earlier-stage alert ahead of deadline.
     const agencyId = typeof f.agency_id === "string" && f.agency_id.trim()
