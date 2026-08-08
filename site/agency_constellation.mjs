@@ -30,6 +30,8 @@ import {
   renderNodeActions,
   renderNodeBack,
   renderNodeFooter,
+  renderNodeProvenance,
+  renderNodeSection,
 } from "./civic_document_chrome.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
@@ -382,34 +384,35 @@ function itemLink(item) {
 }
 
 function obligationMeta(item) {
+  // Reader-facing meta only: drop internal method keys and absence fillers.
   return [
     item.deliverable_type,
-    item.date ? `deadline ${item.date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : "no computed deadline"),
+    item.date ? `deadline ${item.date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : null),
     item.recurrence,
-    item.certification_status === "auto_certified" ? "auto-certified" : "auto-candidate",
-    "not adjudicated",
+    item.certification_status === "auto_certified" ? "auto-certified" : null,
     item.source,
-    item.method,
   ].filter(Boolean).join(" · ");
 }
 
 function categorySection(category) {
-  const status = category.status === "matched"
-    ? (category.id === "obligations" ? `${category.count} statutory duties` : `${category.count} linked`)
-    : category.status === "not_yet_ingested"
-      ? "not yet shown here"
-      : "none in this materialization";
-  const list = category.items.length
-    ? `<ul class="node-record-list">${category.items.map((item) => {
-      if (category.id === "obligations" || item.kind === "obligation") {
-        const sourceLink = item.href
-          ? ` · <a href="${esc(item.href)}" rel="noopener">Source law</a>`
-          : "";
-        return `<li class="node-record" data-obligation-id="${esc(item.id)}"><div class="node-record-main">${esc(item.label)}</div><span class="muted node-muted">${esc(obligationMeta(item))}${sourceLink}</span></li>`;
-      }
-      return `<li class="node-record"><div class="node-record-main">${itemLink(item)}</div><span class="muted node-muted">${esc(item.source)}${item.date ? ` · ${esc(item.date)}` : ""} · ${esc(item.method || "")}</span></li>`;
-    }).join("")}</ul>`
-    : `<p class="node-muted">${esc(category.note || "No linked record is listed for this category.")}</p>`;
+  // Omit empty / not-yet-ingested categories entirely — no absence disclaimers.
+  if (!category?.items?.length || category.status === "empty" || category.status === "not_yet_ingested") {
+    return "";
+  }
+  const status = category.id === "obligations"
+    ? `${category.count} statutory duties`
+    : `${category.count} linked`;
+  // Drop internal method tokens (agency_canonical_v1, …) from reader rows.
+  const list = `<ul class="node-record-list">${category.items.map((item) => {
+    if (category.id === "obligations" || item.kind === "obligation") {
+      const sourceLink = item.href
+        ? ` · <a href="${esc(item.href)}" rel="noopener">Source law</a>`
+        : "";
+      return `<li class="node-record" data-obligation-id="${esc(item.id)}"><div class="node-record-main">${esc(item.label)}</div><span class="muted node-muted">${esc(obligationMeta(item))}${sourceLink}</span></li>`;
+    }
+    const meta = [item.source, item.date].filter(Boolean).join(" · ");
+    return `<li class="node-record"><div class="node-record-main">${itemLink(item)}</div>${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}</li>`;
+  }).join("")}</ul>`;
   const honesty = category.id === "obligations" && category.honesty
     ? `<p class="node-muted muted">${esc(category.honesty)}</p>`
     : "";
@@ -424,15 +427,24 @@ function categorySection(category) {
       ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">${esc(followLabel)}</a>`
       : "",
   ].filter(Boolean).join("");
-  const certAttr = category.certification_basis
-    ? ` data-certification-basis="${esc(category.certification_basis)}"`
-    : "";
-  return `<section class="node-section node-card civic-object-section" data-agency-constellation-category="${esc(category.id)}" data-status="${esc(category.status)}" data-export-class="object_members"${certAttr}>
-    <h2>${esc(category.label)} <span class="muted node-muted">(${esc(status)})</span></h2>
-    ${honesty}
-    ${list}
-    ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
-  </section>`;
+  const body = [
+    honesty,
+    list,
+    actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : "",
+  ].join("");
+  return renderNodeSection({
+    heading: `${category.label} (${status})`,
+    exportClass: "object_members",
+    extraClass: "node-card civic-object-section",
+    attrs: {
+      "data-agency-constellation-category": category.id,
+      "data-status": category.status,
+      ...(category.certification_basis
+        ? { "data-certification-basis": category.certification_basis }
+        : {}),
+    },
+    body,
+  });
 }
 
 /** Static-first civic document for one agency constellation (shared node layout). */
@@ -446,9 +458,9 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const matched = view.summary.matched_categories;
   const lead = matched
     ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory obligations, staffing exams). Links keep the agency scope so each category view can reuse it.`
-    : "No linked records appear for this agency in the current cross-category materialization. Empty categories stay empty rather than inventing matches.";
-  const sections = view.categories.map(categorySection).join("");
-  const obligationsFollow = view.categories.find((category) => category.id === "obligations")?.follow_href || "";
+    : "Public records for this agency appear here when contracts, meetings, rules, statutory obligations, or staffing exams join to its published identity.";
+  const sections = view.categories.map(categorySection).filter(Boolean).join("");
+  const obligationsFollow = view.categories.find((category) => category.id === "obligations" && category.items?.length)?.follow_href || "";
   const actions = renderNodeActions([
     { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
     obligationsFollow
@@ -461,6 +473,12 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     ariaLabel: "Document actions",
     exportClass: "object_actions",
     extraClass: "civic-object-actions",
+  });
+  // Plain-English provenance only — no pipeline method keys or match-basis codes.
+  const provenance = renderNodeProvenance({
+    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory obligations. Deadlines are statutory timed events, not compliance verdicts. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams come from publisher certification records; statutory obligations come from independent enacted-law extraction with inspectable source-law links.",
+    exportClass: "object_provenance",
+    extraClass: "civic-object-section",
   });
   return `<!doctype html>
 <html lang="en">
@@ -479,7 +497,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-node-document="1">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
     <header class="node-hero civic-object-hero" data-export-class="object_identity">
-      <p class="node-kicker civic-object-kicker">Agency constellation · first iteration</p>
+      <p class="node-kicker civic-object-kicker">Agency constellation</p>
       <h1>${esc(title)}</h1>
       <p class="node-lede">${esc(lead)}</p>
       <p class="node-pivot civic-object-pivot">
@@ -488,16 +506,8 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       </p>
     </header>
     ${actions}
-    <section class="node-section civic-object-section" data-export-class="object_members">
-      <h2>Records by category</h2>
-      <p class="node-muted muted">Match basis for this iteration: <code>${esc(view.summary.er_match_basis)}</code>. Later evidence-graph work can tighten joins without changing this page shape. Statutory obligations use auto-certification with inspectable source-law links; deadlines are not compliance verdicts.</p>
-    </section>
     ${sections}
-    <section class="node-section civic-object-section" data-export-class="object_provenance">
-      <h2>Sources and limits</h2>
-      <p>${esc(view.provenance.note)}</p>
-      <p class="node-muted muted">Materialization methods: ${esc(view.provenance.methods.join(", "))}. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams come from publisher civil-service certification edges; statutory obligations come from independent enacted-law extraction with mechanical quote verification.</p>
-    </section>
+    ${provenance}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
   <script id="civic-object-payload" type="application/json">${payload}</script>

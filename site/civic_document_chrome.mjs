@@ -4,6 +4,12 @@
  * Notice detail (SPA shell) is the visual standard; standalone exam / parcel /
  * pack / digest / agency documents inherit the same layout grammar through
  * these helpers + civic-documents.css node-* rules.
+ *
+ * Reader-surface rules (same shape as `sub_outreach.mjs` / property commercial
+ * sale-gate): show a section only when it has reader-usable content; never
+ * announce our own data gaps ("not yet shown", "not available"); never print
+ * internal pipeline keys or subject-reference ids. Keep plain-English source
+ * attribution and world-fact limits (e.g. individual scores are not public).
  */
 
 function esc(value) {
@@ -82,4 +88,100 @@ export function renderNodeActions(items = [], { ariaLabel = "Document actions", 
 /** Shared footer line for static node documents. */
 export function renderNodeFooter({ text = "CityScroll is an unofficial reading aid.", aboutHref = "/about.html", extraClass = "" } = {}) {
   return `<footer class="${esc(classNames("node-footer", extraClass))}">${esc(text)} <a href="${esc(aboutHref)}">About the data</a>.</footer>`;
+}
+
+/**
+ * Render a node-document section only when body markup is non-empty.
+ * Empty / whitespace-only body → "" (omit the whole section, including heading).
+ * Mirrors sub-outreach and property-commercial "paint nothing when absent".
+ */
+export function renderNodeSection({
+  heading,
+  body,
+  headingId = "",
+  exportClass = "",
+  extraClass = "",
+  attrs = {},
+} = {}) {
+  const content = String(body ?? "").trim();
+  if (!content) return "";
+  const h2 = heading
+    ? (headingId
+      ? `<h2 id="${esc(headingId)}">${esc(heading)}</h2>`
+      : `<h2>${esc(heading)}</h2>`)
+    : "";
+  const exportAttr = exportClass ? ` data-export-class="${esc(exportClass)}"` : "";
+  const labelled = headingId ? ` aria-labelledby="${esc(headingId)}"` : "";
+  const attrPairs = Object.entries(attrs || {})
+    .filter(([, value]) => value != null && value !== false && value !== "")
+    .map(([key, value]) => value === true ? ` ${esc(key)}` : ` ${esc(key)}="${esc(value)}"`)
+    .join("");
+  return `<section class="${esc(classNames("node-section", extraClass))}"${labelled}${exportAttr}${attrPairs}>${h2}${content}</section>`;
+}
+
+/**
+ * Reader-facing "Sources and limits" block: plain-English note + optional
+ * human-readable source links. Never includes pipeline source keys or
+ * subject_ref identifiers.
+ */
+export function renderNodeProvenance({
+  note,
+  sourceItems = [],
+  heading = "Sources and limits",
+  headingId = "",
+  exportClass = "object_provenance",
+  extraClass = "",
+} = {}) {
+  const prose = String(note ?? "").trim();
+  const items = (Array.isArray(sourceItems) ? sourceItems : [])
+    .map((item) => {
+      if (item == null) return "";
+      if (typeof item === "string") {
+        const text = item.trim();
+        return text ? `<li>${text}</li>` : "";
+      }
+      const label = String(item.label || item.html || "").trim();
+      if (!label) return "";
+      // `html` is trusted pre-escaped markup from the caller (e.g. an <a>).
+      if (item.html) return `<li>${item.html}</li>`;
+      if (item.href) {
+        return `<li><a href="${esc(item.href)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a></li>`;
+      }
+      return `<li>${esc(label)}</li>`;
+    })
+    .filter(Boolean);
+  if (!prose && !items.length) return "";
+  const list = items.length ? `<ul>${items.join("")}</ul>` : "";
+  const body = `${prose ? `<p>${prose.includes("<") ? prose : esc(prose)}</p>` : ""}${list}`;
+  return renderNodeSection({
+    heading,
+    body,
+    headingId,
+    exportClass,
+    extraClass,
+  });
+}
+
+/**
+ * Phrases that announce our own data gaps on node pages. Used by tests and
+ * surface-load sampling — not for silent auto-rewrites of free text.
+ */
+export const NODE_PAGE_ABSENCE_PHRASES = Object.freeze([
+  "not yet shown",
+  "not yet shown here",
+  "not available yet",
+  "not available in this",
+  "no data",
+  "none in this materialization",
+  "are not yet shown",
+  "post-cycle aggregates are not yet",
+  "snapshot source keys",
+  "subject reference:",
+  "materialization methods:",
+]);
+
+/** Detect reader-facing absence / internal-id cruft in rendered node HTML. */
+export function detectNodePageCruft(html) {
+  const text = String(html || "").toLowerCase();
+  return NODE_PAGE_ABSENCE_PHRASES.filter((phrase) => text.includes(phrase));
 }

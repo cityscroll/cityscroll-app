@@ -54,13 +54,23 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 Standalone exam / parcel / pack / digest / agency documents share one layout
 grammar: `site/civic_document_chrome.mjs` (`renderNodeBack` / `renderNodeActions`
-/ `renderNodeFooter`) + `node-*` rules in `site/civic-documents.css`. Exam keeps
-historical `exam-*` class names; composed objects keep `civic-object-*`; both
-inherit the shared rules. Rebuild: `node tools/build_exam_documents.mjs`,
-`node tools/build_composed_object_documents.mjs`, `node tools/build_agency_documents.mjs`.
+/ `renderNodeFooter` / `renderNodeSection` / `renderNodeProvenance`) + `node-*`
+rules in `site/civic-documents.css`. Exam keeps historical `exam-*` class names;
+composed objects keep `civic-object-*`; both inherit the shared rules. Rebuild:
+`node tools/build_exam_documents.mjs`,
+`node tools/build_composed_object_documents.mjs`,
+`node tools/build_agency_constellation_documents.mjs`,
+`node tools/build_agency_documents.mjs`.
 Parcel source labels: `parcelSectionLabel` in `site/composed_object_documents.mjs`
 (do not inline a partial ternary — `ll48` must not fall through to "Land projects").
 Evidence captures: `python3 tools/capture_node_page_design.py --label after`.
+
+**Reader surface (same shape as `sub_outreach.mjs` / property commercial sale-gate):**
+omit empty sections entirely via `renderNodeSection` (no “not yet shown” /
+“no data” absence announcements); never print pipeline source keys or
+`subject_ref` text (machine identity stays on `data-subject-ref` only); keep
+plain-English source attribution and world-fact limits (e.g. individual scores
+are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## Main site module boundaries
 

@@ -5,6 +5,7 @@ import { test } from "node:test";
 
 import { buildExamPhaseView } from "../site/exam_phase_spine.mjs";
 import { buildExamProcessSpine } from "../site/exam_process_spine.mjs";
+import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import {
   examDocumentPath,
   examSubjectRef,
@@ -56,6 +57,41 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:experience:yes"/);
   assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:window:open"/);
   assert.doesNotMatch(html, /href="#exam\/7016/);
+  // Reader surface: no absence disclaimers or internal pipeline keys.
+  assert.deepEqual(detectNodePageCruft(html), []);
+  assert.doesNotMatch(html, /Snapshot source keys/i);
+  assert.doesNotMatch(html, /Subject reference:/i);
+  assert.doesNotMatch(html, /Post-cycle aggregates are not yet shown/i);
+  assert.match(html, /DCAS exam schedule, Notice of Examination, Civil Service List/);
+});
+
+test("exam public outcomes render only when aggregates exist", () => {
+  const withOutcomes = artifact.exams.find((row) => Staffing.examOutcomeView(row).kind === "joined"
+    || Staffing.examOutcomeView(row).kind === "list_joined");
+  assert.ok(withOutcomes, "fixture needs at least one exam with joined outcomes");
+  const joinedHtml = renderExamDocument(withOutcomes, {
+    today: "2026-08-05",
+    status: Staffing.statusFor(withOutcomes, "2026-08-05"),
+    feeSalary: Staffing.examFeeSalaryView(withOutcomes),
+    outcome: Staffing.examOutcomeView(withOutcomes),
+    phaseView: buildExamPhaseView(buildExamProcessSpine(withOutcomes)),
+  });
+  assert.match(joinedHtml, /data-export-class="exam_outcomes"/);
+  assert.match(joinedHtml, /individual scores and ranks are not public/i);
+  assert.deepEqual(detectNodePageCruft(joinedHtml), []);
+
+  const missing = artifact.exams.find((row) => Staffing.examOutcomeView(row).kind === "not_yet_ingested");
+  assert.ok(missing);
+  const missingHtml = renderExamDocument(missing, {
+    today: "2026-08-05",
+    status: Staffing.statusFor(missing, "2026-08-05"),
+    feeSalary: Staffing.examFeeSalaryView(missing),
+    outcome: Staffing.examOutcomeView(missing),
+    phaseView: buildExamPhaseView(buildExamProcessSpine(missing)),
+  });
+  assert.doesNotMatch(missingHtml, /data-export-class="exam_outcomes"/);
+  assert.doesNotMatch(missingHtml, /Post-cycle aggregates are not yet shown/i);
+  assert.deepEqual(detectNodePageCruft(missingHtml), []);
 });
 
 test("committed exam document pages are reproducible and contain useful no-JavaScript HTML", () => {
