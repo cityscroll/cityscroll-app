@@ -56,6 +56,7 @@ import {
   scopeWithEntity,
 } from "./scope_v0.mjs";
 import {
+  gateNodePageRender,
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
   renderNodeActions,
@@ -930,7 +931,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const demoAsOfLink = showAsOf
     ? ` · <a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>As of ${esc(DEMO_AS_OF_DAY)}</a>`
     : "";
-  return `<!doctype html>
+  return gateNodePageRender(`<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -972,5 +973,5 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <script type="module" src="${esc(runtimeSrc)}"></script>
   <script>${edgeProvenanceClientScript()}</script>
 </body>
-</html>`;
+</html>`);
 }

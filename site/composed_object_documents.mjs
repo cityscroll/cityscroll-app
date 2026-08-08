@@ -4,12 +4,12 @@ import { nearYouUrlFromScope, scopeFromLensState } from "./scope_v0.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { normalizeWatchTemplateRegistry } from "./watch_templates.mjs";
 import {
+  gateNodePageRender,
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
   renderNodeActions,
   renderNodeBack,
   renderNodeFooter,
-  renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { buildObservedParcelBiography, parcelBiographyHref, parcelRef } from "./parcel_scope.mjs";
@@ -155,9 +155,10 @@ function subjectLink(ref, hrefOverride = null) {
 }
 
 function parcelRecordItem(item) {
+  const metadata = [item.source, item.date].filter(Boolean).join(" · ");
   return `<li class="node-record">
     <div class="node-record-main">${subjectLink(item.subject_ref, item.href)} — ${esc(item.label || item.id)}</div>
-    <span class="muted node-muted">${esc(item.source)} · ${esc(item.date || "date not published")}</span>
+    ${metadata ? `<span class="muted node-muted">${esc(metadata)}</span>` : ""}
   </li>`;
 }
 
@@ -221,9 +222,6 @@ export function renderComposedObjectDocument(view, options = {}) {
   const back = isParcel
     ? renderNodeBack({ href: "/browse/property/", label: "Back to Property", extraClass: "civic-object-back" })
     : renderNodeBack({ href: "/following/", label: "Back to Following", extraClass: "civic-object-back" });
-  const provenanceNote = isParcel
-    ? "This page gathers public records that name this exact parcel. The linked source records remain the official record."
-    : "CityScroll groups public records into one reading aid. Source documents remain the official record.";
   const description = isPack
     ? view.description
     : isParcel
@@ -233,12 +231,7 @@ export function renderComposedObjectDocument(view, options = {}) {
   const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
   // Property is not a primary nav route; highlight Browse for parcel documents.
   const mastHighlight = isParcel ? "browse" : "following";
-  const provenance = renderNodeProvenance({
-    note: provenanceNote,
-    exportClass: "object_provenance",
-    extraClass: "civic-object-section",
-  });
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: mastHighlight, surfaceClass: "civic-object-mast" })}<main id="main" class="node-document civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">${back}<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">${esc(kicker)}</p><h1>${esc(title)}</h1><p class="node-lede">${esc(lede)}</p>${pivot}</header>${actionMarkup(view, watchHref)}${members}${provenance}</main>${renderNodeFooter({ extraClass: "civic-object-footer" })}<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script></body></html>`;
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: mastHighlight, surfaceClass: "civic-object-mast" })}<main id="main" class="node-document civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">${back}<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">${esc(kicker)}</p><h1>${esc(title)}</h1><p class="node-lede">${esc(lede)}</p>${pivot}</header>${actionMarkup(view, watchHref)}${members}</main>${renderNodeFooter({ extraClass: "civic-object-footer" })}<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script></body></html>`);
 }
 
 function exportRows(payload) {

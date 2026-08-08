@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 import { buildExamPhaseView } from "../site/exam_phase_spine.mjs";
 import { buildExamProcessSpine } from "../site/exam_process_spine.mjs";
-import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
+import { detectNodePageCruft, gateNodePageRender } from "../site/civic_document_chrome.mjs";
 import {
   examDocumentPath,
   examSubjectRef,
@@ -62,7 +62,7 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.doesNotMatch(html, /Snapshot source keys/i);
   assert.doesNotMatch(html, /Subject reference:/i);
   assert.doesNotMatch(html, /Post-cycle aggregates are not yet shown/i);
-  assert.match(html, /DCAS exam schedule, Notice of Examination, Civil Service List/);
+  assert.doesNotMatch(html, /Not published|Sources and limits|unpublished values remain unlinked/i);
 });
 
 test("exam public outcomes render only when aggregates exist", () => {
@@ -92,6 +92,26 @@ test("exam public outcomes render only when aggregates exist", () => {
   assert.doesNotMatch(missingHtml, /data-export-class="exam_outcomes"/);
   assert.doesNotMatch(missingHtml, /Post-cycle aggregates are not yet shown/i);
   assert.deepEqual(detectNodePageCruft(missingHtml), []);
+});
+
+test("exam facts and cohort links omit unpublished values", () => {
+  const exam = { exam_number: "9998", title: "Example exam", eligibility: "open_competitive" };
+  const html = renderExamDocument(exam, { today: "2026-08-05", feeSalary: {} });
+  assert.doesNotMatch(html, /Application window<\/dt>|Application window:/);
+  assert.doesNotMatch(html, /Application fee|Starting salary|data-facet-value="unknown"/);
+  assert.doesNotMatch(html, /Not published|Sources and limits|unpublished values remain unlinked/i);
+});
+
+test("node-page render gate rejects reader-facing cruft", () => {
+  assert.equal(gateNodePageRender("<main>Useful fact</main>"), "<main>Useful fact</main>");
+  for (const phrase of ["Not published", "Sources and limits", "No data", "None in this materialization"]) {
+    assert.throws(() => gateNodePageRender(`<main>${phrase}</main>`), /reader-facing cruft/i);
+  }
+  assert.throws(
+    () => renderExamDocument({ exam_number: "9997", title: "No data" }),
+    /reader-facing cruft/i,
+    "the exam renderer must enforce the gate at its final HTML boundary",
+  );
 });
 
 test("committed exam document pages are reproducible and contain useful no-JavaScript HTML", () => {

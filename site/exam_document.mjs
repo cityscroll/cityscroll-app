@@ -2,10 +2,10 @@ import { followingUrlFromWatch } from "./following_view.mjs";
 import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
+  gateNodePageRender,
   renderNodeActions,
   renderNodeBack,
   renderNodeFooter,
-  renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
@@ -30,12 +30,12 @@ function clean(value) {
 
 function date(value) {
   const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
-  return match ? `${match[2]}/${match[3]}/${match[1]}` : "Not published";
+  return match ? `${match[2]}/${match[3]}/${match[1]}` : "";
 }
 
 function money(value) {
   const number = Number(value);
-  return Number.isFinite(number) ? `$${Math.round(number).toLocaleString("en-US")}` : "Not published";
+  return Number.isFinite(number) ? `$${Math.round(number).toLocaleString("en-US")}` : "";
 }
 
 function statusFor(exam, today) {
@@ -82,7 +82,9 @@ function outcomeHTML(outcome) {
   const rows = outcome.kind === "list_joined"
     ? [["Eligible list", outcome.list_count], ["List established", date(outcome.established_date)]]
     : [["Applicants", outcome.applicant_count], ["Eligible list", outcome.list_establishment], ["Certified", outcome.certification_count], ["Hired", outcome.hire_count]];
-  return `<dl class="exam-metrics">${rows.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${typeof value === "number" ? value.toLocaleString("en-US") : esc(value)}</dd></div>`).join("")}</dl><p class="exam-muted">${outcome.published_on ? `Published ${date(outcome.published_on)}. ` : ""}These are aggregate public counts; individual scores and ranks are not public.</p>`;
+  const populatedRows = rows.filter(([, value]) => value !== "" && value != null);
+  if (!populatedRows.length) return "";
+  return `<dl class="exam-metrics">${populatedRows.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${typeof value === "number" ? value.toLocaleString("en-US") : esc(value)}</dd></div>`).join("")}</dl><p class="exam-muted">${outcome.published_on ? `Published ${date(outcome.published_on)}. ` : ""}These are aggregate public counts; individual scores and ranks are not public.</p>`;
 }
 
 function examFacetDocumentHref(facet, value) {
@@ -104,13 +106,18 @@ function examFacetPivotsHTML(exam, today) {
   };
   const rows = ["window", "format", "salary", "fee", "experience"].map((facet) => {
     const value = examFacetValue(exam, facet, { today });
-    const label = labels[facet][value] || "Not published";
+    const label = labels[facet][value];
+    if (value === "unknown" || !label) return "";
     const edge = ["people", facet, value].join(":");
-    if (value === "unknown") return `<span class="exam-facet-pivot unknown" data-facet-value="unknown"><b>${esc(facet)}</b> ${esc(label)}</span>`;
     const href = examFacetDocumentHref(facet, value);
     return `<a class="exam-facet-pivot" data-scope-edge="${esc(edge)}" href="${esc(href)}"><b>${esc(facet)}</b> ${esc(label)}</a>`;
+  }).filter(Boolean);
+  return renderNodeSection({
+    heading: "Explore exam cohorts",
+    headingId: "exam-facet-heading",
+    extraClass: "exam-section exam-facet-pivots",
+    body: rows.length ? `<div class="exam-facet-pivot-list">${rows.join("")}</div>` : "",
   });
-  return `<section class="node-section exam-section exam-facet-pivots" aria-labelledby="exam-facet-heading"><h2 id="exam-facet-heading">Explore exam cohorts</h2><p class="exam-muted">These links use the exact values published for this exam; unpublished values remain unlinked.</p><div class="exam-facet-pivot-list">${rows.join("")}</div></section>`;
 }
 
 function predictionHTML(exam) {
@@ -175,11 +182,11 @@ export function renderExamDocument(exam, options = {}) {
   const watchURL = examWatchUrl(id);
   const facts = [
     ["Exam number", id],
-    ["Application window", exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : "Not published"],
-    ["Application fee", feeSalary.fee != null ? money(feeSalary.fee) : "Not published"],
-    ["Starting salary", feeSalary.salary_min != null ? `${money(feeSalary.salary_min)}${feeSalary.salary_max != null ? `–${money(feeSalary.salary_max)}` : ""}` : "Not published"],
+    ["Application window", exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : ""],
+    ["Application fee", feeSalary.fee != null ? money(feeSalary.fee) : ""],
+    ["Starting salary", feeSalary.salary_min != null ? `${money(feeSalary.salary_min)}${feeSalary.salary_max != null ? `–${money(feeSalary.salary_max)}` : ""}` : ""],
     ["Eligibility", exam.eligibility === "promotion" ? "Promotion" : "Open competitive"],
-  ];
+  ].filter(([, value]) => value !== "" && value != null);
   const script = options.includeScript === false ? "" : `<script defer src="/export_workflows.js"></script><script type="module" src="/exam_document.mjs"></script>`;
   const actions = renderNodeActions([
     { kind: "link", label: "Apply through the official site", href: applicationURL, primary: true, external: true, className: "exam-action", attrs: { "data-exam-action": "apply" } },
@@ -198,7 +205,7 @@ export function renderExamDocument(exam, options = {}) {
     `<p class="exam-note" data-export-class="exam_disclaimer">Official details are in English. Read the full official exam notice before applying.</p>`,
   ].join("");
   // Machine identity stays on data-subject-ref only — never printed as reader copy.
-  return `<!doctype html>
+  return gateNodePageRender(`<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · Exam ${esc(id)} · CityScroll</title>
 <meta name="description" content="Exam ${esc(id)}: ${esc(title)}. Application dates, official sources, process context, and public outcomes.">
@@ -209,7 +216,7 @@ export function renderExamDocument(exam, options = {}) {
   <header class="node-hero exam-hero" data-export-class="exam_identity">
     <p class="node-kicker exam-kicker">Civil-service exam</p><h1>${esc(title)}</h1>
     <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · ${DCAS_AGENCY_HREF ? `<a href="${esc(DCAS_AGENCY_HREF)}" data-subject-ref="${esc(DCAS_AGENCY_REF)}">Published by DCAS</a>` : "Published by DCAS"}</p>
-    <div class="exam-status-row"><span class="exam-status exam-status-${esc(status.toLowerCase())}" data-exam-status="${esc(status.toLowerCase())}">${esc(status)}</span><span>Application window: ${esc(exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : "Not published")}</span></div>
+    <div class="exam-status-row"><span class="exam-status exam-status-${esc(status.toLowerCase())}" data-exam-status="${esc(status.toLowerCase())}">${esc(status)}</span>${exam.application_start && exam.application_end ? `<span>Application window: ${esc(`${date(exam.application_start)}–${date(exam.application_end)}`)}</span>` : ""}</div>
   </header>
   ${actions}
   ${renderNodeSection({
@@ -248,19 +255,7 @@ export function renderExamDocument(exam, options = {}) {
     extraClass: "exam-section",
     body: outcomeHTML(outcome),
   })}
-  ${renderNodeProvenance({
-    heading: "Sources and limits",
-    headingId: "exam-provenance-heading",
-    exportClass: "exam_provenance",
-    extraClass: "exam-section exam-provenance",
-    note: "CityScroll joined public DCAS exam schedule, Notice of Examination, Civil Service List, and annual outcome materializations by exam number. This page is an unofficial reading aid.",
-    sourceItems: [
-      noticeURL
-        ? { html: sourceLink(noticeURL, "DCAS exam schedule / Notice of Examination") }
-        : { label: "DCAS exam schedule / Notice of Examination" },
-    ],
-  })}
-</main>${renderNodeFooter({ text: "CityScroll is an unofficial interface to public data.", extraClass: "exam-footer" })}${payloadScript(exam)}${script}</body></html>`;
+</main>${renderNodeFooter({ text: "CityScroll is an unofficial interface to public data.", extraClass: "exam-footer" })}${payloadScript(exam)}${script}</body></html>`);
 }
 
 if (typeof window !== "undefined") {
