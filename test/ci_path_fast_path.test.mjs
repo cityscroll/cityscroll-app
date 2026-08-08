@@ -14,6 +14,9 @@ function read(rel) {
 
 test("ci.yml emits docs_only and unit_full and wires unit fast path", () => {
   const ci = read(".github/workflows/ci.yml");
+  const frontend = ci.match(/\n\s+frontend:\n([\s\S]*?)\n\s+# Subset of frontend/);
+  assert.ok(frontend, "expected frontend path filter block");
+  assert.match(frontend[1], /- '\.github\/workflows\/ci\.yml'/);
   assert.match(ci, /docs_only:/);
   assert.match(ci, /unit_full:/);
   assert.match(ci, /tools\/docs-only-path-guard\.sh/);
