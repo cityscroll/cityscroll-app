@@ -20,11 +20,12 @@ export function renderAgencyIndex() {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Agencies · CityScroll</title><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"></head>
-<body><main class="civic-object-document"><p><a href="/browse/">Back to Browse</a></p>
-<header class="civic-object-hero"><p class="civic-object-kicker">Agency profiles</p><h1>City agencies</h1>
-<p>Browse the agencies represented in CityScroll’s reviewed identity registry. Each profile opens the public agency view and its related records.</p></header>
-<section class="civic-object-section" aria-labelledby="agency-list-heading"><h2 id="agency-list-heading">Agencies</h2><ul>${links}</ul></section>
-<p class="civic-object-footer">CityScroll is an unofficial reading aid. <a href="/about.html">About the data</a>.</p></main></body></html>`;
+<body><a class="skip" href="#main">Skip to content</a>
+<main id="main" class="node-document civic-object-document" data-node-document="1"><p class="node-back"><a href="/browse/">Back to Browse</a></p>
+<header class="node-hero civic-object-hero"><p class="node-kicker civic-object-kicker">Agency profiles</p><h1>City agencies</h1>
+<p class="node-lede">Browse the agencies represented in CityScroll’s reviewed identity registry. Each profile opens the public agency view and its related records.</p></header>
+<section class="node-section node-card civic-object-section" aria-labelledby="agency-list-heading"><h2 id="agency-list-heading">Agencies</h2><ul class="node-record-list">${links}</ul></section>
+</main><footer class="node-footer civic-object-footer">CityScroll is an unofficial reading aid. <a href="/about.html">About the data</a>.</footer></body></html>`;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

@@ -1,3 +1,11 @@
+/**
+ * Shared static document chrome for CityScroll node pages.
+ *
+ * Notice detail (SPA shell) is the visual standard; standalone exam / parcel /
+ * pack / digest / agency documents inherit the same layout grammar through
+ * these helpers + civic-documents.css node-* rules.
+ */
+
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
     "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -7,6 +15,10 @@ function esc(value) {
 function prefixFor(assetPrefix) {
   const value = String(assetPrefix || "/");
   return value.endsWith("/") ? value : `${value}/`;
+}
+
+function classNames(...parts) {
+  return parts.flatMap((part) => String(part || "").split(/\s+/)).filter(Boolean).join(" ");
 }
 
 export function renderCivicDocumentAssets(assetPrefix = "/") {
@@ -34,9 +46,40 @@ export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass =
     ["following", "Following"],
     ["browse", "Browse"],
   ].map(([route, label]) => `<a${current === route ? ' aria-current="page"' : ""} href="${esc(`${base}/${route}/`)}">${label}</a>`).join("");
-  const classes = ["document-mast", surfaceClass].filter(Boolean).join(" ");
+  const classes = classNames("document-mast", surfaceClass);
   return `<header class="${esc(classes)}"><div class="document-mast-inner">
     <a class="document-brand brand-lockup home" href="${esc(home)}">${brandMark()}<span>CityScroll</span></a>
     <nav class="document-nav" aria-label="Primary">${links}</nav>
   </div></header>`;
+}
+
+/** Shared back-link row above a node-document hero. */
+export function renderNodeBack({ href, label, extraClass = "" } = {}) {
+  if (!href || !label) return "";
+  return `<p class="${esc(classNames("node-back", extraClass))}"><a href="${esc(href)}">${esc(label)}</a></p>`;
+}
+
+/**
+ * Shared document actions (Watch / Copy / Print / Download).
+ * `items` is an array of { kind: "link"|"button", label, href?, primary?, attrs? }.
+ */
+export function renderNodeActions(items = [], { ariaLabel = "Document actions", exportClass = "", extraClass = "" } = {}) {
+  const buttons = (Array.isArray(items) ? items : []).map((item) => {
+    const classes = classNames("node-action", item.primary ? "primary" : "", item.className || "");
+    const attrPairs = Object.entries(item.attrs || {})
+      .filter(([, value]) => value != null && value !== false)
+      .map(([key, value]) => value === true ? ` ${esc(key)}` : ` ${esc(key)}="${esc(value)}"`)
+      .join("");
+    if (item.kind === "link") {
+      return `<a class="${esc(classes)}" href="${esc(item.href || "#")}"${item.external ? ' target="_blank" rel="noopener noreferrer"' : ""}${attrPairs}>${esc(item.label)}</a>`;
+    }
+    return `<button class="${esc(classes)}" type="button"${attrPairs}>${esc(item.label)}</button>`;
+  }).join("");
+  const exportAttr = exportClass ? ` data-export-class="${esc(exportClass)}"` : "";
+  return `<nav class="${esc(classNames("node-actions", extraClass))}" aria-label="${esc(ariaLabel)}"${exportAttr}>${buttons}</nav>`;
+}
+
+/** Shared footer line for static node documents. */
+export function renderNodeFooter({ text = "CityScroll is an unofficial reading aid.", aboutHref = "/about.html", extraClass = "" } = {}) {
+  return `<footer class="${esc(classNames("node-footer", extraClass))}">${esc(text)} <a href="${esc(aboutHref)}">About the data</a>.</footer>`;
 }

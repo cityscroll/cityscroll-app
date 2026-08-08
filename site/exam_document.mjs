@@ -1,5 +1,11 @@
 import { followingUrlFromWatch } from "./following_view.mjs";
-import { renderCivicDocumentAssets, renderCivicDocumentMast } from "./civic_document_chrome.mjs";
+import {
+  renderCivicDocumentAssets,
+  renderCivicDocumentMast,
+  renderNodeActions,
+  renderNodeBack,
+  renderNodeFooter,
+} from "./civic_document_chrome.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
 
@@ -99,7 +105,7 @@ function examFacetPivotsHTML(exam, today) {
     const href = examFacetDocumentHref(facet, value);
     return `<a class="exam-facet-pivot" data-scope-edge="${esc(edge)}" href="${esc(href)}"><b>${esc(facet)}</b> ${esc(label)}</a>`;
   });
-  return `<section class="exam-section exam-facet-pivots" aria-labelledby="exam-facet-heading"><h2 id="exam-facet-heading">Explore exam cohorts</h2><p class="exam-muted">These links use the exact values published for this exam; unpublished values remain unlinked.</p><div class="exam-facet-pivot-list">${rows.join("")}</div></section>`;
+  return `<section class="node-section exam-section exam-facet-pivots" aria-labelledby="exam-facet-heading"><h2 id="exam-facet-heading">Explore exam cohorts</h2><p class="exam-muted">These links use the exact values published for this exam; unpublished values remain unlinked.</p><div class="exam-facet-pivot-list">${rows.join("")}</div></section>`;
 }
 
 function predictionHTML(exam) {
@@ -171,34 +177,37 @@ export function renderExamDocument(exam, options = {}) {
     ["Eligibility", exam.eligibility === "promotion" ? "Promotion" : "Open competitive"],
   ];
   const script = options.includeScript === false ? "" : `<script defer src="/export_workflows.js"></script><script type="module" src="/exam_document.mjs"></script>`;
+  const actions = renderNodeActions([
+    { kind: "link", label: "Apply through the official site", href: applicationURL, primary: true, external: true, className: "exam-action", attrs: { "data-exam-action": "apply" } },
+    { kind: "link", label: "Read the official exam notice", href: noticeURL, external: true, className: "exam-action", attrs: { "data-exam-action": "source" } },
+    { kind: "link", label: "Watch this exam", href: watchURL, className: "exam-action", attrs: { "data-exam-watch": id } },
+    { kind: "button", label: "Copy link", className: "exam-action", attrs: { "data-exam-copy": true } },
+    { kind: "button", label: "Print / save PDF", className: "exam-action", attrs: { "data-exam-print": true } },
+    { kind: "button", label: "Download JSON", className: "exam-action", attrs: { "data-exam-export": "json" } },
+    { kind: "button", label: "Download XLSX", className: "exam-action", attrs: { "data-exam-export": "xlsx" } },
+  ], { ariaLabel: "Exam actions", exportClass: "exam_actions", extraClass: "exam-actions" });
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · Exam ${esc(id)} · CityScroll</title>
 <meta name="description" content="Exam ${esc(id)}: ${esc(title)}. Application dates, official sources, process context, and public outcomes.">
 <link rel="canonical" href="${esc(canonical)}"><meta property="og:type" content="article"><meta property="og:site_name" content="CityScroll"><meta property="og:title" content="${esc(title)} · Exam ${esc(id)} · CityScroll"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets("/")}</head>
 <body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "exam-mast" })}
-<main id="main" class="exam-document" data-exam-document="1" data-exam-number="${esc(id)}" data-subject-ref="${esc(examSubjectRef(id))}" data-document-rendered="true">
-  <p class="exam-back"><a href="/browse/staffing/">Back to Staffing and exams</a></p>
-  <header class="exam-hero" data-export-class="exam_identity">
-    <p class="exam-kicker">Civil-service exam</p><h1>${esc(title)}</h1>
+<main id="main" class="node-document exam-document" data-exam-document="1" data-exam-number="${esc(id)}" data-subject-ref="${esc(examSubjectRef(id))}" data-document-rendered="true" data-node-document="1">
+  ${renderNodeBack({ href: "/browse/staffing/", label: "Back to Staffing and exams", extraClass: "exam-back" })}
+  <header class="node-hero exam-hero" data-export-class="exam_identity">
+    <p class="node-kicker exam-kicker">Civil-service exam</p><h1>${esc(title)}</h1>
     <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · ${DCAS_AGENCY_HREF ? `<a href="${esc(DCAS_AGENCY_HREF)}" data-subject-ref="${esc(DCAS_AGENCY_REF)}">Published by DCAS</a>` : "Published by DCAS"}</p>
     <div class="exam-status-row"><span class="exam-status exam-status-${esc(status.toLowerCase())}" data-exam-status="${esc(status.toLowerCase())}">${esc(status)}</span><span>Application window: ${esc(exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : "Not published")}</span></div>
   </header>
-  <nav class="exam-actions" aria-label="Exam actions" data-export-class="exam_actions">
-    <a class="exam-action primary" href="${esc(applicationURL)}" target="_blank" rel="noopener noreferrer" data-exam-action="apply">Apply through the official site</a>
-    <a class="exam-action" href="${esc(noticeURL)}" target="_blank" rel="noopener noreferrer" data-exam-action="source">Read the official exam notice</a>
-    <a class="exam-action" href="${esc(watchURL)}" data-exam-watch="${esc(id)}">Watch this exam</a>
-    <button class="exam-action" type="button" data-exam-copy>Copy link</button><button class="exam-action" type="button" data-exam-print>Print / save PDF</button>
-    <button class="exam-action" type="button" data-exam-export="json">Download JSON</button><button class="exam-action" type="button" data-exam-export="xlsx">Download XLSX</button>
-  </nav>
-  <section class="exam-section" aria-labelledby="exam-facts-heading" data-export-class="exam_facts"><h2 id="exam-facts-heading">At a glance</h2><dl class="exam-facts">${facts.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>${exam.summary ? `<p class="exam-summary" lang="en" dir="ltr">${esc(exam.summary)}</p>` : ""}</section>
-  <section class="exam-section" aria-labelledby="exam-details-heading" data-export-class="exam_facts"><h2 id="exam-details-heading">What the notice says</h2>${exam.test_method || exam.exam_format ? `<p><strong>Test format:</strong> ${esc(exam.test_method || exam.exam_format)}</p>` : ""}${exam.qualifications ? `<p><strong>Qualifications:</strong> ${esc(exam.qualifications)}</p>` : ""}${exam.residency ? `<p><strong>Residency:</strong> ${esc(exam.residency)}</p>` : ""}${feeSalary.fee_waiver ? `<p><strong>Fee waiver:</strong> ${esc(feeSalary.fee_waiver)}</p>` : ""}<p class="exam-note" data-export-class="exam_disclaimer">Official details are in English. Read the full official exam notice before applying.</p></section>
+  ${actions}
+  <section class="node-section exam-section" aria-labelledby="exam-facts-heading" data-export-class="exam_facts"><h2 id="exam-facts-heading">At a glance</h2><dl class="exam-facts">${facts.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>${exam.summary ? `<p class="exam-summary" lang="en" dir="ltr">${esc(exam.summary)}</p>` : ""}</section>
+  <section class="node-section exam-section" aria-labelledby="exam-details-heading" data-export-class="exam_facts"><h2 id="exam-details-heading">What the notice says</h2>${exam.test_method || exam.exam_format ? `<p><strong>Test format:</strong> ${esc(exam.test_method || exam.exam_format)}</p>` : ""}${exam.qualifications ? `<p><strong>Qualifications:</strong> ${esc(exam.qualifications)}</p>` : ""}${exam.residency ? `<p><strong>Residency:</strong> ${esc(exam.residency)}</p>` : ""}${feeSalary.fee_waiver ? `<p><strong>Fee waiver:</strong> ${esc(feeSalary.fee_waiver)}</p>` : ""}<p class="exam-note" data-export-class="exam_disclaimer">Official details are in English. Read the full official exam notice before applying.</p></section>
   ${examFacetPivotsHTML(exam, today)}
-  <section class="exam-section" aria-labelledby="exam-prediction-heading" data-export-class="exam_prediction"><h2 id="exam-prediction-heading">What may happen next</h2>${predictionHTML(exam)}</section>
-  <section class="exam-section" aria-labelledby="exam-process-heading" data-export-class="exam_process"><h2 id="exam-process-heading">Application to appointment</h2>${processHTML(options.phaseView)}</section>
-  <section class="exam-section" aria-labelledby="exam-outcomes-heading" data-export-class="exam_outcomes"><h2 id="exam-outcomes-heading">Public outcomes</h2>${outcomeHTML(outcome)}</section>
-  <section class="exam-section exam-provenance" aria-labelledby="exam-provenance-heading" data-export-class="exam_provenance"><h2 id="exam-provenance-heading">Sources and limits</h2><p>CityScroll joined public DCAS exam schedule, Notice of Examination, Civil Service List, and annual outcome materializations by exam number. This page is an unofficial reading aid.</p><ul><li>${sourceLink(noticeURL, "DCAS exam schedule / Notice of Examination")}</li>${sourceNames.length ? `<li>Snapshot source keys: <code>${esc(sourceNames.join(", "))}</code></li>` : ""}<li>Subject reference: <code>${esc(examSubjectRef(id))}</code></li></ul></section>
-</main><footer class="exam-footer">CityScroll is an unofficial interface to public data. <a href="/about.html">About the data</a>.</footer>${payloadScript(exam)}${script}</body></html>`;
+  <section class="node-section exam-section" aria-labelledby="exam-prediction-heading" data-export-class="exam_prediction"><h2 id="exam-prediction-heading">What may happen next</h2>${predictionHTML(exam)}</section>
+  <section class="node-section exam-section" aria-labelledby="exam-process-heading" data-export-class="exam_process"><h2 id="exam-process-heading">Application to appointment</h2>${processHTML(options.phaseView)}</section>
+  <section class="node-section exam-section" aria-labelledby="exam-outcomes-heading" data-export-class="exam_outcomes"><h2 id="exam-outcomes-heading">Public outcomes</h2>${outcomeHTML(outcome)}</section>
+  <section class="node-section exam-section exam-provenance" aria-labelledby="exam-provenance-heading" data-export-class="exam_provenance"><h2 id="exam-provenance-heading">Sources and limits</h2><p>CityScroll joined public DCAS exam schedule, Notice of Examination, Civil Service List, and annual outcome materializations by exam number. This page is an unofficial reading aid.</p><ul><li>${sourceLink(noticeURL, "DCAS exam schedule / Notice of Examination")}</li>${sourceNames.length ? `<li>Snapshot source keys: <code>${esc(sourceNames.join(", "))}</code></li>` : ""}<li>Subject reference: <code>${esc(examSubjectRef(id))}</code></li></ul></section>
+</main>${renderNodeFooter({ text: "CityScroll is an unofficial interface to public data.", extraClass: "exam-footer" })}${payloadScript(exam)}${script}</body></html>`;
 }
 
 if (typeof window !== "undefined") {

@@ -123,39 +123,76 @@ select {
   padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
 }
 
+/* ── Shared node-document layout ─────────────────────────────────────────
+   Static exam / parcel / pack / digest / agency pages share one grammar.
+   Exam keeps its historical class names; civic-object + node-* aliases
+   inherit the same rules so future node pages do not re-paste styles. */
+
+.node-document,
 .exam-document,
+.civic-object-document,
+.node-footer,
 .exam-footer,
+.civic-object-footer,
+.node-back,
 .exam-back {
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
 }
 
+.node-back,
 .exam-back {
   padding-block-start: var(--space-5);
+  margin: 0;
   font: 600 .875rem/1.4 var(--font-label);
 }
 
-.exam-hero {
+.node-back a,
+.exam-back a {
+  color: var(--color-action);
+  text-decoration: none;
+}
+
+.node-back a:hover,
+.node-back a:focus-visible,
+.exam-back a:hover,
+.exam-back a:focus-visible {
+  text-decoration: underline;
+}
+
+.node-hero,
+.exam-hero,
+.civic-object-hero {
   padding-block: var(--space-6) var(--space-5);
   border-block-end: 3px solid var(--color-text);
 }
 
+.node-kicker,
 .exam-kicker,
+.civic-object-kicker,
 .exam-number,
 .exam-status,
+.node-action,
 .exam-action,
+.civic-object-action,
 .exam-subject-line,
 .exam-status-row,
 .exam-facts dt,
 .exam-process-step,
 .exam-muted,
 .exam-note,
-.exam-footer {
+.node-footer,
+.exam-footer,
+.civic-object-footer,
+.civic-object-meta,
+.node-meta {
   font-family: var(--font-label);
 }
 
-.exam-kicker {
+.node-kicker,
+.exam-kicker,
+.civic-object-kicker {
   margin: 0 0 var(--space-2);
   color: var(--color-action);
   font-size: .8125rem;
@@ -164,17 +201,22 @@ select {
   text-transform: uppercase;
 }
 
-.exam-hero h1 {
-  max-width: 20ch;
+.node-hero h1,
+.exam-hero h1,
+.civic-object-hero h1 {
+  max-width: 22ch;
   margin: 0;
-  font-size: clamp(2.5rem, 7vw, 5.25rem);
+  font-size: clamp(2.25rem, 6.5vw, 4.75rem);
   font-weight: 600;
   line-height: .98;
   letter-spacing: -.04em;
 }
 
+.node-lede,
+.civic-object-hero > p:not(.node-kicker):not(.civic-object-kicker):not(.civic-object-pivot):not(.node-pivot),
 .exam-subject-line {
   margin: var(--space-4) 0 0;
+  max-width: var(--measure);
   color: var(--color-text-soft);
   font-size: .95rem;
 }
@@ -182,6 +224,25 @@ select {
 .exam-number {
   color: var(--color-text);
   font-weight: 700;
+}
+
+.node-pivot,
+.civic-object-pivot {
+  margin: var(--space-4) 0 0;
+  font: 600 .9375rem/1.4 var(--font-label);
+}
+
+.node-pivot a,
+.civic-object-pivot a {
+  color: var(--color-action);
+  text-decoration: none;
+}
+
+.node-pivot a:hover,
+.node-pivot a:focus-visible,
+.civic-object-pivot a:hover,
+.civic-object-pivot a:focus-visible {
+  text-decoration: underline;
 }
 
 .exam-status-row {
@@ -215,7 +276,9 @@ select {
   color: var(--color-text-muted);
 }
 
-.exam-actions {
+.node-actions,
+.exam-actions,
+.civic-object-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
@@ -223,7 +286,9 @@ select {
   border-block-end: 1px solid var(--color-border);
 }
 
-.exam-action {
+.node-action,
+.exam-action,
+.civic-object-action {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
@@ -238,21 +303,99 @@ select {
   text-decoration: none;
 }
 
-.exam-action.primary {
+.node-action.primary,
+.exam-action.primary,
+.civic-object-action.primary {
   background: var(--color-action);
   color: var(--color-surface);
 }
 
-.exam-section {
+.node-action:hover,
+.node-action:focus-visible,
+.exam-action:hover,
+.exam-action:focus-visible,
+.civic-object-action:hover,
+.civic-object-action:focus-visible {
+  filter: brightness(.97);
+}
+
+.node-section,
+.exam-section,
+.civic-object-section {
   max-width: var(--measure);
   padding-block: var(--space-6);
   border-block-end: 1px solid var(--color-border);
 }
 
-.exam-section h2 {
+.node-section h2,
+.exam-section h2,
+.civic-object-section h2 {
   margin: 0 0 var(--space-4);
   font-size: clamp(1.55rem, 3vw, 2.25rem);
   line-height: 1.1;
+}
+
+/* Card-styled source groups on parcel / pack / digest documents. */
+.civic-object-section[data-parcel-biography-domain],
+.node-section.node-card,
+.civic-object-section.node-card {
+  max-width: var(--measure);
+  margin-block: var(--space-4) 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-surface);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.civic-object-section[data-parcel-biography-domain] h2,
+.node-section.node-card h2,
+.civic-object-section.node-card h2 {
+  margin-bottom: var(--space-3);
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+}
+
+.civic-object-section ul,
+.node-record-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.civic-object-section li,
+.node-record-list > li {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas);
+}
+
+.civic-object-section li a,
+.node-record-list a {
+  font-weight: 600;
+  color: var(--color-action);
+  text-decoration: none;
+}
+
+.civic-object-section li a:hover,
+.civic-object-section li a:focus-visible,
+.node-record-list a:hover,
+.node-record-list a:focus-visible {
+  text-decoration: underline;
+}
+
+.civic-object-section .muted,
+.node-muted,
+.exam-muted {
+  color: var(--color-text-muted);
+  font-size: .9375rem;
+}
+
+.civic-object-section .muted {
+  display: block;
+  margin-block-start: var(--space-1);
 }
 
 .exam-facet-pivot-list {
@@ -277,7 +420,7 @@ select {
 .exam-facet-pivot:focus-visible {
   border-color: var(--color-action);
   color: var(--color-action);
-  background: var(--color-surface-alt);
+  background: var(--color-surface-alt, var(--color-canvas-subtle));
 }
 
 .exam-facet-pivot.unknown {
@@ -338,11 +481,6 @@ select {
   font-size: .9375rem;
 }
 
-.exam-muted {
-  color: var(--color-text-muted);
-  font-size: .9375rem;
-}
-
 .exam-process-list {
   display: grid;
   gap: var(--space-2);
@@ -374,11 +512,14 @@ select {
   font-weight: 600;
 }
 
-.exam-provenance ul {
+.exam-provenance ul,
+.civic-object-section[data-export-class="object_provenance"] ul {
   padding-inline-start: var(--space-5);
 }
 
-.exam-footer {
+.node-footer,
+.exam-footer,
+.civic-object-footer {
   padding-block: var(--space-6);
   color: var(--color-text-muted);
   font-size: .875rem;
@@ -386,20 +527,31 @@ select {
 
 @media print {
   .document-mast,
+  .node-back,
   .exam-back,
+  .node-actions,
   .exam-actions,
+  .civic-object-actions,
+  .node-footer,
   .exam-footer,
+  .civic-object-footer,
   .skip {
     display: none !important;
   }
 
-  .exam-document {
+  .node-document,
+  .exam-document,
+  .civic-object-document {
     max-width: none;
     padding-inline: 0;
   }
 
+  .node-section,
   .exam-section,
-  .exam-hero {
+  .civic-object-section,
+  .node-hero,
+  .exam-hero,
+  .civic-object-hero {
     break-inside: avoid;
   }
 
@@ -407,6 +559,7 @@ select {
     color: inherit;
   }
 }
+
 
 .near-hero,
 .following-hero {
@@ -1088,7 +1241,9 @@ select {
     gap: var(--space-1);
   }
 
-  .exam-action {
+  .node-action,
+  .exam-action,
+  .civic-object-action {
     width: 100%;
     justify-content: center;
   }
