@@ -1,3 +1,5 @@
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+
 /**
  * Process conformance (first praxis wave): expected statutory mandate events
  * vs observations in the public record.
@@ -656,10 +658,10 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
         ? `deadline ${expected.deadline_date}`
         : (expected.deadline_text ? `deadline: ${expected.deadline_text}` : null);
       const observedLink = obs.observed_record?.href
-        ? ` · <a href="${esc(obs.observed_record.href)}">City Record: ${esc(obs.observed_record.label || obs.observed_record.request_id)}</a>`
+        ? ` · ${constellationLink({ href: obs.observed_record.href, label: `City Record: ${obs.observed_record.label || obs.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
         : "";
       const source = item.source_href
-        ? ` · <a href="${esc(item.source_href)}" rel="noopener">Source law</a>`
+        ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
         : "";
       const meta = [
         item.deliverable_type,

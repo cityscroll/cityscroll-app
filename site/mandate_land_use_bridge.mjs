@@ -1,5 +1,7 @@
 /** Mandates → land-use/zoning cross-entity edges for agency constellations. */
 
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
@@ -288,7 +290,7 @@ export function renderMandateLandUseSection(view) {
   }
   const list = [...groups.values()].map(({ mandate, edges }) => {
     const source = mandate.source_href
-      ? ` · <a href="${esc(mandate.source_href)}" rel="noopener">Source law</a>`
+      ? ` · ${officialSourceLink({ href: mandate.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
       : "";
     const actions = edges.map((edge) => {
       const why = renderWhyBelieveControl(edge.claim);
@@ -297,7 +299,7 @@ export function renderMandateLandUseSection(view) {
       if (edge.land_action.public_status) meta += ` · ${edge.land_action.public_status}`;
       if (edge.land_action.date) meta += ` · ${edge.land_action.date}`;
       return `<li class="node-record mandate-land-use-record" data-mandate-land-use-edge="${esc(edge.entity_link.id)}" data-edge-claim-row="${esc(edge.claim?.claim_id || edge.entity_link.id)}">
-        <div class="node-record-main"><a data-subject-ref="${esc(edge.land_action.subject_ref)}" href="${esc(edge.land_action.href)}">${esc(edge.land_action.label)}</a>${why ? ` ${why}` : ""}</div>
+        <div class="node-record-main">${constellationLink({ href: edge.land_action.href, label: edge.land_action.label, className: "agency-edge-link", attributes: { "data-subject-ref": edge.land_action.subject_ref }, escape: esc })}${why ? ` ${why}` : ""}</div>
         <span class="muted node-muted">${esc(meta)}</span>
       </li>`;
     }).join("");

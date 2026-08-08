@@ -1,3 +1,5 @@
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+
 /**
  * Mandates → contracts/procurement constellation bridge.
  *
@@ -295,15 +297,15 @@ export function renderMandateContractsBridgeSection(view) {
   const mandates = [...grouped.values()].map((rows) => {
     const mandate = rows[0].mandate;
     const source = mandate.source_href
-      ? ` · <a href="${esc(mandate.source_href)}" rel="noopener">Source law</a>`
+      ? ` · ${officialSourceLink({ href: mandate.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
       : "";
     const records = rows.map((row) => {
       const claim = row.claim?.inspect_href
         ? ` · <a href="${esc(row.claim.inspect_href)}" data-edge-claim="${esc(row.claim.claim_id)}">Why this link?</a>`
         : "";
       return `<li class="node-record mandate-contract-record" data-contract-ref="${esc(row.contract.subject_ref)}" data-edge-type="${esc(MANDATE_CONTRACT_EDGE_TYPE)}">
-        <div class="node-record-main"><a href="${esc(row.procurement_record.href)}">${esc(row.procurement_record.label)}</a></div>
-        <span class="muted node-muted">Contract ${esc(row.contract.contract_id)} · ${esc(row.procurement_record.when || "City Record")} · <a href="${esc(row.procurement_record.href)}">Open procurement record</a>${claim}</span>
+        <div class="node-record-main">${constellationLink({ href: row.procurement_record.href, label: row.procurement_record.label, className: "agency-edge-link", escape: esc })}</div>
+        <span class="muted node-muted">Contract ${esc(row.contract.contract_id)} · ${esc(row.procurement_record.when || "City Record")} · ${constellationLink({ href: row.procurement_record.href, label: "Open procurement record", className: "agency-edge-link", escape: esc })}${claim}</span>
       </li>`;
     }).join("");
     return `<article class="mandate-contract-group" data-mandate-id="${esc(rows[0].mandate_id)}">

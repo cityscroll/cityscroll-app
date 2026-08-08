@@ -4,6 +4,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 //   node --test test/paper_trail_phase.test.mjs
 
 import assert from "node:assert/strict";
+import { constellationLink } from "../site/affordance_grammar.mjs";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -144,7 +145,7 @@ test("chainHTML with phase tools: one default City Record link for blanket pool"
   };
 
   const { chainHTML } = new Function(
-    "t", "tn", "window",
+    "t", "tn", "window", "constellationLink",
     extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") +
     extractFn("cleanText") + extractFn("boxClass") + extractFn("money") + extractFn("fdate") +
     extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +
@@ -166,7 +167,7 @@ test("chainHTML with phase tools: one default City Record link for blanket pool"
     extractFn("chainHTMLFlat") +
     extractFn("chainHTML") +
     "return { chainHTML };"
-  )(t, tn, windowStub);
+  )(t, tn, windowStub, constellationLink);
 
   const opened = blanketChain[0];
   const html = chainHTML(opened, blanketChain, tools);

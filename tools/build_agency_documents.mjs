@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { AGENCY_GROUPS, agencyCanonicalId } from "../site/agency_identity.mjs";
+import { constellationLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/agencies/index.html");
@@ -15,7 +16,7 @@ const esc = (value) => String(value ?? "").replace(/[&<>\"']/g, (char) => ({
 export function renderAgencyIndex() {
   const links = Object.keys(AGENCY_GROUPS).map((name) => {
     const id = agencyCanonicalId(name);
-    return `<li><a href="/agencies/${encodeURIComponent(id)}/" data-subject-ref="agency:id:${esc(id)}">${esc(name)}</a></li>`;
+    return `<li>${constellationLink({ href: `/agencies/${encodeURIComponent(id)}/`, label: name, className: "agency-index-link", attributes: { "data-subject-ref": `agency:id:${id}` }, escape: esc })}</li>`;
   }).join("");
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

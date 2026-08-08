@@ -153,6 +153,8 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /data-agency-constellation-category="rules"/);
   assert.match(html, /data-agency-constellation-category="obligations"/);
   assert.match(html, /data-agency-constellation-category="staffing"/);
+  assert.match(html, /class="ui-constellation-link agency-edge-link"/);
+  assert.match(html, /class="ui-official-source-link agency-source-link"/);
   assert.match(html, /Watch this agency across City Record/);
   assert.match(html, /Watch mandates and deadlines/);
   assert.match(html, /Mandates · expected vs observed|Statutory mandates/);

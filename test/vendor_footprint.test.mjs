@@ -157,6 +157,8 @@ test("vendor footprint renders populated groups and strong objects only", () => 
   assert.doesNotMatch(html, /snapshot|source_record_id/i);
   assert.match(html, /See Acme &amp; Co\.&#39;s awards \(2\)/);
   assert.match(html, /Strong award/);
+  assert.match(html, /class="ui-constellation-link pivot vendor-record-link"/);
+  assert.match(html, /class="ui-constellation-link vendor-footprint-scope"/);
   assert.doesNotMatch(html, /Weak candidate/);
   assert.doesNotMatch(html, /strongly linked|in this build|coverage not measured|View this vendor as/i);
   assert.doesNotMatch(html, /This summary groups|identity not yet confirmed/i);

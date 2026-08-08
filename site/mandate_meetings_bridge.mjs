@@ -1,5 +1,7 @@
 /** Mandates → meetings/hearings cross-entity edges for agency constellations. */
 
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
@@ -269,12 +271,12 @@ export function renderMandateMeetingsSection(view) {
   }
   const list = [...groups.values()].map(({ mandate, edges }) => {
     const source = mandate.source_href
-      ? ` · <a href="${esc(mandate.source_href)}" rel="noopener">Source law</a>`
+      ? ` · ${officialSourceLink({ href: mandate.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
       : "";
     const meetings = edges.map((edge) => {
       const why = renderWhyBelieveControl(edge.claim);
       return `<li class="node-record mandate-meeting-record" data-mandate-meeting-edge="${esc(edge.entity_link.id)}" data-edge-claim-row="${esc(edge.claim?.claim_id || edge.entity_link.id)}">
-        <div class="node-record-main"><a data-subject-ref="${esc(edge.meeting.subject_ref)}" href="${esc(edge.meeting.href)}">${esc(edge.meeting.label)}</a>${why ? ` ${why}` : ""}</div>
+        <div class="node-record-main">${constellationLink({ href: edge.meeting.href, label: edge.meeting.label, className: "agency-edge-link", attributes: { "data-subject-ref": edge.meeting.subject_ref }, escape: esc })}${why ? ` ${why}` : ""}</div>
         ${edge.meeting.date ? `<span class="muted node-muted">City Record · ${esc(edge.meeting.date)}</span>` : ""}
       </li>`;
     }).join("");

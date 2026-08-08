@@ -18,6 +18,7 @@ import {
   renderWhyBelieveControl,
   sourceSystemReaderLabel,
 } from "./graph_edge_provenance.mjs";
+import { officialSourceLink } from "./affordance_grammar.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -83,7 +84,7 @@ function categorySectionHtml(category) {
     const why = item.claim ? renderWhyBelieveControl(item.claim) : "";
     if (category.id === "obligations" || item.kind === "obligation") {
       const sourceLink = item.href
-        ? ` · <a href="${esc(item.href)}" rel="noopener">Source law</a>`
+        ? ` · ${officialSourceLink({ href: item.href, label: "Source law", className: "agency-source-link", escape: esc })}`
         : "";
       const meta = [
         item.deliverable_type,
