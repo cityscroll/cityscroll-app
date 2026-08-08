@@ -38,6 +38,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `elder_slot` in `tools/merge_queue_policy.json`. The one-auto-merge seat cap itself
   lives outside this repo and should call that policy before seating a younger PR.
 
+## Shared node-page layout (static documents)
+
+Standalone exam / parcel / pack / digest / agency documents share one layout
+grammar: `site/civic_document_chrome.mjs` (`renderNodeBack` / `renderNodeActions`
+/ `renderNodeFooter`) + `node-*` rules in `site/civic-documents.css`. Exam keeps
+historical `exam-*` class names; composed objects keep `civic-object-*`; both
+inherit the shared rules. Rebuild: `node tools/build_exam_documents.mjs`,
+`node tools/build_composed_object_documents.mjs`, `node tools/build_agency_documents.mjs`.
+Parcel source labels: `parcelSectionLabel` in `site/composed_object_documents.mjs`
+(do not inline a partial ternary — `ll48` must not fall through to "Land projects").
+Evidence captures: `python3 tools/capture_node_page_design.py --label after`.
+
 ## Main site module boundaries
 
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.

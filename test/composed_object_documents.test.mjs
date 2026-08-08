@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { buildDistrictDigestView, buildMonitorPackView, buildParcelBiographyView, districtDigestPath, districtDigestSubjectRef, districtPivotHref, monitorPackPath, monitorPackSubjectRef, parcelPath, renderComposedObjectDocument } from "../site/composed_object_documents.mjs";
+import { buildDistrictDigestView, buildMonitorPackView, buildParcelBiographyView, districtDigestPath, districtDigestSubjectRef, districtPivotHref, monitorPackPath, monitorPackSubjectRef, parcelPath, parcelSectionLabel, renderComposedObjectDocument } from "../site/composed_object_documents.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
 const digests = JSON.parse(readFileSync(new URL("../site/data/district_weekly_digests.json", import.meta.url), "utf8"));
@@ -42,7 +42,8 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   const html = renderComposedObjectDocument(view);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/parcels\/\d{10}\//);
   assert.match(html, /lens=property/);
-  assert.match(html, new RegExp(`subject_refs_all.*bbl:${bbl}`));
+  // Watch filter is URL-encoded in the href (colon → %3A).
+  assert.match(html, new RegExp(`subject_refs_all(?:.|\\n)*?bbl(?:%3A|:)${bbl}`));
   assert.match(html, /reader-friendly record of public information connected with this parcel/);
   assert.match(html, /public records that name this exact parcel/);
   assert.match(html, /data-export-class="object_identity"/);
@@ -51,4 +52,18 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.match(html, /data-export-class="object_provenance"/);
   assert.match(html, /href="#land\/[A-Za-z0-9_-]+"/);
   assert.doesNotMatch(html, /#land\?project=/);
+  // Shared node-page layout (same grammar as exam documents).
+  assert.match(html, /class="node-document civic-object-document"/);
+  assert.match(html, /class="node-hero civic-object-hero"/);
+  assert.match(html, /class="[^"]*node-actions/);
+  assert.match(html, /class="[^"]*node-action[^"]*primary/);
+  assert.match(html, /data-node-document="1"/);
+  // Each source group is its own labeled card; ll48 must not reuse "Land projects".
+  assert.match(html, /data-parcel-biography-domain="land"[^>]*>[\s\S]*?<h2>Land projects<\/h2>/);
+  assert.match(html, /data-parcel-biography-domain="ll48"[^>]*>[\s\S]*?<h2>City-owned or leased property suitability<\/h2>/);
+  const landHeadings = html.match(/>Land projects</g) || [];
+  assert.equal(landHeadings.length, 1, "Land projects section must appear exactly once");
+  assert.equal(parcelSectionLabel("ll48"), "City-owned or leased property suitability");
+  assert.equal(parcelSectionLabel("land"), "Land projects");
+  assert.equal(parcelSectionLabel("unknown"), null);
 });
