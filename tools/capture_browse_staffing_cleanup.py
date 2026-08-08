@@ -35,8 +35,8 @@ def main() -> None:
     server.daemon_threads = True
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_port}"
-    failures: list[str] = []
-    captures: list[str] = []
+    failures: list[str] = []  # Derived browser assertions; no sourced data.
+    captures: list[str] = []  # Repository-relative paths created by this run.
 
     try:
         with sync_playwright() as playwright:
