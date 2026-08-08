@@ -408,15 +408,21 @@ async function agencyForecastTeaser(r, el){
 }
 
 async function showAgency(name, initialTab){
-  await globalThis.ensureMoneyHistory?.();
-  showTab("entity");
-  const box = $("#entityview");
-  delete box.dataset.vendorStem;
+  const renderGeneration=(globalThis.__entityRouteGeneration||0)+1;
+  globalThis.__entityRouteGeneration=renderGeneration;
+  const isCurrentRender=()=>globalThis.__entityRouteGeneration===renderGeneration;
+  const routeKeyAtStart=globalThis.routeFocusKey?.()||location.hash||`${location.pathname}${location.search}`;
   const arrival = String(name||"").trim();
   const localIdentity = globalThis.CrolEntityPivots.resolveAgencyIdentity(arrival);
   const safe = arrival.replace(/[<>&]/g,"");
+  showTab("entity");
+  const box = $("#entityview");
+  delete box.dataset.vendorStem;
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
+  await globalThis.ensureMoneyHistory?.();
+  if(!isCurrentRender()) return;
   const identity = await routedAgencyIdentity(arrival, localIdentity);
+  if(!isCurrentRender()) return;
   const nm = identity.canonical_name;
   const variants = identity.variants;
   const agencyWhere = `agency_name in(${variants.map(value=>`'${String(value).replace(/'/g,"''")}'`).join(",")})`;
@@ -438,6 +444,7 @@ async function showAgency(name, initialTab){
     workerFetch("/entity-intelligence?kind=agency&name=" + encodeURIComponent(nm), null, 8000)
       .then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
+  if(!isCurrentRender()) return;
   if(!(stats && +stats.n) && !sections.length){
     const searchHref = `/browse/contracts/?q=${encodeURIComponent(arrival)}`;
     const explanation = identity.matched || localIdentity.matched
@@ -549,9 +556,12 @@ async function showAgency(name, initialTab){
     if(initialTab === "forecast") btnForecast.click();
   }
 
+  if(!isCurrentRender()) return;
   announce(t("meta_agency_profile_announce",{name:nm}));
-  focusItemRouteTarget(box.querySelector(".route-item"));
-  applyActiveHistoryRouteScroll();
+  if((globalThis.routeFocusKey?.()||location.hash||`${location.pathname}${location.search}`)===routeKeyAtStart){
+    focusItemRouteTarget(box.querySelector(".route-item"));
+    applyActiveHistoryRouteScroll();
+  }
 }
 
 function vendorProfileFromVariants(variants){

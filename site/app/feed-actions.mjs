@@ -100,7 +100,8 @@ async function loadSection(key){
   if(key==="meetings") return loadHearings();
   const whenSel=$("#"+key+"when");
   let where=`section_name='${cfg.section}'`, order="start_date DESC";
-  const ag=$("#"+key+"agency")?$("#"+key+"agency").value:""; if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
+  const ag=key==="rules" ? (globalThis.rulesAgency || "") : ($("#"+key+"agency")?$("#"+key+"agency").value:"");
+  if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
   if(cfg.upcoming && (!whenSel || whenSel.value==="upcoming")){ where+=` AND event_date > '${todayISO()}'`; order="event_date ASC"; }
   // Property is a small section (~250 rows) whose value is the derived taxonomy — fetch wide, classify client-side.
   // Rules: wider window so multi-notice rulemaking collapse has siblings in-window.

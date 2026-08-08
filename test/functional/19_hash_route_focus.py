@@ -36,6 +36,7 @@ def assert_item_landing(page, selector):
         """element => ({
           active: document.activeElement === element,
           tabindex: element.getAttribute("tabindex"),
+          aria_current: element.getAttribute("aria-current"),
           outlineStyle: getComputedStyle(element).outlineStyle,
           outlineWidth: parseFloat(getComputedStyle(element).outlineWidth),
           top: element.getBoundingClientRect().top,
@@ -45,6 +46,7 @@ def assert_item_landing(page, selector):
     )
     assert landing["active"], f"{selector} was not the active element"
     assert landing["tabindex"] == "-1", f"{selector} was not programmatically focusable"
+    assert landing["aria_current"] == "page", f"{selector} was not marked as the current route"
     assert landing["outlineStyle"] != "none" and landing["outlineWidth"] >= 2, (
         f"{selector} had no visible focus outline: {landing}"
     )

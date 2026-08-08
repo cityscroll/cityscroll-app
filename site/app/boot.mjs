@@ -340,11 +340,12 @@ function currentLensFilterState(tab){
       q: $("#lkw") && $("#lkw").value.trim() || "",
       boro: landBorough || "",
       status: $("#lstatus") && $("#lstatus").value || "all",
+      attendance: landAttendance || "",
     });
   }
   if(tab === "meetings" || tab === "property" || tab === "rules"){
     const state = {
-      agency: $("#"+tab+"agency") && $("#"+tab+"agency").value || "",
+      agency: tab === "rules" ? (rulesAgency || "") : ($("#"+tab+"agency") && $("#"+tab+"agency").value || ""),
       q: $("#"+tab+"kw") && $("#"+tab+"kw").value.trim() || "",
     };
     if(tab === "meetings"){
@@ -514,8 +515,6 @@ $("#land-status-rail").addEventListener("click",event=>{
   $("#lstatus").value=button.dataset.landStatus||"all";
   landSearch();
 });
-const lhearingmode=$("#lhearingmode");
-if(lhearingmode) lhearingmode.addEventListener("change", landSearch);
 const landLocationOptions={
   geolocation:navigator.geolocation,
   fetchImpl:url=>fetch(url),

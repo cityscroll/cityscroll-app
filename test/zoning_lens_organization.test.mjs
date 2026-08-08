@@ -41,10 +41,11 @@ test("Zoning keeps review view visible while place controls stay in one disclosu
   const disclosureStart = zoningSection.indexOf('id="land-more-filters"');
   const disclosureEnd = zoningSection.indexOf("</details>", disclosureStart);
   const disclosure = zoningSection.slice(disclosureStart, disclosureEnd);
-  for (const id of ["land-borough-rail", "lhearingmode", "landlocation"]) {
+  for (const id of ["land-borough-rail", "land-attendance-rail", "landlocation"]) {
     assert.match(disclosure, new RegExp(`id="${id}"`));
   }
-  assert.doesNotMatch(disclosure, /<select[^>]+(?:lboro|borough)/);
+  assert.doesNotMatch(disclosure, /<select[^>]+(?:lboro|borough|lhearingmode)/);
+  assert.doesNotMatch(disclosure, /id="lhearingmode"/);
   assert.match(landSource, /boroughScopeLinksHTML/);
   assert.match(landSource, /renderLandBoroughScopeLinks/);
   assert.doesNotMatch(disclosure, /id="lkw"|id="land-status-rail"/);
