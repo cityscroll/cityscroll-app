@@ -263,9 +263,16 @@
 
   function filterHireNotices(notices, filters) {
     const query = String(filters.query || "").trim().toLowerCase();
+    const agencyMatch = typeof filters.agencyMatch === "function" ? filters.agencyMatch : null;
     return (notices || []).filter(item => {
       if (filters.role && item.role !== filters.role) return false;
-      if (filters.agency && item.agency !== filters.agency) return false;
+      // Prefer identity-aware matchers (canonical agency:id:* ↔ City Record spellings).
+      // Exact string remains for chip filters that already use source agency_name values.
+      if (agencyMatch) {
+        if (!agencyMatch(item.agency)) return false;
+      } else if (filters.agency && item.agency !== filters.agency) {
+        return false;
+      }
       if (!query) return true;
       return [
         item.role, item.person, item.agency, item.title_code, item.reason,
