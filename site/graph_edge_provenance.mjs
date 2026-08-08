@@ -491,13 +491,10 @@ export function renderEdgeProvenancePanel(claims = [], { activeClaimId = null } 
   const active = activeClaimId
     ? list.find((claim) => claim.claim_id === activeClaimId) || null
     : null;
-  const body = active
-    ? renderEdgeProvenanceInspector(active, { open: true })
-    : `<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1">
-        <p>Open a warrant chip on a connection to inspect its source.</p>
-      </div>`;
+  const body = active ? renderEdgeProvenanceInspector(active, { open: true }) : "";
+  const hiddenAttr = active ? "" : " hidden";
   const claimPayload = JSON.stringify(list).replace(/<\/script/gi, "<\\/script");
-  return `<section class="edge-prov-panel node-section node-card civic-object-section" id="edge-provenance" data-edge-provenance-panel="1" data-export-class="object_provenance" aria-labelledby="edge-prov-panel-heading">
+  return `<section class="edge-prov-panel node-section node-card civic-object-section" id="edge-provenance" data-edge-provenance-panel="1" data-export-class="object_provenance" aria-labelledby="edge-prov-panel-heading"${hiddenAttr}>
     <h2 id="edge-prov-panel-heading">Connection evidence</h2>
     <div class="edge-prov-panel-body" data-edge-prov-body="1">${body}</div>
     <script type="application/json" id="edge-provenance-claims">${claimPayload}</script>
@@ -519,10 +516,12 @@ export function edgeProvenanceClientScript() {
 
   const render = (claim) => {
     if (!claim) {
-      body.innerHTML = '<div class="edge-prov-empty muted node-muted" data-edge-prov-empty="1"><p>Open a warrant chip on a connection to inspect its source.</p></div>';
+      body.replaceChildren();
+      panel.hidden = true;
       panel.removeAttribute("data-active-claim");
       return;
     }
+    panel.hidden = false;
     const existing = document.getElementById("claim-" + CSS.escape(claim.claim_id));
     if (existing && existing.closest("[data-edge-prov-body]")) {
       existing.setAttribute("data-open", "true");
