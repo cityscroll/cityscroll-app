@@ -26,6 +26,20 @@ export function officialSourceLink({ href, label, className = "", attributes = {
   return `<a class="ui-official-source-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}" target="_blank" rel="noopener noreferrer"${dataAttributes(attributes, escape)}>${escape(label)}<span aria-hidden="true">↗</span></a>`;
 }
 
+/** Keep repeated official links available without making them the object's visual rhythm. */
+export function officialSourceDisclosure({ items = [], label = "Open official sources", className = "", escape = esc } = {}) {
+  const seen = new Set();
+  const links = (Array.isArray(items) ? items : []).map((item) => {
+    const href = String(item?.href || "").trim();
+    const text = String(item?.label || "").trim();
+    if (!href || !text || seen.has(href)) return "";
+    seen.add(href);
+    return `<li>${officialSourceLink({ href, label: text, className: "node-source-link", escape })}</li>`;
+  }).filter(Boolean);
+  if (!links.length) return "";
+  return `<details class="node-source-disclosure${className ? ` ${escape(className)}` : ""}"><summary class="node-action">${escape(label)}</summary><ul>${links.join("")}</ul></details>`;
+}
+
 /** View-changing control: pill button with aria-pressed; deliberately not a link. */
 export function filterChip({ label, pressed = false, className = "", attributes = {}, escape = esc } = {}) {
   return `<button type="button" class="ui-filter-chip${className ? ` ${escape(className)}` : ""}" aria-pressed="${pressed ? "true" : "false"}"${dataAttributes(attributes, escape)}>${escape(label)}</button>`;

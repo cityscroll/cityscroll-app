@@ -1,4 +1,4 @@
-import { officialSourceLink } from "./affordance_grammar.mjs";
+import { officialSourceDisclosure } from "./affordance_grammar.mjs";
 
 /**
  * Mandates prediction-alerts (capstone): deadline/recurrence → expected civic event.
@@ -628,12 +628,9 @@ export function renderMandatePredictionsSection(view) {
           : (item.deadline_source === "cadence_only"
             ? `<span class="mandate-pred-chip mandate-pred-cadence" data-prediction-band="cadence">Recurring</span>`
             : "");
-        const source = item.source_href
-          ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
-          : "";
         return `<li class="node-record mandate-prediction" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="${esc(item.deliverable_type)}" data-expected-event-kind="${esc(item.expected_event?.kind || "")}"${item.expected_deadline ? ` data-expected-deadline="${esc(item.expected_deadline)}"` : ""}${item.prediction_band ? ` data-prediction-band="${esc(item.prediction_band)}"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
-          <span class="muted node-muted">${meta}${source}</span>
+          <span class="muted node-muted">${meta}</span>
         </li>`;
       }).join("")
     }</ul>`
@@ -653,12 +650,14 @@ export function renderMandatePredictionsSection(view) {
       ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this view</a>`
       : "",
   ].filter(Boolean).join("");
+  const sourceItems = (view.items || []).filter((item) => item.source_href).map((item) => ({ href: item.source_href, label: item.duty_text || "Source law" }));
 
   const copy = view.copy || MANDATE_PREDICTION_COPY;
   return `<section id="mandates-predictions" class="node-section node-card civic-object-section mandate-prediction-alerts" data-agency-constellation-card="mandates-predictions" data-method="${esc(view.method || MANDATE_PREDICTION_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members" data-as-of="${esc(view.as_of || "")}">
     <h2>Expected mandate events <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || MANDATE_PREDICTION_COPY.lead)}</p>
     ${list}
+    ${officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc })}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
 }
