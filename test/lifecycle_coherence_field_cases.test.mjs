@@ -717,11 +717,10 @@ test("HNTB vendor pair: entity resolution matches Checkbook truncation to notice
   const noticeName = "HNTB New York Engineering and Architecture, P.C.";
   assert.equal(vendorNamesMatch(checkbook, noticeName), true);
   const dollars = lifecycleDollarsHTML(HNTB_LIFECYCLE_RAW, HNTB_NOTICE);
-  // Soft variant note (or quiet match) — never the red mismatch warning
+  // A resolved display-name variant stays quiet; genuine mismatches still warn.
   assert.doesNotMatch(dollars, /differs from the notice/i);
   assert.doesNotMatch(dollars, /note warn/);
-  // Soft note when display strings differ but entity resolves
-  assert.match(dollars, /Same vendor as the notice|Checkbook shows the name/i);
+  assert.doesNotMatch(dollars, /Same vendor as the notice|Checkbook shows the name/i);
   // Specific outbound Checkbook link
   assert.match(dollars, /smart_search\/citywide\?search_term=CT184120268807929/);
 });

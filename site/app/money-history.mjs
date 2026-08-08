@@ -255,10 +255,6 @@ function sourceUpdatedHTML(refreshed){
   return refreshed ? ` <span class="rmeta" style="margin:0">${t("external_awards_updated",{date:refreshed})}</span>` : "";
 }
 
-function aboEvidenceHTML(source){
-  return `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("external_awards_possible_note")} ${t("external_awards_abo_note")}${sourceUpdatedHTML(source?.refreshed)}</div></details>`;
-}
-
 // Fuzzy ABO awards render as a "possible" timeline (distinct from the exact NYCHA box below).
 function aboAwardsTimelineHTML(awards, source){
   const rows = awards.map(a=>{
@@ -273,11 +269,10 @@ function aboAwardsTimelineHTML(awards, source){
   }).join("");
   return `<div id="external-awards-content"><div class="chain-h">${t("external_awards_heading")}</div>
     <div class="timeline">${rows}</div>
-    <div class="pnote">${t("external_awards_abo_note")} ${aboSourceLink(source.dataset, source.authority)}</div>${aboEvidenceHTML(source)}</div>`;
+    <div class="pnote">${t("external_awards_abo_note")} ${aboSourceLink(source.dataset, source.authority)}${sourceUpdatedHTML(source?.refreshed)}</div></div>`;
 }
 
-// Exact NYCHA award (matched by PIN) renders as a confident chain box, linked to the exact
-// matched contract on Checkbook NYC.
+// Exact NYCHA award renders as a confident chain box linked to its Checkbook NYC record.
 function nychaAwardBoxHTML(c, pin){
   return `<div class="chain-h">${t("external_awards_heading")}</div><div class="chain">
     <div class="stage"><div class="box award">
@@ -287,7 +282,7 @@ function nychaAwardBoxHTML(c, pin){
       ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(c.vendor)}</b></div>`:""}
       ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
     </div></div></div>
-    <div class="pnote">${t("external_award_nycha_note_html",{pin:escUiHtml(pin), link:checkbookNychaLink(c.id)})}</div>`;
+    <div class="pnote">${checkbookNychaLink(c.id)}</div>`;
 }
 
 // Turn one /externalaward response into the award region's HTML. `notice` (optional) lets the
@@ -886,13 +881,9 @@ function paperTrailPhaseHTML(view, r){
     ? `<details class="lc-phase-history"><summary>${t("paper_trail_show_history")}</summary>${historyPanels}</details>`
     : "";
   const chrono = (view.chronological||[]).map(c => paperTrailMemberRowHTML(c, r)).join("");
-  const how = `<details class="lc-how inline-disclose">
+  const allNotices = `<details class="lc-how inline-disclose">
     <summary>${t("paper_trail_show_all")}</summary>
     <ul class="lc-phase-dates show paper-trail-chrono">${chrono}</ul>
-  </details>
-  <details class="lc-how inline-disclose">
-    <summary>${t("paper_trail_how_summary")}</summary>
-    <div class="inline-disclose-body">${t("paper_trail_how_html")}</div>
   </details>`;
   let notes = "";
   if(view.blanket){
@@ -905,7 +896,7 @@ function paperTrailPhaseHTML(view, r){
     ${currentPanel}
     ${futurePanels}
     ${historyWrap}
-    ${how}
+    ${allNotices}
     ${notes}`;
 }
 

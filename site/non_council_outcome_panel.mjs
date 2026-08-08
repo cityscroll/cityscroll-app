@@ -107,7 +107,6 @@ export function nonCouncilOutcomePanelHTML(payloadOrView, requestId, opts = {}) 
         <a class="view" href="${esc(view.minutes_url)}" target="_blank" rel="noopener noreferrer">${esc(t("non_council_outcome_minutes_link"))}${externalSuffixHTML}</a>
       </article>
     </div>
-    <details class="inline-disclose lc-how"><summary>${esc(t("non_council_outcome_how_summary"))}</summary><div class="inline-disclose-body">${esc(t("non_council_outcome_provenance"))}</div></details>
   </section>`;
 }
 

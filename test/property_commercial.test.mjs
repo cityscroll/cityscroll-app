@@ -373,8 +373,8 @@ test("property commercial detail source gates on sale_eligible and omits apology
   assert.doesNotMatch(detailSrc, /property_commercial_comparables_slot_html/);
   assert.doesNotMatch(detailSrc, /property_commercial_bid_none_html/);
   assert.doesNotMatch(detailSrc, /property_commercial_persona_html/);
-  // Provenance lives in one collapsed how-toggle.
-  assert.match(detailSrc, /inline-disclose/);
+  // Internal extraction methodology does not render on the notice.
+  assert.doesNotMatch(detailSrc, /inline-disclose|property_commercial_provenance_html/);
   // Disposition spine no longer emits empty-stage not-yet-ingested cards in the detail path.
   const spineSrc = src.slice(
     src.indexOf("function propertyDispositionSpineHTML"),
