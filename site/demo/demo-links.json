@@ -1140,6 +1140,33 @@
           }
         ]
       }
+    },
+    {
+      "id": "agency-parks-mandates-conformance",
+      "url": "agencies/parks-and-recreation/",
+      "feature": "process-conformance-mandates",
+      "description": "Parks mandates expected vs observed: City Record filings matched to statutory duties.",
+      "expectations": {
+        "pathname": "/agencies/parks-and-recreation/",
+        "visible": [
+          {
+            "selector": "#mandates-conformance",
+            "text": "expected vs observed"
+          },
+          {
+            "selector": "#mandates-conformance [data-observation-status]"
+          },
+          {
+            "selector": "#mandates-conformance",
+            "text": "City Record"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview"
+          }
+        ]
+      }
     }
   ]
 }
