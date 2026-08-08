@@ -1,4 +1,4 @@
-import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+import { constellationLink, officialSourceDisclosure } from "./affordance_grammar.mjs";
 
 /**
  * Process conformance (first praxis wave): expected statutory mandate events
@@ -656,6 +656,10 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   ].filter(Boolean).join(" · ");
 
   const items = publicItems.slice(0, limit);
+  const sourceItems = items.filter((item) => item.source_href).map((item) => ({
+    href: item.source_href,
+    label: item.duty_text || "Source law",
+  }));
   const list = items.length
     ? `<ul class="node-record-list mandates-conformance-list">${items.map((item) => {
       const obs = item.observation || {};
@@ -668,9 +672,6 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
       const observedLink = obs.observed_record?.href
         ? ` · ${constellationLink({ href: obs.observed_record.href, label: `City Record: ${obs.observed_record.label || obs.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
         : "";
-      const source = item.source_href
-        ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
-        : "";
       const meta = [
         item.deliverable_type,
         expected.label || null,
@@ -682,7 +683,7 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
           <span class="mandate-obs-chip mandate-obs-${esc(status)}" data-observation-label="${esc(status)}">${esc(statusLabel)}</span>
           ${esc(item.duty_text)}
         </div>
-        <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}${source}</span>
+        <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}</span>
       </li>`;
     }).join("")}</ul>`
     : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency in the current materialization.")}</p>`;
@@ -696,6 +697,7 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
     <h2>Mandates · expected vs observed <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
     ${list}
+    ${officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc })}
     ${share ? `<p class="node-inline-actions civic-object-inline-actions">${share}</p>` : ""}
   </section>`;
 }
