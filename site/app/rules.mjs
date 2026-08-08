@@ -1,5 +1,6 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
+import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -29,7 +30,8 @@ function rulePlaceChips(location){
   return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
 }
 
-let rulesAll=[], rulesViewCache=null, rulesProcessSel="all", rulesBorough="";
+let rulesAll=[], rulesViewCache=null, rulesProcessSel="all", rulesBorough="", rulesAgency="";
+let rulesAgencyChoices=[];
 let rulesExplorerToolsPromise=null;
 function rulesExplorerTools(){
   if(!rulesExplorerToolsPromise){
@@ -174,13 +176,26 @@ function renderRulesBoroughScopeLinks(){
     escape:escUiHtml,
   });
 }
+function renderRulesAgencyScopeLinks(){
+  const host=$("#rules-agency-rail");
+  if(!host) return;
+  host.innerHTML=agencyScopeLinksHTML({
+    surface:"rules",
+    agencies:rulesAgencyChoices,
+    selected:rulesAgency,
+    currentHash:location.hash,
+    t,
+    escape:escUiHtml,
+  });
+}
 
 async function renderRulesExplorer(){
+  renderRulesAgencyScopeLinks();
   renderRulesBoroughScopeLinks();
   const tools=await rulesExplorerTools();
   const bandTools=await rulesActionBandTools();
   const processRail=$("#rulesprocessrail");
-  const agency=$("#rulesagency")?.value||"";
+  const agency=rulesAgency;
   const kw=($("#ruleskw")?.value||"").trim();
   let entries=[];
   if(tools && tools.buildRulesExplorerEntries){
@@ -871,12 +886,20 @@ async function loadRuleLifecycle(r,el){
 }
 
 async function loadSectionAgencies(key){
-  const sel=$("#"+key+"agency"); if(!sel) return;
+  const sel=$("#"+key+"agency");
+  const host=key==="rules"?$("#rules-agency-rail"):null;
+  if(key==="rules"&&!host) return;
+  if(key!=="rules"&&!sel) return;
   try{
     const sectionWhere=key==="meetings"
       ? "(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL))"
       : `section_name='${SECTIONS[key].section}'`;
     const rows=await soda({"$select":"agency_name","$where":`${sectionWhere} AND agency_name IS NOT NULL`,"$group":"agency_name","$order":"agency_name","$limit":"200"});
+    if(key==="rules"){
+      rulesAgencyChoices=rows;
+      renderRulesAgencyScopeLinks();
+      return;
+    }
     const cur=sel.value;
     sel.innerHTML=`<option value="">${t("all_agencies")}</option>`+rows.map(r=>`<option>${r.agency_name}</option>`).join("");
     if(cur) forceSelect("#"+key+"agency", cur);
@@ -1029,6 +1052,8 @@ globalThis.rulesProcessControlHTML = rulesProcessControlHTML;
 globalThis.rulesProcessPhaseLabel = rulesProcessPhaseLabel;
 Object.defineProperty(globalThis, "rulesAdoptionLagModelPromise", { configurable: true, get: () => rulesAdoptionLagModelPromise, set: value => { rulesAdoptionLagModelPromise = value; } });
 Object.defineProperty(globalThis, "rulesAll", { configurable: true, get: () => rulesAll, set: value => { rulesAll = value; } });
+Object.defineProperty(globalThis, "rulesAgency", { configurable: true, get: () => rulesAgency, set: value => { rulesAgency = String(value || "").trim(); } });
+Object.defineProperty(globalThis, "rulesAgencyChoices", { configurable: true, get: () => rulesAgencyChoices, set: value => { rulesAgencyChoices = Array.isArray(value) ? value : []; } });
 Object.defineProperty(globalThis, "rulesBorough", { configurable: true, get: () => rulesBorough, set: value => { rulesBorough = normalizeBoroughScope(value); } });
 Object.defineProperty(globalThis, "rulesExplorerToolsPromise", { configurable: true, get: () => rulesExplorerToolsPromise, set: value => { rulesExplorerToolsPromise = value; } });
 Object.defineProperty(globalThis, "rulesPhaseSpineToolsPromise", { configurable: true, get: () => rulesPhaseSpineToolsPromise, set: value => { rulesPhaseSpineToolsPromise = value; } });

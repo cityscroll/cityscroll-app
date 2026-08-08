@@ -1,5 +1,6 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
+import { attendanceScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -9,6 +10,7 @@ const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:
 let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
 let landResolvedArea=null;
 let landBorough="";
+let landAttendance="";
 let landCommunityDistrict="";
 let landCouncilDistrict="";
 const mihOn = v => v===true || v==="true";
@@ -87,6 +89,16 @@ function landHearingModeFieldSync(){
   const status=$("#lstatus")?$("#lstatus").value:"";
   if(field) field.hidden=status!=="hearings";
 }
+function renderLandAttendanceScopeLinks(){
+  const host=$("#land-attendance-rail");
+  if(!host) return;
+  host.innerHTML=attendanceScopeLinksHTML({
+    selected:landAttendance,
+    currentHash:location.hash,
+    t,
+    escape:escUiHtml,
+  });
+}
 function renderLandBoroughScopeLinks(){
   const host=$("#land-borough-rail");
   if(!host) return;
@@ -123,11 +135,12 @@ async function syncLandLensControls(){
     button.setAttribute("aria-pressed",String(button.dataset.landStatus===selectedId));
   });
   landHearingModeFieldSync();
+  renderLandAttendanceScopeLinks();
   renderLandBoroughScopeLinks();
   const active=[
     !!landBorough,
     status!=="all",
-    status==="hearings"&&!!$("#lhearingmode")?.value,
+    status==="hearings"&&!!landAttendance,
     !!landResolvedArea,
   ].filter(Boolean).length;
   const badge=$("#land-filter-badge");
@@ -153,16 +166,16 @@ function setLandResultCount(count){
 function landHasAppliedFilters(){
   return !!($("#lkw")?.value.trim() || landBorough || landCommunityDistrict
     || landCouncilDistrict || landResolvedArea || $("#lstatus")?.value!=="all"
-    || $("#lhearingmode")?.value);
+    || landAttendance);
 }
 function resetLandFilters(){
   landResolvedArea=null;
   landBorough="";
+  landAttendance="";
   landCommunityDistrict="";
   landCouncilDistrict="";
   $("#lkw").value="";
   $("#lstatus").value="all";
-  if($("#lhearingmode")) $("#lhearingmode").value="";
   $("#nltrans-land").innerHTML="";
   landSearch();
 }
@@ -191,6 +204,8 @@ function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
     const modes=Array.isArray(row.attendance_modes)?row.attendance_modes:[];
     if(m==="in_person" && !modes.includes("in_person") && !row.venue_address) return false;
     if(m==="livestream" && !modes.includes("livestream") && !row.livestream_url) return false;
+    if(m==="hybrid" && !(modes.includes("in_person") && modes.includes("livestream"))
+      && !(row.venue_address && row.livestream_url)) return false;
     if(q){
       const blob=`${row.project_name||""} ${row.project_id||""} ${row.venue_address||""} ${row.representing||""}`.toLowerCase();
       if(!blob.includes(q)) return false;
@@ -232,8 +247,9 @@ async function landSearchHearings(stale){
   landHearingModeFieldSync();
   const boro=landBorough;
   const kw=$("#lkw").value.trim();
-  const mode=$("#lhearingmode")?$("#lhearingmode").value:"";
-  $("#lreshead").textContent=t("land_hearings_heading")+(boro?" · "+boro:"")+(mode?` · ${t(mode==="in_person"?"land_hearings_mode_in_person":"land_hearings_mode_livestream")}`:"");
+  const mode=landAttendance;
+  const modeLabel=mode==="in_person"?t("land_hearings_mode_in_person"):mode==="hybrid"?t("venue_hybrid"):t("land_hearings_mode_livestream");
+  $("#lreshead").textContent=t("land_hearings_heading")+(boro?" · "+boro:"")+(mode?` · ${modeLabel}`:"");
   try{
     const snap=await loadLandUpcomingHearings();
     if(stale()) return;
@@ -555,6 +571,7 @@ async function showLandEntry(id){
   landLoaded=true; // suppress the ordinary list fetch while the exact project loads
   showTab("land");
   landBorough="";
+  landAttendance="";
   $("#lkw").value="";
   // A project deep link is still part of the default review view; retain the
   // lens default so the surrounding route state remains stable while detail loads.
@@ -1534,6 +1551,7 @@ Object.defineProperty(globalThis, "lRows", { configurable: true, get: () => lRow
 Object.defineProperty(globalThis, "landAutoLocationChecked", { configurable: true, get: () => landAutoLocationChecked, set: value => { landAutoLocationChecked = value; } });
 Object.defineProperty(globalThis, "landBanner", { configurable: true, get: () => landBanner, set: value => { landBanner = value; } });
 Object.defineProperty(globalThis, "landBorough", { configurable: true, get: () => landBorough, set: value => { landBorough = normalizeBoroughScope(value); } });
+Object.defineProperty(globalThis, "landAttendance", { configurable: true, get: () => landAttendance, set: value => { landAttendance = normalizeAttendanceScope(value); } });
 Object.defineProperty(globalThis, "landCommunityDistrict", { configurable: true, get: () => landCommunityDistrict, set: value => { landCommunityDistrict = value; } });
 Object.defineProperty(globalThis, "landCouncilDistrict", { configurable: true, get: () => landCouncilDistrict, set: value => { landCouncilDistrict = value; } });
 Object.defineProperty(globalThis, "landDefaultSnapshotPromise", { configurable: true, get: () => landDefaultSnapshotPromise, set: value => { landDefaultSnapshotPromise = value; } });
