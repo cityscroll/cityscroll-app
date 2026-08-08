@@ -117,15 +117,19 @@ async function handleComposedObject(request, env, pathname, canonicalPath) {
 }
 
 export function renderEdgeNotice(row, id, meetingOutcome = null) {
-  const title = row?.short_title || `City Record notice ${id}`;
+  const kind = row?.type_of_notice_description || row?.section_name || "Public record";
+  const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
   const agency = row?.agency_name || "Agency not listed";
   const source = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
-  const sourceLink = officialSourceLink({ href: source, label: "View City Record", className: "act primary" });
+  const browseLink = constellationLink({ href: "/browse/", label: "Browse public records", className: "act primary", escape: esc });
+  const followingLink = constellationLink({ href: "/following/", label: "Follow public records", className: "act", escape: esc });
+  const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
   if (!row) {
-    return `<div class="panel route-item" tabindex="-1" data-edge-rendered="notice-unavailable">
-      <p class="ftype">City Record notice</p><h2 class="rolename">Notice ${esc(id)}</h2>
-      <p>The public record could not be loaded at this moment. The official source remains available.</p>
-      <div class="actions"><a class="act" href="/browse/">Back to Browse</a>${sourceLink}</div>
+    return `<div class="panel route-item" tabindex="-1" data-edge-rendered="notice-unavailable" data-notice-id="${esc(id)}">
+      <p class="ftype">${esc(kind)}</p><h2 class="rolename">${esc(title)}</h2>
+      <p>Continue with related public records or check the official record.</p>
+      <div class="actions">${browseLink}${followingLink}</div>
+      <p>${sourceLink}</p>
     </div>`;
   }
   const identity = resolveAgencyIdentity(agency);
@@ -142,12 +146,13 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
     <article class="panel route-item" tabindex="-1">
-      <p class="ftype">${esc(row.type_of_notice_description || "City Record notice")}${row.section_name ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
+      <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
-      <div class="actions">${sourceLink}</div>
+      <div class="actions">${browseLink}${followingLink}</div>
+      <p>${sourceLink}</p>
     </article>
   </div>`;
 }
@@ -223,7 +228,8 @@ async function handleNotice(request, env, id) {
     upstreamFailed = true;
   }
   const status = upstreamFailed ? 503 : row ? 200 : 404;
-  const title = row?.short_title || `City Record notice ${id}`;
+  const kind = row?.type_of_notice_description || row?.section_name || "Public record";
+  const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
   const canonical = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
   const cacheControl = status === 200
     ? "public, max-age=60, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800"
