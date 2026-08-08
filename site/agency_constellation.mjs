@@ -16,6 +16,15 @@ import {
   agencyObligationsFollowHref,
   buildAgencyObligationsView,
 } from "./agency_obligations.mjs";
+import {
+  CONFORMANCE_COPY,
+  MANDATE_CONFORMANCE_STYLE,
+  OBSERVATION_LABELS,
+  PROCESS_CONFORMANCE_METHOD,
+  agencyMandatesConformancePath,
+  buildAgencyConformanceView,
+  renderMandatesConformanceSection,
+} from "./process_conformance.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import {
@@ -88,7 +97,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({
     id: "obligations",
     domain: "rules",
-    label: "Statutory mandates",
+    label: "Mandates",
     browse_facet: "rules",
     surface: "rules",
     relation: "statute_duty",
@@ -308,41 +317,66 @@ function staffingItems(certification, agencyRef, limit = 8) {
     .slice(0, limit);
 }
 
-function obligationItems(obligationsLookup, identity, limit = 8) {
+function obligationItems(obligationsLookup, identity, limit = 8, conformanceView = null) {
   // Pull a wide window so standable filtering still leaves a full category total.
   const view = buildAgencyObligationsView(identity.canonical_id, obligationsLookup, { limit: 500 });
-  if (!view || view.status !== "matched") return { total: 0, items: [], view };
-  const mapped = view.items.map((item) => ({
-    id: item.obligation_id,
-    subject_ref: `obligation:${item.obligation_id}`,
-    label: item.duty_text,
-    date: item.deadline_date || null,
-    source: item.citation || "Enacted local law",
-    relation: "statute_duty",
-    // Auto-certified quote-verify rows are public-strong; quote-miss candidates stay off-list.
-    confidence: item.quote_verified || item.certification_status === "auto_certified"
-      ? "strong"
-      : "tentative",
-    method: AGENCY_OBLIGATIONS_METHOD,
-    href: item.href,
-    deliverable_type: item.deliverable_type,
-    recurrence: item.recurrence,
-    deadline_text: item.deadline_text,
-    certification_status: item.certification_status,
-    observation_status: item.observation_status,
-    kind: "obligation",
-    provenance: {
-      source_system: "enacted_local_law",
-      source_record_id: item.obligation_id || null,
-      source_fields: ["duty_text", "deadline", "citation"],
-      basis: AGENCY_OBLIGATIONS_CERTIFICATION || "auto_certified_quote_verify_v1",
-      observed_at: item.deadline_date || null,
-      input_value: item.citation || null,
-    },
-  }));
+  if (!view || view.status !== "matched") {
+    return { total: 0, items: [], view, conformance: conformanceView, all_items: [] };
+  }
+  const confById = new Map(
+    (conformanceView?.items || []).map((row) => [row.mandate_id || row.obligation_id, row]),
+  );
+  const mapped = view.items.map((item) => {
+    const conf = confById.get(item.obligation_id)?.observation || null;
+    return {
+      id: item.obligation_id,
+      subject_ref: `obligation:${item.obligation_id}`,
+      label: item.duty_text,
+      date: item.deadline_date || null,
+      source: item.citation || "Enacted local law",
+      relation: "statute_duty",
+      confidence: item.quote_verified || item.certification_status === "auto_certified"
+        ? "strong"
+        : "tentative",
+      method: conf ? PROCESS_CONFORMANCE_METHOD : AGENCY_OBLIGATIONS_METHOD,
+      href: item.href,
+      deliverable_type: item.deliverable_type,
+      recurrence: item.recurrence,
+      deadline_text: item.deadline_text,
+      certification_status: item.certification_status,
+      observation_status: conf?.status || item.observation_status || null,
+      observation_label: conf?.label || (conf?.status ? OBSERVATION_LABELS[conf.status] : null) || null,
+      expected_event_label: conf?.expected_event?.label || null,
+      observed_record: conf?.observed_record || null,
+      kind: "obligation",
+      provenance: {
+        source_system: "enacted_local_law",
+        source_record_id: item.obligation_id || null,
+        source_fields: ["duty_text", "deadline", "citation"],
+        basis: AGENCY_OBLIGATIONS_CERTIFICATION || "auto_certified_quote_verify_v1",
+        observed_at: item.deadline_date || null,
+        input_value: item.citation || null,
+      },
+    };
+  });
+  if (conformanceView?.items?.length) {
+    const rank = {
+      observed: 0,
+      on_track: 1,
+      expected_not_yet_observed: 2,
+      enrichment_pending: 3,
+    };
+    mapped.sort((left, right) => {
+      const leftRank = rank[left.observation_status] ?? 9;
+      const rightRank = rank[right.observation_status] ?? 9;
+      if (leftRank !== rightRank) return leftRank - rightRank;
+      return String(left.date || "9999").localeCompare(String(right.date || "9999"));
+    });
+  }
   return {
-    total: Number(view.count) || mapped.length,
+    total: Number(conformanceView?.counts?.total) || Number(view.count) || mapped.length,
     view,
+    conformance: conformanceView,
     items: mapped.slice(0, limit),
     all_items: mapped,
   };
@@ -351,7 +385,7 @@ function obligationItems(obligationsLookup, identity, limit = 8) {
 function categoryStatusLabel(category) {
   if (category.status !== "matched") return "";
   if (category.id === "obligations") {
-    return `${category.count} statutory duties`;
+    return `${category.count} mandates`;
   }
   const total = Number(category.count) || category.items?.length || 0;
   return `${total} linked`;
@@ -365,9 +399,9 @@ function standableItems(items = []) {
   });
 }
 
-function categoryFromDomain(spec, intelligence, identity, certification, obligationsLookup) {
+function categoryFromDomain(spec, intelligence, identity, certification, obligationsLookup, conformanceView = null) {
   if (spec.id === "obligations") {
-    const { total, items: preview, all_items, view } = obligationItems(obligationsLookup, identity);
+    const { total, items: preview, all_items, view, conformance } = obligationItems(obligationsLookup, identity, 12, conformanceView);
     const claimAll = (all_items || preview).map((item) => attachClaim(item, {
       categoryId: spec.id,
       relation: spec.relation,
@@ -388,12 +422,14 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
       count: shown || total,
       items,
       warrant_summary,
-      method: AGENCY_OBLIGATIONS_METHOD,
+      method: conformance ? PROCESS_CONFORMANCE_METHOD : AGENCY_OBLIGATIONS_METHOD,
       certification_basis: AGENCY_OBLIGATIONS_CERTIFICATION,
       er_match_basis: AGENCY_OBLIGATIONS_ER_BASIS,
-      view_all_href: "",
+      view_all_href: agencyMandatesConformancePath(identity.canonical_id),
       follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
-      honesty: "Statutory mandates with published deadlines from enacted local law.",
+      honesty: CONFORMANCE_COPY.lead,
+      conformance,
+      conformance_counts: conformance?.counts || null,
       // Free mandate watch (deliverable-type scoped links are optional refinements).
       mandate_follow_hrefs: {
         all: agencyObligationsFollowHref(identity.canonical_id),
@@ -474,8 +510,73 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   const certification = sources.certification || null;
   const obligations = sources.obligations || null;
 
+  let conformanceView = null;
+  const committed = sources.process_conformance?.by_agency?.[identity.canonical_id] || null;
+  if (committed && obligations) {
+    const live = buildAgencyConformanceView(identity.canonical_id, {
+      obligationsLookup: obligations,
+      rulesDomain: sources.rules_domain || null,
+      meetingsDomain: sources.meetings_domain || null,
+      entityIntelligence: sources.intelligence || null,
+    });
+    const obsMap = committed.observations || null;
+    if (live && obsMap) {
+      const items = (live.items || []).map((item) => {
+        const mid = item.mandate_id || item.obligation_id;
+        const obs = obsMap[mid];
+        if (!obs) return item;
+        return {
+          ...item,
+          observation: {
+            ...item.observation,
+            ...obs,
+            is_compliance_verdict: false,
+            adjudication: "not_adjudicated",
+          },
+        };
+      });
+      const rank = {
+        observed: 0,
+        on_track: 1,
+        expected_not_yet_observed: 2,
+        enrichment_pending: 3,
+      };
+      items.sort((left, right) => {
+        const leftRank = rank[left.observation?.status] ?? 9;
+        const rightRank = rank[right.observation?.status] ?? 9;
+        if (leftRank !== rightRank) return leftRank - rightRank;
+        return String(left.deadline_date || "9999").localeCompare(String(right.deadline_date || "9999"));
+      });
+      conformanceView = {
+        ...live,
+        method: sources.process_conformance.method || PROCESS_CONFORMANCE_METHOD,
+        as_of: committed.as_of || live.as_of,
+        counts: committed.counts || live.counts,
+        candidate_corpus: {
+          size: committed.candidate_corpus_size || live.candidate_corpus?.size || 0,
+          sources: live.candidate_corpus?.sources || [],
+          sample: live.candidate_corpus?.sample || [],
+        },
+        items,
+        items_total: committed.counts?.total || items.length,
+        copy: sources.process_conformance.copy || sources.process_conformance.honesty || CONFORMANCE_COPY,
+        honesty: sources.process_conformance.copy || sources.process_conformance.honesty || CONFORMANCE_COPY,
+        share_path: committed.share_path || agencyMandatesConformancePath(identity.canonical_id),
+      };
+    } else {
+      conformanceView = live;
+    }
+  } else if (obligations) {
+    conformanceView = buildAgencyConformanceView(identity.canonical_id, {
+      obligationsLookup: obligations,
+      rulesDomain: sources.rules_domain || null,
+      meetingsDomain: sources.meetings_domain || null,
+      entityIntelligence: sources.intelligence || null,
+    });
+  }
+
   const categories = AGENCY_CONSTELLATION_CATEGORIES.map((spec) =>
-    categoryFromDomain(spec, intelligence, identity, certification, obligations));
+    categoryFromDomain(spec, intelligence, identity, certification, obligations, conformanceView));
 
   const matched = categories.filter((category) => category.status === "matched").length;
   const claims = categories.flatMap((category) =>
@@ -490,6 +591,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     canonical_id: identity.canonical_id,
     categories,
     claims,
+    mandates_conformance: conformanceView,
     summary: {
       matched_categories: matched,
       category_count: categories.length,
@@ -499,6 +601,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         || sources.intelligence?.generated_at
         || certification?.generated_at
         || obligations?.generated_at
+        || sources.process_conformance?.generated_at
         || null,
       er_match_basis: AGENCY_CONSTELLATION_ER_BASIS,
       method: AGENCY_CONSTELLATION_METHOD,
@@ -506,19 +609,22 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     },
     follow_href: agencyConstellationFollowHref(identity.canonical_id),
     scope_href: agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
+    mandates_href: agencyMandatesConformancePath(identity.canonical_id),
     interactive_profile_href: `/#agency/${encodeURIComponent(identity.canonical_name)}`,
     provenance: {
       intelligence_generated_at: sources.intelligence?.generated_at || null,
       certification_generated_at: certification?.generated_at || null,
       obligations_generated_at: obligations?.generated_at || null,
+      process_conformance_generated_at: sources.process_conformance?.generated_at || null,
       methods: [
         "agency_canonical_v1",
         "publisher_certification_record_v1",
         AGENCY_OBLIGATIONS_METHOD,
+        PROCESS_CONFORMANCE_METHOD,
         AGENCY_CONSTELLATION_METHOD,
         "graph_edge_provenance_v1",
       ],
-      note: "Joins City Record agency identity (entity intelligence), publisher civil-service certification edges, and auto-certified enacted-law statutory mandates. Each listed connection opens a provenance inspector with source and warrant class.",
+      note: "Joins City Record agency identity, civil-service certification edges, enacted-law mandates, and expected-vs-observed City Record matches. Each listed connection opens a provenance inspector with source and warrant class.",
     },
   };
 }
@@ -532,6 +638,8 @@ function itemLink(item) {
 function obligationMeta(item) {
   // Reader-facing meta only: drop internal method keys and absence fillers.
   return [
+    item.observation_label || null,
+    item.expected_event_label || null,
     item.deliverable_type,
     item.date ? `deadline ${item.date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : null),
     item.recurrence,
@@ -542,6 +650,33 @@ function obligationMeta(item) {
 }
 
 function categorySection(category) {
+  // Full process-conformance surface for mandates when materialization is present.
+  if (category.id === "obligations" && category.conformance) {
+    const refine = category.mandate_follow_hrefs
+      ? [
+        category.mandate_follow_hrefs.report
+          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report mandates</a>`
+          : "",
+        category.mandate_follow_hrefs.rulemaking
+          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rulemaking mandates</a>`
+          : "",
+        category.mandate_follow_hrefs.window_90
+          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch deadlines in 90 days</a>`
+          : "",
+        category.follow_href
+          ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">Watch mandates and deadlines</a>`
+          : "",
+      ].filter(Boolean).join("")
+      : "";
+    const body = renderMandatesConformanceSection(category.conformance, { limit: 12 });
+    if (refine && body.includes("</section>")) {
+      return body.replace(
+        "</section>",
+        `<p class="node-inline-actions civic-object-inline-actions">${refine}</p></section>`,
+      );
+    }
+    return body;
+  }
   // Omit empty / not-yet-ingested categories entirely — no absence disclaimers.
   if (!category?.items?.length || category.status === "empty" || category.status === "not_yet_ingested") {
     return "";
@@ -666,7 +801,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ? `As of ${asOf}, this as-of view keeps linked records whose publisher or event date is on or before that day (${matched} of ${displayView.summary.category_count} categories still show links). System-time history of the composed graph is not retained in this iteration. Open “Why do we believe this?” on any connection for its source and warrant class.`
       : `As of ${asOf}, no linked record in this sample has a publisher or event date on or before that day. Public records appear here when joins carry a date on or before the chosen day.`)
     : (matched
-      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, statutory mandates, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
+      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories (contracts, meetings, rules, mandates expected vs observed, staffing exams). Open “Why do we believe this?” on any connection for its source and warrant class.`
       : "Public records for this agency appear here when contracts, meetings, rules, statutory mandates, or staffing exams join to its published identity.");
   const kicker = asOf
     ? `Agency constellation · as of ${asOf} (valid / publication)`
@@ -674,7 +809,8 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const sections = displayView.categories.map(categorySection).filter(Boolean).join("");
   // Provenance inspector uses the full claim set; as-of only filters listed members.
   const provenancePanel = renderEdgeProvenancePanel(view.claims || [], { activeClaimId });
-  const obligationsFollow = view.categories.find((category) => category.id === "obligations" && category.items?.length)?.follow_href || "";
+  const obligationsFollow = view.categories.find((category) => category.id === "obligations" && (category.items?.length || category.conformance))?.follow_href || "";
+  const mandatesHref = view.mandates_href || agencyMandatesConformancePath(view.canonical_id);
   const ledgerSummary = asOf ? buildLedgerSummary(view, displayView) : null;
   const materializationVintage = dayStamp(view.summary?.generated_at)
     || dayStamp(view.provenance?.intelligence_generated_at)
@@ -690,6 +826,9 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   const actions = renderNodeActions([
     { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
+    mandatesHref
+      ? { kind: "link", label: "Mandates expected vs observed", href: mandatesHref, className: "civic-object-action" }
+      : null,
     obligationsFollow
       ? { kind: "link", label: "Watch mandates and deadlines", href: obligationsFollow, className: "civic-object-action" }
       : null,
@@ -704,7 +843,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   // Plain-English provenance only — no pipeline method keys or match-basis codes.
   const provenance = renderNodeProvenance({
-    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, and auto-certified enacted-law statutory mandates. Contracts, meetings, and rules come from the entity-intelligence lookup; staffing exams from publisher certification records; statutory mandates from enacted-law extraction with source-law links. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only; it does not invent historical system-time snapshots.",
+    note: "CityScroll joins City Record agency identity, publisher civil-service certification edges, enacted-law mandates, and expected-vs-observed City Record matches. Contracts, meetings, and rules come from entity intelligence; staffing exams from publisher certification records; mandates from enacted-law extraction. Each listed connection opens a shareable provenance inspector. The as-of control filters on stored publisher or event dates only.",
     exportClass: "object_provenance",
     extraClass: "civic-object-section",
   });
@@ -716,10 +855,11 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${esc(title)}${asOf ? ` · as of ${esc(asOf)}` : ""} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, statutory mandates, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, mandates expected vs observed, and staffing exams — with inspectable connection provenance and as-of filtering.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
+  <style>${MANDATE_CONFORMANCE_STYLE}</style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -732,6 +872,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       <p class="node-lede">${esc(lead)}</p>
       <p class="node-pivot civic-object-pivot">
         <a data-subject-ref="${esc(view.subject_ref)}" href="${esc(view.scope_href)}">Open this agency in Contracts</a>
+        · <a href="${esc(mandatesHref)}">Mandates expected vs observed</a>
         · <a href="${esc(view.interactive_profile_href)}">Interactive profile</a>
         · <a href="#edge-provenance">Why do we believe these links?</a>
         · <a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>Demo as-of ${esc(DEMO_AS_OF_DAY)}</a>

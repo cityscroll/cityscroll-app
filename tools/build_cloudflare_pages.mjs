@@ -78,6 +78,7 @@ const optionalBuilds = [
   ["build_primary_documents.mjs", []],
   ["build_exam_documents.mjs", []],
   ["build_agency_documents.mjs", []],
+  ["build_process_conformance.mjs", []],
   ["build_agency_constellation_documents.mjs", []],
 ];
 for (const [tool, toolArgs] of optionalBuilds) {
