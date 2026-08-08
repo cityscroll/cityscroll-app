@@ -37,6 +37,8 @@ test("full preflight and CI use the route-aware server without touching existing
   const build = ci.indexOf("uses: ./.github/actions/build-site");
   const serve = ci.indexOf("tools/local_site_server.py --directory _site --port 8000");
   assert.ok(build >= 0 && build < serve, "CI must build the deploy artifact before serving it");
+  assert.match(ci, /tools\/local_site_server\.py --directory _site --port 8000 --ready-file/);
+  assert.match(ci, /curl --fail --silent --show-error \"\$local_base\"/);
   assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory _site/);
 });
 
