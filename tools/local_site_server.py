@@ -15,10 +15,12 @@ class QuietHandler(SimpleHTTPRequestHandler):
         return
 
     def _static_agency_constellation(self, route: str, query: str) -> bool:
-        """Serve committed agency constellation documents like production edge.
+        """Serve build-generated agency constellation documents like production edge.
 
-        Interactive SPA profiles stay available via ?tab= or when no static
-        constellation page exists for the id.
+        HTML lives under site/agencies/<id>/index.html after
+        `node tools/build_agency_constellation_documents.mjs` (gitignored;
+        production emits them at deploy). Interactive SPA profiles stay
+        available via ?tab= or when no static constellation page exists.
         """
         if not route.startswith("/agencies/"):
             return False

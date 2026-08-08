@@ -4,6 +4,12 @@
  *
  * Consumes last-known-good entity-intelligence and exam-certification
  * materializations (daily freshness contract). Does not invent joins.
+ *
+ * Policy: per-agency HTML under site/agencies/<id>/index.html is a
+ * build/deploy artifact (gitignored). Commit only the lookup JSON and the
+ * directory index (site/agencies/index.html via build_agency_documents.mjs).
+ * Cloudflare Pages runs this tool inside tools/build_cloudflare_pages.mjs
+ * so production still ships the pages without storing them in git.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
