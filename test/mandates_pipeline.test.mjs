@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -16,7 +17,7 @@ import {
 import { fetchEnactedLaws, fetchTextSource, lawTextFromMatter } from "../tools/law_mandates/fetch_enacted_laws.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { escapeHtml, sanitizeText } from "../tools/law_mandates/sanitize.mjs";
-import { computeDeadline } from "../tools/law_mandates/schema.mjs";
+import { computeDeadline, normalizeRecurrence } from "../tools/law_mandates/schema.mjs";
 import { runSmoke } from "../tools/law_mandates/smoke.mjs";
 import {
   fetchLegistarMatterAttachments,
@@ -24,6 +25,7 @@ import {
 } from "../worker/src/lib/legistar_client.mjs";
 
 const TOKEN = "test-token-placeholder";
+const LOOKUP_PATH = new URL("../site/data/agency_obligations_lookup.json", import.meta.url);
 
 function jsonResponse(value) {
   return new Response(JSON.stringify(value), { status: 200, headers: { "content-type": "application/json" } });
@@ -65,6 +67,38 @@ test("extraction creates deterministic ids and labels a bad quote as a candidate
   assert.equal(envelope.mandates[0].status, "verified");
   assert.equal(envelope.mandates[1].status, "candidate");
   assert.equal(envelope.mandates[1].quote_verified, false);
+});
+
+test("recurrence requires an explicit recurring signal beyond an effective-date offset", () => {
+  assert.equal(normalizeRecurrence("annual", {
+    deadlineText: "No later than 1 year after the effective date of the local law",
+    dutyText: "Submit a report.",
+    verbatimQuote: "No later than 1 year after the effective date of the local law",
+    quoteVerified: true,
+    deliverableType: "report",
+  }), "one-time");
+  assert.equal(normalizeRecurrence("one-time", {
+    deadlineText: "No later than 1 year after the effective date of the local law",
+    dutyText: "Submit a report.",
+    verbatimQuote: "No later than 1 year after the effective date of the local law, and annually thereafter",
+    quoteVerified: true,
+    deliverableType: "report",
+  }), "annual");
+  // Annual subject matter does not make a rulemaking duty recurring.
+  assert.equal(normalizeRecurrence("one-time", {
+    dutyText: "Establish by rule annual building emissions limits.",
+    verbatimQuote: "Establish annual building emissions limits.",
+    quoteVerified: true,
+    deliverableType: "rulemaking",
+  }), "one-time");
+});
+
+test("committed annual audit corrections retain recurring report mandates", () => {
+  const lookup = JSON.parse(readFileSync(LOOKUP_PATH, "utf8"));
+  const rows = Object.values(lookup.by_agency).flatMap((agency) => agency.obligations || []);
+  for (const id of ["76891-001", "56104-001", "53107-001", "71638-001", "72198-001"]) {
+    assert.equal(rows.find((row) => row.obligation_id === id)?.recurrence, "annual", id);
+  }
 });
 
 test("Legistar matter enumeration and attachment helpers preserve authenticated routes", async () => {

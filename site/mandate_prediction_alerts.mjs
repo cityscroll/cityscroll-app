@@ -115,6 +115,31 @@ export function normalizeRecurrence(raw) {
   return text.replace(/\s+/g, "_").slice(0, 40);
 }
 
+function rolledForwardContext(item) {
+  if (item?.deadline_source !== "rolled_forward") return null;
+  const cadence = normalizeRecurrence(item.recurrence);
+  if (cadence === "one-time" || cadence === "ongoing") return null;
+  const label = cadence.replace(/_/g, " ");
+  const context = [`${label}`, "next occurrence"];
+  if (cadence === "annual") {
+    const original = validDate(item.basis?.statute_deadline);
+    const expected = validDate(item.expected_deadline);
+    if (original && expected && original < expected) {
+      const years = [];
+      let occurrence = original;
+      for (let i = 0; i < 400 && occurrence < expected; i += 1) {
+        years.push(occurrence.slice(0, 4));
+        const next = addUtcYears(occurrence, 1);
+        if (!next || next <= occurrence) break;
+        occurrence = next;
+      }
+      if (years.length > 0 && years.length <= 3) context.push(`prior years: ${years.join(", ")}`);
+      else if (years.length > 3) context.push(`prior annual occurrences: ${years.length}`);
+    }
+  }
+  return context.join(" · ");
+}
+
 /**
  * Project the next expected deadline from a past or future statutory date + cadence.
  * Returns null when no standable date can be derived (one-time past, undated, unknown cadence).
@@ -583,9 +608,10 @@ export function renderMandatePredictionsSection(view) {
     ? `<ul class="node-record-list mandate-predictions-list" data-bridge-side="predicted-events">${
       view.predictions.map((item) => {
         const eventLabel = item.expected_event?.label || item.deliverable_type;
+        const recurrenceContext = rolledForwardContext(item);
         const windowLine = item.expected_deadline
           ? (Number.isFinite(item.days_to_deadline) && item.days_to_deadline >= 0
-            ? `expected by ${item.expected_deadline} · ${item.days_to_deadline} day${item.days_to_deadline === 1 ? "" : "s"}`
+            ? `${recurrenceContext ? `${recurrenceContext} · ` : ""}expected by ${item.expected_deadline} · ${item.days_to_deadline} day${item.days_to_deadline === 1 ? "" : "s"}`
             : `expected by ${item.expected_deadline}`)
           : (item.recurrence && item.recurrence !== "one-time"
             ? `${item.recurrence.replace(/_/g, " ")} cycle`
