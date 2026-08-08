@@ -1100,21 +1100,17 @@
       "id": "civic-time-ledger-as-of",
       "url": "agencies/parks-and-recreation/?as_of=2024-06-01",
       "feature": "civic-time-ledger",
-      "description": "Parks agency records filtered as-of 2024-06-01: valid/publication filter with system time labeled not retained.",
+      "description": "Parks agency records filtered as-of 2024-06-01: compact valid-time filter keeps only records dated on or before that day.",
       "expectations": {
         "pathname": "/agencies/parks-and-recreation/",
         "visible": [
           {
             "selector": "[data-civic-time-ledger='1']",
-            "text": "As-of view"
+            "text": "As of day"
           },
           {
-            "selector": "[data-civic-time-ledger='1']",
-            "text": "Valid time"
-          },
-          {
-            "selector": "[data-civic-time-ledger='1']",
-            "text": "System time"
+            "selector": "[data-ctl-comparison]",
+            "text": "dated records"
           },
           {
             "selector": "h1",

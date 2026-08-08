@@ -22,6 +22,8 @@ VIEWPORTS = ((390, 844), (1440, 900))
 PAGES = (
     ("parks-now", "/agencies/parks-and-recreation/"),
     ("parks-as-of-2024-06-01", "/agencies/parks-and-recreation/?as_of=2024-06-01"),
+    ("probation-now", "/agencies/probation/"),
+    ("probation-as-of-2024-06-01", "/agencies/probation/?as_of=2024-06-01"),
 )
 
 
@@ -63,12 +65,19 @@ def main() -> int:
                     dest = OUT / f"{name}-{width}.png"
                     page.screenshot(path=str(dest), full_page=True)
                     print("wrote", dest.relative_to(ROOT))
+                    # Compact ledger panel crop (when present) for height comparison.
+                    panel = page.query_selector("[data-civic-time-ledger='1']")
+                    if panel:
+                        crop = OUT / f"{name}-panel-{width}.png"
+                        panel.screenshot(path=str(crop))
+                        print("wrote", crop.relative_to(ROOT))
                     context.close()
             browser.close()
     finally:
         server.shutdown()
 
     print("demo:", "https://cityscroll.org/agencies/parks-and-recreation/?as_of=2024-06-01")
+    print("demo:", "https://cityscroll.org/agencies/probation/?as_of=2024-06-01")
     return 0
 
 

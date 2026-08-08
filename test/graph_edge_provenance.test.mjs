@@ -92,6 +92,8 @@ test("missing enrichment fields stay labeled, not invented", () => {
   assert.match(html, /Why do we believe this\?/);
   assert.doesNotMatch(html, /Confidence is not identity/i);
   assert.doesNotMatch(html, /entity_link:[a-z0-9-]+/i);
+  assert.doesNotMatch(html, /Source detail still to attach/);
+  assert.doesNotMatch(html, /Later iterations may attach/i);
 });
 
 test("deep-link grammar is shareable and parseable", () => {
@@ -178,19 +180,25 @@ test("inspector panel and why-control render warrant classes without fabricating
   });
 
   const why = renderWhyBelieveControl(exact);
-  assert.match(why, /Why do we believe this\?/);
+  assert.doesNotMatch(why, /Why do we believe this\? ·/);
+  assert.match(why, /edge-prov-token/);
+  assert.match(why, />exact</);
   assert.match(why, /data-warrant-class="exact"/);
+  assert.match(why, /aria-label="Connection evidence: Exact match"/);
   assert.match(why, /claim=contracts%3Anotice%3A20030224002/);
 
   const panel = renderEdgeProvenancePanel([exact, reviewed], {
     activeClaimId: exact.claim_id,
   });
   assert.match(panel, /Exact match/);
-  assert.match(panel, /Record-linkage match|Person-accepted/);
+  assert.match(panel, /Connection evidence/);
+  assert.doesNotMatch(panel, /How links are warranted/);
   assert.match(panel, /data-warrant-class="exact"/);
   assert.doesNotMatch(panel, /Confidence is not identity/i);
   assert.doesNotMatch(panel, /not counted as a verified/i);
   assert.match(panel, /data-edge-provenance-panel/);
   assert.equal(normalizePublicConfidence("publisher_record"), "strong");
   assert.equal(WARRANT_CLASSES.exact.id, "exact");
+  assert.equal(WARRANT_CLASSES.exact.token, "exact");
+  assert.equal(WARRANT_CLASSES.probabilistic.token, "probable");
 });
