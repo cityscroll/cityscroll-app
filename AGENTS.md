@@ -264,6 +264,17 @@ measurements side by side plus the live PASSPort-joined-cohort resolved-same
 rate. Verify: `node --test test/vendor_footprint.test.mjs
 worker/test/entity_intelligence.test.mjs`.
 
+**PASSPort → EI densify (money multi-kind):** entity-intelligence feeds from the
+population-backed census in `site/data/procurement_spine_sources.json`
+(`rows.passport_contracts`, capped at 500) plus OCP awards preferred by the
+existing PIN↔EPIN join — not from the 2-row
+`passport_contracts_materialization` Checkbook-crosswalk demo alone. Selection
+helpers: `selectPassportContractsForMaterialization` /
+`selectOcpAwardsForMaterialization` in `tools/lib/entity_intelligence_build.mjs`.
+Receipt: `docs/evidence/passport-ei-densify/comparison.json`. Rebuild:
+`node tools/build_entity_intelligence.mjs`. Verify:
+`node --test test/procurement_spine_ei_densify.test.mjs`.
+
 ## DuckDB + parquet warehouse (WH-01…WH-06)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped

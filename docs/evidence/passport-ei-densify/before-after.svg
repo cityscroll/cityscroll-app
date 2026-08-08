@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" viewBox="0 0 760 430">
+<rect width="100%" height="100%" fill="#0f1419"/>
+<text x="32" y="36" fill="#e7ecf3" font-family="ui-sans-serif,system-ui,sans-serif" font-size="18" font-weight="600">Money/vendor graph densify — before vs after</text>
+<text x="32" y="56" fill="#9aa7b8" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12">Entity-intelligence 200-root materialization · PASSPort census cap 500</text>
+<text x="32" y="90" fill="#e7ecf3" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13">Contract objects</text>
+<text x="32" y="108" fill="#7d8b9a" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">before 4</text>
+<rect x="280" y="80" width="4" height="12" fill="#5b6b7c" rx="2"/>
+<text x="32" y="126" fill="#9ad0b0" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">after 249</text>
+<rect x="280" y="108" width="130" height="12" fill="#3d9a6a" rx="2"/>
+<text x="32" y="160" fill="#e7ecf3" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13">references_contract edges</text>
+<text x="32" y="178" fill="#7d8b9a" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">before 6</text>
+<rect x="280" y="150" width="4" height="12" fill="#5b6b7c" rx="2"/>
+<text x="32" y="196" fill="#9ad0b0" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">after 804</text>
+<rect x="280" y="178" width="420" height="12" fill="#3d9a6a" rx="2"/>
+<text x="32" y="230" fill="#e7ecf3" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13">Multi-kind vendors in graph</text>
+<text x="32" y="248" fill="#7d8b9a" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">before 2</text>
+<rect x="280" y="220" width="4" height="12" fill="#5b6b7c" rx="2"/>
+<text x="32" y="266" fill="#9ad0b0" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">after 125</text>
+<rect x="280" y="248" width="65" height="12" fill="#3d9a6a" rx="2"/>
+<text x="32" y="300" fill="#e7ecf3" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13">Vendors with contract</text>
+<text x="32" y="318" fill="#7d8b9a" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">before 2</text>
+<rect x="280" y="290" width="4" height="12" fill="#5b6b7c" rx="2"/>
+<text x="32" y="336" fill="#9ad0b0" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">after 125</text>
+<rect x="280" y="318" width="65" height="12" fill="#3d9a6a" rx="2"/>
+<text x="32" y="370" fill="#e7ecf3" font-family="ui-sans-serif,system-ui,sans-serif" font-size="13">PASSPort rows in EI feed</text>
+<text x="32" y="388" fill="#7d8b9a" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">before 2</text>
+<rect x="280" y="360" width="4" height="12" fill="#5b6b7c" rx="2"/>
+<text x="32" y="406" fill="#9ad0b0" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11">after 500</text>
+<rect x="280" y="388" width="261" height="12" fill="#3d9a6a" rx="2"/>
+</svg>
