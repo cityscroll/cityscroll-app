@@ -792,5 +792,6 @@ export function propertyReaderActionStepsHTML(actions, helpers = {}) {
     }).join("");
     rendered.push(`<section class="property-action-history" data-action-history><h4>What already happened</h4><ul>${events}</ul></section>`);
   }
-  return rendered.length ? rendered : [t("next_action_unavailable_handoff")];
+  // No action steps → show nothing (do not narrate that a link is unpublished).
+  return rendered.length ? rendered : [];
 }

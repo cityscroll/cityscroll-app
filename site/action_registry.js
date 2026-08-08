@@ -1289,13 +1289,20 @@
   // Without rfp_id the handoff stays a public browse search recipe (EPIN/name guide). Agency
   // systems only win when the notice names them. When no portal is named, surface the notice's
   // own package URL / contact / submission fields — never "read the official notice."
+  //
+  // PASSPort modes (lifecycle-aware):
+  //   pending     — lifecycle not loaded yet; constructive search, never "could not match"
+  //   matched     — unique EPIN hit; deep-link when rfp_id present
+  //   ambiguous   — EPIN joined but multi-row; search-with-this-EPIN recipe (not a miss)
+  //   search_only — confirmed miss / unavailable after lookup; constructive EPIN search only
   function solicitationHandoff(matter) {
     const body = String(matter.notice_text || "");
     const agency = String(matter.agency_name || "");
     const pin = String(matter.pin || "").trim() || null;
     const title = String(matter.title || "").trim() || null;
-    const rfx = matter.rfx_detail || null;
-    const detail = rfx && rfx.status === "matched" ? (rfx.detail || {}) : null;
+    const rfx = matter.rfx_detail && typeof matter.rfx_detail === "object" ? matter.rfx_detail : null;
+    const rfxStatus = rfx ? String(rfx.status || "").toLowerCase() : "";
+    const detail = rfxStatus === "matched" ? (rfx.detail || {}) : null;
     const explicitUrl = httpsUrl(matter.official_application_url);
     let fields = noticeFieldGuidance(matter);
     const unavailableNotice = cityRecordNoticeUnavailable(matter, matter.official_notice_url)
@@ -1360,14 +1367,35 @@
         system: "passport",
         mode: "matched",
         destination,
-        label_key: "search_passport_rfx",
-        label: "Find this RFx in PASSPort",
+        label_key: deep ? "search_passport_rfx" : "search_passport_rfx",
+        label: deep ? "Open this RFx in PASSPort" : "Find this RFx in PASSPort",
         identifier: String(detail.epin || pin || "").trim() || null,
         // EPIN still useful on the public browse when deep link is auth-gated.
         identifier_url: deep ? PASSPORT_RFX_URL : null,
         procurement_name: String(detail.procurement_name || title || "").trim() || null,
         status: String(detail.rfx_status || "").trim() || null,
         rfp_id: cleanPassportRfpId(rfpId),
+        deep_link: deep,
+        ...fields,
+        ...availability,
+      };
+    }
+
+    // Ambiguous multi-row EPIN: we joined the EPIN; do not narrate "could not match".
+    if (rfxStatus === "ambiguous") {
+      const candidateEpin = Array.isArray(rfx.candidates) && rfx.candidates[0]
+        ? String(rfx.candidates[0].epin || "").trim() || null
+        : null;
+      return {
+        system: "passport",
+        mode: "ambiguous",
+        destination: httpsUrl(rfx.portal) || PASSPORT_RFX_URL,
+        label_key: "search_passport_rfx",
+        label: "Search this EPIN in PASSPort",
+        identifier: candidateEpin || pin,
+        procurement_name: title,
+        status: null,
+        candidate_count: Array.isArray(rfx.candidates) ? rfx.candidates.length : null,
         ...fields,
         ...availability,
       };
@@ -1377,15 +1405,21 @@
       || /\bpassport\b/i.test(body)
       || (explicitUrl && /(^|\.)passport\./i.test(new URL(explicitUrl).hostname));
     if (passportEvidence) {
+      // Explicit lifecycle_loaded:false = first paint before /contract-lifecycle.
+      // Absent flag keeps legacy callers on constructive search_only (no failure copy).
+      const pending = matter.lifecycle_loaded === false
+        && rfxStatus !== "unmatched"
+        && rfxStatus !== "unavailable";
       return {
         system: "passport",
-        mode: "search_only",
+        mode: pending ? "pending" : "search_only",
         destination: PASSPORT_RFX_URL,
         label_key: "search_passport_rfx",
         label: "Search PASSPort RFx",
         identifier: pin,
         procurement_name: title,
         status: null,
+        rfx_status: rfxStatus || null,
         ...fields,
         ...availability,
       };

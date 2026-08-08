@@ -52,19 +52,15 @@ function priorCycleHTML(matches){
       ${c.vendor_name ? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>` : ""}
       <a class="view" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
     </div></div>`).join("");
-  return `<div class="chain-h">${t("prior_cycle_heading")}</div><div class="chain">${rows}</div>
-    <div class="note">${t("prior_cycle_heuristic_note")}</div>`;
+  // Matches only — no methodology note about how they were linked.
+  return `<div class="chain-h">${t("prior_cycle_heading")}</div><div class="chain">${rows}</div>`;
 }
 
+// When there is no confident prior cycle, show nothing — no absence narrative or
+// match-method speculation. Optional near matches remain behind an explicit reveal.
 function priorCycleNoneHTML(r, eligibleCount, near){
-  let key;
-  if(priorCycleTitleWords(r.short_title).length < 2) key = "prior_cycle_none_generic";
-  else if((eligibleCount || 0) === 0) key = "prior_cycle_none_no_candidates_html";
-  else key = "prior_cycle_none_low_confidence_html";
-  const agency = `<span lang="en" dir="ltr">${cleanText(r.agency_name)}</span>`;
-  const note = `<div class="note">${t(key, {agency})}</div>`;
-  if(!near || !near.length) return note;
-  return note + nearMatchRevealHTML();
+  if(near && near.length) return nearMatchRevealHTML();
+  return "";
 }
 
 async function priorCycleAwards(r, el){
@@ -144,8 +140,8 @@ function nearMatchReasonHTML(reason){
   return t("near_match_reason_amount_html", {a: money(reason.a), b: money(reason.b)});
 }
 
-// Visually tiered from the confident chain's own boxes (.box.maybe, styled in <style> above) and
-// carries a plain-language caveat -- never mistaken for a confirmed paper-trail stage.
+// Visually tiered from the confident chain's own boxes (.box.maybe). "Maybe" marks
+// uncertainty; do not narrate internal match reasons or absence methodology.
 function nearMatchHTML(items){
   const rows = items.map(x => `<div class="stage"><div class="box maybe">
       <div class="stage-name">${t("near_match_tag")}</div>
@@ -153,11 +149,9 @@ function nearMatchHTML(items){
       <div class="bt">${escUiHtml(cleanText(x.c.short_title))}</div>
       ${money(x.c.contract_amount) ? `<div class="amt">${money(x.c.contract_amount)}</div>` : ""}
       ${x.c.vendor_name ? `<div class="vend">→ ${pivotA(vendorHref(x.c.vendor_name), cleanText(x.c.vendor_name))}</div>` : ""}
-      <div class="why">${t("near_match_why_lbl")} ${x.reasons.map(nearMatchReasonHTML).join(" · ")}</div>
       <a class="view" href="${REQ_URL(x.c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
     </div></div>`).join("");
-  return `<div class="chain-h">${t("near_match_heading")}</div><div class="chain">${rows}</div>
-    <div class="note warn">${t("near_match_caveat_note")}</div>`;
+  return `<div class="chain-h">${t("near_match_heading")}</div><div class="chain">${rows}</div>`;
 }
 
 function nearMatchRevealHTML(){
