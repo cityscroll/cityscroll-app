@@ -1,4 +1,5 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
+import { constellationLink } from "../affordance_grammar.mjs";
 
 /* ===================== ENTITY PAGES (vendor / agency) =====================
    The pivot layer: every agency or vendor mention links here, and each page is a hub of
@@ -271,13 +272,15 @@ const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => (
 // pivot label would re-open injection for any notice field carrying &lt;…&gt;.
 function typedPivotHTML(href, text){
   const typed = globalThis.CrolEntityPivots?.entityFromHref(href, cleanText(text));
-  return globalThis.CrolEntityPivots.entityChipHTML({
-    ref: typed.ref,
+  return constellationLink({
+    href,
     label: typed.label,
-    link_confidence: "strong",
-  }, typed.options);
+    className: "entity-constellation-link",
+    attributes: { "data-subject-ref": typed.ref },
+    escape: escUiHtml,
+  });
 }
-const pivotA = (href, text) => !href ? escUiHtml(text) : globalThis.CrolEntityPivots?.entityFromHref(href,cleanText(text)) ? typedPivotHTML(href,text) : `<a class="pivot" href="${href}">${escUiHtml(text)}</a>`;
+const pivotA = (href, text) => !href ? escUiHtml(text) : globalThis.CrolEntityPivots?.entityFromHref(href,cleanText(text)) ? typedPivotHTML(href,text) : constellationLink({ href, label: text, className: "entity-constellation-link", escape: escUiHtml });
 
 const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
 function vendorStem(name){

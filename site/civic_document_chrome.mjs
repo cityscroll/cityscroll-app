@@ -27,6 +27,8 @@ function classNames(...parts) {
   return parts.flatMap((part) => String(part || "").split(/\s+/)).filter(Boolean).join(" ");
 }
 
+import { officialSourceLink } from "./affordance_grammar.mjs";
+
 export function renderCivicDocumentAssets(assetPrefix = "/") {
   const prefix = prefixFor(assetPrefix);
   return `<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,6 +80,9 @@ export function renderNodeActions(items = [], { ariaLabel = "Document actions", 
       .join("");
     if (item.kind === "link") {
       return `<a class="${esc(classes)}" href="${esc(item.href || "#")}"${item.external ? ' target="_blank" rel="noopener noreferrer"' : ""}${attrPairs}>${esc(item.label)}</a>`;
+    }
+    if (item.kind === "source") {
+      return officialSourceLink({ href: item.href || "#", label: item.label, className: classes, attributes: item.attrs || {}, escape: esc });
     }
     return `<button class="${esc(classes)}" type="button"${attrPairs}>${esc(item.label)}</button>`;
   }).join("");
@@ -141,7 +146,7 @@ export function renderNodeProvenance({
       // `html` is trusted pre-escaped markup from the caller (e.g. an <a>).
       if (item.html) return `<li>${item.html}</li>`;
       if (item.href) {
-        return `<li><a href="${esc(item.href)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a></li>`;
+        return `<li>${officialSourceLink({ href: item.href, label, className: "node-source-link", escape: esc })}</li>`;
       }
       return `<li>${esc(label)}</li>`;
     })

@@ -5,6 +5,7 @@ import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -259,7 +260,7 @@ function scopeHtml(view) {
 
 function previewItem(item) {
   const mapped = migrateLegacyUrl(item.url || "/browse/");
-  return `<li data-preview-id="${esc(item.id)}"><a href="${esc(mapped.target)}">${esc(item.title || "Untitled record")}</a>${item.summary ? `<p>${esc(item.summary)}</p>` : ""}</li>`;
+  return `<li data-preview-id="${esc(item.id)}">${constellationLink({ href: mapped.target, label: item.title || "Untitled record", className: "following-record-link", escape: esc })}${item.summary ? `<p>${esc(item.summary)}</p>` : ""}</li>`;
 }
 
 function previewHtml(view) {
@@ -297,7 +298,7 @@ function subscribeHtml(view) {
 function templateHtml(template) {
   const watches = template.watches.map((watch) => `<li>${esc(watch.label)}.</li>`).join("");
   const href = `/following/packs/${encodeURIComponent(template.id)}/`;
-  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This pack has ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">Open this pack</a></article>`;
+  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This pack has ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details>${constellationLink({ href, label: "Open this pack", className: "following-pack-link", escape: esc })}</article>`;
 }
 
 function controlsHtml(view) {

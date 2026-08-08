@@ -1,4 +1,6 @@
 import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 
@@ -118,27 +120,34 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
   const title = row?.short_title || `City Record notice ${id}`;
   const agency = row?.agency_name || "Agency not listed";
   const source = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+  const sourceLink = officialSourceLink({ href: source, label: "View City Record", className: "act primary" });
   if (!row) {
     return `<div class="panel route-item" tabindex="-1" data-edge-rendered="notice-unavailable">
       <p class="ftype">City Record notice</p><h2 class="rolename">Notice ${esc(id)}</h2>
       <p>The public record could not be loaded at this moment. The official source remains available.</p>
-      <div class="actions"><a class="act" href="/browse/">Back to Browse</a><a class="act primary" href="${esc(source)}" target="_blank" rel="noopener noreferrer">View City Record</a></div>
+      <div class="actions"><a class="act" href="/browse/">Back to Browse</a>${sourceLink}</div>
     </div>`;
   }
+  const identity = resolveAgencyIdentity(agency);
+  const agencyLink = constellationLink({
+    href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
+    label: agency,
+    className: "notice-agency-link",
+  });
   const facts = [
-    ["Agency", agency], ["Published", row.start_date], ["Event", row.event_date],
+    ["Published", row.start_date], ["Event", row.event_date],
     ["Responses due", row.due_date], ["PIN", row.pin], ["Category", row.category_description],
     ["Selection method", row.selection_method_description], ["Address", row.street_address_1],
   ].filter(([, value]) => value);
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
     <article class="panel route-item" tabindex="-1">
-      <p class="ftype">${esc(row.type_of_notice_description || "City Record notice")}${row.section_name ? ` · ${esc(row.section_name)}` : ""} · ${esc(agency)}</p>
+      <p class="ftype">${esc(row.type_of_notice_description || "City Record notice")}${row.section_name ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
-      <dl class="glance">${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
-      <div class="actions"><a class="act primary" href="${esc(source)}" target="_blank" rel="noopener noreferrer">View City Record</a></div>
+      <div class="actions">${sourceLink}</div>
     </article>
   </div>`;
 }

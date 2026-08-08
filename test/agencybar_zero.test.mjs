@@ -12,6 +12,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { constellationLink } from "../site/affordance_grammar.mjs";
 
 const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "i18n.js"), "utf8");
@@ -40,7 +41,7 @@ const fmtNumber = new Function("window", i18nSrc + "\nreturn window.fmtNumber;")
 const { awardCoverage, awardSourceFor } = await import("../site/external_awards.js");
 
 const env = new Function(
-  "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor", "EXT_ATTRS", "extSR",
+  "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor", "EXT_ATTRS", "extSR", "constellationLink",
   extractFn("money") +
   extractFn("cleanText") +
   extractConst("agencyHref") +
@@ -57,7 +58,7 @@ const env = new Function(
   extractFn("agencyProfileBar") +
   "return { hasAgencyAwards, agencyAwardsNote, noticeAgencyBar, agencyProfileBar };"
 )(t, fmtNumber, windowStub, awardCoverage, awardSourceFor,
-  'target="_blank" rel="noopener noreferrer"', () => '<span class="sr-only"> (opens in new tab)</span>');
+  'target="_blank" rel="noopener noreferrer"', () => '<span class="sr-only"> (opens in new tab)</span>', constellationLink);
 
 test("hasAgencyAwards: SODA's string \"0\" is not truthy for award count", () => {
   assert.equal(env.hasAgencyAwards({ n: "0", total: null }), false);

@@ -17,6 +17,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { constellationLink } from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -43,7 +44,7 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 const { pastWinnersHTML, chainHTML } = new Function(
-  "t", "tn", "window",
+  "t", "tn", "window", "constellationLink",
   extractFn("cleanText") + extractFn("money") + extractFn("fdate") +
   extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +
   extractConst("escUiHtml") + extractConst("pivotA") + extractConst("vendorHref") +
@@ -60,7 +61,7 @@ const { pastWinnersHTML, chainHTML } = new Function(
   extractFn("chainHTMLFlat") +
   extractFn("chainHTML") +
   "return { pastWinnersHTML, chainHTML };"
-)(t, tn, windowStub);
+)(t, tn, windowStub, constellationLink);
 
 // Real 3-cycle chain, NYC DOE PIN base 04021B0003005 ("Assessments for Special Education
 // Services") — same vendor across all three rounds (a name-variant LLC/PLLC suffix change in

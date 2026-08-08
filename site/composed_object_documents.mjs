@@ -12,6 +12,7 @@ import {
   renderNodeFooter,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 import { buildObservedParcelBiography, parcelBiographyHref, parcelRef } from "./parcel_scope.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
 
@@ -151,7 +152,7 @@ function subjectLink(ref, hrefOverride = null) {
     : match?.[1] === "notice"
     ? `City Record notice ${match[2]}`
     : value;
-  return href ? `<a data-subject-ref="${esc(ref)}" href="${esc(href)}">${esc(label)}</a>` : esc(label);
+  return href ? constellationLink({ href, label, className: "composed-object-link", attributes: { "data-subject-ref": ref }, escape: esc }) : esc(label);
 }
 
 function parcelRecordItem(item) {
@@ -179,7 +180,7 @@ function parcelMembersMarkup(view) {
 }
 
 function packMembersMarkup(view) {
-  const items = view.watches.map((watch) => `<li class="node-record"><a href="${esc(followingUrlFromWatch(watch, { frequency: "weekly" }))}">${esc(watch.label)}</a>${watch.subject_refs.length ? `<ul class="node-record-list">${watch.subject_refs.map(subjectLink).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("");
+  const items = view.watches.map((watch) => `<li class="node-record">${constellationLink({ href: followingUrlFromWatch(watch, { frequency: "weekly" }), label: watch.label, className: "composed-object-link", escape: esc })}${watch.subject_refs.length ? `<ul class="node-record-list">${watch.subject_refs.map(subjectLink).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("");
   return `<section class="node-section node-card civic-object-section" data-export-class="object_members"><h2>Watches in this pack</h2><ul class="node-record-list">${items}</ul></section>`;
 }
 
@@ -211,8 +212,8 @@ export function renderComposedObjectDocument(view, options = {}) {
   const pivot = isPack
     ? ""
     : isParcel
-      ? `<p class="node-pivot civic-object-pivot"><a data-subject-ref="${esc(view.parcel_ref)}" href="${esc(parcelBiographyHref(view.bbl))}">Open this parcel in Property</a></p>`
-      : `<p class="node-pivot civic-object-pivot"><a data-subject-ref="district:council-${esc(view.council_district)}" href="${esc(view.pivot_href)}">Explore Council District ${esc(view.council_district)} on Near you</a></p>`;
+      ? `<p class="node-pivot civic-object-pivot">${constellationLink({ href: parcelBiographyHref(view.bbl), label: "Open this parcel in Property", className: "composed-object-link", attributes: { "data-subject-ref": view.parcel_ref }, escape: esc })}</p>`
+      : `<p class="node-pivot civic-object-pivot">${constellationLink({ href: view.pivot_href, label: `Explore Council District ${view.council_district} on Near you`, className: "composed-object-link", attributes: { "data-subject-ref": `district:council-${view.council_district}` }, escape: esc })}</p>`;
   const lede = isPack
     ? (view.serves || view.description)
     : isParcel

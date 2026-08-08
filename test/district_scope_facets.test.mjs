@@ -115,7 +115,7 @@ test("map pivot hrefs use the shared Near-you district scope", () => {
   assert.equal(districtMapPivotHref({ kind: "council_district", id: "99" }), null);
 });
 
-test("facet rail HTML emits hypertext scope links, not page-local predicates", () => {
+test("facet rail HTML emits shared filter controls with shareable destinations", () => {
   const html = districtFacetRailHTML({
     kind: "community_district",
     options: [{ id: "M01", count: 2, label: "M01" }, { id: "K02", count: 1, label: "K02" }],
@@ -124,6 +124,10 @@ test("facet rail HTML emits hypertext scope links, not page-local predicates", (
     anyLabel: "Any district",
     mapPivotLabel: "Map",
   });
+  assert.match(html, /class="ui-filter-chip district-facet-chip"/);
+  assert.match(html, /aria-pressed="true"/);
+  assert.match(html, /data-filter-href=/);
+  assert.match(html, /class="ui-constellation-link district-map-pivot"/);
   assert.match(html, /aria-pressed="true"[^>]*>M01/);
   assert.match(html, /href="#money\?basis=contract_action_address&amp;actionBasis=submission_address&amp;boro=Manhattan&amp;cd=K02"/);
   assert.match(html, /data-district-map-pivot="community_district:M01"/);
