@@ -178,7 +178,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   }
 });
 
-test("Browse landing counts are labeled with current source dates", () => {
+test("Browse landing counts are labeled with source dates without coverage caveats", () => {
   const landing = buildBrowseLanding({
     contracts: { open_as_of: "2026-08-03", notices: Array.from({ length: 3 }, (_, i) => ({ request_id: String(i) })) },
     staffing: { generated_at: "2026-08-02T12:00:00Z", notices: Array.from({ length: 4 }, (_, i) => ({ request_id: String(i) })) },
@@ -191,9 +191,8 @@ test("Browse landing counts are labeled with current source dates", () => {
   assert.equal(landing.cards[0].count, 3);
   assert.equal(landing.cards[1].secondaryCount, 228);
   const html = renderBrowseLanding(landing);
-  assert.match(html, /Current public records/);
-  assert.match(html, /Counts describe the records shown here, not each source’s full historical history\./);
   assert.match(html, /Updated 2026-08-03/);
+  assert.doesNotMatch(html, /Counts describe|full historical history|bounded|joined by parcel/i);
 });
 
 test("public identity copy describes a linked multi-source record", () => {
@@ -210,7 +209,7 @@ test("public identity copy describes a linked multi-source record", () => {
   assert.match(about, /NYC’s public record, linked/);
 });
 
-test("Browse edge filtering is bounded, semantic, and discloses live-only controls", () => {
+test("Browse edge filtering is semantic and uses a copy-free live-filter loading state", () => {
   const payload = {
     open_as_of: "2026-08-05",
     notices: [
@@ -223,7 +222,8 @@ test("Browse edge filtering is bounded, semantic, and discloses live-only contro
   assert.deepEqual(view.liveOnlyFilters, ["mode"]);
   const html = renderBrowseView(view);
   assert.match(html, /href="\/notices\/1"/);
-  assert.match(html, /need the live Browse controls: mode/);
+  assert.match(html, /class="note warn browse-filter-disclosure"[^>]+role="status"/);
+  assert.doesNotMatch(html, /need the live Browse controls|bounded default|until the page is enhanced/i);
   assert.doesNotMatch(html, /Bronx tree care/);
 });
 

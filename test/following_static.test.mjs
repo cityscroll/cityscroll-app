@@ -53,6 +53,7 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.doesNotMatch(html, /Email and privacy|Confirm first|double opt-in/i);
   assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org\/following/);
   assert.doesNotMatch(visible, /\b(?:facet|scope)\b|without JavaScript|server-rendered|static-first/i);
+  assert.doesNotMatch(visible, /sources and limits|materialization|bounded default|not yet shown|not available/i);
   assert.match(html, /type="module" src="\/app\/following\.mjs"/);
   assert.match(html, /rel="stylesheet" href="\/brand\.css"/);
   assert.match(html, /rel="stylesheet" href="\/civic-documents\.css"/);

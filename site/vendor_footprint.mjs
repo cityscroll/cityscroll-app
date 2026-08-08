@@ -160,13 +160,11 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
     const mentions = group.mention_count;
     let identitySummary = "";
     if (!confirmed && mentions) {
-      identitySummary = `${mentions.toLocaleString("en-US")} record${mentions === 1 ? "" : "s"} mention this name — identity not yet confirmed`;
+      identitySummary = `${mentions.toLocaleString("en-US")} record${mentions === 1 ? "" : "s"} mention this name`;
     } else if (confirmed && mentions > confirmed) {
       identitySummary = `${confirmed.toLocaleString("en-US")} link${confirmed === 1 ? "" : "s"} we’ve confirmed · ${mentions.toLocaleString("en-US")} records mention this name`;
     } else if (confirmed) {
       identitySummary = `${confirmed.toLocaleString("en-US")} link${confirmed === 1 ? "" : "s"} we’ve confirmed`;
-    } else {
-      identitySummary = "No records mentioning this name are in this summary yet.";
     }
     const objects = group.objects.slice(0, 4);
     const body = objects.length
@@ -182,10 +180,10 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
       ${viewAll}
     </section>`;
   }).join("");
+  if (!sections) return "";
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
     <div class="ei-domains">${sections}</div>
-    <p class="aidprov ei-method">This summary groups the public records connected with this name.</p>
   </div>`;
 }
