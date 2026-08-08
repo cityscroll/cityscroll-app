@@ -44,6 +44,26 @@ test("feedItems: ZAP rows → ZAP project links", () => {
   assert.match(items[0].summary, /Brooklyn/);
 });
 
+test("feedItems: obligation/mandate rows → agency constellation links", () => {
+  const items = feedItems("obligation", [{
+    alert_id: "obligation:x-001:2026-09-01",
+    obligation_id: "x-001",
+    agency_id: "parks-and-recreation",
+    agency_name: "Parks and Recreation",
+    duty_text: "Publish an annual report.",
+    deliverable_type: "report",
+    deadline_date: "2026-09-01",
+    recurrence: "annual",
+    citation: "§1",
+  }]);
+  assert.equal(items.length, 1);
+  assert.equal(items[0].id, "obligation:x-001:2026-09-01");
+  assert.match(items[0].url, /\/agencies\/parks-and-recreation\//);
+  assert.match(items[0].title, /annual report/);
+  assert.match(items[0].summary, /statutory deadline 2026-09-01/i);
+  assert.doesNotMatch(items[0].summary, /non-compliance|violat/i);
+});
+
 test("feedItems: identifier fallbacks replace placeholder titles", () => {
   assert.equal(feedItems("rezone", [{ project_id: "P1985Q9999" }])[0].title, "Project P1985Q9999");
   assert.equal(feedItems("rules", [{ request_id: "20260805001", short_title: "(untitled)" }])[0].title, "Notice 20260805001");

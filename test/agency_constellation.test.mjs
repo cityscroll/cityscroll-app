@@ -129,6 +129,8 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /data-agency-constellation-category="obligations"/);
   assert.match(html, /data-agency-constellation-category="staffing"/);
   assert.match(html, /Watch this agency across City Record/);
+  assert.match(html, /Watch mandates and deadlines/);
+  assert.match(html, /Statutory mandates/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
   assert.match(html, /entity-intelligence lookup/);
   assert.deepEqual(detectNodePageCruft(html), []);
