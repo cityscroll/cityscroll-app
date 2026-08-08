@@ -460,9 +460,18 @@ async function showAgency(name, initialTab){
       <div class="lname">${pivotA(vendorHref(v.vendor_name), cleanText(v.vendor_name))}</div>
       <div class="lbar"><span style="width:${Math.round((+v.t/maxT)*100)}%"></span></div>
       <div class="lval">${money(v.t)||"—"}</div></div>`).join("");
+  const SECTION_BROWSE = {money:"contracts",people:"staffing",land:"zoning",property:"property",rules:"rules",meetings:"meetings"};
+  const agencyRef = identity.canonical_id ? `agency:id:${identity.canonical_id}` : "";
   const secChips = sections.map(c=>{
     const lens = SECTION_LENS[c.section_name];
+    const browse = SECTION_BROWSE[lens];
     const label = `${tSection(c.section_name)}<span class="ct">${fmtNumber(+c.n)}</span>`;
+    // Document Browse + typed agency facet — same contract as contracts/meetings.
+    // Legacy #people?agency= silently dropped the facet on Staffing hydrate.
+    if(browse && agencyRef){
+      const facet = encodeURIComponent(JSON.stringify({ entity_refs_all: [agencyRef] }));
+      return `<a class="chip" style="text-decoration:none" href="/browse/${browse}/?facet=${facet}" data-agency-section-scope="${escUiHtml(browse)}">${label}</a>`;
+    }
     return lens ? `<a class="chip" style="text-decoration:none" href="#${lens}?agency=${encodeURIComponent(nm)}">${label}</a>` : `<span class="chip" style="cursor:default">${label}</span>`;
   }).join("");
   const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">${isRollingDeadline(r.due_date)?"":"due "+fdate(r.due_date)}</span>
