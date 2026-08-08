@@ -156,7 +156,8 @@ with sync_playwright() as pw:
             body=json.dumps(HPD_CONNECTIONS),
         ),
     )
-    p5.goto(BASE + "#agency/Housing%20Preservation%20and%20Development", timeout=30000)
+    # Interactive SPA profile (constellation document is the default /agencies/<id>/ hit).
+    p5.goto(BASE + "agencies/housing-preservation-and-development/?tab=forecast", timeout=30000)
     p5.wait_for_selector("#entity-intelligence .ei-heading-row", timeout=45000)
     matched_domains = p5.locator('#entity-intelligence .ei-domain[data-status="matched"]').count()
     summary = p5.locator("#entity-intelligence").inner_text()

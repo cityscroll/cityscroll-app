@@ -83,8 +83,9 @@ def main():
                 ("#notice/20260701099", "#noticeview .route-item"),
                 ("#land/P2026K0001", "#land-item-card"),
                 (
+                    # Default agency document is the static constellation surface.
                     "#agency/Housing%20Preservation%20and%20Development",
-                    "#entityview .route-item",
+                    "[data-civic-object-kind='agency-constellation']",
                 ),
                 ("#matter/8502026HP0001", "#entityview .route-item"),
             )
@@ -100,7 +101,7 @@ def main():
             page.wait_for_url(
                 "**/agencies/housing-preservation-and-development/"
             )
-            assert_item_landing(page, "#entityview .route-item")
+            assert_item_landing(page, "[data-civic-object-kind='agency-constellation']")
             page.go_forward()
             page.wait_for_function(
                 "() => location.hash === '#matter/8502026HP0001'"
