@@ -26,6 +26,7 @@ import { compileSub } from "../worker/src/lib/compile.mjs";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
 const NYPD = "police-department";
+const DHMH = "health-and-mental-hygiene";
 const LOOKUP_PATH = join(ROOT, "site/data/agency_obligations_lookup.json");
 const TODAY = "2026-08-08";
 
@@ -85,6 +86,39 @@ test("buildMandatePrediction names expected event and window without compliance"
   assert.equal(pred.compliance_verdict, null);
   assert.equal(pred.basis.method, MANDATE_PREDICTION_METHOD);
   assert.doesNotMatch(JSON.stringify(pred), /non-compliance|violat|missed filing|may not/i);
+});
+
+test("rolled-forward annual predictions name the next occurrence and prior years", () => {
+  assert.ok(obligations, "agency_obligations_lookup.json required");
+  const view = buildAgencyMandatePredictionsView(DHMH, {
+    obligationsLookup: obligations,
+    todayISO: TODAY,
+    includeCadenceOnly: true,
+  });
+  const drowning = view.predictions.find((item) => item.mandate_id === "71638-001");
+  assert.ok(drowning, "DHMH drowning report prediction is present");
+  assert.equal(drowning.expected_deadline, "2026-11-18");
+  assert.equal(drowning.deadline_source, "rolled_forward");
+  assert.equal(drowning.recurrence, "annual");
+
+  const html = renderMandatePredictionsSection(view);
+  assert.match(html, /annual · next occurrence · prior years: 2024, 2025/);
+  assert.match(html, /expected by 2026-11-18/);
+
+  const oneTime = renderMandatePredictionsSection({
+    status: "matched",
+    predictions: [{
+      mandate_id: "one-time-1",
+      duty_text: "Submit a one-time report.",
+      deliverable_type: "report",
+      expected_event: { label: "Report", kind: "report_or_study" },
+      expected_deadline: "2029-01-01",
+      days_to_deadline: 100,
+      recurrence: "one-time",
+      deadline_source: "as_stated",
+    }],
+  });
+  assert.doesNotMatch(oneTime, /next occurrence|prior years|annual/);
 });
 
 test("program deliverables are not predicted in v1", () => {
