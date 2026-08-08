@@ -486,8 +486,15 @@ with sync_playwright() as pw:
     strip = page.evaluate("!!document.getElementById('homeCta')")
     step("OK" if strip else "FAIL", "regression: today strip", "")
     page.goto(BASE + "browse/staffing/", timeout=30000)
-    page.wait_for_selector("#career-area-watches .career-area-watch", timeout=15000)
-    step("OK" if page.locator("#career-area-watches .career-area-watch").count()>=7 else "FAIL", "regression: staffing interest areas", "")
+    page.wait_for_selector("#career-interest-facets [data-career-facet]", timeout=15000)
+    interest_chips = page.locator("#career-interest-facets [data-career-facet]")
+    page.locator('[data-career-facet="people:interest:public-safety"]').click()
+    page.wait_for_selector('[data-interest-context="public-safety"] [data-follow-exam-area]', timeout=15000)
+    step(
+        "OK" if interest_chips.count() >= 7 and page.locator(".career-area-watch").count() == 0 else "FAIL",
+        "regression: staffing interest filter owns subscribe context",
+        "",
+    )
 
     step("OK" if not errors else "FAIL", "zero page errors", "; ".join(errors[:5]))
     browser.close()
