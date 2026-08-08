@@ -4,6 +4,7 @@ import { meetingsSection } from "./agency_constellation_sections/meetings.mjs";
 import { mandatePredictionsSection } from "./agency_constellation_sections/mandate_predictions.mjs";
 import { mandateReportsSection } from "./agency_constellation_sections/mandate_reports.mjs";
 import { mandateRulesSection } from "./agency_constellation_sections/mandate_rules.mjs";
+import { mandateMeetingsSection } from "./agency_constellation_sections/mandate_meetings.mjs";
 import { processConformanceSection } from "./agency_constellation_sections/process_conformance.mjs";
 import { provenanceSection } from "./agency_constellation_sections/provenance.mjs";
 import { rulesSection } from "./agency_constellation_sections/rules.mjs";
@@ -14,6 +15,7 @@ const registeredSections = [
   mandatePredictionsSection,
   mandateReportsSection,
   mandateRulesSection,
+  mandateMeetingsSection,
   contractsSection,
   meetingsSection,
   rulesSection,
