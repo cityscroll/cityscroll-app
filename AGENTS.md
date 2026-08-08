@@ -2335,9 +2335,9 @@ both the live and restored databases.
 
 - User-facing term is **mandates**; storage lens remains `obligations` (upstream
   source vocabulary). Pure model: `site/agency_obligations.mjs`. Shape:
-  **agency → duty → deadline → recurrence**. Deadlines are statutory timed
-  events — **never** compliance verdicts. Observation status stays
-  `not_adjudicated`.
+  **agency → duty → deadline → recurrence**. Product copy states those facts
+  plainly; machine fields (`observation.status`, quote-verify certification)
+  stay off the public surface.
 - Certification: **auto-certified** via mechanical quote verification
   (`auto_certified_quote_verify_v1`); quote-miss rows remain `auto_candidate`.
 - Materialize from independent backfill `tools/law_mandates/output/our.json`

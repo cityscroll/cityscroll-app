@@ -1,14 +1,15 @@
 /**
- * Agency statutory obligations (first iteration).
+ * Agency statutory mandates (first iteration).
  *
  * Materializes enacted-law duties as an agency-scoped read model:
- * agency → duty → deadline → recurrence. Deadlines are timed events, not
- * compliance verdicts. Certification is automatic (quote-verify + schema);
- * there is no public human-review gate.
+ * agency → duty → deadline → recurrence. Certification is automatic
+ * (quote-verify + schema); there is no public human-review gate.
+ * Product surfaces state duty/deadline facts; machine observation fields
+ * stay out of reader-facing copy.
  *
  * Seams for later workstreams:
  * - Evidence-Bearing Civic Graph: agency_match method / confidence
- * - Process Conformance: observation.status remains not_adjudicated in v1
+ * - Process Conformance: observation.status is machine-only in v1
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
@@ -295,10 +296,9 @@ export function normalizeObligationRow(raw = {}, opts = {}) {
       law_number_display: lawNumber,
     },
     certification,
-    // Process-conformance seam: v1 never adjudicates observed vs expected.
+    // Process-conformance seam (machine only): observation status is not a product claim.
     observation: {
       status: "not_adjudicated",
-      label: "Observed vs expected is not adjudicated in this iteration",
       expected_event: deliverable,
     },
     // Digest identity for approaching-deadline watches (world-state, not document match).
@@ -387,10 +387,10 @@ export function buildAgencyObligationsLookup(payload = {}, { generatedAt = null,
     generated_at: generatedAt || payload.generated_at || new Date().toISOString(),
     as_of: asOf || validDate(payload.generated_at?.slice(0, 10)) || null,
     iteration: "v1",
+    // Machine policy (not user-facing copy): surface standable duty/deadline facts only.
     honesty: {
-      compliance: "A deadline is a statutory timed event, not a compliance or non-compliance verdict.",
-      observation: "v1 does not adjudicate whether the expected event appeared in City Record or Required Reports.",
-      certification: "Rows are auto-certified by mechanical quote verification against fetched law text.",
+      surface: "duty_deadline_recurrence",
+      certification: "auto_certified_quote_verify_v1",
     },
     source_receipt: {
       schema_version: payload.schema_version || null,
@@ -547,9 +547,7 @@ function digestRowFromObligation(row, { band, today, days = null } = {}) {
     legistar_url: row.source?.legistar_url || null,
     certification_status: row.certification?.status || "auto_candidate",
     observation_status: "not_adjudicated",
-    // Explicit non-compliance copy for digest renderers.
     compliance_verdict: null,
-    honesty_note: "Statutory deadline only — not a compliance finding.",
     start_date: row.deadline?.computed_date || today,
   };
 }
@@ -598,8 +596,6 @@ export function renderAgencyObligationsSection(view) {
         item.deliverable_type,
         item.deadline_date ? `deadline ${item.deadline_date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : "no computed deadline"),
         item.recurrence,
-        item.certification_status === "auto_certified" ? "auto-certified" : "auto-candidate",
-        "not adjudicated",
       ].filter(Boolean).map(esc).join(" · ");
       const source = item.href
         ? `<a href="${esc(item.href)}" rel="noopener">Source law</a>`
@@ -620,7 +616,7 @@ export function renderAgencyObligationsSection(view) {
 
   return `<section class="node-section node-card civic-object-section" data-agency-constellation-category="obligations" data-status="${esc(view.status)}" data-export-class="object_members" data-certification-basis="${esc(view.certification_basis || AGENCY_OBLIGATIONS_CERTIFICATION)}">
     <h2>Statutory mandates <span class="muted node-muted">(${esc(status)})</span></h2>
-    <p class="node-muted muted">Agency → duty → deadline → recurrence. Deadlines are statutory timed events, not compliance verdicts. Observation status stays not adjudicated in this iteration.</p>
+    <p class="node-muted muted">Agency duties with statutory deadlines and recurrence, linked to source law.</p>
     ${list}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;

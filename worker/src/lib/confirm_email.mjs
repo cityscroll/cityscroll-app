@@ -27,7 +27,7 @@ export function describeFilter(lens, filter) {
     const who = f.agency || f.agency_id || "?";
     const type = f.deliverable_type ? ` (${f.deliverable_type})` : "";
     const window = typeof f.windowDays === "number" ? ` · next ${f.windowDays} days` : "";
-    return `mandates for “${who}”${type}${window} — statutory deadlines only, not compliance findings`;
+    return `mandates for “${who}”${type}${window}`;
   }
   if (lens === "people" && f.view === "guide" && f.examNumber) {
     return `civil-service exam ${f.examNumber} — exact exam updates`;

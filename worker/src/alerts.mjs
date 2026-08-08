@@ -2073,7 +2073,6 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
         : "";
       return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b>${esc(r.duty_text || r.short_title || "Statutory mandate")}</b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
-        <span style="color:#666;font-size:12px;font-style:italic">Statutory deadline only — not a compliance finding. Observation is not adjudicated.</span><br>
         <span style="font-size:13px"><a href="${agencyPath}">↗ Agency constellation</a>${source ? ` &nbsp; ${source}` : ""}</span></li>`;
     }
     if (itemKind === "rezone") {
