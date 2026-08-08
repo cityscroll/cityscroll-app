@@ -201,14 +201,26 @@ export function resolveStatuteActorAgency(rawAgency) {
   };
 }
 
-function legistarMatterUrl(matterId, matterGuid = null) {
+/**
+ * Public source-law URL for an enacted-law matter id from the mandate backfill.
+ *
+ * These ids are Gateway Matter keys, not LegislationDetail row ids. A bare
+ * `LegislationDetail.aspx?ID=<matterId>&G=S` returns "Invalid parameters!".
+ * Match meeting outcomes: `Gateway.aspx?M=L&ID=` resolves to the live detail
+ * page (correct row id + GUID). See `matterDetailUrl` in worker/src/lib/legistar_join.mjs.
+ *
+ * When a real LegislationDetail row id + MatterGuid pair is known, that form is
+ * preferred; never invent a GUID, and never treat matter_id alone as a detail id.
+ */
+export function legistarMatterUrl(matterId, { matterGuid = null, detailId = null } = {}) {
   const id = clean(matterId, 40);
-  if (!id) return null;
-  if (matterGuid) {
-    return `https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=${encodeURIComponent(id)}&GUID=${encodeURIComponent(matterGuid)}`;
+  if (!id || !/^\d+$/.test(id)) return null;
+  const guid = clean(matterGuid, 80);
+  const detail = clean(detailId, 40);
+  if (guid && detail && /^\d+$/.test(detail) && /^[0-9a-fA-F-]{30,}$/.test(guid)) {
+    return `https://nyc.legistar.com/LegislationDetail.aspx?ID=${encodeURIComponent(detail)}&GUID=${encodeURIComponent(guid)}`;
   }
-  // ID-only still opens the Legistar gateway; GUID deep-link is preferred when known.
-  return `https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=${encodeURIComponent(id)}&G=S`;
+  return `https://nyc.legistar.com/Gateway.aspx?M=L&ID=${encodeURIComponent(id)}`;
 }
 
 function normalizeDeadline(raw = {}) {
@@ -261,11 +273,12 @@ export function normalizeObligationRow(raw = {}, opts = {}) {
   if (!duty) return null;
 
   const matterGuid = clean(lawMeta.matter_guid || raw.matter_guid, 80) || null;
+  const detailId = clean(lawMeta.legistar_detail_id || raw.legistar_detail_id, 40) || null;
   const sourceUrl = clean(
     lawMeta.source_url || raw.source_url || lawMeta?.source?.url || raw?.source?.url,
     1000,
   ) || null;
-  const legistarUrl = legistarMatterUrl(matterId, matterGuid);
+  const legistarUrl = legistarMatterUrl(matterId, { matterGuid, detailId });
   const citation = clean(raw.citation, 240) || null;
   const fileNumber = clean(raw.file_number || raw.matter_file || lawMeta.file_number || lawMeta.matter_file, 80) || null;
   const lawNumber = clean(raw.law_number_display || lawMeta.enactment_number || lawMeta.law_number_display, 80) || null;
@@ -324,6 +337,7 @@ export function buildAgencyObligationsLookup(payload = {}, { generatedAt = null,
     if (!id) continue;
     lawByMatter.set(id, {
       matter_guid: law.matter_guid || null,
+      legistar_detail_id: law.legistar_detail_id || law.detail_id || null,
       file_number: law.file_number || law.matter_file || null,
       enactment_number: law.enactment_number || null,
       source_url: law?.source?.url || law.source_url || null,

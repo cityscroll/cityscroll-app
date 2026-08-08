@@ -11,6 +11,7 @@ import {
   agencyObligationsFollowHref,
   buildAgencyObligationsLookup,
   buildAgencyObligationsView,
+  legistarMatterUrl,
   normalizeObligationRow,
   obligationDigestRowsForAgency,
   resolveStatuteActorAgency,
@@ -35,6 +36,37 @@ test("statute actor aliases resolve Parks and HPD", () => {
   assert.equal(resolveStatuteActorAgency("City of New York").matched, false);
 });
 
+test("legistarMatterUrl uses Gateway M=L for matter ids (not broken LegislationDetail G=S)", () => {
+  assert.equal(
+    legistarMatterUrl("48909"),
+    "https://nyc.legistar.com/Gateway.aspx?M=L&ID=48909",
+  );
+  assert.equal(legistarMatterUrl("not-a-number"), null);
+  assert.equal(legistarMatterUrl(""), null);
+  // Detail id + GUID only when both are known; matter_id alone is not a detail id.
+  assert.equal(
+    legistarMatterUrl("48909", {
+      detailId: "1130243",
+      matterGuid: "AE183CB9-0C63-4385-B885-67C0AAEDB007",
+    }),
+    "https://nyc.legistar.com/LegislationDetail.aspx?ID=1130243&GUID=AE183CB9-0C63-4385-B885-67C0AAEDB007",
+  );
+  // GUID without detail id still uses Gateway — wrong detail id + GUID is invalid.
+  assert.equal(
+    legistarMatterUrl("48909", { matterGuid: "AE183CB9-0C63-4385-B885-67C0AAEDB007" }),
+    "https://nyc.legistar.com/Gateway.aspx?M=L&ID=48909",
+  );
+});
+
+test("committed obligations source-law URLs never use invalid LegislationDetail G=S", () => {
+  assert.ok(existsSync(LOOKUP_PATH));
+  const lookup = JSON.parse(readFileSync(LOOKUP_PATH, "utf8"));
+  const sample = lookup.by_agency[PARKS]?.obligations?.[0];
+  assert.ok(sample?.source?.legistar_url);
+  assert.match(sample.source.legistar_url, /^https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&ID=\d+$/);
+  assert.doesNotMatch(JSON.stringify(lookup).slice(0, 500_000), /LegislationDetail\.aspx\?ID=\d+&G=S/);
+});
+
 test("normalizeObligationRow never asserts compliance", () => {
   const row = normalizeObligationRow({
     mandate_id: "1-001",
@@ -51,7 +83,8 @@ test("normalizeObligationRow never asserts compliance", () => {
   assert.equal(row.observation.status, "not_adjudicated");
   assert.equal(row.certification.status, "auto_certified");
   assert.equal(row.certification.basis, AGENCY_OBLIGATIONS_CERTIFICATION);
-  assert.match(row.source.legistar_url, /LegislationDetail/);
+  assert.match(row.source.legistar_url, /Gateway\.aspx\?M=L&ID=1/);
+  assert.doesNotMatch(row.source.legistar_url, /G=S|LegislationDetail\.aspx\?ID=1&G=S/);
   assert.doesNotMatch(JSON.stringify(row), /non-compliance|violat|missed filing/i);
 });
 

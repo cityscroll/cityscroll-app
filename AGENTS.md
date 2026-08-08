@@ -2351,7 +2351,9 @@ both the live and restored databases.
   publication|other) and `windowDays` (1–365). Sanitize fields live in
   `worker/src/lib/filter.mjs` (`LENSES.obligations`); feed preview uses
   `feedItems("obligation", …)`. Confirm copy: `describeFilter` mandates line.
-- Provenance: each row links `source.legistar_url` (mandate → source law).
+- Provenance: each row links `source.legistar_url` (mandate → source law) via
+  `legistarMatterUrl` — Gateway `M=L&ID=` for matter ids (never
+  `LegislationDetail.aspx?ID=&G=S`, which returns Invalid parameters).
 - Rebuild constellation after obligations refresh so agency pages pick up the
   facet: `node tools/build_agency_constellation_documents.mjs`.
 
