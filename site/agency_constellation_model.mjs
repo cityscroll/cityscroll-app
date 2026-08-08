@@ -40,6 +40,11 @@ import {
   buildMandateContractsBridgeView,
 } from "./mandate_contracts_bridge.mjs";
 import {
+  MANDATE_LAND_USE_METHOD,
+  agencyMandateLandUsePath,
+  buildMandateLandUseView,
+} from "./mandate_land_use_bridge.mjs";
+import {
   MANDATE_REPORTS_RECEIPT_METHOD,
   agencyMandateReportsPath,
   buildMandateReportsReceiptView,
@@ -597,6 +602,16 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     perMandateLimit: 3,
   });
 
+  const mandatesLandUse = buildMandateLandUseView(identity.canonical_id, {
+    obligationsLookup: obligations,
+    entityIntelligence: sources.intelligence || null,
+    landProjects: sources.land_projects || null,
+    generatedAt: sources.land_projects?.materialized_at
+      || sources.intelligence?.generated_at
+      || sources.generated_at,
+    perMandateLimit: 3,
+  });
+
   // Mandates → Required Reports receipt: report duties with City Record
   // filing receipt when process-conformance observes a matching publication.
   const mandatesReports = buildMandateReportsReceiptView(identity.canonical_id, {
@@ -630,6 +645,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     ...claims,
     ...(mandatesMeetings?.edges || []).map((edge) => edge.claim).filter(Boolean),
     ...(mandatesContracts?.edges || []).map((edge) => edge.claim).filter(Boolean),
+    ...(mandatesLandUse?.edges || []).map((edge) => edge.claim).filter(Boolean),
   ];
 
   return {
@@ -646,6 +662,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     mandates_rules: mandatesRules,
     ...(mandatesMeetings?.status === "matched"
       ? { mandates_meetings: mandatesMeetings }
+      : {}),
+    ...(mandatesLandUse?.status === "matched"
+      ? { mandates_land_use: mandatesLandUse }
       : {}),
     mandates_reports: mandatesReports,
     mandates_predictions: mandatesPredictions,
@@ -672,6 +691,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     ...(mandatesMeetings?.status === "matched"
       ? { mandates_meetings_href: agencyMandateMeetingsPath(identity.canonical_id) }
       : {}),
+    ...(mandatesLandUse?.status === "matched"
+      ? { mandates_land_use_href: agencyMandateLandUsePath(identity.canonical_id) }
+      : {}),
     mandates_reports_href: agencyMandateReportsPath(identity.canonical_id),
     mandates_predictions_href: agencyMandatePredictionsPath(identity.canonical_id),
     ...(mandatesContracts?.status === "matched"
@@ -690,6 +712,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         PROCESS_CONFORMANCE_METHOD,
         MANDATE_RULES_BRIDGE_METHOD,
         ...(mandatesMeetings?.status === "matched" ? [MANDATE_MEETINGS_METHOD] : []),
+        ...(mandatesLandUse?.status === "matched" ? [MANDATE_LAND_USE_METHOD] : []),
         MANDATE_REPORTS_RECEIPT_METHOD,
         MANDATE_PREDICTION_METHOD,
         ...(mandatesContracts?.status === "matched" ? [MANDATE_CONTRACTS_METHOD] : []),
