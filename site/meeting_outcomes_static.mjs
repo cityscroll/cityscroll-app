@@ -1,4 +1,4 @@
-import { officialSourceLink } from "./affordance_grammar.mjs";
+import { officialSourceDisclosure, officialSourceLink } from "./affordance_grammar.mjs";
 
 export const MEETING_OUTCOMES_SNAPSHOT_SCHEMA = "cityscroll.meeting_outcomes_snapshot.v1";
 
@@ -114,12 +114,6 @@ export function buildMeetingOutcomesSnapshot(records, { generatedAt = new Date()
   };
 }
 
-function documentLinks(documents) {
-  return documents.map((doc) =>
-    officialSourceLink({ href: doc.url, label: doc.name, className: "view meeting-source-link", escape: esc }),
-  ).join("");
-}
-
 export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
   const record = snapshotOrRecord?.schema === MEETING_OUTCOMES_SNAPSHOT_SCHEMA
     ? snapshotOrRecord.by_notice?.[clean(requestId)]
@@ -139,14 +133,19 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
     ...(event.documents || []),
     ...(record.matters || []).flatMap((matter) => matter.documents || []),
   ].filter((doc, index, rows) => rows.findIndex((other) => other.url === doc.url) === index);
+  const officialItems = [
+    ...allDocuments.map((doc) => ({ href: doc.url, label: doc.name })),
+    ...(record.matters || []).filter((matter) => matter.matter_url).map((matter) => ({
+      href: matter.matter_url,
+      label: matter.matter_file || matter.matter_id || "Meeting matter",
+    })),
+  ];
   const matters = (record.matters || []).map((matter) => {
     const label = clean(matter.outcome || matter.actions?.at(-1));
     const vote = matter.votes && [matter.votes.yes, matter.votes.no, matter.votes.abstain].some((n) => n != null)
       ? `<p class="meeting-sub">${matter.votes.yes ?? "—"} yes · ${matter.votes.no ?? "—"} no · ${matter.votes.abstain ?? "—"} abstain</p>`
       : "";
-    const file = matter.matter_url
-      ? officialSourceLink({ href: matter.matter_url, label: matter.matter_file || matter.matter_id, className: "meeting-file meeting-matter-link", escape: esc })
-      : `<span class="meeting-file">${esc(matter.matter_file || matter.matter_id)}</span>`;
+    const file = `<span class="meeting-file">${esc(matter.matter_file || matter.matter_id)}</span>`;
     return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}">
       <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}</div>
       ${label ? `<span class="meeting-badge meeting-badge--${outcomeBucket(label)}">${esc(label)}</span>` : ""}</div>
@@ -155,8 +154,8 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
   return `<section class="meeting-outcomes-static" data-meeting-outcomes-first-paint="1" data-meeting-outcomes-state="present">
     <div class="chain-h">Decision documents and outcomes</div>
     <div class="note">Matched ${eventLink}${event.date ? ` · ${esc(event.date)}` : ""}</div>
-    ${allDocuments.length
-      ? `<div class="meeting-event-docs"><span class="meeting-docs-lbl">Decision documents</span>${documentLinks(allDocuments)}</div>`
+    ${officialItems.length
+      ? `<div class="meeting-event-docs"><span class="meeting-docs-lbl">Decision documents</span>${officialSourceDisclosure({ items: officialItems, label: "Open official meeting records", className: "meeting-source-disclosure", escape: esc })}</div>`
       : `<div class="note">No decision documents published for this meeting.</div>`}
     ${matters ? `<ol class="meeting-agenda">${matters}</ol>` : ""}
   </section>`;
