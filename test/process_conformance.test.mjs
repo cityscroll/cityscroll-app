@@ -218,5 +218,8 @@ test("buildProcessConformanceLookup is pure over fixture inputs", () => {
     generatedAt: "2026-08-07T00:00:00.000Z",
   });
   assert.equal(lookup.by_agency[PARKS].counts.observed, 1);
-  assert.equal(lookup.by_agency[PARKS].items[0].observation.status, OBSERVATION_STATUS.OBSERVED);
+  assert.equal(lookup.by_agency[PARKS].observations["t-001"].status, OBSERVATION_STATUS.OBSERVED);
+  // Compact artifact: duty text is not duplicated here.
+  assert.equal(lookup.by_agency[PARKS].items, undefined);
+  assert.ok(lookup.by_agency[PARKS].observations["t-001"].observed_record?.request_id);
 });

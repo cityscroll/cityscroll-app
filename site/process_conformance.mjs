@@ -549,9 +549,48 @@ export function buildProcessConformanceLookup({
       meetingsDomain,
       entityIntelligence,
       asOf: today,
-      limit: 200,
+      // Full mandate text lives in agency_obligations_lookup; store observation
+      // deltas only so the public artifact stays small and single-owned.
+      limit: 500,
     });
     if (!view || view.status === "empty") continue;
+    const observations = Object.create(null);
+    for (const item of view.items || []) {
+      const mid = item.mandate_id || item.obligation_id;
+      if (!mid) continue;
+      const expected = item.observation?.expected_event || null;
+      observations[mid] = {
+        status: item.observation?.status || null,
+        label: item.observation?.label || null,
+        expected_event: expected
+          ? {
+            kind: expected.kind || null,
+            label: expected.label || null,
+            deliverable_type: expected.deliverable_type || null,
+            deadline_date: expected.deadline_date || null,
+          }
+          : null,
+        observed_record: item.observation?.observed_record
+          ? {
+            request_id: item.observation.observed_record.request_id || null,
+            label: item.observation.observed_record.label || null,
+            when: item.observation.observed_record.when || null,
+            href: item.observation.observed_record.href || null,
+            signal_kind: item.observation.observed_record.signal_kind || null,
+          }
+          : null,
+        match: item.observation?.match
+          ? {
+            method: item.observation.match.method,
+            score: item.observation.match.score,
+            shared_tokens: (item.observation.match.shared_tokens || []).slice(0, 6),
+          }
+          : null,
+        is_compliance_verdict: false,
+        adjudication: "not_adjudicated",
+        method: item.observation?.method || PROCESS_CONFORMANCE_METHOD,
+      };
+    }
     byAgency[id] = {
       agency_id: view.agency_id,
       agency_name: view.agency_name,
@@ -560,7 +599,8 @@ export function buildProcessConformanceLookup({
       counts: view.counts,
       share_path: view.share_path,
       candidate_corpus_size: view.candidate_corpus.size,
-      items: view.items,
+      // Compact map: mandate_id → observation only (join duty text from obligations).
+      observations,
     };
     mandateTotal += view.counts.total;
     observedTotal += view.counts.observed;
