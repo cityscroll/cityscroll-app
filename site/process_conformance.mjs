@@ -2,12 +2,9 @@
  * Process conformance (first praxis wave): expected statutory mandate events
  * vs observations in the public record.
  *
- * Hard honesty boundary (non-negotiable):
- * - Observation is never a compliance verdict.
- * - "Expected event not yet observed in the public record" ≠ non-compliance.
- * - Missing City Record notice does not mean an agency ignored the law.
- * - Only join when the public-record signal is reliable; otherwise
- *   enrichment_pending — never fabricate observations.
+ * Implementation choice (not user-facing copy): only join when the public-record
+ * signal is reliable; otherwise enrichment_pending — never fabricate observations.
+ * User-facing copy states the observation plainly without "not X but Y" hedges.
  *
  * Vocabulary: product term is **mandates** (upstream extract may say obligations).
  *
@@ -21,7 +18,7 @@ export const PROCESS_CONFORMANCE_SCHEMA = "cityscroll.process_conformance.v1";
 export const PROCESS_CONFORMANCE_METHOD = "mandate_expected_vs_observed_v1";
 export const PROCESS_CONFORMANCE_ITERATION = "v1";
 
-/** Public observation labels — never compliance language. */
+/** Public observation status keys and plain reader labels. */
 export const OBSERVATION_STATUS = Object.freeze({
   OBSERVED: "observed",
   EXPECTED_NOT_YET_OBSERVED: "expected_not_yet_observed",
@@ -30,10 +27,10 @@ export const OBSERVATION_STATUS = Object.freeze({
 });
 
 export const OBSERVATION_LABELS = Object.freeze({
-  [OBSERVATION_STATUS.OBSERVED]: "Observed in public record",
-  [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: "Expected, not yet observed",
-  [OBSERVATION_STATUS.ON_TRACK]: "On track (deadline still ahead)",
-  [OBSERVATION_STATUS.ENRICHMENT_PENDING]: "Enrichment pending",
+  [OBSERVATION_STATUS.OBSERVED]: "Observed in City Record",
+  [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: "Expected, not yet in City Record",
+  [OBSERVATION_STATUS.ON_TRACK]: "On track — deadline still ahead",
+  [OBSERVATION_STATUS.ENRICHMENT_PENDING]: "Awaiting a City Record detector",
 });
 
 /**
@@ -78,14 +75,16 @@ export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
   },
 });
 
-export const CONFORMANCE_HONESTY = Object.freeze({
-  compliance:
-    "This is a public-record observation view only — not a verdict about whether an agency followed the law. A missing City Record notice does not mean an agency ignored the law.",
-  observation:
-    "Statuses are observed / expected-not-yet-observed / on-track / enrichment-pending. Observation status is never an adjudication of legality.",
+/** Reader-facing intro for the mandates conformance section (useful framing only). */
+export const CONFORMANCE_COPY = Object.freeze({
+  lead:
+    "Statutory mandates with expected public-record events — rule filings, reports — and matching City Record notices when they appear.",
   coverage:
-    "v1 detects rulemaking and report deliverables against City Record Agency Rules (and report-shaped notice titles). Other deliverable types stay enrichment-pending until a reliable signal lands.",
+    "This pass matches rulemaking and report duties against City Record Agency Rules and report-shaped notice titles. Other duty types wait for a stronger public signal.",
 });
+
+/** @deprecated use CONFORMANCE_COPY — kept as alias for older call sites. */
+export const CONFORMANCE_HONESTY = CONFORMANCE_COPY;
 
 const STOPWORDS = new Set([
   "a", "an", "the", "and", "or", "of", "to", "in", "on", "for", "by", "with", "from",
@@ -316,7 +315,7 @@ function candidateFitsExpected(candidate, expectedKind) {
 
 /**
  * Resolve observation for one mandate against candidates.
- * @returns {object} observation block (never a compliance verdict)
+ * Machine fields keep an internal adjudication marker; reader labels state the fact.
  */
 export function resolveMandateObservation(mandate, candidates = [], { asOf = null } = {}) {
   const deliverable = clean(mandate?.deliverable_type || mandate?.expected_event, 80) || "other";
@@ -332,6 +331,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       deadline_date: deadlineDate,
       deadline_text: clean(mandate?.deadline?.text || mandate?.deadline_text, 240) || null,
     },
+    // Internal schema markers for downstream tools — not reader copy.
     is_compliance_verdict: false,
     adjudication: "not_adjudicated",
     method: PROCESS_CONFORMANCE_METHOD,
@@ -342,7 +342,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       ...base,
       status: OBSERVATION_STATUS.ENRICHMENT_PENDING,
       label: OBSERVATION_LABELS[OBSERVATION_STATUS.ENRICHMENT_PENDING],
-      note: `No reliable public-record detector is wired yet for deliverable type “${deliverable}”.`,
+      note: `No City Record detector for “${deliverable}” yet.`,
       observed_record: null,
       match: null,
     };
@@ -363,7 +363,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       ...base,
       status: OBSERVATION_STATUS.OBSERVED,
       label: OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED],
-      note: "A related public-record filing was matched by agency identity plus topic tokens. This is an observation of publication, not a legal determination that the mandate was satisfied.",
+      note: "Matched a City Record filing by agency identity and shared topic tokens.",
       observed_record: {
         request_id: best.candidate.request_id,
         label: best.candidate.label,
@@ -387,7 +387,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       ...base,
       status: OBSERVATION_STATUS.ON_TRACK,
       label: OBSERVATION_LABELS[OBSERVATION_STATUS.ON_TRACK],
-      note: `Expected ${expected.label} by ${deadlineDate}. No matching public-record filing was found yet in the checked corpus. A future deadline with no observation is still on track — not a compliance finding.`,
+      note: `Expected ${expected.label} by ${deadlineDate}. No matching City Record filing yet.`,
       observed_record: null,
       match: null,
     };
@@ -397,7 +397,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
     ...base,
     status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
     label: OBSERVATION_LABELS[OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED],
-    note: `Expected ${expected.label}${deadlineDate ? ` by ${deadlineDate}` : ""}. No matching filing was found in the checked public-record corpus. Absence from City Record is not proof that the agency ignored the law.`,
+    note: `Expected ${expected.label}${deadlineDate ? ` by ${deadlineDate}` : ""}. No matching City Record filing in the current corpus.`,
     observed_record: null,
     match: null,
   };
@@ -503,7 +503,8 @@ export function buildAgencyConformanceView(agencyIdOrName, {
     },
     items: items.slice(0, limit),
     items_total: items.length,
-    honesty: CONFORMANCE_HONESTY,
+    copy: CONFORMANCE_COPY,
+    honesty: CONFORMANCE_COPY, // alias
     share_path: agencyMandatesConformancePath(identity.canonical_id),
     // Seams for later process-mining enrichment (event logs, alignments).
     seams: {
@@ -613,7 +614,8 @@ export function buildProcessConformanceLookup({
     iteration: PROCESS_CONFORMANCE_ITERATION,
     generated_at: generatedAt || new Date().toISOString(),
     as_of: today,
-    honesty: CONFORMANCE_HONESTY,
+    copy: CONFORMANCE_COPY,
+    honesty: CONFORMANCE_COPY, // alias for older readers
     summary: {
       agency_count: Object.keys(byAgency).length,
       mandate_count: mandateTotal,
@@ -636,7 +638,7 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   if (!view) return "";
   const counts = view.counts || {};
   const statusLine = view.status === "matched"
-    ? `${counts.total || 0} mandates · ${counts.observed || 0} observed · ${counts.expected_not_yet_observed || 0} expected not yet observed · ${counts.on_track || 0} on track · ${counts.enrichment_pending || 0} enrichment pending`
+    ? `${counts.total || 0} mandates · ${counts.observed || 0} observed · ${counts.expected_not_yet_observed || 0} expected, not yet in City Record · ${counts.on_track || 0} on track · ${counts.enrichment_pending || 0} awaiting detector`
     : "none in this materialization";
 
   const items = (view.items || []).slice(0, limit);
@@ -650,7 +652,7 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
         ? `deadline ${expected.deadline_date}`
         : (expected.deadline_text ? `deadline: ${expected.deadline_text}` : "no computed deadline");
       const observedLink = obs.observed_record?.href
-        ? ` · <a href="${esc(obs.observed_record.href)}">Observed: ${esc(obs.observed_record.label || obs.observed_record.request_id)}</a>`
+        ? ` · <a href="${esc(obs.observed_record.href)}">City Record: ${esc(obs.observed_record.label || obs.observed_record.request_id)}</a>`
         : "";
       const source = item.source_href
         ? ` · <a href="${esc(item.source_href)}" rel="noopener">Source law</a>`
@@ -672,17 +674,18 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
     : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency in the current materialization.")}</p>`;
 
   const corpusNote = view.candidate_corpus
-    ? `<p class="node-muted muted">Checked public-record corpus for this agency: ${esc(String(view.candidate_corpus.size))} notice(s) from Agency Rules / meetings materializations. Detection covers rulemaking and report deliverables only in this iteration.</p>`
+    ? `<p class="node-muted muted">City Record corpus checked for this agency: ${esc(String(view.candidate_corpus.size))} Agency Rules / meetings notice(s). This pass covers rulemaking and report duties.</p>`
     : "";
 
   const share = view.share_path
-    ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Shareable mandates conformance link</a>`
+    ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this mandates view</a>`
     : "";
 
+  const copy = view.copy || view.honesty || CONFORMANCE_COPY;
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
     <h2>Mandates · expected vs observed <span class="muted node-muted">(${esc(statusLine)})</span></h2>
-    <p class="node-muted muted">${esc(CONFORMANCE_HONESTY.compliance)}</p>
-    <p class="node-muted muted">${esc(CONFORMANCE_HONESTY.coverage)}</p>
+    <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
+    <p class="node-muted muted">${esc(copy.coverage || CONFORMANCE_COPY.coverage)}</p>
     ${corpusNote}
     ${list}
     ${share ? `<p class="node-inline-actions civic-object-inline-actions">${share}</p>` : ""}

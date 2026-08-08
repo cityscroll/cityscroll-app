@@ -105,7 +105,7 @@ test("resolveMandateObservation never emits compliance verdicts", () => {
     { asOf: "2026-08-07" },
   );
   assert.equal(notYet.status, OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED);
-  assert.match(notYet.note, /not proof that the agency ignored the law/i);
+  assert.match(notYet.note, /No matching City Record filing/i);
 });
 
 test("shareable path anchors mandates conformance", () => {
@@ -141,7 +141,7 @@ test("Parks conformance view labels real mandates without compliance verdicts", 
     assert.equal(item.observation.is_compliance_verdict, false);
     assert.equal(item.observation.adjudication, "not_adjudicated");
   }
-  assert.match(view.honesty.compliance, /not a verdict|public-record observation/i);
+  assert.match(view.copy?.lead || view.honesty?.lead || "", /mandate|City Record/i);
   assert.match(view.share_path, /#mandates-conformance/);
   assert.doesNotMatch(JSON.stringify(view), /agency broke the law|out of compliance|missed its mandate/i);
 });
@@ -152,7 +152,7 @@ test("committed process_conformance lookup covers Parks", () => {
   assert.equal(lookup.schema, PROCESS_CONFORMANCE_SCHEMA);
   assert.ok(lookup.by_agency[PARKS]);
   assert.ok(lookup.by_agency[PARKS].counts.total >= 20);
-  assert.equal(lookup.honesty.compliance, CONFORMANCE_HONESTY.compliance);
+  assert.equal(lookup.copy?.lead || lookup.honesty?.lead, CONFORMANCE_HONESTY.lead);
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
 });
 
@@ -178,9 +178,9 @@ test("constellation surfaces mandates conformance for Parks", () => {
   assert.match(html, /id="mandates-conformance"/);
   assert.match(html, /Mandates · expected vs observed|data-process-conformance="v1"/);
   assert.match(html, /data-observation-status=/);
-  assert.match(html, /not a (compliance|verdict)|public-record observation/i);
-  assert.match(html, /Shareable mandates conformance link|Mandates expected vs observed/);
-  assert.doesNotMatch(html, /broke the law|out of compliance|missed its mandate/i);
+  assert.match(html, /expected vs observed|City Record/i);
+  assert.match(html, /Share this mandates view|Mandates expected vs observed/);
+  assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);
 });
 
 test("buildProcessConformanceLookup is pure over fixture inputs", () => {

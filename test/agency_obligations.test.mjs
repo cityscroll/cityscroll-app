@@ -77,7 +77,7 @@ test("committed lookup covers Parks with real backfill scale", () => {
   assert.equal(lookup.schema, AGENCY_OBLIGATIONS_SCHEMA);
   assert.ok(lookup.summary.obligation_count >= 6000);
   assert.ok(lookup.by_agency[PARKS]?.count >= 20, "Parks must have real statutory duties");
-  assert.equal(lookup.honesty.compliance.includes("not a compliance"), true);
+  assert.match(lookup.honesty.compliance, /statutory timed event/i);
   // Auto-certified path only — no human-review gate fields.
   assert.doesNotMatch(JSON.stringify(lookup.honesty), /clerk review|cairn|verdicts-file/i);
   const sample = lookup.by_agency[PARKS].obligations[0];
@@ -103,7 +103,7 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
       || byId.obligations.method === "mandate_expected_vs_observed_v1",
   );
   assert.equal(byId.obligations.certification_basis, AGENCY_OBLIGATIONS_CERTIFICATION);
-  assert.match(byId.obligations.honesty, /not a (compliance|verdict)|not compliance/i);
+  assert.match(byId.obligations.honesty, /mandate|City Record|statutory/i);
   assert.ok(view.summary.matched_categories >= 5);
 
   const html = renderAgencyConstellationDocument(view);
@@ -133,7 +133,7 @@ test("compileSub obligations lens is a world-state transform, not SODA", () => {
   for (const row of rows.slice(0, 5)) {
     assert.ok(row.alert_id.startsWith("obligation:"));
     assert.equal(row.compliance_verdict, null);
-    assert.match(row.honesty_note, /not a compliance/i);
+    assert.match(row.honesty_note, /statutory deadline|enacted law/i);
   }
 });
 
