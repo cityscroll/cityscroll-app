@@ -214,7 +214,7 @@ test("filters: salary band, fee level, format, no-experience", () => {
   assert.ok(closed.every((e) => e.application_end < today));
 });
 
-test("exam facet links use exact record keys and preserve unknowns", () => {
+test("exam facet links use exact record keys without offering unpublished values", () => {
   const today = "2026-08-03";
   const auto = byExam("7013");
   const caseworker = byExam("7016");
@@ -229,7 +229,12 @@ test("exam facet links use exact record keys and preserve unknowns", () => {
   assert.equal(examFacetValue({ no_experience_required: null }, "experience"), "unknown");
 
   const formatValues = examFacetOptionValues(artifact.exams, "format", { today, statusFor: Staffing.statusFor });
-  assert.deepEqual(formatValues, ["education_experience", "multiple_choice", "unknown"]);
+  assert.deepEqual(formatValues, ["education_experience", "multiple_choice"]);
+  assert.deepEqual(
+    examFacetOptionValues([{ exam_format: null }, {}], "format"),
+    [],
+    "a facet with no published values has no offered options",
+  );
   assert.ok(examFacetOptionValues(artifact.exams, "fee").includes("fee-bearing"));
   assert.equal(examFacetHref({}, "format", "unknown"), "");
   assert.equal(

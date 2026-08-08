@@ -50,9 +50,7 @@ export function examFacetOptionValues(exams, facet, options = {}) {
   const values = new Set((Array.isArray(exams) ? exams : [])
     .map((exam) => examFacetValue(exam, facet, options)));
   const known = EXAM_FACETS[facet]?.values || [];
-  const present = known.filter((value) => values.has(value));
-  if (values.has(UNKNOWN)) present.push(UNKNOWN);
-  return present;
+  return known.filter((value) => values.has(value));
 }
 
 export function examFacetHref(filters, facet, value, { language = "en" } = {}) {

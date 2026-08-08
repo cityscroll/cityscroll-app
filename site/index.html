@@ -979,12 +979,9 @@
   .staffing-notice-facts{display:flex;gap:6px 12px;flex-wrap:wrap;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .staffing-notice-card .view{margin-top:auto;padding-top:3px;font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   .career-guide{margin-bottom:34px;scroll-margin-top:12px}
-  .career-area-watches{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:12px 0 18px}
-  .career-area-watch{min-width:0;border:1px solid var(--rule);border-radius:8px;background:var(--card);padding:11px;display:flex;flex-direction:column;gap:7px}
-  .career-area-watch-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-  .career-area-watch-title{font:700 15px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink);text-decoration:none}
-  .career-area-watch-meta{display:flex;gap:5px;flex-wrap:wrap;min-height:22px}
-  .career-area-watch .act{align-self:flex-start;font-size:11px;padding:5px 8px}
+  .career-interest-context{display:flex;min-width:0;align-items:center;gap:7px;flex-wrap:wrap;margin-top:2px;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--card);font:12px/1.35 ui-sans-serif,system-ui,sans-serif}
+  .career-interest-context-meta{display:flex;min-width:0;gap:5px;flex-wrap:wrap}
+  .career-interest-context .act{margin-inline-start:auto;font-size:11px;padding:5px 8px}
   .career-kicker{font:600 11px/1 var(--font-sc);letter-spacing:.15em;text-transform:uppercase;color:var(--oxblood);margin:0 0 9px}
   .career-intro{border-block:3px double var(--ink);padding:10px 0 12px}
   .career-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:9px}
@@ -1748,7 +1745,6 @@
           <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
         </div>
         <p><a class="act mini" href="https://cityscroll.org/near-you?v=0&amp;lens=people" data-near-you-link data-lens="people" data-i18n="near_you_map_scope">See on map</a></p>
-        <div id="career-area-watches" class="career-area-watches"></div>
         <div class="career-controls">
           <div class="field">
             <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
@@ -1757,6 +1753,7 @@
           <div class="field career-facet-field">
             <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
             <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
+            <div id="career-interest-context"></div>
           </div>
           <div class="field">
             <label for="career-eligibility" data-i18n="career_eligibility_label">Who can apply</label>
