@@ -35,3 +35,16 @@ export function filterChip({ label, pressed = false, className = "", attributes 
 export function staticFact({ label, className = "", escape = esc } = {}) {
   return `<span class="ui-static-fact${className ? ` ${escape(className)}` : ""}">${escape(label)}</span>`;
 }
+
+/** Install navigation behavior for filter buttons carrying their shareable destination. */
+export function installFilterChipNavigation(root = globalThis.document, locationRef = globalThis.location) {
+  if (!root?.querySelectorAll || !locationRef) return;
+  root.querySelectorAll(".ui-filter-chip[data-filter-href]").forEach((button) => {
+    if (button.dataset.filterNavigationInstalled === "true") return;
+    button.dataset.filterNavigationInstalled = "true";
+    button.addEventListener("click", () => {
+      const href = button.getAttribute("data-filter-href");
+      if (href) locationRef.assign(href);
+    });
+  });
+}

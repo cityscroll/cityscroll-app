@@ -1,3 +1,5 @@
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+
 /**
  * Mandates → Required Reports receipt card (first iteration).
  *
@@ -197,10 +199,10 @@ export function renderMandateReportsReceiptSection(view) {
         ].filter(Boolean).map(esc).join(" · ");
         const receipt = item.filing_receipt || item.observed_record || null;
         const receiptLine = receipt?.href
-          ? ` · <a class="mandate-filing-receipt-link" href="${esc(receipt.href)}" data-filing-receipt="1">${esc(FILING_RECEIPT_LABEL)}: ${esc(receipt.label || receipt.request_id)}</a>${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
+          ? ` · ${constellationLink({ href: receipt.href, label: `${FILING_RECEIPT_LABEL}: ${receipt.label || receipt.request_id}`, className: "mandate-filing-receipt-link agency-edge-link", attributes: { "data-filing-receipt": "1" }, escape: esc })}${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
           : "";
         const source = item.source_href
-          ? ` · <a href="${esc(item.source_href)}" rel="noopener">Source law</a>`
+          ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
           : "";
         const chip = receipt
           ? `<span class="mandate-obs-chip mandate-obs-observed mandate-filing-receipt-chip" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-filing-receipt="1">${esc(FILING_RECEIPT_LABEL)}</span>`

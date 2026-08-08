@@ -1,3 +1,5 @@
+import { officialSourceLink } from "./affordance_grammar.mjs";
+
 export const MEETING_OUTCOMES_SNAPSHOT_SCHEMA = "cityscroll.meeting_outcomes_snapshot.v1";
 
 function clean(value) {
@@ -114,7 +116,7 @@ export function buildMeetingOutcomesSnapshot(records, { generatedAt = new Date()
 
 function documentLinks(documents) {
   return documents.map((doc) =>
-    `<a class="view" href="${esc(doc.url)}" target="_blank" rel="noopener noreferrer">${esc(doc.name)}</a>`,
+    officialSourceLink({ href: doc.url, label: doc.name, className: "view meeting-source-link", escape: esc }),
   ).join("");
 }
 
@@ -131,7 +133,7 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
   }
   const event = record.event || {};
   const eventLink = event.url
-    ? `<a class="view" href="${esc(event.url)}" target="_blank" rel="noopener noreferrer">${esc(event.name)}</a>`
+    ? officialSourceLink({ href: event.url, label: event.name, className: "view meeting-source-link", escape: esc })
     : esc(event.name);
   const allDocuments = [
     ...(event.documents || []),
@@ -143,7 +145,7 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
       ? `<p class="meeting-sub">${matter.votes.yes ?? "—"} yes · ${matter.votes.no ?? "—"} no · ${matter.votes.abstain ?? "—"} abstain</p>`
       : "";
     const file = matter.matter_url
-      ? `<a class="meeting-file meeting-matter-link" href="${esc(matter.matter_url)}" target="_blank" rel="noopener noreferrer">${esc(matter.matter_file || matter.matter_id)}</a>`
+      ? officialSourceLink({ href: matter.matter_url, label: matter.matter_file || matter.matter_id, className: "meeting-file meeting-matter-link", escape: esc })
       : `<span class="meeting-file">${esc(matter.matter_file || matter.matter_id)}</span>`;
     return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}">
       <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}</div>

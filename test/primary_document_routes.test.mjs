@@ -192,6 +192,8 @@ test("Browse landing counts are labeled with source dates without coverage cavea
   assert.equal(landing.cards[1].secondaryCount, 228);
   const html = renderBrowseLanding(landing);
   assert.match(html, /Updated 2026-08-03/);
+  assert.match(html, /class="ui-constellation-link browse-card-link"/);
+  assert.match(html, /class="ui-static-fact browse-card-sources"/);
   assert.doesNotMatch(html, /Counts describe|full historical history|bounded|joined by parcel/i);
 });
 
@@ -221,7 +223,8 @@ test("Browse edge filtering is semantic and uses a copy-free live-filter loading
   assert.equal(view.total, 1);
   assert.deepEqual(view.liveOnlyFilters, ["mode"]);
   const html = renderBrowseView(view);
-  assert.match(html, /href="\/notices\/1"/);
+  assert.match(html, /class="ui-constellation-link browse-record-link"[^>]*href="\/notices\/1"/);
+  assert.match(html, /class="ui-constellation-link browse-agency-link"/);
   assert.match(html, /class="note warn browse-filter-disclosure"[^>]+role="status"/);
   assert.doesNotMatch(html, /need the live Browse controls|bounded default|until the page is enhanced/i);
   assert.doesNotMatch(html, /Bronx tree care/);
@@ -259,7 +262,8 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
   assert.match(html, /Forest &lt;management&gt;/);
   assert.match(html, /<dt>Responses due<\/dt>/);
   assert.match(html, /RequestDetail\/20240515016/);
-  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(html, /class="ui-constellation-link notice-agency-link"[^>]*href="\/agencies\/parks-and-recreation\/"/);
+  assert.match(html, /class="ui-official-source-link act primary"[^>]*target="_blank" rel="noopener noreferrer"[^>]*>View City Record<span aria-hidden="true">↗<\/span>/);
   assert.doesNotMatch(html, /class="loading"/);
 });
 

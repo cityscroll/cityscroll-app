@@ -1,5 +1,6 @@
 import { entityHref, parseEntityRef } from "./entity_pivot.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { constellationLink, staticFact } from "./affordance_grammar.mjs";
 import { scopeFromRouteHash, emptyScope } from "./scope_v0.mjs";
 import {
   buildContextualSuggestions,
@@ -728,11 +729,11 @@ export function renderBrowseLanding(landing) {
       : "";
     return `<article class="browse-source-card" id="source-${esc(card.facet)}">
       <p class="browse-source-count">${esc(primary)}${secondary}</p>
-      <h3><a href="${esc(card.route)}">${esc(card.label)}</a></h3>
+      <h3>${constellationLink({ href: card.route, label: card.label, className: "browse-card-link", escape: esc })}</h3>
       <p class="browse-source-description">${esc(card.description)}</p>
-      <p class="browse-source-systems">${esc(card.sources)}</p>
-      <p class="browse-source-asof">${card.asOf ? `Updated ${esc(card.asOf)}` : "Update date unavailable"}</p>
-      <a class="browse-source-action" href="${esc(card.route)}">Browse ${esc(card.label.toLowerCase())} <span aria-hidden="true">→</span></a>
+      <p class="browse-source-systems">${staticFact({ label: card.sources, className: "browse-card-sources", escape: esc })}</p>
+      <p class="browse-source-asof">${staticFact({ label: card.asOf ? `Updated ${card.asOf}` : "Update date unavailable", className: "browse-card-date", escape: esc })}</p>
+      ${constellationLink({ href: card.route, label: `Browse ${card.label.toLowerCase()}`, className: "browse-source-action", escape: esc })}
     </article>`;
   }).join("");
   return `<div class="browse-landing" data-build-rendered="browse-landing">
@@ -764,9 +765,13 @@ export function renderBrowseView(view) {
     const agency = rowAgency(view.facet, row);
     const date = renderedDate(rowDate(view.facet, row));
     const place = rowPlace(view.facet, row);
+    const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
+    const agencyMarkup = agencyIdentity
+      ? constellationLink({ href: `/agencies/${encodeURIComponent(agencyIdentity.canonical_id)}/`, label: agency, className: "browse-agency-link", escape: esc })
+      : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}">
-      <h3>${href ? `<a href="${esc(href)}" lang="en" dir="ltr">${esc(title)}</a>` : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
-      <p class="browse-static-meta">${[agency && esc(agency), date, place && esc(place)].filter(Boolean).join(" · ")}</p>
+      <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
+      <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc })].filter(Boolean).join(" · ")}</p>
     </article>`;
   }).join("");
   const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;

@@ -16,6 +16,7 @@
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import { officialSourceLink } from "./affordance_grammar.mjs";
 
 export const AGENCY_OBLIGATIONS_SCHEMA = "cityscroll.agency_obligations.v1";
 export const AGENCY_OBLIGATIONS_METHOD = "enacted_law_mandate_extract_v1";
@@ -614,7 +615,7 @@ export function renderAgencyObligationsSection(view) {
         item.recurrence,
       ].filter(Boolean).map(esc).join(" · ");
       const source = item.href
-        ? `<a href="${esc(item.href)}" rel="noopener">Source law</a>`
+        ? officialSourceLink({ href: item.href, label: "Source law", className: "agency-source-link", escape: esc })
         : "Source law unavailable";
       const citation = item.citation ? ` · ${esc(item.citation)}` : "";
       return `<li class="node-record" data-obligation-id="${esc(item.obligation_id)}">

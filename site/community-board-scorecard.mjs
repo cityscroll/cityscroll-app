@@ -1,3 +1,5 @@
+import { officialSourceLink } from "./affordance_grammar.mjs";
+
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
@@ -108,7 +110,7 @@ export function renderScorecardPage(scorecard) {
   const rows = scorecard.rows.map((row) => {
     const freshness = formatLastMinutes(row.last_minutes_date, row.days_since_last_minutes);
     const minutes = row.minutes_url
-      ? `<a href="${esc(row.minutes_url)}">Minutes page</a>`
+      ? officialSourceLink({ href: row.minutes_url, label: "Minutes page", className: "meeting-source-link", escape: esc })
       : `<span class="scorecard-muted">Minutes page not verified</span>`;
     const completeness = [
       row.notice_completeness == null ? "Notice: not measured" : `Notice: ${row.notice_completeness}% observed`,

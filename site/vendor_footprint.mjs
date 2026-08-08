@@ -6,6 +6,7 @@ import {
 } from "./scope_v0.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 
 const GROUPS = Object.freeze([
   { id: "awards", label: "Awards", domain: "money", kind: "award", surface: "money", mode: "award" },
@@ -145,7 +146,7 @@ function objectHTML(object, formatDate) {
   const label = escapeHTML(object?.label || object?.subject_ref || "Published record");
   const href = String(object?.href || "");
   const linkedLabel = href.startsWith("#")
-    ? `<a class="pivot" href="${escapeHTML(href)}">${label}</a>`
+    ? constellationLink({ href, label: object?.label || object?.subject_ref || "Published record", className: "pivot vendor-record-link", escape: escapeHTML })
     : label;
   const when = object?.when ? `<span class="ei-when">${escapeHTML(formatDate(object.when))}</span>` : "";
   return `<li class="ei-obj"><span class="ei-obj-main">${linkedLabel}${when}</span></li>`;
@@ -171,7 +172,7 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
       ? `<ul class="ei-list">${objects.map((object) => objectHTML(object, formatDate)).join("")}</ul>`
       : "";
     const viewAll = group.href
-      ? `<a class="vendor-footprint-scope" href="${escapeHTML(group.href)}">See ${escapeHTML(displayName)}&#39;s ${escapeHTML(group.label.toLowerCase())} (${group.scope_count.toLocaleString("en-US")}) →</a>`
+      ? constellationLink({ href: group.href, label: `See ${displayName}'s ${group.label.toLowerCase()} (${group.scope_count.toLocaleString("en-US")})`, className: "vendor-footprint-scope", escape: escapeHTML })
       : "";
     return `<section class="ei-domain vendor-footprint-section" data-footprint-section="${group.id}">
       <h3 class="ei-domain-h">${escapeHTML(group.label)} <span class="ct">${group.scope_count.toLocaleString("en-US")}</span></h3>

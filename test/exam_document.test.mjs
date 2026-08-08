@@ -40,6 +40,8 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /class="[^"]*node-actions/);
   assert.match(html, /data-subject-ref="exam:7016"/);
   assert.match(html, /Published by DCAS/);
+  assert.match(html, /class="ui-constellation-link exam-publisher-link"/);
+  assert.match(html, /class="ui-official-source-link [^"]*exam-action/);
   assert.match(html, /data-exam-watch="7016"/);
   assert.match(html, /data-export-class="exam_prediction"/);
   assert.match(html, /data-prediction-subject="eligible-list-establishment"/);
@@ -51,11 +53,11 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /data-exam-export="json"/);
   assert.match(html, /data-exam-export="xlsx"/);
   assert.match(html, /data-subject-ref="exam:7016"/);
-  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:format:education_experience"/);
-  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:salary:45k_60k"/);
-  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:fee:fee-bearing"/);
-  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:experience:yes"/);
-  assert.match(html, /class="exam-facet-pivot" data-scope-edge="people:window:open"/);
+  assert.match(html, /class="ui-filter-chip exam-facet-pivot" aria-pressed="true"[^>]*data-scope-edge="people:format:education_experience"/);
+  assert.match(html, /data-scope-edge="people:salary:45k_60k"/);
+  assert.match(html, /data-scope-edge="people:fee:fee-bearing"/);
+  assert.match(html, /data-scope-edge="people:experience:yes"/);
+  assert.match(html, /data-scope-edge="people:window:open"/);
   assert.doesNotMatch(html, /href="#exam\/7016/);
   // Reader surface: no absence disclaimers or internal pipeline keys.
   assert.deepEqual(detectNodePageCruft(html), []);

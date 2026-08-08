@@ -56,6 +56,7 @@ def link_info(page, selector):
         target: el.getAttribute("target"),
         rel: el.getAttribute("rel"),
         srText: (el.querySelector(".sr-only") || {}).textContent || null,
+        sourceMark: (el.querySelector('[aria-hidden="true"]') || {}).textContent || null,
     })""")
 
 
@@ -96,14 +97,14 @@ with sync_playwright() as pw:
     page.wait_for_timeout(1500)
 
     # --- Reported link 1: "View in City Record" -------------------------------------------
-    info = link_info(page, '#noticeview a.act[href*="a856-cityrecord.nyc.gov"]')
+    info = link_info(page, '#noticeview a.ui-official-source-link[href*="a856-cityrecord.nyc.gov"]')
     if info["target"] != "_blank":
         failures.append(f'"View in City Record": target={info["target"]!r}, want "_blank" '
                          "(the app-navigates-away regression this gate pins)")
     elif not info["rel"] or "noopener" not in info["rel"] or "noreferrer" not in info["rel"]:
         failures.append(f'"View in City Record": rel={info["rel"]!r}, want noopener+noreferrer')
-    elif not info["srText"] or not info["srText"].strip():
-        failures.append('"View in City Record": no accessible new-tab marking (.sr-only child)')
+    elif info["sourceMark"] != "↗":
+        failures.append('"View in City Record": missing canonical official-source arrow')
     else:
         step("OK", '"View in City Record" opens in a new tab', f"rel={info['rel']!r}")
 
