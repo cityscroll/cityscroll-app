@@ -97,7 +97,7 @@ export { digestDayLogKey };
 
 /** District and mandate (obligations lens) presets are honest-absent: no all-empty weekly filler. */
 export function subDigestDecision({ lens, freshCount, freq, lastSentDate, today, heartbeatDays } = {}) {
-  if (lens === "district" || lens === "obligations") {
+  if (lens === "district" || lens === "mandates" || lens === "obligations") {
     return { action: Number(freshCount) > 0 ? "match" : "none" };
   }
   return digestDecision({ freshCount, freq, lastSentDate, today, heartbeatDays });

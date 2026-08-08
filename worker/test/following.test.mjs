@@ -94,6 +94,22 @@ test("shared API-host Following documents permanently recover to the canonical h
   );
 });
 
+test("legacy obligations lens redirects to canonical mandates on Following", async () => {
+  const filter = encodeURIComponent(JSON.stringify({
+    agency_id: "parks-and-recreation",
+    agency: "Parks and Recreation",
+  }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=obligations&filter=${filter}&freq=weekly`,
+  ), {}, {}, { fetchImpl: previewFetch });
+
+  assert.equal(response.status, 302);
+  const location = response.headers.get("location") || "";
+  assert.match(location, /lens=mandates/);
+  assert.doesNotMatch(location, /lens=obligations/);
+  assert.match(location, /freq=weekly/);
+});
+
 test("the personal island endpoint stays anonymous without a recognized session", async () => {
   const response = await handleFollowing(new Request(
     "https://api.cityscroll.org/following/personal",

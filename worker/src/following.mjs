@@ -1,8 +1,13 @@
 import templates from "../../site/data/watch_templates.json" with { type: "json" };
-import { buildFollowingViewModel, renderFollowingDocument, watchFromFollowingParams } from "../../site/following_view.mjs";
+import {
+  buildFollowingViewModel,
+  followingLensNeedsRedirect,
+  renderFollowingDocument,
+  watchFromFollowingParams,
+} from "../../site/following_view.mjs";
 import { compileSub } from "./lib/compile.mjs";
 import { feedItems } from "./lib/feed.mjs";
-import { sanitize } from "./lib/filter.mjs";
+import { resolveLens, sanitize } from "./lib/filter.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
 import { emailFromRequest } from "./session.mjs";
 import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
@@ -104,6 +109,14 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
   if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405, headers: { "Content-Type": "text/plain", Allow: "GET, HEAD" } });
   if (LEGACY_DOCUMENT_HOSTS.has(url.hostname)) {
     return Response.redirect(`${SITE_ORIGIN}${url.pathname}${url.search}`, 301);
+  }
+
+  // Product lens is mandates; obligations is a legacy alias that must still resolve.
+  const rawLens = url.searchParams.get("lens");
+  if (followingLensNeedsRedirect(rawLens)) {
+    const next = new URL(url);
+    next.searchParams.set("lens", resolveLens(rawLens));
+    return Response.redirect(next.toString(), 302);
   }
 
   const parsed = watchFromFollowingParams(url.searchParams);

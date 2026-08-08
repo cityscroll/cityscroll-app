@@ -61,7 +61,7 @@ test("bridge lists Parks report mandates from live materialization", () => {
   assert.ok(view.mandates.every((m) => m.deliverable_type === "report"));
   assert.ok(view.mandates.every((m) => m.duty_text));
   assert.match(view.share_path, /#mandates-reports$/);
-  assert.match(view.report_mandates_follow_href, /lens=obligations|deliverable/);
+  assert.match(view.report_mandates_follow_href, /lens=mandates|deliverable/);
   // No fabricated receipts on live Parks corpus when process-conformance has none.
   for (const m of view.mandates) {
     if (!m.filing_receipt) {

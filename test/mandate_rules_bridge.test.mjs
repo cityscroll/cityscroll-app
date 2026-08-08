@@ -69,7 +69,7 @@ test("bridge joins Parks rulemaking mandates to Rules-lens filings", () => {
   assert.ok(view.mandates.every((m) => m.deliverable_type === "rulemaking"));
   assert.ok(view.rules_items.length >= 1);
   assert.match(view.share_path, /#mandates-rules$/);
-  assert.match(view.rulemaking_mandates_follow_href, /lens=obligations|deliverable/);
+  assert.match(view.rulemaking_mandates_follow_href, /lens=mandates|deliverable/);
   assert.match(view.rules_follow_href, /lens=rules/);
 });
 
