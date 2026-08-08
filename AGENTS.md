@@ -12,8 +12,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `agency:id:parks-and-recreation`), and re-query SODA when scoped — the citywide 80-row
   hires snapshot is not agency-complete. Under an agency scope, lead with appointments;
   exams only when publisher certification edges join them (`site/staffing_agency_scope.mjs`).
-  Detector: `test/offered_facet_actually_filters.test.mjs` (strict non-empty subset for every
-  offered Browse agency facet + agency section chips).
+  Detector: `test/offered_facet_actually_filters.test.mjs` — facet-exhaustive inventory
+  driven from Browse configs + borough/exam/disposition/procurement/constellation
+  scope modules (not agency-only). Asserts non-empty strict subset + claim match for
+  every offered value present in fixtures; multi-value place bags (meetings
+  `affected_area.boroughs`, property `property_location.boroughs`, money `place`)
+  are first-class. Property/browse borough filtering reads structured place bags
+  in `site/browse_view.mjs` (`rowBoroughs` / `rowMatchesBorough`).
 
 ## PR and CI preflight
 
