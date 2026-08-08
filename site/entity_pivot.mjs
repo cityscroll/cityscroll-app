@@ -10,6 +10,7 @@
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { cleanNoticeText } from "./text_clean.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 export { reconcileAgencyIdentity, resolveAgencyIdentity };
 
 const clean = (value, max = 320) =>
@@ -180,10 +181,19 @@ export function entityChipHTML(entity = {}, options = {}) {
 
   const relation = clean(entity.relation, 80);
   const evidence = readerEvidenceText(entity.evidence);
-  const relationAttr = relation ? ` data-relation="${escapeAttr(relation)}"` : "";
   const extraClass = clean(options.className, 80).replace(/[^a-zA-Z0-9 _-]/g, "");
   const classes = ["pivot", "entity-pivot", extraClass].filter(Boolean).join(" ");
-  const link = `<a class="${classes}" href="${escapeAttr(href)}" data-entity-ref="${escapeAttr(entity.ref)}" data-link-confidence="${confidence}"${relationAttr}>${label}</a>`;
+  const link = constellationLink({
+    href,
+    label: displayLabel,
+    className: classes,
+    attributes: {
+      "data-entity-ref": entity.ref,
+      "data-link-confidence": confidence,
+      ...(relation ? { "data-relation": relation } : {}),
+    },
+    escape: escapeHTML,
+  });
   if (confidence === "strong") return link;
 
   const evidenceHTML = evidence

@@ -1230,7 +1230,7 @@ async function showNotice(id, watch){
     }
     const cityRecordUrl = cityRecordRequestUrl(id);
     const cityRecordAction = cityRecordUrl
-      ? ` · <a href="${cityRecordUrl}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a>`
+      ? ` · ${officialSourceLink({ href: cityRecordUrl, label: t("try_city_record"), escape: taskEsc })}`
       : "";
     box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")}${cityRecordAction}</div>`;
     applyActiveHistoryRouteScroll();

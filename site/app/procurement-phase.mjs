@@ -1,3 +1,5 @@
+import { officialSourceLink } from "../affordance_grammar.mjs";
+
 /* ===================== PROCUREMENT PHASE SPINE (phase-group / dedupe / aggregate) =====
    Pure model: site/procurement_phase_spine.mjs (same shape as land_phase_spine).
    When the module loads, lifecycleTimelineHTML phase-groups milestones; flat stepper is
@@ -249,7 +251,7 @@ function lifecyclePhaseTimelineHTML(view, data, notice){
       ${d.due_date ? ` · ${t("lifecycle_rfx_due_html",{date:fdate(d.due_date) || escUiHtml(d.due_date)})}` : ""}
       ${d.rfx_status ? ` · ${t("lifecycle_rfx_status_html",{status:escUiHtml(d.rfx_status)})}` : ""}
       ${d.procurement_method ? ` · ${t("lifecycle_rfx_method_html",{method:escUiHtml(d.procurement_method)})}` : ""}
-      · <a class="view" href="${rfx.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>
+      · ${officialSourceLink({ href: rfx.portal || PASSPORT_RFX_URL, label: t("lifecycle_source_passport"), className: "view", escape: escUiHtml })}
     </div>`;
   }
 
@@ -336,7 +338,7 @@ function lifecycleTimelineHTMLFlat(data, notice){
       ${d.due_date ? ` · ${t("lifecycle_rfx_due_html",{date:fdate(d.due_date) || escUiHtml(d.due_date)})}` : ""}
       ${d.rfx_status ? ` · ${t("lifecycle_rfx_status_html",{status:escUiHtml(d.rfx_status)})}` : ""}
       ${d.procurement_method ? ` · ${t("lifecycle_rfx_method_html",{method:escUiHtml(d.procurement_method)})}` : ""}
-      · <a class="view" href="${rfx.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>
+      · ${officialSourceLink({ href: rfx.portal || PASSPORT_RFX_URL, label: t("lifecycle_source_passport"), className: "view", escape: escUiHtml })}
     </div>`;
   }
 
@@ -427,7 +429,7 @@ function lifecycleDollarsHTML(data, notice){
       ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
       ${lagNote}
       ${ceilingNote}
-      <div class="pnote"><a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>
+      <div class="pnote">${officialSourceLink({ href: contractLink, label: t("lifecycle_source_checkbook"), escape: escUiHtml })}</div>
     </div></div>`;
   }
 
