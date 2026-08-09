@@ -11,6 +11,7 @@ import {
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { examFacetHref, examFacetValue } from "./exam_detail_facets.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, officialSourceLink, staticFact } from "./affordance_grammar.mjs";
+import { titleCodeFamilyView } from "./title_code_family.mjs";
 
 const DCAS_AGENCY_NAME = "Citywide Administrative Services";
 const DCAS_AGENCY_REF = entityRouteRef("agency", DCAS_AGENCY_NAME);
@@ -134,6 +135,35 @@ function examFacetPivotsHTML(exam, today) {
   });
 }
 
+function titleCodeFamilyHTML(exam, familyMembers = []) {
+  const family = titleCodeFamilyView(exam);
+  if (!family) return "";
+  const currentExam = clean(exam.exam_number);
+  const members = (Array.isArray(familyMembers) ? familyMembers : [])
+    .filter((member) => member && member.exam_number !== currentExam && /^\d{4}$/.test(clean(member.exam_number)));
+  if (!members.length) return "";
+  const links = members.map((member) => constellationLink({
+    href: examDocumentPath(member.exam_number),
+    label: `Exam ${member.exam_number} · ${member.title || `Exam ${member.exam_number}`}`,
+    className: "exam-title-family-link",
+    attributes: { "data-title-code-family-member": member.exam_number },
+    escape: esc,
+  })).join("");
+  const marker = family.marker
+    ? ` <span class="exam-title-family-marker" data-confidence-marker="${esc(family.marker)}">inferred</span>`
+    : "";
+  return renderNodeSection({
+    heading: "Explore this title-code family",
+    headingId: "exam-title-code-family-heading",
+    extraClass: "exam-section exam-title-code-family",
+    attrs: {
+      "data-title-code-family-surface": "navigational",
+      "data-consequence-tier": "navigational_exploratory",
+    },
+    body: `<p class="exam-title-family-lede"><span>${esc(family.label)}</span>${marker}: <code>${esc(family.code)}</code>. This is a navigational aid for browsing related exams, not an authoritative determination about title equivalence, eligibility, or appointment.</p><nav class="exam-title-family-list" aria-label="Related exams in this title-code family">${links}</nav>`,
+  });
+}
+
 function predictionHTML(exam) {
   const forecast = exam?.list_establishment_forecast;
   if (!forecast) return "";
@@ -190,6 +220,7 @@ export function renderExamDocument(exam, options = {}) {
   const status = options.status || statusFor(exam, today);
   const feeSalary = options.feeSalary || {};
   const outcome = options.outcome || {};
+  const familyMembers = options.titleCodeFamilyMembers || [];
   const canonical = options.canonical || `https://cityscroll.org${examDocumentPath(id)}`;
   const applicationURL = exam.official_application_url || OASYS_URL;
   const noticeURL = exam.notice_url || DCAS_SCHEDULE_URL;
@@ -247,7 +278,7 @@ export function renderExamDocument(exam, options = {}) {
     extraClass: "exam-section",
     body: noticeDetails,
   })}
-  ${examFacetPivotsHTML(exam, today)}
+  ${examFacetPivotsHTML(exam, today)}${titleCodeFamilyHTML(exam, familyMembers)}
   ${renderNodeSection({
     heading: "What may happen next",
     headingId: "exam-prediction-heading",
