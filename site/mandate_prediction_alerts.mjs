@@ -18,6 +18,7 @@ import { officialSourceDisclosure } from "./affordance_grammar.mjs";
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
+import { canonicalMandateId } from "./mandate_subject_ref.mjs";
 import {
   DETECTABLE_DELIVERABLES,
   EXPECTED_EVENT_BY_DELIVERABLE,
@@ -476,6 +477,7 @@ export function mandatePredictionDigestRowsForAgency(lookup, agencyId, {
   windowDays = 90,
   pastDays = 14,
   deliverableType = null,
+  mandateId = null,
 } = {}) {
   const identity = resolveAgencyIdentity(agencyId);
   const id = identity?.canonical_id || clean(agencyId, 120);
@@ -490,9 +492,11 @@ export function mandatePredictionDigestRowsForAgency(lookup, agencyId, {
     ? Math.max(0, Math.min(3650, Math.round(Number(pastDays))))
     : 14;
   const typeFilter = clean(deliverableType, 40).toLowerCase() || null;
+  const exactId = canonicalMandateId(mandateId);
 
   const rows = [];
   for (const row of bucket.obligations || []) {
+    if (exactId && clean(row.obligation_id, 80) !== exactId) continue;
     if (typeFilter && clean(row.deliverable_type, 40).toLowerCase() !== typeFilter) continue;
     if (!isPredictableDeliverable(row.deliverable_type)) continue;
 
@@ -504,7 +508,8 @@ export function mandatePredictionDigestRowsForAgency(lookup, agencyId, {
 
     const days = pred.days_to_deadline;
     if (!Number.isFinite(days)) continue;
-    if (days > window || days < -past) continue;
+    // Exact mandate_id watches skip the agency-wide window so preview ≡ digest.
+    if (!exactId && (days > window || days < -past)) continue;
 
     rows.push(digestRowFromPrediction(pred, today));
   }

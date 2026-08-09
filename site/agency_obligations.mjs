@@ -17,6 +17,7 @@
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { canonicalMandateId } from "./mandate_subject_ref.mjs";
 
 export const AGENCY_OBLIGATIONS_SCHEMA = "cityscroll.agency_obligations.v1";
 export const AGENCY_OBLIGATIONS_METHOD = "enacted_law_mandate_extract_v1";
@@ -500,12 +501,15 @@ function publicObligationItem(row, today) {
  * World-state rows for digest compile: approaching / recent mandate deadlines for one agency.
  * Never invents compliance; past dates stay labeled as past statutory dates.
  * Optional deliverableType / windowDays refine the free-watch scope.
+ * Optional mandateId is an exact obligation_id match (no free-text duty matching);
+ * when set, that single duty is always emitted so preview and digest stay aligned.
  */
 export function obligationDigestRowsForAgency(lookup, agencyId, {
   todayISO,
   windowDays = 90,
   pastDays = 30,
   deliverableType = null,
+  mandateId = null,
 } = {}) {
   const identity = resolveAgencyIdentity(agencyId);
   const id = identity?.canonical_id || clean(agencyId, 120);
@@ -520,20 +524,24 @@ export function obligationDigestRowsForAgency(lookup, agencyId, {
     ? Math.max(0, Math.min(3650, Math.round(Number(pastDays))))
     : 30;
   const typeFilter = clean(deliverableType, 40).toLowerCase() || null;
+  const exactId = canonicalMandateId(mandateId);
   const rows = [];
   for (const row of bucket.obligations || []) {
+    if (exactId && clean(row.obligation_id, 80) !== exactId) continue;
     if (typeFilter && clean(row.deliverable_type, 40).toLowerCase() !== typeFilter) continue;
     const date = row.deadline?.computed_date;
     if (!date) {
       // Standing / undated mandates surface once as watchable world-state, not a document match.
-      if (row.recurrence && row.recurrence !== "one-time") {
+      // Exact single-mandate watches also include one-time undated duties so the scope is not empty.
+      if ((row.recurrence && row.recurrence !== "one-time") || exactId) {
         rows.push(digestRowFromObligation(row, { band: "standing", today }));
       }
       continue;
     }
     const days = Math.round((Date.parse(`${date}T12:00:00Z`) - todayMs) / 86400000);
     if (!Number.isFinite(days)) continue;
-    if (days > window || days < -past) continue;
+    // Exact mandate_id watches skip the agency-wide window so preview ≡ digest for that duty.
+    if (!exactId && (days > window || days < -past)) continue;
     const band = days < 0 ? "past_date" : days <= 30 ? "within_30_days" : "within_window";
     rows.push(digestRowFromObligation(row, { band, today, days }));
   }
@@ -573,11 +581,13 @@ function digestRowFromObligation(row, { band, today, days = null } = {}) {
  * Free-watch scope URL for an agency's mandates (world-state digest path).
  * Optional deliverableType (report|rulemaking|program|data publication|other)
  * and windowDays (1–365) refine the shareable scope; omit for the full agency watch.
+ * Optional mandateId narrows to one exact statutory duty (canonical obligation id).
  */
 export function agencyObligationsFollowHref(agencyIdOrName, {
   frequency = "weekly",
   deliverableType = null,
   windowDays = null,
+  mandateId = null,
 } = {}) {
   const identity = resolveAgencyIdentity(agencyIdOrName);
   if (!identity?.canonical_id) return "/following/";
@@ -585,6 +595,8 @@ export function agencyObligationsFollowHref(agencyIdOrName, {
     agency_id: identity.canonical_id,
     agency: identity.canonical_name,
   };
+  const exactId = canonicalMandateId(mandateId);
+  if (exactId) filter.mandate_id = exactId;
   const type = clean(deliverableType, 40).toLowerCase();
   if (type && ["report", "rulemaking", "program", "data publication", "other"].includes(type)) {
     filter.deliverable_type = type;
@@ -598,6 +610,24 @@ export function agencyObligationsFollowHref(agencyIdOrName, {
     lens: "mandates",
     filter,
   }, { frequency });
+}
+
+/**
+ * Shareable Following URL for one linked statutory duty (notice backlink watch).
+ * Requires a canonical mandate id and a resolvable agency.
+ */
+export function mandateFollowHref(mandateId, agencyIdOrName, {
+  frequency = "weekly",
+  windowDays = null,
+} = {}) {
+  const exactId = canonicalMandateId(mandateId);
+  if (!exactId) return null;
+  const href = agencyObligationsFollowHref(agencyIdOrName, {
+    frequency,
+    windowDays,
+    mandateId: exactId,
+  });
+  return href === "/following/" ? null : href;
 }
 
 /** Compact HTML list fragment for constellation embedding. */
