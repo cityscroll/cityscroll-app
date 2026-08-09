@@ -23,6 +23,7 @@ export const PROCESS_CONFORMANCE_ITERATION = "v1";
 /** Public observation status keys and plain reader labels. */
 export const OBSERVATION_STATUS = Object.freeze({
   OBSERVED: "observed",
+  EVIDENCE_ONLY: "evidence_only",
   EXPECTED_NOT_YET_OBSERVED: "expected_not_yet_observed",
   ON_TRACK: "on_track",
   ENRICHMENT_PENDING: "enrichment_pending",
@@ -30,6 +31,8 @@ export const OBSERVATION_STATUS = Object.freeze({
 
 export const OBSERVATION_LABELS = Object.freeze({
   [OBSERVATION_STATUS.OBSERVED]: "Observed in City Record",
+  // Internal-only status: retained as evidence, never rendered as a public edge.
+  [OBSERVATION_STATUS.EVIDENCE_ONLY]: "Evidence retained without a public link",
   [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: "Expected, not yet in City Record",
   [OBSERVATION_STATUS.ON_TRACK]: "On track — deadline still ahead",
   // Internal-only status: the public renderer filters these items before display.
@@ -46,6 +49,15 @@ export const DETECTABLE_DELIVERABLES = Object.freeze(["rulemaking", "report"]);
 
 /** Maximum tolerated lag after a known obligation deadline for an automatic match. */
 export const MAX_POST_DEADLINE_PLAUSIBILITY_DAYS = 365;
+
+/**
+ * Mandate → rule publication is a selective-prediction gate: only enriched
+ * candidates with every relation feature may become a public typed edge.
+ * The held-out precision for this relation is measured by tools/cross_spine_eval.mjs.
+ */
+export const MANDATE_RULE_MIN_PRECISION = 0.90;
+export const MANDATE_RULE_PUBLICATION_TIER = "public_inferred";
+export const MANDATE_RULE_EVIDENCE_ONLY_TIER = "evidence_only";
 
 /** Expected civic-event kind from mandate deliverable_type. */
 export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
@@ -128,6 +140,23 @@ function datePart(value) {
   return match ? validDate(match[1]) : null;
 }
 
+/** Normalize legal references without treating a bare agency/title token as law evidence. */
+export function citationLawKeys(value) {
+  const text = clean(value, 600).toLowerCase();
+  if (!text) return [];
+  const keys = [];
+  const patterns = [
+    /(?:§{1,2}|section)\s*[a-z0-9][a-z0-9().-]*/g,
+    /(?:local law|ll|intro|int|file)\s*[a-z0-9][a-z0-9().-]*/g,
+  ];
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      keys.push(match[0].replace(/\s+/g, "").replace(/^section/, "§"));
+    }
+  }
+  return [...new Set(keys)];
+}
+
 /** Content tokens for conservative topic join (no stemming). */
 export function contentTokens(text) {
   return [...new Set(
@@ -160,6 +189,15 @@ export function normalizeObservationCandidate(raw = {}) {
   const agencyId = clean(raw.agency_id, 120) || null;
   const agencyName = clean(raw.agency_name || raw.agency, 200) || null;
   const when = datePart(raw.when || raw.start_date || raw.date || raw.observed_at);
+  const body = clean(
+    raw.body || raw.body_text || raw.rule_body || raw.description || raw.additional_description_1,
+    4000,
+  ) || null;
+  const citation = clean(
+    raw.citation || raw.law_citation || raw.law_number || raw.law_number_display
+      || raw.file_number || raw.reference,
+    240,
+  ) || null;
   const section = clean(raw.section_name || raw.section, 80).toLowerCase();
   const type = clean(raw.type_of_notice_description || raw.notice_type || raw.type, 120).toLowerCase();
   const domain = clean(raw.domain || raw.signal_domain, 40).toLowerCase() || null;
@@ -189,6 +227,18 @@ export function normalizeObservationCandidate(raw = {}) {
     href: clean(raw.href, 240)
       || (requestId ? `#notice/${encodeURIComponent(requestId)}` : null),
     source_system: clean(raw.source_system || raw.provenance?.source_system || "city_record", 80),
+    body,
+    citation,
+    citation_keys: citationLawKeys([
+      citation,
+      raw.law_text,
+      raw.body_text,
+      raw.body,
+      raw.rule_body,
+    ].filter(Boolean).join(" ")),
+    negative_evidence: Array.isArray(raw.negative_evidence)
+      ? raw.negative_evidence.map((item) => clean(item, 120)).filter(Boolean).slice(0, 8)
+      : [],
     tokens: contentTokens(label),
   };
 }
@@ -299,6 +349,105 @@ export function scoreTopicMatch(dutyText, candidate) {
   return { score: 0, shared: [], method: null };
 }
 
+function mandateCitationKeys(mandate) {
+  return citationLawKeys([
+    mandate?.citation,
+    mandate?.source?.citation,
+    mandate?.file_number,
+    mandate?.law_number_display,
+    mandate?.matter_id,
+  ].filter(Boolean).join(" "));
+}
+
+function candidateCitationKeys(candidate) {
+  return citationLawKeys([
+    candidate?.citation,
+    candidate?.citation_keys?.join(" "),
+    candidate?.law_number,
+    candidate?.law_number_display,
+    candidate?.file_number,
+    candidate?.matter_id,
+    candidate?.law_text,
+    candidate?.body,
+  ].filter(Boolean).join(" "));
+}
+
+function agencyEvidenceMatches(mandate, candidate) {
+  if (mandate?.agency_id && candidate?.agency_id) {
+    const left = resolveAgencyIdentity(mandate.agency_id)?.canonical_id;
+    const right = resolveAgencyIdentity(candidate.agency_id)?.canonical_id;
+    return Boolean(left && right && left === right);
+  }
+  const left = clean(mandate?.agency_name, 200).toLowerCase();
+  const right = clean(candidate?.agency_name, 200).toLowerCase();
+  return !left || !right || left === right;
+}
+
+function negativeEvidenceFor(mandate, candidate, temporalCompatible) {
+  const negative = Array.isArray(candidate?.negative_evidence)
+    ? candidate.negative_evidence.slice()
+    : [];
+  const statusText = `${candidate?.label || ""} ${candidate?.body || ""}`.toLowerCase();
+  if (/\b(withdrawn|repealed|rescinded|superseded|cancelled|canceled|rejected|not adopted)\b/.test(statusText)) {
+    negative.push("adverse_rule_status");
+  }
+  if (!temporalCompatible) negative.push("temporal_incompatibility");
+  const disqualifying = Array.isArray(mandate?.negative_terms)
+    ? new Set(mandate.negative_terms.flatMap((term) => contentTokens(term)))
+    : new Set();
+  const candidateTerms = new Set(contentTokens(`${candidate?.label || ""} ${candidate?.body || ""}`));
+  for (const token of disqualifying) {
+    if (candidateTerms.has(token)) negative.push(`mandate_negative_term:${token}`);
+  }
+  return [...new Set(negative.map((item) => clean(item, 120)).filter(Boolean))];
+}
+
+/**
+ * Build the relation-specific mandate → rule feature vector. Missing source
+ * fields stay missing/false; they never become positive evidence by default.
+ */
+export function scoreMandateRuleEvidence(mandate, candidate, { expectedKind = "rule_filing" } = {}) {
+  const topic = scoreTopicMatch(mandate?.duty_text || mandate?.label || mandate?.action_summary, candidate);
+  const ruleBodyTerms = contentTokens(candidate?.body || "");
+  const mandateTerms = contentTokens(mandate?.duty_text || mandate?.label || mandate?.action_summary);
+  const bodySet = new Set(ruleBodyTerms);
+  const ruleBodyOverlap = [...new Set(mandateTerms.filter((term) => bodySet.has(term)))];
+  const deadlineDate = validDate(mandate?.deadline?.computed_date || mandate?.deadline_date);
+  const temporalCompatible = candidateWithinDeadlinePlausibility(candidate, deadlineDate)
+    && (!mandate?.effective_date || !candidate?.when || candidate.when >= mandate.effective_date);
+  const mandateKeys = mandateCitationKeys(mandate);
+  const candidateKeys = candidateCitationKeys(candidate);
+  const citationLawOverlap = mandateKeys.filter((key) => candidateKeys.includes(key));
+  const citationLawMatch = candidate?.citation_law_match === true || citationLawOverlap.length > 0;
+  const negativeEvidence = negativeEvidenceFor(mandate, candidate, temporalCompatible);
+  const features = {
+    agency_exact: agencyEvidenceMatches(mandate, candidate),
+    expected_event_match: candidateFitsExpected(candidate, expectedKind),
+    topic_overlap: topic.shared,
+    rule_body_overlap: ruleBodyOverlap,
+    citation_law_match: citationLawMatch,
+    citation_law_overlap: citationLawOverlap,
+    temporal_compatible: temporalCompatible,
+    negative_evidence: negativeEvidence,
+    negative_evidence_free: negativeEvidence.length === 0,
+  };
+  const publicationEligible = features.agency_exact
+    && features.expected_event_match
+    && features.topic_overlap.length >= 2
+    && features.rule_body_overlap.length >= 1
+    && features.citation_law_match
+    && features.temporal_compatible
+    && features.negative_evidence_free;
+  return {
+    ...features,
+    topic_score: topic.score,
+    publication_eligible: publicationEligible,
+    publication_tier: publicationEligible
+      ? MANDATE_RULE_PUBLICATION_TIER
+      : MANDATE_RULE_EVIDENCE_ONLY_TIER,
+  };
+}
+
 function candidateWithinDeadlinePlausibility(candidate, deadlineDate) {
   if (!deadlineDate || !candidate?.when) return true;
   const deadlineMs = Date.parse(`${deadlineDate}T12:00:00Z`);
@@ -360,12 +509,40 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
     if (!candidateWithinDeadlinePlausibility(candidate, deadlineDate)) continue;
     const match = scoreTopicMatch(duty, candidate);
     if (match.score <= 0) continue;
-    if (!best || match.score > best.match.score) {
-      best = { candidate, match };
+    const evidence = expected.kind === "rule_filing"
+      ? scoreMandateRuleEvidence(mandate, candidate, { expectedKind: expected.kind })
+      : null;
+    if (!best || (evidence?.publication_eligible && !best.evidence?.publication_eligible)
+      || (Boolean(evidence?.publication_eligible) === Boolean(best.evidence?.publication_eligible)
+        && match.score > best.match.score)) {
+      best = { candidate, match, evidence };
     }
   }
 
   if (best) {
+    if (best.evidence && !best.evidence.publication_eligible) {
+      return {
+        ...base,
+        status: OBSERVATION_STATUS.EVIDENCE_ONLY,
+        label: OBSERVATION_LABELS[OBSERVATION_STATUS.EVIDENCE_ONLY],
+        note: "Candidate retained as evidence-only because the mandate-to-rule publication gate was not met.",
+        observed_record: null,
+        shadow_candidate: {
+          request_id: best.candidate.request_id,
+          label: best.candidate.label,
+          when: best.candidate.when,
+          href: best.candidate.href,
+          features: best.evidence,
+        },
+        match: {
+          method: best.match.method,
+          shared_tokens: best.match.shared.slice(0, 8),
+          score: best.match.score,
+          evidence: best.evidence,
+          publication: MANDATE_RULE_EVIDENCE_ONLY_TIER,
+        },
+      };
+    }
     return {
       ...base,
       status: OBSERVATION_STATUS.OBSERVED,
@@ -383,6 +560,10 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
         method: best.match.method,
         shared_tokens: best.match.shared.slice(0, 8),
         score: best.match.score,
+        ...(best.evidence ? {
+          evidence: best.evidence,
+          publication: MANDATE_RULE_PUBLICATION_TIER,
+        } : {}),
       },
     };
   }
@@ -455,9 +636,10 @@ export function buildAgencyConformanceView(agencyIdOrName, {
   // Sort: observed first for demo scan, then on-track, then expected-not-yet, then enrichment.
   const rank = {
     [OBSERVATION_STATUS.OBSERVED]: 0,
-    [OBSERVATION_STATUS.ON_TRACK]: 1,
-    [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: 2,
-    [OBSERVATION_STATUS.ENRICHMENT_PENDING]: 3,
+    [OBSERVATION_STATUS.EVIDENCE_ONLY]: 1,
+    [OBSERVATION_STATUS.ON_TRACK]: 2,
+    [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: 3,
+    [OBSERVATION_STATUS.ENRICHMENT_PENDING]: 4,
   };
   items.sort((left, right) => {
     const leftRank = rank[left.observation.status] ?? 9;
@@ -587,11 +769,22 @@ export function buildProcessConformanceLookup({
             signal_kind: item.observation.observed_record.signal_kind || null,
           }
           : null,
+        ...(item.observation?.shadow_candidate ? {
+          shadow_candidate: {
+            request_id: item.observation.shadow_candidate.request_id || null,
+            label: item.observation.shadow_candidate.label || null,
+            when: item.observation.shadow_candidate.when || null,
+            href: item.observation.shadow_candidate.href || null,
+            features: item.observation.shadow_candidate.features || null,
+          },
+        } : {}),
         match: item.observation?.match
           ? {
             method: item.observation.match.method,
             score: item.observation.match.score,
             shared_tokens: (item.observation.match.shared_tokens || []).slice(0, 6),
+            publication: item.observation.match.publication || null,
+            evidence: item.observation.match.evidence || null,
           }
           : null,
         is_compliance_verdict: false,

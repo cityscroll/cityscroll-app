@@ -48,8 +48,10 @@ export function writeProcessConformanceArtifacts({ check = false } = {}) {
     sources.meetingsDomain?.generated_at,
     sources.entityIntelligence?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
+  const generatedDates = generatedAt.match(/\d{4}-\d{2}-\d{2}/g) || [];
   const lookup = buildProcessConformanceLookup({
     ...sources,
+    asOf: generatedDates.sort().at(-1) || sources.obligationsLookup?.as_of || null,
     generatedAt,
   });
   if (lookup.schema !== PROCESS_CONFORMANCE_SCHEMA) {

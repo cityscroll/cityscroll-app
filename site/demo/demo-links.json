@@ -1137,25 +1137,21 @@
       "id": "agency-sanitation-mandates-conformance",
       "url": "agencies/sanitation/",
       "feature": "process-conformance-mandates",
-      "description": "Sanitation mandates expected vs observed: City Record filings matched to statutory duties.",
+      "description": "Sanitation rule activity remains public while evidence-only mandate candidates stay out of the typed edge.",
       "expectations": {
         "pathname": "/agencies/sanitation/",
         "visible": [
           {
-            "selector": "#mandates-conformance",
-            "text": "expected vs observed"
-          },
-          {
-            "selector": "#mandates-conformance [data-observation-status]"
-          },
-          {
-            "selector": "#mandates-conformance",
-            "text": "City Record"
+            "selector": "#mandates-rules",
+            "text": "Rulemaking mandates"
           }
         ],
         "notVisible": [
           {
             "selector": "#entityview"
+          },
+          {
+            "selector": "#mandates-conformance"
           }
         ]
       }
