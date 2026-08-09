@@ -103,7 +103,7 @@ The report emits per-relation held-out `precision`, positive `coverage`, and
 interval. `--check` requires the leakage-safe split and gates every relation at
 0.90 point precision with at least 12 predicted held-out candidates by default
 (`--min-precision` and `--min-support` make the thresholds explicit). A perfect
-point estimate below the support floor is `insufficient`, never `pass`.
+point precision below the support floor is `insufficient`, never `pass`.
 Deterministic publisher-key rows are counted outside the inferred candidate
 cohort; labels never write operative links.
 

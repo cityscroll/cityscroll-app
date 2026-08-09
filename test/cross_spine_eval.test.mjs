@@ -175,7 +175,7 @@ test("precision gate fails on a held-out false positive", () => {
   assert.equal(report.ok, false);
 });
 
-test("a perfect point estimate below twelve held-out predictions is insufficient", () => {
+test("perfect point precision below twelve held-out predictions is insufficient", () => {
   const rows = Array.from({ length: DEFAULT_MIN_SUPPORT - 1 }, (_, index) => fixtureRow(
     `support-${index}`,
     "mandate_contract",
