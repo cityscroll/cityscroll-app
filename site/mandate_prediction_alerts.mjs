@@ -655,7 +655,9 @@ export function renderMandatePredictionsSection(view) {
       ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this view</a>`
       : "",
   ].filter(Boolean).join("");
-  const sourceItems = (view.items || []).filter((item) => item.source_href).map((item) => ({ href: item.source_href, label: item.duty_text || "Source law" }));
+  const sourceItems = (view.predictions || [])
+    .filter((item) => item.source_href)
+    .map((item) => ({ href: item.source_href, label: item.duty_text || "Source law" }));
 
   const copy = view.copy || MANDATE_PREDICTION_COPY;
   return `<section id="mandates-predictions" class="node-section node-card civic-object-section mandate-prediction-alerts" data-agency-constellation-card="mandates-predictions" data-method="${esc(view.method || MANDATE_PREDICTION_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members" data-as-of="${esc(view.as_of || "")}">
