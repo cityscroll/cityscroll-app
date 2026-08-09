@@ -10,6 +10,7 @@
 export const CROSS_SPINE_EDGE_POLICY_SCHEMA = "cityscroll.cross_spine_edge_policy.v1";
 export const CROSS_SPINE_EDGE_POLICY_VERSION = "cross_spine_edge_policy_v1";
 export const CROSS_SPINE_MIN_HELD_OUT_PRECISION = 0.90;
+export const CROSS_SPINE_MIN_HELD_OUT_SUPPORT = 12;
 
 export const CROSS_SPINE_EDGE_TIERS = Object.freeze([
   "deterministic",
@@ -64,14 +65,28 @@ export const DEFAULT_CROSS_SPINE_EDGE_POLICY = Object.freeze({
   schema: CROSS_SPINE_EDGE_POLICY_SCHEMA,
   version: CROSS_SPINE_EDGE_POLICY_VERSION,
   min_held_out_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  min_held_out_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT,
+  eval_version: "cross_spine_eval_v2",
+  gold_version: "cross_spine_gold_v2",
+  gates: Object.freeze({
+    mandate_contract: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
+    mandate_rule: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
+    mandate_meeting: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
+    mandate_land_use: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
+  }),
+});
+
+/** Frozen fallback used until a replacement corpus clears every relation gate. */
+export const CROSS_SPINE_EDGE_POLICY_V1 = Object.freeze({
+  schema: CROSS_SPINE_EDGE_POLICY_SCHEMA,
+  version: CROSS_SPINE_EDGE_POLICY_VERSION,
+  min_held_out_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION,
   eval_version: "cross_spine_eval_v1",
   gold_version: "cross_spine_gold_v1",
-  gates: Object.freeze({
-    mandate_contract: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION }),
-    mandate_rule: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION }),
-    mandate_meeting: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION }),
-    mandate_land_use: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION }),
-  }),
+  gates: Object.freeze(Object.fromEntries(Object.keys(CROSS_SPINE_RELATION_POLICIES).map((relation) => [
+    relation,
+    Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION }),
+  ]))),
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -248,12 +263,16 @@ export function policyFromCrossSpineEval(report) {
       status: gate.status,
       min_precision: Number(gate.min_precision),
       precision: Number(gate.precision),
+      min_support: Number(gate.min_support),
+      support: Number(gate.support),
+      precision_interval_95: gate.precision_interval_95 || null,
     });
   }
   return Object.freeze({
     schema: CROSS_SPINE_EDGE_POLICY_SCHEMA,
     version: CROSS_SPINE_EDGE_POLICY_VERSION,
     min_held_out_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+    min_held_out_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT,
     eval_version: clean(report.eval_version),
     gold_version: clean(report.gold_version),
     gates: Object.freeze(gates),
@@ -266,9 +285,22 @@ export function checkCrossSpineEdgePolicy(report) {
   const failures = Object.entries(policy.gates)
     .filter(([, gate]) => gate.status !== "pass"
       || !Number.isFinite(gate.precision)
-      || gate.precision < CROSS_SPINE_MIN_HELD_OUT_PRECISION)
+      || gate.precision < CROSS_SPINE_MIN_HELD_OUT_PRECISION
+      || !Number.isFinite(gate.support)
+      || gate.support < CROSS_SPINE_MIN_HELD_OUT_SUPPORT)
     .map(([relation]) => relation);
   return { ok: failures.length === 0, failures, policy };
+}
+
+/** Promote atomically only after all four replacement relation gates pass. */
+export function promoteCrossSpineEdgePolicy(report, { currentPolicy = CROSS_SPINE_EDGE_POLICY_V1 } = {}) {
+  const check = checkCrossSpineEdgePolicy(report);
+  return {
+    promoted: check.ok,
+    policy: check.ok ? check.policy : currentPolicy,
+    failures: check.failures || Object.keys(CROSS_SPINE_RELATION_POLICIES),
+    reason: check.reason || null,
+  };
 }
 
 export const isCrossSpineCandidate = (edge = {}) => Boolean(

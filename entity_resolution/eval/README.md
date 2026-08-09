@@ -27,7 +27,9 @@ creates links.
 | `fixtures/shadow_monitoring_v0.json` | Characterization snapshot for quiet-debt monitoring |
 | `monitoring/<date>/receipt.json` | Versioned read-only monitor receipt with denominators and provenance |
 | `tools/cross_spine_eval.mjs` | Relation-specific cross-spine candidate, gold, group-split, and held-out precision harness |
-| `cross_spine_gold_v1.jsonl` | Immutable relation labels for the cross-spine evaluation cohort |
+| `cross_spine_gold_v1.jsonl` | Preserved v1 monolith for operating-point history and regression checks |
+| `cross_spine_gold_v2/*.json` | Publisher-backed, per-relation field-case shards with frozen holdout assignments |
+| `cross_spine_gold_v2.jsonl` | Generated v2 combined gold; rebuild with `node tools/build_cross_spine_gold_v2.mjs` |
 
 ## Run
 
@@ -90,16 +92,27 @@ train and holdout, even when several pairs share it.
 
 ```bash
 node tools/cross_spine_eval.mjs \
-  --gold entity_resolution/eval/cross_spine_gold_v1.jsonl \
+  --gold entity_resolution/eval/cross_spine_gold_v2.jsonl \
   --group-split --check
+node tools/build_cross_spine_gold_v2.mjs --check
 node --test test/cross_spine_eval.test.mjs
 ```
 
 The report emits per-relation held-out `precision`, positive `coverage`, and
-`abstention_rate`. `--check` requires the leakage-safe split and gates every
-relation at 0.90 precision by default (`--min-precision` can make the gate
-explicit). Deterministic publisher-key rows are counted outside the inferred
-candidate cohort; labels never write operative links.
+`abstention_rate`, plus predicted support and a two-sided 95% Wilson precision
+interval. `--check` requires the leakage-safe split and gates every relation at
+0.90 point precision with at least 12 predicted held-out candidates by default
+(`--min-precision` and `--min-support` make the thresholds explicit). A perfect
+point estimate below the support floor is `insufficient`, never `pass`.
+Deterministic publisher-key rows are counted outside the inferred candidate
+cohort; labels never write operative links.
+
+V2 source shards each retain at least three publisher cohorts. Every cohort has
+positive and hard-negative field cases, and the generated combined file records
+each shard hash. Explicit `evaluation_split` values are frozen before evaluation
+and are still applied at connected-component scope, so no endpoint can cross
+between train and holdout. V1 remains immutable for comparison; the committed
+runtime policy names v2 only after all four v2 gates pass.
 
 Optional flags:
 
