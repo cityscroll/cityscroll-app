@@ -395,9 +395,9 @@ function negativeEvidenceFor(mandate, candidate, temporalCompatible) {
   const disqualifying = Array.isArray(mandate?.negative_terms)
     ? new Set(mandate.negative_terms.flatMap((term) => contentTokens(term)))
     : new Set();
-  const candidateTokens = new Set(contentTokens(`${candidate?.label || ""} ${candidate?.body || ""}`));
+  const candidateTerms = new Set(contentTokens(`${candidate?.label || ""} ${candidate?.body || ""}`));
   for (const token of disqualifying) {
-    if (candidateTokens.has(token)) negative.push(`mandate_negative_term:${token}`);
+    if (candidateTerms.has(token)) negative.push(`mandate_negative_term:${token}`);
   }
   return [...new Set(negative.map((item) => clean(item, 120)).filter(Boolean))];
 }
@@ -408,10 +408,10 @@ function negativeEvidenceFor(mandate, candidate, temporalCompatible) {
  */
 export function scoreMandateRuleEvidence(mandate, candidate, { expectedKind = "rule_filing" } = {}) {
   const topic = scoreTopicMatch(mandate?.duty_text || mandate?.label || mandate?.action_summary, candidate);
-  const bodyTokens = contentTokens(candidate?.body || "");
-  const dutyTokens = contentTokens(mandate?.duty_text || mandate?.label || mandate?.action_summary);
-  const bodySet = new Set(bodyTokens);
-  const ruleBodyOverlap = [...new Set(dutyTokens.filter((token) => bodySet.has(token)))];
+  const ruleBodyTerms = contentTokens(candidate?.body || "");
+  const mandateTerms = contentTokens(mandate?.duty_text || mandate?.label || mandate?.action_summary);
+  const bodySet = new Set(ruleBodyTerms);
+  const ruleBodyOverlap = [...new Set(mandateTerms.filter((term) => bodySet.has(term)))];
   const deadlineDate = validDate(mandate?.deadline?.computed_date || mandate?.deadline_date);
   const temporalCompatible = candidateWithinDeadlinePlausibility(candidate, deadlineDate)
     && (!mandate?.effective_date || !candidate?.when || candidate.when >= mandate.effective_date);
