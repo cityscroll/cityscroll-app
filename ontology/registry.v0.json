@@ -305,6 +305,23 @@
       ]
     },
     {
+      "id": "person-leader",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "person-leader:{agency_id}:{person_id|name}",
+      "families": [
+        "er:person-leader"
+      ],
+      "backing": [
+        "agency_crosswalk"
+      ],
+      "properties_ref": [
+        "person_name",
+        "head_title",
+        "agency_id"
+      ]
+    },
+    {
       "id": "rule",
       "status": "unregistered",
       "layer": "semantic",
@@ -470,6 +487,17 @@
         "legistar_votes"
       ],
       "label": "Votes on"
+    },
+    {
+      "id": "agency_led_by",
+      "status": "registered",
+      "from": "agency",
+      "to": "person-leader",
+      "backing": [
+        "public_graph.edge",
+        "agency_crosswalk"
+      ],
+      "label": "Agency led by"
     },
     {
       "id": "about_project",
@@ -1166,6 +1194,22 @@
       "status": "registered",
       "backing": [
         "er_taxonomy"
+      ]
+    },
+    {
+      "id": "official",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy",
+        "public_graph.node"
+      ]
+    },
+    {
+      "id": "person-leader",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy",
+        "agency_crosswalk"
       ]
     }
   ],

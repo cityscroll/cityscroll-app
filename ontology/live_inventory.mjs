@@ -11,6 +11,7 @@ import {
 import {
   PUBLIC_DOSSIER_FACT_DEFINITIONS,
 } from "../entity_resolution/publication/dossier.mjs";
+import { ENTITY_TYPE_FAMILIES } from "../entity_resolution/officials/index.mjs";
 import { EVENT_KIND_REGISTRY } from "../worker/src/lib/civic_time.mjs";
 import { ACTION_TYPES as ACTION_LOG_TYPES, OBJECT_TYPES as ACTION_LOG_OBJECTS } from "../worker/src/lib/action_log.mjs";
 import { createRequire } from "node:module";
@@ -25,12 +26,7 @@ export const ASSERTION_CLASSIFICATIONS = Object.freeze([
 ]);
 
 /** ER taxonomy type families (ADR + matchers). */
-export const ER_TYPE_FAMILIES = Object.freeze([
-  "vendor",
-  "agency",
-  "procurement",
-  "location",
-]);
+export const ER_TYPE_FAMILIES = ENTITY_TYPE_FAMILIES;
 
 /** entity_link / taxonomy decision enum. */
 export const ER_DECISIONS = Object.freeze([

@@ -20,6 +20,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   are first-class. Property/browse borough filtering reads structured place bags
   in `site/browse_view.mjs` (`rowBoroughs` / `rowMatchesBorough`).
 
+- **Agency-head entities:** `entity_resolution/leaders/index.mjs` materializes publisher-backed
+  `person-leader` entities from `worker/src/data/agency_crosswalk.json`; `/agency` exposes the
+  descriptor and the agency profile renders a strong, agency-scoped link. Use
+  `entity_resolution/referents/index.mjs` for named heads, agency-scoped role mentions, and
+  exact unique opaque aliases only. Unscoped or ambiguous referents remain plain text.
+
 ## PR and CI preflight
 
 - Run `make prepush` (or `./tools/preflight-required-checks.sh`) before creating or
