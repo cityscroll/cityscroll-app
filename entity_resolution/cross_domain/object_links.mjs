@@ -44,6 +44,10 @@ import {
   isFranchiseConcessionEligible,
   classifyFranchiseConcessionStage,
 } from "../../worker/src/lib/franchise_concession_spine.mjs";
+import {
+  isCrossSpineCandidate,
+  routeCrossSpineEdges,
+} from "./edge_policy.mjs";
 
 export const CROSS_DOMAIN_OBJECT_LINK_VERSION = "cross_domain_object_link_v2";
 export const CROSS_DOMAIN_METHOD = "cross_domain_identity_v2";
@@ -2573,7 +2577,17 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
     };
   }
 
-  const links = dedupeObjectLinks(rawLinks);
+  // Route only explicitly marked cross-spine candidates. Legacy identity and
+  // side-link edges retain their existing contract until their relation policy
+  // supplies an exact-key or held-out publication marker.
+  const crossSpineCandidates = rawLinks.filter(isCrossSpineCandidate);
+  const routed = routeCrossSpineEdges(crossSpineCandidates, {
+    policy: opts.cross_spine_policy,
+  });
+  const links = dedupeObjectLinks([
+    ...rawLinks.filter((link) => !isCrossSpineCandidate(link)),
+    ...routed.public_edges,
+  ]);
   const domainsWithLinks = CROSS_DOMAIN_DOMAINS.filter(
     (d) => domains[d].status === "matched",
   ).length;
@@ -2597,6 +2611,8 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
     root: displayRoot,
     domains,
     links,
+    shadow_edges: routed.shadow_edges,
+    edge_routing: routed.counts,
     metrics: {
       metric: "cross_domain_object_link_coverage",
       domains_total: CROSS_DOMAIN_DOMAINS.length,
@@ -2608,6 +2624,7 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
       total_linked_objects: totalObjects,
       link_count: links.length,
       join_key_link_count,
+      cross_spine_shadow_count: routed.counts.evidence_only,
       coverage_rate: domainsWithLinks / CROSS_DOMAIN_DOMAINS.length,
     },
   };

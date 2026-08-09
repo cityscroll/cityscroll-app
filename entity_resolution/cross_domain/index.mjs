@@ -93,3 +93,21 @@ export {
   buildParcelIntelligence,
   buildPropertyCrossDomainDoc,
 } from "./property_links.mjs";
+
+export {
+  CROSS_SPINE_EDGE_POLICY_SCHEMA,
+  CROSS_SPINE_EDGE_POLICY_VERSION,
+  CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  CROSS_SPINE_EDGE_TIERS,
+  CROSS_SPINE_RELATION_POLICIES,
+  DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  canonicalCrossSpineRelation,
+  crossSpineFeaturePasses,
+  crossSpineRowFeatures,
+  crossSpineEvidenceDecision,
+  routeCrossSpineEdge,
+  routeCrossSpineEdges,
+  policyFromCrossSpineEval,
+  checkCrossSpineEdgePolicy,
+  isCrossSpineCandidate,
+} from "./edge_policy.mjs";

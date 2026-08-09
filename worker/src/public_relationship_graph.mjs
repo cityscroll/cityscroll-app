@@ -172,6 +172,7 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
       ORDER BY record.ingested_at DESC, record.source_system ASC, record.source_system_id ASC
       LIMIT ?`,
   ).bind(entityId, GRAPH_RECORD_LIMIT).all();
+  const crossSpineEdges = [];
   const rows = (result?.results || []).map((row) => {
     const raw = (() => {
       try { return JSON.parse(row.raw_snapshot || "{}"); } catch { return {}; }
@@ -180,9 +181,10 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
     const enriched = identity?.head_name
       ? { ...raw, agency_head_name: identity.head_name, agency_head_title: identity.head_title }
       : raw;
+    if (Array.isArray(enriched.cross_spine_edges)) crossSpineEdges.push(...enriched.cross_spine_edges);
     return { ...row, raw_snapshot: JSON.stringify(enriched) };
   });
-  return serializePublicRelationshipGraph(rows, opts);
+  return serializePublicRelationshipGraph(rows, { ...opts, crossSpineEdges });
 }
 
 export async function handlePublicRelationshipGraph(request, env) {

@@ -6,6 +6,7 @@
 
 import { assertionSnapshot } from "../review/assertion_evidence.mjs";
 import { buildPersonLeaderEntity } from "../leaders/index.mjs";
+import { routeCrossSpineEdges } from "../cross_domain/edge_policy.mjs";
 
 export const PUBLIC_RELATIONSHIP_GRAPH_VERSION = "public_relationship_graph_v1";
 export const PUBLIC_GRAPH_MAX_DEPTH = 2;
@@ -297,6 +298,14 @@ export function serializePublicRelationshipGraph(rows = [], opts = {}) {
     for (const edge of observation.edges) addEdge(allEdges, edge);
   }
 
+  // Optional cross-spine candidates use the same automatic router as the
+  // materialized intelligence surface. Evidence-only and no-edge routes never
+  // enter the public graph, even when a caller supplies them here.
+  const routedCrossSpine = routeCrossSpineEdges(opts.crossSpineEdges || [], {
+    policy: opts.crossSpinePolicy,
+  });
+  for (const edge of routedCrossSpine.public_edges) addEdge(allEdges, edge);
+
   const eligibleNodes = new Set([root.id]);
   for (const node of allNodes.values()) {
     if (nodeTypes.has(node.type)) eligibleNodes.add(node.id);
@@ -355,6 +364,7 @@ export function serializePublicRelationshipGraph(rows = [], opts = {}) {
       observed_from: observedTimes[0] || "",
       observed_through: observedTimes.at(-1) || "",
     },
+    edge_routing: routedCrossSpine.counts,
     nodes: [...includedNodeIds]
       .map((id) => allNodes.get(id))
       .filter(Boolean)
