@@ -67,6 +67,23 @@ test("extraction creates deterministic ids and labels a bad quote as a candidate
   assert.equal(envelope.mandates[0].status, "verified");
   assert.equal(envelope.mandates[1].status, "candidate");
   assert.equal(envelope.mandates[1].quote_verified, false);
+  assert.equal(envelope.enactment_date, "2026-01-15");
+  assert.equal(envelope.effective_date, "2026-02-15");
+});
+
+test("law envelopes fail closed on malformed temporal anchors", async () => {
+  const law = {
+    matter_id: "m-invalid-date",
+    enactment_date: "2026-02-30",
+    effective_date: "February 31, 2026",
+    text: "The department shall publish a report.",
+  };
+  const envelope = await extractMandatesForLaw(law, {
+    model: "fixture",
+    invokeModel: async () => ({ mandates: [] }),
+  });
+  assert.equal(envelope.enactment_date, null);
+  assert.equal(envelope.effective_date, null);
 });
 
 test("recurrence requires an explicit recurring signal beyond an effective-date offset", () => {

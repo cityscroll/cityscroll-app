@@ -182,6 +182,8 @@ function main() {
       quote_verified: row.certification?.quote_verified === true,
       status: row.certification?.quote_verified ? "verified" : "candidate",
       file_number: row.file_number,
+      enactment_date: row.enactment_date || null,
+      effective_date: row.effective_date || null,
     }));
     mkdirSync(dirname(FIXTURE), { recursive: true });
     writeFileSync(FIXTURE, stableStringify({

@@ -142,7 +142,7 @@ test("unresolved mandates and empty agencies render nothing", () => {
   assert.equal(renderMandateMeetingsSection(view), "");
 });
 
-test("live snapshot with no matter/body subject or temporal evidence publishes no meeting edge", () => {
+test("live one-time LPC mandates without explicit end evidence publish no meeting edge", () => {
   const view = buildAgencyConstellationView("landmarks-preservation-commission", {
     obligations,
     meetings_domain: meetings,
@@ -156,6 +156,20 @@ test("live snapshot with no matter/body subject or temporal evidence publishes n
   const html = renderAgencyConstellationDocument(view);
   assert.doesNotMatch(html, /id="mandates-meetings"/);
   assert.doesNotMatch(html, /not yet|no meeting|unresolved|not adjudicated|methodology/i);
+});
+
+test("live recurring DOT mandate publishes subject-overlap meetings after enactment", () => {
+  const view = buildMandateMeetingsView("transportation", {
+    obligationsLookup: obligations,
+    meetingsDomain: meetings,
+    crossSpineGate,
+  });
+  assert.equal(view.status, "matched");
+  assert.equal(view.edges.length, 3, "reader view keeps the existing per-mandate cap");
+  assert.ok(view.edges.every((edge) => edge.match.subject_scope.length >= 2));
+  assert.ok(view.edges.every((edge) => edge.match.temporal.method === "mandate_recurring_open_window_v1"));
+  assert.ok(view.edges.every((edge) => edge.match.temporal.window.start === "2023-08-16"));
+  assert.ok(view.edges.every((edge) => edge.edge_policy.tier === "public_inferred"));
 });
 
 test("a failed held-out gate keeps otherwise supported candidates in evidence-only shadow", () => {
@@ -213,4 +227,141 @@ test("matter-subject stamps feed scope matching but cannot bypass temporal compa
   assert.deepEqual(view.shadow_edges[0].match.subject_scope, ["landmark", "designation"]);
   assert.deepEqual(view.shadow_edges[0].match.meeting_matter_ids, ["pdc:30458"]);
   assert.deepEqual(view.shadow_edges[0].reason, ["temporal"]);
+});
+
+test("recurring meeting mandates open only after a verified law anchor", () => {
+  const recurring = {
+    ...mandate,
+    obligation_id: "recurring-window-1",
+    matter_id: "recurring-window-law",
+    duty_text: "Hold ongoing public hearings on sidewalk cafe petitions.",
+    recurrence: "ongoing",
+    enactment_date: "2024-01-15",
+    effective_date: "2024-02-01",
+    temporal_anchor_method: "law_envelope_strict_iso_v1",
+  };
+  const view = buildMandateMeetingsView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: [recurring] } },
+    },
+    meetingsDomain: {
+      rows: [
+        {
+          request_id: "pre-law",
+          agency_name: "Landmarks Preservation Commission",
+          short_title: "Sidewalk cafe petition hearing",
+          subject: "Sidewalk cafe petition public hearing",
+          type_of_notice_description: "Public Hearings",
+          event_date: "2024-01-31T09:00:00.000",
+        },
+        {
+          request_id: "post-law",
+          agency_name: "Landmarks Preservation Commission",
+          short_title: "Sidewalk cafe petition hearing",
+          subject: "Sidewalk cafe petition public hearing",
+          type_of_notice_description: "Public Hearings",
+          event_date: "2026-08-18T09:00:00.000",
+        },
+      ],
+    },
+    crossSpineGate,
+  });
+
+  assert.deepEqual(view.edges.map((edge) => edge.meeting.request_id), ["post-law"]);
+  assert.equal(view.edges[0].match.temporal.method, "mandate_recurring_open_window_v1");
+  assert.equal(view.edges[0].match.temporal.anchor_field, "effective_date");
+  assert.deepEqual(view.edges[0].match.temporal.window, { start: "2024-02-01", end: null });
+  const preLaw = view.shadow_edges.find((edge) => edge.meeting.request_id === "pre-law");
+  assert.deepEqual(preLaw.reason, ["temporal"]);
+  assert.equal(preLaw.match.temporal.compatible, false);
+});
+
+test("one-time meeting mandates require explicit start and end evidence", () => {
+  const oneTime = {
+    ...mandate,
+    obligation_id: "one-time-window-1",
+    matter_id: "one-time-window-law",
+    duty_text: "Hold a public hearing on sidewalk cafe petitions.",
+    recurrence: "one-time",
+    deadline: { computed_date: "2024-06-01" },
+    enactment_date: "2024-01-15",
+    effective_date: "2024-02-01",
+    temporal_anchor_method: "law_envelope_strict_iso_v1",
+  };
+  const view = buildMandateMeetingsView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: [oneTime] } },
+    },
+    meetingsDomain: {
+      rows: [
+        {
+          request_id: "inside-one-time-window",
+          agency_name: "Landmarks Preservation Commission",
+          short_title: "Sidewalk cafe petition hearing",
+          subject: "Sidewalk cafe petition public hearing",
+          type_of_notice_description: "Public Hearings",
+          event_date: "2024-05-01",
+        },
+        {
+          request_id: "expired-one-time-window",
+          agency_name: "Landmarks Preservation Commission",
+          short_title: "Sidewalk cafe petition hearing",
+          subject: "Sidewalk cafe petition public hearing",
+          type_of_notice_description: "Public Hearings",
+          event_date: "2024-06-02",
+        },
+      ],
+    },
+    crossSpineGate,
+  });
+
+  assert.deepEqual(view.edges.map((edge) => edge.meeting.request_id), ["inside-one-time-window"]);
+  assert.equal(view.edges[0].match.temporal.method, "mandate_one_time_explicit_window_v1");
+  assert.deepEqual(view.edges[0].match.temporal.window, { start: "2024-02-01", end: "2024-06-01" });
+  const expired = view.shadow_edges.find((edge) => edge.meeting.request_id === "expired-one-time-window");
+  assert.deepEqual(expired.reason, ["temporal"]);
+});
+
+test("missing and malformed law anchors fail closed", () => {
+  const rows = [
+    {
+      ...mandate,
+      obligation_id: "missing-anchor",
+      duty_text: "Hold ongoing public hearings on sidewalk cafe petitions.",
+      recurrence: "ongoing",
+    },
+    {
+      ...mandate,
+      obligation_id: "malformed-anchor",
+      duty_text: "Hold ongoing public hearings on sidewalk cafe petitions.",
+      recurrence: "ongoing",
+      enactment_date: "2024-02-30",
+      effective_date: "2024-13-01",
+      temporal_anchor_method: "law_envelope_strict_iso_v1",
+    },
+  ];
+  const view = buildMandateMeetingsView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: rows } },
+    },
+    meetingsDomain: {
+      rows: [{
+        request_id: "undated-law-meeting",
+        agency_name: "Landmarks Preservation Commission",
+        short_title: "Sidewalk cafe petition hearing",
+        subject: "Sidewalk cafe petition public hearing",
+        type_of_notice_description: "Public Hearings",
+        event_date: "2026-08-18",
+      }],
+    },
+    crossSpineGate,
+  });
+
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 2);
+  for (const edge of view.shadow_edges) {
+    assert.deepEqual(edge.reason, ["temporal"]);
+    assert.equal(edge.match.temporal.compatible, false);
+    assert.equal(edge.match.temporal.method, null);
+  }
 });
