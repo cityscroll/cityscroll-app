@@ -296,6 +296,33 @@ function rowDate(facet, row) {
   return row.start_date || row.event_date || null;
 }
 
+/**
+ * Read the most actionable typed date already present on a Browse row.
+ * This is deliberately narrow: a publication/start date is not silently
+ * promoted into a deadline or event, and undated rows keep their title lead.
+ */
+export function browseActionTime(facet, row) {
+  if (!row || typeof row !== "object") return null;
+  if (facet === "contracts" && isoDay(row.due_date)) {
+    return { label: "Responses due", date: row.due_date };
+  }
+  if (facet === "meetings" && isoDay(row.event_date)) {
+    const kind = String(row.type_of_notice_description || "").toLocaleLowerCase();
+    return { label: kind.includes("hearing") ? "Hearing" : "Meeting", date: row.event_date };
+  }
+  if (facet === "property" && isoDay(row.event_date)) {
+    const kind = `${row.disposition_stage || ""} ${row.type_of_notice_description || ""} ${row.short_title || ""}`.toLocaleLowerCase();
+    const label = kind.includes("hearing") ? "Hearing"
+      : kind.includes("sale") || kind.includes("auction") ? "Public sale"
+        : "Event";
+    return { label, date: row.event_date };
+  }
+  if (facet === "zoning" && row.current_milestone && isoDay(row.current_milestone_date)) {
+    return { label: `Milestone: ${row.current_milestone}`, date: row.current_milestone_date };
+  }
+  return null;
+}
+
 function asPlaceObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : null;
 }
@@ -764,12 +791,17 @@ export function renderBrowseView(view) {
     const title = rowTitle(view.facet, row) || "Untitled record";
     const agency = rowAgency(view.facet, row);
     const date = renderedDate(rowDate(view.facet, row));
+    const actionTime = browseActionTime(view.facet, row);
+    const actionMarkup = actionTime
+      ? `<p class="browse-record-action"><span class="browse-record-action-label">${esc(actionTime.label)}</span> ${renderedDate(actionTime.date)}</p>`
+      : "";
     const place = rowPlace(view.facet, row);
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity
       ? constellationLink({ href: `/agencies/${encodeURIComponent(agencyIdentity.canonical_id)}/`, label: agency, className: "browse-agency-link", escape: esc })
       : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}">
+      ${actionMarkup}
       <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
       <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc })].filter(Boolean).join(" · ")}</p>
     </article>`;
