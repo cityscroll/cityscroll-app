@@ -71,6 +71,20 @@ The links on a record can be combined instead of starting a new search. Try an [
 
 Cross-category agency constellations (first iteration) gather one agency across contracts, meetings, rules, statutory mandates, and staffing exams — same parcel-style “records by source” shape. Demo: [Parks and Recreation](https://cityscroll.org/agencies/parks-and-recreation/) (`agency:id:parks-and-recreation`), with per-category Browse scopes, statutory mandates (agency → duty → deadline → recurrence with source-law links), and free watches for City Record notices or mandate deadlines (optional deliverable type / deadline window).
 
+### From notices to a civic graph
+
+CityScroll is increasingly organized around the thing a record is about, not just the system that published it. Typed `◆` constellation links let you pivot among agencies, vendors, projects, parcels, and officials. The public entity graph connects related records across money, land, property, rules, meetings, people, and franchise data without merging the underlying publisher records.
+
+The graph includes exact-key joins for authority keys, contract IDs, BBLs, and ULURP/project identifiers, plus measured relation links for statutory mandates to rules, meetings, contracts, and land-use actions. Every published connection carries provenance. Candidates that do not clear the relation’s precision gate remain evidence-only and are not presented as a fact.
+
+### The Civic Time Ledger
+
+Entity pages can be read **as of** a date using the record’s valid or publication time. The resulting URL is shareable, and missing system-history clocks stay missing rather than being inferred from when CityScroll built its data. Try the [Parks and Recreation constellation](https://cityscroll.org/agencies/parks-and-recreation/) and add `?as_of=2024-06-01`.
+
+### Attachments count
+
+When a notice’s useful details live in a DOCX or text-layer PDF, CityScroll can extract the attachment text and tables, add that content to notice search, and show it in a collapsed detail section with attachment provenance. Image-only PDFs and unsupported formats remain explicit gaps.
+
 ### Honest about missing data
 
 Empty lifecycle slots say **which kind of gap** they are: not yet joined from a public
@@ -79,3 +93,7 @@ source, or not published by the city at all — never a blank “unknown.” The
 describes what feeds are live and how they are used. External data products that need
 complete City Record source rows can follow the
 [bulk and incremental corpus access guide](docs/city-record-corpus-access.md).
+
+City Record is one input to this work, not the destination of every path. The reader surface
+starts with civic entities, places, questions, and actions; source details remain available as
+evidence when they help explain a connection.
