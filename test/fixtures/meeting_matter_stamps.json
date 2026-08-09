@@ -1,0 +1,51 @@
+[
+  {
+    "name": "genuine matter subject",
+    "row": {
+      "additional_description_1": "The Board will discuss issues impacting the New York City jail system."
+    },
+    "expected": {
+      "subject_tokens": ["issues", "impacting", "jail", "system"],
+      "matter_ids": []
+    }
+  },
+  {
+    "name": "generic meeting boilerplate",
+    "row": {
+      "additional_description_1": "Notice is hereby given that a public meeting will be held on August 12, 2026 at 2:30 p.m. Members of the public may attend in person or remotely."
+    },
+    "expected": {
+      "subject_tokens": [],
+      "matter_ids": []
+    }
+  },
+  {
+    "name": "multi-matter directory",
+    "row": {
+      "additional_description_1": "On the following matters: SPECIAL ORDER CALENDAR 2021-43-BZII SUBJECT - Extension of time to complete construction of commercial offices. APPEALS CALENDAR 2025-54-A SUBJECT - Appeal challenging the validity of a building permit. PUBLIC DESIGN COMMISSION 30458: Installation of a courthouse ramp. 30459: Repair of a public monument."
+    },
+    "expected": {
+      "subject_tokens": ["extension", "construction", "commercial", "offices", "appeal", "building", "permit", "installation", "courthouse", "ramp", "repair", "monument"],
+      "matter_ids": ["bsa:2021-43-BZII", "bsa:2025-54-A", "pdc:30458", "pdc:30459"]
+    }
+  },
+  {
+    "name": "contact-heavy body",
+    "row": {
+      "additional_description_1": "The hearing concerns a petition for an unenclosed sidewalk cafe. Contact Jordan Example by email or phone at 555-0199. Visit https://example.com/hearing for access instructions."
+    },
+    "expected": {
+      "subject_tokens": ["petition", "unenclosed", "sidewalk", "cafe"],
+      "matter_ids": []
+    }
+  },
+  {
+    "name": "exact land-use identifiers",
+    "row": {
+      "additional_description_1": "The matters are ULURP No. C 240232 PQX and N 240207 ZRX. Project details: https://zap.planning.nyc.gov/projects/2024X0132."
+    },
+    "expected": {
+      "matter_ids": ["ulurp:C240232PQX", "ulurp:N240207ZRX", "zap:2024X0132"]
+    }
+  }
+]

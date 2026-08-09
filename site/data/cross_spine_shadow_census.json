@@ -4,11 +4,11 @@
   "input_ids": {
     "obligations": "cityscroll.agency_obligations.v1",
     "intelligence": 1,
-    "meetings": 1,
-    "rules": 1,
+    "meetings": 2,
+    "rules": 2,
     "processConformance": "cityscroll.process_conformance.v1",
     "land": 1,
-    "gate": "cityscroll.cross_spine_edge_eval.v1"
+    "gate": "cityscroll.cross_spine_edge_eval.v3"
   },
   "agencies": 49,
   "relations": {
@@ -26,7 +26,7 @@
         "evidence_only": 52
       },
       "by_reason": {
-        "matter_body_subject": 52,
+        "matter_body_subject": 48,
         "temporal": 52
       },
       "by_agency": {
@@ -524,7 +524,7 @@
           "public_inferred": 0,
           "evidence_only": 8,
           "reason_counts": {
-            "matter_body_subject": 8,
+            "matter_body_subject": 4,
             "temporal": 8
           }
         },
@@ -1066,8 +1066,8 @@
       },
       "denominators": {
         "eligible_left_rows": 11,
-        "source_rows": 139,
-        "pre_route_pairs": 45
+        "source_rows": 161,
+        "pre_route_pairs": 50
       },
       "by_tier": {
         "public_inferred": 1
@@ -1159,7 +1159,7 @@
         "city-council": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1189,7 +1189,7 @@
         "civilian-complaint-review-board": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1199,7 +1199,7 @@
         "commission-on-human-rights": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1219,7 +1219,7 @@
         "comptroller": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1229,8 +1229,8 @@
         "consumer-and-worker-protection": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 0,
-            "pre_route_pairs": 0
+            "source_rows": 5,
+            "pre_route_pairs": 5
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1259,7 +1259,7 @@
         "cultural-affairs": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 2,
+            "source_rows": 3,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1269,7 +1269,7 @@
         "education": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 6,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1299,7 +1299,7 @@
         "finance": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 1,
+            "source_rows": 3,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1391,7 +1391,7 @@
         "landmarks-preservation-commission": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1401,7 +1401,7 @@
         "law-department": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 4,
+            "source_rows": 6,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1411,7 +1411,7 @@
         "management-and-budget": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 0,
+            "source_rows": 1,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
