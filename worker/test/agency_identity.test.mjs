@@ -18,7 +18,8 @@ import assert from "node:assert/strict";
 
 import { normalizeAgencyKey, enrichAgency, aliasTargetFor } from "../src/lib/agency_identity.mjs";
 import { canonicalAgency } from "../src/lib/agencies.mjs";
-import { publisherAgencyRows, reconcileAgencyIdentity } from "../../site/agency_identity.mjs";
+import { reconcileAgencyIdentity } from "../../site/agency_identity.mjs";
+import { publisherAgencyRows } from "../../tools/lib/agency_publisher_crosswalk.mjs";
 import crosswalk from "../src/data/agency_crosswalk.json" with { type: "json" };
 import { handleAgency } from "../src/agency.mjs";
 

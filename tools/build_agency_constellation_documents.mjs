@@ -17,11 +17,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   AGENCY_GROUPS,
-  AGENCY_ROUTE_CLASSIFICATIONS,
-  agencyPublisherCollisions,
-  publisherAgencyRows,
   reconcileAgencyIdentity,
 } from "../site/agency_identity.mjs";
+import { AGENCY_ROUTE_CLASSIFICATIONS } from "./lib/agency_route_classifications.mjs";
+import { agencyPublisherCollisions, publisherAgencyRows } from "./lib/agency_publisher_crosswalk.mjs";
 import {
   AGENCY_CONSTELLATION_ER_BASIS,
   AGENCY_CONSTELLATION_METHOD,

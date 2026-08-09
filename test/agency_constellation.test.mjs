@@ -15,12 +15,9 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
-import {
-  AGENCY_ROUTE_CLASSIFICATIONS,
-  agencyPublisherCollisions,
-  publisherAgencyRows,
-  reconcileAgencyIdentity,
-} from "../site/agency_identity.mjs";
+import { reconcileAgencyIdentity } from "../site/agency_identity.mjs";
+import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
+import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
