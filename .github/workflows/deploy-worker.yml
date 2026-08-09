@@ -1,11 +1,18 @@
-# Manual fallback for the Cloudflare Workers Build integration.
-# Workers Builds is canonical for production Worker changes; this workflow is
-# intentionally non-required and does not run on pushes.
+# Deploys the Cloudflare Worker automatically when Worker code or a shared
+# Following renderer source changes land on main. The manual trigger remains
+# available for a re-run without a new commit.
 # Code-only deploy: no secret puts, no [vars] overrides — see worker/README.md's
 # "Automatic deploys" section for the vars-vs-secrets gotcha this intentionally avoids.
 name: Deploy worker
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "worker/**"
+      - "site/following_view.mjs"
+      - "site/data/watch_templates.json"
+      - ".github/workflows/deploy-worker.yml"
   workflow_dispatch:
 
 concurrency:
@@ -93,3 +100,8 @@ jobs:
         env:
           CROL_BASE: https://cityscroll.org/
         run: python3 test/functional/27_project_connections_live.py
+      - name: Post-deploy Following create-first contract
+        env:
+          CROL_BASE: https://cityscroll.org/
+          CROL_DEMO_LINK_IDS: alerts-builder
+        run: python3 test/functional/20_demo_links.py

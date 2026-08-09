@@ -22,6 +22,18 @@ test("Worker routes retain API domains and claim only canonical dynamic-document
   assert.doesNotMatch(routeBlock, /pattern = "www\.cityscroll\.org"/);
 });
 
+test("Worker deploys when shared Following source changes and smokes the canonical empty state", () => {
+  const workflow = read(".github/workflows/deploy-worker.yml");
+  assert.match(workflow, /push:\n\s+branches: \[main\]/);
+  assert.match(workflow, /- "worker\/\*\*"/);
+  assert.match(workflow, /- "site\/following_view\.mjs"/);
+  assert.match(workflow, /- "site\/data\/watch_templates\.json"/);
+  assert.match(workflow, /- "\.github\/workflows\/deploy-worker\.yml"/);
+  assert.match(workflow, /CROL_BASE: https:\/\/cityscroll\.org\//);
+  assert.match(workflow, /CROL_DEMO_LINK_IDS: alerts-builder/);
+  assert.match(workflow, /python3 test\/functional\/20_demo_links\.py/);
+});
+
 test("digest deploy guard covers trigger propagation before the cron", () => {
   assert.equal(digestDeployDelayMs(new Date("2026-08-03T12:39:59.999Z")), 0);
   assert.equal(digestDeployDelayMs(new Date("2026-08-03T12:40:00.000Z")), 25 * 60_000);
