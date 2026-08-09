@@ -3,7 +3,10 @@
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
-import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
+import {
+  AGENCY_OBLIGATIONS_TEMPORAL_ANCHOR_METHOD,
+  agencyObligationsFollowHref,
+} from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import {
   buildEdgeProvenanceClaim,
@@ -74,9 +77,18 @@ function eventKind(row = {}) {
   return null;
 }
 
+function strictIsoDate(value) {
+  const date = clean(value, 20);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isNaN(parsed.valueOf()) || parsed.toISOString().slice(0, 10) !== date
+    ? null
+    : date;
+}
+
 function datePart(value) {
   const match = clean(value, 40).match(/^(\d{4}-\d{2}-\d{2})/);
-  return match ? match[1] : null;
+  return match ? strictIsoDate(match[1]) : null;
 }
 
 function normalizedId(value) {
@@ -117,6 +129,34 @@ function stampedMeetingSubjectTokens(row) {
     : []).join(" "));
 }
 
+function firstDatedField(fields) {
+  for (const [field, value] of fields) {
+    const date = datePart(value);
+    if (date) return { date, field };
+  }
+  return { date: null, field: null };
+}
+
+function verifiedLawAnchor(mandate) {
+  if (mandate?.temporal_anchor_method !== AGENCY_OBLIGATIONS_TEMPORAL_ANCHOR_METHOD) {
+    return { date: null, field: null };
+  }
+  for (const [field, value] of [
+    ["effective_date", mandate.effective_date],
+    ["enactment_date", mandate.enactment_date],
+  ]) {
+    const date = strictIsoDate(value);
+    if (date) return { date, field };
+  }
+  return { date: null, field: null };
+}
+
+function recurringMandate(recurrence) {
+  const value = clean(recurrence, 80).toLowerCase().replace(/_/g, " ");
+  return ["annual", "biennial", "quarterly", "monthly", "ongoing"].includes(value)
+    || /^every \d+ years?$/.test(value);
+}
+
 function temporalEvidence(mandate, meeting) {
   const explicit = meeting.temporal_compatible
     ?? meeting.temporal?.compatible
@@ -130,28 +170,45 @@ function temporalEvidence(mandate, meeting) {
   }
 
   const meetingDate = datePart(meeting.date);
-  const lower = datePart(firstValue(
-    mandate.temporal_window?.start,
-    mandate.temporal?.start,
-    mandate.effective_date,
-    mandate.start_date,
-  ));
-  const upper = datePart(firstValue(
-    mandate.temporal_window?.end,
-    mandate.temporal?.end,
-    mandate.deadline?.computed_date,
-    mandate.end_date,
-  ));
-  if (!meetingDate || (!lower && !upper)) {
-    return { compatible: false, method: null, meeting_date: meetingDate, window: { start: lower, end: upper } };
+  const lawAnchor = verifiedLawAnchor(mandate);
+
+  if (recurringMandate(mandate.recurrence)) {
+    const start = lawAnchor.date;
+    const evidence = {
+      compatible: Boolean(meetingDate && start && meetingDate >= start),
+      method: meetingDate && start ? "mandate_recurring_open_window_v1" : null,
+      recurrence: clean(mandate.recurrence, 80).toLowerCase() || null,
+      anchor_field: lawAnchor.field,
+      meeting_date: meetingDate,
+      window: { start, end: null },
+    };
+    return evidence;
   }
-  if (lower && meetingDate < lower) {
-    return { compatible: false, method: "mandate_temporal_window_v1", meeting_date: meetingDate, window: { start: lower, end: upper } };
-  }
-  if (upper && meetingDate > upper) {
-    return { compatible: false, method: "mandate_temporal_window_v1", meeting_date: meetingDate, window: { start: lower, end: upper } };
-  }
-  return { compatible: true, method: "mandate_temporal_window_v1", meeting_date: meetingDate, window: { start: lower, end: upper } };
+
+  const startEvidence = firstDatedField([
+    ["temporal_window.start", mandate.temporal_window?.start],
+    ["temporal.start", mandate.temporal?.start],
+    [lawAnchor.field, lawAnchor.date],
+    ["start_date", mandate.start_date],
+  ]);
+  const endEvidence = firstDatedField([
+    ["temporal_window.end", mandate.temporal_window?.end],
+    ["temporal.end", mandate.temporal?.end],
+    ["deadline.computed_date", mandate.deadline?.computed_date],
+    ["end_date", mandate.end_date],
+  ]);
+  const start = startEvidence.date;
+  const end = endEvidence.date;
+  const completeWindow = Boolean(meetingDate && start && end && start <= end);
+  return {
+    compatible: Boolean(completeWindow && meetingDate >= start && meetingDate <= end),
+    method: completeWindow ? "mandate_one_time_explicit_window_v1" : null,
+    recurrence: clean(mandate.recurrence, 80).toLowerCase() || "one-time",
+    start_field: startEvidence.field,
+    end_field: endEvidence.field,
+    meeting_date: meetingDate,
+    window: { start, end },
+  };
 }
 
 function meetingCandidates(meetingsDomain, identity) {

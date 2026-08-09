@@ -23,6 +23,7 @@ export const AGENCY_OBLIGATIONS_SCHEMA = "cityscroll.agency_obligations.v1";
 export const AGENCY_OBLIGATIONS_METHOD = "enacted_law_mandate_extract_v1";
 export const AGENCY_OBLIGATIONS_CERTIFICATION = "auto_certified_quote_verify_v1";
 export const AGENCY_OBLIGATIONS_ER_BASIS = "agency_canonical_v1+statute_actor_alias_v1";
+export const AGENCY_OBLIGATIONS_TEMPORAL_ANCHOR_METHOD = "law_envelope_strict_iso_v1";
 
 /** Light statute-actor aliases that are not already City Record spellings. */
 export const STATUTE_ACTOR_ALIASES = Object.freeze({
@@ -87,6 +88,8 @@ const clean = (value, max = 500) => String(value ?? "")
   .replace(/\s+/g, " ")
   .trim()
   .slice(0, max);
+
+const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value || {}, key);
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -285,6 +288,11 @@ export function normalizeObligationRow(raw = {}, opts = {}) {
   const fileNumber = clean(raw.file_number || raw.matter_file || lawMeta.file_number || lawMeta.matter_file, 80) || null;
   const lawNumber = clean(raw.law_number_display || lawMeta.enactment_number || lawMeta.law_number_display, 80) || null;
   const certification = certificationForRow(raw);
+  const hasTemporalAnchors = lawMeta.temporal_anchors_present === true
+    || hasOwn(raw, "enactment_date")
+    || hasOwn(raw, "effective_date");
+  const enactmentDate = validDate(lawMeta.enactment_date ?? raw.enactment_date);
+  const effectiveDate = validDate(lawMeta.effective_date ?? raw.effective_date);
 
   return {
     obligation_id: mandateId,
@@ -304,6 +312,13 @@ export function normalizeObligationRow(raw = {}, opts = {}) {
     citation,
     file_number: fileNumber,
     law_number_display: lawNumber,
+    ...(hasTemporalAnchors ? {
+      // Machine provenance for temporal joins; reader-facing copy does not
+      // treat either publisher date as a deadline or compliance verdict.
+      enactment_date: enactmentDate,
+      effective_date: effectiveDate,
+      temporal_anchor_method: AGENCY_OBLIGATIONS_TEMPORAL_ANCHOR_METHOD,
+    } : {}),
     source: {
       matter_id: matterId,
       legistar_url: legistarUrl,
@@ -344,6 +359,9 @@ export function buildAgencyObligationsLookup(payload = {}, { generatedAt = null,
       enactment_number: law.enactment_number || null,
       source_url: law?.source?.url || law.source_url || null,
       law_number_display: law.law_number_display || null,
+      enactment_date: law.enactment_date ?? null,
+      effective_date: law.effective_date ?? null,
+      temporal_anchors_present: hasOwn(law, "enactment_date") || hasOwn(law, "effective_date"),
     });
   }
 
