@@ -1,409 +1,828 @@
 {
-  "schema": "cityscroll.cross_spine_edge_eval.v1",
-  "eval_version": "cross_spine_eval_v1",
-  "gold_version": "cross_spine_gold_v1",
-  "content_hash": "366795e1c2adcdaf",
+  "schema": "cityscroll.cross_spine_edge_eval.v2",
+  "eval_version": "cross_spine_eval_v2",
+  "gold_version": "cross_spine_gold_v2",
+  "content_hash": "e25a812d38211401",
   "relation": null,
   "group_split": true,
   "split": {
     "holdout_buckets": 5,
     "holdout_bucket": 0,
-    "train_rows": 13,
-    "held_out_rows": 7,
-    "train_groups": 26,
-    "held_out_groups": 14,
+    "train_rows": 0,
+    "held_out_rows": 60,
+    "train_groups": 0,
+    "held_out_groups": 72,
     "group_leakage": false,
     "assignments": [
       {
-        "id": "xsg-001",
-        "split": "train",
-        "groups": {
-          "left": "mandate:contract-001",
-          "right": "contract:001"
-        },
-        "component": "contract:001|mandate:contract-001"
-      },
-      {
-        "id": "xsg-002",
-        "split": "train",
-        "groups": {
-          "left": "mandate:contract-002",
-          "right": "contract:002"
-        },
-        "component": "contract:002|mandate:contract-002"
-      },
-      {
-        "id": "xsg-003",
-        "split": "train",
-        "groups": {
-          "left": "mandate:contract-003",
-          "right": "contract:003"
-        },
-        "component": "contract:003|mandate:contract-003"
-      },
-      {
-        "id": "xsg-004",
-        "split": "train",
-        "groups": {
-          "left": "mandate:contract-004",
-          "right": "contract:004"
-        },
-        "component": "contract:004|mandate:contract-004"
-      },
-      {
-        "id": "xsg-005",
+        "id": "xsg-v2-contract-001",
         "split": "held_out",
         "groups": {
-          "left": "mandate:contract-005",
-          "right": "contract:005"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800271"
         },
-        "component": "contract:005|mandate:contract-005"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-006",
-        "split": "train",
-        "groups": {
-          "left": "mandate:rule-001",
-          "right": "rule:001"
-        },
-        "component": "mandate:rule-001|rule:001"
-      },
-      {
-        "id": "xsg-007",
-        "split": "train",
-        "groups": {
-          "left": "mandate:rule-002",
-          "right": "rule:002"
-        },
-        "component": "mandate:rule-002|rule:002"
-      },
-      {
-        "id": "xsg-008",
-        "split": "train",
-        "groups": {
-          "left": "mandate:rule-003",
-          "right": "rule:003"
-        },
-        "component": "mandate:rule-003|rule:003"
-      },
-      {
-        "id": "xsg-009",
-        "split": "train",
-        "groups": {
-          "left": "mandate:rule-004",
-          "right": "rule:004"
-        },
-        "component": "mandate:rule-004|rule:004"
-      },
-      {
-        "id": "xsg-010",
+        "id": "xsg-v2-contract-002",
         "split": "held_out",
         "groups": {
-          "left": "mandate:rule-005",
-          "right": "rule:005"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800127"
         },
-        "component": "mandate:rule-005|rule:005"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-011",
+        "id": "xsg-v2-contract-003",
         "split": "held_out",
         "groups": {
-          "left": "mandate:meeting-001",
-          "right": "meeting:001"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800072"
         },
-        "component": "mandate:meeting-001|meeting:001"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-012",
-        "split": "train",
-        "groups": {
-          "left": "mandate:meeting-002",
-          "right": "meeting:002"
-        },
-        "component": "mandate:meeting-002|meeting:002"
-      },
-      {
-        "id": "xsg-013",
+        "id": "xsg-v2-contract-004",
         "split": "held_out",
         "groups": {
-          "left": "mandate:meeting-003",
-          "right": "meeting:003"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800150"
         },
-        "component": "mandate:meeting-003|meeting:003"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-014",
-        "split": "train",
-        "groups": {
-          "left": "mandate:meeting-004",
-          "right": "meeting:004"
-        },
-        "component": "mandate:meeting-004|meeting:004"
-      },
-      {
-        "id": "xsg-015",
-        "split": "train",
-        "groups": {
-          "left": "mandate:meeting-005",
-          "right": "meeting:005"
-        },
-        "component": "mandate:meeting-005|meeting:005"
-      },
-      {
-        "id": "xsg-016",
+        "id": "xsg-v2-contract-005",
         "split": "held_out",
         "groups": {
-          "left": "mandate:land-001",
-          "right": "project:001"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228803764"
         },
-        "component": "mandate:land-001|project:001"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-017",
-        "split": "train",
-        "groups": {
-          "left": "mandate:land-002",
-          "right": "project:002"
-        },
-        "component": "mandate:land-002|project:002"
-      },
-      {
-        "id": "xsg-018",
+        "id": "xsg-v2-contract-006",
         "split": "held_out",
         "groups": {
-          "left": "mandate:land-003",
-          "right": "project:003"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228801658"
         },
-        "component": "mandate:land-003|project:003"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-019",
+        "id": "xsg-v2-contract-007",
         "split": "held_out",
         "groups": {
-          "left": "mandate:land-004",
-          "right": "project:004"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800359"
         },
-        "component": "mandate:land-004|project:004"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
       },
       {
-        "id": "xsg-020",
-        "split": "train",
+        "id": "xsg-v2-contract-008",
+        "split": "held_out",
         "groups": {
-          "left": "mandate:land-005",
-          "right": "project:005"
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800318"
         },
-        "component": "mandate:land-005|project:005"
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-009",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800239"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-010",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228803806"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-011",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800163"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-012",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228801332"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-013",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800327"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-014",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228800352"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-contract-015",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:66056-006",
+          "right": "contract:CT1-071-20228804071"
+        },
+        "component": "contract:CT1-071-20228800072|contract:CT1-071-20228800127|contract:CT1-071-20228800150|contract:CT1-071-20228800163|contract:CT1-071-20228800239|contract:CT1-071-20228800271|contract:CT1-071-20228800318|contract:CT1-071-20228800327|contract:CT1-071-20228800352|contract:CT1-071-20228800359|contract:CT1-071-20228801332|contract:CT1-071-20228801658|contract:CT1-071-20228803764|contract:CT1-071-20228803806|contract:CT1-071-20228804071|mandate:66056-006"
+      },
+      {
+        "id": "xsg-v2-land-001",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2018X0438",
+          "right": "project:2018X0438"
+        },
+        "component": "mandate:charter-197-c:2018X0438|project:2018X0438|project:2022Q0160"
+      },
+      {
+        "id": "xsg-v2-land-002",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019K0147",
+          "right": "project:2019K0147"
+        },
+        "component": "mandate:charter-197-c:2019K0147|project:2019K0147"
+      },
+      {
+        "id": "xsg-v2-land-003",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019K0190",
+          "right": "project:2019K0190"
+        },
+        "component": "mandate:charter-197-c:2019K0190|project:2019K0190"
+      },
+      {
+        "id": "xsg-v2-land-004",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019K0301",
+          "right": "project:2019K0301"
+        },
+        "component": "mandate:charter-197-c:2019K0301|project:2019K0301"
+      },
+      {
+        "id": "xsg-v2-land-005",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2018X0438",
+          "right": "project:2022Q0160"
+        },
+        "component": "mandate:charter-197-c:2018X0438|project:2018X0438|project:2022Q0160"
+      },
+      {
+        "id": "xsg-v2-land-006",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019R0267",
+          "right": "project:2019R0267"
+        },
+        "component": "mandate:charter-197-c:2019R0267|project:2019R0267|project:2021K0261"
+      },
+      {
+        "id": "xsg-v2-land-007",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2020Q0240",
+          "right": "project:2020Q0240"
+        },
+        "component": "mandate:charter-197-c:2020Q0240|project:2020Q0240"
+      },
+      {
+        "id": "xsg-v2-land-008",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2020X0410",
+          "right": "project:2020X0410"
+        },
+        "component": "mandate:charter-197-c:2020X0410|project:2020X0410"
+      },
+      {
+        "id": "xsg-v2-land-009",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2021K0187",
+          "right": "project:2021K0187"
+        },
+        "component": "mandate:charter-197-c:2021K0187|project:2021K0187"
+      },
+      {
+        "id": "xsg-v2-land-010",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019R0267",
+          "right": "project:2021K0261"
+        },
+        "component": "mandate:charter-197-c:2019R0267|project:2019R0267|project:2021K0261"
+      },
+      {
+        "id": "xsg-v2-land-011",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2022M0258",
+          "right": "project:2022M0258"
+        },
+        "component": "mandate:charter-197-c:2022M0258|project:2022M0258"
+      },
+      {
+        "id": "xsg-v2-land-012",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2022X0150",
+          "right": "project:2022X0150"
+        },
+        "component": "mandate:charter-197-c:2022X0150|project:2022X0150|project:2023R0199"
+      },
+      {
+        "id": "xsg-v2-land-013",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2025R0137",
+          "right": "project:2025R0137"
+        },
+        "component": "mandate:charter-197-c:2025R0137|project:2025R0137"
+      },
+      {
+        "id": "xsg-v2-land-014",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2026R0127",
+          "right": "project:2026R0127"
+        },
+        "component": "mandate:charter-197-c:2026R0127|project:2026R0127"
+      },
+      {
+        "id": "xsg-v2-land-015",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2022X0150",
+          "right": "project:2023R0199"
+        },
+        "component": "mandate:charter-197-c:2022X0150|project:2022X0150|project:2023R0199"
+      },
+      {
+        "id": "xsg-v2-meeting-001",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-002",
+          "right": "meeting:20260602006"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-002",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-004",
+          "right": "meeting:20260602006"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-003",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-002",
+          "right": "meeting:20260519007"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-004",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-004",
+          "right": "meeting:20260519007"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-005",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:53810-002",
+          "right": "meeting:20260602006"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-006",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-002",
+          "right": "meeting:20260707004"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-007",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-004",
+          "right": "meeting:20260707004"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-008",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-002",
+          "right": "meeting:20260630005"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-009",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-004",
+          "right": "meeting:20260630005"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-010",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:53810-002",
+          "right": "meeting:20260707004"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-011",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-002",
+          "right": "meeting:20260727031"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-012",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-004",
+          "right": "meeting:20260727031"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-013",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-002",
+          "right": "meeting:20260714001"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-014",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54431-004",
+          "right": "meeting:20260714001"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-meeting-015",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:53810-002",
+          "right": "meeting:20260727031"
+        },
+        "component": "mandate:53810-002|mandate:54431-002|mandate:54431-004|meeting:20260519007|meeting:20260602006|meeting:20260630005|meeting:20260707004|meeting:20260714001|meeting:20260727031"
+      },
+      {
+        "id": "xsg-v2-rule-001",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:64116-001",
+          "right": "rule:20260708002"
+        },
+        "component": "mandate:64116-001|rule:20260327013|rule:20260402006|rule:20260605008|rule:20260624032|rule:20260708002"
+      },
+      {
+        "id": "xsg-v2-rule-002",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:64116-001",
+          "right": "rule:20260605008"
+        },
+        "component": "mandate:64116-001|rule:20260327013|rule:20260402006|rule:20260605008|rule:20260624032|rule:20260708002"
+      },
+      {
+        "id": "xsg-v2-rule-003",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:64116-001",
+          "right": "rule:20260402006"
+        },
+        "component": "mandate:64116-001|rule:20260327013|rule:20260402006|rule:20260605008|rule:20260624032|rule:20260708002"
+      },
+      {
+        "id": "xsg-v2-rule-004",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:64116-001",
+          "right": "rule:20260327013"
+        },
+        "component": "mandate:64116-001|rule:20260327013|rule:20260402006|rule:20260605008|rule:20260624032|rule:20260708002"
+      },
+      {
+        "id": "xsg-v2-rule-005",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:64116-001",
+          "right": "rule:20260624032"
+        },
+        "component": "mandate:64116-001|rule:20260327013|rule:20260402006|rule:20260605008|rule:20260624032|rule:20260708002"
+      },
+      {
+        "id": "xsg-v2-rule-006",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:60651-001",
+          "right": "rule:20260522008"
+        },
+        "component": "mandate:60651-001|mandate:60651-002|mandate:60651-003|rule:20260522007|rule:20260522008"
+      },
+      {
+        "id": "xsg-v2-rule-007",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:60651-002",
+          "right": "rule:20260522008"
+        },
+        "component": "mandate:60651-001|mandate:60651-002|mandate:60651-003|rule:20260522007|rule:20260522008"
+      },
+      {
+        "id": "xsg-v2-rule-008",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:60651-003",
+          "right": "rule:20260522008"
+        },
+        "component": "mandate:60651-001|mandate:60651-002|mandate:60651-003|rule:20260522007|rule:20260522008"
+      },
+      {
+        "id": "xsg-v2-rule-009",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:54963-001",
+          "right": "rule:20260406002"
+        },
+        "component": "mandate:54963-001|rule:20260406002"
+      },
+      {
+        "id": "xsg-v2-rule-010",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:60651-001",
+          "right": "rule:20260522007"
+        },
+        "component": "mandate:60651-001|mandate:60651-002|mandate:60651-003|rule:20260522007|rule:20260522008"
+      },
+      {
+        "id": "xsg-v2-rule-011",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:61935-010",
+          "right": "rule:20260715041"
+        },
+        "component": "mandate:61935-010|mandate:61935-012|mandate:61935-015|rule:20260707025|rule:20260715041"
+      },
+      {
+        "id": "xsg-v2-rule-012",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:61935-012",
+          "right": "rule:20260715041"
+        },
+        "component": "mandate:61935-010|mandate:61935-012|mandate:61935-015|rule:20260707025|rule:20260715041"
+      },
+      {
+        "id": "xsg-v2-rule-013",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:61935-015",
+          "right": "rule:20260715041"
+        },
+        "component": "mandate:61935-010|mandate:61935-012|mandate:61935-015|rule:20260707025|rule:20260715041"
+      },
+      {
+        "id": "xsg-v2-rule-014",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:74157-004",
+          "right": "rule:20260728026"
+        },
+        "component": "mandate:74157-004|rule:20260728026"
+      },
+      {
+        "id": "xsg-v2-rule-015",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:61935-010",
+          "right": "rule:20260707025"
+        },
+        "component": "mandate:61935-010|mandate:61935-012|mandate:61935-015|rule:20260707025|rule:20260715041"
       }
     ]
   },
   "all": {
     "mandate_contract": {
       "split": "all",
-      "total": 5,
-      "inferred_total": 5,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 4,
-      "candidates": 4,
-      "true_positive": 4,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 1,
+      "abstentions": 3,
       "abstention_rate": 0.2
     },
     "mandate_land_use": {
       "split": "all",
-      "total": 5,
-      "inferred_total": 5,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 4,
-      "candidates": 4,
-      "true_positive": 4,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 1,
+      "abstentions": 3,
       "abstention_rate": 0.2
     },
     "mandate_meeting": {
       "split": "all",
-      "total": 5,
-      "inferred_total": 5,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 4,
-      "candidates": 4,
-      "true_positive": 4,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 1,
+      "abstentions": 3,
       "abstention_rate": 0.2
     },
     "mandate_rule": {
       "split": "all",
-      "total": 5,
-      "inferred_total": 5,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 4,
-      "candidates": 4,
-      "true_positive": 4,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 1,
+      "abstentions": 3,
       "abstention_rate": 0.2
     }
   },
-  "train": {
-    "mandate_contract": {
-      "split": "train",
-      "total": 4,
-      "inferred_total": 4,
-      "deterministic_rows": 0,
-      "deterministic_gold_positive": 0,
-      "gold_positive": 3,
-      "candidates": 3,
-      "true_positive": 3,
-      "false_positive": 0,
-      "precision": 1,
-      "coverage": 1,
-      "abstentions": 1,
-      "abstention_rate": 0.25
-    },
-    "mandate_land_use": {
-      "split": "train",
-      "total": 2,
-      "inferred_total": 2,
-      "deterministic_rows": 0,
-      "deterministic_gold_positive": 0,
-      "gold_positive": 2,
-      "candidates": 2,
-      "true_positive": 2,
-      "false_positive": 0,
-      "precision": 1,
-      "coverage": 1,
-      "abstentions": 0,
-      "abstention_rate": 0
-    },
-    "mandate_meeting": {
-      "split": "train",
-      "total": 3,
-      "inferred_total": 3,
-      "deterministic_rows": 0,
-      "deterministic_gold_positive": 0,
-      "gold_positive": 3,
-      "candidates": 3,
-      "true_positive": 3,
-      "false_positive": 0,
-      "precision": 1,
-      "coverage": 1,
-      "abstentions": 0,
-      "abstention_rate": 0
-    },
-    "mandate_rule": {
-      "split": "train",
-      "total": 4,
-      "inferred_total": 4,
-      "deterministic_rows": 0,
-      "deterministic_gold_positive": 0,
-      "gold_positive": 3,
-      "candidates": 3,
-      "true_positive": 3,
-      "false_positive": 0,
-      "precision": 1,
-      "coverage": 1,
-      "abstentions": 1,
-      "abstention_rate": 0.25
-    }
-  },
+  "train": {},
   "held_out": {
     "mandate_contract": {
       "split": "held_out",
-      "total": 1,
-      "inferred_total": 1,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 1,
-      "candidates": 1,
-      "true_positive": 1,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 0,
-      "abstention_rate": 0
+      "abstentions": 3,
+      "abstention_rate": 0.2
     },
     "mandate_land_use": {
       "split": "held_out",
-      "total": 3,
-      "inferred_total": 3,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 2,
-      "candidates": 2,
-      "true_positive": 2,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 1,
-      "abstention_rate": 0.3333333333333333
+      "abstentions": 3,
+      "abstention_rate": 0.2
     },
     "mandate_meeting": {
       "split": "held_out",
-      "total": 2,
-      "inferred_total": 2,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 1,
-      "candidates": 1,
-      "true_positive": 1,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 1,
-      "abstention_rate": 0.5
+      "abstentions": 3,
+      "abstention_rate": 0.2
     },
     "mandate_rule": {
       "split": "held_out",
-      "total": 1,
-      "inferred_total": 1,
+      "total": 15,
+      "inferred_total": 15,
       "deterministic_rows": 0,
       "deterministic_gold_positive": 0,
-      "gold_positive": 1,
-      "candidates": 1,
-      "true_positive": 1,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
       "false_positive": 0,
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "coverage": 1,
-      "abstentions": 0,
-      "abstention_rate": 0
+      "abstentions": 3,
+      "abstention_rate": 0.2
     }
   },
   "gate": {
     "mandate_contract": {
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "min_precision": 0.9,
+      "support": 12,
+      "min_support": 12,
+      "support_status": "sufficient",
+      "label_counts": {
+        "same": 12,
+        "different": 3
+      },
+      "source_cohorts": [
+        "dhs_family_shelter_awards",
+        "dhs_shelter_renewals",
+        "dhs_transitional_shelters"
+      ],
       "passed": true,
       "status": "pass"
     },
     "mandate_land_use": {
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "min_precision": 0.9,
+      "support": 12,
+      "min_support": 12,
+      "support_status": "sufficient",
+      "label_counts": {
+        "same": 12,
+        "different": 3
+      },
+      "source_cohorts": [
+        "zap_ulurp_city_map_changes",
+        "zap_ulurp_rezonings",
+        "zap_ulurp_site_selections"
+      ],
       "passed": true,
       "status": "pass"
     },
     "mandate_meeting": {
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "min_precision": 0.9,
+      "support": 12,
+      "min_support": 12,
+      "support_status": "sufficient",
+      "label_counts": {
+        "same": 12,
+        "different": 3
+      },
+      "source_cohorts": [
+        "lpc_hearings_august_2026",
+        "lpc_hearings_july_2026",
+        "lpc_hearings_june_2026"
+      ],
       "passed": true,
       "status": "pass"
     },
     "mandate_rule": {
       "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
       "min_precision": 0.9,
+      "support": 12,
+      "min_support": 12,
+      "support_status": "sufficient",
+      "label_counts": {
+        "same": 12,
+        "different": 3
+      },
+      "source_cohorts": [
+        "dob_energy_and_inspection_rules",
+        "dohmh_lead_and_cooling_tower_rules",
+        "dsny_commercial_waste_zones"
+      ],
       "passed": true,
       "status": "pass"
     }
