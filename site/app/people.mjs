@@ -11,12 +11,13 @@ import {
   staffingAgencyScopePresentation,
 } from "../staffing_agency_scope.mjs";
 import { filterChip } from "../affordance_grammar.mjs";
+import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* ===================== PEOPLE ===================== */
 let SameConsolidation=null;
 let sameConsolidationPromise=null;
 function loadSameConsolidation(){
-  return sameConsolidationPromise||(sameConsolidationPromise=import("../same_consolidation.mjs").then(module=>SameConsolidation=module.createStaffingConsolidationUI({t,escUiHtml,fmtNumber,money,fdt,fdate,REQ_URL,EXT_ATTRS,extSR})));
+  return sameConsolidationPromise||(sameConsolidationPromise=import("../same_consolidation.mjs").then(module=>SameConsolidation=module.createStaffingConsolidationUI({t,escUiHtml,fmtNumber,money,fdt,fdate,REQ_URL,EXT_ATTRS,extSR,listEntityMentionHTML})));
 }
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;

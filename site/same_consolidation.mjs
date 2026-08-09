@@ -125,7 +125,7 @@ export function groupStaffingAppointments(rows) {
 }
 
 export function staffingAppointmentGroupHTML(entry, helpers) {
-  const { t, escUiHtml, fmtNumber, money, fdt, fdate, REQ_URL, EXT_ATTRS, extSR } = helpers;
+  const { t, escUiHtml, fmtNumber, money, fdt, fdate, REQ_URL, EXT_ATTRS, extSR, listEntityMentionHTML } = helpers;
   const item = entry.members[0];
   const members = [...entry.members].sort((a, b) => a.person.localeCompare(b.person));
   const date = (value) => {
@@ -135,6 +135,9 @@ export function staffingAppointmentGroupHTML(entry, helpers) {
     return fdt(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`, { dateOnly: true });
   };
   const role = item.role || t("staffing_unknown_role", { code: escUiHtml(item.title_code || "—") });
+  const agencyHTML = typeof listEntityMentionHTML === "function"
+    ? listEntityMentionHTML({kind:"agency",value:item.agency,escape:escUiHtml,relation:"appoints_staff"})
+    : escUiHtml(item.agency);
   const salary = money(item.salary);
   const pay = salary
     ? Number(item.salary) === 1
@@ -147,7 +150,7 @@ export function staffingAppointmentGroupHTML(entry, helpers) {
     pay,
   ].filter(Boolean).join(" · ");
   const facts = [
-    `<span class="staffing-hire-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</span>`,
+    `<span class="staffing-hire-agency" lang="en" dir="ltr">${agencyHTML}</span>`,
     item.title_code ? `<span class="staffing-hire-fact">${escUiHtml(t("staffing_title_code", { code: item.title_code }))}</span>` : "",
     item.published_at ? `<span class="staffing-hire-date">${escUiHtml(t("staffing_appointment_group_posted", { date: fdate(item.published_at) }))}</span>` : "",
   ].filter(Boolean).join("");
@@ -159,7 +162,10 @@ export function staffingAppointmentGroupHTML(entry, helpers) {
 }
 
 export function createStaffingConsolidationUI(helpers) {
-  const { t, escUiHtml, money, fdate, REQ_URL, EXT_ATTRS, extSR } = helpers;
+  const { t, escUiHtml, money, fdate, REQ_URL, EXT_ATTRS, extSR, listEntityMentionHTML } = helpers;
+  const agencyHTML = (item) => typeof listEntityMentionHTML === "function"
+    ? listEntityMentionHTML({kind:"agency",value:item.agency,label:item.agency || "—",escape:escUiHtml,relation:"appoints_staff"})
+    : escUiHtml(item.agency || "—");
   return {
     group: groupStaffingAppointments,
     facetHTML(kind, allKey, field, items, filters, topValues) {
@@ -181,7 +187,7 @@ export function createStaffingConsolidationUI(helpers) {
         <dl class="staffing-hire-fields">
           ${field(t("person_name_label"), person, "staffing-hire-person-field")}
           ${field(t("staffing_title_code", { code: "" }).trim(), titleCode, "staffing-hire-title-field")}
-          ${field(t("agency_label"), `<span lang="en" dir="ltr">${escUiHtml(item.agency || empty)}</span>`, "staffing-hire-agency-field")}
+          ${field(t("agency_label"), `<span lang="en" dir="ltr">${agencyHTML(item)}</span>`, "staffing-hire-agency-field")}
           ${field(t("staffing_effective_date", { date: "" }).trim(), `<span lang="en" dir="ltr">${escUiHtml(item.effective_date || empty)}</span>`)}
           ${field(t("staffing_salary", { amount: "" }).trim(), salary || empty)}
           ${field(t("staffing_appointment_group_posted", { date: "" }).trim(), item.published_at ? fdate(item.published_at) : empty)}
