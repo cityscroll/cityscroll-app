@@ -71,7 +71,7 @@ const {
   matchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink",
+  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -93,6 +93,7 @@ const {
   extractFn("matchText") +
   extractFn("digTitleHTML") +
   extractFn("digEvidenceHTML") +
+  extractFn("listEntityMentionHTML") + ";\n" +
   extractFn("moneyRowHTML") +
   extractDecl("mihOn") +
   extractFn("landRowHTML") +

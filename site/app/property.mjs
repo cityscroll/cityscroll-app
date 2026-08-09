@@ -15,6 +15,7 @@ import {
 } from "../property_disposition_facets.mjs";
 import { bindPropertyScopeFacetRail, propertyDispositionFacetRailsHTML } from "../property_disposition_facets_ui.mjs";
 import { boroughScopeLinksHTML } from "../borough_scope_links.mjs";
+import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* Franchise / concession multi-notice process spine. */
 function franchiseStageLabel(kind){
@@ -863,6 +864,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const propertyAddress=r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
   const title=noticeDisplayTitle(r, t("tab_property")+" "+t("rule_sibling_role_notice")), displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
+  const agencyMention=r.agency_name?listEntityMentionHTML({kind:"agency",value:r.agency_name,escape:escUiHtml,relation:"publishes_record"}):"";
   const mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
@@ -937,7 +939,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
       ${commercialLead}
       ${lead}
       ${dealLine}
-      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
+      <div class="ftype">${r.type_of_notice_description||""}${agencyMention?" · "+agencyMention:""}</div>
       ${processLine}
       ${entry.bbl?`<div class="tax-lien-card-slot" data-tax-lien-bbl="${escUiHtml(entry.bbl)}"></div>`:""}
       ${titleBlock}

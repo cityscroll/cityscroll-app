@@ -2,6 +2,7 @@ import { noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
 import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_links.mjs";
+import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -457,11 +458,14 @@ function moneyRowHTML(r, i, terms){
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
   const actionLocationChip=globalThis.MoneyActionLocations?.moneyActionLocationChipHTML?.(r,{t,esc:escUiHtml})||"";
   const primaryAction=moneyListPrimaryActionHTML(r);
+  const agencyMention=listEntityMentionHTML({kind:"agency",value:r.agency_name,escape:escUiHtml,relation:"publishes_record"});
+  const vendorMention=r.vendor_name?listEntityMentionHTML({kind:"vendor",value:r.vendor_name,escape:escUiHtml,relation:"named_vendor"}):"";
+  const projectMention=r.project_id?listEntityMentionHTML({kind:"project",value:r.project_id,label:r.project_name||r.project_id,escape:escUiHtml,relation:"names_project"}):"";
   return `<article class="money-row-card">
       ${primaryAction}
-      <div class="row" data-i="${i}" tabindex="0" role="button">
+      <div class="row" data-i="${i}" tabindex="0" role="group">
       <p class="rtitle">${digTitleHTML(title, ev)}</p>
-      <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
+      <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${agencyMention}</span>${vendorMention?` · ${vendorMention}`:""}${projectMention?` · ${projectMention}`:""} · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
       ${mwbeChips}
