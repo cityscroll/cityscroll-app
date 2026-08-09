@@ -10,6 +10,10 @@ import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs"
  */
 
 import { makeObjectLink } from "../entity_resolution/cross_domain/object_links.mjs";
+import {
+  DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  routeCrossSpineEdge,
+} from "../entity_resolution/cross_domain/edge_policy.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
@@ -19,6 +23,7 @@ export const MANDATE_CONTRACTS_SCHEMA = "cityscroll.mandate_contracts_bridge.v1"
 export const MANDATE_CONTRACTS_METHOD = "mandate_agency_scope_authority_exact_v1";
 export const MANDATE_CONTRACT_EDGE_TYPE = "implemented_by_contract";
 export const MANDATE_CONTRACT_SIGNAL = "procurement_contract";
+export const MANDATE_CONTRACT_MIN_PRECISION = 0.9;
 
 const PROCUREMENT_TRIGGER = /\b(?:request for proposals|issue (?:a |an )?solicitation|solicit(?:ation)? for|procure(?:ment)?|enter into (?:a |an )?contract|renegotiat\w* (?:qualifying )?existing [^.]{0,80}contracts?|contract (?:with|for)|contracts (?:with|for))\b/i;
 
@@ -124,6 +129,51 @@ function contractLinks(dossier) {
   return byNotice;
 }
 
+function publicationGate(source) {
+  const row = source?.gate?.mandate_contract
+    || source?.gates?.mandate_contract
+    || source?.mandate_contract
+    || null;
+  if (!row) {
+    return {
+      status: "pass",
+      precision: null,
+      min_precision: MANDATE_CONTRACT_MIN_PRECISION,
+      passed: true,
+      source: "committed_policy",
+    };
+  }
+  const precision = Number(row.precision);
+  const minPrecision = Number(row.min_precision ?? MANDATE_CONTRACT_MIN_PRECISION);
+  const passed = (row.passed === true || row.status === "pass")
+    && Number.isFinite(precision)
+    && Number.isFinite(minPrecision)
+    && precision >= MANDATE_CONTRACT_MIN_PRECISION
+    && precision >= minPrecision;
+  return {
+    status: passed ? "pass" : (row.status === "fail" ? "fail" : "insufficient"),
+    precision: Number.isFinite(precision) ? precision : null,
+    min_precision: Number.isFinite(minPrecision) ? minPrecision : MANDATE_CONTRACT_MIN_PRECISION,
+    passed,
+    gold_version: clean(source?.gold_version || row.gold_version, 120) || null,
+    eval_version: clean(source?.eval_version || row.eval_version, 120) || null,
+  };
+}
+
+function crossSpinePolicy(gate) {
+  return {
+    ...DEFAULT_CROSS_SPINE_EDGE_POLICY,
+    gates: {
+      ...DEFAULT_CROSS_SPINE_EDGE_POLICY.gates,
+      mandate_contract: {
+        status: gate.passed ? "pass" : (gate.status || "insufficient"),
+        min_precision: gate.min_precision,
+        precision: gate.precision,
+      },
+    },
+  };
+}
+
 function emptyView(identity, sources) {
   return {
     schema: MANDATE_CONTRACTS_SCHEMA,
@@ -134,6 +184,7 @@ function emptyView(identity, sources) {
     subject_ref: `agency:id:${identity.canonical_id}`,
     counts: { mandates: 0, procurement_records: 0, contracts: 0 },
     edges: [],
+    shadow_edges: [],
     share_path: agencyMandateContractsPath(identity.canonical_id),
     browse_href: clean(sources.contractsBrowseHref, 500),
     follow_href: clean(sources.contractsFollowHref, 500)
@@ -155,8 +206,11 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
     .filter(isProcurementMandate);
   const notices = procurementObjects(sources.intelligenceDossier);
   const linksByNotice = contractLinks(sources.intelligenceDossier);
+  const gate = publicationGate(sources.crossSpineGate);
+  const edgePolicy = crossSpinePolicy(gate);
   const limit = Math.max(1, Math.min(Number(sources.limit) || 16, 40));
   const edges = [];
+  const shadowEdges = [];
   const seen = new Set();
 
   for (const mandate of mandates) {
@@ -202,6 +256,33 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
           },
           decision: "link",
         };
+        const route = routeCrossSpineEdge({
+          relation: "mandate_contract",
+          features: evidence.features,
+          evidence,
+          provenance: {
+            source_system: clean(contractLink.provenance?.source_system, 120),
+            source_record_id: sourceRecordId,
+          },
+        }, { policy: edgePolicy });
+        if (route.tier !== "public_inferred") {
+          shadowEdges.push({
+            id: `${mandateId}:${contractId}`,
+            mandate: `mandate:${mandateId}`,
+            procurement_record: notice,
+            contract: contractLink.to,
+            match: evidence,
+            decision: "evidence_only",
+            reason: route.reason,
+            edge_policy: {
+              tier: route.tier,
+              reason: route.reason,
+              policy_version: route.policy_version,
+              evidence: route.evidence,
+            },
+          });
+          continue;
+        }
         const edge = makeObjectLink({
           type: MANDATE_CONTRACT_EDGE_TYPE,
           from: `mandate:${mandateId}`,
@@ -264,6 +345,12 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
             status: "observed",
             observed_record: contractLink.to,
           },
+          edge_policy: {
+            tier: route.tier,
+            reason: route.reason,
+            policy_version: route.policy_version,
+            evidence: route.evidence,
+          },
           claim,
         });
         if (edges.length >= limit) break;
@@ -273,7 +360,13 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
     if (edges.length >= limit) break;
   }
 
-  if (!edges.length) return emptyView(identity, sources);
+  if (!edges.length) {
+    return {
+      ...emptyView(identity, sources),
+      shadow_edges: shadowEdges,
+      publication_gate: gate,
+    };
+  }
   return {
     ...emptyView(identity, sources),
     status: "matched",
@@ -281,8 +374,11 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
       mandates: new Set(edges.map((row) => row.mandate_id)).size,
       procurement_records: new Set(edges.map((row) => row.procurement_record.subject_ref)).size,
       contracts: new Set(edges.map((row) => row.contract.subject_ref)).size,
+      shadow_edges: shadowEdges.length,
     },
     edges,
+    shadow_edges: shadowEdges,
+    publication_gate: gate,
   };
 }
 
