@@ -16,6 +16,7 @@
  *   --limit N   cap each domain (default 100 rules / 120 meetings)
  *   --window D  look-back days (default 180)
  *   --skip-people  do not refresh people snapshot (rules/meetings only)
+ *   --rules-only  refresh only the rules snapshot
  *   --people-only  refresh only people (from meeting-outcomes roll_call densify)
  *   --residual-only  re-stamp only IDs in the dated Meetings location receipt
  */
@@ -34,6 +35,10 @@ import {
 import { ruleLocationFromRow } from "../site/rule_location.mjs";
 import { compactDerivationStamp } from "../site/location_derivation.mjs";
 import { buildPersonVotesLookup } from "../site/person_votes.mjs";
+import {
+  RULE_EVIDENCE_STAMP_SCHEMA,
+  extractRuleEvidenceStamp,
+} from "../site/rule_evidence_stamps.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
@@ -102,6 +107,7 @@ function parseArgs(argv) {
     meetingsLimit: 120,
     windowDays: 180,
     skipPeople: false,
+    rulesOnly: false,
     peopleOnly: false,
     residualOnly: false,
   };
@@ -109,6 +115,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === "--check") out.check = true;
     else if (a === "--skip-people") out.skipPeople = true;
+    else if (a === "--rules-only") out.rulesOnly = true;
     else if (a === "--people-only") out.peopleOnly = true;
     else if (a === "--residual-only") out.residualOnly = true;
     else if (a === "--limit" && argv[i + 1]) {
@@ -124,6 +131,7 @@ function parseArgs(argv) {
   }
   if (out.peopleOnly) out.skipPeople = false;
   if (out.residualOnly) out.skipPeople = true;
+  if (out.rulesOnly) out.skipPeople = true;
   return out;
 }
 
@@ -292,6 +300,7 @@ function cleanRule(row) {
     type_of_notice_description: fullRow.type_of_notice_description,
     section_name: fullRow.section_name,
     source_system: "city_record",
+    rule_evidence: extractRuleEvidenceStamp(fullRow),
   };
   const place = compactPlaceStamp(
     ruleLoc.scope === "local" || ruleLoc.scope === "citywide" ? ruleLoc : hearingArea,
@@ -638,20 +647,23 @@ async function main() {
     `section_name='Agency Rules' AND start_date >= '${since}T00:00:00'`,
     args.rulesLimit,
   );
-  const hearingsRaw = await sodaFetch(
-    `(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND start_date >= '${since}T00:00:00'`,
-    args.meetingsLimit,
-  );
+  const hearingsRaw = args.rulesOnly
+    ? []
+    : await sodaFetch(
+      `(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND start_date >= '${since}T00:00:00'`,
+      args.meetingsLimit,
+    );
 
   const rules = rulesRaw.map(cleanRule).filter(Boolean);
   const meetings = hearingsRaw.map(cleanHearing).filter(Boolean);
 
   const rulesDoc = {
-    schema_version: 1,
+    schema_version: 2,
+    rule_evidence_schema: RULE_EVIDENCE_STAMP_SCHEMA,
     domain: "rules",
     title: "Rules domain observations for entity intelligence",
     description:
-      "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Mirrors the city_record side of rules:materialized:v2; no invented contract/vendor joins.",
+      "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Source prose is reduced to bounded rule-evidence stamps and discarded; no invented contract/vendor joins.",
     retrieved_at: retrievedAt,
     window_days: args.windowDays,
     source: {
@@ -687,15 +699,17 @@ async function main() {
 
   mkdirSync(path.dirname(OUT_RULES), { recursive: true });
   writeFileSync(OUT_RULES, `${JSON.stringify(rulesDoc, null, 2)}\n`);
-  writeFileSync(OUT_MEETINGS, `${JSON.stringify(meetingsDoc, null, 2)}\n`);
+  if (!args.rulesOnly) writeFileSync(OUT_MEETINGS, `${JSON.stringify(meetingsDoc, null, 2)}\n`);
   console.log(
     `wrote ${path.relative(ROOT, OUT_RULES)} rows=${rulesDoc.row_count} agencies=${rulesDoc.agency_count}`,
   );
-  console.log(
-    `wrote ${path.relative(ROOT, OUT_MEETINGS)} rows=${meetingsDoc.row_count} agencies=${meetingsDoc.agency_count}`,
-  );
+  if (!args.rulesOnly) {
+    console.log(
+      `wrote ${path.relative(ROOT, OUT_MEETINGS)} rows=${meetingsDoc.row_count} agencies=${meetingsDoc.agency_count}`,
+    );
+  }
 
-  if (!args.skipPeople) {
+  if (!args.skipPeople && !args.rulesOnly) {
     const { rows: peopleRows, seedNotices, eligibleEventIds } = await fetchPeopleRows(meetings);
     writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds);
   }

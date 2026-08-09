@@ -2448,6 +2448,14 @@ both the live and restored databases.
 - v1 detectors: `rulemaking` and `report` against Agency Rules / report-shaped
   City Record notices (agency identity + topic-token join). Other deliverable
   types wait for a stronger detector.
+- Rulemaking evidence stamps are derived by the pure
+  `site/rule_evidence_stamps.mjs` extractor. The rules snapshot builder reads
+  source body fields transiently, commits only bounded topic/citation keys,
+  lifecycle/date enums, and discards the prose. `normalizeObservationCandidate`
+  and `evaluateRuleEvidence` consume the stamp through the existing
+  `mandate_rule` policy gate. Refresh rules alone with
+  `node tools/build_rules_meetings_domain_observations.mjs --rules-only`; verify
+  with `node --test test/rule_evidence_stamps.test.mjs`.
 - Surface: agency constellation `#mandates-conformance` (shareable
   `/agencies/<id>/#mandates-conformance`). Seams left for full event logs and
   Process Mining Manifesto enrichment later.

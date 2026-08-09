@@ -1,0 +1,84 @@
+[
+  {
+    "name": "proposal",
+    "row": {
+      "short_title": "Proposed Rules for Pedestrian Plaza Commercial Activity",
+      "type_of_notice_description": "Public Hearings",
+      "additional_description_1": "The proposed rules regulate pedestrian plaza commercial activity."
+    },
+    "expected": {
+      "lifecycle_status": "proposal",
+      "topic_keys": ["pedestrian", "plaza", "commercial", "activity"],
+      "body_topic_keys": ["pedestrian", "plaza", "commercial", "activity"],
+      "negative_evidence": []
+    }
+  },
+  {
+    "name": "hearing",
+    "row": {
+      "short_title": "Notice of Public Hearing on Lead Dust Rules",
+      "type_of_notice_description": "Public Hearings",
+      "event_date": "2026-06-12T10:00:00.000",
+      "additional_description_1": "A public hearing will consider lead dust containment requirements. Call 555-0199 to testify."
+    },
+    "expected": {
+      "lifecycle_status": "hearing",
+      "topic_keys": ["lead", "dust", "containment", "requirements"],
+      "negative_evidence": []
+    }
+  },
+  {
+    "name": "adoption",
+    "row": {
+      "short_title": "Notice of Adoption of Sidewalk Shed Rules",
+      "additional_description_1": "The amendments governing sidewalk sheds were adopted on June 3, 2026."
+    },
+    "expected": {
+      "lifecycle_status": "adopted",
+      "adoption_date": "2026-06-03",
+      "negative_evidence": []
+    }
+  },
+  {
+    "name": "withdrawal",
+    "row": {
+      "short_title": "Withdrawal of Proposed Outdoor Dining Rules",
+      "other_info_1": "The proposal is withdrawn and will not be adopted."
+    },
+    "expected": {
+      "lifecycle_status": "withdrawn",
+      "negative_evidence": ["rule_withdrawn", "rule_not_adopted"]
+    }
+  },
+  {
+    "name": "repeal",
+    "row": {
+      "short_title": "Repeal of Commercial Waste Zone Rules",
+      "printout_1": "The existing commercial waste zone provisions are repealed."
+    },
+    "expected": {
+      "lifecycle_status": "repealed",
+      "negative_evidence": ["rule_repealed"]
+    }
+  },
+  {
+    "name": "citations",
+    "row": {
+      "short_title": "Rule concerning street vending",
+      "additional_description_1": "Authorized by New York City Charter § 1043 and Administrative Code § 19-157(c)(2), and amending 6 RCNY § 2-317."
+    },
+    "expected": {
+      "citation_keys": ["nyc-charter:1043", "nyc-admin-code:19-157(c)(2)", "rcny:6:2-317"]
+    }
+  },
+  {
+    "name": "effective date",
+    "row": {
+      "short_title": "Notice of Change of Effective Date for SHIELD rules",
+      "additional_description_1": "The amended rule shall take effect on September 15, 2026."
+    },
+    "expected": {
+      "effective_date": "2026-09-15"
+    }
+  }
+]
