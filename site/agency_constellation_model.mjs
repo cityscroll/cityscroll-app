@@ -607,6 +607,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     obligationsLookup: obligations,
     entityIntelligence: sources.intelligence || null,
     landProjects: sources.land_projects || null,
+    crossSpineGate: sources.cross_spine_gate || null,
     generatedAt: sources.land_projects?.materialized_at
       || sources.intelligence?.generated_at
       || sources.generated_at,
@@ -665,7 +666,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     ...(mandatesMeetings?.status === "matched"
       ? { mandates_meetings: mandatesMeetings }
       : {}),
-    ...(mandatesLandUse?.status === "matched"
+    ...(mandatesLandUse?.status === "matched" || mandatesLandUse?.shadow_edges?.length
       ? { mandates_land_use: mandatesLandUse }
       : {}),
     mandates_reports: mandatesReports,
