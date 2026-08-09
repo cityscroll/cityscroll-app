@@ -493,7 +493,7 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
 /**
  * Build one agency constellation view from committed materializations.
  * @param {string} idOrName
- * @param {{ intelligence?: object, certification?: object, obligations?: object, generated_at?: string }} sources
+ * @param {{ intelligence?: object, certification?: object, obligations?: object, cross_spine_gate?: object, generated_at?: string }} sources
  */
 export function buildAgencyConstellationView(idOrName, sources = {}) {
   const identity = resolveAgencyIdentity(idOrName);
@@ -599,6 +599,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     generatedAt: sources.meetings_domain?.generated_at
       || sources.generated_at
       || sources.process_conformance?.generated_at,
+    crossSpineGate: sources.cross_spine_gate || null,
     perMandateLimit: 3,
   });
 
