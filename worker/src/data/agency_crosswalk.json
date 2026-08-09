@@ -1,7 +1,7 @@
 {
   "_provenance": {
     "description": "Agency-identity crosswalk: City Record agency strings → canonical identity + budget, joined from NYC/NYS Open Data. Static snapshot; regenerate with tools/build_agency_crosswalk.mjs.",
-    "downloaded": "2026-07-27",
+    "downloaded": "2026-08-09",
     "sources": [
       {
         "id": "t3jq-9nkf",
@@ -9,7 +9,7 @@
         "attribution": "Office of Technology and Innovation (OTI)",
         "url": "https://data.cityofnewyork.us/d/t3jq-9nkf",
         "rows": 306,
-        "updated": "2026-07-27",
+        "updated": "2026-08-09",
         "provides": [
           "canonical_name",
           "acronym",
@@ -38,7 +38,7 @@
         "name": "The City Record Online",
         "attribution": "Department of Citywide Administrative Services (DCAS)",
         "url": "https://data.cityofnewyork.us/d/dg92-zbpx",
-        "updated": "2026-07-26",
+        "updated": "2026-08-05",
         "role": "enumerated the distinct agency strings that appear in notices"
       }
     ],
@@ -48,6 +48,11 @@
   },
   "entries": {
     "board-of-elections": {
+      "variants": [
+        "BOARD OF ELECTION",
+        "BOARD OF ELECTION POLL WORKERS",
+        "Board of Elections"
+      ],
       "canonical_name": "Board of Elections",
       "acronym": "BOE",
       "org_type": "Advisory or Regulatory Organization",
@@ -61,6 +66,10 @@
       "match_method": "normalized+budget"
     },
     "police-department": {
+      "variants": [
+        "POLICE DEPARTMENT",
+        "Police Department"
+      ],
       "canonical_name": "New York City Police Department",
       "acronym": "NYPD",
       "org_type": "Mayoral Agency",
@@ -74,6 +83,10 @@
       "match_method": "normalized+budget"
     },
     "education": {
+      "variants": [
+        "DEPARTMENT OF EDUCATION ADMIN",
+        "Education"
+      ],
       "canonical_name": "New York City Public Schools",
       "acronym": "NYCPS",
       "org_type": "Mayoral Agency",
@@ -87,6 +100,10 @@
       "match_method": "normalized+budget"
     },
     "parks-and-recreation": {
+      "variants": [
+        "DEPT OF PARKS & RECREATION",
+        "Parks and Recreation"
+      ],
       "canonical_name": "Department of Parks and Recreation",
       "acronym": "DPR",
       "org_type": "Mayoral Agency",
@@ -100,6 +117,10 @@
       "match_method": "normalized+budget"
     },
     "fire-department": {
+      "variants": [
+        "FIRE DEPARTMENT",
+        "Fire Department"
+      ],
       "canonical_name": "Fire Department of the City of New York",
       "acronym": "FDNY",
       "org_type": "Mayoral Agency",
@@ -113,6 +134,10 @@
       "match_method": "normalized+budget"
     },
     "sanitation": {
+      "variants": [
+        "DEPARTMENT OF SANITATION",
+        "Sanitation"
+      ],
       "canonical_name": "New York City Department of Sanitation",
       "acronym": "DSNY",
       "org_type": "Mayoral Agency",
@@ -126,6 +151,11 @@
       "match_method": "normalized+budget"
     },
     "human-resources-administration": {
+      "variants": [
+        "Dept. of Social Svcs/Human Resources Administration",
+        "HRA/DEPT OF SOCIAL SERVICES",
+        "Human Resources Administration"
+      ],
       "canonical_name": "Human Resources Administration",
       "acronym": "HRA",
       "org_type": "Division",
@@ -139,6 +169,11 @@
       "match_method": "normalized"
     },
     "health-and-mental-hygiene": {
+      "variants": [
+        "DEPT OF HEALTH/MENTAL HYGIENE",
+        "DEPT OF MH MR AND ALC SVCS",
+        "Health and Mental Hygiene"
+      ],
       "canonical_name": "Department of Health and Mental Hygiene",
       "acronym": "DOHMH",
       "org_type": "Mayoral Agency",
@@ -152,6 +187,10 @@
       "match_method": "normalized+budget"
     },
     "correction": {
+      "variants": [
+        "Correction",
+        "DEPARTMENT OF CORRECTION"
+      ],
       "canonical_name": "Department of Correction",
       "acronym": "DOC",
       "org_type": "Mayoral Agency",
@@ -165,6 +204,11 @@
       "match_method": "normalized+budget"
     },
     "citywide-administrative-services": {
+      "variants": [
+        "Citywide Administrative Services",
+        "DEPT OF CITYWIDE ADMIN SVCS",
+        "PUBLIC SERVICE CORPS"
+      ],
       "canonical_name": "Department of Citywide Administrative Services",
       "acronym": "DCAS",
       "org_type": "Mayoral Agency",
@@ -178,6 +222,10 @@
       "match_method": "normalized+budget"
     },
     "environmental-protection": {
+      "variants": [
+        "DEPT OF ENVIRONMENT PROTECTION",
+        "Environmental Protection"
+      ],
       "canonical_name": "Department of Environmental Protection",
       "acronym": "DEP",
       "org_type": "Mayoral Agency",
@@ -191,6 +239,10 @@
       "match_method": "normalized"
     },
     "transportation": {
+      "variants": [
+        "DEPARTMENT OF TRANSPORTATION",
+        "Transportation"
+      ],
       "canonical_name": "New York City Department of Transportation",
       "acronym": "NYC DOT",
       "org_type": "Mayoral Agency",
@@ -204,6 +256,20 @@
       "match_method": "normalized+budget"
     },
     "city-university": {
+      "variants": [
+        "Borough Of Manhattan Community College",
+        "COMMUNITY COLLEGE (BRONX)",
+        "COMMUNITY COLLEGE (HOSTOS)",
+        "COMMUNITY COLLEGE (KINGSBORO)",
+        "COMMUNITY COLLEGE (LAGUARDIA)",
+        "COMMUNITY COLLEGE (MANHATTAN)",
+        "COMMUNITY COLLEGE (QUEENSBORO)",
+        "CUNY CENTRAL OFFICE",
+        "City University",
+        "GUTTMAN COMMUNITY COLLEGE",
+        "HUNTER COLLEGE HIGH SCHOOL",
+        "Kingsborough Community College"
+      ],
       "canonical_name": "City University of New York",
       "acronym": "CUNY",
       "org_type": "State Government Agency",
@@ -217,6 +283,10 @@
       "match_method": "normalized+budget"
     },
     "housing-preservation-and-development": {
+      "variants": [
+        "HOUSING PRESERVATION & DVLPMNT",
+        "Housing Preservation and Development"
+      ],
       "canonical_name": "Department of Housing Preservation and Development",
       "acronym": "HPD",
       "org_type": "Mayoral Agency",
@@ -230,6 +300,10 @@
       "match_method": "normalized+budget"
     },
     "district-attorney-new-york-county": {
+      "variants": [
+        "DISTRICT ATTORNEY-MANHATTAN",
+        "District Attorney - New York County"
+      ],
       "canonical_name": "Manhattan District Attorney's Office",
       "acronym": null,
       "org_type": "Elected Office",
@@ -243,6 +317,10 @@
       "match_method": "alias"
     },
     "homeless-services": {
+      "variants": [
+        "DEPT. OF HOMELESS SERVICES",
+        "Homeless Services"
+      ],
       "canonical_name": "Department of Homeless Services",
       "acronym": "DHS",
       "org_type": "Division",
@@ -256,6 +334,9 @@
       "match_method": "normalized+budget"
     },
     "housing-authority": {
+      "variants": [
+        "Housing Authority"
+      ],
       "canonical_name": "New York City Housing Authority",
       "acronym": "NYCHA",
       "org_type": "Public Benefit or Development Organization",
@@ -269,6 +350,10 @@
       "match_method": "normalized"
     },
     "finance": {
+      "variants": [
+        "DEPARTMENT OF FINANCE",
+        "Finance"
+      ],
       "canonical_name": "Department of Finance",
       "acronym": "DOF",
       "org_type": "Mayoral Agency",
@@ -282,6 +367,10 @@
       "match_method": "normalized+budget"
     },
     "buildings": {
+      "variants": [
+        "Buildings",
+        "DEPARTMENT OF BUILDINGS"
+      ],
       "canonical_name": "Department of Buildings",
       "acronym": "DOB",
       "org_type": "Mayoral Agency",
@@ -294,20 +383,11 @@
       "budget_fy": 2027,
       "match_method": "normalized+budget"
     },
-    "administration-for-childrens-services": {
-      "canonical_name": "Administration for Children's Services",
-      "acronym": "ACS",
-      "org_type": "Mayoral Agency",
-      "url": "https://www.nyc.gov/site/acs/index.page",
-      "head_name": "Rebecca Jones Gaston",
-      "head_title": "Commissioner",
-      "reports_to": "Deputy Mayor for Health and Human Services",
-      "budget_code": "068",
-      "budget_adopted": 3141750019,
-      "budget_fy": 2027,
-      "match_method": "normalized+budget"
-    },
     "law-department": {
+      "variants": [
+        "LAW DEPARTMENT",
+        "Law Department"
+      ],
       "canonical_name": "New York City Law Department",
       "acronym": "LAW",
       "org_type": "Mayoral Agency",
@@ -320,7 +400,33 @@
       "budget_fy": 2027,
       "match_method": "normalized+budget"
     },
+    "administration-for-childrens-services": {
+      "variants": [
+        "ADMIN FOR CHILDREN' SVCS",
+        "ADMIN FOR CHILDREN'S SERVICES",
+        "ADMIN FOR CHILDREN'S SVCS",
+        "ADMIN FOR CHILDRENS SERVICES",
+        "ADMIN FOR CHILDRENS SVCS",
+        "Administration for Children's Services"
+      ],
+      "canonical_name": "Administration for Children's Services",
+      "acronym": "ACS",
+      "org_type": "Mayoral Agency",
+      "url": "https://www.nyc.gov/site/acs/index.page",
+      "head_name": "Rebecca Jones Gaston",
+      "head_title": "Commissioner",
+      "reports_to": "Deputy Mayor for Health and Human Services",
+      "budget_code": "068",
+      "budget_adopted": 3141750019,
+      "budget_fy": 2027,
+      "match_method": "normalized+budget"
+    },
     "design-and-construction": {
+      "variants": [
+        "DEPT. OF DESIGN & CONSTRUCTION",
+        "DESIGN AND CONSTRUCTION",
+        "Design and Construction"
+      ],
       "canonical_name": "Department of Design and Construction",
       "acronym": "DDC",
       "org_type": "Mayoral Agency",
@@ -334,6 +440,10 @@
       "match_method": "normalized+budget"
     },
     "district-attorney-queens-county": {
+      "variants": [
+        "DISTRICT ATTORNEY QNS COUNTY",
+        "District Attorney - Queens County"
+      ],
       "canonical_name": "Queens District Attorney's Office",
       "acronym": null,
       "org_type": "Elected Office",
@@ -347,6 +457,10 @@
       "match_method": "normalized+budget"
     },
     "district-attorney-bronx-county": {
+      "variants": [
+        "BRONX DISTRICT ATTORNEY",
+        "District Attorney - Bronx County"
+      ],
       "canonical_name": "Bronx District Attorney's Office",
       "acronym": null,
       "org_type": "Elected Office",
@@ -360,6 +474,9 @@
       "match_method": "normalized+budget"
     },
     "nyc-health-hospitals": {
+      "variants": [
+        "NYC Health + Hospitals"
+      ],
       "canonical_name": "NYC Health + Hospitals",
       "acronym": "H+H",
       "org_type": "Public Benefit or Development Organization",
@@ -373,6 +490,11 @@
       "match_method": "normalized"
     },
     "information-technology-and-telecommunications": {
+      "variants": [
+        "DEPT OF INFO TECH & TELECOMM",
+        "Information Technology and Telecommunications",
+        "TECHNOLOGY & INNOVATION"
+      ],
       "canonical_name": "Office of Technology and Innovation",
       "acronym": "OTI",
       "org_type": "Mayoral Office",
@@ -386,6 +508,10 @@
       "match_method": "alias"
     },
     "district-attorney-kings-county": {
+      "variants": [
+        "DISTRICT ATTORNEY KINGS COUNTY",
+        "District Attorney - Kings County"
+      ],
       "canonical_name": "Brooklyn District Attorney's Office",
       "acronym": null,
       "org_type": "Elected Office",
@@ -399,6 +525,10 @@
       "match_method": "normalized+budget"
     },
     "office-of-the-mayor": {
+      "variants": [
+        "OFFICE OF THE MAYOR",
+        "Office of the Mayor"
+      ],
       "canonical_name": "Office of the Mayor",
       "acronym": "OM",
       "org_type": "Elected Office",
@@ -412,6 +542,10 @@
       "match_method": "normalized"
     },
     "city-council": {
+      "variants": [
+        "CITY COUNCIL",
+        "City Council"
+      ],
       "canonical_name": "New York City Council",
       "acronym": "NYCC",
       "org_type": "Elected Office",
@@ -425,6 +559,10 @@
       "match_method": "normalized+budget"
     },
     "probation": {
+      "variants": [
+        "DEPARTMENT OF PROBATION",
+        "Probation"
+      ],
       "canonical_name": "Department of Probation",
       "acronym": "DOP",
       "org_type": "Mayoral Agency",
@@ -438,6 +576,10 @@
       "match_method": "normalized+budget"
     },
     "aging": {
+      "variants": [
+        "Aging",
+        "DEPARTMENT FOR THE AGING"
+      ],
       "canonical_name": "Department for the Aging",
       "acronym": "NYC AGING",
       "org_type": "Mayoral Agency",
@@ -451,6 +593,10 @@
       "match_method": "normalized+budget"
     },
     "comptroller": {
+      "variants": [
+        "Comptroller",
+        "OFFICE OF THE COMPTROLLER"
+      ],
       "canonical_name": "Office of the New York City Comptroller",
       "acronym": null,
       "org_type": "Elected Office",
@@ -464,6 +610,10 @@
       "match_method": "normalized+budget"
     },
     "youth-and-community-development": {
+      "variants": [
+        "DEPT OF YOUTH & COMM DEV SRVS",
+        "Youth and Community Development"
+      ],
       "canonical_name": "Department of Youth and Community Development",
       "acronym": "DYCD",
       "org_type": "Mayoral Agency",
@@ -477,6 +627,10 @@
       "match_method": "normalized+budget"
     },
     "mayors-office-of-contract-services": {
+      "variants": [
+        "MAYORS OFFICE OF CONTRACT SVCS",
+        "Mayor's Office of Contract Services"
+      ],
       "canonical_name": "Mayor's Office of Contract Services",
       "acronym": "MOCS",
       "org_type": "Mayoral Office",
@@ -490,6 +644,10 @@
       "match_method": "normalized"
     },
     "taxi-and-limousine-commission": {
+      "variants": [
+        "TAXI & LIMOUSINE COMMISSION",
+        "Taxi and Limousine Commission"
+      ],
       "canonical_name": "New York City Taxi and Limousine Commission",
       "acronym": "TLC",
       "org_type": "Mayoral Agency",
@@ -503,6 +661,11 @@
       "match_method": "normalized+budget"
     },
     "management-and-budget": {
+      "variants": [
+        "Management and Budget",
+        "OFFICE OF MANAGEMENT & BUDGET",
+        "OFFICE OF MANAGEMENT AND BUDGET"
+      ],
       "canonical_name": "Mayor's Office of Management and Budget",
       "acronym": "OMB",
       "org_type": "Mayoral Office",
@@ -516,6 +679,10 @@
       "match_method": "alias"
     },
     "administrative-trials-and-hearings": {
+      "variants": [
+        "ADMIN TRIALS AND HEARINGS",
+        "Administrative Trials and Hearings"
+      ],
       "canonical_name": "Office of Administrative Trials and Hearings",
       "acronym": "OATH",
       "org_type": "Mayoral Agency",
@@ -529,6 +696,9 @@
       "match_method": "normalized+budget"
     },
     "school-construction-authority": {
+      "variants": [
+        "School Construction Authority"
+      ],
       "canonical_name": "School Construction Authority",
       "acronym": "SCA",
       "org_type": "Public Benefit or Development Organization",
@@ -542,6 +712,10 @@
       "match_method": "normalized"
     },
     "city-planning": {
+      "variants": [
+        "City Planning",
+        "DEPARTMENT OF CITY PLANNING"
+      ],
       "canonical_name": "Department of City Planning",
       "acronym": "DCP",
       "org_type": "Mayoral Agency",
@@ -555,6 +729,10 @@
       "match_method": "normalized+budget"
     },
     "civilian-complaint-review-board": {
+      "variants": [
+        "CIVILIAN COMPLAINT REVIEW BD",
+        "Civilian Complaint Review Board"
+      ],
       "canonical_name": "Civilian Complaint Review Board",
       "acronym": "CCRB",
       "org_type": "Advisory or Regulatory Organization",
@@ -568,6 +746,10 @@
       "match_method": "normalized+budget"
     },
     "teachers-retirement-system": {
+      "variants": [
+        "TEACHERS RETIREMENT SYSTEM",
+        "Teachers' Retirement System"
+      ],
       "canonical_name": "Teachers' Retirement System of City of New York",
       "acronym": "TRS",
       "org_type": "Pension Fund",
@@ -581,6 +763,10 @@
       "match_method": "normalized"
     },
     "small-business-services": {
+      "variants": [
+        "DEPARTMENT OF BUSINESS SERV.",
+        "Small Business Services"
+      ],
       "canonical_name": "Department of Small Business Services",
       "acronym": "SBS",
       "org_type": "Mayoral Agency",
@@ -594,6 +780,11 @@
       "match_method": "normalized+budget"
     },
     "consumer-and-worker-protection": {
+      "variants": [
+        "CONSUMER AFFAIRS",
+        "CONSUMER AND WORKER PROTECTION",
+        "Consumer and Worker Protection"
+      ],
       "canonical_name": "Department of Consumer and Worker Protection",
       "acronym": "DCWP",
       "org_type": "Mayoral Agency",
@@ -607,6 +798,10 @@
       "match_method": "normalized+budget"
     },
     "investigation": {
+      "variants": [
+        "DEPARTMENT OF INVESTIGATION",
+        "Investigation"
+      ],
       "canonical_name": "Department of Investigation",
       "acronym": "DOI",
       "org_type": "Mayoral Agency",
@@ -620,6 +815,10 @@
       "match_method": "normalized+budget"
     },
     "district-attorney-richmond-county": {
+      "variants": [
+        "DISTRICT ATTORNEY RICHMOND COU",
+        "District Attorney - Richmond County"
+      ],
       "canonical_name": "Staten Island District Attorney's Office",
       "acronym": null,
       "org_type": "Elected Office",
@@ -633,6 +832,9 @@
       "match_method": "normalized+budget"
     },
     "economic-development-corporation": {
+      "variants": [
+        "Economic Development Corporation"
+      ],
       "canonical_name": "Economic Development Corporation",
       "acronym": "NYCEDC",
       "org_type": "Public Benefit or Development Organization",
@@ -646,6 +848,10 @@
       "match_method": "normalized"
     },
     "financial-information-services-agency": {
+      "variants": [
+        "FINANCIAL INFO SVCS AGENCY",
+        "Financial Information Services Agency"
+      ],
       "canonical_name": "Financial Information Services Agency",
       "acronym": "FISA",
       "org_type": "Advisory or Regulatory Organization",
@@ -659,6 +865,10 @@
       "match_method": "normalized+budget"
     },
     "emergency-management": {
+      "variants": [
+        "Emergency Management",
+        "OFFICE OF EMERGENCY MANAGEMENT"
+      ],
       "canonical_name": "New York City Emergency Management",
       "acronym": "NYCEM",
       "org_type": "Mayoral Agency",
@@ -672,6 +882,74 @@
       "match_method": "normalized+budget"
     },
     "community-boards": {
+      "variants": [
+        "BRONX COMMUNITY BOARD #1",
+        "BRONX COMMUNITY BOARD #10",
+        "BRONX COMMUNITY BOARD #11",
+        "BRONX COMMUNITY BOARD #12",
+        "BRONX COMMUNITY BOARD #2",
+        "BRONX COMMUNITY BOARD #3",
+        "BRONX COMMUNITY BOARD #4",
+        "BRONX COMMUNITY BOARD #5",
+        "BRONX COMMUNITY BOARD #6",
+        "BRONX COMMUNITY BOARD #7",
+        "BRONX COMMUNITY BOARD #8",
+        "BRONX COMMUNITY BOARD #9",
+        "BRONX COMMUNITY BOARD 2",
+        "BRONX COMMUNITY BOARD 7",
+        "BROOKLYN COMMUNITY BOARD #1",
+        "BROOKLYN COMMUNITY BOARD #10",
+        "BROOKLYN COMMUNITY BOARD #11",
+        "BROOKLYN COMMUNITY BOARD #12",
+        "BROOKLYN COMMUNITY BOARD #13",
+        "BROOKLYN COMMUNITY BOARD #14",
+        "BROOKLYN COMMUNITY BOARD #15",
+        "BROOKLYN COMMUNITY BOARD #16",
+        "BROOKLYN COMMUNITY BOARD #17",
+        "BROOKLYN COMMUNITY BOARD #18",
+        "BROOKLYN COMMUNITY BOARD #2",
+        "BROOKLYN COMMUNITY BOARD #3",
+        "BROOKLYN COMMUNITY BOARD #4",
+        "BROOKLYN COMMUNITY BOARD #5",
+        "BROOKLYN COMMUNITY BOARD #6",
+        "BROOKLYN COMMUNITY BOARD #7",
+        "BROOKLYN COMMUNITY BOARD #8",
+        "BROOKLYN COMMUNITY BOARD #9",
+        "BROOKLYN COMMUNITY BOARD 4",
+        "Community Boards",
+        "MANHATTAN COMMUNITY BOARD #1",
+        "MANHATTAN COMMUNITY BOARD #10",
+        "MANHATTAN COMMUNITY BOARD #11",
+        "MANHATTAN COMMUNITY BOARD #12",
+        "MANHATTAN COMMUNITY BOARD #2",
+        "MANHATTAN COMMUNITY BOARD #3",
+        "MANHATTAN COMMUNITY BOARD #4",
+        "MANHATTAN COMMUNITY BOARD #5",
+        "MANHATTAN COMMUNITY BOARD #6",
+        "MANHATTAN COMMUNITY BOARD #7",
+        "MANHATTAN COMMUNITY BOARD #8",
+        "MANHATTAN COMMUNITY BOARD #9",
+        "QUEENS COMMUNITY BOARD #1",
+        "QUEENS COMMUNITY BOARD #10",
+        "QUEENS COMMUNITY BOARD #11",
+        "QUEENS COMMUNITY BOARD #12",
+        "QUEENS COMMUNITY BOARD #13",
+        "QUEENS COMMUNITY BOARD #14",
+        "QUEENS COMMUNITY BOARD #2",
+        "QUEENS COMMUNITY BOARD #3",
+        "QUEENS COMMUNITY BOARD #4",
+        "QUEENS COMMUNITY BOARD #5",
+        "QUEENS COMMUNITY BOARD #6",
+        "QUEENS COMMUNITY BOARD #7",
+        "QUEENS COMMUNITY BOARD #8",
+        "QUEENS COMMUNITY BOARD #9",
+        "QUEENS COMMUNITY BOARD 14",
+        "QUEENS COMMUNITY BOARD 2",
+        "QUEENS COMMUNITY BOARD 5",
+        "STATEN ISLAND COMMUNITY BD #1",
+        "STATEN ISLAND COMMUNITY BD #2",
+        "STATEN ISLAND COMMUNITY BD #3"
+      ],
       "canonical_name": "Community Boards",
       "acronym": "CB",
       "org_type": "Advisory or Regulatory Organization",
@@ -685,6 +963,11 @@
       "match_method": "normalized"
     },
     "office-of-special-narcotics-prosecutor": {
+      "variants": [
+        "DISTRICT ATTORNEY-SPECIAL NARC",
+        "Office of Special Narcotics Prose",
+        "Office of the Special Narcotics Prosecutor"
+      ],
       "canonical_name": "Office of the Special Narcotics Prosecutor",
       "acronym": null,
       "org_type": "Division",
@@ -698,6 +981,10 @@
       "match_method": "normalized"
     },
     "commission-on-human-rights": {
+      "variants": [
+        "Commission on Human Rights",
+        "HUMAN RIGHTS COMMISSION"
+      ],
       "canonical_name": "City Commission on Human Rights",
       "acronym": "CCHR",
       "org_type": "Advisory or Regulatory Organization",
@@ -711,6 +998,10 @@
       "match_method": "normalized+budget"
     },
     "campaign-finance-board": {
+      "variants": [
+        "CAMPAIGN FINANCE BOARD",
+        "Campaign Finance Board"
+      ],
       "canonical_name": "Campaign Finance Board",
       "acronym": "CFB",
       "org_type": "Advisory or Regulatory Organization",
@@ -724,6 +1015,10 @@
       "match_method": "normalized+budget"
     },
     "landmarks-preservation-commission": {
+      "variants": [
+        "LANDMARKS PRESERVATION COMM",
+        "Landmarks Preservation Commission"
+      ],
       "canonical_name": "Landmarks Preservation Commission",
       "acronym": "LPC",
       "org_type": "Advisory or Regulatory Organization",
@@ -737,6 +1032,10 @@
       "match_method": "normalized+budget"
     },
     "office-of-labor-relations": {
+      "variants": [
+        "OFFICE OF LABOR RELATIONS",
+        "Office of Labor Relations"
+      ],
       "canonical_name": "Office of Labor Relations",
       "acronym": "OLR",
       "org_type": "Mayoral Office",
@@ -750,6 +1049,10 @@
       "match_method": "normalized"
     },
     "public-advocate": {
+      "variants": [
+        "PUBLIC ADVOCATE",
+        "Public Advocate"
+      ],
       "canonical_name": "Office of the Public Advocate",
       "acronym": "PUB ADV",
       "org_type": "Elected Office",
@@ -763,6 +1066,9 @@
       "match_method": "normalized+budget"
     },
     "mayors-office-of-criminal-justice": {
+      "variants": [
+        "Mayor's Office of Criminal Justice"
+      ],
       "canonical_name": "Mayor's Office of Criminal Justice",
       "acronym": "MOCJ",
       "org_type": "Mayoral Office",
@@ -776,6 +1082,9 @@
       "match_method": "normalized"
     },
     "chief-medical-examiner": {
+      "variants": [
+        "Chief Medical Examiner"
+      ],
       "canonical_name": "Office of the Chief Medical Examiner",
       "acronym": "OCME",
       "org_type": "Mayoral Agency",
@@ -789,6 +1098,10 @@
       "match_method": "normalized"
     },
     "payroll-administration": {
+      "variants": [
+        "OFF OF PAYROLL ADMINISTRATION",
+        "Payroll Administration"
+      ],
       "canonical_name": "Office of Payroll Administration",
       "acronym": "OPA",
       "org_type": "Mayoral Agency",
@@ -802,6 +1115,10 @@
       "match_method": "normalized+budget"
     },
     "borough-president-brooklyn": {
+      "variants": [
+        "BOROUGH PRESIDENT-BROOKLYN",
+        "Borough President - Brooklyn"
+      ],
       "canonical_name": "Office of the Borough President of Brooklyn",
       "acronym": null,
       "org_type": "Elected Office",
@@ -815,6 +1132,9 @@
       "match_method": "normalized+budget"
     },
     "board-of-standards-and-appeals": {
+      "variants": [
+        "Board of Standards and Appeals"
+      ],
       "canonical_name": "Board of Standards and Appeals",
       "acronym": "BSA",
       "org_type": "Advisory or Regulatory Organization",
@@ -828,6 +1148,10 @@
       "match_method": "normalized"
     },
     "borough-president-manhattan": {
+      "variants": [
+        "Borough President - Manhattan",
+        "PRESIDENT BOROUGH OF MANHATTAN"
+      ],
       "canonical_name": "Office of the Borough President of Manhattan",
       "acronym": null,
       "org_type": "Elected Office",
@@ -841,6 +1165,10 @@
       "match_method": "normalized+budget"
     },
     "business-integrity-commission": {
+      "variants": [
+        "BUSINESS INTEGRITY COMMISSION",
+        "Business Integrity Commission"
+      ],
       "canonical_name": "Business Integrity Commission",
       "acronym": "BIC",
       "org_type": "Advisory or Regulatory Organization",
@@ -854,6 +1182,10 @@
       "match_method": "normalized+budget"
     },
     "borough-president-queens": {
+      "variants": [
+        "BOROUGH PRESIDENT-QUEENS",
+        "Borough President - Queens"
+      ],
       "canonical_name": "Office of the Borough President of Queens",
       "acronym": null,
       "org_type": "Elected Office",
@@ -867,6 +1199,9 @@
       "match_method": "normalized+budget"
     },
     "city-planning-commission": {
+      "variants": [
+        "City Planning Commission"
+      ],
       "canonical_name": "City Planning Commission",
       "acronym": "CPC",
       "org_type": "Advisory or Regulatory Organization",
@@ -880,6 +1215,10 @@
       "match_method": "normalized"
     },
     "records-and-information-services": {
+      "variants": [
+        "DEPT OF RECORDS & INFO SERVICE",
+        "Records and Information Services"
+      ],
       "canonical_name": "Department of Records and Information Services",
       "acronym": "DORIS",
       "org_type": "Mayoral Agency",
@@ -893,6 +1232,10 @@
       "match_method": "normalized+budget"
     },
     "borough-president-bronx": {
+      "variants": [
+        "BOROUGH PRESIDENT-BRONX",
+        "Borough President - Bronx"
+      ],
       "canonical_name": "Office of the Borough President of The Bronx",
       "acronym": null,
       "org_type": "Elected Office",
@@ -906,6 +1249,10 @@
       "match_method": "normalized+budget"
     },
     "cultural-affairs": {
+      "variants": [
+        "CULTURAL AFFAIRS",
+        "Cultural Affairs"
+      ],
       "canonical_name": "Department of Cultural Affairs",
       "acronym": "DCLA",
       "org_type": "Mayoral Agency",
@@ -919,6 +1266,10 @@
       "match_method": "normalized+budget"
     },
     "city-clerk": {
+      "variants": [
+        "CITY CLERK",
+        "City Clerk"
+      ],
       "canonical_name": "Office of the City Clerk",
       "acronym": null,
       "org_type": "Division",
@@ -932,6 +1283,10 @@
       "match_method": "normalized+budget"
     },
     "office-of-collective-bargaining": {
+      "variants": [
+        "OFFICE OF COLLECTIVE BARGAININ",
+        "Office of Collective Bargaining"
+      ],
       "canonical_name": "Office of Collective Bargaining",
       "acronym": "OCB",
       "org_type": "Advisory or Regulatory Organization",
@@ -945,6 +1300,9 @@
       "match_method": "normalized+budget"
     },
     "board-of-education-retirement-system": {
+      "variants": [
+        "Board of Education Retirement System"
+      ],
       "canonical_name": "Board of Education Retirement System",
       "acronym": "BERS",
       "org_type": "Pension Fund",
@@ -958,6 +1316,10 @@
       "match_method": "normalized"
     },
     "independent-budget-office": {
+      "variants": [
+        "INDEPENDENT BUDGET OFFICE",
+        "Independent Budget Office"
+      ],
       "canonical_name": "Independent Budget Office",
       "acronym": "IBO",
       "org_type": "Advisory or Regulatory Organization",
@@ -971,6 +1333,10 @@
       "match_method": "normalized+budget"
     },
     "tax-commission": {
+      "variants": [
+        "TAX COMMISSION",
+        "Tax Commission"
+      ],
       "canonical_name": "New York City Tax Commission",
       "acronym": "TAXCOMM",
       "org_type": "Advisory or Regulatory Organization",
@@ -984,6 +1350,10 @@
       "match_method": "normalized"
     },
     "borough-president-staten-island": {
+      "variants": [
+        "BOROUGH PRESIDENT-STATEN IS",
+        "Borough President - Staten Island"
+      ],
       "canonical_name": "Office of the Borough President of Staten Island",
       "acronym": null,
       "org_type": "Elected Office",
@@ -997,6 +1367,10 @@
       "match_method": "normalized+budget"
     },
     "office-of-the-actuary": {
+      "variants": [
+        "OFFICE OF THE ACTUARY",
+        "Office of The Actuary"
+      ],
       "canonical_name": "New York City Office of the Actuary",
       "acronym": "NYCOA",
       "org_type": "Advisory or Regulatory Organization",
@@ -1010,6 +1384,9 @@
       "match_method": "normalized+budget"
     },
     "public-design-commission": {
+      "variants": [
+        "Public Design Commission"
+      ],
       "canonical_name": "Public Design Commission",
       "acronym": "PDC",
       "org_type": "Advisory or Regulatory Organization",
@@ -1023,6 +1400,9 @@
       "match_method": "normalized"
     },
     "rent-guidelines-board": {
+      "variants": [
+        "Rent Guidelines Board"
+      ],
       "canonical_name": "Rent Guidelines Board",
       "acronym": "RGB",
       "org_type": "Advisory or Regulatory Organization",
@@ -1036,6 +1416,10 @@
       "match_method": "normalized"
     },
     "conflicts-of-interest-board": {
+      "variants": [
+        "CONFLICTS OF INTEREST BOARD",
+        "Conflicts of Interest Board"
+      ],
       "canonical_name": "Conflicts of Interest Board",
       "acronym": "COIB",
       "org_type": "Advisory or Regulatory Organization",
@@ -1049,6 +1433,10 @@
       "match_method": "normalized+budget"
     },
     "board-of-correction": {
+      "variants": [
+        "BOARD OF CORRECTION",
+        "Board of Correction"
+      ],
       "canonical_name": "Board of Correction",
       "acronym": "BOC",
       "org_type": "Advisory or Regulatory Organization",
@@ -1062,6 +1450,9 @@
       "match_method": "normalized+budget"
     },
     "public-library-queens": {
+      "variants": [
+        "Public Library - Queens"
+      ],
       "canonical_name": "Queens Public Library",
       "acronym": "QPL",
       "org_type": "Nonprofit Organization",
@@ -1075,6 +1466,11 @@
       "match_method": "normalized"
     },
     "criminal-justice-coordinator": {
+      "variants": [
+        "CRIMINAL JUSTICE COORDINATOR",
+        "Criminal Justice Coordinator",
+        "OFFICE OF CRIMINAL JUSTICE"
+      ],
       "canonical_name": "Criminal Justice Coordinator",
       "acronym": null,
       "org_type": null,
@@ -1088,6 +1484,9 @@
       "match_method": "budget-only"
     },
     "build-nyc-resource-corporation": {
+      "variants": [
+        "Build NYC Resource Corporation"
+      ],
       "canonical_name": "Build NYC Resource Corporation",
       "acronym": null,
       "org_type": "Public Benefit or Development Organization",
@@ -1101,6 +1500,9 @@
       "match_method": "normalized"
     },
     "industrial-development-agency": {
+      "variants": [
+        "Industrial Development Agency"
+      ],
       "canonical_name": "Industrial Development Agency",
       "acronym": "NYCIDA",
       "org_type": "Public Benefit or Development Organization",
@@ -1114,6 +1516,9 @@
       "match_method": "normalized"
     },
     "environmental-control-board": {
+      "variants": [
+        "Environmental Control Board"
+      ],
       "canonical_name": "Environmental Control Board",
       "acronym": "ECB",
       "org_type": "Advisory or Regulatory Organization",
@@ -1127,6 +1532,9 @@
       "match_method": "normalized"
     },
     "mayors-fund-to-advance-new-york-city": {
+      "variants": [
+        "Mayor's Fund to Advance New York City"
+      ],
       "canonical_name": "Mayor's Fund to Advance New York City",
       "acronym": null,
       "org_type": "Nonprofit Organization",
@@ -1140,6 +1548,9 @@
       "match_method": "normalized"
     },
     "equal-employ-practices-comm": {
+      "variants": [
+        "EQUAL EMPLOY PRACTICES COMM"
+      ],
       "canonical_name": "Equal Employment Practices Commission",
       "acronym": "EEPC",
       "org_type": "Advisory or Regulatory Organization",
@@ -1153,6 +1564,11 @@
       "match_method": "normalized+budget"
     },
     "nyc-department-of-veterans-services": {
+      "variants": [
+        "NYC DEPT OF VETERANS SERVICES",
+        "NYC DEPT OF VETERANS' SERVICES",
+        "Veterans' Services"
+      ],
       "canonical_name": "Department of Veterans' Services",
       "acronym": "DVS",
       "org_type": "Mayoral Agency",
@@ -1166,6 +1582,10 @@
       "match_method": "normalized+budget"
     },
     "public-administrator-kings-county": {
+      "variants": [
+        "PUBLIC ADMINISTRATOR-KINGS",
+        "Public Administrator - Kings County"
+      ],
       "canonical_name": "Kings County Public Administrator",
       "acronym": "KCPA",
       "org_type": "State Government Agency",
@@ -1179,6 +1599,9 @@
       "match_method": "normalized+budget"
     },
     "equal-employment-practices-commission": {
+      "variants": [
+        "Equal Employment Practices Commission"
+      ],
       "canonical_name": "Equal Employment Practices Commission",
       "acronym": "EEPC",
       "org_type": "Advisory or Regulatory Organization",
@@ -1191,20 +1614,10 @@
       "budget_fy": 2027,
       "match_method": "normalized+budget"
     },
-    "mayors-office-of-environmental-coordination": {
-      "canonical_name": "Mayor's Office of Environmental Coordination",
-      "acronym": "MOEC",
-      "org_type": "Mayoral Office",
-      "url": "https://www.nyc.gov/site/oec/index.page",
-      "head_name": "Hilary Semel",
-      "head_title": "Director",
-      "reports_to": "Mayor's Office of Climate and Environmental Justice",
-      "budget_code": null,
-      "budget_adopted": null,
-      "budget_fy": null,
-      "match_method": "normalized"
-    },
     "trust-for-governors-island": {
+      "variants": [
+        "Trust for Governors Island"
+      ],
       "canonical_name": "Trust for Governors Island",
       "acronym": null,
       "org_type": "Public Benefit or Development Organization",
@@ -1217,7 +1630,26 @@
       "budget_fy": null,
       "match_method": "normalized"
     },
+    "mayors-office-of-environmental-coordination": {
+      "variants": [
+        "Mayor's Office of Environmental Coordination"
+      ],
+      "canonical_name": "Mayor's Office of Environmental Coordination",
+      "acronym": "MOEC",
+      "org_type": "Mayoral Office",
+      "url": "https://www.nyc.gov/site/oec/index.page",
+      "head_name": "Hilary Semel",
+      "head_title": "Director",
+      "reports_to": "Mayor's Office of Climate and Environmental Justice",
+      "budget_code": null,
+      "budget_adopted": null,
+      "budget_fy": null,
+      "match_method": "normalized"
+    },
     "charter-revision-commission": {
+      "variants": [
+        "Charter Revision Commission"
+      ],
       "canonical_name": "Charter Revision Commission",
       "acronym": null,
       "org_type": "Advisory or Regulatory Organization",
@@ -1231,6 +1663,9 @@
       "match_method": "normalized"
     },
     "new-york-city-police-pension-fund": {
+      "variants": [
+        "New York City Police Pension Fund"
+      ],
       "canonical_name": "New York City Police Pension Fund",
       "acronym": "PPF",
       "org_type": "Pension Fund",
@@ -1244,6 +1679,9 @@
       "match_method": "normalized"
     },
     "procurement-policy-board": {
+      "variants": [
+        "Procurement Policy Board"
+      ],
       "canonical_name": "Procurement Policy Board",
       "acronym": "PPB",
       "org_type": "Advisory or Regulatory Organization",
@@ -1257,6 +1695,9 @@
       "match_method": "normalized"
     },
     "civic-engagement-commission": {
+      "variants": [
+        "Civic Engagement Commission"
+      ],
       "canonical_name": "Civic Engagement Commission",
       "acronym": "CEC",
       "org_type": "Division",
@@ -1270,6 +1711,10 @@
       "match_method": "normalized"
     },
     "civil-service-commission": {
+      "variants": [
+        "CIVIL SERVICE COMMISSION",
+        "Civil Service Commission"
+      ],
       "canonical_name": "Civil Service Commission",
       "acronym": "CSC",
       "org_type": "Advisory or Regulatory Organization",
@@ -1283,6 +1728,10 @@
       "match_method": "normalized+budget"
     },
     "public-administrator-new-york-county": {
+      "variants": [
+        "PUBLIC ADMINISTRATOR-NEW YORK",
+        "Public Administrator - New York County"
+      ],
       "canonical_name": "New York County Public Administrator",
       "acronym": null,
       "org_type": "State Government Agency",
@@ -1296,6 +1745,9 @@
       "match_method": "normalized+budget"
     },
     "hudson-river-park-trust": {
+      "variants": [
+        "Hudson River Park Trust"
+      ],
       "canonical_name": "Hudson River Park Trust",
       "acronym": null,
       "org_type": "Public Benefit or Development Organization",
@@ -1309,6 +1761,9 @@
       "match_method": "normalized"
     },
     "public-administrator-bronx-county": {
+      "variants": [
+        "PUBLIC ADMINISTRATOR-BRONX"
+      ],
       "canonical_name": "Bronx County Public Administrator",
       "acronym": null,
       "org_type": "State Government Agency",
@@ -1322,6 +1777,11 @@
       "match_method": "normalized+budget"
     },
     "commission-on-racial-equity": {
+      "variants": [
+        "COMMISSION ON RACIAL EQUITY",
+        "Commission on Racial Equity",
+        "OFFICE OF RACIAL EQUITY"
+      ],
       "canonical_name": "Commission on Racial Equity",
       "acronym": "CORE",
       "org_type": "Advisory or Regulatory Organization",
@@ -1335,6 +1795,9 @@
       "match_method": "normalized+budget"
     },
     "educational-construction-fund": {
+      "variants": [
+        "Educational Construction Fund"
+      ],
       "canonical_name": "Educational Construction Fund",
       "acronym": "ECF",
       "org_type": "Public Benefit or Development Organization",
@@ -1348,6 +1811,10 @@
       "match_method": "normalized"
     },
     "districting-commission": {
+      "variants": [
+        "DISTRICTING COMMISSION",
+        "Districting Commission"
+      ],
       "canonical_name": "New York City Districting Commission",
       "acronym": null,
       "org_type": "Advisory or Regulatory Organization",
@@ -1361,6 +1828,10 @@
       "match_method": "normalized"
     },
     "public-administrator-queens-county": {
+      "variants": [
+        "PUBLIC ADMINISTRATOR-QUEENS",
+        "Public Administrator - Queens County"
+      ],
       "canonical_name": "Public Administrator of Queens County",
       "acronym": null,
       "org_type": "State Government Agency",
@@ -1374,6 +1845,9 @@
       "match_method": "normalized+budget"
     },
     "mayors-office-of-media-and-entertainment": {
+      "variants": [
+        "Mayor's Office of Media and Entertainment"
+      ],
       "canonical_name": "Mayor's Office of Media and Entertainment",
       "acronym": "MOME",
       "org_type": "Mayoral Office",
@@ -1387,6 +1861,9 @@
       "match_method": "normalized"
     },
     "water-board": {
+      "variants": [
+        "Water Board"
+      ],
       "canonical_name": "New York City Water Board",
       "acronym": "NYWB",
       "org_type": "Public Benefit or Development Organization",
@@ -1400,6 +1877,9 @@
       "match_method": "normalized"
     },
     "loft-board": {
+      "variants": [
+        "Loft Board"
+      ],
       "canonical_name": "New York City Loft Board",
       "acronym": "LOFT",
       "org_type": "Advisory or Regulatory Organization",
@@ -1413,6 +1893,10 @@
       "match_method": "normalized"
     },
     "public-administrator-richmond-county": {
+      "variants": [
+        "PUBLIC ADMINISTRATOR-RICHMOND",
+        "Public Administrator - Richmond County"
+      ],
       "canonical_name": "Richmond County Public Administrator",
       "acronym": null,
       "org_type": "State Government Agency",
@@ -1426,6 +1910,9 @@
       "match_method": "normalized+budget"
     },
     "nyc-and-company": {
+      "variants": [
+        "NYC & Company"
+      ],
       "canonical_name": "New York City Tourism + Conventions",
       "acronym": null,
       "org_type": "Nonprofit Organization",
@@ -1439,6 +1926,9 @@
       "match_method": "normalized"
     },
     "nyc-workforce-development-board": {
+      "variants": [
+        "NYC Workforce Development Board"
+      ],
       "canonical_name": "Workforce Development Board",
       "acronym": null,
       "org_type": "Advisory or Regulatory Organization",
@@ -1452,6 +1942,9 @@
       "match_method": "normalized"
     },
     "mayors-office-of-operations": {
+      "variants": [
+        "Mayor's Office of Operations"
+      ],
       "canonical_name": "Mayor's Office of Operations",
       "acronym": "OPS",
       "org_type": "Mayoral Office",
@@ -1465,6 +1958,9 @@
       "match_method": "normalized"
     },
     "administrative-tax-appeals": {
+      "variants": [
+        "Administrative Tax Appeals"
+      ],
       "canonical_name": "Office of Administrative Tax Appeals",
       "acronym": "OATA",
       "org_type": "Advisory or Regulatory Organization",
@@ -1478,6 +1974,9 @@
       "match_method": "normalized+budget"
     },
     "public-library-brooklyn": {
+      "variants": [
+        "Public Library - Brooklyn"
+      ],
       "canonical_name": "Brooklyn Public Library",
       "acronym": "BPL",
       "org_type": "Nonprofit Organization",
@@ -1491,6 +1990,9 @@
       "match_method": "normalized+budget"
     },
     "banking-commission": {
+      "variants": [
+        "Banking Commission"
+      ],
       "canonical_name": "Banking Commission",
       "acronym": null,
       "org_type": "Advisory or Regulatory Organization",
@@ -1504,6 +2006,9 @@
       "match_method": "normalized"
     },
     "lower-manhattan-development-corporation": {
+      "variants": [
+        "Lower Manhattan Development Corporation"
+      ],
       "canonical_name": "Lower Manhattan Development Corporation",
       "acronym": "LMDC",
       "org_type": "Public Benefit or Development Organization",
@@ -1517,6 +2022,9 @@
       "match_method": "normalized"
     },
     "public-housing-preservation-trust": {
+      "variants": [
+        "Public Housing Preservation Trust"
+      ],
       "canonical_name": "New York City Public Housing Preservation Trust",
       "acronym": null,
       "org_type": "Public Benefit or Development Organization",
@@ -1530,6 +2038,9 @@
       "match_method": "normalized"
     },
     "mayors-office-of-special-enforcement": {
+      "variants": [
+        "Mayor's Office of Special Enforcement"
+      ],
       "canonical_name": "Mayor's Office of Special Enforcement",
       "acronym": "OSE",
       "org_type": "Mayoral Office",
@@ -1543,6 +2054,9 @@
       "match_method": "normalized"
     },
     "metropolitan-transportation-authority": {
+      "variants": [
+        "Metropolitan Transportation Authority"
+      ],
       "canonical_name": "Metropolitan Transportation Authority",
       "acronym": "MTA",
       "org_type": "Public Benefit or Development Organization",

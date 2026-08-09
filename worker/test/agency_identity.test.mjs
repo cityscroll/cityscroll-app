@@ -18,10 +18,14 @@ import assert from "node:assert/strict";
 
 import { normalizeAgencyKey, enrichAgency, aliasTargetFor } from "../src/lib/agency_identity.mjs";
 import { canonicalAgency } from "../src/lib/agencies.mjs";
+import { reconcileAgencyIdentity } from "../../site/agency_identity.mjs";
+import { publisherAgencyRows } from "../../tools/lib/agency_publisher_crosswalk.mjs";
 import crosswalk from "../src/data/agency_crosswalk.json" with { type: "json" };
 import { handleAgency } from "../src/agency.mjs";
 
 const entries = crosswalk.entries;
+const publisherRows = publisherAgencyRows(crosswalk);
+const reconciledAgency = (value) => reconcileAgencyIdentity(value, publisherRows);
 
 // --- normalizeAgencyKey: the two City Record naming conventions must produce ONE key -----------
 
@@ -102,6 +106,35 @@ test("agency rename pairs share one identity card (false-split residual closed)"
     canonicalAgency("Manhattan District Attorney's Office").canonical_id,
     canonicalAgency("Brooklyn District Attorney's Office").canonical_id,
   );
+});
+
+test("route-id collisions collapse only reviewed punctuation and prefix variants", () => {
+  assert.equal(reconciledAgency("N.Y.C. Housing Authority").canonical_id, "housing-authority");
+  assert.equal(reconciledAgency("NYC Housing Authority").canonical_id, "housing-authority");
+  assert.equal(reconciledAgency("Board Of Corrections").canonical_id, "board-of-correction");
+  assert.equal(reconciledAgency("Office Of Administrative Trials And Hearings").canonical_id,
+    "administrative-trials-and-hearings");
+  assert.equal(reconciledAgency("Office Of Payroll Administration").canonical_id,
+    "payroll-administration");
+
+  // A department-prefix bridge must not merge two different correction bodies.
+  assert.equal(canonicalAgency("Department of Correction").canonical_id, "correction");
+  assert.notEqual(
+    canonicalAgency("Department of Correction").canonical_id,
+    reconciledAgency("Board Of Corrections").canonical_id,
+  );
+});
+
+test("unmatched external bodies remain distinct instead of merging into a parent authority", () => {
+  assert.equal(reconciledAgency("N.Y.C. Transit Authority").canonical_id, "n-y-c-transit-authority");
+  assert.equal(reconciledAgency("Triborough Bridge and Tunnel Authority").canonical_id,
+    "triborough-bridge-and-tunnel-authority");
+  assert.notEqual(
+    reconciledAgency("N.Y.C. Transit Authority").canonical_id,
+    reconciledAgency("Metropolitan Transportation Authority").canonical_id,
+  );
+  assert.equal(enrichAgency(entries, "N.Y.C. Transit Authority"), null);
+  assert.equal(enrichAgency(entries, "Triborough Bridge and Tunnel Authority"), null);
 });
 
 test("composition: the join routes through the site's canonicalAgency, not a second resolver", () => {

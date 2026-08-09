@@ -1,6 +1,6 @@
 import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
-import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 
@@ -318,6 +318,19 @@ async function handleEntity(request, env, entity) {
   let id = entity.id;
   try { id = decodeURIComponent(entity.id); } catch (_error) { return new Response("Invalid entity id", { status: 400 }); }
   const url = new URL(request.url);
+  if (entity.family === "agencies") {
+    const aliasTarget = agencyRouteAliasTarget(id);
+    if (aliasTarget && aliasTarget !== id) {
+      url.pathname = `/agencies/${encodeURIComponent(aliasTarget)}/`;
+      return new Response(null, {
+        status: 308,
+        headers: {
+          Location: url.toString(),
+          "Cache-Control": "public, max-age=86400, s-maxage=31536000, immutable",
+        },
+      });
+    }
+  }
   const wantsInteractive = url.searchParams.has("tab");
   // Agency constellation documents are static-first (parcel-biography shape).
   // ?tab= keeps the interactive SPA profile for forecast/deep tabs. Only treat

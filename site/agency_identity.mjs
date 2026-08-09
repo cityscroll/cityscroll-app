@@ -47,7 +47,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "Fire Department": ["FIRE DEPARTMENT"],
   "Health and Mental Hygiene": ["DEPT OF HEALTH/MENTAL HYGIENE", "DEPT OF MH MR AND ALC SVCS"],
   "Homeless Services": ["DEPT. OF HOMELESS SERVICES"],
-  "Housing Authority": ["NYCHA", "N.Y.C. HOUSING AUTHORITY", "NEW YORK CITY HOUSING AUTHORITY"],
+  "Housing Authority": ["NYCHA", "N.Y.C. HOUSING AUTHORITY", "NYC HOUSING AUTHORITY", "NEW YORK CITY HOUSING AUTHORITY"],
   "Housing Preservation and Development": ["HOUSING PRESERVATION & DVLPMNT", "Department of Housing Preservation and Development", "HPD - NYC Dept of Housing Preservation & Development", "HPD - NYC Dept of Housing Preservation and Development"],
   "Human Resources Administration": ["HRA/DEPT OF SOCIAL SERVICES", "Dept. of Social Svcs/Human Resources Administration"],
   "Independent Budget Office": ["INDEPENDENT BUDGET OFFICE"],
@@ -79,6 +79,31 @@ export const AGENCY_GROUPS = Object.freeze({
   "Transportation": ["DEPARTMENT OF TRANSPORTATION"],
   "Youth and Community Development": ["DEPT OF YOUTH & COMM DEV SRVS"],
 });
+
+const ROUTE_ALIAS_TARGETS = new Map([
+  ["board-of-corrections", "board-of-correction"],
+  ["dcasdivision-of-municipal-supply-service", "citywide-administrative-services"],
+  ["district-attorney-special-narcotics", "office-of-special-narcotics-prosecutor"],
+  ["hra-department-of-social-services", "human-resources-administration"],
+  ["mayoralty", "office-of-the-mayor"],
+  ["n-y-c-housing-authority", "housing-authority"],
+  ["new-york-city-police-department", "police-department"],
+  ["nyc-employees-retirement-system", "employees-retirement-system"],
+  ["nyc-health-and-hospitals-corporation", "nyc-health-hospitals"],
+  ["nyc-police-pension-fund", "new-york-city-police-pension-fund"],
+  ["office-of-administrative-trials-and-hearings", "administrative-trials-and-hearings"],
+  ["office-of-contract-services", "mayors-office-of-contract-services"],
+  ["office-of-criminal-justice-002", "mayors-office-of-criminal-justice"],
+  ["office-of-payroll-administration", "payroll-administration"],
+  ["office-of-the-chief-medical-examiner", "chief-medical-examiner"],
+]);
+const STANDALONE_ROUTES = new Map([
+  ["board-meetings", ["Board Meetings", "unresolved"]],
+  ["department-of-social-services", ["Department of Social Services", "legitimate_non_crosswalk_entity"]],
+  ["n-y-c-transit-authority", ["N.Y.C. Transit Authority", "legitimate_non_crosswalk_entity"]],
+  ["new-york-city-fire-pension-fund", ["New York City Fire Pension Fund", "legitimate_non_crosswalk_entity"]],
+  ["triborough-bridge-and-tunnel-authority", ["Triborough Bridge and Tunnel Authority", "legitimate_non_crosswalk_entity", "Triborough Bridge And Tunnel Authority"]],
+]);
 
 function stripDisplaySuffix(value) {
   return String(value || "")
@@ -130,8 +155,35 @@ export function agencyCanonicalId(name) {
   return agencyComparisonKey(name).toLowerCase().replace(/\s+/g, "-");
 }
 
+function uniqueStrings(values) {
+  return [...new Set(values.map((value) => String(value || "").trim()).filter(Boolean))];
+}
+
+function classifiedRouteIdentity(value, { includeSuperseded = false } = {}) {
+  const sourceId = agencyCanonicalId(value);
+  const aliasTarget = ROUTE_ALIAS_TARGETS.get(sourceId);
+  const standalone = STANDALONE_ROUTES.get(sourceId);
+  const isCanonicalTarget = [...ROUTE_ALIAS_TARGETS.values()].includes(sourceId);
+  if ((!includeSuperseded || !aliasTarget) && !standalone && !isCanonicalTarget) return null;
+  const canonical_id = aliasTarget || sourceId;
+  const canonical_name = standalone?.[0]
+    || GROUP_BY_ID.get(canonical_id)?.canonical_name
+    || fallbackName(canonical_id.replace(/-/g, " "));
+  const classification = aliasTarget ? "alias_to_canonical" : (standalone?.[1] || "canonical_route");
+  return Object.freeze({
+    canonical_id,
+    canonical_name,
+    variants: Object.freeze(uniqueStrings([canonical_name, standalone?.[2], value])),
+    matched: classification !== "unresolved",
+    route_classification: classification,
+    superseded_id: aliasTarget ? sourceId : null,
+  });
+}
+
 export function resolveAgencyIdentity(value) {
   const raw = stripDisplaySuffix(value);
+  const classified = classifiedRouteIdentity(raw);
+  if (classified) return classified;
   const routeId = raw.toLowerCase();
   if (GROUP_BY_ID.has(routeId)) return GROUP_BY_ID.get(routeId);
   const key = agencyComparisonKey(raw);
@@ -146,29 +198,56 @@ export function resolveAgencyIdentity(value) {
   return Object.freeze({ canonical_id, canonical_name, variants: Object.freeze([raw || canonical_name].filter(Boolean)), matched: false });
 }
 
-/**
- * Expand a routed identity with the live City Record crosswalk. This is what
- * makes an id-only document route reversible even for agencies outside the
- * small reviewed alias table: every exact source spelling assigned to the id
- * comes back into the query set.
- */
+/** Reconcile a routed identity while preserving publisher source spellings. */
 export function reconcileAgencyIdentity(value, rows) {
-  const local = resolveAgencyIdentity(value);
+  const local = classifiedRouteIdentity(value, { includeSuperseded: true })
+    || resolveAgencyIdentity(value);
   const list = Array.isArray(rows) ? rows : [];
   const inputKey = agencyComparisonKey(value);
-  const sourceMatch = list.find((row) => agencyComparisonKey(row?.raw_string) === inputKey);
-  const canonical_id = String(sourceMatch?.canonical_id || local.canonical_id || "").trim();
-  const grouped = list.filter((row) => String(row?.canonical_id || "").trim() === canonical_id);
-  if (!grouped.length) return local;
-  const canonical_name = String(grouped.find((row) => row?.canonical_name)?.canonical_name || local.canonical_name).trim();
-  const variants = [...new Set(grouped.flatMap((row) => [row?.raw_string, ...(Array.isArray(row?.variants) ? row.variants : [])])
-    .map((item) => String(item || "").trim()).filter(Boolean))];
+  const exactIds = new Set(list.filter((row) => [row?.canonical_id, row?.canonical_name, row?.raw_string, ...(row?.variants || [])]
+    .some((surface) => agencyComparisonKey(surface) === inputKey)).map((row) => row.canonical_id));
+  const directPublisherId = String(value || "").trim().toLowerCase();
+  const directPublisher = list.some((row) => row?.canonical_id === directPublisherId) ? directPublisherId : null;
+  if (!directPublisher && exactIds.size > 1) {
+    return Object.freeze({
+      ...local,
+      matched: false,
+      route_classification: "publisher_collision",
+      collision_ids: Object.freeze([...exactIds].sort()),
+    });
+  }
+  const exactId = directPublisher || (exactIds.size === 1 ? [...exactIds][0] : null);
+  const aliasTarget = ROUTE_ALIAS_TARGETS.get(agencyCanonicalId(value));
+  const canonical_id = String(
+    aliasTarget
+      || exactId
+      || (list.some((row) => row?.canonical_id === local.canonical_id) ? local.canonical_id : "")
+      || local.canonical_id
+      || "",
+  ).trim();
+  const publisher = list.find((row) => row?.canonical_id === canonical_id);
+  if (!publisher) return local;
+  const canonical_name = String(publisher.canonical_name || local.canonical_name).trim();
+  // Preserve every publisher spelling for exact source queries.
+  const variants = uniqueStrings([
+    publisher.raw_string,
+    ...(publisher.variants || []),
+    ...(Array.isArray(local.variants) ? local.variants : []),
+    value,
+    canonical_name,
+  ]);
   return Object.freeze({
     canonical_id,
     canonical_name,
     variants: Object.freeze(variants),
     matched: true,
+    route_classification: local.route_classification || "publisher_crosswalk",
+    superseded_id: local.superseded_id || null,
   });
+}
+
+export function agencyRouteAliasTarget(value) {
+  return ROUTE_ALIAS_TARGETS.get(agencyCanonicalId(value)) || null;
 }
 
 export function canonicalAgency(value) {

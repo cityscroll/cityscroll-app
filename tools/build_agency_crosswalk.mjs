@@ -193,6 +193,10 @@ async function main() {
     const { rec, budget, method } = matchDatasets([site_name, ...variants]);
     if (!rec && !budget) continue; // no identity data → graceful no-match at request time
     entries[canonical_id] = {
+      // Preserve every exact City Record spelling assigned to this identity.
+      // Agency-scoped queries use this bag rather than reconstructing source
+      // strings from the display name.
+      variants: [...new Set(variants)].sort(),
       canonical_name: rec ? rec.canonical_name : site_name, // official roster name, else site name
       acronym: rec ? rec.acronym : null,
       org_type: rec ? rec.org_type : null,

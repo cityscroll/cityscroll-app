@@ -166,10 +166,13 @@ test("the source crosswalk makes canonical agency ids reversible to every exact 
   ];
   const identity = reconcileAgencyIdentity("triborough-bridge-and-tunnel-authority", rows);
   assert.equal(identity.canonical_name, "Triborough Bridge and Tunnel Authority");
-  assert.deepEqual(identity.variants, [
+  for (const sourceSpelling of [
     "Triborough Bridge and Tunnel Authority",
     "TRIBOROUGH BRIDGE & TUNNEL AUTH",
-  ]);
+    "Triborough Bridge And Tunnel Authority",
+  ]) {
+    assert.ok(identity.variants.includes(sourceSpelling), sourceSpelling);
+  }
   assert.equal(identity.matched, true);
 });
 

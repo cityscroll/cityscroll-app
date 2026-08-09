@@ -84,6 +84,14 @@ test("entity routes serve agency constellation documents when present, else the 
   const entity = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/"), env);
   assert.equal(entity.status, 200);
   assert.match(await entity.text(), /id="entityview"/);
+  const housingAlias = await edgeWorker.fetch(new Request(
+    "https://cityscroll.org/agencies/n-y-c-housing-authority/?claim=staffing%3Aexam%3A1017",
+  ), env);
+  assert.equal(housingAlias.status, 308);
+  assert.equal(
+    housingAlias.headers.get("Location"),
+    "https://cityscroll.org/agencies/housing-authority/?claim=staffing%3Aexam%3A1017",
+  );
   const parks = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/parks-and-recreation/"), env);
   assert.equal(parks.status, 200);
   const parksBody = await parks.text();
@@ -143,7 +151,12 @@ test("generated agency pivots round-trip to content-bearing entity routes", asyn
     },
   };
   for (const [href, source] of hrefs) {
-    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
+    let response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
+    if (response.status === 308) {
+      const location = response.headers.get("Location");
+      assert.ok(location, `${source}: ${href} redirect has a target`);
+      response = await edgeWorker.fetch(new Request(location), env);
+    }
     assert.equal(response.status, 200, `${source}: ${href}`);
     const body = await response.text();
     assert.match(body, /id="entityview"|data-civic-object-kind="agency-constellation"|Records by category/, `${source}: ${href}`);
