@@ -15,6 +15,16 @@ import { constellationLink, officialSourceDisclosure } from "./affordance_gramma
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import {
+  RULE_LIFECYCLE_STATUSES,
+  compactCitationLawKeys,
+  compactEvidenceTokens,
+} from "./rule_evidence_stamps.mjs";
+import {
+  CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  routeCrossSpineEdge,
+} from "../entity_resolution/cross_domain/edge_policy.mjs";
 
 export const PROCESS_CONFORMANCE_SCHEMA = "cityscroll.process_conformance.v1";
 export const PROCESS_CONFORMANCE_METHOD = "mandate_expected_vs_observed_v1";
@@ -55,7 +65,7 @@ export const MAX_POST_DEADLINE_PLAUSIBILITY_DAYS = 365;
  * candidates with every relation feature may become a public typed edge.
  * The held-out precision for this relation is measured by tools/cross_spine_eval.mjs.
  */
-export const MANDATE_RULE_MIN_PRECISION = 0.90;
+export const MANDATE_RULE_MIN_PRECISION = CROSS_SPINE_MIN_HELD_OUT_PRECISION;
 export const MANDATE_RULE_PUBLICATION_TIER = "public_inferred";
 export const MANDATE_RULE_EVIDENCE_ONLY_TIER = "evidence_only";
 
@@ -102,20 +112,6 @@ export const CONFORMANCE_COPY = Object.freeze({
 /** @deprecated use CONFORMANCE_COPY — kept as alias for older call sites. */
 export const CONFORMANCE_HONESTY = CONFORMANCE_COPY;
 
-const STOPWORDS = new Set([
-  "a", "an", "the", "and", "or", "of", "to", "in", "on", "for", "by", "with", "from",
-  "as", "at", "is", "are", "be", "been", "was", "were", "will", "shall", "must", "may",
-  "that", "this", "these", "those", "such", "each", "any", "all", "other", "into", "its",
-  "their", "them", "they", "his", "her", "under", "over", "within", "without", "upon",
-  "department", "commissioner", "agency", "city", "new", "york", "nyc", "mayor",
-  "council", "speaker", "submit", "submitted", "regarding", "necessary", "including",
-  "pursuant", "section", "sections", "code", "administrative", "local", "law", "rules",
-  "rule", "promulgate", "implement", "carry", "out", "develop", "ensure", "provide",
-  "prepare", "post", "website", "public", "number", "date", "year", "years", "days",
-  "after", "before", "later", "than", "no", "not", "more", "less", "least", "most",
-  "report", "reports", "study", "plan", "plans", "program", "programs",
-]);
-
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
@@ -142,31 +138,12 @@ function datePart(value) {
 
 /** Normalize legal references without treating a bare agency/title token as law evidence. */
 export function citationLawKeys(value) {
-  const text = clean(value, 600).toLowerCase();
-  if (!text) return [];
-  const keys = [];
-  const patterns = [
-    /(?:§{1,2}|section)\s*[a-z0-9][a-z0-9().-]*/g,
-    /(?:local law|ll|intro|int|file)\s*[a-z0-9][a-z0-9().-]*/g,
-  ];
-  for (const pattern of patterns) {
-    for (const match of text.matchAll(pattern)) {
-      keys.push(match[0].replace(/\s+/g, "").replace(/^section/, "§"));
-    }
-  }
-  return [...new Set(keys)];
+  return compactCitationLawKeys(clean(value, 4000), { limit: 32 });
 }
 
 /** Content tokens for conservative topic join (no stemming). */
 export function contentTokens(text) {
-  return [...new Set(
-    String(text || "")
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, " ")
-      .split(/\s+/)
-      .map((token) => token.trim())
-      .filter((token) => token.length >= 4 && !STOPWORDS.has(token) && !/^\d+$/.test(token)),
-  )];
+  return compactEvidenceTokens(text);
 }
 
 export function expectedEventForDeliverable(deliverableType) {
@@ -201,6 +178,9 @@ export function normalizeObservationCandidate(raw = {}) {
   const section = clean(raw.section_name || raw.section, 80).toLowerCase();
   const type = clean(raw.type_of_notice_description || raw.notice_type || raw.type, 120).toLowerCase();
   const domain = clean(raw.domain || raw.signal_domain, 40).toLowerCase() || null;
+  const stamp = raw.rule_evidence && typeof raw.rule_evidence === "object"
+    ? raw.rule_evidence
+    : {};
   const blob = `${label} ${type} ${section}`.toLowerCase();
   const isRules = domain === "rules"
     || section.includes("agency rules")
@@ -216,6 +196,16 @@ export function normalizeObservationCandidate(raw = {}) {
     else if (isHearing) signalKind = "public_hearing";
     else signalKind = "other_notice";
   }
+  const stampedTopicKeys = Array.isArray(stamp.topic_keys)
+    ? compactEvidenceTokens(stamp.topic_keys.join(" "))
+    : [];
+  const stampedBodyTopicKeys = Array.isArray(stamp.body_topic_keys)
+    ? compactEvidenceTokens(stamp.body_topic_keys.join(" "))
+    : [];
+  const stampedCitationKeys = Array.isArray(stamp.citation_keys)
+    ? stamp.citation_keys.map((item) => clean(item, 120).toLowerCase()).filter(Boolean).slice(0, 32)
+    : [];
+  const lifecycleStatus = clean(stamp.lifecycle_status || raw.lifecycle_status, 40).toLowerCase();
   return {
     request_id: requestId || null,
     label: label || requestId,
@@ -229,17 +219,25 @@ export function normalizeObservationCandidate(raw = {}) {
     source_system: clean(raw.source_system || raw.provenance?.source_system || "city_record", 80),
     body,
     citation,
-    citation_keys: citationLawKeys([
-      citation,
-      raw.law_text,
-      raw.body_text,
-      raw.body,
-      raw.rule_body,
-    ].filter(Boolean).join(" ")),
-    negative_evidence: Array.isArray(raw.negative_evidence)
-      ? raw.negative_evidence.map((item) => clean(item, 120)).filter(Boolean).slice(0, 8)
-      : [],
-    tokens: contentTokens(label),
+    citation_keys: [...new Set([
+      ...stampedCitationKeys,
+      ...citationLawKeys([
+        citation,
+        raw.law_text,
+        raw.body_text,
+        raw.body,
+        raw.rule_body,
+      ].filter(Boolean).join(" ")),
+    ])].slice(0, 32),
+    lifecycle_status: RULE_LIFECYCLE_STATUSES.includes(lifecycleStatus) ? lifecycleStatus : null,
+    effective_date: datePart(stamp.effective_date || raw.effective_date),
+    adoption_date: datePart(stamp.adoption_date || raw.adoption_date),
+    negative_evidence: [...new Set([
+      ...(Array.isArray(stamp.negative_evidence) ? stamp.negative_evidence : []),
+      ...(Array.isArray(raw.negative_evidence) ? raw.negative_evidence : []),
+    ].map((item) => clean(item, 120)).filter(Boolean))].slice(0, 8),
+    tokens: stampedTopicKeys.length ? stampedTopicKeys : contentTokens(label),
+    body_topic_keys: stampedBodyTopicKeys,
   };
 }
 
@@ -360,16 +358,18 @@ function mandateCitationKeys(mandate) {
 }
 
 function candidateCitationKeys(candidate) {
-  return citationLawKeys([
+  return [...new Set([
+    ...(Array.isArray(candidate?.citation_keys) ? candidate.citation_keys : []),
+    ...citationLawKeys([
     candidate?.citation,
-    candidate?.citation_keys?.join(" "),
     candidate?.law_number,
     candidate?.law_number_display,
     candidate?.file_number,
     candidate?.matter_id,
     candidate?.law_text,
     candidate?.body,
-  ].filter(Boolean).join(" "));
+    ].filter(Boolean).join(" ")),
+  ])];
 }
 
 function agencyEvidenceMatches(mandate, candidate) {
@@ -388,7 +388,10 @@ function negativeEvidenceFor(mandate, candidate, temporalCompatible) {
     ? candidate.negative_evidence.slice()
     : [];
   const statusText = `${candidate?.label || ""} ${candidate?.body || ""}`.toLowerCase();
-  if (/\b(withdrawn|repealed|rescinded|superseded|cancelled|canceled|rejected|not adopted)\b/.test(statusText)) {
+  if ([
+    "withdrawn", "repealed", "rescinded", "superseded", "cancelled", "rejected", "not_adopted",
+  ].includes(candidate?.lifecycle_status)
+    || /\b(withdrawn|repealed|rescinded|superseded|cancelled|canceled|rejected|not adopted)\b/.test(statusText)) {
     negative.push("adverse_rule_status");
   }
   if (!temporalCompatible) negative.push("temporal_incompatibility");
@@ -406,15 +409,18 @@ function negativeEvidenceFor(mandate, candidate, temporalCompatible) {
  * Build the relation-specific mandate → rule feature vector. Missing source
  * fields stay missing/false; they never become positive evidence by default.
  */
-export function scoreMandateRuleEvidence(mandate, candidate, { expectedKind = "rule_filing" } = {}) {
+export function evaluateRuleEvidence(mandate, candidate, { expectedKind = "rule_filing" } = {}) {
   const topic = scoreTopicMatch(mandate?.duty_text || mandate?.label || mandate?.action_summary, candidate);
-  const ruleBodyTerms = contentTokens(candidate?.body || "");
+  const ruleBodyTerms = Array.isArray(candidate?.body_topic_keys) && candidate.body_topic_keys.length
+    ? candidate.body_topic_keys
+    : contentTokens(candidate?.body || "");
   const mandateTerms = contentTokens(mandate?.duty_text || mandate?.label || mandate?.action_summary);
   const bodySet = new Set(ruleBodyTerms);
   const ruleBodyOverlap = [...new Set(mandateTerms.filter((term) => bodySet.has(term)))];
   const deadlineDate = validDate(mandate?.deadline?.computed_date || mandate?.deadline_date);
+  const candidateLifecycleDate = candidate?.adoption_date || candidate?.effective_date || candidate?.when;
   const temporalCompatible = candidateWithinDeadlinePlausibility(candidate, deadlineDate)
-    && (!mandate?.effective_date || !candidate?.when || candidate.when >= mandate.effective_date);
+    && (!mandate?.effective_date || !candidateLifecycleDate || candidateLifecycleDate >= mandate.effective_date);
   const mandateKeys = mandateCitationKeys(mandate);
   const candidateKeys = candidateCitationKeys(candidate);
   const citationLawOverlap = mandateKeys.filter((key) => candidateKeys.includes(key));
@@ -431,13 +437,10 @@ export function scoreMandateRuleEvidence(mandate, candidate, { expectedKind = "r
     negative_evidence: negativeEvidence,
     negative_evidence_free: negativeEvidence.length === 0,
   };
-  const publicationEligible = features.agency_exact
-    && features.expected_event_match
-    && features.topic_overlap.length >= 2
-    && features.rule_body_overlap.length >= 1
-    && features.citation_law_match
-    && features.temporal_compatible
-    && features.negative_evidence_free;
+  const route = routeCrossSpineEdge({ relation: "mandate_rule", features });
+  const publicationEligible = route.public === true
+    && route.tier === MANDATE_RULE_PUBLICATION_TIER
+    && Number(route.gate?.min_precision) >= MANDATE_RULE_MIN_PRECISION;
   return {
     ...features,
     topic_score: topic.score,
@@ -445,8 +448,16 @@ export function scoreMandateRuleEvidence(mandate, candidate, { expectedKind = "r
     publication_tier: publicationEligible
       ? MANDATE_RULE_PUBLICATION_TIER
       : MANDATE_RULE_EVIDENCE_ONLY_TIER,
+    policy_gate: {
+      version: DEFAULT_CROSS_SPINE_EDGE_POLICY.version,
+      gold_version: DEFAULT_CROSS_SPINE_EDGE_POLICY.gold_version,
+      min_precision: route.gate?.min_precision || null,
+    },
   };
 }
+
+/** Backward-compatible name for callers that treat evaluation as scoring. */
+export const scoreMandateRuleEvidence = evaluateRuleEvidence;
 
 function candidateWithinDeadlinePlausibility(candidate, deadlineDate) {
   if (!deadlineDate || !candidate?.when) return true;
@@ -510,7 +521,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
     const match = scoreTopicMatch(duty, candidate);
     if (match.score <= 0) continue;
     const evidence = expected.kind === "rule_filing"
-      ? scoreMandateRuleEvidence(mandate, candidate, { expectedKind: expected.kind })
+      ? evaluateRuleEvidence(mandate, candidate, { expectedKind: expected.kind })
       : null;
     if (!best || (evidence?.publication_eligible && !best.evidence?.publication_eligible)
       || (Boolean(evidence?.publication_eligible) === Boolean(best.evidence?.publication_eligible)

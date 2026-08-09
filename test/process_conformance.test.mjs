@@ -13,6 +13,7 @@ import {
   buildAgencyConformanceView,
   buildProcessConformanceLookup,
   contentTokens,
+  evaluateRuleEvidence,
   renderMandatesConformanceSection,
   normalizeObservationCandidate,
   resolveMandateObservation,
@@ -23,6 +24,7 @@ import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
+import { DEFAULT_CROSS_SPINE_EDGE_POLICY } from "../entity_resolution/cross_domain/edge_policy.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
@@ -77,6 +79,44 @@ test("mandate-to-rule evidence requires body and law agreement, not title overla
   assert.equal(evidence.temporal_compatible, true);
   assert.deepEqual(evidence.negative_evidence, []);
   assert.equal(evidence.publication_tier, "public_inferred");
+  assert.equal(evidence.policy_gate.gold_version, DEFAULT_CROSS_SPINE_EDGE_POLICY.gold_version);
+  assert.ok(evidence.policy_gate.min_precision >= 0.90);
+});
+
+test("normalization feeds compact snapshot stamps through the existing rule evaluator", () => {
+  const mandate = {
+    agency_id: "transportation",
+    duty_text: "Promulgate rules relating to pedestrian plaza commercial activity",
+    deliverable_type: "rulemaking",
+    citation: "Administrative Code § 19-157(c)(2)",
+  };
+  const candidate = normalizeObservationCandidate({
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    request_id: "20260601001",
+    short_title: "Proposed Rules for Pedestrian Plaza Commercial Activity",
+    start_date: "2026-06-10T00:00:00.000",
+    section_name: "Agency Rules",
+    rule_evidence: {
+      schema: "cityscroll.rule_evidence_stamp.v1",
+      topic_keys: ["pedestrian", "plaza", "commercial", "activity"],
+      body_topic_keys: ["pedestrian", "plaza", "commercial", "activity"],
+      citation_keys: ["nyc-admin-code:19-157(c)(2)"],
+      lifecycle_status: "adopted",
+      effective_date: "2026-07-01",
+      adoption_date: "2026-06-03",
+      negative_evidence: [],
+    },
+  });
+  assert.equal(candidate.body, null);
+  assert.equal(candidate.lifecycle_status, "adopted");
+  assert.equal(candidate.effective_date, "2026-07-01");
+  assert.deepEqual(candidate.body_topic_keys, ["pedestrian", "plaza", "commercial", "activity"]);
+  const evidence = evaluateRuleEvidence(mandate, candidate);
+  assert.equal(evidence.citation_law_match, true);
+  assert.ok(evidence.rule_body_overlap.includes("pedestrian"));
+  assert.equal(evidence.publication_eligible, true);
+  assert.equal(evidence.policy_gate.gold_version, DEFAULT_CROSS_SPINE_EDGE_POLICY.gold_version);
 });
 
 test("rule candidates with adverse status remain evidence-only", () => {

@@ -2,8 +2,8 @@
   "schema": "cityscroll.process_conformance.v1",
   "method": "mandate_expected_vs_observed_v1",
   "iteration": "v1",
-  "generated_at": "2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z",
-  "as_of": "2026-08-08",
+  "generated_at": "2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z",
+  "as_of": "2026-08-09",
   "copy": {
     "lead": "Statutory mandates with expected public-record events — rule filings, reports — and matching City Record notices when they appear."
   },
@@ -25,7 +25,7 @@
       "agency_id": "administration-for-childrens-services",
       "agency_name": "Administration for Children's Services",
       "subject_ref": "agency:id:administration-for-childrens-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 68,
         "observed": 0,
@@ -1063,7 +1063,7 @@
       "agency_id": "aging",
       "agency_name": "Aging",
       "subject_ref": "agency:id:aging",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 29,
         "observed": 0,
@@ -1516,7 +1516,7 @@
       "agency_id": "board-of-correction",
       "agency_name": "Board of Correction",
       "subject_ref": "agency:id:board-of-correction",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 14,
         "observed": 0,
@@ -1744,7 +1744,7 @@
       "agency_id": "board-of-elections",
       "agency_name": "Board of Elections",
       "subject_ref": "agency:id:board-of-elections",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 58,
         "observed": 0,
@@ -2632,7 +2632,7 @@
       "agency_id": "buildings",
       "agency_name": "Buildings",
       "subject_ref": "agency:id:buildings",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 234,
         "observed": 0,
@@ -6160,7 +6160,7 @@
       "agency_id": "business-integrity-commission",
       "agency_name": "Business Integrity Commission",
       "subject_ref": "agency:id:business-integrity-commission",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 8,
         "observed": 0,
@@ -6298,7 +6298,7 @@
       "agency_id": "campaign-finance-board",
       "agency_name": "Campaign Finance Board",
       "subject_ref": "agency:id:campaign-finance-board",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 73,
         "observed": 0,
@@ -7411,7 +7411,7 @@
       "agency_id": "city-clerk",
       "agency_name": "City Clerk",
       "subject_ref": "agency:id:city-clerk",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 2,
         "observed": 0,
@@ -7459,7 +7459,7 @@
       "agency_id": "city-council",
       "agency_name": "City Council",
       "subject_ref": "agency:id:city-council",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 24,
         "observed": 0,
@@ -7837,7 +7837,7 @@
       "agency_id": "city-planning",
       "agency_name": "City Planning",
       "subject_ref": "agency:id:city-planning",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 9,
         "observed": 0,
@@ -7990,7 +7990,7 @@
       "agency_id": "citywide-administrative-services",
       "agency_name": "Citywide Administrative Services",
       "subject_ref": "agency:id:citywide-administrative-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 72,
         "observed": 0,
@@ -9088,7 +9088,7 @@
       "agency_id": "civilian-complaint-review-board",
       "agency_name": "Civilian Complaint Review Board",
       "subject_ref": "agency:id:civilian-complaint-review-board",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 3,
         "observed": 0,
@@ -9151,7 +9151,7 @@
       "agency_id": "commission-on-human-rights",
       "agency_name": "Commission on Human Rights",
       "subject_ref": "agency:id:commission-on-human-rights",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 45,
         "observed": 0,
@@ -9844,7 +9844,7 @@
       "agency_id": "commission-on-racial-equity",
       "agency_name": "Commission on Racial Equity",
       "subject_ref": "agency:id:commission-on-racial-equity",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 16,
         "observed": 0,
@@ -10102,7 +10102,7 @@
       "agency_id": "comptroller",
       "agency_name": "Comptroller",
       "subject_ref": "agency:id:comptroller",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 37,
         "observed": 0,
@@ -10675,7 +10675,7 @@
       "agency_id": "consumer-and-worker-protection",
       "agency_name": "Consumer and Worker Protection",
       "subject_ref": "agency:id:consumer-and-worker-protection",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 160,
         "observed": 0,
@@ -13093,7 +13093,7 @@
       "agency_id": "correction",
       "agency_name": "Correction",
       "subject_ref": "agency:id:correction",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 205,
         "observed": 0,
@@ -16186,7 +16186,7 @@
       "agency_id": "criminal-justice-coordinator",
       "agency_name": "Criminal Justice Coordinator",
       "subject_ref": "agency:id:criminal-justice-coordinator",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 14,
         "observed": 0,
@@ -16414,7 +16414,7 @@
       "agency_id": "cultural-affairs",
       "agency_name": "Cultural Affairs",
       "subject_ref": "agency:id:cultural-affairs",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 6,
         "observed": 0,
@@ -16522,7 +16522,7 @@
       "agency_id": "education",
       "agency_name": "Education",
       "subject_ref": "agency:id:education",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 123,
         "observed": 0,
@@ -18385,7 +18385,7 @@
       "agency_id": "emergency-management",
       "agency_name": "Emergency Management",
       "subject_ref": "agency:id:emergency-management",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 12,
         "observed": 0,
@@ -18583,7 +18583,7 @@
       "agency_id": "environmental-protection",
       "agency_name": "Environmental Protection",
       "subject_ref": "agency:id:environmental-protection",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 128,
         "observed": 0,
@@ -20521,7 +20521,7 @@
       "agency_id": "finance",
       "agency_name": "Finance",
       "subject_ref": "agency:id:finance",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 147,
         "observed": 0,
@@ -22744,7 +22744,7 @@
       "agency_id": "fire-department",
       "agency_name": "Fire Department",
       "subject_ref": "agency:id:fire-department",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 58,
         "observed": 0,
@@ -23632,7 +23632,7 @@
       "agency_id": "health-and-mental-hygiene",
       "agency_name": "Health and Mental Hygiene",
       "subject_ref": "agency:id:health-and-mental-hygiene",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 259,
         "observed": 0,
@@ -27535,7 +27535,7 @@
       "agency_id": "homeless-services",
       "agency_name": "Homeless Services",
       "subject_ref": "agency:id:homeless-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 46,
         "observed": 0,
@@ -28243,7 +28243,7 @@
       "agency_id": "housing-preservation-and-development",
       "agency_name": "Housing Preservation and Development",
       "subject_ref": "agency:id:housing-preservation-and-development",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 145,
         "observed": 0,
@@ -30436,7 +30436,7 @@
       "agency_id": "human-resources-administration",
       "agency_name": "Human Resources Administration",
       "subject_ref": "agency:id:human-resources-administration",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 102,
         "observed": 0,
@@ -31984,7 +31984,7 @@
       "agency_id": "independent-budget-office",
       "agency_name": "Independent Budget Office",
       "subject_ref": "agency:id:independent-budget-office",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 5,
         "observed": 0,
@@ -32077,7 +32077,7 @@
       "agency_id": "information-technology-and-telecommunications",
       "agency_name": "Information Technology and Telecommunications",
       "subject_ref": "agency:id:information-technology-and-telecommunications",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 29,
         "observed": 0,
@@ -32530,7 +32530,7 @@
       "agency_id": "investigation",
       "agency_name": "Investigation",
       "subject_ref": "agency:id:investigation",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 21,
         "observed": 0,
@@ -32863,7 +32863,7 @@
       "agency_id": "landmarks-preservation-commission",
       "agency_name": "Landmarks Preservation Commission",
       "subject_ref": "agency:id:landmarks-preservation-commission",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 6,
         "observed": 0,
@@ -32971,7 +32971,7 @@
       "agency_id": "law-department",
       "agency_name": "Law Department",
       "subject_ref": "agency:id:law-department",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 27,
         "observed": 0,
@@ -33394,7 +33394,7 @@
       "agency_id": "management-and-budget",
       "agency_name": "Management and Budget",
       "subject_ref": "agency:id:management-and-budget",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 3,
         "observed": 0,
@@ -33457,7 +33457,7 @@
       "agency_id": "mayors-office-of-contract-services",
       "agency_name": "Mayor's Office of Contract Services",
       "subject_ref": "agency:id:mayors-office-of-contract-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 8,
         "observed": 0,
@@ -33595,7 +33595,7 @@
       "agency_id": "nyc-department-of-veterans-services",
       "agency_name": "NYC Department of Veterans' Services",
       "subject_ref": "agency:id:nyc-department-of-veterans-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 10,
         "observed": 0,
@@ -33763,7 +33763,7 @@
       "agency_id": "office-of-collective-bargaining",
       "agency_name": "Office of Collective Bargaining",
       "subject_ref": "agency:id:office-of-collective-bargaining",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 2,
         "observed": 0,
@@ -33811,7 +33811,7 @@
       "agency_id": "office-of-the-mayor",
       "agency_name": "Office of the Mayor",
       "subject_ref": "agency:id:office-of-the-mayor",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 197,
         "observed": 0,
@@ -36784,7 +36784,7 @@
       "agency_id": "parks-and-recreation",
       "agency_name": "Parks and Recreation",
       "subject_ref": "agency:id:parks-and-recreation",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 59,
         "observed": 0,
@@ -37687,7 +37687,7 @@
       "agency_id": "police-department",
       "agency_name": "Police Department",
       "subject_ref": "agency:id:police-department",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 133,
         "observed": 0,
@@ -39700,7 +39700,7 @@
       "agency_id": "probation",
       "agency_name": "Probation",
       "subject_ref": "agency:id:probation",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 15,
         "observed": 0,
@@ -39943,7 +39943,7 @@
       "agency_id": "public-advocate",
       "agency_name": "Public Advocate",
       "subject_ref": "agency:id:public-advocate",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 7,
         "observed": 0,
@@ -40066,7 +40066,7 @@
       "agency_id": "records-and-information-services",
       "agency_name": "Records and Information Services",
       "subject_ref": "agency:id:records-and-information-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 1,
         "observed": 0,
@@ -40099,7 +40099,7 @@
       "agency_id": "sanitation",
       "agency_name": "Sanitation",
       "subject_ref": "agency:id:sanitation",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 51,
         "observed": 0,
@@ -40143,7 +40143,12 @@
               "negative_evidence_free": true,
               "topic_score": 3,
               "publication_eligible": false,
-              "publication_tier": "evidence_only"
+              "publication_tier": "evidence_only",
+              "policy_gate": {
+                "version": "cross_spine_edge_policy_v2",
+                "gold_version": "cross_spine_gold_v3",
+                "min_precision": 0.9
+              }
             }
           },
           "match": {
@@ -40171,7 +40176,12 @@
               "negative_evidence_free": true,
               "topic_score": 3,
               "publication_eligible": false,
-              "publication_tier": "evidence_only"
+              "publication_tier": "evidence_only",
+              "policy_gate": {
+                "version": "cross_spine_edge_policy_v2",
+                "gold_version": "cross_spine_gold_v3",
+                "min_precision": 0.9
+              }
             }
           },
           "is_compliance_verdict": false,
@@ -40208,7 +40218,12 @@
               "negative_evidence_free": true,
               "topic_score": 2,
               "publication_eligible": false,
-              "publication_tier": "evidence_only"
+              "publication_tier": "evidence_only",
+              "policy_gate": {
+                "version": "cross_spine_edge_policy_v2",
+                "gold_version": "cross_spine_gold_v3",
+                "min_precision": 0.9
+              }
             }
           },
           "match": {
@@ -40234,7 +40249,12 @@
               "negative_evidence_free": true,
               "topic_score": 2,
               "publication_eligible": false,
-              "publication_tier": "evidence_only"
+              "publication_tier": "evidence_only",
+              "policy_gate": {
+                "version": "cross_spine_edge_policy_v2",
+                "gold_version": "cross_spine_gold_v3",
+                "min_precision": 0.9
+              }
             }
           },
           "is_compliance_verdict": false,
@@ -40982,7 +41002,7 @@
       "agency_id": "small-business-services",
       "agency_name": "Small Business Services",
       "subject_ref": "agency:id:small-business-services",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 58,
         "observed": 0,
@@ -41870,7 +41890,7 @@
       "agency_id": "tax-commission",
       "agency_name": "Tax Commission",
       "subject_ref": "agency:id:tax-commission",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 2,
         "observed": 0,
@@ -41918,7 +41938,7 @@
       "agency_id": "taxi-and-limousine-commission",
       "agency_name": "Taxi and Limousine Commission",
       "subject_ref": "agency:id:taxi-and-limousine-commission",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 65,
         "observed": 0,
@@ -42911,7 +42931,7 @@
       "agency_id": "transportation",
       "agency_name": "Transportation",
       "subject_ref": "agency:id:transportation",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 124,
         "observed": 0,
@@ -44789,7 +44809,7 @@
       "agency_id": "youth-and-community-development",
       "agency_name": "Youth and Community Development",
       "subject_ref": "agency:id:youth-and-community-development",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-09",
       "counts": {
         "total": 11,
         "observed": 0,

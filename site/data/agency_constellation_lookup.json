@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T15:17:29.522Z",
+  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-09T15:17:29.522Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -2938,7 +2938,7 @@
     "intelligence_generated_at": "2026-08-09T15:17:29.522Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z",
+    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z",
     "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, mandates, and process-conformance expected-vs-observed."
   }
 }
