@@ -7,6 +7,7 @@ import {
   BROWSE_FACETS,
   buildBrowseLanding,
   buildBrowseView,
+  browseActionTime,
   renderBrowseLanding,
   renderBrowseView,
 } from "../site/browse_view.mjs";
@@ -235,6 +236,25 @@ test("Browse edge filtering is semantic and uses a copy-free live-filter loading
   assert.match(html, /class="note warn browse-filter-disclosure"[^>]+role="status"/);
   assert.doesNotMatch(html, /need the live Browse controls|bounded default|until the page is enhanced/i);
   assert.doesNotMatch(html, /Bronx tree care/);
+});
+
+test("Browse record cards lead with typed action time and keep undated rows title-led", () => {
+  assert.deepEqual(
+    browseActionTime("contracts", { due_date: "2026-08-09T10:30:00.000" }),
+    { label: "Responses due", date: "2026-08-09T10:30:00.000" },
+  );
+  assert.deepEqual(
+    browseActionTime("meetings", { type_of_notice_description: "Public Hearings", event_date: "2026-08-19T10:00:00.000" }),
+    { label: "Hearing", date: "2026-08-19T10:00:00.000" },
+  );
+  assert.equal(browseActionTime("rules", { start_date: "2026-08-05" }), null);
+
+  const html = renderBrowseView(buildBrowseView("contracts", {
+    notices: [{ request_id: "1", short_title: "Bridge repair", due_date: "2026-08-09" }],
+  }));
+  assert.match(html, /class="browse-record-action"[^>]*>.*Responses due.*2026-08-09/s);
+  assert.ok(html.indexOf("browse-record-action") < html.indexOf("Bridge repair"));
+  assert.doesNotMatch(html, /Official data from/);
 });
 
 test("legacy fragments use a finite location.replace bridge and preserve language", () => {
