@@ -43,6 +43,7 @@ test("scope rails do not regress into navigational links styled as chips", () =>
     "site/borough_scope_links.mjs",
     "site/following_view.mjs",
     "site/property_disposition_facets_ui.mjs",
+    "site/app/property.mjs",
     "site/app/entities.mjs",
     "site/app/people.mjs",
   ];

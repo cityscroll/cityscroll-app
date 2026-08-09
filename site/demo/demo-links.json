@@ -714,7 +714,7 @@
           {
             "selector": "#assettabs [data-a='timber']",
             "attribute": "class",
-            "equals": "chip on"
+            "equals": "ui-filter-chip on"
           }
         ]
       }
@@ -743,7 +743,7 @@
           {
             "selector": "#assettabs [data-a='real_property']",
             "attribute": "class",
-            "equals": "chip on"
+            "equals": "ui-filter-chip on"
           }
         ]
       }

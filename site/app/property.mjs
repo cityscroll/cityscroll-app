@@ -15,7 +15,7 @@ import {
 } from "../property_disposition_facets.mjs";
 import { bindPropertyScopeFacetRail, propertyDispositionFacetRailsHTML } from "../property_disposition_facets_ui.mjs";
 import { boroughScopeLinksHTML } from "../borough_scope_links.mjs";
-import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import { filterChip, installFilterChipNavigation } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { propertyScopeView } from "../property_scope_fallback.mjs";
 
@@ -1189,8 +1189,15 @@ async function renderPropExplorer(){
   };
   const renderFacetRail=(el,values,selected,dataKey,overrideKey,normalize,apply)=>{
     if(!el) return;
-    el.innerHTML=values.map(([key,label])=>`<button type="button" class="chip ${selected===key?'on':''}" data-${dataKey}="${key}" aria-pressed="${selected===key?'true':'false'}">${escUiHtml(t(label))}<span class="ct">${currentCountFor({[overrideKey]:key})}</span></button>`).join("");
-    el.querySelectorAll(".chip").forEach(button=>button.addEventListener("click",()=>selectPropertyFacet(()=>apply(normalize?normalize(button.dataset[dataKey]):button.dataset[dataKey]))));
+    el.innerHTML=values.map(([key,label])=>filterChip({
+      label: t(label),
+      count: currentCountFor({[overrideKey]:key}),
+      pressed: selected===key,
+      className: selected===key ? "on" : "",
+      attributes: { [`data-${dataKey}`]: key },
+      escape: escUiHtml,
+    })).join("");
+    el.querySelectorAll(".ui-filter-chip").forEach(button=>button.addEventListener("click",()=>selectPropertyFacet(()=>apply(normalize?normalize(button.dataset[dataKey]):button.dataset[dataKey]))));
   };
   renderFacetRail($("#assettabs"),[["all","all_types"],...ASSET_BUCKETS],propAsset,"a","asset",normalizePropAsset,value=>{ propAsset=value; });
 

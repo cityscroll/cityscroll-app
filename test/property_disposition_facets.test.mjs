@@ -330,12 +330,14 @@ test("property app renders disposition facet rails as pressed filter chips", () 
   assert.match(SITE_SOURCE, /property_disposition_facets_ui\.mjs/);
   assert.match(SITE_SOURCE, /propertyDispositionFacetRailsHTML/);
   assert.match(SITE_SOURCE, /bindPropertyScopeFacetRail/);
+  assert.match(SITE_SOURCE, /filterChip\(\{/);
+  assert.match(SITE_SOURCE, /el\.querySelectorAll\("\.ui-filter-chip"\)/);
   // Shareable scope destinations live on the shared filter-chip primitive.
   const ui = readFileSync(join(ROOT, "site/property_disposition_facets_ui.mjs"), "utf8");
   assert.match(ui, /filterChip\(\{/);
   assert.match(ui, /data-filter-href/);
   assert.doesNotMatch(ui, /<a class="chip/);
-  // Asset type rail may remain buttons; the four disposition rails use filter chips.
+  // Asset type and disposition rails all use the shared filter-chip primitive.
   assert.match(SITE_SOURCE, /salerail/);
   assert.match(SITE_SOURCE, /pricerail/);
   assert.match(SITE_SOURCE, /liferail/);

@@ -601,7 +601,7 @@ class DemoLinkContract(unittest.TestCase):
             if "attribute" in state:
                 actual = locator.get_attribute(state["attribute"])
                 expected_value = state["equals"]
-                # Chip chrome is `class="chip on"` today; accept token membership so a
+                # Filter-chip chrome is `class="ui-filter-chip on"` today; accept token membership so a
                 # future extra class token does not flake exact-string equality.
                 if state["attribute"] == "class" and isinstance(expected_value, str):
                     # Token membership on the class attribute (product CSS chrome).
