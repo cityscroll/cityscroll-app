@@ -21,6 +21,10 @@ import {
   compactEvidenceTokens,
 } from "./rule_evidence_stamps.mjs";
 import {
+  TOPIC_NORMALIZATION_VERSION,
+  normalizeTopicEvidence,
+} from "./topic_normalization.mjs";
+import {
   CROSS_SPINE_MIN_HELD_OUT_PRECISION,
   DEFAULT_CROSS_SPINE_EDGE_POLICY,
   routeCrossSpineEdge,
@@ -141,7 +145,7 @@ export function citationLawKeys(value) {
   return compactCitationLawKeys(clean(value, 4000), { limit: 32 });
 }
 
-/** Content tokens for conservative topic join (no stemming). */
+/** Content tokens before reviewed topic normalization. */
 export function contentTokens(text) {
   return compactEvidenceTokens(text);
 }
@@ -332,19 +336,48 @@ export function collectAgencyObservationCandidates({
 
 /** Score whether a candidate notice is a topic match for a mandate duty. */
 export function scoreTopicMatch(dutyText, candidate) {
-  const dutyTokens = contentTokens(dutyText);
-  const noticeTokens = Array.isArray(candidate?.tokens)
+  const dutyTerms = contentTokens(dutyText);
+  const noticeTerms = Array.isArray(candidate?.tokens)
     ? candidate.tokens
     : contentTokens(candidate?.label);
-  if (!dutyTokens.length || !noticeTokens.length) {
-    return { score: 0, shared: [], method: null };
+  if (!dutyTerms.length || !noticeTerms.length) {
+    return { score: 0, shared: [], method: null, normalization: null };
   }
-  const noticeSet = new Set(noticeTokens);
-  const shared = dutyTokens.filter((token) => noticeSet.has(token));
+  const noticeTermSet = new Set(noticeTerms);
+  const exactShared = dutyTerms.filter((term) => noticeTermSet.has(term));
+  if (exactShared.length >= 2) {
+    return {
+      score: exactShared.length,
+      shared: exactShared,
+      method: "topic_token_overlap_v1",
+      normalization: null,
+    };
+  }
+  const duty = normalizeTopicEvidence(dutyText, dutyTerms);
+  const notice = normalizeTopicEvidence(candidate?.label, noticeTerms);
+  const noticeSet = new Set(notice.tokens);
+  const shared = duty.tokens.filter((token) => noticeSet.has(token));
+  const applied = [...duty.applied, ...notice.applied];
   if (shared.length >= 2) {
-    return { score: shared.length, shared, method: "topic_token_overlap_v1" };
+    return {
+      score: shared.length,
+      shared,
+      method: "reviewed_topic_overlap_v1",
+      normalization: applied.length ? {
+        registry_version: TOPIC_NORMALIZATION_VERSION,
+        applied,
+      } : null,
+    };
   }
-  return { score: 0, shared: [], method: null };
+  return {
+    score: 0,
+    shared: [],
+    method: null,
+    normalization: applied.length ? {
+      registry_version: TOPIC_NORMALIZATION_VERSION,
+      applied,
+    } : null,
+  };
 }
 
 function mandateCitationKeys(mandate) {
@@ -444,6 +477,7 @@ export function evaluateRuleEvidence(mandate, candidate, { expectedKind = "rule_
   return {
     ...features,
     topic_score: topic.score,
+    ...(topic.normalization ? { topic_normalization: topic.normalization } : {}),
     publication_eligible: publicationEligible,
     publication_tier: publicationEligible
       ? MANDATE_RULE_PUBLICATION_TIER

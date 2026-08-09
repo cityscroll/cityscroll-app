@@ -1083,6 +1083,87 @@
       "abstention_rate": 0.2
     }
   },
+  "topic_normalization": {
+    "schema": "cityscroll.topic_normalization_registry.v1",
+    "registry_version": "topic_normalization_v1",
+    "source_corpora": [
+      "cross_spine_gold_v3",
+      "cross_spine_shadow_census_v1"
+    ],
+    "all": {
+      "mandate_meeting": {
+        "split": "all",
+        "total": 4,
+        "gold_positive": 1,
+        "candidates": 1,
+        "true_positive": 1,
+        "false_positive": 0,
+        "precision": 1,
+        "coverage": 1,
+        "abstentions": 3,
+        "abstention_rate": 0.75
+      },
+      "mandate_rule": {
+        "split": "all",
+        "total": 4,
+        "gold_positive": 2,
+        "candidates": 2,
+        "true_positive": 2,
+        "false_positive": 0,
+        "precision": 1,
+        "coverage": 1,
+        "abstentions": 2,
+        "abstention_rate": 0.5
+      }
+    },
+    "held_out": {
+      "mandate_meeting": {
+        "split": "held_out",
+        "total": 4,
+        "gold_positive": 1,
+        "candidates": 1,
+        "true_positive": 1,
+        "false_positive": 0,
+        "precision": 1,
+        "coverage": 1,
+        "abstentions": 3,
+        "abstention_rate": 0.75
+      },
+      "mandate_rule": {
+        "split": "held_out",
+        "total": 4,
+        "gold_positive": 2,
+        "candidates": 2,
+        "true_positive": 2,
+        "false_positive": 0,
+        "precision": 1,
+        "coverage": 1,
+        "abstentions": 2,
+        "abstention_rate": 0.5
+      }
+    },
+    "gate": {
+      "mandate_meeting": {
+        "precision": 1,
+        "min_precision": 0.9,
+        "support": 1,
+        "coverage": 1,
+        "abstention_rate": 0.75,
+        "status": "pass",
+        "passed": true
+      },
+      "mandate_rule": {
+        "precision": 1,
+        "min_precision": 0.9,
+        "support": 2,
+        "coverage": 1,
+        "abstention_rate": 0.5,
+        "status": "pass",
+        "passed": true
+      }
+    },
+    "ok": true
+  },
   "gate": {
     "mandate_contract": {
       "precision": 1,

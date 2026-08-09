@@ -8,6 +8,7 @@ import {
   candidateDecision,
   DEFAULT_MIN_SUPPORT,
   evaluateCrossSpineGold,
+  evaluateTopicNormalizationReview,
   generateRelationCandidates,
   groupedSplit,
   loadCrossSpineGold,
@@ -75,6 +76,26 @@ test("versioned cross-spine gold loads and evaluates every relation", () => {
     assert.ok(gate.precision_interval_95.lower < gate.precision);
   }
   assert.equal(report.ok, true);
+  assert.equal(report.topic_normalization.registry_version, "topic_normalization_v1");
+  for (const relation of ["mandate_meeting", "mandate_rule"]) {
+    const metric = report.topic_normalization.held_out[relation];
+    assert.ok(metric.precision >= 0.9);
+    assert.ok(metric.coverage > 0);
+    assert.ok(metric.abstention_rate > 0);
+    assert.equal(report.topic_normalization.gate[relation].status, "pass");
+  }
+});
+
+test("topic normalization review reports precision, coverage, and adversarial abstention", () => {
+  const report = evaluateTopicNormalizationReview();
+  assert.equal(report.ok, true);
+  assert.deepEqual(Object.keys(report.held_out), ["mandate_meeting", "mandate_rule"]);
+  assert.equal(report.held_out.mandate_meeting.precision, 1);
+  assert.equal(report.held_out.mandate_rule.precision, 1);
+  assert.equal(report.held_out.mandate_meeting.false_positive, 0);
+  assert.equal(report.held_out.mandate_rule.false_positive, 0);
+  assert.ok(report.held_out.mandate_meeting.abstentions >= 3);
+  assert.ok(report.held_out.mandate_rule.abstentions >= 2);
 });
 
 test("v3 procedure cases deterministically extend the immutable v2 gold", () => {
@@ -235,6 +256,8 @@ test("CLI check reports relation precision, coverage, abstention, and leakage st
   assert.match(result.stdout, /interval95=\[/);
   assert.match(result.stdout, /coverage=1/);
   assert.match(result.stdout, /abstention=/);
+  assert.match(result.stdout, /topic_normalization=topic_normalization_v1 relation=mandate_meeting precision=1/);
+  assert.match(result.stdout, /topic_normalization=topic_normalization_v1 relation=mandate_rule precision=1/);
   assert.match(result.stdout, /group_split=true leakage=false ok=true/);
 });
 
