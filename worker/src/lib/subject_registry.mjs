@@ -16,6 +16,7 @@
  */
 
 import { parseAuthorityKey, authorityKeyId } from "../../../entity_resolution/authority_keys/index.mjs";
+import { migrateLegacyMandateSubjectRef } from "../../../site/mandate_subject_ref.mjs";
 
 export const SUBJECT_REGISTRY_VERSION = "subject_registry_v1";
 export const SUBJECT_LINK_METHOD = "subject_registry_lifecycle_v1";
@@ -146,6 +147,17 @@ export function formatSubjectRef(kind, id) {
   const i = clean(id);
   if (!KIND_SET.has(k) || !i || /\s/.test(i)) return null;
   return `${k}:${i}`;
+}
+
+/**
+ * Canonicalize the former bare mandate graph alias.
+ *
+ * Compound `obligation:` deadline/watch ids are intentionally preserved as
+ * legacy storage identities. All other refs also pass through unchanged, so a
+ * migration cannot silently re-key an unrelated subject.
+ */
+export function migrateLegacySubjectRef(ref) {
+  return migrateLegacyMandateSubjectRef(ref);
 }
 
 /**

@@ -16,6 +16,10 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
+import {
+  CROSS_BRIDGE_MANDATE_SUBJECT_REF,
+  CROSS_BRIDGE_OBLIGATION_ID,
+} from "./helpers/mandate_subject.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const HOMELESS_SERVICES = "homeless-services";
@@ -39,7 +43,7 @@ test("multi-key bridge requires agency, procurement intent, subject scope, and c
       by_agency: {
         buildings: {
           obligations: [{
-            obligation_id: "demo-procurement-1",
+            obligation_id: CROSS_BRIDGE_OBLIGATION_ID,
             duty_text: "Issue a request for proposals for elevator inspection services.",
             citation: "Local Law demo",
             source: { legistar_url: "https://example.test/law" },
@@ -89,7 +93,8 @@ test("multi-key bridge requires agency, procurement intent, subject scope, and c
   assert.equal(view.edges.length, 1);
   const edge = view.edges[0];
   assert.equal(edge.edge.type, MANDATE_CONTRACT_EDGE_TYPE);
-  assert.equal(edge.edge.from, "mandate:demo-procurement-1");
+  assert.equal(edge.edge.from, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
+  assert.equal(edge.mandate.subject_ref, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.equal(edge.edge.to, "contract:CT1-810-20268800001");
   assert.deepEqual(edge.evidence.subject_scope_keys, ["elevator", "inspection"]);
   assert.equal(edge.evidence.procurement_action_key, "solicitation");
@@ -182,6 +187,7 @@ test("below-gate mandate-to-contract candidates remain evidence-only shadows", (
   assert.equal(view.edges.length, 0);
   assert.equal(view.shadow_edges.length, 1);
   assert.equal(view.shadow_edges[0].decision, "evidence_only");
+  assert.match(view.shadow_edges[0].mandate, /^mandate:/);
   assert.equal(view.shadow_edges[0].edge_policy.tier, "evidence_only");
   assert.equal(renderMandateContractsBridgeSection(view), "");
 });

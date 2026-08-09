@@ -17,6 +17,10 @@ import {
   mandateLandUseKinds,
   renderMandateLandUseSection,
 } from "../site/mandate_land_use_bridge.mjs";
+import {
+  CROSS_BRIDGE_MANDATE_SUBJECT_REF,
+  CROSS_BRIDGE_OBLIGATION_ID,
+} from "./helpers/mandate_subject.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const obligations = JSON.parse(readFileSync(join(ROOT, "site/data/agency_obligations_lookup.json"), "utf8"));
@@ -24,7 +28,7 @@ const intelligence = JSON.parse(readFileSync(join(ROOT, "site/data/entity_intell
 const landProjects = JSON.parse(readFileSync(join(ROOT, "site/data/zap_projects_warehouse_lookup.json"), "utf8"));
 
 const mandate = {
-  obligation_id: "landmark-1",
+  obligation_id: CROSS_BRIDGE_OBLIGATION_ID,
   agency_id: "landmarks-preservation-commission",
   agency_name: "Landmarks Preservation Commission",
   duty_text: "The commission shall designate the landmark within 180 days after the public hearing.",
@@ -138,6 +142,8 @@ test("resolver requires agency, structured action kind, and subject scope rather
   assert.equal(view.edges.length, 1);
   assert.equal(view.edges[0].land_action.project_id, "right");
   assert.equal(view.edges[0].relation, MANDATE_LAND_USE_EDGE_TYPE);
+  assert.equal(view.edges[0].mandate.subject_ref, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
+  assert.equal(view.edges[0].entity_link.source_record_id, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.deepEqual(view.edges[0].match.keys, [
     "agency", "land_action_kind", "project_identity", "mandate_phase_compatible",
   ]);
@@ -224,6 +230,8 @@ test("project identity without a compatible mandate phase remains evidence-only"
   });
   assert.equal(view.edges.length, 0);
   assert.equal(view.shadow_edges.length, 1);
+  assert.equal(view.shadow_edges[0].mandate, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
+  assert.equal(view.shadow_edges[0].entity_link.source_record_id, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.deepEqual(view.shadow_edges[0].reason, ["mandate_phase_compatible"]);
   assert.equal(view.shadow_edges[0].match.project_identity, true);
 });

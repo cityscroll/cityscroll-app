@@ -26,6 +26,7 @@ import {
   makeSubjectLink,
   measureCrossSubjectLinkRate,
   measureRulesMeetingsSubjectLinkRate,
+  migrateLegacySubjectRef,
   parseSubjectRef,
   resolveConnectedSubjects,
   rulesNativeId,
@@ -57,6 +58,21 @@ test("parse/format subject_ref is closed and never rewrites kind or id", () => {
     formatSubjectRef("notice", "20240723114"),
     formatSubjectRef("contract", "CT107120248803393"),
   );
+});
+
+test("legacy obligation graph refs migrate narrowly without rewriting watch storage ids", () => {
+  assert.equal(
+    migrateLegacySubjectRef("obligation:53408-003"),
+    "mandate:53408-003",
+  );
+  assert.equal(
+    migrateLegacySubjectRef("obligation:53408-003:2026-09-30"),
+    "obligation:53408-003:2026-09-30",
+    "deadline watch identity remains an explicit storage alias",
+  );
+  assert.equal(migrateLegacySubjectRef("notice:53408-003"), "notice:53408-003");
+  assert.equal(migrateLegacySubjectRef("unrelated:53408-003"), "unrelated:53408-003");
+  assert.equal(migrateLegacySubjectRef(null), null);
 });
 
 test("source_record and action-log objects map onto the same subject vocabulary", () => {

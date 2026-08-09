@@ -17,6 +17,10 @@ import {
 } from "../site/agency_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { OBSERVATION_STATUS } from "../site/process_conformance.mjs";
+import {
+  CROSS_BRIDGE_MANDATE_SUBJECT_REF,
+  CROSS_BRIDGE_OBLIGATION_ID,
+} from "./helpers/mandate_subject.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
@@ -81,7 +85,7 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
         buildings: {
           obligations: [
             {
-              obligation_id: "demo-rm-1",
+              obligation_id: CROSS_BRIDGE_OBLIGATION_ID,
               duty_text: "Promulgate rules relating to safety standards for refrigeration systems",
               deliverable_type: "rulemaking",
               citation: "Local Law demo",
@@ -107,7 +111,7 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
     rulesCount: 2,
     conformanceItems: [
       {
-        mandate_id: "demo-rm-1",
+        mandate_id: CROSS_BRIDGE_OBLIGATION_ID,
         observation: {
           status: OBSERVATION_STATUS.OBSERVED,
           label: "Observed in City Record",
@@ -125,6 +129,7 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
   });
   assert.equal(view.status, "matched");
   assert.equal(view.counts.observed_links, 1);
+  assert.equal(view.mandates[0].subject_ref, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.equal(view.mandates[0].observed_record.request_id, "20260407013");
   assert.equal(view.mandates[0].observed_record.href, "/notices/20260407013");
   assert.equal(view.rules_items[0].href, "/notices/20260407013");
