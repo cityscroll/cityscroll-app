@@ -615,7 +615,7 @@ async function select(i, el, planningDetailRequested=false){
   const r = currentRows[i];
   if(planningDetailRequested) r.planning_detail_requested = true;
   selectedRFP = r;
-  if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null);
+  if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null, planningDetailRequested);
   else {
     const detail = $("#detail");
     detail.innerHTML = `<div id="dforecast" data-export-class="agency_forecast"><div class="chain-h">${t("agency_forecast_heading")}</div><div class="note"><span class="loading"></span></div></div>`;
@@ -624,7 +624,7 @@ async function select(i, el, planningDetailRequested=false){
   await historyReady;
   if(selectedRFP !== r) return;
   if(planningDetailRequested) await globalThis.ensureRules?.();
-  if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null);
+  if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null, planningDetailRequested);
   globalThis.agencyForecastTeaser?.(r, $("#dforecast"));
   const [hydrated, chain, stats] = await Promise.all([
     hydrateMoneyActionLocationRow(r),
@@ -633,7 +633,7 @@ async function select(i, el, planningDetailRequested=false){
   ]);
   if(selectedRFP !== r) return;
   selectedRFP=hydrated;
-  renderDetail(hydrated, chain, stats);
+  renderDetail(hydrated, chain, stats, planningDetailRequested);
 }
 
 async function hydrateMoneyActionLocationRow(r){

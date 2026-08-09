@@ -11,8 +11,7 @@
 
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
-import { mandateFollowHref } from "./agency_obligations.mjs";
-import { canonicalMandateId } from "./mandate_subject_ref.mjs";
+import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
 
 export const NOTICE_MANDATE_BACKLINKS_SCHEMA = "cityscroll.notice_mandate_backlinks.v1";
 export const NOTICE_MANDATE_BACKLINKS_METHOD = "notice_mandate_backlinks_v1";
@@ -45,6 +44,45 @@ const clean = (value, max = 500) => String(value ?? "")
 const escDefault = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
+
+// Keep the notice reader's one-duty watch link on a small, SPA-safe path. The
+// full agency-obligations module imports the Following document renderer and
+// belongs to agency/mandate routes, not the home cold path.
+function canonicalMandateId(value) {
+  let s = typeof value === "string" ? value.trim() : "";
+  const legacy = s.match(/^(?:mandate|obligation):([^:\s]+)$/i);
+  if (legacy) s = legacy[1];
+  return s && !/\s/.test(s) && !s.includes(":")
+    && /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/.test(s) ? s : null;
+}
+
+function compactWatch(value) {
+  const out = {};
+  for (const [key, item] of Object.entries(value || {})) {
+    if (item == null || item === "" || item === false) continue;
+    if (Array.isArray(item) && item.length === 0) continue;
+    out[key] = item;
+  }
+  return out;
+}
+
+function mandateFollowHref(mandateId, agencyIdOrName) {
+  const exactId = canonicalMandateId(mandateId);
+  const identity = resolveAgencyIdentity(agencyIdOrName);
+  if (!exactId || !identity?.canonical_id) return null;
+  const filter = compactWatch({
+    agency_id: identity.canonical_id,
+    agency: identity.canonical_name,
+    mandate_id: exactId,
+  });
+  const watch = watchFromScope(scopeFromWatch({ lens: "mandates", filter }), { lens: "mandates" });
+  const params = new URLSearchParams({
+    lens: watch.lens,
+    filter: JSON.stringify(compactWatch(watch.filter)),
+    freq: "weekly",
+  });
+  return `https://cityscroll.org/following?${params}`;
+}
 
 export function isPublicBacklinkTier(tier) {
   return PUBLIC_TIER_SET.has(clean(tier, 40));
