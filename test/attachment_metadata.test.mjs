@@ -9,6 +9,7 @@ import {
 } from "../warehouse/lib/attachment_metadata.mjs";
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
+const NOTICE_SOURCE = readFileSync(new URL("../site/app/notice-context.mjs", import.meta.url), "utf8");
 const fixture = JSON.parse(readFileSync(new URL("../warehouse/fixtures/attachment_metadata.json", import.meta.url)));
 const demo = JSON.parse(readFileSync(new URL("../site/demo/demo-links.json", import.meta.url)));
 const sources = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
@@ -41,12 +42,12 @@ test("warehouse runner preserves CPU, checkpoint, and politeness controls", () =
   assert.match(runner, /attachment_metadata_by_notice/);
 });
 
-test("notice chrome and demo contract expose the Cannonsville attachment chip", () => {
+test("notice chrome and demo contract expose the Cannonsville official attachment source", () => {
   assert.match(SITE_SOURCE, /function attachmentChipHTML/);
-  assert.match(SITE_SOURCE, /class="tag attachment-chip"/);
+  assert.match(NOTICE_SOURCE, /officialSourceLink\(\{ href: first\.url/);
   assert.match(SITE_SOURCE, /\/attachment-metadata\?id=/);
   assert.equal(staticLookup.notices["20240515016"][0].document_id, "37470");
-  assert.match(SITE_SOURCE, /target="_blank" rel="noopener"/);
+  assert.match(NOTICE_SOURCE, /className: "attachment-source-link"/);
   const entry = demo.entries.find((item) => item.id === "notice-cannonsville-attachment");
   assert.equal(entry.url, "#notice/20240515016");
   assert.equal(entry.postDeployOnly, true);

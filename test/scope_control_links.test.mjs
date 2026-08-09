@@ -21,7 +21,7 @@ test("Zoning Attendance replaces the select with typed links and preserves the s
   assert.deepEqual(scope.facets.values.entity_refs_all, ["project:2022M0258"]);
 
   const html = attendanceScopeLinksHTML({ selected: "hybrid", currentHash: current });
-  assert.match(html, /data-attendance-scope-link="hybrid"[^>]*data-scope-edge="land\.attendance\.hybrid"[^>]*aria-current="page"/);
+  assert.match(html, /aria-pressed="true"[^>]*data-attendance-scope-link="hybrid"[^>]*data-scope-edge="land\.attendance\.hybrid"/);
   assert.doesNotMatch(html, /<select/);
   assert.match(html, /<button[^>]+data-filter-href/);
   assert.doesNotMatch(index, /id="lhearingmode"/);

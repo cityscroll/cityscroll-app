@@ -5,7 +5,7 @@ import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
-import { constellationLink } from "./affordance_grammar.mjs";
+import { constellationLink, filterChip } from "./affordance_grammar.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -213,9 +213,18 @@ function withPlace(view, borough) {
 }
 
 function scopeLinkChip(href, label, { active = false, axis = "", value = "" } = {}) {
-  const on = active ? " on" : "";
-  const current = active ? ' aria-current="page"' : "";
-  return `<a class="chip following-scope-link${on}" href="${esc(href)}" data-following-scope-axis="${esc(axis)}" data-following-scope-value="${esc(value)}" data-scope-edge="following.${esc(axis)}.${esc(value || "all")}"${current}>${esc(label)}</a>`;
+  return filterChip({
+    label,
+    pressed: active,
+    className: `following-scope-link${active ? " on" : ""}`,
+    attributes: {
+      "data-following-scope-axis": axis,
+      "data-following-scope-value": value,
+      "data-scope-edge": `following.${axis}.${value || "all"}`,
+      "data-filter-href": href,
+    },
+    escape: esc,
+  });
 }
 
 /** Topic + place as shareable scope-link chips (not bare selects). */

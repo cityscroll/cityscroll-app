@@ -52,7 +52,8 @@ test("Contracts keeps secondary controls in one disclosure and promotes temporal
   assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-mode-label"[\s\S]*?id="money-mode-rail"[^>]*aria-labelledby="money-mode-label"/);
   assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-location-label"[\s\S]*?id="money-location-rail"[^>]*aria-labelledby="money-location-label"/);
   assert.match(moneySection, /id="money-temporal-rail"[\s\S]*?id="closingweek"[^>]+data-scope-edge="money\.time\.closing_week"/);
-  assert.doesNotMatch(moneySection, /<button[^>]+id="closingweek"/);
+  assert.match(moneySection, /<button[^>]+id="closingweek"[^>]+class="ui-filter-chip"|<button[^>]+class="ui-filter-chip"[^>]+id="closingweek"/);
+  assert.match(moneySection, /id="closingweek"[^>]+[^>]*aria-pressed="(?:true|false)"/);
   assert.doesNotMatch(moneySection, /<select[^>]+id="mode"/);
   for (const mode of ["open", "allrfp", "award"]) {
     assert.match(moneySection, new RegExp(`data-money-mode="${mode}"[^>]+data-scope-edge="money\\.mode\\.${mode}"`));

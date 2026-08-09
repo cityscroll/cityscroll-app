@@ -13,6 +13,7 @@ import {
   propertySaleMethodControlModel,
   propertyTemporalControlModel,
 } from "./property_disposition_facets.mjs";
+import { filterChip } from "./affordance_grammar.mjs";
 
 /**
  * Build HTML for the four disposition facet rails.
@@ -87,13 +88,19 @@ export function propertyDispositionFacetRailsHTML(opts) {
   });
 
   const chip = (item) => {
-    const pressed = item.pressed ? "true" : "false";
-    const on = item.pressed ? " on" : "";
-    const href = escape(item.href || "#property");
-    const id = escape(item.id);
     const attr = escape(item.data_attr || "facet");
-    const edge = item.scope_edge ? ` data-scope-edge="${escape(item.scope_edge)}"` : "";
-    return `<a class="chip${on}" href="${href}" data-${attr}="${id}"${edge} aria-pressed="${pressed}"${item.pressed ? ` aria-current="true"` : ""}>${escape(t(item.label_key))}<span class="ct">${item.count}</span></a>`;
+    return filterChip({
+      label: t(item.label_key),
+      count: item.count,
+      pressed: item.pressed,
+      className: item.pressed ? "on" : "",
+      attributes: {
+        [`data-${attr}`]: item.id,
+        ...(item.scope_edge ? { "data-scope-edge": item.scope_edge } : {}),
+        "data-filter-href": item.href || "#property",
+      },
+      escape,
+    });
   };
   const rail = (kind, model) => propertyFacetChipItems(model, kind).map(chip).join("");
 
@@ -114,12 +121,10 @@ export function propertyDispositionFacetRailsHTML(opts) {
  */
 export function bindPropertyScopeFacetRail(el, apply) {
   if (!el || typeof apply !== "function") return;
-  el.querySelectorAll("a.chip").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-      event.preventDefault();
-      const attr = link.getAttributeNames().find((name) => name.startsWith("data-") && name !== "data-i18n");
-      apply(attr ? link.getAttribute(attr) : null);
+  el.querySelectorAll(".ui-filter-chip").forEach((button) => {
+    button.addEventListener("click", () => {
+      const attr = button.getAttributeNames().find((name) => name.startsWith("data-") && name !== "data-filter-href" && name !== "data-scope-edge");
+      apply(attr ? button.getAttribute(attr) : null);
     });
   });
 }

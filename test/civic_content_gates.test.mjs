@@ -169,6 +169,27 @@ test("control_labels: rejects long/status controls while allowing full accessibl
   }
 });
 
+test("control_labels: filter chips use pressed state instead of action-copy lint", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-filter-chips-"));
+  try {
+    writeMinimalI18n(dir, {
+      en: { filter_value: "Open Requests for Proposals (RFPs) — accepting now" },
+      shipping: ["es"],
+      langFiles: { es: { filter_value: "Solicitudes de propuestas abiertas — aceptando ahora" } },
+    });
+    writeFileSync(
+      join(dir, "index.html"),
+      `<button type="button" class="ui-filter-chip" aria-pressed="true" data-i18n="filter_value">Open Requests for Proposals (RFPs) — accepting now</button>\n`,
+    );
+    const result = runPython([
+      "-m", "civic_content_gates", "check", "control_labels", "--root", dir,
+    ]);
+    assert.equal(result.status, 0, `filter-chip value labels should be checked by their grammar gate: ${result.stderr}`);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("i18n_keys: field case — fails when a shipping language misses an English key", () => {
   const dir = mkdtempSync(join(tmpdir(), "ccg-i18n-"));
   try {

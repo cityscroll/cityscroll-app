@@ -11,7 +11,7 @@
       "expectations": {
         "visible": [
           {
-            "selector": "#ncontext .attachment-chip",
+            "selector": "#ncontext .attachment-source-link",
             "text": "Description, maps, and volume report"
           },
           {
@@ -299,8 +299,8 @@
           },
           {
             "selector": "#closingweek",
-            "attribute": "aria-current",
-            "equals": "page"
+            "attribute": "aria-pressed",
+            "equals": "true"
           }
         ]
       }
@@ -330,8 +330,8 @@
         "states": [
           {
             "selector": "#closingweek",
-            "attribute": "aria-current",
-            "equals": "page"
+            "attribute": "aria-pressed",
+            "equals": "true"
           }
         ]
       }
@@ -680,8 +680,8 @@
         "states": [
           {
             "selector": "#property-borough-rail [data-borough-scope-link='Brooklyn']",
-            "attribute": "aria-current",
-            "equals": "page"
+            "attribute": "aria-pressed",
+            "equals": "true"
           }
         ]
       }
@@ -714,7 +714,7 @@
           {
             "selector": "#assettabs [data-a='timber']",
             "attribute": "class",
-            "equals": "chip on"
+            "equals": "ui-filter-chip on"
           }
         ]
       }
@@ -743,7 +743,7 @@
           {
             "selector": "#assettabs [data-a='real_property']",
             "attribute": "class",
-            "equals": "chip on"
+            "equals": "ui-filter-chip on"
           }
         ]
       }
