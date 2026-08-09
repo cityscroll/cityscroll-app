@@ -11,6 +11,8 @@
 
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { mandateFollowHref } from "./agency_obligations.mjs";
+import { canonicalMandateId } from "./mandate_subject_ref.mjs";
 
 export const NOTICE_MANDATE_BACKLINKS_SCHEMA = "cityscroll.notice_mandate_backlinks.v1";
 export const NOTICE_MANDATE_BACKLINKS_METHOD = "notice_mandate_backlinks_v1";
@@ -64,8 +66,9 @@ export function relationLabelFor(relation) {
 }
 
 /**
- * Compact public-safe backlink row. Strips subject refs, evidence bags,
- * source-system keys, and shadow tiers.
+ * Compact public-safe backlink row. Strips graph subject_ref forms, evidence bags,
+ * source-system keys, and shadow tiers. Keeps a canonical bare mandate_id when
+ * present so the notice card can offer a one-duty Following watch.
  */
 export function compactMandateBacklink(input = {}) {
   const duty_text = clean(input.duty_text, 700);
@@ -92,7 +95,16 @@ export function compactMandateBacklink(input = {}) {
     ? source_href
     : null;
 
-  return {
+  // Exact product filter key — bare id only (legacy mandate:/obligation: refs normalize).
+  const mandate_id = canonicalMandateId(input.mandate_id)
+    || canonicalMandateId(input.obligation_id)
+    || canonicalMandateId(input.subject_ref)
+    || null;
+  const watch_href = mandate_id && agency_id
+    ? mandateFollowHref(mandate_id, agency_id, { frequency: "weekly" })
+    : null;
+
+  const out = {
     duty_text,
     citation,
     source_href: safeSource,
@@ -103,6 +115,9 @@ export function compactMandateBacklink(input = {}) {
     agency_href,
     publication_tier: isPublicBacklinkTier(tier) ? tier : "public_inferred",
   };
+  if (mandate_id) out.mandate_id = mandate_id;
+  if (watch_href) out.watch_href = watch_href;
+  return out;
 }
 
 /** Look up public backlinks for one notice id. Empty → []. */
@@ -152,9 +167,25 @@ export function renderNoticeMandateBacklinksHTML(rows, { esc = escDefault } = {}
       `<span class="notice-mandate-relation">${esc(row.relation_label)}</span>`,
       citation,
     ].filter(Boolean);
-    return `<article class="notice-mandate-card" data-relation="${esc(row.relation || "")}">
+    // Per-mandate Following watch only when a public backlink carries a canonical id.
+    const watch = row.watch_href
+      ? ` · ${constellationLink({
+        href: row.watch_href,
+        label: "Watch this mandate",
+        className: "notice-mandate-watch",
+        escape: esc,
+        attributes: {
+          "data-mandate-watch": "1",
+          "data-mandate-id": row.mandate_id || "",
+        },
+      })}`
+      : "";
+    const mandateAttr = row.mandate_id
+      ? ` data-mandate-id="${esc(row.mandate_id)}"`
+      : "";
+    return `<article class="notice-mandate-card" data-relation="${esc(row.relation || "")}"${mandateAttr}>
       <p class="notice-mandate-duty" lang="en" dir="ltr">${esc(row.duty_text)}</p>
-      <p class="muted notice-mandate-meta">${metaParts.join(" · ")}${source}${agency}</p>
+      <p class="muted notice-mandate-meta">${metaParts.join(" · ")}${source}${agency}${watch}</p>
     </article>`;
   }).join("");
 

@@ -175,6 +175,42 @@ test("compileSub obligations lens is a world-state transform, not SODA", () => {
   }
 });
 
+test("compileSub mandate_id filters the lookup by exact obligation id", () => {
+  const lookup = JSON.parse(readFileSync(LOOKUP_PATH, "utf8"));
+  const sample = lookup.by_agency?.["homeless-services"]?.obligations
+    ?.find((row) => row.obligation_id === "66056-006");
+  assert.ok(sample, "fixture obligation 66056-006 must exist for exact-id compile");
+
+  const agencyWide = compileSub({
+    lens: "mandates",
+    filter: { agency_id: "homeless-services", agency: "Homeless Services" },
+  }, "2026-08-07");
+  const agencyRows = agencyWide.transformRows(lookup);
+  assert.ok(agencyRows.length >= 1);
+
+  const exact = compileSub({
+    lens: "mandates",
+    filter: {
+      agency_id: "homeless-services",
+      agency: "Homeless Services",
+      mandate_id: "66056-006",
+    },
+  }, "2026-08-07");
+  const exactRows = exact.transformRows(lookup);
+  assert.equal(exactRows.length, 1);
+  assert.equal(exactRows[0].obligation_id, "66056-006");
+  assert.match(exactRows[0].duty_text, /renegotiate existing shelter contracts/i);
+  // Exact id is not free-text matching on duty language.
+  const miss = compileSub({
+    lens: "mandates",
+    filter: {
+      agency_id: "homeless-services",
+      mandate_id: "does-not-exist-999",
+    },
+  }, "2026-08-07");
+  assert.deepEqual(miss.transformRows(lookup), []);
+});
+
 test("obligationDigestRowsForAgency labels past dates without compliance", () => {
   const lookup = {
     by_agency: {
@@ -208,4 +244,13 @@ test("follow href is free obligations watch", () => {
   assert.match(href, /\/following/);
   assert.match(href, /lens=mandates/);
   assert.match(href, /agency_id/);
+});
+
+test("follow href can narrow to one exact mandate_id", () => {
+  const href = agencyObligationsFollowHref("homeless-services", { mandateId: "66056-006" });
+  assert.match(href, /lens=mandates/);
+  assert.match(href, /mandate_id/);
+  const filter = JSON.parse(decodeURIComponent(new URL(href).searchParams.get("filter")));
+  assert.equal(filter.mandate_id, "66056-006");
+  assert.equal(filter.agency_id, "homeless-services");
 });

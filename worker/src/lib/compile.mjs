@@ -93,10 +93,14 @@ export function compileSub(sub, todayISO) {
     // Product lens is "mandates"; "obligations" remains for legacy stored watches.
     // Prediction branch: rulemaking/report duties roll recurrence forward into an
     // expected-event window so watchers get an earlier-stage alert ahead of deadline.
+    // mandate_id is an exact obligation id filter (no free-text duty matching).
     const agencyId = typeof f.agency_id === "string" && f.agency_id.trim()
       ? f.agency_id.trim()
       : (typeof f.agency === "string" && f.agency.trim() ? f.agency.trim() : null);
     if (!agencyId) return null;
+    const mandateId = typeof f.mandate_id === "string" && f.mandate_id.trim()
+      ? f.mandate_id.trim()
+      : null;
     const windowDays = typeof f.windowDays === "number" && f.windowDays >= 1 && f.windowDays <= 365
       ? Math.round(f.windowDays)
       : 90;
@@ -114,12 +118,14 @@ export function compileSub(sub, todayISO) {
           windowDays,
           pastDays: 30,
           deliverableType,
+          mandateId,
         });
         const predicted = mandatePredictionDigestRowsForAgency(payload, agencyId, {
           todayISO,
           windowDays,
           pastDays: 14,
           deliverableType,
+          mandateId,
         });
         return mergeObligationDigestWithPredictions(base, predicted);
       },

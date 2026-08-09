@@ -175,6 +175,7 @@ test("obligations: free-watch fields survive sanitize; junk is dropped", () => {
   assert.deepEqual(out, {
     agency_id: "parks-and-recreation",
     agency: "Parks and Recreation",
+    mandate_id: null,
     deliverable_type: "report",
     windowDays: 90,
   });
@@ -182,6 +183,17 @@ test("obligations: free-watch fields survive sanitize; junk is dropped", () => {
   assert.equal(sanitize("obligations", { deliverable_type: "rulemaking" }).deliverable_type, "rulemaking");
   assert.equal(sanitize("obligations", { windowDays: 0 }).windowDays, null);
   assert.equal(sanitize("obligations", { windowDays: "30" }).windowDays, 30);
+});
+
+test("mandates: mandate_id is exact-id only with legacy subject-ref compatibility", () => {
+  assert.equal(sanitize("mandates", { mandate_id: "66056-006" }).mandate_id, "66056-006");
+  assert.equal(sanitize("mandates", { mandate_id: "mandate:66056-006" }).mandate_id, "66056-006");
+  assert.equal(sanitize("mandates", { mandate_id: "obligation:66056-006" }).mandate_id, "66056-006");
+  // Compound storage keys are not graph subjects — rejected.
+  assert.equal(sanitize("mandates", { mandate_id: "obligation:66056-006:2026-09-01" }).mandate_id, null);
+  assert.equal(sanitize("mandates", { mandate_id: "duty about elevators" }).mandate_id, null);
+  assert.equal(sanitize("mandates", { mandate_id: "../evil" }).mandate_id, null);
+  assert.equal(sanitize("obligations", { mandate_id: "cross-bridge-obligation-001" }).mandate_id, "cross-bridge-obligation-001");
 });
 
 // w12-12: digest deep-links. Before, a digest item's link carried nothing about the watch

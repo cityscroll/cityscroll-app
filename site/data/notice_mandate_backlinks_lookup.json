@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.notice_mandate_backlinks.v1",
   "method": "notice_mandate_backlinks_v1",
-  "generated_at": "2026-08-09T16:16:12.376Z",
+  "generated_at": "2026-08-09T16:48:30.344Z",
   "counts": {
     "notices": 1,
     "edges": 1,
@@ -20,7 +20,8 @@
         "agency_id": "homeless-services",
         "agency_name": "Homeless Services",
         "agency_href": "/agencies/homeless-services/",
-        "publication_tier": "public_inferred"
+        "publication_tier": "public_inferred",
+        "mandate_id": "66056-006"
       }
     ]
   }
