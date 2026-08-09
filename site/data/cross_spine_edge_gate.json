@@ -1,17 +1,17 @@
 {
-  "schema": "cityscroll.cross_spine_edge_eval.v2",
-  "eval_version": "cross_spine_eval_v2",
-  "gold_version": "cross_spine_gold_v2",
-  "content_hash": "e25a812d38211401",
+  "schema": "cityscroll.cross_spine_edge_eval.v3",
+  "eval_version": "cross_spine_eval_v3",
+  "gold_version": "cross_spine_gold_v3",
+  "content_hash": "454d2967931b54b2",
   "relation": null,
   "group_split": true,
   "split": {
     "holdout_buckets": 5,
     "holdout_bucket": 0,
     "train_rows": 0,
-    "held_out_rows": 60,
+    "held_out_rows": 90,
     "train_groups": 0,
-    "held_out_groups": 72,
+    "held_out_groups": 75,
     "group_leakage": false,
     "assignments": [
       {
@@ -156,7 +156,7 @@
           "left": "mandate:charter-197-c:2018X0438",
           "right": "project:2018X0438"
         },
-        "component": "mandate:charter-197-c:2018X0438|project:2018X0438|project:2022Q0160"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-002",
@@ -165,7 +165,7 @@
           "left": "mandate:charter-197-c:2019K0147",
           "right": "project:2019K0147"
         },
-        "component": "mandate:charter-197-c:2019K0147|project:2019K0147"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-003",
@@ -174,7 +174,7 @@
           "left": "mandate:charter-197-c:2019K0190",
           "right": "project:2019K0190"
         },
-        "component": "mandate:charter-197-c:2019K0190|project:2019K0190"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-004",
@@ -183,7 +183,7 @@
           "left": "mandate:charter-197-c:2019K0301",
           "right": "project:2019K0301"
         },
-        "component": "mandate:charter-197-c:2019K0301|project:2019K0301"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-005",
@@ -192,7 +192,7 @@
           "left": "mandate:charter-197-c:2018X0438",
           "right": "project:2022Q0160"
         },
-        "component": "mandate:charter-197-c:2018X0438|project:2018X0438|project:2022Q0160"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-006",
@@ -201,7 +201,7 @@
           "left": "mandate:charter-197-c:2019R0267",
           "right": "project:2019R0267"
         },
-        "component": "mandate:charter-197-c:2019R0267|project:2019R0267|project:2021K0261"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-007",
@@ -210,7 +210,7 @@
           "left": "mandate:charter-197-c:2020Q0240",
           "right": "project:2020Q0240"
         },
-        "component": "mandate:charter-197-c:2020Q0240|project:2020Q0240"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-008",
@@ -219,7 +219,7 @@
           "left": "mandate:charter-197-c:2020X0410",
           "right": "project:2020X0410"
         },
-        "component": "mandate:charter-197-c:2020X0410|project:2020X0410"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-009",
@@ -228,7 +228,7 @@
           "left": "mandate:charter-197-c:2021K0187",
           "right": "project:2021K0187"
         },
-        "component": "mandate:charter-197-c:2021K0187|project:2021K0187"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-010",
@@ -237,7 +237,7 @@
           "left": "mandate:charter-197-c:2019R0267",
           "right": "project:2021K0261"
         },
-        "component": "mandate:charter-197-c:2019R0267|project:2019R0267|project:2021K0261"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-011",
@@ -246,7 +246,7 @@
           "left": "mandate:charter-197-c:2022M0258",
           "right": "project:2022M0258"
         },
-        "component": "mandate:charter-197-c:2022M0258|project:2022M0258"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-012",
@@ -255,7 +255,7 @@
           "left": "mandate:charter-197-c:2022X0150",
           "right": "project:2022X0150"
         },
-        "component": "mandate:charter-197-c:2022X0150|project:2022X0150|project:2023R0199"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-013",
@@ -264,7 +264,7 @@
           "left": "mandate:charter-197-c:2025R0137",
           "right": "project:2025R0137"
         },
-        "component": "mandate:charter-197-c:2025R0137|project:2025R0137"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-014",
@@ -273,7 +273,7 @@
           "left": "mandate:charter-197-c:2026R0127",
           "right": "project:2026R0127"
         },
-        "component": "mandate:charter-197-c:2026R0127|project:2026R0127"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-land-015",
@@ -282,7 +282,7 @@
           "left": "mandate:charter-197-c:2022X0150",
           "right": "project:2023R0199"
         },
-        "component": "mandate:charter-197-c:2022X0150|project:2022X0150|project:2023R0199"
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       },
       {
         "id": "xsg-v2-meeting-001",
@@ -553,11 +553,302 @@
           "right": "rule:20260707025"
         },
         "component": "mandate:61935-010|mandate:61935-012|mandate:61935-015|rule:20260707025|rule:20260715041"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-001",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2018X0438",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-001",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2018X0438",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-002",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019K0147",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-002",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2019K0147",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-003",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019K0190",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-003",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2019K0190",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-004",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019K0301",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-004",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2019K0301",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-005",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2018X0438",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-005",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2022Q0160",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-006",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019R0267",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-006",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2019R0267",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-007",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2020Q0240",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-007",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2020Q0240",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-008",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2020X0410",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-008",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2020X0410",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-009",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2021K0187",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-009",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2021K0187",
+          "right": "procedure:city_map_change"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-010",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2019R0267",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-010",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2021K0261",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-011",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2022M0258",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-011",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2022M0258",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-012",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2022X0150",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-012",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2022X0150",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-013",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2025R0137",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-013",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2025R0137",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-014",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2026R0127",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-014",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2026R0127",
+          "right": "procedure:site_selection"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-mandate-procedure-015",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:charter-197-c:2022X0150",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
+      },
+      {
+        "id": "xsg-v3-project-procedure-015",
+        "split": "held_out",
+        "groups": {
+          "left": "project:2023R0199",
+          "right": "procedure:rezoning"
+        },
+        "component": "mandate:charter-197-c:2018X0438|mandate:charter-197-c:2019K0147|mandate:charter-197-c:2019K0190|mandate:charter-197-c:2019K0301|mandate:charter-197-c:2019R0267|mandate:charter-197-c:2020Q0240|mandate:charter-197-c:2020X0410|mandate:charter-197-c:2021K0187|mandate:charter-197-c:2022M0258|mandate:charter-197-c:2022X0150|mandate:charter-197-c:2025R0137|mandate:charter-197-c:2026R0127|procedure:city_map_change|procedure:rezoning|procedure:site_selection|project:2018X0438|project:2019K0147|project:2019K0190|project:2019K0301|project:2019R0267|project:2020Q0240|project:2020X0410|project:2021K0187|project:2021K0261|project:2022M0258|project:2022Q0160|project:2022X0150|project:2023R0199|project:2025R0137|project:2026R0127"
       }
     ]
   },
   "all": {
     "mandate_contract": {
+      "split": "all",
+      "total": 15,
+      "inferred_total": 15,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
+      "false_positive": 0,
+      "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "coverage": 1,
+      "abstentions": 3,
+      "abstention_rate": 0.2
+    },
+    "mandate_governs_procedure": {
       "split": "all",
       "total": 15,
       "inferred_total": 15,
@@ -621,6 +912,27 @@
       "abstention_rate": 0.2
     },
     "mandate_rule": {
+      "split": "all",
+      "total": 15,
+      "inferred_total": 15,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
+      "false_positive": 0,
+      "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "coverage": 1,
+      "abstentions": 3,
+      "abstention_rate": 0.2
+    },
+    "project_participates_in_procedure": {
       "split": "all",
       "total": 15,
       "inferred_total": 15,
@@ -665,6 +977,27 @@
       "abstentions": 3,
       "abstention_rate": 0.2
     },
+    "mandate_governs_procedure": {
+      "split": "held_out",
+      "total": 15,
+      "inferred_total": 15,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
+      "false_positive": 0,
+      "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "coverage": 1,
+      "abstentions": 3,
+      "abstention_rate": 0.2
+    },
     "mandate_land_use": {
       "split": "held_out",
       "total": 15,
@@ -727,6 +1060,27 @@
       "coverage": 1,
       "abstentions": 3,
       "abstention_rate": 0.2
+    },
+    "project_participates_in_procedure": {
+      "split": "held_out",
+      "total": 15,
+      "inferred_total": 15,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 12,
+      "candidates": 12,
+      "true_positive": 12,
+      "false_positive": 0,
+      "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "coverage": 1,
+      "abstentions": 3,
+      "abstention_rate": 0.2
     }
   },
   "gate": {
@@ -750,6 +1104,30 @@
         "dhs_family_shelter_awards",
         "dhs_shelter_renewals",
         "dhs_transitional_shelters"
+      ],
+      "passed": true,
+      "status": "pass"
+    },
+    "mandate_governs_procedure": {
+      "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "min_precision": 0.9,
+      "support": 12,
+      "min_support": 12,
+      "support_status": "sufficient",
+      "label_counts": {
+        "same": 12,
+        "different": 3
+      },
+      "source_cohorts": [
+        "zap_ulurp_city_map_changes",
+        "zap_ulurp_rezonings",
+        "zap_ulurp_site_selections"
       ],
       "passed": true,
       "status": "pass"
@@ -822,6 +1200,30 @@
         "dob_energy_and_inspection_rules",
         "dohmh_lead_and_cooling_tower_rules",
         "dsny_commercial_waste_zones"
+      ],
+      "passed": true,
+      "status": "pass"
+    },
+    "project_participates_in_procedure": {
+      "precision": 1,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "min_precision": 0.9,
+      "support": 12,
+      "min_support": 12,
+      "support_status": "sufficient",
+      "label_counts": {
+        "same": 12,
+        "different": 3
+      },
+      "source_cohorts": [
+        "zap_ulurp_city_map_changes",
+        "zap_ulurp_rezonings",
+        "zap_ulurp_site_selections"
       ],
       "passed": true,
       "status": "pass"

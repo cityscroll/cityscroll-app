@@ -22,14 +22,14 @@ import {
   crossSpineEvidenceDecision,
 } from "../entity_resolution/cross_domain/edge_policy.mjs";
 
-export const CROSS_SPINE_EVAL_SCHEMA = "cityscroll.cross_spine_edge_eval.v2";
-export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v2";
+export const CROSS_SPINE_EVAL_SCHEMA = "cityscroll.cross_spine_edge_eval.v3";
+export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v3";
 export const DEFAULT_MIN_PRECISION = CROSS_SPINE_MIN_HELD_OUT_PRECISION;
 export const DEFAULT_MIN_SUPPORT = CROSS_SPINE_MIN_HELD_OUT_SUPPORT;
 export const DEFAULT_HOLDOUT_BUCKETS = 5;
 export const DEFAULT_HOLDOUT_BUCKET = 0;
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const DEFAULT_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl");
+export const DEFAULT_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v3.jsonl");
 export const DEFAULT_GATE_RECEIPT_PATH = resolve(ROOT, "site/data/cross_spine_edge_gate.json");
 export const CROSS_SPINE_MONITOR_SCHEMA = "cityscroll.cross_spine_edge_monitor.v1";
 export const CROSS_SPINE_MONITOR_VERSION = "cross_spine_monitor_v1";
@@ -232,7 +232,7 @@ export function loadCrossSpineGold(text) {
     if (!row || typeof row !== "object" || Array.isArray(row)) fail(`line ${lineNo}: expected an object`);
     if (row._meta === true) {
       if (meta) fail(`line ${lineNo}: duplicate _meta record`);
-      if (![1, 2].includes(row.schema_version) || !clean(row.gold_version)) fail(`line ${lineNo}: _meta requires schema_version=1|2 and gold_version`);
+      if (![1, 2, 3].includes(row.schema_version) || !clean(row.gold_version)) fail(`line ${lineNo}: _meta requires schema_version=1|2|3 and gold_version`);
       meta = row;
       continue;
     }
@@ -243,7 +243,7 @@ export function loadCrossSpineGold(text) {
     if (!LABELS.has(row.label)) fail(`line ${lineNo}: label must be same|different`);
     if (!Array.isArray(row.sources) || row.sources.length === 0) fail(`line ${lineNo}: sources must be non-empty`);
     if (!TIERS.has(row.tier || "inferred")) fail(`line ${lineNo}: tier must be inferred|deterministic`);
-    const publisherBacked = meta?.schema_version === 2;
+    const publisherBacked = meta?.schema_version >= 2;
     validateSide(row.left, "left", lineNo, { publisherBacked });
     validateSide(row.right, "right", lineNo, { publisherBacked });
     if (publisherBacked && !clean(row.source_cohort)) fail(`line ${lineNo}: source_cohort is required for v2`);
@@ -546,7 +546,10 @@ function main() {
     if (args.monitor) {
       if (args.relation) throw new Error("--monitor cannot be relation-scoped");
       const out = args.out ? resolve(args.out) : DEFAULT_MONITOR_RECEIPT_PATH;
-      const prior = existsSync(out) ? JSON.parse(readFileSync(out, "utf8")) : null;
+      const existing = existsSync(out) ? JSON.parse(readFileSync(out, "utf8")) : null;
+      // A new frozen gold version establishes a new provenance baseline. Drift
+      // comparisons are meaningful only within the same evaluation corpus.
+      const prior = existing?.gold_version === gold.meta.gold_version ? existing : null;
       const monitor = buildCrossSpineMonitorReceipt({ gold, prior });
       const renderedMonitor = `${JSON.stringify(monitor, null, 2)}\n`;
       if (args.check && (!existsSync(out) || readFileSync(out, "utf8") !== renderedMonitor)) {

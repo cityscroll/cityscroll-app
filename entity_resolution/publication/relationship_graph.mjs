@@ -1,4 +1,4 @@
-// Bounded public procurement relationship graph.
+// Bounded public civic relationship graph.
 //
 // This serializer constructs a new allowlisted graph from linked public source
 // observations. It never emits an unlabeled edge, matcher score, desk state, or
@@ -8,7 +8,7 @@ import { assertionSnapshot } from "../review/assertion_evidence.mjs";
 import { buildPersonLeaderEntity } from "../leaders/index.mjs";
 import { routeCrossSpineEdges } from "../cross_domain/edge_policy.mjs";
 
-export const PUBLIC_RELATIONSHIP_GRAPH_VERSION = "public_relationship_graph_v1";
+export const PUBLIC_RELATIONSHIP_GRAPH_VERSION = "public_relationship_graph_v2";
 export const PUBLIC_GRAPH_MAX_DEPTH = 2;
 export const PUBLIC_GRAPH_MAX_FAN_OUT = 25;
 export const PUBLIC_GRAPH_DEFAULT_DEPTH = 2;
@@ -24,6 +24,9 @@ export const PUBLIC_GRAPH_NODE_TYPES = Object.freeze([
   "official",
   // Publisher-backed agency principal officer.
   "person-leader",
+  "mandate",
+  "project",
+  "procedure",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
@@ -35,6 +38,8 @@ export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
   "votes_on",
   // agency → person-leader (from the agency governance crosswalk).
   "agency_led_by",
+  "mandate_governs_procedure",
+  "project_participates_in_procedure",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
@@ -44,6 +49,8 @@ export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
   references_contract: "References contract",
   votes_on: "Votes on",
   agency_led_by: "Agency led by",
+  mandate_governs_procedure: "Mandate governs procedure",
+  project_participates_in_procedure: "Project participates in procedure",
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -277,7 +284,7 @@ function selectedTypes(requested, allowlist) {
 export function serializePublicRelationshipGraph(rows = [], opts = {}) {
   const list = Array.isArray(rows) ? rows : [];
   const root = publicEntity(list[0]);
-  if (!root || root.type !== "vendor") return null;
+  if (!root || !PUBLIC_GRAPH_NODE_TYPES.includes(root.type)) return null;
 
   const requestedDepth = requestedInteger(opts.depth, PUBLIC_GRAPH_DEFAULT_DEPTH);
   const requestedFanOut = requestedInteger(opts.fanOut, PUBLIC_GRAPH_DEFAULT_FAN_OUT);
@@ -296,6 +303,10 @@ export function serializePublicRelationshipGraph(rows = [], opts = {}) {
     const observation = observationGraph(root, row);
     for (const node of observation.nodes) addNode(allNodes, node);
     for (const edge of observation.edges) addEdge(allEdges, edge);
+  }
+
+  for (const node of Array.isArray(opts.crossSpineNodes) ? opts.crossSpineNodes : []) {
+    addNode(allNodes, node);
   }
 
   // Optional cross-spine candidates use the same automatic router as the
@@ -321,16 +332,21 @@ export function serializePublicRelationshipGraph(rows = [], opts = {}) {
 
   const includedNodeIds = new Set([root.id]);
   const includedEdges = [];
+  const includedEdgeIds = new Set();
   let frontier = [root.id];
   let fanOutReached = false;
   for (let level = 0; level < depth && frontier.length; level += 1) {
     const next = new Set();
     for (const from of [...frontier].sort()) {
-      const outgoing = sortedEdges.filter((edge) => edge.from === from);
-      if (outgoing.length > fanOut) fanOutReached = true;
-      for (const edge of outgoing.slice(0, fanOut)) {
+      const incident = sortedEdges.filter((edge) => !includedEdgeIds.has(edge.id)
+        && (edge.from === from || edge.to === from));
+      if (incident.length > fanOut) fanOutReached = true;
+      for (const edge of incident.slice(0, fanOut)) {
         includedEdges.push(edge);
-        if (!includedNodeIds.has(edge.to)) next.add(edge.to);
+        includedEdgeIds.add(edge.id);
+        const other = edge.from === from ? edge.to : edge.from;
+        if (!includedNodeIds.has(other)) next.add(other);
+        includedNodeIds.add(edge.from);
         includedNodeIds.add(edge.to);
       }
     }

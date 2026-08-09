@@ -18,9 +18,20 @@
 import { parseAuthorityKey, authorityKeyId } from "../../../entity_resolution/authority_keys/index.mjs";
 import { migrateLegacyMandateSubjectRef } from "../../../site/mandate_subject_ref.mjs";
 
-export const SUBJECT_REGISTRY_VERSION = "subject_registry_v1";
+export const SUBJECT_REGISTRY_VERSION = "subject_registry_v2";
 export const SUBJECT_LINK_METHOD = "subject_registry_lifecycle_v1";
 export const SUBJECT_LINK_METHOD_VERSION = "1.0.0";
+
+/** Closed civic procedure vocabulary. New values require a version change. */
+export const LAND_USE_PROCEDURE_VOCABULARY_VERSION = "land_use_procedure_v1";
+export const LAND_USE_PROCEDURE_KINDS = Object.freeze([
+  "landmark_designation",
+  "rezoning",
+  "ulurp",
+  "special_permit",
+  "city_map_change",
+  "site_selection",
+]);
 
 /** Closed subject kind registry (prefix of subject_ref). */
 export const SUBJECT_KINDS = Object.freeze({
@@ -31,6 +42,11 @@ export const SUBJECT_KINDS = Object.freeze({
   mandate: { description: "Statutory mandate extracted from enacted local law" },
   contract: { description: "Checkbook / PASSPort contract id" },
   project: { description: "ZAP land-use project" },
+  procedure: {
+    description: "Versioned civic procedure kind",
+    vocabulary_version: LAND_USE_PROCEDURE_VOCABULARY_VERSION,
+    allowed_ids: LAND_USE_PROCEDURE_KINDS,
+  },
   parcel: { description: "NYC tax lot (10-digit BBL)" },
   pin: { description: "NYC procurement PIN/EPIN authority value" },
   vendor: { description: "Vendor identity handle" },
@@ -48,6 +64,16 @@ export const SUBJECT_KINDS = Object.freeze({
  * lifecycle registration joins.
  */
 export const SUBJECT_LINK_TYPES = Object.freeze({
+  mandate_governs_procedure: {
+    description: "Statutory mandate governs a typed civic procedure",
+    from_kinds: Object.freeze(["mandate"]),
+    to_kinds: Object.freeze(["procedure"]),
+  },
+  project_participates_in_procedure: {
+    description: "Land-use project participates in a typed civic procedure",
+    from_kinds: Object.freeze(["project"]),
+    to_kinds: Object.freeze(["procedure"]),
+  },
   implemented_by_contract: {
     description: "Statutory mandate is implemented through a linked procurement contract",
     from_kinds: Object.freeze(["mandate"]),
@@ -115,6 +141,11 @@ const LINK_TYPE_SET = new Set(Object.keys(SUBJECT_LINK_TYPES));
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
+function subjectIdAllowed(kind, id) {
+  const allowed = SUBJECT_KINDS[kind]?.allowed_ids;
+  return !Array.isArray(allowed) || allowed.includes(id);
+}
+
 /**
  * Parse `kind:id` into a structured subject. Unknown kinds fail closed (null).
  * Never rewrites kind or id — invalid shape returns null.
@@ -129,7 +160,7 @@ export function parseSubjectRef(ref) {
   if (colon <= 0 || colon === raw.length - 1) return null;
   const kind = raw.slice(0, colon).toLowerCase();
   const id = raw.slice(colon + 1).trim();
-  if (!KIND_SET.has(kind) || !id) return null;
+  if (!KIND_SET.has(kind) || !id || !subjectIdAllowed(kind, id)) return null;
   // Reject embedded whitespace or second kind rewrite attempts.
   if (/\s/.test(id)) return null;
   return { kind, id, ref: `${kind}:${id}` };
@@ -145,7 +176,7 @@ export function parseSubjectRef(ref) {
 export function formatSubjectRef(kind, id) {
   const k = clean(kind).toLowerCase();
   const i = clean(id);
-  if (!KIND_SET.has(k) || !i || /\s/.test(i)) return null;
+  if (!KIND_SET.has(k) || !i || /\s/.test(i) || !subjectIdAllowed(k, i)) return null;
   return `${k}:${i}`;
 }
 

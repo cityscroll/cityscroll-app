@@ -2,11 +2,11 @@
   "schema": "cityscroll.cross_spine_edge_monitor.v1",
   "monitor_version": "cross_spine_monitor_v1",
   "observed_at": null,
-  "eval_version": "cross_spine_eval_v2",
-  "gold_version": "cross_spine_gold_v2",
-  "policy_version": "cross_spine_edge_policy_v1",
+  "eval_version": "cross_spine_eval_v3",
+  "gold_version": "cross_spine_gold_v3",
+  "policy_version": "cross_spine_edge_policy_v2",
   "source": {
-    "gold_content_hash": "e25a812d38211401",
+    "gold_content_hash": "454d2967931b54b2",
     "held_out_group_split": true,
     "holdout_bucket": 0,
     "holdout_buckets": 5
@@ -55,16 +55,75 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "60f891374fc44962",
+        "fingerprint": "77a71956777c7351",
         "source_systems": [
           "city_record+passport_public_contracts",
           "nyc_legistar",
           "passport_public_contracts"
         ],
-        "gold_version": "cross_spine_gold_v2",
-        "gold_content_hash": "e25a812d38211401",
-        "eval_version": "cross_spine_eval_v2",
-        "policy_version": "cross_spine_edge_policy_v1"
+        "gold_version": "cross_spine_gold_v3",
+        "gold_content_hash": "454d2967931b54b2",
+        "eval_version": "cross_spine_eval_v3",
+        "policy_version": "cross_spine_edge_policy_v2"
+      },
+      "provenance_drift": {
+        "status": "stable",
+        "previous_fingerprint": null,
+        "changed": false
+      }
+    },
+    "mandate_governs_procedure": {
+      "precision": 1,
+      "coverage": 1,
+      "coverage_rate": 1,
+      "abstention": 0.2,
+      "abstention_rate": 0.2,
+      "abstentions": 3,
+      "candidates": 12,
+      "support": 12,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "true_positive": 12,
+      "false_positive": 0,
+      "held_out_rows": 15,
+      "gate": {
+        "precision": 1,
+        "precision_interval_95": {
+          "confidence": 0.95,
+          "method": "wilson_score",
+          "lower": 0.7575059933447592,
+          "upper": 1
+        },
+        "min_precision": 0.9,
+        "support": 12,
+        "min_support": 12,
+        "support_status": "sufficient",
+        "label_counts": {
+          "same": 12,
+          "different": 3
+        },
+        "source_cohorts": [
+          "zap_ulurp_city_map_changes",
+          "zap_ulurp_rezonings",
+          "zap_ulurp_site_selections"
+        ],
+        "passed": true,
+        "status": "pass"
+      },
+      "provenance": {
+        "fingerprint": "20df481fef582704",
+        "source_systems": [
+          "cityscroll_procedure_vocabulary",
+          "nyc_charter"
+        ],
+        "gold_version": "cross_spine_gold_v3",
+        "gold_content_hash": "454d2967931b54b2",
+        "eval_version": "cross_spine_eval_v3",
+        "policy_version": "cross_spine_edge_policy_v2"
       },
       "provenance_drift": {
         "status": "stable",
@@ -115,15 +174,15 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "db32269c3a6fedc9",
+        "fingerprint": "460ebd1d2b8c83b4",
         "source_systems": [
           "nyc_charter",
           "zoning_application_portal"
         ],
-        "gold_version": "cross_spine_gold_v2",
-        "gold_content_hash": "e25a812d38211401",
-        "eval_version": "cross_spine_eval_v2",
-        "policy_version": "cross_spine_edge_policy_v1"
+        "gold_version": "cross_spine_gold_v3",
+        "gold_content_hash": "454d2967931b54b2",
+        "eval_version": "cross_spine_eval_v3",
+        "policy_version": "cross_spine_edge_policy_v2"
       },
       "provenance_drift": {
         "status": "stable",
@@ -174,15 +233,15 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "4179f57d48051d1e",
+        "fingerprint": "6cd403bcd48d2aa4",
         "source_systems": [
           "city_record",
           "nyc_legistar"
         ],
-        "gold_version": "cross_spine_gold_v2",
-        "gold_content_hash": "e25a812d38211401",
-        "eval_version": "cross_spine_eval_v2",
-        "policy_version": "cross_spine_edge_policy_v1"
+        "gold_version": "cross_spine_gold_v3",
+        "gold_content_hash": "454d2967931b54b2",
+        "eval_version": "cross_spine_eval_v3",
+        "policy_version": "cross_spine_edge_policy_v2"
       },
       "provenance_drift": {
         "status": "stable",
@@ -233,15 +292,74 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "d6c076da40528d0b",
+        "fingerprint": "a95ee8f159108a38",
         "source_systems": [
           "city_record",
           "nyc_legistar"
         ],
-        "gold_version": "cross_spine_gold_v2",
-        "gold_content_hash": "e25a812d38211401",
-        "eval_version": "cross_spine_eval_v2",
-        "policy_version": "cross_spine_edge_policy_v1"
+        "gold_version": "cross_spine_gold_v3",
+        "gold_content_hash": "454d2967931b54b2",
+        "eval_version": "cross_spine_eval_v3",
+        "policy_version": "cross_spine_edge_policy_v2"
+      },
+      "provenance_drift": {
+        "status": "stable",
+        "previous_fingerprint": null,
+        "changed": false
+      }
+    },
+    "project_participates_in_procedure": {
+      "precision": 1,
+      "coverage": 1,
+      "coverage_rate": 1,
+      "abstention": 0.2,
+      "abstention_rate": 0.2,
+      "abstentions": 3,
+      "candidates": 12,
+      "support": 12,
+      "precision_interval_95": {
+        "confidence": 0.95,
+        "method": "wilson_score",
+        "lower": 0.7575059933447592,
+        "upper": 1
+      },
+      "true_positive": 12,
+      "false_positive": 0,
+      "held_out_rows": 15,
+      "gate": {
+        "precision": 1,
+        "precision_interval_95": {
+          "confidence": 0.95,
+          "method": "wilson_score",
+          "lower": 0.7575059933447592,
+          "upper": 1
+        },
+        "min_precision": 0.9,
+        "support": 12,
+        "min_support": 12,
+        "support_status": "sufficient",
+        "label_counts": {
+          "same": 12,
+          "different": 3
+        },
+        "source_cohorts": [
+          "zap_ulurp_city_map_changes",
+          "zap_ulurp_rezonings",
+          "zap_ulurp_site_selections"
+        ],
+        "passed": true,
+        "status": "pass"
+      },
+      "provenance": {
+        "fingerprint": "69bb937058d9b400",
+        "source_systems": [
+          "cityscroll_procedure_vocabulary",
+          "zoning_application_portal"
+        ],
+        "gold_version": "cross_spine_gold_v3",
+        "gold_content_hash": "454d2967931b54b2",
+        "eval_version": "cross_spine_eval_v3",
+        "policy_version": "cross_spine_edge_policy_v2"
       },
       "provenance_drift": {
         "status": "stable",
