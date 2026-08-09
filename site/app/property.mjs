@@ -16,6 +16,7 @@ import {
 import { bindPropertyScopeFacetRail, propertyDispositionFacetRailsHTML } from "../property_disposition_facets_ui.mjs";
 import { boroughScopeLinksHTML } from "../borough_scope_links.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
+import { propertyScopeView } from "../property_scope_fallback.mjs";
 
 /* Franchise / concession multi-notice process spine. */
 function franchiseStageLabel(kind){
@@ -1223,6 +1224,19 @@ async function renderPropExplorer(){
   await renderDcasFleetInventory();
 
   const partition=partitionFor();
+  const placeScoped=Boolean(
+    borough
+    || propertyCommunityDistrict
+    || propertyCouncilDistrict
+    || propertyResolvedNeighborhood
+    || neighborhood
+  );
+  propertyView=propertyScopeView({
+    requestedView: propertyView,
+    placeScoped,
+    currentCount: partition.default_count,
+    archiveCount: partition.archive_count,
+  });
   let entries=propertyView==="archive"?partition.archive_entries:partition.default_entries;
   if(tools?.stampPropertyExplorerTemporal){
     entries=tools.stampPropertyExplorerTemporal(entries,{commercialOf:(r)=>r.commercial||null});
