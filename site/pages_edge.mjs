@@ -2,6 +2,7 @@ import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
+import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -130,7 +131,7 @@ async function handleComposedObject(request, env, pathname, canonicalPath) {
   return transformed;
 }
 
-export function renderEdgeNotice(row, id, meetingOutcome = null) {
+export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklinksLookup = null) {
   const kind = row?.type_of_notice_description || row?.section_name || "Public record";
   const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
   const agency = row?.agency_name || "Agency not listed";
@@ -160,6 +161,8 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
     ["Responses due", row.due_date], ["PIN", row.pin], ["Category", row.category_description],
     ["Selection method", row.selection_method_description], ["Address", row.street_address_1],
   ].filter(([, value]) => value);
+  // Public mandate backlinks only — empty lookup / unmatched notice → no section.
+  const mandateBacklinksHTML = renderNoticeMandateBacklinksForId(mandateBacklinksLookup, id, { esc });
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
     <article class="panel route-item" tabindex="-1">
@@ -168,6 +171,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
+      ${mandateBacklinksHTML}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
       <div class="actions">${browseLink}${followingLink}</div>
       <p>${sourceLink}</p>
@@ -227,9 +231,10 @@ async function noticeRow(id) {
 }
 
 async function handleNotice(request, env, id) {
-  const [asset, meetingSnapshotResponse] = await Promise.all([
+  const [asset, meetingSnapshotResponse, mandateBacklinksResponse] = await Promise.all([
     staticAsset(env, request, "/"),
     staticAsset(env, request, "/data/meeting_outcomes_snapshot.json"),
+    staticAsset(env, request, "/data/notice_mandate_backlinks_lookup.json"),
   ]);
   let meetingOutcome = null;
   try {
@@ -237,6 +242,14 @@ async function handleNotice(request, env, id) {
     meetingOutcome = snapshot?.by_notice?.[id] || null;
   } catch (_error) {
     meetingOutcome = null;
+  }
+  let mandateBacklinksLookup = null;
+  try {
+    mandateBacklinksLookup = mandateBacklinksResponse.ok
+      ? await mandateBacklinksResponse.json()
+      : null;
+  } catch (_error) {
+    mandateBacklinksLookup = null;
   }
   let row = null;
   let upstreamFailed = false;
@@ -261,7 +274,12 @@ async function handleNotice(request, env, id) {
     .on(".tabbtn.active", { element(element) { element.setAttribute("class", "tabbtn"); } })
     .on("section.tabpane.active", { element(element) { element.setAttribute("class", "tabpane"); } })
     .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
-    .on("#noticeview", { element(element) { element.setInnerContent(renderEdgeNotice(row, id, meetingOutcome), { html: true }); } })
+    .on("#noticeview", { element(element) {
+      element.setInnerContent(
+        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup),
+        { html: true },
+      );
+    } })
     .transform(response);
   if (request.method === "HEAD") return new Response(null, { status, headers: transformed.headers });
   return transformed;

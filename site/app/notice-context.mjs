@@ -44,7 +44,24 @@ function attachmentChipHTML(r){if((r.section_name||r.section)==="Changes in Pers
 let attachmentRelatedToolsPromise=null;
 async function attachmentRelatedTools(){if(!attachmentRelatedToolsPromise)attachmentRelatedToolsPromise=import("../attachment_related.mjs").catch(()=>null);return attachmentRelatedToolsPromise;}
 async function attachmentRelatedHTMLFor(r){if(!r||!r.request_id)return "";const hasAttach=Array.isArray(r.attachments)&&r.attachments.some(a=>a&&(a.url||a.extracted_text));if(!hasAttach)return "";const tools=await attachmentRelatedTools();if(!tools)return "";let artifact=null;if(r.related_by_attachment&&Array.isArray(r.related_by_attachment.related))artifact={by_notice:{[String(r.request_id)]:{related:r.related_by_attachment.related}}};else artifact=await tools.loadAttachmentRelatedLookup();return artifact?tools.attachmentRelatedHTML(artifact,r.request_id,{t,esc:escUiHtml}):"";}
-async function fillContext(r,el){if(!el)return;const attachmentHTML=attachmentChipHTML(r);if(attachmentHTML)el.innerHTML=attachmentHTML;const[flags,ctx,relatedHTML,tablesHTML]=await Promise.all([noticeFlags(r),awardContext(r),attachmentRelatedHTMLFor(r),attachmentTablesHTMLFor(r)]);if(!document.contains(el))return;let html=attachmentHTML;if(relatedHTML)html+=relatedHTML;if(flags.length)html+=`<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`;html+=ctx;if(html)el.innerHTML=html;if(tablesHTML&&document.contains(el)){const host=el.querySelector("[data-attachment-tables-host]");if(host)host.outerHTML=tablesHTML;else if(el.querySelector(".attachment-panel"))el.querySelector(".attachment-panel").insertAdjacentHTML("beforeend",tablesHTML);const tools=await attachmentTablesTools();if(tools&&document.contains(el))tools.bindAttachmentTableSort(el);}}
+/* Public mandate backlinks (precompute-first). Empty-safe: no request when the
+   notice id is absent; no absence announcement when the lookup has no match.
+   Skip when the edge already stamped the same card so hydration cannot duplicate. */
+let mandateBacklinksToolsPromise=null;
+let mandateBacklinksLookupPromise=null;
+function mandateBacklinksTools(){if(!mandateBacklinksToolsPromise)mandateBacklinksToolsPromise=import("../notice_mandate_backlinks.mjs").catch(()=>null);return mandateBacklinksToolsPromise;}
+function loadMandateBacklinksLookup(){if(!mandateBacklinksLookupPromise)mandateBacklinksLookupPromise=fetch("data/notice_mandate_backlinks_lookup.json",{cache:"no-cache",credentials:"omit"}).then(r=>r&&r.ok?r.json():null).catch(()=>null);return mandateBacklinksLookupPromise;}
+async function mandateBacklinksHTMLFor(r){
+  if(!r||!r.request_id)return "";
+  // Edge first paint may already own the card; do not double-mount.
+  if(document.querySelector("#noticeview [data-connected-mandate='1']"))return "";
+  const tools=await mandateBacklinksTools();
+  if(!tools)return "";
+  const lookup=await loadMandateBacklinksLookup();
+  if(!lookup)return "";
+  return tools.renderNoticeMandateBacklinksForId(lookup,r.request_id,{esc:escUiHtml})||"";
+}
+async function fillContext(r,el){if(!el)return;const attachmentHTML=attachmentChipHTML(r);if(attachmentHTML)el.innerHTML=attachmentHTML;const[flags,ctx,relatedHTML,tablesHTML,mandateHTML]=await Promise.all([noticeFlags(r),awardContext(r),attachmentRelatedHTMLFor(r),attachmentTablesHTMLFor(r),mandateBacklinksHTMLFor(r)]);if(!document.contains(el))return;let html=attachmentHTML;if(mandateHTML)html+=mandateHTML;if(relatedHTML)html+=relatedHTML;if(flags.length)html+=`<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`;html+=ctx;if(html)el.innerHTML=html;if(tablesHTML&&document.contains(el)){const host=el.querySelector("[data-attachment-tables-host]");if(host)host.outerHTML=tablesHTML;else if(el.querySelector(".attachment-panel"))el.querySelector(".attachment-panel").insertAdjacentHTML("beforeend",tablesHTML);const tools=await attachmentTablesTools();if(tools&&document.contains(el))tools.bindAttachmentTableSort(el);}}
 async function externalAwardForNotice(r,el){if(!el)return;const cov=awardCoverage(r.agency_name);if(cov==="absent"||cov==="unknown")return;const resp=await loadExternalAward({id:r.request_id});if(!document.contains(el)||!resp)return;el.innerHTML=externalAwardHTML(resp,r);const offerBtn=el.querySelector("[data-award-watch-offer]");if(offerBtn)offerBtn.addEventListener("click",async()=>{const carry=await import("../alerts_context_carry.mjs").catch(()=>null);const scope=carry?.alertScopeFromNotice({...r,kind:"award"});location.assign(scope?carry.alertsHref(scope):"/following/");});}
 
-Object.assign(globalThis,{SECTION_LENS,BM_CACHE,NONCOMP_RE,yearCut,ordinal,agencyNorms,noticeFlags,awardContext,parcelLinksHTML,fillAddressLinks,attachmentExtractHTML,attachmentTablesHTMLFor,attachmentChipHTML,attachmentRelatedHTMLFor,fillContext,externalAwardForNotice});
+Object.assign(globalThis,{SECTION_LENS,BM_CACHE,NONCOMP_RE,yearCut,ordinal,agencyNorms,noticeFlags,awardContext,parcelLinksHTML,fillAddressLinks,attachmentExtractHTML,attachmentTablesHTMLFor,attachmentChipHTML,attachmentRelatedHTMLFor,mandateBacklinksHTMLFor,fillContext,externalAwardForNotice});
