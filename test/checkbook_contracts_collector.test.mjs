@@ -28,6 +28,7 @@ describe("Checkbook Contracts normalization", () => {
     const parsed = fixtureRows();
     assert.equal(parsed[0].agency, "Department of Alpha");
     assert.equal(parsed[0].pin, "10026P0001001");
+    assert.equal(parsed[0].vendor, "Alpha & Prime LLC");
     assert.equal(parsed[1].subVendor, "Alpha Subcontractor Inc");
 
     const normalized = normalizeCheckbookContractRows(parsed);
@@ -38,7 +39,7 @@ describe("Checkbook Contracts normalization", () => {
     assert.equal(normalized.counts.subvendor_slices, 1);
     assert.equal(normalized.rows[0].contract_id, "CT-ALPHA");
     assert.equal(normalized.rows[0].subvendor_count, 1);
-    assert.equal(normalized.rows[0].prime_vendor, "Alpha Prime LLC");
+    assert.equal(normalized.rows[0].prime_vendor, "Alpha & Prime LLC");
   });
 
   it("measures only exact contract/PIN overlap and keeps names out of identity", () => {

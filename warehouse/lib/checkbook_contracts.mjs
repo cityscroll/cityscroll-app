@@ -3,7 +3,14 @@
 import { createHash } from "node:crypto";
 import { normId } from "../../worker/src/lib/passport_join.mjs";
 
-const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+const clean = (value) => String(value ?? "")
+  .replace(/&amp;/gi, "&")
+  .replace(/&quot;/gi, '"')
+  .replace(/&apos;/gi, "'")
+  .replace(/&lt;/gi, "<")
+  .replace(/&gt;/gi, ">")
+  .replace(/\s+/g, " ")
+  .trim();
 const usable = (value) => {
   const text = clean(value);
   return text && text !== "-" && text.toLowerCase() !== "n/a" ? text : "";

@@ -40,9 +40,21 @@ export { CURRENT_SOLICITATIONS_SOURCE };
 // XML parsing (regex-based, matching the pattern in checkbook.mjs / external_award.mjs)
 // ---------------------------------------------------------------------------
 
+function decodeXmlText(value) {
+  const named = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+  return String(value || "").replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos);/gi, (match, entity) => {
+    const lower = entity.toLowerCase();
+    if (lower in named) return named[lower];
+    const codePoint = lower.startsWith("#x")
+      ? Number.parseInt(lower.slice(2), 16)
+      : Number.parseInt(lower.slice(1), 10);
+    try { return String.fromCodePoint(codePoint); } catch { return match; }
+  });
+}
+
 function extractTag(xml, tag) {
   const m = String(xml || "").match(new RegExp(`<${tag}>([^<]*)</${tag}>`));
-  return m ? m[1].trim() : "";
+  return m ? decodeXmlText(m[1]).trim() : "";
 }
 
 function parseAmount(s) {

@@ -20,8 +20,8 @@
     "strategy": "explicit fiscal-year partitions; records_from offsets; pages checkpointed with SHA-256; every page must retain the first observed record_count",
     "page_size": 999,
     "pages": 37,
-    "checkpoint_hits": 0,
-    "fetched_pages": 37,
+    "checkpoint_hits": 37,
+    "fetched_pages": 0,
     "resumable": true,
     "count_drift_policy": "fail without publishing",
     "max_fiscal_years": 5,
@@ -53,8 +53,8 @@
   },
   "checksums": {
     "page_manifest_sha256": "11d38d7f6a313e87c748112f7bed43b35eb1ee603302e22a0f6df51f3e0c9dce",
-    "normalized_contracts_sha256": "2ec8e04c27a443d26d84590fd1595db7ede7911703bffab6e8e6587f57980d05",
-    "committed_graph_slice_sha256": "df2eefbe5b7fd9048101cd95f66f602c40e8741c3aeee06d61ce0286718e0a32"
+    "normalized_contracts_sha256": "af0a73c6325a8c4bbd15eaa4f0e1e98beadf6843ce71777133dd2df580b60669",
+    "committed_graph_slice_sha256": "ea019bef3cb895a926ec04a53bbda86fb9b18c3fb6ae7216680fb7ebeb1058bc"
   },
   "overlap_before_graph_selection": {
     "checkbook_contracts": 25818,

@@ -3,14 +3,14 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-09T14:51:13.645Z",
+  "generated_at": "2026-08-09T15:01:57.962Z",
   "observation_count": 2459,
   "entity_count": 200,
   "multi_domain_count": 34,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
     "cap": 200,
-    "candidate_count": 950,
+    "candidate_count": 948,
     "reason_counts": {
       "multi_domain": 34,
       "mandate_agency_reserve": 14,
@@ -18381,6 +18381,1438 @@
         "total_linked_objects": 17,
         "link_count": 72,
         "join_key_link_count": 33,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.42857142857142855
+      }
+    },
+    "agency:id:consumer-and-worker-protection": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:consumer-and-worker-protection",
+        "id": "id:consumer-and-worker-protection",
+        "canonical_id": "consumer-and-worker-protection",
+        "canonical_name": "Consumer and Worker Protection",
+        "display_name": "Consumer and Worker Protection"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:CT186620278801417",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "86623M0001001R002",
+              "contract_id": "CT186620278801417",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "Department of Consumer & Worker Protection"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT186620278800919",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "NEIGHBORHOOD TRUST FINANCIAL PARTNERS INC",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "86620P8178KXLR002",
+              "contract_id": "CT186620278800919",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "Department of Consumer & Worker Protection"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT186620278800918",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "EAST RIVER DEVELOPMENT ALLIANCE, INC.",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "86620P8181KXLR002",
+              "contract_id": "CT186620278800918",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "Department of Consumer & Worker Protection"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT186620278801219",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "CHHAYA COMMUNITY DEVELOPMENT CORPORATION",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "86620P8180KXLR002",
+              "contract_id": "CT186620278801219",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "Department of Consumer & Worker Protection"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT186620278801220",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "BRONXWORKS INC",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "86620P8176KXLR002",
+              "contract_id": "CT186620278801220",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "Department of Consumer & Worker Protection"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 5
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260715045",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "Notice of Change of Effective Date for SHIELD rules",
+              "when": "2026-07-22T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260715045",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260715045",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260715045",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-07-22T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260713006",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+              "when": "2026-07-20T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260713006",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260713006",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260713006",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-07-20T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260626035",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOA Cancellation of Subscriptions",
+              "when": "2026-07-08T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260626035",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260626035",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260626035",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-07-08T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260626036",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOH Junk Fees",
+              "when": "2026-07-08T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260626036",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260626036",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260626036",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-07-08T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260626034",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
+              "when": "2026-07-06T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260626034",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260626034",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260626034",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-07-06T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260622072",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOA Debt Collector Penalty Schedule",
+              "when": "2026-06-29T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260622072",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260622072",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260622072",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-06-29T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 6
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260713006",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+              "when": "2026-08-19T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260713006",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260713006",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260713006",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-08-19T11:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260626036",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "DCWP NOH Junk Fees",
+              "when": "2026-08-07T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260626036",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260626036",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260626036",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-08-07T11:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260626034",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
+              "when": "2026-08-05T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260626034",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260626034",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260626034",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-08-05T11:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260609003",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
+              "when": "2026-07-16T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260609003",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260609003",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260609003",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-16T11:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260602003",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "DCWP NOH Unclaimed Restitution Fund",
+              "when": "2026-07-09T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260602003",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260602003",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260602003",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-09T11:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 5
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT186620278800918",
+          "to": "agency:id:consumer-and-worker-protection",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT186620278800918",
+          "to": "pin:86620P8181KXLR002",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8181KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8181KXLR002",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8181KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8181KXLR002",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT186620278800919",
+          "to": "agency:id:consumer-and-worker-protection",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT186620278800919",
+          "to": "pin:86620P8178KXLR002",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8178KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8178KXLR002",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8178KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8178KXLR002",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT186620278801219",
+          "to": "agency:id:consumer-and-worker-protection",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT186620278801219",
+          "to": "pin:86620P8180KXLR002",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8180KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8180KXLR002",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8180KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8180KXLR002",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT186620278801220",
+          "to": "agency:id:consumer-and-worker-protection",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT186620278801220",
+          "to": "pin:86620P8176KXLR002",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8176KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8176KXLR002",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86620P8176KXLR002",
+            "join_key": "pin",
+            "join_value": "86620P8176KXLR002",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT186620278801417",
+          "to": "agency:id:consumer-and-worker-protection",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Department of Consumer & Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT186620278801417",
+          "to": "pin:86623M0001001R002",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86623M0001001R002",
+            "join_key": "pin",
+            "join_value": "86623M0001001R002",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "86623M0001001R002",
+            "join_key": "pin",
+            "join_value": "86623M0001001R002",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260310018",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260310018",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-03-20T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260311018",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260311018",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-03-23T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260313007",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260313007",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-03-24T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260326020",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260326020",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-04-02T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260327020",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260327020",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-04-03T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260327026",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260327026",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-04-08T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260410006",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260410006",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-04-17T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260422018",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260422018",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-04-30T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260507003",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260507003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-05-14T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260513026",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260513026",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-05-20T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260602003",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260602003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-09T11:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260602003",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260602003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-06-09T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260609003",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260609003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-16T11:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260609003",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260609003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-06-16T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260612002",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260612002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-06-23T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260622072",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260622072",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-06-29T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260626034",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260626034",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-08-05T11:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260626034",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260626034",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-07-06T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260626035",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260626035",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-07-08T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260626036",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260626036",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-08-07T11:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260626036",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260626036",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-07-08T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260713006",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260713006",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-08-19T11:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260713006",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260713006",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-07-20T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260715045",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260715045",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-07-22T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 5,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
+        "total_linked_objects": 16,
+        "link_count": 34,
+        "join_key_link_count": 5,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.42857142857142855
       }
@@ -59295,937 +60727,6 @@
         "total_linked_objects": 12,
         "link_count": 289,
         "join_key_link_count": 166,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.2857142857142857
-      }
-    },
-    "agency:id:consumer-and-worker-protection": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:consumer-and-worker-protection",
-        "id": "id:consumer-and-worker-protection",
-        "canonical_id": "consumer-and-worker-protection",
-        "canonical_name": "Consumer and Worker Protection",
-        "display_name": "Consumer and Worker Protection"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260715045",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Notice of Change of Effective Date for SHIELD rules",
-              "when": "2026-07-22T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260715045",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260715045",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260715045",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-07-22T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260713006",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
-              "when": "2026-07-20T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260713006",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260713006",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260713006",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-07-20T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260626035",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOA Cancellation of Subscriptions",
-              "when": "2026-07-08T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260626035",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260626035",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260626035",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-07-08T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260626036",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOH Junk Fees",
-              "when": "2026-07-08T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260626036",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260626036",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260626036",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-07-08T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260626034",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
-              "when": "2026-07-06T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260626034",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260626034",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260626034",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-07-06T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260622072",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOA Debt Collector Penalty Schedule",
-              "when": "2026-06-29T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260622072",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260622072",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260622072",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-06-29T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 6
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260713006",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
-              "when": "2026-08-19T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260713006",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260713006",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260713006",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-08-19T11:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260626036",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "DCWP NOH Junk Fees",
-              "when": "2026-08-07T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260626036",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260626036",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260626036",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-08-07T11:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260626034",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
-              "when": "2026-08-05T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260626034",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260626034",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260626034",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-08-05T11:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260609003",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
-              "when": "2026-07-16T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260609003",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260609003",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260609003",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-16T11:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260602003",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "DCWP NOH Unclaimed Restitution Fund",
-              "when": "2026-07-09T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260602003",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260602003",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260602003",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-09T11:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 5
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "issued_rule",
-          "from": "notice:20260310018",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260310018",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-03-20T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260311018",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260311018",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-03-23T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260313007",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260313007",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-03-24T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260326020",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260326020",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-04-02T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260327020",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260327020",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-04-03T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260327026",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260327026",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-04-08T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260410006",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260410006",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-04-17T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260422018",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260422018",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-04-30T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260507003",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260507003",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-05-14T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260513026",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260513026",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-05-20T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260602003",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260602003",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-09T11:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260602003",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260602003",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-06-09T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260609003",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260609003",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-16T11:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260609003",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260609003",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-06-16T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260612002",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260612002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-06-23T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260622072",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260622072",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-06-29T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260626034",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260626034",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-08-05T11:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260626034",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260626034",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-07-06T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260626035",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260626035",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-07-08T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260626036",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260626036",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-08-07T11:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260626036",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260626036",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-07-08T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260713006",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260713006",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-08-19T11:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260713006",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260713006",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-07-20T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260715045",
-          "to": "agency:id:consumer-and-worker-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260715045",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-07-22T00:00:00.000",
-            "input_value": "Consumer and Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 2,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 11,
-        "link_count": 24,
-        "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.2857142857142857
       }
@@ -199866,593 +200367,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "agency:id:department-of-consumer-and-amp-worker-protection": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-        "id": "id:department-of-consumer-and-amp-worker-protection",
-        "canonical_id": "department-of-consumer-and-amp-worker-protection",
-        "canonical_name": "Department of Consumer &amp; Worker Protection",
-        "display_name": "Department of Consumer &amp; Worker Protection"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:CT186620278801417",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "86623M0001001R002",
-              "contract_id": "CT186620278801417",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "input_value": "Department of Consumer &amp; Worker Protection"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT186620278800919",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "NEIGHBORHOOD TRUST FINANCIAL PARTNERS INC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "86620P8178KXLR002",
-              "contract_id": "CT186620278800919",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "input_value": "Department of Consumer &amp; Worker Protection"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT186620278800918",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "EAST RIVER DEVELOPMENT ALLIANCE, INC.",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "86620P8181KXLR002",
-              "contract_id": "CT186620278800918",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "input_value": "Department of Consumer &amp; Worker Protection"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT186620278801219",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "CHHAYA COMMUNITY DEVELOPMENT CORPORATION",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "86620P8180KXLR002",
-              "contract_id": "CT186620278801219",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "input_value": "Department of Consumer &amp; Worker Protection"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT186620278801220",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "BRONXWORKS INC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "86620P8176KXLR002",
-              "contract_id": "CT186620278801220",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "input_value": "Department of Consumer &amp; Worker Protection"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 5
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT186620278800918",
-          "to": "agency:id:department-of-consumer-and-amp-worker-protection",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT186620278800918",
-          "to": "pin:86620P8181KXLR002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8181KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8181KXLR002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8181KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8181KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8181KXLR002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v1"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT186620278800919",
-          "to": "agency:id:department-of-consumer-and-amp-worker-protection",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT186620278800919",
-          "to": "pin:86620P8178KXLR002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8178KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8178KXLR002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8178KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8178KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8178KXLR002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v1"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT186620278801219",
-          "to": "agency:id:department-of-consumer-and-amp-worker-protection",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT186620278801219",
-          "to": "pin:86620P8180KXLR002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8180KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8180KXLR002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8180KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8180KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8180KXLR002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v1"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT186620278801220",
-          "to": "agency:id:department-of-consumer-and-amp-worker-protection",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT186620278801220",
-          "to": "pin:86620P8176KXLR002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8176KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8176KXLR002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86620P8176KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86620P8176KXLR002",
-            "join_key": "pin",
-            "join_value": "86620P8176KXLR002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v1"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT186620278801417",
-          "to": "agency:id:department-of-consumer-and-amp-worker-protection",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Department of Consumer &amp; Worker Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT186620278801417",
-          "to": "pin:86623M0001001R002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86623M0001001R002",
-            "join_key": "pin",
-            "join_value": "86623M0001001R002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:86623M0001001R002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "86623M0001001R002",
-            "join_key": "pin",
-            "join_value": "86623M0001001R002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v1"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 5,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 5,
-        "link_count": 10,
-        "join_key_link_count": 5,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "agency:id:office-of-contract-services": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -243286,6 +243200,448 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+        "id": "stem:P%20M%20ELECTRICAL%20CONTRACTING",
+        "stem": "P M ELECTRICAL CONTRACTING",
+        "display_name": "P & M ELECTRICAL CONTRACTING CORP"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20210315113",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Electrical Work at the Marinas, Various Parks Locations",
+              "when": "2021-03-22",
+              "amount": 84980,
+              "public_status": null,
+              "pin": "84621W0013001",
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20210315113",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+              "root_kind": "vendor",
+              "href": "#notice/20210315113",
+              "provenance": {
+                "source_system": "warehouse",
+                "source_record_id": "warehouse:20210315113",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2021-03-22",
+                "input_value": "P & M Electrical Contracting Corp."
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-846-20218800788",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "P & M ELECTRICAL CONTRACTING CORP",
+              "when": "02/28/2021",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-846-20218800788",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "02/28/2021",
+                "input_value": "P & M ELECTRICAL CONTRACTING CORP"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT181620278800569",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "P & M ELECTRICAL CONTRACTING CORP",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "81626B0004001",
+              "contract_id": "CT181620278800569",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:81626B0004001",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "input_value": "P & M ELECTRICAL CONTRACTING CORP"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 3
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-846-20218800788",
+          "to": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "02/28/2021",
+            "input_value": "P & M ELECTRICAL CONTRACTING CORP",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "02/28/2021",
+            "input_value": "P & M ELECTRICAL CONTRACTING CORP"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-846-20218800788",
+          "to": "pin:84621W0013001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "02/28/2021",
+            "input_value": "84621W0013001",
+            "join_key": "epin",
+            "join_value": "84621W0013001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "02/28/2021",
+            "input_value": "84621W0013001",
+            "join_key": "epin",
+            "join_value": "84621W0013001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT181620278800569",
+          "to": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626B0004001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "input_value": "P & M ELECTRICAL CONTRACTING CORP",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626B0004001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "input_value": "P & M ELECTRICAL CONTRACTING CORP"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT181620278800569",
+          "to": "pin:81626B0004001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626B0004001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "81626B0004001",
+            "join_key": "pin",
+            "join_value": "81626B0004001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626B0004001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "81626B0004001",
+            "join_key": "pin",
+            "join_value": "81626B0004001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:20210315113",
+          "to": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210315113",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2021-03-22",
+            "input_value": "P & M Electrical Contracting Corp.",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210315113",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2021-03-22",
+            "input_value": "P & M Electrical Contracting Corp."
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20210315113",
+          "to": "contract:CT1-846-20218800788",
+          "method": "passport_contract_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "02/28/2021",
+            "input_value": "84621W0013001",
+            "related_source_system": "warehouse",
+            "related_source_record_id": "warehouse:20210315113",
+            "join_key": "pin_epin",
+            "join_value": "84621W0013001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218800788",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "02/28/2021",
+            "input_value": "84621W0013001",
+            "related_source_system": "warehouse",
+            "related_source_record_id": "warehouse:20210315113",
+            "join_key": "pin_epin",
+            "join_value": "84621W0013001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20210315113",
+          "to": "pin:84621W0013001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210315113",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2021-03-22",
+            "input_value": "84621W0013001",
+            "join_key": "pin",
+            "join_value": "84621W0013001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210315113",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2021-03-22",
+            "input_value": "84621W0013001",
+            "join_key": "pin",
+            "join_value": "84621W0013001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v1"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 4,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 3,
+        "link_count": 7,
+        "join_key_link_count": 4,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "vendor:stem:PARTNERSHIP%20WITH%20CHILDREN": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -251020,7 +251376,7 @@
               "subject_ref": "contract:CT104220271401188",
               "domain": "money",
               "object_kind": "contract",
-              "label": "SURE SHOT TERMITE &amp; PEST CONTROL INC",
+              "label": "SURE SHOT TERMITE & PEST CONTROL INC",
               "when": null,
               "amount": null,
               "public_status": null,
@@ -255660,6 +256016,11 @@
         "entity_ref": "agency:id:parks-and-recreation",
         "relation": "published_by_agency",
         "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+        "relation": "named_vendor",
+        "confidence": "strong"
       }
     ],
     "contract:CT1-846-20218801033": [
@@ -259242,6 +259603,11 @@
         "entity_ref": "agency:id:health-and-mental-hygiene",
         "relation": "published_by_agency",
         "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+        "relation": "named_vendor",
+        "confidence": "strong"
       }
     ],
     "contract:CT181620278800988": [
@@ -260011,28 +260377,28 @@
     ],
     "contract:CT186620278800918": [
       {
-        "entity_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
+        "entity_ref": "agency:id:consumer-and-worker-protection",
         "relation": "published_by_agency",
         "confidence": "strong"
       }
     ],
     "contract:CT186620278800919": [
       {
-        "entity_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
+        "entity_ref": "agency:id:consumer-and-worker-protection",
         "relation": "published_by_agency",
         "confidence": "strong"
       }
     ],
     "contract:CT186620278801219": [
       {
-        "entity_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
+        "entity_ref": "agency:id:consumer-and-worker-protection",
         "relation": "published_by_agency",
         "confidence": "strong"
       }
     ],
     "contract:CT186620278801220": [
       {
-        "entity_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
+        "entity_ref": "agency:id:consumer-and-worker-protection",
         "relation": "published_by_agency",
         "confidence": "strong"
       },
@@ -260044,7 +260410,7 @@
     ],
     "contract:CT186620278801417": [
       {
-        "entity_ref": "agency:id:department-of-consumer-and-amp-worker-protection",
+        "entity_ref": "agency:id:consumer-and-worker-protection",
         "relation": "published_by_agency",
         "confidence": "strong"
       },
@@ -262365,6 +262731,11 @@
       {
         "entity_ref": "agency:id:parks-and-recreation",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -268134,7 +268505,7 @@
             2026,
             2027
           ],
-          "sha256": "2ec8e04c27a443d26d84590fd1595db7ede7911703bffab6e8e6587f57980d05"
+          "sha256": "af0a73c6325a8c4bbd15eaa4f0e1e98beadf6843ce71777133dd2df580b60669"
         },
         "overlap": {
           "checkbook_contracts": 25818,
@@ -268261,6 +268632,14 @@
       "coverage_rate": 0.42857142857142855
     },
     {
+      "ref": "agency:id:consumer-and-worker-protection",
+      "kind": "agency",
+      "display_name": "Consumer and Worker Protection",
+      "domains_matched": 3,
+      "total_linked_objects": 16,
+      "coverage_rate": 0.42857142857142855
+    },
+    {
       "ref": "agency:id:buildings",
       "kind": "agency",
       "display_name": "Buildings",
@@ -268338,14 +268717,6 @@
       "display_name": "Citywide Administrative Services",
       "domains_matched": 2,
       "total_linked_objects": 12,
-      "coverage_rate": 0.2857142857142857
-    },
-    {
-      "ref": "agency:id:consumer-and-worker-protection",
-      "kind": "agency",
-      "display_name": "Consumer and Worker Protection",
-      "domains_matched": 2,
-      "total_linked_objects": 11,
       "coverage_rate": 0.2857142857142857
     },
     {
@@ -269013,14 +269384,6 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "agency:id:department-of-consumer-and-amp-worker-protection",
-      "kind": "agency",
-      "display_name": "Department of Consumer &amp; Worker Protection",
-      "domains_matched": 1,
-      "total_linked_objects": 5,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
       "ref": "agency:id:office-of-contract-services",
       "kind": "agency",
       "display_name": "Office Of Contract Services",
@@ -269648,6 +270011,14 @@
       "ref": "vendor:stem:NEW%20YORK%20CITY%20HOUSING%20AUTHORITY",
       "kind": "vendor",
       "display_name": "NEW YORK CITY HOUSING AUTHORITY",
+      "domains_matched": 1,
+      "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "vendor:stem:P%20M%20ELECTRICAL%20CONTRACTING",
+      "kind": "vendor",
+      "display_name": "P & M ELECTRICAL CONTRACTING CORP",
       "domains_matched": 1,
       "total_linked_objects": 3,
       "coverage_rate": 0.14285714285714285
