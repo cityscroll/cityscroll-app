@@ -649,6 +649,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     ...(mandatesMeetings?.edges || []).map((edge) => edge.claim).filter(Boolean),
     ...(mandatesContracts?.edges || []).map((edge) => edge.claim).filter(Boolean),
     ...(mandatesLandUse?.edges || []).map((edge) => edge.claim).filter(Boolean),
+    ...(mandatesLandUse?.procedure_paths || []).map((path) => path.claim).filter(Boolean),
   ];
 
   return {

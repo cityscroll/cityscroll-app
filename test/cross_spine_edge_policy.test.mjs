@@ -16,7 +16,7 @@ import {
   loadCrossSpineGold,
 } from "../tools/cross_spine_eval.mjs";
 
-const GOLD_PATH = new URL("../entity_resolution/eval/cross_spine_gold_v2.jsonl", import.meta.url);
+const GOLD_PATH = new URL("../entity_resolution/eval/cross_spine_gold_v3.jsonl", import.meta.url);
 
 const inferredFeatures = {
   agency_exact: true,
@@ -45,6 +45,38 @@ test("publishes only relation candidates behind the held-out gate", () => {
   assert.equal(route.public, true);
   assert.equal(route.gate.relation, "mandate_rule");
   assert.equal(route.gate.min_precision, 0.9);
+});
+
+test("procedure relations require exact closed-vocabulary evidence", () => {
+  const mandate = routeCrossSpineEdge({
+    relation: "mandate_governs_procedure",
+    features: {
+      mandate_quote_verified: true,
+      procedure_kind_exact: true,
+      procedure_vocabulary_member: true,
+    },
+  });
+  const project = routeCrossSpineEdge({
+    relation: "project_participates_in_procedure",
+    features: {
+      project_subject_exact: true,
+      publisher_action_kind_exact: true,
+      procedure_vocabulary_member: true,
+    },
+  });
+  const titleOnly = routeCrossSpineEdge({
+    relation: "project_participates_in_procedure",
+    features: {
+      project_subject_exact: true,
+      title_similarity: true,
+      procedure_vocabulary_member: true,
+    },
+    provenance: { source_system: "zap", source_record_id: "project:title-only" },
+  });
+  assert.equal(mandate.tier, "public_inferred");
+  assert.equal(project.tier, "public_inferred");
+  assert.equal(titleOnly.tier, "evidence_only");
+  assert.deepEqual(titleOnly.evidence.missing, ["publisher_action_kind_exact"]);
 });
 
 test("uncertain candidates become shadow evidence and never a public edge", () => {
@@ -98,7 +130,7 @@ test("policy check binds the router to the immutable grouped holdout", () => {
   assert.ok(Object.values(check.policy.gates).every((gate) => gate.support >= gate.min_support));
 });
 
-test("v2 promotion is atomic and preserves public edge counts", () => {
+test("v3 promotion is atomic and preserves established public edge counts", () => {
   const gold = loadCrossSpineGold(readFileSync(GOLD_PATH, "utf8"));
   const report = evaluateCrossSpineGold({ gold, groupSplit: true });
   const incomplete = structuredClone(report);
@@ -113,7 +145,7 @@ test("v2 promotion is atomic and preserves public edge counts", () => {
   assert.deepEqual(retained.failures, ["mandate_rule"]);
   const promoted = promoteCrossSpineEdgePolicy(report);
   assert.equal(promoted.promoted, true);
-  assert.equal(promoted.policy.gold_version, "cross_spine_gold_v2");
+  assert.equal(promoted.policy.gold_version, "cross_spine_gold_v3");
 
   const candidates = [
     { relation: "mandate_rule", features: inferredFeatures },
@@ -126,4 +158,16 @@ test("v2 promotion is atomic and preserves public edge counts", () => {
   const v2 = routeCrossSpineEdges(candidates, { policy: promoted.policy });
   assert.deepEqual(v2.counts, v1.counts);
   assert.equal(v2.public_edges.length, v1.public_edges.length);
+
+  const procedureCandidate = {
+    relation: "mandate_governs_procedure",
+    features: {
+      mandate_quote_verified: true,
+      procedure_kind_exact: true,
+      procedure_vocabulary_member: true,
+    },
+    provenance: { source_system: "nyc_legistar", source_record_id: "mandate:54431-002" },
+  };
+  assert.equal(routeCrossSpineEdge(procedureCandidate, { policy: CROSS_SPINE_EDGE_POLICY_V1 }).tier, "evidence_only");
+  assert.equal(routeCrossSpineEdge(procedureCandidate, { policy: promoted.policy }).tier, "public_inferred");
 });

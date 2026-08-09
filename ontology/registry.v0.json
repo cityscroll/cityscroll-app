@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "generated_note": "Catalog only \u2014 no production writer or public route. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
@@ -232,6 +232,32 @@
       "backing": [
         "process_spine",
         "zap"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "mandate",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "mandate:{canonical_law_ref}",
+      "families": [],
+      "backing": [
+        "public_graph.node",
+        "subject_registry"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "procedure",
+      "status": "registered",
+      "layer": "spine",
+      "primary_key_pattern": "procedure:{land_use_procedure_v1_kind}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [
+        "public_graph.node",
+        "subject_registry"
       ],
       "properties_ref": []
     },
@@ -498,6 +524,28 @@
         "agency_crosswalk"
       ],
       "label": "Agency led by"
+    },
+    {
+      "id": "mandate_governs_procedure",
+      "status": "registered",
+      "from": "mandate",
+      "to": "procedure",
+      "backing": [
+        "public_graph.edge",
+        "subject_registry"
+      ],
+      "label": "Mandate governs procedure"
+    },
+    {
+      "id": "project_participates_in_procedure",
+      "status": "registered",
+      "from": "project",
+      "to": "procedure",
+      "backing": [
+        "public_graph.edge",
+        "subject_registry"
+      ],
+      "label": "Project participates in procedure"
     },
     {
       "id": "about_project",
