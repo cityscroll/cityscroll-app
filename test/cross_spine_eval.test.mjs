@@ -116,6 +116,19 @@ test("CLI check reports relation precision, coverage, abstention, and leakage st
   assert.match(result.stdout, /group_split=true leakage=false ok=true/);
 });
 
+test("relation-scoped CLI check does not compare against the all-relations receipt", () => {
+  const result = spawnSync(process.execPath, [
+    HARNESS_PATH,
+    "--gold", GOLD_PATH,
+    "--relation", "mandate_contract",
+    "--min-precision", "0.90",
+    "--check",
+  ], { cwd: ROOT, encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /relation=mandate_contract/);
+  assert.match(result.stdout, /group_split=true leakage=false ok=true/);
+});
+
 test("malformed gold cannot silently skip relation groups", () => {
   const malformed = JSON.stringify({
     _meta: true,
