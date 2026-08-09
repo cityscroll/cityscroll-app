@@ -10,7 +10,7 @@ import {
 } from "../tools/cross_spine_eval.mjs";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
-const GOLD = loadCrossSpineGold(readFileSync(resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v1.jsonl"), "utf8"));
+const GOLD = loadCrossSpineGold(readFileSync(resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl"), "utf8"));
 const HARNESS = resolve(ROOT, "tools/cross_spine_eval.mjs");
 
 test("monitor emits the four relation metrics and provenance fingerprints", () => {
@@ -26,6 +26,9 @@ test("monitor emits the four relation metrics and provenance fingerprints", () =
     assert.equal(typeof metric.precision, "number");
     assert.equal(typeof metric.coverage, "number");
     assert.equal(typeof metric.abstention, "number");
+    assert.equal(metric.support, 12);
+    assert.equal(metric.gate.support_status, "sufficient");
+    assert.equal(metric.precision_interval_95.confidence, 0.95);
     assert.match(metric.provenance.fingerprint, /^[a-f0-9]{16}$/);
     assert.equal(metric.provenance_drift.status, "stable");
   }
