@@ -1659,7 +1659,10 @@
     const kind = kindFor(matter || {});
     const stage = String(matter.lifecycle_stage || "").toLowerCase();
     const deadline = matter.deadline || null;
-    const watch = local("watch", "next_action_watch", "Watch this notice", watchDestination(matter), null);
+    // The destination carries the matter's related-record scope, not a durable
+    // subscription to this single notice. Keep that distinction visible in the
+    // promise: the watch reports matching records when they arrive.
+    const watch = local("watch", "next_action_watch", "Get updates about related records", watchDestination(matter), null);
     const calendar = local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, deadline);
     const notice = () => official("document", "read_official_notice", "Read the official notice", matter.official_notice_url, deadline);
     let actions;
@@ -1814,7 +1817,7 @@
     } else if (kind === "zoning") {
       const handoff = zoningHandoff(matter, {today});
       const actionDeadline = deadline || handoff.deadline || null;
-      const landWatch = local("watch", "next_action_watch_rezone", "Watch this rezoning", watchDestination(matter), null);
+      const landWatch = local("watch", "next_action_watch_rezone", "Get updates about related land-use activity", watchDestination(matter), null);
       // Rail keeps at most 3 actions (slice below). Prefer:
       //   join platform → [join, calendar, watch] (maps stay in guide steps)
       //   ZAP hybrid logistics → [maps attend, watch live, calendar|watch]
