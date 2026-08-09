@@ -16,6 +16,7 @@ import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
 import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
+import { selectNearYouExplanationPath } from "./near_you_explanation_path.mjs";
 import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
@@ -250,7 +251,18 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
     || scope.place.council_districts.length || scope.place.neighborhood
     || scope.place.location_scope);
-  const linkedRecord = (record) => ({ ...record, route: migratedSiteHref(record.route) });
+  const linkedRecord = (record, { explain = true } = {}) => {
+    const whyHere = explain
+      ? selectNearYouExplanationPath(record.why_here_candidates, scope)
+      : null;
+    return {
+      ...record,
+      route: migratedSiteHref(record.route),
+      why_here: whyHere
+        ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) }
+        : null,
+    };
+  };
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
     const ids = mapped ? intersection(activityRoot?.district_items?.[kind]?.[lens], allowed) : [];
@@ -259,7 +271,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       label: BAG_LABELS[kind],
       ids,
       count: ids.length,
-      records: ids.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord),
+      records: ids.map((id) => records[id]).filter(Boolean).sort(recordSort)
+        .map((record) => linkedRecord(record, { explain: false })),
       href: urlForScope(scopeWithPlace(scope, { locationScope: kind })),
     }];
   }));
@@ -298,6 +311,28 @@ function dateLabel(value) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
 }
 
+function placeRoleLabel(role) {
+  if (role === "venue") return "Meeting venue";
+  if (role === "matter") return "Matter place";
+  return "Affected area";
+}
+
+function whyHerePath(path) {
+  if (!path) return "";
+  const mandateLabel = path.mandate?.citation || path.mandate?.relation_label || "Connected mandate";
+  return `<div class="near-record-why" data-why-here-path="1"
+    data-located-in-method="${esc(path.provenance?.located_in_method)}"
+    data-cross-spine-method="${esc(path.provenance?.cross_spine_method)}"
+    data-publication-tier="${esc(path.provenance?.publication_tier)}"
+    aria-label="Why this record is here">
+    <strong>Why this is here</strong>
+    <span class="near-record-why-step">${esc(placeRoleLabel(path.location?.place_role))}: ${esc(path.location?.label)}</span>
+    <span class="near-record-why-separator" aria-hidden="true">·</span>
+    <span class="near-record-why-step">Process: <a href="${esc(path.agency?.href)}">${esc(path.agency?.name)}</a> → <a href="${esc(path.notice_href)}" title="${esc(path.mandate?.duty_text)}">Mandate: ${esc(mandateLabel)}</a></span>
+    <span class="near-record-why-source">Public location and civic-process links</span>
+  </div>`;
+}
+
 function recordCard(record) {
   return `<li class="near-record" data-record-id="${esc(record.id)}">
     <a class="near-record-title" href="${esc(record.route)}">${esc(record.title)}</a>
@@ -306,7 +341,7 @@ function recordCard(record) {
       ${record.type ? `<span>${esc(record.type)}</span>` : ""}
       <span>${esc(dateLabel(record.date))}</span>
     </div>
-    <div class="near-record-basis"><strong>${esc(record.basis)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>
+    <div class="near-record-basis"><strong>${esc(record.basis)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>${whyHerePath(record.why_here)}
   </li>`;
 }
 

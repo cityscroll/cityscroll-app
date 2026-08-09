@@ -50,6 +50,7 @@ import {
   geographySubjectRef,
   makeSubjectLink,
 } from "../../worker/src/lib/subject_registry.mjs";
+import { buildNearYouExplanationCandidates } from "../../site/near_you_explanation_path.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
 
@@ -1120,6 +1121,7 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
  * @param {object[]} [opts.rulesRows]
  * @param {object[]} [opts.moneyRows]
  * @param {object[]} [opts.contractActionRows]
+ * @param {object} [opts.mandateBacklinksLookup] — public notice → mandate reverse index
  * @param {object} [opts.districtCorpora] — client-readable descriptors for indexed rows
  * @param {string} [opts.builtAt]
  */
@@ -1594,6 +1596,28 @@ export function buildDistrictActivity(opts = {}) {
     },
   };
 
+  const mandateBacklinksLookup = opts.mandateBacklinksLookup || {};
+  let explanationRecordCount = 0;
+  let explanationCandidateCount = 0;
+  if (mandateBacklinksLookup.schema === "cityscroll.notice_mandate_backlinks.v1") {
+    for (const lens of LENSES) {
+      for (const record of Object.values(records[lens])) {
+        const candidates = buildNearYouExplanationCandidates({
+          record,
+          lens,
+          locatedEdges: publicGeographyEdges,
+          geographyNodes: geographySubjects.nodes,
+          mandateBacklinks: mandateBacklinksLookup.by_notice?.[record.id] || [],
+          reverseIndexMethod: mandateBacklinksLookup.method,
+        });
+        if (!candidates.length) continue;
+        record.why_here_candidates = candidates;
+        explanationRecordCount += 1;
+        explanationCandidateCount += candidates.length;
+      }
+    }
+  }
+
   return {
     schema: DISTRICT_ACTIVITY_SCHEMA,
     boundary_vintage: String(boundaries.boundary_vintage),
@@ -1614,6 +1638,15 @@ export function buildDistrictActivity(opts = {}) {
     sources,
     district_items: districtItems,
     geography_subjects: geographySubjects,
+    explanation_paths: {
+      schema: "cityscroll.near_you_explanation_paths.v1",
+      reverse_index_schema: mandateBacklinksLookup.schema || null,
+      reverse_index_method: mandateBacklinksLookup.method || null,
+      reverse_index_generated_at: mandateBacklinksLookup.generated_at || null,
+      records: explanationRecordCount,
+      candidates: explanationCandidateCount,
+      note: "Offline candidates join public located_in edges to public cross-spine mandate backlinks. The Near-you renderer selects at most one exact place match per card.",
+    },
     records,
     basis_layers: {
       contract_action_address: contractActionBasis,

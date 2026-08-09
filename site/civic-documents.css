@@ -1365,6 +1365,34 @@ select {
   color: var(--color-action);
 }
 
+.near-record-why {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  margin-block-start: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-inline-start: 3px solid var(--color-action);
+  background: var(--cs-action-tint);
+  color: var(--color-text-soft);
+  font: .8125rem/1.45 var(--font-interface);
+}
+
+.near-record-why > strong {
+  color: var(--color-text);
+}
+
+.near-record-why-step,
+.near-record-why-source {
+  min-width: 0;
+}
+
+.near-record-why-source {
+  flex-basis: 100%;
+  color: var(--color-text-muted);
+  font-size: .75rem;
+}
+
 .near-bags {
   border-block-start: 1px solid var(--color-border);
 }
