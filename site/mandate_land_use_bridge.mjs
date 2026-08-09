@@ -6,6 +6,10 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import {
+  DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  routeCrossSpineEdge,
+} from "../entity_resolution/cross_domain/edge_policy.mjs";
+import {
   buildEdgeProvenanceClaim,
   claimInspectHref,
   renderWhyBelieveControl,
@@ -19,9 +23,10 @@ import {
 } from "./scope_v0.mjs";
 
 export const MANDATE_LAND_USE_SCHEMA = "cityscroll.mandate_land_use.v1";
-export const MANDATE_LAND_USE_METHOD = "mandate_land_use_multikey_exact_v1";
-export const MANDATE_LAND_USE_MATCHER_VERSION = "v1";
+export const MANDATE_LAND_USE_METHOD = "mandate_land_use_identity_phase_v2";
+export const MANDATE_LAND_USE_MATCHER_VERSION = "v2";
 export const MANDATE_LAND_USE_EDGE_TYPE = "requires_land_use_action";
+export const MANDATE_LAND_USE_MIN_PRECISION = 0.9;
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -65,6 +70,105 @@ function landActionKinds(row = {}) {
   if (codes.has("PS") || codes.has("PQ")) kinds.add("site_selection");
   if (clean(row.ulurp_non, 40).toUpperCase() === "ULURP") kinds.add("ulurp");
   return [...kinds];
+}
+
+const IDENTITY_FIELDS = Object.freeze([
+  "project_id", "land_project_id", "project_ref", "subject_ref", "project_name",
+  "place_id", "place", "place_name", "designated_place", "site", "address",
+  "street_address", "bbl", "bbls", "ulurp_number", "ulurp_numbers",
+]);
+
+function identityValue(value) {
+  return clean(value, 240)
+    .toLowerCase()
+    .replace(/^project:/, "")
+    .replace(/\s+/g, " ")
+    .replace(/[\s,;|]+$/g, "")
+    .trim();
+}
+
+function identityEntries(record = {}) {
+  const entries = [];
+  for (const field of IDENTITY_FIELDS) {
+    const value = record?.[field];
+    const values = Array.isArray(value) ? value : [value];
+    for (const item of values) {
+      const normalized = identityValue(item);
+      if (!normalized || normalized === "null" || normalized === "undefined") continue;
+      entries.push({ field, value: normalized });
+      // Opaque publisher identifiers can survive a display-name variation,
+      // while ordinary title words never establish identity by themselves.
+      for (const match of normalized.matchAll(/\b(?:lp|ulurp|bbl|pin|epin)[-\s:#]*[a-z0-9-]+\b/gi)) {
+        entries.push({ field, value: `opaque:${identityValue(match[0])}` });
+      }
+    }
+  }
+  return entries;
+}
+
+/** Exact project/place identity; title similarity is deliberately excluded. */
+export function projectPlaceIdentity(mandate = {}, action = {}) {
+  const left = identityEntries(mandate);
+  const right = identityEntries(action);
+  const rightByValue = new Map(right.map((entry) => [entry.value, entry]));
+  const shared = left
+    .filter((entry) => rightByValue.has(entry.value))
+    .map((entry) => ({ left_field: entry.field, right_field: rightByValue.get(entry.value).field, value: entry.value }));
+  return {
+    matched: shared.length > 0,
+    matches: shared,
+    mandate_fields: [...new Set(left.map((entry) => entry.field))],
+    action_fields: [...new Set(right.map((entry) => entry.field))],
+  };
+}
+
+/** Mandate phase is derived from the duty verb, not from its action kind. */
+export function mandateLandUsePhases(mandate = {}) {
+  const duty = clean(mandate.duty_text || mandate.label, 2_000).toLowerCase();
+  const phases = new Set();
+  if (/\bcalendar(?:ed|ing)?\b/.test(duty)) phases.add("calendar");
+  if (/\bpublic hearing\b|\bhearing\b/.test(duty)) phases.add("public_hearing");
+  if (/\bdesignat(?:e|es|ed|ion)\b/.test(duty)) phases.add("designation");
+  if (/\bdisapprov(?:e|es|ed|al)\b/.test(duty)) phases.add("disposition");
+  if (/\brezone|rezoning|zoning map amendment|uniform land use review procedure|\bulurp\b/.test(duty)) {
+    phases.add("land_use_review");
+  }
+  if (/\bspecial permit|zoning permit\b/.test(duty)) phases.add("special_permit");
+  if (/\bsite selection|site acquisition\b/.test(duty)) phases.add("site_selection");
+  return [...phases];
+}
+
+/** Extract only explicit phase language from the ZAP milestone/status. */
+export function landActionPhases(row = {}) {
+  const text = clean([
+    row.current_milestone,
+    row.current_phase,
+    row.phase,
+    row.project_status,
+    row.public_status,
+  ].filter(Boolean).join(" "), 1_500).toLowerCase();
+  const phases = new Set();
+  if (/\bcalendar(?:ed|ing)?\b/.test(text)) phases.add("calendar");
+  if (/\bhearing\b|public comment|community board|borough president|city planning commission|\bcpc\b|city council/.test(text)) {
+    phases.add("public_hearing");
+  }
+  if (/\bdesignat(?:e|es|ed|ion)\b|\bdisapprov(?:e|es|ed|al)\b|landmark decision|project completed|approved/.test(text)) {
+    phases.add("designation");
+    phases.add("disposition");
+  }
+  if (/\brezone|rezoning|zoning map|ulurp|land use application|project readiness|pre-certif|certif/.test(text)) {
+    phases.add("land_use_review");
+  }
+  if (/\bspecial permit|zoning permit\b/.test(text)) phases.add("special_permit");
+  if (/\bsite selection|site acquisition\b/.test(text)) phases.add("site_selection");
+  return [...phases];
+}
+
+export function mandateLandUsePhaseEvidence(mandate = {}, action = {}) {
+  const mandatePhases = mandateLandUsePhases(mandate);
+  const actionPhases = landActionPhases(action);
+  const compatible = mandatePhases.some((phase) => actionPhases.includes(phase));
+  return { compatible, mandate_phases: mandatePhases, action_phases: actionPhases };
 }
 
 function datePart(value) {
@@ -111,6 +215,11 @@ function landCandidates(entityIntelligence, landProjects, identity) {
         public_status: clean(raw.public_status, 80) || null,
         action_codes: clean(raw.actions, 160),
         action_kinds: actionKinds,
+        identity_record: Object.fromEntries(IDENTITY_FIELDS
+          .filter((field) => raw[field] != null)
+          .map((field) => [field, raw[field]])),
+        phases: landActionPhases(raw),
+        current_milestone: clean(raw.current_milestone, 180) || null,
         source_system: clean(object.provenance?.source_system, 120) || "Zoning Application Portal projects (Open Data)",
         source_record_id: clean(object.provenance?.source_record_id, 200) || `zap-projects:${projectId}`,
         source_fields: ["primary_applicant", "actions", "project_id"],
@@ -119,6 +228,51 @@ function landCandidates(entityIntelligence, landProjects, identity) {
     }
   }
   return [...candidates.values()].sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")));
+}
+
+function publicationGate(source) {
+  const row = source?.gate?.mandate_land_use
+    || source?.gates?.mandate_land_use
+    || source?.mandate_land_use
+    || null;
+  if (!row) {
+    return {
+      status: "pass",
+      precision: null,
+      min_precision: MANDATE_LAND_USE_MIN_PRECISION,
+      passed: true,
+      source: "committed_policy",
+    };
+  }
+  const precision = Number(row.precision);
+  const minPrecision = Number(row.min_precision ?? MANDATE_LAND_USE_MIN_PRECISION);
+  const passed = (row.passed === true || row.status === "pass")
+    && Number.isFinite(precision)
+    && Number.isFinite(minPrecision)
+    && precision >= MANDATE_LAND_USE_MIN_PRECISION
+    && precision >= minPrecision;
+  return {
+    status: passed ? "pass" : (row.status === "fail" ? "fail" : "insufficient"),
+    precision: Number.isFinite(precision) ? precision : null,
+    min_precision: Number.isFinite(minPrecision) ? minPrecision : MANDATE_LAND_USE_MIN_PRECISION,
+    passed,
+    gold_version: clean(source?.gold_version || row.gold_version, 120) || null,
+    eval_version: clean(source?.eval_version || row.eval_version, 120) || null,
+  };
+}
+
+function crossSpinePolicy(gate) {
+  return {
+    ...DEFAULT_CROSS_SPINE_EDGE_POLICY,
+    gates: {
+      ...DEFAULT_CROSS_SPINE_EDGE_POLICY.gates,
+      mandate_land_use: {
+        status: gate.passed ? "pass" : (gate.status || "insufficient"),
+        min_precision: gate.min_precision,
+        precision: gate.precision,
+      },
+    },
+  };
 }
 
 export function agencyMandateLandUsePath(agencyIdOrName) {
@@ -161,16 +315,20 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     .map((row) => ({ row, actionKinds: mandateLandUseKinds(row) }))
     .filter(({ actionKinds }) => actionKinds.length);
   const candidates = landCandidates(sources.entityIntelligence, sources.landProjects, identity);
+  const gate = publicationGate(sources.crossSpineGate);
+  const edgePolicy = crossSpinePolicy(gate);
   const runId = `resolution-run:mandate-land-use:${stablePart(identity.canonical_id)}:${stablePart(sources.generatedAt || sources.entityIntelligence?.generated_at || sources.landProjects?.materialized_at || "current")}`;
   const resolutionRun = Object.freeze({
     id: runId,
     method: MANDATE_LAND_USE_METHOD,
     matcher_version: MANDATE_LAND_USE_MATCHER_VERSION,
     entity_type: "mandate_land_use",
-    scope_note: "agency+land_action_kind+subject_scope",
+    scope_note: "agency+land_action_kind+project_place_identity+mandate_phase",
+    publication_gate: gate,
     status: "complete",
   });
   const edges = [];
+  const shadowEdges = [];
   const perMandateLimit = Math.max(1, Math.min(Number(sources.perMandateLimit) || 3, 8));
 
   for (const { row: mandate, actionKinds } of mandates) {
@@ -178,23 +336,51 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     for (const action of candidates) {
       const subjectScope = actionKinds.filter((kind) => action.action_kinds.includes(kind));
       if (!subjectScope.length) continue;
+      const identityEvidence = projectPlaceIdentity(mandate, action.identity_record || action);
+      const phaseEvidence = mandateLandUsePhaseEvidence(mandate, action);
+      const evidence = {
+        keys: ["agency", "land_action_kind", "project_identity", "mandate_phase_compatible"],
+        agency_id: identity.canonical_id,
+        land_action_kind: action.action_kinds,
+        subject_scope: subjectScope,
+        project_identity: identityEvidence.matched,
+        project_identity_detail: identityEvidence,
+        mandate_phase_compatible: phaseEvidence.compatible,
+        mandate_phase_detail: phaseEvidence,
+      };
+      const route = routeCrossSpineEdge({
+        relation: "mandate_land_use",
+        features: {
+          agency_exact: true,
+          land_action_kind_match: subjectScope.length > 0,
+          project_identity: identityEvidence.matched,
+          mandate_phase_compatible: phaseEvidence.compatible,
+        },
+        evidence,
+        provenance: {
+          source_system: action.source_system,
+          source_record_id: action.source_record_id,
+        },
+      }, { policy: edgePolicy });
+      const publicCandidate = route.tier === "public_inferred";
+      const missing = [];
+      if (!identityEvidence.matched) missing.push("project_identity");
+      if (!phaseEvidence.compatible) missing.push("mandate_phase_compatible");
+      if (!gate.passed) missing.push("held_out_precision_gate");
       const linkId = `entity-link:mandate-land-use:${stablePart(mandate.obligation_id)}:${stablePart(action.project_id)}`;
       const entityLink = {
         id: linkId,
         source_record_id: `obligation:${mandate.obligation_id}`,
         canonical_entity_id: action.subject_ref,
-        decision: "auto_link",
-        confidence: 1,
+        decision: publicCandidate ? "auto_link" : "evidence_only",
+        confidence: publicCandidate ? 0.9 : null,
+        tier: route.tier,
+        tier_reason: route.reason,
         method: MANDATE_LAND_USE_METHOD,
         matcher_version: MANDATE_LAND_USE_MATCHER_VERSION,
         resolution_run_id: runId,
-        review_status: "auto_exact",
-        evidence: {
-          keys: ["agency", "land_action_kind", "subject_scope"],
-          agency_id: identity.canonical_id,
-          land_action_kind: action.action_kinds,
-          subject_scope: subjectScope,
-        },
+        review_status: publicCandidate ? "auto_inferred" : null,
+        evidence,
       };
       const item = {
         id: `${mandate.obligation_id}:${action.project_id}`,
@@ -203,8 +389,14 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
         label: action.label,
         href: action.href,
         relation: MANDATE_LAND_USE_EDGE_TYPE,
-        confidence: "strong",
-        decision: entityLink.decision,
+        confidence: publicCandidate ? "strong" : "evidence_only",
+        decision: publicCandidate ? entityLink.decision : "evidence_only",
+        edge_policy: {
+          tier: route.tier,
+          reason: route.reason,
+          policy_version: route.policy_version,
+          evidence: route.evidence,
+        },
         method: MANDATE_LAND_USE_METHOD,
         entity_link_id: linkId,
         resolution_run_id: runId,
@@ -215,10 +407,22 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
           source_fields: action.source_fields,
           input_value: `${identity.canonical_name} · ${action.action_codes}`,
           observed_at: action.date,
-          basis: "agency+land_action_kind+subject_scope",
+          basis: "agency+land_action_kind+project_place_identity+mandate_phase",
           source_excerpt: action.label,
         },
       };
+      if (!publicCandidate) {
+        shadowEdges.push({
+          id: item.id,
+          mandate: item.root_ref,
+          land_action: action,
+          match: evidence,
+          entity_link: { ...entityLink, decision: "evidence_only", review_status: null },
+          decision: "evidence_only",
+          reason: missing.length ? missing : [route.reason],
+        });
+        continue;
+      }
       const claimBase = buildEdgeProvenanceClaim(item, {
         category_id: "mandate-land-use",
         relation: MANDATE_LAND_USE_EDGE_TYPE,
@@ -271,8 +475,15 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     subject_ref: `agency:id:${identity.canonical_id}`,
     relation: MANDATE_LAND_USE_EDGE_TYPE,
     resolution_run: resolutionRun,
-    counts: { mandates: matchedMandates.size, land_actions: matchedActions.size, edges: edges.length },
+    counts: {
+      mandates: matchedMandates.size,
+      land_actions: matchedActions.size,
+      edges: edges.length,
+      shadow_edges: shadowEdges.length,
+    },
     edges,
+    shadow_edges: shadowEdges,
+    publication_gate: gate,
     share_path: agencyMandateLandUsePath(identity.canonical_id),
     land_browse_href: agencyLandUseBrowseHref(identity.canonical_id),
     mandates_follow_href: agencyObligationsFollowHref(identity.canonical_id),
