@@ -152,7 +152,7 @@ function clampField(name, v) {
       if (!Array.isArray(v)) return [];
       return [...new Set(v
         .map((item) => String(item || "").trim())
-        .filter((item) => /^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0, 20);
+        .filter((item) => /^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0, 20);
     case "connection_relation":
       return typeof v === "string" && CONNECTION_RELATIONS.has(v) ? v : null;
     case "name":
