@@ -176,10 +176,14 @@ function cloneCategory(category) {
  * Inert controls are worse than no control — require ≥2 dated items on ≥2 days.
  */
 export function asOfFilterCanNarrow(view) {
-  if (!view || view.kind !== "agency-constellation") return false;
+  if (!view || !["agency-constellation", "parcel"].includes(view.kind)) return false;
   const days = new Set();
   let dated = 0;
-  for (const category of view.categories || []) {
+  const categories = view.categories || Object.entries(view.sections || {}).map(([id, section]) => ({
+    id,
+    items: section.items || [],
+  }));
+  for (const category of categories) {
     for (const item of category.items || []) {
       const day = itemValidDay(item);
       if (!day) continue;
@@ -203,8 +207,8 @@ export function asOfFilterCanNarrow(view) {
  * @param {{ axis?: "valid"|"system" }} [opts]
  */
 export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
-  if (!view || view.kind !== "agency-constellation") {
-    throw new TypeError("projectAgencyConstellationAsOf requires an agency-constellation view");
+  if (!view || !["agency-constellation", "parcel"].includes(view.kind)) {
+    throw new TypeError("projectAgencyConstellationAsOf requires an agency-constellation or parcel view");
   }
   const asOf = normalizeAsOfDay(asOfDay);
   if (!asOf) {
@@ -222,7 +226,13 @@ export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
   const excludedAfter = [];
   const undated = [];
 
-  const categories = (view.categories || []).map((category) => {
+  const sourceCategories = view.categories || Object.entries(view.sections || {}).map(([id, section]) => ({
+    id,
+    label: section.label || id,
+    status: section.items?.length ? "matched" : "empty",
+    items: section.items || [],
+  }));
+  const categories = sourceCategories.map((category) => {
     const next = cloneCategory(category);
     const kept = [];
     for (const item of next.items) {
@@ -331,6 +341,7 @@ export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
   };
 }
 
+
 /**
  * Diff "now" vs as-of projections for the ledger panel.
  */
@@ -387,6 +398,7 @@ export function renderCivicTimeLedgerPanel({
   path,
   asOfDay = null,
   summary = null,
+  subjectLabel = "this agency’s linked records",
 } = {}) {
   const day = normalizeAsOfDay(asOfDay);
   const action = esc(path || "/");
@@ -423,7 +435,7 @@ export function renderCivicTimeLedgerPanel({
         <p>Shows only linked records whose publisher or event date is on or before the day you pick. Share the URL to reopen the same day.</p>
       </details>
     </div>
-    <p class="ctl-lede">Filter this agency’s linked records by date.</p>
+    <p class="ctl-lede">Filter ${esc(subjectLabel)} by date.</p>
     <form class="ctl-form" method="get" action="${action}" data-ctl-form>
       <label class="ctl-label" for="ctl-as-of">As of</label>
       <div class="ctl-form-row">
@@ -433,7 +445,7 @@ export function renderCivicTimeLedgerPanel({
       </div>
     </form>
     ${comparison}
-    ${arrivedList}
+${arrivedList}
   </section>`;
 }
 

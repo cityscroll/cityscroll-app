@@ -372,7 +372,12 @@ export default {
     const district = safeDistrictDigest(url.pathname);
     if (district) return handleComposedObject(request, env, `/districts/council/${district}/digest/`, `/districts/council/${district}/digest/`);
     const parcel = safeParcel(url.pathname);
-    if (parcel) return handleComposedObject(request, env, `/parcels/${parcel}/`, `/parcels/${parcel}/`);
+    if (parcel) {
+      const path = `/parcels/${parcel}/`;
+      const asOf = String(url.searchParams.get("as_of") || "").trim();
+      const canonical = /^\d{4}-\d{2}-\d{2}$/.test(asOf) ? `${path}?as_of=${asOf}` : path;
+      return handleComposedObject(request, env, path, canonical);
+    }
     const browse = browseRoute(url.pathname);
     if (browse.kind === "facet") return handleBrowse(request, env, browse.facet);
     if (browse.kind === "unknown") {

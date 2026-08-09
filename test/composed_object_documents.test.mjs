@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { buildDistrictDigestView, buildMonitorPackView, buildParcelBiographyView, districtDigestPath, districtDigestSubjectRef, districtPivotHref, monitorPackPath, monitorPackSubjectRef, parcelPath, parcelSectionLabel, renderComposedObjectDocument } from "../site/composed_object_documents.mjs";
+import { projectAgencyConstellationAsOf } from "../site/civic_time_ledger.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
 const digests = JSON.parse(readFileSync(new URL("../site/data/district_weekly_digests.json", import.meta.url), "utf8"));
@@ -55,7 +56,10 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.match(html, /data-export-class="object_identity"/);
   assert.match(html, /data-export-class="object_actions"/);
   assert.match(html, /data-export-class="object_members"/);
-  assert.doesNotMatch(html, /data-export-class="object_provenance"/);
+  assert.match(html, /data-export-class="object_provenance"/);
+  assert.match(html, /data-civic-time-ledger="1"/);
+  assert.match(html, /Filter this parcel’s linked records by date/);
+  assert.doesNotMatch(html, /System time|system-time|not retained/i);
   assert.match(html, /href="#land\/[A-Za-z0-9_-]+"/);
   assert.doesNotMatch(html, /#land\?project=/);
   // Shared node-page layout (same grammar as exam documents).
@@ -88,4 +92,9 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.equal(parcelSectionLabel("ll48"), "City-owned or leased property suitability");
   assert.equal(parcelSectionLabel("land"), "Land projects");
   assert.equal(parcelSectionLabel("unknown"), null);
+  const asOf = projectAgencyConstellationAsOf(view, "2021-12-31", { axis: "valid" });
+  assert.ok(asOf.as_of, "parcel projection should retain the shared ledger contract");
+  const htmlAsOf = renderComposedObjectDocument(view, { asOf: "2021-12-31" });
+  assert.match(htmlAsOf, /data-as-of="2021-12-31"/);
+  assert.match(htmlAsOf, /dated records on or before/);
 });
