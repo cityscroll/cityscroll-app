@@ -16,11 +16,62 @@ import {
   slimProcurementMaterializationReceipt,
   DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP,
   DEFAULT_OCP_AWARD_MATERIALIZATION_CAP,
+  buildEntityIntelligenceDoc,
 } from "../tools/lib/entity_intelligence_build.mjs";
+import {
+  buildIntelligenceCorpus,
+  observationFromMoneyRow,
+  observationFromRulesRow,
+} from "../entity_resolution/cross_domain/index.mjs";
 import { buildEpinIndex, joinPinToEpin } from "../worker/src/lib/passport_join.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SPINE = path.join(ROOT, "site/data/procurement_spine_sources.json");
+
+describe("entity-intelligence root selection", () => {
+  it("reserves every observable mandate agency and keeps the multi-domain floor", async () => {
+    const doc = buildEntityIntelligenceDoc(ROOT);
+    const obligations = JSON.parse(readFileSync(path.join(ROOT, "site/data/agency_obligations_lookup.json"), "utf8"));
+    const mandateRefs = Object.entries(obligations.by_agency || {})
+      .filter(([, agency]) => (agency?.obligations || []).length > 0)
+      .map(([agencyId]) => `agency:id:${agencyId}`);
+    const observableMandateRefs = mandateRefs.filter((ref) => doc.by_ref[ref]);
+    assert.equal(observableMandateRefs.length, 39);
+    assert.ok(observableMandateRefs.every((ref) => doc.by_ref[ref]));
+    assert.ok(doc.entity_count <= 200);
+    assert.equal(doc.multi_domain_count, 30);
+    assert.equal(doc.selection.mandate_agency_selected, 39);
+    assert.deepEqual(doc.selection.reason_counts, {
+      multi_domain: 30,
+      mandate_agency_reserve: 15,
+      richness_fill: 155,
+    });
+  });
+
+  it("lets a low-fan-out mandate agency beat an unrelated filler without displacing a multi-domain root", () => {
+    const observations = [
+      observationFromMoneyRow({ request_id: "multi-money", agency_name: "Parks and Recreation", vendor_name: "Multi Vendor" }),
+      observationFromRulesRow({ request_id: "multi-rule", agency_name: "Parks and Recreation", title: "Multi Rule" }),
+      observationFromMoneyRow({ request_id: "mandate-money", agency_name: "Department of Transportation", vendor_name: "Mandate Vendor" }),
+      observationFromMoneyRow({ request_id: "filler-money", agency_name: "City Clerk", vendor_name: "Filler Vendor" }),
+    ];
+    const doc = buildIntelligenceCorpus(observations, {
+      max_entities: 2,
+      mandate_agency_refs: ["agency:id:transportation"],
+    });
+    const refs = doc.entities.map((entity) => entity.root.ref);
+    assert.deepEqual(refs, [
+      "agency:id:parks-and-recreation",
+      "agency:id:transportation",
+    ]);
+    assert.equal(doc.multi_domain_count, 1);
+    assert.deepEqual(doc.selection.reason_counts, {
+      multi_domain: 1,
+      mandate_agency_reserve: 1,
+      richness_fill: 0,
+    });
+  });
+});
 
 describe("passport contract materialization selection", () => {
   it("prefers compatibility examples then fills from the population census under the cap", () => {

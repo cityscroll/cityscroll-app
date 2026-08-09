@@ -224,7 +224,9 @@ export function routeCrossSpineEdges(edges = [], options = {}) {
       .filter((route) => route.public)
       .map((route) => ({
         ...route.edge,
-        tier: route.tier,
+        // Keep the finer exact-publisher-key marker on the public edge while
+        // the route itself remains in the deterministic policy tier.
+        tier: hasExactKey(route.edge) ? "deterministic_exact_key" : route.tier,
         tier_version: CROSS_SPINE_EDGE_POLICY_VERSION,
       })),
     shadow_edges: routes

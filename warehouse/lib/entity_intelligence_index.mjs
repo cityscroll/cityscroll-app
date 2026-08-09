@@ -151,6 +151,7 @@ export function buildEntityIntelligenceIndex(observations, opts = {}) {
     edge_count: edges.length,
     join_key_edge_count,
     multi_domain_count: corpus.multi_domain_count,
+    selection: corpus.selection,
     domains: [...CROSS_DOMAIN_DOMAINS],
     link_type_counts: linkTypeCounts,
     roots,
@@ -165,6 +166,7 @@ export function buildEntityIntelligenceIndex(observations, opts = {}) {
       edges_indexed: edges.length,
       join_key_edge_count,
       multi_domain_count: corpus.multi_domain_count,
+      selection: corpus.selection,
       coverage_hint:
         corpus.entity_count > 0
           ? corpus.multi_domain_count / corpus.entity_count
