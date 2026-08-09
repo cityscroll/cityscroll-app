@@ -64,15 +64,6 @@ MCP_MAX_PER_IP_DAY = "300"
 TRANSLATE_MAX_CALLS_PER_DAY = "150"
 # Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
 QUEUE_DIGESTS = "true"
-# Optional board-notification bridge (see worker/README.md "Board notifications" and
-# https://github.com/jimdc/board-notify). Unconfigured forks leave /board-hook fail-closed.
-# BOARDNOTIFY_CC: comma-separated GitHub logins (no "@") for mention-cc on each comment.
-BOARDNOTIFY_CC = "jimdc,michaeljohnsheehan-a11y,devdoshi,abannabao"
-BOARD_PROJECT_IDS = "PVT_kwDOEgVDsM4BdE22"
-BOARD_ORG = "cityscroll"
-BOARD_URL = "https://github.com/orgs/cityscroll/projects/1"
-BOARD_HOOK_DRY = "false"
-BOARD_HOOK_MAX_PER_DAY = "100"
 ANALYTICS_ACCOUNT_ID = "8162581cb1d97e20a172031adb8a13af"
 ANALYTICS_DATASET = "crol_usage_events_v1"
 ANALYTICS_MEASURED_SINCE = "2026-07-27"
@@ -122,12 +113,6 @@ migrations_dir = "migrations"
 binding = "NL_METER"
 id = "f410ee870b954e2980ee646312704014"
 
-# board-notify's handler reads env.METER for its daily surface cap; same namespace as
-# NL_METER (not a migration — the "boardhook" counter just keeps counting from one store).
-[[kv_namespaces]]
-binding = "METER"
-id = "f410ee870b954e2980ee646312704014"
-
 [[kv_namespaces]]
 binding = "ALERT_STATE"
 id = "451ce64e616b49b6837682e75cb07756"
@@ -167,5 +152,4 @@ ENTITY_LINK_DUAL_WRITE = "false"
 QUEUE_DIGESTS = "false"
 ANALYTICS_ENVIRONMENT = "preview"
 SOURCE_VAULT_ENABLED = "false"
-BOARD_HOOK_DRY = "true"
 CONFIRM_BASE = "https://api-beta.cityscroll.org"

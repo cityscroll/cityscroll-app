@@ -45,7 +45,6 @@ import { handleExternalAward, refreshAboAwards, prewarmNycha } from "./external_
 import { handleAgency } from "./agency.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
-import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleMirror } from "./mirror.mjs";
@@ -86,7 +85,6 @@ export default {
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);
     if (pathname === "/notice") return handleNotice(request, env);
-    if (pathname === "/board-hook") return handleBoardHook(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
     if (pathname === "/forecast") return handleForecast(request, env);
     if (pathname === "/forecast/accuracy") return handleForecastAccuracy(request, env);
