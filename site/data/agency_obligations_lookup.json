@@ -42162,7 +42162,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "rulemaking"
           },
-          "alert_id": "obligation:68103-003:ongoing"
+          "alert_id": "obligation:68103-003:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-004",
@@ -42206,7 +42209,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-004:ongoing"
+          "alert_id": "obligation:68103-004:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-005",
@@ -42250,7 +42256,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-005:ongoing"
+          "alert_id": "obligation:68103-005:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-006",
@@ -42294,7 +42303,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-006:ongoing"
+          "alert_id": "obligation:68103-006:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-008",
@@ -42338,7 +42350,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-008:ongoing"
+          "alert_id": "obligation:68103-008:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-009",
@@ -42382,7 +42397,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "data publication"
           },
-          "alert_id": "obligation:68103-009:ongoing"
+          "alert_id": "obligation:68103-009:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-012",
@@ -42426,7 +42444,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-012:ongoing"
+          "alert_id": "obligation:68103-012:ongoing",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68103-014",
@@ -42470,7 +42491,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-014:one-time"
+          "alert_id": "obligation:68103-014:one-time",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "68932-001",
@@ -53145,7 +53169,10 @@
             "label": "Observed vs expected is not adjudicated in this iteration",
             "expected_event": "other"
           },
-          "alert_id": "obligation:68103-015:one-time"
+          "alert_id": "obligation:68103-015:one-time",
+          "enactment_date": "2023-08-16",
+          "effective_date": null,
+          "temporal_anchor_method": "law_envelope_strict_iso_v1"
         },
         {
           "obligation_id": "70896-002",

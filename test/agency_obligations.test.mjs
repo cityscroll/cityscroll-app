@@ -88,6 +88,44 @@ test("normalizeObligationRow never asserts compliance", () => {
   assert.doesNotMatch(JSON.stringify(row), /non-compliance|violat|missed filing/i);
 });
 
+test("law-envelope temporal anchors remain strict machine provenance", () => {
+  const mandateRow = {
+    mandate_id: "temporal-001",
+    matter_id: "temporal-law",
+    agency: "Department of Parks and Recreation",
+    duty_text: "Hold recurring public meetings on park access.",
+    deliverable_type: "other",
+    deadline: { kind: "none" },
+    recurrence: "ongoing",
+    quote_verified: true,
+  };
+  const lookup = buildAgencyObligationsLookup({
+    laws: [{
+      matter_id: "temporal-law",
+      enactment_date: "2024-01-15",
+      effective_date: "2024-02-01",
+    }],
+    mandates: [mandateRow],
+  }, { generatedAt: "2026-08-09T12:00:00Z" });
+  const row = lookup.by_agency[PARKS].obligations[0];
+  assert.equal(row.enactment_date, "2024-01-15");
+  assert.equal(row.effective_date, "2024-02-01");
+  assert.equal(row.temporal_anchor_method, "law_envelope_strict_iso_v1");
+
+  const malformed = buildAgencyObligationsLookup({
+    laws: [{
+      matter_id: "temporal-law",
+      enactment_date: "2024-02-30",
+      effective_date: "not-a-date",
+    }],
+    mandates: [mandateRow],
+  });
+  const malformedRow = malformed.by_agency[PARKS].obligations[0];
+  assert.equal(malformedRow.enactment_date, null);
+  assert.equal(malformedRow.effective_date, null);
+  assert.equal(malformedRow.temporal_anchor_method, "law_envelope_strict_iso_v1");
+});
+
 test("fixture materialization yields Parks duties with provenance", () => {
   assert.ok(existsSync(FIXTURE_PATH), "fixture sample must exist");
   const payload = JSON.parse(readFileSync(FIXTURE_PATH, "utf8"));
