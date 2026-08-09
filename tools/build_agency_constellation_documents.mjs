@@ -45,6 +45,7 @@ function loadSources() {
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
+  const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
@@ -55,6 +56,7 @@ function loadSources() {
     process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
+    cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
   };
 }
