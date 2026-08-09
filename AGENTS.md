@@ -527,6 +527,15 @@ Rebuild and verify the reconciled receipt at
 `docs/evidence/geography-subjects/located-in-audit.json` with
 `node tools/build_district_activity.mjs --check`.
 
+**Near-you explanation paths:** `site/near_you_explanation_path.mjs` composes
+only public `located_in` edges with the public-only
+`notice_mandate_backlinks_lookup.json` reverse index during the district build.
+The shared Near-you renderer selects one strongest candidate matching the exact
+displayed place; special bags and response addresses never imply a district
+mandate, while meeting venues stay explicitly labeled as logistics rather than
+matter place. Verify with `test/near_you_explanation_path.test.mjs` and the
+Near-you build check.
+
 **Deploy wiring (load-bearing):** `tools/build_district_activity.mjs` runs inside
 `.github/actions/build-site` before the provider-neutral Pages artifact is assembled, so
 map density never ships stale against locator code. `built_at` advances on every
