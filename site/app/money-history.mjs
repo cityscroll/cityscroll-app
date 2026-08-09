@@ -1014,7 +1014,7 @@ function noticeAgencyBar(stats, agencyName, barClass){
     <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
   </div>`;
 }
-function renderDetail(r, chain, stats){
+function renderDetail(r, chain, stats, loadContext = true){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
   const initialActionsForGlance = window.CrolActions
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
@@ -1056,14 +1056,19 @@ function renderDetail(r, chain, stats){
   const dx = $("#dxlsx"); if(dx && !pending) dx.addEventListener("click", ()=>exportNoticeXlsx(r, chain));
   const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
   if(pending) return; // context/dollars fetch once, on the hydrated render
-  fillContext(r, $("#dcontext"));
+  if (loadContext) {
+    const contextReady = globalThis.ensureNoticeContext?.() || Promise.resolve();
+    contextReady.then(() => {
+      if (typeof fillContext === "function") fillContext(r, $("#dcontext"));
+      if (typeof externalAwardForNotice === "function") externalAwardForNotice(r, $("#dexternal"));
+    }).catch(() => {});
+  }
   mountNoticeActionRail($("#dactions"),r);
   if(typeof loadSolicitationMwbe === "function") loadSolicitationMwbe(r, $("#dmwbe"));
   if(typeof globalThis.loadRuleLifecycle === "function") loadRuleLifecycle(r, $("#drules"));
   loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"), $("#dsuboutreach"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));
-  externalAwardForNotice(r, $("#dexternal"));
   priorCycleAwards(r, $("#dprior"));
   agencyForecastTeaser(r, $("#dforecast"));
   mountUnofficialTranslation($("#dxlate"), r);
