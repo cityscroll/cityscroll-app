@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "rule_evidence_schema": "cityscroll.rule_evidence_stamp.v1",
   "domain": "rules",
   "title": "Rules domain observations for entity intelligence",
-  "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Mirrors the city_record side of rules:materialized:v2; no invented contract/vendor joins.",
-  "retrieved_at": "2026-08-05T20:50:48.662Z",
+  "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Source prose is reduced to bounded rule-evidence stamps and discarded; no invented contract/vendor joins.",
+  "retrieved_at": "2026-08-09T14:40:29.151Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -23,6 +24,27 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "surcharge",
+          "certain",
+          "primary",
+          "residences",
+          "extension",
+          "time",
+          "file",
+          "expansion",
+          "processes",
+          "emergency"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "emergency",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -62,6 +84,19 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "incomplete",
+          "inspections"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -101,6 +136,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "orders",
+          "explanatory",
+          "statements",
+          "findings"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -140,84 +190,19 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "energy",
+          "conservation"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260715045",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "Notice of Change of Effective Date for SHIELD rules",
-      "start_date": "2026-07-22T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260714024",
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
-      "start_date": "2026-07-22T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -257,6 +242,130 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "opportunity",
+          "taxi",
+          "parking",
+          "commercial",
+          "meters",
+          "vehicle",
+          "markings"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "hearing",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260714024",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
+      "start_date": "2026-07-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "utility",
+          "company",
+          "properties"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260715045",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "Notice of Change of Effective Date for SHIELD rules",
+      "start_date": "2026-07-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "change",
+          "effective",
+          "shield"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -296,6 +405,25 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "expedited",
+          "land",
+          "review",
+          "procedure",
+          "affordable",
+          "housing",
+          "appeals",
+          "board"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -335,45 +463,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "waitlist",
+          "licenses"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260708018",
-      "agency_name": "Board of Correction",
-      "short_title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
-      "start_date": "2026-07-15T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -413,6 +516,27 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "implementation",
+          "dates",
+          "brooklyn",
+          "east",
+          "manhattan",
+          "northeast",
+          "queens",
+          "west",
+          "cwzs"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "local",
         "boroughs": [
@@ -455,52 +579,79 @@
       }
     },
     {
-      "request_id": "20260710033",
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
-      "start_date": "2026-07-14T00:00:00.000",
+      "request_id": "20260708018",
+      "agency_name": "Board of Correction",
+      "short_title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
+      "start_date": "2026-07-15T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "reopening",
+          "period",
+          "board",
+          "correction",
+          "concerning",
+          "minimum",
+          "standards",
+          "related",
+          "mental",
+          "health",
+          "care",
+          "proposals",
+          "first",
+          "published",
+          "record",
+          "january",
+          "anyone",
+          "through",
+          "there",
+          "deadline",
+          "august",
+          "review",
+          "made",
+          "online",
+          "going",
+          "received",
+          "available"
+        ],
+        "body_topic_keys": [
+          "reopening",
+          "period",
+          "board",
+          "correction",
+          "concerning",
+          "minimum",
+          "standards",
+          "related",
+          "mental",
+          "health",
+          "care",
+          "proposals",
+          "first",
+          "published",
+          "record",
+          "january",
+          "anyone",
+          "through",
+          "there",
+          "deadline",
+          "august",
+          "review",
+          "made",
+          "online",
+          "going",
+          "received",
+          "available"
+        ],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260707025",
-      "agency_name": "Buildings",
-      "short_title": "Final Rule - Amendment of Rules relating to Sidewalk Sheds",
-      "start_date": "2026-07-14T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -540,6 +691,129 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "owned",
+          "bicycle",
+          "racks"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260707025",
+      "agency_name": "Buildings",
+      "short_title": "Final Rule - Amendment of Rules relating to Sidewalk Sheds",
+      "start_date": "2026-07-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "final",
+          "sidewalk",
+          "sheds"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260710033",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "start_date": "2026-07-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "surcharge",
+          "property",
+          "does",
+          "serve",
+          "primary",
+          "residence"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -579,6 +853,22 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "driver",
+          "relief",
+          "penalty",
+          "reduction",
+          "medallion"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -618,6 +908,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "pace",
+          "financing"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -657,6 +960,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "cancellation",
+          "subscriptions"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -696,6 +1013,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "junk",
+          "fees"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -735,6 +1066,23 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "requirements",
+          "hvfhv",
+          "services",
+          "protections",
+          "drivers"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -774,6 +1122,23 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "containerization",
+          "requirements",
+          "buildings",
+          "containing",
+          "dwelling",
+          "units"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -813,6 +1178,26 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "office",
+          "comptroller",
+          "affordable",
+          "neighborhoods",
+          "yorkers",
+          "construction",
+          "wage",
+          "regulations",
+          "final"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -852,6 +1237,22 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "debt",
+          "collector",
+          "penalty",
+          "schedule"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -891,6 +1292,18 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "workbook"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -930,6 +1343,22 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "taxi",
+          "limousine",
+          "commission",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -969,6 +1398,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fy2027",
+          "dohmh",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1008,6 +1452,23 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "protected",
+          "time",
+          "earned",
+          "safe",
+          "sick"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1047,6 +1508,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "aging",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1086,6 +1561,25 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "recordkeeping",
+          "requirements",
+          "third",
+          "party",
+          "food",
+          "delivery",
+          "services"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1125,6 +1619,28 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "final",
+          "implementation",
+          "dates",
+          "brooklyn",
+          "north",
+          "upper",
+          "manhattan",
+          "commercial",
+          "waste",
+          "zones"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "local",
         "boroughs": [
@@ -1165,13 +1681,30 @@
       }
     },
     {
-      "request_id": "20260602003",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Unclaimed Restitution Fund",
+      "request_id": "20260605058",
+      "agency_name": "Finance",
+      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
       "start_date": "2026-06-09T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "surcharge",
+          "property",
+          "does",
+          "serve",
+          "primary",
+          "residence"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1211,6 +1744,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "final",
+          "petitions",
+          "rulemaking"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1243,13 +1790,28 @@
       }
     },
     {
-      "request_id": "20260605058",
-      "agency_name": "Finance",
-      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "request_id": "20260602003",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Unclaimed Restitution Fund",
       "start_date": "2026-06-09T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "unclaimed",
+          "restitution",
+          "fund"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1289,6 +1851,25 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "loft",
+          "board",
+          "multiple",
+          "dwelling"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [
+          "nyc-charter:1043",
+          "section:282",
+          "section:1043"
+        ],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1328,84 +1909,24 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "update",
+          "parks",
+          "list",
+          "qualifying",
+          "documents",
+          "disability",
+          "membership"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260522008",
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Amendment of Rules Relating to Lead Dust",
-      "start_date": "2026-05-29T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260522005",
-      "agency_name": "Fire Department",
-      "short_title": "Adoption of Amendments to Fire Department Rule 3 RCNY 8400-02",
-      "start_date": "2026-05-29T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1445,6 +1966,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "further",
+          "vital",
+          "records"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1484,6 +2019,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1516,13 +2064,79 @@
       }
     },
     {
-      "request_id": "20260519037",
-      "agency_name": "City Planning",
-      "short_title": "DCP FY2027 Regulatory Agenda",
-      "start_date": "2026-05-27T00:00:00.000",
+      "request_id": "20260522008",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Lead Dust",
+      "start_date": "2026-05-29T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "lead",
+          "dust"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260522005",
+      "agency_name": "Fire Department",
+      "short_title": "Adoption of Amendments to Fire Department Rule 3 RCNY 8400-02",
+      "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fire"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [
+          "rcny:3:8400-02"
+        ],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1562,6 +2176,72 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "termination",
+          "pregnancy"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260519037",
+      "agency_name": "City Planning",
+      "short_title": "DCP FY2027 Regulatory Agenda",
+      "start_date": "2026-05-27T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fy2027",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1601,6 +2281,19 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "pace",
+          "financing"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1640,6 +2333,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "resolution",
+          "board",
+          "health"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1679,6 +2386,22 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "home",
+          "improvement",
+          "contractor",
+          "disclosures"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1718,6 +2441,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "mocs",
+          "fy27",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1757,45 +2495,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fy27",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260512030",
-      "agency_name": "Information Technology and Telecommunications",
-      "short_title": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
-      "start_date": "2026-05-19T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1835,6 +2548,74 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "centralized",
+          "construction",
+          "mentor"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260512030",
+      "agency_name": "Information Technology and Telecommunications",
+      "short_title": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
+      "start_date": "2026-05-19T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda",
+          "procedure",
+          "capa"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1874,84 +2655,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260512040",
-      "agency_name": "Commission on Human Rights",
-      "short_title": "FY 2027 CCHR Regulatory Agenda",
-      "start_date": "2026-05-18T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260512015",
-      "agency_name": "Board of Standards and Appeals",
-      "short_title": "Notice of Adoption: BSA adopts amendments to its Rules of Practice and Procedures, 2 R.C.N.Y., to implement Charter secs. 666-a and 668(d-1), and to make other conforming changes, pursuant to Charter secs.1043(a), 666, and 666-a.",
-      "start_date": "2026-05-18T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -1991,6 +2707,129 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "special",
+          "event",
+          "permits"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260512040",
+      "agency_name": "Commission on Human Rights",
+      "short_title": "FY 2027 CCHR Regulatory Agenda",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "cchr",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260512015",
+      "agency_name": "Board of Standards and Appeals",
+      "short_title": "Notice of Adoption: BSA adopts amendments to its Rules of Practice and Procedures, 2 R.C.N.Y., to implement Charter secs. 666-a and 668(d-1), and to make other conforming changes, pursuant to Charter secs.1043(a), 666, and 666-a.",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "adopts",
+          "practice",
+          "procedures",
+          "make",
+          "conforming",
+          "changes"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2030,45 +2869,24 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "containerization",
+          "requirements",
+          "buildings",
+          "containing",
+          "dwelling",
+          "units"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260508032",
-      "agency_name": "Rent Guidelines Board",
-      "short_title": "Proposed Rules for rent guidelines for October 1, 2026 through September 30, 2027",
-      "start_date": "2026-05-14T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2108,6 +2926,79 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "speed",
+          "cameras",
+          "weigh",
+          "motion",
+          "violation",
+          "monitoring",
+          "system"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260508032",
+      "agency_name": "Rent Guidelines Board",
+      "short_title": "Proposed Rules for rent guidelines for October 1, 2026 through September 30, 2027",
+      "start_date": "2026-05-14T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "rent",
+          "guidelines",
+          "october",
+          "through",
+          "september"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2147,6 +3038,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2186,6 +3091,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2225,6 +3143,21 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "applications",
+          "rptl"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [
+          "section:485-x"
+        ],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2264,6 +3197,23 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "elevators",
+          "escalators",
+          "personnel",
+          "hoists",
+          "moving",
+          "walks"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2303,6 +3253,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "final",
+          "piping",
+          "inspection",
+          "entities"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2342,6 +3307,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "enforcement",
+          "parking",
+          "requirements"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2381,45 +3360,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fy2027",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260417003",
-      "agency_name": "Transportation",
-      "short_title": "Proposed Amendment of Citywide Truck Routes",
-      "start_date": "2026-05-04T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2459,6 +3413,72 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "capa",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260417003",
+      "agency_name": "Transportation",
+      "short_title": "Proposed Amendment of Citywide Truck Routes",
+      "start_date": "2026-05-04T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "citywide",
+          "truck",
+          "routes"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2498,6 +3518,27 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "real",
+          "property",
+          "affordable",
+          "neighborhoods",
+          "yorkers",
+          "incentive",
+          "deadline",
+          "extended"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [
+          "section:485-x"
+        ],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2537,45 +3578,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "construction",
+          "noise",
+          "monitoring",
+          "penalty"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260324022",
-      "agency_name": "Sanitation",
-      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
-      "start_date": "2026-05-01T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2615,6 +3632,74 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda",
+          "fy2027"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260324022",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "fiscal",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2654,6 +3739,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2693,6 +3791,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2732,6 +3843,22 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "debt",
+          "collector",
+          "penalty",
+          "schedule"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2771,45 +3898,19 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260421020",
-      "agency_name": "City Clerk",
-      "short_title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
-      "start_date": "2026-04-28T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2849,6 +3950,79 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "finance",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260421020",
+      "agency_name": "City Clerk",
+      "short_title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
+      "start_date": "2026-04-28T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "relation",
+          "establishment",
+          "coney",
+          "island",
+          "business",
+          "improvement",
+          "district"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [
+          "local-law:2026:43"
+        ],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2888,6 +4062,23 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "capa",
+          "regulatory",
+          "agenda",
+          "business",
+          "integrity",
+          "commission"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2927,6 +4118,22 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "extension",
+          "period",
+          "second",
+          "donations",
+          "gifts"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "hearing",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -2966,6 +4173,22 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "affordable",
+          "housing",
+          "fast",
+          "track",
+          "methodology"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3005,6 +4228,22 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "self",
+          "storage",
+          "facilities",
+          "warehouses"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3044,6 +4283,23 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "civilian",
+          "complaint",
+          "review",
+          "board",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3083,6 +4339,22 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "office",
+          "trials",
+          "hearings",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3122,6 +4394,22 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fees",
+          "ambulance",
+          "treatment",
+          "transport",
+          "services"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3161,45 +4449,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "final",
+          "safety",
+          "standards",
+          "refrigeration"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260406002",
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Amendment of Rules Relating to Reporting Requirements for Cooling Towers",
-      "start_date": "2026-04-08T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3239,6 +4503,126 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "cancellation",
+          "subscriptions"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260406002",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Reporting Requirements for Cooling Towers",
+      "start_date": "2026-04-08T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "reporting",
+          "requirements",
+          "cooling",
+          "towers"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260331027",
+      "agency_name": "Mayor's Office of Environmental Coordination",
+      "short_title": "Regulatory Agenda FY 2027",
+      "start_date": "2026-04-07T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3278,6 +4662,27 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "implementation",
+          "dates",
+          "brooklyn",
+          "north",
+          "upper",
+          "manhattan",
+          "commercial",
+          "waste",
+          "zones"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "local",
         "boroughs": [
@@ -3311,45 +4716,6 @@
           "role": "matter",
           "evidence": [
             "DSNY Proposed Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260331027",
-      "agency_name": "Mayor's Office of Environmental Coordination",
-      "short_title": "Regulatory Agenda FY 2027",
-      "start_date": "2026-04-07T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
           ]
         },
         "confidence_tier": "strong",
@@ -3364,6 +4730,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "fire",
+          "regulatory",
+          "agenda"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3403,6 +4783,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "licensing",
+          "laws"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3442,6 +4836,26 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dsny",
+          "final",
+          "related",
+          "implementation",
+          "commercial",
+          "waste",
+          "zones",
+          "infrequent",
+          "generators"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3481,6 +4895,21 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "change",
+          "ehasd",
+          "expiration"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3520,6 +4949,22 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "emergency",
+          "summer",
+          "event",
+          "permit",
+          "applications"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "emergency",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3559,6 +5004,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "centralized",
+          "construction",
+          "mentor"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3598,6 +5057,19 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "sidewalk",
+          "sheds"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3637,6 +5109,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "owned",
+          "bicycle",
+          "racks"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3676,6 +5162,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "adjudicatory",
+          "proceedings"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3715,45 +5215,22 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "home",
+          "improvement",
+          "contractor",
+          "disclosures"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "unknown",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
       },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260310018",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOA Rules Relating to Restaurant Surcharges",
-      "start_date": "2026-03-20T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3793,6 +5270,74 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "stipulated",
+          "fine",
+          "commercial",
+          "abatement"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260310018",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Rules Relating to Restaurant Surcharges",
+      "start_date": "2026-03-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "dcwp",
+          "restaurant",
+          "surcharges"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "notice",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3832,6 +5377,20 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "piping",
+          "inspection",
+          "entities"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "proposal",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3871,6 +5430,19 @@
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "petitions",
+          "rulemaking"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "hearing",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
@@ -3910,6 +5482,20 @@
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
+      "rule_evidence": {
+        "schema": "cityscroll.rule_evidence_stamp.v1",
+        "topic_keys": [
+          "childcare",
+          "center",
+          "abatement"
+        ],
+        "body_topic_keys": [],
+        "citation_keys": [],
+        "lifecycle_status": "adopted",
+        "effective_date": null,
+        "adoption_date": null,
+        "negative_evidence": []
+      },
       "rule_location": {
         "scope": "citywide",
         "derivation": {
