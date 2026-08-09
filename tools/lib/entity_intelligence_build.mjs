@@ -33,6 +33,8 @@ const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
 /** Population-backed PASSPort contracts admitted into the EI graph (not the 2-row crosswalk demo). */
 export const DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP = 500;
+/** Population-backed Checkbook contracts admitted after collector-side normalization. */
+export const DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP = 500;
 /** OCP awards admitted into the EI graph; selection prefers PIN↔EPIN joins to the passport slice. */
 export const DEFAULT_OCP_AWARD_MATERIALIZATION_CAP = 500;
 
@@ -419,6 +421,33 @@ export function selectPassportContractsForMaterialization(doc, opts = {}) {
 }
 
 /**
+ * Admit the committed, population-measured Checkbook graph slice under its
+ * independent cap. The collector has already collapsed prime/subvendor and
+ * fiscal-year slices to one row per exact prime_contract_id.
+ */
+export function selectCheckbookContractsForMaterialization(doc, opts = {}) {
+  const cap = Math.max(1, Number(opts.cap) || DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP);
+  const censusSlice = Array.isArray(doc?.rows?.checkbook_contracts) ? doc.rows.checkbook_contracts : [];
+  const seen = new Set();
+  const rows = [];
+  for (const row of censusSlice) {
+    const id = clean(row?.contract_id || row?.prime_contract_id || row?.id);
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    rows.push(row);
+    if (rows.length >= cap) break;
+  }
+  return {
+    rows,
+    population_rows: Number(doc?.sources?.checkbook_contracts?.population?.normalized_unique_contracts) || null,
+    committed_slice_rows: censusSlice.length,
+    selected_rows: rows.length,
+    cap,
+    strategy: "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id",
+  };
+}
+
+/**
  * Select OCP award rows for the EI graph, preferring awards that join the
  * already-selected PASSPort contract slice via the existing PIN↔EPIN join.
  * No new matcher — only materialization ordering within the award cap.
@@ -483,14 +512,16 @@ export function slimProcurementMaterializationReceipt(materialization) {
   };
   return {
     passport_contracts: slimPart(materialization.passport_contracts),
+    checkbook_contracts: slimPart(materialization.checkbook_contracts),
     ocp_awards: slimPart(materialization.ocp_awards),
   };
 }
 
 /**
  * Load procurement-spine observations without turning source keys into vendor
- * identity claims. The materialization carries a measured PASSPort award rate,
- * while Checkbook coverage remains null until its population denominator exists.
+ * identity claims. PASSPort and Checkbook each carry measured populations and
+ * independent graph caps; Checkbook Spending remains a compatibility row until
+ * its own population denominator exists.
  */
 export function collectProcurementSpineObservations(root, opts = {}) {
   const doc = loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"));
@@ -517,8 +548,11 @@ export function collectProcurementSpineObservations(root, opts = {}) {
   const passportSelection = selectPassportContractsForMaterialization(doc, {
     cap: opts.passport_contract_cap || DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP,
   });
+  const checkbookSelection = selectCheckbookContractsForMaterialization(doc, {
+    cap: opts.checkbook_contract_cap || DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP,
+  });
   add(passportSelection.rows, observationFromPassportContractRow, "passport-public-contracts");
-  add(doc.rows.checkbook_contracts, observationFromCheckbookContractRow, "checkbook-contracts");
+  add(checkbookSelection.rows, observationFromCheckbookContractRow, "checkbook-contracts");
   add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
 
   return {
@@ -528,6 +562,7 @@ export function collectProcurementSpineObservations(root, opts = {}) {
     passport_rows: passportSelection.rows,
     materialization: {
       passport_contracts: passportSelection,
+      checkbook_contracts: checkbookSelection,
     },
     row_counts: Object.fromEntries(
       Object.entries(doc.rows).map(([name, rows]) => [name, Array.isArray(rows) ? rows.length : 0]),

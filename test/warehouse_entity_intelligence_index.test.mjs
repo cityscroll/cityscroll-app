@@ -7,7 +7,7 @@
  *   node warehouse/lib/entity_intelligence_index.mjs --check
  */
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it } from "node:test";
@@ -24,8 +24,6 @@ import {
 import { indexObservationsByRoot } from "../entity_resolution/cross_domain/index.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PROOF = join(ROOT, "warehouse/receipts/proof/wh_entity_intelligence_index_latest.json");
-
 describe("warehouse entity intelligence index", () => {
   it("indexes roots and join-key edges from fixture observations", () => {
     const observations = collectFixtureObservations(ROOT, { limit: 400 });
@@ -48,6 +46,25 @@ describe("warehouse entity intelligence index", () => {
     );
   });
 
+  it("retains every relation shape before filling a capped edge index", () => {
+    const link = (type, root) => ({
+      type,
+      from: root,
+      to: `${root}:${type}`,
+      domain: "money",
+      provenance: { source_system: "fixture", source_record_id: `${root}:${type}` },
+    });
+    const index = new Map([
+      ["agency:a", { root: { kind: "agency" }, links: [link("named_vendor", "agency:a"), link("references_contract", "agency:a")] }],
+      ["vendor:z", { root: { kind: "vendor" }, links: [link("paid_to_vendor", "vendor:z")] }],
+    ]);
+    const edges = flattenIndexToEdges(index, { max_edges: 3 });
+    assert.deepEqual(
+      [...new Set(edges.map((edge) => edge.link_type))].sort(),
+      ["named_vendor", "paid_to_vendor", "references_contract"],
+    );
+  });
+
   it("buildEntityIntelligenceIndex is self-consistent for Parks demo", () => {
     const observations = collectFixtureObservations(ROOT, { limit: 400 });
     const doc = buildEntityIntelligenceIndex(observations, {
@@ -67,17 +84,20 @@ describe("warehouse entity intelligence index", () => {
   });
 
   it("proof receipt exists after materialize (or can be written)", () => {
+    const generated = join(ROOT, ".generated");
+    mkdirSync(generated, { recursive: true });
+    const proofPath = join(mkdtempSync(join(generated, "warehouse-ei-proof-test-")), "proof.json");
     const observations = collectFixtureObservations(ROOT, { limit: 400 });
     const doc = buildEntityIntelligenceIndex(observations, {
       max_entities: 40,
       max_per_domain: 6,
     });
-    const proof = writeIndexProof(doc, PROOF);
-    assert.ok(existsSync(PROOF));
+    const proof = writeIndexProof(doc, proofPath);
+    assert.ok(existsSync(proofPath));
     assert.equal(proof.version, ENTITY_INTELLIGENCE_INDEX_VERSION);
     assert.ok(proof.edge_count > 0);
     assert.ok(proof.join_key_edge_count > 0);
-    const disk = JSON.parse(readFileSync(PROOF, "utf8"));
+    const disk = JSON.parse(readFileSync(proofPath, "utf8"));
     assert.equal(disk.root_count, proof.root_count);
   });
 });

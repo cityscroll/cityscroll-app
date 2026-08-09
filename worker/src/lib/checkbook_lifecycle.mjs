@@ -40,9 +40,21 @@ export { CURRENT_SOLICITATIONS_SOURCE };
 // XML parsing (regex-based, matching the pattern in checkbook.mjs / external_award.mjs)
 // ---------------------------------------------------------------------------
 
+function decodeXmlText(value) {
+  const named = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+  return String(value || "").replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos);/gi, (match, entity) => {
+    const lower = entity.toLowerCase();
+    if (lower in named) return named[lower];
+    const codePoint = lower.startsWith("#x")
+      ? Number.parseInt(lower.slice(2), 16)
+      : Number.parseInt(lower.slice(1), 10);
+    try { return String.fromCodePoint(codePoint); } catch { return match; }
+  });
+}
+
 function extractTag(xml, tag) {
   const m = String(xml || "").match(new RegExp(`<${tag}>([^<]*)</${tag}>`));
-  return m ? m[1].trim() : "";
+  return m ? decodeXmlText(m[1]).trim() : "";
 }
 
 function parseAmount(s) {
@@ -58,10 +70,13 @@ export function parseContractTransaction(txXml) {
   return {
     id: extractTag(txXml, "prime_contract_id"),
     vendor: extractTag(txXml, "prime_vendor"),
-    agency: extractTag(txXml, "agency_name"),
-    pin: extractTag(txXml, "pin"),
+    agency: extractTag(txXml, "agency_name")
+      || extractTag(txXml, "prime_contracting_agency"),
+    pin: extractTag(txXml, "pin")
+      || extractTag(txXml, "prime_contract_pin"),
     status: extractTag(txXml, "status"),
     vendorRecordType: extractTag(txXml, "vendor_record_type"),
+    subVendor: extractTag(txXml, "sub_vendor"),
     current: parseAmount(extractTag(txXml, "prime_contract_current_amount")),
     original: parseAmount(extractTag(txXml, "prime_contract_original_amount")),
     spent: parseAmount(extractTag(txXml, "prime_vendor_spent_to_date")),

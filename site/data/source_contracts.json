@@ -194,13 +194,15 @@
       "required_fields": [
         "prime_contract_id",
         "prime_vendor",
+        "prime_contracting_agency",
+        "prime_contract_pin",
         "prime_contract_current_amount",
         "prime_contract_registration_date"
       ],
       "max_stale_days": 45,
       "publisher_cadence": "Ongoing registrations and spending updates",
-      "product_freshness": "Queried live for contract details and daily for watched renewal estimates.",
-      "used_for": "Pending and registered contract amounts, paid-to-date totals, contract terms, and the procurement lifecycle timeline.",
+      "product_freshness": "Queried live for contract details and daily for watched renewal estimates. A checkpointed host collector measures and materializes the FY2025-FY2027 registered-expense population for the bounded entity-intelligence graph feed.",
+      "used_for": "Pending and registered contract amounts, paid-to-date totals, contract terms, the procurement lifecycle timeline, and a population-backed exact contract/PIN graph slice.",
       "code_references": [
         {
           "path": "worker/src/checkbook.mjs",
@@ -208,6 +210,10 @@
         },
         {
           "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "<type_of_data>Contracts</type_of_data>"
+        },
+        {
+          "path": "warehouse/scripts/checkbook_contracts.mjs",
           "contains": "<type_of_data>Contracts</type_of_data>"
         }
       ],

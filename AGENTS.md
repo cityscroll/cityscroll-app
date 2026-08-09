@@ -295,6 +295,17 @@ Receipt: `docs/evidence/passport-ei-densify/comparison.json`. Rebuild:
 `node tools/build_entity_intelligence.mjs`. Verify:
 `node --test test/procurement_spine_ei_densify.test.mjs`.
 
+**Checkbook Contracts population feed:**
+`warehouse/scripts/checkbook_contracts.mjs` pages explicit fiscal-year
+partitions with count-drift failure, checksummed resumable checkpoints, and a
+100,000-row hard ceiling. It collapses prime/subvendor slices to one exact
+`prime_contract_id`, measures PASSPort and modern City Record overlap before
+selection, and publishes only the bounded slice in
+`site/data/procurement_spine_sources.json`. Refresh with
+`node warehouse/scripts/checkbook_contracts.mjs --publish --refresh --fiscal-years
+2025,2026,2027 --page-size 999 --graph-cap 500`; verify with `--check` and
+`node --test test/checkbook_contracts_collector.test.mjs`.
+
 ## DuckDB + parquet warehouse (WH-01…WH-06)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
