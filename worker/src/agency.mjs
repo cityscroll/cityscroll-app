@@ -12,6 +12,7 @@
 
 import crosswalk from "./data/agency_crosswalk.json" with { type: "json" };
 import { enrichAgency } from "./lib/agency_identity.mjs";
+import { buildPersonLeaderEntity } from "../../entity_resolution/leaders/index.mjs";
 
 const ALLOW = new Set([
   "https://cityscroll.org", "https://www.cityscroll.org",
@@ -39,9 +40,19 @@ export async function handleAgency(req, env, ctx) {
   }
 
   const identity = enrichAgency(crosswalk.entries, name);
+  const leader = identity
+    ? buildPersonLeaderEntity({
+        agencyId: Object.entries(crosswalk.entries).find(([, entry]) => entry === identity)?.[0] || "",
+        agencyName: identity.canonical_name,
+        headName: identity.head_name,
+        headTitle: identity.head_title,
+        source: { system: "nyc_open_data", dataset: "t3jq-9nkf" },
+      })
+    : null;
+  const publicIdentity = identity ? { ...identity, leader } : identity;
   // Static join → safe to cache hard at the edge (a day); the bundle only changes on redeploy.
   const res = json(
-    { ok: true, agency: name, matched: !!identity, identity: identity || null, provenance: PROVENANCE },
+    { ok: true, agency: name, matched: !!identity, identity: publicIdentity || null, provenance: PROVENANCE },
     200, cors, "public, max-age=86400"
   );
   if (cache) {

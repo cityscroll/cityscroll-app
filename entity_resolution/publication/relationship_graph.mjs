@@ -5,6 +5,7 @@
 // arbitrary relationship inferred from proximity in a source record.
 
 import { assertionSnapshot } from "../review/assertion_evidence.mjs";
+import { buildPersonLeaderEntity } from "../leaders/index.mjs";
 
 export const PUBLIC_RELATIONSHIP_GRAPH_VERSION = "public_relationship_graph_v1";
 export const PUBLIC_GRAPH_MAX_DEPTH = 2;
@@ -20,6 +21,8 @@ export const PUBLIC_GRAPH_NODE_TYPES = Object.freeze([
   "award",
   // Official person-level identity for Council roll-call votes (meeting outcomes).
   "official",
+  // Publisher-backed agency principal officer.
+  "person-leader",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
@@ -29,6 +32,8 @@ export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
   "references_contract",
   // official → matter|agenda_item (populated from retained Legistar person votes).
   "votes_on",
+  // agency → person-leader (from the agency governance crosswalk).
+  "agency_led_by",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
@@ -37,6 +42,7 @@ export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
   published_by_agency: "Published by agency",
   references_contract: "References contract",
   votes_on: "Votes on",
+  agency_led_by: "Agency led by",
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -140,7 +146,7 @@ function addEdge(edges, edge) {
     ...edge,
     id: edgeId(edge),
     label: PUBLIC_GRAPH_EDGE_LABELS[edge.type],
-    confidence: publicConfidence(),
+    confidence: edge.confidence || publicConfidence(),
   };
   if (!edges.has(complete.id)) edges.set(complete.id, complete);
 }
@@ -203,6 +209,33 @@ function observationGraph(root, row) {
       to: agencyId,
       provenance: publicProvenance(source, observedAt, [recordType.field.name, agency.name]),
     });
+
+    const headName = field(raw, ["agency_head_name", "head_name"]);
+    const headTitle = field(raw, ["agency_head_title", "head_title"]);
+    const leader = buildPersonLeaderEntity({
+      agencyId,
+      agencyName: agency.value,
+      headName: headName?.value,
+      headTitle: headTitle?.value,
+    });
+    if (leader) {
+      nodes.push({
+        id: leader.id,
+        type: leader.entity_type,
+        name: leader.display_name,
+        role: leader.role,
+        classification: "publisher_assertion",
+        provenance: publicProvenance(source, observedAt, [headName.name, headTitle?.name, agency.name].filter(Boolean)),
+        confidence: leader.confidence,
+      });
+      edges.push({
+        type: "agency_led_by",
+        from: agencyId,
+        to: leader.id,
+        confidence: leader.confidence,
+        provenance: publicProvenance(source, observedAt, [headName.name, headTitle?.name, agency.name].filter(Boolean)),
+      });
+    }
   }
 
   if (contract && recordType.type === "award") {

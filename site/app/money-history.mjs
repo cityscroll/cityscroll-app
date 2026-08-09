@@ -353,7 +353,10 @@ function agencyIdentityHTML(resp){
   const rows = [];
   if(id.head_name){
     const who = id.head_title ? `${id.head_title} · ${id.head_name}` : id.head_name;
-    rows.push([t("agency_identity_led_by"), en(who)]);
+    const leader = id.leader && id.leader.entity_type === "person-leader" && id.leader.id
+      ? `<a class="entity-pivot" href="/agencies/${encodeURIComponent(id.leader.agency_id || "")}/" data-entity-ref="${escUiHtml(id.leader.id)}" data-link-confidence="strong" data-relation="agency_led_by">${en(who)}</a>`
+      : en(who);
+    rows.push([t("agency_identity_led_by"), leader]);
   }
   if(id.reports_to) rows.push([t("agency_identity_reports_to"), en(id.reports_to)]);
   if(id.org_type) rows.push([t("agency_identity_org_type"), en(id.org_type)]);
