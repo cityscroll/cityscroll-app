@@ -37,6 +37,17 @@ function previewFetch(url) {
   ]), { status: 200, headers: { "Content-Type": "application/json" } }));
 }
 
+test("the edge Following renderer keeps the create-first empty state on a fresh visit", async () => {
+  const response = await handleFollowing(new Request("https://cityscroll.org/following/"));
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /data-following-preview-form/);
+  assert.match(html, /data-following-subscribe-panel/);
+  assert.match(html, /Pick a topic or place to see matches\./);
+  assert.match(html, /data-personal-watch-list/);
+});
+
 test("the edge Following renderer previews the same saved scope and preserves the source-list count", async () => {
   const filter = encodeURIComponent(JSON.stringify({
     keywords: ["curb"],

@@ -291,8 +291,11 @@ locally by hitting `/__scheduled?cron=0+10+*+*+*` or `/__scheduled?cron=0+13+*+*
 ### Automatic deploys
 
 `.github/workflows/deploy-worker.yml` deploys the Worker automatically on every push to `main`
-that touches `worker/**` (also runnable by hand via `workflow_dispatch` for a re-run without a
-new commit). Each deploy **applies pending D1 migrations** (`wrangler d1 migrations apply
+that touches `worker/**` or the shared Following renderer
+(`site/following_view.mjs` / `site/data/watch_templates.json`) (also runnable by hand via
+`workflow_dispatch` for a re-run without a new commit). Its post-deploy smoke includes the
+Following create-first contract on the canonical site route. Each deploy **applies pending D1
+migrations** (`wrangler d1 migrations apply
 crol-notices --remote`) before `wrangler deploy`, so schema changes under `migrations/` land
 with the code that needs them. Skipping that step left the PASSPort tables uncreated and every
 lifecycle PASSPort lookup returning `lookup_status=error`. The deploy is still **code-only**
