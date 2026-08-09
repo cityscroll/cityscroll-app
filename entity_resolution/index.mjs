@@ -185,6 +185,23 @@ export {
 } from "./exam_certifications/index.mjs";
 
 export {
+  AGENCY_HEAD_ENTITY_TYPE,
+  PERSON_LEADER_ENTITY_TYPE,
+  PERSON_LEADER_PRIMARY_KEY_PATTERN,
+  PERSON_LEADER_RESOLUTION_METHOD,
+  PERSON_LEADER_TYPE_FAMILY,
+  buildAgencyHeadEntities,
+  buildPersonLeaderEntity,
+  personLeaderEntityId,
+  resolveLeadershipReferent,
+} from "./leaders/index.mjs";
+
+export {
+  resolveOpaqueReferent,
+  resolveReferent,
+} from "./referents/index.mjs";
+
+export {
   PUBLICATION_VERSION,
   PUBLIC_ENTITY_FIELDS,
   PUBLIC_ENTITY_LINK_FIELDS,

@@ -12,6 +12,8 @@ import {
   PUBLIC_RELATIONSHIP_GRAPH_VERSION,
   serializePublicRelationshipGraph,
 } from "../../entity_resolution/publication/relationship_graph.mjs";
+import crosswalk from "./data/agency_crosswalk.json" with { type: "json" };
+import { enrichAgency } from "./lib/agency_identity.mjs";
 
 const GRAPH_CACHE = "public, max-age=300";
 export const GRAPH_RECORD_LIMIT = 250;
@@ -170,7 +172,17 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
       ORDER BY record.ingested_at DESC, record.source_system ASC, record.source_system_id ASC
       LIMIT ?`,
   ).bind(entityId, GRAPH_RECORD_LIMIT).all();
-  return serializePublicRelationshipGraph(result?.results || [], opts);
+  const rows = (result?.results || []).map((row) => {
+    const raw = (() => {
+      try { return JSON.parse(row.raw_snapshot || "{}"); } catch { return {}; }
+    })();
+    const identity = enrichAgency(crosswalk.entries, raw.agency_name || raw.agency || "");
+    const enriched = identity?.head_name
+      ? { ...raw, agency_head_name: identity.head_name, agency_head_title: identity.head_title }
+      : raw;
+    return { ...row, raw_snapshot: JSON.stringify(enriched) };
+  });
+  return serializePublicRelationshipGraph(rows, opts);
 }
 
 export async function handlePublicRelationshipGraph(request, env) {

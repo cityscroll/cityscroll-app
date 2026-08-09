@@ -9,13 +9,14 @@ export const OFFICIAL_TYPE_FAMILY = "official";
 export const VOTES_ON_LINK_TYPE = "votes_on";
 export const OFFICIAL_PRIMARY_KEY_PATTERN = "official:{person_id}";
 
-/** Closed ER type-family set including the official person family. */
+/** Closed ER type-family set including official and agency-head person families. */
 export const ENTITY_TYPE_FAMILIES = Object.freeze([
   "vendor",
   "agency",
   "procurement",
   "location",
   "official",
+  "person-leader",
 ]);
 
 // NYC Legistar publishes VoteValueName as Affirmative / Negative (not Aye/Nay).
