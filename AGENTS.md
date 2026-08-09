@@ -25,6 +25,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   descriptor and the agency profile renders a strong, agency-scoped link. Use
   `entity_resolution/referents/index.mjs` for named heads, agency-scoped role mentions, and
   exact unique opaque aliases only. Unscoped or ambiguous referents remain plain text.
+- **Cross-spine edge routing:** `entity_resolution/cross_domain/edge_policy.mjs` is the shared
+  four-tier router (`deterministic`, `public_inferred`, `evidence_only`, `no_edge`). Keep
+  uncertain candidates in `shadow_edges` only; verify the frozen relation gates with
+  `node tools/cross_spine_eval.mjs --check-policy` and cover public omission in
+  `worker/test/public_relationship_graph.test.mjs`.
 
 ## PR and CI preflight
 

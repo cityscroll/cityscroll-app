@@ -174,6 +174,24 @@ export {
 } from "./cross_domain/index.mjs";
 
 export {
+  CROSS_SPINE_EDGE_POLICY_SCHEMA,
+  CROSS_SPINE_EDGE_POLICY_VERSION,
+  CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  CROSS_SPINE_EDGE_TIERS,
+  CROSS_SPINE_RELATION_POLICIES,
+  DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  canonicalCrossSpineRelation,
+  crossSpineFeaturePasses,
+  crossSpineRowFeatures,
+  crossSpineEvidenceDecision,
+  routeCrossSpineEdge,
+  routeCrossSpineEdges,
+  policyFromCrossSpineEval,
+  checkCrossSpineEdgePolicy,
+  isCrossSpineCandidate,
+} from "./cross_domain/edge_policy.mjs";
+
+export {
   CERTIFIED_TO_AGENCY,
   CERTIFIED_TO_AGENCY_LABEL,
   CERTIFICATION_METHOD,
