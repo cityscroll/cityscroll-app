@@ -4,7 +4,9 @@ import { test } from "node:test";
 
 import {
   BROWSE_FACETS,
+  browseEdgeInventory,
   buildBrowseView,
+  parseBrowseRef,
   renderBrowseView,
 } from "../site/browse_view.mjs";
 import { resolveAgencyIdentity } from "../site/agency_identity.mjs";
@@ -104,6 +106,36 @@ test("browse scope conformance: every registered lens filters when given fixture
       assert.match(html, /No records in this lens match/);
     }
   }
+});
+
+test("default Browse inventories exact non-property secondary refs without changing Property", () => {
+  const expectedSecondaryKinds = {
+    contracts: new Set(["notice", "pin"]),
+    staffing: new Set(["notice"]),
+    zoning: new Set(["project"]),
+    rules: new Set(["notice"]),
+    meetings: new Set(["notice", "project"]),
+  };
+
+  for (const [facet, kinds] of Object.entries(expectedSecondaryKinds)) {
+    const payload = readPayload(facet);
+    const rows = rowsForFacet(payload, facet);
+    const inventory = browseEdgeInventory(facet, rows, []);
+    assert.ok(inventory.edgePairs.length > 0, `${facet} has exact co-occurring Browse refs`);
+
+    const refs = inventory.edgeInventory.map((edge) => edge.ref);
+    assert.ok(refs.every((ref) => parseBrowseRef(ref)), `${facet} refs are typed and parseable`);
+    for (const kind of kinds) {
+      assert.ok(refs.some((ref) => parseBrowseRef(ref)?.kind === kind), `${facet} exposes ${kind} refs`);
+    }
+  }
+
+  const property = readPayload("property");
+  const propertyRefs = browseEdgeInventory("property", rowsForFacet(property, "property"), [])
+    .edgeInventory
+    .map((edge) => edge.ref);
+  assert.ok(propertyRefs.some((ref) => ref.startsWith("bbl:")), "Property still exposes parcel refs");
+  assert.equal(propertyRefs.some((ref) => ref.startsWith("notice:") || ref.startsWith("pin:")), false);
 });
 
 test("contracts conformance: a three-way typed scope is an all-ref intersection with removable chips", () => {
