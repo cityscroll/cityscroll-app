@@ -17,7 +17,7 @@ test("production shadow census reproduces the committed bridge baseline", () => 
   };
   const receipt = buildCrossSpineShadowCensus(sources);
   assert.deepEqual(Object.fromEntries(Object.entries(receipt.relations).map(([key, value]) => [key, value.totals])), {
-    mandate_meeting: { public_inferred: 0, evidence_only: 52 },
+    mandate_meeting: { public_inferred: 3, evidence_only: 48 },
     mandate_land_use: { public_inferred: 0, evidence_only: 9 },
     mandate_contract: { public_inferred: 1, evidence_only: 0 },
     mandate_rule: { public_inferred: 0, evidence_only: 0 },
@@ -32,7 +32,7 @@ test("census output is redacted to ids, counts, source names, and enum reasons",
   const text = JSON.stringify(receipt);
   assert.doesNotMatch(text, /duty_text|source_excerpt|notice body|contact|subject_scope|candidate/i);
   assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, 48);
-  assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, 52);
-  assert.equal(receipt.relations.mandate_meeting.totals.public_inferred, 0);
+  assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, 44);
+  assert.equal(receipt.relations.mandate_meeting.totals.public_inferred, 3);
   assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 9);
 });

@@ -168,6 +168,10 @@ export function buildMandateEnvelope(law, mandates, { fetchedAt = null } = {}) {
   return {
     schema_version: MANDATES_SCHEMA_VERSION,
     matter_id: sanitizeText(law?.matter_id, 120),
+    // Publisher-issued law anchors only. Invalid or non-ISO values remain null;
+    // file numbers and publication order are never date evidence.
+    enactment_date: validDate(law?.enactment_date),
+    effective_date: validDate(law?.effective_date),
     source: {
       url: sanitizeText(law?.provenance?.source_url || law?.source_url, 1000) || null,
       fetched_at: fetchedAt || law?.provenance?.fetched_at || null,
