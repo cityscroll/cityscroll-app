@@ -15,6 +15,7 @@ import {
   renderWhyBelieveControl,
 } from "./graph_edge_provenance.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
+import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import {
   emptyScope,
   normalizeScope,
@@ -332,6 +333,8 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
   const perMandateLimit = Math.max(1, Math.min(Number(sources.perMandateLimit) || 3, 8));
 
   for (const { row: mandate, actionKinds } of mandates) {
+    const mandateRef = mandateSubjectRef(mandate.obligation_id);
+    if (!mandateRef) continue;
     let matched = 0;
     for (const action of candidates) {
       const subjectScope = actionKinds.filter((kind) => action.action_kinds.includes(kind));
@@ -370,7 +373,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
       const linkId = `entity-link:mandate-land-use:${stablePart(mandate.obligation_id)}:${stablePart(action.project_id)}`;
       const entityLink = {
         id: linkId,
-        source_record_id: `obligation:${mandate.obligation_id}`,
+        source_record_id: mandateRef,
         canonical_entity_id: action.subject_ref,
         decision: publicCandidate ? "auto_link" : "evidence_only",
         confidence: publicCandidate ? 0.9 : null,
@@ -385,7 +388,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
       const item = {
         id: `${mandate.obligation_id}:${action.project_id}`,
         subject_ref: action.subject_ref,
-        root_ref: `obligation:${mandate.obligation_id}`,
+        root_ref: mandateRef,
         label: action.label,
         href: action.href,
         relation: MANDATE_LAND_USE_EDGE_TYPE,
@@ -443,7 +446,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
         relation: MANDATE_LAND_USE_EDGE_TYPE,
         mandate: {
           mandate_id: mandate.obligation_id,
-          subject_ref: `obligation:${mandate.obligation_id}`,
+          subject_ref: mandateRef,
           duty_text: clean(mandate.duty_text, 500),
           citation: clean(mandate.citation, 200) || null,
           source_href: clean(mandate.source?.legistar_url || mandate.href, 400) || null,
