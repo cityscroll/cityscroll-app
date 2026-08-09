@@ -73,6 +73,37 @@ function fixtureActivity() {
           basis: "Affected area",
           confidence: "strong",
           route: "/#notice/m-queens",
+          why_here_candidates: [{
+            schema: "cityscroll.near_you_explanation_path.v1",
+            hop_count: 3,
+            notice_href: "/notices/m-queens",
+            location: {
+              relation: "located_in",
+              subject_ref: "borough:queens",
+              kind: "borough",
+              label: "Queens",
+              place_role: "affected_area",
+              method: "district_activity_placement_v1",
+              placement_method: "matter_title_place",
+            },
+            agency: {
+              id: "transportation",
+              name: "Transportation",
+              href: "/agencies/transportation/",
+            },
+            mandate: {
+              relation: "requires_public_hearing",
+              relation_label: "Public hearing for this duty",
+              duty_text: "Hold a hearing before adopting the plan.",
+              citation: "Local Law § 1",
+              publication_tier: "deterministic",
+            },
+            provenance: {
+              located_in_method: "district_activity_placement_v1",
+              cross_spine_method: "notice_mandate_backlinks_v1",
+              publication_tier: "deterministic",
+            },
+          }],
         },
         "m-citywide": {
           id: "m-citywide",
@@ -181,6 +212,11 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(html, /data-record-id="m-queens"/);
   assert.match(html, /Queens curb redesign hearing/);
   assert.match(html, /Affected area/);
+  assert.equal((html.match(/data-why-here-path="1"/g) || []).length, 1);
+  assert.match(html, /Why this is here/);
+  assert.match(html, /Affected area: Queens/);
+  assert.match(html, /href="\/agencies\/transportation\/"/);
+  assert.match(html, /href="\/notices\/m-queens"[^>]*>Mandate: Local Law § 1/);
   assert.match(html, /data-map-id="Queens"[^>]+data-count="1"/);
   assert.match(html, /data-map-area="Queens"[^>]+data-count="1"/);
   assert.match(html, /data-bag="citywide"/);
