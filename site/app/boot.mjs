@@ -341,6 +341,7 @@ function currentLensFilterState(tab){
       boro: landBorough || "",
       status: $("#lstatus") && $("#lstatus").value || "all",
       attendance: landAttendance || "",
+      when: landClosingWeek ? ["closing", "week"].join(":") : "",
     });
   }
   if(tab === "meetings" || tab === "property" || tab === "rules"){
