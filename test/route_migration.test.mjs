@@ -13,6 +13,13 @@ test("legacy fragment mappings remain finite and preserve language through docs"
     "/browse/staffing/?lang=es&view=guide&role=Engineer+Civil&window=open");
 });
 
+test("legacy borough scope links still normalize across list lenses", () => {
+  assert.equal(migrateLegacyUrl("/#property?boro=Brooklyn").target, "/browse/property/?boro=Brooklyn");
+  assert.equal(migrateLegacyUrl("/#land?boro=Queens").target, "/browse/zoning/?boro=Queens");
+  assert.equal(migrateLegacyUrl("/#rules?boro=Bronx").target, "/browse/rules/?boro=Bronx");
+  assert.equal(migrateLegacyUrl("/#meetings?boro=Manhattan").target, "/browse/meetings/?boro=Manhattan");
+});
+
 test("unsupported legacy scope keys are surfaced explicitly", () => {
   const mapped = migrateLegacyUrl("/#notice/20240515016?q=air&retiredMode=secret");
   assert.equal(mapped.target, "/notices/20240515016?legacy=unsupported-filter");

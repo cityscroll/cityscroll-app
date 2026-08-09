@@ -19,6 +19,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `affected_area.boroughs`, property `property_location.boroughs`, money `place`)
   are first-class. Property/browse borough filtering reads structured place bags
   in `site/browse_view.mjs` (`rowBoroughs` / `rowMatchesBorough`).
+- Place-scoped Property routes use `site/property_scope_fallback.mjs`: if the scoped current
+  view is empty but the same scope has closed records, the route opens the archive view so a
+  valid place link does not present a misleading empty result. Coverage is in
+  `test/property_scope_fallback.test.mjs` (fixture: `test/fixtures/property_scope/`).
 
 - **Agency-head entities:** `entity_resolution/leaders/index.mjs` materializes publisher-backed
   `person-leader` entities from `worker/src/data/agency_crosswalk.json`; `/agency` exposes the
