@@ -16,18 +16,20 @@ import { fileURLToPath } from "node:url";
 import {
   CROSS_SPINE_RELATION_POLICIES,
   CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  CROSS_SPINE_MIN_HELD_OUT_SUPPORT,
   canonicalCrossSpineRelation,
   checkCrossSpineEdgePolicy,
   crossSpineEvidenceDecision,
 } from "../entity_resolution/cross_domain/edge_policy.mjs";
 
-export const CROSS_SPINE_EVAL_SCHEMA = "cityscroll.cross_spine_edge_eval.v1";
-export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v1";
+export const CROSS_SPINE_EVAL_SCHEMA = "cityscroll.cross_spine_edge_eval.v2";
+export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v2";
 export const DEFAULT_MIN_PRECISION = CROSS_SPINE_MIN_HELD_OUT_PRECISION;
+export const DEFAULT_MIN_SUPPORT = CROSS_SPINE_MIN_HELD_OUT_SUPPORT;
 export const DEFAULT_HOLDOUT_BUCKETS = 5;
 export const DEFAULT_HOLDOUT_BUCKET = 0;
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const DEFAULT_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v1.jsonl");
+export const DEFAULT_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl");
 export const DEFAULT_GATE_RECEIPT_PATH = resolve(ROOT, "site/data/cross_spine_edge_gate.json");
 export const CROSS_SPINE_MONITOR_SCHEMA = "cityscroll.cross_spine_edge_monitor.v1";
 export const CROSS_SPINE_MONITOR_VERSION = "cross_spine_monitor_v1";
@@ -36,6 +38,7 @@ export const DEFAULT_MONITOR_RECEIPT_PATH = resolve(ROOT, "site/data/cross_spine
 const LABELS = new Set(["same", "different"]);
 export const RELATION_POLICIES = CROSS_SPINE_RELATION_POLICIES;
 const TIERS = new Set(["inferred", "deterministic"]);
+const EVALUATION_SPLITS = new Set(["train", "held_out"]);
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -151,6 +154,15 @@ export function groupedSplit(rows = [], {
   }
   const splitByRoot = new Map();
   for (const [root, members] of componentByRoot) {
+    const requestedSplits = new Set(groups
+      .filter((group) => uf.find(group.left) === root)
+      .map((group) => clean(group.row.evaluation_split))
+      .filter(Boolean));
+    if (requestedSplits.size > 1) fail(`connected component ${root} declares conflicting evaluation_split values`);
+    if (requestedSplits.size === 1) {
+      splitByRoot.set(root, [...requestedSplits][0]);
+      continue;
+    }
     const canonical = [...members].sort().join("|");
     // Independent relation cohorts get independent deterministic buckets so
     // every relation can acquire a holdout without making a shared endpoint
@@ -197,10 +209,12 @@ export function groupedSplit(rows = [], {
   };
 }
 
-function validateSide(side, path, lineNo) {
+function validateSide(side, path, lineNo, { publisherBacked = false } = {}) {
   if (!side || typeof side !== "object" || Array.isArray(side)) fail(`line ${lineNo}: ${path} must be an object`);
   if (!clean(side.source_system)) fail(`line ${lineNo}: ${path}.source_system is required`);
   if (!clean(side.display_name)) fail(`line ${lineNo}: ${path}.display_name is required`);
+  if (publisherBacked && !clean(side.source_record_id)) fail(`line ${lineNo}: ${path}.source_record_id is required for v2`);
+  if (publisherBacked && !clean(side.source_url)) fail(`line ${lineNo}: ${path}.source_url is required for v2`);
 }
 
 /** Parse and validate the versioned cross-spine gold JSONL format. */
@@ -218,7 +232,7 @@ export function loadCrossSpineGold(text) {
     if (!row || typeof row !== "object" || Array.isArray(row)) fail(`line ${lineNo}: expected an object`);
     if (row._meta === true) {
       if (meta) fail(`line ${lineNo}: duplicate _meta record`);
-      if (row.schema_version !== 1 || !clean(row.gold_version)) fail(`line ${lineNo}: _meta requires schema_version=1 and gold_version`);
+      if (![1, 2].includes(row.schema_version) || !clean(row.gold_version)) fail(`line ${lineNo}: _meta requires schema_version=1|2 and gold_version`);
       meta = row;
       continue;
     }
@@ -229,8 +243,13 @@ export function loadCrossSpineGold(text) {
     if (!LABELS.has(row.label)) fail(`line ${lineNo}: label must be same|different`);
     if (!Array.isArray(row.sources) || row.sources.length === 0) fail(`line ${lineNo}: sources must be non-empty`);
     if (!TIERS.has(row.tier || "inferred")) fail(`line ${lineNo}: tier must be inferred|deterministic`);
-    validateSide(row.left, "left", lineNo);
-    validateSide(row.right, "right", lineNo);
+    const publisherBacked = meta?.schema_version === 2;
+    validateSide(row.left, "left", lineNo, { publisherBacked });
+    validateSide(row.right, "right", lineNo, { publisherBacked });
+    if (publisherBacked && !clean(row.source_cohort)) fail(`line ${lineNo}: source_cohort is required for v2`);
+    if (publisherBacked && !EVALUATION_SPLITS.has(row.evaluation_split)) {
+      fail(`line ${lineNo}: evaluation_split must be train|held_out for v2`);
+    }
     sideGroup(row, "left");
     sideGroup(row, "right");
     cases.push({ ...row, relation, tier: row.tier || "inferred" });
@@ -243,6 +262,25 @@ export function loadCrossSpineGold(text) {
 
 function ratio(numerator, denominator) {
   return denominator ? numerator / denominator : null;
+}
+
+/** Two-sided Wilson score interval for a binomial proportion. */
+export function wilsonInterval(successes, trials, z = 1.959963984540054) {
+  if (!Number.isInteger(successes) || !Number.isInteger(trials) || trials < 0 || successes < 0 || successes > trials) {
+    fail("Wilson interval requires integer successes/trials with 0 <= successes <= trials");
+  }
+  if (trials === 0) return null;
+  const p = successes / trials;
+  const z2 = z * z;
+  const denominator = 1 + z2 / trials;
+  const center = (p + z2 / (2 * trials)) / denominator;
+  const margin = (z * Math.sqrt((p * (1 - p) + z2 / (4 * trials)) / trials)) / denominator;
+  return {
+    confidence: 0.95,
+    method: "wilson_score",
+    lower: Math.max(0, center - margin),
+    upper: Math.min(1, center + margin),
+  };
 }
 
 function relationMetric(rows, candidates) {
@@ -262,6 +300,7 @@ function relationMetric(rows, candidates) {
     true_positive: truePositive,
     false_positive: falsePositive,
     precision: ratio(truePositive, generated),
+    precision_interval_95: wilsonInterval(truePositive, generated),
     coverage: ratio(truePositive, positive),
     abstentions: rows.length - generated,
     abstention_rate: ratio(rows.length - generated, rows.length),
@@ -281,7 +320,13 @@ function measureRelations(rows, splitName) {
   return byRelation;
 }
 
-export function evaluateCrossSpineGold({ gold, relation = null, groupSplit = false, minPrecision = DEFAULT_MIN_PRECISION } = {}) {
+export function evaluateCrossSpineGold({
+  gold,
+  relation = null,
+  groupSplit = false,
+  minPrecision = DEFAULT_MIN_PRECISION,
+  minSupport = DEFAULT_MIN_SUPPORT,
+} = {}) {
   if (!gold || !Array.isArray(gold.cases)) fail("gold must be the result of loadCrossSpineGold");
   const selectedRelation = relation ? canonicalRelation(relation) : null;
   if (selectedRelation && !RELATION_POLICIES[selectedRelation]) fail(`unsupported relation ${relation}`);
@@ -295,11 +340,24 @@ export function evaluateCrossSpineGold({ gold, relation = null, groupSplit = fal
   const gate = {};
   for (const relation of relations) {
     const metric = groupSplit ? heldOut[relation] : all[relation];
+    const relationCases = cases.filter((row) => row.relation === relation);
+    const support = metric?.candidates ?? 0;
+    const sufficientSupport = support >= minSupport;
+    const precisionPass = metric?.precision != null && metric.precision >= minPrecision;
     gate[relation] = {
       precision: metric?.precision ?? null,
+      precision_interval_95: metric?.precision_interval_95 ?? null,
       min_precision: minPrecision,
-      passed: metric?.precision != null && metric.precision >= minPrecision,
-      status: metric?.precision == null ? "insufficient" : metric.precision >= minPrecision ? "pass" : "fail",
+      support,
+      min_support: minSupport,
+      support_status: sufficientSupport ? "sufficient" : "insufficient",
+      label_counts: {
+        same: relationCases.filter((row) => row.label === "same").length,
+        different: relationCases.filter((row) => row.label === "different").length,
+      },
+      source_cohorts: [...new Set(relationCases.map((row) => clean(row.source_cohort)).filter(Boolean))].sort(),
+      passed: sufficientSupport && precisionPass,
+      status: !sufficientSupport || metric?.precision == null ? "insufficient" : precisionPass ? "pass" : "fail",
     };
   }
   return {
@@ -378,6 +436,8 @@ export function buildCrossSpineMonitorReceipt({ gold, prior = null, observedAt =
       abstention_rate: metric?.abstention_rate ?? null,
       abstentions: metric?.abstentions ?? null,
       candidates: metric?.candidates ?? null,
+      support: metric?.candidates ?? 0,
+      precision_interval_95: metric?.precision_interval_95 ?? null,
       true_positive: metric?.true_positive ?? null,
       false_positive: metric?.false_positive ?? null,
       held_out_rows: metric?.total ?? 0,
@@ -410,8 +470,8 @@ export function buildCrossSpineMonitorReceipt({ gold, prior = null, observedAt =
     source: {
       gold_content_hash: gold.contentHash,
       held_out_group_split: true,
-      holdout_bucket: report.split.holdoutBucket,
-      holdout_buckets: report.split.holdoutBuckets,
+      holdout_bucket: report.split.holdout_bucket,
+      holdout_buckets: report.split.holdout_buckets,
     },
     relations: byRelation,
     provenance_drift: {
@@ -429,6 +489,7 @@ function parseArgs(argv) {
     relation: null,
     groupSplit: false,
     minPrecision: DEFAULT_MIN_PRECISION,
+    minSupport: DEFAULT_MIN_SUPPORT,
     json: false,
     out: null,
     check: false,
@@ -441,6 +502,7 @@ function parseArgs(argv) {
     else if (arg === "--relation") args.relation = argv[++index];
     else if (arg === "--group-split") args.groupSplit = true;
     else if (arg === "--min-precision") args.minPrecision = Number(argv[++index]);
+    else if (arg === "--min-support") args.minSupport = Number(argv[++index]);
     else if (arg === "--json") args.json = true;
     else if (arg === "--out") args.out = argv[++index];
     else if (arg === "--check") args.check = true;
@@ -450,6 +512,7 @@ function parseArgs(argv) {
     else fail(`unknown argument: ${arg}`);
   }
   if (!Number.isFinite(args.minPrecision) || args.minPrecision < 0 || args.minPrecision > 1) fail("--min-precision must be between 0 and 1");
+  if (!Number.isInteger(args.minSupport) || args.minSupport < 1) fail("--min-support must be an integer >= 1");
   // A gate is never allowed to silently become an in-sample measurement.
   if (args.check || args.checkPolicy) args.groupSplit = true;
   // Relation-scoped checks validate that relation's held-out gate. The
@@ -462,7 +525,7 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  console.error("Usage: node tools/cross_spine_eval.mjs [--gold <path.jsonl>] [--relation <relation>] [--group-split] [--monitor] [--min-precision 0.90] [--json] [--out <receipt.json>] [--check] [--check-policy]");
+  console.error("Usage: node tools/cross_spine_eval.mjs [--gold <path.jsonl>] [--relation <relation>] [--group-split] [--monitor] [--min-precision 0.90] [--min-support 12] [--json] [--out <receipt.json>] [--check] [--check-policy]");
 }
 
 function main() {
@@ -473,7 +536,13 @@ function main() {
   if (!existsSync(path)) { console.error(`gold file not found: ${args.gold}`); process.exitCode = 1; return; }
   try {
     const gold = loadCrossSpineGold(readFileSync(path, "utf8"));
-    const report = evaluateCrossSpineGold({ gold, relation: args.relation, groupSplit: args.groupSplit, minPrecision: args.minPrecision });
+    const report = evaluateCrossSpineGold({
+      gold,
+      relation: args.relation,
+      groupSplit: args.groupSplit,
+      minPrecision: args.minPrecision,
+      minSupport: args.minSupport,
+    });
     if (args.monitor) {
       if (args.relation) throw new Error("--monitor cannot be relation-scoped");
       const out = args.out ? resolve(args.out) : DEFAULT_MONITOR_RECEIPT_PATH;
@@ -487,7 +556,8 @@ function main() {
       if (args.json) console.log(renderedMonitor.trim());
       else {
         for (const [relation, metric] of Object.entries(monitor.relations)) {
-          console.log(`relation=${relation} precision=${metric.precision ?? "null"} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention ?? "null"} provenance_drift=${metric.provenance_drift.status}`);
+          const interval = metric.precision_interval_95;
+          console.log(`relation=${relation} precision=${metric.precision ?? "null"} support=${metric.support} interval95=${interval ? `[${interval.lower},${interval.upper}]` : "null"} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention ?? "null"} provenance_drift=${metric.provenance_drift.status}`);
         }
         console.log(`provenance_drift=${monitor.provenance_drift.status} ok=${monitor.ok}`);
       }
@@ -497,7 +567,7 @@ function main() {
     if (args.checkPolicy) {
       const policyCheck = checkCrossSpineEdgePolicy(report);
       if (!policyCheck.ok) throw new Error(`edge policy failed: ${policyCheck.failures.join(", ") || policyCheck.reason}`);
-      console.log(`cross_spine_policy=${policyCheck.policy.version} min_precision=${policyCheck.policy.min_held_out_precision} ok=true`);
+      console.log(`cross_spine_policy=${policyCheck.policy.version} min_precision=${policyCheck.policy.min_held_out_precision} min_support=${policyCheck.policy.min_held_out_support} ok=true`);
     }
     const rendered = `${JSON.stringify(report, null, 2)}\n`;
     if (args.out) {
@@ -510,7 +580,8 @@ function main() {
     else {
       for (const [relation, metric] of Object.entries(report.held_out || report.all)) {
         const gate = report.gate[relation];
-        console.log(`relation=${relation} split=${metric.split} precision=${metric.precision ?? "null"} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention_rate ?? "null"} candidates=${metric.candidates} gate=${gate.status}`);
+        const interval = gate.precision_interval_95;
+        console.log(`relation=${relation} split=${metric.split} precision=${metric.precision ?? "null"} support=${gate.support}/${gate.min_support} interval95=${interval ? `[${interval.lower},${interval.upper}]` : "null"} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention_rate ?? "null"} candidates=${metric.candidates} gate=${gate.status}`);
       }
       console.log(`group_split=${report.group_split} leakage=${report.split?.group_leakage ?? false} ok=${report.ok}`);
     }

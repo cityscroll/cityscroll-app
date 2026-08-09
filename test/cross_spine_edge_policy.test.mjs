@@ -4,8 +4,10 @@ import { readFileSync } from "node:fs";
 
 import {
   DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  CROSS_SPINE_EDGE_POLICY_V1,
   CROSS_SPINE_EDGE_TIERS,
   checkCrossSpineEdgePolicy,
+  promoteCrossSpineEdgePolicy,
   routeCrossSpineEdge,
   routeCrossSpineEdges,
 } from "../entity_resolution/cross_domain/edge_policy.mjs";
@@ -14,7 +16,7 @@ import {
   loadCrossSpineGold,
 } from "../tools/cross_spine_eval.mjs";
 
-const GOLD_PATH = new URL("../entity_resolution/eval/cross_spine_gold_v1.jsonl", import.meta.url);
+const GOLD_PATH = new URL("../entity_resolution/eval/cross_spine_gold_v2.jsonl", import.meta.url);
 
 const inferredFeatures = {
   agency_exact: true,
@@ -91,5 +93,37 @@ test("policy check binds the router to the immutable grouped holdout", () => {
   const check = checkCrossSpineEdgePolicy(report);
   assert.equal(check.ok, true);
   assert.equal(check.policy.min_held_out_precision, DEFAULT_CROSS_SPINE_EDGE_POLICY.min_held_out_precision);
+  assert.equal(check.policy.min_held_out_support, DEFAULT_CROSS_SPINE_EDGE_POLICY.min_held_out_support);
   assert.equal(check.policy.gold_version, DEFAULT_CROSS_SPINE_EDGE_POLICY.gold_version);
+  assert.ok(Object.values(check.policy.gates).every((gate) => gate.support >= gate.min_support));
+});
+
+test("v2 promotion is atomic and preserves public edge counts", () => {
+  const gold = loadCrossSpineGold(readFileSync(GOLD_PATH, "utf8"));
+  const report = evaluateCrossSpineGold({ gold, groupSplit: true });
+  const incomplete = structuredClone(report);
+  incomplete.gate.mandate_rule.support = 11;
+  incomplete.gate.mandate_rule.support_status = "insufficient";
+  incomplete.gate.mandate_rule.status = "insufficient";
+  incomplete.gate.mandate_rule.passed = false;
+
+  const retained = promoteCrossSpineEdgePolicy(incomplete);
+  assert.equal(retained.promoted, false);
+  assert.equal(retained.policy.gold_version, "cross_spine_gold_v1");
+  assert.deepEqual(retained.failures, ["mandate_rule"]);
+  const promoted = promoteCrossSpineEdgePolicy(report);
+  assert.equal(promoted.promoted, true);
+  assert.equal(promoted.policy.gold_version, "cross_spine_gold_v2");
+
+  const candidates = [
+    { relation: "mandate_rule", features: inferredFeatures },
+    { relation: "mandate_contract", features: { agency_exact: true, procurement_trigger: true, procurement_action_exact: true, subject_scope_overlap: ["shelter"], contract_authority_exact: true } },
+    { relation: "mandate_meeting", features: { agency_exact: true, event_kind_match: true, subject_scope_overlap: ["landmark", "designation"], temporal_compatible: true } },
+    { relation: "mandate_land_use", features: { agency_exact: true, land_action_kind_match: true, project_identity: true, mandate_phase_compatible: true } },
+    { relation: "mandate_rule", features: { agency_exact: true }, provenance: { source_system: "city_record" } },
+  ];
+  const v1 = routeCrossSpineEdges(candidates, { policy: CROSS_SPINE_EDGE_POLICY_V1 });
+  const v2 = routeCrossSpineEdges(candidates, { policy: promoted.policy });
+  assert.deepEqual(v2.counts, v1.counts);
+  assert.equal(v2.public_edges.length, v1.public_edges.length);
 });

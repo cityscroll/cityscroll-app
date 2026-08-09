@@ -1,0 +1,67 @@
+{
+  "schema": "cityscroll.cross_spine_gold_shard.v2",
+  "gold_version": "cross_spine_gold_v2",
+  "relation": "mandate_contract",
+  "cohorts": [
+    {
+      "id": "dhs_shelter_renewals",
+      "sources": ["nyc_legistar", "passport_public_contracts"],
+      "evidence_basis": "The certified shelter-contract renegotiation mandate is paired with registered DHS P-series shelter contracts; a B-series construction contract is the hard negative.",
+      "left": {
+        "source_system": "nyc_legistar",
+        "source_record_id": "nyc_legistar:66056:006",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=66056",
+        "display_name": "Renegotiate existing shelter contracts",
+        "subject_ref": "mandate:66056-006"
+      },
+      "features": {"agency_exact":true,"procurement_trigger":true,"procurement_action_exact":true,"subject_scope_overlap":["shelter"],"contract_authority_exact":true},
+      "cases": [
+        {"id":"xsg-v2-contract-001","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800271","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Westhab shelter contract · 07117P8271KXLR001","subject_ref":"contract:CT1-071-20228800271"}},
+        {"id":"xsg-v2-contract-002","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800127","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Bowery Residents' Committee shelter contract · 07117P8281KXLR001","subject_ref":"contract:CT1-071-20228800127"}},
+        {"id":"xsg-v2-contract-003","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800072","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Project Renewal shelter contract · 07117P8282KXLR001","subject_ref":"contract:CT1-071-20228800072"}},
+        {"id":"xsg-v2-contract-004","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800150","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Bowery Residents' Committee shelter contract · 07111P8304KXLR001","subject_ref":"contract:CT1-071-20228800150"}},
+        {"id":"xsg-v2-contract-005","label":"different","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228803764","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Rennon Construction contract · 07119B8205KXLR001","subject_ref":"contract:CT1-071-20228803764"},"features":{"procurement_action_exact":false,"subject_scope_overlap":[],"contract_authority_exact":false}}
+      ]
+    },
+    {
+      "id": "dhs_family_shelter_awards",
+      "sources": ["nyc_legistar", "city_record", "passport_public_contracts"],
+      "evidence_basis": "Exact City Record PIN-to-PASSPort chains identify family-shelter contracts covered by the certified mandate; an agency waste-services contract is the hard negative.",
+      "left": {
+        "source_system": "nyc_legistar",
+        "source_record_id": "nyc_legistar:66056:006",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=66056",
+        "display_name": "Renegotiate existing shelter contracts",
+        "subject_ref": "mandate:66056-006"
+      },
+      "features": {"agency_exact":true,"procurement_trigger":true,"procurement_action_exact":true,"subject_scope_overlap":["family","shelter"],"contract_authority_exact":true},
+      "cases": [
+        {"id":"xsg-v2-contract-006","label":"same","right":{"source_system":"city_record+passport_public_contracts","source_record_id":"city_record:20210915131|passport:CT1-071-20228801658","source_url":"https://a856-cityrecord.nyc.gov/RequestDetail/20210915131","display_name":"FWC Services at Prospect Family Residence","subject_ref":"contract:CT1-071-20228801658"}},
+        {"id":"xsg-v2-contract-007","label":"same","right":{"source_system":"city_record+passport_public_contracts","source_record_id":"city_record:20210915152|passport:CT1-071-20228800359","source_url":"https://a856-cityrecord.nyc.gov/RequestDetail/20210915152","display_name":"FWC Shelter at Siena House","subject_ref":"contract:CT1-071-20228800359"}},
+        {"id":"xsg-v2-contract-008","label":"same","right":{"source_system":"city_record+passport_public_contracts","source_record_id":"city_record:20210830104|passport:CT1-071-20228800318","source_url":"https://a856-cityrecord.nyc.gov/RequestDetail/20210830104","display_name":"Shelter facilities at Saratoga Family Residence","subject_ref":"contract:CT1-071-20228800318"}},
+        {"id":"xsg-v2-contract-009","label":"same","right":{"source_system":"city_record+passport_public_contracts","source_record_id":"city_record:20210830105|passport:CT1-071-20228800239","source_url":"https://a856-cityrecord.nyc.gov/RequestDetail/20210830105","display_name":"Shelter services at Albemarle Family Residence","subject_ref":"contract:CT1-071-20228800239"}},
+        {"id":"xsg-v2-contract-010","label":"different","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228803806","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Century Waste Services contract · 07119B8203KXLR001","subject_ref":"contract:CT1-071-20228803806"},"features":{"procurement_action_exact":false,"subject_scope_overlap":[],"contract_authority_exact":false}}
+      ]
+    },
+    {
+      "id": "dhs_transitional_shelters",
+      "sources": ["nyc_legistar", "passport_public_contracts"],
+      "evidence_basis": "Registered DHS P-series residential-service contracts form the positive cohort; a B-series environmental-services contract forms the hard negative.",
+      "left": {
+        "source_system": "nyc_legistar",
+        "source_record_id": "nyc_legistar:66056:006",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=66056",
+        "display_name": "Renegotiate existing shelter contracts",
+        "subject_ref": "mandate:66056-006"
+      },
+      "features": {"agency_exact":true,"procurement_trigger":true,"procurement_action_exact":true,"subject_scope_overlap":["residential","shelter"],"contract_authority_exact":true},
+      "cases": [
+        {"id":"xsg-v2-contract-011","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800163","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"The Bridge residential-services contract · 07118P8318KXLR001","subject_ref":"contract:CT1-071-20228800163"}},
+        {"id":"xsg-v2-contract-012","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228801332","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Comunilife residential-services contract · 07118P8319KXLR001","subject_ref":"contract:CT1-071-20228801332"}},
+        {"id":"xsg-v2-contract-013","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800327","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"NAICA residential-services contract · 07118P8317KXLR001","subject_ref":"contract:CT1-071-20228800327"}},
+        {"id":"xsg-v2-contract-014","label":"same","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228800352","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"Urban Resource Institute residential-services contract · 07118P8325KXLR001","subject_ref":"contract:CT1-071-20228800352"}},
+        {"id":"xsg-v2-contract-015","label":"different","right":{"source_system":"passport_public_contracts","source_record_id":"passport:CT1-071-20228804071","source_url":"https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public","display_name":"New York Environmental Systems contract · 07119B8204KXLR001","subject_ref":"contract:CT1-071-20228804071"},"features":{"procurement_action_exact":false,"subject_scope_overlap":[],"contract_authority_exact":false}}
+      ]
+    }
+  ]
+}

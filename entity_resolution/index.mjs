@@ -177,9 +177,11 @@ export {
   CROSS_SPINE_EDGE_POLICY_SCHEMA,
   CROSS_SPINE_EDGE_POLICY_VERSION,
   CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  CROSS_SPINE_MIN_HELD_OUT_SUPPORT,
   CROSS_SPINE_EDGE_TIERS,
   CROSS_SPINE_RELATION_POLICIES,
   DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  CROSS_SPINE_EDGE_POLICY_V1,
   canonicalCrossSpineRelation,
   crossSpineFeaturePasses,
   crossSpineRowFeatures,
@@ -188,6 +190,7 @@ export {
   routeCrossSpineEdges,
   policyFromCrossSpineEval,
   checkCrossSpineEdgePolicy,
+  promoteCrossSpineEdgePolicy,
   isCrossSpineCandidate,
 } from "./cross_domain/edge_policy.mjs";
 
