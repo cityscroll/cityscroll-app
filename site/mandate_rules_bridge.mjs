@@ -15,7 +15,11 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { noticeDocumentPath } from "./notice_permalink.mjs";
-import { OBSERVATION_LABELS, OBSERVATION_STATUS } from "./process_conformance.mjs";
+import {
+  MANDATE_RULE_PUBLICATION_TIER,
+  OBSERVATION_LABELS,
+  OBSERVATION_STATUS,
+} from "./process_conformance.mjs";
 
 export const MANDATE_RULES_BRIDGE_SCHEMA = "cityscroll.mandate_rules_bridge.v1";
 export const MANDATE_RULES_BRIDGE_METHOD = "mandate_agency_rules_bridge_v1";
@@ -105,13 +109,18 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
   const mandates = rulemaking.slice(0, limit).map((row) => {
     const conf = confById.get(row.obligation_id) || null;
     const obs = conf?.observation || null;
-    const observed = obs?.status === OBSERVATION_STATUS.OBSERVED && obs?.observed_record
+    const publicMandateRuleEdge = obs?.match?.publication === MANDATE_RULE_PUBLICATION_TIER
+      || obs?.publication === MANDATE_RULE_PUBLICATION_TIER;
+    const observed = obs?.status === OBSERVATION_STATUS.OBSERVED
+      && publicMandateRuleEdge
+      && obs?.observed_record
       ? {
         request_id: clean(obs.observed_record.request_id, 40) || null,
         label: clean(obs.observed_record.label, 240) || null,
         when: clean(obs.observed_record.when, 40) || null,
         href: noticeHref(obs.observed_record.href, obs.observed_record.request_id),
         signal_kind: clean(obs.observed_record.signal_kind, 40) || "rule_filing",
+        publication: MANDATE_RULE_PUBLICATION_TIER,
       }
       : null;
     return {
