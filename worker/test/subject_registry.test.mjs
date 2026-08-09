@@ -15,11 +15,15 @@ import { mapFixtureDoc } from "../src/lib/civic_time.mjs";
 import { labelOcpDisagreements } from "../src/lib/claim_layer.mjs";
 import { subjectRefForActionObject } from "../src/lib/action_log.mjs";
 import {
+  GEOGRAPHY_BOROUGH_IDS,
+  GEOGRAPHY_COMMUNITY_DISTRICT_IDS,
+  GEOGRAPHY_COUNCIL_DISTRICT_IDS,
   LAND_USE_PROCEDURE_KINDS,
   LAND_USE_PROCEDURE_VOCABULARY_VERSION,
   SUBJECT_REGISTRY_VERSION,
   attachSubjectRefToClaims,
   formatSubjectRef,
+  geographySubjectRef,
   linksFromCivicFixtureDoc,
   linksFromLifecycle,
   linksFromMeetingRecord,
@@ -96,6 +100,40 @@ test("land-use procedure subjects use a closed, versioned vocabulary", () => {
     type: "mandate_governs_procedure",
     from: "project:2026K0443",
     to: "procedure:landmark_designation",
+  }), null);
+});
+
+test("geography subjects use closed canonical ids and invalid ids fail closed", () => {
+  assert.deepEqual(GEOGRAPHY_BOROUGH_IDS, [
+    "bronx", "brooklyn", "manhattan", "queens", "staten-island",
+  ]);
+  assert.equal(GEOGRAPHY_COMMUNITY_DISTRICT_IDS.length, 59);
+  assert.equal(GEOGRAPHY_COUNCIL_DISTRICT_IDS.length, 51);
+  assert.equal(geographySubjectRef("borough", "Staten Island"), "borough:staten-island");
+  assert.equal(geographySubjectRef("community_district", "q4"), "community-district:Q04");
+  assert.equal(geographySubjectRef("council-district", "05"), "council-district:5");
+  assert.equal(parseSubjectRef("community-district:Q04")?.id, "Q04");
+  assert.equal(parseSubjectRef("council-district:51")?.id, "51");
+  assert.equal(formatSubjectRef("borough", "Queens"), null, "noncanonical borough id fails closed");
+  assert.equal(formatSubjectRef("community-district", "Q15"), null);
+  assert.equal(formatSubjectRef("community-district", "M64"), null, "JIA ids are not regular CDs");
+  assert.equal(formatSubjectRef("council-district", "52"), null);
+  assert.equal(geographySubjectRef("borough", "citywide"), null, "citywide is not a polygon subject");
+
+  const edge = makeSubjectLink({
+    type: "located_in",
+    from: "notice:20260723031",
+    to: "community-district:X05",
+  });
+  assert.equal(edge?.type, "located_in");
+  assert.deepEqual(resolveConnectedSubjects("notice:20260723031", [edge]), [
+    "community-district:X05",
+    "notice:20260723031",
+  ]);
+  assert.equal(makeSubjectLink({
+    type: "located_in",
+    from: "notice:20260723031",
+    to: "agency:parks",
   }), null);
 });
 
