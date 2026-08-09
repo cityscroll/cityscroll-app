@@ -8,7 +8,7 @@
  * coverage without inventing a second ontology.
  */
 
-import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
 import {
   AGENCY_OBLIGATIONS_CERTIFICATION,
   AGENCY_OBLIGATIONS_ER_BASIS,
@@ -496,7 +496,7 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
  * @param {{ intelligence?: object, certification?: object, obligations?: object, cross_spine_gate?: object, generated_at?: string }} sources
  */
 export function buildAgencyConstellationView(idOrName, sources = {}) {
-  const identity = resolveAgencyIdentity(idOrName);
+  const identity = reconcileAgencyIdentity(idOrName, sources.publisher_agency_rows || []);
   if (!identity?.canonical_id) return null;
 
   const ref = `agency:id:${identity.canonical_id}`;
