@@ -8,6 +8,7 @@
 
 import { nearYouUrlFromScope } from "./near_you_scope.mjs";
 import { scopeFromRouteHash } from "./scope_v0.mjs";
+import { constellationLink, filterChip } from "./affordance_grammar.mjs";
 
 export const BOROUGH_SCOPE_LINKS_SCHEMA = "cityscroll.borough_scope_links.v1";
 export const BOROUGHS = Object.freeze([
@@ -103,12 +104,33 @@ export function boroughScopeLinksHTML(opts = {}) {
     const active = selected === id;
     const href = boroughScopeHref(surface, id, currentHash);
     const edge = `${surface}.borough.${id || "all"}`;
-    return `<a class="chip borough-scope-link${active ? " on" : ""}" href="${escape(href)}" data-borough-scope-link="${escape(id || "all")}" data-scope-edge="${escape(edge)}"${active ? ' aria-current="page"' : ""}>${escape(labelFor(id, t))}</a>`;
+    return filterChip({
+      label: labelFor(id, t),
+      pressed: active,
+      className: `borough-scope-link${active ? " on" : ""}`,
+      attributes: {
+        "data-borough-scope-link": id || "all",
+        "data-scope-edge": edge,
+        "data-filter-href": href,
+      },
+      escape,
+    });
   }).join("");
   const mapHref = boroughMapPivotHref(surface, selected, currentHash);
   const mapEdge = `${surface}.map.borough.${selected || "all"}`;
   const map = GEOGRAPHIC_MAP_SURFACES.has(surface)
-    ? `<a class="act mini borough-map-pivot" data-borough-map-pivot="${escape(surface)}" data-scope-edge="${escape(mapEdge)}" data-near-you-link data-lens="${escape(surface)}" href="${escape(mapHref)}">${escape(t("near_you_map_scope"))}</a>`
+    ? constellationLink({
+      href: mapHref,
+      label: t("near_you_map_scope"),
+      className: "borough-map-pivot",
+      attributes: {
+        "data-borough-map-pivot": surface,
+        "data-scope-edge": mapEdge,
+        "data-near-you-link": "",
+        "data-lens": surface,
+      },
+      escape,
+    })
     : "";
   return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}</div>${map}`;
 }

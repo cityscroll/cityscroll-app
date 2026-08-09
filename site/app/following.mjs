@@ -1,3 +1,5 @@
+import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+
 const root = document.querySelector("[data-following-root]");
 const msg = (name) => root?.dataset[name] || "";
 
@@ -65,6 +67,7 @@ function adoptFollowingDocument(html) {
   const current = root.querySelector("[data-following-workspace]");
   const replacement = next.querySelector("[data-following-workspace]");
   if (current && replacement) current.replaceWith(replacement);
+  installFilterChipNavigation(root);
   wireSubscribe();
   duplicateWarning();
 }
@@ -161,6 +164,7 @@ function wireSubscribe() {
 }
 
 if (root) {
+  installFilterChipNavigation(root);
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();
   loadPersonal();

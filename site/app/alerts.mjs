@@ -1,4 +1,5 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
+import { officialSourceLink } from "../affordance_grammar.mjs";
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
@@ -1169,7 +1170,7 @@ function attachmentChipHTML(r){
     : "";
   // Always keep the original-document link; text extract is progressive disclosure.
   return `<div class="attachment-panel" style="margin:6px 0 4px">
-    <a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a>
+    ${officialSourceLink({ href: first.url, label: `${label} · ${t("view_in_city_record")}`, className: "attachment-source-link", escape: escUiHtml })}
     ${extract}
     ${tablesHost}
   </div>`;

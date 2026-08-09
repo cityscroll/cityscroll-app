@@ -17,8 +17,9 @@ function dataAttributes(attributes, escape) {
 }
 
 /** Internal graph travel: same-tab, blue, solid underline, leading node glyph. */
-export function constellationLink({ href, label, className = "", current = false, attributes = {}, escape = esc } = {}) {
-  return `<a class="ui-constellation-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}"${current ? ' aria-current="page"' : ""}${dataAttributes(attributes, escape)}><span aria-hidden="true">◆</span>${escape(label)}</a>`;
+export function constellationLink({ href, label, count = null, className = "", current = false, attributes = {}, escape = esc } = {}) {
+  const countMarkup = count == null ? "" : `<span class="ct">${escape(count)}</span>`;
+  return `<a class="ui-constellation-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}"${current ? ' aria-current="page"' : ""}${dataAttributes(attributes, escape)}><span aria-hidden="true">◆</span>${escape(label)}${countMarkup}</a>`;
 }
 
 /** Authoritative external record: new tab, neutral dotted underline, trailing arrow. */
@@ -41,13 +42,15 @@ export function officialSourceDisclosure({ items = [], label = "Open official so
 }
 
 /** View-changing control: pill button with aria-pressed; deliberately not a link. */
-export function filterChip({ label, pressed = false, current = false, className = "", attributes = {}, escape = esc } = {}) {
-  return `<button type="button" class="ui-filter-chip${className ? ` ${escape(className)}` : ""}" aria-pressed="${pressed ? "true" : "false"}"${dataAttributes(attributes, escape)}${current ? ' aria-current="page"' : ""}>${escape(label)}</button>`;
+export function filterChip({ label, count = null, pressed = false, className = "", attributes = {}, escape = esc } = {}) {
+  const countMarkup = count == null ? "" : `<span class="ct">${escape(count)}</span>`;
+  return `<button type="button" class="ui-filter-chip${className ? ` ${escape(className)}` : ""}" aria-pressed="${pressed ? "true" : "false"}"${dataAttributes(attributes, escape)}>${escape(label)}${countMarkup}</button>`;
 }
 
 /** Non-interactive information: plain semantic text with no link affordance. */
-export function staticFact({ label, className = "", escape = esc } = {}) {
-  return `<span class="ui-static-fact${className ? ` ${escape(className)}` : ""}">${escape(label)}</span>`;
+export function staticFact({ label, count = null, className = "", escape = esc } = {}) {
+  const countMarkup = count == null ? "" : `<span class="ct">${escape(count)}</span>`;
+  return `<span class="ui-static-fact${className ? ` ${escape(className)}` : ""}">${escape(label)}${countMarkup}</span>`;
 }
 
 /** Install navigation behavior for filter buttons carrying their shareable destination. */

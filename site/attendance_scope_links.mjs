@@ -68,7 +68,6 @@ export function attendanceScopeLinksHTML({
     return filterChip({
       label: t(labelKey),
       pressed: isActive,
-      current: isActive,
       className: `attendance-scope-link${isActive ? " on" : ""}`,
       attributes: { "data-attendance-scope-link": id || "all", "data-scope-edge": edge, "data-filter-href": href },
       escape,

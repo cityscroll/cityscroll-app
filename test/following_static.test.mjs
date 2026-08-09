@@ -35,8 +35,8 @@ test("Following renders the public control center and a complete no-JavaScript f
     ],
   }, templates);
   const html = renderFollowingDocument(view);
-  assert.match(html, /class="chip following-scope-link/);
-  assert.match(html, /class="chip following-scope-link on"[^>]*href=/);
+  assert.match(html, /class="ui-filter-chip following-scope-link/);
+  assert.match(html, /class="ui-filter-chip following-scope-link on"[^>]*aria-pressed="true"[^>]*data-filter-href=/);
   assert.match(html, /class="ui-constellation-link following-record-link"/);
   const visible = html.replace(/<[^>]+>/g, " ");
 
@@ -130,7 +130,7 @@ test("Following accepts legacy obligations lens and emits canonical mandates", (
   assert.doesNotMatch(url.search, /lens=obligations/);
   const html = renderFollowingDocument(buildFollowingViewModel(parsed, templates));
   assert.match(html, /name="lens"[^>]+value="mandates"/);
-  assert.match(html, /data-following-scope-value="mandates"[^>]*aria-current="page"|aria-current="page"[^>]*data-following-scope-value="mandates"/);
+  assert.match(html, /aria-pressed="true"[^>]*data-following-scope-value="mandates"/);
 });
 
 test("Following round-trips an exact mandate_id watch scope", () => {

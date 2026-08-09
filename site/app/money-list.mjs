@@ -3,6 +3,7 @@ import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
 import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_links.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
+import { installFilterChipNavigation } from "../affordance_grammar.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -36,8 +37,7 @@ function setClosingWeekState(active){
   const link = document.getElementById("closingweek");
   if(!link) return;
   link.classList.toggle("on", !!active);
-  if(active) link.setAttribute("aria-current", "page");
-  else link.removeAttribute("aria-current");
+  link.setAttribute("aria-pressed", String(!!active));
 }
 function syncProcurementFacetRails(){
   const activeMode = ["open", "allrfp", "award"].includes(String($("#mode")?.value || ""))
@@ -45,33 +45,32 @@ function syncProcurementFacetRails(){
     : "open";
   const scope = currentMoneyRouteScope();
   const modeRail = document.getElementById(["money", "mode", "rail"].join("-"));
-  modeRail?.querySelectorAll("a").forEach((link) => {
+  modeRail?.querySelectorAll(".ui-filter-chip").forEach((link) => {
     const modeKey = link.dataset.moneyMode;
     if (!modeKey) return;
-    link.href = moneyModeHref(modeKey, scope);
+    link.dataset.filterHref = moneyModeHref(modeKey, scope);
     const active = modeKey === activeMode;
     link.classList.toggle("on", active);
-    if (active) link.setAttribute("aria-current", "page");
-    else link.removeAttribute("aria-current");
+    link.setAttribute("aria-pressed", String(active));
   });
-  const activeBasis = moneyLocationFilter.layer === "contract_action_address"
+  const activeBasis = ["", "contract_action_address"].includes(moneyLocationFilter.layer)
     ? (moneyLocationFilter.basis || "contract_action_address")
     : "";
   const locationRail = document.getElementById(["money", "location", "rail"].join("-"));
-  locationRail?.querySelectorAll("a").forEach((link) => {
+  locationRail?.querySelectorAll(".ui-filter-chip").forEach((link) => {
     const basis = link.dataset.moneyLocationBasis;
     if (!basis) return;
-    link.href = moneyLocationBasisHref(scope, basis);
+    link.dataset.filterHref = moneyLocationBasisHref(scope, basis);
     const active = basis === activeBasis;
     link.classList.toggle("on", active);
-    if (active) link.setAttribute("aria-current", "page");
-    else link.removeAttribute("aria-current");
+    link.setAttribute("aria-pressed", String(active));
   });
   const closing = document.getElementById("closingweek");
   if(closing){
-    closing.href = moneyClosingWeekHash(scope, !closingWeek);
+    closing.dataset.filterHref = moneyClosingWeekHash(scope, !closingWeek);
     setClosingWeekState(closingWeek);
   }
+  installFilterChipNavigation(document);
 }
 async function initializeMoneyLocationFilters(){
   const tools=await moneyActionLocationTools();
