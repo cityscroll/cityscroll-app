@@ -2488,24 +2488,6 @@ both the live and restored databases.
   field case: NYPD annual/quarterly report roll-forward within 90 days.
   Demo Parks: `/agencies/parks-and-recreation/#mandates-predictions`.
 
-## Ontology delta · what's new in the graph (v1)
-
-- Living Civic Graph first praxis wave: structural inventory growth (new edge
-  types, object kinds, agencies, constellation categories, mandate deliverable
-  types) vs a frozen prior inventory — not row-level “new notices.”
-- Pure model: `site/ontology_delta.mjs`. Build:
-  `node tools/build_ontology_delta.mjs` (+ `--check`). Baseline:
-  `site/data/ontology_inventory_baseline.json`. Lookup:
-  `site/data/ontology_delta_lookup.json`. Shareable document:
-  `/graph/ontology-delta/` (`site/graph/ontology-delta/index.html`). Linked from
-  `/agencies/`. Capture: `python3 tools/capture_ontology_delta.py`.
-- v1 scope: additions only over entity intelligence + constellation + mandates.
-  Deeper type-version history / incremental MV maintenance is a later seam
-  (Gupta-Mumick for implementers; not product copy). Copy doctrine: standable
-  deltas only — no disclaimerslop.
-- Verify: `node --test test/ontology_delta.test.mjs`. Demo:
-  `ontology-delta-whats-new` → `/graph/ontology-delta/`.
-
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
