@@ -137,6 +137,7 @@ function scopeSummary(lens, filter) {
     ["time", filter.dateWindow || filter.when],
     ["name", filter.name],
     ["agency id", filter.agency_id],
+    ["mandate", filter.mandate_id],
     ["deliverable type", filter.deliverable_type],
     ["deadline window", typeof filter.windowDays === "number" ? `next ${filter.windowDays} days` : null],
     ["exam number", Array.isArray(filter.examNumber) ? filter.examNumber.join(", ") : filter.examNumber],

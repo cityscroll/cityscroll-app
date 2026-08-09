@@ -324,8 +324,8 @@ const DEEPLINK_LENSES = {
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
-  mandates: ["agency_id", "agency", "deliverable_type", "windowDays"],
-  obligations: ["agency_id", "agency", "deliverable_type", "windowDays"],
+  mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
+  obligations: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   award:    ["requestId", "agency"],
 };
@@ -337,6 +337,15 @@ function deeplinkClampField(name, v){
     case "keywords": return Array.isArray(v) ? v.map(k=>String(k).toLowerCase().trim()).filter(Boolean).slice(0,4) : [];
     case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
+    case "mandate_id": {
+      // Exact statutory duty id — bare id or legacy mandate:/obligation: subject ref.
+      // Keep field-for-field parity with worker/src/lib/filter.mjs + site/mandate_subject_ref.mjs.
+      let s = typeof v === "string" ? v.trim() : "";
+      const legacy = s.match(/^(?:mandate|obligation):([^:\s]+)$/i);
+      if (legacy) s = legacy[1];
+      if (!s || /\s/.test(s) || s.includes(":")) return null;
+      return /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/.test(s) ? s : null;
+    }
     case "deliverable_type": { const s=typeof v==="string"?v.trim().toLowerCase():""; return ["report","rulemaking","program","data publication","other"].includes(s)?s:null; }
     case "windowDays": {
       const n=typeof v==="number"?v:(typeof v==="string"&&v.trim()?Number(v):NaN);

@@ -36,9 +36,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/data/notice_mandate_backlinks_lookup.json` via
   `node tools/build_notice_mandate_backlinks.mjs`. Edge stamps in `renderEdgeNotice`; SPA
   hydrates through `fillContext` in `site/app/notice-context.mjs` and skips when the edge
-  card is already present. Empty-safe: no absence copy, no profile-blocking fetch on miss.
-  Verify: `node --test test/notice_mandate_backlinks.test.mjs` and
-  `test/functional/24_notice_document_features.py`.
+  card is already present. Public rows may carry a bare `mandate_id` (product filter key)
+  so the card can offer “Watch this mandate” via `mandateFollowHref` — never store graph
+  `subject_ref` / `mandate:` prefixes on the public artifact. Empty-safe: no absence copy,
+  no profile-blocking fetch on miss. Verify: `node --test test/notice_mandate_backlinks.test.mjs`
+  and `test/functional/24_notice_document_features.py`.
 - **Land-use procedure nodes:** the closed `land_use_procedure_v1` vocabulary lives in
   `worker/src/lib/subject_registry.mjs`. `site/mandate_land_use_bridge.mjs` composes
   mandate → procedure ← project only when both evaluated edges are public; the direct
@@ -2422,10 +2424,12 @@ both the live and restored databases.
   public `lens: "mandates"` (+ legacy `obligations` alias/redirect) +
   `{ agency_id, agency }` via `agencyObligationsFollowHref` → Following /
   `compileSub` loads the lookup. Optional refinements: `deliverable_type`
-  (report|rulemaking|program|data publication|other) and `windowDays` (1–365).
-  Sanitize fields live in `worker/src/lib/filter.mjs` (`LENSES.mandates` /
-  `LENSES.obligations`); feed preview uses `feedItems("obligation", …)`.
-  Confirm copy: `describeFilter` mandates line.
+  (report|rulemaking|program|data publication|other), `windowDays` (1–365), and
+  exact `mandate_id` (canonical bare id or legacy `mandate:`/`obligation:` ref via
+  `canonicalMandateId` — no free-text duty matching; exact watches skip the
+  agency-wide window so preview ≡ digest for that duty). Sanitize fields live in
+  `worker/src/lib/filter.mjs` (`LENSES.mandates` / `LENSES.obligations`); feed
+  preview uses `feedItems("obligation", …)`. Confirm copy: `describeFilter` mandates line.
 - Provenance: each row links `source.legistar_url` (mandate → source law) via
   `legistarMatterUrl` — Gateway `M=L&ID=` for matter ids (never
   `LegislationDetail.aspx?ID=&G=S`, which returns Invalid parameters).

@@ -35,6 +35,24 @@ test("describeFilter falls back to 'all notices' when empty", () => {
   assert.equal(describeFilter("rules", {}), "rules & notices — all notices");
 });
 
+test("describeFilter names a single-mandate exact-id watch", () => {
+  assert.equal(
+    describeFilter("mandates", {
+      agency_id: "homeless-services",
+      agency: "Homeless Services",
+      mandate_id: "66056-006",
+    }),
+    "mandate 66056-006 for “Homeless Services”",
+  );
+  assert.equal(
+    describeFilter("obligations", {
+      agency_id: "parks-and-recreation",
+      agency: "Parks and Recreation",
+    }),
+    "mandates for “Parks and Recreation”",
+  );
+});
+
 test("describeFilter: agency + notice type + category + amount ceiling — the multi-field alert case", () => {
   assert.equal(
     describeFilter("money", {

@@ -133,6 +133,33 @@ test("Following accepts legacy obligations lens and emits canonical mandates", (
   assert.match(html, /data-following-scope-value="mandates"[^>]*aria-current="page"|aria-current="page"[^>]*data-following-scope-value="mandates"/);
 });
 
+test("Following round-trips an exact mandate_id watch scope", () => {
+  const filter = {
+    agency_id: "homeless-services",
+    agency: "Homeless Services",
+    mandate_id: "66056-006",
+  };
+  const href = followingUrlFromWatch({ lens: "mandates", filter }, { frequency: "daily" });
+  const parsed = watchFromFollowingParams(new URL(href).searchParams);
+  assert.equal(parsed.lens, "mandates");
+  assert.equal(parsed.frequency, "daily");
+  assert.equal(parsed.filter.mandate_id, "66056-006");
+  assert.equal(parsed.filter.agency_id, "homeless-services");
+  const view = buildFollowingViewModel({
+    ...parsed,
+    requested: true,
+    previewItems: [{
+      id: "obligation:66056-006:2021-12-07",
+      title: "Renegotiate shelter contracts",
+      url: "/agencies/homeless-services/",
+    }],
+  }, templates);
+  assert.ok(view.scopeSummary.some((chip) => chip.label === "66056-006" || /66056-006/.test(chip.label)));
+  const html = renderFollowingDocument(view);
+  assert.match(html, /name="lens"[^>]+value="mandates"/);
+  assert.match(html, /66056-006/);
+});
+
 test("Following gives every visible heading a distinct navigation label", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
   const headings = [...html.matchAll(/<h[1-3](?:\s[^>]*)?>([^<]+)<\/h[1-3]>/g)]

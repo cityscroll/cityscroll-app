@@ -195,6 +195,21 @@ test("watches and subscription metadata translate through scope without joining 
   assert.equal("freq" in scope, false);
 });
 
+test("exact mandate_id free-watch filter round-trips through scope", () => {
+  const watch = {
+    lens: "mandates",
+    filter: {
+      agency_id: "homeless-services",
+      agency: "Homeless Services",
+      mandate_id: "66056-006",
+    },
+  };
+  const scope = scopeFromWatch(watch);
+  assert.equal(scope.facets.values.mandate_id, "66056-006");
+  assert.equal(scope.facets.values.agency_id, "homeless-services");
+  assert.deepEqual(watchFromScope(scope, { lens: "mandates" }), watch);
+});
+
 test("lens state aliases normalize to the same scope instead of duplicating state", () => {
   const scope = scopeFromLensState("land", {
     q: "LIC",
