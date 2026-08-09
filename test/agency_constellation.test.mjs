@@ -155,7 +155,7 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /data-agency-constellation-category="staffing"/);
   assert.match(html, /class="ui-constellation-link agency-edge-link"/);
   assert.match(html, /class="ui-official-source-link agency-source-link"/);
-  assert.match(html, /Watch this agency across City Record/);
+  assert.match(html, /Get updates about this agency&#39;s public records/);
   assert.match(html, /Watch mandates and deadlines/);
   assert.match(html, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
