@@ -8,7 +8,7 @@
  */
 
 export const CROSS_SPINE_EDGE_POLICY_SCHEMA = "cityscroll.cross_spine_edge_policy.v1";
-export const CROSS_SPINE_EDGE_POLICY_VERSION = "cross_spine_edge_policy_v1";
+export const CROSS_SPINE_EDGE_POLICY_VERSION = "cross_spine_edge_policy_v2";
 export const CROSS_SPINE_MIN_HELD_OUT_PRECISION = 0.90;
 export const CROSS_SPINE_MIN_HELD_OUT_SUPPORT = 12;
 
@@ -50,6 +50,14 @@ export const CROSS_SPINE_RELATION_POLICIES = Object.freeze({
     required: ["agency_exact", "land_action_kind_match", "project_identity", "mandate_phase_compatible"],
     minimumOverlap: {},
   }),
+  mandate_governs_procedure: Object.freeze({
+    required: ["mandate_quote_verified", "procedure_kind_exact", "procedure_vocabulary_member"],
+    minimumOverlap: {},
+  }),
+  project_participates_in_procedure: Object.freeze({
+    required: ["project_subject_exact", "publisher_action_kind_exact", "procedure_vocabulary_member"],
+    minimumOverlap: {},
+  }),
 });
 
 const RELATION_ALIASES = Object.freeze({
@@ -66,24 +74,31 @@ export const DEFAULT_CROSS_SPINE_EDGE_POLICY = Object.freeze({
   version: CROSS_SPINE_EDGE_POLICY_VERSION,
   min_held_out_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION,
   min_held_out_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT,
-  eval_version: "cross_spine_eval_v2",
-  gold_version: "cross_spine_gold_v2",
+  eval_version: "cross_spine_eval_v3",
+  gold_version: "cross_spine_gold_v3",
   gates: Object.freeze({
     mandate_contract: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
     mandate_rule: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
     mandate_meeting: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
     mandate_land_use: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
+    mandate_governs_procedure: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
+    project_participates_in_procedure: Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION, min_support: CROSS_SPINE_MIN_HELD_OUT_SUPPORT }),
   }),
 });
 
 /** Frozen fallback used until a replacement corpus clears every relation gate. */
 export const CROSS_SPINE_EDGE_POLICY_V1 = Object.freeze({
   schema: CROSS_SPINE_EDGE_POLICY_SCHEMA,
-  version: CROSS_SPINE_EDGE_POLICY_VERSION,
+  version: "cross_spine_edge_policy_v1",
   min_held_out_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION,
   eval_version: "cross_spine_eval_v1",
   gold_version: "cross_spine_gold_v1",
-  gates: Object.freeze(Object.fromEntries(Object.keys(CROSS_SPINE_RELATION_POLICIES).map((relation) => [
+  gates: Object.freeze(Object.fromEntries([
+    "mandate_contract",
+    "mandate_rule",
+    "mandate_meeting",
+    "mandate_land_use",
+  ].map((relation) => [
     relation,
     Object.freeze({ status: "pass", min_precision: CROSS_SPINE_MIN_HELD_OUT_PRECISION }),
   ]))),
@@ -294,7 +309,7 @@ export function checkCrossSpineEdgePolicy(report) {
   return { ok: failures.length === 0, failures, policy };
 }
 
-/** Promote atomically only after all four replacement relation gates pass. */
+/** Promote atomically only after every replacement relation gate passes. */
 export function promoteCrossSpineEdgePolicy(report, { currentPolicy = CROSS_SPINE_EDGE_POLICY_V1 } = {}) {
   const check = checkCrossSpineEdgePolicy(report);
   return {

@@ -151,6 +151,7 @@ test("public graph returns only typed, evidence-bearing procurement relationship
     assert.equal(graph.version, PUBLIC_RELATIONSHIP_GRAPH_VERSION);
     assert.deepEqual(PUBLIC_GRAPH_NODE_TYPES, [
       "vendor", "agency", "solicitation", "contract", "award", "official", "person-leader",
+      "mandate", "project", "procedure",
     ]);
     assert.deepEqual(PUBLIC_GRAPH_EDGE_TYPES, [
       "named_vendor_on_award",
@@ -159,6 +160,8 @@ test("public graph returns only typed, evidence-bearing procurement relationship
       "references_contract",
       "votes_on",
       "agency_led_by",
+      "mandate_governs_procedure",
+      "project_participates_in_procedure",
     ]);
     assert.equal(graph.root.id, ENTITY_ID);
     // Procurement fixture graph does not emit official nodes; allowlist still includes them.
@@ -297,4 +300,76 @@ test("public graph omits evidence-only cross-spine candidates", () => {
   });
   assert.equal(graph.edge_routing.evidence_only, 1);
   assert.equal(graph.edges.some((edge) => edge.from === ENTITY_ID && edge.type === "references_contract"), false);
+});
+
+test("public graph traverses a reified procedure only through evaluated public edges", () => {
+  const provenance = {
+    source: { system: "cityscroll_procedure_vocabulary", id: "land_use_procedure_v1" },
+    source_fields: ["procedure_kind"],
+    observed_at: "2026-08-09T00:00:00.000Z",
+  };
+  const mandateEdge = {
+    type: "mandate_governs_procedure",
+    relation: "mandate_governs_procedure",
+    from: "mandate:54431-002",
+    to: "procedure:landmark_designation",
+    features: {
+      mandate_quote_verified: true,
+      procedure_kind_exact: true,
+      procedure_vocabulary_member: true,
+    },
+    provenance,
+  };
+  const projectEdge = {
+    type: "project_participates_in_procedure",
+    relation: "project_participates_in_procedure",
+    from: "project:2026K0443",
+    to: "procedure:landmark_designation",
+    features: {
+      project_subject_exact: true,
+      publisher_action_kind_exact: true,
+      procedure_vocabulary_member: true,
+    },
+    provenance: {
+      source: { system: "zoning_application_portal", id: "2026K0443" },
+      source_fields: ["project_id", "actions"],
+      observed_at: "2026-08-09T00:00:00.000Z",
+    },
+  };
+  const rows = [{
+    entity_id: "mandate:54431-002",
+    entity_type: "mandate",
+    display_name: "Landmark public-hearing mandate",
+    raw_snapshot: "{}",
+  }];
+  const crossSpineNodes = [
+    { id: "procedure:landmark_designation", type: "procedure", name: "Landmark designation procedure" },
+    { id: "project:2026K0443", type: "project", name: "Public School 15 Annex" },
+  ];
+  const graph = serializePublicRelationshipGraph(rows, {
+    depth: 2,
+    crossSpineNodes,
+    crossSpineEdges: [mandateEdge, projectEdge],
+  });
+  assert.deepEqual(graph.edges.map((edge) => edge.type).sort(), [
+    "mandate_governs_procedure",
+    "project_participates_in_procedure",
+  ]);
+  assert.ok(graph.nodes.some((node) => node.id === "procedure:landmark_designation"));
+  assert.ok(graph.nodes.some((node) => node.id === "project:2026K0443"));
+
+  const heldProject = serializePublicRelationshipGraph(rows, {
+    depth: 2,
+    crossSpineNodes,
+    crossSpineEdges: [
+      mandateEdge,
+      {
+        ...projectEdge,
+        features: { project_subject_exact: true, procedure_vocabulary_member: true },
+      },
+    ],
+  });
+  assert.equal(heldProject.edge_routing.evidence_only, 1);
+  assert.deepEqual(heldProject.edges.map((edge) => edge.type), ["mandate_governs_procedure"]);
+  assert.equal(heldProject.nodes.some((node) => node.id === "project:2026K0443"), false);
 });

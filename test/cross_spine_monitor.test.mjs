@@ -10,17 +10,19 @@ import {
 } from "../tools/cross_spine_eval.mjs";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
-const GOLD = loadCrossSpineGold(readFileSync(resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl"), "utf8"));
+const GOLD = loadCrossSpineGold(readFileSync(resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v3.jsonl"), "utf8"));
 const HARNESS = resolve(ROOT, "tools/cross_spine_eval.mjs");
 
-test("monitor emits the four relation metrics and provenance fingerprints", () => {
+test("monitor emits all relation metrics and provenance fingerprints", () => {
   const receipt = buildCrossSpineMonitorReceipt({ gold: GOLD });
   assert.equal(receipt.schema, "cityscroll.cross_spine_edge_monitor.v1");
   assert.deepEqual(Object.keys(receipt.relations).sort(), [
     "mandate_contract",
+    "mandate_governs_procedure",
     "mandate_land_use",
     "mandate_meeting",
     "mandate_rule",
+    "project_participates_in_procedure",
   ]);
   for (const metric of Object.values(receipt.relations)) {
     assert.equal(typeof metric.precision, "number");

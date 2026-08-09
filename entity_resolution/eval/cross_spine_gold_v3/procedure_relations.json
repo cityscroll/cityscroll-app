@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.cross_spine_procedure_gold_config.v1",
+  "gold_version": "cross_spine_gold_v3",
+  "source_gold_version": "cross_spine_gold_v2",
+  "vocabulary_version": "land_use_procedure_v1",
+  "vocabulary_source_url": "https://github.com/cityscroll/crol-list/blob/main/worker/src/lib/subject_registry.mjs",
+  "relations": [
+    "mandate_governs_procedure",
+    "project_participates_in_procedure"
+  ],
+  "cohorts": {
+    "zap_ulurp_rezonings": {
+      "procedure_kind": "rezoning",
+      "negative_procedure_kind": "city_map_change"
+    },
+    "zap_ulurp_city_map_changes": {
+      "procedure_kind": "city_map_change",
+      "negative_procedure_kind": "site_selection"
+    },
+    "zap_ulurp_site_selections": {
+      "procedure_kind": "site_selection",
+      "negative_procedure_kind": "rezoning"
+    }
+  }
+}

@@ -30,6 +30,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   uncertain candidates in `shadow_edges` only; verify the frozen relation gates with
   `node tools/cross_spine_eval.mjs --check-policy` and cover public omission in
   `worker/test/public_relationship_graph.test.mjs`.
+- **Land-use procedure nodes:** the closed `land_use_procedure_v1` vocabulary lives in
+  `worker/src/lib/subject_registry.mjs`. `site/mandate_land_use_bridge.mjs` composes
+  mandate → procedure ← project only when both evaluated edges are public; the direct
+  `mandate_land_use` identity-and-phase gate remains separate and must not be weakened.
 
 ## PR and CI preflight
 
