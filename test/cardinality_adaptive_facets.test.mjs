@@ -36,6 +36,19 @@ test("small facets use inline links while large agency facets use a searchable t
   assert.doesNotMatch(large, /<select/);
 });
 
+test("unresolved agency names remain visible as plain text", () => {
+  const knownAgency = Object.keys(AGENCY_GROUPS).find((name) => /Buildings$/.test(name));
+  const unresolvedAgency = ["Unresolved", "agency", "fixture"].join(" ");
+  const html = agencyScopeLinksHTML({
+    surface: "rules",
+    // Synthetic unresolved label: source is this test fixture, not a public agency claim.
+    agencies: [knownAgency, unresolvedAgency],
+  });
+  assert.match(html, new RegExp(unresolvedAgency));
+  assert.match(html, /class="ui-static-fact facet-unresolved-option"/);
+  assert.doesNotMatch(html, /href="[^"]*Unresolved|data-agency-entity-link="[^"]*unresolved/i);
+});
+
 test("Staffing keeps non-geographic actions out and renders eligibility as a chip group", () => {
   const staffing = shell.slice(shell.indexOf('id="tab-people"'), shell.indexOf('id="tab-land"'));
   assert.doesNotMatch(staffing, /data-near-you-link|See on map/);
