@@ -844,6 +844,16 @@ function actionRailHTML(actions){
       return `<div class="next-action-guide-lead" role="status">${label}</div>`;
     }
     if(action.delivery==="official_handoff"){
+      // City Record is evidence, not a kinetic destination. Keep a reader's route to
+      // the official notice, but never let that source become the rail's primary CTA.
+      let cityRecordNotice=false;
+      try{
+        const url=new URL(String(action.destination||""));
+        cityRecordNotice=url.protocol==="https:"&&url.hostname.toLowerCase()==="a856-cityrecord.nyc.gov"&&/^\/RequestDetail\//i.test(url.pathname);
+      }catch(_e){}
+      if(cityRecordNotice){
+        return officialSourceLink({ href:action.destination, label:t("city_record_link"), className:"next-action-source", escape:escUiHtml });
+      }
       const primary=primaryUsed?"":" primary"; primaryUsed=true;
       const accessible=`${label} — ${action.destination_label}`;
       return `<a class="act${primary}" aria-label="${escUiHtml(accessible)}" title="${escUiHtml(action.destination_label)}" href="${escUiHtml(action.destination)}" data-action-outcome-index="${index}" ${EXT_ATTRS}>${label}${extSR()}</a>`;
@@ -1153,9 +1163,6 @@ function meetingsExplorerCardHTML(entry){
   const participation=entry.participation||record.participation||{};
   const primaryAction=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   const secondaryActions=[];
-  // City Record official notice — REQ_URL only so link_targets classifies as external
-  // (mixed source_url||REQ_URL expressions are unclassified by that gate).
-  secondaryActions.push(officialSourceLink({ href: REQ_URL(record.request_id), label: t("read_official_notice"), className: "act", escape: escUiHtml }));
   if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("meetings_action_agency_profile")}</a>`);
   const participationAction=participationLinksHTML({ participation });
   if(participationAction) secondaryActions.push(participationAction);
