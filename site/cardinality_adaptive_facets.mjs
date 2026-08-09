@@ -29,6 +29,7 @@ export function renderCardinalityAdaptiveFacet({
   allHref = "#",
   entityHref = (choice) => choice.href || "#",
   scopeHref = (choice) => choice.href || "#",
+  unresolvedLabels = [],
   escape = defaultEscape,
   limit = INLINE_FACET_LIMIT,
 } = {}) {
@@ -36,12 +37,15 @@ export function renderCardinalityAdaptiveFacet({
   const normalized = choices.filter((choice) => choice?.id && choice?.label);
   const allActive = !selectedId;
   const all = filterChip({ label: allLabel, pressed: allActive, className: "agency-scope-link", attributes: { "data-agency-scope-link": "all", "data-filter-href": allHref }, escape });
+  const unresolved = Array.from(new Set(unresolvedLabels.map(clean).filter(Boolean)))
+    .map((label) => staticFact({ label, className: "facet-unresolved-option", escape }))
+    .join(" ");
   if (normalized.length <= limit) {
     const links = normalized.map((choice) => {
       const active = choice.id === selectedId;
       return filterChip({ label: choice.label, pressed: active, className: "agency-scope-link", attributes: { "data-agency-scope-link": choice.id, "data-filter-href": scopeHref(choice), "data-scope-edge": choice.scopeEdge }, escape });
     }).join("");
-    return `<div class="agency-scope-links cardinality-facet cardinality-facet-small" data-cardinality-facet="small" role="group" aria-label="${escape(label)}">${all}${links}</div>`;
+    return `<div class="agency-scope-links cardinality-facet cardinality-facet-small" data-cardinality-facet="small" role="group" aria-label="${escape(label)}">${all}${links}${unresolved}</div>`;
   }
 
   const listId = `${safeId}-matches`;
@@ -55,7 +59,7 @@ export function renderCardinalityAdaptiveFacet({
   return `<div class="cardinality-facet cardinality-facet-large" data-cardinality-facet="large">
     <div class="facet-typeahead-head">${all}<input type="search" class="facet-typeahead-input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${escape(listId)}" aria-label="${escape(`Type to filter ${label.toLocaleLowerCase()}`)}" placeholder="${escape(`Type to filter ${label.toLocaleLowerCase()}`)}"></div>
     <ul class="facet-typeahead-list" id="${escape(listId)}" data-facet-results aria-label="${escape(`${label} matches`)}">${rows}</ul>
-    <p class="facet-typeahead-empty" data-facet-empty hidden>${staticFact({ label: `No matching ${label.toLocaleLowerCase()}.`, escape })}</p>
+    <p class="facet-typeahead-empty" data-facet-empty hidden>${staticFact({ label: `No matching ${label.toLocaleLowerCase()}.`, escape })}</p>${unresolved ? `<div class="facet-unresolved-options">${unresolved}</div>` : ""}
   </div>`;
 }
 

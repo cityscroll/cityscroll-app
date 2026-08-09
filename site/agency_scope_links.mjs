@@ -28,6 +28,16 @@ function agencyEntityRef(value) {
   return identity?.matched && identity.canonical_id ? `agency:id:${identity.canonical_id}` : "";
 }
 
+function unresolvedAgencyLabels(rows, knownLabels) {
+  const labels = new Set();
+  for (const row of rows) {
+    const label = cleanAgencyScopeValue(typeof row === "string" ? row : row?.agency_name);
+    const identity = resolveAgencyIdentity(label);
+    if (label && (!identity?.matched || !identity.canonical_id) && !knownLabels.has(label)) labels.add(label);
+  }
+  return [...labels].sort((left, right) => left.localeCompare(right));
+}
+
 function withoutAgency(scope) {
   const next = scopeFromRouteHash(routeHashFromScope(scope, { surface: "rules" }));
   next.facets.agencies = [];
@@ -78,6 +88,7 @@ export function agencyScopeLinksHTML({
     ...choice,
     scopeEdge: `${surface}.agency.${choice.id}`,
   }));
+  const unresolved = unresolvedAgencyLabels(agencies, new Set(choices.map((choice) => choice.label)));
   const allHref = agencyScopeHref(surface, "", currentHash);
   return renderCardinalityAdaptiveFacet({
     id: `${surface}-agency`,
@@ -88,6 +99,7 @@ export function agencyScopeLinksHTML({
     allHref,
     entityHref: (choice) => `/agencies/${encodeURIComponent(choice.id)}/`,
     scopeHref: (choice) => agencyScopeHref(surface, choice.label, currentHash),
+    unresolvedLabels: unresolved,
     escape,
   });
 }
