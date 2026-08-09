@@ -2774,8 +2774,12 @@ export function resolveRootQuery(query = {}) {
  */
 export function buildIntelligenceCorpus(observations, opts = {}) {
   const maxEntities = Math.max(1, Number(opts.max_entities) || 80);
-  /** Prefer multi-domain entities; keep high-fan-out single-domain only as fillers. */
+  /** Prefer multi-domain entities; reserve mandate agencies before richness fills. */
   const preferMultiDomain = opts.prefer_multi_domain !== false;
+  const mandateAgencyRefs = new Set(
+    (opts.mandate_agency_refs || opts.reserved_root_refs || [])
+      .filter((ref) => typeof ref === "string" && ref),
+  );
   // Single pass index — corpus no longer re-scans observations per entity.
   const index = opts.index || indexObservationsByRoot(observations);
 
@@ -2822,21 +2826,34 @@ export function buildIntelligenceCorpus(observations, opts = {}) {
     return String(a.root?.ref || "").localeCompare(String(b.root?.ref || ""));
   });
 
-  let ranked = entities;
-  if (preferMultiDomain) {
-    const multi = entities.filter((e) => (e.metrics?.domains_matched || 0) >= 2);
-    const rest = entities.filter((e) => (e.metrics?.domains_matched || 0) < 2);
-    // Always keep all multi-domain; fill remainder with richest single-domain.
-    ranked = [...multi, ...rest];
-  }
+  const isMultiDomain = (entity) => (entity.metrics?.domains_matched || 0) >= 2;
+  const isMandateAgency = (entity) =>
+    entity.root?.kind === "agency" && mandateAgencyRefs.has(entity.root?.ref);
+  const multi = preferMultiDomain ? entities.filter(isMultiDomain) : [];
+  const mandateReserve = preferMultiDomain
+    ? entities.filter((entity) => !isMultiDomain(entity) && isMandateAgency(entity))
+    : [];
+  const richnessFill = entities.filter(
+    (entity) => !isMultiDomain(entity) && !isMandateAgency(entity),
+  );
+  const ranked = preferMultiDomain
+    ? [...multi, ...mandateReserve, ...richnessFill]
+    : entities;
   const sliced = ranked.slice(0, maxEntities);
+  const selectedMulti = sliced.filter(isMultiDomain);
+  const selectedMandateReserve = sliced.filter(
+    (entity) => !isMultiDomain(entity) && isMandateAgency(entity),
+  );
+  const selectedRichnessFill = sliced.filter(
+    (entity) => !isMultiDomain(entity) && !isMandateAgency(entity),
+  );
   const byRef = {};
   for (const e of sliced) {
     if (e.root?.ref) byRef[e.root.ref] = e;
   }
 
   // Multi-domain entities (the point of this layer)
-  const multiDomain = sliced.filter((e) => (e.metrics?.domains_matched || 0) >= 2);
+  const multiDomain = selectedMulti;
 
   return {
     schema_version: 1,
@@ -2846,6 +2863,22 @@ export function buildIntelligenceCorpus(observations, opts = {}) {
     generated_at: new Date().toISOString(),
     entity_count: sliced.length,
     multi_domain_count: multiDomain.length,
+    selection: {
+      strategy: preferMultiDomain
+        ? "multi_domain_then_mandate_agency_reserve_then_richness_fill"
+        : "richness_order",
+      cap: maxEntities,
+      candidate_count: entities.length,
+      reason_counts: {
+        multi_domain: selectedMulti.length,
+        mandate_agency_reserve: selectedMandateReserve.length,
+        richness_fill: selectedRichnessFill.length,
+      },
+      mandate_agency_candidates: entities.filter(isMandateAgency).length,
+      mandate_agency_selected: sliced.filter(isMandateAgency).length,
+      mandate_agency_omitted: entities.filter(isMandateAgency).length
+        - sliced.filter(isMandateAgency).length,
+    },
     domains: [...CROSS_DOMAIN_DOMAINS],
     entities: sliced,
     by_ref: byRef,

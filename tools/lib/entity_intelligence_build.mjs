@@ -878,6 +878,12 @@ export function collectCrossDomainObservations(root, opts = {}) {
 export function buildEntityIntelligenceDoc(root, opts = {}) {
   const observations = collectCrossDomainObservations(root, opts);
   const procurementSpine = collectProcurementSpineObservations(root, opts);
+  const obligationsLookup = loadJsonIfExists(
+    path.join(root, "site/data/agency_obligations_lookup.json"),
+  );
+  const mandateAgencyRefs = Object.entries(obligationsLookup?.by_agency || {})
+    .filter(([, agency]) => (agency?.obligations || []).length > 0)
+    .map(([agencyId]) => `agency:id:${agencyId}`);
   // Receipt only: recompute OCP selection against the same passport slice so the
   // materialization doc records joined/fill counts without a second observation pass.
   const ocpLookup = loadJsonIfExists(
@@ -898,6 +904,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     // The former fixture-era cap of 40 hid roots discovered by bulk lookups.
     // Keep the edge document bounded while retaining a useful densified corpus.
     max_entities: opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP,
+    mandate_agency_refs: mandateAgencyRefs,
   });
   const vendorFootprint = buildVendorFootprintCoverage(
     corpus,
@@ -928,6 +935,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     observation_count: observations.length,
     entity_count: corpus.entity_count,
     multi_domain_count: corpus.multi_domain_count,
+    selection: corpus.selection,
     domains: corpus.domains,
     demo_refs: corpus.demo_refs,
     verified_demo: demoEntity
@@ -1011,6 +1019,7 @@ export function slimDocForWorker(doc) {
     observation_count: doc.observation_count,
     entity_count: doc.entity_count,
     multi_domain_count: doc.multi_domain_count,
+    selection: doc.selection,
     domains: doc.domains,
     demo_refs: doc.demo_refs,
     verified_demo: doc.verified_demo,
