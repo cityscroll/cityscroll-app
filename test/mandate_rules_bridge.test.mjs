@@ -118,6 +118,7 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
             href: "#notice/20260407013",
             signal_kind: "rule_filing",
           },
+          match: { publication: "public_inferred" },
         },
       },
     ],

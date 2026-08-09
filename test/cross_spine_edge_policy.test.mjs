@@ -20,7 +20,10 @@ const inferredFeatures = {
   agency_exact: true,
   expected_event_match: true,
   topic_overlap: ["commercial", "waste"],
+  rule_body_overlap: ["commercial", "waste"],
+  citation_law_match: true,
   temporal_compatible: true,
+  negative_evidence_free: true,
 };
 
 test("routes exact publisher keys to deterministic regardless of inferred features", () => {

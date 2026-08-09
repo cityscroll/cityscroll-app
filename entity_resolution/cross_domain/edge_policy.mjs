@@ -30,7 +30,15 @@ export const CROSS_SPINE_RELATION_POLICIES = Object.freeze({
     minimumOverlap: { subject_scope_overlap: 1 },
   }),
   mandate_rule: Object.freeze({
-    required: ["agency_exact", "expected_event_match", "topic_overlap", "temporal_compatible"],
+    required: [
+      "agency_exact",
+      "expected_event_match",
+      "topic_overlap",
+      "rule_body_overlap",
+      "citation_law_match",
+      "temporal_compatible",
+      "negative_evidence_free",
+    ],
     minimumOverlap: { topic_overlap: 2 },
   }),
   mandate_meeting: Object.freeze({
