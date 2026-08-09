@@ -138,6 +138,10 @@ test("GET /agency returns the identity card + provenance for a matched agency", 
   assert.equal(body.ok, true);
   assert.equal(body.matched, true);
   assert.equal(body.identity.acronym, "DSNY");
+  assert.equal(body.identity.leader.entity_type, "person-leader");
+  assert.equal(body.identity.leader.role, body.identity.head_title);
+  assert.equal(body.identity.leader.display_name, body.identity.head_name);
+  assert.equal(body.identity.leader.confidence.status, "strong");
   // Provenance names the source datasets by their own ids — the honest-data register.
   const ids = body.provenance.sources.map((s) => s.id);
   assert.ok(ids.includes("t3jq-9nkf"));

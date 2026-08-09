@@ -139,6 +139,14 @@ deferred until gold coverage exists; this family exists so votes and meetings ca
 Routing summary: high conf → auto-link · low conf → separate · middle → review · material
 contradiction → never-auto.
 
+### 6. Agency-head leaders (person-leader)
+
+The current principal officer named by the NYC agency governance crosswalk is a distinct
+`person-leader` entity, separate from a Legistar `official`. Its stable identity is scoped to
+the agency and person (`person-leader:{agency_id}:{person_id|name}`). Named heads and role
+mentions such as “the commissioner” resolve only with an exact publisher-backed head and,
+for role-only text, an agency scope. Ambiguous or unscoped referents remain unresolved.
+
 LLM matching is **out of scope** for this foundation and for Phase 4 matcher cards. Any
 future generative adjudicator is residue-only after a conventional scorer, with stored
 prompts/version and human override — not a primary matcher.

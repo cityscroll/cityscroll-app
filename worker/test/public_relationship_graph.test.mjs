@@ -149,7 +149,7 @@ test("public graph returns only typed, evidence-bearing procurement relationship
     const graph = await readPublicRelationshipGraph(env.DB, ENTITY_ID, { depth: 2, fanOut: 20 });
     assert.equal(graph.version, PUBLIC_RELATIONSHIP_GRAPH_VERSION);
     assert.deepEqual(PUBLIC_GRAPH_NODE_TYPES, [
-      "vendor", "agency", "solicitation", "contract", "award", "official",
+      "vendor", "agency", "solicitation", "contract", "award", "official", "person-leader",
     ]);
     assert.deepEqual(PUBLIC_GRAPH_EDGE_TYPES, [
       "named_vendor_on_award",
@@ -157,6 +157,7 @@ test("public graph returns only typed, evidence-bearing procurement relationship
       "published_by_agency",
       "references_contract",
       "votes_on",
+      "agency_led_by",
     ]);
     assert.equal(graph.root.id, ENTITY_ID);
     // Procurement fixture graph does not emit official nodes; allowlist still includes them.
@@ -171,7 +172,11 @@ test("public graph returns only typed, evidence-bearing procurement relationship
       assert.equal(edge.provenance.source.system, "city_record");
       assert.match(edge.provenance.observed_at, /^2026-/);
       assert.ok(edge.provenance.source_fields.length >= 2);
-      assert.deepEqual(edge.confidence, { status: "not_scored", basis: "publisher_record" });
+      if (edge.type === "agency_led_by") {
+        assert.deepEqual(edge.confidence, { status: "strong", basis: "publisher_record" });
+      } else {
+        assert.deepEqual(edge.confidence, { status: "not_scored", basis: "publisher_record" });
+      }
     }
     assert.equal(graph.nodes.some((node) => node.name === "Public Hearing"), false);
     assertSensitivityBoundary(graph);
