@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.property_scope_fixture.v1",
+  "symptom": "Brooklyn Property scope empties",
+  "before_behavior": {
+    "route": "#property?boro=Brooklyn",
+    "unfiltered_current_count": 16,
+    "scoped_current_count": 0,
+    "scoped_archive_count": 46
+  },
+  "cases": [
+    {
+      "id": "brooklyn-property-scope-archive-only",
+      "borough": "Brooklyn",
+      "current_count": 0,
+      "archive_count": 46,
+      "expected_view": "archive"
+    },
+    {
+      "id": "bronx-property-scope-current-match",
+      "borough": "Bronx",
+      "current_count": 2,
+      "archive_count": 28,
+      "expected_view": "default"
+    },
+    {
+      "id": "queens-property-scope-no-match",
+      "borough": "Queens",
+      "current_count": 0,
+      "archive_count": 0,
+      "expected_view": "default"
+    },
+    {
+      "id": "brooklyn-property-category-scope-archive-only",
+      "borough": "Brooklyn",
+      "category": "seized_property",
+      "current_count": 0,
+      "archive_count": 9,
+      "expected_view": "archive"
+    }
+  ]
+}
