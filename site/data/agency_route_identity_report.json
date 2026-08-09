@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.agency_route_identity_report.v1",
-  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T13:52:57.396Z",
+  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T15:17:29.522Z",
   "method": "exact_publisher_crosswalk_with_reviewed_route_dispositions_v1",
   "publisher_canonical_count": 116,
-  "constellation_only_source_count": 20,
+  "constellation_only_source_count": 21,
   "classification_counts": {
     "alias_to_canonical": 15,
     "legitimate_non_crosswalk_entity": 4,
-    "unresolved": 1
+    "unresolved": 2
   },
   "cases": [
     {
@@ -41,6 +41,36 @@
       "basis": "punctuation-insensitive singular/plural publisher alias"
     },
     {
+      "source_id": "city-university-construction-fund",
+      "names": [
+        "City University Construction Fund"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "unresolved",
+      "canonical_id": "city-university-construction-fund",
+      "canonical_name": "city-university-construction-fund",
+      "canonical_path": "/agencies/city-university-construction-fund/",
+      "redirect_from": null,
+      "basis": "no exact publisher-crosswalk identity"
+    },
+    {
+      "source_id": "city-university-of-new-york",
+      "names": [
+        "City University of New York"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "city-university",
+      "canonical_name": "City University of New York",
+      "canonical_path": "/agencies/city-university/",
+      "redirect_from": "/agencies/city-university-of-new-york/",
+      "basis": "no exact publisher-crosswalk identity"
+    },
+    {
       "source_id": "dcasdivision-of-municipal-supply-service",
       "names": [
         "Dcasdivision Of Municipal Supply Service"
@@ -58,7 +88,7 @@
     {
       "source_id": "department-of-social-services",
       "names": [
-        "Department Of Social Services"
+        "Department of Social Services"
       ],
       "sources": [
         "entity_intelligence"
@@ -282,21 +312,6 @@
       "basis": "department-prefix publisher alias"
     },
     {
-      "source_id": "office-of-the-chief-medical-examiner",
-      "names": [
-        "Office Of The Chief Medical Examiner"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "chief-medical-examiner",
-      "canonical_name": "Office of the Chief Medical Examiner",
-      "canonical_path": "/agencies/chief-medical-examiner/",
-      "redirect_from": "/agencies/office-of-the-chief-medical-examiner/",
-      "basis": "department-prefix publisher alias"
-    },
-    {
       "source_id": "triborough-bridge-and-tunnel-authority",
       "names": [
         "Triborough Bridge And Tunnel Authority"
@@ -318,6 +333,12 @@
       "to": "/agencies/board-of-correction/",
       "source_id": "board-of-corrections",
       "canonical_id": "board-of-correction"
+    },
+    {
+      "from": "/agencies/city-university-of-new-york/",
+      "to": "/agencies/city-university/",
+      "source_id": "city-university-of-new-york",
+      "canonical_id": "city-university"
     },
     {
       "from": "/agencies/dcasdivision-of-municipal-supply-service/",
@@ -396,12 +417,6 @@
       "to": "/agencies/payroll-administration/",
       "source_id": "office-of-payroll-administration",
       "canonical_id": "payroll-administration"
-    },
-    {
-      "from": "/agencies/office-of-the-chief-medical-examiner/",
-      "to": "/agencies/chief-medical-examiner/",
-      "source_id": "office-of-the-chief-medical-examiner",
-      "canonical_id": "chief-medical-examiner"
     }
   ],
   "collisions": {

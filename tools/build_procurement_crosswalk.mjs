@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Materialize the bounded Checkbook ↔ PASSPort procurement crosswalk. */
+/** Materialize the bounded population-backed Checkbook ↔ PASSPort procurement crosswalk. */
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
@@ -19,7 +19,7 @@ function readInput() {
   return {
     observed_on: doc.observed_on || null,
     generated_at: doc.generated_at || null,
-    passportContracts: doc.rows?.passport_contracts_materialization || [],
+    passportContracts: doc.rows?.passport_contracts || [],
     checkbookContracts: doc.rows?.checkbook_contracts || [],
   };
 }
@@ -27,11 +27,11 @@ function buildDocument(input) {
   const crosswalk = buildPassportCheckbookCrosswalk(input);
   return {
     schema_version: 1,
-    title: "Bounded Checkbook Contracts ↔ PASSPort Public crosswalk",
+    title: "Population-backed Checkbook Contracts ↔ PASSPort Public crosswalk",
     observed_on: input.observed_on,
     generated_at: input.generated_at,
     sources: {
-      passport: "site/data/procurement_spine_sources.json#rows.passport_contracts_materialization",
+      passport: "site/data/procurement_spine_sources.json#rows.passport_contracts",
       checkbook: "site/data/procurement_spine_sources.json#rows.checkbook_contracts",
     },
     metrics: crosswalk.metrics,

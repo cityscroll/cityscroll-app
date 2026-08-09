@@ -518,7 +518,8 @@ describe("entity intelligence view — Parks multi-domain", () => {
 
     const doc = buildEntityIntelligenceDoc(ROOT);
     assert.equal(doc.procurement_spine.coverage.passport_contracts.modern_awards.rate, 0.886);
-    assert.equal(doc.procurement_spine.coverage.checkbook_contracts.modern_awards.rate, null);
+    assert.equal(doc.procurement_spine.coverage.checkbook_contracts.population_backed, true);
+    assert.ok(doc.procurement_spine.coverage.checkbook_contracts.modern_awards.rate > 0.8);
     assert.equal(doc.procurement_spine.coverage.checkbook_spending.modern_awards.rate, null);
     assert.ok(doc.multi_domain_count >= 1);
     // Demo prefers an entity with people matched when available (City Council).
@@ -721,14 +722,15 @@ describe("entity intelligence view — Parks multi-domain", () => {
       "utf8",
     ));
     const rebuilt = buildPassportCheckbookCrosswalk({
-      passportContracts: spine.rows?.passport_contracts_materialization || [],
+      passportContracts: spine.rows?.passport_contracts || [],
       checkbookContracts: spine.rows?.checkbook_contracts || [],
     });
     assert.equal(crosswalk.schema_version, 1);
     assert.equal(crosswalk.metrics.version, "passport_checkbook_crosswalk_v1");
-    assert.equal(crosswalk.metrics.matched, 1);
-    assert.equal(crosswalk.rows[0].join_method, "pin_epin_exact");
-    assert.equal(crosswalk.rows[0].provenance.source_fields.includes("pin"), true);
+    assert.ok(crosswalk.metrics.matched >= 1);
+    const exactPin = crosswalk.rows.find((row) => row.join_method === "pin_epin_exact");
+    assert.ok(exactPin, "at least one exact Checkbook PIN ↔ PASSPort EPIN match");
+    assert.equal(exactPin.provenance.source_fields.includes("pin"), true);
     assert.deepEqual(crosswalk.metrics, rebuilt.metrics);
     assert.deepEqual(crosswalk.rows, rebuilt.rows);
   });

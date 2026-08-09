@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Vendor footprint coverage and promotion receipt",
-  "generated_at": "2026-08-08T12:15:15.003Z",
+  "generated_at": "2026-08-09T15:17:29.522Z",
   "status": "qualified",
   "qualifier_required": true,
   "sections": [
@@ -27,8 +27,8 @@
     "no_name_awards": 1429,
     "normalization_blocked_awards": 4,
     "vendor_roots": 14463,
-    "multi_domain_vendor_roots": 0,
-    "multi_domain_vendor_rate": 0,
+    "multi_domain_vendor_roots": 1,
+    "multi_domain_vendor_rate": 0.0001,
     "multi_kind_vendor_roots": 3683,
     "multi_kind_vendor_rate": 0.2546,
     "section_denominators": {
@@ -106,7 +106,7 @@
       },
       "multi_domain_vendor_rate": {
         "threshold": 0.5,
-        "actual": 0,
+        "actual": 0.0001,
         "passed": false
       },
       "section_denominator_rate": {
@@ -134,6 +134,6 @@
     "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
     "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
     "procurement_spine": "site/data/procurement_spine_sources.json",
-    "procurement_spine_observed_on": "2026-08-06"
+    "procurement_spine_observed_on": "2026-08-09"
   }
 }

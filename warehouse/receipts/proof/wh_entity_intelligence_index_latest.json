@@ -2,45 +2,58 @@
   "schema_version": 1,
   "version": "wh_entity_intelligence_index_v1",
   "object_link_version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-08T12:17:32.839Z",
-  "observation_count": 400,
-  "root_count": 168,
-  "edge_count": 742,
-  "join_key_edge_count": 338,
-  "multi_domain_count": 21,
+  "generated_at": "2026-08-09T15:17:30.666Z",
+  "observation_count": 600,
+  "root_count": 200,
+  "edge_count": 1037,
+  "join_key_edge_count": 431,
+  "multi_domain_count": 23,
   "link_type_counts": {
-    "published_by_agency": 134,
-    "shares_authority_key": 134,
-    "issued_rule": 67,
-    "hosts_meeting": 66,
-    "decides_land_project": 1,
-    "votes_as_official": 7,
-    "applicant_agency": 10,
-    "sited_on_parcel": 203,
-    "named_vendor": 67,
-    "applicant_vendor": 53
+    "published_by_agency": 200,
+    "shares_authority_key": 200,
+    "issued_rule": 100,
+    "hosts_meeting": 100,
+    "decides_land_project": 5,
+    "votes_as_official": 15,
+    "applicant_agency": 11,
+    "sited_on_parcel": 226,
+    "named_vendor": 100,
+    "applicant_vendor": 80
   },
   "metrics": {
     "metric": "warehouse_entity_intelligence_index",
-    "roots_indexed": 168,
-    "edges_indexed": 742,
-    "join_key_edge_count": 338,
-    "multi_domain_count": 21,
-    "coverage_hint": 0.525
+    "roots_indexed": 200,
+    "edges_indexed": 1037,
+    "join_key_edge_count": 431,
+    "multi_domain_count": 23,
+    "selection": {
+      "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
+      "cap": 40,
+      "candidate_count": 227,
+      "reason_counts": {
+        "multi_domain": 23,
+        "mandate_agency_reserve": 0,
+        "richness_fill": 17
+      },
+      "mandate_agency_candidates": 0,
+      "mandate_agency_selected": 0,
+      "mandate_agency_omitted": 0
+    },
+    "coverage_hint": 0.575
   },
   "demo_refs": [
     "agency:id:housing-preservation-and-development",
     "agency:id:parks-and-recreation",
     "agency:id:transportation",
-    "agency:id:buildings",
-    "agency:id:small-business-services"
+    "agency:id:sanitation",
+    "agency:id:buildings"
   ],
   "roots": [
     {
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "object_count": 66,
-      "link_count": 78,
+      "object_count": 99,
+      "link_count": 111,
       "domains_matched": 4,
       "domains": [
         "land",
@@ -59,8 +72,8 @@
     {
       "root_ref": "agency:id:parks-and-recreation",
       "root_kind": "agency",
-      "object_count": 7,
-      "link_count": 9,
+      "object_count": 13,
+      "link_count": 19,
       "domains_matched": 4,
       "domains": [
         "land",
@@ -79,8 +92,8 @@
     {
       "root_ref": "agency:id:small-business-services",
       "root_kind": "agency",
-      "object_count": 15,
-      "link_count": 27,
+      "object_count": 21,
+      "link_count": 38,
       "domains_matched": 3,
       "domains": [
         "money",
@@ -96,8 +109,8 @@
     {
       "root_ref": "agency:id:transportation",
       "root_kind": "agency",
-      "object_count": 13,
-      "link_count": 18,
+      "object_count": 17,
+      "link_count": 22,
       "domains_matched": 3,
       "domains": [
         "meetings",
@@ -114,8 +127,8 @@
     {
       "root_ref": "agency:id:buildings",
       "root_kind": "agency",
-      "object_count": 12,
-      "link_count": 16,
+      "object_count": 16,
+      "link_count": 21,
       "domains_matched": 3,
       "domains": [
         "meetings",
@@ -132,8 +145,8 @@
     {
       "root_ref": "agency:id:sanitation",
       "root_kind": "agency",
-      "object_count": 8,
-      "link_count": 9,
+      "object_count": 16,
+      "link_count": 23,
       "domains_matched": 3,
       "domains": [
         "meetings",
@@ -148,10 +161,27 @@
       ]
     },
     {
+      "root_ref": "agency:id:city-planning",
+      "root_kind": "agency",
+      "object_count": 3,
+      "link_count": 3,
+      "domains_matched": 3,
+      "domains": [
+        "land",
+        "meetings",
+        "rules"
+      ],
+      "link_types": [
+        "applicant_agency",
+        "hosts_meeting",
+        "issued_rule"
+      ]
+    },
+    {
       "root_ref": "agency:id:city-council",
       "root_kind": "agency",
-      "object_count": 19,
-      "link_count": 12,
+      "object_count": 29,
+      "link_count": 21,
       "domains_matched": 2,
       "domains": [
         "meetings",
@@ -165,8 +195,8 @@
     {
       "root_ref": "agency:id:consumer-and-worker-protection",
       "root_kind": "agency",
-      "object_count": 14,
-      "link_count": 14,
+      "object_count": 24,
+      "link_count": 24,
       "domains_matched": 2,
       "domains": [
         "meetings",
@@ -178,10 +208,26 @@
       ]
     },
     {
+      "root_ref": "agency:id:citywide-administrative-services",
+      "root_kind": "agency",
+      "object_count": 16,
+      "link_count": 23,
+      "domains_matched": 2,
+      "domains": [
+        "meetings",
+        "money"
+      ],
+      "link_types": [
+        "hosts_meeting",
+        "published_by_agency",
+        "shares_authority_key"
+      ]
+    },
+    {
       "root_ref": "agency:id:aging",
       "root_kind": "agency",
-      "object_count": 11,
-      "link_count": 21,
+      "object_count": 15,
+      "link_count": 29,
       "domains_matched": 2,
       "domains": [
         "money",
@@ -196,8 +242,8 @@
     {
       "root_ref": "agency:id:environmental-protection",
       "root_kind": "agency",
-      "object_count": 11,
-      "link_count": 20,
+      "object_count": 14,
+      "link_count": 26,
       "domains_matched": 2,
       "domains": [
         "money",
@@ -210,26 +256,56 @@
       ]
     },
     {
-      "root_ref": "agency:id:citywide-administrative-services",
+      "root_ref": "agency:id:finance",
       "root_kind": "agency",
-      "object_count": 9,
-      "link_count": 13,
+      "object_count": 12,
+      "link_count": 12,
       "domains_matched": 2,
       "domains": [
         "meetings",
-        "money"
+        "rules"
       ],
       "link_types": [
         "hosts_meeting",
-        "published_by_agency",
-        "shares_authority_key"
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:city-planning-commission",
+      "root_kind": "agency",
+      "object_count": 8,
+      "link_count": 8,
+      "domains_matched": 2,
+      "domains": [
+        "meetings",
+        "rules"
+      ],
+      "link_types": [
+        "hosts_meeting",
+        "issued_rule"
       ]
     },
     {
       "root_ref": "agency:id:health-and-mental-hygiene",
       "root_kind": "agency",
-      "object_count": 6,
-      "link_count": 7,
+      "object_count": 8,
+      "link_count": 10,
+      "domains_matched": 2,
+      "domains": [
+        "money",
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule",
+        "published_by_agency",
+        "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "agency:id:information-technology-and-telecommunications",
+      "root_kind": "agency",
+      "object_count": 7,
+      "link_count": 13,
       "domains_matched": 2,
       "domains": [
         "money",
@@ -244,8 +320,8 @@
     {
       "root_ref": "agency:id:landmarks-preservation-commission",
       "root_kind": "agency",
-      "object_count": 6,
-      "link_count": 6,
+      "object_count": 7,
+      "link_count": 7,
       "domains_matched": 2,
       "domains": [
         "meetings",
@@ -257,7 +333,23 @@
       ]
     },
     {
-      "root_ref": "agency:id:city-planning-commission",
+      "root_ref": "agency:id:fire-department",
+      "root_kind": "agency",
+      "object_count": 6,
+      "link_count": 9,
+      "domains_matched": 2,
+      "domains": [
+        "money",
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule",
+        "published_by_agency",
+        "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "agency:id:rent-guidelines-board",
       "root_kind": "agency",
       "object_count": 5,
       "link_count": 5,
@@ -269,22 +361,6 @@
       "link_types": [
         "hosts_meeting",
         "issued_rule"
-      ]
-    },
-    {
-      "root_ref": "agency:id:information-technology-and-telecommunications",
-      "root_kind": "agency",
-      "object_count": 5,
-      "link_count": 9,
-      "domains_matched": 2,
-      "domains": [
-        "money",
-        "rules"
-      ],
-      "link_types": [
-        "issued_rule",
-        "published_by_agency",
-        "shares_authority_key"
       ]
     },
     {
@@ -303,23 +379,22 @@
       ]
     },
     {
-      "root_ref": "agency:id:fire-department",
+      "root_ref": "agency:id:board-of-correction",
       "root_kind": "agency",
-      "object_count": 4,
-      "link_count": 7,
+      "object_count": 3,
+      "link_count": 3,
       "domains_matched": 2,
       "domains": [
-        "money",
+        "meetings",
         "rules"
       ],
       "link_types": [
-        "issued_rule",
-        "published_by_agency",
-        "shares_authority_key"
+        "hosts_meeting",
+        "issued_rule"
       ]
     },
     {
-      "root_ref": "agency:id:rent-guidelines-board",
+      "root_ref": "agency:id:comptroller",
       "root_kind": "agency",
       "object_count": 3,
       "link_count": 3,
@@ -349,53 +424,10 @@
       ]
     },
     {
-      "root_ref": "agency:id:board-of-correction",
-      "root_kind": "agency",
-      "object_count": 2,
-      "link_count": 2,
-      "domains_matched": 2,
-      "domains": [
-        "meetings",
-        "rules"
-      ],
-      "link_types": [
-        "hosts_meeting",
-        "issued_rule"
-      ]
-    },
-    {
-      "root_ref": "agency:id:city-planning",
-      "root_kind": "agency",
-      "object_count": 2,
-      "link_count": 2,
-      "domains_matched": 2,
-      "domains": [
-        "land",
-        "rules"
-      ],
-      "link_types": [
-        "applicant_agency",
-        "issued_rule"
-      ]
-    },
-    {
-      "root_ref": "agency:id:finance",
-      "root_kind": "agency",
-      "object_count": 8,
-      "link_count": 8,
-      "domains_matched": 1,
-      "domains": [
-        "rules"
-      ],
-      "link_types": [
-        "issued_rule"
-      ]
-    },
-    {
       "root_ref": "agency:id:board-meetings",
       "root_kind": "agency",
-      "object_count": 7,
-      "link_count": 7,
+      "object_count": 10,
+      "link_count": 10,
       "domains_matched": 1,
       "domains": [
         "meetings"
@@ -407,8 +439,8 @@
     {
       "root_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
       "root_kind": "vendor",
-      "object_count": 6,
-      "link_count": 12,
+      "object_count": 7,
+      "link_count": 14,
       "domains_matched": 1,
       "domains": [
         "money"
@@ -416,6 +448,33 @@
       "link_types": [
         "named_vendor",
         "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "agency:id:charter-revision-commission",
+      "root_kind": "agency",
+      "object_count": 6,
+      "link_count": 6,
+      "domains_matched": 1,
+      "domains": [
+        "meetings"
+      ],
+      "link_types": [
+        "hosts_meeting"
+      ]
+    },
+    {
+      "root_ref": "agency:id:community-boards",
+      "root_kind": "agency",
+      "object_count": 5,
+      "link_count": 6,
+      "domains_matched": 1,
+      "domains": [
+        "meetings"
+      ],
+      "link_types": [
+        "decides_land_project",
+        "hosts_meeting"
       ]
     },
     {
@@ -430,19 +489,6 @@
       "link_types": [
         "published_by_agency",
         "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:charter-revision-commission",
-      "root_kind": "agency",
-      "object_count": 4,
-      "link_count": 4,
-      "domains_matched": 1,
-      "domains": [
-        "meetings"
-      ],
-      "link_types": [
-        "hosts_meeting"
       ]
     },
     {
@@ -472,6 +518,19 @@
       ]
     },
     {
+      "root_ref": "agency:id:housing-authority",
+      "root_kind": "agency",
+      "object_count": 3,
+      "link_count": 3,
+      "domains_matched": 1,
+      "domains": [
+        "meetings"
+      ],
+      "link_types": [
+        "hosts_meeting"
+      ]
+    },
+    {
       "root_ref": "agency:id:office-of-contract-services",
       "root_kind": "agency",
       "object_count": 3,
@@ -486,36 +545,10 @@
       ]
     },
     {
-      "root_ref": "agency:id:comptroller",
+      "root_ref": "agency:id:youth-and-community-development",
       "root_kind": "agency",
-      "object_count": 2,
-      "link_count": 2,
-      "domains_matched": 1,
-      "domains": [
-        "rules"
-      ],
-      "link_types": [
-        "issued_rule"
-      ]
-    },
-    {
-      "root_ref": "agency:id:housing-authority",
-      "root_kind": "agency",
-      "object_count": 2,
-      "link_count": 2,
-      "domains_matched": 1,
-      "domains": [
-        "meetings"
-      ],
-      "link_types": [
-        "hosts_meeting"
-      ]
-    },
-    {
-      "root_ref": "agency:id:new-york-city-police-department",
-      "root_kind": "agency",
-      "object_count": 2,
-      "link_count": 4,
+      "object_count": 3,
+      "link_count": 6,
       "domains_matched": 1,
       "domains": [
         "money"
@@ -528,8 +561,8 @@
     {
       "root_ref": "vendor:stem:INNOVEE%20CONSULTING",
       "root_kind": "vendor",
-      "object_count": 2,
-      "link_count": 4,
+      "object_count": 3,
+      "link_count": 6,
       "domains_matched": 1,
       "domains": [
         "money"
@@ -540,23 +573,10 @@
       ]
     },
     {
-      "root_ref": "vendor:stem:PHIPPS%20HOUSES",
-      "root_kind": "vendor",
-      "object_count": 2,
-      "link_count": 2,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor"
-      ]
-    },
-    {
       "root_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
       "root_kind": "vendor",
-      "object_count": 2,
-      "link_count": 4,
+      "object_count": 3,
+      "link_count": 6,
       "domains_matched": 1,
       "domains": [
         "money"
@@ -569,8 +589,8 @@
     {
       "root_ref": "vendor:stem:SHI%20INTERNATIONAL",
       "root_kind": "vendor",
-      "object_count": 2,
-      "link_count": 4,
+      "object_count": 3,
+      "link_count": 6,
       "domains_matched": 1,
       "domains": [
         "money"
@@ -581,37 +601,10 @@
       ]
     },
     {
-      "root_ref": "vendor:stem:THE%20DURST%20ORGANIZATION",
-      "root_kind": "vendor",
-      "object_count": 2,
-      "link_count": 5,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor",
-        "sited_on_parcel"
-      ]
-    },
-    {
-      "root_ref": "agency:id:board-of-education-retirement-system",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "meetings"
-      ],
-      "link_types": [
-        "hosts_meeting"
-      ]
-    },
-    {
       "root_ref": "agency:id:borough-president-brooklyn",
       "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
+      "object_count": 2,
+      "link_count": 2,
       "domains_matched": 1,
       "domains": [
         "meetings"
@@ -623,8 +616,8 @@
     {
       "root_ref": "agency:id:borough-president-queens",
       "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 2,
+      "object_count": 2,
+      "link_count": 5,
       "domains_matched": 1,
       "domains": [
         "meetings"
@@ -632,6 +625,33 @@
       "link_types": [
         "decides_land_project",
         "hosts_meeting"
+      ]
+    },
+    {
+      "root_ref": "agency:id:conflicts-of-interest-board",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:edc-economic-development-corporation-for-nyc",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 3,
+      "domains_matched": 1,
+      "domains": [
+        "land"
+      ],
+      "link_types": [
+        "applicant_agency",
+        "sited_on_parcel"
       ]
     }
   ],
@@ -789,6 +809,25 @@
       "observed_at": "07/01/2020"
     },
     {
+      "root_ref": "agency:id:administrative-trials-and-hearings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260409035",
+      "to_ref": "agency:id:administrative-trials-and-hearings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260409035",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Administrative Trials and Hearings",
+      "observed_at": "2026-04-16T00:00:00.000"
+    },
+    {
       "root_ref": "agency:id:aging",
       "root_kind": "agency",
       "link_type": "issued_rule",
@@ -830,6 +869,25 @@
       "root_ref": "agency:id:aging",
       "root_kind": "agency",
       "link_type": "published_by_agency",
+      "from_ref": "contract:CT1-125-20218800027",
+      "to_ref": "agency:id:aging",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800027",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "money_agency_name",
+      "input_value": "DEPARTMENT FOR THE AGING",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "published_by_agency",
       "from_ref": "contract:CT1-125-20218800052",
       "to_ref": "agency:id:aging",
       "domain": "money",
@@ -857,6 +915,25 @@
       "method_version": "1",
       "source_system": "passport-public-contracts",
       "source_record_id": "passport-public-contracts:ct:CT1-125-20218800053",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "money_agency_name",
+      "input_value": "DEPARTMENT FOR THE AGING",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "published_by_agency",
+      "from_ref": "contract:CT1-125-20218800054",
+      "to_ref": "agency:id:aging",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800054",
       "source_fields": [
         "agency_name"
       ],
@@ -914,6 +991,44 @@
       "method_version": "1",
       "source_system": "passport-public-contracts",
       "source_record_id": "passport-public-contracts:ct:CT1-125-20218800062",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "money_agency_name",
+      "input_value": "DEPARTMENT FOR THE AGING",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "published_by_agency",
+      "from_ref": "contract:CT1-125-20218800075",
+      "to_ref": "agency:id:aging",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800075",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "money_agency_name",
+      "input_value": "DEPARTMENT FOR THE AGING",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "published_by_agency",
+      "from_ref": "contract:CT1-125-20218800076",
+      "to_ref": "agency:id:aging",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800076",
       "source_fields": [
         "agency_name"
       ],
@@ -1020,6 +1135,25 @@
       "root_ref": "agency:id:aging",
       "root_kind": "agency",
       "link_type": "shares_authority_key",
+      "from_ref": "contract:CT1-125-20218800027",
+      "to_ref": "pin:12521L0081001",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "pin_authority_key_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800027",
+      "source_fields": [
+        "epin"
+      ],
+      "basis": "money_epin",
+      "input_value": "12521L0081001",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "shares_authority_key",
       "from_ref": "contract:CT1-125-20218800052",
       "to_ref": "pin:12521L0462001",
       "domain": "money",
@@ -1052,6 +1186,25 @@
       ],
       "basis": "money_epin",
       "input_value": "12521L0509001",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "shares_authority_key",
+      "from_ref": "contract:CT1-125-20218800054",
+      "to_ref": "pin:12521L0530001",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "pin_authority_key_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800054",
+      "source_fields": [
+        "epin"
+      ],
+      "basis": "money_epin",
+      "input_value": "12521L0530001",
       "observed_at": "07/01/2020"
     },
     {
@@ -1109,6 +1262,44 @@
       ],
       "basis": "money_epin",
       "input_value": "12521L0297001",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "shares_authority_key",
+      "from_ref": "contract:CT1-125-20218800075",
+      "to_ref": "pin:12521L0556001",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "pin_authority_key_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800075",
+      "source_fields": [
+        "epin"
+      ],
+      "basis": "money_epin",
+      "input_value": "12521L0556001",
+      "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "shares_authority_key",
+      "from_ref": "contract:CT1-125-20218800076",
+      "to_ref": "pin:12521L0559001",
+      "domain": "money",
+      "confidence": "strong",
+      "method": "pin_authority_key_v1",
+      "method_version": "1",
+      "source_system": "passport-public-contracts",
+      "source_record_id": "passport-public-contracts:ct:CT1-125-20218800076",
+      "source_fields": [
+        "epin"
+      ],
+      "basis": "money_epin",
+      "input_value": "12521L0559001",
       "observed_at": "07/01/2020"
     },
     {
@@ -1186,6 +1377,63 @@
       "basis": "money_epin",
       "input_value": "12521L0542001",
       "observed_at": "07/01/2020"
+    },
+    {
+      "root_ref": "agency:id:board-meetings",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260213011",
+      "to_ref": "agency:id:board-meetings",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260213011",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Board Meetings",
+      "observed_at": "2026-06-01T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:board-meetings",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260213012",
+      "to_ref": "agency:id:board-meetings",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260213012",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Board Meetings",
+      "observed_at": "2026-06-08T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:board-meetings",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260213013",
+      "to_ref": "agency:id:board-meetings",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260213013",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Board Meetings",
+      "observed_at": "2026-06-15T00:00:00.000"
     },
     {
       "root_ref": "agency:id:board-meetings",
@@ -1324,6 +1572,25 @@
       "root_ref": "agency:id:board-of-correction",
       "root_kind": "agency",
       "link_type": "hosts_meeting",
+      "from_ref": "notice:20260106032",
+      "to_ref": "agency:id:board-of-correction",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260106032",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Board of Correction",
+      "observed_at": "2026-06-09T13:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:board-of-correction",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
       "from_ref": "notice:20260106033",
       "to_ref": "agency:id:board-of-correction",
       "domain": "meetings",
@@ -1454,6 +1721,64 @@
       "observed_at": "2026-05-18T00:00:00.000"
     },
     {
+      "root_ref": "agency:id:borough-president-bronx",
+      "root_kind": "agency",
+      "link_type": "decides_land_project",
+      "from_ref": "notice:20260608005",
+      "to_ref": "project:2023X0149",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "exact_ulurp_token_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260608005",
+      "source_fields": [
+        "body",
+        "ulurp_numbers"
+      ],
+      "basis": "meeting_body_ulurp_token",
+      "input_value": "2023X0149;240206ZMX;240207ZRX;N240207ZRX",
+      "observed_at": "2026-06-15T12:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:borough-president-bronx",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260608005",
+      "to_ref": "agency:id:borough-president-bronx",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260608005",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Borough President - Bronx",
+      "observed_at": "2026-06-15T12:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:borough-president-brooklyn",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260601042",
+      "to_ref": "agency:id:borough-president-brooklyn",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260601042",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Borough President - Brooklyn",
+      "observed_at": "2026-06-10T18:00:00.000"
+    },
+    {
       "root_ref": "agency:id:borough-president-brooklyn",
       "root_kind": "agency",
       "link_type": "hosts_meeting",
@@ -1476,6 +1801,46 @@
       "root_ref": "agency:id:borough-president-queens",
       "root_kind": "agency",
       "link_type": "decides_land_project",
+      "from_ref": "notice:20260528018",
+      "to_ref": "project:2024Q0219",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "exact_ulurp_token_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260528018",
+      "source_fields": [
+        "body",
+        "ulurp_numbers"
+      ],
+      "basis": "meeting_body_ulurp_token",
+      "input_value": "250330ZRQ;N250330ZRQ",
+      "observed_at": "2026-06-11T09:30:00.000"
+    },
+    {
+      "root_ref": "agency:id:borough-president-queens",
+      "root_kind": "agency",
+      "link_type": "decides_land_project",
+      "from_ref": "notice:20260528018",
+      "to_ref": "project:2025Q0247",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "exact_ulurp_token_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260528018",
+      "source_fields": [
+        "body",
+        "ulurp_numbers"
+      ],
+      "basis": "meeting_body_ulurp_token",
+      "input_value": "260186ZMQ;260187ZRQ",
+      "observed_at": "2026-06-11T09:30:00.000"
+    },
+    {
+      "root_ref": "agency:id:borough-president-queens",
+      "root_kind": "agency",
+      "link_type": "decides_land_project",
       "from_ref": "notice:20260618037",
       "to_ref": "project:2024Q0292",
       "domain": "meetings",
@@ -1491,6 +1856,25 @@
       "basis": "meeting_body_ulurp_token",
       "input_value": "260234ZMQ;260235ZRQ",
       "observed_at": "2026-07-02T09:30:00.000"
+    },
+    {
+      "root_ref": "agency:id:borough-president-queens",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260528018",
+      "to_ref": "agency:id:borough-president-queens",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260528018",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Borough President - Queens",
+      "observed_at": "2026-06-11T09:30:00.000"
     },
     {
       "root_ref": "agency:id:borough-president-queens",
@@ -1567,6 +1951,63 @@
       "basis": "meetings_agency_name",
       "input_value": "Buildings",
       "observed_at": "2026-09-09T11:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260313023",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260313023",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-03-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260320022",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260320022",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-03-27T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260407013",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260407013",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-04-15T00:00:00.000"
     },
     {
       "root_ref": "agency:id:buildings",
@@ -1738,424 +2179,6 @@
       "basis": "money_agency_name",
       "input_value": "DEPARTMENT OF BUILDINGS",
       "observed_at": "01/24/2021"
-    },
-    {
-      "root_ref": "agency:id:buildings",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "contract:CT1-810-20218801120",
-      "to_ref": "agency:id:buildings",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "passport-public-contracts",
-      "source_record_id": "passport-public-contracts:ct:CT1-810-20218801120",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "DEPARTMENT OF BUILDINGS",
-      "observed_at": "02/11/2021"
-    },
-    {
-      "root_ref": "agency:id:buildings",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "contract:CT1-810-20218800692",
-      "to_ref": "pin:81021W0010001",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "passport-public-contracts",
-      "source_record_id": "passport-public-contracts:ct:CT1-810-20218800692",
-      "source_fields": [
-        "epin"
-      ],
-      "basis": "money_epin",
-      "input_value": "81021W0010001",
-      "observed_at": "12/01/2020"
-    },
-    {
-      "root_ref": "agency:id:buildings",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "contract:CT1-810-20218801016",
-      "to_ref": "pin:81021W0012001",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "passport-public-contracts",
-      "source_record_id": "passport-public-contracts:ct:CT1-810-20218801016",
-      "source_fields": [
-        "epin"
-      ],
-      "basis": "money_epin",
-      "input_value": "81021W0012001",
-      "observed_at": "07/01/2020"
-    },
-    {
-      "root_ref": "agency:id:buildings",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "contract:CT1-810-20218801020",
-      "to_ref": "pin:81021W0013001R001",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "passport-public-contracts",
-      "source_record_id": "passport-public-contracts:ct:CT1-810-20218801020",
-      "source_fields": [
-        "epin"
-      ],
-      "basis": "money_epin",
-      "input_value": "81021W0013001R001",
-      "observed_at": "01/24/2021"
-    },
-    {
-      "root_ref": "agency:id:buildings",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "contract:CT1-810-20218801120",
-      "to_ref": "pin:81021W0016001",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "passport-public-contracts",
-      "source_record_id": "passport-public-contracts:ct:CT1-810-20218801120",
-      "source_fields": [
-        "epin"
-      ],
-      "basis": "money_epin",
-      "input_value": "81021W0016001",
-      "observed_at": "02/11/2021"
-    },
-    {
-      "root_ref": "agency:id:campaign-finance-board",
-      "root_kind": "agency",
-      "link_type": "issued_rule",
-      "from_ref": "notice:20260424028",
-      "to_ref": "agency:id:campaign-finance-board",
-      "domain": "rules",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260424028",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "rules_agency_name",
-      "input_value": "Campaign Finance Board",
-      "observed_at": "2026-05-01T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:charter-revision-commission",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260605045",
-      "to_ref": "agency:id:charter-revision-commission",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260605045",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Charter Revision Commission",
-      "observed_at": "2026-06-25T18:30:00.000"
-    },
-    {
-      "root_ref": "agency:id:charter-revision-commission",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260617003",
-      "to_ref": "agency:id:charter-revision-commission",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260617003",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Charter Revision Commission",
-      "observed_at": "2026-06-24T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:charter-revision-commission",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260623048",
-      "to_ref": "agency:id:charter-revision-commission",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260623048",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Charter Revision Commission",
-      "observed_at": "2026-06-25T18:30:00.000"
-    },
-    {
-      "root_ref": "agency:id:charter-revision-commission",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260715002",
-      "to_ref": "agency:id:charter-revision-commission",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260715002",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Charter Revision Commission",
-      "observed_at": "2026-07-20T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260617039",
-      "to_ref": "agency:id:city-council",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260617039",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-01T11:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260625040",
-      "to_ref": "agency:id:city-council",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260625040",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-09T11:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260706036",
-      "to_ref": "agency:id:city-council",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260706036",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14T10:30:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260707021",
-      "to_ref": "agency:id:city-council",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260707021",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-21T11:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260707022",
-      "to_ref": "agency:id:city-council",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260707022",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-22T11:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7798",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7798:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7801",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7801:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7823",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7823:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7824",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7824:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7825",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7825:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7832",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7832:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:city-council",
-      "root_kind": "agency",
-      "link_type": "votes_as_official",
-      "from_ref": "entity:official:7898",
-      "to_ref": "agency:id:city-council",
-      "domain": "people",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "legistar",
-      "source_record_id": "legistar:person:7898:matter:79193:event:22526",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "people_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-14"
     }
   ],
   "provenance": {
