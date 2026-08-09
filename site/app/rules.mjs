@@ -108,7 +108,9 @@ function rulesExplorerCardHTML(entry, terms){
     acts=`<a class="act primary"${primaryFactAttr} href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   }
   const primaryAction=acts;
-  const secondaryActions=[officialSourceLink({ href: REQ_URL(r.request_id), label: t("city_record_link"), className: "act", escape: escUiHtml })];
+  // The notice route carries the official record link; cards do not repeat it as a
+  // reflexive source action. Keep a source link only when the rule page itself is useful.
+  const secondaryActions=[];
   // Secondary official rule page when primary was the comment portal (not already the rule URL).
   if(entry.rule_url && !(wantRulePrimary || (wantCommentPrimary && !entry.comment_url))){
     secondaryActions.push(officialSourceLink({ href: entry.rule_url, label: t("rule_event_official_source"), className: "act", escape: escUiHtml }));
@@ -876,8 +878,8 @@ function feedCardHTML(key, r, terms){
   // Comment-open is the actionable moment: lead with the official comment-page CTA so the
   // primary action sits first in the row (matches the hearing-card join/participation lead).
   const ruleAct=key==="rules"?ruleCommentAction(r._ruleStage):"";
-  // Primary in-app action first (Open notice), then the external City Record citation.
-  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`+officialSourceLink({ href: REQ_URL(r.request_id), label: t("city_record_link"), className: "act", escape: escUiHtml });
+  // Primary in-app action first; the notice route carries the official record source.
+  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
   acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
   if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
   const geometry=key==="property"&&r._location?.geometry;

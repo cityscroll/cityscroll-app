@@ -1,4 +1,5 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
+import { officialSourceLink } from "../affordance_grammar.mjs";
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local
@@ -627,7 +628,7 @@ async function showMatter(pin){
         <button class="act primary" type="button" id="ecopy">${t("copy_link_btn")}</button>
         ${qrButtonHTML("eqr","act")}
         ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
-        <a class="act" href="${REQ_URL(latestNoticeId)}" ${EXT_ATTRS}>${t("matter_latest_city_record")}${extSR()}</a>
+        ${officialSourceLink({ href:REQ_URL(latestNoticeId), label:t("matter_latest_city_record"), className:"matter-city-record-source", escape:escUiHtml })}
         ${checkbookHref ? `<a class="act" href="${escUiHtml(checkbookHref)}" ${EXT_ATTRS}>${t("matter_open_checkbook")}${extSR()}</a>` : ""}
       </div>
       <div class="note">${t("matter_spine_note")}</div>
