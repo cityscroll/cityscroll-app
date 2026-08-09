@@ -162,6 +162,30 @@ test("committed live corpus links Homeless Services shelter mandates through awa
   assert.doesNotMatch(html, /not yet|no matching|methodology|disclaimer|fabricat/i);
 });
 
+test("below-gate mandate-to-contract candidates remain evidence-only shadows", () => {
+  const view = buildMandateContractsBridgeView(HOMELESS_SERVICES, {
+    obligationsLookup: obligations,
+    intelligenceDossier: intelligence.by_ref["agency:id:homeless-services"],
+    crossSpineGate: {
+      gate: {
+        mandate_contract: {
+          status: "pass",
+          passed: false,
+          precision: 0.89,
+          min_precision: 0.9,
+        },
+      },
+    },
+  });
+
+  assert.equal(view.status, "empty");
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 1);
+  assert.equal(view.shadow_edges[0].decision, "evidence_only");
+  assert.equal(view.shadow_edges[0].edge_policy.tier, "evidence_only");
+  assert.equal(renderMandateContractsBridgeSection(view), "");
+});
+
 test("constellation model registers claims and renders the standalone bridge section", () => {
   const view = buildAgencyConstellationView(HOMELESS_SERVICES, {
     intelligence,

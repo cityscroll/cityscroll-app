@@ -352,7 +352,10 @@ function parseArgs(argv) {
   if (!Number.isFinite(args.minPrecision) || args.minPrecision < 0 || args.minPrecision > 1) fail("--min-precision must be between 0 and 1");
   // A gate is never allowed to silently become an in-sample measurement.
   if (args.check || args.checkPolicy) args.groupSplit = true;
-  if (args.check && !args.out && !args.goldProvided) args.out = DEFAULT_GATE_RECEIPT_PATH;
+  // Relation-scoped checks validate that relation's held-out gate. The
+  // committed receipt covers the all-relations policy and cannot be compared
+  // byte-for-byte with a relation-only report.
+  if (args.check && !args.out && !args.goldProvided && !args.relation) args.out = DEFAULT_GATE_RECEIPT_PATH;
   return args;
 }
 
