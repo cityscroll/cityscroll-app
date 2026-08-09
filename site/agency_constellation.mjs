@@ -118,7 +118,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     obligationsFollow
       ? { kind: "link", label: "Watch mandates and deadlines", href: obligationsFollow, className: "civic-object-action" }
       : null,
-    { kind: "link", label: "Connection evidence", href: "#edge-provenance", className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
     { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
     { kind: "button", label: "Download JSON", attrs: { "data-object-export": "json" }, className: "civic-object-action" },
