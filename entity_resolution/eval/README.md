@@ -30,6 +30,8 @@ creates links.
 | `cross_spine_gold_v1.jsonl` | Preserved v1 monolith for operating-point history and regression checks |
 | `cross_spine_gold_v2/*.json` | Publisher-backed, per-relation field-case shards with frozen holdout assignments |
 | `cross_spine_gold_v2.jsonl` | Generated v2 combined gold; rebuild with `node tools/build_cross_spine_gold_v2.mjs` |
+| `cross_spine_gold_v3/procedure_relations.json` | Closed-vocabulary configuration for the two reified procedure relations |
+| `cross_spine_gold_v3.jsonl` | Generated v3 gold retaining v2 plus evaluated procedure cases |
 
 ## Run
 
@@ -92,9 +94,9 @@ train and holdout, even when several pairs share it.
 
 ```bash
 node tools/cross_spine_eval.mjs \
-  --gold entity_resolution/eval/cross_spine_gold_v2.jsonl \
+  --gold entity_resolution/eval/cross_spine_gold_v3.jsonl \
   --group-split --check
-node tools/build_cross_spine_gold_v2.mjs --check
+node tools/build_cross_spine_gold_v3.mjs --check
 node --test test/cross_spine_eval.test.mjs
 ```
 
@@ -111,8 +113,11 @@ V2 source shards each retain at least three publisher cohorts. Every cohort has
 positive and hard-negative field cases, and the generated combined file records
 each shard hash. Explicit `evaluation_split` values are frozen before evaluation
 and are still applied at connected-component scope, so no endpoint can cross
-between train and holdout. V1 remains immutable for comparison; the committed
-runtime policy names v2 only after all four v2 gates pass.
+between train and holdout. V1 and V2 remain immutable for comparison. V3 retains
+all V2 cases and adds `mandate_governs_procedure` and
+`project_participates_in_procedure` field cases against the closed
+`land_use_procedure_v1` vocabulary. The committed runtime policy names V3 only
+after all six gates pass.
 
 Optional flags:
 

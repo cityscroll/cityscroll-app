@@ -15,6 +15,8 @@ import { mapFixtureDoc } from "../src/lib/civic_time.mjs";
 import { labelOcpDisagreements } from "../src/lib/claim_layer.mjs";
 import { subjectRefForActionObject } from "../src/lib/action_log.mjs";
 import {
+  LAND_USE_PROCEDURE_KINDS,
+  LAND_USE_PROCEDURE_VOCABULARY_VERSION,
   SUBJECT_REGISTRY_VERSION,
   attachSubjectRefToClaims,
   formatSubjectRef,
@@ -58,6 +60,43 @@ test("parse/format subject_ref is closed and never rewrites kind or id", () => {
     formatSubjectRef("notice", "20240723114"),
     formatSubjectRef("contract", "CT107120248803393"),
   );
+});
+
+test("land-use procedure subjects use a closed, versioned vocabulary", () => {
+  assert.equal(LAND_USE_PROCEDURE_VOCABULARY_VERSION, "land_use_procedure_v1");
+  assert.deepEqual(LAND_USE_PROCEDURE_KINDS, [
+    "landmark_designation",
+    "rezoning",
+    "ulurp",
+    "special_permit",
+    "city_map_change",
+    "site_selection",
+  ]);
+  assert.deepEqual(parseSubjectRef("procedure:landmark_designation"), {
+    kind: "procedure",
+    id: "landmark_designation",
+    ref: "procedure:landmark_designation",
+  });
+  assert.equal(formatSubjectRef("procedure", "variance"), null);
+  assert.equal(parseSubjectRef("procedure:title-similarity"), null);
+
+  const mandateLink = makeSubjectLink({
+    type: "mandate_governs_procedure",
+    from: "mandate:54431-002",
+    to: "procedure:landmark_designation",
+  });
+  const projectLink = makeSubjectLink({
+    type: "project_participates_in_procedure",
+    from: "project:2026K0443",
+    to: "procedure:landmark_designation",
+  });
+  assert.equal(mandateLink?.type, "mandate_governs_procedure");
+  assert.equal(projectLink?.type, "project_participates_in_procedure");
+  assert.equal(makeSubjectLink({
+    type: "mandate_governs_procedure",
+    from: "project:2026K0443",
+    to: "procedure:landmark_designation",
+  }), null);
 });
 
 test("legacy obligation graph refs migrate narrowly without rewriting watch storage ids", () => {

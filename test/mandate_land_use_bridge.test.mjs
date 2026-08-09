@@ -10,10 +10,13 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import {
+  MANDATE_GOVERNS_PROCEDURE,
   MANDATE_LAND_USE_EDGE_TYPE,
   MANDATE_LAND_USE_METHOD,
+  PROJECT_PARTICIPATES_IN_PROCEDURE,
   agencyMandateLandUsePath,
   buildMandateLandUseView,
+  composePublicProcedurePaths,
   mandateLandUseKinds,
   renderMandateLandUseSection,
 } from "../site/mandate_land_use_bridge.mjs";
@@ -159,6 +162,43 @@ test("resolver requires agency, structured action kind, and subject scope rather
   assert.equal(view.edges[0].claim.enrichment.entity_link_id.available, true);
   assert.equal(view.edges[0].claim.enrichment.resolution_run_id.available, true);
   assert.equal(view.edges[0].claim.claim_id, view.edges[0].entity_link.id);
+  assert.equal(view.procedure_paths.length, 1);
+  assert.equal(view.procedure_paths[0].procedure.subject_ref, "procedure:landmark_designation");
+  assert.equal(view.procedure_paths[0].mandate_edge.type, MANDATE_GOVERNS_PROCEDURE);
+  assert.equal(view.procedure_paths[0].project_edge.type, PROJECT_PARTICIPATES_IN_PROCEDURE);
+  assert.equal(view.procedure_paths[0].mandate_edge.to, view.procedure_paths[0].project_edge.to);
+  assert.equal(view.procedure_paths[0].mandate_edge.public, true);
+  assert.equal(view.procedure_paths[0].project_edge.public, true);
+  assert.deepEqual(view.procedure_paths[0].mandate_edge.evidence.source_fields, [
+    "duty_text", "certification.quote_verified",
+  ]);
+  assert.deepEqual(view.procedure_paths[0].project_edge.evidence.source_fields, [
+    "project_id", "actions",
+  ]);
+});
+
+test("composed procedure paths require both public edges", () => {
+  const mandateEdge = {
+    type: MANDATE_GOVERNS_PROCEDURE,
+    from: "mandate:54431-002",
+    to: "procedure:landmark_designation",
+    public: true,
+  };
+  const projectEdge = {
+    type: PROJECT_PARTICIPATES_IN_PROCEDURE,
+    from: "project:2026K0443",
+    to: "procedure:landmark_designation",
+    public: true,
+  };
+  assert.equal(composePublicProcedurePaths([mandateEdge], [projectEdge]).length, 1);
+  assert.deepEqual(composePublicProcedurePaths(
+    [mandateEdge],
+    [{ ...projectEdge, public: false }],
+  ), []);
+  assert.deepEqual(composePublicProcedurePaths(
+    [{ ...mandateEdge, public: false }],
+    [projectEdge],
+  ), []);
 });
 
 test("subject and temporal conditions suppress unsupported designation edges", () => {
@@ -191,16 +231,23 @@ test("live Landmarks materialization keeps agency-only land actions in shadow", 
     intelligence,
     land_projects: landProjects,
   });
-  assert.equal(view.mandates_land_use.status, "empty");
+  assert.equal(view.mandates_land_use.status, "matched");
   assert.equal(view.mandates_land_use.edges.length, 0);
-  assert.ok(view.mandates_land_use.shadow_edges.length > 0);
+  assert.equal(view.mandates_land_use.shadow_edges.length, 9);
   assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.decision === "evidence_only"));
   assert.ok(view.mandates_land_use.shadow_edges.some((edge) => edge.reason.includes("project_identity")));
   assert.ok(view.mandates_land_use.shadow_edges.some((edge) => edge.reason.includes("mandate_phase_compatible")));
-  assert.equal(view.claims.some((claim) => claim.category_id === "mandate-land-use"), false);
+  assert.equal(view.mandates_land_use.procedure_paths.length, 9);
+  assert.ok(view.mandates_land_use.procedure_paths.every((path) => (
+    path.mandate_edge.public && path.project_edge.public
+  )));
+  assert.ok(view.claims.some((claim) => claim.category_id === "mandate-land-use"));
 
   const html = renderAgencyConstellationDocument(view);
-  assert.doesNotMatch(html, /id="mandates-land-use"/);
+  assert.match(html, /id="mandates-land-use"/);
+  assert.match(html, /Landmark designation procedure/);
+  assert.match(html, /Projects participating in this procedure/);
+  assert.doesNotMatch(html, /requires project|mandate requires this project/i);
 });
 
 test("project identity without a compatible mandate phase remains evidence-only", () => {

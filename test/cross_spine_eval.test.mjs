@@ -13,12 +13,15 @@ import {
   loadCrossSpineGold,
   wilsonInterval,
 } from "../tools/cross_spine_eval.mjs";
+import { LAND_USE_PROCEDURE_KINDS } from "../worker/src/lib/subject_registry.mjs";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
-const GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl");
+const GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v3.jsonl");
+const V2_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl");
 const V1_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v1.jsonl");
 const HARNESS_PATH = resolve(ROOT, "tools/cross_spine_eval.mjs");
-const BUILD_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v2.mjs");
+const BUILD_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v3.mjs");
+const BUILD_V2_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v2.mjs");
 
 function fixtureRow(id, relation, label, leftGroup, rightGroup, features) {
   return {
@@ -44,18 +47,21 @@ const CONTRACT_FEATURES = {
 
 test("versioned cross-spine gold loads and evaluates every relation", () => {
   const gold = loadCrossSpineGold(readFileSync(GOLD_PATH, "utf8"));
-  assert.equal(gold.meta.gold_version, "cross_spine_gold_v2");
-  assert.equal(gold.cases.length, 60);
-  assert.equal(gold.meta.shards.length, 4);
+  assert.equal(gold.meta.gold_version, "cross_spine_gold_v3");
+  assert.equal(gold.cases.length, 90);
+  assert.equal(gold.meta.base_gold.gold_version, "cross_spine_gold_v2");
+  assert.equal(gold.meta.additions.length, 1);
   const report = evaluateCrossSpineGold({ gold, groupSplit: true });
-  assert.equal(report.schema, "cityscroll.cross_spine_edge_eval.v2");
+  assert.equal(report.schema, "cityscroll.cross_spine_edge_eval.v3");
   assert.equal(report.split.group_leakage, false);
-  assert.equal(report.split.held_out_rows, 60);
+  assert.equal(report.split.held_out_rows, 90);
   assert.deepEqual(Object.keys(report.gate).sort(), [
     "mandate_contract",
+    "mandate_governs_procedure",
     "mandate_land_use",
     "mandate_meeting",
     "mandate_rule",
+    "project_participates_in_procedure",
   ]);
   for (const gate of Object.values(report.gate)) {
     assert.equal(gate.status, "pass");
@@ -71,13 +77,16 @@ test("versioned cross-spine gold loads and evaluates every relation", () => {
   assert.equal(report.ok, true);
 });
 
-test("per-relation shards deterministically generate the combined v2 gold", () => {
+test("v3 procedure cases deterministically extend the immutable v2 gold", () => {
   const result = spawnSync(process.execPath, [BUILD_PATH, "--check"], { cwd: ROOT, encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /cross_spine_gold_v2=clean cases=60/);
+  assert.match(result.stdout, /cross_spine_gold_v3=clean cases=90/);
+  const v2 = spawnSync(process.execPath, [BUILD_V2_PATH, "--check"], { cwd: ROOT, encoding: "utf8" });
+  assert.equal(v2.status, 0, v2.stderr);
+  assert.match(v2.stdout, /cross_spine_gold_v2=clean cases=60/);
 });
 
-test("every v2 field case resolves to committed publisher records", () => {
+test("every cross-spine field case resolves to a committed publisher record or procedure kind", () => {
   const gold = loadCrossSpineGold(readFileSync(GOLD_PATH, "utf8"));
   const obligations = JSON.parse(readFileSync(resolve(ROOT, "site/data/agency_obligations_lookup.json"), "utf8"));
   const obligationIds = new Set(Object.values(obligations.by_agency)
@@ -106,8 +115,20 @@ test("every v2 field case resolves to committed publisher records", () => {
       assert.ok(ruleIds.has(row.right.subject_ref.replace(/^rule:/, "")), row.id);
     } else if (row.relation === "mandate_land_use") {
       assert.ok(projectIds.has(row.right.subject_ref.replace(/^project:/, "")), row.id);
+    } else if (row.relation === "mandate_governs_procedure") {
+      assert.ok(LAND_USE_PROCEDURE_KINDS.includes(row.right.subject_ref.replace(/^procedure:/, "")), row.id);
+    } else if (row.relation === "project_participates_in_procedure") {
+      assert.ok(projectIds.has(row.left.subject_ref.replace(/^project:/, "")), row.id);
+      assert.ok(LAND_USE_PROCEDURE_KINDS.includes(row.right.subject_ref.replace(/^procedure:/, "")), row.id);
     }
   }
+});
+
+test("v2 remains immutable after procedure relations move to v3", () => {
+  const gold = loadCrossSpineGold(readFileSync(V2_GOLD_PATH, "utf8"));
+  assert.equal(gold.meta.gold_version, "cross_spine_gold_v2");
+  assert.equal(gold.cases.length, 60);
+  assert.equal(gold.cases.some((row) => row.relation.includes("procedure")), false);
 });
 
 test("v1 remains immutable and cannot pass the new minimum-support gate", () => {
