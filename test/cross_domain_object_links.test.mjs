@@ -41,6 +41,7 @@ import {
   stampMeetingLandLinksOnCorpus,
   MEETING_LAND_ULURP_METHOD,
   MEETING_LAND_ZAP_METHOD,
+  EXACT_KEY_EDGE_TIER,
   buildPassportCheckbookCrosswalk,
 } from "../entity_resolution/cross_domain/index.mjs";
 import {
@@ -137,6 +138,9 @@ describe("observation → links with provenance", () => {
     assert.equal(links[0].from, "notice:20260723031");
     assert.equal(links[0].to, "contract:CT1-816-20278801775");
     assert.equal(links[0].provenance.related_source_system, "ocp-recent-contract-awards");
+    assert.equal(links[0].tier, EXACT_KEY_EDGE_TIER);
+    assert.equal(links[0].provenance.match, "exact");
+    assert.equal(links[0].provenance.join_key, "pin_epin");
   });
 
   it("crosswalks Checkbook and PASSPort contracts through PIN/EPIN without name fallback", () => {
@@ -168,6 +172,25 @@ describe("observation → links with provenance", () => {
     assert.equal(crosswalkLinks[0].from, "contract:CT81626W0043001");
     assert.equal(crosswalkLinks[0].to, "contract:CT1-816-20278801775");
     assert.equal(crosswalkLinks[0].provenance.source_fields[0], "pin");
+  });
+
+  it("does not reintegrate non-exact PIN suffix or prefix candidates", () => {
+    const award = observationFromMoneyRow({
+      request_id: "20260723032",
+      pin: "81626W0043001A001",
+      agency_name: "Health and Mental Hygiene",
+      vendor_name: "MAKE IT ZESTY LLC",
+    });
+    const contract = observationFromPassportContractRow({
+      contract_id: "CT1-816-20278801775",
+      epin: "81626W0043001",
+      agency: "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+      vendor: "MAKE IT ZESTY LLC",
+    });
+    assert.equal(
+      (procurementContractLinksForObservations([award, contract]).get(award.source_record_id) || []).length,
+      0,
+    );
   });
 
   it("links a money award to agency and vendor with source provenance", () => {
@@ -233,6 +256,9 @@ describe("observation → links with provenance", () => {
     assert.ok(parcelEdges.every((e) => e.to.startsWith("parcel:")));
     assert.equal(parcelEdges[0].provenance.source_fields.includes("bbl"), true);
     assert.equal(parcelEdges[0].method, "zap_bbl_project_id_v1");
+    assert.equal(parcelEdges[0].tier, EXACT_KEY_EDGE_TIER);
+    assert.equal(parcelEdges[0].provenance.join_key, "bbl");
+    assert.equal(parcelEdges[0].provenance.join_value, "1017670001");
   });
 
   it("links award PIN and contract_id join keys with provenance", () => {
@@ -253,8 +279,14 @@ describe("observation → links with provenance", () => {
     assert.ok(pinEdge, "PIN join edge");
     assert.equal(pinEdge.to, "pin:PIN-FIXTURE-5");
     assert.equal(pinEdge.provenance.source_fields.includes("pin"), true);
+    assert.equal(pinEdge.tier, EXACT_KEY_EDGE_TIER);
+    assert.equal(pinEdge.provenance.join_key, "pin");
+    assert.equal(pinEdge.provenance.join_value, "PIN-FIXTURE-5");
     assert.ok(ctEdge, "contract_id join edge");
     assert.equal(ctEdge.to, "contract:CT-PARKS-FIX005");
+    assert.equal(ctEdge.tier, EXACT_KEY_EDGE_TIER);
+    assert.equal(ctEdge.provenance.join_key, "contract_id");
+    assert.equal(ctEdge.provenance.join_value, "CT-PARKS-FIX005");
     assert.ok(agencyCt, "contract → agency");
     assert.equal(agencyCt.to, "agency:id:parks-and-recreation");
     assert.ok(joinKeyLinksForObservation(obs).length >= 2);
@@ -649,6 +681,25 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(parks.domains.meetings.status, "matched");
     assert.ok(parks.links[0].provenance.source_record_id);
 
+    const exactTypes = new Set([
+      "shares_authority_key",
+      "references_contract",
+      "sited_on_parcel",
+      "sits_on_parcel",
+      "decides_land_project",
+    ]);
+    const allLinks = Object.values(doc.by_ref).flatMap((entry) => entry.links || []);
+    const exactLinks = allLinks.filter((link) => exactTypes.has(link.type));
+    assert.ok(exactLinks.length > 0);
+    assert.ok(exactLinks.every((link) =>
+      link.tier === EXACT_KEY_EDGE_TIER
+        && link.provenance?.match === "exact"
+        && link.provenance?.join_key
+        && link.provenance?.join_value,
+    ));
+    assert.equal(allLinks.some((link) => link.type === "implemented_by_contract"), false);
+    assert.equal(allLinks.some((link) => typeof link.confidence === "number"), false);
+
     // Domain snapshots densify beyond the old 3 rules + 4 meetings seeds
     const rulesSnap = join(ROOT, "site/data/rules_domain_observations.json");
     const meetingsSnap = join(ROOT, "site/data/meetings_domain_observations.json");
@@ -746,6 +797,10 @@ describe("meeting → land reverse object-link (ULURP / ZAP)", () => {
     assert.equal(edge.method, MEETING_LAND_ULURP_METHOD);
     assert.ok(edge.provenance?.source_system);
     assert.ok(edge.provenance?.source_record_id);
+    assert.equal(edge.tier, EXACT_KEY_EDGE_TIER);
+    assert.equal(edge.provenance.match, "exact");
+    assert.equal(edge.provenance.join_key, "ulurp_number");
+    assert.equal(edge.provenance.join_value, "240046HAM");
     assert.ok(
       edge.provenance.source_fields.includes("body")
         || edge.provenance.source_fields.includes("ulurp_numbers"),
