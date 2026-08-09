@@ -1,0 +1,124 @@
+{
+  "schema": "cityscroll.cross_spine_edge_eval.v1",
+  "eval_version": "cross_spine_eval_v1",
+  "gold_version": "cross_spine_gold_v1",
+  "content_hash": "18c22ac35c59dea4",
+  "relation": "mandate_meeting",
+  "group_split": true,
+  "split": {
+    "holdout_buckets": 5,
+    "holdout_bucket": 0,
+    "train_rows": 3,
+    "held_out_rows": 2,
+    "train_groups": 6,
+    "held_out_groups": 4,
+    "group_leakage": false,
+    "assignments": [
+      {
+        "id": "xsg-011",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:meeting-001",
+          "right": "meeting:001"
+        },
+        "component": "mandate:meeting-001|meeting:001"
+      },
+      {
+        "id": "xsg-012",
+        "split": "train",
+        "groups": {
+          "left": "mandate:meeting-002",
+          "right": "meeting:002"
+        },
+        "component": "mandate:meeting-002|meeting:002"
+      },
+      {
+        "id": "xsg-013",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:meeting-003",
+          "right": "meeting:003"
+        },
+        "component": "mandate:meeting-003|meeting:003"
+      },
+      {
+        "id": "xsg-014",
+        "split": "train",
+        "groups": {
+          "left": "mandate:meeting-004",
+          "right": "meeting:004"
+        },
+        "component": "mandate:meeting-004|meeting:004"
+      },
+      {
+        "id": "xsg-015",
+        "split": "train",
+        "groups": {
+          "left": "mandate:meeting-005",
+          "right": "meeting:005"
+        },
+        "component": "mandate:meeting-005|meeting:005"
+      }
+    ]
+  },
+  "all": {
+    "mandate_meeting": {
+      "split": "all",
+      "total": 5,
+      "inferred_total": 5,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 4,
+      "candidates": 4,
+      "true_positive": 4,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.2
+    }
+  },
+  "train": {
+    "mandate_meeting": {
+      "split": "train",
+      "total": 3,
+      "inferred_total": 3,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 3,
+      "candidates": 3,
+      "true_positive": 3,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 0,
+      "abstention_rate": 0
+    }
+  },
+  "held_out": {
+    "mandate_meeting": {
+      "split": "held_out",
+      "total": 2,
+      "inferred_total": 2,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 1,
+      "candidates": 1,
+      "true_positive": 1,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.5
+    }
+  },
+  "gate": {
+    "mandate_meeting": {
+      "precision": 1,
+      "min_precision": 0.9,
+      "passed": true,
+      "status": "pass"
+    }
+  },
+  "ok": true
+}

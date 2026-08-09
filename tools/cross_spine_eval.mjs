@@ -11,7 +11,8 @@
 
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   CROSS_SPINE_RELATION_POLICIES,
   CROSS_SPINE_MIN_HELD_OUT_PRECISION,
@@ -25,6 +26,9 @@ export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v1";
 export const DEFAULT_MIN_PRECISION = CROSS_SPINE_MIN_HELD_OUT_PRECISION;
 export const DEFAULT_HOLDOUT_BUCKETS = 5;
 export const DEFAULT_HOLDOUT_BUCKET = 0;
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+export const DEFAULT_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v1.jsonl");
+export const DEFAULT_GATE_RECEIPT_PATH = resolve(ROOT, "site/data/cross_spine_edge_gate.json");
 
 const LABELS = new Set(["same", "different"]);
 export const RELATION_POLICIES = CROSS_SPINE_RELATION_POLICIES;
@@ -322,7 +326,8 @@ export function evaluateCrossSpineGold({ gold, relation = null, groupSplit = fal
 
 function parseArgs(argv) {
   const args = {
-    gold: null,
+    gold: DEFAULT_GOLD_PATH,
+    goldProvided: false,
     relation: null,
     groupSplit: false,
     minPrecision: DEFAULT_MIN_PRECISION,
@@ -333,7 +338,7 @@ function parseArgs(argv) {
   };
   for (let index = 2; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "--gold") args.gold = argv[++index];
+    if (arg === "--gold") { args.gold = argv[++index]; args.goldProvided = true; }
     else if (arg === "--relation") args.relation = argv[++index];
     else if (arg === "--group-split") args.groupSplit = true;
     else if (arg === "--min-precision") args.minPrecision = Number(argv[++index]);
@@ -344,18 +349,15 @@ function parseArgs(argv) {
     else if (arg === "--help" || arg === "-h") return { help: true };
     else fail(`unknown argument: ${arg}`);
   }
-  if (!args.gold && args.checkPolicy) {
-    args.gold = "entity_resolution/eval/cross_spine_gold_v1.jsonl";
-  }
-  if (!args.gold) fail("--gold is required");
   if (!Number.isFinite(args.minPrecision) || args.minPrecision < 0 || args.minPrecision > 1) fail("--min-precision must be between 0 and 1");
   // A gate is never allowed to silently become an in-sample measurement.
   if (args.check || args.checkPolicy) args.groupSplit = true;
+  if (args.check && !args.out && !args.goldProvided) args.out = DEFAULT_GATE_RECEIPT_PATH;
   return args;
 }
 
 function usage() {
-  console.error("Usage: node tools/cross_spine_eval.mjs --gold <path.jsonl> [--relation <relation>] --group-split [--min-precision 0.90] [--json] [--out <receipt.json>] [--check] [--check-policy]");
+  console.error("Usage: node tools/cross_spine_eval.mjs [--gold <path.jsonl>] [--relation <relation>] --group-split [--min-precision 0.90] [--json] [--out <receipt.json>] [--check] [--check-policy]");
 }
 
 function main() {

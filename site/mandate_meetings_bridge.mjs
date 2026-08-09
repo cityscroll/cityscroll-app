@@ -12,16 +12,21 @@ import {
 import { contentTokens } from "./process_conformance.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import {
+  DEFAULT_CROSS_SPINE_EDGE_POLICY,
+  routeCrossSpineEdge,
+} from "../entity_resolution/cross_domain/edge_policy.mjs";
+import {
   emptyScope,
   normalizeScope,
   routeHashFromScope,
   scopeWithEntity,
 } from "./scope_v0.mjs";
 
-export const MANDATE_MEETINGS_SCHEMA = "cityscroll.mandate_meetings.v1";
-export const MANDATE_MEETINGS_METHOD = "mandate_meeting_multikey_exact_v1";
-export const MANDATE_MEETINGS_MATCHER_VERSION = "v1";
+export const MANDATE_MEETINGS_SCHEMA = "cityscroll.mandate_meetings.v2";
+export const MANDATE_MEETINGS_METHOD = "mandate_meeting_subject_temporal_v2";
+export const MANDATE_MEETINGS_MATCHER_VERSION = "v2";
 export const MANDATE_MEETING_EDGE_TYPE = "requires_public_hearing";
+export const MANDATE_MEETING_MIN_PRECISION = 0.9;
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -73,6 +78,74 @@ function datePart(value) {
   return match ? match[1] : null;
 }
 
+function normalizedId(value) {
+  return clean(value, 120).toLowerCase();
+}
+
+function firstValue(...values) {
+  return values.find((value) => clean(value, 500)) || null;
+}
+
+function mandateSubjectText(mandate) {
+  return firstValue(
+    mandate.matter_body_subject,
+    mandate.body_subject,
+    mandate.subject,
+    mandate.matter?.subject,
+    mandate.duty_text,
+    mandate.citation,
+  );
+}
+
+function meetingSubjectText(row) {
+  return firstValue(
+    row.matter_body_subject,
+    row.body_subject,
+    row.matter?.subject,
+    row.subject,
+    row.body,
+    row.description,
+    row.short_title || row.title || row.label,
+  );
+}
+
+function temporalEvidence(mandate, meeting) {
+  const explicit = meeting.temporal_compatible
+    ?? meeting.temporal?.compatible
+    ?? meeting.temporal_evidence?.compatible;
+  if (typeof explicit === "boolean") {
+    return {
+      compatible: explicit,
+      method: "publisher_temporal_compatibility",
+      meeting_date: meeting.date,
+    };
+  }
+
+  const meetingDate = datePart(meeting.date);
+  const lower = datePart(firstValue(
+    mandate.temporal_window?.start,
+    mandate.temporal?.start,
+    mandate.effective_date,
+    mandate.start_date,
+  ));
+  const upper = datePart(firstValue(
+    mandate.temporal_window?.end,
+    mandate.temporal?.end,
+    mandate.deadline?.computed_date,
+    mandate.end_date,
+  ));
+  if (!meetingDate || (!lower && !upper)) {
+    return { compatible: false, method: null, meeting_date: meetingDate, window: { start: lower, end: upper } };
+  }
+  if (lower && meetingDate < lower) {
+    return { compatible: false, method: "mandate_temporal_window_v1", meeting_date: meetingDate, window: { start: lower, end: upper } };
+  }
+  if (upper && meetingDate > upper) {
+    return { compatible: false, method: "mandate_temporal_window_v1", meeting_date: meetingDate, window: { start: lower, end: upper } };
+  }
+  return { compatible: true, method: "mandate_temporal_window_v1", meeting_date: meetingDate, window: { start: lower, end: upper } };
+}
+
 function meetingCandidates(meetingsDomain, identity) {
   const out = [];
   for (const row of meetingsDomain?.rows || []) {
@@ -89,26 +162,71 @@ function meetingCandidates(meetingsDomain, identity) {
       label,
       event_kind: kind,
       date: datePart(row.event_date || row.start_date || row.date),
+      temporal_compatible: row.temporal_compatible
+        ?? row.temporal?.compatible
+        ?? row.temporal_evidence?.compatible
+        ?? null,
+      temporal: row.temporal || row.temporal_evidence || null,
+      matter_id: clean(row.matter_id || row.matter?.id, 120) || null,
+      subject_fields: [
+        row.matter_body_subject || row.body_subject ? "body_subject" : null,
+        row.matter?.subject ? "matter.subject" : null,
+        row.subject ? "subject" : null,
+        row.body ? "body" : null,
+        row.description ? "description" : null,
+        row.short_title || row.title || row.label ? "short_title" : null,
+      ].filter(Boolean),
       href: clean(row.href, 240) || `/notices/${encodeURIComponent(requestId)}`,
       source_system: clean(row.source_system, 80) || "city_record",
       agency_name: identity.canonical_name,
-      title_scope_tokens: scopeTokens(label),
-      agency_scope_tokens: scopeTokens(identity.canonical_name),
+      subject_scope_tokens: scopeTokens(meetingSubjectText(row)),
     });
   }
   return out.sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")));
 }
 
 function matchedScope(mandate, candidate) {
-  const mandateScope = scopeTokens(mandate.duty_text, mandate.citation);
-  const titleScope = new Set(candidate.title_scope_tokens || []);
-  const agencyScope = new Set(candidate.agency_scope_tokens || []);
-  const titleShared = mandateScope.filter((token) => titleScope.has(token));
-  const agencyShared = mandateScope.filter((token) => agencyScope.has(token));
-  if (titleShared.length >= 2) return titleShared;
-  if (agencyShared.length >= 2) return agencyShared;
-  const rareAgency = agencyShared.filter((token) => token.length >= 8);
-  return rareAgency.length ? rareAgency : [];
+  const mandateScope = scopeTokens(mandateSubjectText(mandate));
+  const subjectScope = new Set(candidate.subject_scope_tokens || []);
+  const shared = mandateScope.filter((token) => subjectScope.has(token));
+  return shared.length >= 2 ? shared : [];
+}
+
+function publicationGate(source) {
+  const row = source?.gate?.mandate_meeting
+    || source?.gates?.mandate_meeting
+    || source?.mandate_meeting
+    || source
+    || null;
+  const precision = Number(row?.precision);
+  const minPrecision = Number(row?.min_precision ?? MANDATE_MEETING_MIN_PRECISION);
+  const passed = (row?.passed === true || row?.status === "pass")
+    && Number.isFinite(precision)
+    && Number.isFinite(minPrecision)
+    && precision >= MANDATE_MEETING_MIN_PRECISION
+    && precision >= minPrecision;
+  return {
+    status: passed ? "pass" : (row?.status || "insufficient"),
+    precision: Number.isFinite(precision) ? precision : null,
+    min_precision: Number.isFinite(minPrecision) ? minPrecision : MANDATE_MEETING_MIN_PRECISION,
+    passed,
+    gold_version: clean(source?.gold_version || row?.gold_version, 120) || null,
+    eval_version: clean(source?.eval_version || row?.eval_version, 120) || null,
+  };
+}
+
+function crossSpinePolicy(gate) {
+  return {
+    ...DEFAULT_CROSS_SPINE_EDGE_POLICY,
+    gates: {
+      ...DEFAULT_CROSS_SPINE_EDGE_POLICY.gates,
+      mandate_meeting: {
+        status: gate.passed ? "pass" : (gate.status || "insufficient"),
+        min_precision: gate.min_precision,
+        precision: gate.precision,
+      },
+    },
+  };
 }
 
 function stablePart(value) {
@@ -152,40 +270,77 @@ export function buildMandateMeetingsView(agencyIdOrName, sources = {}) {
     .filter((row) => row?.certification?.quote_verified !== false)
     .filter(mandateRequiresMeeting);
   const candidates = meetingCandidates(sources.meetingsDomain, identity);
+  const gate = publicationGate(sources.crossSpineGate);
+  const edgePolicy = crossSpinePolicy(gate);
   const runId = `resolution-run:mandate-meeting:${stablePart(identity.canonical_id)}:${stablePart(sources.generatedAt || sources.meetingsDomain?.generated_at || "current")}`;
   const resolutionRun = Object.freeze({
     id: runId,
     method: MANDATE_MEETINGS_METHOD,
     matcher_version: MANDATE_MEETINGS_MATCHER_VERSION,
     entity_type: "mandate_meeting",
-    scope_note: "agency+event_kind+subject_scope",
+    scope_note: "agency+event_kind+matter_body_subject+temporal",
+    publication_gate: gate,
     status: "complete",
   });
   const edges = [];
+  const shadowEdges = [];
   const perMandateLimit = Math.max(1, Math.min(Number(sources.perMandateLimit) || 3, 8));
 
   for (const mandate of mandates) {
     let matched = 0;
     for (const meeting of candidates) {
       const subjectScope = matchedScope(mandate, meeting);
-      if (!subjectScope.length) continue;
+      const temporal = temporalEvidence(mandate, meeting);
+      const mandateMatterId = clean(mandate.matter_id || mandate.source?.matter_id, 120) || null;
+      const matterExact = Boolean(mandateMatterId && meeting.matter_id
+        && normalizedId(mandateMatterId) === normalizedId(meeting.matter_id));
+      const evidence = {
+        keys: ["agency", "event_kind", "matter_body_subject", "temporal"],
+        agency_id: identity.canonical_id,
+        event_kind: meeting.event_kind,
+        matter_id: mandateMatterId,
+        meeting_matter_id: meeting.matter_id,
+        matter_exact: matterExact,
+        subject_scope: subjectScope,
+        subject_scope_overlap: subjectScope,
+        body_subject_overlap: subjectScope,
+        subject_fields: meeting.subject_fields,
+        temporal_compatible: temporal.compatible,
+        temporal,
+      };
+      const route = routeCrossSpineEdge({
+        relation: "mandate_meeting",
+        features: {
+          agency_exact: true,
+          event_kind_match: Boolean(meeting.event_kind),
+          subject_scope_overlap: subjectScope,
+          temporal_compatible: temporal.compatible,
+        },
+        evidence,
+        provenance: {
+          source_system: meeting.source_system,
+          source_record_id: `city_record:${meeting.request_id}`,
+        },
+      }, { policy: edgePolicy });
+      const publicCandidate = route.tier === "public_inferred";
+      const missing = [];
+      if (!subjectScope.length) missing.push("matter_body_subject");
+      if (!temporal.compatible) missing.push("temporal");
+      if (!gate.passed) missing.push("held_out_precision_gate");
       const linkId = `entity-link:mandate-meeting:${stablePart(mandate.obligation_id)}:${stablePart(meeting.request_id)}`;
       const entityLink = {
         id: linkId,
         source_record_id: `obligation:${mandate.obligation_id}`,
         canonical_entity_id: meeting.subject_ref,
-        decision: "auto_link",
-        confidence: 1,
+        decision: publicCandidate ? "auto_link" : "evidence_only",
+        confidence: publicCandidate ? 0.9 : null,
+        tier: route.tier,
+        tier_reason: route.reason,
         method: MANDATE_MEETINGS_METHOD,
         matcher_version: MANDATE_MEETINGS_MATCHER_VERSION,
         resolution_run_id: runId,
-        review_status: "auto_exact",
-        evidence: {
-          keys: ["agency", "event_kind", "subject_scope"],
-          agency_id: identity.canonical_id,
-          event_kind: meeting.event_kind,
-          subject_scope: subjectScope,
-        },
+        review_status: publicCandidate ? "auto_inferred" : null,
+        evidence,
       };
       const item = {
         id: `${mandate.obligation_id}:${meeting.request_id}`,
@@ -194,8 +349,14 @@ export function buildMandateMeetingsView(agencyIdOrName, sources = {}) {
         label: meeting.label,
         href: meeting.href,
         relation: MANDATE_MEETING_EDGE_TYPE,
-        confidence: "strong",
-        decision: entityLink.decision,
+        confidence: publicCandidate ? "strong" : "evidence_only",
+        decision: publicCandidate ? entityLink.decision : "evidence_only",
+        edge_policy: {
+          tier: route.tier,
+          reason: route.reason,
+          policy_version: route.policy_version,
+          evidence: route.evidence,
+        },
         method: MANDATE_MEETINGS_METHOD,
         entity_link_id: linkId,
         resolution_run_id: runId,
@@ -203,13 +364,25 @@ export function buildMandateMeetingsView(agencyIdOrName, sources = {}) {
         provenance: {
           source_system: meeting.source_system,
           source_record_id: `city_record:${meeting.request_id}`,
-          source_fields: ["agency_name", "type_of_notice_description", "short_title"],
+          source_fields: ["agency_name", "type_of_notice_description", ...meeting.subject_fields, "event_date"],
           input_value: subjectScope.join(", "),
           observed_at: meeting.date,
-          basis: "agency+event_kind+subject_scope",
+          basis: "agency+event_kind+matter_body_subject+temporal",
           source_excerpt: meeting.label,
         },
       };
+      if (!publicCandidate) {
+        shadowEdges.push({
+          id: item.id,
+          mandate: item.root_ref,
+          meeting,
+          match: evidence,
+          entity_link: { ...entityLink, decision: "evidence_only", review_status: null },
+          decision: "evidence_only",
+          reason: missing.length ? missing : [route.reason],
+        });
+        continue;
+      }
       const claim = buildEdgeProvenanceClaim(item, {
         category_id: "mandate-meetings",
         relation: MANDATE_MEETING_EDGE_TYPE,
@@ -228,6 +401,7 @@ export function buildMandateMeetingsView(agencyIdOrName, sources = {}) {
         meeting,
         match: entityLink.evidence,
         entity_link: entityLink,
+        edge_policy: item.edge_policy,
         resolution_run: resolutionRun,
         process_conformance: {
           expected_event: { kind: meeting.event_kind, label: "Public meeting or hearing" },
@@ -252,8 +426,15 @@ export function buildMandateMeetingsView(agencyIdOrName, sources = {}) {
     subject_ref: `agency:id:${identity.canonical_id}`,
     relation: MANDATE_MEETING_EDGE_TYPE,
     resolution_run: resolutionRun,
-    counts: { mandates: matchedMandates.size, meetings: matchedMeetings.size, edges: edges.length },
+    publication_gate: gate,
+    counts: {
+      mandates: matchedMandates.size,
+      meetings: matchedMeetings.size,
+      edges: edges.length,
+      shadow_edges: shadowEdges.length,
+    },
     edges,
+    shadow_edges: shadowEdges,
     share_path: agencyMandateMeetingsPath(identity.canonical_id),
     meetings_browse_href: agencyMeetingsBrowseHref(identity.canonical_id),
     mandates_follow_href: agencyObligationsFollowHref(identity.canonical_id),

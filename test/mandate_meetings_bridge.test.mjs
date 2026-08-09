@@ -25,9 +25,11 @@ const meetings = JSON.parse(readFileSync(join(ROOT, "site/data/meetings_domain_o
 const intelligence = JSON.parse(readFileSync(join(ROOT, "site/data/entity_intelligence_lookup.json"), "utf8"));
 const certification = JSON.parse(readFileSync(join(ROOT, "site/data/exam_certification_constellation.json"), "utf8"));
 const processConformance = JSON.parse(readFileSync(join(ROOT, "site/data/process_conformance_lookup.json"), "utf8"));
+const crossSpineGate = JSON.parse(readFileSync(join(ROOT, "site/data/cross_spine_edge_gate.json"), "utf8"));
 
 const mandate = {
   obligation_id: "54431-002",
+  matter_id: "matter-1",
   agency_id: "landmarks-preservation-commission",
   agency_name: "Landmarks Preservation Commission",
   duty_text: "The commission shall hold a public hearing to consider any landmark under consideration for landmark designation.",
@@ -60,8 +62,11 @@ test("resolver requires agency, event kind, and subject scope rather than title 
           request_id: "right",
           agency_name: "Landmarks Preservation Commission",
           short_title: "Public Hearing Agenda",
+          matter_id: "matter-1",
+          subject: "Landmark designation public hearing",
           type_of_notice_description: "Public Hearings",
           event_date: "2026-08-18T09:00:00.000",
+          temporal_compatible: true,
           source_system: "city_record",
         },
         {
@@ -80,6 +85,7 @@ test("resolver requires agency, event kind, and subject scope rather than title 
       ],
     },
     generatedAt: "2026-08-08T12:00:00Z",
+    crossSpineGate,
   });
 
   assert.equal(view.status, "matched");
@@ -87,8 +93,12 @@ test("resolver requires agency, event kind, and subject scope rather than title 
   assert.equal(view.edges.length, 1);
   assert.equal(view.edges[0].meeting.request_id, "right");
   assert.equal(view.edges[0].relation, MANDATE_MEETING_EDGE_TYPE);
-  assert.deepEqual(view.edges[0].match.keys, ["agency", "event_kind", "subject_scope"]);
+  assert.deepEqual(view.edges[0].match.keys, ["agency", "event_kind", "matter_body_subject", "temporal"]);
   assert.ok(view.edges[0].match.subject_scope.includes("landmark"));
+  assert.equal(view.edges[0].match.matter_exact, true);
+  assert.equal(view.edges[0].match.temporal_compatible, true);
+  assert.equal(view.edges[0].edge_policy.tier, "public_inferred");
+  assert.equal(view.edges[0].entity_link.tier, "public_inferred");
   assert.match(view.edges[0].entity_link.id, /^entity-link:mandate-meeting:/);
   assert.match(view.edges[0].resolution_run.id, /^resolution-run:mandate-meeting:/);
   assert.equal(view.edges[0].process_conformance.status, "observed");
@@ -119,31 +129,51 @@ test("unresolved mandates and empty agencies render nothing", () => {
         type_of_notice_description: "Public Hearings",
       }],
     },
+    crossSpineGate,
   });
   assert.equal(view.status, "empty");
   assert.deepEqual(view.edges, []);
   assert.equal(renderMandateMeetingsSection(view), "");
 });
 
-test("live Landmarks materialization links hearing mandates to City Record meetings", () => {
+test("live snapshot with no matter/body subject or temporal evidence publishes no meeting edge", () => {
   const view = buildAgencyConstellationView("landmarks-preservation-commission", {
     obligations,
     meetings_domain: meetings,
     intelligence,
     certification,
     process_conformance: processConformance,
+    cross_spine_gate: crossSpineGate,
   });
-  assert.equal(view.mandates_meetings.status, "matched");
-  assert.ok(view.mandates_meetings.counts.mandates >= 1);
-  assert.ok(view.mandates_meetings.counts.meetings >= 1);
-  assert.ok(view.mandates_meetings.edges.every((edge) => edge.meeting.request_id));
-  assert.ok(view.claims.some((claim) => claim.category_id === "mandate-meetings"));
+  assert.equal(view.mandates_meetings, undefined);
 
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /id="mandates-meetings"/);
-  assert.match(html, /Mandates · Meetings and hearings/);
-  assert.match(html, /data-mandate-meeting-edge=/);
-  assert.match(html, /Watch mandates/);
-  assert.match(html, /Follow meetings and hearings/);
+  assert.doesNotMatch(html, /id="mandates-meetings"/);
   assert.doesNotMatch(html, /not yet|no meeting|unresolved|not adjudicated|methodology/i);
+});
+
+test("a failed held-out gate keeps otherwise supported candidates in evidence-only shadow", () => {
+  const view = buildMandateMeetingsView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: [mandate] } },
+    },
+    meetingsDomain: {
+      rows: [{
+        request_id: "shadow",
+        agency_name: "Landmarks Preservation Commission",
+        short_title: "Landmark designation public hearing",
+        subject: "Landmark designation public hearing",
+        matter_id: "matter-1",
+        type_of_notice_description: "Public Hearings",
+        event_date: "2026-08-18T09:00:00.000",
+        temporal_compatible: true,
+      }],
+    },
+    crossSpineGate: { gate: { mandate_meeting: { passed: false, precision: 0.89, min_precision: 0.9, status: "fail" } } },
+  });
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 1);
+  assert.deepEqual(view.shadow_edges[0].reason, ["held_out_precision_gate"]);
+  assert.equal(view.shadow_edges[0].decision, "evidence_only");
+  assert.equal(view.shadow_edges[0].entity_link.tier, "evidence_only");
 });
