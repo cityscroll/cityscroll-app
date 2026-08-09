@@ -187,7 +187,11 @@ def main() -> None:
         for rail_selector, data_attr in rails:
             if rail_selector != "#assettabs" and page.locator("#property-more-filters").get_attribute("open") is None:
                 page.locator("#property-more-filters > summary").click()
-            keys = page.locator(f"{rail_selector} .chip").evaluate_all(f"buttons => buttons.map(button => button.getAttribute('{data_attr}'))")
+            controls = page.locator(f"{rail_selector} .ui-filter-chip")
+            assert controls.evaluate_all(
+                "buttons => buttons.every(button => button.tagName === 'BUTTON' && ['true', 'false'].includes(button.getAttribute('aria-pressed')))"
+            ), f"invalid filter control semantics in {rail_selector}"
+            keys = controls.evaluate_all(f"buttons => buttons.map(button => button.getAttribute('{data_attr}'))")
             assert keys, f"no chips in {rail_selector}"
             for key in keys:
                 chip = page.locator(f'{rail_selector} [{data_attr}="{key}"]')
