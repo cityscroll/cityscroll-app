@@ -30,6 +30,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   uncertain candidates in `shadow_edges` only; verify the frozen relation gates with
   `node tools/cross_spine_eval.mjs --check-policy` and cover public omission in
   `worker/test/public_relationship_graph.test.mjs`.
+- **Notice mandate backlinks:** public-only reverse index of mandate → notice edges for
+  `/notices/<id>`. SPA-safe renderer `site/notice_mandate_backlinks.mjs` (no bridge/ER
+  imports); build-time index `tools/lib/notice_mandate_backlinks_index.mjs` →
+  `site/data/notice_mandate_backlinks_lookup.json` via
+  `node tools/build_notice_mandate_backlinks.mjs`. Edge stamps in `renderEdgeNotice`; SPA
+  hydrates through `fillContext` in `site/app/notice-context.mjs` and skips when the edge
+  card is already present. Empty-safe: no absence copy, no profile-blocking fetch on miss.
+  Verify: `node --test test/notice_mandate_backlinks.test.mjs` and
+  `test/functional/24_notice_document_features.py`.
 - **Land-use procedure nodes:** the closed `land_use_procedure_v1` vocabulary lives in
   `worker/src/lib/subject_registry.mjs`. `site/mandate_land_use_bridge.mjs` composes
   mandate → procedure ← project only when both evaluated edges are public; the direct
