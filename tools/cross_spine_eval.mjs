@@ -12,49 +12,23 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import {
+  CROSS_SPINE_RELATION_POLICIES,
+  CROSS_SPINE_MIN_HELD_OUT_PRECISION,
+  canonicalCrossSpineRelation,
+  checkCrossSpineEdgePolicy,
+  crossSpineEvidenceDecision,
+} from "../entity_resolution/cross_domain/edge_policy.mjs";
 
 export const CROSS_SPINE_EVAL_SCHEMA = "cityscroll.cross_spine_edge_eval.v1";
 export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v1";
-export const DEFAULT_MIN_PRECISION = 0.9;
+export const DEFAULT_MIN_PRECISION = CROSS_SPINE_MIN_HELD_OUT_PRECISION;
 export const DEFAULT_HOLDOUT_BUCKETS = 5;
 export const DEFAULT_HOLDOUT_BUCKET = 0;
 
 const LABELS = new Set(["same", "different"]);
+export const RELATION_POLICIES = CROSS_SPINE_RELATION_POLICIES;
 const TIERS = new Set(["inferred", "deterministic"]);
-
-/**
- * The evidence contract is intentionally explicit. Later enrichment cards
- * may add features, but each relation owns its candidate gate here.
- */
-export const RELATION_POLICIES = Object.freeze({
-  mandate_contract: Object.freeze({
-    required: [
-      "agency_exact",
-      "procurement_trigger",
-      "procurement_action_exact",
-      "subject_scope_overlap",
-      "contract_authority_exact",
-    ],
-    minimumOverlap: { subject_scope_overlap: 1 },
-  }),
-  mandate_rule: Object.freeze({
-    required: ["agency_exact", "expected_event_match", "topic_overlap", "temporal_compatible"],
-    minimumOverlap: { topic_overlap: 2 },
-  }),
-  mandate_meeting: Object.freeze({
-    required: ["agency_exact", "event_kind_match", "subject_scope_overlap", "temporal_compatible"],
-    minimumOverlap: { subject_scope_overlap: 2 },
-  }),
-  mandate_land_use: Object.freeze({
-    required: ["agency_exact", "land_action_kind_match", "project_identity", "mandate_phase_compatible"],
-    minimumOverlap: {},
-  }),
-});
-
-const RELATION_ALIASES = Object.freeze({
-  mandate_land: "mandate_land_use",
-  mandate_land_action: "mandate_land_use",
-});
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -65,32 +39,7 @@ function fail(message) {
 }
 
 function canonicalRelation(value) {
-  const relation = clean(value).toLowerCase();
-  return RELATION_ALIASES[relation] || relation;
-}
-
-function valueForFeature(features, key) {
-  if (Object.prototype.hasOwnProperty.call(features, key)) return features[key];
-  if (key === "subject_scope_overlap" && Object.hasOwn(features, "subject_scope_keys")) {
-    return features.subject_scope_keys;
-  }
-  if (key === "topic_overlap" && Object.hasOwn(features, "topic_keys")) return features.topic_keys;
-  return undefined;
-}
-
-function featurePasses(features, key, minimum) {
-  const value = valueForFeature(features, key);
-  if (Array.isArray(value)) return value.length >= (minimum || 1);
-  if (typeof value === "number") return value >= (minimum || 1);
-  return value === true || value === "true" || value === "exact" || value === "compatible";
-}
-
-function rowFeatures(row) {
-  return {
-    ...(row?.features && typeof row.features === "object" ? row.features : {}),
-    ...(row?.evidence?.features && typeof row.evidence.features === "object" ? row.evidence.features : {}),
-    ...(row?.evidence && typeof row.evidence === "object" ? row.evidence : {}),
-  };
+  return canonicalCrossSpineRelation(value);
 }
 
 /**
@@ -99,20 +48,13 @@ function rowFeatures(row) {
  */
 export function candidateDecision(row, relation = row?.relation) {
   const canonical = canonicalRelation(relation);
-  const policy = RELATION_POLICIES[canonical];
-  if (!policy) return { relation: canonical, candidate: false, reason: "unknown_relation" };
   if (row?.tier === "deterministic" || row?.evidence?.tier === "deterministic") {
     return { relation: canonical, candidate: false, tier: "deterministic", reason: "deterministic_tier" };
   }
-  const features = rowFeatures(row);
-  const missing = policy.required.filter((key) => !featurePasses(features, key, policy.minimumOverlap[key]));
+  const evidence = crossSpineEvidenceDecision(row, canonical);
   return {
-    relation: canonical,
-    candidate: missing.length === 0,
+    ...evidence,
     tier: "inferred",
-    required: [...policy.required],
-    missing,
-    reason: missing.length ? "insufficient_relation_evidence" : "relation_evidence_satisfied",
   };
 }
 
@@ -379,7 +321,16 @@ export function evaluateCrossSpineGold({ gold, relation = null, groupSplit = fal
 }
 
 function parseArgs(argv) {
-  const args = { gold: null, relation: null, groupSplit: false, minPrecision: DEFAULT_MIN_PRECISION, json: false, out: null, check: false };
+  const args = {
+    gold: null,
+    relation: null,
+    groupSplit: false,
+    minPrecision: DEFAULT_MIN_PRECISION,
+    json: false,
+    out: null,
+    check: false,
+    checkPolicy: false,
+  };
   for (let index = 2; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--gold") args.gold = argv[++index];
@@ -389,18 +340,22 @@ function parseArgs(argv) {
     else if (arg === "--json") args.json = true;
     else if (arg === "--out") args.out = argv[++index];
     else if (arg === "--check") args.check = true;
+    else if (arg === "--check-policy") args.checkPolicy = true;
     else if (arg === "--help" || arg === "-h") return { help: true };
     else fail(`unknown argument: ${arg}`);
+  }
+  if (!args.gold && args.checkPolicy) {
+    args.gold = "entity_resolution/eval/cross_spine_gold_v1.jsonl";
   }
   if (!args.gold) fail("--gold is required");
   if (!Number.isFinite(args.minPrecision) || args.minPrecision < 0 || args.minPrecision > 1) fail("--min-precision must be between 0 and 1");
   // A gate is never allowed to silently become an in-sample measurement.
-  if (args.check) args.groupSplit = true;
+  if (args.check || args.checkPolicy) args.groupSplit = true;
   return args;
 }
 
 function usage() {
-  console.error("Usage: node tools/cross_spine_eval.mjs --gold <path.jsonl> [--relation <relation>] --group-split [--min-precision 0.90] [--json] [--out <receipt.json>] [--check]");
+  console.error("Usage: node tools/cross_spine_eval.mjs --gold <path.jsonl> [--relation <relation>] --group-split [--min-precision 0.90] [--json] [--out <receipt.json>] [--check] [--check-policy]");
 }
 
 function main() {
@@ -412,6 +367,11 @@ function main() {
   try {
     const gold = loadCrossSpineGold(readFileSync(path, "utf8"));
     const report = evaluateCrossSpineGold({ gold, relation: args.relation, groupSplit: args.groupSplit, minPrecision: args.minPrecision });
+    if (args.checkPolicy) {
+      const policyCheck = checkCrossSpineEdgePolicy(report);
+      if (!policyCheck.ok) throw new Error(`edge policy failed: ${policyCheck.failures.join(", ") || policyCheck.reason}`);
+      console.log(`cross_spine_policy=${policyCheck.policy.version} min_precision=${policyCheck.policy.min_held_out_precision} ok=true`);
+    }
     const rendered = `${JSON.stringify(report, null, 2)}\n`;
     if (args.out) {
       if (args.check && existsSync(resolve(args.out)) && readFileSync(resolve(args.out), "utf8") !== rendered) {
