@@ -14,7 +14,7 @@
     "agency_count": 49,
     "mandate_count": 2931,
     "detectable_mandate_count": 703,
-    "observed_count": 2,
+    "observed_count": 0,
     "detectable_deliverables": [
       "rulemaking",
       "report"
@@ -40102,30 +40102,49 @@
       "as_of": "2026-08-08",
       "counts": {
         "total": 51,
-        "observed": 2,
+        "observed": 0,
         "expected_not_yet_observed": 12,
         "on_track": 0,
         "enrichment_pending": 37,
-        "detectable": 14
+        "detectable": 14,
+        "evidence_only": 2
       },
       "share_path": "/agencies/sanitation/#mandates-conformance",
       "candidate_corpus_size": 8,
       "observations": {
         "64116-001": {
-          "status": "observed",
-          "label": "Observed in City Record",
+          "status": "evidence_only",
+          "label": "Evidence retained without a public link",
           "expected_event": {
             "kind": "rule_filing",
             "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
             "deliverable_type": "rulemaking",
             "deadline_date": null
           },
-          "observed_record": {
+          "observed_record": null,
+          "shadow_candidate": {
             "request_id": "20260605008",
             "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
             "when": "2026-06-11",
             "href": "#notice/20260605008",
-            "signal_kind": "rule_filing"
+            "features": {
+              "agency_exact": true,
+              "expected_event_match": true,
+              "topic_overlap": [
+                "commercial",
+                "waste",
+                "zones"
+              ],
+              "rule_body_overlap": [],
+              "citation_law_match": false,
+              "citation_law_overlap": [],
+              "temporal_compatible": true,
+              "negative_evidence": [],
+              "negative_evidence_free": true,
+              "topic_score": 3,
+              "publication_eligible": false,
+              "publication_tier": "evidence_only"
+            }
           },
           "match": {
             "method": "topic_token_overlap_v1",
@@ -40134,27 +40153,63 @@
               "commercial",
               "waste",
               "zones"
-            ]
+            ],
+            "publication": "evidence_only",
+            "evidence": {
+              "agency_exact": true,
+              "expected_event_match": true,
+              "topic_overlap": [
+                "commercial",
+                "waste",
+                "zones"
+              ],
+              "rule_body_overlap": [],
+              "citation_law_match": false,
+              "citation_law_overlap": [],
+              "temporal_compatible": true,
+              "negative_evidence": [],
+              "negative_evidence_free": true,
+              "topic_score": 3,
+              "publication_eligible": false,
+              "publication_tier": "evidence_only"
+            }
           },
           "is_compliance_verdict": false,
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
         "64116-004": {
-          "status": "observed",
-          "label": "Observed in City Record",
+          "status": "evidence_only",
+          "label": "Evidence retained without a public link",
           "expected_event": {
             "kind": "rule_filing",
             "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
             "deliverable_type": "rulemaking",
             "deadline_date": null
           },
-          "observed_record": {
+          "observed_record": null,
+          "shadow_candidate": {
             "request_id": "20260327013",
             "label": "DSNY Final Rule Related to the Implementation of the 8th and 9th Commercial Waste Zones and Infrequent Waste Generators",
             "when": "2026-04-03",
             "href": "#notice/20260327013",
-            "signal_kind": "rule_filing"
+            "features": {
+              "agency_exact": true,
+              "expected_event_match": true,
+              "topic_overlap": [
+                "generators",
+                "waste"
+              ],
+              "rule_body_overlap": [],
+              "citation_law_match": false,
+              "citation_law_overlap": [],
+              "temporal_compatible": true,
+              "negative_evidence": [],
+              "negative_evidence_free": true,
+              "topic_score": 2,
+              "publication_eligible": false,
+              "publication_tier": "evidence_only"
+            }
           },
           "match": {
             "method": "topic_token_overlap_v1",
@@ -40162,7 +40217,25 @@
             "shared_tokens": [
               "generators",
               "waste"
-            ]
+            ],
+            "publication": "evidence_only",
+            "evidence": {
+              "agency_exact": true,
+              "expected_event_match": true,
+              "topic_overlap": [
+                "generators",
+                "waste"
+              ],
+              "rule_body_overlap": [],
+              "citation_law_match": false,
+              "citation_law_overlap": [],
+              "temporal_compatible": true,
+              "negative_evidence": [],
+              "negative_evidence_free": true,
+              "topic_score": 2,
+              "publication_eligible": false,
+              "publication_tier": "evidence_only"
+            }
           },
           "is_compliance_verdict": false,
           "adjudication": "not_adjudicated",

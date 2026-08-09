@@ -2,18 +2,108 @@
   "schema": "cityscroll.cross_spine_edge_eval.v1",
   "eval_version": "cross_spine_eval_v1",
   "gold_version": "cross_spine_gold_v1",
-  "content_hash": "18c22ac35c59dea4",
-  "relation": "mandate_meeting",
+  "content_hash": "366795e1c2adcdaf",
+  "relation": null,
   "group_split": true,
   "split": {
     "holdout_buckets": 5,
     "holdout_bucket": 0,
-    "train_rows": 3,
-    "held_out_rows": 2,
-    "train_groups": 6,
-    "held_out_groups": 4,
+    "train_rows": 13,
+    "held_out_rows": 7,
+    "train_groups": 26,
+    "held_out_groups": 14,
     "group_leakage": false,
     "assignments": [
+      {
+        "id": "xsg-001",
+        "split": "train",
+        "groups": {
+          "left": "mandate:contract-001",
+          "right": "contract:001"
+        },
+        "component": "contract:001|mandate:contract-001"
+      },
+      {
+        "id": "xsg-002",
+        "split": "train",
+        "groups": {
+          "left": "mandate:contract-002",
+          "right": "contract:002"
+        },
+        "component": "contract:002|mandate:contract-002"
+      },
+      {
+        "id": "xsg-003",
+        "split": "train",
+        "groups": {
+          "left": "mandate:contract-003",
+          "right": "contract:003"
+        },
+        "component": "contract:003|mandate:contract-003"
+      },
+      {
+        "id": "xsg-004",
+        "split": "train",
+        "groups": {
+          "left": "mandate:contract-004",
+          "right": "contract:004"
+        },
+        "component": "contract:004|mandate:contract-004"
+      },
+      {
+        "id": "xsg-005",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:contract-005",
+          "right": "contract:005"
+        },
+        "component": "contract:005|mandate:contract-005"
+      },
+      {
+        "id": "xsg-006",
+        "split": "train",
+        "groups": {
+          "left": "mandate:rule-001",
+          "right": "rule:001"
+        },
+        "component": "mandate:rule-001|rule:001"
+      },
+      {
+        "id": "xsg-007",
+        "split": "train",
+        "groups": {
+          "left": "mandate:rule-002",
+          "right": "rule:002"
+        },
+        "component": "mandate:rule-002|rule:002"
+      },
+      {
+        "id": "xsg-008",
+        "split": "train",
+        "groups": {
+          "left": "mandate:rule-003",
+          "right": "rule:003"
+        },
+        "component": "mandate:rule-003|rule:003"
+      },
+      {
+        "id": "xsg-009",
+        "split": "train",
+        "groups": {
+          "left": "mandate:rule-004",
+          "right": "rule:004"
+        },
+        "component": "mandate:rule-004|rule:004"
+      },
+      {
+        "id": "xsg-010",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:rule-005",
+          "right": "rule:005"
+        },
+        "component": "mandate:rule-005|rule:005"
+      },
       {
         "id": "xsg-011",
         "split": "held_out",
@@ -58,11 +148,101 @@
           "right": "meeting:005"
         },
         "component": "mandate:meeting-005|meeting:005"
+      },
+      {
+        "id": "xsg-016",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:land-001",
+          "right": "project:001"
+        },
+        "component": "mandate:land-001|project:001"
+      },
+      {
+        "id": "xsg-017",
+        "split": "train",
+        "groups": {
+          "left": "mandate:land-002",
+          "right": "project:002"
+        },
+        "component": "mandate:land-002|project:002"
+      },
+      {
+        "id": "xsg-018",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:land-003",
+          "right": "project:003"
+        },
+        "component": "mandate:land-003|project:003"
+      },
+      {
+        "id": "xsg-019",
+        "split": "held_out",
+        "groups": {
+          "left": "mandate:land-004",
+          "right": "project:004"
+        },
+        "component": "mandate:land-004|project:004"
+      },
+      {
+        "id": "xsg-020",
+        "split": "train",
+        "groups": {
+          "left": "mandate:land-005",
+          "right": "project:005"
+        },
+        "component": "mandate:land-005|project:005"
       }
     ]
   },
   "all": {
+    "mandate_contract": {
+      "split": "all",
+      "total": 5,
+      "inferred_total": 5,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 4,
+      "candidates": 4,
+      "true_positive": 4,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.2
+    },
+    "mandate_land_use": {
+      "split": "all",
+      "total": 5,
+      "inferred_total": 5,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 4,
+      "candidates": 4,
+      "true_positive": 4,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.2
+    },
     "mandate_meeting": {
+      "split": "all",
+      "total": 5,
+      "inferred_total": 5,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 4,
+      "candidates": 4,
+      "true_positive": 4,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.2
+    },
+    "mandate_rule": {
       "split": "all",
       "total": 5,
       "inferred_total": 5,
@@ -79,6 +259,36 @@
     }
   },
   "train": {
+    "mandate_contract": {
+      "split": "train",
+      "total": 4,
+      "inferred_total": 4,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 3,
+      "candidates": 3,
+      "true_positive": 3,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.25
+    },
+    "mandate_land_use": {
+      "split": "train",
+      "total": 2,
+      "inferred_total": 2,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 2,
+      "candidates": 2,
+      "true_positive": 2,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 0,
+      "abstention_rate": 0
+    },
     "mandate_meeting": {
       "split": "train",
       "total": 3,
@@ -93,9 +303,54 @@
       "coverage": 1,
       "abstentions": 0,
       "abstention_rate": 0
+    },
+    "mandate_rule": {
+      "split": "train",
+      "total": 4,
+      "inferred_total": 4,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 3,
+      "candidates": 3,
+      "true_positive": 3,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.25
     }
   },
   "held_out": {
+    "mandate_contract": {
+      "split": "held_out",
+      "total": 1,
+      "inferred_total": 1,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 1,
+      "candidates": 1,
+      "true_positive": 1,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 0,
+      "abstention_rate": 0
+    },
+    "mandate_land_use": {
+      "split": "held_out",
+      "total": 3,
+      "inferred_total": 3,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 2,
+      "candidates": 2,
+      "true_positive": 2,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 1,
+      "abstention_rate": 0.3333333333333333
+    },
     "mandate_meeting": {
       "split": "held_out",
       "total": 2,
@@ -110,10 +365,43 @@
       "coverage": 1,
       "abstentions": 1,
       "abstention_rate": 0.5
+    },
+    "mandate_rule": {
+      "split": "held_out",
+      "total": 1,
+      "inferred_total": 1,
+      "deterministic_rows": 0,
+      "deterministic_gold_positive": 0,
+      "gold_positive": 1,
+      "candidates": 1,
+      "true_positive": 1,
+      "false_positive": 0,
+      "precision": 1,
+      "coverage": 1,
+      "abstentions": 0,
+      "abstention_rate": 0
     }
   },
   "gate": {
+    "mandate_contract": {
+      "precision": 1,
+      "min_precision": 0.9,
+      "passed": true,
+      "status": "pass"
+    },
+    "mandate_land_use": {
+      "precision": 1,
+      "min_precision": 0.9,
+      "passed": true,
+      "status": "pass"
+    },
     "mandate_meeting": {
+      "precision": 1,
+      "min_precision": 0.9,
+      "passed": true,
+      "status": "pass"
+    },
+    "mandate_rule": {
       "precision": 1,
       "min_precision": 0.9,
       "passed": true,

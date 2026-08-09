@@ -14,7 +14,9 @@ import {
   buildProcessConformanceLookup,
   contentTokens,
   renderMandatesConformanceSection,
+  normalizeObservationCandidate,
   resolveMandateObservation,
+  scoreMandateRuleEvidence,
   scoreTopicMatch,
 } from "../site/process_conformance.mjs";
 import {
@@ -50,6 +52,53 @@ test("topic match requires shared content tokens", () => {
     { label: "Emergency Rule Regarding 2026 Summer Event Permit Applications" },
   );
   assert.equal(weak.score, 0);
+});
+
+test("mandate-to-rule evidence requires body and law agreement, not title overlap alone", () => {
+  const mandate = {
+    agency_id: "transportation",
+    duty_text: "Promulgate rules relating to pedestrian plaza commercial activity",
+    deliverable_type: "rulemaking",
+    citation: "§ 19-157(c)(2)",
+  };
+  const candidate = normalizeObservationCandidate({
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    request_id: "20260601001",
+    short_title: "Proposed Rules for Pedestrian Plaza Commercial Activity",
+    body: "These rules regulate pedestrian plaza commercial activity under § 19-157(c)(2).",
+    citation: "§ 19-157(c)(2)",
+    start_date: "2026-06-10T00:00:00.000",
+    signal_kind: "rule_filing",
+  });
+  const evidence = scoreMandateRuleEvidence(mandate, candidate);
+  assert.ok(evidence.rule_body_overlap.includes("pedestrian"));
+  assert.equal(evidence.citation_law_match, true);
+  assert.equal(evidence.temporal_compatible, true);
+  assert.deepEqual(evidence.negative_evidence, []);
+  assert.equal(evidence.publication_tier, "public_inferred");
+});
+
+test("rule candidates with adverse status remain evidence-only", () => {
+  const observation = resolveMandateObservation({
+    agency_id: "transportation",
+    duty_text: "Promulgate rules relating to pedestrian plaza commercial activity",
+    deliverable_type: "rulemaking",
+    citation: "§ 19-157(c)(2)",
+  }, [normalizeObservationCandidate({
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    request_id: "20260601002",
+    short_title: "Withdrawn Rules for Pedestrian Plaza Commercial Activity",
+    body: "Withdrawn rules would regulate pedestrian plaza commercial activity under § 19-157(c)(2).",
+    citation: "§ 19-157(c)(2)",
+    start_date: "2026-06-10T00:00:00.000",
+    signal_kind: "rule_filing",
+  })]);
+  assert.equal(observation.status, OBSERVATION_STATUS.EVIDENCE_ONLY);
+  assert.equal(observation.observed_record, null);
+  assert.equal(observation.match.publication, "evidence_only");
+  assert.ok(observation.shadow_candidate.features.negative_evidence.includes("adverse_rule_status"));
 });
 
 test("does not attach the 2026 Lead Dust notice to 2020 outdoor-dining or food-vending duties", () => {
@@ -111,6 +160,8 @@ test("does not attach the DOT FHV parking notice to pedestrian-plaza rulemaking,
     request_id: "20260601001",
     label: "Proposed Rules for Pedestrian Plaza Commercial Activity",
     href: "#notice/20260601001",
+    body: "These rules establish pedestrian plaza commercial activity under § 19-157(c)(2).",
+    citation: "§ 19-157(c)(2)",
     tokens: contentTokens("Proposed Rules for Pedestrian Plaza Commercial Activity"),
   }], { asOf: "2026-08-08" });
   assert.equal(genuineObservation.status, OBSERVATION_STATUS.OBSERVED);
@@ -140,6 +191,7 @@ test("resolveMandateObservation never emits compliance verdicts", () => {
       duty_text: "Promulgate rules relating to special event permits",
       deliverable_type: "rulemaking",
       deadline: { computed_date: "2026-06-01" },
+      citation: "§1",
     },
     [{
       request_id: "20260514002",
@@ -147,6 +199,8 @@ test("resolveMandateObservation never emits compliance verdicts", () => {
       when: "2026-05-18",
       signal_kind: "rule_filing",
       href: "#notice/20260514002",
+      body: "These rules establish special event permits under § 1.",
+      citation: "§1",
       tokens: contentTokens("DPR Proposed Amendment of Rules Relating to Special Event Permits"),
     }],
   );
@@ -280,7 +334,7 @@ test("committed process_conformance lookup covers Parks", () => {
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
 });
 
-test("constellation surfaces only observed mandates conformance rows for Sanitation", () => {
+test("constellation does not surface evidence-only rule candidates as mandate edges", () => {
   const intelligence = JSON.parse(readFileSync(join(ROOT, "site/data/entity_intelligence_lookup.json"), "utf8"));
   const certification = JSON.parse(readFileSync(join(ROOT, "site/data/exam_certification_constellation.json"), "utf8"));
   const obligations = JSON.parse(readFileSync(OBLIGATIONS, "utf8"));
@@ -295,18 +349,14 @@ test("constellation surfaces only observed mandates conformance rows for Sanitat
   assert.equal(byId.obligations.label, "Mandates");
   assert.equal(byId.obligations.status, "matched");
   assert.ok(byId.obligations.conformance);
-  assert.ok(view.mandates_conformance);
+  assert.equal(view.mandates_conformance.counts.evidence_only, 2);
   assert.match(view.mandates_href, /#mandates-conformance/);
 
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /id="mandates-conformance"/);
-  assert.match(html, /Mandates · expected vs observed|data-process-conformance="v1"/);
-  const section = html.match(/<section id="mandates-conformance"[\s\S]*?<\/section>/)?.[0] || "";
-  assert.match(section, /data-observation-status=/);
-  assert.doesNotMatch(section, /data-observation-status="expected_not_yet_observed"/);
-  assert.doesNotMatch(section, /Expected, not yet in City Record/);
-  assert.match(html, /expected vs observed|City Record/i);
-  assert.match(html, /Share this mandates view|Mandates expected vs observed/);
+  assert.doesNotMatch(html, /id="mandates-conformance"/);
+  assert.match(html, /Rulemaking mandates · Rules activity/);
+  const rulesBridge = html.match(/<section id="mandates-rules"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.doesNotMatch(rulesBridge, /data-observation-status="observed"|City Record:/);
   assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);
   assert.doesNotMatch(html, /awaiting detector|This pass matches|corpus checked|This pass covers/i);
 });
@@ -337,6 +387,8 @@ test("buildProcessConformanceLookup is pure over fixture inputs", () => {
         request_id: "20260514002",
         agency_name: "Parks and Recreation",
         short_title: "DPR Proposed Amendment of Rules Relating to Special Event Permits",
+        body: "These rules establish special event permits under §1.",
+        citation: "§1",
         start_date: "2026-05-18T00:00:00.000",
         section_name: "Agency Rules",
         type_of_notice_description: "Public Hearings",
