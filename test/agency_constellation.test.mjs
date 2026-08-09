@@ -15,6 +15,12 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
+import {
+  AGENCY_ROUTE_CLASSIFICATIONS,
+  agencyPublisherCollisions,
+  publisherAgencyRows,
+  reconcileAgencyIdentity,
+} from "../site/agency_identity.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
@@ -28,6 +34,10 @@ const certification = JSON.parse(
 const obligations = existsSync(join(ROOT, "site/data/agency_obligations_lookup.json"))
   ? JSON.parse(readFileSync(join(ROOT, "site/data/agency_obligations_lookup.json"), "utf8"))
   : null;
+const publisherCrosswalk = JSON.parse(
+  readFileSync(join(ROOT, "worker/src/data/agency_crosswalk.json"), "utf8"),
+);
+const publisherRows = publisherAgencyRows(publisherCrosswalk);
 
 const PARKS = "parks-and-recreation";
 
@@ -59,6 +69,31 @@ test("agency path and subject ref are stable", () => {
   assert.equal(agencyPath(PARKS), "/agencies/parks-and-recreation/");
   assert.equal(agencySubjectRef(PARKS), "agency:id:parks-and-recreation");
   assert.equal(agencySubjectRef("Parks and Recreation"), "agency:id:parks-and-recreation");
+});
+
+test("publisher reconciliation retains every exact source spelling and fails closed on collisions", () => {
+  for (const row of publisherRows) {
+    const identity = reconcileAgencyIdentity(row.canonical_id, publisherRows);
+    for (const variant of row.variants) {
+      assert.ok(identity.variants.includes(variant), `${row.canonical_id} retains ${variant}`);
+    }
+  }
+  const collisions = agencyPublisherCollisions(publisherRows);
+  assert.ok(collisions.some((row) => row.comparison_key === "EQUAL EMPLOYMENT PRACTICES COMMISSION"));
+  const ambiguous = reconcileAgencyIdentity("Equal Employment Practices Commission", publisherRows);
+  assert.equal(ambiguous.matched, false);
+});
+
+test("all reviewed constellation-only routes have an explicit non-fuzzy disposition", () => {
+  assert.equal(AGENCY_ROUTE_CLASSIFICATIONS.length, 20);
+  assert.deepEqual(
+    Object.fromEntries(["alias_to_canonical", "legitimate_non_crosswalk_entity", "unresolved"]
+      .map((classification) => [
+        classification,
+        AGENCY_ROUTE_CLASSIFICATIONS.filter((row) => row.classification === classification).length,
+      ])),
+    { alias_to_canonical: 15, legitimate_non_crosswalk_entity: 4, unresolved: 1 },
+  );
 });
 
 test("Parks constellation spans contracts, meetings, rules, obligations, and staffing", () => {
@@ -272,4 +307,17 @@ test("lookup materialization includes Parks multi-category demo when built", () 
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
   assert.ok(lookup.by_id[PARKS]);
   assert.ok(lookup.by_id[PARKS].matched_categories >= 3);
+  assert.equal(lookup.aliases["n-y-c-housing-authority"], "housing-authority");
+  assert.equal(lookup.by_id["n-y-c-housing-authority"], undefined);
+  assert.equal(lookup.by_id["housing-authority"].subject_ref, "agency:id:housing-authority");
+
+  const report = JSON.parse(readFileSync(join(ROOT, "site/data/agency_route_identity_report.json"), "utf8"));
+  assert.equal(report.constellation_only_source_count, 20);
+  assert.deepEqual(report.classification_counts, {
+    alias_to_canonical: 15,
+    legitimate_non_crosswalk_entity: 4,
+    unresolved: 1,
+  });
+  assert.equal(report.cases.length, 20);
+  assert.ok(report.cases.every((row) => row.classification && row.basis));
 });

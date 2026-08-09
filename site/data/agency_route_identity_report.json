@@ -1,0 +1,424 @@
+{
+  "schema": "cityscroll.agency_route_identity_report.v1",
+  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T13:52:57.396Z",
+  "method": "exact_publisher_crosswalk_with_reviewed_route_dispositions_v1",
+  "publisher_canonical_count": 116,
+  "constellation_only_source_count": 20,
+  "classification_counts": {
+    "alias_to_canonical": 15,
+    "legitimate_non_crosswalk_entity": 4,
+    "unresolved": 1
+  },
+  "cases": [
+    {
+      "source_id": "board-meetings",
+      "names": [
+        "Board Meetings"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "unresolved",
+      "canonical_id": "board-meetings",
+      "canonical_name": "Board Meetings",
+      "canonical_path": "/agencies/board-meetings/",
+      "redirect_from": null,
+      "basis": "generic publisher label does not identify one agency"
+    },
+    {
+      "source_id": "board-of-corrections",
+      "names": [
+        "Board Of Corrections"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "board-of-correction",
+      "canonical_name": "Board of Correction",
+      "canonical_path": "/agencies/board-of-correction/",
+      "redirect_from": "/agencies/board-of-corrections/",
+      "basis": "punctuation-insensitive singular/plural publisher alias"
+    },
+    {
+      "source_id": "dcasdivision-of-municipal-supply-service",
+      "names": [
+        "Dcasdivision Of Municipal Supply Service"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "citywide-administrative-services",
+      "canonical_name": "Department of Citywide Administrative Services",
+      "canonical_path": "/agencies/citywide-administrative-services/",
+      "redirect_from": "/agencies/dcasdivision-of-municipal-supply-service/",
+      "basis": "named DCAS division"
+    },
+    {
+      "source_id": "department-of-social-services",
+      "names": [
+        "Department Of Social Services"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "legitimate_non_crosswalk_entity",
+      "canonical_id": "department-of-social-services",
+      "canonical_name": "Department of Social Services",
+      "canonical_path": "/agencies/department-of-social-services/",
+      "redirect_from": null,
+      "basis": "publisher body retained separately from its HRA and Homeless Services components"
+    },
+    {
+      "source_id": "district-attorney-special-narcotics",
+      "names": [
+        "District Attorney - Special Narcotics"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "office-of-special-narcotics-prosecutor",
+      "canonical_name": "Office of the Special Narcotics Prosecutor",
+      "canonical_path": "/agencies/office-of-special-narcotics-prosecutor/",
+      "redirect_from": "/agencies/district-attorney-special-narcotics/",
+      "basis": "reviewed publisher rename"
+    },
+    {
+      "source_id": "hra-department-of-social-services",
+      "names": [
+        "Hra/Department Of Social Services"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "human-resources-administration",
+      "canonical_name": "Human Resources Administration",
+      "canonical_path": "/agencies/human-resources-administration/",
+      "redirect_from": "/agencies/hra-department-of-social-services/",
+      "basis": "publisher crosswalk variant"
+    },
+    {
+      "source_id": "mayoralty",
+      "names": [
+        "Mayoralty"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "office-of-the-mayor",
+      "canonical_name": "Office of the Mayor",
+      "canonical_path": "/agencies/office-of-the-mayor/",
+      "redirect_from": "/agencies/mayoralty/",
+      "basis": "publisher budget-code identity"
+    },
+    {
+      "source_id": "n-y-c-housing-authority",
+      "names": [
+        "N.Y.C. Housing Authority"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "housing-authority",
+      "canonical_name": "New York City Housing Authority",
+      "canonical_path": "/agencies/housing-authority/",
+      "redirect_from": "/agencies/n-y-c-housing-authority/",
+      "basis": "punctuation-only publisher alias"
+    },
+    {
+      "source_id": "n-y-c-transit-authority",
+      "names": [
+        "N.Y.C. Transit Authority"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "legitimate_non_crosswalk_entity",
+      "canonical_id": "n-y-c-transit-authority",
+      "canonical_name": "N.Y.C. Transit Authority",
+      "canonical_path": "/agencies/n-y-c-transit-authority/",
+      "redirect_from": null,
+      "basis": "distinct MTA operating authority; no parent merge"
+    },
+    {
+      "source_id": "new-york-city-fire-pension-fund",
+      "names": [
+        "New York City Fire Pension Fund"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "legitimate_non_crosswalk_entity",
+      "canonical_id": "new-york-city-fire-pension-fund",
+      "canonical_name": "New York City Fire Pension Fund",
+      "canonical_path": "/agencies/new-york-city-fire-pension-fund/",
+      "redirect_from": null,
+      "basis": "distinct pension fund absent from the publisher identity set"
+    },
+    {
+      "source_id": "new-york-city-police-department",
+      "names": [
+        "New York City Police Department"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "police-department",
+      "canonical_name": "New York City Police Department",
+      "canonical_path": "/agencies/police-department/",
+      "redirect_from": "/agencies/new-york-city-police-department/",
+      "basis": "publisher crosswalk canonical name"
+    },
+    {
+      "source_id": "nyc-employees-retirement-system",
+      "names": [
+        "Nyc Employees' Retirement System"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "employees-retirement-system",
+      "canonical_name": "Employees' Retirement System",
+      "canonical_path": "/agencies/employees-retirement-system/",
+      "redirect_from": "/agencies/nyc-employees-retirement-system/",
+      "basis": "punctuation and city-prefix publisher alias"
+    },
+    {
+      "source_id": "nyc-health-and-hospitals-corporation",
+      "names": [
+        "Nyc Health And Hospitals Corporation"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "nyc-health-hospitals",
+      "canonical_name": "NYC Health + Hospitals",
+      "canonical_path": "/agencies/nyc-health-hospitals/",
+      "redirect_from": "/agencies/nyc-health-and-hospitals-corporation/",
+      "basis": "reviewed publisher former-name alias"
+    },
+    {
+      "source_id": "nyc-police-pension-fund",
+      "names": [
+        "Nyc Police Pension Fund"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "new-york-city-police-pension-fund",
+      "canonical_name": "New York City Police Pension Fund",
+      "canonical_path": "/agencies/new-york-city-police-pension-fund/",
+      "redirect_from": "/agencies/nyc-police-pension-fund/",
+      "basis": "publisher crosswalk canonical name"
+    },
+    {
+      "source_id": "office-of-administrative-trials-and-hearings",
+      "names": [
+        "Office Of Administrative Trials And Hearings"
+      ],
+      "sources": [
+        "entity_intelligence",
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "administrative-trials-and-hearings",
+      "canonical_name": "Office of Administrative Trials and Hearings",
+      "canonical_path": "/agencies/administrative-trials-and-hearings/",
+      "redirect_from": "/agencies/office-of-administrative-trials-and-hearings/",
+      "basis": "department-prefix publisher alias"
+    },
+    {
+      "source_id": "office-of-contract-services",
+      "names": [
+        "Office Of Contract Services"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "mayors-office-of-contract-services",
+      "canonical_name": "Mayor's Office of Contract Services",
+      "canonical_path": "/agencies/mayors-office-of-contract-services/",
+      "redirect_from": "/agencies/office-of-contract-services/",
+      "basis": "publisher crosswalk canonical office"
+    },
+    {
+      "source_id": "office-of-criminal-justice-002",
+      "names": [
+        "Office Of Criminal Justice (002)"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "mayors-office-of-criminal-justice",
+      "canonical_name": "Mayor's Office of Criminal Justice",
+      "canonical_path": "/agencies/mayors-office-of-criminal-justice/",
+      "redirect_from": "/agencies/office-of-criminal-justice-002/",
+      "basis": "publisher budget-code identity"
+    },
+    {
+      "source_id": "office-of-payroll-administration",
+      "names": [
+        "Office Of Payroll Administration"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "payroll-administration",
+      "canonical_name": "Office of Payroll Administration",
+      "canonical_path": "/agencies/payroll-administration/",
+      "redirect_from": "/agencies/office-of-payroll-administration/",
+      "basis": "department-prefix publisher alias"
+    },
+    {
+      "source_id": "office-of-the-chief-medical-examiner",
+      "names": [
+        "Office Of The Chief Medical Examiner"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "alias_to_canonical",
+      "canonical_id": "chief-medical-examiner",
+      "canonical_name": "Office of the Chief Medical Examiner",
+      "canonical_path": "/agencies/chief-medical-examiner/",
+      "redirect_from": "/agencies/office-of-the-chief-medical-examiner/",
+      "basis": "department-prefix publisher alias"
+    },
+    {
+      "source_id": "triborough-bridge-and-tunnel-authority",
+      "names": [
+        "Triborough Bridge And Tunnel Authority"
+      ],
+      "sources": [
+        "exam_certification"
+      ],
+      "classification": "legitimate_non_crosswalk_entity",
+      "canonical_id": "triborough-bridge-and-tunnel-authority",
+      "canonical_name": "Triborough Bridge and Tunnel Authority",
+      "canonical_path": "/agencies/triborough-bridge-and-tunnel-authority/",
+      "redirect_from": null,
+      "basis": "distinct MTA operating authority; no parent merge"
+    }
+  ],
+  "aliases": [
+    {
+      "from": "/agencies/board-of-corrections/",
+      "to": "/agencies/board-of-correction/",
+      "source_id": "board-of-corrections",
+      "canonical_id": "board-of-correction"
+    },
+    {
+      "from": "/agencies/dcasdivision-of-municipal-supply-service/",
+      "to": "/agencies/citywide-administrative-services/",
+      "source_id": "dcasdivision-of-municipal-supply-service",
+      "canonical_id": "citywide-administrative-services"
+    },
+    {
+      "from": "/agencies/district-attorney-special-narcotics/",
+      "to": "/agencies/office-of-special-narcotics-prosecutor/",
+      "source_id": "district-attorney-special-narcotics",
+      "canonical_id": "office-of-special-narcotics-prosecutor"
+    },
+    {
+      "from": "/agencies/hra-department-of-social-services/",
+      "to": "/agencies/human-resources-administration/",
+      "source_id": "hra-department-of-social-services",
+      "canonical_id": "human-resources-administration"
+    },
+    {
+      "from": "/agencies/mayoralty/",
+      "to": "/agencies/office-of-the-mayor/",
+      "source_id": "mayoralty",
+      "canonical_id": "office-of-the-mayor"
+    },
+    {
+      "from": "/agencies/n-y-c-housing-authority/",
+      "to": "/agencies/housing-authority/",
+      "source_id": "n-y-c-housing-authority",
+      "canonical_id": "housing-authority"
+    },
+    {
+      "from": "/agencies/new-york-city-police-department/",
+      "to": "/agencies/police-department/",
+      "source_id": "new-york-city-police-department",
+      "canonical_id": "police-department"
+    },
+    {
+      "from": "/agencies/nyc-employees-retirement-system/",
+      "to": "/agencies/employees-retirement-system/",
+      "source_id": "nyc-employees-retirement-system",
+      "canonical_id": "employees-retirement-system"
+    },
+    {
+      "from": "/agencies/nyc-health-and-hospitals-corporation/",
+      "to": "/agencies/nyc-health-hospitals/",
+      "source_id": "nyc-health-and-hospitals-corporation",
+      "canonical_id": "nyc-health-hospitals"
+    },
+    {
+      "from": "/agencies/nyc-police-pension-fund/",
+      "to": "/agencies/new-york-city-police-pension-fund/",
+      "source_id": "nyc-police-pension-fund",
+      "canonical_id": "new-york-city-police-pension-fund"
+    },
+    {
+      "from": "/agencies/office-of-administrative-trials-and-hearings/",
+      "to": "/agencies/administrative-trials-and-hearings/",
+      "source_id": "office-of-administrative-trials-and-hearings",
+      "canonical_id": "administrative-trials-and-hearings"
+    },
+    {
+      "from": "/agencies/office-of-contract-services/",
+      "to": "/agencies/mayors-office-of-contract-services/",
+      "source_id": "office-of-contract-services",
+      "canonical_id": "mayors-office-of-contract-services"
+    },
+    {
+      "from": "/agencies/office-of-criminal-justice-002/",
+      "to": "/agencies/mayors-office-of-criminal-justice/",
+      "source_id": "office-of-criminal-justice-002",
+      "canonical_id": "mayors-office-of-criminal-justice"
+    },
+    {
+      "from": "/agencies/office-of-payroll-administration/",
+      "to": "/agencies/payroll-administration/",
+      "source_id": "office-of-payroll-administration",
+      "canonical_id": "payroll-administration"
+    },
+    {
+      "from": "/agencies/office-of-the-chief-medical-examiner/",
+      "to": "/agencies/chief-medical-examiner/",
+      "source_id": "office-of-the-chief-medical-examiner",
+      "canonical_id": "chief-medical-examiner"
+    }
+  ],
+  "collisions": {
+    "ambiguous_publisher_keys": [
+      {
+        "comparison_key": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
+        "canonical_ids": [
+          "equal-employ-practices-comm",
+          "equal-employment-practices-commission"
+        ],
+        "canonical_names": [
+          "Equal Employment Practices Commission",
+          "Equal Employment Practices Commission"
+        ]
+      }
+    ],
+    "collapsed_route_groups": []
+  },
+  "policy": "Only exact publisher variants and reviewed aliases collapse. Ambiguous and external bodies remain separate."
+}

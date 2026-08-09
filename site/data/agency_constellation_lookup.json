@@ -2,15 +2,32 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T02:58:33.883Z",
+  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T13:52:57.396Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
     "housing-preservation-and-development"
   ],
-  "agency_count": 100,
+  "agency_count": 91,
   "multi_category_count": 58,
   "verified_demo": "agency:id:parks-and-recreation",
+  "aliases": {
+    "board-of-corrections": "board-of-correction",
+    "dcasdivision-of-municipal-supply-service": "citywide-administrative-services",
+    "district-attorney-special-narcotics": "office-of-special-narcotics-prosecutor",
+    "hra-department-of-social-services": "human-resources-administration",
+    "mayoralty": "office-of-the-mayor",
+    "n-y-c-housing-authority": "housing-authority",
+    "new-york-city-police-department": "police-department",
+    "nyc-employees-retirement-system": "employees-retirement-system",
+    "nyc-health-and-hospitals-corporation": "nyc-health-hospitals",
+    "nyc-police-pension-fund": "new-york-city-police-pension-fund",
+    "office-of-administrative-trials-and-hearings": "administrative-trials-and-hearings",
+    "office-of-contract-services": "mayors-office-of-contract-services",
+    "office-of-criminal-justice-002": "mayors-office-of-criminal-justice",
+    "office-of-payroll-administration": "payroll-administration",
+    "office-of-the-chief-medical-examiner": "chief-medical-examiner"
+  },
   "by_id": {
     "administration-for-childrens-services": {
       "subject_ref": "agency:id:administration-for-childrens-services",
@@ -47,13 +64,13 @@
     },
     "administrative-trials-and-hearings": {
       "subject_ref": "agency:id:administrative-trials-and-hearings",
-      "display_name": "Administrative Trials and Hearings",
+      "display_name": "Office of Administrative Trials and Hearings",
       "path": "/agencies/administrative-trials-and-hearings/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 2,
+          "count": 4,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -72,15 +89,15 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 47,
           "method": "publisher_certification_record_v1"
         }
       }
     },
     "aging": {
       "subject_ref": "agency:id:aging",
-      "display_name": "Aging",
+      "display_name": "Department for the Aging",
       "path": "/agencies/aging/",
       "matched_categories": 4,
       "categories": {
@@ -113,7 +130,7 @@
     },
     "board-meetings": {
       "subject_ref": "agency:id:board-meetings",
-      "display_name": "board-meetings",
+      "display_name": "Board Meetings",
       "path": "/agencies/board-meetings/",
       "matched_categories": 1,
       "categories": {
@@ -148,7 +165,7 @@
       "subject_ref": "agency:id:board-of-correction",
       "display_name": "Board of Correction",
       "path": "/agencies/board-of-correction/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -171,39 +188,6 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "board-of-corrections": {
-      "subject_ref": "agency:id:board-of-corrections",
-      "display_name": "board-of-corrections",
-      "path": "/agencies/board-of-corrections/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
           "status": "matched",
           "count": 5,
           "method": "publisher_certification_record_v1"
@@ -212,7 +196,7 @@
     },
     "board-of-education-retirement-system": {
       "subject_ref": "agency:id:board-of-education-retirement-system",
-      "display_name": "board-of-education-retirement-system",
+      "display_name": "Board of Education Retirement System",
       "path": "/agencies/board-of-education-retirement-system/",
       "matched_categories": 1,
       "categories": {
@@ -278,7 +262,7 @@
     },
     "board-of-standards-and-appeals": {
       "subject_ref": "agency:id:board-of-standards-and-appeals",
-      "display_name": "board-of-standards-and-appeals",
+      "display_name": "Board of Standards and Appeals",
       "path": "/agencies/board-of-standards-and-appeals/",
       "matched_categories": 2,
       "categories": {
@@ -311,7 +295,7 @@
     },
     "borough-president-bronx": {
       "subject_ref": "agency:id:borough-president-bronx",
-      "display_name": "Borough President - Bronx",
+      "display_name": "Office of the Borough President of The Bronx",
       "path": "/agencies/borough-president-bronx/",
       "matched_categories": 2,
       "categories": {
@@ -344,7 +328,7 @@
     },
     "borough-president-brooklyn": {
       "subject_ref": "agency:id:borough-president-brooklyn",
-      "display_name": "Borough President - Brooklyn",
+      "display_name": "Office of the Borough President of Brooklyn",
       "path": "/agencies/borough-president-brooklyn/",
       "matched_categories": 2,
       "categories": {
@@ -377,7 +361,7 @@
     },
     "borough-president-manhattan": {
       "subject_ref": "agency:id:borough-president-manhattan",
-      "display_name": "Borough President - Manhattan",
+      "display_name": "Office of the Borough President of Manhattan",
       "path": "/agencies/borough-president-manhattan/",
       "matched_categories": 1,
       "categories": {
@@ -410,7 +394,7 @@
     },
     "borough-president-queens": {
       "subject_ref": "agency:id:borough-president-queens",
-      "display_name": "Borough President - Queens",
+      "display_name": "Office of the Borough President of Queens",
       "path": "/agencies/borough-president-queens/",
       "matched_categories": 2,
       "categories": {
@@ -443,7 +427,7 @@
     },
     "buildings": {
       "subject_ref": "agency:id:buildings",
-      "display_name": "Buildings",
+      "display_name": "Department of Buildings",
       "path": "/agencies/buildings/",
       "matched_categories": 5,
       "categories": {
@@ -478,7 +462,7 @@
       "subject_ref": "agency:id:business-integrity-commission",
       "display_name": "Business Integrity Commission",
       "path": "/agencies/business-integrity-commission/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -491,8 +475,8 @@
           "method": "agency_canonical_v1"
         },
         "rules": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -511,7 +495,7 @@
       "subject_ref": "agency:id:campaign-finance-board",
       "display_name": "Campaign Finance Board",
       "path": "/agencies/campaign-finance-board/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -524,8 +508,8 @@
           "method": "agency_canonical_v1"
         },
         "rules": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -542,7 +526,7 @@
     },
     "charter-revision-commission": {
       "subject_ref": "agency:id:charter-revision-commission",
-      "display_name": "charter-revision-commission",
+      "display_name": "Charter Revision Commission",
       "path": "/agencies/charter-revision-commission/",
       "matched_categories": 1,
       "categories": {
@@ -573,11 +557,44 @@
         }
       }
     },
+    "chief-medical-examiner": {
+      "subject_ref": "agency:id:chief-medical-examiner",
+      "display_name": "Office of the Chief Medical Examiner",
+      "path": "/agencies/chief-medical-examiner/",
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_canonical_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      }
+    },
     "city-clerk": {
       "subject_ref": "agency:id:city-clerk",
-      "display_name": "City Clerk",
+      "display_name": "Office of the City Clerk",
       "path": "/agencies/city-clerk/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -590,8 +607,8 @@
           "method": "agency_canonical_v1"
         },
         "rules": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -608,7 +625,7 @@
     },
     "city-council": {
       "subject_ref": "agency:id:city-council",
-      "display_name": "City Council",
+      "display_name": "New York City Council",
       "path": "/agencies/city-council/",
       "matched_categories": 2,
       "categories": {
@@ -641,7 +658,7 @@
     },
     "city-planning": {
       "subject_ref": "agency:id:city-planning",
-      "display_name": "City Planning",
+      "display_name": "Department of City Planning",
       "path": "/agencies/city-planning/",
       "matched_categories": 5,
       "categories": {
@@ -674,7 +691,7 @@
     },
     "city-planning-commission": {
       "subject_ref": "agency:id:city-planning-commission",
-      "display_name": "city-planning-commission",
+      "display_name": "City Planning Commission",
       "path": "/agencies/city-planning-commission/",
       "matched_categories": 2,
       "categories": {
@@ -707,7 +724,7 @@
     },
     "city-university": {
       "subject_ref": "agency:id:city-university",
-      "display_name": "city-university",
+      "display_name": "City University of New York",
       "path": "/agencies/city-university/",
       "matched_categories": 1,
       "categories": {
@@ -740,13 +757,13 @@
     },
     "citywide-administrative-services": {
       "subject_ref": "agency:id:citywide-administrative-services",
-      "display_name": "Citywide Administrative Services",
+      "display_name": "Department of Citywide Administrative Services",
       "path": "/agencies/citywide-administrative-services/",
       "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
+          "count": 8,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -808,7 +825,7 @@
       "subject_ref": "agency:id:civilian-complaint-review-board",
       "display_name": "Civilian Complaint Review Board",
       "path": "/agencies/civilian-complaint-review-board/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -821,8 +838,8 @@
           "method": "agency_canonical_v1"
         },
         "rules": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -839,9 +856,9 @@
     },
     "commission-on-human-rights": {
       "subject_ref": "agency:id:commission-on-human-rights",
-      "display_name": "Commission on Human Rights",
+      "display_name": "City Commission on Human Rights",
       "path": "/agencies/commission-on-human-rights/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -854,8 +871,8 @@
           "method": "agency_canonical_v1"
         },
         "rules": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -905,7 +922,7 @@
     },
     "community-boards": {
       "subject_ref": "agency:id:community-boards",
-      "display_name": "community-boards",
+      "display_name": "Community Boards",
       "path": "/agencies/community-boards/",
       "matched_categories": 1,
       "categories": {
@@ -938,7 +955,7 @@
     },
     "comptroller": {
       "subject_ref": "agency:id:comptroller",
-      "display_name": "Comptroller",
+      "display_name": "Office of the New York City Comptroller",
       "path": "/agencies/comptroller/",
       "matched_categories": 4,
       "categories": {
@@ -971,7 +988,7 @@
     },
     "conflicts-of-interest-board": {
       "subject_ref": "agency:id:conflicts-of-interest-board",
-      "display_name": "conflicts-of-interest-board",
+      "display_name": "Conflicts of Interest Board",
       "path": "/agencies/conflicts-of-interest-board/",
       "matched_categories": 2,
       "categories": {
@@ -1004,7 +1021,7 @@
     },
     "consumer-and-worker-protection": {
       "subject_ref": "agency:id:consumer-and-worker-protection",
-      "display_name": "Consumer and Worker Protection",
+      "display_name": "Department of Consumer and Worker Protection",
       "path": "/agencies/consumer-and-worker-protection/",
       "matched_categories": 4,
       "categories": {
@@ -1037,7 +1054,7 @@
     },
     "correction": {
       "subject_ref": "agency:id:correction",
-      "display_name": "Correction",
+      "display_name": "Department of Correction",
       "path": "/agencies/correction/",
       "matched_categories": 3,
       "categories": {
@@ -1103,7 +1120,7 @@
     },
     "cultural-affairs": {
       "subject_ref": "agency:id:cultural-affairs",
-      "display_name": "Cultural Affairs",
+      "display_name": "Department of Cultural Affairs",
       "path": "/agencies/cultural-affairs/",
       "matched_categories": 3,
       "categories": {
@@ -1134,42 +1151,9 @@
         }
       }
     },
-    "dcasdivision-of-municipal-supply-service": {
-      "subject_ref": "agency:id:dcasdivision-of-municipal-supply-service",
-      "display_name": "dcasdivision-of-municipal-supply-service",
-      "path": "/agencies/dcasdivision-of-municipal-supply-service/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "department-of-social-services": {
       "subject_ref": "agency:id:department-of-social-services",
-      "display_name": "department-of-social-services",
+      "display_name": "Department of Social Services",
       "path": "/agencies/department-of-social-services/",
       "matched_categories": 1,
       "categories": {
@@ -1202,7 +1186,7 @@
     },
     "design-and-construction": {
       "subject_ref": "agency:id:design-and-construction",
-      "display_name": "Design and Construction",
+      "display_name": "Department of Design and Construction",
       "path": "/agencies/design-and-construction/",
       "matched_categories": 2,
       "categories": {
@@ -1235,7 +1219,7 @@
     },
     "district-attorney-bronx-county": {
       "subject_ref": "agency:id:district-attorney-bronx-county",
-      "display_name": "District Attorney - Bronx County",
+      "display_name": "Bronx District Attorney's Office",
       "path": "/agencies/district-attorney-bronx-county/",
       "matched_categories": 1,
       "categories": {
@@ -1268,7 +1252,7 @@
     },
     "district-attorney-kings-county": {
       "subject_ref": "agency:id:district-attorney-kings-county",
-      "display_name": "District Attorney - Kings County",
+      "display_name": "Brooklyn District Attorney's Office",
       "path": "/agencies/district-attorney-kings-county/",
       "matched_categories": 1,
       "categories": {
@@ -1301,7 +1285,7 @@
     },
     "district-attorney-new-york-county": {
       "subject_ref": "agency:id:district-attorney-new-york-county",
-      "display_name": "District Attorney - New York County",
+      "display_name": "Manhattan District Attorney's Office",
       "path": "/agencies/district-attorney-new-york-county/",
       "matched_categories": 1,
       "categories": {
@@ -1334,7 +1318,7 @@
     },
     "district-attorney-queens-county": {
       "subject_ref": "agency:id:district-attorney-queens-county",
-      "display_name": "District Attorney - Queens County",
+      "display_name": "Queens District Attorney's Office",
       "path": "/agencies/district-attorney-queens-county/",
       "matched_categories": 1,
       "categories": {
@@ -1367,7 +1351,7 @@
     },
     "district-attorney-richmond-county": {
       "subject_ref": "agency:id:district-attorney-richmond-county",
-      "display_name": "District Attorney - Richmond County",
+      "display_name": "Staten Island District Attorney's Office",
       "path": "/agencies/district-attorney-richmond-county/",
       "matched_categories": 1,
       "categories": {
@@ -1398,42 +1382,9 @@
         }
       }
     },
-    "district-attorney-special-narcotics": {
-      "subject_ref": "agency:id:district-attorney-special-narcotics",
-      "display_name": "district-attorney-special-narcotics",
-      "path": "/agencies/district-attorney-special-narcotics/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 4,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "education": {
       "subject_ref": "agency:id:education",
-      "display_name": "Education",
+      "display_name": "New York City Public Schools",
       "path": "/agencies/education/",
       "matched_categories": 2,
       "categories": {
@@ -1466,7 +1417,7 @@
     },
     "emergency-management": {
       "subject_ref": "agency:id:emergency-management",
-      "display_name": "Emergency Management",
+      "display_name": "New York City Emergency Management",
       "path": "/agencies/emergency-management/",
       "matched_categories": 3,
       "categories": {
@@ -1497,9 +1448,42 @@
         }
       }
     },
+    "employees-retirement-system": {
+      "subject_ref": "agency:id:employees-retirement-system",
+      "display_name": "Employees' Retirement System",
+      "path": "/agencies/employees-retirement-system/",
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "matched",
+          "count": 69,
+          "method": "publisher_certification_record_v1"
+        }
+      }
+    },
     "environmental-control-board": {
       "subject_ref": "agency:id:environmental-control-board",
-      "display_name": "environmental-control-board",
+      "display_name": "Environmental Control Board",
       "path": "/agencies/environmental-control-board/",
       "matched_categories": 1,
       "categories": {
@@ -1532,7 +1516,7 @@
     },
     "environmental-protection": {
       "subject_ref": "agency:id:environmental-protection",
-      "display_name": "Environmental Protection",
+      "display_name": "Department of Environmental Protection",
       "path": "/agencies/environmental-protection/",
       "matched_categories": 4,
       "categories": {
@@ -1565,7 +1549,7 @@
     },
     "equal-employment-practices-commission": {
       "subject_ref": "agency:id:equal-employment-practices-commission",
-      "display_name": "equal-employment-practices-commission",
+      "display_name": "Equal Employment Practices Commission",
       "path": "/agencies/equal-employment-practices-commission/",
       "matched_categories": 2,
       "categories": {
@@ -1598,7 +1582,7 @@
     },
     "finance": {
       "subject_ref": "agency:id:finance",
-      "display_name": "Finance",
+      "display_name": "Department of Finance",
       "path": "/agencies/finance/",
       "matched_categories": 5,
       "categories": {
@@ -1664,7 +1648,7 @@
     },
     "fire-department": {
       "subject_ref": "agency:id:fire-department",
-      "display_name": "Fire Department",
+      "display_name": "Fire Department of the City of New York",
       "path": "/agencies/fire-department/",
       "matched_categories": 4,
       "categories": {
@@ -1697,7 +1681,7 @@
     },
     "health-and-mental-hygiene": {
       "subject_ref": "agency:id:health-and-mental-hygiene",
-      "display_name": "Health and Mental Hygiene",
+      "display_name": "Department of Health and Mental Hygiene",
       "path": "/agencies/health-and-mental-hygiene/",
       "matched_categories": 5,
       "categories": {
@@ -1730,7 +1714,7 @@
     },
     "homeless-services": {
       "subject_ref": "agency:id:homeless-services",
-      "display_name": "Homeless Services",
+      "display_name": "Department of Homeless Services",
       "path": "/agencies/homeless-services/",
       "matched_categories": 3,
       "categories": {
@@ -1763,9 +1747,9 @@
     },
     "housing-authority": {
       "subject_ref": "agency:id:housing-authority",
-      "display_name": "Housing Authority",
+      "display_name": "New York City Housing Authority",
       "path": "/agencies/housing-authority/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -1788,15 +1772,15 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 399,
           "method": "publisher_certification_record_v1"
         }
       }
     },
     "housing-preservation-and-development": {
       "subject_ref": "agency:id:housing-preservation-and-development",
-      "display_name": "Housing Preservation and Development",
+      "display_name": "Department of Housing Preservation and Development",
       "path": "/agencies/housing-preservation-and-development/",
       "matched_categories": 5,
       "categories": {
@@ -1827,44 +1811,11 @@
         }
       }
     },
-    "hra-department-of-social-services": {
-      "subject_ref": "agency:id:hra-department-of-social-services",
-      "display_name": "hra-department-of-social-services",
-      "path": "/agencies/hra-department-of-social-services/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 279,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "human-resources-administration": {
       "subject_ref": "agency:id:human-resources-administration",
       "display_name": "Human Resources Administration",
       "path": "/agencies/human-resources-administration/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -1887,8 +1838,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 279,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1897,7 +1848,7 @@
       "subject_ref": "agency:id:independent-budget-office",
       "display_name": "Independent Budget Office",
       "path": "/agencies/independent-budget-office/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -1905,8 +1856,8 @@
           "method": "agency_canonical_v1"
         },
         "meetings": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "rules": {
@@ -1928,7 +1879,7 @@
     },
     "information-technology-and-telecommunications": {
       "subject_ref": "agency:id:information-technology-and-telecommunications",
-      "display_name": "Information Technology and Telecommunications",
+      "display_name": "Office of Technology and Innovation",
       "path": "/agencies/information-technology-and-telecommunications/",
       "matched_categories": 4,
       "categories": {
@@ -1961,7 +1912,7 @@
     },
     "investigation": {
       "subject_ref": "agency:id:investigation",
-      "display_name": "Investigation",
+      "display_name": "Department of Investigation",
       "path": "/agencies/investigation/",
       "matched_categories": 2,
       "categories": {
@@ -2027,7 +1978,7 @@
     },
     "law-department": {
       "subject_ref": "agency:id:law-department",
-      "display_name": "Law Department",
+      "display_name": "New York City Law Department",
       "path": "/agencies/law-department/",
       "matched_categories": 3,
       "categories": {
@@ -2060,13 +2011,13 @@
     },
     "management-and-budget": {
       "subject_ref": "agency:id:management-and-budget",
-      "display_name": "Management and Budget",
+      "display_name": "Mayor's Office of Management and Budget",
       "path": "/agencies/management-and-budget/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -2091,39 +2042,6 @@
         }
       }
     },
-    "mayoralty": {
-      "subject_ref": "agency:id:mayoralty",
-      "display_name": "mayoralty",
-      "path": "/agencies/mayoralty/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "mayors-office-of-contract-services": {
       "subject_ref": "agency:id:mayors-office-of-contract-services",
       "display_name": "Mayor's Office of Contract Services",
@@ -2132,7 +2050,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 1,
+          "count": 6,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -2159,51 +2077,18 @@
     },
     "mayors-office-of-criminal-justice": {
       "subject_ref": "agency:id:mayors-office-of-criminal-justice",
-      "display_name": "mayors-office-of-criminal-justice",
+      "display_name": "Mayor's Office of Criminal Justice",
       "path": "/agencies/mayors-office-of-criminal-justice/",
       "matched_categories": 1,
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 5,
+          "count": 8,
           "method": "agency_canonical_v1"
         },
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "n-y-c-housing-authority": {
-      "subject_ref": "agency:id:housing-authority",
-      "display_name": "Housing Authority",
-      "path": "/agencies/housing-authority/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 3,
           "method": "agency_canonical_v1"
         },
         "rules": {
@@ -2225,7 +2110,7 @@
     },
     "n-y-c-transit-authority": {
       "subject_ref": "agency:id:n-y-c-transit-authority",
-      "display_name": "n-y-c-transit-authority",
+      "display_name": "N.Y.C. Transit Authority",
       "path": "/agencies/n-y-c-transit-authority/",
       "matched_categories": 1,
       "categories": {
@@ -2289,15 +2174,15 @@
         }
       }
     },
-    "new-york-city-police-department": {
-      "subject_ref": "agency:id:new-york-city-police-department",
-      "display_name": "new-york-city-police-department",
-      "path": "/agencies/new-york-city-police-department/",
+    "new-york-city-police-pension-fund": {
+      "subject_ref": "agency:id:new-york-city-police-pension-fund",
+      "display_name": "New York City Police Pension Fund",
+      "path": "/agencies/new-york-city-police-pension-fund/",
       "matched_categories": 1,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -2316,15 +2201,15 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 72,
           "method": "publisher_certification_record_v1"
         }
       }
     },
     "nyc-department-of-veterans-services": {
       "subject_ref": "agency:id:nyc-department-of-veterans-services",
-      "display_name": "NYC Department of Veterans' Services",
+      "display_name": "Department of Veterans' Services",
       "path": "/agencies/nyc-department-of-veterans-services/",
       "matched_categories": 2,
       "categories": {
@@ -2355,43 +2240,10 @@
         }
       }
     },
-    "nyc-employees-retirement-system": {
-      "subject_ref": "agency:id:nyc-employees-retirement-system",
-      "display_name": "nyc-employees-retirement-system",
-      "path": "/agencies/nyc-employees-retirement-system/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 69,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "nyc-health-and-hospitals-corporation": {
-      "subject_ref": "agency:id:nyc-health-and-hospitals-corporation",
-      "display_name": "nyc-health-and-hospitals-corporation",
-      "path": "/agencies/nyc-health-and-hospitals-corporation/",
+    "nyc-health-hospitals": {
+      "subject_ref": "agency:id:nyc-health-hospitals",
+      "display_name": "NYC Health + Hospitals",
+      "path": "/agencies/nyc-health-hospitals/",
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -2421,42 +2273,9 @@
         }
       }
     },
-    "nyc-police-pension-fund": {
-      "subject_ref": "agency:id:nyc-police-pension-fund",
-      "display_name": "nyc-police-pension-fund",
-      "path": "/agencies/nyc-police-pension-fund/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 72,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "nyc-workforce-development-board": {
       "subject_ref": "agency:id:nyc-workforce-development-board",
-      "display_name": "nyc-workforce-development-board",
+      "display_name": "Workforce Development Board",
       "path": "/agencies/nyc-workforce-development-board/",
       "matched_categories": 1,
       "categories": {
@@ -2483,39 +2302,6 @@
         "staffing": {
           "status": "empty",
           "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "office-of-administrative-trials-and-hearings": {
-      "subject_ref": "agency:id:office-of-administrative-trials-and-hearings",
-      "display_name": "office-of-administrative-trials-and-hearings",
-      "path": "/agencies/office-of-administrative-trials-and-hearings/",
-      "matched_categories": 2,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 47,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2553,72 +2339,6 @@
         }
       }
     },
-    "office-of-contract-services": {
-      "subject_ref": "agency:id:office-of-contract-services",
-      "display_name": "office-of-contract-services",
-      "path": "/agencies/office-of-contract-services/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 5,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "office-of-criminal-justice-002": {
-      "subject_ref": "agency:id:office-of-criminal-justice-002",
-      "display_name": "office-of-criminal-justice-002",
-      "path": "/agencies/office-of-criminal-justice-002/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 5,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "office-of-labor-relations": {
       "subject_ref": "agency:id:office-of-labor-relations",
       "display_name": "Office of Labor Relations",
@@ -2652,10 +2372,10 @@
         }
       }
     },
-    "office-of-payroll-administration": {
-      "subject_ref": "agency:id:office-of-payroll-administration",
-      "display_name": "office-of-payroll-administration",
-      "path": "/agencies/office-of-payroll-administration/",
+    "office-of-special-narcotics-prosecutor": {
+      "subject_ref": "agency:id:office-of-special-narcotics-prosecutor",
+      "display_name": "Office of the Special Narcotics Prosecutor",
+      "path": "/agencies/office-of-special-narcotics-prosecutor/",
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -2680,14 +2400,14 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 32,
+          "count": 4,
           "method": "publisher_certification_record_v1"
         }
       }
     },
     "office-of-the-actuary": {
       "subject_ref": "agency:id:office-of-the-actuary",
-      "display_name": "Office of The Actuary",
+      "display_name": "New York City Office of the Actuary",
       "path": "/agencies/office-of-the-actuary/",
       "matched_categories": 1,
       "categories": {
@@ -2718,39 +2438,6 @@
         }
       }
     },
-    "office-of-the-chief-medical-examiner": {
-      "subject_ref": "agency:id:office-of-the-chief-medical-examiner",
-      "display_name": "office-of-the-chief-medical-examiner",
-      "path": "/agencies/office-of-the-chief-medical-examiner/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
     "office-of-the-mayor": {
       "subject_ref": "agency:id:office-of-the-mayor",
       "display_name": "Office of the Mayor",
@@ -2759,7 +2446,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
+          "count": 8,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -2786,7 +2473,7 @@
     },
     "parks-and-recreation": {
       "subject_ref": "agency:id:parks-and-recreation",
-      "display_name": "Parks and Recreation",
+      "display_name": "Department of Parks and Recreation",
       "path": "/agencies/parks-and-recreation/",
       "matched_categories": 5,
       "categories": {
@@ -2817,15 +2504,48 @@
         }
       }
     },
+    "payroll-administration": {
+      "subject_ref": "agency:id:payroll-administration",
+      "display_name": "Office of Payroll Administration",
+      "path": "/agencies/payroll-administration/",
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "matched",
+          "count": 32,
+          "method": "publisher_certification_record_v1"
+        }
+      }
+    },
     "police-department": {
       "subject_ref": "agency:id:police-department",
-      "display_name": "Police Department",
+      "display_name": "New York City Police Department",
       "path": "/agencies/police-department/",
       "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
+          "count": 8,
           "method": "agency_canonical_v1"
         },
         "meetings": {
@@ -2852,7 +2572,7 @@
     },
     "probation": {
       "subject_ref": "agency:id:probation",
-      "display_name": "Probation",
+      "display_name": "Department of Probation",
       "path": "/agencies/probation/",
       "matched_categories": 3,
       "categories": {
@@ -2885,7 +2605,7 @@
     },
     "public-administrator-new-york-county": {
       "subject_ref": "agency:id:public-administrator-new-york-county",
-      "display_name": "public-administrator-new-york-county",
+      "display_name": "New York County Public Administrator",
       "path": "/agencies/public-administrator-new-york-county/",
       "matched_categories": 1,
       "categories": {
@@ -2918,7 +2638,7 @@
     },
     "public-advocate": {
       "subject_ref": "agency:id:public-advocate",
-      "display_name": "Public Advocate",
+      "display_name": "Office of the Public Advocate",
       "path": "/agencies/public-advocate/",
       "matched_categories": 1,
       "categories": {
@@ -2951,7 +2671,7 @@
     },
     "public-design-commission": {
       "subject_ref": "agency:id:public-design-commission",
-      "display_name": "public-design-commission",
+      "display_name": "Public Design Commission",
       "path": "/agencies/public-design-commission/",
       "matched_categories": 1,
       "categories": {
@@ -2984,7 +2704,7 @@
     },
     "records-and-information-services": {
       "subject_ref": "agency:id:records-and-information-services",
-      "display_name": "Records and Information Services",
+      "display_name": "Department of Records and Information Services",
       "path": "/agencies/records-and-information-services/",
       "matched_categories": 2,
       "categories": {
@@ -3017,7 +2737,7 @@
     },
     "rent-guidelines-board": {
       "subject_ref": "agency:id:rent-guidelines-board",
-      "display_name": "rent-guidelines-board",
+      "display_name": "Rent Guidelines Board",
       "path": "/agencies/rent-guidelines-board/",
       "matched_categories": 2,
       "categories": {
@@ -3050,7 +2770,7 @@
     },
     "sanitation": {
       "subject_ref": "agency:id:sanitation",
-      "display_name": "Sanitation",
+      "display_name": "New York City Department of Sanitation",
       "path": "/agencies/sanitation/",
       "matched_categories": 5,
       "categories": {
@@ -3083,7 +2803,7 @@
     },
     "small-business-services": {
       "subject_ref": "agency:id:small-business-services",
-      "display_name": "Small Business Services",
+      "display_name": "Department of Small Business Services",
       "path": "/agencies/small-business-services/",
       "matched_categories": 4,
       "categories": {
@@ -3116,7 +2836,7 @@
     },
     "tax-commission": {
       "subject_ref": "agency:id:tax-commission",
-      "display_name": "Tax Commission",
+      "display_name": "New York City Tax Commission",
       "path": "/agencies/tax-commission/",
       "matched_categories": 2,
       "categories": {
@@ -3149,7 +2869,7 @@
     },
     "taxi-and-limousine-commission": {
       "subject_ref": "agency:id:taxi-and-limousine-commission",
-      "display_name": "Taxi and Limousine Commission",
+      "display_name": "New York City Taxi and Limousine Commission",
       "path": "/agencies/taxi-and-limousine-commission/",
       "matched_categories": 5,
       "categories": {
@@ -3182,7 +2902,7 @@
     },
     "teachers-retirement-system": {
       "subject_ref": "agency:id:teachers-retirement-system",
-      "display_name": "Teachers' Retirement System",
+      "display_name": "Teachers' Retirement System of City of New York",
       "path": "/agencies/teachers-retirement-system/",
       "matched_categories": 1,
       "categories": {
@@ -3215,7 +2935,7 @@
     },
     "transportation": {
       "subject_ref": "agency:id:transportation",
-      "display_name": "Transportation",
+      "display_name": "New York City Department of Transportation",
       "path": "/agencies/transportation/",
       "matched_categories": 5,
       "categories": {
@@ -3248,7 +2968,7 @@
     },
     "triborough-bridge-and-tunnel-authority": {
       "subject_ref": "agency:id:triborough-bridge-and-tunnel-authority",
-      "display_name": "triborough-bridge-and-tunnel-authority",
+      "display_name": "Triborough Bridge and Tunnel Authority",
       "path": "/agencies/triborough-bridge-and-tunnel-authority/",
       "matched_categories": 1,
       "categories": {
@@ -3281,7 +3001,7 @@
     },
     "youth-and-community-development": {
       "subject_ref": "agency:id:youth-and-community-development",
-      "display_name": "Youth and Community Development",
+      "display_name": "Department of Youth and Community Development",
       "path": "/agencies/youth-and-community-development/",
       "matched_categories": 3,
       "categories": {
@@ -3314,7 +3034,7 @@
     }
   },
   "provenance": {
-    "intelligence_generated_at": "2026-08-09T02:58:33.883Z",
+    "intelligence_generated_at": "2026-08-09T13:52:57.396Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
     "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z",

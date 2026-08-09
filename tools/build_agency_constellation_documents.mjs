@@ -17,8 +17,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   AGENCY_GROUPS,
-  agencyCanonicalId,
-  resolveAgencyIdentity,
+  AGENCY_ROUTE_CLASSIFICATIONS,
+  agencyPublisherCollisions,
+  publisherAgencyRows,
+  reconcileAgencyIdentity,
 } from "../site/agency_identity.mjs";
 import {
   AGENCY_CONSTELLATION_ER_BASIS,
@@ -31,6 +33,7 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
 const LOOKUP = join(SITE, "data/agency_constellation_lookup.json");
+const IDENTITY_REPORT = join(SITE, "data/agency_route_identity_report.json");
 const DEMO_IDS = Object.freeze(["parks-and-recreation", "housing-preservation-and-development"]);
 
 function readJson(path) {
@@ -46,6 +49,7 @@ function loadSources() {
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
   const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
+  const publisherCrosswalkPath = join(ROOT, "worker/src/data/agency_crosswalk.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
@@ -58,20 +62,263 @@ function loadSources() {
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
+    publisher_crosswalk: readJson(publisherCrosswalkPath),
+  };
+}
+
+function agencySourceIdentity(id, name, publisherRows) {
+  const routed = reconcileAgencyIdentity(id, publisherRows);
+  if (routed.route_classification) return routed;
+  const named = reconcileAgencyIdentity(name || id, publisherRows);
+  return named.matched ? named : routed;
+}
+
+function mergeDomainBlocks(blocks) {
+  const present = blocks.filter(Boolean);
+  if (!present.length) return null;
+  const objects = [];
+  const seen = new Set();
+  for (const block of present) {
+    for (const object of Array.isArray(block?.objects) ? block.objects : []) {
+      const key = [object?.subject_ref, object?.link_type, object?.request_id, object?.contract_id].join("|");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      objects.push(object);
+    }
+  }
+  const matched = present.some((block) => block?.status === "matched");
+  const pending = present.some((block) => block?.status === "not_yet_ingested");
+  return {
+    ...present[0],
+    status: matched ? "matched" : (pending ? "not_yet_ingested" : "empty"),
+    gap_class: matched ? null : (present.find((block) => block?.gap_class)?.gap_class || "empty_in_corpus"),
+    note: matched ? null : (present.find((block) => block?.note)?.note || null),
+    objects,
+    count: objects.length || Math.max(0, ...present.map((block) => Number(block?.count) || 0)),
+  };
+}
+
+function mergeIntelligenceDossiers(dossiers, identity) {
+  const ref = `agency:id:${identity.canonical_id}`;
+  const domains = {};
+  const domainIds = new Set(dossiers.flatMap((dossier) => Object.keys(dossier?.domains || {})));
+  for (const domain of domainIds) {
+    domains[domain] = mergeDomainBlocks(dossiers.map((dossier) => dossier?.domains?.[domain]));
+  }
+  const links = [];
+  const seenLinks = new Set();
+  for (const dossier of dossiers) {
+    const oldRef = dossier?.root?.ref;
+    for (const link of Array.isArray(dossier?.links) ? dossier.links : []) {
+      const normalized = {
+        ...link,
+        from: link?.from === oldRef ? ref : link?.from,
+        to: link?.to === oldRef ? ref : link?.to,
+      };
+      const key = [normalized.type, normalized.from, normalized.to, normalized.method].join("|");
+      if (seenLinks.has(key)) continue;
+      seenLinks.add(key);
+      links.push(normalized);
+    }
+  }
+  return {
+    ...dossiers[0],
+    root: {
+      ...(dossiers[0]?.root || {}),
+      ref,
+      id: `id:${identity.canonical_id}`,
+      canonical_id: identity.canonical_id,
+      canonical_name: identity.canonical_name,
+      display_name: identity.canonical_name,
+    },
+    domains,
+    links,
+  };
+}
+
+function reconcileIntelligence(intelligence, publisherRows) {
+  if (!intelligence?.by_ref) return intelligence;
+  const grouped = new Map();
+  const byRef = {};
+  for (const [ref, dossier] of Object.entries(intelligence.by_ref)) {
+    const match = ref.match(/^agency:id:(.+)$/);
+    if (!match) {
+      byRef[ref] = dossier;
+      continue;
+    }
+    const identity = agencySourceIdentity(
+      match[1],
+      dossier?.root?.canonical_name || dossier?.root?.display_name,
+      publisherRows,
+    );
+    const canonicalRef = `agency:id:${identity.canonical_id}`;
+    if (!grouped.has(canonicalRef)) grouped.set(canonicalRef, { identity, dossiers: [] });
+    grouped.get(canonicalRef).dossiers.push(dossier);
+  }
+  for (const [ref, group] of grouped) {
+    byRef[ref] = mergeIntelligenceDossiers(group.dossiers, group.identity);
+  }
+  return {
+    ...intelligence,
+    by_ref: byRef,
+    by_subject_ref: { ...(intelligence.by_subject_ref || {}), ...byRef },
+  };
+}
+
+function reconcileCertification(certification, publisherRows) {
+  if (!certification) return certification;
+  const identityBySourceId = new Map();
+  for (const row of Array.isArray(certification.by_agency) ? certification.by_agency : []) {
+    identityBySourceId.set(
+      String(row?.agency_id || ""),
+      agencySourceIdentity(row?.agency_id, row?.agency_name, publisherRows),
+    );
+  }
+  const edges = [];
+  const seenEdges = new Set();
+  for (const edge of Array.isArray(certification.edges) ? certification.edges : []) {
+    const match = String(edge?.to || "").match(/^agency:id:(.+)$/);
+    if (!match) {
+      edges.push(edge);
+      continue;
+    }
+    const identity = identityBySourceId.get(match[1]) || agencySourceIdentity(match[1], null, publisherRows);
+    const to = `agency:id:${identity.canonical_id}`;
+    const normalized = {
+      ...edge,
+      to,
+      id: `${edge.from}|${to}`,
+    };
+    const key = [normalized.type, normalized.from, normalized.to].join("|");
+    if (seenEdges.has(key)) continue;
+    seenEdges.add(key);
+    edges.push(normalized);
+  }
+  const rowsById = new Map();
+  for (const row of Array.isArray(certification.by_agency) ? certification.by_agency : []) {
+    const identity = identityBySourceId.get(String(row?.agency_id || ""));
+    const id = identity.canonical_id;
+    if (!rowsById.has(id)) {
+      rowsById.set(id, {
+        ...row,
+        ref: `agency:id:${id}`,
+        agency_id: id,
+        agency_name: identity.canonical_name,
+        edge_refs: [],
+      });
+    }
+  }
+  for (const [id, row] of rowsById) {
+    const ref = `agency:id:${id}`;
+    const agencyEdges = edges.filter((edge) => edge?.to === ref && edge?.type === "certified_to_agency");
+    row.edge_count = agencyEdges.length;
+    row.edge_refs = agencyEdges.map((edge) => edge.id);
+  }
+  return { ...certification, edges, by_agency: [...rowsById.values()] };
+}
+
+export function reconcileAgencyConstellationSources(sources, publisherRows = publisherAgencyRows(sources?.publisher_crosswalk)) {
+  return {
+    ...sources,
+    publisher_agency_rows: publisherRows,
+    intelligence: reconcileIntelligence(sources?.intelligence, publisherRows),
+    certification: reconcileCertification(sources?.certification, publisherRows),
   };
 }
 
 function candidateAgencyIds(sources) {
-  const ids = new Set(Object.keys(AGENCY_GROUPS).map(agencyCanonicalId));
+  const ids = new Set(Object.keys(AGENCY_GROUPS).map((name) =>
+    reconcileAgencyIdentity(name, sources.publisher_agency_rows).canonical_id));
   for (const ref of Object.keys(sources.intelligence?.by_ref || {})) {
     const match = String(ref).match(/^agency:id:(.+)$/);
-    if (match) ids.add(resolveAgencyIdentity(match[1]).canonical_id);
+    if (match) ids.add(reconcileAgencyIdentity(match[1], sources.publisher_agency_rows).canonical_id);
   }
   for (const row of sources.certification?.by_agency || []) {
-    if (row?.agency_id) ids.add(row.agency_id);
+    if (row?.agency_id) ids.add(reconcileAgencyIdentity(row.agency_id, sources.publisher_agency_rows).canonical_id);
   }
-  for (const demo of DEMO_IDS) ids.add(demo);
+  for (const demo of DEMO_IDS) ids.add(reconcileAgencyIdentity(demo, sources.publisher_agency_rows).canonical_id);
   return [...ids].sort();
+}
+
+function activeAgencySources(sources) {
+  const rows = new Map();
+  for (const [ref, dossier] of Object.entries(sources.intelligence?.by_ref || {})) {
+    const match = String(ref).match(/^agency:id:(.+)$/);
+    if (!match) continue;
+    const active = Object.values(dossier?.domains || {}).some((domain) =>
+      domain?.status === "matched" && (Number(domain?.count) > 0 || domain?.objects?.length));
+    if (!active) continue;
+    rows.set(match[1], {
+      source_id: match[1],
+      names: [dossier?.root?.canonical_name || dossier?.root?.display_name].filter(Boolean),
+      sources: ["entity_intelligence"],
+    });
+  }
+  for (const row of sources.certification?.by_agency || []) {
+    if (!row?.agency_id || !(Number(row.edge_count) > 0)) continue;
+    const current = rows.get(row.agency_id) || { source_id: row.agency_id, names: [], sources: [] };
+    current.names = [...new Set([...current.names, row.agency_name].filter(Boolean))];
+    current.sources = [...new Set([...current.sources, "exam_certification"])];
+    rows.set(row.agency_id, current);
+  }
+  return [...rows.values()].sort((left, right) => left.source_id.localeCompare(right.source_id));
+}
+
+export function buildAgencyRouteIdentityReport(rawSources, publisherRows, generatedAt = "unknown") {
+  const publisherIds = new Set(publisherRows.map((row) => row.canonical_id));
+  const decisions = new Map(AGENCY_ROUTE_CLASSIFICATIONS.map((row) => [row.source_id, row]));
+  const cases = activeAgencySources(rawSources)
+    .filter((row) => !publisherIds.has(row.source_id))
+    // The residual is defined over public constellation candidates, not every
+    // tentative agency root in the wider intelligence artifact. Explicitly
+    // reviewed cases stay in the census even after their resolver collapses.
+    .filter((row) => decisions.has(row.source_id)
+      || (buildAgencyConstellationView(row.source_id, rawSources)?.summary?.matched_categories || 0) > 0)
+    .map((row) => {
+      const decision = decisions.get(row.source_id);
+      const identity = agencySourceIdentity(row.source_id, row.names[0], publisherRows);
+      const classification = decision?.classification
+        || (publisherIds.has(identity.canonical_id) ? "alias_to_canonical" : "unresolved");
+      return {
+        ...row,
+        classification,
+        canonical_id: identity.canonical_id,
+        canonical_name: identity.canonical_name,
+        canonical_path: `/agencies/${identity.canonical_id}/`,
+        redirect_from: classification === "alias_to_canonical" ? `/agencies/${row.source_id}/` : null,
+        basis: decision?.basis || "no exact publisher-crosswalk identity",
+      };
+    });
+  const counts = Object.fromEntries(
+    ["alias_to_canonical", "legitimate_non_crosswalk_entity", "unresolved"]
+      .map((classification) => [classification, cases.filter((row) => row.classification === classification).length]),
+  );
+  const collapsed = new Map();
+  for (const row of cases.filter((entry) => entry.classification === "alias_to_canonical")) {
+    if (!collapsed.has(row.canonical_id)) collapsed.set(row.canonical_id, []);
+    collapsed.get(row.canonical_id).push(row.source_id);
+  }
+  const aliases = cases
+    .filter((row) => row.classification === "alias_to_canonical")
+    .map((row) => ({ from: row.redirect_from, to: row.canonical_path, source_id: row.source_id, canonical_id: row.canonical_id }));
+  const publisherCollisions = agencyPublisherCollisions(publisherRows);
+  return {
+    schema: "cityscroll.agency_route_identity_report.v1",
+    generated_at: generatedAt,
+    method: "exact_publisher_crosswalk_with_reviewed_route_dispositions_v1",
+    publisher_canonical_count: publisherIds.size,
+    constellation_only_source_count: cases.length,
+    classification_counts: counts,
+    cases,
+    aliases,
+    collisions: {
+      ambiguous_publisher_keys: publisherCollisions,
+      collapsed_route_groups: [...collapsed.entries()]
+        .filter(([, sourceIds]) => sourceIds.length > 1)
+        .map(([canonical_id, source_ids]) => ({ canonical_id, source_ids: source_ids.sort() })),
+    },
+    policy: "Only exact publisher variants and reviewed aliases collapse. Ambiguous and external bodies remain separate.",
+  };
 }
 
 export function buildAgencyConstellationMaterialization(sources = loadSources()) {
@@ -82,12 +329,15 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.obligations?.generated_at,
     sources.process_conformance?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
+  const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
+  const identityReport = buildAgencyRouteIdentityReport(sources, publisherRows, generatedAt);
+  const reconciledSources = reconcileAgencyConstellationSources(sources, publisherRows);
   const byId = {};
   const documents = [];
 
-  for (const id of candidateAgencyIds(sources)) {
+  for (const id of candidateAgencyIds(reconciledSources)) {
     const view = buildAgencyConstellationView(id, {
-      ...sources,
+      ...reconciledSources,
       generated_at: generatedAt,
     });
     if (!view) continue;
@@ -122,6 +372,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     agency_count: Object.keys(byId).length,
     multi_category_count: Object.values(byId).filter((row) => row.matched_categories >= 2).length,
     verified_demo: "agency:id:parks-and-recreation",
+    aliases: Object.fromEntries(identityReport.aliases.map((row) => [row.source_id, row.canonical_id])),
     by_id: byId,
     provenance: {
       intelligence_generated_at: sources.intelligence?.generated_at || null,
@@ -132,12 +383,13 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     },
   };
 
-  return { lookup, documents };
+  return { lookup, documents, identityReport };
 }
 
 export function writeAgencyConstellationArtifacts({ check = false } = {}) {
-  const { lookup, documents } = buildAgencyConstellationMaterialization();
+  const { lookup, documents, identityReport } = buildAgencyConstellationMaterialization();
   const lookupJson = `${JSON.stringify(lookup, null, 2)}\n`;
+  const identityReportJson = `${JSON.stringify(identityReport, null, 2)}\n`;
   let stale = 0;
 
   if (!existsSync(LOOKUP) || readFileSync(LOOKUP, "utf8") !== lookupJson) {
@@ -145,6 +397,14 @@ export function writeAgencyConstellationArtifacts({ check = false } = {}) {
     if (!check) {
       mkdirSync(dirname(LOOKUP), { recursive: true });
       writeFileSync(LOOKUP, lookupJson);
+    }
+  }
+
+  if (!existsSync(IDENTITY_REPORT) || readFileSync(IDENTITY_REPORT, "utf8") !== identityReportJson) {
+    stale += 1;
+    if (!check) {
+      mkdirSync(dirname(IDENTITY_REPORT), { recursive: true });
+      writeFileSync(IDENTITY_REPORT, identityReportJson);
     }
   }
 
