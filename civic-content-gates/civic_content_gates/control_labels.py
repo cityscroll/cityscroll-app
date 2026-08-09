@@ -43,10 +43,13 @@ STATUS_RES = {
 }
 
 # Anchors are included only when styled as action controls. Buttons and summaries
-# are controls by element semantics. These named families cover labels selected at
-# runtime (for example rulesExplorerCardHTML's action_key) that a template scan
-# cannot resolve to one literal t("key") call.
+# are controls by element semantics, except filter chips: their labels name the
+# selectable value, while the pressed state supplies the action/state semantics.
+# These named families cover labels selected at runtime (for example
+# rulesExplorerCardHTML's action_key) that a template scan cannot resolve to one
+# literal t("key") call.
 ACTION_CLASSES = frozenset(("act", "watchbtn", "export-control", "mini-sub-btn"))
+FILTER_CHIP_CLASS = "ui-filter-chip"
 DYNAMIC_KEY_PREFIXES = (
     "disposition_phase_action_",
     "franchise_phase_action_",
@@ -95,9 +98,11 @@ def _source_files(site_root: Path) -> list[Path]:
 
 
 def _is_action_control(tag: str, attrs: str, inner: str) -> bool:
+    match = CLASS_RE.search(attrs)
+    if tag == "button" and match and FILTER_CHIP_CLASS in match.group(1).split():
+        return False
     if tag in {"button", "summary"}:
         return True
-    match = CLASS_RE.search(attrs)
     if match and ACTION_CLASSES.intersection(match.group(1).split()):
         return True
     keys = list(m.group(1) for m in DATA_I18N_RE.finditer(attrs))
