@@ -26,6 +26,8 @@ creates links.
 | `entity_audits/<date>/` | Versioned entity sample, review sheet, and sampling receipt |
 | `fixtures/shadow_monitoring_v0.json` | Characterization snapshot for quiet-debt monitoring |
 | `monitoring/<date>/receipt.json` | Versioned read-only monitor receipt with denominators and provenance |
+| `tools/cross_spine_eval.mjs` | Relation-specific cross-spine candidate, gold, group-split, and held-out precision harness |
+| `cross_spine_gold_v1.jsonl` | Immutable relation labels for the cross-spine evaluation cohort |
 
 ## Run
 
@@ -75,6 +77,29 @@ matchers own precision.
 
 Malformed gold (bad JSON, missing fields, duplicate ids, meta/`case_count` mismatch)
 exits non-zero.
+
+## Cross-spine edge evaluation
+
+Cross-domain relation candidates have a separate gold contract from identity
+resolution. Each row names a `relation`, `tier`, `label`, both endpoint
+`groups`, and relation evidence under `features`. The harness generates
+candidates from the relation policy without reading the label, then measures
+the generated cohort against the immutable label. `groups.left` and
+`groups.right` are connected-component keys: an endpoint cannot appear in both
+train and holdout, even when several pairs share it.
+
+```bash
+node tools/cross_spine_eval.mjs \
+  --gold entity_resolution/eval/cross_spine_gold_v1.jsonl \
+  --group-split --check
+node --test test/cross_spine_eval.test.mjs
+```
+
+The report emits per-relation held-out `precision`, positive `coverage`, and
+`abstention_rate`. `--check` requires the leakage-safe split and gates every
+relation at 0.90 precision by default (`--min-precision` can make the gate
+explicit). Deterministic publisher-key rows are counted outside the inferred
+candidate cohort; labels never write operative links.
 
 Optional flags:
 
