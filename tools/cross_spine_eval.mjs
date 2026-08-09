@@ -29,6 +29,9 @@ export const DEFAULT_HOLDOUT_BUCKET = 0;
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v1.jsonl");
 export const DEFAULT_GATE_RECEIPT_PATH = resolve(ROOT, "site/data/cross_spine_edge_gate.json");
+export const CROSS_SPINE_MONITOR_SCHEMA = "cityscroll.cross_spine_edge_monitor.v1";
+export const CROSS_SPINE_MONITOR_VERSION = "cross_spine_monitor_v1";
+export const DEFAULT_MONITOR_RECEIPT_PATH = resolve(ROOT, "site/data/cross_spine_edge_monitor.json");
 
 const LABELS = new Set(["same", "different"]);
 export const RELATION_POLICIES = CROSS_SPINE_RELATION_POLICIES;
@@ -324,6 +327,101 @@ export function evaluateCrossSpineGold({ gold, relation = null, groupSplit = fal
   };
 }
 
+function provenanceFingerprint({ relation, gold, policy }) {
+  const rows = gold.cases
+    .filter((row) => row.relation === relation)
+    .map((row) => ({
+      id: row.id,
+      sources: [...row.sources].sort(),
+      left_source: row.left.source_system,
+      right_source: row.right.source_system,
+    }));
+  return createHash("sha256").update(JSON.stringify({
+    relation,
+    gold_version: gold.meta.gold_version,
+    gold_content_hash: gold.contentHash,
+    eval_version: CROSS_SPINE_EVAL_VERSION,
+    policy_version: policy.version,
+    rows,
+  })).digest("hex").slice(0, 16);
+}
+
+/**
+ * Build a deterministic drift receipt over the reintegrated relations.
+ *
+ * Precision is the frozen grouped-holdout measurement; coverage and
+ * abstention are retained from the same relation cohort. Provenance is
+ * fingerprinted independently per relation so a source or policy change
+ * cannot hide behind an unchanged aggregate metric.
+ */
+export function buildCrossSpineMonitorReceipt({ gold, prior = null, observedAt = null } = {}) {
+  if (!gold || !Array.isArray(gold.cases)) fail("gold must be the result of loadCrossSpineGold");
+  const report = evaluateCrossSpineGold({ gold, groupSplit: true });
+  const policy = checkCrossSpineEdgePolicy(report).policy;
+  if (!policy) fail("cross-spine policy could not be derived from evaluation");
+  const relations = Object.keys(CROSS_SPINE_RELATION_POLICIES).sort();
+  const priorRelations = prior?.relations && typeof prior.relations === "object" ? prior.relations : {};
+  const byRelation = {};
+  for (const relation of relations) {
+    const metric = report.held_out?.[relation] || report.all?.[relation] || null;
+    const fingerprint = provenanceFingerprint({ relation, gold, policy });
+    const priorFingerprint = priorRelations[relation]?.provenance?.fingerprint || null;
+    const drifted = Boolean(priorFingerprint && priorFingerprint !== fingerprint);
+    const sourceSystems = [...new Set(gold.cases
+      .filter((row) => row.relation === relation)
+      .flatMap((row) => [row.left.source_system, row.right.source_system]))].sort();
+    byRelation[relation] = {
+      precision: metric?.precision ?? null,
+      coverage: metric?.coverage ?? null,
+      coverage_rate: metric?.coverage ?? null,
+      abstention: metric?.abstention_rate ?? null,
+      abstention_rate: metric?.abstention_rate ?? null,
+      abstentions: metric?.abstentions ?? null,
+      candidates: metric?.candidates ?? null,
+      true_positive: metric?.true_positive ?? null,
+      false_positive: metric?.false_positive ?? null,
+      held_out_rows: metric?.total ?? 0,
+      gate: report.gate[relation],
+      provenance: {
+        fingerprint,
+        source_systems: sourceSystems,
+        gold_version: gold.meta.gold_version,
+        gold_content_hash: gold.contentHash,
+        eval_version: CROSS_SPINE_EVAL_VERSION,
+        policy_version: policy.version,
+      },
+      provenance_drift: {
+        status: drifted ? "drifted" : "stable",
+        // Keep the stable receipt canonical; the prior value is useful only
+        // when a change is actually detected.
+        previous_fingerprint: drifted ? priorFingerprint : null,
+        changed: drifted,
+      },
+    };
+  }
+  const driftedRelations = relations.filter((relation) => byRelation[relation].provenance_drift.changed);
+  return {
+    schema: CROSS_SPINE_MONITOR_SCHEMA,
+    monitor_version: CROSS_SPINE_MONITOR_VERSION,
+    observed_at: observedAt,
+    eval_version: report.eval_version,
+    gold_version: report.gold_version,
+    policy_version: policy.version,
+    source: {
+      gold_content_hash: gold.contentHash,
+      held_out_group_split: true,
+      holdout_bucket: report.split.holdoutBucket,
+      holdout_buckets: report.split.holdoutBuckets,
+    },
+    relations: byRelation,
+    provenance_drift: {
+      status: driftedRelations.length ? "drifted" : "stable",
+      relations: driftedRelations,
+    },
+    ok: report.ok && driftedRelations.length === 0,
+  };
+}
+
 function parseArgs(argv) {
   const args = {
     gold: DEFAULT_GOLD_PATH,
@@ -335,6 +433,7 @@ function parseArgs(argv) {
     out: null,
     check: false,
     checkPolicy: false,
+    monitor: false,
   };
   for (let index = 2; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -346,6 +445,7 @@ function parseArgs(argv) {
     else if (arg === "--out") args.out = argv[++index];
     else if (arg === "--check") args.check = true;
     else if (arg === "--check-policy") args.checkPolicy = true;
+    else if (arg === "--monitor") args.monitor = true;
     else if (arg === "--help" || arg === "-h") return { help: true };
     else fail(`unknown argument: ${arg}`);
   }
@@ -355,12 +455,14 @@ function parseArgs(argv) {
   // Relation-scoped checks validate that relation's held-out gate. The
   // committed receipt covers the all-relations policy and cannot be compared
   // byte-for-byte with a relation-only report.
-  if (args.check && !args.out && !args.goldProvided && !args.relation) args.out = DEFAULT_GATE_RECEIPT_PATH;
+  if (!args.out && !args.goldProvided && !args.relation) {
+    args.out = args.monitor ? DEFAULT_MONITOR_RECEIPT_PATH : (args.check ? DEFAULT_GATE_RECEIPT_PATH : null);
+  }
   return args;
 }
 
 function usage() {
-  console.error("Usage: node tools/cross_spine_eval.mjs [--gold <path.jsonl>] [--relation <relation>] --group-split [--min-precision 0.90] [--json] [--out <receipt.json>] [--check] [--check-policy]");
+  console.error("Usage: node tools/cross_spine_eval.mjs [--gold <path.jsonl>] [--relation <relation>] [--group-split] [--monitor] [--min-precision 0.90] [--json] [--out <receipt.json>] [--check] [--check-policy]");
 }
 
 function main() {
@@ -372,6 +474,26 @@ function main() {
   try {
     const gold = loadCrossSpineGold(readFileSync(path, "utf8"));
     const report = evaluateCrossSpineGold({ gold, relation: args.relation, groupSplit: args.groupSplit, minPrecision: args.minPrecision });
+    if (args.monitor) {
+      if (args.relation) throw new Error("--monitor cannot be relation-scoped");
+      const out = args.out ? resolve(args.out) : DEFAULT_MONITOR_RECEIPT_PATH;
+      const prior = existsSync(out) ? JSON.parse(readFileSync(out, "utf8")) : null;
+      const monitor = buildCrossSpineMonitorReceipt({ gold, prior });
+      const renderedMonitor = `${JSON.stringify(monitor, null, 2)}\n`;
+      if (args.check && (!existsSync(out) || readFileSync(out, "utf8") !== renderedMonitor)) {
+        throw new Error(`monitor receipt drift vs --out ${out}`);
+      }
+      if (!args.check) writeFileSync(out, renderedMonitor);
+      if (args.json) console.log(renderedMonitor.trim());
+      else {
+        for (const [relation, metric] of Object.entries(monitor.relations)) {
+          console.log(`relation=${relation} precision=${metric.precision ?? "null"} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention ?? "null"} provenance_drift=${metric.provenance_drift.status}`);
+        }
+        console.log(`provenance_drift=${monitor.provenance_drift.status} ok=${monitor.ok}`);
+      }
+      if (args.check && !monitor.ok) process.exitCode = 1;
+      return;
+    }
     if (args.checkPolicy) {
       const policyCheck = checkCrossSpineEdgePolicy(report);
       if (!policyCheck.ok) throw new Error(`edge policy failed: ${policyCheck.failures.join(", ") || policyCheck.reason}`);

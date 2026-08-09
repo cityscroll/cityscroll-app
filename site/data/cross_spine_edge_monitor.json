@@ -1,0 +1,155 @@
+{
+  "schema": "cityscroll.cross_spine_edge_monitor.v1",
+  "monitor_version": "cross_spine_monitor_v1",
+  "observed_at": null,
+  "eval_version": "cross_spine_eval_v1",
+  "gold_version": "cross_spine_gold_v1",
+  "policy_version": "cross_spine_edge_policy_v1",
+  "source": {
+    "gold_content_hash": "366795e1c2adcdaf",
+    "held_out_group_split": true
+  },
+  "relations": {
+    "mandate_contract": {
+      "precision": 1,
+      "coverage": 1,
+      "coverage_rate": 1,
+      "abstention": 0,
+      "abstention_rate": 0,
+      "abstentions": 0,
+      "candidates": 1,
+      "true_positive": 1,
+      "false_positive": 0,
+      "held_out_rows": 1,
+      "gate": {
+        "precision": 1,
+        "min_precision": 0.9,
+        "passed": true,
+        "status": "pass"
+      },
+      "provenance": {
+        "fingerprint": "7727c76ada1a977c",
+        "source_systems": [
+          "city_record",
+          "enacted_local_law"
+        ],
+        "gold_version": "cross_spine_gold_v1",
+        "gold_content_hash": "366795e1c2adcdaf",
+        "eval_version": "cross_spine_eval_v1",
+        "policy_version": "cross_spine_edge_policy_v1"
+      },
+      "provenance_drift": {
+        "status": "stable",
+        "previous_fingerprint": null,
+        "changed": false
+      }
+    },
+    "mandate_land_use": {
+      "precision": 1,
+      "coverage": 1,
+      "coverage_rate": 1,
+      "abstention": 0.3333333333333333,
+      "abstention_rate": 0.3333333333333333,
+      "abstentions": 1,
+      "candidates": 2,
+      "true_positive": 2,
+      "false_positive": 0,
+      "held_out_rows": 3,
+      "gate": {
+        "precision": 1,
+        "min_precision": 0.9,
+        "passed": true,
+        "status": "pass"
+      },
+      "provenance": {
+        "fingerprint": "0b81ab87e169145d",
+        "source_systems": [
+          "enacted_local_law",
+          "zoning_application_portal"
+        ],
+        "gold_version": "cross_spine_gold_v1",
+        "gold_content_hash": "366795e1c2adcdaf",
+        "eval_version": "cross_spine_eval_v1",
+        "policy_version": "cross_spine_edge_policy_v1"
+      },
+      "provenance_drift": {
+        "status": "stable",
+        "previous_fingerprint": null,
+        "changed": false
+      }
+    },
+    "mandate_meeting": {
+      "precision": 1,
+      "coverage": 1,
+      "coverage_rate": 1,
+      "abstention": 0.5,
+      "abstention_rate": 0.5,
+      "abstentions": 1,
+      "candidates": 1,
+      "true_positive": 1,
+      "false_positive": 0,
+      "held_out_rows": 2,
+      "gate": {
+        "precision": 1,
+        "min_precision": 0.9,
+        "passed": true,
+        "status": "pass"
+      },
+      "provenance": {
+        "fingerprint": "06e5ac7a44eb4190",
+        "source_systems": [
+          "city_record",
+          "enacted_local_law"
+        ],
+        "gold_version": "cross_spine_gold_v1",
+        "gold_content_hash": "366795e1c2adcdaf",
+        "eval_version": "cross_spine_eval_v1",
+        "policy_version": "cross_spine_edge_policy_v1"
+      },
+      "provenance_drift": {
+        "status": "stable",
+        "previous_fingerprint": null,
+        "changed": false
+      }
+    },
+    "mandate_rule": {
+      "precision": 1,
+      "coverage": 1,
+      "coverage_rate": 1,
+      "abstention": 0,
+      "abstention_rate": 0,
+      "abstentions": 0,
+      "candidates": 1,
+      "true_positive": 1,
+      "false_positive": 0,
+      "held_out_rows": 1,
+      "gate": {
+        "precision": 1,
+        "min_precision": 0.9,
+        "passed": true,
+        "status": "pass"
+      },
+      "provenance": {
+        "fingerprint": "7e1f4c76c653724b",
+        "source_systems": [
+          "city_record",
+          "enacted_local_law"
+        ],
+        "gold_version": "cross_spine_gold_v1",
+        "gold_content_hash": "366795e1c2adcdaf",
+        "eval_version": "cross_spine_eval_v1",
+        "policy_version": "cross_spine_edge_policy_v1"
+      },
+      "provenance_drift": {
+        "status": "stable",
+        "previous_fingerprint": null,
+        "changed": false
+      }
+    }
+  },
+  "provenance_drift": {
+    "status": "stable",
+    "relations": []
+  },
+  "ok": true
+}
