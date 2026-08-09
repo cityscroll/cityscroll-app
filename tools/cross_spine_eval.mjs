@@ -21,6 +21,11 @@ import {
   checkCrossSpineEdgePolicy,
   crossSpineEvidenceDecision,
 } from "../entity_resolution/cross_domain/edge_policy.mjs";
+import { scoreTopicMatch } from "../site/process_conformance.mjs";
+import {
+  TOPIC_NORMALIZATION_REGISTRY,
+  TOPIC_NORMALIZATION_VERSION,
+} from "../site/topic_normalization.mjs";
 
 export const CROSS_SPINE_EVAL_SCHEMA = "cityscroll.cross_spine_edge_eval.v3";
 export const CROSS_SPINE_EVAL_VERSION = "cross_spine_eval_v3";
@@ -264,6 +269,60 @@ function ratio(numerator, denominator) {
   return denominator ? numerator / denominator : null;
 }
 
+function topicNormalizationMetric(rows) {
+  const candidates = rows.filter((row) => scoreTopicMatch(row.left, { label: row.right }).score > 0);
+  const goldPositive = rows.filter((row) => row.label === "same").length;
+  const truePositive = candidates.filter((row) => row.label === "same").length;
+  const falsePositive = candidates.filter((row) => row.label === "different").length;
+  return {
+    total: rows.length,
+    gold_positive: goldPositive,
+    candidates: candidates.length,
+    true_positive: truePositive,
+    false_positive: falsePositive,
+    precision: ratio(truePositive, candidates.length),
+    coverage: ratio(truePositive, goldPositive),
+    abstentions: rows.length - candidates.length,
+    abstention_rate: ratio(rows.length - candidates.length, rows.length),
+  };
+}
+
+/** Report the frozen adversarial review cohort separately from final edge gates. */
+export function evaluateTopicNormalizationReview({ relation = null, minPrecision = DEFAULT_MIN_PRECISION } = {}) {
+  const selected = relation ? canonicalRelation(relation) : null;
+  const rows = TOPIC_NORMALIZATION_REGISTRY.review_cases
+    .filter((row) => !selected || row.relation === selected);
+  const relations = [...new Set(rows.map((row) => row.relation))].sort();
+  const measure = (split) => Object.fromEntries(relations.map((key) => {
+    const cohort = rows.filter((row) => row.relation === key && (!split || row.split === split));
+    return [key, { split: split || "all", ...topicNormalizationMetric(cohort) }];
+  }));
+  const all = measure(null);
+  const heldOut = measure("held_out");
+  const gate = Object.fromEntries(relations.map((key) => {
+    const metric = heldOut[key];
+    const passed = metric.precision != null && metric.precision >= minPrecision;
+    return [key, {
+      precision: metric.precision,
+      min_precision: minPrecision,
+      support: metric.candidates,
+      coverage: metric.coverage,
+      abstention_rate: metric.abstention_rate,
+      status: passed ? "pass" : "fail",
+      passed,
+    }];
+  }));
+  return {
+    schema: TOPIC_NORMALIZATION_REGISTRY.schema,
+    registry_version: TOPIC_NORMALIZATION_VERSION,
+    source_corpora: ["cross_spine_gold_v3", "cross_spine_shadow_census_v1"],
+    all,
+    held_out: heldOut,
+    gate,
+    ok: Object.values(gate).every((row) => row.passed),
+  };
+}
+
 /** Two-sided Wilson score interval for a binomial proportion. */
 export function wilsonInterval(successes, trials, z = 1.959963984540054) {
   if (!Number.isInteger(successes) || !Number.isInteger(trials) || trials < 0 || successes < 0 || successes > trials) {
@@ -336,6 +395,10 @@ export function evaluateCrossSpineGold({
   const all = measureRelations(cases, "all");
   const train = groupSplit ? measureRelations(split.train, "train") : null;
   const heldOut = groupSplit ? measureRelations(split.heldOut, "held_out") : null;
+  const topicNormalization = evaluateTopicNormalizationReview({
+    relation: selectedRelation,
+    minPrecision,
+  });
   const relations = [...new Set(cases.map((row) => row.relation))].sort();
   const gate = {};
   for (const relation of relations) {
@@ -380,8 +443,9 @@ export function evaluateCrossSpineGold({
     all,
     train,
     held_out: heldOut,
+    topic_normalization: topicNormalization,
     gate,
-    ok: Object.values(gate).every((row) => row.passed),
+    ok: Object.values(gate).every((row) => row.passed) && topicNormalization.ok,
   };
 }
 
@@ -585,6 +649,10 @@ function main() {
         const gate = report.gate[relation];
         const interval = gate.precision_interval_95;
         console.log(`relation=${relation} split=${metric.split} precision=${metric.precision ?? "null"} support=${gate.support}/${gate.min_support} interval95=${interval ? `[${interval.lower},${interval.upper}]` : "null"} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention_rate ?? "null"} candidates=${metric.candidates} gate=${gate.status}`);
+      }
+      for (const [relation, metric] of Object.entries(report.topic_normalization.held_out)) {
+        const gate = report.topic_normalization.gate[relation];
+        console.log(`topic_normalization=${TOPIC_NORMALIZATION_VERSION} relation=${relation} precision=${metric.precision ?? "null"} support=${metric.candidates} coverage=${metric.coverage ?? "null"} abstention=${metric.abstention_rate ?? "null"} gate=${gate.status}`);
       }
       console.log(`group_split=${report.group_split} leakage=${report.split?.group_leakage ?? false} ok=${report.ok}`);
     }
