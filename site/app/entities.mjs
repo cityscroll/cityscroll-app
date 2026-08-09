@@ -1,5 +1,5 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
-import { constellationLink } from "../affordance_grammar.mjs";
+import { constellationLink, filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 
 /* ===================== ENTITY PAGES (vendor / agency) =====================
    The pivot layer: every agency or vendor mention links here, and each page is a hub of
@@ -457,14 +457,32 @@ async function showAgency(name, initialTab){
   const secChips = sections.map(c=>{
     const lens = SECTION_LENS[c.section_name];
     const browse = SECTION_BROWSE[lens];
-    const label = `${tSection(c.section_name)}<span class="ct">${fmtNumber(+c.n)}</span>`;
+    const label = tSection(c.section_name);
+    const count = fmtNumber(+c.n);
     // Document Browse + typed agency facet — same contract as contracts/meetings.
     // Legacy #people?agency= silently dropped the facet on Staffing hydrate.
     if(browse && agencyRef){
       const facet = encodeURIComponent(JSON.stringify({ entity_refs_all: [agencyRef] }));
-      return `<a class="chip" style="text-decoration:none" href="/browse/${browse}/?facet=${facet}" data-agency-section-scope="${escUiHtml(browse)}">${label}</a>`;
+      return filterChip({
+        label,
+        count,
+        className: "agency-section-scope",
+        attributes: {
+          "data-agency-section-scope": browse,
+          "data-filter-href": `/browse/${browse}/?facet=${facet}`,
+        },
+        escape: escUiHtml,
+      });
     }
-    return lens ? `<a class="chip" style="text-decoration:none" href="#${lens}?agency=${encodeURIComponent(nm)}">${label}</a>` : `<span class="chip" style="cursor:default">${label}</span>`;
+    return lens
+      ? filterChip({
+        label,
+        count,
+        className: "agency-section-scope",
+        attributes: { "data-filter-href": `#${lens}?agency=${encodeURIComponent(nm)}` },
+        escape: escUiHtml,
+      })
+      : staticFact({ label, count, className: "agency-section-fact", escape: escUiHtml });
   }).join("");
   const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">${isRollingDeadline(r.due_date)?"":"due "+fdate(r.due_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>${deadlineTag(r.due_date)}</div>`).join("");
@@ -499,18 +517,19 @@ async function showAgency(name, initialTab){
 
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
-      <div class="actions" style="margin-top:16px">
+    <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">${t("agency_follow_btn")}</button>
         <button class="act" type="button" id="ecopy">${t("copy_link")}</button>
         ${qrButtonHTML("eqr","act")}
         ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
         <button class="act" type="button" data-aw="rules">${t("agency_watch_rules_btn")}</button>
         <button class="act" type="button" data-aw="meetings">${t("agency_watch_meetings_btn")}</button>
-        <a class="view" href="/agencies/${encodeURIComponent(identity.canonical_id)}/">Agency records</a>
+        ${constellationLink({ href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`, label: "Agency records", className: "view", escape: escUiHtml })}
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}
       </div>
     </div></div>`;
 
+  installFilterChipNavigation(box);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
   // Lens-scoped follow (rules/meetings only) — hash carries agency so prefill is shareable.
@@ -962,7 +981,13 @@ function vendorProfileHTML(profile, details, hydrating){
   const hasForecasts = forecasts.length > 0;
   const agChips = agencies.map(a=>{
     const name = a.name||a.agency_name||"";
-    return `<a class="chip" style="text-decoration:none" href="${agencyHref(name)}">${escUiHtml(cleanText(name))}<span class="ct">${money(a.total??a.t)||a.n}</span></a>`;
+    return constellationLink({
+      href: agencyHref(name),
+      label: cleanText(name),
+      count: money(a.total ?? a.t) || a.n,
+      className: "vendor-agency-link",
+      escape: escUiHtml,
+    });
   }).join("");
   // Composability suggestion (gc-08): the vendor's own top counterparty agency is
   // already fetched for the chip row above — reuse it to suggest one fast, reliable
@@ -1027,6 +1052,7 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
   const link = new URL(vendorHref(display), location.origin).href;
   box.dataset.vendorStem = profile.stem;
   box.innerHTML = vendorProfileHTML(profile, details, hydrating);
+  installFilterChipNavigation(box);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
   const rows = details?.rows || [];

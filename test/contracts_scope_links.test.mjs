@@ -18,7 +18,7 @@ function scopeFromNearYouHref(href) {
   return scopeFromRouteHash(`#money${url.search}`);
 }
 
-test("Contracts exposes the four remaining controls as typed links or chips", () => {
+test("Contracts exposes the four remaining controls as typed filter chips", () => {
   const section = html.slice(html.indexOf('<section id="tab-money"'), html.indexOf("<!-- ============ PEOPLE"));
   for (const edge of [
     "money.location.contract_action_address",
@@ -27,7 +27,8 @@ test("Contracts exposes the four remaining controls as typed links or chips", ()
     "money.location.document_pickup",
     "money.time.closing_week",
   ]) assert.match(section, new RegExp(`data-scope-edge="${edge.replaceAll(".", "\\.")}"`));
-  assert.doesNotMatch(section, /<button[^>]+id="closingweek"/);
+  assert.match(section, /class="ui-filter-chip"[^>]+id="closingweek"/);
+  assert.match(section, /class="ui-filter-chip"[^>]+id="closingweek"[^>]+[^>]*aria-pressed="(?:true|false)"/);
   assert.doesNotMatch(section, /<select[^>]+id="moneycd"(?![^>]*hidden)/);
   assert.doesNotMatch(section, /<select[^>]+id="moneycouncil"(?![^>]*hidden)/);
 });

@@ -10,7 +10,7 @@ import {
   sodaAgencyNameClause,
   staffingAgencyScopePresentation,
 } from "../staffing_agency_scope.mjs";
-import { filterChip } from "../affordance_grammar.mjs";
+import { filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* ===================== PEOPLE ===================== */
@@ -311,8 +311,18 @@ function careerFacetLinkHTML(facet,value,filters,sourceValue=""){
   const edge=["people",facet,value].join(":");
   const stateKey={eligibility:"eligibility",interest:"interest",window:"window",format:"format",salary:"salary_band",fee:"fee_level",experience:"no_experience"}[facet];
   const current=filters[stateKey]===value;
-  const source=sourceValue ? ` data-source-value="${escUiHtml(sourceValue)}"` : "";
-  return `<a class="career-facet-chip${current?" current":""}" data-career-facet="${escUiHtml(edge)}" data-scope-edge="${escUiHtml(edge)}" href="${escUiHtml(href)}"${current?' aria-current="page"':""}${source}>${escUiHtml(label)}</a>`;
+  return filterChip({
+    label,
+    pressed: current,
+    className: `career-facet-chip${current ? " current" : ""}`,
+    attributes: {
+      "data-career-facet": edge,
+      "data-scope-edge": edge,
+      "data-filter-href": href,
+      ...(sourceValue ? { "data-source-value": sourceValue } : {}),
+    },
+    escape: escUiHtml,
+  });
 }
 function careerFacetControlsHTML(){
   if(!careerData) return;
@@ -345,6 +355,7 @@ function careerFacetControlsHTML(){
       }));
     }
   }
+  installFilterChipNavigation(document);
 }
 function careerDiffLeadsHTML(exam, feeSalary){
   const view=CrolStaffing.examDifferentiatorView
@@ -358,10 +369,14 @@ function careerDiffLeadsHTML(exam, feeSalary){
     const facet={exam_format:"format",fee:"fee",salary:"salary",no_experience_required:"experience",experience_required:"experience"}[key];
     const href=facet ? examFacetHref(careerFacetFilters(),facet,value,{language:window.LANG||"en"}) : "";
     const edge=facet ? ["people",facet,value].join(":") : "";
-    const source=key==="fee" && exam.fee!=null ? ` data-source-value="${escUiHtml(exam.fee)}"` : "";
     chips.push(href
-      ? `<a class="career-diff-chip" data-diff="${escUiHtml(key)}" data-scope-edge="${escUiHtml(edge)}" href="${escUiHtml(href)}"${source}>${escUiHtml(label)}</a>`
-      : `<span class="career-diff-chip" data-diff="${escUiHtml(key)}">${escUiHtml(label)}</span>`);
+      ? filterChip({
+        label,
+        className: "career-diff-chip",
+        attributes: { "data-diff": key, "data-scope-edge": edge, "data-filter-href": href, ...(key === "fee" && exam.fee != null ? { "data-source-value": exam.fee } : {}) },
+        escape: escUiHtml,
+      })
+      : staticFact({ label, className: "career-diff-fact", escape: escUiHtml }));
   };
   const leads=Array.isArray(view.card_leads) && view.card_leads.length
     ? view.card_leads
@@ -748,7 +763,14 @@ function careerCardHTML(exam){
     : "";
   return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" data-exam-format="${escUiHtml(exam.exam_format||"")}" data-salary-band="${escUiHtml(exam.salary_band||"")}" data-fee-level="${escUiHtml(exam.fee_level||"")}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
     <div class="career-deadline-lead">
-      ${statusHref?`<a class="tag ${careerStatusClass(status)}" data-scope-edge="${["people","window",status].join(":")}" href="${escUiHtml(statusHref)}">${careerStatusLabel(status)}</a>`:`<span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>`}
+      ${statusHref
+        ? filterChip({
+          label: careerStatusLabel(status),
+          className: `career-status-chip ${careerStatusClass(status)}`,
+          attributes: { "data-scope-edge": ["people", "window", status].join(":"), "data-filter-href": statusHref },
+          escape: escUiHtml,
+        })
+        : staticFact({ label: careerStatusLabel(status), className: `career-status-fact ${careerStatusClass(status)}`, escape: escUiHtml })}
       ${openBand?`<span class="tag" data-open-window-band="${openBand}" lang="en" dir="ltr">${openBand}</span>`:""}
       ${exam.notice_url?`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted</span>`:""}
       ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}

@@ -223,8 +223,12 @@ def run(base: str) -> None:
               quietPrompt: /Pick a topic or place to see matches/.test(
                 document.querySelector('[data-following-subscribe-panel]')?.textContent || ''
               ),
-              topicChips: document.querySelectorAll('[data-following-topic-scope] a.chip').length,
-              placeChips: document.querySelectorAll('[data-following-place-scope] a.chip').length,
+              topicControls: [...document.querySelectorAll(
+                '[data-following-topic-scope] button.ui-filter-chip[data-following-scope-axis="topic"]'
+              )].map(el => ({tag: el.tagName, pressed: el.getAttribute('aria-pressed')})),
+              placeControls: [...document.querySelectorAll(
+                '[data-following-place-scope] button.ui-filter-chip[data-following-scope-axis="place"]'
+              )].map(el => ({tag: el.tagName, pressed: el.getAttribute('aria-pressed')})),
               lensSelects: document.querySelectorAll('select[name="lens"]').length,
               sectionOrder: [...document.querySelectorAll('#your-following, #create, #packs')]
                 .map(el => el.id),
@@ -234,8 +238,13 @@ def run(base: str) -> None:
         assert following_contract["scopeCount"] == following_contract["previewRows"], following_contract
         assert following_contract["criteriaMethod"] == "get", following_contract
         assert following_contract["quietPrompt"], following_contract
-        assert following_contract["topicChips"] >= 5, following_contract
-        assert following_contract["placeChips"] >= 5, following_contract
+        assert len(following_contract["topicControls"]) >= 5, following_contract
+        assert len(following_contract["placeControls"]) >= 5, following_contract
+        for control_group in (following_contract["topicControls"], following_contract["placeControls"]):
+            assert all(
+                control["tag"] == "BUTTON" and control["pressed"] in {"true", "false"}
+                for control in control_group
+            ), following_contract
         assert following_contract["lensSelects"] == 0, following_contract
         # Create leads; saved watches are secondary (not a fixed top invariant).
         assert following_contract["sectionOrder"] == ["create", "your-following", "packs"], following_contract

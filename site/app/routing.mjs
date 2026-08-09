@@ -931,8 +931,7 @@ function applyHash(){
       };
       closingWeek = q.get("closing") === "week";
       $("#closingweek").classList.toggle("on", closingWeek);
-      if(closingWeek) $("#closingweek").setAttribute("aria-current", "page");
-      else $("#closingweek").removeAttribute("aria-current");
+      $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
       methodSel = q.get("m") || "";
       $("#moneylocationbasis").value="";
       $("#moneyboro").value="";
