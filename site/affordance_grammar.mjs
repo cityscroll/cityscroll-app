@@ -41,8 +41,8 @@ export function officialSourceDisclosure({ items = [], label = "Open official so
 }
 
 /** View-changing control: pill button with aria-pressed; deliberately not a link. */
-export function filterChip({ label, pressed = false, className = "", attributes = {}, escape = esc } = {}) {
-  return `<button type="button" class="ui-filter-chip${className ? ` ${escape(className)}` : ""}" aria-pressed="${pressed ? "true" : "false"}"${dataAttributes(attributes, escape)}>${escape(label)}</button>`;
+export function filterChip({ label, pressed = false, current = false, className = "", attributes = {}, escape = esc } = {}) {
+  return `<button type="button" class="ui-filter-chip${className ? ` ${escape(className)}` : ""}" aria-pressed="${pressed ? "true" : "false"}"${dataAttributes(attributes, escape)}${current ? ' aria-current="page"' : ""}>${escape(label)}</button>`;
 }
 
 /** Non-interactive information: plain semantic text with no link affordance. */
