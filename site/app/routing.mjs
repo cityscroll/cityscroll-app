@@ -1182,7 +1182,31 @@ function setNoticeCompactCta(isNoticeRoute){
 
 const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name,additional_description_2,additional_description_3,other_info_2,other_info_3,printout_1,printout_2,printout_3,building_name,city,state,zip_code";
 let attachmentLookupPromise=null;
-async function noticeAttachmentMetadata(id){
+function noticeAttachmentFallbacks(notice){
+  const raw=notice?.document_links;
+  const values=[];
+  const visit=value=>{
+    if(!value)return;
+    if(Array.isArray(value)){value.forEach(visit);return;}
+    if(typeof value==="object"){visit(value.url||value.href||value.link);return;}
+    const text=String(value).trim();
+    if(!text)return;
+    try{const parsed=JSON.parse(text);if(parsed!==text){visit(parsed);return;}}catch(e){}
+    text.replace(/&amp;/gi,"&").split(/\s*[,|]\s*(?=https?:\/\/)/).forEach(item=>values.push(item));
+  };
+  visit(raw);
+  const seen=new Set();
+  return values.map(value=>{
+    try{
+      const url=new URL(value);
+      const documentId=url.searchParams.get("documentId")||url.searchParams.get("DocumentID")||url.searchParams.get("documentid");
+      if(url.protocol!=="https:"||url.hostname!=="a856-cityrecord.nyc.gov"||!/^\/Search\/GetFile$/i.test(url.pathname)||!documentId||seen.has(documentId))return null;
+      seen.add(documentId);
+      return {request_id:String(notice?.request_id||""),document_id:documentId,title:null,url:url.href,content_type:null,bytes:null,source:"dataset"};
+    }catch(e){return null;}
+  }).filter(Boolean);
+}
+async function noticeAttachmentMetadata(id, notice=null){
   try{
     const response=await workerFetch("/attachment-metadata?id="+encodeURIComponent(id),null,4000);
     if(response.ok){
@@ -1196,6 +1220,9 @@ async function noticeAttachmentMetadata(id){
   }
   const lookup=await attachmentLookupPromise;
   const attachments=lookup && Array.isArray(lookup.notices?.[String(id)])?lookup.notices[String(id)]:[];
+  if(attachments.length) return {request_id:String(id),n_attachments:attachments.length,attachments};
+  const fallback=noticeAttachmentFallbacks(notice);
+  if(fallback.length) return {request_id:String(id),n_attachments:fallback.length,attachments:fallback};
   return {request_id:String(id),n_attachments:attachments.length,attachments};
 }
 async function showNotice(id, watch){
@@ -1209,11 +1236,9 @@ async function showNotice(id, watch){
   if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
   try{
-    const [rows, attachmentData] = await Promise.all([
-      import("../notice-read.mjs").then(m=>m.read(id)),
-      noticeAttachmentMetadata(id),
-    ]);
+    const rows = await import("../notice-read.mjs").then(m=>m.read(id));
     r = rows[0];
+    const attachmentData = await noticeAttachmentMetadata(id,r);
     if(r && attachmentData && Array.isArray(attachmentData.attachments) && attachmentData.attachments.length){
       r.attachments=attachmentData.attachments;
       r.n_documents=Math.max(Number(r.n_documents||0),attachmentData.attachments.length);
