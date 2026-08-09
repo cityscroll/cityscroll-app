@@ -89,6 +89,12 @@ export function bindCardinalityAdaptiveFacets(root = document) {
       } else if (event.key === "ArrowDown") {
         const first = options.find((option) => !option.hidden)?.querySelector("a");
         if (first) { event.preventDefault(); first.focus(); }
+      } else if (event.key === "Enter" && clean(input.value)) {
+        const first = options.find((option) => !option.hidden)?.querySelector("[data-filter-href]");
+        if (first) {
+          event.preventDefault();
+          first.click();
+        }
       }
     });
     facet.querySelectorAll("[data-filter-href]").forEach((button) => button.addEventListener("click", () => {
