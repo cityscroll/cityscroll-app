@@ -87,13 +87,15 @@ const BROWSE_SCOPE_POLICY = Object.freeze({
       "vendor_entity_ref",
       "project_entity_ref",
       "agency_entity_ref",
+      "pin",
+      "request_id",
     ],
   },
-  staffing: { agencyField: "agency_name", entityRefFields: [] },
-  zoning: { agencyField: "primary_applicant", entityRefFields: [] },
+  staffing: { agencyField: "agency_name", entityRefFields: ["request_id"] },
+  zoning: { agencyField: "primary_applicant", entityRefFields: ["project_id"] },
   property: { agencyField: "agency_name", entityRefFields: ["disposition_subject_ref", "disposition_join_keys"] },
-  rules: { agencyField: "agency_name", entityRefFields: [] },
-  meetings: { agencyField: "agency_name", entityRefFields: [] },
+  rules: { agencyField: "agency_name", entityRefFields: ["request_id"] },
+  meetings: { agencyField: "agency_name", entityRefFields: ["request_id", "zap_project_ids"] },
 });
 
 const KNOWN_SCOPE_FILTER_KEYS = new Set(["facet"]);
@@ -125,6 +127,30 @@ function normalizeAgencyIdFromRef(value) {
   return raw.startsWith("id:") ? raw.slice(3) : raw;
 }
 
+/**
+ * Browse also scopes by exact source subjects/keys when a lens has no public
+ * entity profile for its second edge. These are not entity-profile pivots:
+ * they remain opaque, exact City Record/PIN references and never become
+ * links from display-name similarity.
+ */
+export function parseBrowseRef(value) {
+  const parsed = parseEntityRef(value);
+  if (parsed) return parsed;
+  const ref = String(value || "").trim();
+  if (!ref || /\s/.test(ref)) return null;
+  const notice = ref.match(/^notice:([A-Za-z0-9][A-Za-z0-9_-]{3,39})$/);
+  if (notice) return { kind: "notice", id: notice[1], ref };
+  const pin = ref.match(/^pin:([A-Za-z0-9][A-Za-z0-9_-]{3,39})$/);
+  if (pin) return { kind: "pin", id: pin[1], ref };
+  return null;
+}
+
+function exactBrowseRef(kind, value) {
+  const raw = String(value || "").trim();
+  if (!raw) return null;
+  return parseBrowseRef(`${kind}:${raw}`);
+}
+
 function collectEntityRefsFromCell(value) {
   if (value == null) return [];
   const cells = Array.isArray(value) ? value : [value];
@@ -132,7 +158,7 @@ function collectEntityRefsFromCell(value) {
     if (raw == null || raw === "") return [];
     const candidate = typeof raw === "string" ? raw : raw?.ref || raw?.entity_ref;
     if (typeof candidate !== "string") return [];
-    const parsed = parseEntityRef(candidate) || parseDispositionRef(candidate);
+    const parsed = parseBrowseRef(candidate) || parseDispositionRef(candidate);
     if (!parsed) return [];
     if (parsed.kind === "agency") parsed.id = normalizeAgencyIdFromRef(parsed.id);
     return [parsed];
@@ -153,6 +179,8 @@ function scopeLabelFromRef(item) {
   if (item.kind === "agency") {
     return resolveAgencyIdentity(item.id).canonical_name;
   }
+  if (item.kind === "notice") return `notice ${item.id}`;
+  if (item.kind === "pin") return `PIN ${item.id}`;
   return `${item.kind}:${item.id}`;
 }
 
@@ -188,7 +216,7 @@ function scopeFromFacetParams(facet, search) {
   }
 
   for (const rawRef of refValues) {
-    const parsedRef = parseEntityRef(rawRef) || parseDispositionRef(rawRef);
+    const parsedRef = parseBrowseRef(rawRef) || parseDispositionRef(rawRef);
     if (!parsedRef) {
       unsupportedRefs.add(String(rawRef));
       continue;
@@ -218,6 +246,28 @@ function readRowEntityRefs(row, facet) {
   const fields = policy?.entityRefFields || [];
   const refs = [];
   for (const field of fields) {
+    if (field === "request_id") {
+      const ref = exactBrowseRef("notice", row?.[field]);
+      if (ref) refs.push(ref);
+      continue;
+    }
+    if (field === "pin") {
+      const ref = exactBrowseRef("pin", row?.[field]);
+      if (ref) refs.push(ref);
+      continue;
+    }
+    if (field === "project_id") {
+      const ref = exactBrowseRef("project", row?.[field]);
+      if (ref) refs.push(ref);
+      continue;
+    }
+    if (field === "zap_project_ids") {
+      for (const projectId of Array.isArray(row?.[field]) ? row[field] : [row?.[field]]) {
+        const ref = exactBrowseRef("project", projectId);
+        if (ref) refs.push(ref);
+      }
+      continue;
+    }
     refs.push(...collectEntityRefsFromCell(row?.[field]));
   }
   return refs;
@@ -590,7 +640,7 @@ function suggestionEdgeLabel(item) {
 
 function browseEdgeInventory(facet, rows, currentRefs) {
   const requested = (currentRefs || []).map((ref) => {
-    const parsed = parseEntityRef(ref);
+    const parsed = parseBrowseRef(ref);
     if (!parsed) return null;
     return parsed.kind === "agency"
       ? { ...parsed, id: parsed.id.replace(/^id:/, "") }
@@ -606,7 +656,7 @@ function browseEdgeInventory(facet, rows, currentRefs) {
 
   for (const row of baseMatches) {
     const rowEdges = [...rowReferenceSet(row, facet).values()] // Source: current Browse payload's typed rowReferenceSet; no new data is fetched here.
-      .filter((item) => parseEntityRef(item.ref))
+      .filter((item) => parseBrowseRef(item.ref))
       .filter((item) => item.ref && !requestedKeys.has(scopeKeyFromKindAndRef(item)));
     for (const item of rowEdges) {
       const key = item.ref;

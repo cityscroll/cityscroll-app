@@ -86,6 +86,8 @@ function routableEntityRef(value) {
   if (/^vendor:stem:.+$/.test(ref)) return ref;
   if (/^entity:official:.+$/.test(ref)) return ref;
   if (/^project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(ref)) return ref;
+  if (/^notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}$/.test(ref)) return ref;
+  if (/^pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}$/.test(ref)) return ref;
   if (/^exam:\d{4}$/.test(ref)) return ref;
   if (/^bbl:\d{10}$/.test(ref)) return ref;
   return null;
