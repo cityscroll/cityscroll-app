@@ -15,6 +15,7 @@ import {
 import { constellationLink } from "./affordance_grammar.mjs";
 import { buildObservedParcelBiography, parcelBiographyHref, parcelRef } from "./parcel_scope.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
+import { asOfFilterCanNarrow, buildLedgerSummary, projectAgencyConstellationAsOf, renderCivicTimeLedgerPanel } from "./civic_time_ledger.mjs";
 
 export const CIVIC_OBJECT_EXPORT_REGISTRY = Object.freeze({
   "monitor-pack": Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
@@ -66,6 +67,7 @@ export function parcelSubjectRef(bbl) {
 export function buildParcelBiographyView({ bbl, crossDomain, taxLien, cofo } = {}) {
   const view = buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo });
   if (!view.ok) return null;
+  const sections = view.sections || {};
   return { ...view, kind: "parcel", id: view.bbl, path: parcelPath(view.bbl), subject_ref: view.parcel_ref };
 }
 
@@ -179,6 +181,30 @@ function parcelMembersMarkup(view) {
   }).filter(Boolean).join("");
 }
 
+function parcelLedgerView(view) {
+  return {
+    ...view,
+    categories: Object.entries(view.sections || {}).map(([id, section]) => ({
+      id,
+      label: parcelSectionLabel(id) || id,
+      status: section.items?.length ? "matched" : "empty",
+      items: section.items || [],
+    })),
+  };
+}
+
+function parcelLedgerMarkup(view, asOfDay = null) {
+  if (!asOfFilterCanNarrow(view)) return "";
+  const ledgerView = parcelLedgerView(view);
+  const projected = asOfDay ? projectAgencyConstellationAsOf(ledgerView, asOfDay, { axis: "valid" }) : null;
+  return renderCivicTimeLedgerPanel({
+    path: view.path,
+    asOfDay,
+    summary: projected ? buildLedgerSummary(ledgerView, projected) : null,
+    subjectLabel: "this parcel’s linked records",
+  });
+}
+
 function packMembersMarkup(view) {
   const items = view.watches.map((watch) => `<li class="node-record">${constellationLink({ href: followingUrlFromWatch(watch, { frequency: "weekly" }), label: watch.label, className: "composed-object-link", escape: esc })}${watch.subject_refs.length ? `<ul class="node-record-list">${watch.subject_refs.map(subjectLink).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("");
   return `<section class="node-section node-card civic-object-section" data-export-class="object_members"><h2>Watches in this pack</h2><ul class="node-record-list">${items}</ul></section>`;
@@ -209,6 +235,7 @@ export function renderComposedObjectDocument(view, options = {}) {
     : isPack
       ? packMembersMarkup(view)
       : digestMembersMarkup(view);
+  const ledger = isParcel ? parcelLedgerMarkup(view, options.asOf || null) : "";
   const pivot = isPack
     ? ""
     : isParcel
@@ -229,10 +256,12 @@ export function renderComposedObjectDocument(view, options = {}) {
       ? "A reader-friendly record of public information connected with this parcel."
       : `A weekly public-data digest for Council District ${view.council_district}.`;
   const canonical = `https://cityscroll.org${view.path}`;
-  const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
+  const payloadView = isParcel && asOfFilterCanNarrow(view) ? parcelLedgerView(view) : view;
+  const payload = JSON.stringify(payloadView).replace(/<\/script/gi, "<\\/script");
   // Property is not a primary nav route; highlight Browse for parcel documents.
   const mastHighlight = isParcel ? "browse" : "following";
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: mastHighlight, surfaceClass: "civic-object-mast" })}<main id="main" class="node-document civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">${back}<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">${esc(kicker)}</p><h1>${esc(title)}</h1><p class="node-lede">${esc(lede)}</p>${pivot}</header>${actionMarkup(view, watchHref)}${members}</main>${renderNodeFooter({ extraClass: "civic-object-footer" })}<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script></body></html>`);
+  const ledgerRuntime = isParcel ? '<script type="module" src="/civic_time_ledger_runtime.mjs"></script>' : "";
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: mastHighlight, surfaceClass: "civic-object-mast" })}<main id="main" class="node-document civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">${back}<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">${esc(kicker)}</p><h1>${esc(title)}</h1><p class="node-lede">${esc(lede)}</p>${pivot}</header>${actionMarkup(view, watchHref)}${ledger}${members}</main>${renderNodeFooter({ extraClass: "civic-object-footer" })}<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script>${ledgerRuntime}</body></html>`);
 }
 
 function exportRows(payload) {

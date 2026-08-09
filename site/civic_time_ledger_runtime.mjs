@@ -145,6 +145,7 @@ function replaceCategorySections(root, categories) {
 }
 
 function updateHero(root, nowView, asOfView, day) {
+  if (nowView.kind !== "agency-constellation") return;
   const kicker = root.querySelector(".node-kicker, .civic-object-kicker");
   const lede = root.querySelector(".node-lede");
   if (day && asOfView) {
@@ -183,6 +184,7 @@ function updateLedgerPanel(root, nowView, asOfView, day, useful) {
     path: nowView.path,
     asOfDay: day,
     summary,
+    subjectLabel: nowView.kind === "parcel" ? "this parcel’s linked records" : "agency’s linked records",
   });
   if (existing) existing.outerHTML = html;
   else {
@@ -244,7 +246,7 @@ function applyAsOf(root, nowView, day) {
   // Static HTML already embeds the full process-conformance mandates surface.
   // Only rewrite category sections when an as-of filter changes membership —
   // re-rendering "now" from the JSON payload would drop #mandates-conformance.
-  if (asOfView) {
+  if (asOfView && nowView.kind === "agency-constellation") {
     replaceCategorySections(root, asOfView.categories);
   } else if (root.dataset.asOf) {
     // Clearing as-of: hard-navigate so the static document (with process-
@@ -267,8 +269,8 @@ function applyAsOf(root, nowView, day) {
 }
 
 export function mountAgencyCivicTimeLedger(root = document) {
-  const main = root.querySelector?.("[data-civic-object-kind='agency-constellation']")
-    || (root.matches?.("[data-civic-object-kind='agency-constellation']") ? root : null);
+  const main = root.querySelector?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']")
+    || (root.matches?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']") ? root : null);
   if (!main) return null;
   const payloadEl = root.getElementById?.("civic-object-payload")
     || document.getElementById("civic-object-payload");
@@ -279,7 +281,7 @@ export function mountAgencyCivicTimeLedger(root = document) {
   } catch {
     return null;
   }
-  if (!nowView || nowView.kind !== "agency-constellation") return null;
+  if (!nowView || !["agency-constellation", "parcel"].includes(nowView.kind)) return null;
 
   const initial = parseAsOfFromSearch(location.search);
   applyAsOf(main, nowView, initial);
