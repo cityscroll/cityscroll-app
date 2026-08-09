@@ -568,6 +568,46 @@ select {
   color: var(--color-text-muted);
 }
 
+.exam-title-code-family {
+  border-block-start: 2px solid var(--color-action);
+}
+
+.exam-title-family-lede {
+  max-width: 72ch;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-soft);
+}
+
+.exam-title-family-lede code {
+  color: var(--color-text);
+  font: 600 .95em/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.exam-title-family-marker {
+  color: var(--color-text-muted);
+  font: 600 .72rem/1 var(--font-label);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.exam-title-family-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+
+.exam-title-family-link {
+  padding: .45rem .65rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.exam-title-family-link:hover,
+.exam-title-family-link:focus-visible {
+  border-color: var(--color-action);
+  background: var(--color-surface-alt, var(--color-canvas-subtle));
+}
+
 .exam-facts,
 .exam-metrics {
   display: grid;

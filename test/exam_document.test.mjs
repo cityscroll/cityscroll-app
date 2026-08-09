@@ -15,6 +15,7 @@ import {
 import { edgeRequestKind } from "../site/pages_edge.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
 import { examDocumentOutputs } from "../tools/build_exam_documents.mjs";
+import { buildTitleCodeFamilyIndex } from "../site/title_code_family.mjs";
 import { compileSub } from "../worker/src/lib/compile.mjs";
 import { sanitize } from "../worker/src/lib/filter.mjs";
 import { describeFilter } from "../worker/src/lib/confirm_email.mjs";
@@ -65,6 +66,25 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.doesNotMatch(html, /Subject reference:/i);
   assert.doesNotMatch(html, /Post-cycle aggregates are not yet shown/i);
   assert.doesNotMatch(html, /Not published|Sources and limits|unpublished values remain unlinked/i);
+});
+
+test("exam documents expose title-code family navigation as a labeled browse aid", () => {
+  const exam = artifact.exams.find((row) => row.exam_number === "7311");
+  const html = renderExamDocument(exam, {
+    today: "2026-08-05",
+    status: Staffing.statusFor(exam, "2026-08-05"),
+    feeSalary: Staffing.examFeeSalaryView(exam),
+    outcome: Staffing.examOutcomeView(exam),
+    phaseView: buildExamPhaseView(buildExamProcessSpine(exam)),
+    titleCodeFamilyMembers: buildTitleCodeFamilyIndex(artifact.exams)[exam.title_code],
+  });
+  assert.match(html, /data-title-code-family-surface="navigational"/);
+  assert.match(html, /data-consequence-tier="navigational_exploratory"/);
+  assert.match(html, /Explore this title-code family/);
+  assert.match(html, /This is a navigational aid for browsing related exams/);
+  assert.match(html, /class="ui-constellation-link exam-title-family-link"[^>]*href="\/exams\//);
+  assert.match(html, /data-title-code-family-member="7312"/);
+  assert.deepEqual(detectNodePageCruft(html), []);
 });
 
 test("exam public outcomes render only when aggregates exist", () => {
