@@ -57,11 +57,35 @@ def fulfill_json(route: Route, payload: object) -> None:
     route.fulfill(status=200, content_type="application/json", body=json.dumps(payload))
 
 
+MANDATE_BACKLINKS_LOOKUP = {
+    "schema": "cityscroll.notice_mandate_backlinks.v1",
+    "method": "notice_mandate_backlinks_v1",
+    "generated_at": "2026-08-09T00:00:00.000Z",
+    "counts": {"notices": 1, "edges": 1, "by_relation": {"implemented_by_contract": 1}},
+    "by_notice": {
+        NOTICE_ID: [
+            {
+                "duty_text": "Issue a request for proposals for playground reconstruction services.",
+                "citation": "Local Law fixture §1",
+                "source_href": "https://example.test/law/playground",
+                "relation": "implemented_by_contract",
+                "relation_label": "Procurement record for this duty",
+                "agency_id": "parks-and-recreation",
+                "agency_name": "Parks and Recreation",
+                "agency_href": "/agencies/parks-and-recreation/",
+                "publication_tier": "public_inferred",
+            }
+        ]
+    },
+}
+
+
 def install_notice_routes(
     page: Page,
     translation_calls: list[str],
     *,
     notice: dict[str, object] = NOTICE,
+    mandate_lookup: dict[str, object] | None = MANDATE_BACKLINKS_LOOKUP,
 ) -> None:
     page.route(
         "https://data.cityofnewyork.us/resource/dg92-zbpx.json*",
@@ -71,6 +95,11 @@ def install_notice_routes(
         "**/attachment-metadata*",
         lambda route: fulfill_json(route, {"request_id": NOTICE_ID, "attachments": []}),
     )
+    if mandate_lookup is not None:
+        page.route(
+            "**/data/notice_mandate_backlinks_lookup.json*",
+            lambda route: fulfill_json(route, mandate_lookup),
+        )
 
     def translate(route: Route) -> None:
         translation_calls.append(route.request.url)
@@ -121,6 +150,37 @@ def assert_document_feature_parity(page: Page) -> None:
         assert disclosure.get_attribute("open") is None, f"{label} disclosure did not close"
         summary.click()
         assert disclosure.get_attribute("open") is not None, f"{label} disclosure did not reopen"
+
+
+def assert_connected_mandate_card(page: Page) -> None:
+    """Hydrated notice path paints one Connected mandate provenance card when indexed."""
+    card = page.locator("#noticeview [data-connected-mandate='1']")
+    card.wait_for(state="visible", timeout=10000)
+    assert card.count() == 1, "mandate backlink card duplicated after hydration"
+    text = card.inner_text()
+    text_lower = text.lower()
+    # .chain-h may render the heading in CSS uppercase; match case-insensitively.
+    assert "connected mandate" in text_lower
+    assert "playground reconstruction" in text_lower
+    assert "procurement record for this duty" in text_lower
+    assert "local law fixture" in text_lower
+    source = card.locator('a[href="https://example.test/law/playground"]')
+    assert source.count() == 1, "source-law link missing from mandate card"
+    agency = card.locator('a[href="/agencies/parks-and-recreation/"]')
+    assert agency.count() == 1, "agency dossier link missing from mandate card"
+    # Machine identities stay off the reader surface.
+    html = card.inner_html()
+    assert "subject_ref" not in html
+    assert "mandate:" not in html
+    assert "evidence_only" not in html
+
+
+def assert_no_connected_mandate_absence(page: Page) -> None:
+    """Notices without a public backlink render no card and no absence announcement."""
+    assert page.locator("#noticeview [data-connected-mandate]").count() == 0
+    body = page.locator("#noticeview").inner_text().lower()
+    assert "connected mandate" not in body
+    assert "not yet shown" not in body
 
 
 def assert_structured_property_sections(page: Page) -> dict[str, object]:
@@ -246,6 +306,7 @@ def main() -> None:
         )
 
         assert_document_feature_parity(direct)
+        assert_connected_mandate_card(direct)
         direct.locator("#ncopy").click()
         copied = direct.evaluate("window.__copiedNoticeUrl")
         copied_url = urlsplit(copied)
@@ -271,12 +332,25 @@ def main() -> None:
         property_context = context_with_clipboard(browser)
         property_page = property_context.new_page()
         property_calls: list[str] = list()
-        install_notice_routes(property_page, property_calls, notice=PROPERTY_NOTICE)
+        # Empty public index: property notices without a backlink stay silent.
+        install_notice_routes(
+            property_page,
+            property_calls,
+            notice=PROPERTY_NOTICE,
+            mandate_lookup={
+                "schema": "cityscroll.notice_mandate_backlinks.v1",
+                "method": "notice_mandate_backlinks_v1",
+                "counts": {"notices": 0, "edges": 0, "by_relation": {}},
+                "by_notice": {},
+            },
+        )
         property_page.goto(
             f"{BASE}/notices/{PROPERTY_NOTICE['request_id']}",
             wait_until="load",
             timeout=30000,
         )
+        property_page.locator("#nactions .next-action-rail").wait_for(state="visible", timeout=10000)
+        assert_no_connected_mandate_absence(property_page)
 
         biography = property_page.locator("#npropertyxd [data-parcel-biography='1']")
         biography.wait_for(state="visible", timeout=10000)
