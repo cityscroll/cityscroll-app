@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-09T15:01:57.962Z",
+  "generated_at": "2026-08-09T15:17:29.522Z",
   "observation_count": 2459,
   "entity_count": 200,
   "multi_domain_count": 34,
@@ -81439,8 +81439,8 @@
         "ref": "agency:id:mayors-office-of-criminal-justice",
         "id": "id:mayors-office-of-criminal-justice",
         "canonical_id": "mayors-office-of-criminal-justice",
-        "canonical_name": "Mayor's Office of Criminal Justice",
-        "display_name": "Mayor's Office of Criminal Justice"
+        "canonical_name": "mayors office of criminal justice",
+        "display_name": "mayors office of criminal justice"
       },
       "domains": {
         "money": {
@@ -141781,8 +141781,8 @@
         "ref": "agency:id:department-of-social-services",
         "id": "id:department-of-social-services",
         "canonical_id": "department-of-social-services",
-        "canonical_name": "Department Of Social Services",
-        "display_name": "Department Of Social Services"
+        "canonical_name": "Department of Social Services",
+        "display_name": "Department of Social Services"
       },
       "domains": {
         "money": {
@@ -268794,7 +268794,7 @@
     {
       "ref": "agency:id:mayors-office-of-criminal-justice",
       "kind": "agency",
-      "display_name": "Mayor's Office of Criminal Justice",
+      "display_name": "mayors office of criminal justice",
       "domains_matched": 2,
       "total_linked_objects": 6,
       "coverage_rate": 0.2857142857142857
@@ -269002,7 +269002,7 @@
     {
       "ref": "agency:id:department-of-social-services",
       "kind": "agency",
-      "display_name": "Department Of Social Services",
+      "display_name": "Department of Social Services",
       "domains_matched": 1,
       "total_linked_objects": 6,
       "coverage_rate": 0.14285714285714285

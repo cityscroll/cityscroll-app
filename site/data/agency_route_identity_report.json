@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.agency_route_identity_report.v1",
-  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T15:01:57.962Z",
+  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-08T12:15:15.003Z|2026-08-09T15:17:29.522Z",
   "method": "exact_publisher_crosswalk_with_reviewed_route_dispositions_v1",
   "publisher_canonical_count": 116,
   "constellation_only_source_count": 21,
@@ -88,7 +88,7 @@
     {
       "source_id": "department-of-social-services",
       "names": [
-        "Department Of Social Services"
+        "Department of Social Services"
       ],
       "sources": [
         "entity_intelligence"
