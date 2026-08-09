@@ -276,6 +276,23 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
   assert.doesNotMatch(html, /class="loading"/);
 });
 
+test("notice response renderer preserves an attachment-only notice affordance", () => {
+  const html = renderEdgeNotice({
+    request_id: "20180705102",
+    short_title: "ACS FY19 regulatory agenda",
+    agency_name: "Administration for Children's Services",
+    type_of_notice_description: "Notice",
+    section_name: "Agency Rules",
+    document_links: {
+      url: "https://a856-cityrecord.nyc.gov/Search/GetFile?SectionID=4&amp;RequestID=20180705102&amp;DocumentID=3423",
+    },
+  }, "20180705102");
+  assert.match(html, /notice-attachment-fallback/);
+  assert.match(html, /Read the attachment/);
+  assert.match(html, /DocumentID=3423/);
+  assert.doesNotMatch(html, /Notice text/);
+});
+
 test("notice agency facts link only to reviewed agency pages", () => {
   const nycha = renderEdgeNotice({
     request_id: "20260626002",
