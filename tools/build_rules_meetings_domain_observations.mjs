@@ -17,6 +17,7 @@
  *   --window D  look-back days (default 180)
  *   --skip-people  do not refresh people snapshot (rules/meetings only)
  *   --rules-only  refresh only the rules snapshot
+ *   --meeting-stamps-only  add matter stamps to the fixed meetings corpus
  *   --people-only  refresh only people (from meeting-outcomes roll_call densify)
  *   --residual-only  re-stamp only IDs in the dated Meetings location receipt
  */
@@ -39,6 +40,10 @@ import {
   RULE_EVIDENCE_STAMP_SCHEMA,
   extractRuleEvidenceStamp,
 } from "../site/rule_evidence_stamps.mjs";
+import {
+  MEETING_MATTER_STAMP_SCHEMA,
+  extractMeetingMatterStamp,
+} from "../site/meeting_matter_stamps.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
@@ -91,8 +96,9 @@ const PEOPLE_EXTRACT_LIMIT = 600;
 /** Safety cap on list pagination (matched roll-call records are few). */
 const MEETING_OUTCOMES_PAGE_LIMIT = 100;
 const MEETING_OUTCOMES_MAX_OFFSET = 2000;
-// Body fields are fetched only to extract ULURP / ZAP project keys for reverse
-// land joins — raw body text is NOT written into the committed snapshot
+// Body fields are fetched only to extract bounded matter-subject stamps plus
+// ULURP / ZAP project keys for reverse land joins. Raw body text is NOT written
+// into the committed snapshot
 // (emails / phones / testimony contacts must not land on the public PR surface).
 const SELECT =
   "request_id,start_date,agency_name,type_of_notice_description,section_name,short_title,event_date,"
@@ -108,6 +114,7 @@ function parseArgs(argv) {
     windowDays: 180,
     skipPeople: false,
     rulesOnly: false,
+    meetingStampsOnly: false,
     peopleOnly: false,
     residualOnly: false,
   };
@@ -116,6 +123,7 @@ function parseArgs(argv) {
     if (a === "--check") out.check = true;
     else if (a === "--skip-people") out.skipPeople = true;
     else if (a === "--rules-only") out.rulesOnly = true;
+    else if (a === "--meeting-stamps-only") out.meetingStampsOnly = true;
     else if (a === "--people-only") out.peopleOnly = true;
     else if (a === "--residual-only") out.residualOnly = true;
     else if (a === "--limit" && argv[i + 1]) {
@@ -132,6 +140,7 @@ function parseArgs(argv) {
   if (out.peopleOnly) out.skipPeople = false;
   if (out.residualOnly) out.skipPeople = true;
   if (out.rulesOnly) out.skipPeople = true;
+  if (out.meetingStampsOnly) out.skipPeople = true;
   return out;
 }
 
@@ -363,6 +372,7 @@ function cleanHearing(row) {
   });
   if (landRefs.ulurp_keys.length) out.ulurp_keys = landRefs.ulurp_keys;
   if (landRefs.zap_project_ids.length) out.zap_project_ids = landRefs.zap_project_ids;
+  out.matter_subject = extractMeetingMatterStamp(fullRow);
   // Place stamp for map choropleth: human derivation (matter → venue → agency HQ).
   // Scope + district bags + method/confidence only — never raw body text.
   let place = compactPlaceStamp(meetingPlaceFromRow(fullRow, {
@@ -592,6 +602,41 @@ async function main() {
     return;
   }
 
+  if (args.meetingStampsOnly) {
+    if (!existsSync(OUT_MEETINGS)) {
+      throw new Error("meeting-stamps-only requires the Meetings snapshot");
+    }
+    const current = JSON.parse(readFileSync(OUT_MEETINGS, "utf8"));
+    const ids = (current.rows || []).map((row) => String(row.request_id)).filter(Boolean);
+    const rawRows = await sodaFetch(
+      `request_id in (${ids.map((id) => `'${id}'`).join(",")})`,
+      ids.length,
+    );
+    const stampById = new Map(rawRows.map((row) => [
+      String(row.request_id),
+      extractMeetingMatterStamp(row),
+    ]));
+    if (stampById.size !== ids.length) {
+      throw new Error(`meeting-stamps-only fetched ${stampById.size}/${ids.length} source rows`);
+    }
+    const rows = (current.rows || []).map((row) => ({
+      ...row,
+      matter_subject: stampById.get(String(row.request_id)),
+    }));
+    const next = {
+      ...current,
+      schema_version: 2,
+      meeting_matter_stamp_schema: MEETING_MATTER_STAMP_SCHEMA,
+      description:
+        "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Source prose is reduced to bounded matter-subject stamps and discarded. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
+      matter_subject_stamped_at: retrievedAt,
+      rows,
+    };
+    writeFileSync(OUT_MEETINGS, `${JSON.stringify(next, null, 2)}\n`);
+    console.log(`wrote ${path.relative(ROOT, OUT_MEETINGS)} matter_stamps=${rows.length}`);
+    return;
+  }
+
   if (args.residualOnly) {
     const receiptPath = path.join(ROOT, "site/data/meetings_location_residual_receipt.json");
     if (!existsSync(receiptPath) || !existsSync(OUT_MEETINGS)) {
@@ -656,6 +701,14 @@ async function main() {
 
   const rules = rulesRaw.map(cleanRule).filter(Boolean);
   const meetings = hearingsRaw.map(cleanHearing).filter(Boolean);
+  let previousMeetings = null;
+  if (existsSync(OUT_MEETINGS)) {
+    try {
+      previousMeetings = JSON.parse(readFileSync(OUT_MEETINGS, "utf8"));
+    } catch {
+      previousMeetings = null;
+    }
+  }
 
   const rulesDoc = {
     schema_version: 2,
@@ -679,11 +732,12 @@ async function main() {
   };
 
   const meetingsDoc = {
-    schema_version: 1,
+    schema_version: 2,
+    meeting_matter_stamp_schema: MEETING_MATTER_STAMP_SCHEMA,
     domain: "meetings",
     title: "Meetings domain observations for entity intelligence",
     description:
-      "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
+      "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Source prose is reduced to bounded matter-subject stamps and discarded. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
     retrieved_at: retrievedAt,
     window_days: args.windowDays,
     source: {
@@ -695,6 +749,9 @@ async function main() {
     row_count: meetings.length,
     agency_count: new Set(meetings.map((r) => r.agency_name)).size,
     rows: meetings,
+    ...(previousMeetings?.location_residual
+      ? { location_residual: previousMeetings.location_residual }
+      : {}),
   };
 
   mkdirSync(path.dirname(OUT_RULES), { recursive: true });
