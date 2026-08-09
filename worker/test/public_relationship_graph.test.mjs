@@ -12,6 +12,7 @@ import {
   handlePublicRelationshipGraph,
   readPublicRelationshipGraph,
 } from "../src/public_relationship_graph.mjs";
+import { serializePublicRelationshipGraph } from "../../entity_resolution/publication/relationship_graph.mjs";
 
 const ENTITY_ID = "vendor:stem:ACME CONSTRUCTION";
 
@@ -268,4 +269,32 @@ test("graph unknown id returns not_yet_public — not a live empty product surfa
   } finally {
     sqlite.close();
   }
+});
+
+test("public graph omits evidence-only cross-spine candidates", () => {
+  const graph = serializePublicRelationshipGraph([{
+    entity_id: ENTITY_ID,
+    entity_type: "vendor",
+    display_name: "Acme Construction LLC",
+    source_system: "city_record",
+    source_system_id: "20260730001",
+    raw_snapshot: JSON.stringify({
+      type_of_notice_description: "Award",
+      short_title: "Bridge inspection services",
+      vendor_name: "Acme Construction LLC",
+      contract_id: "CT-850-1",
+    }),
+    ingested_at: "2026-08-01T11:00:00.000Z",
+  }], {
+    crossSpineEdges: [{
+      type: "references_contract",
+      relation: "mandate_rule",
+      from: ENTITY_ID,
+      to: "contract:name:ct-850-1",
+      features: { agency_exact: true, topic_overlap: ["rule"] },
+      provenance: { source_system: "city_record", source_record_id: "rule-1" },
+    }],
+  });
+  assert.equal(graph.edge_routing.evidence_only, 1);
+  assert.equal(graph.edges.some((edge) => edge.from === ENTITY_ID && edge.type === "references_contract"), false);
 });
