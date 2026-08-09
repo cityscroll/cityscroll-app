@@ -1,7 +1,7 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
-import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import { installFilterChipNavigation, officialSourceLink } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* ===================== LAND ===================== */
@@ -507,7 +507,7 @@ async function landSelect(i, el){
     ${landPermalinkActionHTML(r)}
     <a class="act" href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
-    <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
+    <span id="land-city-record-source"></span>
   </div>
   <div id="project-connections"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
@@ -545,7 +545,7 @@ async function landSelect(i, el){
   bindQRShare($("#landqr"), landURL);
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
   const crterm=cleanText(r.project_name||"").replace(/\b(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice)\b/ig," ").replace(/\s+/g," ").trim();
-  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ if(selection!==landSelectionSeq) return; const cr=$("#crfind"); if(cr&&rows&&rows[0]){ cr.href=REQ_URL(rows[0].request_id); cr.innerHTML=t("rezoning_notice_link")+extSR(); } }).catch(()=>{}); }
+  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ if(selection!==landSelectionSeq) return; const cr=$("#land-city-record-source"); if(cr&&rows&&rows[0]){ cr.outerHTML=officialSourceLink({ href:REQ_URL(rows[0].request_id), label:t("rezoning_notice_link"), className:"land-city-record-source", escape:escUiHtml }); } }).catch(()=>{}); }
   let drew=false;
   try{
     const bblRows=await api(ZAPBBL,{"$select":"bbl","$where":`project_id='${(r.project_id||"").replace(/'/g,"''")}'`,"$limit":"40"});

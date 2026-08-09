@@ -912,7 +912,9 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   </div>`;
   const primaryActionKey=(closed||superseded)?"property_action_open_notice":(!closed&&cardCopy?.action_kind?"property_action_open_notice":actionKey);
   const primaryAction=`<a class="act${closed||superseded?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
-  const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
+  // The internal notice route retains the official-record source link; do not repeat it
+  // on every property card as a generic action.
+  const secondaryActions=[];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
     if(links?.zola_url) secondaryActions.push(`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`);
