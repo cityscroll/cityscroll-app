@@ -29,6 +29,7 @@ const PATHS = {
   money: join(ROOT, "site/data/money_domain_observations.json"),
   moneyFallback: join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"),
   contractActions: join(ROOT, "site/data/contract_action_address_locations.json"),
+  mandateBacklinks: join(ROOT, "site/data/notice_mandate_backlinks_lookup.json"),
 };
 
 function loadJson(path) {
@@ -47,6 +48,7 @@ function loadInputs() {
   const rules = loadJson(PATHS.rules);
   const money = loadJson(PATHS.money) || loadJson(PATHS.moneyFallback);
   const contractActions = loadJson(PATHS.contractActions);
+  const mandateBacklinksLookup = loadJson(PATHS.mandateBacklinks);
 
   return {
     boundaries,
@@ -56,6 +58,7 @@ function loadInputs() {
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],
+    mandateBacklinksLookup,
     districtCorpora: {
       land: {
         path: "data/zap_projects_warehouse_lookup.json",
@@ -143,6 +146,32 @@ function check(doc) {
       throw new Error("weak fallback leaked into public located_in edges");
     }
   }
+  const explanationPaths = doc.explanation_paths;
+  if (
+    explanationPaths?.schema !== "cityscroll.near_you_explanation_paths.v1"
+    || explanationPaths.reverse_index_schema !== "cityscroll.notice_mandate_backlinks.v1"
+    || explanationPaths.reverse_index_method !== "notice_mandate_backlinks_v1"
+  ) throw new Error("Near-you explanation path provenance missing");
+  let explanationRecords = 0;
+  let explanationCandidates = 0;
+  for (const records of Object.values(doc.records || {})) {
+    for (const record of Object.values(records || {})) {
+      const candidates = record.why_here_candidates || [];
+      if (candidates.length) explanationRecords += 1;
+      explanationCandidates += candidates.length;
+      for (const candidate of candidates) {
+        if (
+          candidate?.schema !== "cityscroll.near_you_explanation_path.v1"
+          || candidate.location?.relation !== "located_in"
+          || !["deterministic", "public_inferred"].includes(candidate.mandate?.publication_tier)
+        ) throw new Error("non-public Near-you explanation candidate");
+      }
+    }
+  }
+  if (
+    explanationRecords !== explanationPaths.records
+    || explanationCandidates !== explanationPaths.candidates
+  ) throw new Error("Near-you explanation path count drift");
   for (const lens of ["land", "property", "rules", "meetings", "money"]) {
     const corpus = itemIndex.corpora?.[lens];
     if (!corpus?.path || !corpus?.collection || !corpus?.stamp_field || !corpus?.stamp_value) {
