@@ -58,10 +58,13 @@ export function parseContractTransaction(txXml) {
   return {
     id: extractTag(txXml, "prime_contract_id"),
     vendor: extractTag(txXml, "prime_vendor"),
-    agency: extractTag(txXml, "agency_name"),
-    pin: extractTag(txXml, "pin"),
+    agency: extractTag(txXml, "agency_name")
+      || extractTag(txXml, "prime_contracting_agency"),
+    pin: extractTag(txXml, "pin")
+      || extractTag(txXml, "prime_contract_pin"),
     status: extractTag(txXml, "status"),
     vendorRecordType: extractTag(txXml, "vendor_record_type"),
+    subVendor: extractTag(txXml, "sub_vendor"),
     current: parseAmount(extractTag(txXml, "prime_contract_current_amount")),
     original: parseAmount(extractTag(txXml, "prime_contract_original_amount")),
     spent: parseAmount(extractTag(txXml, "prime_vendor_spent_to_date")),

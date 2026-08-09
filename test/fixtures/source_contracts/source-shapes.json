@@ -104,6 +104,8 @@
       "fields": [
         "prime_contract_id",
         "prime_vendor",
+        "prime_contracting_agency",
+        "prime_contract_pin",
         "prime_contract_current_amount",
         "prime_contract_registration_date"
       ]

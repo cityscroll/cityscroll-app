@@ -77,7 +77,31 @@ export function flattenIndexToEdges(index, opts = {}) {
     || String(a.from_ref).localeCompare(String(b.from_ref))
     || String(a.to_ref).localeCompare(String(b.to_ref)),
   );
-  return edges.slice(0, maxEdges);
+  if (edges.length <= maxEdges) return edges;
+  // Preserve relation-shape coverage before the deterministic fill. A plain
+  // lexicographic prefix silently loses later-root relation types as denser
+  // sources add rows (for example payment edges on vendor roots).
+  const reserved = [];
+  const seenTypes = new Set();
+  for (const edge of edges) {
+    if (seenTypes.has(edge.link_type)) continue;
+    seenTypes.add(edge.link_type);
+    reserved.push(edge);
+    if (reserved.length >= maxEdges) return reserved;
+  }
+  const reservedKeys = new Set(reserved.map((edge) => [
+    edge.root_ref,
+    edge.link_type,
+    edge.from_ref,
+    edge.to_ref,
+  ].join("|")));
+  for (const edge of edges) {
+    const key = [edge.root_ref, edge.link_type, edge.from_ref, edge.to_ref].join("|");
+    if (reservedKeys.has(key)) continue;
+    reserved.push(edge);
+    if (reserved.length >= maxEdges) break;
+  }
+  return reserved;
 }
 
 /**

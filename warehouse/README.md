@@ -196,6 +196,34 @@ as a checksum manifest over deterministic 10,000-row JSON shards in
 20 MiB, leaving deployment headroom below the static-host asset limit while the
 raw warehouse payload remains a single resumable build artifact.
 
+## Checkbook Contracts population
+
+`checkbook_contracts.mjs` collects explicit fiscal-year partitions from the
+official Checkbook Contracts XML API. Pages are resumable from a gitignored
+checkpoint and carry per-page SHA-256 hashes. A pull stops without publishing
+if `record_count` changes or parsed rows do not equal the API denominator.
+Prime-vendor and subvendor slices collapse to one exact `prime_contract_id`;
+names never become contract identity keys.
+
+```bash
+# Offline proof (two pages, including one prime/subvendor pair).
+node warehouse/scripts/checkbook_contracts.mjs --from-fixture \
+  --fiscal-years 2026 --page-size 2 --graph-cap 2 \
+  --stage-dir .generated/checkbook-contracts-fixture \
+  --receipt .generated/checkbook-contracts-fixture/receipt.json \
+  --snapshot .generated/checkbook-contracts-fixture/normalized.json
+
+# Population refresh and bounded graph publication.
+node warehouse/scripts/checkbook_contracts.mjs --publish \
+  --refresh --fiscal-years 2025,2026,2027 --page-size 999 --graph-cap 500
+node warehouse/scripts/checkbook_contracts.mjs --check
+```
+
+The committed denominator and overlap receipt is
+`warehouse/receipts/proof/checkbook_contracts_population_latest.json`; only the
+500-row stratified graph slice is stored in
+`site/data/procurement_spine_sources.json`.
+
 ## ZAP milestone and disposition statistics
 
 The ZAP bulk receipt profiles milestone/status-date coverage used by the land

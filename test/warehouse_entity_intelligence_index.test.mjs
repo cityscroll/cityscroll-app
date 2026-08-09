@@ -48,6 +48,25 @@ describe("warehouse entity intelligence index", () => {
     );
   });
 
+  it("retains every relation shape before filling a capped edge index", () => {
+    const link = (type, root) => ({
+      type,
+      from: root,
+      to: `${root}:${type}`,
+      domain: "money",
+      provenance: { source_system: "fixture", source_record_id: `${root}:${type}` },
+    });
+    const index = new Map([
+      ["agency:a", { root: { kind: "agency" }, links: [link("named_vendor", "agency:a"), link("references_contract", "agency:a")] }],
+      ["vendor:z", { root: { kind: "vendor" }, links: [link("paid_to_vendor", "vendor:z")] }],
+    ]);
+    const edges = flattenIndexToEdges(index, { max_edges: 3 });
+    assert.deepEqual(
+      [...new Set(edges.map((edge) => edge.link_type))].sort(),
+      ["named_vendor", "paid_to_vendor", "references_contract"],
+    );
+  });
+
   it("buildEntityIntelligenceIndex is self-consistent for Parks demo", () => {
     const observations = collectFixtureObservations(ROOT, { limit: 400 });
     const doc = buildEntityIntelligenceIndex(observations, {
