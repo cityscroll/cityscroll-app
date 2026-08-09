@@ -102,7 +102,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const showMandatesReportsNav = reportsSource?.status === "matched";
   const showMandatesPredictionsNav = predictionsSource?.status === "matched";
   const actions = renderNodeActions([
-    { kind: "link", label: "Watch this agency across City Record", href: view.follow_href, primary: true, className: "civic-object-action" },
+    { kind: "link", label: "Get updates about this agency's public records", href: view.follow_href, primary: true, className: "civic-object-action" },
     mandatesHref
       ? { kind: "link", label: "Mandates expected vs observed", href: mandatesHref, className: "civic-object-action" }
       : null,
