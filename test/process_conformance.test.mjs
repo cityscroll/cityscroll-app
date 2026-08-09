@@ -83,6 +83,36 @@ test("mandate-to-rule evidence requires body and law agreement, not title overla
   assert.ok(evidence.policy_gate.min_precision >= 0.90);
 });
 
+test("reviewed aliases generate a rule candidate but cannot bypass final evidence gates", () => {
+  const mandate = {
+    agency_id: "sanitation",
+    duty_text: "Regulate commercial waste zones",
+    deliverable_type: "rulemaking",
+    citation: "Administrative Code § 16-1001",
+  };
+  const candidate = normalizeObservationCandidate({
+    agency_id: "sanitation",
+    agency_name: "Sanitation",
+    request_id: "20260708002",
+    short_title: "DSNY Proposed Implementation Dates for Manhattan West CWZs",
+    body: "Implementation schedule without the cited mandate text.",
+    start_date: "2026-07-15T00:00:00.000",
+    signal_kind: "rule_filing",
+  });
+
+  const topic = scoreTopicMatch(mandate.duty_text, candidate);
+  assert.equal(topic.method, "reviewed_topic_overlap_v1");
+  assert.deepEqual(topic.shared, ["commercial", "waste", "zone"]);
+
+  const evidence = evaluateRuleEvidence(mandate, candidate);
+  assert.equal(evidence.topic_score, 3);
+  assert.equal(evidence.citation_law_match, false);
+  assert.deepEqual(evidence.rule_body_overlap, []);
+  assert.equal(evidence.publication_eligible, false);
+  assert.equal(evidence.publication_tier, "evidence_only");
+  assert.equal(evidence.topic_normalization.registry_version, "topic_normalization_v1");
+});
+
 test("normalization feeds compact snapshot stamps through the existing rule evaluator", () => {
   const mandate = {
     agency_id: "transportation",

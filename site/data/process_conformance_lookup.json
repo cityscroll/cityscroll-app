@@ -40123,17 +40123,17 @@
           },
           "observed_record": null,
           "shadow_candidate": {
-            "request_id": "20260605008",
-            "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
-            "when": "2026-06-11",
-            "href": "#notice/20260605008",
+            "request_id": "20260708002",
+            "label": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+            "when": "2026-07-15",
+            "href": "#notice/20260708002",
             "features": {
               "agency_exact": true,
               "expected_event_match": true,
               "topic_overlap": [
                 "commercial",
                 "waste",
-                "zones"
+                "zone"
               ],
               "rule_body_overlap": [],
               "citation_law_match": false,
@@ -40142,6 +40142,35 @@
               "negative_evidence": [],
               "negative_evidence_free": true,
               "topic_score": 3,
+              "topic_normalization": {
+                "registry_version": "topic_normalization_v1",
+                "applied": [
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "commercial waste zones"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  },
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "cwzs"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  }
+                ]
+              },
               "publication_eligible": false,
               "publication_tier": "evidence_only",
               "policy_gate": {
@@ -40152,12 +40181,12 @@
             }
           },
           "match": {
-            "method": "topic_token_overlap_v1",
+            "method": "reviewed_topic_overlap_v1",
             "score": 3,
             "shared_tokens": [
               "commercial",
               "waste",
-              "zones"
+              "zone"
             ],
             "publication": "evidence_only",
             "evidence": {
@@ -40166,7 +40195,7 @@
               "topic_overlap": [
                 "commercial",
                 "waste",
-                "zones"
+                "zone"
               ],
               "rule_body_overlap": [],
               "citation_law_match": false,
@@ -40175,6 +40204,35 @@
               "negative_evidence": [],
               "negative_evidence_free": true,
               "topic_score": 3,
+              "topic_normalization": {
+                "registry_version": "topic_normalization_v1",
+                "applied": [
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "commercial waste zones"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  },
+                  {
+                    "id": "official-acronym-commercial-waste-zone-v1",
+                    "kind": "official_acronym",
+                    "matched_aliases": [
+                      "cwzs"
+                    ],
+                    "canonical_tokens": [
+                      "commercial",
+                      "waste",
+                      "zone"
+                    ]
+                  }
+                ]
+              },
               "publication_eligible": false,
               "publication_tier": "evidence_only",
               "policy_gate": {
