@@ -18,6 +18,10 @@ import {
   buildMandateMeetingsView,
   renderMandateMeetingsSection,
 } from "../site/mandate_meetings_bridge.mjs";
+import {
+  CROSS_BRIDGE_MANDATE_SUBJECT_REF,
+  CROSS_BRIDGE_OBLIGATION_ID,
+} from "./helpers/mandate_subject.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const obligations = JSON.parse(readFileSync(join(ROOT, "site/data/agency_obligations_lookup.json"), "utf8"));
@@ -28,7 +32,7 @@ const processConformance = JSON.parse(readFileSync(join(ROOT, "site/data/process
 const crossSpineGate = JSON.parse(readFileSync(join(ROOT, "site/data/cross_spine_edge_gate.json"), "utf8"));
 
 const mandate = {
-  obligation_id: "54431-002",
+  obligation_id: CROSS_BRIDGE_OBLIGATION_ID,
   matter_id: "matter-1",
   agency_id: "landmarks-preservation-commission",
   agency_name: "Landmarks Preservation Commission",
@@ -93,6 +97,8 @@ test("resolver requires agency, event kind, and subject scope rather than title 
   assert.equal(view.edges.length, 1);
   assert.equal(view.edges[0].meeting.request_id, "right");
   assert.equal(view.edges[0].relation, MANDATE_MEETING_EDGE_TYPE);
+  assert.equal(view.edges[0].mandate.subject_ref, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
+  assert.equal(view.edges[0].entity_link.source_record_id, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.deepEqual(view.edges[0].match.keys, ["agency", "event_kind", "matter_body_subject", "temporal"]);
   assert.ok(view.edges[0].match.subject_scope.includes("landmark"));
   assert.equal(view.edges[0].match.matter_exact, true);
@@ -175,5 +181,7 @@ test("a failed held-out gate keeps otherwise supported candidates in evidence-on
   assert.equal(view.shadow_edges.length, 1);
   assert.deepEqual(view.shadow_edges[0].reason, ["held_out_precision_gate"]);
   assert.equal(view.shadow_edges[0].decision, "evidence_only");
+  assert.equal(view.shadow_edges[0].mandate, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
+  assert.equal(view.shadow_edges[0].entity_link.source_record_id, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.equal(view.shadow_edges[0].entity_link.tier, "evidence_only");
 });

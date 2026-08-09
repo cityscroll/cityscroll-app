@@ -18,6 +18,7 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { buildEdgeProvenanceClaim } from "./graph_edge_provenance.mjs";
+import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 
 export const MANDATE_CONTRACTS_SCHEMA = "cityscroll.mandate_contracts_bridge.v1";
 export const MANDATE_CONTRACTS_METHOD = "mandate_agency_scope_authority_exact_v1";
@@ -215,9 +216,10 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
 
   for (const mandate of mandates) {
     const mandateId = clean(mandate.obligation_id || mandate.mandate_id, 120);
+    const mandateRef = mandateSubjectRef(mandateId);
     const mandateKeys = mandateContractSubjectKeys(mandate.duty_text);
     const actionKey = procurementActionKey(mandate.duty_text);
-    if (!mandateId || !mandateKeys.length || !actionKey) continue;
+    if (!mandateRef || !mandateKeys.length || !actionKey) continue;
     for (const notice of notices) {
       if (!noticeCarriesAction(notice, actionKey)) continue;
       const noticeKeys = mandateContractSubjectKeys(notice.label);
@@ -268,7 +270,7 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
         if (route.tier !== "public_inferred") {
           shadowEdges.push({
             id: `${mandateId}:${contractId}`,
-            mandate: `mandate:${mandateId}`,
+            mandate: mandateRef,
             procurement_record: notice,
             contract: contractLink.to,
             match: evidence,
@@ -285,7 +287,7 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
         }
         const edge = makeObjectLink({
           type: MANDATE_CONTRACT_EDGE_TYPE,
-          from: `mandate:${mandateId}`,
+          from: mandateRef,
           to: contractLink.to,
           domain: "money",
           confidence: "strong",
@@ -320,7 +322,7 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
         edges.push({
           mandate_id: mandateId,
           mandate: {
-            subject_ref: `mandate:${mandateId}`,
+            subject_ref: mandateRef,
             duty_text: clean(mandate.duty_text, 700),
             citation: clean(mandate.citation, 240) || null,
             source_href: clean(mandate.source?.legistar_url || mandate.href, 500) || null,

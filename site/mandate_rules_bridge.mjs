@@ -15,6 +15,7 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { noticeDocumentPath } from "./notice_permalink.mjs";
+import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import {
   MANDATE_RULE_PUBLICATION_TIER,
   OBSERVATION_LABELS,
@@ -97,7 +98,7 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
   const allMandates = Array.isArray(bucket?.obligations) ? bucket.obligations : [];
   const rulemaking = allMandates.filter(
     (row) => clean(row?.deliverable_type, 40).toLowerCase() === "rulemaking",
-  );
+  ).filter((row) => mandateSubjectRef(row?.obligation_id));
 
   const confById = new Map();
   for (const item of sources.conformanceItems || []) {
@@ -125,6 +126,7 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
       : null;
     return {
       mandate_id: row.obligation_id,
+      subject_ref: mandateSubjectRef(row.obligation_id),
       duty_text: clean(row.duty_text, 500),
       deliverable_type: "rulemaking",
       citation: clean(row.citation, 200) || null,
