@@ -40,6 +40,7 @@ import {
   buildContractActionBasisLayer,
   buildDistrictActivity,
   communityDistrictFromAgencyName,
+  geographyPlacementDecision,
   meetingPlacementsFromRow,
   parseZapCommunityDistricts,
 } from "../tools/lib/district_activity.mjs";
@@ -785,6 +786,100 @@ test("citywide rules land in the first-class citywide bag", () => {
   assert.ok(bags.some((b) => b.kind === "citywide" && b.counts.rules >= 1));
   const cw = citywideBucketCounts(activity);
   assert.ok(cw.rules >= 1);
+});
+
+test("geography edges reconcile with polygon memberships without promoting weak fallbacks", () => {
+  assert.deepEqual(geographyPlacementDecision({ method: "coordinates_pip", confidence_tier: "strong" }), {
+    decision: "public",
+    reason: "deterministic_or_structured_placement",
+  });
+  assert.deepEqual(geographyPlacementDecision({
+    method: "civic_address_pip",
+    source_method: "vendor_address",
+    confidence_tier: "derived",
+  }), {
+    decision: "evidence_only",
+    reason: "weak_vendor_fallback",
+  });
+  assert.deepEqual(geographyPlacementDecision({ method: "agency_hq", confidence_tier: "weak" }), {
+    decision: "evidence_only",
+    reason: "weak_agency_hq_fallback",
+  });
+  assert.deepEqual(geographyPlacementDecision({ method: "future_guess", confidence_tier: "strong" }), {
+    decision: "evidence_only",
+    reason: "unsupported_placement_method",
+  });
+
+  const activity = buildDistrictActivity({
+    boundaries,
+    zapRows: [{ project_id: "2024Q0292", borough: "Queens", community_district: "Q04" }],
+    moneyRows: [
+      {
+        request_id: "money-publisher",
+        borough: "Queens",
+        community_district: "Q04",
+      },
+      {
+        request_id: "money-vendor",
+        place: {
+          scope: "local",
+          boroughs: ["Bronx"],
+          addresses: ["1880 Valentine Avenue"],
+          derivation: {
+            methods: ["vendor_address"],
+            confidence: 0.55,
+            role: "vendor",
+          },
+        },
+      },
+      {
+        request_id: "money-citywide",
+        place: {
+          scope: "citywide",
+          derivation: { methods: ["citywide_phrase"], confidence: 0.8, role: "citywide" },
+        },
+      },
+      { request_id: "money-unlocated", short_title: "Generic services" },
+    ],
+    meetingsRows: [{
+      request_id: "meeting-virtual",
+      affected_area: { scope: "unlocated", unlocated_reason: "virtual_only", virtual_only: true },
+    }, {
+      request_id: "meeting-agency-hq",
+      agency_name: "City Planning Commission",
+      short_title: "Regular public meeting",
+    }],
+  });
+  const graph = activity.geography_subjects;
+  assert.equal(graph.schema, "cityscroll.geography_subjects.v1");
+  assert.ok(graph.public_edges.some((edge) => (
+    edge.from === "project:2024Q0292"
+      && edge.to === "community-district:Q04"
+      && edge.type === "located_in"
+  )));
+  assert.ok(graph.public_edges.some((edge) => (
+    edge.from === "notice:money-publisher" && edge.to === "borough:queens"
+  )));
+  assert.ok(!graph.public_edges.some((edge) => /money-(?:vendor|citywide|unlocated)/.test(edge.from)));
+  assert.ok(!graph.public_edges.some((edge) => /meeting-virtual/.test(edge.from)));
+  assert.ok(!graph.public_edges.some((edge) => /meeting-agency-hq/.test(edge.from)));
+  assert.ok(graph.evidence_only_edges.some((edge) => (
+    edge.from === "notice:money-vendor"
+      && edge.reason === "weak_vendor_fallback"
+      && edge.evidence.placement_method === "civic_address_pip"
+      && edge.evidence.source_method === "vendor_address"
+  )));
+  assert.ok(graph.evidence_only_edges.some((edge) => (
+    edge.from === "notice:meeting-agency-hq" && edge.reason === "weak_agency_hq_fallback"
+  )));
+  assert.equal(graph.audit.reconciled, true);
+  assert.equal(graph.audit.non_polygon.citywide.money, 1);
+  assert.equal(graph.audit.non_polygon.virtual.meetings, 1);
+  assert.equal(graph.audit.non_polygon.unlocated.money, 1);
+  assert.equal(
+    graph.audit.polygon_memberships,
+    graph.public_edges.length + graph.evidence_only_edges.length,
+  );
 });
 
 test("money vendor address geocodes to CD + council when gazetteer matches", () => {

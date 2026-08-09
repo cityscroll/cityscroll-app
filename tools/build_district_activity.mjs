@@ -16,6 +16,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");
 const WORKER_OUT = join(ROOT, "worker/src/data/district_activity.json");
 const DIGEST_OUT = join(ROOT, "site/data/district_weekly_digests.json");
+const GEOGRAPHY_AUDIT_OUT = join(ROOT, "docs/evidence/geography-subjects/located-in-audit.json");
 
 const PATHS = {
   boundaries: join(ROOT, "site/data/district_boundaries.json"),
@@ -99,6 +100,12 @@ function build() {
   };
 }
 
+function subjectCountByKind(nodes = []) {
+  const counts = Object.create(null);
+  for (const node of nodes) counts[node.kind] = (counts[node.kind] || 0) + 1;
+  return counts;
+}
+
 function check(doc) {
   if (!doc || doc.schema !== DISTRICT_ACTIVITY_SCHEMA) {
     throw new Error("district_activity schema mismatch");
@@ -113,6 +120,29 @@ function check(doc) {
     || itemIndex.boundary_vintage !== doc.boundary_vintage
     || itemIndex.built_at !== doc.built_at
   ) throw new Error("district item index stamp mismatch");
+  const geography = doc.geography_subjects;
+  if (
+    geography?.schema !== "cityscroll.geography_subjects.v1"
+    || geography.boundary_vintage !== doc.boundary_vintage
+    || geography.built_at !== doc.built_at
+    || geography.audit?.schema !== "cityscroll.geography_located_in_audit.v1"
+    || geography.audit.reconciled !== true
+  ) throw new Error("geography subject graph reconciliation failed");
+  const subjectCounts = subjectCountByKind(geography.nodes);
+  if (subjectCounts.borough !== 5) throw new Error("geography graph requires five borough subjects");
+  if (subjectCounts["community-district"] !== 59) {
+    throw new Error("geography graph requires 59 regular community-district subjects");
+  }
+  if (subjectCounts["council-district"] !== 51) {
+    throw new Error("geography graph requires 51 council-district subjects");
+  }
+  for (const edge of geography.public_edges || []) {
+    if (edge.type !== "located_in" || !edge.from || !edge.to) throw new Error("invalid public located_in edge");
+    if (["agency_hq", "vendor_address", "vendor_place"].includes(edge.evidence?.source_method)
+      || edge.confidence === "weak") {
+      throw new Error("weak fallback leaked into public located_in edges");
+    }
+  }
   for (const lens of ["land", "property", "rules", "meetings", "money"]) {
     const corpus = itemIndex.corpora?.[lens];
     if (!corpus?.path || !corpus?.collection || !corpus?.stamp_field || !corpus?.stamp_value) {
@@ -159,6 +189,13 @@ function check(doc) {
       if ((doc[bucket]?.[lens] || 0) !== ids.length) {
         throw new Error(`${lens} ${bucket} count/list drift`);
       }
+      const bucketIds = new Set(ids.map(String));
+      const leaked = [
+        ...(geography.public_edges || []),
+        ...(geography.evidence_only_edges || []),
+      ].some((edge) => edge.evidence?.lens === lens
+        && bucketIds.has(String(edge.from || "").replace(/^(?:notice|project):/, "")));
+      if (leaked) throw new Error(`${lens} ${bucket} item received a polygon located_in edge`);
     }
   }
   const boroughKeys = Object.keys(doc.by_level.borough);
@@ -227,12 +264,23 @@ function check(doc) {
   }
 }
 
+function geographyAuditReceipt(doc) {
+  return {
+    ...doc.geography_subjects.audit,
+    boundary_vintage: doc.boundary_vintage,
+    built_at: doc.built_at,
+    subject_counts: subjectCountByKind(doc.geography_subjects.nodes),
+  };
+}
+
 function writeTwin(doc) {
   const text = JSON.stringify(doc) + "\n";
   mkdirSync(dirname(SITE_OUT), { recursive: true });
   writeFileSync(SITE_OUT, text);
   mkdirSync(dirname(WORKER_OUT), { recursive: true });
   writeFileSync(WORKER_OUT, text);
+  mkdirSync(dirname(GEOGRAPHY_AUDIT_OUT), { recursive: true });
+  writeFileSync(GEOGRAPHY_AUDIT_OUT, `${JSON.stringify(geographyAuditReceipt(doc), null, 2)}\n`);
 }
 
 function checkDigest(doc) {
@@ -263,6 +311,10 @@ if (checkOnly) {
     process.exit(1);
   }
   check(existing);
+  const existingAudit = loadJson(GEOGRAPHY_AUDIT_OUT);
+  if (JSON.stringify(existingAudit) !== JSON.stringify(geographyAuditReceipt(existing))) {
+    throw new Error("geography located_in audit receipt drift");
+  }
   // Rebuild and compare shape invariants (not full byte equality — built_at moves).
   const existingDigest = loadJson(DIGEST_OUT);
   checkDigest(existingDigest);

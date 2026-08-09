@@ -42,8 +42,20 @@ import {
   geocodeFromPlaceOrRow,
   buildCommunityToCouncilIndex,
 } from "../../site/civic_address_geocode.mjs";
+import {
+  GEOGRAPHY_BOROUGH_IDS,
+  GEOGRAPHY_COMMUNITY_DISTRICT_IDS,
+  GEOGRAPHY_COUNCIL_DISTRICT_IDS,
+  formatSubjectRef,
+  geographySubjectRef,
+  makeSubjectLink,
+} from "../../worker/src/lib/subject_registry.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
+
+export const GEOGRAPHY_SUBJECT_GRAPH_SCHEMA = "cityscroll.geography_subjects.v1";
+export const GEOGRAPHY_LOCATION_METHOD = "district_activity_placement_v1";
+export const GEOGRAPHY_LOCATION_METHOD_VERSION = "1.0.0";
 
 const LENSES = ["land", "property", "rules", "meetings", "money"];
 
@@ -99,6 +111,83 @@ function isVirtualPlacement(slot) {
   return slot?.bucket === "virtual"
     || slot?.borough === "Virtual"
     || slot?.method === "virtual_only";
+}
+
+const WEAK_GEOGRAPHY_METHODS = new Set(["agency_hq", "vendor_address", "vendor_place"]);
+export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
+  "agency_borough",
+  "agency_community_board",
+  "agency_service_area",
+  "cd_centroid_council",
+  "civic_address_pip",
+  "classic_affected_area",
+  "community_board",
+  "coordinates_pip",
+  "hearing_matter",
+  "matter_address",
+  "matter_body_borough",
+  "matter_title_place",
+  "neighborhood_place",
+  "publisher_council",
+  "publisher_district",
+  "rule-scope",
+  "service_borough",
+  "stamped",
+  "structured_bag",
+  "title_borough",
+  "venue_column",
+  "venue_line",
+]);
+const PUBLIC_GEOGRAPHY_METHOD_SET = new Set(PUBLIC_GEOGRAPHY_PLACEMENT_METHODS);
+
+/** Route a district-activity placement without confusing geometric precision with semantic strength. */
+export function geographyPlacementDecision(slot = {}) {
+  const method = String(slot.method || "").trim();
+  const sourceMethod = String(slot.source_method || "").trim();
+  if (method === "agency_hq" || sourceMethod === "agency_hq") {
+    return { decision: "evidence_only", reason: "weak_agency_hq_fallback" };
+  }
+  if ([method, sourceMethod].some((value) => value.startsWith("vendor_") || WEAK_GEOGRAPHY_METHODS.has(value))) {
+    return { decision: "evidence_only", reason: "weak_vendor_fallback" };
+  }
+  if (slot.confidence_tier === "weak") {
+    return { decision: "evidence_only", reason: "weak_placement_confidence" };
+  }
+  const effectiveMethod = method || "structured_bag";
+  if (!PUBLIC_GEOGRAPHY_METHOD_SET.has(effectiveMethod)) {
+    return { decision: "evidence_only", reason: "unsupported_placement_method" };
+  }
+  return { decision: "public", reason: "deterministic_or_structured_placement" };
+}
+
+function geographySubjectNodes() {
+  const boroughNames = {
+    bronx: "Bronx",
+    brooklyn: "Brooklyn",
+    manhattan: "Manhattan",
+    queens: "Queens",
+    "staten-island": "Staten Island",
+  };
+  return [
+    ...GEOGRAPHY_BOROUGH_IDS.map((id) => ({
+      subject_ref: geographySubjectRef("borough", id),
+      kind: "borough",
+      id,
+      label: boroughNames[id],
+    })),
+    ...GEOGRAPHY_COMMUNITY_DISTRICT_IDS.map((id) => ({
+      subject_ref: geographySubjectRef("community-district", id),
+      kind: "community-district",
+      id,
+      label: `Community District ${id}`,
+    })),
+    ...GEOGRAPHY_COUNCIL_DISTRICT_IDS.map((id) => ({
+      subject_ref: geographySubjectRef("council-district", id),
+      kind: "council-district",
+      id,
+      label: `Council District ${id}`,
+    })),
+  ];
 }
 
 /** Compact public facts embedded beside the exact membership index for static rendering. */
@@ -343,9 +432,13 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
   if (!area || typeof area !== "object") return [];
   const slots = [];
   const seen = new Set();
+  const sourceMethod = area.derivation?.methods?.[0]
+    || (area.derivation?.role === "vendor" ? "vendor_place" : null)
+    || (area.derivation?.role === "agency" ? "agency_hq" : null);
   const push = (slot) => {
     const community = slot.community ? normalizeCommunityDistrictId(slot.community) : null;
     let council = slot.council ? normalizeCouncilDistrictId(slot.council) : null;
+    let councilMethod = slot.council_method || null;
     let borough = canonBorough(slot.borough)
       || (community ? boroughFromCommunityId(community) : null);
     // When CD is known but council is not, join via CD centroid index (land density).
@@ -353,7 +446,10 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
       const fromCd = opts.cdCouncilIndex[community];
       if (fromCd) {
         council = normalizeCouncilDistrictId(fromCd);
-        if (council && !slot.method) slot = { ...slot, method: "cd_centroid_council" };
+        if (council) {
+          councilMethod = "cd_centroid_council";
+          if (!slot.method) slot = { ...slot, method: "cd_centroid_council" };
+        }
       }
     }
     if (!community && !council && !borough) return;
@@ -365,6 +461,10 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
       community,
       council,
       ...(slot.method ? { method: slot.method } : {}),
+      ...(councilMethod ? { council_method: councilMethod } : {}),
+      ...(slot.source_method || sourceMethod
+        ? { source_method: slot.source_method || sourceMethod }
+        : {}),
     });
   };
 
@@ -770,7 +870,14 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
       : (geo.borough || null);
     if (community || council || borough) {
       return annotate(
-        [{ borough, community, council }],
+        [{
+          borough,
+          community,
+          council,
+          ...(stamped?.derivation?.role === "vendor" || row?.vendor_address
+            ? { source_method: stamped?.derivation?.methods?.[0] || "vendor_address" }
+            : {}),
+        }],
         "civic_address_pip",
         0.7,
       );
@@ -1061,6 +1168,44 @@ export function buildDistrictActivity(opts = {}) {
     rules: { corpus: "rules_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
     money: { corpus: "money_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
   };
+  const geographyMemberships = new Map();
+
+  function itemSubjectRef(lens, itemId) {
+    return formatSubjectRef(lens === "land" ? "project" : "notice", itemId);
+  }
+
+  function recordGeographyMembership(lens, level, id, itemId, slot = {}) {
+    const from = itemSubjectRef(lens, itemId);
+    const to = geographySubjectRef(level, id);
+    if (!from || !to) return;
+    const route = geographyPlacementDecision(slot);
+    const edge = makeSubjectLink({
+      type: "located_in",
+      from,
+      to,
+      method: GEOGRAPHY_LOCATION_METHOD,
+      method_version: GEOGRAPHY_LOCATION_METHOD_VERSION,
+      confidence: slot.confidence_tier || null,
+      evidence: {
+        basis: "district_activity_placement",
+        lens,
+        placement_method: slot.geography_method || slot.method || "structured_bag",
+        source_method: slot.source_method || null,
+        boundary_vintage: String(boundaries.boundary_vintage),
+      },
+    });
+    if (!edge) return;
+    const candidate = {
+      ...edge,
+      decision: route.decision,
+      reason: route.reason,
+    };
+    const key = `${lens}|${from}|${to}`;
+    const previous = geographyMemberships.get(key);
+    if (!previous || (previous.decision === "evidence_only" && candidate.decision === "public")) {
+      geographyMemberships.set(key, candidate);
+    }
+  }
 
   function bumpMethod(lens, method) {
     const key = method || "unknown";
@@ -1072,11 +1217,12 @@ export function buildDistrictActivity(opts = {}) {
     unlocatedReasons[lens][key] = (unlocatedReasons[lens][key] || 0) + 1;
   }
 
-  function addDistrictItem(lens, level, id, itemId) {
+  function addDistrictItem(lens, level, id, itemId, slot = {}) {
     if (!LENSES.includes(lens) || !id || !itemId) return;
     const levelBag = districtItemSets.by_level[level];
     if (!levelBag[id]) levelBag[id] = emptyItemLensSets();
     levelBag[id][lens].add(String(itemId));
+    recordGeographyMembership(lens, level, id, itemId, slot);
   }
 
   function addBucketItem(lens, bucket, itemId) {
@@ -1179,18 +1325,22 @@ export function buildDistrictActivity(opts = {}) {
         const cd = normalizeCommunityDistrictId(slot.community);
         if (cd) {
           bump(byCommunity, cd, lens);
-          addDistrictItem(lens, "community_district", cd, itemId);
+          addDistrictItem(lens, "community_district", cd, itemId, slot);
           const b = slot.borough || boroughFromCommunityId(cd);
           if (b && b !== "Citywide" && b !== "Virtual") {
             bump(byBorough, b, lens);
-            addDistrictItem(lens, "borough", b, itemId);
+            addDistrictItem(lens, "borough", b, itemId, slot);
           }
           // Supplement council from CD centroid when the slot has CD but no council.
           if (!slot.council && cdCouncilIndex[cd]) {
             const fromCd = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
             if (fromCd) {
               bump(byCouncil, fromCd, lens);
-              addDistrictItem(lens, "council_district", fromCd, itemId);
+              addDistrictItem(lens, "council_district", fromCd, itemId, {
+                ...slot,
+                method: "cd_centroid_council",
+                geography_method: "cd_centroid_council",
+              });
               if (!method || method === slot.method) method = method || "cd_centroid_council";
             }
           }
@@ -1201,13 +1351,17 @@ export function buildDistrictActivity(opts = {}) {
         const id = normalizeCouncilDistrictId(slot.council);
         if (id) {
           bump(byCouncil, id, lens);
-          addDistrictItem(lens, "council_district", id, itemId);
+          addDistrictItem(lens, "council_district", id, itemId, {
+            ...slot,
+            method: slot.council_method || slot.method,
+            geography_method: slot.council_method || slot.geography_method || slot.method,
+          });
           slotPlaced = true;
         }
       }
       if (!slotPlaced && slot.borough && slot.borough !== "Citywide" && slot.borough !== "Virtual") {
         bump(byBorough, slot.borough, lens);
-        addDistrictItem(lens, "borough", slot.borough, itemId);
+        addDistrictItem(lens, "borough", slot.borough, itemId, slot);
         slotPlaced = true;
       }
       if (slotPlaced) placed = true;
@@ -1255,6 +1409,8 @@ export function buildDistrictActivity(opts = {}) {
           community: cd,
           council: publisherCouncil,
           method: publisherCouncil ? "publisher_council" : "cd_centroid_council",
+          geography_method: "publisher_district",
+          council_method: publisherCouncil ? "publisher_council" : "cd_centroid_council",
         }))
       : [{
         borough: boro,
@@ -1381,6 +1537,63 @@ export function buildDistrictActivity(opts = {}) {
     ]).size;
   }
 
+  const geographyEdges = [...geographyMemberships.values()].sort((left, right) =>
+    left.from.localeCompare(right.from)
+      || left.to.localeCompare(right.to)
+      || left.evidence.lens.localeCompare(right.evidence.lens),
+  );
+  const publicGeographyEdges = geographyEdges
+    .filter((edge) => edge.decision === "public")
+    .map(({ reason: _reason, ...edge }) => edge);
+  const evidenceOnlyGeographyEdges = geographyEdges.filter((edge) => edge.decision === "evidence_only");
+  const geographyAuditByLens = Object.fromEntries(LENSES.map((lens) => {
+    const polygonMemberships = Object.values(districtItems.by_level)
+      .flatMap((levelBag) => Object.values(levelBag))
+      .reduce((sum, bag) => sum + (bag?.[lens]?.length || 0), 0);
+    const lensEdges = geographyEdges.filter((edge) => edge.evidence.lens === lens);
+    const byMethod = Object.create(null);
+    for (const edge of lensEdges) {
+      const method = edge.evidence.placement_method;
+      if (!byMethod[method]) byMethod[method] = { public: 0, evidence_only: 0, total: 0 };
+      byMethod[method][edge.decision] += 1;
+      byMethod[method].total += 1;
+    }
+    const publicEdges = lensEdges.filter((edge) => edge.decision === "public").length;
+    const evidenceOnlyEdges = lensEdges.length - publicEdges;
+    return [lens, {
+      polygon_memberships: polygonMemberships,
+      public_edges: publicEdges,
+      evidence_only_edges: evidenceOnlyEdges,
+      reconciled: polygonMemberships === lensEdges.length,
+      by_method: byMethod,
+    }];
+  }));
+  const polygonMemberships = Object.values(geographyAuditByLens)
+    .reduce((sum, row) => sum + row.polygon_memberships, 0);
+  const geographySubjects = {
+    schema: GEOGRAPHY_SUBJECT_GRAPH_SCHEMA,
+    boundary_vintage: String(boundaries.boundary_vintage),
+    built_at: builtAt,
+    nodes: geographySubjectNodes(),
+    public_edges: publicGeographyEdges,
+    evidence_only_edges: evidenceOnlyGeographyEdges,
+    audit: {
+      schema: "cityscroll.geography_located_in_audit.v1",
+      polygon_memberships: polygonMemberships,
+      public_edges: publicGeographyEdges.length,
+      evidence_only_edges: evidenceOnlyGeographyEdges.length,
+      reconciled: Object.values(geographyAuditByLens).every((row) => row.reconciled)
+        && polygonMemberships === geographyEdges.length,
+      by_lens: geographyAuditByLens,
+      non_polygon: {
+        citywide: { ...citywideBag },
+        virtual: { ...virtualBag },
+        unlocated: { ...unlocated },
+      },
+      note: "Each polygon membership has exactly one routed located_in candidate. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
+    },
+  };
+
   return {
     schema: DISTRICT_ACTIVITY_SCHEMA,
     boundary_vintage: String(boundaries.boundary_vintage),
@@ -1400,6 +1613,7 @@ export function buildDistrictActivity(opts = {}) {
     unlocated_reasons: unlocatedReasons,
     sources,
     district_items: districtItems,
+    geography_subjects: geographySubjects,
     records,
     basis_layers: {
       contract_action_address: contractActionBasis,

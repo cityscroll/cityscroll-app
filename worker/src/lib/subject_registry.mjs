@@ -17,8 +17,12 @@
 
 import { parseAuthorityKey, authorityKeyId } from "../../../entity_resolution/authority_keys/index.mjs";
 import { migrateLegacyMandateSubjectRef } from "../../../site/mandate_subject_ref.mjs";
+import {
+  normalizeCommunityDistrictId,
+  normalizeCouncilDistrictId,
+} from "../../../site/council_district_lookup.mjs";
 
-export const SUBJECT_REGISTRY_VERSION = "subject_registry_v2";
+export const SUBJECT_REGISTRY_VERSION = "subject_registry_v3";
 export const SUBJECT_LINK_METHOD = "subject_registry_lifecycle_v1";
 export const SUBJECT_LINK_METHOD_VERSION = "1.0.0";
 
@@ -33,6 +37,27 @@ export const LAND_USE_PROCEDURE_KINDS = Object.freeze([
   "site_selection",
 ]);
 
+/** Closed polygon geography vocabularies. Non-polygon buckets are not subjects. */
+export const GEOGRAPHY_BOROUGH_IDS = Object.freeze([
+  "bronx",
+  "brooklyn",
+  "manhattan",
+  "queens",
+  "staten-island",
+]);
+
+export const GEOGRAPHY_COMMUNITY_DISTRICT_IDS = Object.freeze([
+  ...Array.from({ length: 12 }, (_, index) => `M${String(index + 1).padStart(2, "0")}`),
+  ...Array.from({ length: 12 }, (_, index) => `X${String(index + 1).padStart(2, "0")}`),
+  ...Array.from({ length: 18 }, (_, index) => `K${String(index + 1).padStart(2, "0")}`),
+  ...Array.from({ length: 14 }, (_, index) => `Q${String(index + 1).padStart(2, "0")}`),
+  ...Array.from({ length: 3 }, (_, index) => `R${String(index + 1).padStart(2, "0")}`),
+]);
+
+export const GEOGRAPHY_COUNCIL_DISTRICT_IDS = Object.freeze(
+  Array.from({ length: 51 }, (_, index) => String(index + 1)),
+);
+
 /** Closed subject kind registry (prefix of subject_ref). */
 export const SUBJECT_KINDS = Object.freeze({
   notice: { description: "City Record notice (request_id)" },
@@ -46,6 +71,18 @@ export const SUBJECT_KINDS = Object.freeze({
     description: "Versioned civic procedure kind",
     vocabulary_version: LAND_USE_PROCEDURE_VOCABULARY_VERSION,
     allowed_ids: LAND_USE_PROCEDURE_KINDS,
+  },
+  borough: {
+    description: "NYC borough polygon",
+    allowed_ids: GEOGRAPHY_BOROUGH_IDS,
+  },
+  "community-district": {
+    description: "NYC regular community district polygon",
+    allowed_ids: GEOGRAPHY_COMMUNITY_DISTRICT_IDS,
+  },
+  "council-district": {
+    description: "NYC Council district polygon",
+    allowed_ids: GEOGRAPHY_COUNCIL_DISTRICT_IDS,
   },
   parcel: { description: "NYC tax lot (10-digit BBL)" },
   pin: { description: "NYC procurement PIN/EPIN authority value" },
@@ -134,6 +171,11 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
     from_kinds: Object.freeze(["notice"]),
     to_kinds: Object.freeze(["notice"]),
   },
+  located_in: {
+    description: "Published civic subject has a deterministic polygon placement",
+    from_kinds: Object.freeze(["notice", "project"]),
+    to_kinds: Object.freeze(["borough", "community-district", "council-district"]),
+  },
 });
 
 const KIND_SET = new Set(Object.keys(SUBJECT_KINDS));
@@ -178,6 +220,38 @@ export function formatSubjectRef(kind, id) {
   const i = clean(id);
   if (!KIND_SET.has(k) || !i || /\s/.test(i) || !subjectIdAllowed(k, i)) return null;
   return `${k}:${i}`;
+}
+
+/**
+ * Normalize a supported NYC polygon identifier and return its canonical ref.
+ * Citywide, virtual, joint-interest areas, and invalid ids fail closed.
+ */
+export function geographySubjectRef(kind, id) {
+  const normalizedKind = clean(kind).toLowerCase().replace(/_/g, "-");
+  if (normalizedKind === "borough") {
+    const normalizedId = clean(id).toLowerCase().replace(/\s+/g, "-");
+    return GEOGRAPHY_BOROUGH_IDS.includes(normalizedId)
+      ? formatSubjectRef("borough", normalizedId)
+      : null;
+  }
+  if (normalizedKind === "community-district") {
+    const compactId = clean(id).toUpperCase();
+    const productMatch = compactId.match(/^([MXKQR])0?(\d{1,2})$/);
+    const normalizedId = normalizeCommunityDistrictId(id)
+      || (productMatch
+        ? `${productMatch[1]}${String(Number(productMatch[2])).padStart(2, "0")}`
+        : null);
+    return GEOGRAPHY_COMMUNITY_DISTRICT_IDS.includes(normalizedId)
+      ? formatSubjectRef("community-district", normalizedId)
+      : null;
+  }
+  if (normalizedKind === "council-district") {
+    const normalizedId = normalizeCouncilDistrictId(id);
+    return GEOGRAPHY_COUNCIL_DISTRICT_IDS.includes(normalizedId)
+      ? formatSubjectRef("council-district", normalizedId)
+      : null;
+  }
+  return null;
 }
 
 /**
