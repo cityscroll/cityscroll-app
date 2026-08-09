@@ -1,6 +1,7 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { attendanceScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
+import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -233,7 +234,7 @@ function landHearingRowHTML(row, i){
   const open=row.project_id
     ? `<a class="act" href="#land/${encodeURIComponent(row.project_id)}">${t("land_hearings_open_project")}</a>`
     : "";
-  return `<div class="row land-hearing-row" data-i="${i}" data-project-id="${escUiHtml(row.project_id||"")}" tabindex="0" role="button">
+  return `<div class="row land-hearing-row" data-i="${i}" data-project-id="${escUiHtml(row.project_id||"")}" tabindex="0" role="group">
     <p class="rtitle">${escUiHtml(title)}</p>
     <p class="rmeta"><span class="ragency">${escUiHtml(row.borough||"")}${row.representing?` · ${escUiHtml(row.representing)}`:""}</span>
       · ${t("land_hearings_card_when",{date:whenLabel})}${modeTxt?` · ${escUiHtml(modeTxt)}`:""}
@@ -419,9 +420,11 @@ async function landNearby(geo,status){
 // digEvidenceHTML() are generic text-in/HTML-out and work on any title+description pair.
 function landRowHTML(r, i, terms, contextTerms){
   const title = landProjectDisplayTitle(r), ev = matchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
-  return `<div class="row" data-i="${i}" tabindex="0" role="button">
-    <p class="rtitle">${digTitleHTML(title, ev)}</p>
-    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}</span> · ${r.public_status||r.project_status||""}<br>
+  const projectMention=listEntityMentionHTML({kind:"project",value:r.project_id,label:title,escape:escUiHtml,relation:"land_project"});
+  const applicantMention=listEntityMentionHTML({kind:"agency",value:r.primary_applicant,escape:escUiHtml,relation:"primary_applicant"});
+  return `<div class="row" data-i="${i}" tabindex="0" role="group">
+    <p class="rtitle">${projectMention||digTitleHTML(title, ev)}</p>
+    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}${applicantMention?` · ${applicantMention}`:""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
     ${digEvidenceHTML(ev)}
   </div>`;

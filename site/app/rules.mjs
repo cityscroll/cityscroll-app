@@ -3,6 +3,7 @@ import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_l
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
+import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -64,6 +65,7 @@ function rulesExplorerCardHTML(entry, terms){
   const mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const agency=entry.agency||r.agency_name||"";
+  const agencyMention=agency?listEntityMentionHTML({kind:"agency",value:agency,escape:escUiHtml,relation:"publishes_record"}):"";
   const scopeHtml=excerptHtml(entry.excerpt||r.additional_description_1,200);
   const processLine=`<div class="rules-process-line">
     <span class="tag open" data-card-fact="stage:${escUiHtml(processStage||"unstaged")}">${escUiHtml(processLabel)}</span>
@@ -107,7 +109,6 @@ function rulesExplorerCardHTML(entry, terms){
   }
   const primaryAction=acts;
   const secondaryActions=[officialSourceLink({ href: REQ_URL(r.request_id), label: t("city_record_link"), className: "act", escape: escUiHtml })];
-  if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("rules_action_agency_profile")}</a>`);
   // Secondary official rule page when primary was the comment portal (not already the rule URL).
   if(entry.rule_url && !(wantRulePrimary || (wantCommentPrimary && !entry.comment_url))){
     secondaryActions.push(officialSourceLink({ href: entry.rule_url, label: t("rule_event_official_source"), className: "act", escape: escUiHtml }));
@@ -129,7 +130,7 @@ function rulesExplorerCardHTML(entry, terms){
     if(chips) siblingsHtml=`<div class="rules-siblings">${t("rules_siblings_label")}: ${chips}</div>`;
   }
   return `<div class="fcard rules-fcard" data-request-id="${escUiHtml(r.request_id||"")}" data-rulemaking-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
-      <div class="ftype">${r.type_of_notice_description||""}${agency?" · "+pivotA(agencyHref(agency), agency):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
+      <div class="ftype">${r.type_of_notice_description||""}${agencyMention?" · "+agencyMention:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${processLine}
       <div class="ftitle"><a href="${noticeHref}">${digTitleHTML(title, mev)}</a></div>
       ${siblingsHtml}
@@ -870,6 +871,7 @@ function feedCardHTML(key, r, terms){
   // when a later path escaped again, and could cut inside "&ldquo;".
   const scopeHtml=excerptHtml(r.additional_description_1,200);
   const title=noticeDisplayTitle(r), mev=matchEvidence(title, matchText(r), terms);
+  const agencyMention=r.agency_name?listEntityMentionHTML({kind:"agency",value:r.agency_name,escape:escUiHtml,relation:"publishes_record"}):"";
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   // Comment-open is the actionable moment: lead with the official comment-page CTA so the
   // primary action sits first in the row (matches the hearing-card join/participation lead).
@@ -891,7 +893,7 @@ function feedCardHTML(key, r, terms){
   const rstage=key==="rules"&&!ruleAct?ruleStageChip(r._ruleStage):"";
   const rbadges=rstage?`<div>${rstage}</div>`:"";
   return `<div class="fcard">
-      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
+      <div class="ftype">${r.type_of_notice_description||""}${agencyMention?" · "+agencyMention:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       ${rbadges}
       <div class="ftitle"><a href="${noticeHref}">${digTitleHTML(title, mev)}</a></div>
