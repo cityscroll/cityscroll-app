@@ -76,7 +76,6 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
-| `/board-hook` | POST | **Board notifications** — see below | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
 | `/` `/health` | GET | liveness | none |
 
 ## The daily digest (shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
@@ -161,17 +160,6 @@ replies to the From address would bounce — crol-list.org still has Cloudflare 
 routing. To is only ever the subscriber's own opted-in address. Never sends as a
 person. The sending domain is managed separately from the public website hostnames.
 
-## Board notifications
-
-The maintainers' own board-status notifications (`/board-hook`, GitHub Projects → issue
-comments) run on [`board-notify`](https://github.com/jimdc/board-notify), a separate
-open-source package — everything about how it works (auth, HMAC, cc-roster, daily cap)
-is documented in that project's own README, not here. It's an **optional** dependency:
-this instance is scoped to project id `PVT_kwDOEgVDsM4BdE22` in the `cityscroll` org
-(set via `BOARD_PROJECT_IDS` / `BOARD_ORG` in `wrangler.toml`), but if you fork crol-list
-and never configure its secrets, `/board-hook` fails closed with no effect on anything
-else — you can ignore it entirely or point it at your own board.
-
 ## Defense in depth (denial-of-wallet & abuse)
 
 `/nl` is the only endpoint that spends money, so it's layered: a centralized CORS allowlist
@@ -235,7 +223,7 @@ totals remain visible when SQL read credentials are missing. `ANALYTICS_DEV_KEY`
 short-lived HMAC exclusion tokens for live-site testing; invalid or missing tokens count
 normally and receive the same response.
 
-## Dependencies — three libraries extracted from this worker
+## Dependencies — two libraries extracted from this worker
 
 This worker is otherwise dependency-free; its only runtime deps are small, general-purpose
 libraries that were **extracted out of it** so anyone can reuse them, then pulled back in — so
@@ -248,23 +236,17 @@ inline here:
   it bundles for Workers with no `nodejs_compat`.
 - **[`sendcap`](https://github.com/jimdc/sendcap)** — the alert-mailer spend guard (`MAX_PER_RUN`
   + `MAX_SENDS_PER_DAY`). A pure "may I make one more paid send?" decision.
-- **[`board-notify`](https://github.com/jimdc/board-notify)** — the `/board-hook` bridge (see
-  "Board notifications" above). Unlike the other two, this one is genuinely **optional** —
-  crol-list ships and works fully with it unconfigured; it exists so the maintainers don't have
-  to keep a private fork of GitHub-board-notification logic inside a public clone's worker.
-
 `optin-token` and `sendcap` are published on npm — [`optin-token`](https://www.npmjs.com/package/optin-token)
 and [`@jimdc/sendcap`](https://www.npmjs.com/package/@jimdc/sendcap) (scoped because npm's
-name-similarity filter reserves the bare `sendcap`) — pulled in as `^1.0.0` deps. `board-notify`
-isn't on npm yet, so it's pinned to a commit SHA via a `github:` dependency instead. The tests
-under `test/token.*`, `test/unsub.*`, `test/caps.*`, and `test/board_hook_integration.*` are
+name-similarity filter reserves the bare `sendcap`) — pulled in as `^1.0.0` deps. The tests
+under `test/token.*`, `test/unsub.*`, and `test/caps.*` are
 **integration regression guards** over these packages — they fail here if a swap ever regresses
 crol's contract, not reimplementations of the packages' own unit suites.
 
 ## Develop, test, deploy
 
 ```sh
-npm install               # pulls wrangler + optin-token, sendcap, board-notify
+npm install               # pulls wrangler + optin-token + sendcap
 npm test                  # node --test — 323 unit tests, no network
 npm run dev               # wrangler dev → http://localhost:8787; analytics drops by default
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
@@ -274,17 +256,14 @@ CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over e
 
 Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
 `TOKEN_SECRET`, `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `SHADOW_STATUS_KEY`,
-`BOARD_HOOK_SECRET`, `GITHUB_BOT_TOKEN`, `BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`,
-`BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. `SHADOW_STATUS_KEY`
+`ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. `SHADOW_STATUS_KEY`
 is an optional read-only secret accepted **only** on `GET /admin/digest-shadow`; when absent, that
-route falls back to `ADMIN_KEY` as before. Board-notify
-secrets are optional — see "Board notifications" above. Vars (in `wrangler.toml`):
+route falls back to `ADMIN_KEY` as before. Vars (in `wrangler.toml`):
 `ANALYTICS_ENVIRONMENT` (`production` on the live Worker; beta overrides to `preview`),
 `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run: still **renders** each
 digest and logs the full HTML + headers, but never calls Resend and never bumps send
 counters / last-sent clocks), `ALERTS_FROM`, `ALERTS_REPLY_TO`, `MAX_PER_RUN`,
-`MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`, `BOARD_PROJECT_IDS`, `BOARD_ORG`,
-`BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire a cron
+`MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, and `FEEDBACK_TO`. Fire a cron
 locally by hitting `/__scheduled?cron=0+10+*+*+*` or `/__scheduled?cron=0+13+*+*+*` under
 `wrangler dev`.
 
