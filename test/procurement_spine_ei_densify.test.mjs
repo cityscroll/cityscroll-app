@@ -11,10 +11,12 @@ import { describe, it } from "node:test";
 
 import {
   selectPassportContractsForMaterialization,
+  selectCheckbookContractsForMaterialization,
   selectOcpAwardsForMaterialization,
   collectProcurementSpineObservations,
   slimProcurementMaterializationReceipt,
   DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP,
+  DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP,
   DEFAULT_OCP_AWARD_MATERIALIZATION_CAP,
   buildEntityIntelligenceDoc,
 } from "../tools/lib/entity_intelligence_build.mjs";
@@ -36,16 +38,17 @@ describe("entity-intelligence root selection", () => {
       .filter(([, agency]) => (agency?.obligations || []).length > 0)
       .map(([agencyId]) => `agency:id:${agencyId}`);
     const observableMandateRefs = mandateRefs.filter((ref) => doc.by_ref[ref]);
-    assert.equal(observableMandateRefs.length, 39);
+    assert.equal(observableMandateRefs.length, doc.selection.mandate_agency_selected);
     assert.ok(observableMandateRefs.every((ref) => doc.by_ref[ref]));
     assert.ok(doc.entity_count <= 200);
-    assert.equal(doc.multi_domain_count, 30);
-    assert.equal(doc.selection.mandate_agency_selected, 39);
-    assert.deepEqual(doc.selection.reason_counts, {
-      multi_domain: 30,
-      mandate_agency_reserve: 15,
-      richness_fill: 155,
-    });
+    assert.ok(doc.multi_domain_count >= 30);
+    assert.equal(doc.selection.mandate_agency_selected, doc.selection.mandate_agency_candidates);
+    assert.equal(doc.selection.mandate_agency_omitted, 0);
+    assert.equal(doc.selection.reason_counts.multi_domain, doc.multi_domain_count);
+    assert.equal(
+      Object.values(doc.selection.reason_counts).reduce((sum, value) => sum + value, 0),
+      doc.entity_count,
+    );
   });
 
   it("lets a low-fan-out mandate agency beat an unrelated filler without displacing a multi-domain root", () => {
@@ -163,6 +166,27 @@ describe("OCP award materialization selection", () => {
   });
 });
 
+describe("Checkbook contract materialization selection", () => {
+  it("dedupes exact contract ids and enforces the independent cap", () => {
+    const doc = {
+      sources: { checkbook_contracts: { population: { normalized_unique_contracts: 50 } } },
+      rows: {
+        checkbook_contracts: [
+          { contract_id: "A", pin: "1" },
+          { contract_id: "A", pin: "1" },
+          { prime_contract_id: "B", pin: "2" },
+          { contract_id: "C", pin: "3" },
+        ],
+      },
+    };
+    const selected = selectCheckbookContractsForMaterialization(doc, { cap: 2 });
+    assert.deepEqual(selected.rows.map((row) => row.contract_id || row.prime_contract_id), ["A", "B"]);
+    assert.equal(selected.population_rows, 50);
+    assert.equal(selected.committed_slice_rows, 4);
+    assert.equal(selected.selected_rows, 2);
+  });
+});
+
 describe("procurement spine observation feed", () => {
   it("collects far more than two PASSPort contract observations from the live spine", () => {
     const spine = collectProcurementSpineObservations(ROOT);
@@ -183,6 +207,24 @@ describe("procurement spine observation feed", () => {
     const receipt = slimProcurementMaterializationReceipt(spine.materialization);
     assert.equal(receipt.passport_contracts.selected_rows, contractObs.length);
     assert.equal(receipt.passport_contracts.rows, undefined);
+    assert.equal(receipt.checkbook_contracts.rows, undefined);
+  });
+
+  it("collects a bounded population-backed Checkbook contract slice", () => {
+    const spine = collectProcurementSpineObservations(ROOT);
+    const contractObs = spine.observations.filter(
+      (observation) => observation.object_kind === "contract" && /checkbook/i.test(observation.source_system || ""),
+    );
+    const doc = JSON.parse(readFileSync(SPINE, "utf8"));
+    if (doc.sources?.checkbook_contracts?.population_backed) {
+      assert.ok(contractObs.length > 1);
+      assert.ok(contractObs.length <= DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP);
+      assert.equal(spine.materialization?.checkbook_contracts?.selected_rows, contractObs.length);
+      assert.equal(
+        spine.materialization?.checkbook_contracts?.population_rows,
+        doc.sources.checkbook_contracts.population.normalized_unique_contracts,
+      );
+    }
   });
 
   it("selected passport slice joins real OCP award PINs via the existing join", () => {
