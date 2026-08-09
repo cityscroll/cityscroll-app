@@ -1,8 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "domain": "meetings",
   "title": "Meetings domain observations for entity intelligence",
-  "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
+  "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Source prose is reduced to bounded matter-subject stamps and discarded. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
   "retrieved_at": "2026-08-05T20:50:48.662Z",
   "window_days": 180,
   "source": {
@@ -27,6 +27,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -42,6 +47,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -57,6 +67,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -72,6 +87,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -103,6 +123,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -118,6 +143,11 @@
         "scope": "unlocated",
         "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -153,6 +183,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "please",
+          "soon",
+          "thereafter",
+          "reached",
+          "which",
+          "wishing",
+          "heard",
+          "opportunity",
+          "disposition",
+          "real",
+          "property",
+          "identified",
+          "below",
+          "access",
+          "code",
+          "general",
+          "municipal",
+          "charter",
+          "housing",
+          "preservation",
+          "development",
+          "sale",
+          "owned",
+          "collectively",
+          "area",
+          "borough",
+          "bronx",
+          "address",
+          "block",
+          "west",
+          "street",
+          "affordable"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -187,6 +255,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "13th",
+          "authorizing",
+          "cien",
+          "fuegos",
+          "maintain",
+          "operate",
+          "roadway",
+          "cafe",
+          "term",
+          "four",
+          "years",
+          "adjacent",
+          "avenue",
+          "borough",
+          "manhattan",
+          "chama",
+          "mama",
+          "franklin"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -218,6 +324,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -237,6 +348,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -282,6 +398,49 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "extension",
+          "complete",
+          "construction",
+          "obtain",
+          "certificate",
+          "occupancy",
+          "previously",
+          "approved",
+          "variance",
+          "permit",
+          "repurposing",
+          "existing",
+          "three",
+          "story",
+          "plus",
+          "cellar",
+          "building",
+          "occupied",
+          "commercial",
+          "offices",
+          "right",
+          "community",
+          "facility",
+          "uses",
+          "which",
+          "expires",
+          "zoning",
+          "district",
+          "appeal",
+          "buildings",
+          "challenging",
+          "validity"
+        ],
+        "matter_ids": [
+          "bsa:2021-43-BZII",
+          "bsa:2025-54-A",
+          "bsa:2026-09-A",
+          "bsa:2026-06-BZ"
+        ]
       }
     },
     {
@@ -316,6 +475,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -354,6 +518,25 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "further",
+          "including",
+          "inspection",
+          "contract",
+          "sale",
+          "obtained",
+          "centre",
+          "street",
+          "room",
+          "north"
+        ],
+        "matter_ids": [
+          "ulurp:210221PCR",
+          "ulurp:C210221PCR"
+        ]
       }
     },
     {
@@ -383,6 +566,42 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "intent",
+          "award",
+          "concession",
+          "license",
+          "agreement",
+          "busters",
+          "marine",
+          "bronx",
+          "marina",
+          "development",
+          "operation",
+          "maintenance",
+          "outdoor",
+          "amenities",
+          "wnyc",
+          "transmitter",
+          "park",
+          "located",
+          "kent",
+          "street",
+          "brooklyn",
+          "solicitation",
+          "b385",
+          "provide",
+          "twenty",
+          "five",
+          "year",
+          "term",
+          "options",
+          "renew"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -398,6 +617,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -432,6 +656,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -470,6 +699,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "authorizing",
+          "modification",
+          "existing",
+          "variety",
+          "cafe",
+          "maintain",
+          "operate",
+          "roadway",
+          "term",
+          "four",
+          "years",
+          "adjacent",
+          "driggs",
+          "borough",
+          "brooklyn",
+          "columbus",
+          "manhattan",
+          "kitchen"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -485,6 +752,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -516,6 +788,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -535,6 +812,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -566,6 +848,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -597,6 +884,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -612,6 +904,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -655,6 +952,69 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "installation",
+          "ramp",
+          "queens",
+          "supreme",
+          "courthouse",
+          "sutphin",
+          "boulevard",
+          "jamaica",
+          "preliminary",
+          "final",
+          "dcas",
+          "minor",
+          "repair",
+          "quill",
+          "thomas",
+          "jefferson",
+          "pierre",
+          "jean",
+          "david",
+          "angers",
+          "part",
+          "long",
+          "term",
+          "loan",
+          "historical",
+          "society",
+          "central",
+          "park",
+          "west",
+          "manhattan",
+          "modifications",
+          "landscape"
+        ],
+        "matter_ids": [
+          "pdc:30458",
+          "pdc:30459",
+          "pdc:30460",
+          "pdc:30461",
+          "pdc:30462",
+          "pdc:30463",
+          "pdc:30464",
+          "pdc:30465",
+          "pdc:30466",
+          "pdc:30467",
+          "pdc:30468",
+          "pdc:30469",
+          "pdc:30470",
+          "pdc:30471",
+          "pdc:30472",
+          "pdc:30473",
+          "pdc:30474",
+          "pdc:30475",
+          "pdc:30476",
+          "pdc:30477",
+          "pdc:30478",
+          "pdc:30479",
+          "pdc:30480",
+          "pdc:30481"
+        ]
       }
     },
     {
@@ -686,6 +1046,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -717,6 +1082,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -745,6 +1115,35 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "concessionaire",
+          "operation",
+          "maintenance",
+          "cafeteria",
+          "nypd",
+          "police",
+          "academy",
+          "college",
+          "point",
+          "queens",
+          "gross",
+          "receipts",
+          "mean",
+          "revenue",
+          "derived",
+          "sale",
+          "food",
+          "beverages",
+          "merchandise",
+          "catering",
+          "services",
+          "vending",
+          "operations"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -776,6 +1175,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -807,6 +1211,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -837,6 +1246,11 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -868,6 +1282,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -899,6 +1318,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -918,6 +1342,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -949,6 +1378,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -964,6 +1398,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -997,7 +1436,12 @@
         "source": "venue"
       },
       "event_id": "22526",
-      "source_note": "legistar_event_join_demo"
+      "source_note": "legistar_event_join_demo",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      }
     },
     {
       "request_id": "20260106033",
@@ -1031,6 +1475,17 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "discuss",
+          "issues",
+          "impacting",
+          "jail",
+          "system"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1062,6 +1517,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1093,6 +1553,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1135,6 +1600,47 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "amendment",
+          "previously",
+          "approved",
+          "variance",
+          "permitting",
+          "operation",
+          "gasoline",
+          "service",
+          "station",
+          "permit",
+          "enlargement",
+          "building",
+          "zoning",
+          "districts",
+          "development",
+          "residential",
+          "family",
+          "mapped",
+          "street",
+          "contrary",
+          "general",
+          "district",
+          "extension",
+          "obtain",
+          "certificate",
+          "occupancy",
+          "which",
+          "permitted",
+          "enclosed",
+          "contractor",
+          "establishment",
+          "including"
+        ],
+        "matter_ids": [
+          "bsa:2026-13-A",
+          "bsa:2016-14-A"
+        ]
       }
     },
     {
@@ -1154,6 +1660,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1169,6 +1680,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1200,6 +1716,44 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "exempt",
+          "bonds",
+          "issued",
+          "part",
+          "plan",
+          "finance",
+          "qualified",
+          "educational",
+          "facilities",
+          "code",
+          "project",
+          "description",
+          "school",
+          "currently",
+          "operates",
+          "charter",
+          "square",
+          "foot",
+          "condominium",
+          "unit",
+          "existing",
+          "leased",
+          "third",
+          "party",
+          "owner",
+          "comprising",
+          "floor",
+          "story",
+          "mixed",
+          "building",
+          "located",
+          "parcel"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1231,6 +1785,44 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "industrial",
+          "development",
+          "empowered",
+          "state",
+          "constituting",
+          "title",
+          "article",
+          "general",
+          "municipal",
+          "chapter",
+          "laws",
+          "amended",
+          "enter",
+          "straight",
+          "lease",
+          "transactions",
+          "benefit",
+          "qualified",
+          "projects",
+          "thereby",
+          "advance",
+          "opportunities",
+          "prosperity",
+          "economic",
+          "welfare",
+          "people",
+          "improve",
+          "standard",
+          "living",
+          "requested",
+          "participate",
+          "issue"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1262,6 +1854,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1281,6 +1878,11 @@
       "location_source": {
         "terminal_classification": "virtual_only",
         "locator": "https://www.nyc.gov/assets/dsny/downloads/collection/containerization/residential-containerization/deis-25dos003y-07012026.pdf"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1319,6 +1921,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "16th",
+          "authorizing",
+          "koulas",
+          "espresso",
+          "maintain",
+          "operate",
+          "roadway",
+          "cafe",
+          "term",
+          "four",
+          "years",
+          "adjacent",
+          "borough",
+          "queens",
+          "pineapple",
+          "hospitality",
+          "consulting",
+          "lexington"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1350,6 +1990,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1381,6 +2026,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1412,6 +2062,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1443,6 +2098,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1474,6 +2134,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1493,6 +2158,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1527,6 +2197,47 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "property",
+          "acquiring",
+          "used",
+          "permanent",
+          "easement",
+          "facilitate",
+          "construction",
+          "maintenance",
+          "closed",
+          "conduit",
+          "pipeline",
+          "kingsbridge",
+          "heights",
+          "neighborhood",
+          "community",
+          "districts",
+          "bronx",
+          "acquisition",
+          "approved",
+          "planning",
+          "charter",
+          "sections",
+          "ulurp",
+          "purchase",
+          "price",
+          "further",
+          "including",
+          "inspection",
+          "contract",
+          "sale",
+          "obtained",
+          "centre"
+        ],
+        "matter_ids": [
+          "ulurp:240232PQX",
+          "ulurp:C240232PQX"
+        ]
       }
     },
     {
@@ -1568,6 +2279,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "items",
+          "heard",
+          "kent",
+          "avenue",
+          "rezoning",
+          "zoning",
+          "amendment",
+          "districts",
+          "text",
+          "appendix",
+          "facilitate",
+          "story",
+          "mixed",
+          "building",
+          "including",
+          "ground",
+          "floor",
+          "commercial",
+          "space",
+          "sought",
+          "holdings",
+          "williamsburg",
+          "community",
+          "district",
+          "brooklyn",
+          "edison",
+          "permanent",
+          "easement",
+          "gateway",
+          "microtunnel",
+          "citywide",
+          "administrative"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1583,6 +2332,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1631,6 +2385,50 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "conditions",
+          "ceqr",
+          "declaration",
+          "ulurp",
+          "n260235",
+          "submitted",
+          "children",
+          "daycare",
+          "nursery",
+          "school",
+          "sections",
+          "charter",
+          "amendment",
+          "zoning",
+          "text",
+          "designate",
+          "project",
+          "area",
+          "mandatory",
+          "inclusionary",
+          "housing",
+          "borough",
+          "queens",
+          "community",
+          "district",
+          "shown",
+          "diagram",
+          "illustrative",
+          "purposes",
+          "only",
+          "dated"
+        ],
+        "matter_ids": [
+          "ulurp:260184ZMQ",
+          "ulurp:260185ZRQ",
+          "ulurp:N260185ZRQ",
+          "ulurp:260234ZMQ",
+          "ulurp:260235ZRQ",
+          "ulurp:N260235ZRQ"
+        ]
       }
     },
     {
@@ -1662,6 +2460,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1687,6 +2490,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "times",
+          "locations",
+          "tuesday",
+          "cuny",
+          "medgar",
+          "evers",
+          "college",
+          "bedford",
+          "avenue",
+          "brooklyn",
+          "wednesday",
+          "lehman",
+          "park",
+          "boulevard",
+          "west",
+          "bronx",
+          "monday",
+          "snug",
+          "harbor",
+          "cultural",
+          "center",
+          "great",
+          "hall",
+          "richmond",
+          "terrace",
+          "staten",
+          "island",
+          "riverside",
+          "church",
+          "drive",
+          "queens",
+          "borough"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1712,6 +2553,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "close",
+          "final",
+          "action",
+          "addition",
+          "previously",
+          "approved",
+          "interim",
+          "report",
+          "dated",
+          "available",
+          "transmitted",
+          "clerk",
+          "ballot",
+          "proposal",
+          "open",
+          "primaries",
+          "nonpartisan",
+          "local",
+          "elections",
+          "placement",
+          "general",
+          "election",
+          "adopted",
+          "notes",
+          "same",
+          "considered",
+          "charter",
+          "revision",
+          "materials",
+          "relating",
+          "consideration",
+          "including"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -1758,6 +2637,52 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "housing",
+          "preservation",
+          "development",
+          "east",
+          "138th",
+          "street",
+          "associates",
+          "together",
+          "applicants",
+          "propose",
+          "number",
+          "land",
+          "actions",
+          "described",
+          "below",
+          "facilitate",
+          "phased",
+          "affordable",
+          "rental",
+          "buildings",
+          "zoning",
+          "square",
+          "feet",
+          "units",
+          "plus",
+          "superintendents",
+          "residential",
+          "amenity",
+          "space",
+          "small",
+          "commercial",
+          "shore"
+        ],
+        "matter_ids": [
+          "ulurp:260190ZSX",
+          "ulurp:260191ZCX",
+          "ulurp:260192LDX",
+          "ulurp:260193HAX",
+          "ulurp:260194ZAX",
+          "ulurp:260195ZAX",
+          "ulurp:260336ZAX"
+        ]
       }
     },
     {
@@ -1777,6 +2702,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1815,6 +2745,43 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "extension",
+          "term",
+          "gasoline",
+          "service",
+          "station",
+          "which",
+          "expired",
+          "waiver",
+          "rules",
+          "practice",
+          "procedures",
+          "zoning",
+          "district",
+          "instatement",
+          "previously",
+          "approved",
+          "variance",
+          "permitting",
+          "operation",
+          "automotive",
+          "repair",
+          "facility",
+          "community",
+          "land",
+          "firm",
+          "timothy",
+          "sellis",
+          "zane",
+          "owners"
+        ],
+        "matter_ids": [
+          "bsa:2026-11-BZ"
+        ]
       }
     },
     {
@@ -1846,6 +2813,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1877,6 +2849,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1911,6 +2888,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -1953,6 +2935,69 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "construction",
+          "carport",
+          "structures",
+          "installation",
+          "photovoltaic",
+          "panels",
+          "brooklyn",
+          "museum",
+          "eastern",
+          "parkway",
+          "preliminary",
+          "dcla",
+          "modifications",
+          "urban",
+          "poet",
+          "alexandre",
+          "arrechea",
+          "atlantic",
+          "avenue",
+          "median",
+          "between",
+          "conduit",
+          "boulevard",
+          "fountain",
+          "amended",
+          "pavilion",
+          "queens",
+          "botanical",
+          "garden",
+          "main",
+          "street",
+          "elder"
+        ],
+        "matter_ids": [
+          "pdc:30411",
+          "pdc:30412",
+          "pdc:30413",
+          "pdc:30414",
+          "pdc:30415",
+          "pdc:30416",
+          "pdc:30417",
+          "pdc:30418",
+          "pdc:30419",
+          "pdc:30420",
+          "pdc:30421",
+          "pdc:30422",
+          "pdc:30423",
+          "pdc:30424",
+          "pdc:30425",
+          "pdc:30426",
+          "pdc:30427",
+          "pdc:30428",
+          "pdc:30429",
+          "pdc:30430",
+          "pdc:30431",
+          "pdc:30432",
+          "pdc:30433",
+          "pdc:30434"
+        ]
       }
     },
     {
@@ -1984,6 +3029,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2018,6 +3068,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2033,6 +3088,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2061,6 +3121,11 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2095,6 +3160,26 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "design",
+          "construction",
+          "team",
+          "provide",
+          "project",
+          "hwkavej81",
+          "reconstruction",
+          "avenue",
+          "east",
+          "81st",
+          "street",
+          "accordance",
+          "standard",
+          "practice"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2114,6 +3199,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2152,6 +3242,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "petition",
+          "join",
+          "your",
+          "browser",
+          "either",
+          "click",
+          "link",
+          "paste",
+          "address",
+          "only",
+          "connect",
+          "brooklyn",
+          "bull",
+          "maintain",
+          "operate",
+          "roadway",
+          "cafe",
+          "term"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2196,6 +3324,47 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "renewal",
+          "lease",
+          "tenant",
+          "first",
+          "floor",
+          "building",
+          "located",
+          "hillside",
+          "avenue",
+          "block",
+          "lots",
+          "borough",
+          "queens",
+          "community",
+          "walk",
+          "service",
+          "center",
+          "such",
+          "commissioner",
+          "citywide",
+          "administrative",
+          "services",
+          "determine",
+          "period",
+          "execution",
+          "annual",
+          "rent",
+          "terminated",
+          "after",
+          "seven",
+          "years",
+          "provided"
+        ],
+        "matter_ids": [
+          "ulurp:000611PXQ",
+          "ulurp:N000611PXQ"
+        ]
       }
     },
     {
@@ -2231,6 +3400,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "renewal",
+          "amendment",
+          "lease",
+          "tenant",
+          "through",
+          "floors",
+          "building",
+          "located",
+          "greenwich",
+          "street",
+          "park",
+          "place",
+          "block",
+          "borough",
+          "manhattan",
+          "office",
+          "management",
+          "budget",
+          "mayor",
+          "contract",
+          "services",
+          "actuary",
+          "general",
+          "administrative",
+          "offices",
+          "such",
+          "commissioner",
+          "citywide",
+          "determine",
+          "commence",
+          "execution",
+          "expire"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2267,6 +3474,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "renewal",
+          "lease",
+          "tenant",
+          "basement",
+          "partial",
+          "first",
+          "floor",
+          "mezzanine",
+          "entire",
+          "floors",
+          "through",
+          "penthouse",
+          "adjacent",
+          "parking",
+          "building",
+          "located",
+          "11th",
+          "avenue",
+          "west",
+          "26th",
+          "street",
+          "block",
+          "lots",
+          "borough",
+          "manhattan",
+          "human",
+          "resources",
+          "administration",
+          "executive",
+          "general",
+          "administrative",
+          "office"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2307,6 +3552,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "25th",
+          "petition",
+          "join",
+          "your",
+          "browser",
+          "either",
+          "click",
+          "link",
+          "paste",
+          "address",
+          "only",
+          "connect",
+          "allora",
+          "maintain",
+          "operate",
+          "roadway",
+          "cafe",
+          "term"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2342,6 +3625,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "property",
+          "economically",
+          "impractical",
+          "infeasible",
+          "consideration",
+          "sale",
+          "fair",
+          "market",
+          "value",
+          "determined",
+          "appraisal",
+          "approved",
+          "mayor",
+          "citywide",
+          "administrative",
+          "services",
+          "authorized",
+          "sell",
+          "listed",
+          "below",
+          "further",
+          "obtained",
+          "contacting",
+          "attention",
+          "charles",
+          "goldberg",
+          "note",
+          "need",
+          "accommodations",
+          "please",
+          "know",
+          "least"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2387,6 +3708,48 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "conditions",
+          "ceqr",
+          "declaration",
+          "related",
+          "full",
+          "proposal",
+          "accessed",
+          "zoning",
+          "portal",
+          "please",
+          "direct",
+          "questions",
+          "office",
+          "bronx",
+          "borough",
+          "president",
+          "sojourner",
+          "truth",
+          "mapes",
+          "rezoning",
+          "submitted",
+          "crotona",
+          "parkway",
+          "housing",
+          "development",
+          "fund",
+          "corporation",
+          "sections",
+          "charter",
+          "amendment"
+        ],
+        "matter_ids": [
+          "ulurp:240206ZMX",
+          "ulurp:C240206ZMX",
+          "ulurp:240207ZRX",
+          "ulurp:N240207ZRX",
+          "zap:2023X0149"
+        ]
       }
     },
     {
@@ -2418,6 +3781,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2449,6 +3817,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2464,6 +3837,11 @@
         "scope": "unlocated",
         "unlocated_reason": "body_place_omitted",
         "virtual_only": false
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2474,7 +3852,12 @@
       "event_date": "2026-07-09T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      }
     },
     {
       "request_id": "20260528031",
@@ -2519,6 +3902,34 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "submitted",
+          "planning",
+          "zoning",
+          "amendment",
+          "text",
+          "appendix",
+          "facilitate",
+          "four",
+          "story",
+          "square",
+          "foot",
+          "community",
+          "facility",
+          "building",
+          "sought",
+          "ridge",
+          "development",
+          "center"
+        ],
+        "matter_ids": [
+          "ulurp:260115ZMK",
+          "ulurp:260116ZRK",
+          "ulurp:D260116ZRK"
+        ]
       }
     },
     {
@@ -2557,6 +3968,37 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "zoning",
+          "amendment",
+          "text",
+          "appendix",
+          "facilitate",
+          "story",
+          "mixed",
+          "development",
+          "ground",
+          "floor",
+          "commercial",
+          "melrose",
+          "street",
+          "bushwick",
+          "fort",
+          "hamilton",
+          "mews",
+          "rezoning",
+          "including",
+          "community",
+          "facility",
+          "uses",
+          "sought",
+          "ridge",
+          "brooklyn"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2598,6 +4040,48 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "approved",
+          "relevant",
+          "authorities",
+          "would",
+          "result",
+          "rezoning",
+          "zoning",
+          "districts",
+          "well",
+          "text",
+          "amendment",
+          "designate",
+          "mandatory",
+          "inclusionary",
+          "housing",
+          "area",
+          "resolution",
+          "appendix",
+          "actions",
+          "facilitate",
+          "development",
+          "residential",
+          "buildings",
+          "totaling",
+          "square",
+          "feet",
+          "floor",
+          "providing",
+          "affordable",
+          "units",
+          "amenity",
+          "space"
+        ],
+        "matter_ids": [
+          "ulurp:240206ZMX",
+          "ulurp:240207ZRX",
+          "ulurp:N240207ZRX"
+        ]
       }
     },
     {
@@ -2617,6 +4101,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2648,6 +4137,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2678,6 +4172,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "citywide",
+          "input",
+          "sessions",
+          "tuesday",
+          "school",
+          "west",
+          "broadway",
+          "wednesday",
+          "fordham",
+          "university",
+          "mcshane",
+          "campus",
+          "center",
+          "east",
+          "road",
+          "bronx",
+          "thursday",
+          "brooklyn",
+          "joralemon",
+          "street",
+          "monday",
+          "design",
+          "construction",
+          "floor",
+          "multipurpose",
+          "room",
+          "thomson",
+          "avenue",
+          "enter",
+          "30th",
+          "place",
+          "queens"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2712,6 +4244,11 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2757,6 +4294,50 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "conditions",
+          "ceqr",
+          "declaration",
+          "ulurp",
+          "n250330",
+          "submitted",
+          "sapphire",
+          "sections",
+          "charter",
+          "amendment",
+          "zoning",
+          "text",
+          "designate",
+          "project",
+          "area",
+          "mandatory",
+          "inclusionary",
+          "housing",
+          "borough",
+          "queens",
+          "community",
+          "district",
+          "shown",
+          "diagram",
+          "illustrative",
+          "purposes",
+          "only",
+          "dated",
+          "include",
+          "item",
+          "n260187"
+        ],
+        "matter_ids": [
+          "ulurp:260186ZMQ",
+          "ulurp:260187ZRQ",
+          "ulurp:N260187ZRQ",
+          "ulurp:250392ZMQ",
+          "ulurp:250330ZRQ",
+          "ulurp:N250330ZRQ"
+        ]
       }
     },
     {
@@ -2788,6 +4369,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2822,6 +4408,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2853,6 +4444,19 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "anyone",
+          "wants",
+          "comment",
+          "rule",
+          "must",
+          "sign",
+          "speak"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2887,6 +4491,17 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "discuss",
+          "issues",
+          "impacting",
+          "jail",
+          "system"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -2918,6 +4533,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2949,6 +4569,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2968,6 +4593,11 @@
       "location_source": {
         "terminal_classification": "multi_event_directory",
         "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -2999,6 +4629,19 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "anyone",
+          "wants",
+          "comment",
+          "rule",
+          "must",
+          "sign",
+          "speak"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3038,6 +4681,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "18th",
+          "petition",
+          "join",
+          "your",
+          "browser",
+          "either",
+          "click",
+          "link",
+          "paste",
+          "address",
+          "maintain",
+          "operate",
+          "roadway",
+          "cafe",
+          "term",
+          "four",
+          "years",
+          "adjacent"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3069,6 +4750,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3100,6 +4786,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3131,6 +4822,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "please",
+          "soon",
+          "thereafter",
+          "reached",
+          "which",
+          "wishing",
+          "heard",
+          "opportunity",
+          "disposition",
+          "real",
+          "property",
+          "identified",
+          "below",
+          "private",
+          "housing",
+          "finance",
+          "charter",
+          "preservation",
+          "development",
+          "sale",
+          "owned",
+          "collectively",
+          "area",
+          "borough",
+          "bronx",
+          "address",
+          "block",
+          "powers",
+          "avenue",
+          "construction",
+          "program",
+          "sponsors"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3146,6 +4875,44 @@
         "scope": "unlocated",
         "unlocated_reason": "virtual_only",
         "virtual_only": true
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "teams",
+          "access",
+          "code",
+          "conducted",
+          "mayor",
+          "office",
+          "contract",
+          "services",
+          "draft",
+          "annual",
+          "human",
+          "plan",
+          "fiscal",
+          "year",
+          "procurement",
+          "policy",
+          "rules",
+          "agencies",
+          "required",
+          "publish",
+          "describing",
+          "actions",
+          "regard",
+          "service",
+          "contracts",
+          "including",
+          "existing",
+          "anticipated",
+          "covered",
+          "planning",
+          "period",
+          "through"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3161,6 +4928,26 @@
         "scope": "unlocated",
         "unlocated_reason": "virtual_only",
         "virtual_only": true
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "advisory",
+          "meets",
+          "every",
+          "quarter",
+          "discuss",
+          "fiscal",
+          "conditions",
+          "selected",
+          "staff",
+          "also",
+          "present",
+          "recent",
+          "research",
+          "briefings"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3180,6 +4967,11 @@
       "location_source": {
         "terminal_classification": "virtual_only",
         "locator": "https://www.nyc.gov/site/dcas/about/public-hearings/public-hearings-2026.page"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3211,6 +5003,19 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "anyone",
+          "wants",
+          "comment",
+          "rule",
+          "must",
+          "sign",
+          "speak"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3245,6 +5050,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3279,6 +5089,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3311,6 +5126,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3354,6 +5174,38 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "hutchinson",
+          "river",
+          "parkway",
+          "rezoning",
+          "submitted",
+          "hutch",
+          "owner",
+          "sections",
+          "charter",
+          "amendment",
+          "zoning",
+          "full",
+          "proposal",
+          "accessed",
+          "portal",
+          "please",
+          "direct",
+          "questions",
+          "office",
+          "bronx",
+          "borough",
+          "president"
+        ],
+        "matter_ids": [
+          "ulurp:240161ZMX",
+          "ulurp:C240161ZMX",
+          "zap:2021X0247"
+        ]
       }
     },
     {
@@ -3388,6 +5240,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3416,6 +5273,44 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "prospect",
+          "park",
+          "alliance",
+          "proposal",
+          "create",
+          "large",
+          "scale",
+          "outdoor",
+          "exhibits",
+          "lefferts",
+          "historic",
+          "house",
+          "museum",
+          "permanently",
+          "inscribe",
+          "previously",
+          "overlooked",
+          "histories",
+          "lenape",
+          "african",
+          "peoples",
+          "landscape",
+          "welcome",
+          "descendant",
+          "visitors",
+          "signals",
+          "site",
+          "relevant",
+          "them",
+          "communicate",
+          "broader",
+          "these"
+        ],
+        "matter_ids": []
       }
     },
     {
@@ -3447,6 +5342,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3478,6 +5378,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3509,6 +5414,11 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3524,6 +5434,11 @@
         "scope": "unlocated",
         "unlocated_reason": "virtual_only",
         "virtual_only": true
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
       }
     },
     {
@@ -3563,6 +5478,19 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      },
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "anyone",
+          "wants",
+          "comment",
+          "rule",
+          "must",
+          "sign",
+          "speak"
+        ],
+        "matter_ids": []
       }
     }
   ],
@@ -3571,5 +5499,7 @@
     "fixed_rows": 24,
     "refreshed_at": "2026-08-05T14:00:27.418Z"
   },
-  "place_stamp_note": "affected_area stamps restored from pre-#417 snapshot after ULURP stamp cleanup dropped place densify fields; re-run tools/build_rules_meetings_domain_observations.mjs when live SODA is available to refresh."
+  "place_stamp_note": "affected_area stamps restored from pre-#417 snapshot after ULURP stamp cleanup dropped place densify fields; re-run tools/build_rules_meetings_domain_observations.mjs when live SODA is available to refresh.",
+  "meeting_matter_stamp_schema": "cityscroll.meeting_matter_stamp.v1",
+  "matter_subject_stamped_at": "2026-08-09T16:38:12.840Z"
 }

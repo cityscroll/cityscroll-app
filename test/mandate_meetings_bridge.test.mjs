@@ -185,3 +185,32 @@ test("a failed held-out gate keeps otherwise supported candidates in evidence-on
   assert.equal(view.shadow_edges[0].entity_link.source_record_id, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.equal(view.shadow_edges[0].entity_link.tier, "evidence_only");
 });
+
+test("matter-subject stamps feed scope matching but cannot bypass temporal compatibility", () => {
+  const view = buildMandateMeetingsView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: [mandate] } },
+    },
+    meetingsDomain: {
+      rows: [{
+        request_id: "stamped-shadow",
+        agency_name: "Landmarks Preservation Commission",
+        short_title: "Public Hearing Agenda",
+        type_of_notice_description: "Public Hearings",
+        event_date: "2026-08-18T09:00:00.000",
+        matter_subject: {
+          schema: "cityscroll.meeting_matter_stamp.v1",
+          subject_tokens: ["landmark", "designation"],
+          matter_ids: ["pdc:30458"],
+        },
+      }],
+    },
+    crossSpineGate,
+  });
+
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 1);
+  assert.deepEqual(view.shadow_edges[0].match.subject_scope, ["landmark", "designation"]);
+  assert.deepEqual(view.shadow_edges[0].match.meeting_matter_ids, ["pdc:30458"]);
+  assert.deepEqual(view.shadow_edges[0].reason, ["temporal"]);
+});

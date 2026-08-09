@@ -110,6 +110,13 @@ function meetingSubjectText(row) {
   );
 }
 
+function stampedMeetingSubjectTokens(row) {
+  if (!row?.matter_subject || typeof row.matter_subject !== "object") return null;
+  return scopeTokens((Array.isArray(row.matter_subject.subject_tokens)
+    ? row.matter_subject.subject_tokens
+    : []).join(" "));
+}
+
 function temporalEvidence(mandate, meeting) {
   const explicit = meeting.temporal_compatible
     ?? meeting.temporal?.compatible
@@ -169,7 +176,12 @@ function meetingCandidates(meetingsDomain, identity) {
         ?? null,
       temporal: row.temporal || row.temporal_evidence || null,
       matter_id: clean(row.matter_id || row.matter?.id, 120) || null,
+      matter_ids: Array.isArray(row.matter_subject?.matter_ids)
+        ? row.matter_subject.matter_ids.map((value) => clean(value, 120)).filter(Boolean)
+        : [],
       subject_fields: [
+        row.matter_subject?.subject_tokens?.length ? "matter_subject.subject_tokens" : null,
+        row.matter_subject?.matter_ids?.length ? "matter_subject.matter_ids" : null,
         row.matter_body_subject || row.body_subject ? "body_subject" : null,
         row.matter?.subject ? "matter.subject" : null,
         row.subject ? "subject" : null,
@@ -180,7 +192,7 @@ function meetingCandidates(meetingsDomain, identity) {
       href: clean(row.href, 240) || `/notices/${encodeURIComponent(requestId)}`,
       source_system: clean(row.source_system, 80) || "city_record",
       agency_name: identity.canonical_name,
-      subject_scope_tokens: scopeTokens(meetingSubjectText(row)),
+      subject_scope_tokens: stampedMeetingSubjectTokens(row) ?? scopeTokens(meetingSubjectText(row)),
     });
   }
   return out.sort((left, right) => String(right.date || "").localeCompare(String(left.date || "")));
@@ -295,14 +307,17 @@ export function buildMandateMeetingsView(agencyIdOrName, sources = {}) {
       const subjectScope = matchedScope(mandate, meeting);
       const temporal = temporalEvidence(mandate, meeting);
       const mandateMatterId = clean(mandate.matter_id || mandate.source?.matter_id, 120) || null;
-      const matterExact = Boolean(mandateMatterId && meeting.matter_id
-        && normalizedId(mandateMatterId) === normalizedId(meeting.matter_id));
+      const meetingMatterIds = [meeting.matter_id, ...(meeting.matter_ids || [])].filter(Boolean);
+      const matterExact = Boolean(mandateMatterId && meetingMatterIds.some(
+        (value) => normalizedId(mandateMatterId) === normalizedId(value),
+      ));
       const evidence = {
         keys: ["agency", "event_kind", "matter_body_subject", "temporal"],
         agency_id: identity.canonical_id,
         event_kind: meeting.event_kind,
         matter_id: mandateMatterId,
         meeting_matter_id: meeting.matter_id,
+        meeting_matter_ids: meeting.matter_ids,
         matter_exact: matterExact,
         subject_scope: subjectScope,
         subject_scope_overlap: subjectScope,

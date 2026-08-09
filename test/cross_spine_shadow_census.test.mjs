@@ -31,6 +31,8 @@ test("census output is redacted to ids, counts, source names, and enum reasons",
   const receipt = buildCrossSpineShadowCensus();
   const text = JSON.stringify(receipt);
   assert.doesNotMatch(text, /duty_text|source_excerpt|notice body|contact|subject_scope|candidate/i);
-  assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, 52);
+  assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, 48);
+  assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, 52);
+  assert.equal(receipt.relations.mandate_meeting.totals.public_inferred, 0);
   assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 9);
 });
