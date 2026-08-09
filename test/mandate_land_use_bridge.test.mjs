@@ -28,6 +28,7 @@ const mandate = {
   agency_id: "landmarks-preservation-commission",
   agency_name: "Landmarks Preservation Commission",
   duty_text: "The commission shall designate the landmark within 180 days after the public hearing.",
+  project_id: "right",
   deliverable_type: "other",
   citation: "Administrative Code section 25-303(l)(2)",
   source: { legistar_url: "https://example.test/law" },
@@ -113,6 +114,7 @@ test("resolver requires agency, structured action kind, and subject scope rather
           actions: "HI",
           primary_applicant: "LPC - NYC Landmarks Preservation Commission",
           current_milestone_date: "2026-08-08",
+          current_milestone: "Designation approved",
         },
         {
           project_id: "title-only",
@@ -136,8 +138,15 @@ test("resolver requires agency, structured action kind, and subject scope rather
   assert.equal(view.edges.length, 1);
   assert.equal(view.edges[0].land_action.project_id, "right");
   assert.equal(view.edges[0].relation, MANDATE_LAND_USE_EDGE_TYPE);
-  assert.deepEqual(view.edges[0].match.keys, ["agency", "land_action_kind", "subject_scope"]);
+  assert.deepEqual(view.edges[0].match.keys, [
+    "agency", "land_action_kind", "project_identity", "mandate_phase_compatible",
+  ]);
   assert.deepEqual(view.edges[0].match.subject_scope, ["landmark_designation"]);
+  assert.equal(view.edges[0].match.project_identity, true);
+  assert.equal(view.edges[0].match.project_identity_detail.matched, true);
+  assert.equal(view.edges[0].match.mandate_phase_compatible, true);
+  assert.equal(view.edges[0].match.mandate_phase_detail.compatible, true);
+  assert.equal(view.edges[0].entity_link.tier, "public_inferred");
   assert.match(view.edges[0].entity_link.id, /^entity-link:mandate-land-use:/);
   assert.match(view.edges[0].resolution_run.id, /^resolution-run:mandate-land-use:/);
   assert.equal(view.edges[0].process_conformance.status, "observed");
@@ -170,27 +179,81 @@ test("unresolved land-use mandates render nothing", () => {
   assert.equal(renderMandateLandUseSection(view), "");
 });
 
-test("live Landmarks materialization links designation mandates to ZAP land-use actions", () => {
+test("live Landmarks materialization keeps agency-only land actions in shadow", () => {
   const view = buildAgencyConstellationView("landmarks-preservation-commission", {
     obligations,
     intelligence,
     land_projects: landProjects,
   });
-  assert.equal(view.mandates_land_use.status, "matched");
-  assert.ok(view.mandates_land_use.counts.mandates >= 1);
-  assert.ok(view.mandates_land_use.counts.land_actions >= 1);
-  assert.ok(view.mandates_land_use.edges.every((edge) => edge.land_action.project_id));
-  assert.equal(
-    new Set(view.mandates_land_use.edges.map((edge) => edge.claim.claim_id)).size,
-    view.mandates_land_use.edges.length,
-  );
-  assert.ok(view.claims.some((claim) => claim.category_id === "mandate-land-use"));
+  assert.equal(view.mandates_land_use.status, "empty");
+  assert.equal(view.mandates_land_use.edges.length, 0);
+  assert.ok(view.mandates_land_use.shadow_edges.length > 0);
+  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.decision === "evidence_only"));
+  assert.ok(view.mandates_land_use.shadow_edges.some((edge) => edge.reason.includes("project_identity")));
+  assert.ok(view.mandates_land_use.shadow_edges.some((edge) => edge.reason.includes("mandate_phase_compatible")));
+  assert.equal(view.claims.some((claim) => claim.category_id === "mandate-land-use"), false);
 
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /id="mandates-land-use"/);
-  assert.match(html, /Mandates · Land-use and zoning actions/);
-  assert.match(html, /data-mandate-land-use-edge=/);
-  assert.match(html, /Watch mandates/);
-  assert.match(html, /Follow land-use and zoning actions/);
-  assert.doesNotMatch(html, /not yet|no action|unresolved|not adjudicated|methodology/i);
+  assert.doesNotMatch(html, /id="mandates-land-use"/);
+});
+
+test("project identity without a compatible mandate phase remains evidence-only", () => {
+  const view = buildMandateLandUseView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: [{
+        ...mandate,
+        duty_text: "The commission shall designate the landmark after the public hearing.",
+        project_id: "right",
+      }] } },
+    },
+    entityIntelligence: {
+      by_ref: { "agency:id:landmarks-preservation-commission": { domains: { land: { objects: [{
+        project_id: "right",
+        subject_ref: "project:right",
+        link_type: "applicant_agency",
+        provenance: { input_value: "Landmarks Preservation Commission" },
+      }] } } } },
+    },
+    landProjects: { rows: [{
+      project_id: "right",
+      project_name: "Public School Annex (LP-1000)",
+      actions: "HI",
+      primary_applicant: "Landmarks Preservation Commission",
+      current_milestone: "Prepare Filed Land Use Application",
+    }] },
+  });
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 1);
+  assert.deepEqual(view.shadow_edges[0].reason, ["mandate_phase_compatible"]);
+  assert.equal(view.shadow_edges[0].match.project_identity, true);
+});
+
+test("a sub-threshold land-use gate keeps an otherwise qualified edge in shadow", () => {
+  const view = buildMandateLandUseView("landmarks-preservation-commission", {
+    obligationsLookup: {
+      by_agency: { "landmarks-preservation-commission": { obligations: [mandate] } },
+    },
+    entityIntelligence: {
+      by_ref: { "agency:id:landmarks-preservation-commission": { domains: { land: { objects: [{
+        project_id: "right",
+        subject_ref: "project:right",
+        link_type: "applicant_agency",
+        provenance: { input_value: "Landmarks Preservation Commission" },
+      }] } } } },
+    },
+    landProjects: { rows: [{
+      project_id: "right",
+      project_name: "Public School Annex (LP-1000)",
+      actions: "HI",
+      primary_applicant: "Landmarks Preservation Commission",
+      current_milestone: "Designation approved",
+    }] },
+    crossSpineGate: {
+      gate: { mandate_land_use: { status: "fail", precision: 0.89, min_precision: 0.9 } },
+    },
+  });
+  assert.equal(view.edges.length, 0);
+  assert.equal(view.shadow_edges.length, 1);
+  assert.deepEqual(view.shadow_edges[0].reason, ["held_out_precision_gate"]);
+  assert.equal(view.publication_gate.passed, false);
 });
