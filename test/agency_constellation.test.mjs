@@ -189,6 +189,9 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /class="ui-official-source-link agency-source-link"/);
   assert.match(html, /Get updates about this agency&#39;s public records/);
   assert.match(html, /Watch mandates and deadlines/);
+  const actionNav = html.match(/<nav class="node-actions civic-object-actions"[\s\S]*?<\/nav>/)?.[0] || "";
+  assert.doesNotMatch(actionNav, /href="#edge-provenance"/);
+  assert.match(html, /class="ui-constellation-link agency-pivot-link" href="#edge-provenance"/);
   assert.match(html, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
   assert.doesNotMatch(html, /civil-service certification|provenance inspector/i);
