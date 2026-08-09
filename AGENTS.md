@@ -496,6 +496,15 @@ phrase awards) and `virtual` (virtual-only meetings with no matter pin). The map
 list renders them as labeled rows at every level; district detail also notes
 citywide items that apply city-scale without counting them into polygons.
 
+**Geography subject graph:** `district_activity.geography_subjects` materializes
+canonical borough / regular community-district / council-district nodes and one
+routed `located_in` candidate per polygon membership. Publisher, structured-bag,
+PIP, and centroid placements are public; weak agency-HQ / vendor fallbacks remain
+`evidence_only`. Citywide, virtual, and unlocated never become polygon subjects.
+Rebuild and verify the reconciled receipt at
+`docs/evidence/geography-subjects/located-in-audit.json` with
+`node tools/build_district_activity.mjs --check`.
+
 **Deploy wiring (load-bearing):** `tools/build_district_activity.mjs` runs inside
 `.github/actions/build-site` before the provider-neutral Pages artifact is assembled, so
 map density never ships stale against locator code. `built_at` advances on every

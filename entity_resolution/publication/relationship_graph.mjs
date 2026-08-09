@@ -8,7 +8,7 @@ import { assertionSnapshot } from "../review/assertion_evidence.mjs";
 import { buildPersonLeaderEntity } from "../leaders/index.mjs";
 import { routeCrossSpineEdges } from "../cross_domain/edge_policy.mjs";
 
-export const PUBLIC_RELATIONSHIP_GRAPH_VERSION = "public_relationship_graph_v2";
+export const PUBLIC_RELATIONSHIP_GRAPH_VERSION = "public_relationship_graph_v3";
 export const PUBLIC_GRAPH_MAX_DEPTH = 2;
 export const PUBLIC_GRAPH_MAX_FAN_OUT = 25;
 export const PUBLIC_GRAPH_DEFAULT_DEPTH = 2;
@@ -27,6 +27,9 @@ export const PUBLIC_GRAPH_NODE_TYPES = Object.freeze([
   "mandate",
   "project",
   "procedure",
+  "borough",
+  "community-district",
+  "council-district",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
@@ -40,6 +43,7 @@ export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
   "agency_led_by",
   "mandate_governs_procedure",
   "project_participates_in_procedure",
+  "located_in",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
@@ -51,6 +55,7 @@ export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
   agency_led_by: "Agency led by",
   mandate_governs_procedure: "Mandate governs procedure",
   project_participates_in_procedure: "Project participates in procedure",
+  located_in: "Located in",
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
