@@ -325,15 +325,17 @@ test("When temporal chips use source dates; undated stays outside dated bands", 
   assert.equal(pastOnly.some((e) => e.primary.request_id === "20251106024"), false);
 });
 
-test("property app renders disposition facet rails as scope-link chips, not buttons", () => {
+test("property app renders disposition facet rails as pressed filter chips", () => {
   assert.match(SITE_SOURCE, /property_disposition_facets\.mjs/);
   assert.match(SITE_SOURCE, /property_disposition_facets_ui\.mjs/);
   assert.match(SITE_SOURCE, /propertyDispositionFacetRailsHTML/);
   assert.match(SITE_SOURCE, /bindPropertyScopeFacetRail/);
-  // Scope-link chip markup (anchors with href) lives in the pure UI helper.
+  // Shareable scope destinations live on the shared filter-chip primitive.
   const ui = readFileSync(join(ROOT, "site/property_disposition_facets_ui.mjs"), "utf8");
-  assert.match(ui, /<a class="chip\$\{on\}" href=/);
-  // Asset type rail may remain buttons; the four disposition rails use scope links.
+  assert.match(ui, /filterChip\(\{/);
+  assert.match(ui, /data-filter-href/);
+  assert.doesNotMatch(ui, /<a class="chip/);
+  // Asset type rail may remain buttons; the four disposition rails use filter chips.
   assert.match(SITE_SOURCE, /salerail/);
   assert.match(SITE_SOURCE, /pricerail/);
   assert.match(SITE_SOURCE, /liferail/);

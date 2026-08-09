@@ -395,6 +395,7 @@ const ruleChipEnv = new Function(
   "function escUiHtml(s){ return String(s==null?'':s); }\n" +
   "function extSR(){ return '[SR]'; }\n" +
   "const EXT_ATTRS='target=\"_blank\" rel=\"noopener noreferrer\"';\n" +
+  "function officialSourceLink({href,label,className='',escape=String}={}){ return '<a class=\"ui-official-source-link'+(className?' '+className:'')+'\" href=\"'+escape(href)+'\" target=\"_blank\" rel=\"noopener noreferrer\">'+escape(label)+'<span aria-hidden=\"true\">↗</span></a>'; }\n" +
   extractFn("daysLeft") +
   extractConst("RULE_STAGE_CFG") +
   extractFn("ruleDisplayStage") + extractFn("ruleDateLabel") + extractFn("ruleStageChip") + extractFn("ruleCommentAction") +
@@ -405,30 +406,30 @@ const nr = (o) => Object.assign({ url: "https://rules.example/rule" }, o);
 
 test("ruleStageChip: comment-open uses the urgency ladder and links the comment page", () => {
   const hot = ruleChipEnv.ruleStageChip({ stage: "comment-open", nyc_rules: nr({ comment_url: "https://rules.example/c", comment_by_date: ruleInDays(2) }) });
-  assert.match(hot, /tag hot/);
+  assert.match(hot, /ui-official-source-link rule-stage-source hot/);
   assert.match(hot, /href="https:\/\/rules\.example\/c"/); // comment page preferred while open
   assert.match(hot, /rule_stage_comment_open/);
-  assert.ok(hot.includes("[SR]")); // accessible new-tab marking
+  assert.match(hot, /target="_blank" rel="noopener noreferrer"/); // official-source new-tab treatment
 
   const soon = ruleChipEnv.ruleStageChip({ stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(10) }) });
-  assert.match(soon, /tag soon/);
+  assert.match(soon, /ui-official-source-link rule-stage-source soon/);
 
   const open = ruleChipEnv.ruleStageChip({ stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(40) }) });
-  assert.match(open, /tag open/);
+  assert.match(open, /ui-official-source-link rule-stage-source open/);
 });
 
 test("ruleStageChip: settled stages read as quiet ink and link the rule record", () => {
   const adopted = ruleChipEnv.ruleStageChip({ stage: "adopted", nyc_rules: nr({ adoption_date: "2026-01-15" }) });
-  assert.match(adopted, /tag asset/);
+  assert.match(adopted, /ui-official-source-link rule-stage-source asset/);
   assert.match(adopted, /href="https:\/\/rules\.example\/rule"/);
   assert.match(adopted, /rule_stage_adopted/);
 
   const effective = ruleChipEnv.ruleStageChip({ stage: "effective", nyc_rules: nr({ adoption_date: "2025-12-01" }) });
-  assert.match(effective, /tag asset/);
+  assert.match(effective, /ui-official-source-link rule-stage-source asset/);
   assert.match(effective, /rule_stage_effective/);
 
   const hearing = ruleChipEnv.ruleStageChip({ stage: "hearing", nyc_rules: nr({ hearing_date: ruleInDays(20) }) });
-  assert.match(hearing, /tag open/); // actionable upcoming event
+  assert.match(hearing, /ui-official-source-link rule-stage-source open/); // actionable upcoming event
   assert.match(hearing, /rule_stage_hearing/);
 });
 
@@ -455,7 +456,7 @@ test("ruleDisplayStage: a comment-open whose deadline passed is corrected to com
   const stale = { stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(-3) }) };
   assert.equal(ruleChipEnv.ruleDisplayStage(stale), "comment-closed");
   const chip = ruleChipEnv.ruleStageChip(stale);
-  assert.match(chip, /tag closed/);
+  assert.match(chip, /ui-official-source-link rule-stage-source closed/);
   assert.match(chip, /rule_stage_comment_closed · /, "closed status carries the known end date as data");
 });
 

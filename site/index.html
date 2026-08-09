@@ -689,8 +689,6 @@
   .lens-more-content .chiprow{margin-top:0}
   .borough-scope-field .field-label{display:block;font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:var(--space-2)}
   .borough-scope-links{display:flex;flex-wrap:wrap;gap:var(--space-1);align-items:center}
-  .borough-scope-links .chip{display:inline-flex;align-items:center;min-height:40px;text-decoration:none;cursor:pointer}
-  .borough-scope-links .chip[aria-current="page"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
   .borough-map-pivot{display:inline-block;margin-top:var(--space-2)}
   .attendance-scope-links,.agency-scope-links{display:flex;flex-wrap:wrap;gap:var(--space-1);align-items:center}
   .attendance-scope-links .chip,.agency-scope-links .chip{display:inline-flex;align-items:center;min-height:40px;text-decoration:none;cursor:pointer}
@@ -1011,9 +1009,6 @@
   .career-facet-field{display:flex;flex-direction:column;gap:6px}
   .career-facet-label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .career-facet-links{display:flex;flex-wrap:wrap;align-content:flex-start;gap:5px;min-height:30px}
-  .career-facet-chip{display:inline-flex;align-items:center;max-width:100%;border:1px solid var(--rule);border-radius:999px;padding:5px 8px;background:var(--card);color:var(--ink-soft);font:650 11px/1.25 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
-  .career-facet-chip:hover,.career-facet-chip:focus-visible,.career-facet-chip.current{border-color:var(--blue);color:var(--blue);background:#eef2ff}
-  .career-facet-unknown{display:inline-flex;align-items:center;max-width:100%;border:1px dashed var(--rule);border-radius:999px;padding:5px 8px;color:var(--muted);font:600 11px/1.25 ui-sans-serif,system-ui,sans-serif}
   .career-source{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:#f6f7f9;border-inline-start:4px solid var(--green);padding:10px 12px;margin:0 0 14px;font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .career-source.stale{border-inline-start-color:var(--rose);background:#eef2ff}
   .career-source details{flex:0 0 auto}
@@ -1045,10 +1040,6 @@
   .career-action-fact b{display:block;font:750 13px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
   .career-action-fact span{display:block;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px}
   .career-diff-leads{display:flex;flex-wrap:wrap;gap:6px;margin:0}
-  .career-diff-chip{display:inline-flex;align-items:center;gap:4px;font:650 12px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--wash,#f6f7f9);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;max-width:100%;text-decoration:none}
-  .career-diff-chip[data-diff="exam_format"]{border-color:var(--blue);color:var(--blue)}
-  .career-diff-chip[data-diff="fee"]{border-color:var(--green);color:var(--green)}
-  .career-diff-chip[data-diff="no_experience_required"],.career-diff-chip[data-diff="experience_required"]{border-color:var(--amber,#8a5a00);color:var(--amber,#8a5a00)}
   .career-diff-quals{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);margin:0}
   .career-diff-quals b{color:var(--ink)}
   .career-card>.note[data-staffing-list-prediction]{margin-top:0}
@@ -1655,23 +1646,23 @@
       <div class="money-facet-rail" role="group" aria-labelledby="money-mode-label">
         <div class="property-rail-label lens-primary-label" id="money-mode-label" data-i18n="show_label">Show</div>
         <nav class="chiprow lens-primary-rail" id="money-mode-rail" aria-labelledby="money-mode-label">
-          <a class="chip" data-money-mode="open" data-scope-edge="money.mode.open" href="/browse/contracts/?mode=open" data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</a>
-          <a class="chip" data-money-mode="allrfp" data-scope-edge="money.mode.allrfp" href="/browse/contracts/?mode=allrfp" data-i18n="mode_allrfp">All RFPs</a>
-          <a class="chip" data-money-mode="award" data-scope-edge="money.mode.award" href="/browse/contracts/?mode=award" data-i18n="mode_award">Recent Awards ($)</a>
+          <button type="button" class="ui-filter-chip" data-money-mode="open" data-scope-edge="money.mode.open" data-filter-href="/browse/contracts/?mode=open" aria-pressed="true"><span data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</span></button>
+          <button type="button" class="ui-filter-chip" data-money-mode="allrfp" data-scope-edge="money.mode.allrfp" data-filter-href="/browse/contracts/?mode=allrfp" aria-pressed="false"><span data-i18n="mode_allrfp">All RFPs</span></button>
+          <button type="button" class="ui-filter-chip" data-money-mode="award" data-scope-edge="money.mode.award" data-filter-href="/browse/contracts/?mode=award" aria-pressed="false"><span data-i18n="mode_award">Recent Awards ($)</span></button>
         </nav>
       </div>
       <div class="money-facet-rail" role="group" aria-labelledby="money-location-label">
         <div class="property-rail-label lens-primary-label" id="money-location-label" data-i18n="money_location_basis_label">Response location basis</div>
         <nav class="chiprow lens-primary-rail" id="money-location-rail" aria-labelledby="money-location-label">
-          <a class="chip" data-money-location-basis="contract_action_address" data-scope-edge="money.location.contract_action_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%7D" data-i18n="money_location_basis_response">Any response address</a>
-          <a class="chip" data-money-location-basis="submission_address" data-scope-edge="money.location.submission_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22submission_address%22%7D" data-i18n="money_location_basis_submission">Located by submission address</a>
-          <a class="chip" data-money-location-basis="pre_bid_venue" data-scope-edge="money.location.pre_bid_venue" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22pre_bid_venue%22%7D" data-i18n="money_location_basis_prebid">Located by pre-bid venue</a>
-          <a class="chip" data-money-location-basis="document_pickup" data-scope-edge="money.location.document_pickup" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22document_pickup%22%7D" data-i18n="money_location_basis_pickup">Located by document-pickup address</a>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="contract_action_address" data-scope-edge="money.location.contract_action_address" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%7D" aria-pressed="true"><span data-i18n="money_location_basis_response">Any response address</span></button>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="submission_address" data-scope-edge="money.location.submission_address" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22submission_address%22%7D" aria-pressed="false"><span data-i18n="money_location_basis_submission">Located by submission address</span></button>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="pre_bid_venue" data-scope-edge="money.location.pre_bid_venue" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22pre_bid_venue%22%7D" aria-pressed="false"><span data-i18n="money_location_basis_prebid">Located by pre-bid venue</span></button>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="document_pickup" data-scope-edge="money.location.document_pickup" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22document_pickup%22%7D" aria-pressed="false"><span data-i18n="money_location_basis_pickup">Located by document-pickup address</span></button>
         </nav>
       </div>
       <div class="money-facet-rail" id="moneyquick" role="group" aria-label="Contract timing">
         <nav class="chiprow lens-primary-rail" id="money-temporal-rail" aria-label="Contract timing">
-          <a class="chip" id="closingweek" data-money-temporal="closing_week" data-scope-edge="money.time.closing_week" href="#money?closing=week" data-i18n="closing_this_week">Closing this week</a>
+          <button type="button" class="ui-filter-chip" id="closingweek" data-money-temporal="closing_week" data-scope-edge="money.time.closing_week" data-filter-href="#money?closing=week" aria-pressed="false" data-i18n="closing_this_week">Closing this week</button>
         </nav>
       </div>
     </div>
@@ -1915,7 +1906,7 @@
               </div>
               <div class="field" id="lhearingmode-field" hidden>
                 <span class="field-label" data-i18n="land_hearings_mode_label">Attendance</span>
-                <div id="land-attendance-rail"><a class="act mini" href="#land?status=hearings" data-scope-edge="land.attendance.all" data-i18n="land_hearings_mode_all">Any mode</a></div>
+                <div id="land-attendance-rail"><button type="button" class="ui-filter-chip" aria-pressed="true" data-scope-edge="land.attendance.all" data-filter-href="#land?status=hearings" data-i18n="land_hearings_mode_all">Any mode</button></div>
                 <div id="land-temporal-rail"></div>
               </div>
               <div class="field land-control-button"><button type="button" id="landlocation" data-i18n="use_my_location">Use my location</button></div>
@@ -2061,7 +2052,7 @@
       <p class="rules-action-band-note muted" data-i18n="rules_action_band_rail_label">What you can do now</p>
     </div>
     <div class="controls">
-      <div class="field agency-scope-field"><span class="field-label" id="rules-agency-label" data-i18n="agency_label">Agency</span><div id="rules-agency-rail"><a class="act mini" href="#rules" data-scope-edge="rules.agency.all" data-i18n="all_agencies">All agencies</a></div></div>
+      <div class="field agency-scope-field"><span class="field-label" id="rules-agency-label" data-i18n="agency_label">Agency</span><div id="rules-agency-rail"><button type="button" class="ui-filter-chip" aria-pressed="true" data-scope-edge="rules.agency.all" data-filter-href="#rules" data-i18n="all_agencies">All agencies</button></div></div>
       <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="rules-borough-rail"></div></div>
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>

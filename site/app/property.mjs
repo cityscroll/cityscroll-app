@@ -15,6 +15,7 @@ import {
 } from "../property_disposition_facets.mjs";
 import { bindPropertyScopeFacetRail, propertyDispositionFacetRailsHTML } from "../property_disposition_facets_ui.mjs";
 import { boroughScopeLinksHTML } from "../borough_scope_links.mjs";
+import { installFilterChipNavigation } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { propertyScopeView } from "../property_scope_fallback.mjs";
 
@@ -1012,7 +1013,7 @@ function updatePropertyMoreFiltersState(){
 }
 const normalizePropSaleMethod=normalizeSaleMethodKey;
 const normalizePropPriceBand=normalizePriceBandKey;
-function renderPropertyBoroughScopeLinks(){const host=$("#property-borough-rail");if(host)host.innerHTML=boroughScopeLinksHTML({selected:propertyBorough,t});}
+function renderPropertyBoroughScopeLinks(){const host=$("#property-borough-rail");if(host){host.innerHTML=boroughScopeLinksHTML({selected:propertyBorough,t});installFilterChipNavigation(host);}}
 function normalizePropSort(raw){
   const key=String(raw||"").trim().toLowerCase().replace(/-/g,"_");
   return ["closing_soon","newest","price_desc","price_asc"].includes(key)?key:"closing_soon";

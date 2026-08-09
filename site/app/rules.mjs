@@ -1,5 +1,6 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
+import { installFilterChipNavigation } from "../affordance_grammar.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
@@ -169,6 +170,7 @@ function renderRulesBoroughScopeLinks(){
     t,
     escape:escUiHtml,
   });
+  installFilterChipNavigation(host);
 }
 function renderRulesAgencyScopeLinks(){
   const host=$("#rules-agency-rail");
@@ -328,7 +330,7 @@ function ruleStageChip(rec){
   // Official page: comment page while comments are open, the rule/adoption record otherwise.
   const href=nr?(stage==="comment-open"?(nr.comment_url||nr.url||null):(nr.url||null)):null;
   return href
-    ? `<a class="tag ${cls}" href="${escUiHtml(href)}" ${EXT_ATTRS}>${label}${extSR()}</a>`
+    ? officialSourceLink({ href, label, className: `rule-stage-source ${cls}`, escape: escUiHtml })
     : `<span class="tag ${cls}">${label}</span>`;
 }
 // Comment CTA exists only during a published open window.

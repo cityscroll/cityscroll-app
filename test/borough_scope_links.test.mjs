@@ -42,7 +42,7 @@ test("borough map pivots carry the same Zoning scope into Near you", () => {
   );
 });
 
-test("rails expose native links with a named group and one current state", () => {
+test("rails expose pressed filter chips with a named group and one current state", () => {
   const html = boroughScopeLinksHTML({
     surface: "property",
     selected: "Brooklyn",
@@ -50,12 +50,12 @@ test("rails expose native links with a named group and one current state", () =>
   });
   assert.match(html, /data-borough-scope="property"/);
   assert.match(html, /role="group"/);
-  assert.match(html, /data-borough-scope-link="Brooklyn"[^>]*aria-current="page"/);
+  assert.match(html, /aria-pressed="true"[^>]*data-borough-scope-link="Brooklyn"/);
   assert.match(html, /data-borough-scope-link="Brooklyn"[^>]*data-scope-edge="property\.borough\.Brooklyn"/);
   assert.match(html, /data-borough-map-pivot="property"/);
   assert.match(html, /data-borough-map-pivot="property"[^>]*data-scope-edge="property\.map\.borough\.Brooklyn"/);
   assert.equal((html.match(/data-borough-scope-link=/g) || []).length, BOROUGHS.length + 1);
-  assert.doesNotMatch(html, /<button|<select/);
+  assert.doesNotMatch(html, /<select/);
 });
 
 test("the four in-scope surfaces retire their borough selects", () => {
