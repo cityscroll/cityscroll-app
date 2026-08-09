@@ -198,6 +198,7 @@ function serializeState(){
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
     if($("#lstatus").value !== "all") q.set("status", $("#lstatus").value);
     if($("#lstatus").value==="hearings" && landAttendance) q.set("attendance", landAttendance);
+    if($("#lstatus").value==="hearings" && landClosingWeek) q.set("closing", "week");
   } else if(SECTIONS[tab]){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
@@ -1012,6 +1013,7 @@ function applyHash(){
       $("#lstatus").value = landStatus==="all"||landStatus==="hearings"||/^(?:project|public):.+$/.test(landStatus||"") ? landStatus : "active";
       const att=q.get("attendance");
       landAttendance=landStatus==="hearings" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
+      landClosingWeek=landStatus==="hearings" && q.get("closing")==="week";
       let scopedProjectId="";
       try{
         const facet=JSON.parse(q.get("facet")||"{}");

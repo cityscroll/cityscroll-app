@@ -1,6 +1,7 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
-import { attendanceScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
+import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
+import { installFilterChipNavigation } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 
 /* ===================== LAND ===================== */
@@ -12,6 +13,7 @@ let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=
 let landResolvedArea=null;
 let landBorough="";
 let landAttendance="";
+let landClosingWeek=false;
 let landCommunityDistrict="";
 let landCouncilDistrict="";
 const mihOn = v => v===true || v==="true";
@@ -99,6 +101,12 @@ function renderLandAttendanceScopeLinks(){
     t,
     escape:escUiHtml,
   });
+  installFilterChipNavigation(host);
+  const temporalHost=$("#land-temporal-rail");
+  if(temporalHost){
+    temporalHost.innerHTML=landTemporalScopeLinksHTML({active:landClosingWeek,currentHash:location.hash,t,escape:escUiHtml});
+    installFilterChipNavigation(temporalHost);
+  }
 }
 function renderLandBoroughScopeLinks(){
   const host=$("#land-borough-rail");
@@ -142,6 +150,7 @@ async function syncLandLensControls(){
     !!landBorough,
     status!=="all",
     status==="hearings"&&!!landAttendance,
+    status==="hearings"&&landClosingWeek,
     !!landResolvedArea,
   ].filter(Boolean).length;
   const badge=$("#land-filter-badge");
@@ -167,12 +176,13 @@ function setLandResultCount(count){
 function landHasAppliedFilters(){
   return !!($("#lkw")?.value.trim() || landBorough || landCommunityDistrict
     || landCouncilDistrict || landResolvedArea || $("#lstatus")?.value!=="all"
-    || landAttendance);
+    || landAttendance || landClosingWeek);
 }
 function resetLandFilters(){
   landResolvedArea=null;
   landBorough="";
   landAttendance="";
+  landClosingWeek=false;
   landCommunityDistrict="";
   landCouncilDistrict="";
   $("#lkw").value="";
@@ -192,8 +202,10 @@ function landEmptyStateHTML(kind="projects"){
 function wireLandEmptyState(){
   $("#llist")?.querySelector("[data-land-widen]")?.addEventListener("click",resetLandFilters);
 }
-function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
+function filterLandHearingRows(rows, {boro, mode, kw, today, closingWeek=false}={}){
   const day=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
+  const weekEnd=new Date(`${day}T00:00:00Z`); weekEnd.setUTCDate(weekEnd.getUTCDate()+7);
+  const through=weekEnd.toISOString().slice(0,10);
   const b=(boro||"").toLowerCase();
   const m=mode||"";
   const q=(kw||"").toLowerCase();
@@ -201,6 +213,7 @@ function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
     if(!row) return false;
     const when=String(row.hearing_date||row.hearing_at||"").slice(0,10);
     if(!when||when<day) return false;
+    if(closingWeek && when>through) return false;
     if(b && String(row.borough||"").toLowerCase()!==b) return false;
     const modes=Array.isArray(row.attendance_modes)?row.attendance_modes:[];
     if(m==="in_person" && !modes.includes("in_person") && !row.venue_address) return false;
@@ -255,7 +268,7 @@ async function landSearchHearings(stale){
     const snap=await loadLandUpcomingHearings();
     if(stale()) return;
     const all=snap&&Array.isArray(snap.hearings)?snap.hearings:[];
-    const rows=filterLandHearingRows(all,{boro, mode, kw, today:todayISO()});
+    const rows=filterLandHearingRows(all,{boro, mode, closingWeek:landClosingWeek, today:todayISO()});
     lRows=rows.map(r=>({
       // Keep enough project shape so landSelect can open a detail route.
       project_id:r.project_id,
@@ -575,6 +588,7 @@ async function showLandEntry(id){
   showTab("land");
   landBorough="";
   landAttendance="";
+  landClosingWeek=false;
   $("#lkw").value="";
   // A project deep link is still part of the default review view; retain the
   // lens default so the surrounding route state remains stable while detail loads.
@@ -1499,6 +1513,7 @@ Object.defineProperty(globalThis, "landAutoLocationChecked", { configurable: tru
 Object.defineProperty(globalThis, "landBanner", { configurable: true, get: () => landBanner, set: value => { landBanner = value; } });
 Object.defineProperty(globalThis, "landBorough", { configurable: true, get: () => landBorough, set: value => { landBorough = normalizeBoroughScope(value); } });
 Object.defineProperty(globalThis, "landAttendance", { configurable: true, get: () => landAttendance, set: value => { landAttendance = normalizeAttendanceScope(value); } });
+Object.defineProperty(globalThis, "landClosingWeek", { configurable: true, get: () => landClosingWeek, set: value => { landClosingWeek = value === true; } });
 Object.defineProperty(globalThis, "landCommunityDistrict", { configurable: true, get: () => landCommunityDistrict, set: value => { landCommunityDistrict = value; } });
 Object.defineProperty(globalThis, "landCouncilDistrict", { configurable: true, get: () => landCouncilDistrict, set: value => { landCouncilDistrict = value; } });
 Object.defineProperty(globalThis, "landDefaultSnapshotPromise", { configurable: true, get: () => landDefaultSnapshotPromise, set: value => { landDefaultSnapshotPromise = value; } });
