@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { agencyScopeHref, agencyScopeLinksHTML } from "../site/agency_scope_links.mjs";
-import { attendanceScopeHref, attendanceScopeLinksHTML } from "../site/attendance_scope_links.mjs";
+import { attendanceScopeHref, attendanceScopeLinksHTML, landClosingWeekHash, landTemporalScopeLinksHTML } from "../site/attendance_scope_links.mjs";
 import { scopeFromRouteHash } from "../site/scope_v0.mjs";
 
 const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
@@ -22,9 +22,21 @@ test("Zoning Attendance replaces the select with typed links and preserves the s
 
   const html = attendanceScopeLinksHTML({ selected: "hybrid", currentHash: current });
   assert.match(html, /data-attendance-scope-link="hybrid"[^>]*data-scope-edge="land\.attendance\.hybrid"[^>]*aria-current="page"/);
-  assert.doesNotMatch(html, /<select|<button/);
+  assert.doesNotMatch(html, /<select/);
+  assert.match(html, /<button[^>]+data-filter-href/);
   assert.doesNotMatch(index, /id="lhearingmode"/);
   assert.match(index, /id="land-attendance-rail"/);
+});
+
+test("Zoning closing-week is a temporal scope chip and round-trips with attendance", () => {
+  const current = "#land?boro=Queens&status=hearings&attendance=hybrid";
+  const href = landClosingWeekHash(current);
+  const scope = scopeFromRouteHash(href);
+  assert.equal(scope.time_window.preset, "closing:week");
+  assert.equal(scope.facets.values.attendance, "hybrid");
+  assert.match(landTemporalScopeLinksHTML({ active: true, currentHash: href }), /data-scope-edge="land\.time\.closing_week"/);
+  assert.match(landTemporalScopeLinksHTML({ active: true, currentHash: href }), /data-filter-href="#land\?boro=Queens&amp;status=hearings/);
+  assert.equal(scopeFromRouteHash(landClosingWeekHash(href, false)).time_window.preset, null);
 });
 
 test("Rules Agency uses a canonical typed edge while preserving other Rules facets", () => {
