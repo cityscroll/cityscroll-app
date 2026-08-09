@@ -61,6 +61,20 @@ test("notice chrome and demo contract expose the Cannonsville attachment chip", 
   assert.match(demoHarness, /CROL_DEMO_LINK_IDS/);
 });
 
+test("historical attachment-only notices carry extracted text in the committed lookup", () => {
+  for (const [requestId, documentId, text] of [
+    ["20180705102", "3423", /FY19 REGULATORY AGENDA/],
+    ["20241001008", "38632", /REQUEST FOR COMMENT/],
+  ]) {
+    const attachment = staticLookup.notices[requestId]?.find((item) => item.document_id === documentId);
+    assert.ok(attachment, `${requestId} attachment is materialized`);
+    assert.equal(attachment.text_status, "ok");
+    assert.match(attachment.extracted_text, text);
+  }
+  assert.match(SITE_SOURCE, /function noticeAttachmentFallbacks/);
+  assert.match(SITE_SOURCE, /document_links/);
+});
+
 test("source registry records the measured modern export break", () => {
   const cityRecord = sources.contracts.find((source) => source.id === "city-record");
   assert.equal(cityRecord.attachment_metadata.portal_min_delay_seconds, 1.2);

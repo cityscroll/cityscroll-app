@@ -32,7 +32,11 @@ test("FW-04 publishes new source-backed metadata through identical lookup twins"
   assert.ok(site.notices["20260729027"], "live pass notice reaches the reader lookup");
   const liveRows = Object.values(site.notices).flat()
     .filter((row) => row.request_id !== "20240515016");
-  assert.equal(liveRows.length, 6);
+  assert.equal(liveRows.length, 8);
   assert.ok(liveRows.every((row) => row.source === "portal" && row.url));
-  assert.ok(liveRows.every((row) => !row.extracted_text && !row.extracted_tables));
+  const historicalBackfill = liveRows.filter((row) => ["20180705102", "20241001008"].includes(row.request_id));
+  assert.equal(historicalBackfill.length, 2);
+  assert.ok(historicalBackfill.every((row) => row.text_status === "ok" && row.extracted_text));
+  const modernMetadataOnly = liveRows.filter((row) => !historicalBackfill.includes(row));
+  assert.ok(modernMetadataOnly.every((row) => !row.extracted_text && !row.extracted_tables));
 });

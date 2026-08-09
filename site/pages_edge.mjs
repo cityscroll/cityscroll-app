@@ -21,6 +21,20 @@ function esc(value) {
     .replaceAll('"', "&quot;");
 }
 
+function firstNoticeAttachmentUrl(row) {
+  const value = row?.document_links;
+  const candidate = Array.isArray(value) ? value[0] : value && typeof value === "object" ? (value.url || value.href || value.link) : value;
+  if (!candidate) return null;
+  try {
+    const url = new URL(String(candidate).replaceAll("&amp;", "&"));
+    const documentId = url.searchParams.get("documentId") || url.searchParams.get("DocumentID") || url.searchParams.get("documentid");
+    if (url.protocol !== "https:" || url.hostname !== "a856-cityrecord.nyc.gov" || !/^\/Search\/GetFile$/i.test(url.pathname) || !documentId) return null;
+    return url.href;
+  } catch (_error) {
+    return null;
+  }
+}
+
 function safeId(pathname) {
   const match = pathname.match(/^\/notices\/([A-Za-z0-9_-]{1,80})\/?$/);
   return match ? match[1] : null;
@@ -140,6 +154,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
       className: "notice-agency-link",
     })
     : esc(agency);
+  const attachmentUrl = !row.additional_description_1 ? firstNoticeAttachmentUrl(row) : null;
   const facts = [
     ["Published", row.start_date], ["Event", row.event_date],
     ["Responses due", row.due_date], ["PIN", row.pin], ["Category", row.category_description],
@@ -151,6 +166,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null) {
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
       <div class="actions">${browseLink}${followingLink}</div>
