@@ -65,7 +65,7 @@ AGENCY_ID = "agency:name:department%20of%20design%20and%20construction"
 CONTRACT_ID = "contract:name:ct-850-1"
 
 GRAPH = {
-    "version": "public_relationship_graph_v2",
+    "version": "public_relationship_graph_v3",
     "root": {"id": ROOT_ID, "type": "vendor", "name": "Acme Construction LLC"},
     "bounds": {
         "requested_depth": 2,

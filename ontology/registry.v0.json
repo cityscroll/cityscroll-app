@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "generated_note": "Catalog only \u2014 no production writer or public route. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
@@ -258,6 +258,51 @@
       "backing": [
         "public_graph.node",
         "subject_registry"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "borough",
+      "status": "registered",
+      "layer": "spine",
+      "primary_key_pattern": "borough:{canonical_slug}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [
+        "public_graph.node",
+        "subject_registry",
+        "district_activity"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "community-district",
+      "status": "registered",
+      "layer": "spine",
+      "primary_key_pattern": "community-district:{normalized_id}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [
+        "public_graph.node",
+        "subject_registry",
+        "district_activity"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "council-district",
+      "status": "registered",
+      "layer": "spine",
+      "primary_key_pattern": "council-district:{1..51}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [
+        "public_graph.node",
+        "subject_registry",
+        "district_activity"
       ],
       "properties_ref": []
     },
@@ -546,6 +591,18 @@
         "subject_registry"
       ],
       "label": "Project participates in procedure"
+    },
+    {
+      "id": "located_in",
+      "status": "registered",
+      "from": "notice|project",
+      "to": "borough|community-district|council-district",
+      "backing": [
+        "public_graph.edge",
+        "subject_registry",
+        "district_activity"
+      ],
+      "label": "Located in"
     },
     {
       "id": "about_project",

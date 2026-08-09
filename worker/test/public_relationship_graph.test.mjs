@@ -151,7 +151,7 @@ test("public graph returns only typed, evidence-bearing procurement relationship
     assert.equal(graph.version, PUBLIC_RELATIONSHIP_GRAPH_VERSION);
     assert.deepEqual(PUBLIC_GRAPH_NODE_TYPES, [
       "vendor", "agency", "solicitation", "contract", "award", "official", "person-leader",
-      "mandate", "project", "procedure",
+      "mandate", "project", "procedure", "borough", "community-district", "council-district",
     ]);
     assert.deepEqual(PUBLIC_GRAPH_EDGE_TYPES, [
       "named_vendor_on_award",
@@ -162,6 +162,7 @@ test("public graph returns only typed, evidence-bearing procurement relationship
       "agency_led_by",
       "mandate_governs_procedure",
       "project_participates_in_procedure",
+      "located_in",
     ]);
     assert.equal(graph.root.id, ENTITY_ID);
     // Procurement fixture graph does not emit official nodes; allowlist still includes them.
