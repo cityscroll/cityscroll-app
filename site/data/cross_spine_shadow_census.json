@@ -1,0 +1,2083 @@
+{
+  "schema": "cityscroll.cross_spine_shadow_census.v1",
+  "census_version": "cross_spine_shadow_census_v1",
+  "input_ids": {
+    "obligations": "cityscroll.agency_obligations.v1",
+    "intelligence": 1,
+    "meetings": 1,
+    "rules": 1,
+    "processConformance": "cityscroll.process_conformance.v1",
+    "land": 1,
+    "gate": "cityscroll.cross_spine_edge_eval.v1"
+  },
+  "agencies": 49,
+  "relations": {
+    "mandate_meeting": {
+      "totals": {
+        "public_inferred": 0,
+        "evidence_only": 52
+      },
+      "denominators": {
+        "eligible_left_rows": 15,
+        "source_rows": 5831,
+        "pre_route_pairs": 1785
+      },
+      "by_tier": {
+        "evidence_only": 52
+      },
+      "by_reason": {
+        "matter_body_subject": 52,
+        "temporal": 52
+      },
+      "by_agency": {
+        "administration-for-childrens-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "aging": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-correction": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-elections": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "buildings": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "business-integrity-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "campaign-finance-board": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-clerk": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-council": {
+          "denominators": {
+            "eligible_left_rows": 4,
+            "source_rows": 119,
+            "pre_route_pairs": 476
+          },
+          "public_inferred": 0,
+          "evidence_only": 24,
+          "reason_counts": {
+            "matter_body_subject": 24,
+            "temporal": 24
+          }
+        },
+        "city-planning": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "citywide-administrative-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "civilian-complaint-review-board": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-human-rights": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-racial-equity": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "comptroller": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 1,
+          "reason_counts": {
+            "matter_body_subject": 1,
+            "temporal": 1
+          }
+        },
+        "consumer-and-worker-protection": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "correction": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "criminal-justice-coordinator": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "cultural-affairs": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "education": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "emergency-management": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "environmental-protection": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "finance": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "fire-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "health-and-mental-hygiene": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 119,
+            "pre_route_pairs": 238
+          },
+          "public_inferred": 0,
+          "evidence_only": 4,
+          "reason_counts": {
+            "matter_body_subject": 4,
+            "temporal": 4
+          }
+        },
+        "homeless-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "housing-preservation-and-development": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "human-resources-administration": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "independent-budget-office": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "information-technology-and-telecommunications": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "investigation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "landmarks-preservation-commission": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 119,
+            "pre_route_pairs": 238
+          },
+          "public_inferred": 0,
+          "evidence_only": 14,
+          "reason_counts": {
+            "matter_body_subject": 14,
+            "temporal": 14
+          }
+        },
+        "law-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "management-and-budget": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "mayors-office-of-contract-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "nyc-department-of-veterans-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-collective-bargaining": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-the-mayor": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "parks-and-recreation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "police-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "probation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "public-advocate": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "records-and-information-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "sanitation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "small-business-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "tax-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "taxi-and-limousine-commission": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 1,
+          "reason_counts": {
+            "matter_body_subject": 1,
+            "temporal": 1
+          }
+        },
+        "transportation": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 119,
+            "pre_route_pairs": 119
+          },
+          "public_inferred": 0,
+          "evidence_only": 8,
+          "reason_counts": {
+            "matter_body_subject": 8,
+            "temporal": 8
+          }
+        },
+        "youth-and-community-development": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 119,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        }
+      },
+      "by_source_system": {
+        "city_record": 52
+      }
+    },
+    "mandate_land_use": {
+      "totals": {
+        "public_inferred": 0,
+        "evidence_only": 9
+      },
+      "denominators": {
+        "eligible_left_rows": 3,
+        "source_rows": 11319,
+        "pre_route_pairs": 693
+      },
+      "by_tier": {
+        "evidence_only": 9
+      },
+      "by_reason": {
+        "mandate_phase_compatible": 9,
+        "project_identity": 9
+      },
+      "by_agency": {
+        "administration-for-childrens-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "aging": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-correction": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-elections": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "buildings": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "business-integrity-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "campaign-finance-board": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-clerk": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-council": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-planning": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "citywide-administrative-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "civilian-complaint-review-board": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-human-rights": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-racial-equity": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "comptroller": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "consumer-and-worker-protection": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "correction": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "criminal-justice-coordinator": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "cultural-affairs": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "education": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "emergency-management": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "environmental-protection": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "finance": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "fire-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "health-and-mental-hygiene": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "homeless-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "housing-preservation-and-development": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "human-resources-administration": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "independent-budget-office": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "information-technology-and-telecommunications": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "investigation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "landmarks-preservation-commission": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 231,
+            "pre_route_pairs": 693
+          },
+          "public_inferred": 0,
+          "evidence_only": 9,
+          "reason_counts": {
+            "project_identity": 9,
+            "mandate_phase_compatible": 9
+          }
+        },
+        "law-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "management-and-budget": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "mayors-office-of-contract-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "nyc-department-of-veterans-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-collective-bargaining": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-the-mayor": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "parks-and-recreation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "police-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "probation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "public-advocate": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "records-and-information-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "sanitation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "small-business-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "tax-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "taxi-and-limousine-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "transportation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "youth-and-community-development": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 231,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        }
+      },
+      "by_source_system": {
+        "warehouse": 9
+      }
+    },
+    "mandate_contract": {
+      "totals": {
+        "public_inferred": 1,
+        "evidence_only": 0
+      },
+      "denominators": {
+        "eligible_left_rows": 11,
+        "source_rows": 139,
+        "pre_route_pairs": 45
+      },
+      "by_tier": {
+        "public_inferred": 1
+      },
+      "by_reason": {
+        "held_out_precision_gate_passed": 1
+      },
+      "by_agency": {
+        "administration-for-childrens-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "aging": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-correction": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-elections": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "buildings": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "business-integrity-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "campaign-finance-board": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-clerk": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-council": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-planning": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 4,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "citywide-administrative-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "civilian-complaint-review-board": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-human-rights": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-racial-equity": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "comptroller": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "consumer-and-worker-protection": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "correction": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "criminal-justice-coordinator": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "cultural-affairs": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 2,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "education": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "emergency-management": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "environmental-protection": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 6,
+            "pre_route_pairs": 12
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "finance": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 1,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "fire-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "health-and-mental-hygiene": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "homeless-services": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 6,
+            "pre_route_pairs": 6
+          },
+          "public_inferred": 1,
+          "evidence_only": 0,
+          "reason_counts": {
+            "held_out_precision_gate_passed": 1
+          }
+        },
+        "housing-preservation-and-development": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 6,
+            "pre_route_pairs": 6
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "human-resources-administration": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "independent-budget-office": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "information-technology-and-telecommunications": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 6,
+            "pre_route_pairs": 6
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "investigation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "landmarks-preservation-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "law-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 4,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "management-and-budget": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "mayors-office-of-contract-services": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 1,
+            "pre_route_pairs": 3
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "nyc-department-of-veterans-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-collective-bargaining": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-the-mayor": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "parks-and-recreation": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 6,
+            "pre_route_pairs": 6
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "police-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "probation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "public-advocate": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "records-and-information-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "sanitation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "small-business-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "tax-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 0,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "taxi-and-limousine-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 1,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "transportation": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 6,
+            "pre_route_pairs": 6
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "youth-and-community-development": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 6,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        }
+      },
+      "by_source_system": {
+        "city_record": 1
+      }
+    },
+    "mandate_rule": {
+      "totals": {
+        "public_inferred": 0,
+        "evidence_only": 0
+      },
+      "denominators": {
+        "eligible_left_rows": 245,
+        "source_rows": 4900,
+        "pre_route_pairs": 24500
+      },
+      "by_tier": {},
+      "by_reason": {},
+      "by_agency": {
+        "administration-for-childrens-services": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 100,
+            "pre_route_pairs": 100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "aging": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-correction": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 100,
+            "pre_route_pairs": 200
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "board-of-elections": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 100,
+            "pre_route_pairs": 300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "buildings": {
+          "denominators": {
+            "eligible_left_rows": 47,
+            "source_rows": 100,
+            "pre_route_pairs": 4700
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "business-integrity-commission": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 100,
+            "pre_route_pairs": 300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "campaign-finance-board": {
+          "denominators": {
+            "eligible_left_rows": 6,
+            "source_rows": 100,
+            "pre_route_pairs": 600
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-clerk": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-council": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "city-planning": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "citywide-administrative-services": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 100,
+            "pre_route_pairs": 300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "civilian-complaint-review-board": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 100,
+            "pre_route_pairs": 100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-human-rights": {
+          "denominators": {
+            "eligible_left_rows": 5,
+            "source_rows": 100,
+            "pre_route_pairs": 500
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "commission-on-racial-equity": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 100,
+            "pre_route_pairs": 100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "comptroller": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "consumer-and-worker-protection": {
+          "denominators": {
+            "eligible_left_rows": 26,
+            "source_rows": 100,
+            "pre_route_pairs": 2600
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "correction": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 100,
+            "pre_route_pairs": 200
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "criminal-justice-coordinator": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "cultural-affairs": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "education": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "emergency-management": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 100,
+            "pre_route_pairs": 100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "environmental-protection": {
+          "denominators": {
+            "eligible_left_rows": 27,
+            "source_rows": 100,
+            "pre_route_pairs": 2700
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "finance": {
+          "denominators": {
+            "eligible_left_rows": 7,
+            "source_rows": 100,
+            "pre_route_pairs": 700
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "fire-department": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 100,
+            "pre_route_pairs": 100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "health-and-mental-hygiene": {
+          "denominators": {
+            "eligible_left_rows": 31,
+            "source_rows": 100,
+            "pre_route_pairs": 3100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "homeless-services": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 100,
+            "pre_route_pairs": 300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "housing-preservation-and-development": {
+          "denominators": {
+            "eligible_left_rows": 24,
+            "source_rows": 100,
+            "pre_route_pairs": 2400
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "human-resources-administration": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 100,
+            "pre_route_pairs": 200
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "independent-budget-office": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "information-technology-and-telecommunications": {
+          "denominators": {
+            "eligible_left_rows": 1,
+            "source_rows": 100,
+            "pre_route_pairs": 100
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "investigation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "landmarks-preservation-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "law-department": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "management-and-budget": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "mayors-office-of-contract-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "nyc-department-of-veterans-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-collective-bargaining": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "office-of-the-mayor": {
+          "denominators": {
+            "eligible_left_rows": 3,
+            "source_rows": 100,
+            "pre_route_pairs": 300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "parks-and-recreation": {
+          "denominators": {
+            "eligible_left_rows": 4,
+            "source_rows": 100,
+            "pre_route_pairs": 400
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "police-department": {
+          "denominators": {
+            "eligible_left_rows": 2,
+            "source_rows": 100,
+            "pre_route_pairs": 200
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "probation": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "public-advocate": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "records-and-information-services": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "sanitation": {
+          "denominators": {
+            "eligible_left_rows": 8,
+            "source_rows": 100,
+            "pre_route_pairs": 800
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "small-business-services": {
+          "denominators": {
+            "eligible_left_rows": 5,
+            "source_rows": 100,
+            "pre_route_pairs": 500
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "tax-commission": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "taxi-and-limousine-commission": {
+          "denominators": {
+            "eligible_left_rows": 13,
+            "source_rows": 100,
+            "pre_route_pairs": 1300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "transportation": {
+          "denominators": {
+            "eligible_left_rows": 13,
+            "source_rows": 100,
+            "pre_route_pairs": 1300
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        },
+        "youth-and-community-development": {
+          "denominators": {
+            "eligible_left_rows": 0,
+            "source_rows": 100,
+            "pre_route_pairs": 0
+          },
+          "public_inferred": 0,
+          "evidence_only": 0,
+          "reason_counts": {}
+        }
+      },
+      "by_source_system": {}
+    }
+  }
+}
