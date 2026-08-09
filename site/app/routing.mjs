@@ -712,7 +712,10 @@ function taskCanIBidCardHTML(presentation, focused){
     : "";
   const itemHref = presentation.id ? TaskFirst.taskItemHash("can-i-bid", presentation.id) : "#task/can-i-bid";
   const noticeHref = presentation.notice_hash || "#money";
-  const sourceHref = (presentation.source && presentation.source.url) || (f.request_id ? REQ_URL(f.request_id) : "#money");
+  const sourceHref = (presentation.source && presentation.source.url) || (f.request_id ? REQ_URL(f.request_id) : null);
+  const sourceLink = sourceHref
+    ? officialSourceLink({ href:sourceHref, label:t("city_record_link"), className:"task-city-record-source", escape:taskEsc })
+    : "";
   return `<article class="task-card${focused?" route-item":""}"${focused?' tabindex="-1"':""} data-task-id="${taskEsc(presentation.id||"")}">
     <p class="task-card-answer">${taskEsc(taskBidAnswerHTML(presentation))}</p>
     <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(noticeDisplayTitle({short_title:f.title,request_id:f.request_id}))}</h3>
@@ -723,7 +726,7 @@ function taskCanIBidCardHTML(presentation, focused){
     <div class="task-card-actions actions">
       ${focused?"":`<a class="act" href="${taskEsc(itemHref)}">${t("task_open_example")}</a>`}
       <a class="act primary" href="${taskEsc(noticeHref)}">${t("task_open_notice_lens")}</a>
-      <a class="act" href="${taskEsc(sourceHref)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
+      ${sourceLink}
     </div>
   </article>`;
 }

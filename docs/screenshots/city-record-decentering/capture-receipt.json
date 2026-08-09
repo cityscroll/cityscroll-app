@@ -1,0 +1,174 @@
+{
+  "viewports": [
+    [
+      390,
+      900
+    ],
+    [
+      1440,
+      1100
+    ]
+  ],
+  "captures": [
+    {
+      "phase": "before",
+      "surface": "rules-card",
+      "viewport": [
+        390,
+        900
+      ],
+      "file": "docs/screenshots/city-record-decentering/before-rules-card-390.png",
+      "inner_width": 390,
+      "document_scroll_width": 390,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "before",
+      "surface": "property-card",
+      "viewport": [
+        390,
+        900
+      ],
+      "file": "docs/screenshots/city-record-decentering/before-property-card-390.png",
+      "inner_width": 390,
+      "document_scroll_width": 390,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "before",
+      "surface": "meetings-card",
+      "viewport": [
+        390,
+        900
+      ],
+      "file": "docs/screenshots/city-record-decentering/before-meetings-card-390.png",
+      "inner_width": 390,
+      "document_scroll_width": 390,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "before",
+      "surface": "rules-card",
+      "viewport": [
+        1440,
+        1100
+      ],
+      "file": "docs/screenshots/city-record-decentering/before-rules-card-1440.png",
+      "inner_width": 1440,
+      "document_scroll_width": 1440,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "before",
+      "surface": "property-card",
+      "viewport": [
+        1440,
+        1100
+      ],
+      "file": "docs/screenshots/city-record-decentering/before-property-card-1440.png",
+      "inner_width": 1440,
+      "document_scroll_width": 1440,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "before",
+      "surface": "meetings-card",
+      "viewport": [
+        1440,
+        1100
+      ],
+      "file": "docs/screenshots/city-record-decentering/before-meetings-card-1440.png",
+      "inner_width": 1440,
+      "document_scroll_width": 1440,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "after",
+      "surface": "rules-card",
+      "viewport": [
+        390,
+        900
+      ],
+      "file": "docs/screenshots/city-record-decentering/after-rules-card-390.png",
+      "inner_width": 390,
+      "document_scroll_width": 390,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "after",
+      "surface": "property-card",
+      "viewport": [
+        390,
+        900
+      ],
+      "file": "docs/screenshots/city-record-decentering/after-property-card-390.png",
+      "inner_width": 390,
+      "document_scroll_width": 390,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "after",
+      "surface": "meetings-card",
+      "viewport": [
+        390,
+        900
+      ],
+      "file": "docs/screenshots/city-record-decentering/after-meetings-card-390.png",
+      "inner_width": 390,
+      "document_scroll_width": 390,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "after",
+      "surface": "rules-card",
+      "viewport": [
+        1440,
+        1100
+      ],
+      "file": "docs/screenshots/city-record-decentering/after-rules-card-1440.png",
+      "inner_width": 1440,
+      "document_scroll_width": 1440,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "after",
+      "surface": "property-card",
+      "viewport": [
+        1440,
+        1100
+      ],
+      "file": "docs/screenshots/city-record-decentering/after-property-card-1440.png",
+      "inner_width": 1440,
+      "document_scroll_width": 1440,
+      "overflow_px": 0,
+      "overflow_open": true
+    },
+    {
+      "phase": "after",
+      "surface": "meetings-card",
+      "viewport": [
+        1440,
+        1100
+      ],
+      "file": "docs/screenshots/city-record-decentering/after-meetings-card-1440.png",
+      "inner_width": 1440,
+      "document_scroll_width": 1440,
+      "overflow_px": 0,
+      "overflow_open": true
+    }
+  ],
+  "schema_version": 1,
+  "production_before": "https://cityscroll.org/",
+  "local_after": "local static site with hermetic public-data fixtures",
+  "overflow_open": true
+}
