@@ -26,6 +26,9 @@ export function describeFilter(lens, filter) {
   }
   if (lens === "mandates" || lens === "obligations") {
     const who = f.agency || f.agency_id || "?";
+    if (f.mandate_id) {
+      return `mandate ${f.mandate_id} for “${who}”`;
+    }
     const type = f.deliverable_type ? ` (${f.deliverable_type})` : "";
     const window = typeof f.windowDays === "number" ? ` · next ${f.windowDays} days` : "";
     return `mandates for “${who}”${type}${window}`;

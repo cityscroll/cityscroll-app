@@ -64,7 +64,7 @@ test("public tiers are accepted and evidence_only is rejected", () => {
   assert.equal(isPublicBacklinkTier("no_edge"), false);
 });
 
-test("compact rows drop machine identities and non-public tiers", () => {
+test("compact rows keep bare mandate_id, drop subject_ref, and reject non-public tiers", () => {
   const publicRow = compactMandateBacklink({
     duty_text: "Hold a hearing.",
     citation: "AC §1",
@@ -79,7 +79,10 @@ test("compact rows drop machine identities and non-public tiers", () => {
   assert.equal(publicRow.agency_id, "homeless-services");
   assert.equal(publicRow.agency_href, "/agencies/homeless-services/");
   assert.equal(publicRow.subject_ref, undefined);
-  assert.equal(publicRow.mandate_id, undefined);
+  // Bare canonical id is a product filter key; the graph subject_ref form is not stored.
+  assert.equal(publicRow.mandate_id, "should-not-leak");
+  assert.match(publicRow.watch_href || "", /lens=mandates/);
+  assert.match(publicRow.watch_href || "", /mandate_id/);
 
   assert.equal(compactMandateBacklink({
     duty_text: "Shadow duty",
@@ -99,6 +102,8 @@ test("contract view collector indexes public edges only by notice id", () => {
   const row = byNotice.get("20260000001")[0];
   assert.equal(row.relation, MANDATE_CONTRACT_EDGE_TYPE);
   assert.match(row.duty_text, /elevator inspection/i);
+  assert.equal(row.mandate_id, CROSS_BRIDGE_OBLIGATION_ID);
+  assert.equal(row.watch_href, undefined);
   assert.doesNotMatch(JSON.stringify(row), /mandate:|subject_ref|evidence_only/);
 });
 
@@ -116,6 +121,7 @@ test("lookup and render are empty-safe and omit absence copy", () => {
         agency_id: "buildings",
         agency_name: "Department of Buildings",
         agency_href: "/agencies/buildings/",
+        mandate_id: CROSS_BRIDGE_OBLIGATION_ID,
         publication_tier: "public_inferred",
       }],
       "20260000099": [{
@@ -138,6 +144,10 @@ test("lookup and render are empty-safe and omit absence copy", () => {
   assert.match(html, /href="https:\/\/example\.test\/law"/);
   assert.match(html, /href="\/agencies\/buildings\/"/);
   assert.match(html, /Procurement record for this duty/);
+  assert.match(html, /Watch this mandate/);
+  assert.match(html, /data-mandate-watch="1"/);
+  assert.match(html, new RegExp(`data-mandate-id="${CROSS_BRIDGE_OBLIGATION_ID}"`));
+  assert.match(html, /lens=mandates/);
   assert.doesNotMatch(html, /subject_ref|mandate:|evidence_only|source_system|not yet shown|no data/i);
   assert.deepEqual(detectNodePageCruft(html), []);
 });
@@ -162,6 +172,7 @@ test("edge notice renderer stamps the card and stays silent without a match", ()
   assert.match(withCard, /shelter contracts/i);
   assert.match(withCard, /Administrative Code/);
   assert.match(withCard, /href="\/agencies\/homeless-services\/"/);
+  assert.match(withCard, /Watch this mandate/);
   assert.doesNotMatch(withCard, /mandate:66056|subject_ref|evidence_only/);
   assert.deepEqual(detectNodePageCruft(withCard), []);
 
@@ -185,11 +196,14 @@ test("committed lookup is public-only and includes the known contract edge", () 
     assert.ok(isPublicBacklinkTier(row.publication_tier));
     assert.ok(row.duty_text);
     assert.equal(row.subject_ref, undefined);
-    assert.equal(row.mandate_id, undefined);
     assert.equal(row.evidence, undefined);
+    // Canonical bare id enables the one-duty watch; graph subject_ref form stays off.
+    assert.ok(row.mandate_id);
+    assert.doesNotMatch(row.mandate_id, /^mandate:/);
   }
   const html = renderNoticeMandateBacklinksHTML(rows);
   assert.match(html, /Connected mandate/);
+  assert.match(html, /Watch this mandate/);
   assert.deepEqual(detectNodePageCruft(html), []);
 });
 
@@ -220,9 +234,12 @@ test("live materialization from sources stays public-only", () => {
     for (const row of rows) {
       assert.ok(isPublicBacklinkTier(row.publication_tier));
       assert.equal("subject_ref" in row, false);
-      assert.equal("mandate_id" in row, false);
+      assert.equal("watch_href" in row, false);
+      if (row.mandate_id) assert.doesNotMatch(row.mandate_id, /^mandate:/);
     }
   }
+  const known = lookup.by_notice["20210820102"][0];
+  assert.ok(known.mandate_id, "public contract edge must carry a canonical mandate id");
 });
 
 test("notice-context wires mandate backlinks into fillContext without a profile-blocking path", () => {

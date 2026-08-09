@@ -37,10 +37,23 @@ function pushBacklink(byNotice, noticeId, row) {
   const compact = compactMandateBacklink(row);
   if (!id || !compact) return;
   const list = byNotice.get(id) || [];
-  const dedupe = `${compact.duty_text}|${compact.relation || ""}|${compact.agency_id || ""}|${compact.citation || ""}`;
+  const dedupe = `${compact.duty_text}|${compact.relation || ""}|${compact.agency_id || ""}|${compact.citation || ""}|${compact.mandate_id || ""}`;
   if (list.some((item) => item._dedupe === dedupe)) return;
-  list.push({ ...compact, _dedupe: dedupe });
+  // Persist only public fields; watch_href is derived at render time from mandate_id.
+  const { watch_href: _watch, ...persistable } = compact;
+  if (!persistable.mandate_id) delete persistable.mandate_id;
+  list.push({ ...persistable, _dedupe: dedupe });
   byNotice.set(id, list);
+}
+
+/** Extract a canonical bare mandate id from a bridge edge / mandate bag. */
+function mandateIdFromEdge(edge) {
+  return edge?.mandate_id
+    || edge?.mandate?.mandate_id
+    || edge?.mandate?.obligation_id
+    || edge?.mandate?.subject_ref
+    || edge?.obligation_id
+    || null;
 }
 
 function agencyFields(view) {
@@ -61,6 +74,7 @@ export function collectFromContractView(view, byNotice = new Map()) {
       || noticeIdFromSubject(edge?.procurement_record?.subject_ref);
     pushBacklink(byNotice, noticeId, {
       ...agency,
+      mandate_id: mandateIdFromEdge(edge),
       duty_text: edge?.mandate?.duty_text,
       citation: edge?.mandate?.citation,
       source_href: edge?.mandate?.source_href,
@@ -82,6 +96,7 @@ export function collectFromMeetingsView(view, byNotice = new Map()) {
       || noticeIdFromSubject(edge?.meeting?.subject_ref);
     pushBacklink(byNotice, noticeId, {
       ...agency,
+      mandate_id: mandateIdFromEdge(edge),
       duty_text: edge?.mandate?.duty_text,
       citation: edge?.mandate?.citation,
       source_href: edge?.mandate?.source_href,
@@ -111,6 +126,7 @@ export function collectFromRulesView(view, byNotice = new Map()) {
       || noticeIdFromSubject(observed.subject_ref || observed.href);
     pushBacklink(byNotice, noticeId, {
       ...agency,
+      mandate_id: mandate.mandate_id || mandate.obligation_id || mandate.subject_ref,
       duty_text: mandate.duty_text,
       citation: mandate.citation,
       source_href: mandate.source_href,
@@ -137,6 +153,7 @@ export function collectFromLandUseView(view, byNotice = new Map()) {
     if (!noticeId) continue;
     pushBacklink(byNotice, noticeId, {
       ...agency,
+      mandate_id: mandateIdFromEdge(edge),
       duty_text: edge?.mandate?.duty_text,
       citation: edge?.mandate?.citation,
       source_href: edge?.mandate?.source_href,

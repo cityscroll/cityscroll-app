@@ -73,6 +73,7 @@ MANDATE_BACKLINKS_LOOKUP = {
                 "agency_id": "parks-and-recreation",
                 "agency_name": "Parks and Recreation",
                 "agency_href": "/agencies/parks-and-recreation/",
+                "mandate_id": "fixture-mandate-001",
                 "publication_tier": "public_inferred",
             }
         ]
@@ -168,7 +169,14 @@ def assert_connected_mandate_card(page: Page) -> None:
     assert source.count() == 1, "source-law link missing from mandate card"
     agency = card.locator('a[href="/agencies/parks-and-recreation/"]')
     assert agency.count() == 1, "agency dossier link missing from mandate card"
-    # Machine identities stay off the reader surface.
+    watch = card.locator("a.notice-mandate-watch[data-mandate-watch='1']")
+    assert watch.count() == 1, "per-mandate watch action missing from mandate card"
+    assert "watch this mandate" in watch.inner_text().lower()
+    watch_href = watch.get_attribute("href") or ""
+    assert "lens=mandates" in watch_href
+    assert "mandate_id" in watch_href
+    assert "fixture-mandate-001" in watch_href
+    # Graph subject_ref forms stay off the reader surface; bare mandate_id is the product filter.
     html = card.inner_html()
     assert "subject_ref" not in html
     assert "mandate:" not in html

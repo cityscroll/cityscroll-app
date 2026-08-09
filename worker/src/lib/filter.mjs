@@ -1,6 +1,8 @@
 // Pure, dependency-free helpers for /nl — unit-testable and runtime-agnostic
 // (works identically under Node tests and the Cloudflare Workers runtime).
 
+import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
+
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
 
@@ -47,9 +49,11 @@ export const LENSES = {
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
   // Record document match — compileSub loads agency_obligations_lookup.json. Optional
   // deliverable_type + windowDays narrow the free watch; agency_id is the join key.
-  // Product lens is "mandates"; "obligations" is the legacy/upstream alias (storage + old links).
-  mandates: ["agency_id", "agency", "deliverable_type", "windowDays"],
-  obligations: ["agency_id", "agency", "deliverable_type", "windowDays"],
+  // mandate_id is an exact canonical obligation id (or legacy mandate:/obligation: ref) —
+  // never free-text duty matching. Product lens is "mandates"; "obligations" is the
+  // legacy/upstream alias (storage + old links).
+  mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
+  obligations: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/
   // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
@@ -86,6 +90,9 @@ function clampField(name, v) {
       // Canonical agency slugs (parks-and-recreation) — letters, digits, hyphens.
       return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s) ? s : null;
     }
+    case "mandate_id":
+      // Exact statutory duty id — bare id or legacy mandate:/obligation: subject ref.
+      return canonicalMandateId(v);
     case "deliverable_type": {
       const s = typeof v === "string" ? v.trim().toLowerCase() : "";
       return MANDATE_DELIVERABLE_TYPES.includes(s) ? s : null;

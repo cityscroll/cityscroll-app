@@ -56,15 +56,19 @@ export function buildAndWrite({ check = false } = {}) {
   if (lookup.schema !== NOTICE_MANDATE_BACKLINKS_SCHEMA) {
     throw new Error(`unexpected schema ${lookup.schema}`);
   }
-  // Guard: no evidence_only / no_edge tiers in the public artifact.
+  // Guard: no evidence_only / no_edge tiers; no graph subject_ref / evidence bags.
+  // Bare mandate_id is a product filter key for one-duty Following watches — allowed.
   for (const [noticeId, rows] of Object.entries(lookup.by_notice || {})) {
     for (const row of rows) {
       const tier = String(row.publication_tier || "");
       if (tier === "evidence_only" || tier === "no_edge") {
         throw new Error(`non-public tier leaked for notice ${noticeId}: ${tier}`);
       }
-      if (row.subject_ref || row.mandate_id || row.evidence || row.source_system) {
+      if (row.subject_ref || row.evidence || row.source_system || row.watch_href) {
         throw new Error(`machine identity leaked for notice ${noticeId}`);
+      }
+      if (row.mandate_id && (String(row.mandate_id).includes(":") || /\s/.test(String(row.mandate_id)))) {
+        throw new Error(`non-canonical mandate_id for notice ${noticeId}: ${row.mandate_id}`);
       }
     }
   }
