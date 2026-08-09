@@ -24,6 +24,7 @@ import {
   buildEntityIntelligence,
   observationFromMoneyRow,
   CROSS_DOMAIN_DOMAINS,
+  EXACT_KEY_EDGE_TIER,
 } from "../entity_resolution/cross_domain/index.mjs";
 import { formatSubjectRef } from "../worker/src/lib/subject_registry.mjs";
 
@@ -82,6 +83,9 @@ describe("BBL → ZAP exact join", () => {
     assert.equal(edge.to, "project:2022M0258");
     assert.equal(edge.provenance.source_system, "zap-bbl");
     assert.ok(edge.provenance.source_record_id.includes("1006440001"));
+    assert.equal(edge.tier, EXACT_KEY_EDGE_TIER);
+    assert.equal(edge.provenance.join_key, "bbl");
+    assert.equal(edge.provenance.join_value, "1006440001");
   });
 
   it("does not invent a ZAP hit for Industry Road without zap-bbl row", () => {

@@ -32,7 +32,7 @@ import {
 } from "../../worker/src/lib/subject_registry.mjs";
 // Reuse land-side strict ULURP token extractor (same as joinCityRecordLandNotices).
 import { extractUlurpKeys } from "../../worker/src/lib/ulurp_recommendations_join.mjs";
-import { buildEpinIndex, joinPinToEpin, normId } from "../../worker/src/lib/passport_join.mjs";
+import { normId } from "../../worker/src/lib/passport_join.mjs";
 import {
   buildPassportCheckbookCrosswalk,
   PROCUREMENT_CROSSWALK_METHOD,
@@ -195,6 +195,10 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
 const DOMAIN_SET = new Set(CROSS_DOMAIN_DOMAINS);
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
+/** Exact publisher-key edges are a separate deterministic tier. */
+export const EXACT_KEY_EDGE_TIER = "deterministic_exact_key";
+export const EXACT_KEY_EDGE_TIER_VERSION = "1";
+
 /**
  * Stable agency subject_ref from any free-text agency surface.
  * @returns {{ ref: string, canonical_id: string, canonical_name: string } | null}
@@ -245,6 +249,10 @@ export function makeProvenance(input = {}) {
   if (input.input_value != null) provenance.input_value = clean(input.input_value);
   if (input.related_source_system) provenance.related_source_system = clean(input.related_source_system);
   if (input.related_source_record_id) provenance.related_source_record_id = clean(input.related_source_record_id);
+  if (input.join_key) provenance.join_key = clean(input.join_key);
+  if (input.join_value != null) provenance.join_value = clean(input.join_value);
+  if (input.match) provenance.match = clean(input.match);
+  if (input.tier) provenance.tier = clean(input.tier);
   return provenance;
 }
 
@@ -309,6 +317,39 @@ export function makeObjectLink(input = {}) {
     method_version,
     provenance,
     layer: CROSS_DOMAIN_OBJECT_LINK_VERSION,
+  };
+}
+
+/**
+ * Build an edge warranted by one exact publisher key. Provenance names both
+ * the key field and the value that joined the records; callers must not use
+ * this helper for fuzzy, scored, or inferred matches.
+ */
+export function makeExactKeyObjectLink(input = {}) {
+  const source = input.provenance || input;
+  const join_key = clean(source.join_key || source.exact_key || source.key);
+  const join_value = clean(source.join_value ?? source.input_value);
+  if (!join_key || !join_value) return null;
+  const provenance = makeProvenance({
+    ...source,
+    join_key,
+    join_value,
+    input_value: source.input_value ?? join_value,
+  });
+  if (!provenance) return null;
+  const edge = makeObjectLink({ ...input, provenance });
+  if (!edge) return null;
+  return {
+    ...edge,
+    tier: EXACT_KEY_EDGE_TIER,
+    tier_version: EXACT_KEY_EDGE_TIER_VERSION,
+    provenance: {
+      ...edge.provenance,
+      join_key,
+      join_value,
+      match: "exact",
+      tier: EXACT_KEY_EDGE_TIER,
+    },
   };
 }
 
@@ -1072,7 +1113,13 @@ export function makeMeetingLandProjectLink(meetingObs, project) {
     source_url: `https://zap.planning.nyc.gov/projects/${encodeURIComponent(project.project_id)}`,
   });
   if (!provenance) return null;
-  return makeObjectLink({
+  const join_key = method === MEETING_LAND_ZAP_METHOD ? "project_id" : "ulurp_number";
+  const join_value = method === MEETING_LAND_ZAP_METHOD
+    ? project.project_id
+    : (project.join_keys || []).find((key) => /^\d{6,}[A-Z]{2,}$/i.test(key))
+      || (project.join_keys || [])[0]
+      || project.project_id;
+  return makeExactKeyObjectLink({
     type: "decides_land_project",
     from: meetingObs.subject_ref,
     to: projectRef,
@@ -1080,7 +1127,7 @@ export function makeMeetingLandProjectLink(meetingObs, project) {
     confidence: "strong",
     method,
     method_version,
-    provenance,
+    provenance: { ...provenance, join_key, join_value },
   });
 }
 
@@ -1986,7 +2033,7 @@ export function joinKeyLinksForObservation(obs) {
           input_value: key.value,
         });
         if (!provenance) continue;
-        const edge = makeObjectLink({
+        const edge = makeExactKeyObjectLink({
           type: "shares_authority_key",
           from: objectSubject,
           to: pinRef,
@@ -1994,7 +2041,7 @@ export function joinKeyLinksForObservation(obs) {
           confidence: "strong",
           method: PIN_METHOD,
           method_version: PIN_METHOD_VERSION,
-          provenance,
+          provenance: { ...provenance, join_key: key.field, join_value: key.value },
         });
         if (edge) edges.push(edge);
       }
@@ -2019,7 +2066,7 @@ export function joinKeyLinksForObservation(obs) {
         input_value: contractId,
       });
       if (provenance) {
-        const edge = makeObjectLink({
+        const edge = makeExactKeyObjectLink({
           type: "references_contract",
           from: objectSubject,
           to: contractRef,
@@ -2027,7 +2074,7 @@ export function joinKeyLinksForObservation(obs) {
           confidence: "strong",
           method: CONTRACT_METHOD,
           method_version: CONTRACT_METHOD_VERSION,
-          provenance,
+          provenance: { ...provenance, join_key: "contract_id", join_value: contractId },
         });
         if (edge) edges.push(edge);
 
@@ -2072,7 +2119,7 @@ export function joinKeyLinksForObservation(obs) {
         input_value: contractId,
       });
       if (provenance) {
-        const edge = makeObjectLink({
+        const edge = makeExactKeyObjectLink({
           type: "payment_on_contract",
           from: objectSubject,
           to: contractRef,
@@ -2080,7 +2127,7 @@ export function joinKeyLinksForObservation(obs) {
           confidence: "strong",
           method: PAYMENT_METHOD,
           method_version: PAYMENT_METHOD_VERSION,
-          provenance,
+          provenance: { ...provenance, join_key: "contract_id", join_value: contractId },
         });
         if (edge) edges.push(edge);
       }
@@ -2123,7 +2170,7 @@ function parcelLinksForObservation(obs) {
       input_value: bbl,
     });
     if (!provenance) continue;
-    const edge = makeObjectLink({
+    const edge = makeExactKeyObjectLink({
       type: "sited_on_parcel",
       from: projectRef,
       to: parcel.ref,
@@ -2131,7 +2178,7 @@ function parcelLinksForObservation(obs) {
       confidence: "strong",
       method: "zap_bbl_project_id_v1",
       method_version: "1",
-      provenance,
+      provenance: { ...provenance, join_key: "bbl", join_value: bbl },
     });
     if (edge) edges.push(edge);
   }
@@ -2276,7 +2323,6 @@ export function procurementContractLinksForObservations(observations = []) {
   );
   const byContractId = new Map();
   const byAuthorityKey = new Map();
-  const passportEpinRows = [];
 
   const addKey = (key, contract) => {
     const normalized = normId(key);
@@ -2293,9 +2339,7 @@ export function procurementContractLinksForObservations(observations = []) {
     }
     addKey(contract.pin, contract);
     addKey(contract.epin, contract);
-    if (contract.epin) passportEpinRows.push(contract.epin);
   }
-  const epinIndex = buildEpinIndex(passportEpinRows);
   const linksByObservation = new Map();
 
   // Rank-11 residual crosswalk: connect the two publisher contract subjects
@@ -2312,7 +2356,12 @@ export function procurementContractLinksForObservations(observations = []) {
     checkbookContracts,
   });
   const contractBySourceId = new Map(contracts.map((contract) => [contract.source_record_id, contract]));
-  for (const row of crosswalk.rows.filter((candidate) => candidate.status === "matched")) {
+  // The exact-key reintegration tier admits only literal contract-id or
+  // literal PIN↔EPIN equality. Prefix/suffix recovery remains outside this
+  // tier until a separate relation policy authorizes it.
+  for (const row of crosswalk.rows.filter((candidate) =>
+    candidate.status === "matched"
+      && ["contract_id_exact", "pin_epin_exact"].includes(candidate.join_method))) {
     const checkbook = contractBySourceId.get(row.checkbook_source_record_id);
     const passport = contractBySourceId.get(row.passport_source_record_id);
     if (!checkbook?.subject_ref || !passport?.subject_ref) continue;
@@ -2326,7 +2375,7 @@ export function procurementContractLinksForObservations(observations = []) {
       related_source_record_id: passport.source_record_id,
     });
     if (!provenance) continue;
-    const edge = makeObjectLink({
+    const edge = makeExactKeyObjectLink({
       type: "corroborates_contract",
       from: checkbook.subject_ref,
       to: passport.subject_ref,
@@ -2334,7 +2383,11 @@ export function procurementContractLinksForObservations(observations = []) {
       confidence: "strong",
       method: PROCUREMENT_CROSSWALK_METHOD,
       method_version: "1",
-      provenance,
+      provenance: {
+        ...provenance,
+        join_key: row.join_method === "contract_id_exact" ? "contract_id" : "pin_epin",
+        join_value: row.input_value,
+      },
     });
     if (!edge) continue;
     for (const key of [checkbook.source_record_id, passport.source_record_id]) {
@@ -2359,17 +2412,7 @@ export function procurementContractLinksForObservations(observations = []) {
     if (contractId) addMatches(byContractId.get(contractId), "contract_id", notice.contract_id);
 
     const pin = clean(notice.pin);
-    if (pin) {
-      addMatches(byAuthorityKey.get(normId(pin)), "pin_exact", pin);
-      const joined = joinPinToEpin(pin, epinIndex);
-      if (joined?.epin) {
-        addMatches(
-          byAuthorityKey.get(joined.epin),
-          joined.method,
-          pin,
-        );
-      }
-    }
+    if (pin) addMatches(byAuthorityKey.get(normId(pin)), "pin_exact", pin);
     const epin = clean(notice.epin);
     if (epin) addMatches(byAuthorityKey.get(normId(epin)), "epin_exact", epin);
     if (!matches.size) continue;
@@ -2390,7 +2433,7 @@ export function procurementContractLinksForObservations(observations = []) {
         related_source_record_id: notice.source_record_id,
       });
       if (!provenance) continue;
-      const edge = makeObjectLink({
+      const edge = makeExactKeyObjectLink({
         type: "references_contract",
         from: notice.subject_ref,
         to: contract.subject_ref,
@@ -2398,7 +2441,11 @@ export function procurementContractLinksForObservations(observations = []) {
         confidence: "strong",
         method: PASSPORT_CONTRACT_JOIN_METHOD,
         method_version: PASSPORT_CONTRACT_JOIN_METHOD_VERSION,
-        provenance,
+        provenance: {
+          ...provenance,
+          join_key: joinMethod === "contract_id" ? "contract_id" : "pin_epin",
+          join_value: inputValue || contract.epin || contract.contract_id,
+        },
       });
       if (edge) edges.push(edge);
     }

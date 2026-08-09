@@ -25,6 +25,8 @@ import {
   CROSS_DOMAIN_METHOD,
   CROSS_DOMAIN_METHOD_VERSION,
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
+  EXACT_KEY_EDGE_TIER,
+  EXACT_KEY_EDGE_TIER_VERSION,
 } from "./object_links.mjs";
 import { primaryPropertyBbl, propertyLocationFromRow } from "../../site/property_location.mjs";
 
@@ -322,6 +324,10 @@ export function linkPropertyObservation(obs) {
       basis: "exact_bbl",
       observed_at: obs.when,
       input_value: bbl,
+      join_key: "bbl",
+      join_value: bbl,
+      match: "exact",
+      tier: EXACT_KEY_EDGE_TIER,
     });
     if (!provenance) continue;
     links.push({
@@ -333,6 +339,8 @@ export function linkPropertyObservation(obs) {
       method: BBL_JOIN_METHOD,
       method_version: BBL_JOIN_METHOD_VERSION,
       provenance,
+      tier: EXACT_KEY_EDGE_TIER,
+      tier_version: EXACT_KEY_EDGE_TIER_VERSION,
       layer: CROSS_DOMAIN_OBJECT_LINK_VERSION,
     });
   }
@@ -420,6 +428,10 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
           source_fields: ["project_id", "bbl"],
           basis: "exact_bbl",
           input_value: bbl,
+          join_key: "bbl",
+          join_value: bbl,
+          match: "exact",
+          tier: EXACT_KEY_EDGE_TIER,
           source_url: `https://zap.planning.nyc.gov/projects/${encodeURIComponent(projectId)}`,
         });
         if (!provenance || !projectRef || !parcelRef) continue;
@@ -439,6 +451,8 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
             via_parcel: parcelRef,
             property_request_id: obs.request_id,
           },
+          tier: EXACT_KEY_EDGE_TIER,
+          tier_version: EXACT_KEY_EDGE_TIER_VERSION,
           layer: PROPERTY_CROSS_DOMAIN_VERSION,
         });
         // project → parcel
@@ -451,6 +465,8 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
           method: BBL_JOIN_METHOD,
           method_version: BBL_JOIN_METHOD_VERSION,
           provenance,
+          tier: EXACT_KEY_EDGE_TIER,
+          tier_version: EXACT_KEY_EDGE_TIER_VERSION,
           layer: PROPERTY_CROSS_DOMAIN_VERSION,
         });
         pairCount += 1;
