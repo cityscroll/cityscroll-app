@@ -1420,18 +1420,25 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
   const allSubs = (await subWatches(env)).filter(isWatchActive);
   const today = day;
 
-  // Select lagging subs or explicit subKeys.
-  let targets = [];
+  // Select lagging watches or explicit subKeys, then expand each selected watch to
+  // its subscriber's complete active-watch set. Recovery is one account occasion:
+  // a multi-watch subscriber gets one rollup email containing every eligible section.
+  let selected = [];
   if (subKeys && subKeys.length) {
     const keySet = new Set(subKeys);
-    targets = allSubs.filter((s) => keySet.has(s.key));
+    selected = allSubs.filter((s) => keySet.has(s.key));
   } else {
     for (const s of allSubs) {
       const lastsent = await getLastSent(env, s.key);
       const lagDays = lastsent ? daysBetweenUTC(lastsent, today) : Infinity;
-      if (lagDays >= minLagDays) targets.push(s);
+      if (lagDays >= minLagDays) selected.push(s);
     }
   }
+
+  const selectedEmails = new Set(selected.map((s) => normalizeEmail(s.email)).filter(Boolean));
+  const targetAccounts = [...groupSubsByEmail(allSubs).entries()]
+    .filter(([email]) => selectedEmails.has(email))
+    .map(([email, subs]) => ({ email, subs }));
 
   const ctx = {
     FROM, LIVE, today,
@@ -1440,11 +1447,13 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
     onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
   };
 
-  for (const s of targets) {
+  for (const { subs } of targetAccounts) {
     try {
-      results.push(await processCatchUpSub(env, s, ctx));
+      results.push(subs.length > 1
+        ? await processCatchUpAccountRollup(env, subs, ctx)
+        : await processCatchUpSub(env, subs[0], ctx));
     } catch (e) {
-      results.push({ sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up", status: "error" });
+      results.push({ sub: accountLogId(subs[0]?.email), error: String(e?.message || e), action: "catch_up", status: "error" });
     }
   }
 
@@ -1454,11 +1463,11 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
     matched: results.filter((r) => !r.error && (Number(r.new) || 0) > 0).length,
     sent: results.filter((r) => r.sent).length,
     sentToday,
-    candidates: targets.length,
+    candidates: targetAccounts.length,
     results,
     skipped_reason: results.some((r) => r.sent)
       ? null
-      : (targets.length === 0
+      : (targetAccounts.length === 0
         ? "no_lagging_subs"
         : (results.some((r) => r.error) ? "errors" : (results.some((r) => r.capped) ? "capped" : "no_matches"))),
     status: results.some((r) => r.sent)
@@ -1470,17 +1479,20 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
   // Always merge catch-up entries into the day log — including QUEUE_DIGESTS mode.
   // Queue daily fan-out only seeds an empty daylog; catch-up is a separate path that
   // must still stamp action/traffic_class catch_up so desk ops can exempt multi-day
-  // recovery from phantom_send without heuristics alone.
+  // recovery from phantom_send without heuristics alone. Rollups use the account
+  // day-log shape, preserving one entry per provider send.
   try {
     const existing = await readDigestDayLog(env, day);
-    const catchUpEntries = results.map((r) => toDayLogEntry(r, { day })).filter(Boolean);
+    const catchUpEntries = results.map((r) => (r.kind === "rollup"
+      ? toRollupDayLogEntry(r, { day })
+      : toDayLogEntry(r, { day }))).filter(Boolean);
     const merged = existing
       ? { ...existing, entries: [...(existing.entries || []), ...catchUpEntries] }
       : buildDayLog({ day, ranAt, live: LIVE, mode: "catch_up", results });
     await writeDigestDayLog(env, recomputeDayLogTotalsLocal(merged));
   } catch { /* observability only */ }
-  console.log("catch-up run:", JSON.stringify({ ranAt, sentThisRun, sentToday, candidates: targets.length }));
-  return { ranAt, live: LIVE, sentThisRun, sentToday, candidates: targets.length, receipt, results };
+  console.log("catch-up run:", JSON.stringify({ ranAt, sentThisRun, sentToday, candidates: targetAccounts.length }));
+  return { ranAt, live: LIVE, sentThisRun, sentToday, candidates: targetAccounts.length, receipt, results };
 }
 
 /**
@@ -1538,6 +1550,7 @@ async function processCatchUpSub(env, s, ctx) {
     if (s.lens === "award") {
       const seenId = `award:${s.key}`;
       await clearSeen(env, seenId);
+      if (ctx.evaluateOnly) return evaluateCatchUpAwardSection(env, s, ctx, watermark, seenId);
       // Delegate to processAwardSub with a fresh ctx (it handles its own cap/send/markSeen).
       return processAwardSub(env, s, ctx);
     }
@@ -1592,12 +1605,30 @@ async function processCatchUpSub(env, s, ctx) {
       // delivery boundary makes a later retry replay the same entitled window.
       return {
         sub: maskKey(s.key), lens: s.lens,
+        ...(ctx.evaluateOnly ? { subKey: s.key, kind: q.kind, since: watermark, email: s.email, label: describeFilter(s.lens, s.filter), freshRows: [] } : {}),
         queryLabel: describeFilter(s.lens, s.filter),
         emailRedacted: redactEmail(s.email),
         found: rows.length, new: 0,
         noticeIds: [], forecasts: 0,
         action: "catch_up", zeroMatch: true,
         sent: false, dryRun: false, capped: false, status: "no_matches",
+      };
+    }
+
+    if (ctx.evaluateOnly) {
+      const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
+      const w = encodeWatchFilter(s.lens, s.filter);
+      return {
+        sub: maskKey(s.key), subKey: s.key, lens: s.lens,
+        queryLabel: describeFilter(s.lens, s.filter),
+        label: describeFilter(s.lens, s.filter), email: s.email,
+        emailRedacted: redactEmail(s.email), kind: q.kind,
+        found: rows.length, new: fresh.length,
+        noticeIds: fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100),
+        forecasts: 0, action: "catch_up", zeroMatch: false, sent: false,
+        since: watermark, freshRows: fresh, keywords, w,
+        markSeenIds: [...rows.map((r) => r[q.idField]).filter(Boolean), ...propertyStageSeenIds],
+        seenId: s.key,
       };
     }
 
@@ -1650,6 +1681,110 @@ async function processCatchUpSub(env, s, ctx) {
   }
 }
 
+async function evaluateCatchUpAwardSection(env, s, ctx, watermark, seenId) {
+  const filter = s.filter || {};
+  if (typeof filter.requestId !== "string" || !filter.requestId) {
+    return { sub: maskKey(s.key), subKey: s.key, lens: "award", queryLabel: describeFilter("award", filter), skipped: "malformed-award-watch", action: "catch_up" };
+  }
+  const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency, ctx.nowMs);
+  if (!ok) return { sub: maskKey(s.key), subKey: s.key, lens: "award", queryLabel: describeFilter("award", filter), skipped: "award-lookup-failed", action: "catch_up" };
+  const fresh = candidates.filter((candidate) => candidate.key);
+  return {
+    sub: maskKey(s.key), subKey: s.key, lens: "award",
+    queryLabel: describeFilter("award", filter), label: describeFilter("award", filter),
+    email: s.email, emailRedacted: redactEmail(s.email),
+    found: candidates.length, new: fresh.length,
+    noticeIds: fresh.length ? [filter.requestId] : [], forecasts: 0,
+    action: "catch_up", zeroMatch: fresh.length === 0, sent: false,
+    since: watermark, kind: "award", awardCandidates: fresh, awardFilter: filter,
+    markSeenIds: candidates.map((candidate) => candidate.key).filter(Boolean), seenId,
+  };
+}
+
+// Catch-up account rollup: each watch is evaluated from its own successful
+// delivery watermark, but the subscriber receives one consolidated provider send.
+async function processCatchUpAccountRollup(env, subs, ctx) {
+  const email = normalizeEmail(subs?.[0]?.email || "");
+  const accountId = accountLogId(email);
+  try {
+    const sections = [];
+    for (const s of subs) sections.push(await processCatchUpSub(env, s, { ...ctx, evaluateOnly: true }));
+    const decision = rollupSendDecision(sections);
+    const wanting = sections.filter(sectionWantsSend);
+    const { allow: underCap, capped } = capDecision({
+      want: decision.wantSend && !!email,
+      counts: ctx.counts(), caps: ctx.caps,
+    });
+    const send = underCap && ctx.LIVE;
+    const allNoticeIds = sections.flatMap((section) => section.noticeIds || []);
+    const totalFound = sections.reduce((total, section) => total + (Number(section.found) || 0), 0);
+    let manageUrlPresent = false;
+    let preview = null;
+
+    if (underCap && decision.wantSend) {
+      const lang = (wanting[0] && wanting[0].lang) || (subs[0] && subs[0].lang) || "en";
+      const unsubAllUrl = await unsubAllLink(env, email);
+      const manageUrl = await prefsLink(env, email);
+      manageUrlPresent = !!manageUrl;
+      const sessionTok = await issueEmailSessionToken(env, email);
+      const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      const watchCount = sections.length;
+      const bodySections = rollupBodySections(sections);
+      const subject = `CityScroll: recovery — ${decision.totalNew} new — ${watchCount} watches`;
+      const html = catchUpRollupDigestHtml({
+        sections: bodySections.length ? bodySections : wanting,
+        wantingCount: wanting.length, watchCount, unsubAllUrl, manageUrl,
+        lang, sessionTok, base,
+        watermark: sections.map((section) => section.since).filter(Boolean).sort()[0] || null,
+      });
+      const payload = emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
+      if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
+      if (send) {
+        await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
+        await ctx.onSent();
+        if (ctx.advanceState !== false) {
+          for (const section of sections) {
+            if (section.subKey && sectionWantsSend(section)) await setLastSent(env, section.subKey, ctx.today);
+          }
+          await bumpStatAllTime(env.ALERT_STATE, "digest_catchup");
+          await bumpHistDay(env.ALERT_STATE, "digest_catchup", new Date());
+          for (const section of sections) {
+            if (section.freshRows?.length) await bumpDigestCategories(env, section.freshRows, section.lens);
+          }
+          emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email", mode: "catch_up" });
+        }
+      } else {
+        logDryRunEmail(payload);
+        if (ctx.onDryRun) await ctx.onDryRun();
+      }
+    }
+
+    if (send && ctx.advanceState !== false) {
+      for (const section of sections) {
+        if (section.markSeenIds?.length && section.seenId) await markSeen(env, section.seenId, section.markSeenIds);
+      }
+    }
+    return {
+      sub: accountId, kind: "rollup", emailRedacted: redactEmail(email),
+      queryLabel: `${sections.length} watches`, found: totalFound,
+      new: decision.totalNew, noticeIds: allNoticeIds.slice(0, 100), forecasts: decision.totalForecasts,
+      action: decision.wantSend ? "catch_up" : "none", traffic_class: "catch_up",
+      zeroMatch: !decision.wantSend, sent: !!send,
+      dryRun: underCap && decision.wantSend && !ctx.LIVE, manageUrlPresent, capped,
+      sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
+      sections: sections.map((section) => ({
+        sub: section.sub, lens: section.lens, queryLabel: section.queryLabel,
+        new: section.new, found: section.found, action: section.action,
+        skipped: section.skipped || null, error: section.error || null,
+        forecasts: section.forecasts || 0,
+      })),
+      ...(preview ? { preview } : {}),
+    };
+  } catch (e) {
+    return { sub: accountId, kind: "rollup", emailRedacted: redactEmail(email), error: String(e?.message || e), action: "catch_up", status: "error" };
+  }
+}
+
 // Catch-up email: same item list as a normal digest, but with a clear "delivery was
 // interrupted" intro so it never reads as a normal daily drip. Apology framing is the
 // product decision: the subscriber should understand why they're getting a batch.
@@ -1657,6 +1792,17 @@ function catchUpDigestHtml(label, kind, rows, unsubUrl, watermark, base, lang, k
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const body = subDigestHtml(label, kind, rows, unsubUrl, watermark, base, [], lang, keywords, w, "", sessionTok);
   const intro = emailT(lang, "catch_up_intro", { n: rows.length, date: shortDate(watermark) });
+  return body.replace(
+    /(<h2[^>]*>CityScroll[^<]*<\/h2>)/,
+    `$1<p style="color:#a42;font-size:13px">${esc(intro)}</p>`,
+  );
+}
+
+function catchUpRollupDigestHtml({ watermark = null, ...options } = {}) {
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  const body = rollupDigestHtml(options);
+  const date = watermark ? shortDate(watermark) : "your last successful delivery";
+  const intro = `Delivery was interrupted — this is one consolidated recovery digest containing the missed updates since ${date}.`;
   return body.replace(
     /(<h2[^>]*>CityScroll[^<]*<\/h2>)/,
     `$1<p style="color:#a42;font-size:13px">${esc(intro)}</p>`,
