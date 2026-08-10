@@ -1,7 +1,7 @@
 // Account-level digest rollup: multi-watch email → one consolidated send.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob } from "../src/alerts.mjs";
+import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob, appendQueueDayLogEntry } from "../src/alerts.mjs";
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
 import { buildDigestJobs } from "../src/lib/rollup.mjs";
 import {
@@ -267,6 +267,19 @@ test("buildDayLog: rollup kind preserved", () => {
   assert.equal(log.entries.find((e) => e.kind === "rollup")?.noticeCount, 3);
   assert.equal(log.entries.find((e) => e.kind === "subscription")?.noticeCount, 1);
   assert.equal(log.sentCount, 2);
+});
+
+test("queue daylog append is fail-soft and reports success or failure", async () => {
+  const day = "2026-08-04";
+  const result = { sub: "sub:ab***", kind: "subscription", new: 1, found: 1, noticeIds: ["n1"], action: "match", sent: true };
+  const good = kv({});
+  const written = await appendQueueDayLogEntry({ ALERT_STATE: good }, day, result);
+  assert.equal(written.ok, true);
+  assert.equal(JSON.parse(await good.get(`digest:daylog:${day}`)).sentCount, 1);
+
+  const failing = { get: async () => null, put: async () => { throw new Error("KV write down"); } };
+  const failed = await appendQueueDayLogEntry({ ALERT_STATE: failing }, day, result);
+  assert.deepEqual(failed, { ok: false, reason: "write-failed" });
 });
 
 test("multi-watch with only one matching section: subject names N watches, body lists all sections", async () => {

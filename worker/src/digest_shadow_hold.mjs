@@ -1,6 +1,8 @@
 // Digest-shadow delivery lease. The 06:00 rehearsal remains delivery-free; this module
 // turns only its named affected_digest_ids into short-lived 09:00 delivery holds.
 
+import { notifyOperator } from "./feedback.mjs";
+
 export const DIGEST_SHADOW_HOLD_CONTRACT = "digest-shadow-hold.v1";
 export const DIGEST_SHADOW_HOLD_CUTOFF_UTC = "12:45:00.000Z";
 export const DIGEST_SHADOW_DELIVERY_BOUNDARY_UTC = "13:00:00.000Z";
@@ -10,6 +12,8 @@ export const DIGEST_SHADOW_DEGRADED_CONTRACT = "digest-shadow-degraded-decision.
 
 const DEGRADED_LATEST_KEY = "digest:shadow:degraded:latest";
 const DARK_HOLD_PENDING_KEY = "digest:shadow:dark-hold:pending";
+const DEGRADED_ALERT_PREFIX = "digest:shadow:degraded:alerted:";
+const LAST_KNOWN_STATE_PREFIX = "digest:shadow:hold:last-known:";
 const DEFAULT_RETRY_DELAYS_MS = Object.freeze([250, 1000]);
 
 export class DigestShadowHoldInputError extends Error {
@@ -41,6 +45,11 @@ function dayAge(day, today) {
   return Math.max(0, Math.floor((end - start) / 86_400_000));
 }
 
+function normalizeDarkDays(value) {
+  const n = Number(value);
+  return Number.isInteger(n) && n >= 1 && n <= 30 ? n : DIGEST_SHADOW_DARK_DAYS;
+}
+
 function degradedReceipt({ state, decision, lastReadyRunDay = null, readyAgeDays = null, attempts = 1 }) {
   return {
     contract: DIGEST_SHADOW_DEGRADED_CONTRACT,
@@ -56,6 +65,7 @@ function degradedReceipt({ state, decision, lastReadyRunDay = null, readyAgeDays
     last_ready_run_day: lastReadyRunDay,
     ready_age_days: readyAgeDays,
     retry_attempts: attempts,
+    dark_period_days: state.dark_period_days || DIGEST_SHADOW_DARK_DAYS,
     catch_up_required: decision === "HOLD_ALL_DARK_PERIOD",
     observation: state.observation || null,
   };
@@ -67,12 +77,14 @@ function openState({
   observation,
   lastReadyRunDay = undefined,
   attempts = 1,
+  darkDays = DIGEST_SHADOW_DARK_DAYS,
 } = {}) {
   const evaluatedAt = iso(now);
   const day = evaluatedAt.slice(0, 10);
+  const darkPeriodDays = normalizeDarkDays(darkDays);
   const readyAgeDays = dayAge(lastReadyRunDay, day);
   const readyHistoryKnown = lastReadyRunDay !== undefined;
-  const dark = readyHistoryKnown && (lastReadyRunDay == null || readyAgeDays >= DIGEST_SHADOW_DARK_DAYS);
+  const dark = readyHistoryKnown && (lastReadyRunDay == null || readyAgeDays >= darkPeriodDays);
   const state = {
     contract: DIGEST_SHADOW_HOLD_CONTRACT,
     run_day: day,
@@ -86,6 +98,7 @@ function openState({
     affected_digest_ids: [],
     overridden_digest_ids: [],
     active_digest_ids: [],
+    dark_period_days: darkPeriodDays,
     observation: observation || null,
   };
   const decision = dark ? "HOLD_ALL_DARK_PERIOD" : "SEND_FAIL_OPEN";
@@ -109,6 +122,7 @@ export function buildDigestShadowHoldState({
   sourceError = null,
   lastReadyRunDay = undefined,
   attempts = 1,
+  darkDays = DIGEST_SHADOW_DARK_DAYS,
 } = {}) {
   if (sourceError) {
     return openState({
@@ -117,6 +131,7 @@ export function buildDigestShadowHoldState({
       observation: String(sourceError?.message || sourceError),
       lastReadyRunDay,
       attempts,
+      darkDays,
     });
   }
 
@@ -129,6 +144,7 @@ export function buildDigestShadowHoldState({
       observation: summary?.run_day ? `latest run is ${summary.run_day}` : "no run for delivery day",
       lastReadyRunDay,
       attempts,
+      darkDays,
     });
   }
 
@@ -265,15 +281,25 @@ async function readLastReadyRunDay(db, day) {
   return row?.run_day || null;
 }
 
-async function readPersistedState(db, day) {
-  const row = await db.prepare(
-    "SELECT state_json FROM digest_shadow_hold_states WHERE run_day = ?",
-  ).bind(day).first();
-  if (!row?.state_json) return null;
+async function readPersistedState(db, day, fallbackStore = null) {
   try {
-    const state = JSON.parse(row.state_json);
-    if (state?.run_day !== day || state?.degraded_receipt) return null;
-    return state;
+    const row = await db.prepare(
+      "SELECT state_json FROM digest_shadow_hold_states WHERE run_day = ?",
+    ).bind(day).first();
+    if (row?.state_json) {
+      const state = JSON.parse(row.state_json);
+      if (state?.run_day === day && !state?.degraded_receipt) return state;
+    }
+  } catch {
+    // D1 is the canonical audit store; the KV copy keeps today's last-known
+    // decision available when that store itself is unavailable.
+  }
+  if (!fallbackStore?.get) return null;
+  try {
+    const raw = await fallbackStore.get(`${LAST_KNOWN_STATE_PREFIX}${day}`);
+    if (!raw) return null;
+    const state = JSON.parse(raw);
+    return state?.run_day === day && !state?.degraded_receipt ? state : null;
   } catch {
     return null;
   }
@@ -332,6 +358,43 @@ function lastKnownState(lastKnown, { now, attempts, sourceError }) {
   });
   state.degraded_receipt.source_error = String(sourceError?.message || sourceError || "hold store unavailable");
   return state;
+}
+
+/** Send one operator-facing signal per degraded decision; never contact a subscriber. */
+export async function announceDigestShadowDegrade(env, receipt, {
+  notifyFn = notifyOperator,
+} = {}) {
+  if (!receipt) return { sent: false, reason: "no-receipt" };
+  // Cloudflare production always has the D1 binding. Local unit callers can
+  // opt into the route explicitly without accidentally issuing network calls.
+  if (!env?.DB && env?.DIGEST_SHADOW_ALERTS !== "true") return { sent: false, reason: "not-configured" };
+  if (!env?.RESEND_API_KEY) return { sent: false, reason: "not-configured" };
+  const key = `${DEGRADED_ALERT_PREFIX}${receipt.decision_id}`;
+  try {
+    if (env.ALERT_STATE && await env.ALERT_STATE.get(key)) {
+      return { sent: false, duplicate: true };
+    }
+    const reason = [
+      `Digest safety degraded on ${receipt.run_day}.`,
+      `Decision: ${receipt.decision}.`,
+      `Source: ${receipt.source_status}.`,
+      `Delivery policy: ${receipt.delivery_policy}.`,
+      `Last READY rehearsal: ${receipt.last_ready_run_day || "none known"}.`,
+      `READY age: ${receipt.ready_age_days == null ? "unknown" : `${receipt.ready_age_days} day(s)`}.`,
+      `Observation: ${receipt.observation || "none"}.`,
+      "This is an operator signal; no subscriber address is included.",
+    ].join(" ");
+    await notifyFn(env, {
+      subject: `[CityScroll] Digest safety: ${receipt.decision}`,
+      text: reason,
+      html: `<div style="font:15px/1.6 system-ui,sans-serif"><h2>Digest safety degraded</h2><p>${reason.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</p></div>`,
+    });
+    if (env.ALERT_STATE) await env.ALERT_STATE.put(key, receipt.evaluated_at || new Date().toISOString());
+    return { sent: true };
+  } catch (error) {
+    console.error("digest shadow operator notification failed:", String(error?.message || error));
+    return { sent: false, reason: String(error?.message || error) };
+  }
 }
 
 function sleep(ms) {
@@ -431,6 +494,11 @@ async function persistState(db, state) {
     ).run();
 }
 
+async function persistLastKnownState(store, state) {
+  if (!store?.put || !state?.run_day || state.degraded_receipt) return;
+  await store.put(`${LAST_KNOWN_STATE_PREFIX}${state.run_day}`, JSON.stringify(state));
+}
+
 /**
  * Delivery-path read. A transient store blip gets three bounded attempts. After that,
  * today's persisted state is the narrow waist; without one, recent READY history keeps
@@ -442,20 +510,25 @@ export async function resolveDigestShadowHold(db, {
   receiptStore = null,
   retryDelaysMs = DEFAULT_RETRY_DELAYS_MS,
   sleepFn = sleep,
+  darkDays = DIGEST_SHADOW_DARK_DAYS,
+  alertEnv = null,
+  notifyFn = notifyOperator,
 } = {}) {
+  const day = iso(now).slice(0, 10);
   if (!db) {
-    const state = buildDigestShadowHoldState({
-      now,
-      sourceError: new Error("DB binding unavailable"),
-      attempts: 0,
-    });
+    const sourceError = new Error("DB binding unavailable");
+    let lastKnown = null;
+    try { lastKnown = await readPersistedState(null, day, receiptStore); } catch { /* KV fallback is best effort */ }
+    const state = lastKnown
+      ? lastKnownState(lastKnown, { now, attempts: 0, sourceError })
+      : buildDigestShadowHoldState({ now, sourceError, attempts: 0, darkDays });
     if (persist) {
       try { await writeDegradedReceipt(receiptStore, state.degraded_receipt); } catch { /* signal is fail-soft */ }
+      await announceDigestShadowDegrade(alertEnv, state.degraded_receipt, { notifyFn });
       console.error("digest shadow degraded decision:", JSON.stringify(state.degraded_receipt));
     }
     return state;
   }
-  const day = iso(now).slice(0, 10);
   const delays = Array.isArray(retryDelaysMs) ? retryDelaysMs : DEFAULT_RETRY_DELAYS_MS;
   const maxAttempts = delays.length + 1;
   let state = null;
@@ -475,6 +548,7 @@ export async function resolveDigestShadowHold(db, {
         lastReadyRunDay,
         now,
         attempts,
+        darkDays,
       });
       break;
     } catch (error) {
@@ -486,7 +560,7 @@ export async function resolveDigestShadowHold(db, {
   if (!state) {
     let lastKnown = null;
     let lastReadyRunDay = undefined;
-    try { lastKnown = await readPersistedState(db, day); } catch { /* primary error remains authoritative */ }
+    try { lastKnown = await readPersistedState(db, day, receiptStore); } catch { /* primary error remains authoritative */ }
     if (lastKnown) {
       state = lastKnownState(lastKnown, { now, attempts, sourceError });
     } else {
@@ -496,6 +570,7 @@ export async function resolveDigestShadowHold(db, {
         sourceError,
         lastReadyRunDay,
         attempts,
+        darkDays,
       });
     }
   }
@@ -519,10 +594,16 @@ export async function resolveDigestShadowHold(db, {
       } catch (error) {
         state = { ...state, observation: `${state.observation}; audit persistence failed: ${String(error?.message || error)}` };
       }
+      try {
+        await persistLastKnownState(receiptStore, state);
+      } catch (error) {
+        state = { ...state, observation: `${state.observation}; last-known persistence failed: ${String(error?.message || error)}` };
+      }
     }
     if (state.degraded_receipt) {
       try {
         await writeDegradedReceipt(receiptStore, state.degraded_receipt);
+        await announceDigestShadowDegrade(alertEnv, state.degraded_receipt, { notifyFn });
         console.error("digest shadow degraded decision:", JSON.stringify(state.degraded_receipt));
       } catch (error) {
         state = { ...state, observation: `${state.observation}; degraded receipt failed: ${String(error?.message || error)}` };
@@ -533,7 +614,7 @@ export async function resolveDigestShadowHold(db, {
 }
 
 /** Shadow-run write. A READY rerun replaces any active state with an eligible receipt. */
-export async function recordDigestShadowHoldState(db, summary, { now = new Date() } = {}) {
+export async function recordDigestShadowHoldState(db, summary, { now = new Date(), receiptStore = null } = {}) {
   const day = summary?.run_day || iso(now).slice(0, 10);
   let overriddenDigestIds = [];
   if (summary?.status === "READY" && summary?.ok !== false) {
@@ -543,6 +624,7 @@ export async function recordDigestShadowHoldState(db, summary, { now = new Date(
   }
   const state = buildDigestShadowHoldState({ summary, overriddenDigestIds, now });
   await persistState(db, state);
+  await persistLastKnownState(receiptStore, state);
   return state;
 }
 

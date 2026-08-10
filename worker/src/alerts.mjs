@@ -41,6 +41,7 @@ import { redactEmail, normalizeEmail } from "./lib/subscriptions.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
+  classifyDigestDeliveryState,
   toDayLogEntry,
   mergeDayLogEntry,
 } from "./lib/digest_ops.mjs";
@@ -68,6 +69,7 @@ import {
   forecastIsDeliverableOn,
 } from "./lib/contract_forecast_predictions.mjs";
 import {
+  announceDigestShadowDegrade,
   completeDigestShadowRecovery,
   digestShadowId,
   isDigestHeld,
@@ -199,11 +201,13 @@ async function writeDigestRunReceipt(env, receipt) {
 // Per-subscription day log: which digests went out, which notices, and zero-match
 // rows so quiet days stay visible. Fail-soft — never break the cron.
 export async function writeDigestDayLog(env, dayLog) {
-  if (!env?.ALERT_STATE || !dayLog?.day) return;
+  if (!env?.ALERT_STATE || !dayLog?.day) return { ok: false, reason: "not-configured" };
   try {
     await env.ALERT_STATE.put(digestDayLogKey(dayLog.day), JSON.stringify(dayLog));
+    return { ok: true };
   } catch {
     /* observability only */
+    return { ok: false, reason: "write-failed" };
   }
 }
 
@@ -219,13 +223,13 @@ export async function readDigestDayLog(env, day) {
   }
 }
 
-async function appendQueueDayLogEntry(env, day, jobResult) {
-  if (!env?.ALERT_STATE || !day || !jobResult) return;
+export async function appendQueueDayLogEntry(env, day, jobResult) {
+  if (!env?.ALERT_STATE || !day || !jobResult) return { ok: false, reason: "not-configured" };
   try {
     const entry = jobResult.kind === "rollup"
       ? toRollupDayLogEntry(jobResult, { day })
       : toDayLogEntry(jobResult, { day });
-    if (!entry) return;
+    if (!entry) return { ok: false, reason: "no-entry" };
     const key = digestDayLogKey(day);
     let existing = null;
     try { existing = JSON.parse((await env.ALERT_STATE.get(key)) || "null"); } catch { existing = null; }
@@ -236,8 +240,10 @@ async function appendQueueDayLogEntry(env, day, jobResult) {
       mode: "queue",
     });
     await env.ALERT_STATE.put(key, JSON.stringify(merged));
+    return { ok: true, dayLog: merged };
   } catch {
     /* observability only */
+    return { ok: false, reason: "write-failed" };
   }
 }
 
@@ -251,6 +257,67 @@ export async function readDigestRunReceipt(env) {
   } catch {
     return null;
   }
+}
+
+async function readDigestRunReceiptForDay(env, day) {
+  if (!env?.ALERT_STATE || !day) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(digestRunDayKey(day));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+async function readDigestSendCount(env, day) {
+  if (!env?.ALERT_STATE || !day) return null;
+  try { return Number(await env.ALERT_STATE.get(`sendcount:${day}`)) || 0; } catch { return null; }
+}
+
+function priorUtcDay(now) {
+  const day = new Date(now);
+  day.setUTCDate(day.getUTCDate() - 1);
+  return day.toISOString().slice(0, 10);
+}
+
+async function announceDeliveryDiagnostic(env, day, evidence) {
+  const observation = classifyDigestDeliveryState(evidence);
+  // A deliberately empty log is a valid zero-send record. Only alert on a
+  // missing/unverifiable log or on positive send evidence without its log.
+  if (observation === "DAYLOG_RECORDED"
+    || observation === "DELIVERY_STATE_UNVERIFIABLE"
+    || (observation === "CRON_FIRED_NO_SEND" && evidence.dayLog)) return null;
+  return announceDigestShadowDegrade(env, {
+    contract: "digest-delivery-observation.v1",
+    decision_id: `${day}:DELIVERY_${observation}`,
+    run_day: day,
+    evaluated_at: new Date().toISOString(),
+    source_status: "DELIVERY_OBSERVATION",
+    delivery_policy: "OBSERVABILITY_ONLY",
+    fail_policy: "not_applicable",
+    decision: observation,
+    signal: "desk_loud",
+    attention_status: "open",
+    last_ready_run_day: null,
+    ready_age_days: null,
+    retry_attempts: 0,
+    observation: `run receipt=${evidence.receipt ? "present" : "absent"}; sendcount=${evidence.sendcount ?? "unknown"}; daylog=${evidence.dayLog ? "present" : "absent"}`,
+  });
+}
+
+async function stampQueueDeliveryObservation(env, day, jobResult, daylogWrite) {
+  const receipt = await readDigestRunReceiptForDay(env, day);
+  if (!receipt) return;
+  const observation = daylogWrite.ok
+    ? "DAYLOG_RECORDED"
+    : (jobResult?.sent ? "SENT_WITHOUT_DAYLOG" : "CRON_FIRED_NO_SEND");
+  await writeDigestRunReceipt(env, {
+    ...receipt,
+    delivery_observation: observation,
+    daylog_write: daylogWrite.ok ? "ok" : "failed",
+  });
 }
 
 // Queue consumers merge their final outcome into the day's receipt so a silent zero after
@@ -356,12 +423,22 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const heartbeatDays = Number(env.HEARTBEAT_DAYS) || 14;     // quiet days before a daily sub gets a liveness ping
   const now = options.now == null ? new Date() : new Date(options.now);
   const day = now.toISOString().slice(0, 10);
+  const priorDay = priorUtcDay(now);
+  if (options.capturePreviews !== true && options.persist !== false) {
+    await announceDeliveryDiagnostic(env, priorDay, {
+      receipt: await readDigestRunReceiptForDay(env, priorDay),
+      sendcount: await readDigestSendCount(env, priorDay),
+      dayLog: await readDigestDayLog(env, priorDay),
+    });
+  }
   const shadowHold = options.shadowHoldState || (options.capturePreviews
     ? null
     : await resolveDigestShadowHold(env.DB, {
       now,
       persist: true,
       receiptStore: env.ALERT_STATE,
+      darkDays: env.DIGEST_SHADOW_DARK_DAYS,
+      alertEnv: env,
     }));
   const heldDigestIds = new Set(shadowHold?.active_digest_ids || []);
   const holdAllDigests = shadowHold?.delivery_policy === "ALL_DIGESTS_HELD";
@@ -523,33 +600,50 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const deferred = results.filter((r) => r.capped).length;
   if (deferred) console.warn(`alerts: ${deferred} watch(es) deferred by send caps (perRun=${maxPerRun}, perDay=${maxPerDay})`);
   const ranAt = now.toISOString();
-  const receipt = summarizeDigestRun({
+  let receipt = summarizeDigestRun({
     ranAt, day, live: LIVE, mode, sentThisRun, sentToday, results, enqueued,
   });
   if (options.persist !== false) await writeDigestRunReceipt(env, receipt);
   // Day log carries per-sub notice ids + zero-match rows for the ops dashboard.
   // Queue mode only has the fan-out stub here; consumers append via mergeDayLogEntry.
+  let dayLogWrite = { ok: false, reason: "not-persisted" };
+  let dayLog = null;
   if (options.persist !== false) {
     if (mode !== "queue") {
-      await writeDigestDayLog(env, buildDayLog({
+      dayLog = buildDayLog({
         day,
         ranAt,
         live: LIVE,
         mode,
         results,
         shadowHoldDecision: shadowHold?.degraded_receipt || shadowRecovery?.receipt || null,
-      }));
+      });
+      dayLogWrite = await writeDigestDayLog(env, dayLog);
     } else {
       // Seed an empty/queue daylog so the day is present even before consumers finish.
-      await writeDigestDayLog(env, buildDayLog({
+      dayLog = buildDayLog({
         day,
         ranAt,
         live: LIVE,
         mode,
         results: [],
         shadowHoldDecision: shadowHold?.degraded_receipt || shadowRecovery?.receipt || null,
-      }));
+      });
+      dayLogWrite = await writeDigestDayLog(env, dayLog);
     }
+    receipt = {
+      ...receipt,
+      delivery_observation: receipt.skipped_reason === "queue_pending"
+        ? "QUEUE_PENDING"
+        : classifyDigestDeliveryState({ receipt, sendcount: sentToday, dayLog: dayLogWrite.ok ? dayLog : null }),
+      daylog_write: dayLogWrite.ok ? "ok" : "failed",
+    };
+    await writeDigestRunReceipt(env, receipt);
+    await announceDeliveryDiagnostic(env, day, {
+      receipt,
+      sendcount: sentToday,
+      dayLog: dayLogWrite.ok ? dayLog : null,
+    });
   }
   const summary = {
     ranAt,
@@ -1209,6 +1303,8 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     now,
     persist: true,
     receiptStore: env.ALERT_STATE,
+    darkDays: env.DIGEST_SHADOW_DARK_DAYS,
+    alertEnv: env,
   });
   let daily = await getSendCount(env, day);
   const ctx = {
@@ -1258,7 +1354,15 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
 
   console.log("digest job:", JSON.stringify(r));
   await recordQueueJobOutcome(env, day, r);
-  await appendQueueDayLogEntry(env, day, r);
+  const daylogWrite = await appendQueueDayLogEntry(env, day, r);
+  await stampQueueDeliveryObservation(env, day, r, daylogWrite);
+  if (!daylogWrite.ok) {
+    await announceDeliveryDiagnostic(env, day, {
+      receipt: await readDigestRunReceiptForDay(env, day),
+      sendcount: await readDigestSendCount(env, day),
+      dayLog: null,
+    });
+  }
   if (r?.error) {
     throw new Error(`digest job error for ${r.sub || "?"}: ${r.error}`);
   }
