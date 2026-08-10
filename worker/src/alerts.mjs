@@ -60,6 +60,15 @@ import {
 import { prefsLink } from "./prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
+import {
+  SECTION_STATUS,
+  enqueueEvaluatedSection,
+  listOwedItems,
+  reserveDeliveryOccasion,
+  finalizeAcceptedDelivery,
+  failDelivery,
+  markDeliveryAttempt,
+} from "./lib/digest_outbox.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
 import { landProjectDisplayTitle } from "../../site/display_title.mjs";
@@ -551,7 +560,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const today = day;
   const isMonday = now.getUTCDay() === 1;
   const ctx = {
-    FROM, LIVE, heartbeatDays, today, isMonday,
+    FROM, LIVE, heartbeatDays, today, isMonday, now,
     counts: () => ({ "per-run": options.queueCapSemantics ? 0 : sentThisRun, daily: sentToday }),
     caps: { "per-run": maxPerRun, daily: maxPerDay },
     onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
@@ -676,7 +685,134 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 // the inline loop and the queue consumer share this logic exactly.
 //
 // For multi-watch accounts use processAccountRollup() instead — one email, one send unit.
+async function normalizeWatchIdentity(s) {
+  if (!s || typeof s !== "object") return s;
+  const { record } = await ensureSubscriptionIdentity(s, s.key);
+  return { ...s, ...record };
+}
+
+async function enqueueNormalSection(env, s, section, rows, ctx, kind) {
+  if (!env.DB || !s?.watch_id || !s?.subscriber_id || section?.status !== SECTION_STATUS.SUCCESS) return null;
+  try {
+    return await enqueueEvaluatedSection(env.DB, {
+      lens: s.lens,
+      kind,
+      status: SECTION_STATUS.SUCCESS,
+      freshRows: rows,
+      sourceObservedAt: ctx.now || ctx.today,
+      owedOrigin: "normal-evaluation",
+    }, {
+      watchId: s.watch_id,
+      subscriberId: s.subscriber_id,
+      sourceObservedAt: ctx.now || ctx.today,
+      now: ctx.now || ctx.today,
+    });
+  } catch (error) {
+    // The existing digest remains operational during a staged schema rollout or
+    // a transient outbox write failure. The section result records the diagnostic;
+    // it is never treated as a delivered watermark.
+    return { status: SECTION_STATUS.FAILED, error: String(error?.message || error), enqueued: 0, attempted: 0, item_ids: [] };
+  }
+}
+
+async function owedForSubscriber(env, subscriberId) {
+  if (!env.DB || !subscriberId) return [];
+  try { return await listOwedItems(env.DB, subscriberId); } catch { return []; }
+}
+
+function payloadRow(item) {
+  try {
+    const parsed = JSON.parse(item.payload_json);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch { return null; }
+}
+
+function sameRenderedItem(a, b) {
+  if (!a || !b) return false;
+  if (a.request_id && b.request_id) return String(a.request_id) === String(b.request_id);
+  if (a.project_id && b.project_id) return String(a.project_id) === String(b.project_id);
+  if (a.alert_id && b.alert_id) return String(a.alert_id) === String(b.alert_id);
+  return false;
+}
+
+/** Add the durable owed set to the ordinary section renderer, never by source date. */
+function attachOwedRows(sections, owed) {
+  const byWatch = new Map();
+  for (const item of Array.isArray(owed) ? owed : []) {
+    const row = payloadRow(item);
+    if (!row) continue;
+    const list = byWatch.get(item.watch_id) || [];
+    list.push({ item, row });
+    byWatch.set(item.watch_id, list);
+  }
+  for (const section of sections) {
+    if (!section || section.error || section.skipped || section.status !== SECTION_STATUS.SUCCESS) continue;
+    const entries = byWatch.get(section.watchId || section.watch_id) || [];
+    if (!entries.length) continue;
+    section.outboxItems = entries.map(({ item }) => item);
+    const carried = entries.map(({ row }) => row);
+    if (section.kind === "award") {
+      const current = Array.isArray(section.awardCandidates) ? section.awardCandidates : [];
+      section.awardCandidates = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
+    } else {
+      const current = Array.isArray(section.freshRows) ? section.freshRows : [];
+      section.freshRows = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
+    }
+    section.new = (section.kind === "award" ? section.awardCandidates : section.freshRows).length;
+    section.noticeIds = [...new Set([
+      ...(Array.isArray(section.noticeIds) ? section.noticeIds : []),
+      ...carried.map((row) => row.request_id).filter(Boolean),
+    ])].slice(0, 100);
+    section.action = "match";
+  }
+  return sections;
+}
+
+function acceptedOutboxItems(sections) {
+  return sections.flatMap((section) => sectionWantsSend(section) && !section.error && !section.skipped
+    ? (Array.isArray(section.outboxItems) ? section.outboxItems : [])
+    : []);
+}
+
+async function reserveOutboxForAccount(env, sections, subscriberId, ctx, wantSend) {
+  if (!env.DB || !subscriberId || !wantSend || !ctx.LIVE) return null;
+  try {
+    const eligibleCount = acceptedOutboxItems(sections).length;
+    return await reserveDeliveryOccasion(env.DB, subscriberId, ctx.today, ctx.now || ctx.today, null, eligibleCount);
+  } catch { return null; }
+}
+
+async function finalizeOutboxDelivery(env, reservation, subscriberId, ctx, items, accepted, partialError) {
+  if (!reservation || !env.DB) return null;
+  try {
+    if (!accepted) {
+      await failDelivery(env.DB, {
+        subscriberId, scheduledDay: ctx.today, deliveryId: reservation.deliveryId,
+        error: partialError || { message: "provider rejected delivery" },
+      });
+      return { status: "failed", deliveredCount: 0 };
+    }
+    return await finalizeAcceptedDelivery(env.DB, {
+      subscriberId,
+      scheduledDay: ctx.today,
+      deliveryId: reservation.deliveryId,
+      items,
+      acceptedAt: ctx.now || ctx.today,
+      providerMessageId: accepted.id || accepted.message_id || null,
+      status: partialError ? "partial_error" : "sent",
+      error: partialError,
+      eligibleCount: items.length,
+    });
+  } catch (error) {
+    // Provider acceptance is still true, but a failed ledger commit must not
+    // fabricate delivered rows. The reserved occasion prevents a duplicate
+    // same-day send; the owed rows remain visible for reconciliation.
+    return { status: "ledger_error", deliveredCount: 0, error: String(error?.message || error) };
+  }
+}
+
 export async function processOneSub(env, s, ctx) {
+  s = await normalizeWatchIdentity(s);
   const digestId = await digestShadowId("digest", s.key);
   const previewId = ctx.capturePreviews ? digestId : null;
   if (ctx.holdAllDigests || ctx.heldDigestIds?.has(digestId)) {
@@ -746,7 +882,23 @@ export async function processOneSub(env, s, ctx) {
     for (const row of rows) {
       if (row.property_watch?.transition && !reconciled.fresh.some((freshRow) => freshRow.request_id === row.request_id)) reconciled.fresh.push(row);
     }
-    const fresh = dedupeFreshByContent(reconciled.fresh);
+    let fresh = dedupeFreshByContent(reconciled.fresh);
+
+    const outboxSection = {
+      sub: maskKey(s.key),
+      subKey: s.key,
+      lens: s.lens,
+      queryLabel: describeFilter(s.lens, s.filter),
+      status: SECTION_STATUS.SUCCESS,
+      watchId: s.watch_id,
+      kind: q.kind,
+      freshRows: fresh,
+      new: fresh.length,
+    };
+    outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, s.lens === "rules" ? fresh : rows, ctx, q.kind);
+    attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
+    fresh = outboxSection.freshRows || fresh;
+    const includedOutboxItems = acceptedOutboxItems([outboxSection]);
 
     // Search health: has this watch matched anything new lately? Judged from `fresh` alone (not
     // forecasts — those are a different kind of content), and recorded on the sub's own SUBS
@@ -769,7 +921,11 @@ export async function processOneSub(env, s, ctx) {
       counts: ctx.counts(),
       caps: ctx.caps,
     });
-    const send = underCap && ctx.LIVE;
+    let send = underCap && ctx.LIVE;
+    let reservation = null;
+    let occasionReserved = false;
+    let providerAccepted = null;
+    let delivery = null;
 
     let manageUrlPresent = false;
     let preview = null;
@@ -813,9 +969,30 @@ export async function processOneSub(env, s, ctx) {
       const payload = emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubUrl}>` };
       if (send) {
-        await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
-        await ctx.onSent();
-        if (ctx.advanceState !== false) {
+        reservation = await reserveOutboxForAccount(env, [outboxSection], s.subscriber_id, ctx, true);
+        if (reservation && !reservation.reserved) {
+          send = false;
+          occasionReserved = true;
+        } else {
+          if (reservation) {
+            try { await markDeliveryAttempt(env.DB, includedOutboxItems, ctx.now || ctx.today); } catch { /* receipt is best effort */ }
+          }
+          try {
+            providerAccepted = await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+          } catch (error) {
+            if (reservation?.reserved) {
+              try {
+                delivery = await finalizeOutboxDelivery(env, reservation, s.subscriber_id, ctx, [], false, { message: String(error?.message || error) });
+              } catch { /* preserve the provider error for queue retry */ }
+            }
+            throw error;
+          }
+          await ctx.onSent();
+          delivery = reservation?.reserved
+            ? await finalizeOutboxDelivery(env, reservation, s.subscriber_id, ctx, includedOutboxItems, providerAccepted, null)
+            : null;
+        }
+        if (providerAccepted && ctx.advanceState !== false) {
           await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
           await bumpStatAllTime(env.ALERT_STATE, "digest");
           await bumpHistDay(env.ALERT_STATE, "digest", new Date());
@@ -831,7 +1008,7 @@ export async function processOneSub(env, s, ctx) {
 
     // Mark seen ONLY on a real send — advancing the seen set without delivery was the
     // watermark-poisoning bug (dry-run, quiet, or any path where send stays false).
-    if (send && ctx.advanceState !== false && reconciled.markSeenIds.length) {
+    if (providerAccepted && ctx.advanceState !== false && reconciled.markSeenIds.length) {
       await markSeen(env, s.key, reconciled.markSeenIds);
     }
     // Multi-day lag after a delivery outage: stamp traffic_class so desk ops can exempt
@@ -852,7 +1029,10 @@ export async function processOneSub(env, s, ctx) {
       action: decision.action,
       traffic_class: lagRecovery ? "catch_up" : null,
       zeroMatch: fresh.length === 0 && forecasts.length === 0 && decision.action === "none",
-      sent: send,
+      sent: !!providerAccepted && delivery?.status !== "ledger_error",
+      providerAccepted: !!providerAccepted,
+      deliveryStatus: delivery?.status || (occasionReserved ? "reserved" : null),
+      occasionReserved,
       dryRun: underCap && !ctx.LIVE,
       manageUrlPresent,
       capped,
@@ -872,7 +1052,9 @@ export async function processOneSub(env, s, ctx) {
  * this always reads the current SUBS records.
  */
 export async function processAccountRollup(env, subs, ctx) {
+  subs = await Promise.all((Array.isArray(subs) ? subs : []).map(normalizeWatchIdentity));
   const email = normalizeEmail(subs?.[0]?.email || "");
+  const subscriberId = subs?.[0]?.subscriber_id || null;
   const accountId = accountLogId(email);
   const digestId = await digestShadowId("digest", (subs || []).map((sub) => sub.key).sort().join("|"));
   const previewId = ctx.capturePreviews ? digestId : null;
@@ -912,6 +1094,11 @@ export async function processAccountRollup(env, subs, ctx) {
       sections.push(await evaluateSubSection(env, s, ctx));
     }
 
+    const owed = await owedForSubscriber(env, subscriberId);
+    for (const section of sections) {
+      section.watchId = subs.find((s) => s.key === section.subKey)?.watch_id || null;
+    }
+    attachOwedRows(sections, owed);
     const decision = rollupSendDecision(sections);
     const wanting = sections.filter(sectionWantsSend);
     const { allow: underCap, capped } = capDecision({
@@ -919,7 +1106,15 @@ export async function processAccountRollup(env, subs, ctx) {
       counts: ctx.counts(),
       caps: ctx.caps,
     });
-    const send = underCap && ctx.LIVE;
+    let send = underCap && ctx.LIVE;
+    const partialError = sections.some((section) => section.error
+      || section.status === SECTION_STATUS.PARTIAL_ERROR
+      || section.status === SECTION_STATUS.FAILED);
+    const includedOutboxItems = acceptedOutboxItems(sections);
+    let reservation = null;
+    let occasionReserved = false;
+    let providerAccepted = null;
+    let delivery = null;
 
     const allNoticeIds = [];
     let totalFound = 0;
@@ -960,9 +1155,30 @@ export async function processAccountRollup(env, subs, ctx) {
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
       // List-Unsubscribe points at all-watches for rollup (account-level one-click).
       if (send) {
-        await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
-        await ctx.onSent();
-        if (ctx.advanceState !== false) {
+        reservation = await reserveOutboxForAccount(env, sections, subscriberId, ctx, decision.wantSend);
+        if (reservation && !reservation.reserved) {
+          send = false;
+          occasionReserved = true;
+        } else {
+          if (reservation) {
+            try { await markDeliveryAttempt(env.DB, includedOutboxItems, ctx.now || ctx.today); } catch { /* receipt is best effort */ }
+          }
+          try {
+            providerAccepted = await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
+          } catch (error) {
+            if (reservation?.reserved) {
+              try {
+                delivery = await finalizeOutboxDelivery(env, reservation, subscriberId, ctx, [], false, { message: String(error?.message || error) });
+              } catch { /* preserve the provider error for queue retry */ }
+            }
+            throw error;
+          }
+          await ctx.onSent();
+          delivery = reservation?.reserved
+            ? await finalizeOutboxDelivery(env, reservation, subscriberId, ctx, includedOutboxItems, providerAccepted, partialError ? { message: "one or more digest sections failed" } : null)
+            : null;
+        }
+        if (providerAccepted && ctx.advanceState !== false) {
           for (const sec of sections) {
             if (sec.subKey && sectionWantsSend(sec)) {
               await setLastSent(env, sec.subKey, ctx.today);
@@ -982,7 +1198,7 @@ export async function processAccountRollup(env, subs, ctx) {
     }
 
     // Mark seen ONLY on a real send (same watermark-poisoning fix as single-sub path).
-    if (send && ctx.advanceState !== false) {
+    if (providerAccepted && ctx.advanceState !== false) {
       for (const sec of sections) {
         if (sec.markSeenIds?.length && sec.seenId) {
           await markSeen(env, sec.seenId, sec.markSeenIds);
@@ -1010,7 +1226,11 @@ export async function processAccountRollup(env, subs, ctx) {
         : "none",
       traffic_class: lagRecovery ? "catch_up" : null,
       zeroMatch: !decision.wantSend,
-      sent: !!send,
+      sent: !!providerAccepted && !partialError && delivery?.status !== "ledger_error",
+      providerAccepted: !!providerAccepted,
+      deliveryStatus: delivery?.status || (occasionReserved ? "reserved" : (partialError ? "partial_error" : null)),
+      occasionReserved,
+      partialError,
       dryRun: underCap && decision.wantSend && !ctx.LIVE,
       manageUrlPresent,
       capped,
@@ -1056,13 +1276,13 @@ async function evaluateSubSection(env, s, ctx) {
   };
   try {
     if (s.freq === "weekly" && !ctx.isMonday) {
-      return { ...base, skipped: "weekly" };
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "weekly" };
     }
     if (s.lens === "award") {
       return evaluateAwardSection(env, s, ctx, base);
     }
     const q = compileSub(s, ctx.today);
-    if (!q) return { ...base, skipped: `lens:${s.lens}` };
+    if (!q) return { ...base, status: SECTION_STATUS.SKIPPED, skipped: `lens:${s.lens}` };
 
     const forecasts = await matchForecasts(env, s, ctx.today);
     let rows;
@@ -1126,8 +1346,10 @@ async function evaluateSubSection(env, s, ctx) {
       ? searchHealthNoteHtml({ lang: s.lang || "en", quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
       : "";
 
-    return {
+    const section = {
       ...base,
+      status: SECTION_STATUS.SUCCESS,
+      watchId: s.watch_id,
       found: rows.length,
       new: fresh.length,
       noticeIds: fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100),
@@ -1144,23 +1366,30 @@ async function evaluateSubSection(env, s, ctx) {
       markSeenIds: reconciled.markSeenIds,
       seenId: s.key,
     };
+    // The selected rows come from either the fresh D1 mirror branch or the
+    // SODA branch above. Both source paths enter the same identity adapter;
+    // source dates never decide whether an owed item is eligible.
+    section.outboxEnqueue = await enqueueNormalSection(env, s, section, s.lens === "rules" ? fresh : rows, ctx, q.kind);
+    return section;
   } catch (e) {
-    return { ...base, error: String(e?.message || e) };
+    return { ...base, status: SECTION_STATUS.FAILED, error: String(e?.message || e) };
   }
 }
 
 async function evaluateAwardSection(env, s, ctx, base) {
   const filter = s.filter || {};
   if (typeof filter.requestId !== "string" || !filter.requestId) {
-    return { ...base, skipped: "malformed-award-watch" };
+    return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "malformed-award-watch" };
   }
   const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency, ctx.nowMs);
-  if (!ok) return { ...base, skipped: "award-lookup-failed" };
+  if (!ok) return { ...base, status: SECTION_STATUS.FAILED, error: "award-lookup-failed" };
   const seenId = `award:${s.key}`;
   const seen = await getSeen(env, seenId);
   const fresh = candidates.filter((c) => c.key && !seen.has(c.key));
-  return {
+  const section = {
     ...base,
+    status: SECTION_STATUS.SUCCESS,
+    watchId: s.watch_id,
     found: candidates.length,
     new: fresh.length,
     noticeIds: fresh.length ? [filter.requestId].filter(Boolean) : [],
@@ -1172,6 +1401,8 @@ async function evaluateAwardSection(env, s, ctx, base) {
     markSeenIds: candidates.map((c) => c.key).filter(Boolean),
     seenId,
   };
+  section.outboxEnqueue = await enqueueNormalSection(env, s, section, candidates, ctx, "award");
+  return section;
 }
 
 // One award-arrival watch: diff the notice's current award candidates (currentAwardCandidates,
@@ -1312,6 +1543,7 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     LIVE: env.ALERTS_LIVE === "true",
     heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
     today: day,
+    now,
     isMonday: now.getUTCDay() === 1,
     // Per-run pacing is the queue's job now; the DAILY ceiling stays hard.
     counts: () => ({ "per-run": 0, daily }),
@@ -1934,7 +2166,12 @@ async function loadSub(env, key) {
   if (!env.SUBS) return null;
   try {
     const v = JSON.parse(await env.SUBS.get(key));
-    return v && v.email ? { key, ...v } : null;
+    if (!v || !v.email) return null;
+    const { record, changed } = await ensureSubscriptionIdentity(v, key);
+    if (changed) {
+      try { await env.SUBS.put(key, JSON.stringify(record)); } catch { /* queue can still evaluate the legacy record */ }
+    }
+    return { key, ...record };
   } catch {
     return null;
   }
