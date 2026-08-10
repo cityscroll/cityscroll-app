@@ -40,11 +40,48 @@ export function buildSubscription({ email, lens, filter, channel = "email", freq
   };
 }
 
+// Immutable carry-forward identities.  `subscriber_id` is account-scoped; `watch_id`
+// is scoped to the legacy KV address.  The latter is intentional: the SUBS key remains
+// the storage address during this migration, while /prefs may safely mutate its filter.
+// Both values are opaque truncated SHA-256 identifiers and never contain the address.
+export async function deriveSubscriberId(email) {
+  return `subscriber:${await digestHex(normalizeEmail(email))}`;
+}
+
+export async function deriveWatchId(legacyKey) {
+  return `watch:${await digestHex(String(legacyKey || ""))}`;
+}
+
+/**
+ * Add missing immutable identity fields to a legacy SUBS record without changing any
+ * existing subscription fields.  Existing IDs always win so this is safe to rerun.
+ */
+export async function ensureSubscriptionIdentity(record, legacyKey) {
+  if (!record || typeof record !== "object") return { record, changed: false };
+  const next = { ...record };
+  let changed = false;
+  if (!next.subscriber_id) {
+    next.subscriber_id = await deriveSubscriberId(next.email);
+    changed = true;
+  }
+  if (!next.watch_id) {
+    next.watch_id = await deriveWatchId(legacyKey);
+    changed = true;
+  }
+  return { record: next, changed };
+}
+
 // Canonical string for a (email, lens, filter) triple — hash it for a stable KV id so the
 // same alert isn't stored twice. (Hashing is done by the caller via Web Crypto.)
 // IMPORTANT: `lang` is deliberately excluded — changing language must not duplicate a watch.
 export function subCanonical({ email, lens, filter }) {
   return JSON.stringify({ email: normalizeEmail(email), lens, filter: filter || {} });
+}
+
+async function digestHex(value) {
+  const data = new TextEncoder().encode(String(value));
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(buf)].slice(0, 12).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 // For logs: never print a full subscriber address.
