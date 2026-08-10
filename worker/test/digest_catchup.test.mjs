@@ -172,6 +172,53 @@ test("catch-up send: clears seen, sends all missed notices, advances watermark",
   } finally { globalThis.fetch = realFetch; }
 });
 
+test("catch-up rollup: one subscriber with two active watches gets one batched email", async () => {
+  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
+  const firstKey = "sub:rollup-first:r01";
+  const secondKey = "sub:rollup-second:r02";
+  const sharedEmail = "rollup-catchup@example.com";
+  const record = (lens) => ({
+    email: sharedEmail,
+    lens,
+    filter: { minAmount: 500000, keywords: ["construction"] },
+    freq: "daily",
+    channel: "email",
+    createdAt: "2026-07-01T00:00:00.000Z",
+    lang: "en",
+  });
+  SUBS.store.set(firstKey, JSON.stringify(record("money")));
+  SUBS.store.set(secondKey, JSON.stringify(record("money")));
+  await ALERT_STATE.put(`lastsent:${firstKey}`, "2026-07-28");
+  await ALERT_STATE.put(`lastsent:${secondKey}`, "2026-07-28");
+  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
+  const notices = [
+    { request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed construction", contract_amount: "900000", section_name: "Procurement" },
+  ];
+  const sent = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    const u = String(url);
+    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
+    if (u.includes("api.resend.com")) { sent.push(JSON.parse(opts.body)); return Response.json({ id: "catchup_rollup_1" }); }
+    throw new Error("unexpected fetch: " + u);
+  };
+  try {
+    const r = await runCatchUpDigests(env, { minLagDays: 2 });
+    assert.equal(r.candidates, 1, "one recovery occasion for the subscriber account");
+    assert.equal(r.results.length, 1, "one account result");
+    assert.equal(r.results[0].kind, "rollup");
+    assert.equal(r.results[0].sent, true);
+    assert.equal(r.results[0].sections.length, 2, "both active watches are represented in the batch");
+    assert.equal(r.results[0].sendUnits, 1);
+    assert.equal(sent.length, 1, "one provider send for one subscriber account");
+    assert.equal(await ALERT_STATE.get(`lastsent:${firstKey}`), DAY(), "first watch watermark advances after the account send");
+    assert.equal(await ALERT_STATE.get(`lastsent:${secondKey}`), DAY(), "second watch watermark advances after the account send");
+    const dayLog = await readDigestDayLog(env, DAY());
+    assert.equal(dayLog.entries.filter((entry) => entry.kind === "rollup").length, 1, "one account rollup day-log entry");
+    assert.equal(dayLog.entries.find((entry) => entry.kind === "rollup").sections.length, 2, "day log keeps both subscription sections");
+  } finally { globalThis.fetch = realFetch; }
+});
+
 test("catch-up receipt: written with mode 'catch_up' and readable", async () => {
   const SUBS = new MockKV(), ALERT_STATE = new MockKV();
   const key = "sub:receipt@example.com:r01";
