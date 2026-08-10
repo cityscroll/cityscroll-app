@@ -292,6 +292,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "Read-only owed digest items grouped by subscriber, with delivery state and next schedule.",
   },
   {
+    path: "/admin/next-digest-preview",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Read-only exact next scheduled digest preview, indexed by subscriber or redacted label; no send or state advancement.",
+  },
+  {
     path: "/admin/digest-backfill",
     methods: ["POST"],
     auth: "ADMIN_KEY",
