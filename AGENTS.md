@@ -171,6 +171,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Production Worker deploys must run `node tools/wait_for_digest_cron_window.mjs`
   immediately before `wrangler deploy`. Wrangler rewrites Cron Trigger configuration,
   so the guard keeps deploys outside 12:40–13:05 UTC around the 13:00 digest.
+- The 13:00 scheduled handler must call `runAlerts` before advisory daily read-model refreshes;
+  those upstream refreshes can be slow or fail after the delivery critical path. The ordering
+  contract is covered by `node --test worker/test/digest_schedule_order.test.mjs`.
 - Cloudflare Pages remains the origin for `cityscroll.org` and `www.cityscroll.org`. Bounded
   Worker zone routes serve canonical `/near-you*`, `/following*`, and `/prefs*` documents;
   Worker custom domains remain `api.cityscroll.org` and the `api.crol-list.org` compatibility alias.
