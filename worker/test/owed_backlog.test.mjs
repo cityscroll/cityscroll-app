@@ -8,9 +8,11 @@ import {
   OWED_BACKLOG_QUERY,
   buildOwedBacklogBody,
   readOwedBacklog,
+  scanSubscriberMetadata,
   scheduledTimes,
 } from "../src/owed_backlog.mjs";
 import { handleAdminOwedBacklog, renderAdminStatsPage } from "../src/admin.mjs";
+import { deriveSubscriberId } from "../src/lib/subscriptions.mjs";
 
 const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 
@@ -89,6 +91,18 @@ test("readOwedBacklog returns per-subscriber counts, oldest item, and latest del
   assert.equal(body.subscribers[1].overdue, true);
   assert.equal(JSON.stringify(body).includes("person@example.com"), false);
   sqlite.close();
+});
+
+test("legacy SUBS records receive an in-memory identity for the redacted desk label", async () => {
+  const metadata = await scanSubscriberMetadata(new MockKV({
+    "sub:legacy-owner": JSON.stringify({ email: "owner@example.com", lens: "rules", paused: false }),
+  }));
+  const subscriberId = await deriveSubscriberId("owner@example.com");
+  assert.equal(metadata.available, true);
+  assert.deepEqual(metadata.bySubscriber.get(subscriberId), {
+    subscriber_label: "ow***@example.com",
+    active_watch_count: 1,
+  });
 });
 
 test("scheduled boundary makes an old owed row overdue only after 13:00 UTC", () => {

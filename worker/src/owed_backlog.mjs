@@ -1,4 +1,4 @@
-import { redactEmail } from "./lib/subscriptions.mjs";
+import { ensureSubscriptionIdentity, redactEmail } from "./lib/subscriptions.mjs";
 
 export const OWED_BACKLOG_SCHEMA = "owed-backlog.v1";
 export const DIGEST_SCHEDULE_HOUR_UTC = 13;
@@ -105,16 +105,20 @@ export async function scanSubscriberMetadata(subs) {
       for (const key of page.keys || []) {
         let record;
         try { record = JSON.parse(await subs.get(key.name)); } catch { continue; }
-        if (!record?.subscriber_id) continue;
-        const current = bySubscriber.get(record.subscriber_id) || {
-          subscriber_label: record.email ? redactEmail(record.email) : record.subscriber_id,
+        // Legacy SUBS records may predate the immutable identity migration.
+        // Derive the same opaque identity in memory so the private desk can
+        // still show its redacted owner label without mutating SUBS.
+        const { record: resolved } = await ensureSubscriptionIdentity(record, key.name);
+        if (!resolved?.subscriber_id) continue;
+        const current = bySubscriber.get(resolved.subscriber_id) || {
+          subscriber_label: resolved.email ? redactEmail(resolved.email) : resolved.subscriber_id,
           active_watch_count: 0,
         };
-        if (record.email && current.subscriber_label === record.subscriber_id) {
-          current.subscriber_label = redactEmail(record.email);
+        if (resolved.email && current.subscriber_label === resolved.subscriber_id) {
+          current.subscriber_label = redactEmail(resolved.email);
         }
-        if (!record.paused) current.active_watch_count += 1;
-        bySubscriber.set(record.subscriber_id, current);
+        if (!resolved.paused) current.active_watch_count += 1;
+        bySubscriber.set(resolved.subscriber_id, current);
       }
       cursor = page.list_complete ? null : page.cursor;
     } while (cursor);
