@@ -325,7 +325,7 @@ export async function runDigestShadow(env, { now = new Date(), runAlertsFn = run
   const history = await readHistory(env, at.toISOString().slice(0, 10));
   const summary = buildDigestShadowSummary({ run, history, now: at });
   await persistDigestShadow(env.DB, summary);
-  summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at });
+  summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at, receiptStore: env.ALERT_STATE });
   await persistDigestShadow(env.DB, summary);
   const out = { ...summary };
   delete out._rendered_previews;

@@ -10,6 +10,7 @@ import {
   toRosterRow,
   searchInterestSignal,
   correctnessCheck,
+  classifyDigestDeliveryState,
   recountFresh,
   noticeDeepLink,
   digestDayLogKey,
@@ -104,6 +105,19 @@ test("summarizeDay: missing log still returns the day (absence visible)", () => 
   assert.equal(s.hasLog, false);
   assert.deepEqual(s.sends, []);
   assert.equal(s.sendcount, 0);
+});
+
+test("classifyDigestDeliveryState distinguishes the three missing-log production states", () => {
+  assert.equal(classifyDigestDeliveryState({ receipt: null, sendcount: 0, dayLog: null }), "CRON_NOT_OBSERVED");
+  assert.equal(classifyDigestDeliveryState({
+    receipt: { sent: 0 }, sendcount: 0, dayLog: { entries: [] },
+  }), "CRON_FIRED_NO_SEND");
+  assert.equal(classifyDigestDeliveryState({
+    receipt: { sent: 2 }, sendcount: 2, dayLog: null,
+  }), "SENT_WITHOUT_DAYLOG");
+  assert.equal(classifyDigestDeliveryState({
+    receipt: { sent: 2 }, sendcount: 2, dayLog: { entries: [{ sent: true }] },
+  }), "DAYLOG_RECORDED");
 });
 
 test("toRosterRow + searchInterestSignal", () => {

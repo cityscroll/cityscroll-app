@@ -240,6 +240,26 @@ export function summarizeDay({ day, dayLog = null, receipt = null, sendcount = n
 }
 
 /**
+ * Classify the evidence available for one UTC delivery day. A missing day log is
+ * an observability gap, not proof that no email was sent; keep the independent
+ * run receipt and send counter in the decision.
+ */
+export function classifyDigestDeliveryState({ receipt = null, sendcount = null, dayLog = null } = {}) {
+  const hasReceipt = !!(receipt && typeof receipt === "object");
+  const hasDayLog = !!(dayLog && Array.isArray(dayLog.entries) && dayLog.entries.length > 0);
+  const sent = Math.max(
+    Number(receipt?.sent) || 0,
+    Number(sendcount) || 0,
+  );
+
+  if (sent > 0 && !hasDayLog) return "SENT_WITHOUT_DAYLOG";
+  if (hasReceipt && sent === 0) return "CRON_FIRED_NO_SEND";
+  if (!hasReceipt && sent === 0 && !dayLog) return "CRON_NOT_OBSERVED";
+  if (hasDayLog) return "DAYLOG_RECORDED";
+  return "DELIVERY_STATE_UNVERIFIABLE";
+}
+
+/**
  * Roster row from a SUBS record + optional lastsent.
  * Full email is allowed only on admin-gated responses (caller responsibility).
  */
