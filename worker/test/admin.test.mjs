@@ -109,6 +109,7 @@ test("SHADOW_STATUS_KEY gets 401 from every other registered /admin/* route", as
     ["POST", "/admin/possibly-same"],
     ["GET", "/admin/ops-contract"],
     ["GET", "/admin/stats"],
+    ["GET", "/admin/owed-backlog"],
     ["GET", "/admin/digest-rollup"],
     ["POST", "/admin/digest-shadow"],
     ["POST", "/admin/digest-send-test"],

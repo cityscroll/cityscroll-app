@@ -286,6 +286,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "Private product activity, subscriptions, and delivery operations (JSON or ?view=html).",
   },
   {
+    path: "/admin/owed-backlog",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Read-only owed digest items grouped by subscriber, with delivery state and next schedule.",
+  },
+  {
     path: "/admin/subs",
     methods: ["GET"],
     auth: "ADMIN_KEY",
