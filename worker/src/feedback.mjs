@@ -71,9 +71,27 @@ function rand() {
   return [...crypto.getRandomValues(new Uint8Array(6))].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function notifyOperator(env, r) {
+// Shared operator notification route. Feedback and delivery-safety signals use
+// the same Resend destination and sender; neither path addresses subscribers.
+export async function notifyOperator(env, r) {
   const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
   const to = env.FEEDBACK_TO || DEFAULT_TO;
+  if (r.subject && r.text) {
+    const payload = {
+      from,
+      to,
+      subject: r.subject,
+      text: r.text,
+      html: r.html || `<pre style="white-space:pre-wrap">${escHtml(r.text)}</pre>`,
+    };
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
+    return res.json();
+  }
   const label = { bug: "Bug", feature: "Feature idea", general: "General" }[r.category] || r.category;
   const payload = {
     from, to,

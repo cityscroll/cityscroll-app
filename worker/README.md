@@ -91,8 +91,9 @@ produce `NEEDS_ATTENTION` and HTTP 503.
 
 The scheduled `digest-shadow-monitor.yml` polls after both rehearsal and delivery, and opens or
 updates a repair issue when the run is redlined, missing, stale, or has an open degraded-path
-receipt. Shadow failures never send operator
-email; the authenticated admin endpoint remains the canonical machine-readable status surface.
+receipt. A degraded delivery decision also sends one deduplicated operator signal through the
+existing `FEEDBACK_TO`/Resend notification route; it never addresses a subscriber. The
+authenticated admin endpoint remains the canonical machine-readable status surface.
 The repair protocol is to diagnose the listed `affected_digest_ids`, apply the repair, then use
 authenticated `POST /admin/digest-shadow` to re-render the full set before 09:00. At 12:45 UTC
 (15 minutes before the
@@ -104,7 +105,8 @@ The failure boundary is deliberately narrow: a redline is fail-closed only for i
 `affected_digest_ids`. Hold-store reads get three bounded attempts (250 ms then 1 s backoff), then
 use that day's last persisted hold state when one is usable. Without a last-known state, a missing
 or unavailable run stays fail-open with a loud `digest-shadow-degraded-decision.v1` receipt while
-the latest `READY` rehearsal is less than three calendar days old. At the three-day boundary the
+the latest `READY` rehearsal is less than `DIGEST_SHADOW_DARK_DAYS` calendar days old (default 3,
+chosen to allow a bounded repair window without allowing stale validation to run indefinitely). At the dark-period boundary the
 policy holds every digest; the next `READY` rehearsal runs watermark catch-up before normal
 delivery and closes the receipt. `/admin/digest-shadow` exposes the receipt and returns HTTP 503
 while attention is open; the daylog carries the same collapsed decision for the operations line.
@@ -112,6 +114,11 @@ Run-level redlines without named digest scope remain fail-open. Named holds expi
 queue message found held is acknowledged as `skipped:shadow-hold`, never retried into an accidental
 later send. The authenticated override body above requires a reason and can release only IDs named
 by that day's run.
+
+Delivery receipts also carry `delivery_observation` values that separate a missing cron receipt,
+a run that recorded no sends, and positive send evidence without a usable per-subscription daylog.
+Queue consumers retain the fail-soft send behavior, but a failed daylog append now leaves the
+diagnosis on the independent run receipt and sends the same operator signal.
 
 Before the digest run, the same cron refreshes the D1 notices mirror from Socrata
 (`ingest.mjs`, cursored, fail-soft) and pre-warms prior-cycle match sets for the
