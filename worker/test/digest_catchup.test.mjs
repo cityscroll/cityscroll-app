@@ -1,8 +1,9 @@
-// Watermark recovery (catch-up digests): when delivery was broken for days, recovery
-// must re-send the missed stream since the delivery watermark, not a single post-unclog drip.
-// Tests the selection logic, the send path, and the receipt/stats bookkeeping.
+// Catch-up evaluation (no-send outbox backfill). The legacy operator route keeps its
+// input shape, but it now evaluates source predicates into durable owed identities.
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { DatabaseSync } from "node:sqlite";
 import {
   runCatchUpDigests,
   readCatchUpReceipt,
@@ -25,24 +26,70 @@ class MockKV {
   }
 }
 
+const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const DAY = () => new Date().toISOString().slice(0, 10);
 
-function seedSub(env, key, { lastsent = null, lens = "money", filter = { minAmount: 500000, keywords: ["construction"] }, paused = false } = {}) {
-  const rec = { email: `test-recipient-${key.replace("sub:", "").replace(/:\w+$/, "")}`, lens, filter, freq: "daily", channel: "email", createdAt: "2026-07-01T00:00:00.000Z", lang: "en", ...(paused ? { paused: true } : {}) };
-  env.SUBS.store.set(key, JSON.stringify(rec));
-  if (lastsent) env.ALERT_STATE.store.set(`lastsent:${key}`, lastsent);
+function makeDb() {
+  const sqlite = new DatabaseSync(":memory:");
+  sqlite.exec(migration);
+  const db = {
+    prepare(sql) {
+      const statement = sqlite.prepare(sql);
+      return {
+        bind(...params) {
+          return {
+            run() {
+              const result = statement.run(...params);
+              return { meta: { changes: Number(result.changes || 0) } };
+            },
+            all() { return { results: statement.all(...params) }; },
+            first() { return statement.get(...params) || null; },
+          };
+        },
+      };
+    },
+    async batch(statements) { return statements.map((statement) => statement.run()); },
+  };
+  return { sqlite, db };
 }
 
-function mockFetch(notices) {
-  return async (url) => {
-    const u = String(url);
-    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
-    if (u.includes("api.resend.com")) return Response.json({ id: "catchup_1" });
-    throw new Error("unexpected fetch: " + u);
+function seedSub(env, key, {
+  email = "test-recipient-" + key.replace("sub:", "").replace(/:\w+$/, ""),
+  lastsent = null,
+  lens = "money",
+  filter = { minAmount: 500000, keywords: ["construction"] },
+  paused = false,
+  subscriberId = null,
+  watchId = null,
+} = {}) {
+  const rec = {
+    email, lens, filter, freq: "daily", channel: "email",
+    createdAt: "2026-07-01T00:00:00.000Z", lang: "en",
+    subscriber_id: subscriberId || "subscriber:" + email,
+    watch_id: watchId || "watch:" + key,
+    ...(paused ? { paused: true } : {}),
+  };
+  env.SUBS.store.set(key, JSON.stringify(rec));
+  if (lastsent) env.ALERT_STATE.store.set("lastsent:" + key, lastsent);
+}
+
+function createEnv(options = {}) {
+  const SUBS = new MockKV();
+  const ALERT_STATE = new MockKV();
+  const { sqlite, db } = makeDb();
+  return {
+    env: { SUBS, ALERT_STATE, DB: db, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32), ...options },
+    sqlite,
   };
 }
 
-test("a recovered READY rehearsal runs catch-up and closes the dark-period receipt", async () => {
+function withFetch(handler) {
+  const previous = globalThis.fetch;
+  globalThis.fetch = async (url, options) => handler(String(url), options);
+  return () => { globalThis.fetch = previous; };
+}
+
+test("shadow recovery remains pending because catch-up evaluation does not send", async () => {
   const ALERT_STATE = new MockKV();
   const pending = {
     contract: "digest-shadow-degraded-decision.v1",
@@ -61,261 +108,177 @@ test("a recovered READY rehearsal runs catch-up and closes the dark-period recei
       now: "2026-08-04T13:00:00.000Z",
       runCatchUpFn: async (_env, options) => {
         calls.push(options);
-        return { live: true, candidates: 2, sentThisRun: 2, results: [{ sent: true }, { sent: true }] };
+        return { live: false, evaluation_only: true, candidates: 2, sentThisRun: 0, results: [] };
       },
     },
   );
   assert.deepEqual(calls, [{ minLagDays: 1 }]);
-  assert.equal(out.receipt.decision, "CATCH_UP_SENT_ON_RECOVERY");
-  assert.equal(out.receipt.recovery_of, pending.decision_id);
-  assert.equal(out.receipt.catch_up.sent, 2);
-  assert.equal(await ALERT_STATE.get("digest:shadow:dark-hold:pending"), null);
-  assert.equal((await readDigestShadowDegradedReceipt(ALERT_STATE)).attention_status, "closed");
+  assert.equal(out.pending, true);
+  assert.equal(out.receipt, null);
+  assert.ok(await ALERT_STATE.get("digest:shadow:dark-hold:pending"));
 });
 
-test("catch-up selection: sub with lastsent >= minLagDays is targeted", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const today = DAY();
-  const laggingKey = "sub:lagging@example.com:k01";
-  const freshKey = "sub:fresh@example.com:k02";
-  seedSub({ SUBS, ALERT_STATE }, laggingKey, { lastsent: "2026-07-28" });
-  seedSub({ SUBS, ALERT_STATE }, freshKey, { lastsent: today });
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "false", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = mockFetch([]);
-  try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    const targetedKeys = r.results.map((x) => x.sub);
-    assert.ok(targetedKeys.some((s) => s.includes("la***")), "lagging sub is targeted");
-    assert.ok(!targetedKeys.some((s) => s.includes("fr***") && !s.includes("la***")), "fresh sub is NOT targeted");
-    assert.equal(r.candidates, 1, "exactly one lagging sub");
-  } finally { globalThis.fetch = realFetch; }
-});
-
-test("catch-up covers the active entitlement set and does not advance on no-match", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const activeKey = "sub:active-a01";
-  const pausedKey = "sub:paused-p01";
-  seedSub({ SUBS, ALERT_STATE }, activeKey, { lastsent: "2026-07-28" });
-  seedSub({ SUBS, ALERT_STATE }, pausedKey, { lastsent: "2026-07-28", paused: true });
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = mockFetch([]);
-  try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    assert.equal(r.candidates, 1, "paused watches are not entitled to recovery mail");
-    assert.equal(r.results[0].status, "no_matches");
-    assert.equal(r.receipt.status, "no_matches");
-    assert.equal(r.receipt.outcomes.no_matches, 1);
-    assert.equal(await ALERT_STATE.get(`lastsent:${activeKey}`), "2026-07-28", "no-match recovery cannot advance the watermark");
-    assert.equal(await ALERT_STATE.get(`lastsent:${pausedKey}`), "2026-07-28", "paused watermark remains untouched");
-  } finally { globalThis.fetch = realFetch; }
-});
-
-test("catch-up send failure is an error receipt and preserves the last successful watermark", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const key = "sub:failed-f01";
-  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const notices = [{ request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed construction", contract_amount: "900000", section_name: "Procurement" }];
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = async (url) => {
-    const u = String(url);
-    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
-    if (u.includes("api.resend.com")) throw new Error("resend unavailable");
-    throw new Error("unexpected fetch: " + u);
-  };
-  try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    assert.equal(r.receipt.status, "error");
-    assert.equal(r.receipt.outcomes.error, 1);
-    assert.equal(r.results[0].status, "error");
-    assert.equal(await ALERT_STATE.get(`lastsent:${key}`), "2026-07-28", "failed delivery cannot advance the watermark");
-  } finally { globalThis.fetch = realFetch; }
-});
-
-test("catch-up send: clears seen, sends all missed notices, advances watermark", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const key = "sub:catchup@example.com:c01";
-  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
-  // Poison the seen set (simulating the old bug): mark notices that should be re-sent.
-  await ALERT_STATE.put(`seen:${key}`, JSON.stringify(["20260729001", "20260730001"]));
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const sent = [];
-  const notices = [
-    { request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed A", contract_amount: "900000", section_name: "Procurement" },
-    { request_id: "20260730001", start_date: "2026-07-30T00:00:00.000", agency_name: "DDC", short_title: "Missed B", contract_amount: "800000", section_name: "Procurement" },
-    { request_id: "20260731001", start_date: "2026-07-31T00:00:00.000", agency_name: "DDC", short_title: "Today C", contract_amount: "700000", section_name: "Procurement" },
-  ];
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = async (url, opts) => {
-    const u = String(url);
-    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
-    if (u.includes("api.resend.com")) { sent.push(JSON.parse(opts.body)); return Response.json({ id: "catchup_1" }); }
-    throw new Error("unexpected fetch: " + u);
-  };
-  try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    assert.equal(r.candidates, 1, "one lagging sub");
-    const sub = r.results[0];
-    assert.equal(sub.action, "catch_up");
-    assert.equal(sub.sent, true, "catch-up email was sent");
-    assert.ok(sub.new >= 2, "all missed notices found as fresh (seen was cleared)");
-    assert.equal(sent.length, 1, "exactly one catch-up email");
-    assert.match(sent[0].subject, /missed/i, "subject clearly says catch-up");
-    // Watermark advanced to today.
-    const lastsent = await ALERT_STATE.get(`lastsent:${key}`);
-    assert.equal(lastsent, DAY(), "watermark advanced to today after catch-up send");
-    // digest_catchup stat was bumped.
-    const catchupStat = await ALERT_STATE.get("stats:alltime:digest_catchup");
-    assert.equal(catchupStat, "1", "catch-up stat bumped");
-  } finally { globalThis.fetch = realFetch; }
-});
-
-test("catch-up rollup: one subscriber with two active watches gets one batched email", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const firstKey = "sub:rollup-first:r01";
-  const secondKey = "sub:rollup-second:r02";
-  const sharedEmail = "rollup-catchup@example.com";
-  const record = (lens) => ({
-    email: sharedEmail,
-    lens,
-    filter: { minAmount: 500000, keywords: ["construction"] },
-    freq: "daily",
-    channel: "email",
-    createdAt: "2026-07-01T00:00:00.000Z",
-    lang: "en",
+test("catch-up evaluates a non-date meetings predicate without a lastsent date floor", async () => {
+  const { env, sqlite } = createEnv();
+  const key = "sub:meeting-old:m01";
+  seedSub(env, key, {
+    lens: "meetings",
+    filter: { keywords: ["hearing"] },
+    lastsent: "2026-08-09",
   });
-  SUBS.store.set(firstKey, JSON.stringify(record("money")));
-  SUBS.store.set(secondKey, JSON.stringify(record("money")));
-  await ALERT_STATE.put(`lastsent:${firstKey}`, "2026-07-28");
-  await ALERT_STATE.put(`lastsent:${secondKey}`, "2026-07-28");
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const notices = [
-    { request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed construction", contract_amount: "900000", section_name: "Procurement" },
-  ];
-  const sent = [];
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = async (url, opts) => {
-    const u = String(url);
-    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
-    if (u.includes("api.resend.com")) { sent.push(JSON.parse(opts.body)); return Response.json({ id: "catchup_rollup_1" }); }
-    throw new Error("unexpected fetch: " + u);
-  };
+  await env.ALERT_STATE.put("seen:" + key, JSON.stringify(["MEETING-OLD"]));
+  const fetches = [];
+  let resendCalls = 0;
+  const restore = withFetch((url) => {
+    fetches.push(url);
+    if (url.includes("api.resend.com")) { resendCalls++; return Response.json({ id: "must-not-send" }); }
+    return Response.json([{
+      request_id: "MEETING-OLD",
+      start_date: "2020-01-02",
+      event_date: "2026-08-11",
+      section_name: "Public Hearings and Meetings",
+      short_title: "Old publication, current hearing",
+    }]);
+  });
   try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    assert.equal(r.candidates, 1, "one recovery occasion for the subscriber account");
-    assert.equal(r.results.length, 1, "one account result");
-    assert.equal(r.results[0].kind, "rollup");
-    assert.equal(r.results[0].sent, true);
-    assert.equal(r.results[0].sections.length, 2, "both active watches are represented in the batch");
-    assert.equal(r.results[0].sendUnits, 1);
-    assert.equal(sent.length, 1, "one provider send for one subscriber account");
-    assert.equal(await ALERT_STATE.get(`lastsent:${firstKey}`), DAY(), "first watch watermark advances after the account send");
-    assert.equal(await ALERT_STATE.get(`lastsent:${secondKey}`), DAY(), "second watch watermark advances after the account send");
-    const dayLog = await readDigestDayLog(env, DAY());
-    assert.equal(dayLog.entries.filter((entry) => entry.kind === "rollup").length, 1, "one account rollup day-log entry");
-    assert.equal(dayLog.entries.find((entry) => entry.kind === "rollup").sections.length, 2, "day log keeps both subscription sections");
-  } finally { globalThis.fetch = realFetch; }
+    const result = await runCatchUpDigests(env, { subKeys: [key] });
+    assert.equal(result.live, false);
+    assert.equal(result.sentThisRun, 0);
+    assert.equal(result.receipt.enqueued, 1);
+    assert.equal(result.results[0].sections[0].status, "success");
+    assert.equal(resendCalls, 0, "evaluation never calls the provider");
+    assert.equal(await env.ALERT_STATE.get("lastsent:" + key), "2026-08-09", "lastsent is telemetry only");
+    assert.equal(await env.ALERT_STATE.get("seen:" + key), JSON.stringify(["MEETING-OLD"]), "legacy seen is untouched");
+    assert.equal(sqlite.prepare("SELECT item_id FROM digest_outbox_items").get().item_id, "notice:MEETING-OLD");
+    const sourceRequest = fetches.find((url) => url.includes("dg92-zbpx"));
+    assert.ok(sourceRequest);
+    assert.ok(!sourceRequest.includes("start_date%20%3E%3D") && !sourceRequest.includes("start_date+%3E%3D"), "source request has no lastsent floor");
+  } finally {
+    restore();
+    sqlite.close();
+  }
+});
+
+test("catch-up enqueues distinct land identities by project_id", async () => {
+  const { env, sqlite } = createEnv();
+  const key = "sub:land-projects:l01";
+  seedSub(env, key, { lens: "land", filter: { status: "all", keywords: [] }, lastsent: "2026-08-09" });
+  let resendCalls = 0;
+  const restore = withFetch((url) => {
+    if (url.includes("api.resend.com")) { resendCalls++; return Response.json({ id: "must-not-send" }); }
+    return Response.json([
+      { project_id: "P-1", project_name: "Same title", current_milestone_date: "2020-01-01" },
+      { project_id: "P-2", project_name: "Same title", current_milestone_date: "2020-01-01" },
+    ]);
+  });
+  try {
+    const result = await runCatchUpDigests(env, { subKeys: [key] });
+    assert.equal(result.receipt.enqueued, 2);
+    assert.equal(result.results[0].sections[0].new, 2);
+    assert.equal(resendCalls, 0);
+    assert.deepEqual(
+      sqlite.prepare("SELECT item_id FROM digest_outbox_items ORDER BY item_id").all().map((row) => row.item_id),
+      ["land:P-1", "land:P-2"],
+    );
+  } finally {
+    restore();
+    sqlite.close();
+  }
+});
+
+test("catch-up reruns are idempotent and do not drain the outbox", async () => {
+  const { env, sqlite } = createEnv();
+  const key = "sub:idempotent:i01";
+  seedSub(env, key, { lens: "land", filter: { status: "all", keywords: [] }, lastsent: "2026-08-09" });
+  const restore = withFetch((url) => {
+    if (url.includes("api.resend.com")) throw new Error("provider must not be called");
+    return Response.json([{ project_id: "P-1", project_name: "One" }]);
+  });
+  try {
+    const first = await runCatchUpDigests(env, { subKeys: [key] });
+    const second = await runCatchUpDigests(env, { subKeys: [key] });
+    assert.equal(first.receipt.enqueued, 1);
+    assert.equal(second.receipt.enqueued, 0);
+    assert.equal(second.results[0].sections[0].enqueued, 0);
+    assert.equal(second.results[0].sections[0].status, "success");
+    assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_items").get().n, 1);
+  } finally {
+    restore();
+    sqlite.close();
+  }
+});
+
+test("catch-up surfaces partial_error and failed sections instead of complete", async () => {
+  const { env, sqlite } = createEnv();
+  const goodKey = "sub:partial-good:p01";
+  const badKey = "sub:partial-bad:p02";
+  const email = "partial@example.com";
+  seedSub(env, goodKey, {
+    email, lens: "meetings", filter: { keywords: ["meet"] }, lastsent: "2026-08-09",
+  });
+  seedSub(env, badKey, {
+    email, lens: "money", filter: { minAmount: 500000, keywords: ["fail"] }, lastsent: "2026-08-09",
+  });
+  const restore = withFetch((url) => {
+    if (url.includes("api.resend.com")) throw new Error("provider must not be called");
+    if (url.includes("fail")) throw new Error("money source unavailable");
+    return Response.json([{
+      request_id: "MEETING-OK",
+      event_date: "2026-08-11",
+      section_name: "Public Hearings and Meetings",
+      short_title: "Meeting",
+    }]);
+  });
+  try {
+    const result = await runCatchUpDigests(env, { subKeys: [goodKey] });
+    assert.equal(result.status, "partial_error");
+    assert.equal(result.results[0].complete, false);
+    const sections = result.results[0].sections;
+    assert.deepEqual(sections.map((section) => section.status), ["success", "failed"]);
+    assert.equal(sections[1].error, "money source unavailable");
+    assert.equal(result.receipt.outcomes.partial_error, 1);
+    assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_items").get().n, 1);
+  } finally {
+    restore();
+    sqlite.close();
+  }
+});
+
+test("catch-up reports all-source failure as failed", async () => {
+  const { env, sqlite } = createEnv();
+  const key = "sub:failed-source:f01";
+  seedSub(env, key, { lens: "money", filter: { minAmount: 500000, keywords: ["fail"] }, lastsent: "2026-08-09" });
+  const restore = withFetch((url) => {
+    if (url.includes("fail")) throw new Error("source unavailable");
+    return Response.json([]);
+  });
+  try {
+    const result = await runCatchUpDigests(env, { subKeys: [key] });
+    assert.equal(result.status, "failed");
+    assert.equal(result.results[0].status, "failed");
+    assert.equal(result.results[0].complete, false);
+    assert.equal(result.receipt.outcomes.failed, 1);
+  } finally {
+    restore();
+    sqlite.close();
+  }
 });
 
 test("catch-up receipt: written with mode 'catch_up' and readable", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const key = "sub:receipt@example.com:r01";
-  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "false", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = mockFetch([]);
+  const { env, sqlite } = createEnv();
+  const key = "sub:receipt:r01";
+  seedSub(env, key, { lens: "land", filter: { status: "all", keywords: [] }, lastsent: "2026-08-09" });
+  const restore = withFetch(() => Response.json([]));
   try {
-    await runCatchUpDigests(env, { minLagDays: 2 });
+    await runCatchUpDigests(env, { subKeys: [key] });
     const receipt = await readCatchUpReceipt(env);
-    assert.ok(receipt, "receipt exists");
+    assert.ok(receipt);
     assert.equal(receipt.mode, "catch_up");
-    assert.equal(receipt.candidates, 1);
-  } finally { globalThis.fetch = realFetch; }
-});
-
-test("catch-up: no lagging subs returns skipped_reason 'no_lagging_subs'", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const today = DAY();
-  const key = "sub:current@example.com:n01";
-  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: today });
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = mockFetch([]);
-  try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    assert.equal(r.candidates, 0, "no lagging subs");
-    assert.equal(r.receipt.skipped_reason, "no_lagging_subs");
-  } finally { globalThis.fetch = realFetch; }
-});
-
-test("catch-up: explicit subKeys forces catch-up for specified subs regardless of lag", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const today = DAY();
-  const key = "sub:forced@example.com:f01";
-  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: today }); // NOT lagging
-  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "false", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = mockFetch([
-    { request_id: "20260731001", start_date: "2026-07-31T00:00:00.000", agency_name: "DDC", short_title: "Forced", contract_amount: "600000", section_name: "Procurement" },
-  ]);
-  try {
-    const r = await runCatchUpDigests(env, { subKeys: [key] });
-    assert.equal(r.candidates, 1, "forced sub is targeted even though it's not lagging");
-  } finally { globalThis.fetch = realFetch; }
-});
-
-// QUEUE_DIGESTS must not skip catch-up daylog merge — desk phantom_send exemption
-// requires stamped daylog rows (action/traffic_class catch_up).
-test("catch-up under queue mode: daylog entries are written with catch_up stamp", async () => {
-  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
-  const key = "sub:queuecu@example.com:q01";
-  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
-  const env = {
-    SUBS,
-    ALERT_STATE,
-    ALERTS_LIVE: "true",
-    RESEND_API_KEY: "rk",
-    TOKEN_SECRET: "s".repeat(32),
-    // Simulate production queue mode: catch-up must still write daylog (was gated off).
-    QUEUE_DIGESTS: "true",
-    DIGEST_QUEUE: { send: async () => {} },
-  };
-  const notices = [
-    { request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed A", contract_amount: "900000", section_name: "Procurement" },
-    { request_id: "20260730001", start_date: "2026-07-30T00:00:00.000", agency_name: "DDC", short_title: "Missed B", contract_amount: "800000", section_name: "Procurement" },
-  ];
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = mockFetch(notices);
-  // Force Resend success path via mockFetch (ALERTS_LIVE true).
-  globalThis.fetch = async (url, opts) => {
-    const u = String(url);
-    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
-    if (u.includes("api.resend.com")) return Response.json({ id: "catchup_q1" });
-    throw new Error("unexpected fetch: " + u);
-  };
-  try {
-    const r = await runCatchUpDigests(env, { minLagDays: 2 });
-    assert.equal(r.candidates, 1);
-    assert.ok(r.results[0]?.sent, "catch-up send happened");
-    const day = DAY();
-    const dayLog = await readDigestDayLog(env, day);
-    assert.ok(dayLog, "daylog must exist under queue mode after catch-up");
-    assert.ok(Array.isArray(dayLog.entries) && dayLog.entries.length >= 1, "daylog has catch-up entries");
-    const stamped = dayLog.entries.filter((e) => e.action === "catch_up" || e.traffic_class === "catch_up");
-    assert.ok(stamped.length >= 1, "at least one entry stamped catch_up");
-    assert.equal(stamped[0].traffic_class, "catch_up");
-    // Desk correctness: multi-day noticeCount vs day-scoped expected=0 is exempt.
-    const c = correctnessCheck({
-      day,
-      dayLog,
-      recounts: { [stamped[0].id]: { noticeCount: 0, noticeIds: [] } },
-    });
-    assert.equal(c.status, "ok", "stamped catch-up must not phantom_send");
-    assert.ok(c.catchUpExempt >= 1);
+    assert.equal(receipt.evaluation_only, true);
+    assert.equal(receipt.sent, 0);
   } finally {
-    globalThis.fetch = realFetch;
+    restore();
+    sqlite.close();
   }
 });
 
