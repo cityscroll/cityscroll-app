@@ -24,6 +24,7 @@ import {
   handleAdminOpsContract,
   handleAdminStats,
   handleAdminOwedBacklog,
+  handleAdminDigestBackfill,
   handleAdminDigestRollup,
   handleAdminDigestShadow,
   handleAdminDigestSendTest,
@@ -135,6 +136,7 @@ export default {
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);
     if (pathname === "/admin/stats") return handleAdminStats(request, env);
     if (pathname === "/admin/owed-backlog") return handleAdminOwedBacklog(request, env);
+    if (pathname === "/admin/digest-backfill") return handleAdminDigestBackfill(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
     if (pathname === "/admin/digest-shadow") return handleAdminDigestShadow(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
