@@ -23,6 +23,50 @@ const INSERT_OUTBOX_ITEM = `
   ON CONFLICT (watch_id, item_id) DO NOTHING
 `;
 
+const INSERT_DELIVERY_OCCASION = `
+  INSERT INTO digest_outbox_deliveries
+    (subscriber_id, scheduled_day, delivery_id, status, reserved_at, eligible_count)
+  VALUES (?, ?, ?, 'reserved', ?, ?)
+  ON CONFLICT (subscriber_id, scheduled_day) DO NOTHING
+`;
+
+const SELECT_OWED_ITEMS = `
+  SELECT watch_id, subscriber_id, item_id, lens, item_kind, payload_json,
+         source_observed_at, first_owed_at, owed_origin, status, delivered_at,
+         delivery_id, attempt_count, last_attempt_at, last_error
+    FROM digest_outbox_items
+   WHERE subscriber_id = ? AND status = 'owed'
+   ORDER BY first_owed_at ASC, watch_id ASC, item_id ASC
+   LIMIT ?
+`;
+
+const MARK_ATTEMPT = `
+  UPDATE digest_outbox_items
+     SET attempt_count = attempt_count + 1,
+         last_attempt_at = ?,
+         last_error = NULL
+   WHERE watch_id = ? AND item_id = ? AND status = 'owed'
+`;
+
+const MARK_DELIVERED = `
+  UPDATE digest_outbox_items
+     SET status = 'delivered', delivered_at = ?, delivery_id = ?, last_error = NULL
+   WHERE watch_id = ? AND item_id = ? AND status = 'owed'
+`;
+
+const COMPLETE_DELIVERY = `
+  UPDATE digest_outbox_deliveries
+     SET status = ?, sent_at = ?, provider_message_id = ?,
+         eligible_count = ?, delivered_count = ?, error_json = ?
+   WHERE subscriber_id = ? AND scheduled_day = ? AND delivery_id = ?
+`;
+
+const FAIL_DELIVERY = `
+  UPDATE digest_outbox_deliveries
+     SET status = 'failed', error_json = ?
+   WHERE subscriber_id = ? AND scheduled_day = ? AND delivery_id = ?
+`;
+
 function text(value) {
   return value == null ? "" : String(value).trim();
 }
@@ -191,6 +235,102 @@ async function runInsert(db, params) {
   const statement = db.prepare(INSERT_OUTBOX_ITEM);
   if (typeof statement.bind === "function") return statement.bind(...params).run();
   return statement.run(...params);
+}
+
+async function runStatement(db, sql, params = []) {
+  const statement = db.prepare(sql);
+  if (typeof statement.bind === "function") return statement.bind(...params).run();
+  return statement.run(...params);
+}
+
+function randomDeliveryId() {
+  if (typeof globalThis.crypto?.randomUUID === "function") return `digest:${globalThis.crypto.randomUUID()}`;
+  return `digest:${Date.now().toString(36)}:${Math.random().toString(36).slice(2)}`;
+}
+
+/**
+ * Reserve the single scheduled delivery occasion for a subscriber/day.
+ * A conflict is a normal, non-error result: it means another queue delivery
+ * already owns today's occasion and must not be followed by a second send.
+ */
+export async function reserveDeliveryOccasion(db, subscriberId, scheduledDay, reservedAt, deliveryId = null, eligibleCount = 0) {
+  if (!db?.prepare) throw new TypeError("delivery reservation requires a D1 database");
+  const id = deliveryId || randomDeliveryId();
+  const result = await runStatement(db, INSERT_DELIVERY_OCCASION, [
+    subscriberId,
+    scheduledDay,
+    id,
+    nowISO(reservedAt),
+    Math.max(0, Number(eligibleCount) || 0),
+  ]);
+  return { reserved: changesFrom(result) !== 0, deliveryId: id };
+}
+
+/** Read the durable owed set; source dates and lastsent are intentionally absent. */
+export async function listOwedItems(db, subscriberId, limit = 500) {
+  if (!db?.prepare) throw new TypeError("owed lookup requires a D1 database");
+  const statement = db.prepare(SELECT_OWED_ITEMS);
+  const result = typeof statement.bind === "function"
+    ? await statement.bind(subscriberId, Math.max(1, Number(limit) || 500)).all()
+    : await statement.all(subscriberId, Math.max(1, Number(limit) || 500));
+  return Array.isArray(result?.results) ? result.results : (Array.isArray(result) ? result : []);
+}
+
+/** Mark the exact provider-attributed items delivered and close the occasion. */
+export async function finalizeAcceptedDelivery(db, {
+  subscriberId,
+  scheduledDay,
+  deliveryId,
+  items = [],
+  acceptedAt,
+  providerMessageId = null,
+  status = "sent",
+  error = null,
+  eligibleCount = null,
+} = {}) {
+  if (!db?.prepare) throw new TypeError("delivery finalization requires a D1 database");
+  if (!["sent", "partial_error"].includes(status)) throw new TypeError("invalid accepted delivery status");
+  const at = nowISO(acceptedAt);
+  const exact = Array.isArray(items) ? items.filter((item) => item?.watch_id && item?.item_id) : [];
+  const statements = exact.map((item) => db.prepare(MARK_DELIVERED).bind(
+    at, deliveryId, item.watch_id, item.item_id,
+  ));
+  statements.push(db.prepare(COMPLETE_DELIVERY).bind(
+    status, at, providerMessageId, eligibleCount == null ? exact.length : Math.max(0, Number(eligibleCount) || 0), exact.length, error ? JSON.stringify(error) : null,
+    subscriberId, scheduledDay, deliveryId,
+  ));
+  if (typeof db.batch === "function") {
+    await db.batch(statements);
+  } else {
+    for (const statement of statements) await statement.run();
+  }
+  return {
+    status,
+    deliveredCount: exact.length,
+    eligibleCount: eligibleCount == null ? exact.length : Math.max(0, Number(eligibleCount) || 0),
+  };
+}
+
+/** Record a provider failure while deliberately leaving every item owed. */
+export async function failDelivery(db, { subscriberId, scheduledDay, deliveryId, error } = {}) {
+  if (!db?.prepare) throw new TypeError("delivery failure requires a D1 database");
+  await runStatement(db, FAIL_DELIVERY, [
+    error ? JSON.stringify(error) : JSON.stringify({ message: "provider rejected delivery" }),
+    subscriberId,
+    scheduledDay,
+    deliveryId,
+  ]);
+  return { status: "failed" };
+}
+
+/** Stamp an attempt without changing owed membership. */
+export async function markDeliveryAttempt(db, items = [], attemptedAt) {
+  if (!db?.prepare) throw new TypeError("delivery attempt requires a D1 database");
+  const statements = (Array.isArray(items) ? items : []).filter((item) => item?.watch_id && item?.item_id)
+    .map((item) => db.prepare(MARK_ATTEMPT).bind(nowISO(attemptedAt), item.watch_id, item.item_id));
+  if (typeof db.batch === "function") await db.batch(statements);
+  else for (const statement of statements) await statement.run();
+  return statements.length;
 }
 
 function changesFrom(result) {
