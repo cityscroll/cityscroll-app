@@ -695,7 +695,7 @@ async function normalizeWatchIdentity(s) {
 }
 
 async function enqueueNormalSection(env, s, section, rows, ctx, kind) {
-  if (!env.DB || !s?.watch_id || !s?.subscriber_id || section?.status !== SECTION_STATUS.SUCCESS) return null;
+  if (ctx.previewOnly || !env.DB || !s?.watch_id || !s?.subscriber_id || section?.status !== SECTION_STATUS.SUCCESS) return null;
   try {
     return await enqueueEvaluatedSection(env.DB, {
       lens: s.lens,
@@ -1004,7 +1004,7 @@ export async function processOneSub(env, s, ctx) {
         }
       } else {
         // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
-        logDryRunEmail(payload);
+        if (!ctx.previewOnly) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
@@ -1195,7 +1195,7 @@ export async function processAccountRollup(env, subs, ctx) {
           emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email" });
         }
       } else {
-        logDryRunEmail(payload);
+        if (!ctx.previewOnly) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
@@ -1457,7 +1457,7 @@ export async function processAwardSub(env, s, ctx) {
         await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
         emitUsageEvent(env, { event: "digest_sent", surface: "email" });
       } else {
-        logDryRunEmail(payload);
+        if (!ctx.previewOnly) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
@@ -2008,6 +2008,57 @@ export async function dryRunRollupForEmail(env, email) {
 }
 
 /**
+ * Render the next scheduled delivery for one subscriber without evaluating any
+ * delivery-side writes. The returned preview is produced by the same single- or
+ * account-level renderer used by the scheduled drain.
+ */
+export async function previewNextDigestForSubscriber(env, subscriberId, { day, now = new Date() } = {}) {
+  const all = await subWatches(env, { readOnly: true });
+  const list = all.filter((s) => s.subscriber_id === subscriberId);
+  const active = list.filter(isWatchActive);
+  if (!list.length) return { ok: false, reason: "subscriber-not-found" };
+
+  const scheduledDay = day || new Date(now).toISOString().slice(0, 10);
+  const ctx = {
+    FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
+    LIVE: false,
+    previewOnly: true,
+    capturePreviews: true,
+    heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
+    today: scheduledDay,
+    now,
+    nowMs: new Date(now).getTime(),
+    isMonday: new Date(`${scheduledDay}T00:00:00.000Z`).getUTCDay() === 1,
+    counts: () => ({ "per-run": 0, daily: 0 }),
+    caps: { "per-run": 9999, daily: 9999 },
+    onSent: async () => {},
+    advanceState: false,
+  };
+  if (!active.length) {
+    return {
+      ok: true,
+      subscriberId,
+      watchCount: list.length,
+      activeCount: 0,
+      mode: "empty",
+      result: { kind: "empty", skipped: "all-paused", preview: null },
+    };
+  }
+  const result = active.length === 1
+    ? await processOneSub(env, active[0], ctx)
+    : await processAccountRollup(env, active, ctx);
+  return {
+    ok: true,
+    subscriberId,
+    watchCount: list.length,
+    activeCount: active.length,
+    rollup: active.length > 1,
+    mode: active.length > 1 ? "rollup" : "single",
+    result,
+  };
+}
+
+/**
  * Admin test-send: run the normal digest path with live delivery enabled for this request only.
  * State advancement is opt-in so a test message cannot consume tomorrow's notices by default.
  */
@@ -2332,7 +2383,7 @@ async function setLastSent(env, id, date) {
 
 // ---- confirmed subscriptions (SUBS KV) -----------------------------------
 
-async function subWatches(env) {
+async function subWatches(env, { readOnly = false } = {}) {
   if (!env.SUBS) return [];
   const out = [];
   let cursor;
@@ -2344,7 +2395,7 @@ async function subWatches(env) {
           const parsed = JSON.parse(await env.SUBS.get(k.name));
           if (parsed && parsed.email) {
             const { record, changed } = await ensureSubscriptionIdentity(parsed, k.name);
-            if (changed) {
+            if (changed && !readOnly) {
               try { await env.SUBS.put(k.name, JSON.stringify(record)); } catch { /* read remains compatible with minimal KV fixtures */ }
             }
             out.push({ key: k.name, ...record });

@@ -45,6 +45,7 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.stats_metrics.some((m) => m.exclude_developer_traffic === true));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/stats"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/next-digest-preview"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/digest-shadow"));
   assert.equal(doc.digest_shadow.contract, "digest-shadow.v1");
   assert.equal(doc.digest_shadow.hold.contract, "digest-shadow-hold.v1");

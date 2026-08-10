@@ -11,7 +11,12 @@ import {
   maskKey as watchLogMaskKey,
   readWatchLog,
 } from "./lib/watchlog.mjs";
-import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
+import {
+  dryRunRollupForEmail,
+  digestSendTestForEmail,
+  previewNextDigestForSubscriber,
+  runCatchUpDigests,
+} from "./alerts.mjs";
 import {
   INVESTIGATION_WORKSPACE_VERSION,
   buildInvestigationWorkspace,
@@ -30,7 +35,7 @@ import { timingSafeEqualString } from "./lib/secret_compare.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 import { handlePrivateStats } from "./stats.mjs";
-import { readOwedBacklog } from "./owed_backlog.mjs";
+import { readOwedBacklog, scanSubscriberMetadata, scheduledTimes } from "./owed_backlog.mjs";
 import {
   BackfillCoverageError,
   BackfillInputError,
@@ -561,6 +566,119 @@ export async function handleAdminOwedBacklog(req, env, options = {}) {
   return json(backlog, 200);
 }
 
+function digestHtmlToText(html) {
+  return String(html || "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(?:p|li|h[1-6]|section|div|tr)>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+async function previewSubscribers(env, backlog) {
+  const byId = new Map((backlog.subscribers || []).map((row) => [row.subscriber_id, { ...row }]));
+  const metadata = await scanSubscriberMetadata(env.SUBS);
+  for (const [subscriberId, details] of metadata.bySubscriber) {
+    const current = byId.get(subscriberId) || {
+      subscriber_id: subscriberId,
+      owed_count: 0,
+      next_scheduled_at: backlog.next_scheduled_at,
+    };
+    byId.set(subscriberId, {
+      ...current,
+      subscriber_label: details.subscriber_label || current.subscriber_label || subscriberId,
+      active_watch_count: details.active_watch_count ?? current.active_watch_count ?? 0,
+    });
+  }
+  return [...byId.values()].sort((a, b) => String(a.subscriber_id).localeCompare(String(b.subscriber_id)));
+}
+
+function previewLink(req, subscriberId = null) {
+  const url = new URL(req.url);
+  url.pathname = "/admin/next-digest-preview";
+  url.searchParams.delete("view");
+  if (subscriberId) url.searchParams.set("subscriber", subscriberId);
+  else url.searchParams.delete("subscriber");
+  return `${url.pathname}${url.search}`;
+}
+
+function renderNextDigestPreviewPage(body) {
+  const heading = body.index ? "Next scheduled digest previews" : "Next scheduled digest preview";
+  const content = body.index
+    ? (body.subscribers.length
+      ? `<table><thead><tr><th>Subscriber</th><th>Owed</th><th>Preview</th></tr></thead><tbody>${body.subscribers.map((row) => `<tr><th scope="row">${escapeHtml(row.subscriber_label)}<br><small>${escapeHtml(row.subscriber_id)}</small></th><td>${deskNumber(row.owed_count)}</td><td><a href="${escapeHtml(row.preview_url)}">Open preview</a></td></tr>`).join("")}</tbody></table>`
+      : "<p>No subscribers are configured.</p>")
+    : `<dl class="ops"><dt>Subscriber</dt><dd>${escapeHtml(body.subscriber_label)}<br><small>${escapeHtml(body.subscriber_id)}</small></dd><dt>Next scheduled at</dt><dd>${escapeHtml(deskDate(body.next_scheduled_at))}</dd><dt>Owed items</dt><dd>${deskNumber(body.owed_item_count)}</dd></dl>${body.empty ? "<p class=\"empty\">No owed delivery items. The next scheduled digest has nothing to preview.</p>" : `<h2>Digest body</h2><p><strong>${escapeHtml(body.subject)}</strong></p><div class="digest-body">${body.digest_html}</div>`}`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${heading} · CityScroll desk</title><style>:root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:900px;margin:auto;padding:28px 20px 64px}.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px}header{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:20px}.eyebrow{margin:0 0 6px;color:#1f6b4f;font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1,h2{font-family:ui-serif,Georgia,serif}h1{margin:0;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05}.lede,.empty{color:var(--muted)}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0 0 20px}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;overflow-wrap:anywhere}table{width:100%;border-collapse:collapse}th,td{padding:9px 6px;border-bottom:1px solid var(--rule);text-align:right}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.digest-body{border-top:1px solid var(--rule);padding-top:18px;overflow-wrap:anywhere}@media(max-width:600px){.wrap{padding-inline:14px}.ops{grid-template-columns:1fr}.ops dd{text-align:left}}</style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · read-only preview</p><h1>${heading}</h1><p class="lede">A dry-run of the body the next scheduled drain would send. This surface sends nothing and advances no delivery state.</p></header><section class="card">${content}</section></main></body></html>`;
+}
+
+/** GET /admin/next-digest-preview?key=…[&subscriber=<opaque id|redacted label>] — read-only. */
+export async function handleAdminNextDigestPreview(req, env, options = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  if (!env.DB) return json({ error: "no-store" }, 503);
+
+  const url = new URL(req.url);
+  const backlog = await readOwedBacklog(env, options);
+  if (!backlog.available) return json({ error: backlog.error || "no-store" }, 503);
+  const subscribers = await previewSubscribers(env, backlog);
+  const requested = url.searchParams.get("subscriber");
+  if (!requested) {
+    const body = {
+      schema: "next-digest-preview.v1",
+      index: true,
+      generated_at: backlog.generated_at,
+      next_scheduled_at: backlog.next_scheduled_at,
+      subscribers: subscribers.map((row) => ({
+        subscriber_id: row.subscriber_id,
+        subscriber_label: row.subscriber_label || row.subscriber_id,
+        owed_count: Number(row.owed_count) || 0,
+        preview_url: previewLink(req, row.subscriber_id),
+      })),
+    };
+    if (url.searchParams.get("view") === "html" || (req.headers.get("accept") || "").includes("text/html")) {
+      return new Response(renderNextDigestPreviewPage(body), { status: 200, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" } });
+    }
+    return json(body, 200);
+  }
+
+  const matches = subscribers.filter((row) => row.subscriber_id === requested || row.subscriber_label === requested);
+  if (matches.length > 1) return json({ error: "subscriber-ambiguous" }, 409);
+  if (!matches.length) return json({ error: "subscriber-not-found" }, 404);
+  const row = matches[0];
+  const timing = scheduledTimes(options.now || new Date());
+  const result = await previewNextDigestForSubscriber(env, row.subscriber_id, { day: timing.nextScheduledAt.slice(0, 10), now: timing.now });
+  if (!result.ok) return json({ error: result.reason || "subscriber-not-found" }, 404);
+  if (result.result?.error) return json({ error: "preview-unavailable" }, 503);
+  const digest = result.result?.preview || null;
+  const body = {
+    schema: "next-digest-preview.v1",
+    index: false,
+    generated_at: timing.now.toISOString(),
+    next_scheduled_at: timing.nextScheduledAt,
+    subscriber_id: row.subscriber_id,
+    subscriber_label: row.subscriber_label || row.subscriber_id,
+    owed_item_count: Number(row.owed_count) || 0,
+    mode: result.mode,
+    empty: !digest?.html,
+    subject: digest?.subject || null,
+    digest_html: digest?.html || null,
+    digest_text: digest?.html ? digestHtmlToText(digest.html) : null,
+  };
+  if (url.searchParams.get("view") === "html" || (req.headers.get("accept") || "").includes("text/html")) {
+    return new Response(renderNextDigestPreviewPage(body), { status: 200, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" } });
+  }
+  return json(body, 200);
+}
+
 /**
  * POST /admin/digest-backfill?key=… — enqueue the exact first carry-forward
  * payload. This is a no-send path: it reads SUBS, writes D1 outbox rows, and
@@ -610,7 +728,7 @@ function deskDate(value) {
     : date.toLocaleString("en-US", { timeZone: "UTC" }) + " UTC";
 }
 
-export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklogHref = "/admin/owed-backlog") {
+export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklogHref = "/admin/owed-backlog", nextDigestPreviewHref = "/admin/next-digest-preview") {
   const usage = stats.usage || {};
   const daily = Object.entries(usage.growth?.by_day || {})
     .sort(([a], [b]) => b.localeCompare(a))
@@ -627,10 +745,10 @@ export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklog
     : backlogRows.length === 0
       ? "<p>No owed delivery items.</p>"
       : `<table><thead><tr><th>Subscriber</th><th>Owed</th><th>Oldest</th><th>Last delivery</th><th>Drill-in</th></tr></thead><tbody>${backlogRows.map((row) => `<tr${row.overdue ? ' class="overdue-row"' : ""}><th scope="row">${escapeHtml(row.subscriber_label)}<br><small>${escapeHtml(row.subscriber_id)} · ${row.active_watch_count == null ? "watch count unavailable" : `${deskNumber(row.active_watch_count)} active watch${row.active_watch_count === 1 ? "" : "es"}`}</small></th><td>${deskNumber(row.owed_count)} ${row.overdue ? '<strong class="overdue-badge">OVERDUE</strong>' : ""}</td><td>${escapeHtml(row.oldest_age)}<br><small>${escapeHtml(deskDate(row.oldest_owed_at))}</small></td><td>${escapeHtml(row.last_delivery_status || "Not recorded")}<br><small>${escapeHtml(deskDate(row.last_sent_at))}</small></td><td>${escapeHtml(row.oldest_lens || "Not recorded")} / ${escapeHtml(row.oldest_item_id || "Not recorded")}</td></tr>`).join("")}</tbody></table>`;
-  const backlogPanel = `<section class="panel backlog-panel" aria-labelledby="owed-backlog-heading"><div class="panel-heading"><div><h2 id="owed-backlog-heading">Owed delivery backlog</h2><p class="panel-note">${backlogUnavailable ? "D1 read model unavailable." : `${deskNumber(backlogTotal)} item${backlogTotal === 1 ? "" : "s"} owed across ${deskNumber(backlogRows.length)} subscriber${backlogRows.length === 1 ? "" : "s"}. Next scheduled digest: ${escapeHtml(deskDate(owedBacklog?.next_scheduled_at))}.`}</p></div><a href="${escapeHtml(owedBacklogHref)}">Open JSON</a></div>${backlogContent}</section>`;
+  const backlogPanel = `<section class="panel backlog-panel" aria-labelledby="owed-backlog-heading"><div class="panel-heading"><div><h2 id="owed-backlog-heading">Owed delivery backlog</h2><p class="panel-note">${backlogUnavailable ? "D1 read model unavailable." : `${deskNumber(backlogTotal)} item${backlogTotal === 1 ? "" : "s"} owed across ${deskNumber(backlogRows.length)} subscriber${backlogRows.length === 1 ? "" : "s"}. Next scheduled digest: ${escapeHtml(deskDate(owedBacklog?.next_scheduled_at))}.`}</p></div><span class="panel-actions"><a href="${escapeHtml(owedBacklogHref)}">Open JSON</a><a href="${escapeHtml(nextDigestPreviewHref)}">Preview next digests</a></span></div>${backlogContent}</section>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Product activity · CityScroll desk</title><style>
-  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f;--red:#a52d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}.backlog-panel{grid-column:1/-1}.panel-heading{display:flex;justify-content:space-between;gap:16px;align-items:start}.panel-heading a{white-space:nowrap}.panel-note{color:var(--muted);margin:0 0 12px}.overdue-row{background:#fff0ed}.overdue-badge{display:inline-block;color:#fff;background:var(--red);border-radius:4px;padding:1px 5px;font-size:.68rem;letter-spacing:.04em;margin-left:4px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}.backlog-panel{grid-column:auto}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
+  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f;--red:#a52d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}.backlog-panel{grid-column:1/-1}.panel-heading{display:flex;justify-content:space-between;gap:16px;align-items:start}.panel-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}.panel-actions a{white-space:nowrap}.panel-note{color:var(--muted);margin:0 0 12px}.overdue-row{background:#fff0ed}.overdue-badge{display:inline-block;color:#fff;background:var(--red);border-radius:4px;padding:1px 5px;font-size:.68rem;letter-spacing:.04em;margin-left:4px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}.backlog-panel{grid-column:auto}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
   </style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · private operations</p><h1>Product activity</h1><p class="lede">Usage, subscriptions, and delivery volumes live here because they describe product operations and people’s activity—not the public civic corpus.</p></header>
   <section class="grid" aria-label="Product activity summary">
     <article class="card"><div class="value">${deskNumber(stats.subscriptions?.accounts)}</div><div class="label">Accounts with watches</div></article>
@@ -658,7 +776,15 @@ export async function handleAdminStats(req, env, options = {}) {
     const owedBacklogUrl = new URL(req.url);
     owedBacklogUrl.pathname = "/admin/owed-backlog";
     owedBacklogUrl.searchParams.delete("view");
-    return new Response(renderAdminStatsPage(stats, owedBacklog, `${owedBacklogUrl.pathname}${owedBacklogUrl.search}`), {
+    const nextDigestPreviewUrl = new URL(req.url);
+    nextDigestPreviewUrl.pathname = "/admin/next-digest-preview";
+    nextDigestPreviewUrl.searchParams.delete("view");
+    return new Response(renderAdminStatsPage(
+      stats,
+      owedBacklog,
+      `${owedBacklogUrl.pathname}${owedBacklogUrl.search}`,
+      `${nextDigestPreviewUrl.pathname}${nextDigestPreviewUrl.search}`,
+    ), {
       status: 200,
       headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" },
     });
