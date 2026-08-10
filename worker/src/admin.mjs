@@ -32,6 +32,13 @@ import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 import { handlePrivateStats } from "./stats.mjs";
 import { readOwedBacklog } from "./owed_backlog.mjs";
 import {
+  BackfillCoverageError,
+  BackfillInputError,
+  FIRST_PAYLOAD_ID,
+  readBackfillSubscriptions,
+  runFirstPayloadBackfill,
+} from "./digest_backfill.mjs";
+import {
   DigestShadowHoldInputError,
   overrideDigestShadowHold,
   readDigestShadowDegradedReceipt,
@@ -552,6 +559,43 @@ export async function handleAdminOwedBacklog(req, env, options = {}) {
   const backlog = await readOwedBacklog(env, options);
   if (!backlog.available) return json({ error: backlog.error || "no-store" }, 503);
   return json(backlog, 200);
+}
+
+/**
+ * POST /admin/digest-backfill?key=… — enqueue the exact first carry-forward
+ * payload. This is a no-send path: it reads SUBS, writes D1 outbox rows, and
+ * never evaluates a watch or invokes a provider.
+ */
+export async function handleAdminDigestBackfill(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  if (!env.DB || !env.SUBS) return json({ error: "no-store" }, 503);
+  let body;
+  try {
+    body = await req.json();
+  } catch {
+    return json({ error: "invalid-json" }, 400);
+  }
+  if (body?.payload_id !== FIRST_PAYLOAD_ID) return json({ error: "unsupported-backfill-payload" }, 400);
+  try {
+    const subscriptions = await readBackfillSubscriptions(env.SUBS);
+    const result = await runFirstPayloadBackfill({
+      db: env.DB,
+      subscriptions,
+      ownerEmail: body?.owner_email,
+      sourceSnapshots: body?.source_snapshots,
+      deliveryEvidence: body?.delivery_evidence,
+      firstOwedAt: body?.first_owed_at,
+      payloadId: body?.payload_id,
+    });
+    return json(result, 200);
+  } catch (error) {
+    const status = error instanceof BackfillCoverageError || error instanceof BackfillInputError
+      ? error.status
+      : 503;
+    return json({ error: error instanceof Error ? error.message : "backfill failed" }, status);
+  }
 }
 
 function deskNumber(value) {

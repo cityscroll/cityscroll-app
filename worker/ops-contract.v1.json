@@ -423,6 +423,14 @@
       "description": "Read-only owed digest items grouped by subscriber, with delivery state and next schedule."
     },
     {
+      "path": "/admin/digest-backfill",
+      "methods": [
+        "POST"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "No-send enqueue of the exact first carry-forward payload after explicit delivery-coverage reconciliation."
+    },
+    {
       "path": "/admin/subs",
       "methods": [
         "GET"
