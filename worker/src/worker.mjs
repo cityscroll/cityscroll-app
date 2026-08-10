@@ -38,7 +38,7 @@ import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
 import { handleEvent } from "./events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
-import { runAlerts, consumeDigestJob, runCatchUpDigests } from "./alerts.mjs";
+import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handleNotice, prewarmNotices } from "./notice.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
@@ -174,16 +174,6 @@ export default {
     }
     // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
-    // Watermark recovery remains immediately before the normal run when explicitly enabled.
-    if (env.DIGEST_CATCH_UP === "1" || env.DIGEST_CATCH_UP === "true") {
-      try {
-        const r = await runCatchUpDigests(env, { minLagDays: 2 });
-        console.log("catch-up (env trigger):", JSON.stringify({ sent: r.sentThisRun, candidates: r.candidates }));
-      } catch (e) {
-        console.error("catch-up (env trigger) failed (normal digest continues):", String(e?.message || e));
-      }
-    }
-
     console.log("digest delivery: starting");
     await runAlerts(env);
     console.log("digest delivery: complete");

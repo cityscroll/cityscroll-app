@@ -754,8 +754,9 @@ function json(obj, status) {
   });
 }
 
-// POST /admin/digest-catchup?key=… — operator-triggered watermark recovery. Selects subs
-// whose lastsent lags by >= minLagDays (default 2) and sends one catch-up digest each.
+// POST /admin/digest-catchup?key=… — operator-triggered catch-up evaluation. Selects subs
+// whose lastsent heartbeat lags by >= minLagDays (default 2), then enqueues owed identities.
+// This endpoint never sends email or runs the delivery drain.
 // Optional body: { minLagDays?: number, subKeys?: string[] }. FAIL CLOSED until ADMIN_KEY set.
 export async function handleAdminDigestCatchUp(req, env) {
   const auth = checkAdminKey(req, env);
@@ -780,9 +781,9 @@ export async function handleAdminDigestCatchUp(req, env) {
     sentToday: result.sentToday,
     results: result.results.map((r) => ({
       sub: r.sub, lens: r.lens, action: r.action,
-      new: r.new || 0, found: r.found || 0, sent: !!r.sent,
+      new: r.new || 0, found: r.found || 0, enqueued: r.enqueued || 0, sent: false,
       capped: !!r.capped, error: r.error || null, zeroMatch: !!r.zeroMatch,
-      status: r.status || null,
+      status: r.status || null, complete: r.complete === true, sections: r.sections || [],
     })),
   }, 200);
 }
