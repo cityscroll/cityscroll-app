@@ -9,6 +9,10 @@ import {
   enqueueEvaluatedSections,
   extractLensIdentity,
   sectionResultStatus,
+  reserveDeliveryOccasion,
+  listOwedItems,
+  finalizeAcceptedDelivery,
+  failDelivery,
 } from "../src/lib/digest_outbox.mjs";
 
 const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
@@ -24,10 +28,13 @@ function d1FromSQLite(sqlite) {
               const result = statement.run(...params);
               return { meta: { changes: Number(result.changes || 0) } };
             },
+            all() { return { results: statement.all(...params) }; },
+            first() { return statement.get(...params) || null; },
           };
         },
       };
     },
+    async batch(statements) { return statements.map((statement) => statement.run()); },
   };
 }
 
@@ -160,5 +167,63 @@ test("multi-section enqueue preserves statuses while inserting only successful s
   assert.equal(result.enqueued, 1);
   assert.deepEqual(result.sections.map((section) => section.status), ["partial_error", "success", "failed"]);
   assert.deepEqual(rows(sqlite).map((row) => row.item_id), ["land:P1"]);
+  sqlite.close();
+});
+
+test("delivery occasion is unique per subscriber and UTC day", async () => {
+  const { sqlite, db } = makeDb();
+  const first = await reserveDeliveryOccasion(db, "subscriber:one", "2026-08-10", "2026-08-10T13:00:00.000Z", "delivery:one");
+  const second = await reserveDeliveryOccasion(db, "subscriber:one", "2026-08-10", "2026-08-10T13:01:00.000Z", "delivery:two");
+  assert.deepEqual(first, { reserved: true, deliveryId: "delivery:one" });
+  assert.deepEqual(second, { reserved: false, deliveryId: "delivery:two" });
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_deliveries").get().n, 1);
+  sqlite.close();
+});
+
+test("accepted delivery flips only included owed rows and preserves partial failures", async () => {
+  const { sqlite, db } = makeDb();
+  const insert = sqlite.prepare(`INSERT INTO digest_outbox_items
+    (watch_id, subscriber_id, item_id, lens, item_kind, payload_json, source_observed_at, first_owed_at, owed_origin)
+    VALUES (?, ?, ?, 'money', 'rfp', '{}', ?, ?, 'test')`);
+  insert.run("watch:one", "subscriber:one", "notice:one", "2026-08-10", "2026-08-10T12:00:00Z");
+  insert.run("watch:one", "subscriber:one", "notice:two", "2026-08-10", "2026-08-10T12:01:00Z");
+  const reservation = await reserveDeliveryOccasion(db, "subscriber:one", "2026-08-10", "2026-08-10T13:00:00Z", "delivery:one", 2);
+  const owed = await listOwedItems(db, "subscriber:one");
+  const done = await finalizeAcceptedDelivery(db, {
+    subscriberId: "subscriber:one",
+    scheduledDay: "2026-08-10",
+    deliveryId: reservation.deliveryId,
+    items: [owed[0]],
+    acceptedAt: "2026-08-10T13:00:02Z",
+    providerMessageId: "provider:one",
+    status: "partial_error",
+    error: { section: "meetings" },
+    eligibleCount: 2,
+  });
+  assert.equal(done.status, "partial_error");
+  assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = 'notice:one'").get().status, "delivered");
+  assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = 'notice:two'").get().status, "owed");
+  const receipt = sqlite.prepare("SELECT status, provider_message_id FROM digest_outbox_deliveries").get();
+  assert.equal(receipt.status, "partial_error");
+  assert.equal(receipt.provider_message_id, "provider:one");
+  assert.equal(sqlite.prepare("SELECT eligible_count, delivered_count FROM digest_outbox_deliveries").get().eligible_count, 2);
+  assert.equal(sqlite.prepare("SELECT eligible_count, delivered_count FROM digest_outbox_deliveries").get().delivered_count, 1);
+  sqlite.close();
+});
+
+test("provider failure records failed occasion and leaves every item owed", async () => {
+  const { sqlite, db } = makeDb();
+  sqlite.prepare(`INSERT INTO digest_outbox_items
+    (watch_id, subscriber_id, item_id, lens, item_kind, payload_json, source_observed_at, first_owed_at, owed_origin)
+    VALUES ('watch:one', 'subscriber:one', 'notice:one', 'money', 'rfp', '{}', '2026-08-10', '2026-08-10T12:00:00Z', 'test')`).run();
+  const reservation = await reserveDeliveryOccasion(db, "subscriber:one", "2026-08-10", "2026-08-10T13:00:00Z", "delivery:one");
+  await failDelivery(db, {
+    subscriberId: "subscriber:one",
+    scheduledDay: "2026-08-10",
+    deliveryId: reservation.deliveryId,
+    error: { message: "provider unavailable" },
+  });
+  assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = 'notice:one'").get().status, "owed");
+  assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_deliveries").get().status, "failed");
   sqlite.close();
 });
