@@ -12,7 +12,7 @@ import { signToken, verifyToken } from "optin-token";
 import { htmlPage } from "./lib/confirm_email.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { overActorLimit } from "./lib/meter.mjs";
-import { normalizeEmail, redactEmail } from "./lib/subscriptions.mjs";
+import { normalizeEmail, redactEmail, ensureSubscriptionIdentity } from "./lib/subscriptions.mjs";
 import { appendWatchLog, updateDetail, watchLabel, watchSnapshot } from "./lib/watchlog.mjs";
 import { emailFromRequest } from "./session.mjs";
 import {
@@ -144,9 +144,13 @@ export async function listWatchesForEmail(env, email) {
       for (const k of res.keys) {
         if (out.length >= PREFS_MAX_WATCHES) break;
         try {
-          const v = JSON.parse(await env.SUBS.get(k.name));
-          if (v && normalizeEmail(v.email) === want) {
-            const row = toPrefsWatchRow(v, k.name);
+          const parsed = JSON.parse(await env.SUBS.get(k.name));
+          if (parsed && normalizeEmail(parsed.email) === want) {
+            const { record, changed } = await ensureSubscriptionIdentity(parsed, k.name);
+            if (changed) {
+              try { await env.SUBS.put(k.name, JSON.stringify(record)); } catch { /* read remains compatible with minimal KV fixtures */ }
+            }
+            const row = toPrefsWatchRow(record, k.name);
             if (row) out.push(row);
           }
         } catch { /* skip */ }
@@ -190,6 +194,9 @@ async function applyPrefsAction(env, email, action, key, patch) {
   if (normalizeEmail(record.email) !== want) {
     return { error: "That watch does not belong to this address." };
   }
+  // Backfill before any preference mutation so a legacy record cannot acquire an
+  // identity that changes when its mutable filter is edited.
+  record = (await ensureSubscriptionIdentity(record, key)).record;
 
   if (action === "delete") {
     const label = watchLabel(record) || record.label;
