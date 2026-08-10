@@ -170,6 +170,22 @@ export default {
       }
       return;
     }
+    // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model
+    // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
+    // Watermark recovery remains immediately before the normal run when explicitly enabled.
+    if (env.DIGEST_CATCH_UP === "1" || env.DIGEST_CATCH_UP === "true") {
+      try {
+        const r = await runCatchUpDigests(env, { minLagDays: 2 });
+        console.log("catch-up (env trigger):", JSON.stringify({ sent: r.sentThisRun, candidates: r.candidates }));
+      } catch (e) {
+        console.error("catch-up (env trigger) failed (normal digest continues):", String(e?.message || e));
+      }
+    }
+
+    console.log("digest delivery: starting");
+    await runAlerts(env);
+    console.log("digest delivery: complete");
+
     // Refresh the D1 notices mirror first (fail-soft: an ingest failure must never
     // block the digest run — alerts fall back to querying Socrata live anyway).
     let ingestResult = null;
@@ -310,23 +326,6 @@ export default {
     } catch (e) {
       console.error("vendor profile refresh failed (digest continues):", String(e?.message || e));
     }
-    // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
-    // digest run — config watches + every KV subscription — completes.
-
-    // Watermark recovery: when DIGEST_CATCH_UP is set, send catch-up digests to any sub whose
-    // lastsent lags >= 2 days before the normal run. One-shot env flag — unset after recovery.
-    // Prefer the admin POST /admin/digest-catchup endpoint for operator control.
-    if (env.DIGEST_CATCH_UP === "1" || env.DIGEST_CATCH_UP === "true") {
-      try {
-        const r = await runCatchUpDigests(env, { minLagDays: 2 });
-        console.log("catch-up (env trigger):", JSON.stringify({ sent: r.sentThisRun, candidates: r.candidates }));
-      } catch (e) {
-        console.error("catch-up (env trigger) failed (normal digest continues):", String(e?.message || e));
-      }
-    }
-
-    await runAlerts(env);
-
     // w12-16: "active watches" is a live gauge (a KV list count), not something with a
     // discrete moment to bump on — so charting it over time means snapshotting today's
     // reading once a day, here, rather than incrementing on an event. No backfill is
