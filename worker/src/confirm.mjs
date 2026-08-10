@@ -3,7 +3,7 @@
 // expired/forged token does nothing. Returns a small HTML page (it's clicked from an email).
 
 import { verifyToken } from "optin-token";
-import { buildSubscription, subCanonical } from "./lib/subscriptions.mjs";
+import { buildSubscription, deriveSubscriberId, deriveWatchId, subCanonical } from "./lib/subscriptions.mjs";
 import { describeFilter, htmlPage } from "./lib/confirm_email.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { appendActionLog } from "./lib/action_log.mjs";
@@ -24,6 +24,8 @@ export async function handleConfirm(req, env) {
   const p = res.payload; // { e, l, f, c, q, lng? }
   const sub = buildSubscription({ email: p.e, lens: p.l, filter: p.f, channel: p.c, freq: p.q, lang: p.lng || "en" });
   const key = `sub:${await subId(sub)}`;
+  sub.subscriber_id = await deriveSubscriberId(sub.email);
+  sub.watch_id = await deriveWatchId(key);
   try {
     await env.SUBS.put(key, JSON.stringify(sub));
   } catch {

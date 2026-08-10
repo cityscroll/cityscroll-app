@@ -37,7 +37,7 @@ import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs"
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 import { currentAwardCandidates } from "./external_award.mjs";
-import { redactEmail, normalizeEmail } from "./lib/subscriptions.mjs";
+import { redactEmail, normalizeEmail, ensureSubscriptionIdentity } from "./lib/subscriptions.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
@@ -2215,8 +2215,14 @@ async function subWatches(env) {
       const res = await env.SUBS.list({ prefix: "sub:", cursor });
       for (const k of res.keys) {
         try {
-          const v = JSON.parse(await env.SUBS.get(k.name));
-          if (v && v.email) out.push({ key: k.name, ...v });
+          const parsed = JSON.parse(await env.SUBS.get(k.name));
+          if (parsed && parsed.email) {
+            const { record, changed } = await ensureSubscriptionIdentity(parsed, k.name);
+            if (changed) {
+              try { await env.SUBS.put(k.name, JSON.stringify(record)); } catch { /* read remains compatible with minimal KV fixtures */ }
+            }
+            out.push({ key: k.name, ...record });
+          }
         } catch { /* skip a malformed record */ }
       }
       cursor = res.list_complete ? null : res.cursor;
