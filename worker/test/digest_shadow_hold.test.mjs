@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   DIGEST_SHADOW_DARK_DAYS,
   DIGEST_SHADOW_HOLD_CONTRACT,
+  announceDigestShadowDegrade,
   buildDigestShadowHoldState,
   digestIdForJob,
   isDigestHeld,
@@ -184,6 +185,40 @@ test("store outage uses today's persisted redline state and emits a degraded rec
   assert.equal(db.writes.length, 0, "degraded receipt must not overwrite the usable canonical state");
 });
 
+test("store outage can read the last-known state from alert-state KV when D1 is down", async () => {
+  const receipts = new MockKV();
+  await receipts.put("digest:shadow:hold:last-known:2026-08-04", JSON.stringify(persistedState({
+    source_status: "READY",
+    affected_digest_ids: [],
+    active_digest_ids: [],
+  })));
+  const state = await resolveDigestShadowHold(graduatedDb({ failuresBeforeSuccess: 99 }), {
+    now: `${DAY}T13:00:00.000Z`,
+    receiptStore: receipts,
+    retryDelaysMs: [0, 0],
+  });
+  assert.equal(state.source_status, "LAST_KNOWN_READY");
+  assert.equal(state.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
+  assert.equal(state.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+});
+
+test("missing D1 binding also uses today's last-known state from alert-state KV", async () => {
+  const receipts = new MockKV();
+  await receipts.put("digest:shadow:hold:last-known:2026-08-04", JSON.stringify(persistedState({
+    source_status: "READY",
+    affected_digest_ids: [],
+    active_digest_ids: [],
+  })));
+  const state = await resolveDigestShadowHold(null, {
+    now: `${DAY}T13:00:00.000Z`,
+    persist: true,
+    receiptStore: receipts,
+  });
+  assert.equal(state.source_status, "LAST_KNOWN_READY");
+  assert.equal(state.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
+  assert.equal(state.degraded_receipt.decision, "SEND_ON_LAST_KNOWN_STATE");
+});
+
 test("store outage sends on today's persisted READY state", async () => {
   const state = await resolveDigestShadowHold(graduatedDb({
     failuresBeforeSuccess: 99,
@@ -263,6 +298,37 @@ test("missing rehearsal with no READY history enters the dark hold", () => {
   });
   assert.equal(state.delivery_policy, "ALL_DIGESTS_HELD");
   assert.equal(state.degraded_receipt.last_ready_run_day, null);
+});
+
+test("dark-period threshold is configurable while default remains three days", () => {
+  const state = buildDigestShadowHoldState({
+    summary: null,
+    lastReadyRunDay: "2026-08-02",
+    darkDays: 2,
+    now: `${DAY}T13:00:00.000Z`,
+  });
+  assert.equal(state.delivery_policy, "ALL_DIGESTS_HELD");
+  assert.equal(state.dark_period_days, 2);
+  assert.equal(state.degraded_receipt.dark_period_days, 2);
+  assert.equal(DIGEST_SHADOW_DARK_DAYS, 3);
+});
+
+test("loud degraded path calls the established operator notifier once", async () => {
+  const receipts = new MockKV();
+  const state = buildDigestShadowHoldState({
+    summary: null,
+    lastReadyRunDay: "2026-08-01",
+    now: `${DAY}T13:00:00.000Z`,
+  });
+  const calls = [];
+  const notifyFn = async (_env, payload) => { calls.push(payload); };
+  const env = { RESEND_API_KEY: "test-only", ALERT_STATE: receipts, DIGEST_SHADOW_ALERTS: "true" };
+  assert.deepEqual(await announceDigestShadowDegrade(env, state.degraded_receipt, { notifyFn }), { sent: true });
+  assert.equal(calls.length, 1);
+  assert.match(calls[0].subject, /HOLD_ALL_DARK_PERIOD/);
+  assert.match(calls[0].text, /no subscriber address/i);
+  assert.deepEqual(await announceDigestShadowDegrade(env, state.degraded_receipt, { notifyFn }), { sent: false, duplicate: true });
+  assert.equal(calls.length, 1, "same degraded decision must not page repeatedly");
 });
 
 test("dark-period decision persists the machine receipt and recovery marker", async () => {

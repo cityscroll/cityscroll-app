@@ -52,6 +52,10 @@ MAX_PER_RUN = "25"
 MAX_SENDS_PER_DAY = "50"
 # Quiet days before a DAILY sub gets a "still watching" heartbeat (weekly subs always email).
 HEARTBEAT_DAYS = "14"
+# Graduated digest safety: hold all delivery after three calendar days without a READY rehearsal.
+# Three days gives the operator a repair window while bounding the risk of stale validation.
+DIGEST_SHADOW_DARK_DAYS = "3"
+DIGEST_SHADOW_ALERTS = "true"
 # Operator inbox for /feedback notifications (non-secret var).
 FEEDBACK_TO = "feedback@cityscroll.org"
 # Inbound subscribe-by-email address; spend ceilings for LLM-backed surfaces:
