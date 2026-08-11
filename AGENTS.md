@@ -2580,18 +2580,26 @@ both the live and restored databases.
 - Verify: `node --test test/process_conformance.test.mjs test/reports_domain_observations.test.mjs`.
   Measurement: `docs/evidence/mandate-graph-densify/join-measurement.json`.
 
-## Mandate co-located graph neighbors (mand-graph-01)
+## Mandate graph neighbors (mandate-specific, not agency-wide)
 
-- Even when per-mandate → notice/contract edges are empty, every mandate row
-  still opens grounded neighbors: **Source law** (exact `matter_id` /
-  `source.legistar_url`) plus agency-scoped **Open in Rules / Meetings /
-  Contracts** via `agencyCategoryBrowseHref` + `entity_refs_all agency:id`.
+- **Per-row only:** **Source law** (exact `matter_id` / `source.legistar_url`)
+  plus optional real mandate→entity chips via `mandate_links` /
+  `mandateScopedLinksFromRecord`. Never paint agency-wide
+  `agencyCategoryBrowseHref` chips on every mandate card — that looked like
+  “connections” while linking the whole agency (`published_by_agency` /
+  `agency:id`), identical across mandates.
+- **Section chrome only:** honest **Browse agency Rules / Meetings / Contracts**
+  (`data-scope="agency"`) via `renderMandateSectionNeighborActions`.
 - Pure helpers: `site/mandate_graph_neighbors.mjs` (honest H2/nav titles when
   `observed_links` / `filing_receipts` are 0 — no “Filing receipts” claim without
   a receipt). Wired into rules / reports / predictions / conformance renderers.
 - Never fabricate mandate→entity filing edges; densify waves are separate.
+  Coverage is sparse today (citywide process-conformance observed edges are few;
+  notice reverse-backlinks remain the public edge inventory).
 - Verify: `node --test test/mandate_graph_neighbors.test.mjs`. Capture:
-  `python3 tools/capture_mandate_graph_01.py`. Demo:
+  `python3 tools/capture_mandate_graph_01.py` and
+  `docs/screenshots/mandate-edges-specific/`. Demo:
+  `/agencies/environmental-protection/#mandates-rules`,
   `/agencies/parks-and-recreation/#mandates-rules`.
 
 ## Mandates → Rules constellation card (v1)
@@ -2603,9 +2611,10 @@ both the live and restored databases.
 - Pure model: `site/mandate_rules_bridge.mjs` (`buildMandateRulesBridgeView` /
   `renderMandateRulesBridgeSection`). Wired from
   `site/agency_constellation.mjs` as `view.mandates_rules`. Shareable
-  `/agencies/<id>/#mandates-rules`. Scopes: Open in Rules (browse facet),
+  `/agencies/<id>/#mandates-rules`. Section scopes: Browse agency Rules,
   Watch rulemaking mandates (obligations free-watch), Follow Rules activity.
-  Per-row graph neighbors: see **Mandate co-located graph neighbors** above.
+  Per-row actions: see **Mandate graph neighbors** above (Source law + real
+  linked filings only).
 - Rebuild: `node tools/build_agency_constellation_documents.mjs`. Capture:
   `python3 tools/capture_mandate_rules_bridge.py`. Verify:
   `node --test test/mandate_rules_bridge.test.mjs`. Demo Parks:

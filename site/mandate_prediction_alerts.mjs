@@ -653,10 +653,11 @@ export function renderMandatePredictionsSection(view) {
           item.deliverable_type,
           item.citation,
         ].filter(Boolean).map(esc).join(" · ");
+        // Per-row: Source law only (predictions are not yet observed edges).
+        // Agency-wide browse chips stay in section chrome — never on every card.
         const neighbors = renderMandateRowGraphActions({
           source_href: item.source_href,
           matter_id: item.matter_id,
-          graph_neighbors: graphNeighbors,
           prefer: item.deliverable_type === "rulemaking" ? "rules" : "contracts",
           escape: esc,
         });
