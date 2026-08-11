@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
-  "version": "0.3.0",
-  "generated_note": "Catalog only \u2014 no production writer or public route. Characterization imports live allowlists and fails if a code type is missing here.",
+  "version": "0.4.0",
+  "generated_note": "Civic Graph catalog (object–link–action). Catalog only — no production writer or public route. Each object/link carries grounding built|partial|gap from the measured existence matrix. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
     "civic_time": "worker/src/lib/civic_time.mjs",
@@ -36,7 +36,8 @@
         "end_date",
         "registration_date",
         "due_date"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "agency",
@@ -54,7 +55,8 @@
       "properties_ref": [
         "name",
         "agency"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "solicitation",
@@ -75,7 +77,8 @@
         "epin",
         "pin",
         "due_date"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "contract",
@@ -99,7 +102,8 @@
         "start_date",
         "end_date",
         "registration_date"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "award",
@@ -120,7 +124,8 @@
         "pin",
         "epin",
         "contract_amount"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "notice",
@@ -141,7 +146,8 @@
         "epin",
         "due_date",
         "start_date"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "canonical_entity",
@@ -159,7 +165,8 @@
       ],
       "properties_ref": [
         "name"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "source_record",
@@ -170,7 +177,8 @@
       "backing": [
         "d1.source_records"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "entity_pair",
@@ -182,7 +190,8 @@
         "action_log.object",
         "false_split_disposition"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "built"
     },
     {
       "id": "pin_store",
@@ -194,7 +203,8 @@
         "action_log.object",
         "kv.pins"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "built"
     },
     {
       "id": "watch",
@@ -206,7 +216,8 @@
         "action_log.object",
         "kv.sub"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "built"
     },
     {
       "id": "process",
@@ -219,7 +230,8 @@
       "backing": [
         "process_spine"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "project",
@@ -233,7 +245,8 @@
         "process_spine",
         "zap"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "mandate",
@@ -245,7 +258,8 @@
         "public_graph.node",
         "subject_registry"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "procedure",
@@ -259,7 +273,8 @@
         "public_graph.node",
         "subject_registry"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "borough",
@@ -274,7 +289,8 @@
         "subject_registry",
         "district_activity"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "community-district",
@@ -289,7 +305,8 @@
         "subject_registry",
         "district_activity"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "council-district",
@@ -304,7 +321,8 @@
         "subject_registry",
         "district_activity"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "payment",
@@ -318,7 +336,8 @@
       "backing": [],
       "properties_ref": [
         "contract_amount"
-      ]
+      ],
+      "grounding": "gap"
     },
     {
       "id": "matter",
@@ -328,7 +347,8 @@
       "primary_key_pattern": "matter:{legistar_id}",
       "families": [],
       "backing": [],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "gap"
     },
     {
       "id": "meeting",
@@ -338,7 +358,8 @@
       "primary_key_pattern": "meeting:{event_id}",
       "families": [],
       "backing": [],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "agenda_item",
@@ -348,7 +369,8 @@
       "primary_key_pattern": "agenda_item:{event_item_id}",
       "families": [],
       "backing": [],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "vote",
@@ -358,7 +380,8 @@
       "primary_key_pattern": "vote:{event_item_id}:{person_id}",
       "families": [],
       "backing": [],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "official",
@@ -373,7 +396,8 @@
       "properties_ref": [
         "person_id",
         "person_name"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "person-leader",
@@ -390,7 +414,8 @@
         "person_name",
         "head_title",
         "agency_id"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "rule",
@@ -402,7 +427,8 @@
       "backing": [
         "rules_spine"
       ],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "property_site",
@@ -423,7 +449,8 @@
         "block",
         "lot",
         "agency_name"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "exam",
@@ -433,7 +460,8 @@
       "primary_key_pattern": "exam:{exam_no}",
       "families": [],
       "backing": [],
-      "properties_ref": []
+      "properties_ref": [],
+      "grounding": "partial"
     },
     {
       "id": "subsidy_project",
@@ -445,6 +473,22 @@
         "er:location"
       ],
       "backing": [],
+      "properties_ref": [],
+      "grounding": "gap"
+    },
+    {
+      "id": "franchise",
+      "status": "unregistered",
+      "grounding": "partial",
+      "layer": "semantic",
+      "reason": "Franchise/concession spines exist as product joins; not a public graph node type.",
+      "primary_key_pattern": "franchise:{counterparty|plan|concession_id}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "franchise_concession_spine"
+      ],
       "properties_ref": []
     }
   ],
@@ -457,7 +501,8 @@
       "backing": [
         "public_graph.edge"
       ],
-      "label": "Named vendor on award"
+      "label": "Named vendor on award",
+      "grounding": "built"
     },
     {
       "id": "named_vendor_on_solicitation",
@@ -467,7 +512,8 @@
       "backing": [
         "public_graph.edge"
       ],
-      "label": "Named vendor on solicitation"
+      "label": "Named vendor on solicitation",
+      "grounding": "built"
     },
     {
       "id": "published_by_agency",
@@ -477,7 +523,8 @@
       "backing": [
         "public_graph.edge"
       ],
-      "label": "Published by agency"
+      "label": "Published by agency",
+      "grounding": "built"
     },
     {
       "id": "certified_to_agency",
@@ -487,7 +534,8 @@
       "backing": [
         "exam_certification_constellation"
       ],
-      "label": "Certified to agency"
+      "label": "Certified to agency",
+      "grounding": "partial"
     },
     {
       "id": "references_contract",
@@ -497,7 +545,8 @@
       "backing": [
         "public_graph.edge"
       ],
-      "label": "References contract"
+      "label": "References contract",
+      "grounding": "built"
     },
     {
       "id": "same_as",
@@ -507,7 +556,8 @@
       "backing": [
         "entity_link.auto_link"
       ],
-      "label": "Same as (identity link)"
+      "label": "Same as (identity link)",
+      "grounding": "partial"
     },
     {
       "id": "separate",
@@ -517,7 +567,8 @@
       "backing": [
         "entity_link.separate"
       ],
-      "label": "Separate entities"
+      "label": "Separate entities",
+      "grounding": "partial"
     },
     {
       "id": "never_auto",
@@ -527,7 +578,8 @@
       "backing": [
         "entity_link.never_auto"
       ],
-      "label": "Never auto-link"
+      "label": "Never auto-link",
+      "grounding": "partial"
     },
     {
       "id": "reviewed_as",
@@ -537,7 +589,8 @@
       "backing": [
         "action_log.review_decision"
       ],
-      "label": "Desk review decision"
+      "label": "Desk review decision",
+      "grounding": "partial"
     },
     {
       "id": "paid_under",
@@ -546,7 +599,8 @@
       "to": "payment",
       "reason": "Payment object unregistered; spending not dual-written.",
       "backing": [],
-      "label": "Paid under"
+      "label": "Paid under",
+      "grounding": "gap"
     },
     {
       "id": "votes_on",
@@ -557,7 +611,8 @@
         "public_graph.edge",
         "legistar_votes"
       ],
-      "label": "Votes on"
+      "label": "Votes on",
+      "grounding": "partial"
     },
     {
       "id": "agency_led_by",
@@ -568,7 +623,8 @@
         "public_graph.edge",
         "agency_crosswalk"
       ],
-      "label": "Agency led by"
+      "label": "Agency led by",
+      "grounding": "partial"
     },
     {
       "id": "mandate_governs_procedure",
@@ -579,7 +635,8 @@
         "public_graph.edge",
         "subject_registry"
       ],
-      "label": "Mandate governs procedure"
+      "label": "Mandate governs procedure",
+      "grounding": "partial"
     },
     {
       "id": "project_participates_in_procedure",
@@ -590,7 +647,8 @@
         "public_graph.edge",
         "subject_registry"
       ],
-      "label": "Project participates in procedure"
+      "label": "Project participates in procedure",
+      "grounding": "partial"
     },
     {
       "id": "located_in",
@@ -602,7 +660,8 @@
         "subject_registry",
         "district_activity"
       ],
-      "label": "Located in"
+      "label": "Located in",
+      "grounding": "partial"
     },
     {
       "id": "about_project",
@@ -613,7 +672,8 @@
       "backing": [
         "land_event_spine"
       ],
-      "label": "About project"
+      "label": "About project",
+      "grounding": "gap"
     },
     {
       "id": "item_on_agenda",
@@ -624,7 +684,8 @@
       "backing": [
         "meeting_outcomes"
       ],
-      "label": "Item on agenda"
+      "label": "Item on agenda",
+      "grounding": "gap"
     },
     {
       "id": "registered_as",
@@ -635,7 +696,108 @@
       "backing": [
         "checkbook_lifecycle"
       ],
-      "label": "Registered as"
+      "label": "Registered as",
+      "grounding": "gap"
+    },
+    {
+      "id": "passport_contract_for",
+      "status": "unregistered",
+      "grounding": "gap",
+      "from": "solicitation|award|notice",
+      "to": "contract",
+      "reason": "PASSPort contract join is product code (passport_join); not a shared ontology link id.",
+      "backing": [
+        "passport_join"
+      ],
+      "label": "PASSPort contract for"
+    },
+    {
+      "id": "passport_rfx_for",
+      "status": "unregistered",
+      "grounding": "gap",
+      "from": "solicitation|notice",
+      "to": "solicitation",
+      "reason": "PASSPort RFx join is product code; not a shared ontology link id.",
+      "backing": [
+        "passport_rfx"
+      ],
+      "label": "PASSPort RFx for"
+    },
+    {
+      "id": "prior_cycle_of",
+      "status": "unregistered",
+      "grounding": "gap",
+      "from": "award",
+      "to": "award",
+      "reason": "Prior-cycle award matchers exist in product paths without a cataloged link type.",
+      "backing": [
+        "prior_cycle"
+      ],
+      "label": "Prior cycle of"
+    },
+    {
+      "id": "notice_for_meeting",
+      "status": "unregistered",
+      "grounding": "partial",
+      "from": "notice",
+      "to": "meeting",
+      "reason": "Council notice→Legistar event join is live in meeting-outcomes but not a shared link-type id.",
+      "backing": [
+        "meeting_outcomes",
+        "legistar_join"
+      ],
+      "label": "Notice for meeting"
+    },
+    {
+      "id": "comment_deadline_of",
+      "status": "unregistered",
+      "grounding": "partial",
+      "from": "rule",
+      "to": "event",
+      "reason": "Rules spine emits comment_close civic-time events; no shared link-type id.",
+      "backing": [
+        "rules_spine",
+        "civic_time"
+      ],
+      "label": "Comment deadline of"
+    },
+    {
+      "id": "subsidy_stage_of",
+      "status": "unregistered",
+      "grounding": "gap",
+      "from": "notice",
+      "to": "subsidy_project",
+      "reason": "Subsidy lifecycle stages are product joins without immutable project observations.",
+      "backing": [
+        "subsidy_lifecycle"
+      ],
+      "label": "Subsidy stage of"
+    },
+    {
+      "id": "milestone_of",
+      "status": "unregistered",
+      "grounding": "partial",
+      "from": "project",
+      "to": "event",
+      "reason": "Land event spine milestones exist in product code without a shared link-type id.",
+      "backing": [
+        "land_event_spine",
+        "zap_outcomes"
+      ],
+      "label": "Milestone of"
+    },
+    {
+      "id": "named_franchisee",
+      "status": "unregistered",
+      "grounding": "partial",
+      "from": "franchise",
+      "to": "vendor",
+      "reason": "Franchise entity intelligence emits named_franchisee edges; franchise object is not a public graph node type.",
+      "backing": [
+        "franchise_concession_spine",
+        "entity_intelligence"
+      ],
+      "label": "Named franchisee"
     }
   ],
   "event_kinds": [
@@ -645,7 +807,8 @@
       "lens": "money",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "procurement.award_registered",
@@ -653,7 +816,8 @@
       "lens": "money",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "procurement.payment",
@@ -661,7 +825,8 @@
       "lens": "money",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "procurement.solicitation_opened",
@@ -670,7 +835,8 @@
       "backing": [
         "civic_time",
         "passport_rfx"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "procurement.solicitation_due",
@@ -679,7 +845,8 @@
       "backing": [
         "civic_time",
         "passport_rfx"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "procurement.solicitation_addenda",
@@ -687,7 +854,8 @@
       "lens": "money",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.tax_lien_notice_90",
@@ -696,7 +864,8 @@
       "backing": [
         "civic_time",
         "dof_tax_lien_sale_lists"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.tax_lien_notice_60",
@@ -705,7 +874,8 @@
       "backing": [
         "civic_time",
         "dof_tax_lien_sale_lists"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.tax_lien_notice_30",
@@ -714,7 +884,8 @@
       "backing": [
         "civic_time",
         "dof_tax_lien_sale_lists"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.tax_lien_notice_10",
@@ -723,7 +894,8 @@
       "backing": [
         "civic_time",
         "dof_tax_lien_sale_lists"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.tax_lien_sale_deadline",
@@ -732,7 +904,8 @@
       "backing": [
         "civic_time",
         "dof_tax_lien_sale_lists"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.tax_lien_sold",
@@ -741,7 +914,8 @@
       "backing": [
         "civic_time",
         "dof_tax_lien_sale_lists"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "rules.proposal_published",
@@ -749,7 +923,8 @@
       "lens": "rules",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "rules.public_hearing",
@@ -757,7 +932,8 @@
       "lens": "rules",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "rules.comment_close",
@@ -765,7 +941,8 @@
       "lens": "rules",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "rules.adoption",
@@ -773,7 +950,8 @@
       "lens": "rules",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "rules.effective",
@@ -781,7 +959,8 @@
       "lens": "rules",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "land.zap_milestone",
@@ -789,7 +968,8 @@
       "lens": "land",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "land.city_record_notice",
@@ -797,7 +977,8 @@
       "lens": "land",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "land.city_record_hearing",
@@ -805,7 +986,8 @@
       "lens": "land",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "land.zap_disposition",
@@ -813,7 +995,8 @@
       "lens": "land",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "meetings.council_event",
@@ -821,7 +1004,8 @@
       "lens": "meetings",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "meetings.agenda_item_action",
@@ -829,7 +1013,8 @@
       "lens": "meetings",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "meetings.roll_call_vote",
@@ -837,7 +1022,8 @@
       "lens": "meetings",
       "backing": [
         "civic_time"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "meetings.non_council_notice",
@@ -846,7 +1032,8 @@
       "backing": [
         "civic_time",
         "non_council_hearing_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "meetings.non_council_hearing",
@@ -855,7 +1042,8 @@
       "backing": [
         "civic_time",
         "non_council_hearing_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "staffing.application_window",
@@ -864,7 +1052,8 @@
       "backing": [
         "civic_time",
         "exam_process_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "staffing.list_established",
@@ -873,7 +1062,8 @@
       "backing": [
         "civic_time",
         "exam_process_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "staffing.certification",
@@ -882,7 +1072,8 @@
       "backing": [
         "civic_time",
         "exam_process_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "staffing.appointment",
@@ -891,7 +1082,8 @@
       "backing": [
         "civic_time",
         "exam_process_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "franchise.solicitation",
@@ -900,7 +1092,8 @@
       "backing": [
         "civic_time",
         "franchise_concession_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "franchise.public_hearing",
@@ -909,7 +1102,8 @@
       "backing": [
         "civic_time",
         "franchise_concession_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "franchise.committee_meeting",
@@ -918,7 +1112,8 @@
       "backing": [
         "civic_time",
         "franchise_concession_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "franchise.award",
@@ -927,7 +1122,8 @@
       "backing": [
         "civic_time",
         "franchise_concession_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.disposition_hearing",
@@ -936,7 +1132,8 @@
       "backing": [
         "civic_time",
         "property_disposition_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.auction_or_rfp",
@@ -945,7 +1142,8 @@
       "backing": [
         "civic_time",
         "property_disposition_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "property.award_or_conveyance",
@@ -954,7 +1152,8 @@
       "backing": [
         "civic_time",
         "property_disposition_spine"
-      ]
+      ],
+      "grounding": "partial"
     }
   ],
   "assertion_classifications": [
@@ -966,7 +1165,8 @@
         "assertion_evidence",
         "public_dossier",
         "public_graph"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "cityscroll_interpretation",
@@ -974,7 +1174,8 @@
       "meaning": "Product comparison or conflict label; never selects a canonical winner",
       "backing": [
         "assertion_evidence"
-      ]
+      ],
+      "grounding": "built"
     }
   ],
   "assertion_facts": [
@@ -984,7 +1185,8 @@
       "kind": "amount",
       "backing": [
         "assertion_evidence"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "start_date",
@@ -992,7 +1194,8 @@
       "kind": "date",
       "backing": [
         "assertion_evidence"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "end_date",
@@ -1000,7 +1203,8 @@
       "kind": "date",
       "backing": [
         "assertion_evidence"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "registration_date",
@@ -1008,7 +1212,8 @@
       "kind": "date",
       "backing": [
         "assertion_evidence"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "due_date",
@@ -1016,7 +1221,8 @@
       "kind": "date",
       "backing": [
         "assertion_evidence"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "name",
@@ -1024,7 +1230,8 @@
       "kind": "text",
       "backing": [
         "public_dossier"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "agency",
@@ -1032,7 +1239,8 @@
       "kind": "text",
       "backing": [
         "public_dossier"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "pin",
@@ -1040,7 +1248,8 @@
       "kind": "text",
       "backing": [
         "public_dossier"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "epin",
@@ -1048,7 +1257,8 @@
       "kind": "text",
       "backing": [
         "public_dossier"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "contract_id",
@@ -1056,7 +1266,8 @@
       "kind": "text",
       "backing": [
         "public_dossier"
-      ]
+      ],
+      "grounding": "built"
     }
   ],
   "kinetic_action_types": {
@@ -1066,77 +1277,88 @@
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "calendar",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "document",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "contact",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "rsvp",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "comment",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "attend",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "bid_checklist",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "official_application",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "return_to_matter",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "local_note",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       }
     ],
     "action_deliveries": [
@@ -1145,21 +1367,24 @@
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "official_handoff",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "unavailable",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       }
     ],
     "product_method_log": [
@@ -1171,7 +1396,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "watch_confirmed",
@@ -1181,7 +1407,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "watch_updated",
@@ -1191,7 +1418,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "watch_paused",
@@ -1201,7 +1429,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "watch_resumed",
@@ -1211,7 +1440,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "watch_removed",
@@ -1221,7 +1451,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "review_decision",
@@ -1231,7 +1462,8 @@
         ],
         "backing": [
           "action_log"
-        ]
+        ],
+        "grounding": "built"
       }
     ],
     "outcomes": [
@@ -1240,35 +1472,40 @@
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "attended",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "bid",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "won",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       },
       {
         "id": "not_useful",
         "status": "registered",
         "backing": [
           "action_registry"
-        ]
+        ],
+        "grounding": "built"
       }
     ]
   },
@@ -1278,28 +1515,32 @@
       "status": "registered",
       "backing": [
         "er_taxonomy"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "agency",
       "status": "registered",
       "backing": [
         "er_taxonomy"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "procurement",
       "status": "registered",
       "backing": [
         "er_taxonomy"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "location",
       "status": "registered",
       "backing": [
         "er_taxonomy"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "official",
@@ -1307,7 +1548,8 @@
       "backing": [
         "er_taxonomy",
         "public_graph.node"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "person-leader",
@@ -1315,7 +1557,8 @@
       "backing": [
         "er_taxonomy",
         "agency_crosswalk"
-      ]
+      ],
+      "grounding": "built"
     }
   ],
   "er_decisions": [
@@ -1325,7 +1568,8 @@
       "backing": [
         "er_taxonomy",
         "entity_link"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "separate",
@@ -1333,7 +1577,8 @@
       "backing": [
         "er_taxonomy",
         "entity_link"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "review",
@@ -1341,7 +1586,8 @@
       "backing": [
         "er_taxonomy",
         "entity_link"
-      ]
+      ],
+      "grounding": "built"
     },
     {
       "id": "never_auto",
@@ -1349,7 +1595,8 @@
       "backing": [
         "er_taxonomy",
         "entity_link"
-      ]
+      ],
+      "grounding": "built"
     }
   ],
   "process_spine_join_confidence": [
@@ -1358,21 +1605,24 @@
       "status": "registered",
       "backing": [
         "process_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "review",
       "status": "registered",
       "backing": [
         "process_spine"
-      ]
+      ],
+      "grounding": "partial"
     },
     {
       "id": "unmatched",
       "status": "registered",
       "backing": [
         "process_spine"
-      ]
+      ],
+      "grounding": "partial"
     }
   ],
   "flywheel": {
@@ -1397,5 +1647,32 @@
       "registry"
     ],
     "note": "Multi-dimension cards are emitted by tools/flywheel-run.mjs; ontology-enrichment reuses tools/intelligence_flywheel.mjs. The surface-load dimension consumes deterministic fixtures locally and a scheduled live Chromium sample. Do not hand-author parallel metric-driven roadmaps."
+  },
+  "civic_graph": {
+    "name": "Civic Graph",
+    "schema": "cityscroll.ontology.registry.v0",
+    "description": "Unified object–link–action registry for CityScroll civic entities. Identity (ER type families) is the link-not-merge layer, not the whole graph. Evaluation flywheel measures coverage, agreement, actionability, and grounding.",
+    "grounding_states": [
+      "built",
+      "partial",
+      "gap"
+    ],
+    "remaining_stack": [
+      {
+        "id": "crol-list/civic-graph-coverage",
+        "title": "Expand dual-write and first-class objects along gap grounding + source_coverage",
+        "phase": "P3"
+      },
+      {
+        "id": "crol-list/civic-graph-civic-time-store",
+        "title": "Production civic-time writer only after adapters stay stable under the harness",
+        "phase": "P4"
+      },
+      {
+        "id": "crol-list/civic-graph-officials-votes",
+        "title": "Promote officials/votes objects when person-level retention stays complete",
+        "phase": "P5"
+      }
+    ]
   }
 }

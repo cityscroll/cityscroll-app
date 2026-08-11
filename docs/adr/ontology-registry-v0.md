@@ -1,12 +1,14 @@
-# ADR: Ontology registry v0 (catalog + flywheel seam)
+# ADR: Civic Graph registry v0 (catalog + flywheel seam)
 
 | Field | Value |
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
+| Updated | 2026-08-11 (grounding states + design-matrix link catalog) |
 | Scope | Catalog + pure evaluation flywheel — no production graph store, no public route |
+| Product name | **Civic Graph** (object–link–action registry + evaluation harness) |
 | Supersedes | — |
-| Related | `docs/adr/entity-resolution-taxonomy.md`, `docs/adr/civic-time-event-contract.md`, `docs/action-log.md` |
+| Related | `docs/adr/entity-resolution-taxonomy.md`, `docs/adr/civic-time-event-contract.md`, `docs/action-log.md`, `docs/civic-graph.md` |
 
 ## Context
 
@@ -16,8 +18,9 @@ privacy-safe product action log. Those type systems lived in separate modules wi
 single catalog, so cross-spine agreement and enrichment planning could not be automated.
 
 Roadmap tranches alone do not prove intelligence depth. The product needs a **named object–
-link–action registry** and a **MAPE flywheel** that measures coverage, agreement, and
-actionability, then emits enrichment work (P3+) instead of hand-carding it.
+link–action registry** (the Civic Graph) and a **MAPE flywheel** that measures coverage,
+agreement, actionability, and **grounding**, then emits enrichment work (P3+) instead of
+hand-carding it.
 
 ## Decision
 
@@ -35,6 +38,11 @@ A versioned catalog of:
 Every **live allowlist id** imported from product code must appear with
 `status: "registered"` or `status: "unregistered"` (with a reason when unregistered).
 Characterization: `test/ontology_registry.test.mjs` via `ontology/sync.mjs`.
+
+Every object type, link type, event kind, and kinetic action also carries
+**`grounding`**: `built` | `partial` | `gap` — measured product depth from the existence
+matrix (not the same axis as catalog `status`). Unregistered entries must not claim
+`built`. Pure helpers: `ontology/grounding.mjs`.
 
 ### 2. Zero production risk for v0
 
