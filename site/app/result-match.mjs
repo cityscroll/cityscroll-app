@@ -62,9 +62,9 @@ function digTitleHTML(title, ev){
 function digEvidenceHTML(ev){
   if(!ev || ev.field==="title") return "";
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
-  if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
-  if(ev.field==="attachment-text" || ev.field==="attachment-tables") return `<div class="dev" data-match-provenance="${esc(ev.field)}">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
-  return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
+  if(ev.field==="description") return `<div class="dev" data-match-evidence="1">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  if(ev.field==="attachment-text" || ev.field==="attachment-tables") return `<div class="dev" data-match-evidence="1" data-match-provenance="${esc(ev.field)}">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  return `<div class="dev" data-match-evidence="1">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
 }
 function digContact(r){
   const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const parts=[];
@@ -107,12 +107,12 @@ function digItemHTML(kind, r, keywords, awarenessTools){
   const aw=digAwarenessHTML(kind,r,awarenessTools);
   if(kind==="award"){
     const title=noticeDisplayTitle(r), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
-    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div><div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name?" · "+escUiHtml(cleanText(r.vendor_name)):""}</div>${aw}${digEvidenceHTML(ev)}<div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
+    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div>${digEvidenceHTML(ev)}<div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name?" · "+escUiHtml(cleanText(r.vendor_name)):""}</div>${aw}<div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
   if(kind==="notice"){
     const title=noticeDisplayTitle(r), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
     const meta=[r.agency_name,r.type_of_notice_description,fdate(r.start_date),r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
-    return `<div class="digitem"><div class="dt">${digTitleHTML(title,ev)}</div><div class="dm">${meta}</div>${aw}${digEvidenceHTML(ev)}<div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
+    return `<div class="digitem"><div class="dt">${digTitleHTML(title,ev)}</div>${digEvidenceHTML(ev)}<div class="dm">${meta}</div>${aw}<div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){
     const dl=daysLeft(r.due_date), rolling=isRollingDeadline(r.due_date);
@@ -122,7 +122,7 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
     const when=rolling?t("rolling_deadline_tag"):t("due_on",{date:fdt(r.due_date)})+(dl!=null?t("days_paren",{n:dl}):"");
-    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div><div class="dm">${r.agency_name} · ${when}</div>${aw}${digEvidenceHTML(ev)}${dc}</div>`;
+    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div>${digEvidenceHTML(ev)}<div class="dm">${r.agency_name} · ${when}</div>${aw}${dc}</div>`;
   }
   const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
   return `<div class="digitem"><div class="dt"><a href="${landHref}">${enTitle(landProjectDisplayTitle(r))}</a></div><div class="dm">${r.borough||""}${r.community_district?" · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant?" · "+r.primary_applicant:""}${mihOn(r.mih_flag)?" · "+t("affordable_housing_tag"):""}</div>${aw}<div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;

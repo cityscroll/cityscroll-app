@@ -83,8 +83,10 @@ test("GET /prefs lists watches for the token email", async () => {
   const html = await res.text();
   assert.match(html, /schools/i);
   assert.doesNotMatch(html, /roads/i);
-  assert.match(html, /next daily digest run/i);
+  assert.match(html, /next digest/i);
   assert.match(html, /9am Eastern/i);
+  assert.match(html, /takes effect immediately/i);
+  assert.match(html, /14 days/i);
 });
 
 test("GET /prefs bridges a recognized session into the same account's watch manager", async () => {
@@ -256,7 +258,7 @@ test("POST update keywords and freq", async () => {
   assert.equal(res.status, 200);
   const json = await res.json();
   assert.equal(json.ok, true);
-  assert.match(json.flash.message, /next daily/i);
+  assert.match(json.flash.message, /next digest/i);
   const stored = JSON.parse(await env.SUBS.get("sub:w1"));
   assert.equal(stored.freq, "weekly");
   assert.deepEqual(stored.filter.keywords, ["education", "libraries"]);

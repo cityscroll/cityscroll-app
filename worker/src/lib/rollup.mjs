@@ -149,6 +149,82 @@ export function rollupBodySections(sections = []) {
   });
 }
 
+/** Stable anchor id for a rollup section (email TOC jump links). */
+export function rollupSectionAnchorId(label, index = 0) {
+  const slug = String(label || "watch")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48) || "watch";
+  return `watch-${Number(index) || 0}-${slug}`;
+}
+
+/**
+ * Whether a body section should render as a one-line quiet summary (no item chrome).
+ * Quiet honesty still includes the section so multi-watch mail cannot look single-watch.
+ */
+export function isQuietRollupSection(section) {
+  if (!section || section.error) return false;
+  if (section.skipped) return true;
+  // Award-arrival watches (lens "award") render candidates, not City Record freshRows.
+  if (section.lens === "award" && Array.isArray(section.awardCandidates)) {
+    return section.awardCandidates.length === 0;
+  }
+  const fresh = Number(section.new);
+  const freshCount = Number.isFinite(fresh)
+    ? fresh
+    : Array.isArray(section.freshRows) ? section.freshRows.length : 0;
+  const forecasts = Number(section.forecasts);
+  const forecastCount = Number.isFinite(forecasts)
+    ? forecasts
+    : Array.isArray(section.forecastRows) ? section.forecastRows.length : 0;
+  return freshCount === 0 && forecastCount === 0;
+}
+
+/**
+ * TOC entries for multi-watch rollup bodies: total-new jump index per watch.
+ * Each entry: { id, label, count, quiet, skipped, statusLabel }.
+ */
+export function rollupTocEntries(sections = []) {
+  return (Array.isArray(sections) ? sections : []).map((sec, i) => {
+    const label = sec.label || sec.queryLabel || sec.lens || "Watch";
+    const id = rollupSectionAnchorId(label, i);
+    if (sec.skipped) {
+      const statusLabel = sec.skipped === "weekly"
+        ? "weekly — next Monday"
+        : sec.skipped === "paused"
+          ? "paused"
+          : `skipped (${sec.skipped})`;
+      return { id, label, count: 0, quiet: true, skipped: sec.skipped, statusLabel };
+    }
+    const fresh = Number(sec.new);
+    const count = Number.isFinite(fresh)
+      ? fresh
+      : Array.isArray(sec.freshRows) ? sec.freshRows.length : 0;
+    const forecasts = Number(sec.forecasts);
+    const forecastCount = Number.isFinite(forecasts)
+      ? forecasts
+      : Array.isArray(sec.forecastRows) ? sec.forecastRows.length : 0;
+    const quiet = isQuietRollupSection(sec);
+    let statusLabel;
+    if (quiet) statusLabel = "no new matches";
+    else if (count > 0 && forecastCount > 0) statusLabel = `${count} new · ${forecastCount} forecast(s)`;
+    else if (count > 0) statusLabel = `${count} new`;
+    else statusLabel = `${forecastCount} forecast(s)`;
+    return { id, label, count, quiet, skipped: null, statusLabel };
+  });
+}
+
+/**
+ * One-line quiet section copy: "Hearings — no new matches."
+ * Full item chrome stays on sections with matches.
+ */
+export function quietRollupSectionLine(label, statusLabel = "no new matches") {
+  const name = String(label || "Watch").trim() || "Watch";
+  const status = String(statusLabel || "no new matches").trim() || "no new matches";
+  return `${name} — ${status}`;
+}
+
 /**
  * Day-log entry for an account-level rollup send (or dry-run).
  * Never stores a raw email — redacted only.

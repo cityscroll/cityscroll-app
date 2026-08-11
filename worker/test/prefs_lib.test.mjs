@@ -8,6 +8,8 @@ import {
   applyWatchPatch,
   parsePrefsAction,
   CUTOVER_COPY,
+  UNSUB_IMMEDIATE_COPY,
+  HEARTBEAT_HELP_COPY,
   PREFS_SCOPE,
 } from "../src/lib/prefs.mjs";
 
@@ -72,7 +74,13 @@ test("parsePrefsAction accepts form-style keywords string", () => {
   assert.equal(a.patch.freq, "weekly");
 });
 
-test("CUTOVER_COPY documents next daily run", () => {
-  assert.match(CUTOVER_COPY, /next daily/i);
+test("CUTOVER_COPY documents next digest latency", () => {
+  assert.match(CUTOVER_COPY, /next digest/i);
   assert.match(CUTOVER_COPY, /9am Eastern/i);
+});
+
+test("unsub and heartbeat help copy are explicit", () => {
+  assert.match(UNSUB_IMMEDIATE_COPY, /immediate/i);
+  assert.match(HEARTBEAT_HELP_COPY, /14 days/i);
+  assert.match(HEARTBEAT_HELP_COPY, /still-watching/i);
 });
