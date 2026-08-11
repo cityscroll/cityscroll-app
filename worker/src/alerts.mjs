@@ -114,6 +114,17 @@ export function subDigestDecision({ lens, freshCount, freq, lastSentDate, today,
   return digestDecision({ freshCount, freq, lastSentDate, today, heartbeatDays });
 }
 
+/**
+ * Canonical “Manage watches” destination: Following personal after session exchange.
+ * Falls through to null so callers can use a prefs token link when no session token exists.
+ */
+export function followingManageUrl({ base = "https://api.cityscroll.org", sessionTok = null } = {}) {
+  if (!sessionTok) return null;
+  const next = "https://cityscroll.org/following/#your-following";
+  const origin = String(base || "https://api.cityscroll.org").replace(/\/$/, "");
+  return `${origin}/session?token=${encodeURIComponent(sessionTok)}&next=${encodeURIComponent(next)}`;
+}
+
 // Collapse one cron (or queue-consumer aggregate) into a public, low-cardinality receipt.
 // A silent skip must leave a non-null skipped_reason — never an empty "looks like nothing ran."
 export function summarizeDigestRun({ ranAt, day, live, mode, sentThisRun, sentToday, results = [], enqueued = 0 } = {}) {
@@ -954,7 +965,13 @@ export async function processOneSub(env, s, ctx) {
       const healthNote = healthStatus.quiet
         ? searchHealthNoteHtml({ lang, quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
         : "";
-      const manageUrl = await prefsLink(env, s.email);
+      // Pins-scoped magic-link token: every notice link carries it so a click
+      // quietly recognizes the browser (session cookie) without a login form.
+      // Manage watches lands on Following personal (canonical); prefs remains
+      // the account-level cadence/email surface for token-only entry.
+      const sessionTok = await issueEmailSessionToken(env, s.email);
+      const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      const manageUrl = followingManageUrl({ base, sessionTok }) || await prefsLink(env, s.email);
       manageUrlPresent = !!manageUrl;
       if (hasActivity) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
@@ -969,10 +986,7 @@ export async function processOneSub(env, s, ctx) {
         // encodeWatchFilter()) or a lens deep-links don't cover (rezone links straight to ZAP
         // below, never through here).
         const w = encodeWatchFilter(s.lens, s.filter);
-        // Pins-scoped magic-link token: every notice link carries it so a click
-        // quietly recognizes the browser (session cookie) without a login form.
-        const sessionTok = await issueEmailSessionToken(env, s.email);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, base, forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
@@ -1139,10 +1153,11 @@ export async function processAccountRollup(env, subs, ctx) {
     if (underCap && decision.wantSend) {
       const lang = (wanting[0] && wanting[0].lang) || (subs[0] && subs[0].lang) || "en";
       const unsubAllUrl = await unsubAllLink(env, email);
-      const manageUrl = await prefsLink(env, email);
-      manageUrlPresent = !!manageUrl;
       const sessionTok = await issueEmailSessionToken(env, email);
       const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      // Canonical watch list: Following personal via session exchange; prefs is fallback.
+      const manageUrl = followingManageUrl({ base, sessionTok }) || await prefsLink(env, email);
+      manageUrlPresent = !!manageUrl;
       // Account watch count (all evaluated sections, including quiet/weekly) drives the
       // multi-watch subject form even when only one section wanted send.
       const watchCount = sections.length;
