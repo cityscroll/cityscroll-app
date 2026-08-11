@@ -128,12 +128,15 @@ export function updateLedger(ledger = {}, emittedCards = [], { seen_at } = {}) {
       : (prior.status && prior.status !== "fixed" && prior.status !== "closed"
         ? prior.status
         : "proposed");
+    // Preserve hand-authored fields (fixed_at, fixed_note, evidence, notes, …)
+    // when a re-emit refreshes the open row; only overlay the reconcile keys.
     cards[card.id] = {
+      ...prior,
       status,
-      dimension: card.dimension,
-      title: card.title,
-      verify: card.verify,
-      content_hash: card.content_hash,
+      dimension: card.dimension ?? prior.dimension,
+      title: card.title ?? prior.title,
+      verify: card.verify ?? prior.verify,
+      content_hash: card.content_hash ?? prior.content_hash,
       last_seen_at: at,
       demo_win: card.demo_win || prior.demo_win || null,
     };
@@ -142,6 +145,8 @@ export function updateLedger(ledger = {}, emittedCards = [], { seen_at } = {}) {
     schema: LEDGER_SCHEMA,
     policy_version: MULTI_FLYWHEEL_POLICY_VERSION,
     updated_at: at,
+    // Keep ledger-level note (and any future top-level annotations).
+    ...(ledger.note != null && ledger.note !== "" ? { note: ledger.note } : {}),
     cards,
   };
 }
@@ -167,6 +172,7 @@ export function applyVerifyToLedger(ledger = {}, verifyResults = {}, { seen_at }
       schema: LEDGER_SCHEMA,
       policy_version: MULTI_FLYWHEEL_POLICY_VERSION,
       updated_at: at,
+      ...(ledger.note != null && ledger.note !== "" ? { note: ledger.note } : {}),
       cards,
     },
     closed,

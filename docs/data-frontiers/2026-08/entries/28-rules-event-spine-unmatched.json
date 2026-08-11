@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "rules-event-spine-unmatched",
+  "rank": 28,
+  "gap_inventory_row": "`rules-event-spine-unmatched` — City Record rule lacks NYC Rules join",
+  "source_and_access": "[NYC Rules RSS](https://rules.cityofnewyork.us/feed/), RSS 2.0 pull keyed by agency/date/title tokens.",
+  "join_feasibility": "**Unmeasured assessment: high.** The read model is live, but no dated notice-level residual rate is recorded.",
+  "reader_value": "**5** — Rules; commenters see the full proposal-to-effective spine.",
+  "effort": "**API pull**",
+  "disposition": "**Landed:** measure residual coverage before proposing more collection."
+}

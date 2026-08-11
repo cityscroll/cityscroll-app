@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v3-mandate-report-candidates",
+  "status": "fixed",
+  "dimension": "ontology-enrichment",
+  "title": "Densify report_or_study observation candidates for report mandates",
+  "verify": "node -e \"const p=require('./site/data/process_conformance_lookup.json'); const s=p.summary||{}; if(!(Number(s.observed_count)>0)) process.exit(1);\" && node --test test/process_conformance.test.mjs test/mandate_reports_receipt.test.mjs",
+  "content_hash": "1970beb41ee7e7b2",
+  "last_seen_at": "2026-08-11T22:30:00.000Z",
+  "demo_win": "At least one agency shows a real City Record report filing receipt on a report mandate without false merges on the held-out sample.",
+  "fixed_at": "2026-08-11T22:30:00.000Z",
+  "fixed_note": "Quieted after mandate densify: process_conformance observed_count>0; verify green."
+}

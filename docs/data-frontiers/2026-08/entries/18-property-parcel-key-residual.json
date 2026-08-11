@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "property-parcel-key-residual",
+  "rank": 18,
+  "gap_inventory_row": "`property-parcel-key-residual` **(new)** — property item lacks a 10-digit BBL",
+  "source_and_access": "[City Record Online](https://data.cityofnewyork.us/d/dg92-zbpx) tax-lot/address text, then the official [NYC Planning Geoservice API](https://geoservice.planning.nyc.gov/) address function for property-level BBL output.",
+  "join_feasibility": "**Measured:** 138/139 (99.28%) property observations already have a BBL; one residual observation does not. The repeated message on non-Property routes is presentation leakage, not evidence of a large corpus gap.",
+  "reader_value": "**2** — Property and parcel detail; enables ZoLa, tax-lien, and cross-domain parcel links for the final resolvable row.",
+  "effort": "**API pull**",
+  "disposition": "Low-yield cleanup. Add to the inventory, but fix cross-surface rendering separately."
+}

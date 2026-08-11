@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/checkbook-spending-payment-retention",
+  "status": "fixed",
+  "dimension": "coverage",
+  "title": "Checkbook Spending payment retention (payment↔contract gap)",
+  "verify": "node --test test/checkbook_spending_collector.test.mjs && node warehouse/scripts/checkbook_spending.mjs --check",
+  "fixed_at": "2026-08-11T19:30:00.000Z",
+  "fixed_note": "Host collector retains individual Checkbook Spending payment rows as source_records-shaped snapshots; kill sample usefulness 22/50 (44%), precision 31/31 (100%) exact contract_id. Graph slice + ontology payment object registered.",
+  "demo_win": "Money spine shows retained payment documents on joined contracts instead of spent-to-date summaries alone."
+}

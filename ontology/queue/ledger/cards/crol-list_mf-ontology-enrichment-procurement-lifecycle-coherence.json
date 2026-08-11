@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-procurement-lifecycle-coherence",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close measured procurement lifecycle coherence gaps",
+  "verify": "node -e \"const s=require('./worker/test/fixtures/lifecycle-coherence/expected_coherence.json'); process.exit(s.procurement_lifecycle_coherence_rate === 1 && s.award_solicitation_recovery_rate === 1 ? 0 : 1)\"",
+  "content_hash": "9434571a422a821f",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Procurement timelines remain ordered, reconcile amounts, and recover a sourced solicitation for every eligible award."
+}

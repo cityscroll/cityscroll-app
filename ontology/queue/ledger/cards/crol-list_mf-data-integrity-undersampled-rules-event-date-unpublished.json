@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-undersampled-rules-event-date-unpublished",
+  "status": "proposed",
+  "dimension": "data-integrity",
+  "title": "Sample not-published rate for claim rules-event-date-unpublished",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for rules-event-date-unpublished",
+  "content_hash": "f45c47cfe9063635",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Claim rules-event-date-unpublished has a measured recent+historical not-published rate so credibility can be audited continuously."
+}

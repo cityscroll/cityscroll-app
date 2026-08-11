@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-active-civil-service-list",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: active-civil-service-list",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # active-civil-service-list present",
+  "content_hash": "840614ffe7bb0782",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source active-civil-service-list retains immutable D1 observations without changing its product-delivery status."
+}

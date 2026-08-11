@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-readability-view-gap-taxonomy-dense-table",
+  "status": "proposed",
+  "dimension": "readability",
+  "title": "Redesign unusable joined view: gap-taxonomy-dense-table",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # readability:gap-taxonomy-dense-table overall>=0.5",
+  "content_hash": "1de9fe14e59d3515",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Gap inventory reads as ranked opportunities with class labels, not a dense dump table."
+}

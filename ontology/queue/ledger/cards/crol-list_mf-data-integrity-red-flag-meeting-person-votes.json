@@ -1,0 +1,24 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-red-flag-meeting-person-votes",
+  "status": "fixed",
+  "dimension": "data-integrity",
+  "title": "Credibility red flag: ~100% not-published for meeting-person-votes",
+  "verify": "node --test test/meeting_person_votes.test.mjs test/meeting_outcomes_static.test.mjs",
+  "fixed_at": "2026-08-11T18:00:00.000Z",
+  "fixed_note": "Live kill sample: 6/6 vote-bearing matched Council notices retain by_person (100%; 6/16=37.5% of matched); 48/48 roll_call stages keep person rows (precision 1.0). Claim sample healthy. Static first paint maps aye/nay and roll-call chips. Official constellation still gated at 30 distinct roll-call events (have 12 densified / 6 in live window). Complementary person-row precision receipt: site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json (388/388).",
+  "demo_win": "Council hearings show named yes/no roll call when Legistar published votes for the event.",
+  "evidence": {
+    "usefulness_rate": 0.375,
+    "vote_bearing_retention": 1,
+    "joined": 6,
+    "total_matched": 16,
+    "precision_rate": 1,
+    "receipt": "site/data/legistar_sources/verification_receipts/meeting_person_votes_2026-08-11.json",
+    "materialization_receipt": "site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json",
+    "person_rows_precision": "388/388",
+    "materialize": true
+  },
+  "content_hash": "6bed4fc36f17773d",
+  "last_seen_at": "2026-08-11T21:00:00.000Z"
+}

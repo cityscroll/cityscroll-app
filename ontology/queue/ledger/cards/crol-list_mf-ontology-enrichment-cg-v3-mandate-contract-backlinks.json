@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Expand mandate→contract public edges beyond the single DHS template",
+  "verify": "node -e \"const b=require('./site/data/notice_mandate_backlinks_lookup.json'); const n=Number(b.counts&&b.counts.edges); if(!(n>=5)) process.exit(1);\" && node --test test/notice_mandate_backlinks.test.mjs",
+  "content_hash": "f401a9351448241d",
+  "last_seen_at": "2026-08-11T22:30:00.000Z",
+  "demo_win": "At least five public mandate→contract reverse edges render on notice documents, expanded from the DHS Administrative Code template without title-only invent."
+}

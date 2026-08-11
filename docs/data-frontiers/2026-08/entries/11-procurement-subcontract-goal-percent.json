@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-subcontract-goal-percent",
+  "rank": 11,
+  "gap_inventory_row": "`procurement-subcontract-goal-percent` — contract-level M/WBE goal",
+  "source_and_access": "[MOCS LL1 plans](https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page) publish planned solicitation attributes, while the Comptroller’s [M/WBE procurement reports](https://comptroller.nyc.gov/type/mwbe-procurement/) publish aggregate oversight findings. Neither is verified as a contract-keyed goal-percent feed.",
+  "join_feasibility": "**Blocked.** No verified public source keyed by PIN or contract ID publishes the required goal percentage. The FY24 Comptroller report found approved subcontract records for only about 10% of eligible contracts; that is a measured reporting-coverage statistic, not a goal-field join rate.",
+  "reader_value": "**5** — Money, prime-win outreach, and M/WBE subcontractors; shows the opportunity size and later goal attainment.",
+  "effort": "**Partnership-blocked**",
+  "disposition": "Keep as a publication request/monitor. Do not derive a percentage from aggregate reports."
+}

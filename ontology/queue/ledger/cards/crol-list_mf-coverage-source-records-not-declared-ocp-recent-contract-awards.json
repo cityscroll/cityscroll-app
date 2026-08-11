@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-ocp-recent-contract-awards",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: ocp-recent-contract-awards",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # ocp-recent-contract-awards present",
+  "content_hash": "ac0e29c9feae596b",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source ocp-recent-contract-awards retains immutable D1 observations without changing its product-delivery status."
+}

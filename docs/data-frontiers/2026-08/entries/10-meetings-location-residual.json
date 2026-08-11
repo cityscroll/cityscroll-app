@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "meetings-location-residual",
+  "rank": 10,
+  "gap_inventory_row": "`meetings-location-residual` **(new)** — 24 meetings have no place signal",
+  "source_and_access": "[City Record Online](https://data.cityofnewyork.us/d/dg92-zbpx) matter text and venue columns, plus official agency/board meeting pages when a notice is ambiguous.",
+  "join_feasibility": "**Measured:** 95/119 Meetings rows located (79.8%); 24/119 remain `no_place_signal` on 2026-08-04. **Unmeasured assessment:** board/agency pages may resolve a subset; no residual sample has been coded by cause.",
+  "reader_value": "**4** — Map and Meetings; attendees and district followers get correct local scope.",
+  "effort": "**Scrape**",
+  "disposition": "First classify the 24 misses; do not substitute agency headquarters for matter geography."
+}

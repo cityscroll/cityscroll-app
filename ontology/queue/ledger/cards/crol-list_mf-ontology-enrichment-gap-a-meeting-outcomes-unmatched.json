@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-meeting-outcomes-unmatched",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: meeting-outcomes-unmatched",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for meeting-outcomes-unmatched",
+  "content_hash": "8f20141470bc8bae",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap meeting-outcomes-unmatched shows joined public data instead of “not yet shown here”."
+}

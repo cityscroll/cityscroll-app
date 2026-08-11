@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-cross-source-consistency-disagree-notice-20231222103-contract-amount",
+  "status": "proposed",
+  "dimension": "cross-source-consistency",
+  "title": "Reconcile cross-source contract_amount on notice:20231222103",
+  "verify": "node --test worker/test/claim_layer.test.mjs # public_claim_labeled_disagree",
+  "content_hash": "a139b76565f2d325",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "OCP and City Record award amounts both remain labeled; the lifecycle shows disagreement without inventing a winner."
+}

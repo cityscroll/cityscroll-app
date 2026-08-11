@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "external-awards-abo-none",
+  "rank": 4,
+  "rc": "RC-4",
+  "gap_inventory_row": "**RC-4** `external-awards-abo-none` — unresolved award after an ABO lookup",
+  "source_and_access": "[NYS Authorities Budget Office local-authority procurements](https://data.ny.gov/d/8w5p-k45m) and its companion Socrata tables: API pulls keyed by authority, vendor, award date, and amount.",
+  "join_feasibility": "**Measured:** 1/50 (2%) authority-stratified residual notices had a labeled match; fuzzy precision was 50%, with five false positives and four ambiguous groups in ten reviewed candidate groups ([receipt](../site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json)).",
+  "reader_value": "**4** — Money and agency/vendor profiles; authority notices gain vendor, amount, date, and a traceable external award.",
+  "effort": "**API pull**",
+  "disposition": "**Infrastructure landed; edge stopped.** Below the 30% usefulness and 95% precision gates, so no reader surface or notice-level edge ships."
+}

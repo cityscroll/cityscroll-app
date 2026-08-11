@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-bid-counts",
+  "rank": 15,
+  "gap_inventory_row": "`procurement-bid-counts` — number of tenderers",
+  "source_and_access": "[Bid Tabulations (Historical)](https://data.cityofnewyork.us/d/9k82-ys7w), Socrata API/export.",
+  "join_feasibility": "**Measured:** 0/7,254 modern notices and 2,158/23,804 (9.07%) in the 2016–2021 overlap; source ends in 2021 and has no PIN.",
+  "reader_value": "**3** — Money; competition context for researchers and procurement oversight.",
+  "effort": "**API pull**",
+  "disposition": "Below the 30% usefulness threshold; historical niche only."
+}
