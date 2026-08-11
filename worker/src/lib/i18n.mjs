@@ -23,6 +23,9 @@ const EMAIL_STRINGS = {
     digest_unsubscribe:   "Unsubscribe",
     digest_unsubscribe_all: "Unsubscribe from all watches",
     digest_manage:        "Manage watches",
+    // Prefs latency honesty (edits next digest) vs unsub (immediate).
+    digest_prefs_cutover: "Changes apply to the next digest (about 9am Eastern).",
+    digest_unsub_immediate: "takes effect immediately",
     rules_comment_open:   "Comments open through {date}",
     rules_comment_action: "Comment on NYC Rules",
 
@@ -42,6 +45,9 @@ const EMAIL_STRINGS = {
 
     quiet_nothing_week:  "No new items this week for {label} — nothing new {since}.",
     quiet_still_watching:"Still watching {label} — nothing new {since}.",
+    // Plain still-subscribed sentence so quiet days are never mistaken for outage.
+    quiet_still_subscribed: "No new matches since {date} — you are still subscribed.",
+    quiet_still_subscribed_week: "No new matches since {date} — you are still subscribed (weekly check-in).",
     quiet_working:       "This note just confirms your alert is working — we'll email the moment something matches.",
     quiet_subscribed:    "You subscribed to this on cityscroll.org.",
 
@@ -87,6 +93,8 @@ const EMAIL_STRINGS = {
     digest_unsubscribe:   "Darse de baja",
     digest_unsubscribe_all: "Darse de baja de todas las alertas",
     digest_manage:        "Administrar alertas",
+    digest_prefs_cutover: "Los cambios se aplican al próximo resumen (alrededor de las 9am Eastern).",
+    digest_unsub_immediate: "tiene efecto inmediato",
     rules_comment_open:   "Comentarios abiertos hasta {date}",
     rules_comment_action: "Comentar en NYC Rules",
 
@@ -105,6 +113,8 @@ const EMAIL_STRINGS = {
 
     quiet_nothing_week:  "No hay avisos nuevos esta semana para {label} — nada nuevo {since}.",
     quiet_still_watching:"Seguimos monitoreando {label} — nada nuevo {since}.",
+    quiet_still_subscribed: "Sin coincidencias nuevas desde {date} — sigue suscrito.",
+    quiet_still_subscribed_week: "Sin coincidencias nuevas desde {date} — sigue suscrito (revisión semanal).",
     quiet_working:       "Esta nota confirma que su alerta está funcionando — le avisaremos en cuanto haya coincidencias.",
     quiet_subscribed:    "Se suscribió a esto en cityscroll.org.",
 

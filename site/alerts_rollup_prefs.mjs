@@ -18,7 +18,15 @@ export const ALERTS_ROLLUP_PREFS_SCHEMA_VERSION = 1;
 export const ROLLUP_GROUP_DIMS = Object.freeze(["topic", "agency", "geography"]);
 
 export const PREFS_CUTOVER_COPY =
-  "Preference changes take effect on the next daily digest run (~9am Eastern).";
+  "Changes apply to the next digest (about 9am Eastern).";
+
+/** Unsubscribe removes watches immediately (not gated on the next digest). */
+export const PREFS_UNSUB_IMMEDIATE_COPY =
+  "Unsubscribe takes effect immediately.";
+
+/** Daily-watch heartbeat contract (14-day default; not tunable in prefs without product OK). */
+export const PREFS_HEARTBEAT_HELP_COPY =
+  "If a daily watch is quiet for 14 days, we send a still-watching note so silence never looks like an outage.";
 
 const LENS_TOPIC = Object.freeze({
   money: "Contracts & awards",
@@ -213,6 +221,12 @@ export function buildRollupPreviewModel(watches = [], { groupBy = "topic", dest 
     : totalNew > 0
       ? `CityScroll: ${totalNew} new — ${sections[0]?.label || "watch"}`
       : `CityScroll: still watching — ${sections[0]?.label || "watch"}`;
+  const toc = sections.map((s, i) => ({
+    id: `watch-${i}`,
+    label: s.label,
+    quiet: !!s.quiet,
+    statusLabel: s.quiet ? "no new matches" : `${s.new} new`,
+  }));
   return {
     schema_version: ALERTS_ROLLUP_PREFS_SCHEMA_VERSION,
     dest,
@@ -222,12 +236,15 @@ export function buildRollupPreviewModel(watches = [], { groupBy = "topic", dest 
     totalNew,
     subject,
     summaryLine: multi
-      ? `${wantingCount} of ${watchCount} watches with updates`
-      : `${wantingCount} watch${wantingCount === 1 ? "" : "es"} with updates`,
+      ? `${totalNew} new · ${wantingCount} of ${watchCount} watches with updates`
+      : `${totalNew} new · ${wantingCount} watch${wantingCount === 1 ? "" : "es"} with updates`,
+    toc,
     groupBy: ROLLUP_GROUP_DIMS.includes(groupBy) ? groupBy : "topic",
     groups,
     sections,
     cutover: PREFS_CUTOVER_COPY,
+    unsubImmediate: PREFS_UNSUB_IMMEDIATE_COPY,
+    heartbeatHelp: PREFS_HEARTBEAT_HELP_COPY,
     rollupApplies: multi,
   };
 }

@@ -22,14 +22,28 @@ No passwords or full login accounts. Identity is the confirmed email, same as ma
 
 ## Cutover rule (preference center)
 
-Edits write to `SUBS` immediately. The daily digest always reads current `SUBS` rows, so changes take effect on the **next daily cron** (~13:00 UTC / **~9am Eastern**). Every preference-center surface states this.
+Edits write to `SUBS` immediately. The daily digest always reads current `SUBS` rows, so changes **apply to the next digest (about 9am Eastern)** (~13:00 UTC). Every preference-center surface, digest footer, and Following delivery help states this.
+
+## Quiet-day honesty and heartbeat
+
+- **Daily quiet** stays silent on purpose (no mail when there is nothing new).
+- **Heartbeat:** if a daily watch is quiet for **14 days**, CityScroll sends a still-watching note so silence never looks like an outage. The 14-day default is documented on prefs and Following; it is **not** user-tunable without an explicit product decision.
+- **Weekly** watches always check in on Mondays, even with no new matches. First weekly-empty and heartbeat bodies include a plain “No new matches since DATE — you are still subscribed” sentence.
+
+## Multi-watch rollup body
+
+- Subject stays count-honest (`N watches`).
+- Body opens with total new · optional since date · a TOC jump list per watch (new count or quiet).
+- Quiet sections render as **one line** (`Label — no new matches`), not full item chrome. Matched sections keep full item cards.
 
 ## Unsubscribe
 
-| Scope | How |
-|-------|-----|
-| One watch | Existing token `{ k: "sub:…" }` on List-Unsubscribe and per-watch footers. |
-| All watches | Token `{ all: 1, e: "<email>" }` from rollup footers and preference center “Unsubscribe all”. |
+| Scope | How | Latency |
+|-------|-----|---------|
+| One watch | Existing token `{ k: "sub:…" }` on List-Unsubscribe and per-watch footers. | **Immediate** |
+| All watches | Token `{ all: 1, e: "<email>" }` from rollup footers and preference center “Unsubscribe all”. | **Immediate** |
+
+Surfaces that mention unsubscribe also say it takes effect immediately (unlike preference edits).
 
 ## Preference center
 

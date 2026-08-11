@@ -10,6 +10,10 @@ import {
   rollupSendDecision,
   rollupSubject,
   rollupBodySections,
+  rollupTocEntries,
+  rollupSectionAnchorId,
+  isQuietRollupSection,
+  quietRollupSectionLine,
   toRollupDayLogEntry,
   accountLogId,
 } from "../src/lib/rollup.mjs";
@@ -130,6 +134,26 @@ test("rollupBodySections: keeps quiet and weekly sections, drops errors", () => 
   ]);
   assert.equal(body.length, 3);
   assert.deepEqual(body.map((s) => s.queryLabel), ["a", "b", "c"]);
+});
+
+test("rollup TOC + quiet one-line helpers", () => {
+  assert.equal(rollupSectionAnchorId("Hearings & meetings", 2), "watch-2-hearings-meetings");
+  assert.equal(quietRollupSectionLine("Hearings", "no new matches"), "Hearings — no new matches");
+  assert.equal(isQuietRollupSection({ new: 0, forecasts: 0 }), true);
+  assert.equal(isQuietRollupSection({ new: 2, forecasts: 0 }), false);
+  assert.equal(isQuietRollupSection({ skipped: "weekly" }), true);
+
+  const toc = rollupTocEntries([
+    { label: "Construction", new: 3, forecasts: 0 },
+    { label: "Hearings", new: 0, forecasts: 0 },
+    { label: "Weekly park", skipped: "weekly", new: 0 },
+  ]);
+  assert.equal(toc.length, 3);
+  assert.equal(toc[0].quiet, false);
+  assert.match(toc[0].statusLabel, /3 new/);
+  assert.equal(toc[1].quiet, true);
+  assert.equal(toc[1].statusLabel, "no new matches");
+  assert.match(toc[2].statusLabel, /weekly/i);
 });
 
 test("toRollupDayLogEntry: kind=rollup and sendUnits=1", () => {

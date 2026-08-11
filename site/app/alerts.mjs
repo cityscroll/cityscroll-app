@@ -346,12 +346,14 @@ function digTitleHTML(title, ev){
   return enTitle(`${esc(before)}<mark>${esc(hit)}</mark>${esc(after)}`);
 }
 // digEvidenceHTML: a one-line "why this matched" note for a match NOT in the title.
+// Skipped when the title already shows the hit. Placed under the title / before actions
+// so preview scan order matches the outbound email evidence line.
 function digEvidenceHTML(ev){
   if(!ev || ev.field==="title") return "";
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
-  if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
-  if(ev.field==="attachment-text" || ev.field==="attachment-tables") return `<div class="dev" data-match-provenance="${esc(ev.field)}">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
-  return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
+  if(ev.field==="description") return `<div class="dev" data-match-evidence="1">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  if(ev.field==="attachment-text" || ev.field==="attachment-tables") return `<div class="dev" data-match-evidence="1" data-match-provenance="${esc(ev.field)}">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  return `<div class="dev" data-match-evidence="1">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
 }
 function digContact(r){
   const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const parts=[];
@@ -407,18 +409,18 @@ function digItemHTML(kind, r, keywords, awarenessTools){
   if(kind==="award"){
     const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords, null, matchAttachmentText(r));
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
+    ${digEvidenceHTML(ev)}
     <div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name? " · "+escUiHtml(cleanText(r.vendor_name)):""}</div>
     ${aw}
-    ${digEvidenceHTML(ev)}
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
   if(kind==="notice"){
     const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords, null, matchAttachmentText(r));
     const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
     return `<div class="digitem"><div class="dt">${digTitleHTML(title, ev)}</div>
+    ${digEvidenceHTML(ev)}
     <div class="dm">${meta}</div>
     ${aw}
-    ${digEvidenceHTML(ev)}
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date), rolling=isRollingDeadline(r.due_date);
@@ -430,7 +432,8 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
     const when = rolling ? t("rolling_deadline_tag") : t("due_on",{date:fdt(r.due_date)})+(dl!=null?t("days_paren",{n:dl}):"");
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
-    <div class="dm">${r.agency_name} · ${when}</div>${aw}${digEvidenceHTML(ev)}${dc}</div>`; }
+    ${digEvidenceHTML(ev)}
+    <div class="dm">${r.agency_name} · ${when}</div>${aw}${dc}</div>`; }
   // Rezoning dig: deep-link into Land detail (action rail + ULURP timeline), not only ZAP.
   // Scope decision: match evidence highlighting is out of scope for ZAP rows (different shape).
   const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
@@ -631,10 +634,12 @@ function usdRollup(n){
   const v = Number(n);
   return Number.isFinite(v) ? "$" + v.toLocaleString("en-US") : "";
 }
-function alertsRollupSectionHTML(sec, awarenessTools){
+function alertsRollupSectionHTML(sec, awarenessTools, index = 0){
   const label = escUiHtml(sec.label || sec.lens || t("alerts_rollup_watch_fallback"));
+  const anchor = `watch-${Number(index) || 0}`;
+  // Quiet: one-line only (parity with outbound rollupDigestHtml quiet sections).
   if(sec.quiet || !(sec.rows && sec.rows.length)){
-    return `<div class="rollup-sec"><h3>${label}</h3><p class="rollup-quiet">${t("alerts_rollup_section_quiet")}</p></div>`;
+    return `<p id="${anchor}" class="rollup-quiet" data-rollup-quiet="1">${label} — ${t("alerts_rollup_section_quiet")}</p>`;
   }
   const items = sec.rows.map((r)=>{
     if(r.project_name || r.project_id){
@@ -645,10 +650,14 @@ function alertsRollupSectionHTML(sec, awarenessTools){
     const meta = [r.agency_name, usdRollup(r.contract_amount)].filter(Boolean).map(escUiHtml).join(" · ");
     // Demo fixtures are money-shaped; awareness picks solicitation vs award from type fields.
     const kind = /Award/i.test(String(r.type_of_notice_description || "")) ? "award" : "rfp";
+    // Prefer digItemHTML when available so demo mock cards share the email item model.
+    if(typeof digItemHTML === "function"){
+      return digItemHTML(kind, r, [], awarenessTools);
+    }
     const aw = digAwarenessHTML(kind, r, awarenessTools);
     return `<div class="digitem"><div class="dt">${escUiHtml(r.short_title || r.request_id || "Notice")}</div><div class="dm">${meta}</div>${aw}</div>`;
   }).join("");
-  return `<div class="rollup-sec"><h3>${label}</h3>${items}</div>`;
+  return `<div id="${anchor}" class="rollup-sec" data-rollup-section="1"><h3>${label} <span class="freq">· ${(sec.new || sec.rows.length)} new</span></h3>${items}</div>`;
 }
 function alertsRollupGroupsHTML(groups){
   if(!groups || !groups.length){
@@ -667,8 +676,15 @@ function alertsRollupEmailMockHTML(model, awarenessTools){
   // Recipient is a display label for the mock (not a live address). Product digests
   // still use the real From identity on the worker send path.
   const dest = escUiHtml(model.dest || t("email_placeholder") || "reader");
-  const body = (model.sections || []).map((sec)=>alertsRollupSectionHTML(sec, awarenessTools)).join("");
+  const sections = model.sections || [];
+  const body = sections.map((sec, i)=>alertsRollupSectionHTML(sec, awarenessTools, i)).join("");
   const summary = escUiHtml(model.summaryLine || "");
+  const toc = Array.isArray(model.toc) && model.toc.length > 1
+    ? `<nav class="rollup-toc" data-rollup-toc="1" aria-label="Watches in this digest"><div class="rollup-toc-head">In this email</div><ul>${model.toc.map((entry, i)=>{
+      const status = entry.quiet ? escUiHtml(entry.statusLabel || "no new matches") : escUiHtml(entry.statusLabel || "new");
+      return `<li><a href="#watch-${i}">${escUiHtml(entry.label || "")}</a> — ${status}</li>`;
+    }).join("")}</ul></nav>`
+    : "";
   const footer = t("alerts_rollup_digest_footer");
   // Reuse the single-watch preview's From chrome when present so this surface does not
   // re-state the product sender string (keeps one source of truth with aPreview).
@@ -681,6 +697,7 @@ function alertsRollupEmailMockHTML(model, awarenessTools){
     <div class="esubj">${escUiHtml(model.subject || "")}</div></div>
     <div class="ebody">
       <p style="margin:0 0 12px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${summary}</p>
+      ${toc}
       ${body}
       <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${footer}</div>
     </div></div>`;

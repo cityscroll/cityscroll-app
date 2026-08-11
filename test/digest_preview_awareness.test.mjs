@@ -64,3 +64,20 @@ test("shared module is the single source for worker email and site preview", () 
   );
   assert.match(workerReexport, /site\/digest_item_awareness\.mjs/);
 });
+
+test("digItemHTML places match evidence under title before actions (preview≡email scan order)", () => {
+  // Both home-wire and alerts-island digItemHTML must keep evidence before action chrome.
+  assert.match(INDEX, /digEvidenceHTML\(ev\)[\s\S]{0,200}class="dm"/);
+  assert.match(INDEX, /data-match-evidence="1"/);
+});
+
+test("Following list preview is a slim subset — dig item awareness stays digItemHTML/subDigestHtml", () => {
+  const following = readFileSync(
+    new URL("../site/following_view.mjs", import.meta.url),
+    "utf8",
+  );
+  // Following shows title/summary for scope preview, not a third dig-item renderer.
+  assert.match(following, /function previewItem/);
+  assert.doesNotMatch(following, /function digItemHTML/);
+  assert.match(following, /14 days|still-watching/i);
+});
