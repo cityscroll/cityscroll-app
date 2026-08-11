@@ -11,7 +11,10 @@ echo "== multi-dimension flywheel characterization =="
 OUT="${TMPDIR:-/tmp}/cs-multi-flywheel-verify-$$"
 node tools/build_location_resolution_inventory.mjs --check
 python3 tools/sample_surface_load.py --fixture --out "$OUT-surface-load.json"
-node --test test/multi_flywheel.test.mjs test/multi_flywheel_dimensions.test.mjs
+node tools/rebuild_flywheel_ledger.mjs --check
+node tools/build_data_frontiers.mjs --check
+node --test test/multi_flywheel.test.mjs test/multi_flywheel_dimensions.test.mjs \
+  test/ledger_store.test.mjs test/data_frontiers.test.mjs
 
 echo "== cross-spine fixture suite =="
 node tools/cross_spine_validate.mjs

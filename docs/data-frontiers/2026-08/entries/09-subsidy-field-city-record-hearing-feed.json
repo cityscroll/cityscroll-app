@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "subsidy-field-city-record-hearing-feed",
+  "rank": 9,
+  "gap_inventory_row": "`subsidy-field-city-record-hearing-feed` — hearing-only record lacks structured project fields",
+  "source_and_access": "Same NYCEDC project spreadsheets/documents; current City Record body remains a fallback for stated project cost.",
+  "join_feasibility": "**Measured path:** City Record hearing bodies parse Total Project Cost / Total Development Cost when labeled; feed-down empty structured fields use not_yet_ingested, not class-(b). RC-2 host-side join remains the durable project identity path when it hits.",
+  "reader_value": "**4** — Money and notice detail; upgrades a hearing notice into a useful project summary.",
+  "effort": "**Scrape**",
+  "disposition": "**Hearing money path landed; project identity depends on RC-2 residual.**"
+}

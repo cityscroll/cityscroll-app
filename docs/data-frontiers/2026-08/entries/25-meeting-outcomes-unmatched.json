@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "meeting-outcomes-unmatched",
+  "rank": 25,
+  "gap_inventory_row": "`meeting-outcomes-unmatched` — Council event not joined",
+  "source_and_access": "[NYC Council Legistar API](https://council.nyc.gov/legislation/api/), authenticated API; Events → EventItems → Votes/Attachments.",
+  "join_feasibility": "**Measured:** 59/59 (100%) modern Council notices joined an event; 59/59 had EventItems and 58/59 (98.3%) had matter-linked items.",
+  "reader_value": "**5** — Meetings, officials, and alerts.",
+  "effort": "**API pull**",
+  "disposition": "**Landed:** the remaining state is timing/edge failure, not a new frontier."
+}

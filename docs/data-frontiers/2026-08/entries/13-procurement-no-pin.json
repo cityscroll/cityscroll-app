@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-no-pin",
+  "rank": 13,
+  "gap_inventory_row": "`procurement-no-pin` — notice omits the deterministic contract key",
+  "source_and_access": "[PASSPort Public contracts](https://a0333-passportpublic.nyc.gov/dataJs/contractData.js), [PASSPort Public RFx](https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js), and [Checkbook Contracts](https://www.checkbooknyc.com/data-feeds/api). Access is JavaScript dump or API; publisher pages may return 403 to unattended clients.",
+  "join_feasibility": "**Unmeasured assessment: low.** Without PIN/EPIN, title/agency/vendor/date matching is fuzzy and no safe residual rate has been measured.",
+  "reader_value": "**4** — Money and contract lifecycle; restores registration and payment provenance.",
+  "effort": "**API pull**",
+  "disposition": "Precision reconnaissance only; do not weaken deterministic joins globally."
+}

@@ -20,6 +20,7 @@ import {
 } from "../ontology/flywheel_run.mjs";
 import { MULTI_CARD_SCHEMA } from "../ontology/dimensions/shared.mjs";
 import { emptyLedger } from "../ontology/card_queue.mjs";
+import { loadLedgerStore } from "../ontology/ledger_store.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -261,7 +262,8 @@ test("ontology-enrichment + default flywheel rank open cg-v ladder first", () =>
 
   // Production ledger already holds older proposed cards open. Strip any cg-v
   // entries so this test models the first emit of the still-open ladder.
-  const liveLedger = loadJson("ontology/queue/ledger.json");
+  // Fold the per-card store (ledger.json is a thin pointer, not the cards map).
+  const liveLedger = loadLedgerStore(join(ROOT, "ontology/queue/ledger.json"));
   const seedLedger = {
     ...liveLedger,
     cards: Object.fromEntries(

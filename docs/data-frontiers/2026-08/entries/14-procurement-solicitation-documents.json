@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-solicitation-documents",
+  "rank": 14,
+  "gap_inventory_row": "`procurement-solicitation-documents` — tender package documents",
+  "source_and_access": "Logical home: per-notice City Record RequestDetail/GetFile and PASSPort. There is no verified modern open document feed.",
+  "join_feasibility": "**Measured:** RFx document URLs 0/50 kill sample and 0/1,470 modern Solicitation+PIN notices; modern OCP and City Record `document_links` also 0/1,550 ([receipt](../site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json)).",
+  "reader_value": "**5** — vendors need the actual bid package and addenda.",
+  "effort": "**Manual + partnership-blocked**",
+  "disposition": "Do not card another RFx adapter. Keep a deep official handoff and monitor for publication change."
+}

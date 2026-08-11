@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "exam-outcome-individual",
+  "rank": 17,
+  "gap_inventory_row": "`exam-outcome-individual` — applicant score/result",
+  "source_and_access": "DCAS candidate portals are private; no public open-data source is verified or appropriate.",
+  "join_feasibility": "**Blocked by publication and privacy.**",
+  "reader_value": "**1** — individual applicants already have the authenticated portal; public value is low and privacy risk is high.",
+  "effort": "**Partnership-blocked**",
+  "disposition": "Intentionally out of scope. Keep only aggregate outcomes."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "subsidy-outcome-absent",
+  "rank": 7,
+  "gap_inventory_row": "`subsidy-outcome-absent` — board/closing outcome missing",
+  "source_and_access": "[NYCIDA financial and public documents](https://edc.nyc/nycida/financial-public-documents) and [Build NYC financial and public documents](https://edc.nyc/build-nyc-financial-public-documents): meeting minutes and project documents, normally PDF/HTML.",
+  "join_feasibility": "**Measured on accepted RC-2 corpus:** board outcomes **5/5 approved** from explicit motion language; closing outcomes **0/5** honest-absent ([receipt](../site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json)).",
+  "reader_value": "**5** — Money and neighborhood oversight; answers whether assistance was approved and on what terms.",
+  "effort": "**Scrape**",
+  "disposition": "**Partially unblocked by RC-2.** Never infer an outcome from a scheduled hearing."
+}

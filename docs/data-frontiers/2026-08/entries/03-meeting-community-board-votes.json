@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "meeting-community-board-votes",
+  "rank": 3,
+  "rc": "RC-3",
+  "gap_inventory_row": "**RC-3** `meeting-community-board-votes` — non-Council outcomes and votes",
+  "source_and_access": "The official [community-board directory](https://www.nyc.gov/site/communityboards/about/manhattan-boards.page) supplies board sites; boards publish heterogeneous HTML/PDF minutes and sometimes vote sheets, for example [Manhattan CB3](https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page) and [Queens CB8](https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page). Borough-president recommendation pages are additional board-specific sources, not a citywide feed.",
+  "join_feasibility": "**Measured:** fixed borough-stratified sample joined **0/10 (0%)** by exact body + meeting date + publisher ULURP after expanding collectable minutes indexes from 8 to 17 ([receipt](../site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json); prior 0/10 at 8 pages: [2026-08-04](../site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json)). Fixture precision on publisher-ULURP keys is 100% but usefulness stays below 30%.",
+  "reader_value": "**5** — Meetings and Land; attendees and neighborhood advocates learn what happened, how a board voted, and where minutes live.",
+  "effort": "**Scrape**",
+  "disposition": "**Infrastructure landed; edge stopped.** Registry + collector + empty lookup ship; no notice-level outcome edge until usefulness ≥30% and precision 100%."
+}
