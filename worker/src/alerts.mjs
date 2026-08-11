@@ -738,6 +738,16 @@ function sameRenderedItem(a, b) {
   return false;
 }
 
+/**
+ * Award-arrival watches (lens "award") carry NYCHA/ABO candidates on
+ * awardCandidates. Money awards compile with query kind "award" too — that is
+ * a notice-list shape (freshRows + vendor_name), not award-watch candidates.
+ * Gate the award-watch outbox path on lens, never on query kind alone.
+ */
+function isAwardWatchSection(section) {
+  return section?.lens === "award";
+}
+
 /** Add the durable owed set to the ordinary section renderer, never by source date. */
 function attachOwedRows(sections, owed) {
   const byWatch = new Map();
@@ -754,14 +764,14 @@ function attachOwedRows(sections, owed) {
     if (!entries.length) continue;
     section.outboxItems = entries.map(({ item }) => item);
     const carried = entries.map(({ row }) => row);
-    if (section.kind === "award") {
+    if (isAwardWatchSection(section)) {
       const current = Array.isArray(section.awardCandidates) ? section.awardCandidates : [];
       section.awardCandidates = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
     } else {
       const current = Array.isArray(section.freshRows) ? section.freshRows : [];
       section.freshRows = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
     }
-    section.new = (section.kind === "award" ? section.awardCandidates : section.freshRows).length;
+    section.new = (isAwardWatchSection(section) ? section.awardCandidates : section.freshRows).length;
     section.noticeIds = [...new Set([
       ...(Array.isArray(section.noticeIds) ? section.noticeIds : []),
       ...carried.map((row) => row.request_id).filter(Boolean),
@@ -1500,7 +1510,8 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", session
     ? `${base}/session?token=${encodeURIComponent(sessionTok)}&next=${encodeURIComponent(dest)}`
     : dest;
   const items = candidates.map((c) => {
-    const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
+    const vendorName = c.vendor || c.vendor_name;
+    const vendor = vendorName ? esc(vendorName) : esc(emailT(lang, "award_watch_vendor_unlisted"));
     const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
     if (c.kind === "exact") {
       return `<li data-digest-item="1" style="margin:0 0 14px"><b>${esc(emailT(lang, "award_watch_exact_label"))}</b><br>
@@ -2562,7 +2573,12 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
           : "Official rule page";
       acts.unshift(`<a href="${esc(r.action_band.action_url)}">${esc(bandAct)}</a>`);
     }
-    const meta = [r.agency_name, usd(r.contract_amount),
+    // Awards: show the published vendor when City Record provides it (same shape
+    // as digItemHTML). "vendor unlisted" is reserved for award-arrival watches
+    // that lack a counterparty, not money award notice digests.
+    const meta = [r.agency_name,
+      itemKind === "award" && r.vendor_name ? r.vendor_name : "",
+      usd(r.contract_amount),
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
@@ -2712,9 +2728,12 @@ function rollupDigestHtml({
         <p style="color:#666;font-style:italic;margin:0">${esc(skipNote)}</p>
       </section>`;
     }
-    if (sec.kind === "award" && Array.isArray(sec.awardCandidates)) {
+    // Award-arrival watches only (lens "award"). Money awards share query kind
+    // "award" but must render as City Record notices with vendor_name.
+    if (isAwardWatchSection(sec) && Array.isArray(sec.awardCandidates)) {
       const items = sec.awardCandidates.map((c) => {
-        const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
+        const vendorName = c.vendor || c.vendor_name;
+        const vendor = vendorName ? esc(vendorName) : esc(emailT(lang, "award_watch_vendor_unlisted"));
         const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
         return `<li data-digest-item="1" style="margin:0 0 10px">${meta}</li>`;
       }).join("");
@@ -2760,7 +2779,12 @@ function rollupDigestHtml({
       if (w) qs.push(`w=${w}`);
       const rowKind = itemKind || "rfp";
       const noticeLink = `${base}/r/${encodeURIComponent(rowKind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
-      const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
+      // Money awards share query kind "award" with award-arrival watches; still
+      // render City Record vendor_name on the notice meta line.
+      const meta = [r.agency_name,
+        rowKind === "award" && r.vendor_name ? r.vendor_name : "",
+        usd(r.contract_amount),
+        dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
       const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";
