@@ -236,11 +236,15 @@
         "issue_date"
       ],
       "publisher_cadence": "Ongoing spending and payment updates",
-      "product_freshness": "Queried by contract_id after the Contracts-domain join (Checkbook Spending rejects PIN filters).",
-      "used_for": "Individual payment records in the procurement lifecycle (solicitation to payment), joined via registered/pending contract ids.",
+      "product_freshness": "Queried by contract_id after the Contracts-domain join (Checkbook Spending rejects PIN filters). Host collector warehouse/scripts/checkbook_spending.mjs seeds the Contracts graph, retains individual payment rows (not spent summaries), and publishes a graph slice when usefulness is at least 30% and precision is at least 95%.",
+      "used_for": "Individual payment records in the procurement lifecycle (solicitation to payment), joined via registered/pending contract ids; population-backed retained payment rows on the procurement spine.",
       "code_references": [
         {
           "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "<type_of_data>Spending</type_of_data>"
+        },
+        {
+          "path": "warehouse/scripts/checkbook_spending.mjs",
           "contains": "<type_of_data>Spending</type_of_data>"
         }
       ],

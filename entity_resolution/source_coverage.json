@@ -145,7 +145,7 @@
     {
       "id": "checkbook-spending",
       "source_system": "checkbook_spending",
-      "importer": "worker/src/checkbook_lifecycle.mjs#computeLifecycle",
+      "importer": "warehouse/scripts/checkbook_spending.mjs",
       "identity_entities": ["payment", "payee", "contract_id"],
       "stable_source_key": "payment:<contract_id>:<document_id>:<payee>:<issue_date>:<amount>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
@@ -161,8 +161,8 @@
         "status": "complete",
         "row_count": 344,
         "latest_ingested_at": "2026-08-02T02:12:11.135Z",
-        "measured_at": "2026-08-02T17:02:36.000Z",
-        "note": "Demand-driven dual-write on lifecycle requests; sparse but non-zero and fresh."
+        "measured_at": "2026-08-11T19:25:33.574Z",
+        "note": "Request-time dual-write remains demand-driven. Host collector retains individual payment rows (not spent summaries) as source_records-shaped snapshots and a population-backed graph slice. Kill sample 2026-08-11: 22/50 seed contracts (44%) retained ≥1 payment; precision 31/31 (100%) exact contract_id. Receipt: site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json."
       },
       "fixture": "worker/test/checkbook_source_records.test.mjs",
       "replay_test": "worker/test/checkbook_source_records.test.mjs",

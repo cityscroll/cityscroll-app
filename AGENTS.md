@@ -2583,6 +2583,23 @@ both the live and restored databases.
   field case: NYPD annual/quarterly report roll-forward within 90 days.
   Demo Parks: `/agencies/parks-and-recreation/#mandates-predictions`.
 
+
+## Checkbook Spending payment retention
+
+Host-side bulk path for individual Checkbook payment rows (not spent-to-date
+summaries only): `warehouse/scripts/checkbook_spending.mjs` + pure
+`warehouse/lib/checkbook_spending.mjs`. Seeds the population-backed Checkbook
+Contracts graph, pulls Spending by `contract_id` (PIN rejected on Spending),
+retains each payment as a `source_records`-shaped snapshot
+(`checkbookSpendingSourceSystemId`), and measures payment↔contract usefulness +
+precision. Materialize the graph slice only when usefulness ≥30% and precision
+≥95%. Residual pin recovery reuses `pin_prefix_of_epin` from
+`worker/src/lib/passport_join.mjs`. Request-time dual-write remains
+`CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` on lifecycle. Receipt:
+`site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json`.
+Verify: `node --test test/checkbook_spending_collector.test.mjs` and
+`node warehouse/scripts/checkbook_spending.mjs --check`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

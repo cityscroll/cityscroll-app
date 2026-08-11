@@ -1,0 +1,591 @@
+{
+  "schema": "cityscroll.checkbook_spending_population_receipt.v1",
+  "status": "complete",
+  "failure_state": null,
+  "source": {
+    "publisher": "Office of the New York City Comptroller",
+    "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+    "endpoint": "https://www.checkbooknyc.com/api",
+    "pulled_at": "2026-08-11T19:25:33.574Z",
+    "type_of_data": "Spending",
+    "spending_category": "c",
+    "spending_category_label": "Contracts",
+    "join_path": "Contracts graph seed → Spending by contract_id (PIN rejected on Spending domain)"
+  },
+  "paging": {
+    "strategy": "seed contract_id pages; records_from offsets; max pages per contract; polite delay",
+    "page_size": 50,
+    "max_pages_per_contract": 2,
+    "fetched_pages": 50,
+    "seed_contracts": 50,
+    "delay_ms": 1200
+  },
+  "population": {
+    "seed_contracts": 50,
+    "raw_payment_rows": 31,
+    "retained_payments": 31,
+    "unique_contracts_with_payments": 22,
+    "blocked": {
+      "missing_contract_id": 0,
+      "missing_identity": 0,
+      "duplicate_source_ids": 0
+    },
+    "per_contract": [
+      {
+        "contract_id": "CT104020273003416",
+        "pin": "10",
+        "spent": 17520.36,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT104020273004352",
+        "pin": "86",
+        "spent": 24992.5,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT104020273004570",
+        "pin": "86",
+        "spent": 24999,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT104020273004903",
+        "pin": "24",
+        "spent": 23500,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT104320271400618",
+        "pin": "043-CUCF1810-FEDEX",
+        "spent": 99.04,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT105420268808209",
+        "pin": "05426M0001001",
+        "spent": 75000,
+        "ok": true,
+        "error": null,
+        "record_count": 2,
+        "retained_rows": 2,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT105720278801357",
+        "pin": "05726W0063001",
+        "spent": 22917.6,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106820278800073",
+        "pin": "06821X8013KXLR002",
+        "spent": 851502.71,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920268808002",
+        "pin": "06926G0050001",
+        "spent": 14110.72,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278800505",
+        "pin": "06923P0015001R001",
+        "spent": 1185981.5,
+        "ok": true,
+        "error": null,
+        "record_count": 3,
+        "retained_rows": 3,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278800507",
+        "pin": "06923P0016001R001",
+        "spent": 362668,
+        "ok": true,
+        "error": null,
+        "record_count": 3,
+        "retained_rows": 3,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801150",
+        "pin": "06926R0001006",
+        "spent": 124313.91,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801152",
+        "pin": "06926R0001008",
+        "spent": 78176.97,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801300",
+        "pin": "06926R0001001",
+        "spent": 96607.44,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801352",
+        "pin": "06926R0001003",
+        "spent": 82983.15,
+        "ok": true,
+        "error": null,
+        "record_count": 2,
+        "retained_rows": 2,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801353",
+        "pin": "06926R0001004",
+        "spent": 65454.38,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801354",
+        "pin": "06926R0001014",
+        "spent": 151234.26,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801376",
+        "pin": "06926R0001011",
+        "spent": 105542.3,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801378",
+        "pin": "06926R0001009",
+        "spent": 39349.68,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801386",
+        "pin": "06926R0001016",
+        "spent": 18310.29,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT106920278801411",
+        "pin": "06926R0001012",
+        "spent": 73628.61,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800009",
+        "pin": "07122P8043KXLR001",
+        "spent": 4834836.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800109",
+        "pin": "07122P8046KXLR001",
+        "spent": 2595038.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800127",
+        "pin": "07122P8016KXLR001",
+        "spent": 5492600.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800152",
+        "pin": "07121P0122001R001",
+        "spent": 11288103,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800153",
+        "pin": "07122P8027KXLR001",
+        "spent": 3151250,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800160",
+        "pin": "07122P8045KXLR001",
+        "spent": 3235016.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800190",
+        "pin": "07122X8003KXLR001",
+        "spent": 5853748.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800539",
+        "pin": "07121P0125009",
+        "spent": 1681074,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800830",
+        "pin": "07122P0012072",
+        "spent": 10468368,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800899",
+        "pin": "07125P0010019",
+        "spent": 9159068,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800934",
+        "pin": "07125P0010007",
+        "spent": 5860177.5,
+        "ok": true,
+        "error": null,
+        "record_count": 2,
+        "retained_rows": 2,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800941",
+        "pin": "07125P0010018",
+        "spent": 16736095,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800945",
+        "pin": "07125P0010042",
+        "spent": 9364749,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800946",
+        "pin": "07126N0018001",
+        "spent": 1893365.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278800962",
+        "pin": "07126X8002KXLR001",
+        "spent": 5618104.5,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278801054",
+        "pin": "07125P0010010",
+        "spent": 10856557,
+        "ok": true,
+        "error": null,
+        "record_count": 2,
+        "retained_rows": 2,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278801062",
+        "pin": "07125P0010003",
+        "spent": 5451074.5,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278801107",
+        "pin": "07125P0010027",
+        "spent": 5370850,
+        "ok": true,
+        "error": null,
+        "record_count": 2,
+        "retained_rows": 2,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT107120278801486",
+        "pin": "07126X0012001",
+        "spent": 5647087.5,
+        "ok": true,
+        "error": null,
+        "record_count": 1,
+        "retained_rows": 1,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT100220271400542",
+        "pin": "002270198101",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT100220278801283",
+        "pin": "00225N8001KXLR002",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT100220278801511",
+        "pin": "00226W0016001",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT100820271401006",
+        "pin": "008GUARDIAN008",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT101220271401966",
+        "pin": "20270000002",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT101520270000619",
+        "pin": "015-238-287-00 SA R3",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT101720261414447",
+        "pin": "01726E0001001",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT101720268806468",
+        "pin": "01726B0002001",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT101720278801239",
+        "pin": "01725P0002001",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      },
+      {
+        "contract_id": "CT101720278801240",
+        "pin": "01725P0002002",
+        "spent": 0,
+        "ok": true,
+        "error": null,
+        "record_count": 0,
+        "retained_rows": 0,
+        "pages": 1
+      }
+    ]
+  },
+  "measurement": {
+    "usefulness": {
+      "joined": 22,
+      "total": 50,
+      "rate": 0.44,
+      "floor": 0.3,
+      "denominator": "seed contracts from the population-backed Checkbook Contracts graph",
+      "numerator": "seed contracts with ≥1 retained Checkbook Spending payment row"
+    },
+    "precision": {
+      "true_positives": 31,
+      "false_positives": 0,
+      "attempts": 31,
+      "rate": 1,
+      "floor": 0.95,
+      "basis": "publisher contract_id equals seed / exact spine id; seed mismatches are false positives; pin_prefix_of_epin accepted only for residual pin joins"
+    },
+    "methods": {
+      "exact_contract_id": 31
+    },
+    "gates": {
+      "usefulness_floor": 0.3,
+      "precision_floor": 0.95,
+      "usefulness_cleared": true,
+      "precision_cleared": true,
+      "materialize": true
+    },
+    "acceptance_rule": "exact contract_id join (product path); pin_prefix_of_epin / epin_prefix_of_pin only as residual when a payment pin uniquely resolves; never invent payments"
+  },
+  "retention": {
+    "mode": "individual_payment_rows",
+    "not": "spent_to_date_summary_only",
+    "source_records_shape": "worker/src/lib/checkbook_source_records.mjs#checkbookSpendingSourceSystemId",
+    "source_records_path": "warehouse stage source_records.jsonl (host-side immutable snapshot)",
+    "dual_write_flag": "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE",
+    "source_records_written": 31
+  },
+  "graph_slice": {
+    "cap": 500,
+    "row_count": 31,
+    "strategy": "newest issue_date first; retain individual payment rows (not spent-to-date summaries)",
+    "materialize": true
+  },
+  "checksums": {
+    "retained_payments_sha256": "53c6a6f92df3f31e0d2986ba857437986190962d476c2a46067b1595cd5ecc8d",
+    "committed_graph_slice_sha256": "0f9ee8729d44a3d37fd181e10782b4496afa56d220f146219125f5360d8f178c",
+    "seed_contract_ids_sha256": "bb87eb6051589801a2f9a7f47733436deb34990efb08b659a8370c623c6f0fa9",
+    "source_records_sha256": "c8e4019dbddda0973ba150b745839a7bd52d384bf14ec0be96e109fb05b1cfc7"
+  },
+  "identity_policy": {
+    "payment_identity": "payment:<contract_id>:<document_id>:<payee>:<issue_date>:<amount>",
+    "contract_join": "exact normalized contract_id (product path)",
+    "residual_pin_join": "pin_prefix_of_epin / epin_prefix_of_pin / exact pin via passport_join only when residual",
+    "never": "PIN-only Spending queries; fabricated payments; name-only joins"
+  }
+}

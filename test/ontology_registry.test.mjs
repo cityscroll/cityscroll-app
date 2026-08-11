@@ -105,8 +105,9 @@ test("unregistered object types declare a reason", () => {
       assert.ok(entry.reason && entry.reason.length > 10, entry.id);
     }
   }
-  assert.ok(idsWithStatus(registry.object_types, "unregistered").includes("payment"));
   assert.ok(idsWithStatus(registry.object_types, "unregistered").includes("vote"));
+  // payment is registered after Checkbook Spending retention (2026-08-11 kill sample).
+  assert.ok(idsWithStatus(registry.object_types, "registered").includes("payment"));
   // official is registered (public graph person-level vote nodes).
   assert.ok(idsWithStatus(registry.object_types, "registered").includes("official"));
 });
