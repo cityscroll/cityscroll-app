@@ -28,6 +28,13 @@ const registry = JSON.parse(readFileSync(
 ));
 const receipt = JSON.parse(readFileSync(
   new URL(
+    "../site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json",
+    import.meta.url,
+  ),
+  "utf8",
+));
+const priorReceipt = JSON.parse(readFileSync(
+  new URL(
     "../site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json",
     import.meta.url,
   ),
@@ -146,6 +153,12 @@ test("reviewed sample labels each body-matched candidate and gates promotion at 
 
 test("published real sample kills the below-threshold bridge", () => {
   assert.equal(receipt.usefulness_threshold, 0.3);
+  assert.equal(receipt.observed_on, "2026-08-11");
+  assert.deepEqual(receipt.join_measurement.rates.exact_body_date_publisher_ulurp, {
+    joined: 0,
+    total: 10,
+    rate: 0,
+  });
   assert.deepEqual(receipt.join_measurement.rates.strict_body_date_matter, {
     joined: 0,
     total: 10,
@@ -159,11 +172,25 @@ test("published real sample kills the below-threshold bridge", () => {
     "Staten Island": 2,
   });
   assert.equal(receipt.join_measurement.cases.length, 10);
+  assert.equal(receipt.source_inventory.explicitly_collectable_pages, 17);
+  assert.equal(receipt.source_inventory.prior_collectable_pages, 8);
+  // Expansion promoted bronx-cb-06 from inventory_only to collect; still no same-date PDF.
+  const bx6 = receipt.join_measurement.cases.find((row) => row.request_id === "20260603044");
+  assert.equal(bx6?.body_id, "bronx-cb-06");
+  assert.equal(bx6?.disposition, "no_document_on_event_date");
   assert.equal(receipt.false_positive_review.reviewed_pairs, 1);
   assert.equal(receipt.false_positive_review.accepted, 0);
   assert.equal(receipt.false_positive_review.rejected, 1);
   assert.match(receipt.verdict, /Below usefulness threshold/i);
   assert.equal(registry.policy.join_bridge_enabled, false);
+  // Historical 2026-08-04 kill sample remains as evidence (8 collectable pages, 0 joins).
+  assert.equal(priorReceipt.observed_on, "2026-08-04");
+  assert.deepEqual(priorReceipt.join_measurement.rates.strict_body_date_matter, {
+    joined: 0,
+    total: 10,
+    rate: 0,
+  });
+  assert.equal(priorReceipt.source_inventory.explicitly_collectable_pages, 8);
 });
 
 test("strict bridge requires exact body/date and publisher ULURP matter tokens", () => {

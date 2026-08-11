@@ -9,8 +9,12 @@ The registry deliberately reports board-level coverage. It must not be described
 as a complete citywide network while source pages and archive practices remain
 heterogeneous.
 
-The dated receipt under `verification_receipts/` records the fixed, borough-
-stratified real-notice sample (0/10 strict joins). The join method is
+Dated receipts under `verification_receipts/` record the fixed, borough-
+stratified real-notice sample. The authoritative re-measure is
+`non_council_minutes_votes_2026-08-11.json` (**0/10** joins after expanding
+collectable minutes indexes from 8 to 17). The prior
+`non_council_minutes_votes_2026-08-04.json` sample (also 0/10 at 8 collectable
+pages) is retained as historical evidence. The join method is
 `exact_body_date_publisher_ulurp`: exact body, exact meeting date, and a
 publisher-supplied ULURP matter identifier present in both the notice and the
 minutes text. Slug or street-name tokens are not join keys. Guessed URLs,

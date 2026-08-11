@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.cb_minutes_publication_probe_receipt.v1",
-  "generated_at": "2026-08-06T18:06:08.713Z",
-  "as_of": "2026-08-06",
+  "generated_at": "2026-08-11T18:22:31Z",
+  "as_of": "2026-08-11",
   "expected_window": "trailing_12_months",
   "mandate_source": "https://comptroller.nyc.gov/reports/audit-report-on-the-twelve-manhattan-community-boards-compliance-with-new-york-city-charter-and-new-york-city-administrative-code-requirements-for-public-meetings-and-hearings-and-for-web/",
   "probes": [
@@ -367,53 +367,321 @@
     },
     {
       "body_id": "bronx-cb-02",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
+      "url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
+      "fetched_at": "2026-08-11T18:22:17Z",
+      "http_status": 200,
+      "content_sha256": "b10dc093ffdd31ce0032d5cf22978317c4fb3a3805f53e7314b68f09729acfb7",
       "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "status": "ok"
     },
     {
       "body_id": "bronx-cb-03",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
+      "url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
+      "fetched_at": "2026-08-11T18:22:18Z",
+      "http_status": 200,
+      "content_sha256": "1a0f6748af0f34c40dd55203520a8b18edfe61ea523fc16da0e0bff539f611c2",
       "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "status": "ok"
     },
     {
       "body_id": "bronx-cb-04",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
-      "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
+      "fetched_at": "2026-08-11T18:22:20Z",
+      "http_status": 200,
+      "content_sha256": "f4e71f4d9298ed27acc506e3ddb6cb1e2851a03d884f66fc4d90ce1c6949a1a6",
+      "observations": [
+        {
+          "meeting_date": "2021-10-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb4/downloads/pdf/minutes/2021/10-26-21-cb4-full-board-meeting-minutes.pdf",
+          "title": "October 2021"
+        },
+        {
+          "meeting_date": "2021-09-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb4/downloads/pdf/minutes/2021/9-28-21-cb4-board-minutes.pdf",
+          "title": "September 2021"
+        },
+        {
+          "meeting_date": "2021-05-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb4/downloads/pdf/minutes/2021/5-25-21-cb4-full-board-meeting minutes_v1.pdf",
+          "title": "May 2021"
+        },
+        {
+          "meeting_date": "2021-04-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb4/downloads/pdf/minutes/2021/4-27-21-cb4-full-board-meeting-minutes.pdf",
+          "title": "April 2021"
+        }
+      ],
+      "status": "ok"
     },
     {
       "body_id": "bronx-cb-05",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
-      "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
+      "fetched_at": "2026-08-11T18:22:21Z",
+      "http_status": 200,
+      "content_sha256": "06821b49c4e5a92a4efd27551bca7c6a600e082de5e7a6911d9d8dd1794463eb",
+      "observations": [
+        {
+          "meeting_date": "2026-05-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2026/May-2026-Gernal-Board-meeting-minutes.pdf",
+          "title": "May 27, 2026"
+        },
+        {
+          "meeting_date": "2026-04-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2026/April-2026-General-Board-meeting-minutes.pdf",
+          "title": "April 22, 2026"
+        },
+        {
+          "meeting_date": "2026-03-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2026/March-2026-General-Board-meeting-minutes.pdf",
+          "title": "March 25, 2026"
+        },
+        {
+          "meeting_date": "2026-02-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2026/February-General-Board-meeting-minutes.pdf",
+          "title": "February 25, 2026"
+        },
+        {
+          "meeting_date": "2025-12-10",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2026/December-2025-General-Board-minutes-copy.pdf",
+          "title": "December 10, 2025"
+        },
+        {
+          "meeting_date": "2025-11-12",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/November-2025-General-Board-meeting-minutes.pdf",
+          "title": "November 12, 2025"
+        },
+        {
+          "meeting_date": "2025-10-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/October-General-Board-meeting-minutes.pdf",
+          "title": "October 22, 2025"
+        },
+        {
+          "meeting_date": "2025-09-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/September-2025-General-Board-meeting-minutes.pdf",
+          "title": "September 24, 2025"
+        },
+        {
+          "meeting_date": "2025-06-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/20251001092329.pdf",
+          "title": "June 25, 2025"
+        },
+        {
+          "meeting_date": "2025-05-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/May-2025-General-Board-meeting-minutes.pdf",
+          "title": "May 28, 2025"
+        },
+        {
+          "meeting_date": "2025-04-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/20250529163737.pdf",
+          "title": "April 23, 2025"
+        },
+        {
+          "meeting_date": "2025-02-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/2.26.2025-Public-Hearing-and-General-Board.pdf",
+          "title": "February 26, 2025"
+        },
+        {
+          "meeting_date": "2025-01-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2025/January-2025-General-Board-minutes.pdf",
+          "title": "January 22, 2025"
+        },
+        {
+          "meeting_date": "2024-12-11",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2024/December-2025-General-Board-Meeting-minutes.pdf",
+          "title": "December 11, 2024"
+        },
+        {
+          "meeting_date": "2024-11-13",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2024/November-2024-General-Board-meeting-minutes.pdf",
+          "title": "November 13, 2024"
+        },
+        {
+          "meeting_date": "2024-10-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2024/October-2024-Public-Hearing-and-General-Board-meeting-minutes.pdf",
+          "title": "October 23, 2024"
+        },
+        {
+          "meeting_date": "2024-09-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/General-Board-Meeting-Minutes-final.pdf",
+          "title": "September 25, 2024"
+        },
+        {
+          "meeting_date": "2024-06-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/General-Board-Meeting-June-26-2024-minutes.pdf",
+          "title": "June 26, 2024"
+        },
+        {
+          "meeting_date": "2024-05-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/May-2024-Public-Hearing-and-General-Board-meeting-minutes.pdf",
+          "title": "May 22, 2024"
+        },
+        {
+          "meeting_date": "2024-04-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/April-2024-Board-meeting-minutes.pdf",
+          "title": "April 24, 2024"
+        },
+        {
+          "meeting_date": "2024-03-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/March-2024-General-Board-minutes.pdf",
+          "title": "March 27, 2024"
+        },
+        {
+          "meeting_date": "2024-02-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/February-2024-General-Board-Meeting-Minutes.pdf",
+          "title": "February 28, 2024"
+        },
+        {
+          "meeting_date": "2024-01-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2024/January-2024-General-Board-minutes.pdf",
+          "title": "January 24, 2024"
+        },
+        {
+          "meeting_date": "2023-12-13",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/December-2023-Public-Hearing.pdf",
+          "title": "December 13, 2023"
+        },
+        {
+          "meeting_date": "2023-12-13",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/December-2023-General-Board-minutes.pdf",
+          "title": "December 13, 2023"
+        },
+        {
+          "meeting_date": "2023-11-08",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/November-2023-General-Board-Minutes.pdf",
+          "title": "November 8, 2023"
+        },
+        {
+          "meeting_date": "2023-10-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/October-2023-General-Board-minutes.pdf",
+          "title": "October 25, 2023"
+        },
+        {
+          "meeting_date": "2023-09-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/September-2023-General-Board-minutes.pdf",
+          "title": "September 27, 2023"
+        },
+        {
+          "meeting_date": "2023-05-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/May-2023-General-Board-minutes.pdf",
+          "title": "May 22, 2023"
+        },
+        {
+          "meeting_date": "2023-04-19",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/April-2023-General-Board-meeting-minutes.pdf",
+          "title": "April 19, 2023"
+        },
+        {
+          "meeting_date": "2023-03-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2023/March-2023-General-Board-meeting-minutes.pdf",
+          "title": "March 22, 2023"
+        },
+        {
+          "meeting_date": "2022-09-21",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2022/minutes-20220921.pdf",
+          "title": "September 21, 2022"
+        },
+        {
+          "meeting_date": "2022-06-14",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2022/minutes-20220614.pdf",
+          "title": "June 14, 2022"
+        },
+        {
+          "meeting_date": "2022-04-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2022/General-Board-minutes-April-2022.pdf",
+          "title": "April 27, 2022"
+        },
+        {
+          "meeting_date": "2022-03-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2022/General-Board-minutes-March-2022.pdf",
+          "title": "March 23, 2022"
+        },
+        {
+          "meeting_date": "2022-01-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/minutes/2022/January-2022-General-Board-Meeting-Minutes.pdf",
+          "title": "January 26, 2022"
+        },
+        {
+          "meeting_date": "2021-12-08",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/2021_december _general_board_meeting_minutes.pdf",
+          "title": "December 8, 2021"
+        },
+        {
+          "meeting_date": "2020-01-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Minutes - January 22, 2020.pdf",
+          "title": "January 22nd, 2020"
+        },
+        {
+          "meeting_date": "2019-12-11",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - December 11, 2019.pdf",
+          "title": "December 11th, 2019"
+        },
+        {
+          "meeting_date": "2019-11-13",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - November 13, 2019.pdf",
+          "title": "November 13th, 2019"
+        },
+        {
+          "meeting_date": "2019-09-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - September 25, 2019.pdf",
+          "title": "September 25th, 2019"
+        },
+        {
+          "meeting_date": "2019-06-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - June 26, 2019.pdf",
+          "title": "June 26, 2019"
+        },
+        {
+          "meeting_date": "2019-05-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - May 22, 2019.pdf",
+          "title": "May 22nd, 2019"
+        },
+        {
+          "meeting_date": "2019-04-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - April 24, 2019.pdf",
+          "title": "April 24th, 2019"
+        },
+        {
+          "meeting_date": "2019-03-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - March 27, 2019.pdf",
+          "title": "March 27th, 2019"
+        },
+        {
+          "meeting_date": "2019-02-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb5/downloads/pdf/General Board Meeting Minutes - February 27, 2019.pdf",
+          "title": "February 27th, 2019"
+        }
+      ],
+      "status": "ok"
     },
     {
       "body_id": "bronx-cb-06",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
-      "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
+      "fetched_at": "2026-08-11T18:22:23Z",
+      "http_status": 200,
+      "content_sha256": "29077e9b33ce4e79f972e99c62b9142f2a95f838e73d266204be82806aac040d",
+      "observations": [
+        {
+          "meeting_date": "2025-01-01",
+          "document_url": "https://cbbronx.cityofnewyork.us/cb6/wp-content/uploads/sites/4/2025/06/Transportation-Committee-Meeting-Minutes-of-May-15-2025-1-1.pdf",
+          "title": "Transportation Committee Meeting"
+        },
+        {
+          "meeting_date": "2025-01-01",
+          "document_url": "https://cbbronx.cityofnewyork.us/cb6/wp-content/uploads/sites/4/2025/06/Health-and-Human-Services-Committee-Meeting-Minutes-of-April-10-2025-1-1.pdf",
+          "title": "Health and Human Services Committee Meeting"
+        },
+        {
+          "meeting_date": "2025-01-01",
+          "document_url": "https://cbbronx.cityofnewyork.us/cb6/wp-content/uploads/sites/4/2025/06/Transportation-Committee-Meeting-Minutes-of-April-10-2025-1-1.pdf",
+          "title": "Transportation Committee Meeting"
+        },
+        {
+          "meeting_date": "2025-01-01",
+          "document_url": "https://cbbronx.cityofnewyork.us/cb6/wp-content/uploads/sites/4/2025/06/Public-Safety-and-Licensing-Committee-Meeting-Minutes-of-March-26-2025-1-1.pdf",
+          "title": "Public Safety and Licensing Committee Meeting"
+        }
+      ],
+      "status": "ok"
     },
     {
       "body_id": "bronx-cb-07",
@@ -467,13 +735,318 @@
     },
     {
       "body_id": "bronx-cb-12",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
-      "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
+      "fetched_at": "2026-08-11T18:22:25Z",
+      "http_status": 200,
+      "content_sha256": "2199730c7f7488fcdaa34f28cc6e36f0fb89e1bd13958b9792e74b03199cef27",
+      "observations": [
+        {
+          "meeting_date": "2026-05-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2026/minutes0526.pdf",
+          "title": "May 28, 2026"
+        },
+        {
+          "meeting_date": "2026-04-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2026/minutes0426.pdf",
+          "title": "April 23, 2026"
+        },
+        {
+          "meeting_date": "2026-03-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2026/minutes0326.pdf",
+          "title": "March 26, 2026"
+        },
+        {
+          "meeting_date": "2026-01-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2026/2554_001.pdf",
+          "title": "January 22, 2026"
+        },
+        {
+          "meeting_date": "2025-10-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2025/minutes1025.pdf",
+          "title": "October 23, 2025"
+        },
+        {
+          "meeting_date": "2025-09-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2025/minutes0925.pdf",
+          "title": "September 25, 2025"
+        },
+        {
+          "meeting_date": "2025-06-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2025/minutes0625.pdf",
+          "title": "June 26, 2025"
+        },
+        {
+          "meeting_date": "2025-05-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2025/minutes-5-22-2025.pdf",
+          "title": "May 22, 2025"
+        },
+        {
+          "meeting_date": "2025-04-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2025/minutes-04-24-2025.pdf",
+          "title": "April 23, 2025"
+        },
+        {
+          "meeting_date": "2025-01-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2025/2083_001.pdf",
+          "title": "January 23, 2025"
+        },
+        {
+          "meeting_date": "2024-11-11",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2024/minutes1124.pdf",
+          "title": "November 11, 2024"
+        },
+        {
+          "meeting_date": "2024-09-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2024/minutes0924.pdf",
+          "title": "September 26, 2024"
+        },
+        {
+          "meeting_date": "2024-06-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2024/minutes0624.pdf",
+          "title": "June 27, 2024"
+        },
+        {
+          "meeting_date": "2024-05-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2024/May-Minutes24.pdf",
+          "title": "May 23, 2024"
+        },
+        {
+          "meeting_date": "2024-03-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2024/march24minutes.pdf",
+          "title": "March 28, 2024"
+        },
+        {
+          "meeting_date": "2024-01-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2024/January24-Minutes.pdf",
+          "title": "January 25, 2024"
+        },
+        {
+          "meeting_date": "2023-11-14",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/1754_001.pdf",
+          "title": "November 14, 2023"
+        },
+        {
+          "meeting_date": "2023-10-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/1678_001.pdf",
+          "title": "October 26, 2023"
+        },
+        {
+          "meeting_date": "2023-09-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/1677_001.pdf",
+          "title": "September 28, 2023"
+        },
+        {
+          "meeting_date": "2023-06-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/june-minutes.pdf",
+          "title": "June 22, 2023"
+        },
+        {
+          "meeting_date": "2023-05-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/minutes0523.pdf",
+          "title": "May 25, 2023"
+        },
+        {
+          "meeting_date": "2023-04-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/april-minutes.pdf",
+          "title": "April 27, 2023"
+        },
+        {
+          "meeting_date": "2023-03-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/1548_001.pdf",
+          "title": "March 23, 2023"
+        },
+        {
+          "meeting_date": "2023-02-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/minutes0223.pdf",
+          "title": "February 23, 2023"
+        },
+        {
+          "meeting_date": "2023-01-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2023/minutes0123.pdf",
+          "title": "January 26, 2023"
+        },
+        {
+          "meeting_date": "2022-11-17",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2022/minutes-202211.pdf",
+          "title": "November 17, 2022"
+        },
+        {
+          "meeting_date": "2022-10-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2022/Full-Board-Minutes-Oct-2022.pdf",
+          "title": "October 27, 2022"
+        },
+        {
+          "meeting_date": "2022-09-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/2022/Full-Board-Minutes-Sept-2022.pdf",
+          "title": "September 22, 2022"
+        },
+        {
+          "meeting_date": "2022-04-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes-april-2022.pdf",
+          "title": "April 28, 2022"
+        },
+        {
+          "meeting_date": "2022-03-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes-march-2022.pdf",
+          "title": "March 24, 2022"
+        },
+        {
+          "meeting_date": "2022-01-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes-january-2022.pdf",
+          "title": "January 27, 2022"
+        },
+        {
+          "meeting_date": "2021-11-18",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes1121.pdf",
+          "title": "November 18, 2021"
+        },
+        {
+          "meeting_date": "2021-10-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes1021.pdf",
+          "title": "October 28, 2021"
+        },
+        {
+          "meeting_date": "2021-05-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes-05-27-21.pdf",
+          "title": "May 27, 2021"
+        },
+        {
+          "meeting_date": "2020-11-19",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutesnovember20.pdf",
+          "title": "November 19, 2020"
+        },
+        {
+          "meeting_date": "2020-10-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutesoctober2020.pdf",
+          "title": "October 22, 2020"
+        },
+        {
+          "meeting_date": "2020-09-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutesseptember20.pdf",
+          "title": "September 24, 2020"
+        },
+        {
+          "meeting_date": "2020-06-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutesjune2020.pdf",
+          "title": "June 25, 2020"
+        },
+        {
+          "meeting_date": "2020-05-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutesmay2020.pdf",
+          "title": "May 28, 2020"
+        },
+        {
+          "meeting_date": "2020-01-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutesjanuary20.pdf",
+          "title": "January 23, 2020"
+        },
+        {
+          "meeting_date": "2019-11-21",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes1119.pdf",
+          "title": "November 21, 2019"
+        },
+        {
+          "meeting_date": "2019-10-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes1019c.pdf",
+          "title": "October 24, 2019"
+        },
+        {
+          "meeting_date": "2019-09-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0919.pdf",
+          "title": "September 26, 2019"
+        },
+        {
+          "meeting_date": "2019-06-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0619c.pdf",
+          "title": "June 27, 2019"
+        },
+        {
+          "meeting_date": "2019-05-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0519c.pdf",
+          "title": "May 23, 2019"
+        },
+        {
+          "meeting_date": "2019-03-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0319.pdf",
+          "title": "March 28, 2019"
+        },
+        {
+          "meeting_date": "2019-02-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0219.pdf",
+          "title": "February 28, 2019"
+        },
+        {
+          "meeting_date": "2019-01-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0219c.pdf",
+          "title": "January 24, 2019"
+        },
+        {
+          "meeting_date": "2018-10-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/board_minutes_1018c.pdf",
+          "title": "October 25, 2018"
+        },
+        {
+          "meeting_date": "2018-09-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes918pt1.pdf",
+          "title": "September 27, 2018"
+        },
+        {
+          "meeting_date": "2018-06-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/board_minutes_618.pdf",
+          "title": "June 28, 2018"
+        },
+        {
+          "meeting_date": "2018-05-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/board_minutes_518.pdf",
+          "title": "May 24, 2018"
+        },
+        {
+          "meeting_date": "2018-02-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes218.pdf",
+          "title": "February 22, 2018"
+        },
+        {
+          "meeting_date": "2016-01-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/minutes0116.pdf",
+          "title": "January 28, 2016"
+        },
+        {
+          "meeting_date": "2015-12-03",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/general_board_minutes_dec_2015.pdf",
+          "title": "December 3, 2015"
+        },
+        {
+          "meeting_date": "2015-10-22",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/oct_2015_minutes.pdf",
+          "title": "October 22, 2015"
+        },
+        {
+          "meeting_date": "2015-09-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/sep_2015_minutes.pdf",
+          "title": "September 24, 2015"
+        },
+        {
+          "meeting_date": "2015-06-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/june-2015-minutes.pdf",
+          "title": "June 27, 2015"
+        },
+        {
+          "meeting_date": "2015-05-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/may_2015_minutes.pdf",
+          "title": "May 28, 2015"
+        },
+        {
+          "meeting_date": "2015-04-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/april_2015_minutes.pdf",
+          "title": "April 23, 2015"
+        },
+        {
+          "meeting_date": "2015-02-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb12/downloads/pdf/february_2015_minutes.pdf",
+          "title": "February 26, 2015"
+        }
+      ],
+      "status": "ok"
     },
     {
       "body_id": "brooklyn-cb-01",
@@ -871,13 +1444,12 @@
     },
     {
       "body_id": "brooklyn-cb-13",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
+      "url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
+      "fetched_at": "2026-08-11T18:22:26Z",
+      "http_status": 200,
+      "content_sha256": "293571da887234350833a28397d759da4f39bb6d1199069ab9b485e7c73cc76e",
       "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "status": "ok"
     },
     {
       "body_id": "brooklyn-cb-14",
@@ -940,13 +1512,43 @@
     },
     {
       "body_id": "manhattan-cb-02",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
-      "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
+      "fetched_at": "2026-08-11T18:22:28Z",
+      "http_status": 200,
+      "content_sha256": "067783032b5e76689505da9bfcd42f905d5d74bad22273c2bf9cc364645af985",
+      "observations": [
+        {
+          "meeting_date": "2026-07-06",
+          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/07/06-June-2026-Full-Board-Minutes.pdf",
+          "title": "June 2026"
+        },
+        {
+          "meeting_date": "2026-06-05",
+          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/06/05-May-2026-Full-Board-Minutes.pdf",
+          "title": "May 2026"
+        },
+        {
+          "meeting_date": "2026-05-04",
+          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/05/04-April-2026-Full-Board-Minutes-final.pdf",
+          "title": "April 2026"
+        },
+        {
+          "meeting_date": "2026-02-09",
+          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/02/09-September-2025-Full-Board-Minutes-rev-FINAL.pdf",
+          "title": "September 2025"
+        },
+        {
+          "meeting_date": "2025-09-07",
+          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2025/09/07-July-2025-Full-Board-Minutes-bis.pdf",
+          "title": "July 2025"
+        },
+        {
+          "meeting_date": "2026-02-02",
+          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/02/02-February-2025-Full-Board-Minutes-MND-review_EGS-edits-Final.pdf",
+          "title": "February 2025"
+        }
+      ],
+      "status": "ok"
     },
     {
       "body_id": "manhattan-cb-03",
@@ -1068,13 +1670,12 @@
     },
     {
       "body_id": "queens-cb-03",
-      "url": null,
-      "fetched_at": null,
-      "http_status": null,
-      "content_sha256": null,
+      "url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
+      "fetched_at": "2026-08-11T18:22:30Z",
+      "http_status": 200,
+      "content_sha256": "7aec6a433e0299da5432e087e2c4d697fcd2f91d58072ef9ca9901287e47b044",
       "observations": [],
-      "status": "empty",
-      "reason": "no_known_url"
+      "status": "ok"
     },
     {
       "body_id": "queens-cb-04",

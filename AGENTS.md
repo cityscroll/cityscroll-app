@@ -2309,8 +2309,11 @@ before a future edge can land. Verify with
 The RC-3 source inventory is
 `site/data/non_council_outcome_sources/source_registry.json`: all 59 community
 boards and five borough presidents are represented, but coverage is reported by
-body rather than as citywide. The real-sample verification receipt still measures
-0/10 strict joins. The join was repaired to **exact body + date + publisher
+body rather than as citywide. Collectable minutes indexes expanded **8 → 17**
+on 2026-08-11. The authoritative kill sample
+(`verification_receipts/non_council_minutes_votes_2026-08-11.json`) still
+measures **0/10** exact joins after that expansion (prior 0/10 at 8 pages
+retained as `…_2026-08-04.json`). The join is **exact body + date + publisher
 ULURP identifiers only** (`exact_body_date_publisher_ulurp` in
 `warehouse/lib/non_council_outcomes.mjs`); slug/name matter tokens never promote.
 `policy.join_bridge_enabled` remains **false** and the committed outcome lookup
