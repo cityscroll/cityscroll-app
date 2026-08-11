@@ -68,8 +68,11 @@ test("rollup preview model uses multi-watch subject and section-per-watch body",
   assert.ok(model.totalNew >= 1);
   assert.match(model.subject, /3 watches/);
   assert.match(model.summaryLine, /of 3 watches/);
+  assert.match(model.summaryLine, /\d+ new ·/);
   assert.equal(model.sections.length, 3);
   assert.equal(model.cutover, PREFS_CUTOVER_COPY);
+  assert.ok(Array.isArray(model.toc));
+  assert.equal(model.toc.length, 3);
   assert.ok(ROLLUP_GROUP_DIMS.includes(model.groupBy));
 });
 
