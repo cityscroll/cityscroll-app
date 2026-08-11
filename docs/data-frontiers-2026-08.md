@@ -116,6 +116,18 @@ Sparse Land panel ships from `site/data/ulurp_recommendations_lookup.json` via
 `site/ulurp_recommendation_panel.mjs` only on token hits. Property Disposition
 remains the wrong universe. ZAP-universe catalog coverage stays contrast-only.
 
+### Meeting person-vote materialization (flywheel crank, 2026-08-11)
+
+The data-integrity red flag `meeting-person-votes` claimed ~100% empty `by_person` on matched Council hearings after an earlier VotePerson* field-mapping miss. Live re-measure against the matched meeting-outcomes materialization:
+
+| Metric | Value | Gate |
+|---|---:|---|
+| Matched Council hearings with non-empty `by_person` | **6 / 16 (37.5%)** | ≥30% usefulness |
+| Reviewed person-row precision (`person_id` + name + bucket + official bind) | **388 / 388 (100%)** | ≥95% precision |
+| Stratified credibility sample empty rate | **9 / 15 (60%)** | below 85% suspicious / 95% red-flag |
+
+**Disposition:** keep the edge live; mark the flywheel card fixed; residual empties stay honest voice/action-only slots (do not invent roll call). Receipt: [`site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json`](../site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json). Demo: `#notice/20260706036` → event `22526` (Christopher Marte and peers).
+
 ## Inventory additions and maintenance actions
 
 The three census-derived gaps should be added to the executable inventory on the next taxonomy update:
