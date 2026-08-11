@@ -657,7 +657,8 @@ function alertsRollupSectionHTML(sec, awarenessTools, index = 0){
     const aw = digAwarenessHTML(kind, r, awarenessTools);
     return `<div class="digitem"><div class="dt">${escUiHtml(r.short_title || r.request_id || "Notice")}</div><div class="dm">${meta}</div>${aw}</div>`;
   }).join("");
-  return `<div id="${anchor}" class="rollup-sec" data-rollup-section="1"><h3>${label} <span class="freq">· ${(sec.new || sec.rows.length)} new</span></h3>${items}</div>`;
+  const nNew = sec.new || sec.rows.length;
+  return `<div id="${anchor}" class="rollup-sec" data-rollup-section="1"><h3>${label} <span class="freq">· ${escUiHtml(t("alerts_rollup_status_new_count", { n: nNew }))}</span></h3>${items}</div>`;
 }
 function alertsRollupGroupsHTML(groups){
   if(!groups || !groups.length){
@@ -680,8 +681,10 @@ function alertsRollupEmailMockHTML(model, awarenessTools){
   const body = sections.map((sec, i)=>alertsRollupSectionHTML(sec, awarenessTools, i)).join("");
   const summary = escUiHtml(model.summaryLine || "");
   const toc = Array.isArray(model.toc) && model.toc.length > 1
-    ? `<nav class="rollup-toc" data-rollup-toc="1" aria-label="Watches in this digest"><div class="rollup-toc-head">In this email</div><ul>${model.toc.map((entry, i)=>{
-      const status = entry.quiet ? escUiHtml(entry.statusLabel || "no new matches") : escUiHtml(entry.statusLabel || "new");
+    ? `<nav class="rollup-toc" data-rollup-toc="1" aria-label="${escUiHtml(t("alerts_rollup_toc_aria"))}"><div class="rollup-toc-head">${escUiHtml(t("alerts_rollup_toc_heading"))}</div><ul>${model.toc.map((entry, i)=>{
+      const status = entry.quiet
+        ? escUiHtml(entry.statusLabel || t("alerts_rollup_section_quiet"))
+        : escUiHtml(entry.statusLabel || t("alerts_rollup_status_new_count", { n: entry.count != null ? entry.count : "" }));
       return `<li><a href="#watch-${i}">${escUiHtml(entry.label || "")}</a> — ${status}</li>`;
     }).join("")}</ul></nav>`
     : "";
