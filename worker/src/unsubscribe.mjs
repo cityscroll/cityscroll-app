@@ -38,7 +38,7 @@ export async function handleUnsubscribe(req, env) {
       : page(
         "Unsubscribed",
         n
-          ? `You're off all CityScroll alerts for this address (${n} watch${n === 1 ? "" : "es"} removed). You can re-subscribe any time on cityscroll.org.`
+          ? `You're off all CityScroll alerts for this address (${n} watch${n === 1 ? "" : "es"} removed). This took effect immediately. You can re-subscribe any time on cityscroll.org.`
           : "No alerts were active for this address. You can re-subscribe any time on cityscroll.org.",
         200,
       );
@@ -65,7 +65,7 @@ export async function handleUnsubscribe(req, env) {
 
   return oneClick
     ? new Response(null, { status: 200 })
-    : page("Unsubscribed", "You're off that alert. You can re-subscribe any time on cityscroll.org.", 200);
+    : page("Unsubscribed", "You're off that alert. This took effect immediately. You can re-subscribe any time on cityscroll.org.", 200);
 }
 
 async function deleteAllForEmail(env, email) {

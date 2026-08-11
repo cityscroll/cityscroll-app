@@ -405,7 +405,13 @@ function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
 }
 
 function subscribeHtml(view) {
-  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Pick a topic or place to see matches.</p></section>`;
+  if (!view.requested) {
+    return `<section class="following-subscribe" data-following-subscribe-panel>
+      <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
+      <p>Pick a topic or place to see matches.</p>
+      <p class="following-note" data-following-delivery-help>No new matches means no email. That is on purpose. After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
+    </section>`;
+  }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
@@ -413,9 +419,12 @@ function subscribeHtml(view) {
       <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
       <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
       <input type="hidden" name="lang" value="en">
-      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-confirm-note"></label>
+      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-confirm-note following-delivery-help"></label>
       <button type="submit">Email me this watch</button>
       <p id="following-confirm-note">We send one link first. Click it to start the watch.</p>
+      <p id="following-delivery-help" class="following-note" data-following-delivery-help>
+        No new matches means no email. That is on purpose. After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.
+      </p>
       <p data-following-submit-status role="status" aria-live="polite"></p>
     </form>
   </section>`;

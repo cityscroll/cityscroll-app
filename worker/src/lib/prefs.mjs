@@ -16,8 +16,17 @@ export const PREFS_TOKEN_TTL_SECONDS = 60 * 24 * 3600;
 /** Max watches listed/edited in one prefs session (denial-of-wallet / page size). */
 export const PREFS_MAX_WATCHES = 40;
 
+/** Pref edits land in SUBS immediately; digests read SUBS on the next cron. */
 export const CUTOVER_COPY =
-  "Changes take effect on the next daily digest run (~9am Eastern).";
+  "Changes apply to the next digest (about 9am Eastern).";
+
+/** Unsubscribe removes watches immediately (not gated on the next digest). */
+export const UNSUB_IMMEDIATE_COPY =
+  "Unsubscribe takes effect immediately.";
+
+/** Documented heartbeat contract for daily watches (not user-tunable without product OK). */
+export const HEARTBEAT_HELP_COPY =
+  "If a daily watch is quiet for 14 days, we send a still-watching note so silence never looks like an outage.";
 
 export function prefsPayload(email) {
   return { e: normalizeEmail(email), sc: PREFS_SCOPE };

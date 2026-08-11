@@ -20,6 +20,8 @@ import {
   PREFS_TOKEN_TTL_SECONDS,
   PREFS_MAX_WATCHES,
   CUTOVER_COPY,
+  UNSUB_IMMEDIATE_COPY,
+  HEARTBEAT_HELP_COPY,
   prefsPayload,
   isPrefsPayload,
   toPrefsWatchRow,
@@ -175,7 +177,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
     const deleted = await deleteAllForEmail(env, want);
     return {
       message: deleted
-        ? `Removed ${deleted} watch${deleted === 1 ? "" : "es"}. You will get no further digests for this address after the next daily run.`
+        ? `Removed ${deleted} watch${deleted === 1 ? "" : "es"}. Unsubscribe took effect immediately — you will get no further digests for this address.`
         : "No watches found for this address.",
     };
   }
@@ -205,7 +207,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
       action, email: record.email, subKey: key, lens: record.lens,
       label, freq: record.freq, source: "prefs",
     });
-    return { message: "Watch removed. Takes effect next daily run (~9am Eastern)." };
+    return { message: `Watch removed. ${UNSUB_IMMEDIATE_COPY}` };
   }
 
   if (action === "pause") {
@@ -216,7 +218,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
       action, email: record.email, subKey: key, lens: record.lens,
       label: watchLabel(record) || record.label, freq: record.freq, source: "prefs",
     });
-    return { message: "Watch paused. No matches from it until you unpause (next daily run)." };
+    return { message: `Watch paused. No matches from it until you unpause. ${CUTOVER_COPY}` };
   }
 
   if (action === "unpause") {
@@ -227,7 +229,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
       action, email: record.email, subKey: key, lens: record.lens,
       label: watchLabel(record) || record.label, freq: record.freq, source: "prefs",
     });
-    return { message: "Watch active again. Takes effect next daily run (~9am Eastern)." };
+    return { message: `Watch active again. ${CUTOVER_COPY}` };
   }
 
   if (action === "update") {
@@ -339,6 +341,8 @@ function prefsHtmlResponse(email, watches, token, flash) {
   const body = `
     ${flashHtml}
     <p style="color:#5b6470;font-size:14px;text-align:left">${esc(CUTOVER_COPY)}</p>
+    <p style="color:#5b6470;font-size:13px;text-align:left">${esc(UNSUB_IMMEDIATE_COPY)}</p>
+    <p style="color:#5b6470;font-size:13px;text-align:left">${esc(HEARTBEAT_HELP_COPY)}</p>
     <p style="color:#5b6470;font-size:13px;text-align:left">Account: <b>${esc(redactEmail(email))}</b> · ${watches.length} watch${watches.length === 1 ? "" : "es"}</p>
     ${empty}
     ${rows}
@@ -347,6 +351,7 @@ function prefsHtmlResponse(email, watches, token, flash) {
       <input type="hidden" name="token" value="${esc(token)}" />
       <input type="hidden" name="action" value="unsub_all" />
       <button type="submit" style="font:600 14px system-ui;background:transparent;border:1px solid #1a44e0;color:#1a44e0;border-radius:6px;padding:8px 14px;cursor:pointer">Unsubscribe all watches</button>
+      <p style="color:#5b6470;font-size:12px;margin:8px 0 0">${esc(UNSUB_IMMEDIATE_COPY)}</p>
     </form>` : ""}
   `;
 
@@ -371,4 +376,4 @@ function json(obj, status) {
 }
 
 // Re-export for tests / digest footers.
-export { PREFS_SCOPE, CUTOVER_COPY, prefsPayload, isPrefsPayload };
+export { PREFS_SCOPE, CUTOVER_COPY, UNSUB_IMMEDIATE_COPY, HEARTBEAT_HELP_COPY, prefsPayload, isPrefsPayload };

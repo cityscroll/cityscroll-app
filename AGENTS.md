@@ -1406,6 +1406,22 @@ test/digest_preview_awareness.test.mjs worker/test/alert_temporal.test.mjs`.
 Evidence: `node tools/render_digest_awareness_evidence.mjs` and
 `node tools/render_preview_ops_parity_evidence.mjs`.
 
+## Digest delivery UI (email as first-class surface)
+
+Rendered digests are product UI: multi-watch rollup opens with total new · since ·
+TOC jump links (`rollupTocEntries` / `rollupDigestHtml`); quiet sections are
+one-line (`Label — no new matches`), not full item chrome. Match evidence sits
+under the title before actions (`evidenceLineHtml` / `digEvidenceHTML`, brand
+blue rule). Quiet/heartbeat bodies include a still-subscribed sentence; prefs
+edits “apply to the next digest (about 9am Eastern)” while unsubscribe is
+immediate. Heartbeat is documented at 14 days (not user-tunable without product
+OK). Following list preview stays a slim title/summary subset — dig-item
+awareness remains `digItemHTML` ↔ `subDigestHtml` only. Verify:
+`cd worker && node --test test/digest_delivery_ui.test.mjs test/digest_rollup.test.mjs
+test/rollup.test.mjs test/prefs_lib.test.mjs` and
+`node --test test/digest_preview_awareness.test.mjs test/alerts_rollup_prefs.test.mjs`.
+Docs: `docs/digest-rollup-prefs.md`.
+
 ## Context-carrying alert entry
 
 "Watch this notice" / header "Want email updates?" / "Watch this search" land on
