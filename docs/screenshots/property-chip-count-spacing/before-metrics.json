@@ -1,0 +1,83 @@
+[
+  {
+    "textContent": "All types0",
+    "html": "All types<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Vehicles0",
+    "html": "Vehicles<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Timber0",
+    "html": "Timber<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Equipment0",
+    "html": "Equipment<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Real property0",
+    "html": "Real property<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Scrap / materials0",
+    "html": "Scrap / materials<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Seized / unclaimed property0",
+    "html": "Seized / unclaimed property<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Rights / interests0",
+    "html": "Rights / interests<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  },
+  {
+    "textContent": "Other0",
+    "html": "Other<span class=\"ct\">0</span>",
+    "display": "flex",
+    "gap": "normal",
+    "columnGap": "normal",
+    "ctMarginStart": "0px",
+    "measuredGapPx": 0
+  }
+]
