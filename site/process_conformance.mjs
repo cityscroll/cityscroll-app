@@ -8,8 +8,8 @@ import { constellationLink } from "./affordance_grammar.mjs";
  * signal is reliable; otherwise enrichment_pending — never fabricate observations.
  * User-facing copy states the observation plainly without "not X but Y" hedges.
  *
- * Co-located graph neighbors (source law + agency Rules/Meetings/Contracts)
- * open from each observed row even when denser mandate→filing edges are thin.
+ * Per-row actions are mandate-specific (Source law + linked City Record filing
+ * when observed). Agency Rules/Meetings/Contracts browse is section chrome only.
  *
  * Vocabulary: product term is **mandates** (upstream extract may say obligations).
  *
@@ -976,10 +976,11 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
         ? ` · ${constellationLink({ href: obs.observed_record.href, label: `City Record: ${obs.observed_record.label || obs.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
         : "";
       const matter = mandateMatterEdgeFromRow(item);
+      // Per-row: Source law only. Observed City Record filing is linked above.
+      // Agency-wide browse chips stay in section chrome — never on every card.
       const neighbors = renderMandateRowGraphActions({
         source_href: item.source_href || matter?.href,
         matter_id: item.matter_id || matter?.matter_id,
-        graph_neighbors: graphNeighbors,
         prefer: item.deliverable_type === "rulemaking" ? "rules" : "contracts",
         escape: esc,
       });
