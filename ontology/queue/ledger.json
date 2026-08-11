@@ -2,6 +2,7 @@
   "schema": "cityscroll.multi_flywheel_ledger.v0",
   "policy_version": "v0",
   "updated_at": "2026-08-11T19:30:00.000Z",
+  "note": "2026-08-11 also closed Checkbook Spending payment retention after a dated kill sample cleared 30%/95% gates.",
   "cards": {
     "crol-list/mf-data-integrity-red-flag-subsidy-field-company-place-money": {
       "status": "fixed",
@@ -22,12 +23,12 @@
       "demo_win": "Later subsidy stages only claim city does not publish after a successful project join that still lacks the stage."
     },
     "crol-list/mf-data-integrity-red-flag-meeting-person-votes": {
-      "status": "proposed",
+      "status": "fixed",
       "dimension": "data-integrity",
       "title": "Credibility red flag: ~100% not-published for meeting-person-votes",
-      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate:meeting-person-votes classification!=red_flag",
-      "content_hash": "6bed4fc36f17773d",
-      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "verify": "node --test test/meeting_person_votes.test.mjs test/meeting_outcomes_static.test.mjs",
+      "fixed_at": "2026-08-11T18:00:00.000Z",
+      "fixed_note": "Live kill sample: 6/6 vote-bearing matched Council notices retain by_person (100%; 6/16=37.5% of matched); 48/48 roll_call stages keep person rows (precision 1.0). Claim sample healthy. Static first paint maps aye/nay and roll-call chips. Official constellation still gated at 30 distinct roll-call events (have 12 densified / 6 in live window).",
       "demo_win": "Council hearings show named yes/no roll call when Legistar published votes for the event."
     },
     "crol-list/mf-readability-view-raw-source-records-dump": {
@@ -51,11 +52,11 @@
     "crol-list/mf-cross-source-consistency-claim-labels-passport-contracts-x-checkbook-contracts": {
       "status": "proposed",
       "dimension": "cross-source-consistency",
-      "title": "Label every public disagreement in PASSPort contracts \u00d7 Checkbook contracts",
+      "title": "Label every public disagreement in PASSPort contracts × Checkbook contracts",
       "verify": "node -e \"const x=require('./ontology/fixtures/dimensions/cross_source_disagreements.json'); const r=x.claim_labeled_disagree_families.find((v)=>v.id==='passport-contracts-x-checkbook-contracts'); process.exit(r && r.eligible > 0 && r.labeled === r.eligible ? 0 : 1)\"",
       "content_hash": "074414a6c322e41b",
       "last_seen_at": "1970-01-01T00:00:00.000Z",
-      "demo_win": "Conflicting values in PASSPort contracts \u00d7 Checkbook contracts retain both source assertions without a silent winner."
+      "demo_win": "Conflicting values in PASSPort contracts × Checkbook contracts retain both source assertions without a silent winner."
     },
     "crol-list/mf-cross-source-consistency-spine-notice-demo-confirmed-separate": {
       "status": "proposed",
@@ -479,7 +480,7 @@
       "fixed_at": "2026-08-11T18:30:00.000Z",
       "verify": "node --test test/non_council_outcomes_infrastructure.test.mjs",
       "evidence": {
-        "join_rate": 0.0,
+        "join_rate": 0,
         "joined": 0,
         "total": 10,
         "collectable_pages": 17,
@@ -492,12 +493,263 @@
     "crol-list/checkbook-spending-payment-retention": {
       "status": "fixed",
       "dimension": "coverage",
-      "title": "Checkbook Spending payment retention (payment\u2194contract gap)",
+      "title": "Checkbook Spending payment retention (payment↔contract gap)",
       "verify": "node --test test/checkbook_spending_collector.test.mjs && node warehouse/scripts/checkbook_spending.mjs --check",
       "fixed_at": "2026-08-11T19:30:00.000Z",
       "fixed_note": "Host collector retains individual Checkbook Spending payment rows as source_records-shaped snapshots; kill sample usefulness 22/50 (44%), precision 31/31 (100%) exact contract_id. Graph slice + ontology payment object registered.",
       "demo_win": "Money spine shows retained payment documents on joined contracts instead of spent-to-date summaries alone."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-zap-projects": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: zap-projects",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # zap-projects present",
+      "content_hash": "631763cea1b711d9",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source zap-projects retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-data-integrity-undersampled-dcas-nonfleet-surplus-listings": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Sample not-published rate for claim dcas-nonfleet-surplus-listings",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for dcas-nonfleet-surplus-listings",
+      "content_hash": "e4b220f19128af5f",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Claim dcas-nonfleet-surplus-listings has a measured recent+historical not-published rate so credibility can be audited continuously."
+    },
+    "crol-list/mf-data-integrity-undersampled-external-awards-agency-absent": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Sample not-published rate for claim external-awards-agency-absent",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for external-awards-agency-absent",
+      "content_hash": "c34fa7fabf522df5",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Claim external-awards-agency-absent has a measured recent+historical not-published rate so credibility can be audited continuously."
+    },
+    "crol-list/mf-data-integrity-undersampled-money-location-residual": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Sample not-published rate for claim money-location-residual",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for money-location-residual",
+      "content_hash": "7ebd0907838ddb7b",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Claim money-location-residual has a measured recent+historical not-published rate so credibility can be audited continuously."
+    },
+    "crol-list/mf-data-integrity-undersampled-procurement-planning-budget": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Sample not-published rate for claim procurement-planning-budget",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for procurement-planning-budget",
+      "content_hash": "8678873dc1820749",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Claim procurement-planning-budget has a measured recent+historical not-published rate so credibility can be audited continuously."
+    },
+    "crol-list/mf-data-integrity-undersampled-procurement-subcontract-goal-percent": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Sample not-published rate for claim procurement-subcontract-goal-percent",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for procurement-subcontract-goal-percent",
+      "content_hash": "14a1d1138f1c740a",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Claim procurement-subcontract-goal-percent has a measured recent+historical not-published rate so credibility can be audited continuously."
+    },
+    "crol-list/mf-data-integrity-undersampled-rules-event-date-unpublished": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Sample not-published rate for claim rules-event-date-unpublished",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for rules-event-date-unpublished",
+      "content_hash": "f45c47cfe9063635",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Claim rules-event-date-unpublished has a measured recent+historical not-published rate so credibility can be audited continuously."
+    },
+    "crol-list/mf-ontology-enrichment-actionability-low": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Raise deep-link actionability (search-page / landing / unavailable handoffs)",
+      "verify": "node --test test/actionability_sample.test.mjs test/action-rail.test.mjs test/intelligence_flywheel.test.mjs",
+      "content_hash": "b713f822a3f9d791",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Primary kinetic handoffs deep-link to the specific official item instead of a search page, landing, or unavailable placeholder."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-city-record-attachment-export-cliff": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: city-record-attachment-export-cliff",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for city-record-attachment-export-cliff",
+      "content_hash": "afd3a7aa5c5167c3",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap city-record-attachment-export-cliff shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-exam-outcome-aggregate": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: exam-outcome-aggregate",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for exam-outcome-aggregate",
+      "content_hash": "1070e28374488376",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap exam-outcome-aggregate shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-exam-salary-fee-not-published": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: exam-salary-fee-not-published",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for exam-salary-fee-not-published",
+      "content_hash": "de249436105b6489",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap exam-salary-fee-not-published shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-external-awards-abo-none": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: external-awards-abo-none",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for external-awards-abo-none",
+      "content_hash": "fb7d45e412a1c142",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap external-awards-abo-none shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-land-outcome-detail": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: land-outcome-detail",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for land-outcome-detail",
+      "content_hash": "f388784ab5fd0bcd",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap land-outcome-detail shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-meeting-matters-absent": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: meeting-matters-absent",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for meeting-matters-absent",
+      "content_hash": "2c0fac425dc6ea81",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap meeting-matters-absent shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-meeting-outcomes-unmatched": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: meeting-outcomes-unmatched",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for meeting-outcomes-unmatched",
+      "content_hash": "8f20141470bc8bae",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap meeting-outcomes-unmatched shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-meeting-votes-absent": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: meeting-votes-absent",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for meeting-votes-absent",
+      "content_hash": "acd33a614e2ad6c4",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap meeting-votes-absent shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-meetings-location-residual": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: meetings-location-residual",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for meetings-location-residual",
+      "content_hash": "04f130b6b0d7158e",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap meetings-location-residual shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-procurement-bid-counts": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: procurement-bid-counts",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for procurement-bid-counts",
+      "content_hash": "4457b48960b26009",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap procurement-bid-counts shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-procurement-ocp-recent-awards": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: procurement-ocp-recent-awards",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for procurement-ocp-recent-awards",
+      "content_hash": "f661d88fc4300b76",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap procurement-ocp-recent-awards shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-procurement-payment-unmatched": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: procurement-payment-unmatched",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for procurement-payment-unmatched",
+      "content_hash": "e05345d719272c10",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap procurement-payment-unmatched shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-procurement-pending-unmatched": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: procurement-pending-unmatched",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for procurement-pending-unmatched",
+      "content_hash": "48315046b3ac13bc",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap procurement-pending-unmatched shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-procurement-registered-unmatched": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: procurement-registered-unmatched",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for procurement-registered-unmatched",
+      "content_hash": "04846738f96c5f3a",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap procurement-registered-unmatched shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-property-parcel-key-residual": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: property-parcel-key-residual",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for property-parcel-key-residual",
+      "content_hash": "ae8df262cb958369",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap property-parcel-key-residual shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-rules-event-spine-unmatched": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: rules-event-spine-unmatched",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for rules-event-spine-unmatched",
+      "content_hash": "93af620f85eeacf0",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap rules-event-spine-unmatched shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-subsidy-field-city-record-hearing-feed": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: subsidy-field-city-record-hearing-feed",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for subsidy-field-city-record-hearing-feed",
+      "content_hash": "700ec97a14738fbf",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap subsidy-field-city-record-hearing-feed shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-subsidy-field-company-place-money": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: subsidy-field-company-place-money",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for subsidy-field-company-place-money",
+      "content_hash": "5bdbe367663d56a6",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap subsidy-field-company-place-money shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-subsidy-outcome-absent": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: subsidy-outcome-absent",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for subsidy-outcome-absent",
+      "content_hash": "a6fb9693e5851a51",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap subsidy-outcome-absent shows joined public data instead of “not yet shown here”."
+    },
+    "crol-list/mf-ontology-enrichment-gap-a-subsidy-project-unmatched": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close class-(a) gap: subsidy-project-unmatched",
+      "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for subsidy-project-unmatched",
+      "content_hash": "aa26c36e8892870c",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Class-(a) gap subsidy-project-unmatched shows joined public data instead of “not yet shown here”."
     }
-  },
-  "note": "2026-08-11 also closed Checkbook Spending payment retention after a dated kill sample cleared 30%/95% gates."
+  }
 }

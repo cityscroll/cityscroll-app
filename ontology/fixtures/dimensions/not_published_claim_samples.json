@@ -61,18 +61,41 @@
       "id": "meeting-person-votes",
       "field": "by_person roll-call votes",
       "surface": "notice_detail.meeting_outcomes",
-      "render": "meeting outcomes roll-call (empty by_person)",
+      "render": "named roll call when by_person retained; omit person panel when publisher issued no roll call",
       "i18n_keys": [],
       "visibility": "high",
       "public_source": "Legistar EventItems/{id}/Votes",
       "sample": {
-        "recent": { "size": 8, "not_published": 8 },
-        "historical": { "size": 7, "not_published": 7 },
-        "non_null_examples": 0,
+        "recent": {
+          "size": 8,
+          "not_published": 0,
+          "entry_ids": [
+            "20260706036",
+            "20260625040",
+            "20260428021",
+            "20260408025",
+            "20260331028",
+            "20260304007"
+          ]
+        },
+        "historical": {
+          "size": 8,
+          "not_published": 0,
+          "entry_ids": [
+            "20251126039",
+            "20251119030",
+            "20251107004",
+            "20250905004",
+            "20250731012",
+            "20250612007"
+          ]
+        },
+        "non_null_examples": 6,
         "public_source_has_data": true,
-        "public_source_evidence": "Legistar publishes person votes; production meeting-outcomes materialization 0/15 matched Council hearings with non-empty by_person (agenda outcomes do populate).",
-        "classification_hint": "never_ingested",
-        "fix": "Retain person-level votes in meeting-outcomes KV materialization or stop marketing person roll-call as live."
+        "public_source_evidence": "Live meeting-outcomes materialization retains by_person on 6/6 vote-bearing matched Council notices (100%; 6/16=37.5% of all matched) and 48/48 roll_call stages (person retention 1.0). Empty by_person on voice/laid-over hearings is honest absence — not class-(b) 'city does not publish'. Static first paint maps aye/nay tallies and roll-call name chips. Receipt: site/data/legistar_sources/verification_receipts/meeting_person_votes_2026-08-11.json.",
+        "classification_hint": "healthy",
+        "fix": "Keep class-(a) only when tallies exist and identity mapping fails; never invent persons for tally_only or no-vote hearings. Official constellation promotion still needs ≥30 distinct roll-call events.",
+        "verify": "node --test test/meeting_person_votes.test.mjs test/meeting_outcomes_static.test.mjs"
       },
       "demo_win": "Council hearings show named yes/no roll call when Legistar published votes for the event."
     },
