@@ -36,6 +36,17 @@ test("shared primitives emit the complete four-class grammar", () => {
   assert.doesNotMatch(fact, /href=|cursor:pointer|text-decoration/);
 });
 
+test("filter chips keep a non-collapsible gap between label and count", () => {
+  // Render-only bug: label text and .ct were adjacent inside display:flex with no gap,
+  // so "Vehicles" + "1" painted as "Vehicles1". Spacing must come from CSS flex gap /
+  // margin on .ct — not a collapsible whitespace text node between them.
+  const brand = read("site/brand.css");
+  assert.match(brand, /\.ui-filter-chip\.ui-filter-chip\{[^}]*\bgap\s*:\s*[^;}]+/, "ui-filter-chip declares flex gap");
+  const chip = filterChip({ label: "Vehicles", count: 1 });
+  assert.match(chip, /Vehicles<span class="ct">1<\/span>/);
+  assert.doesNotMatch(chip, /Vehicles\s+<span class="ct">/, "spacing is CSS-owned, not a fragile text node");
+});
+
 test("scope rails do not regress into navigational links styled as chips", () => {
   const files = [
     "site/index.html",

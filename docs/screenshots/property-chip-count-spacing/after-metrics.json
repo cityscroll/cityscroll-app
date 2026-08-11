@@ -1,0 +1,56 @@
+[
+  {
+    "textContent": "All types0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Vehicles0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Timber0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Equipment0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Real property0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Scrap / materials0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Seized / unclaimed property0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Rights / interests0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  },
+  {
+    "textContent": "Other0",
+    "display": "flex",
+    "gap": "4.55px",
+    "measuredGapPx": 4.546875
+  }
+]
