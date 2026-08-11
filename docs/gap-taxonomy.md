@@ -60,9 +60,11 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `bid-tabulations-historical` | disabled | bid_number, PIN, bid_title, bid_opening_date | high-risk | 0% (modern_notices_strict) |
 | `capital-projects` | disabled | project_name, managing_agency, client_agency, pid | — | 0% (modern_procurement_substring_unique) |
 | `capital-projects-dashboard` | landed | fms_id, managing_agency_+_agency_project_name_+_phase_time_(reviewed_candidate_only) | — | — |
+| `cfb-campaign-contributions` | landed | recipname, person_name_key | — | 49.1% (distinct_recipients) |
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
 | `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
+| `city-clerk-elobbyist` | landed | lobbyist_targets, person_name_key | — | 96.2% (person_shaped_mentions) |
 | `city-council-committee-membership` | landed | member_id | — | 5.8% (linked_rows) |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
 | `city-record` | live-only | PIN, request_id, agency, document_id, event_date, BBL, project_name, company_name, project_address, labeled_Total_Project_Cost_in_notice_body | — | — |
@@ -79,6 +81,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `mocs-ll1-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
 | `mocs-ll63-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
 | `nyc-council-legistar` | landed | body_id, matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
+| `nyc-council-members` | landed | council_member_id | — | 100% (vote_corpus_person_ids) |
 | `nyc-rules-rss` | landed | agency, publication_date, title_tokens | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present, board_date, explicit_motion/vote_language | — | — |
 | `ocp-recent-contract-awards` | landed | PIN, request_id, agency | — | — |
@@ -199,4 +202,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `e7971f8ef07a…` · materialized 11 · candidates 75 · class changes 0.
+Last refresh fingerprint: `26efb64b0bd1…` · materialized 11 · candidates 76 · class changes 0.

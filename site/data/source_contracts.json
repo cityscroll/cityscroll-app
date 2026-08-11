@@ -694,7 +694,9 @@
       "publisher_cadence": "Annual Local Law 50 report with corrections or refreshed publication rows as DCAS updates the report",
       "product_freshness": "A committed graph slice is labeled with its observed vintage. Only rows joined by exact exam_no to the committed staffing exam corpus are published; source rows without an exact exam card remain bulk-side and are not rendered.",
       "used_for": "Agency/list utilization evidence on staffing exam cards and exam documents, including appointed, certified, and removal counts.",
-      "join_keys": ["exam_no"],
+      "join_keys": [
+        "exam_no"
+      ],
       "join_measurement": {
         "observed_on": "2026-08-05",
         "eligible": 228,
@@ -703,7 +705,7 @@
         "rate": 0.4298,
         "source_rows_available": 22737,
         "attached_rows": 656,
-        "strategy": "exact exam_no ↔ exam_number; no title, agency, or zero-padding inference",
+        "strategy": "exact exam_no \u2194 exam_number; no title, agency, or zero-padding inference",
         "verdict": "Publish only the 656 rows attached to 98 exam cards; keep the remaining source rows bulk-side."
       },
       "code_references": [
@@ -893,18 +895,35 @@
       "publisher_cadence": "Monthly (Open Data metadata; 31-day working cadence)",
       "product_freshness": "The exact project_id join is materialized into the land project constellation; unmatched source rows remain excluded from the public read model.",
       "used_for": "Exact ZAP project evidence for Mandatory Inclusionary Housing status, adoption date, map, community district, and affordability option.",
-      "join_keys": ["project_id"],
+      "join_keys": [
+        "project_id"
+      ],
       "join_measurement": {
         "observed_on": "2026-08-05",
         "universe": "All rows in Socrata m79g-k9r4",
         "strategy": "exact_project_id against the full ZAP project source; title, address, and ULURP-only joins rejected",
-        "rates": { "exact_project_id": { "joined": 269, "total": 275, "rate": 0.9781818182 } },
+        "rates": {
+          "exact_project_id": {
+            "joined": 269,
+            "total": 275,
+            "rate": 0.9781818182
+          }
+        },
         "verdict": "Materialize only exact project_id matches; six unmatched rows remain a named gap."
       },
       "code_references": [
-        { "path": "tools/build_mih_project_lookup.mjs", "contains": "m79g-k9r4" },
-        { "path": "site/project_connections.mjs", "contains": "has_mih_area" },
-        { "path": "site/data/mih_project_lookup.json", "contains": "cityscroll.mih_project_lookup.v1" }
+        {
+          "path": "tools/build_mih_project_lookup.mjs",
+          "contains": "m79g-k9r4"
+        },
+        {
+          "path": "site/project_connections.mjs",
+          "contains": "has_mih_area"
+        },
+        {
+          "path": "site/data/mih_project_lookup.json",
+          "contains": "cityscroll.mih_project_lookup.v1"
+        }
       ],
       "delivery_tier": "edge-materialized",
       "warehouse_snapshot": {
@@ -1017,7 +1036,9 @@
           "contains": "joinPropertyToLl48ByBbl"
         }
       ],
-      "join_keys": ["bbl"],
+      "join_keys": [
+        "bbl"
+      ],
       "delivery_tier": "edge-materialized",
       "warehouse_snapshot": {
         "status": "materialized",
@@ -1290,7 +1311,9 @@
       "publisher_cadence": "Ongoing DOB certificate and issue updates",
       "product_freshness": "A guarded build refreshes the bulk source and publishes only exact-BBL rows attached to the committed parcel graph; each row carries source provenance and the artifact carries its source vintage.",
       "used_for": "Certificate of Occupancy evidence in the observed parcel biography.",
-      "join_keys": ["bbl"],
+      "join_keys": [
+        "bbl"
+      ],
       "join_measurement": {
         "observed_on": "2026-08-05",
         "universe": "Distinct exact ten-digit BBLs in the committed parcel graph",
@@ -1781,23 +1804,57 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "aabe-yfm9",
       "landing_page": "https://data.cityofnewyork.us/d/aabe-yfm9",
-      "required_fields": ["member_id", "full_name", "committee", "appointment_type", "start_date", "end_date", "committee_id", "id"],
+      "required_fields": [
+        "member_id",
+        "full_name",
+        "committee",
+        "appointment_type",
+        "start_date",
+        "end_date",
+        "committee_id",
+        "id"
+      ],
       "max_stale_days": 365,
       "publisher_cadence": "Historical export updated when committee membership records are revised",
       "product_freshness": "Bulk rows stay in the warehouse. The official profile uses a committed exact-member_id join slice and displays its source vintage and measured gaps.",
       "used_for": "Exact-key committee membership evidence on official profiles.",
       "code_references": [
-        {"path": "warehouse/datasets.v0.json", "contains": "aabe-yfm9"},
-        {"path": "tools/build_committee_memberships_lookup.mjs", "contains": "member_id"},
-        {"path": "site/committee_memberships_build.mjs", "contains": "exact_member_id_join"},
-        {"path": "site/app/entities.mjs", "contains": "official_committee_memberships_lookup.json"}
+        {
+          "path": "warehouse/datasets.v0.json",
+          "contains": "aabe-yfm9"
+        },
+        {
+          "path": "tools/build_committee_memberships_lookup.mjs",
+          "contains": "member_id"
+        },
+        {
+          "path": "site/committee_memberships_build.mjs",
+          "contains": "exact_member_id_join"
+        },
+        {
+          "path": "site/app/entities.mjs",
+          "contains": "official_committee_memberships_lookup.json"
+        }
       ],
-      "join_keys": ["member_id"],
+      "join_keys": [
+        "member_id"
+      ],
       "join_measurement": {
         "observed_on": "2026-08-05",
         "universe": "5,358 source rows and 15 committed exact person IDs in the people-domain corpus",
         "strategy": "exact member_id to person_id; no name fallback",
-        "rates": {"linked_rows": {"joined": 308, "total": 5358, "rate": 0.0575}, "linked_people": {"joined": 12, "total": 15, "rate": 0.8}},
+        "rates": {
+          "linked_rows": {
+            "joined": 308,
+            "total": 5358,
+            "rate": 0.0575
+          },
+          "linked_people": {
+            "joined": 12,
+            "total": 15,
+            "rate": 0.8
+          }
+        },
         "verdict": "Publish the 308 exact-key rows for 12 people; leave three people as an explicit gap."
       },
       "warehouse_snapshot": {
@@ -1805,6 +1862,196 @@
         "artifact": "site/data/official_committee_memberships_lookup.json",
         "materialized_at": "2026-08-05T00:00:00.000Z",
         "row_count": 308
+      },
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "nyc-council-members",
+      "name": "NYC Council Members (1999 to Present)",
+      "owner": "NYC Council",
+      "status": "live",
+      "scope": "site",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "uvw5-9znb",
+      "landing_page": "https://data.cityofnewyork.us/d/uvw5-9znb",
+      "required_fields": [
+        "council_member_id",
+        "name",
+        "term_start",
+        "term_end",
+        "district",
+        "office_id"
+      ],
+      "max_stale_days": 90,
+      "publisher_cadence": "Council membership roster; term rows accumulate over time",
+      "product_freshness": "Host-side rebuild writes site/data/person_hub_lookup.json. council_member_id equals Legistar PersonId for official profiles.",
+      "used_for": "Official person identity hub: district, term, and exact PersonId binding for votes, lobby targets, and campaign finance recipients.",
+      "code_references": [
+        {
+          "path": "site/person_hub.mjs",
+          "contains": "uvw5-9znb"
+        },
+        {
+          "path": "tools/build_person_hub.mjs",
+          "contains": "council_member_id"
+        },
+        {
+          "path": "site/app/entities.mjs",
+          "contains": "person_hub_lookup.json"
+        }
+      ],
+      "join_keys": [
+        "council_member_id"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-08-11",
+        "universe": "Committed person_votes_lookup PersonIds and demo ids 7801/7785",
+        "strategy": "exact council_member_id = Legistar PersonId; no name fallback for identity",
+        "rates": {
+          "vote_corpus_person_ids": {
+            "joined": 19,
+            "total": 19,
+            "rate": 1.0
+          },
+          "demo_marte_louis": {
+            "joined": 2,
+            "total": 2,
+            "rate": 1.0
+          }
+        },
+        "verdict": "Ship person hub. Exact PersonId identity; district and term stamp on official profiles."
+      },
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/person_hub_lookup.json",
+        "materialized_at": "2026-08-11T00:00:00.000Z",
+        "row_count": 215
+      },
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "city-clerk-elobbyist",
+      "name": "City Clerk eLobbyist Data",
+      "owner": "NYC City Clerk",
+      "status": "live",
+      "scope": "site",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "fmf3-knd8",
+      "landing_page": "https://data.cityofnewyork.us/d/fmf3-knd8",
+      "required_fields": [
+        "client_name",
+        "lobbyist_name",
+        "lobbyist_targets",
+        "report_year"
+      ],
+      "max_stale_days": 30,
+      "publisher_cadence": "Lobbying registrations and periodic reports",
+      "product_freshness": "Host-side kill sample + materialization into official_lobby_influence_lookup.json when usefulness and precision gates clear.",
+      "used_for": "Org \u2192 Lobbyist \u2192 Official target edges on official profiles via person hub name keys.",
+      "code_references": [
+        {
+          "path": "site/official_influence.mjs",
+          "contains": "fmf3-knd8"
+        },
+        {
+          "path": "entity_resolution/officials/lobby_targets.mjs",
+          "contains": "parseLobbyTargets"
+        },
+        {
+          "path": "tools/build_official_influence.mjs",
+          "contains": "LOBBY_SODA"
+        }
+      ],
+      "join_keys": [
+        "lobbyist_targets",
+        "person_name_key"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-08-11",
+        "universe": "Person-shaped lobbyist_targets mentions in a 2,000-row 2020+ kill sample",
+        "strategy": "parse targets; exact unique person-name keys against uvw5-9znb hub; no fuzzy public edges",
+        "rates": {
+          "person_shaped_mentions": {
+            "joined": 64116,
+            "total": 66669,
+            "rate": 0.9617
+          },
+          "reviewed_precision": {
+            "joined": 40,
+            "total": 40,
+            "rate": 1
+          }
+        },
+        "verdict": "Ship lobby edges. Usefulness 96.17% and precision 100% clear 30%/95% gates."
+      },
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/official_lobby_influence_lookup.json",
+        "materialized_at": "2026-08-11T00:00:00.000Z",
+        "row_count": 2440
+      },
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "cfb-campaign-contributions",
+      "name": "Campaign Finance Board Contributions",
+      "owner": "NYC Campaign Finance Board",
+      "status": "live",
+      "scope": "site",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "rjkp-yttg",
+      "landing_page": "https://data.cityofnewyork.us/d/rjkp-yttg",
+      "required_fields": [
+        "name",
+        "recipid",
+        "recipname",
+        "amnt",
+        "election"
+      ],
+      "max_stale_days": 30,
+      "publisher_cadence": "Periodic CFB disclosure filings",
+      "product_freshness": "Host-side sample of modern City Council (officecd=5) rows into official_cfb_influence_lookup.json when gates clear.",
+      "used_for": "Donor \u2192 official recipient edges on official profiles via person hub name keys.",
+      "code_references": [
+        {
+          "path": "site/official_influence.mjs",
+          "contains": "rjkp-yttg"
+        },
+        {
+          "path": "tools/build_official_influence.mjs",
+          "contains": "CFB_SODA"
+        }
+      ],
+      "join_keys": [
+        "recipname",
+        "person_name_key"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-08-11",
+        "universe": "Distinct recipients in a modern City Council CFB kill sample (election>=2021, officecd=5)",
+        "strategy": "exact unique person-name keys (including Last, First) against uvw5-9znb hub",
+        "rates": {
+          "distinct_recipients": {
+            "joined": 53,
+            "total": 108,
+            "rate": 0.4907
+          },
+          "reviewed_precision": {
+            "joined": 40,
+            "total": 40,
+            "rate": 1
+          }
+        },
+        "verdict": "Ship CFB recipient edges. Usefulness 49.07% and precision 100% clear 30%/95% gates."
+      },
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/official_cfb_influence_lookup.json",
+        "materialized_at": "2026-08-11T00:00:00.000Z",
+        "row_count": 1398
       },
       "delivery_tier": "edge-materialized"
     },
