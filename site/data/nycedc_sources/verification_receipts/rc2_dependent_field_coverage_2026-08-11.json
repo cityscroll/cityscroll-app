@@ -1,0 +1,93 @@
+{
+  "schema": "cityscroll.rc2_dependent_field_coverage.v1",
+  "observed_on": "2026-08-11",
+  "parent_receipt": {
+    "schema": "cityscroll.nycedc_project_join_receipt.v1",
+    "observed_at": "2026-08-04T11:49:21Z",
+    "bridge_status": "accepted",
+    "join_rate": 0.4167,
+    "threshold": 0.3,
+    "false_positives": 0,
+    "unreviewed_candidates": 0
+  },
+  "corpus": {
+    "notices": 3,
+    "projects": 5,
+    "request_ids": [
+      "20251229015",
+      "20260313009",
+      "20260414006"
+    ]
+  },
+  "fields": {
+    "company": {
+      "present": 5,
+      "total": 5,
+      "rate": 1
+    },
+    "address": {
+      "present": 5,
+      "total": 5,
+      "rate": 1
+    },
+    "requested_benefit": {
+      "present": 2,
+      "total": 5,
+      "rate": 0.4
+    },
+    "estimated_public_cost": {
+      "present": 3,
+      "total": 5,
+      "rate": 0.6
+    },
+    "project_cost": {
+      "present": 0,
+      "total": 5,
+      "rate": 0
+    },
+    "any_money": {
+      "present": 3,
+      "total": 5,
+      "rate": 0.6
+    }
+  },
+  "stages": {
+    "application": {
+      "date": 0,
+      "outcome": 0,
+      "date_rate": 0,
+      "outcome_rate": 0
+    },
+    "board_decision": {
+      "date": 5,
+      "outcome": 5,
+      "date_rate": 1,
+      "outcome_rate": 1
+    },
+    "closing": {
+      "date": 0,
+      "outcome": 0,
+      "date_rate": 0,
+      "outcome_rate": 0
+    },
+    "compliance": {
+      "date": 0,
+      "outcome": 0,
+      "date_rate": 0,
+      "outcome_rate": 0
+    }
+  },
+  "policy": {
+    "source_null_stays_null": true,
+    "invent_money_from_siblings": false,
+    "invent_outcome_from_hearing": false,
+    "reader_surface": "show positive facts only; omit empty slots (no class-(b) mask)"
+  },
+  "verdict": {
+    "parent_bridge": "accepted",
+    "company_place_ready": true,
+    "money_partial": true,
+    "board_decision_ready": true,
+    "later_stages_honest_absent": true
+  }
+}
