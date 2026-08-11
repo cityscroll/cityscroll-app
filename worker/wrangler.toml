@@ -41,6 +41,9 @@ PASSPORT_SOURCE_RECORD_DUAL_WRITE = "true"
 CHECKBOOK_SOURCE_RECORD_DUAL_WRITE = "true"
 LEGISTAR_SOURCE_RECORD_DUAL_WRITE = "true"
 ENTITY_LINK_DUAL_WRITE = "true"
+# Durable civic-time event append (D1 civic_time_events). Default OFF — pure adapter
+# seam only until an operator opts in. Set "true" to persist envelopes from adapters.
+CIVIC_TIME_EVENT_WRITE = "false"
 CONFIRM_BASE = "https://api.cityscroll.org"
 # Alerts sender (site owner decision 2026-07-29).
 ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"
@@ -153,6 +156,7 @@ PASSPORT_SOURCE_RECORD_DUAL_WRITE = "false"
 CHECKBOOK_SOURCE_RECORD_DUAL_WRITE = "false"
 LEGISTAR_SOURCE_RECORD_DUAL_WRITE = "false"
 ENTITY_LINK_DUAL_WRITE = "false"
+CIVIC_TIME_EVENT_WRITE = "false"
 QUEUE_DIGESTS = "false"
 ANALYTICS_ENVIRONMENT = "preview"
 SOURCE_VAULT_ENABLED = "false"

@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.4.0";
+export const OPS_CONTRACT_VERSION = "1.4.1";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -513,6 +513,13 @@ export const FEATURE_FLAGS = Object.freeze([
     name: "ANALYTICS_ENVIRONMENT",
     values: ["production", "preview", "development", "unset"],
     description: "Usage writes only when exactly production (plus USAGE_ANALYTICS binding).",
+  },
+  {
+    name: "CIVIC_TIME_EVENT_WRITE",
+    values: ["true", "false", "unset"],
+    description:
+      "When true, append civic-time event envelopes to D1 civic_time_events after Money "
+      + "lifecycle attach. Default off (false/unset): pure adapter seam only, no durable writes.",
   },
 ]);
 

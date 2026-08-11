@@ -1434,8 +1434,14 @@ Award continues as City Record notice_published / registration stages. Metrics:
 lifecycles); `rfx_spine_adapter_coverage` (matched-RFx lifecycles with ≥1 RFx production
 event / matched RFx); `temporal_completeness_rate` (mean share of
 event/publication/observed/processed clocks filled per civic-time event, by spine,
-joined to source-contract health via `temporalCompletenessScorecard`). Verify:
-`node --test worker/test/civic_time_contract.test.mjs worker/test/temporal_completeness.test.mjs worker/test/checkbook_lifecycle.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check && node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check`.
+joined to source-contract health via `temporalCompletenessScorecard`).
+
+**Flag-gated durable writer (default off):** `worker/src/lib/civic_time_writer.mjs`
+appends envelopes to D1 `civic_time_events` (migration `0019`) only when
+`CIVIC_TIME_EVENT_WRITE=true`. Unset/`false` keeps the pure seam (no writes). Wired
+fail-soft after Money attach in `worker/src/checkbook_lifecycle.mjs`. No public
+reads yet. Verify:
+`node --test worker/test/civic_time_contract.test.mjs worker/test/civic_time_writer.test.mjs worker/test/temporal_completeness.test.mjs worker/test/checkbook_lifecycle.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check && node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check`.
 Digest delivery identity remains `docs/digest-time-ontology.md` (separate concern).
 
 ## Subject registry (cross-spine subject_ref)

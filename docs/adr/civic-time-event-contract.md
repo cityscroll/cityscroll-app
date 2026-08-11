@@ -4,9 +4,9 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle |
+| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle; optional flag-gated D1 writer |
 | Supersedes | — |
-| Blocks | Optional later writers for Rules/Land/Meetings under this envelope |
+| Blocks | Optional later writers for Rules/Land/Meetings under this envelope (adapters remain library-only until they opt in) |
 
 ## Context
 
@@ -21,7 +21,8 @@ publication) and idempotency keys, so late revisions and re-runs are hard to aud
 
 Authoritative system map: [`docs/architecture.md`](../architecture.md). This ADR is a
 library seam under the existing Worker package — not a second architecture document, not a
-deployable service, not a temporal database, and not a production writer.
+deployable service, and not a temporal database. An optional production writer may append
+envelopes to D1 when explicitly enabled (see **Flag-gated production writer** below).
 
 ## Decision
 
@@ -100,10 +101,29 @@ production event / all matched-RFx lifecycles (baseline 0 → 1.0 on field cases
 Rules/Land/Meetings remain read-only mappers until a later materializer opts in. Adapters
 do not replace the product spines as source of truth.
 
+### Flag-gated production writer
+
+Envelopes may optionally be appended to D1 table `civic_time_events` (migration
+`0019_civic_time_events.sql`) so history can accumulate across runs.
+
+| Item | Value |
+| --- | --- |
+| Module | `worker/src/lib/civic_time_writer.mjs` |
+| Env flag | `CIVIC_TIME_EVENT_WRITE` |
+| Enable value | exactly `"true"` (case-insensitive) |
+| Default | **off** (`"false"` in `worker/wrangler.toml`; unset also means off) |
+| Behavior when off | Pure seam only — adapters attach `civic_events` to responses; no D1 writes |
+| Behavior when on | Fail-soft `INSERT OR IGNORE` by `event_id` after Money lifecycle attach |
+| Public reads | None yet — table is write-only accumulation |
+
+Clock honesty is enforced at map time and again at write time: source-null
+`published_at` / `valid_*` / `observed_at` stay SQL NULL; processing never fills
+publication; observation never fills valid time.
+
 ### Non-goals
 
-- No separate civic-event D1 table or event bus (Money events ride the existing lifecycle cache)
-- No graph store or multi-hop ontology product
+- No always-on event bus or graph store (the D1 table is an opt-in append log only)
+- No public HTTP consumer of `civic_time_events` in this card
 - No replacement of existing spine renderers (`deriveRuleEvents`, land spine, meeting
   outcomes, Checkbook lifecycle) — adapters project them into the shared envelope
 
@@ -119,6 +139,7 @@ do not replace the product spines as source of truth.
 
 ```bash
 node --test worker/test/civic_time_contract.test.mjs
+node --test worker/test/civic_time_writer.test.mjs
 node --test worker/test/temporal_completeness.test.mjs
 node --test worker/test/checkbook_lifecycle.test.mjs
 node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check
@@ -149,7 +170,11 @@ Characterization: `node --test worker/test/temporal_completeness.test.mjs`.
 
 ## Rollback
 
-Remove `mapMoneyLifecycleToCivic` / `attachMoneyCivicEvents` wiring from
-`worker/src/checkbook_lifecycle.mjs` and drop `civic_events` from the cache completeness
-check. Delete `worker/src/lib/civic_time.mjs`, fixtures under `worker/test/fixtures/civic-time/`,
-the characterization tests, the CLI, and this ADR if rolling back the whole seam.
+- Writer only: set `CIVIC_TIME_EVENT_WRITE` to `"false"` (or unset). No code change required;
+  the pure seam continues to attach `civic_events` without D1 writes.
+- Full seam: remove `mapMoneyLifecycleToCivic` / `attachMoneyCivicEvents` /
+  `writeLifecycleCivicEvents` wiring from `worker/src/checkbook_lifecycle.mjs` and drop
+  `civic_events` from the cache completeness check. Delete `worker/src/lib/civic_time.mjs`,
+  `worker/src/lib/civic_time_writer.mjs`, migration `0019_civic_time_events.sql`, fixtures
+  under `worker/test/fixtures/civic-time/`, the characterization tests, the CLI, and this
+  ADR if rolling back the whole seam.
