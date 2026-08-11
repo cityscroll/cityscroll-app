@@ -1670,11 +1670,16 @@ and `compile.mjs` re-export for call-site stability. Equal/distinct pin table:
 `worker/test/fixtures/normalize_pairs.json`. Verify:
 `node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs`.
 
-**Agency rename residual (gold false_split):** alias dual names in
-`worker/src/lib/agencies.mjs` `GROUPS` so ER stem + identity enrichment share one
-`canonical_id` (DoITT→OTI, county DA↔borough DA office, Business→SBS). Keep site
-ids stable so `agency_crosswalk.json` keys still match. Borough DAs stay distinct.
-Verify: `node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`
+**Agency rename / successor densify:** OTI roster `t3jq-9nkf`
+`alternate_or_former_names` densifies into `former_names` stamps on
+`worker/src/data/agency_crosswalk.json` via `tools/build_agency_successors.mjs`
+(pure lib `tools/lib/agency_successors.mjs`). Residual renames that must share a
+route id land in `site/agency_identity.mjs` `AGENCY_GROUPS` (not a bulk browser
+alias module — home.cold wireBytes). Kill sample must clear ≥95% precision with
+zero hard-negative merges before materializing. Verify:
+`node --test test/agency_successors.test.mjs worker/test/agency_identity.test.mjs`
+and `node tools/build_agency_successors.mjs --check --fixture`. Gold:
+`node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`
 → `false_split=0` `false_merge=0` `recall=1`. Captures:
 `python3 tools/capture_agency_false_splits.py`.
 

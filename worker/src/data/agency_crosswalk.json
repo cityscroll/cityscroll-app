@@ -44,7 +44,16 @@
     ],
     "canonical_agencies": 116,
     "city_record_strings_scanned": 313,
-    "volume_coverage": 0.994
+    "volume_coverage": 0.994,
+    "successor_densify": {
+      "source_id": "t3jq-9nkf",
+      "basis": "oti_alternate_or_former_names_v1",
+      "edge_count": 76,
+      "stamped_entries": 0,
+      "stamped_surfaces": 0,
+      "materialize": true,
+      "applied_count": 0
+    }
   },
   "entries": {
     "board-of-elections": {
@@ -63,12 +72,14 @@
       "budget_code": "003",
       "budget_adopted": 146875148,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "police-department": {
       "variants": [
-        "POLICE DEPARTMENT",
-        "Police Department"
+        "Police Department",
+        "POLICE DEPARTMENT"
       ],
       "canonical_name": "New York City Police Department",
       "acronym": "NYPD",
@@ -80,12 +91,19 @@
       "budget_code": "056",
       "budget_adopted": 6276535865,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Police Department"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "education": {
       "variants": [
+        "Department of Education",
         "DEPARTMENT OF EDUCATION ADMIN",
-        "Education"
+        "Education",
+        "NYC Public Schools"
       ],
       "canonical_name": "New York City Public Schools",
       "acronym": "NYCPS",
@@ -97,11 +115,20 @@
       "budget_code": "040",
       "budget_adopted": 34996591607,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Department of Education",
+        "NYC Public Schools"
+      ],
+      "former_acronyms": [
+        "DOE"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "parks-and-recreation": {
       "variants": [
         "DEPT OF PARKS & RECREATION",
+        "NYC Parks",
         "Parks and Recreation"
       ],
       "canonical_name": "Department of Parks and Recreation",
@@ -114,12 +141,19 @@
       "budget_code": "846",
       "budget_adopted": 687637766,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "NYC Parks"
+      ],
+      "former_acronyms": [
+        "Parks"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "fire-department": {
       "variants": [
-        "FIRE DEPARTMENT",
-        "Fire Department"
+        "Fire Department",
+        "FIRE DEPARTMENT"
       ],
       "canonical_name": "Fire Department of the City of New York",
       "acronym": "FDNY",
@@ -131,11 +165,17 @@
       "budget_code": "057",
       "budget_adopted": 2621215957,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Fire Department"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "sanitation": {
       "variants": [
         "DEPARTMENT OF SANITATION",
+        "NYC Sanitation",
         "Sanitation"
       ],
       "canonical_name": "New York City Department of Sanitation",
@@ -148,7 +188,13 @@
       "budget_code": "827",
       "budget_adopted": 1987963656,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Department of Sanitation",
+        "NYC Sanitation"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "human-resources-administration": {
       "variants": [
@@ -166,13 +212,17 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "health-and-mental-hygiene": {
       "variants": [
         "DEPT OF HEALTH/MENTAL HYGIENE",
         "DEPT OF MH MR AND ALC SVCS",
-        "Health and Mental Hygiene"
+        "Health and Mental Hygiene",
+        "Health Department",
+        "NYC Health"
       ],
       "canonical_name": "Department of Health and Mental Hygiene",
       "acronym": "DOHMH",
@@ -184,7 +234,15 @@
       "budget_code": "816",
       "budget_adopted": 2440587524,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Health Department",
+        "NYC Health"
+      ],
+      "former_acronyms": [
+        "DOH"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "correction": {
       "variants": [
@@ -201,7 +259,9 @@
       "budget_code": "072",
       "budget_adopted": 1212565375,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "citywide-administrative-services": {
       "variants": [
@@ -219,7 +279,9 @@
       "budget_code": "856",
       "budget_adopted": 1774665175,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "environmental-protection": {
       "variants": [
@@ -236,7 +298,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "transportation": {
       "variants": [
@@ -253,7 +317,14 @@
       "budget_code": "841",
       "budget_adopted": 1503042033,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Department of Transportation"
+      ],
+      "former_acronyms": [
+        "DOT"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "city-university": {
       "variants": [
@@ -280,7 +351,9 @@
       "budget_code": "042",
       "budget_adopted": 1554336905,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "housing-preservation-and-development": {
       "variants": [
@@ -297,12 +370,18 @@
       "budget_code": "806",
       "budget_adopted": 1611120690,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Housing Preservation and Development"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "district-attorney-new-york-county": {
       "variants": [
+        "District Attorney - New York County",
         "DISTRICT ATTORNEY-MANHATTAN",
-        "District Attorney - New York County"
+        "New York County District Attorney's Office"
       ],
       "canonical_name": "Manhattan District Attorney's Office",
       "acronym": null,
@@ -314,7 +393,12 @@
       "budget_code": "901",
       "budget_adopted": 180030822,
       "budget_fy": 2027,
-      "match_method": "alias"
+      "match_method": "alias",
+      "former_names": [
+        "New York County District Attorney's Office"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "homeless-services": {
       "variants": [
@@ -331,7 +415,9 @@
       "budget_code": "071",
       "budget_adopted": 3554426684,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "housing-authority": {
       "variants": [
@@ -347,7 +433,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "finance": {
       "variants": [
@@ -364,7 +452,9 @@
       "budget_code": "836",
       "budget_adopted": 371193171,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "buildings": {
       "variants": [
@@ -381,12 +471,15 @@
       "budget_code": "810",
       "budget_adopted": 230868731,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "law-department": {
       "variants": [
+        "Law Department",
         "LAW DEPARTMENT",
-        "Law Department"
+        "Office of the Corporation Counsel"
       ],
       "canonical_name": "New York City Law Department",
       "acronym": "LAW",
@@ -398,7 +491,15 @@
       "budget_code": "025",
       "budget_adopted": 276814297,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Law Department",
+        "Office of the Corporation Counsel"
+      ],
+      "former_acronyms": [
+        "Law Dept."
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "administration-for-childrens-services": {
       "variants": [
@@ -419,7 +520,9 @@
       "budget_code": "068",
       "budget_adopted": 3141750019,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "design-and-construction": {
       "variants": [
@@ -437,12 +540,15 @@
       "budget_code": "850",
       "budget_adopted": 164489559,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "district-attorney-queens-county": {
       "variants": [
+        "District Attorney - Queens County",
         "DISTRICT ATTORNEY QNS COUNTY",
-        "District Attorney - Queens County"
+        "Queens County District Attorney's Office"
       ],
       "canonical_name": "Queens District Attorney's Office",
       "acronym": null,
@@ -454,10 +560,16 @@
       "budget_code": "904",
       "budget_adopted": 108133079,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Queens County District Attorney's Office"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "district-attorney-bronx-county": {
       "variants": [
+        "Bronx County District Attorney's Office",
         "BRONX DISTRICT ATTORNEY",
         "District Attorney - Bronx County"
       ],
@@ -471,7 +583,12 @@
       "budget_code": "902",
       "budget_adopted": 128320716,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Bronx County District Attorney's Office"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "nyc-health-hospitals": {
       "variants": [
@@ -487,10 +604,13 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "information-technology-and-telecommunications": {
       "variants": [
+        "Department of Information Technology and Telecommunications",
         "DEPT OF INFO TECH & TELECOMM",
         "Information Technology and Telecommunications",
         "TECHNOLOGY & INNOVATION"
@@ -505,12 +625,20 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "alias"
+      "match_method": "alias",
+      "former_names": [
+        "Department of Information Technology and Telecommunications"
+      ],
+      "former_acronyms": [
+        "DoITT"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "district-attorney-kings-county": {
       "variants": [
+        "District Attorney - Kings County",
         "DISTRICT ATTORNEY KINGS COUNTY",
-        "District Attorney - Kings County"
+        "Kings County District Attorney's Office"
       ],
       "canonical_name": "Brooklyn District Attorney's Office",
       "acronym": null,
@@ -522,12 +650,19 @@
       "budget_code": "903",
       "budget_adopted": 157898433,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Kings County District Attorney's Office"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "office-of-the-mayor": {
       "variants": [
+        "Mayor's Office",
+        "Office of the Mayor",
         "OFFICE OF THE MAYOR",
-        "Office of the Mayor"
+        "Office of the Mayor of the City of New York"
       ],
       "canonical_name": "Office of the Mayor",
       "acronym": "OM",
@@ -539,12 +674,18 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": [
+        "Mayor's Office",
+        "Office of the Mayor of the City of New York"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "city-council": {
       "variants": [
-        "CITY COUNCIL",
-        "City Council"
+        "City Council",
+        "CITY COUNCIL"
       ],
       "canonical_name": "New York City Council",
       "acronym": "NYCC",
@@ -556,7 +697,12 @@
       "budget_code": "102",
       "budget_adopted": 115049827,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "City Council"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "probation": {
       "variants": [
@@ -573,12 +719,15 @@
       "budget_code": "781",
       "budget_adopted": 115658490,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "aging": {
       "variants": [
         "Aging",
-        "DEPARTMENT FOR THE AGING"
+        "DEPARTMENT FOR THE AGING",
+        "NYC Aging"
       ],
       "canonical_name": "Department for the Aging",
       "acronym": "NYC AGING",
@@ -590,7 +739,14 @@
       "budget_code": "125",
       "budget_adopted": 605474705,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "NYC Aging"
+      ],
+      "former_acronyms": [
+        "DFTA"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "comptroller": {
       "variants": [
@@ -607,7 +763,12 @@
       "budget_code": "015",
       "budget_adopted": 127028130,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Comptroller"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "youth-and-community-development": {
       "variants": [
@@ -624,7 +785,9 @@
       "budget_code": "260",
       "budget_adopted": 1514141442,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "mayors-office-of-contract-services": {
       "variants": [
@@ -641,7 +804,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "taxi-and-limousine-commission": {
       "variants": [
@@ -658,7 +823,14 @@
       "budget_code": "156",
       "budget_adopted": 58133858,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Taxi and Limousine Commission"
+      ],
+      "former_acronyms": [
+        "NYC TLC"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "management-and-budget": {
       "variants": [
@@ -676,7 +848,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "alias"
+      "match_method": "alias",
+      "former_names": null,
+      "former_acronyms": null
     },
     "administrative-trials-and-hearings": {
       "variants": [
@@ -693,7 +867,9 @@
       "budget_code": "820",
       "budget_adopted": 80902546,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "school-construction-authority": {
       "variants": [
@@ -709,7 +885,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "city-planning": {
       "variants": [
@@ -726,7 +904,9 @@
       "budget_code": "030",
       "budget_adopted": 56788947,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "civilian-complaint-review-board": {
       "variants": [
@@ -743,7 +923,9 @@
       "budget_code": "054",
       "budget_adopted": 29167829,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "teachers-retirement-system": {
       "variants": [
@@ -760,7 +942,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "small-business-services": {
       "variants": [
@@ -777,13 +961,16 @@
       "budget_code": "801",
       "budget_adopted": 279711843,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "consumer-and-worker-protection": {
       "variants": [
         "CONSUMER AFFAIRS",
+        "Consumer and Worker Protection",
         "CONSUMER AND WORKER PROTECTION",
-        "Consumer and Worker Protection"
+        "Department of Consumer Affairs"
       ],
       "canonical_name": "Department of Consumer and Worker Protection",
       "acronym": "DCWP",
@@ -795,7 +982,14 @@
       "budget_code": "866",
       "budget_adopted": 75070618,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Department of Consumer Affairs"
+      ],
+      "former_acronyms": [
+        "DCA"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "investigation": {
       "variants": [
@@ -812,12 +1006,15 @@
       "budget_code": "032",
       "budget_adopted": 55874468,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "district-attorney-richmond-county": {
       "variants": [
+        "District Attorney - Richmond County",
         "DISTRICT ATTORNEY RICHMOND COU",
-        "District Attorney - Richmond County"
+        "Richmond County District Attorney's Office"
       ],
       "canonical_name": "Staten Island District Attorney's Office",
       "acronym": null,
@@ -829,7 +1026,12 @@
       "budget_code": "905",
       "budget_adopted": 27013456,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Richmond County District Attorney's Office"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "economic-development-corporation": {
       "variants": [
@@ -845,7 +1047,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "financial-information-services-agency": {
       "variants": [
@@ -862,11 +1066,14 @@
       "budget_code": "127",
       "budget_adopted": 122930913,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "emergency-management": {
       "variants": [
         "Emergency Management",
+        "NYC Emergency Management",
         "OFFICE OF EMERGENCY MANAGEMENT"
       ],
       "canonical_name": "New York City Emergency Management",
@@ -879,7 +1086,15 @@
       "budget_code": "017",
       "budget_adopted": 80773863,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "NYC Emergency Management",
+        "Office of Emergency Management"
+      ],
+      "former_acronyms": [
+        "OEM"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "community-boards": {
       "variants": [
@@ -960,7 +1175,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "office-of-special-narcotics-prosecutor": {
       "variants": [
@@ -978,7 +1195,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "commission-on-human-rights": {
       "variants": [
@@ -995,7 +1214,9 @@
       "budget_code": "226",
       "budget_adopted": 15355660,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "campaign-finance-board": {
       "variants": [
@@ -1012,7 +1233,9 @@
       "budget_code": "004",
       "budget_adopted": 109481237,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "landmarks-preservation-commission": {
       "variants": [
@@ -1029,7 +1252,9 @@
       "budget_code": "136",
       "budget_adopted": 8144365,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "office-of-labor-relations": {
       "variants": [
@@ -1046,12 +1271,15 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-advocate": {
       "variants": [
-        "PUBLIC ADVOCATE",
-        "Public Advocate"
+        "Office of the Public Advocate for the City of New York",
+        "Public Advocate",
+        "PUBLIC ADVOCATE"
       ],
       "canonical_name": "Office of the Public Advocate",
       "acronym": "PUB ADV",
@@ -1063,7 +1291,13 @@
       "budget_code": "101",
       "budget_adopted": 5542658,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Office of the Public Advocate for the City of New York",
+        "Public Advocate"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "mayors-office-of-criminal-justice": {
       "variants": [
@@ -1079,7 +1313,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "chief-medical-examiner": {
       "variants": [
@@ -1095,7 +1331,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "payroll-administration": {
       "variants": [
@@ -1112,7 +1350,9 @@
       "budget_code": "131",
       "budget_adopted": 17573369,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "borough-president-brooklyn": {
       "variants": [
@@ -1129,7 +1369,9 @@
       "budget_code": "012",
       "budget_adopted": 7735303,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "board-of-standards-and-appeals": {
       "variants": [
@@ -1145,7 +1387,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "borough-president-manhattan": {
       "variants": [
@@ -1162,7 +1406,9 @@
       "budget_code": "010",
       "budget_adopted": 6017382,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "business-integrity-commission": {
       "variants": [
@@ -1179,7 +1425,9 @@
       "budget_code": "829",
       "budget_adopted": 8724918,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "borough-president-queens": {
       "variants": [
@@ -1196,7 +1444,9 @@
       "budget_code": "013",
       "budget_adopted": 6778610,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "city-planning-commission": {
       "variants": [
@@ -1212,7 +1462,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "records-and-information-services": {
       "variants": [
@@ -1229,7 +1481,9 @@
       "budget_code": "860",
       "budget_adopted": 15233377,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "borough-president-bronx": {
       "variants": [
@@ -1246,7 +1500,9 @@
       "budget_code": "011",
       "budget_adopted": 7034979,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "cultural-affairs": {
       "variants": [
@@ -1263,7 +1519,9 @@
       "budget_code": "126",
       "budget_adopted": 299657922,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "city-clerk": {
       "variants": [
@@ -1280,7 +1538,9 @@
       "budget_code": "103",
       "budget_adopted": 8924713,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "office-of-collective-bargaining": {
       "variants": [
@@ -1297,7 +1557,9 @@
       "budget_code": "313",
       "budget_adopted": 2825195,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "board-of-education-retirement-system": {
       "variants": [
@@ -1313,7 +1575,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "independent-budget-office": {
       "variants": [
@@ -1330,12 +1594,15 @@
       "budget_code": "132",
       "budget_adopted": 8343403,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "tax-commission": {
       "variants": [
-        "TAX COMMISSION",
-        "Tax Commission"
+        "NYC Tax Commission",
+        "Tax Commission",
+        "TAX COMMISSION"
       ],
       "canonical_name": "New York City Tax Commission",
       "acronym": "TAXCOMM",
@@ -1347,7 +1614,13 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": [
+        "NYC Tax Commission",
+        "Tax Commission"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "borough-president-staten-island": {
       "variants": [
@@ -1364,7 +1637,9 @@
       "budget_code": "014",
       "budget_adopted": 5206209,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "office-of-the-actuary": {
       "variants": [
@@ -1381,10 +1656,13 @@
       "budget_code": "008",
       "budget_adopted": 7614099,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-design-commission": {
       "variants": [
+        "Art Commission",
         "Public Design Commission"
       ],
       "canonical_name": "Public Design Commission",
@@ -1397,7 +1675,12 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": [
+        "Art Commission"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "rent-guidelines-board": {
       "variants": [
@@ -1413,7 +1696,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "conflicts-of-interest-board": {
       "variants": [
@@ -1430,7 +1715,9 @@
       "budget_code": "312",
       "budget_adopted": 2860750,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "board-of-correction": {
       "variants": [
@@ -1447,7 +1734,9 @@
       "budget_code": "073",
       "budget_adopted": 4086397,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-library-queens": {
       "variants": [
@@ -1463,7 +1752,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "criminal-justice-coordinator": {
       "variants": [
@@ -1481,10 +1772,13 @@
       "budget_code": "128",
       "budget_adopted": 868317728,
       "budget_fy": 2027,
-      "match_method": "budget-only"
+      "match_method": "budget-only",
+      "former_names": null,
+      "former_acronyms": null
     },
     "build-nyc-resource-corporation": {
       "variants": [
+        "Build NYC",
         "Build NYC Resource Corporation"
       ],
       "canonical_name": "Build NYC Resource Corporation",
@@ -1497,7 +1791,12 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": [
+        "Build NYC"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "industrial-development-agency": {
       "variants": [
@@ -1513,7 +1812,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "environmental-control-board": {
       "variants": [
@@ -1529,7 +1830,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "mayors-fund-to-advance-new-york-city": {
       "variants": [
@@ -1545,11 +1848,14 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "equal-employ-practices-comm": {
       "variants": [
-        "EQUAL EMPLOY PRACTICES COMM"
+        "EQUAL EMPLOY PRACTICES COMM",
+        "Equal Employment Opportunity"
       ],
       "canonical_name": "Equal Employment Practices Commission",
       "acronym": "EEPC",
@@ -1561,7 +1867,12 @@
       "budget_code": "133",
       "budget_adopted": 1606048,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": [
+        "Equal Employment Opportunity"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "nyc-department-of-veterans-services": {
       "variants": [
@@ -1579,7 +1890,9 @@
       "budget_code": "063",
       "budget_adopted": 7634186,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-administrator-kings-county": {
       "variants": [
@@ -1596,7 +1909,9 @@
       "budget_code": "943",
       "budget_adopted": 1136406,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "equal-employment-practices-commission": {
       "variants": [
@@ -1612,7 +1927,9 @@
       "budget_code": "133",
       "budget_adopted": 1606048,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "trust-for-governors-island": {
       "variants": [
@@ -1628,7 +1945,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "mayors-office-of-environmental-coordination": {
       "variants": [
@@ -1644,7 +1963,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "charter-revision-commission": {
       "variants": [
@@ -1660,7 +1981,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "new-york-city-police-pension-fund": {
       "variants": [
@@ -1676,7 +1999,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "procurement-policy-board": {
       "variants": [
@@ -1692,7 +2017,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "civic-engagement-commission": {
       "variants": [
@@ -1708,7 +2035,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "civil-service-commission": {
       "variants": [
@@ -1725,7 +2054,9 @@
       "budget_code": "134",
       "budget_adopted": 1217197,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-administrator-new-york-county": {
       "variants": [
@@ -1742,7 +2073,9 @@
       "budget_code": "941",
       "budget_adopted": 1320021,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "hudson-river-park-trust": {
       "variants": [
@@ -1758,7 +2091,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-administrator-bronx-county": {
       "variants": [
@@ -1774,7 +2109,9 @@
       "budget_code": "942",
       "budget_adopted": 883662,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "commission-on-racial-equity": {
       "variants": [
@@ -1792,7 +2129,9 @@
       "budget_code": "215",
       "budget_adopted": 4827741,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "educational-construction-fund": {
       "variants": [
@@ -1808,7 +2147,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "districting-commission": {
       "variants": [
@@ -1825,7 +2166,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-administrator-queens-county": {
       "variants": [
@@ -1842,7 +2185,9 @@
       "budget_code": "944",
       "budget_adopted": 694608,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "mayors-office-of-media-and-entertainment": {
       "variants": [
@@ -1858,7 +2203,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "water-board": {
       "variants": [
@@ -1874,7 +2221,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "loft-board": {
       "variants": [
@@ -1890,7 +2239,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-administrator-richmond-county": {
       "variants": [
@@ -1907,7 +2258,9 @@
       "budget_code": "945",
       "budget_adopted": 673602,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "nyc-and-company": {
       "variants": [
@@ -1923,7 +2276,12 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": [
+        "NYC & Company"
+      ],
+      "former_acronyms": null,
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "nyc-workforce-development-board": {
       "variants": [
@@ -1939,7 +2297,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "mayors-office-of-operations": {
       "variants": [
@@ -1955,7 +2315,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "administrative-tax-appeals": {
       "variants": [
@@ -1971,7 +2333,9 @@
       "budget_code": "021",
       "budget_adopted": 6092131,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-library-brooklyn": {
       "variants": [
@@ -1987,7 +2351,9 @@
       "budget_code": "038",
       "budget_adopted": 144774313,
       "budget_fy": 2027,
-      "match_method": "normalized+budget"
+      "match_method": "normalized+budget",
+      "former_names": null,
+      "former_acronyms": null
     },
     "banking-commission": {
       "variants": [
@@ -2003,7 +2369,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "lower-manhattan-development-corporation": {
       "variants": [
@@ -2019,7 +2387,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "public-housing-preservation-trust": {
       "variants": [
@@ -2035,7 +2405,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     },
     "mayors-office-of-special-enforcement": {
       "variants": [
@@ -2051,7 +2423,12 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": [
+        "AJC"
+      ],
+      "successor_basis": "oti_alternate_or_former_names_v1"
     },
     "metropolitan-transportation-authority": {
       "variants": [
@@ -2067,7 +2444,9 @@
       "budget_code": null,
       "budget_adopted": null,
       "budget_fy": null,
-      "match_method": "normalized"
+      "match_method": "normalized",
+      "former_names": null,
+      "former_acronyms": null
     }
   }
 }
