@@ -973,7 +973,7 @@ function landPhaseSpineHTML(view, tools, record){
       return `<li><button type="button" class="land-phase-step lc-step ${cls}" data-land-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(landPhaseLabel(p))}">${escUiHtml(p.short||landPhaseLabel(p))}</button>${arrow}</li>`;
     }).join("")
   }</ol>`;
-  const panels=(view.phases||[]).map(p=>{
+  const phasePanelHTML=(p)=>{
     const open=p.state==="current"?" open":"";
     const stateWord=p.state==="current"?t("land_spine_phase_current"):p.state==="passed"?t("land_spine_phase_done"):t("land_spine_phase_future");
     const statutoryRow=(clock&&clock.status!=="ineligible")
@@ -1011,7 +1011,15 @@ function landPhaseSpineHTML(view, tools, record){
       </summary>
       <div class="land-phase-body">${statutory}${body}</div>
     </details>`;
-  }).join("");
+  };
+  // Compact template: current (and attention) detail open; earlier stages under one history disclosure;
+  // future unmatched stay as closed chips/panels without dominating the fold.
+  const currentPanels=(view.phases||[]).filter(p=>p.state==="current").map(phasePanelHTML).join("");
+  const historyPanels=(view.phases||[]).filter(p=>p.state==="passed").map(phasePanelHTML).join("");
+  const futurePanels=(view.phases||[]).filter(p=>p.state==="future").map(phasePanelHTML).join("");
+  const historyWrap=historyPanels
+    ? `<details class="lc-phase-history land-phase-history"><summary>${t("lifecycle_phase_show_history")}</summary>${historyPanels}</details>`
+    : "";
   const chrono=(view.chronological||[]).map(e=>landSpineEventRowHTML(e, view.portal_url, isPortalUrl)).join("");
   const chronology=`<details class="land-spine-how lc-how">
     <summary>${t("land_spine_show_all")}</summary>
@@ -1020,7 +1028,7 @@ function landPhaseSpineHTML(view, tools, record){
   const lagHTML=landSpineLagHTML(view.lag?.open_data_vs_portal || {});
   const gaps=landSpineGapsHTML(view.gaps);
   const baseRate=landZoningStatisticsHTML(record);
-  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${panels}${baseRate}${chronology}${lagHTML}${gaps}`;
+  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${currentPanels}${historyWrap}${futurePanels}${baseRate}${chronology}${lagHTML}${gaps}`;
 }
 /** Flat fallback if phase module fails to load — still dedupes project portal links. */
 function landSpineHTMLFlat(spine, record){
@@ -1056,6 +1064,8 @@ function bindLandSpineUI(root){
       const id=step.getAttribute("data-land-phase");
       const panel=root.querySelector(`[data-land-phase-panel="${CSS.escape(id)}"]`);
       if(panel){
+        const hist=panel.closest?.(".lc-phase-history");
+        if(hist) hist.open=true;
         panel.open=true;
         try{ panel.scrollIntoView({behavior:"smooth", block:"nearest"}); }catch(_e){}
       }

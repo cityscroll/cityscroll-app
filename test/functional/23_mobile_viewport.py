@@ -32,7 +32,8 @@ SURFACES = (
     ("property", "#property", "#propertyfeed .fcard"),
     ("rules", "#rules", "#rulesfeed .fcard"),
     ("meetings", "#meetings", "#meetingsfeed .fcard"),
-    ("near you", "near-you/", ".near-area-list a"),
+    # List-first mobile Near you: exact records ready before the optional Map surface.
+    ("near you", "near-you/", ".near-results[data-results-count], [data-near-surface='list']"),
     ("following", "following/", "[data-following-preview-form]"),
     ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
     ("reader action", "#notice/20260701099", "#noticeview .panel"),
@@ -141,11 +142,26 @@ def run(base: str) -> None:
                       paths: Object.fromEntries([...document.querySelectorAll('[data-map-id]')].map(el => [el.dataset.mapId, Number(el.dataset.count)])),
                       areas: Object.fromEntries([...document.querySelectorAll('[data-map-area]')].map(el => [el.dataset.mapArea, Number(el.dataset.count)])),
                       enhanced: document.querySelector('[data-near-you-root]')?.dataset.enhanced,
+                      listFirst: getComputedStyle(document.querySelector('[data-near-surface-panel="list"]')||document.body).display !== 'none',
+                      mapHidden: getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')||document.body).display === 'none',
                     })"""
                 )
                 assert contract["count"] == len(set(contract["ids"])), contract
                 assert contract["paths"] == contract["areas"], contract
                 assert contract["enhanced"] == "true", contract
+                assert contract["listFirst"], contract
+                # Enhanced mobile defaults to the list surface; Map remains one tap away.
+                if contract["enhanced"] == "true":
+                    assert contract["mapHidden"], contract
+                    map_switch = page.locator("[data-near-surface='map']")
+                    assert map_switch.count() > 0, contract
+                    map_switch.first.click()
+                    page.locator(".near-area-list a").first.wait_for(state="visible", timeout=10_000)
+                    assert page.evaluate(
+                        """() => getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')).display !== 'none'"""
+                    )
+                else:
+                    page.locator(".near-area-list a").first.wait_for(state="visible", timeout=10_000)
 
             if name == "rule detail":
                 phase_buttons = page.locator(".rule-phase-stepper .lc-step")

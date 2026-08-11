@@ -47,6 +47,7 @@ async function adoptDocument(href) {
     ".near-place-guide",
     ".near-form",
     ".near-coverage",
+    ".near-surface-switch",
     ".near-map-section",
     ".near-results",
     ".near-bags",
@@ -201,6 +202,33 @@ function wireForms() {
   }
 }
 
+/** Mobile list-first: Records / Map switch keeps count≡list while map stays optional. */
+function wireSurfaceSwitch() {
+  const nav = root.querySelector("[data-near-surface-switch]");
+  if (!nav || wired.has(nav)) return;
+  wired.add(nav);
+  if (!root.dataset.nearMobileSurface) root.dataset.nearMobileSurface = "list";
+  nav.querySelectorAll("[data-near-surface]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const surface = link.dataset.nearSurface;
+      if (surface !== "list" && surface !== "map") return;
+      // Only intercept on the mobile switch layout; desktop keeps dual overview.
+      if (!window.matchMedia || !window.matchMedia("(max-width: 560px)").matches) return;
+      event.preventDefault();
+      root.dataset.nearMobileSurface = surface;
+      nav.querySelectorAll("[data-near-surface]").forEach((node) => {
+        node.classList.toggle("is-active", node === link);
+        if (node === link) node.setAttribute("aria-current", "true");
+        else node.removeAttribute("aria-current");
+      });
+      const target = root.querySelector(
+        surface === "map" ? "#near-map-heading" : "#near-results-heading",
+      );
+      target?.focus?.({ preventScroll: true });
+    });
+  });
+}
+
 function wireIsland() {
   if (!root) return;
   root.dataset.enhanced = "true";
@@ -209,6 +237,7 @@ function wireIsland() {
   wirePanZoom();
   wireGeolocation();
   wireForms();
+  wireSurfaceSwitch();
 }
 
 if (root) {

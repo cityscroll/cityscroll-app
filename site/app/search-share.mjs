@@ -883,7 +883,7 @@ function deactivateAskSearch(lens){
 }
 
 function injectNLBoxes(){
-  const tabs={people:["#tab-people",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules",".controls"],meetings:["#tab-meetings","#meetings-toolbar"],alerts:["#tab-alerts",".grid"]};
+  const tabs={people:["#tab-people",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules","#rules-toolbar"],meetings:["#tab-meetings","#meetings-toolbar"],alerts:["#tab-alerts",".grid"]};
   Object.entries(tabs).forEach(([lens,[sel,anchorSel]])=>{
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;

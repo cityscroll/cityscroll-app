@@ -137,6 +137,10 @@ def main():
         rules.route("**/data.cityofnewyork.us/**", rules_route)
         rules.route("**/api.cityscroll.org/**", rules_route)
         rules.goto(BASE.rstrip("/") + "/browse/rules/", wait_until="domcontentloaded", timeout=30000)
+        # Agency is a secondary More-filters control under the shared lens template.
+        more = rules.locator("#rules-more-filters")
+        if more.count() and not more.evaluate("el => el.open"):
+            more.locator("summary").click()
         rules.wait_for_selector("#rules-agency-rail [data-cardinality-facet]")
         rules.wait_for_function(
             "document.querySelectorAll('#rules-agency-rail [data-facet-option]').length >= 9",
