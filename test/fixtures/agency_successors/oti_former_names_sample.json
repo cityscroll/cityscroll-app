@@ -1,0 +1,491 @@
+{
+  "_provenance": {
+    "source_id": "t3jq-9nkf",
+    "source_name": "NYC Agencies and Governance Organizations",
+    "attribution": "Office of Technology and Innovation (OTI)",
+    "url": "https://data.cityofnewyork.us/d/t3jq-9nkf",
+    "downloaded": "2026-08-11",
+    "filter": "rows with non-null alternate_or_former_names or alternate_or_former_acronyms",
+    "row_count": 53,
+    "parent_roster_rows": 306
+  },
+  "rows": [
+    {
+      "name": "Mayor's Office of Policy and Planning",
+      "acronym": null,
+      "alternate_or_former_names": "Mayor's Office of Policy and Planning and Delivery",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000276"
+    },
+    {
+      "name": "Chief Counsel to the Mayor and City Hall",
+      "acronym": null,
+      "alternate_or_former_names": "Office of the Chief Counsel to the Mayor",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000128"
+    },
+    {
+      "name": "New York City Department of Sanitation",
+      "acronym": "DSNY",
+      "alternate_or_former_names": "Department of Sanitation;NYC Sanitation",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000152"
+    },
+    {
+      "name": "Fire Department of the City of New York",
+      "acronym": "FDNY",
+      "alternate_or_former_names": "Fire Department",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000191"
+    },
+    {
+      "name": "Office of Technology and Innovation",
+      "acronym": "OTI",
+      "alternate_or_former_names": "Department of Information Technology and Telecommunications",
+      "alternate_or_former_acronyms": "DoITT",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000382"
+    },
+    {
+      "name": "New York City Department of Transportation",
+      "acronym": "NYC DOT",
+      "alternate_or_former_names": "Department of Transportation",
+      "alternate_or_former_acronyms": "DOT",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000157"
+    },
+    {
+      "name": "Department of Records and Information Services",
+      "acronym": "DORIS",
+      "alternate_or_former_names": null,
+      "alternate_or_former_acronyms": "DoRIS",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000151"
+    },
+    {
+      "name": "NYC311",
+      "acronym": "311",
+      "alternate_or_former_names": "311",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_000000"
+    },
+    {
+      "name": "Office of Intergovernmental Affairs",
+      "acronym": "MOIGA",
+      "alternate_or_former_names": "Mayor's Office of Office of Intergovernmental Affairs",
+      "alternate_or_former_acronyms": "IGA",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000226"
+    },
+    {
+      "name": "New York City Law Department",
+      "acronym": "LAW",
+      "alternate_or_former_names": "Law Department;Office of the Corporation Counsel",
+      "alternate_or_former_acronyms": "Law;Law Dept.",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000238"
+    },
+    {
+      "name": "Mayor's Office of Community Mental Health",
+      "acronym": "OCMH",
+      "alternate_or_former_names": null,
+      "alternate_or_former_acronyms": "OCMH",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000356"
+    },
+    {
+      "name": "New York City Tourism + Conventions",
+      "acronym": null,
+      "alternate_or_former_names": "NYC & Company",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Nonprofit Organization",
+      "record_id": "NYC_GOID_000310"
+    },
+    {
+      "name": "Mayor's Office of Special Enforcement",
+      "acronym": "OSE",
+      "alternate_or_former_names": null,
+      "alternate_or_former_acronyms": "AJC",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000277"
+    },
+    {
+      "name": "National September 11 Memorial and Museum",
+      "acronym": null,
+      "alternate_or_former_names": "World Trade Center Memorial Foundation;9/11 Memorial & Museum",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Nonprofit Organization",
+      "record_id": "NYC_GOID_000464"
+    },
+    {
+      "name": "MoMA PS1",
+      "acronym": "MOMA PS1",
+      "alternate_or_former_names": "PS 1 Contemporary Art Center",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Nonprofit Organization",
+      "record_id": "NYC_GOID_000081"
+    },
+    {
+      "name": "Office of Information Privacy",
+      "acronym": "OIP",
+      "alternate_or_former_names": null,
+      "alternate_or_former_acronyms": "MOIP",
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_100012"
+    },
+    {
+      "name": "Cyber Command",
+      "acronym": null,
+      "alternate_or_former_names": "NYC Cyber Command",
+      "alternate_or_former_acronyms": "NYC3",
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_100010"
+    },
+    {
+      "name": "New York City Emergency Management",
+      "acronym": "NYCEM",
+      "alternate_or_former_names": "NYC Emergency Management;Office of Emergency Management",
+      "alternate_or_former_acronyms": "OEM",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000315"
+    },
+    {
+      "name": "Mayor's Office of Equity and Racial Justice",
+      "acronym": "MOERJ",
+      "alternate_or_former_names": "Mayor's Office of Equity",
+      "alternate_or_former_acronyms": "MOE",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000267"
+    },
+    {
+      "name": "Mayor's Office for Nonprofit Services",
+      "acronym": "MONS",
+      "alternate_or_former_names": "Office of not-for-profit organization services;Mayor's Office of Nonprofits",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000257"
+    },
+    {
+      "name": "Queens District Attorney's Office",
+      "acronym": null,
+      "alternate_or_former_names": "Queens County District Attorney's Office",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000171"
+    },
+    {
+      "name": "Flushing Council on Culture and the Arts / Flushing Town Hall",
+      "acronym": null,
+      "alternate_or_former_names": "Flushing Town Hall",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Nonprofit Organization",
+      "record_id": "NYC_GOID_000068"
+    },
+    {
+      "name": "New York City Police Department",
+      "acronym": "NYPD",
+      "alternate_or_former_names": "Police Department",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000389"
+    },
+    {
+      "name": "New York City Public Schools",
+      "acronym": "NYCPS",
+      "alternate_or_former_names": "Department of Education;NYC Public Schools",
+      "alternate_or_former_acronyms": "DOE",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000143"
+    },
+    {
+      "name": "Department of Housing Preservation and Development",
+      "acronym": "HPD",
+      "alternate_or_former_names": "Housing Preservation and Development",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000216"
+    },
+    {
+      "name": "Office of the Mayor",
+      "acronym": "OM",
+      "alternate_or_former_names": "Office of the Mayor of the City of New York;Mayor's Office",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000251"
+    },
+    {
+      "name": "Office of the New York City Comptroller",
+      "acronym": null,
+      "alternate_or_former_names": "Comptroller",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000123"
+    },
+    {
+      "name": "Unity Project",
+      "acronym": "UP",
+      "alternate_or_former_names": "NYC Unity Project",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_100003"
+    },
+    {
+      "name": "Perelman Performing Arts Center",
+      "acronym": "PACNYC",
+      "alternate_or_former_names": "World Trade Center Performing Arts Center;PAC NYC",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Nonprofit Organization",
+      "record_id": "NYC_GOID_000465"
+    },
+    {
+      "name": "Build NYC Resource Corporation",
+      "acronym": null,
+      "alternate_or_former_names": "Build NYC",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Public Benefit or Development Organization",
+      "record_id": "NYC_GOID_100014"
+    },
+    {
+      "name": "Equal Employment Practices Commission",
+      "acronym": "EEPC",
+      "alternate_or_former_names": "Equal Employment Opportunity",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Advisory or Regulatory Organization",
+      "record_id": "NYC_GOID_000185"
+    },
+    {
+      "name": "Public Design Commission",
+      "acronym": "PDC",
+      "alternate_or_former_names": "Art Commission",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Advisory or Regulatory Organization",
+      "record_id": "NYC_GOID_000397"
+    },
+    {
+      "name": "Staten Island District Attorney's Office",
+      "acronym": null,
+      "alternate_or_former_names": "Richmond County District Attorney's Office",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000172"
+    },
+    {
+      "name": "Department of Parks and Recreation",
+      "acronym": "DPR",
+      "alternate_or_former_names": "NYC Parks",
+      "alternate_or_former_acronyms": "Parks",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000149"
+    },
+    {
+      "name": "Mayor's Office to End Domestic and Gender-Based Violence",
+      "acronym": "ENDGBV",
+      "alternate_or_former_names": "Mayor's Office to Combat Domestic Violence",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000253"
+    },
+    {
+      "name": "Mayor's Office of Sports, Wellness and Recreation",
+      "acronym": "MOSWR",
+      "alternate_or_former_names": "Mayor's Office of Sports and Recreation",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000279"
+    },
+    {
+      "name": "Office of Data Analytics",
+      "acronym": "ODA",
+      "alternate_or_former_names": "Mayor's Office of Data Analytics",
+      "alternate_or_former_acronyms": "MODA",
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_100011"
+    },
+    {
+      "name": "Bronx District Attorney's Office",
+      "acronym": null,
+      "alternate_or_former_names": "Bronx County District Attorney's Office",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000168"
+    },
+    {
+      "name": "Office of the Public Advocate",
+      "acronym": "PUB ADV",
+      "alternate_or_former_names": "Office of the Public Advocate for the City of New York;Public Advocate",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000396"
+    },
+    {
+      "name": "Department for the Aging",
+      "acronym": "NYC AGING",
+      "alternate_or_former_names": "NYC Aging",
+      "alternate_or_former_acronyms": "DFTA",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000135"
+    },
+    {
+      "name": "Sheriff",
+      "acronym": null,
+      "alternate_or_former_names": "NYC Sheriff",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_100005"
+    },
+    {
+      "name": "Center for Brooklyn History",
+      "acronym": "CBH",
+      "alternate_or_former_names": "Brooklyn Historical Society",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Nonprofit Organization",
+      "record_id": "NYC_GOID_100015"
+    },
+    {
+      "name": "Office of the Inspector General for the NYPD",
+      "acronym": "OIG-NYPD",
+      "alternate_or_former_names": null,
+      "alternate_or_former_acronyms": "OIGNYPD",
+      "operational_status": "Active",
+      "organization_type": "Division",
+      "record_id": "NYC_GOID_100020"
+    },
+    {
+      "name": "New York City Young Men's Initiative",
+      "acronym": "YMI",
+      "alternate_or_former_names": "Young Men's Initiative",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000468"
+    },
+    {
+      "name": "New York City Council",
+      "acronym": "NYCC",
+      "alternate_or_former_names": "City Council",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000097"
+    },
+    {
+      "name": "Manhattan District Attorney's Office",
+      "acronym": null,
+      "alternate_or_former_names": "New York County District Attorney's Office",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000170"
+    },
+    {
+      "name": "Department of Consumer and Worker Protection",
+      "acronym": "DCWP",
+      "alternate_or_former_names": "Department of Consumer Affairs",
+      "alternate_or_former_acronyms": "DCA",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000139"
+    },
+    {
+      "name": "New York City Tax Commission",
+      "acronym": "TAXCOMM",
+      "alternate_or_former_names": "Tax Commission;NYC Tax Commission",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Advisory or Regulatory Organization",
+      "record_id": "NYC_GOID_100024"
+    },
+    {
+      "name": "New York City Taxi and Limousine Commission",
+      "acronym": "TLC",
+      "alternate_or_former_names": "Taxi and Limousine Commission",
+      "alternate_or_former_acronyms": "NYC TLC",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000436"
+    },
+    {
+      "name": "Brooklyn District Attorney's Office",
+      "acronym": null,
+      "alternate_or_former_names": "Kings County District Attorney's Office",
+      "alternate_or_former_acronyms": null,
+      "operational_status": "Active",
+      "organization_type": "Elected Office",
+      "record_id": "NYC_GOID_000169"
+    },
+    {
+      "name": "New York City Transit Riders Council",
+      "acronym": "NYCTRC",
+      "alternate_or_former_names": "New York City Transit Authority Advisory Council",
+      "alternate_or_former_acronyms": "NYCTAAC",
+      "operational_status": "Active",
+      "organization_type": "Advisory or Regulatory Organization",
+      "record_id": "NYC_GOID_000330"
+    },
+    {
+      "name": "Department of Health and Mental Hygiene",
+      "acronym": "DOHMH",
+      "alternate_or_former_names": "NYC Health;Health Department",
+      "alternate_or_former_acronyms": "DOH",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Agency",
+      "record_id": "NYC_GOID_000146"
+    },
+    {
+      "name": "Mayor's Office of Minority and Women-Owned Business Enterprises",
+      "acronym": "MWBE",
+      "alternate_or_former_names": null,
+      "alternate_or_former_acronyms": "Office of M/WBE",
+      "operational_status": "Active",
+      "organization_type": "Mayoral Office",
+      "record_id": "NYC_GOID_000272"
+    }
+  ]
+}

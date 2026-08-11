@@ -98,6 +98,12 @@ Receipt: [`site/data/person_hub_sources/verification_receipts/person_hub_influen
 
 Rebuild: `node tools/build_person_hub.mjs` then `node tools/build_official_influence.mjs`.
 
+## Agency rename / successor densify (OTI former names)
+
+**Gap:** agency dual names and successors (DoITT→OTI, DCA→DCWP, Art Commission→PDC, and related renames) break entity resolution when legacy and current surfaces mint different canonical ids. The existing crosswalk already joined City Record strings to OTI roster cards (`t3jq-9nkf`); residual work is densifying the roster's published `alternate_or_former_names` / `alternate_or_former_acronyms` into the shared resolve path rather than inventing a second agency ER subsystem.
+
+**Result (2026-08-11):** fixture-backed densify of the OTI former-name slice (53 of 306 roster rows) extracted 76 publisher-backed edges. A dated kill sample of 10 known renames + 5 hard negatives measured **precision 100%** (floor 95%), **0 false merges**, and product resolve covers **10/10** positives (gold `gv0-026` remains joined). Materialized into `worker/src/data/agency_crosswalk.json` (`former_names` / `former_acronyms` stamps). Residual route-id densify lives in `site/agency_identity.mjs` `AGENCY_GROUPS` only — a bulk browser alias module was rejected for the home.cold wireBytes budget. Rebuild: `node tools/build_agency_successors.mjs --fixture` (or live SODA without `--fixture`); gate: `--check`. Receipt: [`site/data/agency_sources/verification_receipts/agency_successors_2026-08-11.json`](../site/data/agency_sources/verification_receipts/agency_successors_2026-08-11.json).
+
 ## Inventory additions and maintenance actions
 
 The three census-derived gaps should be added to the executable inventory on the next taxonomy update:
