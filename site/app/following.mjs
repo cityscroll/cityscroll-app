@@ -104,7 +104,7 @@ function updateRuleLine() {
       warn.className = "following-warning";
       warn.dataset.followingCitywideWarn = "true";
       warn.setAttribute("role", "status");
-      warn.textContent = "This watch is citywide and daily — quiet days stay silent, but matches anywhere in the city can email you. Add a place or switch to weekly for a lighter inbox.";
+      warn.textContent = msg("msgCitywideDailyWarn");
       panel.append(warn);
     } else if (!citywideDaily && warn) {
       warn.remove();
@@ -182,11 +182,20 @@ function promotePersonalWhenWatches() {
   const details = personal.querySelector("details.following-personal-details");
   if (details) {
     // Promote demoted markup into a full section heading when watches exist.
-    const summary = details.querySelector("summary");
+    // Reuse SSR copy already in the summary — no new English literals in this island.
+    const kickerEl = details.querySelector(".following-kicker");
+    const headingEl = details.querySelector("#following-personal-heading");
     const list = personal.querySelector("[data-personal-watch-list]");
     const status = personal.querySelector("[data-personal-status]");
-    if (summary && list) {
-      personal.innerHTML = `<p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2>${list.outerHTML}${status ? status.outerHTML : ""}`;
+    if (kickerEl && headingEl && list) {
+      const kicker = document.createElement("p");
+      kicker.className = "following-kicker";
+      kicker.textContent = kickerEl.textContent || "";
+      const heading = document.createElement("h2");
+      heading.id = "following-personal-heading";
+      heading.textContent = headingEl.textContent || "";
+      personal.replaceChildren(kicker, heading, list);
+      if (status) personal.append(status);
     }
   }
   // Order: watches → create → workspace → packs

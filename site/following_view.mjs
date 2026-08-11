@@ -507,6 +507,7 @@ export function renderFollowingBody(view) {
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
+    data-msg-citywide-daily-warn="This watch is citywide and daily — quiet days stay silent, but matches anywhere in the city can email you. Add a place or switch to weekly for a lighter inbox."
     data-following-lens="${esc(view.lens)}"
     data-following-filter="${esc(JSON.stringify(view.filter))}">
     <section class="following-hero">
