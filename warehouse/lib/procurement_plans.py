@@ -15,6 +15,17 @@ from urllib.parse import urljoin
 
 
 USEFULNESS_THRESHOLD = 0.30
+PRECISION_THRESHOLD = 0.95
+# Shared with worker/src/lib/passport_join.mjs — EPIN/PIN prefix strategies.
+EPIN_PREFIX_MIN_LEN = 8
+SUFFIX_RE = re.compile(r"^(.+?)([A-Z]\d{3,4})$")
+REST_OK_RE = re.compile(r"^(?:\d+|[A-Z]\d{2,6}|[A-Z]{1,2}\d{2,6})+$")
+DETERMINISTIC_METHODS = frozenset({
+    "deterministic_identifier",
+    "pin_prefix_of_epin",
+    "epin_prefix_of_pin",
+    "pin_strip_suffix",
+})
 CONTENT_STOPWORDS = {
     "and", "the", "for", "from", "with", "into", "services", "service",
     "goods", "city", "new", "york", "contract", "procurement", "project",
@@ -40,6 +51,77 @@ def comparison_key(value: Any) -> str:
 
 def identifier_key(value: Any) -> str:
     return re.sub(r"[^A-Za-z0-9]", "", str(value or "")).upper()
+
+
+def strip_one_suffix(value: Any) -> str | None:
+    """Strip one trailing amendment/renewal-style suffix (A001, R001, …)."""
+    key = identifier_key(value)
+    match = SUFFIX_RE.match(key)
+    return match.group(1) if match else None
+
+
+def rest_ok_for_prefix_join(rest: str | None) -> bool:
+    """Honest task/line tail after a proper PIN/EPIN prefix (product passport join)."""
+    if rest is None or rest == "":
+        return True
+    return bool(REST_OK_RE.match(str(rest)))
+
+
+def join_plan_id_to_target_ids(
+    plan_id: str,
+    target_exact: set[str],
+    target_by_prefix: dict[str, list[str]],
+) -> list[tuple[str, str]]:
+    """Join one plan identifier to target ids using product passport strategies.
+
+    Strategies (same order as worker/src/lib/passport_join.mjs joinPinToEpin):
+      exact | pin_strip_suffix | epin_prefix_of_pin | pin_prefix_of_epin
+
+    Returns list of (method, matched_target_id) without inventing weak shared-prefix
+    body collisions. Multiple task-order EPINs under one plan PIN are all returned.
+    """
+    pin = identifier_key(plan_id)
+    if not pin:
+        return []
+    hits: list[tuple[str, str]] = []
+    seen: set[str] = set()
+
+    def add(method: str, target_id: str) -> None:
+        if target_id and target_id not in seen:
+            seen.add(target_id)
+            hits.append((method, target_id))
+
+    if pin in target_exact:
+        add("deterministic_identifier", pin)
+
+    stripped = strip_one_suffix(pin)
+    if stripped and stripped in target_exact:
+        add("pin_strip_suffix", stripped)
+    if stripped:
+        stripped2 = strip_one_suffix(stripped)
+        if stripped2 and stripped2 in target_exact:
+            add("pin_strip_suffix", stripped2)
+
+    # Target id is a proper prefix of the plan id (EPIN prefix of longer PIN).
+    for length in range(min(len(pin) - 1, 20), EPIN_PREFIX_MIN_LEN - 1, -1):
+        cand = pin[:length]
+        if cand not in target_exact:
+            continue
+        rest = pin[length:]
+        if rest_ok_for_prefix_join(rest):
+            add("epin_prefix_of_pin", cand)
+            break
+
+    # Plan id is a proper prefix of one or more target ids (PIN prefix of EPIN).
+    for candidate_pin in (pin, stripped):
+        if not candidate_pin or len(candidate_pin) < EPIN_PREFIX_MIN_LEN:
+            continue
+        for target_id in target_by_prefix.get(candidate_pin, []):
+            rest = target_id[len(candidate_pin):]
+            if rest_ok_for_prefix_join(rest):
+                add("pin_prefix_of_epin", target_id)
+
+    return hits
 
 
 def iso_date(value: Any) -> str | None:
@@ -367,11 +449,46 @@ def _match_candidate(
     plan: dict[str, Any],
     target: dict[str, Any],
     review_labels: dict[str, dict[str, Any]],
+    *,
+    id_hit: tuple[str, str] | None = None,
 ) -> dict[str, Any] | None:
+    """Score one plan↔target pair.
+
+    Prefer product passport identifier strategies (exact / strip-suffix / prefix)
+    over agency+title+time fuzzy. Fuzzy still requires an explicit review label.
+    """
+    key = _candidate_key(plan, target)
+    if id_hit:
+        method, matched_id = id_hit
+        reason = {
+            "deterministic_identifier": (
+                "publisher identifiers are equal after punctuation-only normalization"
+            ),
+            "pin_strip_suffix": (
+                "plan identifier equals target after stripping one amendment/renewal suffix"
+            ),
+            "pin_prefix_of_epin": (
+                "plan PIN is a proper prefix of the target EPIN with an honest task/line tail "
+                "(product passport join pin_prefix_of_epin)"
+            ),
+            "epin_prefix_of_pin": (
+                "target EPIN is a proper prefix of the plan PIN with an honest task/line tail "
+                "(product passport join epin_prefix_of_pin)"
+            ),
+        }.get(method, "deterministic product identifier strategy")
+        return {
+            "candidate_key": key,
+            "method": method,
+            "identifier": matched_id,
+            "score": 1.0,
+            "reviewed": True,
+            "accepted": True,
+            "review_reason": reason,
+        }
+
     plan_ids = {identifier_key(value) for value in plan.get("published_identifiers") or []}
     target_ids = {identifier_key(value) for value in target.get("identifiers") or []}
     shared = sorted((plan_ids & target_ids) - {""})
-    key = _candidate_key(plan, target)
     if shared:
         return {
             "candidate_key": key,
@@ -400,19 +517,153 @@ def _match_candidate(
     }
 
 
+def _build_target_indexes(
+    targets: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    target_indexes: dict[str, dict[str, Any]] = {}
+    for group in ("city_record", "passport"):
+        by_id: dict[str, list[dict[str, Any]]] = {}
+        by_prefix: dict[str, list[str]] = {}
+        exact_ids: set[str] = set()
+        by_agency: dict[str, list[dict[str, Any]]] = {}
+        for target in targets:
+            if _target_group(str(target.get("source"))) != group:
+                continue
+            for raw_id in target.get("identifiers") or []:
+                key = identifier_key(raw_id)
+                if not key:
+                    continue
+                by_id.setdefault(key, []).append(target)
+                exact_ids.add(key)
+                for length in range(min(len(key) - 1, 20), EPIN_PREFIX_MIN_LEN - 1, -1):
+                    pref = key[:length]
+                    by_prefix.setdefault(pref, []).append(key)
+            agency = comparison_key(target.get("agency"))
+            if agency:
+                by_agency.setdefault(agency, []).append(target)
+        # de-dupe prefix lists while preserving order
+        for pref, ids in list(by_prefix.items()):
+            seen: set[str] = set()
+            uniq: list[str] = []
+            for item in ids:
+                if item not in seen:
+                    seen.add(item)
+                    uniq.append(item)
+            by_prefix[pref] = uniq
+        target_indexes[group] = {
+            "by_id": by_id,
+            "by_prefix": by_prefix,
+            "exact_ids": exact_ids,
+            "by_agency": by_agency,
+        }
+    return target_indexes
+
+
+def _select_plan_sample(
+    plans: list[dict[str, Any]],
+    source: str,
+    *,
+    sample_size: int,
+    sample_method: str,
+) -> list[dict[str, Any]]:
+    """Select the kill-sample denominator for one plan source.
+
+    sample_method:
+      fixed_sorted — first N by source_record_id (legacy; often zero id-bearing)
+      identifier_bearing — only plans with published PIN/EPIN identifiers
+      both_report — identifier_bearing for the gate, with fixed_sorted contrast
+                    recorded separately by the caller
+    """
+    pool = [plan for plan in plans if plan.get("source") == source]
+    if sample_method in ("identifier_bearing", "both_report"):
+        pool = [
+            plan for plan in pool
+            if any(identifier_key(v) for v in (plan.get("published_identifiers") or []))
+        ]
+    pool = sorted(pool, key=lambda plan: str(plan.get("source_record_id") or ""))
+    if sample_size and sample_size > 0:
+        return pool[:sample_size]
+    return pool
+
+
+def _collect_plan_matches(
+    plan: dict[str, Any],
+    index: dict[str, Any],
+    labels: dict[str, dict[str, Any]],
+) -> tuple[
+    list[tuple[dict[str, Any], dict[str, Any]]],
+    list[dict[str, Any]],
+    int,
+    int,
+]:
+    """Return (matches, fuzzy_cases, candidate_count, unreviewed_fuzzy_count)."""
+    matches: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    fuzzy_cases: list[dict[str, Any]] = []
+    candidates = 0
+    unreviewed = 0
+    candidate_targets: dict[tuple[str, str], dict[str, Any]] = {}
+    id_hits_by_target: dict[tuple[str, str], tuple[str, str]] = {}
+
+    exact_ids: set[str] = index["exact_ids"]
+    by_prefix: dict[str, list[str]] = index["by_prefix"]
+    by_id: dict[str, list[dict[str, Any]]] = index["by_id"]
+
+    for raw_id in plan.get("published_identifiers") or []:
+        for method, matched_id in join_plan_id_to_target_ids(raw_id, exact_ids, by_prefix):
+            for target in by_id.get(matched_id, []):
+                tkey = (str(target.get("source")), str(target.get("target_id")))
+                candidate_targets[tkey] = target
+                # Prefer exact over prefix when both fire for the same target.
+                prior = id_hits_by_target.get(tkey)
+                if prior is None or (
+                    prior[0] != "deterministic_identifier"
+                    and method == "deterministic_identifier"
+                ):
+                    id_hits_by_target[tkey] = (method, matched_id)
+
+    agency = comparison_key(plan.get("agency"))
+    for target in index["by_agency"].get(agency, []):
+        tkey = (str(target.get("source")), str(target.get("target_id")))
+        candidate_targets.setdefault(tkey, target)
+
+    for tkey, target in candidate_targets.items():
+        candidate = _match_candidate(
+            plan, target, labels, id_hit=id_hits_by_target.get(tkey),
+        )
+        if not candidate:
+            continue
+        candidates += 1
+        if candidate["method"] == "agency_title_time_reviewed":
+            fuzzy_cases.append(candidate)
+            if not candidate["reviewed"]:
+                unreviewed += 1
+        if candidate["accepted"]:
+            matches.append((target, candidate))
+    return matches, fuzzy_cases, candidates, unreviewed
+
+
 def build_bridge_measurement(
     plans: list[dict[str, Any]],
     targets: list[dict[str, Any]],
     *,
     sample_size: int = 100,
     usefulness_threshold: float = USEFULNESS_THRESHOLD,
+    precision_threshold: float = PRECISION_THRESHOLD,
     review_labels: dict[str, dict[str, Any]] | None = None,
+    sample_method: str = "fixed_sorted",
+    materialize_population: bool = False,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """Measure, review, and gate each plan-source → target-source path.
 
-    Denominators are deterministic plan-side samples sorted by source_record_id.
-    A fuzzy candidate cannot contribute to the numerator until explicitly labeled.
-    Edges are returned only for paths that clear the threshold and review gate.
+    Usefulness denominators follow sample_method:
+      fixed_sorted — first N plans by source_record_id (legacy default)
+      identifier_bearing — only PIN/EPIN-bearing plans (correct RC-1 bridge denom)
+
+    Prefer product passport identifier strategies (exact + prefix) over naive
+    exact equality alone. Fuzzy agency+title+time still needs explicit labels.
+
+    When materialize_population is True and a path clears usefulness + precision,
+    edges are emitted for the full plan population (not only the kill sample).
     """
     labels = review_labels or {}
     source_names = ("mocs_ll63", "mocs_ll1", "capital_projects_dashboard")
@@ -420,76 +671,131 @@ def build_bridge_measurement(
     paths: dict[str, dict[str, Any]] = {}
     accepted_by_path: dict[str, list[dict[str, Any]]] = {}
     reviewed_cases: dict[str, dict[str, Any]] = {}
-    target_indexes: dict[str, dict[str, dict[str, list[dict[str, Any]]]]] = {}
-    for group in target_groups:
-        by_id: dict[str, list[dict[str, Any]]] = {}
-        by_agency: dict[str, list[dict[str, Any]]] = {}
-        for target in targets:
-            if _target_group(str(target.get("source"))) != group:
-                continue
-            for raw_id in target.get("identifiers") or []:
-                key = identifier_key(raw_id)
-                if key:
-                    by_id.setdefault(key, []).append(target)
-            agency = comparison_key(target.get("agency"))
-            if agency:
-                by_agency.setdefault(agency, []).append(target)
-        target_indexes[group] = {"by_id": by_id, "by_agency": by_agency}
+    target_indexes = _build_target_indexes(targets)
+    gate_method = (
+        "identifier_bearing"
+        if sample_method in ("identifier_bearing", "both_report")
+        else "fixed_sorted"
+    )
+
+    def edge_from(plan: dict[str, Any], source: str, target: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "plan_source_record_id": plan["source_record_id"],
+            "plan_source": source,
+            "target_source": target["source"],
+            "target_id": target["target_id"],
+            "method": candidate["method"],
+            "identifier": candidate["identifier"],
+            "score": candidate["score"],
+            "provenance": {
+                "plan_url": plan.get("source_url"),
+                "target_url": target.get("source_url"),
+            },
+        }
 
     for source in source_names:
-        sample = sorted(
-            (plan for plan in plans if plan.get("source") == source),
-            key=lambda plan: str(plan.get("source_record_id") or ""),
-        )[:sample_size]
+        sample = _select_plan_sample(
+            plans, source, sample_size=sample_size, sample_method=gate_method,
+        )
+        contrast_sample = None
+        if sample_method == "both_report":
+            contrast_sample = _select_plan_sample(
+                plans, source, sample_size=sample_size, sample_method="fixed_sorted",
+            )
         for group in target_groups:
             path_name = f"{source}_to_{group}"
             joined_plans: set[str] = set()
-            path_edges = []
+            path_edges: list[dict[str, Any]] = []
             unreviewed = 0
             candidates = 0
+            method_counts: dict[str, int] = {}
+            index = target_indexes[group]
             for plan in sample:
-                matches = []
-                candidate_targets: dict[tuple[str, str], dict[str, Any]] = {}
-                index = target_indexes[group]
-                for raw_id in plan.get("published_identifiers") or []:
-                    for target in index["by_id"].get(identifier_key(raw_id), []):
-                        candidate_targets[(str(target.get("source")), str(target.get("target_id")))] = target
-                agency = comparison_key(plan.get("agency"))
-                for target in index["by_agency"].get(agency, []):
-                    candidate_targets[(str(target.get("source")), str(target.get("target_id")))] = target
-                for target in candidate_targets.values():
-                    candidate = _match_candidate(plan, target, labels)
-                    if not candidate:
-                        continue
-                    candidates += 1
-                    if candidate["method"] == "agency_title_time_reviewed":
-                        reviewed_cases[candidate["candidate_key"]] = candidate
-                        if not candidate["reviewed"]:
-                            unreviewed += 1
-                    if candidate["accepted"]:
-                        matches.append((target, candidate))
-                # A plan-side numerator is one even if both a notice and RFx record match.
+                matches, fuzzy_cases, cand_n, unrev_n = _collect_plan_matches(
+                    plan, index, labels,
+                )
+                candidates += cand_n
+                unreviewed += unrev_n
+                for case in fuzzy_cases:
+                    reviewed_cases[case["candidate_key"]] = case
                 if matches:
                     joined_plans.add(str(plan["source_record_id"]))
                     for target, candidate in matches:
-                        path_edges.append({
-                            "plan_source_record_id": plan["source_record_id"],
-                            "plan_source": source,
-                            "target_source": target["source"],
-                            "target_id": target["target_id"],
-                            "method": candidate["method"],
-                            "identifier": candidate["identifier"],
-                            "score": candidate["score"],
-                            "provenance": {
-                                "plan_url": plan.get("source_url"),
-                                "target_url": target.get("source_url"),
-                            },
-                        })
+                        method_counts[candidate["method"]] = (
+                            method_counts.get(candidate["method"], 0) + 1
+                        )
+                        path_edges.append(edge_from(plan, source, target, candidate))
+
             total = len(sample)
             joined = len(joined_plans)
-            rate = joined / total if total else 0
+            rate = joined / total if total else 0.0
+
+            # Precision: deterministic product strategies auto-accept; fuzzy uses labels.
+            # candidate_key = plan_source_record_id|target_source|target_id
+            sample_ids = {str(plan.get("source_record_id") or "") for plan in sample}
+            path_fuzzy = []
+            for key, case in reviewed_cases.items():
+                parts = key.split("|")
+                if len(parts) < 3:
+                    continue
+                plan_id, target_source, _target_id = parts[0], parts[1], parts[2]
+                if plan_id not in sample_ids:
+                    continue
+                if _target_group(target_source) != group:
+                    continue
+                if case["method"] != "agency_title_time_reviewed" or not case["reviewed"]:
+                    continue
+                path_fuzzy.append(case)
+            det_edge_count = sum(
+                1 for edge in path_edges if edge["method"] in DETERMINISTIC_METHODS
+            )
+            fuzzy_accepted = sum(1 for case in path_fuzzy if case["accepted"])
+            fuzzy_rejected = sum(1 for case in path_fuzzy if not case["accepted"])
+            # Count deterministic accepted plan-side hits once each (not per edge).
+            det_plan_hits = len({
+                edge["plan_source_record_id"]
+                for edge in path_edges
+                if edge["method"] in DETERMINISTIC_METHODS
+            })
+            precision_numer = det_plan_hits + fuzzy_accepted
+            precision_denom = det_plan_hits + fuzzy_accepted + fuzzy_rejected
+            if precision_denom:
+                precision = precision_numer / precision_denom
+            elif joined == 0:
+                precision = 1.0  # no candidates → no false positives
+            elif det_edge_count == len(path_edges):
+                precision = 1.0  # only product deterministic strategies
+            else:
+                precision = None
+
             review_complete = unreviewed == 0
-            materialize = bool(total and rate >= usefulness_threshold and review_complete)
+            precision_ok = precision is not None and precision >= precision_threshold
+            materialize = bool(
+                total
+                and rate >= usefulness_threshold
+                and review_complete
+                and precision_ok
+            )
+
+            contrast: dict[str, Any] | None = None
+            if contrast_sample is not None:
+                c_joined: set[str] = set()
+                for plan in contrast_sample:
+                    matches, _, _, _ = _collect_plan_matches(plan, index, labels)
+                    if matches:
+                        c_joined.add(str(plan["source_record_id"]))
+                c_total = len(contrast_sample)
+                contrast = {
+                    "sample_method": "fixed_sorted",
+                    "joined": len(c_joined),
+                    "total": c_total,
+                    "rate": (len(c_joined) / c_total) if c_total else 0.0,
+                    "note": (
+                        "Legacy fixed-sorted sample often undersamples PIN/EPIN-bearing "
+                        "renewal rows; gate uses identifier_bearing denominator."
+                    ),
+                }
+
             paths[path_name] = {
                 "joined": joined,
                 "total": total,
@@ -497,25 +803,60 @@ def build_bridge_measurement(
                 "candidates": candidates,
                 "review_complete": review_complete,
                 "unreviewed_candidates": unreviewed,
+                "precision": precision,
+                "precision_threshold": precision_threshold,
+                "precision_ok": precision_ok,
+                "method_counts": method_counts,
                 "materialize": materialize,
+                "sample_method": gate_method,
+                "contrast_fixed_sorted": contrast,
                 "verdict": (
-                    "Above usefulness threshold; reviewed edges may materialize."
+                    "Above usefulness and precision thresholds; reviewed edges may materialize."
                     if materialize else
-                    "Stop: below usefulness threshold or review incomplete; no edges materialize."
+                    "Stop: below usefulness/precision threshold or review incomplete; no edges materialize."
                 ),
             }
-            accepted_by_path[path_name] = path_edges if materialize else []
+
+            if materialize and materialize_population:
+                # Full population edges for this source×group, not only the sample.
+                pop_edges: list[dict[str, Any]] = []
+                for plan in (p for p in plans if p.get("source") == source):
+                    matches, _, _, _ = _collect_plan_matches(plan, index, labels)
+                    for target, candidate in matches:
+                        if candidate["method"] in DETERMINISTIC_METHODS or candidate["accepted"]:
+                            pop_edges.append(edge_from(plan, source, target, candidate))
+                accepted_by_path[path_name] = pop_edges
+            else:
+                accepted_by_path[path_name] = path_edges if materialize else []
 
     reviewed = [case for case in reviewed_cases.values() if case["reviewed"]]
     false_positives = [case for case in reviewed if not case["accepted"]]
     measurement = {
         "sample": {
-            "method": "fixed_sorted_modern_sample",
+            "method": (
+                "identifier_bearing_plan_sample"
+                if gate_method == "identifier_bearing"
+                else "fixed_sorted_modern_sample"
+            ),
             "size_per_plan_source": sample_size,
             "modern_target_start": "2025-01-01",
             "sort_key": "source_record_id ASC",
+            "denominator_policy": (
+                "joinable_candidate_rows"
+                if gate_method == "identifier_bearing"
+                else "fixed_sorted_source_rows"
+            ),
+            "join_strategies": [
+                "exact",
+                "pin_strip_suffix",
+                "pin_prefix_of_epin",
+                "epin_prefix_of_pin",
+                "agency_title_time_reviewed",
+            ],
+            "product_join_reuse": "worker/src/lib/passport_join.mjs",
         },
         "usefulness_threshold": usefulness_threshold,
+        "precision_threshold": precision_threshold,
         "paths": paths,
         "false_positive_review": {
             "reviewed": len(reviewed),
@@ -523,7 +864,11 @@ def build_bridge_measurement(
             "false_positives": len(false_positives),
             "unreviewed": sum(1 for case in reviewed_cases.values() if not case["reviewed"]),
             "cases": sorted(reviewed_cases.values(), key=lambda case: case["candidate_key"]),
-            "rubric": "Agency+title+time candidates require an explicit label; deterministic identifier equality does not rely on title similarity.",
+            "rubric": (
+                "Agency+title+time candidates require an explicit label. Deterministic "
+                "product identifier strategies (exact, strip-suffix, pin_prefix_of_epin, "
+                "epin_prefix_of_pin with rest_ok tails) auto-accept without title similarity."
+            ),
         },
     }
     edges = [edge for path_edges in accepted_by_path.values() for edge in path_edges]

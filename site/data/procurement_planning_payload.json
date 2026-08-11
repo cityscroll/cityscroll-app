@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.procurement_planning.manifest.v1",
-  "generated_at": "2026-08-04T16:09:54Z",
+  "generated_at": "2026-08-11T18:55:26Z",
   "fiscal_year": 2027,
   "contract": {
     "unmatched_rows_remain_unmatched": true,
@@ -787,8 +787,15 @@
       ]
     },
     "bridge_edges": {
-      "rows": 0,
-      "shards": []
+      "rows": 146,
+      "shards": [
+        {
+          "path": "site/data/procurement_planning_payload/bridge-edges-000.json",
+          "rows": 146,
+          "bytes": 69319,
+          "sha256": "da9f7dd71e136b42599ceff822ae47dcf016641b1c7c32937fdfc6ab3f6b84f2"
+        }
+      ]
     }
   },
   "shard_contract": {

@@ -1046,7 +1046,7 @@
       "id": "ulurp-recommendation-pdfs",
       "name": "ULURP Recommendation PDFs",
       "source_contract_id": "ulurp-recommendation-pdfs",
-      "status": "disabled",
+      "status": "live-only",
       "join_keys": [
         "ulurp_numbers"
       ],
@@ -1060,10 +1060,10 @@
           "joined": 152,
           "total": 27971,
           "metric": "zap_ulurp_numbered_either",
-          "observed_on": "2026-07-30",
-          "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+          "observed_on": "2026-08-11",
+          "universe": "Recommendation / PDF catalog rows (joinable-candidate denominator)",
           "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
-          "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer.",
+          "verdict": "Above usefulness threshold on recommendation-row denominator (80/91 = 87.91%). Ship sparse panel. ZAP-universe catalog coverage (0.54%) is contrast-only.",
           "source": "source_contracts.join_measurement"
         }
       },
@@ -1074,7 +1074,7 @@
       "id": "ulurp-recommendations",
       "name": "ULURP Recommendations (Borough President positions)",
       "source_contract_id": "ulurp-recommendations",
-      "status": "disabled",
+      "status": "live-only",
       "join_keys": [
         "ulurp_numbers"
       ],
@@ -1088,10 +1088,10 @@
           "joined": 152,
           "total": 27971,
           "metric": "zap_ulurp_numbered_either",
-          "observed_on": "2026-07-30",
-          "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+          "observed_on": "2026-08-11",
+          "universe": "Recommendation / PDF catalog rows (joinable-candidate denominator)",
           "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
-          "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer.",
+          "verdict": "Above usefulness threshold on recommendation-row denominator (80/91 = 87.91%). Ship sparse panel. ZAP-universe catalog coverage (0.54%) is contrast-only.",
           "source": "source_contracts.join_measurement"
         }
       },
@@ -2602,6 +2602,102 @@
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "ulurp-recommendation-pdfs-x-unregistered-zoning-application-portal-projects-via-ulurp_numbers",
+      "source_a": "ulurp-recommendation-pdfs",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-zap-api-outcomes-via-ulurp_numbers",
+      "source_a": "ulurp-recommendation-pdfs",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-zap-projects-via-ulurp_numbers",
+      "source_a": "ulurp-recommendation-pdfs",
+      "source_b": "zap-projects",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "ulurp-recommendations-x-unregistered-zoning-application-portal-projects-via-ulurp_numbers",
+      "source_a": "ulurp-recommendations",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "ulurp-recommendations-x-zap-api-outcomes-via-ulurp_numbers",
+      "source_a": "ulurp-recommendations",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "ulurp-recommendations-x-zap-projects-via-ulurp_numbers",
+      "source_a": "ulurp-recommendations",
+      "source_b": "zap-projects",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
       "source_a": "unregistered-zoning-application-portal-projects",
       "source_b": "zap-api-outcomes",
@@ -2755,6 +2851,20 @@
       "gaps_would_close": [],
       "score": 0,
       "evidence": "Shared keys published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only); 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-ulurp-recommendations-via-ulurp_numbers",
+      "source_a": "ulurp-recommendation-pdfs",
+      "source_b": "ulurp-recommendations",
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys ulurp_numbers; 0 taxonomy gap(s) could close."
     }
   ],
   "gaps": [
@@ -3384,9 +3494,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-11",
-    "source_contracts_fingerprint": "26efb64b0bd173b620ad05599343e6adabb2dc2026677ab7b4e5a684b49979cc",
+    "source_contracts_fingerprint": "87f293f2f82fc82b5912a928f6713b6c4df808e7854a69f50e0f4e6d7043624a",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 76,
+    "candidate_crosswalks": 83,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

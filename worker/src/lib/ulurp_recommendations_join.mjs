@@ -1,17 +1,16 @@
 // Strict ULURP-number join: ZAP projects (hgx4-8ukb) ↔ Open Data ULURP
 // recommendations (Borough President positions + PDF companion letters).
 //
-// Measured 2026-07-30 (see site/data/ulurp_recommendation_sources/ and
-// site/data/source_contracts.json join_measurement for ulurp-recommendations
-// and ulurp-recommendation-pdfs):
+// Measured 2026-07-30; usefulness re-gated 2026-08-11 on the joinable-candidate
+// denominator (see verification receipts + ontology/join_gate_policy.mjs):
 //
-//   Product universe (ZAP Open Data projects with non-null ulurp_numbers):
+//   Catalog coverage contrast (ZAP projects with non-null ulurp_numbers):
 //     either recommendations or PDFs: 0.54% (152 / 27,971)
 //     recommendations alone (4j6i-9rmr): 0.29% (81 / 27,971)
 //     PDFs alone (gt5i-dmde): 0.25% (71 / 27,971)
 //
-//   Reverse (recommendation/PDF rows that hit some ZAP project): high
-//     (~88% / ~83%) — the catalogs are real but tiny and borough-scoped.
+//   Gate denominator (recommendation/PDF rows that hit some ZAP project):
+//     recommendations 80/91 ≈ 87.91%; PDFs 73/88 ≈ 82.95%
 //
 // Accepted strategies (strict only):
 //   exact_ulurp_token — normalized ULURP application token (optional type letter
@@ -23,9 +22,9 @@
 //   Property Disposition notice sample as success metric (wrong universe —
 //   disposition notices are not ZAP ULURP projects)
 //
-// Verdict: below usefulness threshold (~30%) on the ZAP ulurp-numbered product
-// universe → no edge materialization. Ship measured recon + source contracts
-// only; keep the class-(a) land-outcome pointer.
+// Verdict (2026-08-11): ship a sparse Borough President recommendation panel
+// gated on recommendation_rows_hit_zap. ZAP-universe catalog coverage remains
+// contrast-only and must not re-kill the join.
 
 // Shared with site notice-land join — isolated 6-digit body + whole-word
 // action-code suffix (rejects Zoom "…302621 Meeting" → 302621MEET).

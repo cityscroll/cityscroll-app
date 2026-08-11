@@ -122,7 +122,7 @@ test("summarizeUlurpRecommendation and cleanUrl keep PDF deep-links", () => {
   assert.equal(cleanUrl("javascript:alert(1)"), null);
 });
 
-test("verification receipt records measured rates below usefulness threshold", () => {
+test("historical 2026-07-30 receipt recorded ZAP-universe catalog coverage below threshold", () => {
   const jm = receipt.join_measurement;
   assert.equal(jm.usefulness_threshold, 0.3);
   assert.ok(jm.rates.zap_ulurp_numbered_either.rate < 0.3);
@@ -131,6 +131,8 @@ test("verification receipt records measured rates below usefulness threshold", (
   assert.equal(jm.rates.zap_ulurp_numbered_either.rate, 0.0054);
   assert.ok(jm.rates.zap_ulurp_numbered_recommendations.rate < 0.3);
   assert.ok(jm.rates.zap_ulurp_numbered_pdfs.rate < 0.3);
+  // Recommendation-row denominator was already high on the historical receipt.
+  assert.ok(jm.rates.recommendation_rows_hit_zap.rate >= 0.3);
   assert.match(jm.verdict, /Below usefulness threshold/i);
   assert.match(jm.wrong_universe_note, /Property Disposition/i);
   assert.equal(receipt.datasets.recommendations.row_count, 91);
@@ -141,17 +143,16 @@ test("verification receipt records measured rates below usefulness threshold", (
   assert.match(receipt.curl_verified.pdfs.sample_sha256, /^[a-f0-9]{64}$/);
 });
 
-test("source contracts are registered as disabled with join_measurement", () => {
+test("source contracts are live after recommendation-row re-gate", () => {
   const registry = loadSourceContracts();
   for (const id of ["ulurp-recommendations", "ulurp-recommendation-pdfs"]) {
     const contract = registry.contracts.find((c) => c.id === id);
     assert.ok(contract, `${id} contract missing`);
-    assert.equal(contract.status, "disabled");
+    assert.equal(contract.status, "live");
     assert.equal(contract.kind, "socrata");
-    assert.ok(contract.gap);
     assert.ok(contract.join_measurement);
-    assert.ok(contract.join_measurement.rates.zap_ulurp_numbered_either.rate < 0.3);
-    assert.match(contract.join_measurement.verdict, /Below usefulness threshold/i);
+    assert.ok(contract.join_measurement.rates.recommendation_rows_hit_zap.rate >= 0.3);
+    assert.match(contract.join_measurement.verdict, /recommendation-row|Above usefulness/i);
   }
   const recs = registry.contracts.find((c) => c.id === "ulurp-recommendations");
   assert.equal(recs.dataset_id, "4j6i-9rmr");
@@ -175,7 +176,7 @@ test("annotated recon screenshots are present and sha-pinned in the manifest", (
   }
 });
 
-test("join_cases topline matches receipt kill metric", () => {
+test("join_cases topline keeps ZAP-universe catalog contrast below threshold", () => {
   assert.equal(cases.join_measurement_topline.zap_ulurp_numbered_either_rate, 0.0054);
   assert.ok(cases.join_measurement_topline.zap_ulurp_numbered_either_rate < 0.3);
 });
