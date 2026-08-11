@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "subsidy-project-unmatched",
+  "rank": 2,
+  "rc": "RC-2",
+  "gap_inventory_row": "**RC-2** `subsidy-project-unmatched` — no NYCIDA/Build NYC project join",
+  "source_and_access": "[NYCEDC financial and public documents](https://edc.nyc/about-nycedc/financial-public-documents-recordings): official annual project spreadsheets, project-document archives, board minutes, and recordings; host-side HTML/XLSX/PDF collection because unattended edge fetches have returned 403.",
+  "join_feasibility": "**Measured:** fixed notice-project sample joined **5/12 (41.67%)** by unique name+address+date with **0/5 false positives** and 0 unreviewed candidates ([join receipt](../site/data/nycedc_sources/verification_receipts/nycedc_project_documents_2026-08-04.json)). Dependent field coverage on the accepted corpus: company 5/5, address 5/5, any money 3/5, board decision date+outcome 5/5, closing/compliance 0/5 honest-absent ([field receipt](../site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json)).",
+  "reader_value": "**5** — Money and notice detail; subsidy applicants, neighbors, and oversight readers gain a project identity instead of a hearing-only fragment.",
+  "effort": "**Scrape**",
+  "disposition": "**Infrastructure landed; edge accepted.** Join clears 30% usefulness and 100% reviewed precision; receipt-backed project panel and lifecycle stages ship for matched notices. Residual unmatched hearings stay unmatched without inventing projects."
+}

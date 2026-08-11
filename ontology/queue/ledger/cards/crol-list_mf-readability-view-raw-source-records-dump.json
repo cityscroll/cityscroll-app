@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-readability-view-raw-source-records-dump",
+  "status": "proposed",
+  "dimension": "readability",
+  "title": "Redesign unusable joined view: raw-source-records-dump",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # readability:raw-source-records-dump",
+  "content_hash": "8bac918654f8700e",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "The false-split desk shows grouped publisher rails instead of a raw source-record dump."
+}

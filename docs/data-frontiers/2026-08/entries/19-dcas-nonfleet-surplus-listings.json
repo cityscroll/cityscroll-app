@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "dcas-nonfleet-surplus-listings",
+  "rank": 19,
+  "gap_inventory_row": "`dcas-nonfleet-surplus-listings` — non-fleet goods auction inventory",
+  "source_and_access": "The official [DCAS surplus-sales guide](https://www.nyc.gov/site/dcas/business/surplus-sales.page) points to the GovDeals seller page but publishes no item-level export. The official [DCAS Vehicle Auction List](https://data.cityofnewyork.us/d/ynic-uz5i) supplies the fleet subset through Socrata. GovDeals' User Agreement section 2 prohibits spiders, crawlers, robots, substantial downloading, and data mining; its API page says access is for registered GovDeals clients.",
+  "join_feasibility": "**Measured:** the fleet dataset contains 12,316 rows and the bounded 90-day snapshot found no open rows as of 2026-08-04. NYC Open Data searches found no equivalent non-fleet item feed. Non-fleet coverage is **unknown; no numeric claim is made**.",
+  "reader_value": "**3** — Property commercial-watch readers can find vehicles and, if an authorized feed becomes available, other surplus goods without confusing them with parcel dispositions.",
+  "effort": "**Partnership-blocked**",
+  "disposition": "**Split disposition:** the official fleet subset landed as a basis-labeled goods-surplus facet. Non-fleet stays a DCAS/GovDeals authorized-export or client-API request; no marketplace scraper."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "land-outcome-detail",
+  "rank": 31,
+  "gap_inventory_row": "`land-outcome-detail` — ZAP final decision documents",
+  "source_and_access": "[ZAP Open Data](https://data.cityofnewyork.us/d/hgx4-8ukb), exact project-ID calls to the official ZAP project service, and DOB NOW by exact BBL.",
+  "join_feasibility": "**Measured:** 50/50 completed ULURP projects had a useful outcome, 45/50 had disposition/vote, and 34/50 had an approved action; mixed sample document coverage was 40/60 (66.7%).",
+  "reader_value": "**5** — Land and notice detail; applicants and neighbors see decision documents and downstream construction.",
+  "effort": "**API pull**",
+  "disposition": "**Landed:** maintain materialization; this is no longer an uncollected frontier."
+}

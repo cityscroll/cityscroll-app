@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-actionability-low",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Raise deep-link actionability (search-page / landing / unavailable handoffs)",
+  "verify": "node --test test/actionability_sample.test.mjs test/action-rail.test.mjs test/intelligence_flywheel.test.mjs",
+  "content_hash": "b713f822a3f9d791",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Primary kinetic handoffs deep-link to the specific official item instead of a search page, landing, or unavailable placeholder."
+}

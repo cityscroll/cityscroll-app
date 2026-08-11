@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-external-awards-abo-none",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: external-awards-abo-none",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for external-awards-abo-none",
+  "content_hash": "fb7d45e412a1c142",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap external-awards-abo-none shows joined public data instead of “not yet shown here”."
+}

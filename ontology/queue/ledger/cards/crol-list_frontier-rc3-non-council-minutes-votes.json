@@ -1,0 +1,20 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/frontier-rc3-non-council-minutes-votes",
+  "retain_map_id": true,
+  "status": "fixed",
+  "title": "RC-3 non-Council minutes registry + kill sample (edge stopped)",
+  "dimension": "coverage",
+  "fixed_at": "2026-08-11T18:30:00.000Z",
+  "verify": "node --test test/non_council_outcomes_infrastructure.test.mjs",
+  "evidence": {
+    "join_rate": 0,
+    "joined": 0,
+    "total": 10,
+    "collectable_pages": 17,
+    "prior_collectable_pages": 8,
+    "materialize": false,
+    "receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json"
+  },
+  "notes": "Inventory expanded; usefulness gate failed; join_bridge_enabled remains false."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-dof-tax-lien-sale-lists",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: dof-tax-lien-sale-lists",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dof-tax-lien-sale-lists present",
+  "content_hash": "09322808bb3e5054",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source dof-tax-lien-sale-lists retains immutable D1 observations without changing its product-delivery status."
+}

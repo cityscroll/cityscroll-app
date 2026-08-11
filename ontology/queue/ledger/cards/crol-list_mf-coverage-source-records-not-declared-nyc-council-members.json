@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-nyc-council-members",
+  "status": "fixed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: nyc-council-members",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # present",
+  "fixed_at": "2026-08-11T22:00:00.000Z",
+  "fixed_note": "Host retention + PERSON_HUB_SOURCE_RECORD_DUAL_WRITE. Kill sample usefulness 100% (40/40 exact PersonId), precision 100%. Receipt person_hub_source_records_2026-08-11.json.",
+  "demo_win": "Publisher rows for the person-hub constellation retain immutable source_records-shaped observations without changing public delivery."
+}

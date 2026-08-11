@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-dual-write-nycida-build-nyc-projects",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Close observation coverage gap: nycida-build-nyc-projects",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nycida-build-nyc-projects after=complete",
+  "content_hash": "a166dea3116f4e56",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source nycida-build-nyc-projects retains immutable observations and counts as covered."
+}

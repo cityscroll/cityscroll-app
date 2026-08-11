@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-coverage-abo-external-awards",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Dual-write or retain observations for abo-external-awards",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # abo-external-awards after=complete",
+  "content_hash": "b1e957756697f1f3",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source observations for abo-external-awards are retained immutably and raise source_coverage."
+}

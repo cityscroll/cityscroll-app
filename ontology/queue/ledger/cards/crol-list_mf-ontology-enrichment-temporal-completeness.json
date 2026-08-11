@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-temporal-completeness",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Complete missing civic-event clocks",
+  "verify": "node -e \"const s=require('./worker/test/fixtures/civic-time/expected_temporal_completeness.json'); process.exit(s.temporal_completeness_rate === 1 ? 0 : 1)\"",
+  "content_hash": "96d5e703bb4af1f2",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Every measured civic event carries the applicable event, publication, observation, and processing clocks."
+}

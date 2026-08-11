@@ -137,7 +137,23 @@ Every emitted card includes:
 
 ## Idempotency (reconciliation)
 
-Ledger: `ontology/queue/ledger.json` (`cityscroll.multi_flywheel_ledger.v0`).
+Ledger storage is **per-card** so concurrent cranks that close different cards
+produce non-overlapping diffs (no shared `cards` map rewrite):
+
+| Path | Role |
+| --- | --- |
+| `ontology/queue/ledger/cards/<id>.json` | **Source of truth** — one record per card |
+| `ontology/queue/ledger/meta.json` | Schema, `updated_at`, optional note, card count |
+| `ontology/queue/ledger.json` | Thin pointer (`storage: per_card_v1`); not a hand-merged map |
+
+In-memory shape remains `cityscroll.multi_flywheel_ledger.v0` (folded by
+`ontology/ledger_store.mjs` → `loadLedgerStore`). `--update-ledger` writes only
+the card files whose payloads actually changed. Rebuild / inspect:
+
+```bash
+node tools/rebuild_flywheel_ledger.mjs --check
+node tools/rebuild_flywheel_ledger.mjs --json   # folded aggregate on stdout
+```
 
 | Prior status | On re-run |
 | --- | --- |
@@ -205,10 +221,13 @@ are append-only and keyed by class token so re-runs stay idempotent.
 | `ontology/flywheel_run.mjs` | Multi-dimension orchestrator (pure) |
 | `ontology/dimensions/*` | Per-dimension evaluators |
 | `ontology/card_queue.mjs` | Rank, dedupe, ledger reconcile |
+| `ontology/ledger_store.mjs` | Per-card ledger load/write + fold |
 | `ontology/engineering_lessons.mjs` | Recurring-class extraction |
 | `ontology/fixtures/dimensions/` | Feature / view / disagreement inventories |
-| `ontology/queue/` | Schema + ledger |
+| `ontology/queue/ledger/cards/` | Per-card ledger records (source of truth) |
+| `ontology/queue/schema.v0.json` | Queue document schema |
 | `tools/flywheel-run.mjs` | CLI |
+| `tools/rebuild_flywheel_ledger.mjs` | Fold / check per-card ledger |
 | `tools/intelligence_flywheel.mjs` | Single-dimension (enrichment) CLI |
 | `tools/verify_multi_flywheel.sh` | Full verify gate |
 

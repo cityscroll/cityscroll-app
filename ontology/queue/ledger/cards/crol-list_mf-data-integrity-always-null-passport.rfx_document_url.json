@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-always-null-passport.rfx_document_url",
+  "status": "proposed",
+  "dimension": "data-integrity",
+  "title": "Restore non-null example for feature passport.rfx_document_url",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # data-integrity:passport.rfx_document_url",
+  "content_hash": "dd65d481b0d18c6b",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Solicitation package documents open from the notice handoff when the city publishes a joinable URL."
+}

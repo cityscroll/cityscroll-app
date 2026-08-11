@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-dcas-vehicle-auction-list",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: dcas-vehicle-auction-list",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dcas-vehicle-auction-list present",
+  "content_hash": "40ac5be7b052fb7e",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source dcas-vehicle-auction-list retains immutable D1 observations without changing its product-delivery status."
+}

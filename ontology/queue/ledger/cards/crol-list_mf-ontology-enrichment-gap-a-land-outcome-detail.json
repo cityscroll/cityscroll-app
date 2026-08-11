@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-land-outcome-detail",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: land-outcome-detail",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for land-outcome-detail",
+  "content_hash": "f388784ab5fd0bcd",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap land-outcome-detail shows joined public data instead of “not yet shown here”."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-city-council-committee-membership",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: city-council-committee-membership",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # city-council-committee-membership present",
+  "content_hash": "c80b7e365cdd518d",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source city-council-committee-membership retains immutable D1 observations without changing its product-delivery status."
+}

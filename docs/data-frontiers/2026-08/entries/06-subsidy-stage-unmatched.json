@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "subsidy-stage-unmatched",
+  "rank": 6,
+  "gap_inventory_row": "`subsidy-stage-unmatched` — published lifecycle stage not attached",
+  "source_and_access": "Same NYCEDC HTML/PDF project and meeting-document collection as rank 2.",
+  "join_feasibility": "**Measured on accepted RC-2 corpus:** board_decision date+outcome **5/5**; application/closing/compliance **0/5** (source-null in the minutes sample) ([receipt](../site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json)).",
+  "reader_value": "**4** — Money and notice detail; adds hearing, board, closing, and compliance progression.",
+  "effort": "**Scrape**",
+  "disposition": "**Partially unblocked by RC-2.** Board stage ships when minutes state it; densify closing/compliance only from explicit source language."
+}

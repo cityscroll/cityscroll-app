@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-zap-api-outcomes",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: zap-api-outcomes",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # zap-api-outcomes present",
+  "content_hash": "e5936ca63821c085",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source zap-api-outcomes retains immutable D1 observations without changing its product-delivery status."
+}

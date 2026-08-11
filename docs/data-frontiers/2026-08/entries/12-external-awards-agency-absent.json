@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "external-awards-agency-absent",
+  "rank": 12,
+  "gap_inventory_row": "`external-awards-agency-absent` — agency has no batch award source",
+  "source_and_access": "ABO and Checkbook cover some authorities; the missing agency-specific dataset is **unverified** until an official feed is found.",
+  "join_feasibility": "**Blocked.** The registry’s absent entries were checked on 2026-07-16; no batch-downloadable source was verified.",
+  "reader_value": "**4** — Money and agency/vendor profiles.",
+  "effort": "**Partnership-blocked**",
+  "disposition": "Recheck official publication channels periodically; do not fabricate a source row."
+}

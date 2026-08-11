@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-location-resolution-map-high-no-place-signal-money",
+  "status": "proposed",
+  "dimension": "location-resolution",
+  "title": "Map money corpus still has a high no_place_signal residual",
+  "verify": "node tools/build_district_activity.mjs --check",
+  "content_hash": "2a7729842971c04f",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "money events either resolve to a place/citywide/virtual bag or document a more specific unlocated reason than generic no_place_signal."
+}

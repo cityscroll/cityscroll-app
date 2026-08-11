@@ -1,3 +1,5 @@
+<!-- Generated projection: do not hand-edit the ranked table rows. Update docs/data-frontiers/2026-08/entries/<rank>-<id>.json and run node tools/build_data_frontiers.mjs -->
+
 # Data frontiers: August 2026
 
 This plan ranks the next data-collection and joining opportunities for Cityscroll. It covers all 28 rows in the executable [gap inventory](../site/data/gap_taxonomy.json), then adds three data gaps exposed by the August 4 product census that are not yet in that inventory: residual location coverage for Money and Meetings, plus the small remaining property-parcel key gap.

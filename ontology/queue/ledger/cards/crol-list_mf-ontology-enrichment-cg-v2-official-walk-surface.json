@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Deep-link official influence panels into votes and matters",
+  "verify": "node --test test/person_hub.test.mjs test/official_influence.test.mjs test/person_votes.test.mjs test/meeting_view_readability.test.mjs",
+  "content_hash": "f434f5cb865caea7",
+  "last_seen_at": "2026-08-11T22:30:00.000Z",
+  "demo_win": "On #official/7801 (and influence demos), lobby and CFB edges deep-link to related published roll-call matters and City Record notices when votes densify allows — no invented edges."
+}

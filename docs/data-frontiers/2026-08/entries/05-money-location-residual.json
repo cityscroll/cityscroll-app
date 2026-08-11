@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "money-location-residual",
+  "rank": 5,
+  "gap_inventory_row": "`money-location-residual` **(new)** — 212 awards have no place-of-performance signal",
+  "source_and_access": "Primary source remains [City Record Online](https://data.cityofnewyork.us/d/dg92-zbpx) notice title/body and agency fields. Capital subsets may use [Capital Projects Dashboard](https://data.cityofnewyork.us/d/fb86-vt7u) community district/project metadata. No verified general-purpose “place served by contract” dataset exists.",
+  "join_feasibility": "**Measured:** 128/340 Money rows located (37.6%); 212/340 remain `no_place_signal` on 2026-08-04. A separate response-logistics join found usable action addresses on 26/40 current solicitation rows and resolved all 30 extracted addresses; 15 of those rows overlap this residual, so 197 rows lack either kind of geography. Submission offices and pre-bid venues are explicitly not performance evidence, so the performance residual remains 212 ([receipt](evidence/contracts-action-address-geo/join_receipt.json)).",
+  "reader_value": "**5** — Map and Money; residents can answer “what spending affects my district?” while vendors can separately find where to submit or attend.",
+  "effort": "**API pull + partnership-blocked**",
+  "disposition": "The basis-labeled response-location layer landed. Performance geography remains high value but blocked for universal coverage; next split that residual by procurement class and agency."
+}

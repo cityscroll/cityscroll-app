@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-subsidy-project-unmatched",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: subsidy-project-unmatched",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for subsidy-project-unmatched",
+  "content_hash": "aa26c36e8892870c",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap subsidy-project-unmatched shows joined public data instead of “not yet shown here”."
+}

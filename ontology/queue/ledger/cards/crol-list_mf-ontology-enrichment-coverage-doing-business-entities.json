@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-coverage-doing-business-entities",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Dual-write or retain observations for doing-business-entities",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # doing-business-entities after=complete",
+  "content_hash": "49d97578c3d48f8d",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source observations for doing-business-entities are retained immutably and raise source_coverage."
+}

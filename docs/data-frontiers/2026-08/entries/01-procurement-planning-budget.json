@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-planning-budget",
+  "rank": 1,
+  "rc": "RC-1",
+  "gap_inventory_row": "**RC-1** `procurement-planning-budget` — planning budget and rationale",
+  "source_and_access": "[MOCS LL63 plans](https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page) and [M/WBE LL1 plans](https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page): agency-linked XLSX files from official index pages; supplement with the [Capital Projects Dashboard](https://data.cityofnewyork.us/d/fb86-vt7u) through Socrata/OData for capital budget, phase, FMS ID, and spend.",
+  "join_feasibility": "**Measured:** the older Capital Projects view `n7gv-k5yt` joined 0/100 by unique substring and 1/100 by unique token similarity because it has no PIN/EPIN ([receipt](../site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json)). **Unmeasured assessment:** LL63/LL1 and the newer FMS-ID view remain low-to-uncertain until a PIN/EPIN/FMS bridge sample is measured; no rate is claimed.",
+  "reader_value": "**5** — Money; vendors see upcoming work, residents see planned purpose and budget, and contract timelines gain a planning phase.",
+  "effort": "**Scrape + API pull**",
+  "disposition": "**Ready to card.** Measure before materializing; keep separate source-specific kill criteria."
+}

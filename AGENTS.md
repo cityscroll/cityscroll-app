@@ -2094,7 +2094,7 @@ Rule registry + pure audit: `ontology/dimensions/ontology_coherence.mjs`;
 inventory `ontology/fixtures/dimensions/ontology_coherence_payloads.json`;
 CLI `node tools/audit_ontology_coherence.mjs`. Entrypoint:
 `node tools/flywheel-run.mjs --fixture --emit <dir>`. Idempotent ledger:
-`ontology/queue/ledger.json`. Consumer contract + schedule:
+`ontology/queue/ledger/cards/*.json` (per-card source of truth; `ontology/queue/ledger.json` is a thin pointer). Consumer contract + schedule:
 [`docs/multi-flywheel.md`](docs/multi-flywheel.md). Verify:
 `./tools/verify_ontology_flywheel.sh` and `node --test test/ontology_coherence.test.mjs`.
 Join false-negative guard: `ontology/join_gate_policy.mjs` + lesson `join-false-negative` in `ontology/engineering-lessons.md` (prefer product join strategies; gate on joinable-candidate denominators). Hourly CI artifact: `multi-flywheel-queue` (`.github/workflows/multi-flywheel.yml`).

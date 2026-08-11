@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "city-record-attachment-export-cliff",
+  "rank": 21,
+  "gap_inventory_row": "`city-record-attachment-export-cliff` — modern attachment metadata",
+  "source_and_access": "Archive `document_links` from [City Record Open Data](https://data.cityofnewyork.us/d/dg92-zbpx) plus polite RequestDetail metadata deltas from [City Record Online](https://a856-cityrecord.nyc.gov/).",
+  "join_feasibility": "**Measured:** modern Open Data attachment fill collapsed to effectively 0%; sampled modern portal panels were populated on 20%–93% of non-personnel notice classes.",
+  "reader_value": "**4** — all lenses; readers get source documents and extracted text/tables.",
+  "effort": "**Scrape**",
+  "disposition": "**Landed:** T0 metadata collector exists. Maintain freshness and reconcile the row’s status."
+}

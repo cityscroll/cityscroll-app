@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-city-record-attachment-export-cliff",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: city-record-attachment-export-cliff",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for city-record-attachment-export-cliff",
+  "content_hash": "afd3a7aa5c5167c3",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap city-record-attachment-export-cliff shows joined public data instead of “not yet shown here”."
+}

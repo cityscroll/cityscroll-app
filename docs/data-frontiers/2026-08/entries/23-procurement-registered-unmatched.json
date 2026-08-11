@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-registered-unmatched",
+  "rank": 23,
+  "gap_inventory_row": "`procurement-registered-unmatched` — registered contract",
+  "source_and_access": "Same Checkbook Contracts and PASSPort sources as rank 22.",
+  "join_feasibility": "**Measured:** 78% either-source modern coverage for PASSPort context; the inventory does not state a separate Checkbook registration residual rate.",
+  "reader_value": "**5** — vendors and oversight readers see whether the contract became effective.",
+  "effort": "**API pull**",
+  "disposition": "**Landed:** measure and narrow the true residual."
+}

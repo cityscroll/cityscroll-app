@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Register paid_under and promote payment grounding after retention",
+  "verify": "node -e \"const r=require('./ontology/registry.v0.json'); const p=r.object_types.find(o=>o.id==='payment'); const l=r.link_types.find(x=>x.id==='paid_under'); if(!p||p.grounding==='gap') process.exit(1); if(!l||l.status!=='registered'||l.grounding==='gap') process.exit(1); if(/unregistered|not dual-written/i.test(l.reason||'')) process.exit(1);\"",
+  "content_hash": "8c2943231997c4e0",
+  "last_seen_at": "2026-08-11T22:30:00.000Z",
+  "demo_win": "Registry treats payment as a realized object and paid_under as a first-class contract→payment link, so Follow-the-Dollars can walk individual Checkbook payment rows."
+}

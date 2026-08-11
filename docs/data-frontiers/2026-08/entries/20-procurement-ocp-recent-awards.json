@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-ocp-recent-awards",
+  "rank": 20,
+  "gap_inventory_row": "`procurement-ocp-recent-awards` — award enrichment",
+  "source_and_access": "[Recent Contract Awards](https://data.cityofnewyork.us/d/qyyg-4tf5), Socrata API/export keyed by PIN/request ID/agency.",
+  "join_feasibility": "**Unmeasured assessment: high for this exact gap row.** The dataset is verified and bulk-loaded locally, but the inventory row lacks a dated residual join rate.",
+  "reader_value": "**3** — Money and award detail; adds OCP fields beyond City Record.",
+  "effort": "**API pull**",
+  "disposition": "**Reconcile, not collect:** warehouse materialization already exists; measure residual coverage and retire or narrow the row."
+}

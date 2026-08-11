@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-undersampled-dcas-nonfleet-surplus-listings",
+  "status": "proposed",
+  "dimension": "data-integrity",
+  "title": "Sample not-published rate for claim dcas-nonfleet-surplus-listings",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for dcas-nonfleet-surplus-listings",
+  "content_hash": "e4b220f19128af5f",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Claim dcas-nonfleet-surplus-listings has a measured recent+historical not-published rate so credibility can be audited continuously."
+}

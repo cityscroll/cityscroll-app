@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "exam-salary-fee-not-published",
+  "rank": 30,
+  "gap_inventory_row": "`exam-salary-fee-not-published` — fee or salary null",
+  "source_and_access": "[DCAS open competitive exams](https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page) and linked Notices of Examination; HTML index plus PDF extraction keyed by exam number.",
+  "join_feasibility": "**Measured:** 8/8 linked NOEs in the repository sample published fee and minimum salary.",
+  "reader_value": "**5** — Staffing; applicants can assess cost and pay before applying.",
+  "effort": "**Scrape**",
+  "disposition": "**Landed:** null now means a missing/not-yet-posted NOE join, not a new source."
+}

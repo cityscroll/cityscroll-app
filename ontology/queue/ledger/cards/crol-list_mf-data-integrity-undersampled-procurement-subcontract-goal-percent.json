@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-undersampled-procurement-subcontract-goal-percent",
+  "status": "proposed",
+  "dimension": "data-integrity",
+  "title": "Sample not-published rate for claim procurement-subcontract-goal-percent",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for procurement-subcontract-goal-percent",
+  "content_hash": "14a1d1138f1c740a",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Claim procurement-subcontract-goal-percent has a measured recent+historical not-published rate so credibility can be audited continuously."
+}

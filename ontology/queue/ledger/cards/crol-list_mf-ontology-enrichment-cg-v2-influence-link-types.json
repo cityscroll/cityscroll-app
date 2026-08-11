@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Catalog lobby and CFB influence edges in Civic Graph registry",
+  "verify": "node -e \"const r=require('./ontology/registry.v0.json'); const ids=new Set(r.link_types.map(l=>l.id)); if(!ids.has('lobby_targets_official')&&!ids.has('lobby_client_targets_official')) process.exit(1); if(!ids.has('contribution_to_official')&&!ids.has('campaign_contribution_to_official')) process.exit(1);\" && node --test test/ontology_registry.test.mjs test/official_influence.test.mjs test/person_hub.test.mjs",
+  "content_hash": "c444c3c27b0b2efc",
+  "last_seen_at": "2026-08-11T22:30:00.000Z",
+  "demo_win": "Civic Graph names lobby and campaign-finance influence as first-class link types backed by the promoted person-hub lookups, so official pages walk org → official without ad-hoc lookup-only edges."
+}

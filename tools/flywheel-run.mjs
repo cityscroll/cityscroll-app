@@ -29,6 +29,13 @@ import {
   planLessonFileUpdate,
 } from "../ontology/flywheel_run.mjs";
 import { emptyLedger } from "../ontology/card_queue.mjs";
+import {
+  loadLedgerStore,
+  writeLedgerStore,
+  dirtyCardIds,
+  hasPerCardStore,
+  ledgerStoreDir,
+} from "../ontology/ledger_store.mjs";
 import { applyLessonsToFile } from "../ontology/engineering_lessons.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -44,7 +51,9 @@ Options:
   --dimensions a,b     subset of dimensions (default: all)
   --surface-load path  rendered inventory produced by tools/sample_surface_load.py
   --ledger <path>      idempotency ledger (default: ontology/queue/ledger.json)
-  --update-ledger      write merged ledger back to --ledger path
+                       Per-card store at <dir>/ledger/cards/*.json when present;
+                       a single JSON file is still accepted for temp/fixture use.
+  --update-ledger      write changed card records (and meta) back to the ledger store
   --lessons <path>     engineering-lessons.md path (default: ontology/engineering-lessons.md)
   --write-lessons      append recurring lesson classes
   --refresh-open       re-emit already-open cards with refreshed evidence
@@ -106,12 +115,18 @@ function parseArgs(argv) {
 }
 
 function loadLedger(path) {
-  if (!existsSync(path)) return emptyLedger();
-  const raw = JSON.parse(readFileSync(path, "utf8"));
-  if (!raw.cards || typeof raw.cards !== "object") {
-    return { ...emptyLedger(), ...raw, cards: {} };
-  }
-  return raw;
+  return loadLedgerStore(path);
+}
+
+/**
+ * Prefer the per-card store whenever it already exists OR the path is the
+ * repo default ledger. Temp single-file ledgers (tests) keep monolithic writes
+ * until a cards/ directory appears beside them.
+ */
+function shouldUsePerCardStore(path) {
+  if (hasPerCardStore(ledgerStoreDir(path))) return true;
+  if (resolve(path) === resolve(DEFAULT_LEDGER)) return true;
+  return false;
 }
 
 function renderCardMarkdown(card) {
@@ -239,7 +254,19 @@ function main(argv = process.argv.slice(2)) {
   }
 
   if (args.updateLedger) {
-    writeFileSync(args.ledger, `${JSON.stringify(nextLedger, null, 2)}\n`);
+    if (shouldUsePerCardStore(args.ledger)) {
+      const dirty = dirtyCardIds(ledger, nextLedger);
+      writeLedgerStore(args.ledger, nextLedger, {
+        // Only rewrite card files that actually changed — concurrent cranks
+        // that touch different cards therefore produce non-overlapping diffs.
+        dirtyIds: dirty,
+        writeAggregate: false,
+        writePointer: true,
+      });
+    } else {
+      // Temp / fixture single-file mode (characterization tests).
+      writeFileSync(args.ledger, `${JSON.stringify(nextLedger, null, 2)}\n`);
+    }
   }
 
   if (args.writeLessons && lessons.length) {
