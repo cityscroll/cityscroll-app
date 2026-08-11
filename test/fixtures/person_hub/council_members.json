@@ -1,0 +1,322 @@
+[
+  {
+    "name": "Christopher Marte",
+    "council_member_id": "7801",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "1",
+    "office_id": "5827"
+  },
+  {
+    "name": "Christopher Marte",
+    "council_member_id": "7801",
+    "term_start": "2024-01-01T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "1",
+    "office_id": "5238"
+  },
+  {
+    "name": "Christopher Marte",
+    "council_member_id": "7801",
+    "term_start": "2022-01-01T00:00:00.000",
+    "term_end": "2023-12-31T00:00:00.000",
+    "district": "1",
+    "office_id": "4469"
+  },
+  {
+    "name": "Farah N. Louis",
+    "council_member_id": "7785",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "45",
+    "office_id": "5825"
+  },
+  {
+    "name": "Farah N. Louis",
+    "council_member_id": "7785",
+    "term_start": "2024-01-01T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "45",
+    "office_id": "5236"
+  },
+  {
+    "name": "Farah N. Louis",
+    "council_member_id": "7785",
+    "term_start": "2022-01-01T00:00:00.000",
+    "term_end": "2023-12-31T00:00:00.000",
+    "district": "45",
+    "office_id": "4501"
+  },
+  {
+    "name": "Farah N. Louis",
+    "council_member_id": "7785",
+    "term_start": "2019-06-04T00:00:00.000",
+    "term_end": "2021-12-31T00:00:00.000",
+    "district": "45",
+    "office_id": "4260"
+  },
+  {
+    "name": "Simcha Felder",
+    "council_member_id": "5289",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "44",
+    "office_id": "5814"
+  },
+  {
+    "name": "Simcha Felder",
+    "council_member_id": "5289",
+    "term_start": "2025-04-16T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "44",
+    "office_id": "5755"
+  },
+  {
+    "name": "Simcha Felder",
+    "council_member_id": "5289",
+    "term_start": "2010-01-01T00:00:00.000",
+    "term_end": "2010-01-31T00:00:00.000",
+    "district": "44",
+    "office_id": "2785"
+  },
+  {
+    "name": "Simcha Felder",
+    "council_member_id": "5289",
+    "term_start": "2006-01-01T00:00:00.000",
+    "term_end": "2009-12-31T00:00:00.000",
+    "district": "44",
+    "office_id": "2742"
+  },
+  {
+    "name": "Simcha Felder",
+    "council_member_id": "5289",
+    "term_start": "2004-01-01T00:00:00.000",
+    "term_end": "2005-12-31T00:00:00.000",
+    "district": "44",
+    "office_id": "1731"
+  },
+  {
+    "name": "Shaun Abreu",
+    "council_member_id": "7804",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "7",
+    "office_id": "5799"
+  },
+  {
+    "name": "Shaun Abreu",
+    "council_member_id": "7804",
+    "term_start": "2024-01-01T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "7",
+    "office_id": "5212"
+  },
+  {
+    "name": "Shaun Abreu",
+    "council_member_id": "7804",
+    "term_start": "2022-01-01T00:00:00.000",
+    "term_end": "2023-12-31T00:00:00.000",
+    "district": "7",
+    "office_id": "4473"
+  },
+  {
+    "name": "Alexa Avil\u00e9s",
+    "council_member_id": "7825",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "38",
+    "office_id": "5802"
+  },
+  {
+    "name": "Alexa Avil\u00e9s",
+    "council_member_id": "7825",
+    "term_start": "2024-01-01T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "38",
+    "office_id": "5214"
+  },
+  {
+    "name": "Alexa Avil\u00e9s",
+    "council_member_id": "7825",
+    "term_start": "2022-01-01T00:00:00.000",
+    "term_end": "2023-12-31T00:00:00.000",
+    "district": "38",
+    "office_id": "4476"
+  },
+  {
+    "name": "Amanda C. Far\u00edas",
+    "council_member_id": "7810",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "18",
+    "office_id": "5813"
+  },
+  {
+    "name": "Amanda C. Far\u00edas",
+    "council_member_id": "7810",
+    "term_start": "2024-01-01T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "18",
+    "office_id": "5225"
+  },
+  {
+    "name": "Amanda C. Far\u00edas",
+    "council_member_id": "7810",
+    "term_start": "2022-01-01T00:00:00.000",
+    "term_end": "2023-12-31T00:00:00.000",
+    "district": "18",
+    "office_id": "4487"
+  },
+  {
+    "name": "Chi A. Oss\u00e9",
+    "council_member_id": "7823",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "36",
+    "office_id": "5833"
+  },
+  {
+    "name": "Chi A. Oss\u00e9",
+    "council_member_id": "7823",
+    "term_start": "2024-01-01T00:00:00.000",
+    "term_end": "2025-12-31T00:00:00.000",
+    "district": "36",
+    "office_id": "5244"
+  },
+  {
+    "name": "Chi A. Oss\u00e9",
+    "council_member_id": "7823",
+    "term_start": "2022-01-01T00:00:00.000",
+    "term_end": "2023-12-31T00:00:00.000",
+    "district": "36",
+    "office_id": "4507"
+  },
+  {
+    "name": "Elsie Encarnaci\u00f3n",
+    "council_member_id": "7895",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "8",
+    "office_id": "5811"
+  },
+  {
+    "name": "Gale A. Brewer",
+    "council_member_id": "5259",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "6",
+    "office_id": "5805"
+  },
+  {
+    "name": "James F. Gennaro",
+    "council_member_id": "5273",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "24",
+    "office_id": "5816"
+  },
+  {
+    "name": "Darlene Mealy",
+    "council_member_id": "6272",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "41",
+    "office_id": "5828"
+  },
+  {
+    "name": "Kevin C. Riley",
+    "council_member_id": "7794",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "12",
+    "office_id": "5836"
+  },
+  {
+    "name": "Selvena N. Brooks-Powers",
+    "council_member_id": "7796",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "31",
+    "office_id": "5806"
+  },
+  {
+    "name": "Oswald J. Feliz",
+    "council_member_id": "7798",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "15",
+    "office_id": "5815"
+  },
+  {
+    "name": "Eric Dinowitz",
+    "council_member_id": "7799",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "11",
+    "office_id": "5810"
+  },
+  {
+    "name": "Erik D. Bottcher",
+    "council_member_id": "7802",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2026-02-03T00:00:00.000",
+    "district": "3",
+    "office_id": "5804"
+  },
+  {
+    "name": "Julie Menin",
+    "council_member_id": "7803",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "5",
+    "office_id": "5829"
+  },
+  {
+    "name": "Carmen N. De La Rosa",
+    "council_member_id": "7806",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "10",
+    "office_id": "5809"
+  },
+  {
+    "name": "Pierina Ana Sanchez",
+    "council_member_id": "7808",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "14",
+    "office_id": "5838"
+  },
+  {
+    "name": "Althea V.  Stevens",
+    "council_member_id": "7809",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "16",
+    "office_id": "5842"
+  },
+  {
+    "name": "Vickie Paladino",
+    "council_member_id": "7811",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "19",
+    "office_id": "5834"
+  },
+  {
+    "name": "Sandra Ung",
+    "council_member_id": "7812",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "20",
+    "office_id": "5844"
+  },
+  {
+    "name": "Tiffany L. Cab\u00e1n",
+    "council_member_id": "7813",
+    "term_start": "2026-01-01T00:00:00.000",
+    "term_end": "2029-12-31T00:00:00.000",
+    "district": "22",
+    "office_id": "5807"
+  }
+]

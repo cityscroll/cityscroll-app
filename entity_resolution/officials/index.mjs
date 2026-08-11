@@ -3,11 +3,32 @@
 // Type family for elected/appointed officials who cast recorded votes. Pure
 // helpers only: normalize Legistar person rows, mint stable official ids, and
 // emit typed votes_on edges. No LLM matching; no silent person invent.
+//
+// Person hub (uvw5-9znb) + lobby/CFB name binding live in:
+//   person_name.mjs, lobby_targets.mjs, org_resolve.mjs
+//   site/person_hub.mjs, site/official_influence.mjs
 
 export const OFFICIAL_ENTITY_TYPE = "official";
 export const OFFICIAL_TYPE_FAMILY = "official";
 export const VOTES_ON_LINK_TYPE = "votes_on";
 export const OFFICIAL_PRIMARY_KEY_PATTERN = "official:{person_id}";
+
+export {
+  foldPersonText,
+  personNameKeys,
+  buildPersonNameIndex,
+  resolvePersonName,
+} from "./person_name.mjs";
+export {
+  parseLobbyTargets,
+  isPersonShapedLobbyTarget,
+} from "./lobby_targets.mjs";
+export {
+  orgKey,
+  orgKeyPreferringVendorStem,
+  consolidateOrgKeys,
+  ORG_ALIAS_SEED,
+} from "./org_resolve.mjs";
 
 /** Closed ER type-family set including official and agency-head person families. */
 export const ENTITY_TYPE_FAMILIES = Object.freeze([

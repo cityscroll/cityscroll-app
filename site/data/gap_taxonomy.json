@@ -342,6 +342,31 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "cfb-campaign-contributions",
+      "name": "Campaign Finance Board Contributions",
+      "source_contract_id": "cfb-campaign-contributions",
+      "status": "landed",
+      "join_keys": [
+        "recipname",
+        "person_name_key"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.4907,
+          "joined": 53,
+          "total": 108,
+          "metric": "distinct_recipients",
+          "observed_on": "2026-08-11",
+          "universe": "Distinct recipients in a modern City Council CFB kill sample (election>=2021, officecd=5)",
+          "strategy": "exact unique person-name keys (including Last, First) against uvw5-9znb hub",
+          "verdict": "Ship CFB recipient edges. Usefulness 49.07% and precision 100% clear 30%/95% gates.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/rjkp-yttg",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "checkbook-contracts",
       "name": "Checkbook NYC Contracts",
       "source_contract_id": "checkbook-contracts",
@@ -393,6 +418,31 @@
       ],
       "join_coverage": {},
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "city-clerk-elobbyist",
+      "name": "City Clerk eLobbyist Data",
+      "source_contract_id": "city-clerk-elobbyist",
+      "status": "landed",
+      "join_keys": [
+        "lobbyist_targets",
+        "person_name_key"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.9617,
+          "joined": 64116,
+          "total": 66669,
+          "metric": "person_shaped_mentions",
+          "observed_on": "2026-08-11",
+          "universe": "Person-shaped lobbyist_targets mentions in a 2,000-row 2020+ kill sample",
+          "strategy": "parse targets; exact unique person-name keys against uvw5-9znb hub; no fuzzy public edges",
+          "verdict": "Ship lobby edges. Usefulness 96.17% and precision 100% clear 30%/95% gates.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/fmf3-knd8",
       "delivery_tier": "edge-materialized"
     },
     {
@@ -804,6 +854,30 @@
       },
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "nyc-council-members",
+      "name": "NYC Council Members (1999 to Present)",
+      "source_contract_id": "nyc-council-members",
+      "status": "landed",
+      "join_keys": [
+        "council_member_id"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 1,
+          "joined": 19,
+          "total": 19,
+          "metric": "vote_corpus_person_ids",
+          "observed_on": "2026-08-11",
+          "universe": "Committed person_votes_lookup PersonIds and demo ids 7801/7785",
+          "strategy": "exact council_member_id = Legistar PersonId; no name fallback for identity",
+          "verdict": "Ship person hub. Exact PersonId identity; district and term stamp on official profiles.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/uvw5-9znb",
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "nyc-geosearch",
@@ -2598,6 +2672,20 @@
       "evidence": "Shared keys project_id, BBL; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "cfb-campaign-contributions-x-city-clerk-elobbyist-via-person_name_key",
+      "source_a": "cfb-campaign-contributions",
+      "source_b": "city-clerk-elobbyist",
+      "key_path": [
+        "person_name_key"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys person_name_key; 0 taxonomy gap(s) could close."
+    },
+    {
       "id": "current-solicitations-ocp-x-passport-public-rfx-via-PIN",
       "source_a": "current-solicitations-ocp",
       "source_b": "passport-public-rfx",
@@ -3296,9 +3384,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-11",
-    "source_contracts_fingerprint": "e7971f8ef07a349303d8ee5cadddb2b6fe9dcb860a9635f37021440672e6b5db",
+    "source_contracts_fingerprint": "26efb64b0bd173b620ad05599343e6adabb2dc2026677ab7b4e5a684b49979cc",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 75,
+    "candidate_crosswalks": 76,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }
