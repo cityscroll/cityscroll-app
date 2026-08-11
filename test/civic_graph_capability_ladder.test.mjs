@@ -27,20 +27,8 @@ function loadJson(rel) {
   return JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 }
 
-// Rank order after rankCards (score desc, then id) — what the queue emits at #1–#8.
-const EXPECTED_RANKED_LADDER_IDS = [
-  "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
-  "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
-  "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
-  "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
-  "crol-list/mf-ontology-enrichment-cg-v3-mandate-report-candidates",
-  "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
-  "crol-list/mf-ontology-enrichment-cg-v3-mandate-rule-evidence-stamps",
-  "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
-];
-
-// Emission order from civicGraphCapabilityCards (v1 → v2 → v3 blocks).
-const EXPECTED_EMIT_ORDER_IDS = [
+// Full ladder emission order when every threshold fails (v1 → v2 → v3 blocks).
+const FULL_LADDER_EMIT_ORDER = [
   "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
   "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
   "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
@@ -51,18 +39,88 @@ const EXPECTED_EMIT_ORDER_IDS = [
   "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
 ];
 
-test("fixture ladder loads and emits eight cg-v cards while metrics fail", () => {
+// Rank order (score desc, id) for the full open ladder.
+const FULL_LADDER_RANKED = [
+  "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
+  "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
+  "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
+  "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
+  "crol-list/mf-ontology-enrichment-cg-v3-mandate-report-candidates",
+  "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
+  "crol-list/mf-ontology-enrichment-cg-v3-mandate-rule-evidence-stamps",
+  "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
+];
+
+// Currently open after mandate densify: report/rule cards quiet (observed_count>0);
+// contract card remains until backlink edges reach 10.
+const OPEN_LADDER_EMIT_ORDER = [
+  "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
+  "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
+  "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
+  "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
+  "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
+  "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
+];
+
+const OPEN_LADDER_RANKED = [
+  "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
+  "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
+  "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
+  "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
+  "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
+  "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
+];
+
+/** Synthetic full-fail ladder (every threshold open) for full-ladder characterization. */
+function fullFailLadder(base) {
+  const ladder = structuredClone(base);
+  ladder.metrics.payment = {
+    ...ladder.metrics.payment,
+    object_grounding: "gap",
+    object_status: "registered",
+    paid_under_status: "unregistered",
+    paid_under_grounding: "gap",
+    paid_under_reason_stale: true,
+    retention_usefulness: 0.44,
+    retention_precision: 1.0,
+    retention_materialize: true,
+  };
+  ladder.metrics.official_influence = {
+    ...ladder.metrics.official_influence,
+    hub_promoted: true,
+    lobby_edge_count: 2440,
+    cfb_edge_count: 1398,
+    lobby_precision: 1.0,
+    cfb_precision: 1.0,
+    registry_has_lobby_link_type: false,
+    registry_has_cfb_link_type: false,
+  };
+  ladder.metrics.votes = {
+    ...ladder.metrics.votes,
+    eligible_event_count: 12,
+    constellation_event_bar: 30,
+    retention_pass: true,
+    event_count_pass: false,
+    constellation_promoted: false,
+  };
+  ladder.metrics.mandates = {
+    ...ladder.metrics.mandates,
+    mandate_count: 2931,
+    observed_count: 0,
+    notice_backlink_edges: 1,
+    notice_backlink_notices: 1,
+  };
+  return ladder;
+}
+
+test("committed fixture emits the still-open cg-v ladder cards", () => {
   const ladder = loadJson("ontology/fixtures/dimensions/civic_graph_capability_ladder.json");
   assert.equal(ladder.schema, LADDER_SCHEMA);
   assert.ok(Array.isArray(ladder.already_in_flywheel));
   assert.ok(ladder.already_in_flywheel.length >= 5);
 
   const cards = civicGraphCapabilityCards({ civic_graph_capability_ladder: ladder });
-  assert.equal(cards.length, 8);
-  assert.deepEqual(
-    cards.map((c) => c.id),
-    EXPECTED_EMIT_ORDER_IDS,
-  );
+  assert.deepEqual(cards.map((c) => c.id), OPEN_LADDER_EMIT_ORDER);
 
   for (const card of cards) {
     assert.equal(card.schema, MULTI_CARD_SCHEMA);
@@ -74,22 +132,32 @@ test("fixture ladder loads and emits eight cg-v cards while metrics fail", () =>
     assert.ok(Number(card.rank_score) >= 88, card.id);
   }
 
-  // Rank scores put v1 payment first, then influence / roll-call densify.
   const byScore = [...cards].sort(
     (a, b) => (b.rank_score - a.rank_score) || String(a.id).localeCompare(String(b.id)),
   );
-  assert.deepEqual(byScore.map((c) => c.id), EXPECTED_RANKED_LADDER_IDS);
+  assert.deepEqual(byScore.map((c) => c.id), OPEN_LADDER_RANKED);
   assert.equal(byScore[0].rank_score, 97);
   assert.equal(byScore[1].rank_score, 95);
-  assert.equal(byScore[2].rank_score, 94);
-  assert.equal(byScore[3].rank_score, 93);
 
   const metrics = civicGraphCapabilityMetrics({ civic_graph_capability_ladder: ladder });
   assert.equal(metrics.civic_graph_ladder_loaded, true);
-  assert.equal(metrics.civic_graph_capability_cards, 8);
+  assert.equal(metrics.civic_graph_capability_cards, OPEN_LADDER_EMIT_ORDER.length);
   assert.equal(metrics.paid_under_status, "unregistered");
   assert.equal(metrics.rollcall_event_count, 12);
-  assert.equal(metrics.mandate_observed_count, 0);
+  // Mandate densify on main raised observed_count; report/rule cards quiet.
+  assert.ok(Number(metrics.mandate_observed_count) > 0);
+});
+
+test("full-fail metrics still emit the complete eight-card ladder", () => {
+  const base = loadJson("ontology/fixtures/dimensions/civic_graph_capability_ladder.json");
+  const ladder = fullFailLadder(base);
+  const cards = civicGraphCapabilityCards({ civic_graph_capability_ladder: ladder });
+  assert.equal(cards.length, 8);
+  assert.deepEqual(cards.map((c) => c.id), FULL_LADDER_EMIT_ORDER);
+  const byScore = [...cards].sort(
+    (a, b) => (b.rank_score - a.rank_score) || String(a.id).localeCompare(String(b.id)),
+  );
+  assert.deepEqual(byScore.map((c) => c.id), FULL_LADDER_RANKED);
 });
 
 test("emitter stays quiet without a ladder inventory", () => {
@@ -139,6 +207,18 @@ test("roll-call densify quiets past the constellation event bar", () => {
 
 test("mandate densify quiets when observed_count and backlinks clear", () => {
   const ladder = loadJson("ontology/fixtures/dimensions/civic_graph_capability_ladder.json");
+  // Live fixture already has observed_count>0 — report/rule quiet. Force zero then clear.
+  const open = structuredClone(ladder);
+  open.metrics.mandates = {
+    ...open.metrics.mandates,
+    observed_count: 0,
+    notice_backlink_edges: 1,
+  };
+  assert.ok(
+    civicGraphCapabilityCards({ civic_graph_capability_ladder: open })
+      .some((c) => c.id.includes("cg-v3-mandate-report")),
+  );
+
   const cleared = structuredClone(ladder);
   cleared.metrics.mandates = {
     ...cleared.metrics.mandates,
@@ -152,7 +232,7 @@ test("mandate densify quiets when observed_count and backlinks clear", () => {
   );
 });
 
-test("ontology-enrichment + default flywheel rank cg-v ladder #1–#8", () => {
+test("ontology-enrichment + default flywheel rank open cg-v ladder first", () => {
   const ladder = loadJson("ontology/fixtures/dimensions/civic_graph_capability_ladder.json");
   const enrichment = evaluateOntologyEnrichment({
     civic_graph_capability_ladder: ladder,
@@ -164,8 +244,11 @@ test("ontology-enrichment + default flywheel rank cg-v ladder #1–#8", () => {
     generated_at: "1970-01-01T00:00:00.000Z",
   });
   assert.equal(enrichment.metrics.civic_graph_ladder_loaded, true);
-  assert.equal(enrichment.metrics.civic_graph_capability_cards, 8);
-  for (const id of EXPECTED_RANKED_LADDER_IDS) {
+  assert.equal(
+    enrichment.metrics.civic_graph_capability_cards,
+    OPEN_LADDER_EMIT_ORDER.length,
+  );
+  for (const id of OPEN_LADDER_EMIT_ORDER) {
     assert.ok(
       enrichment.cards.some((c) => c.id === id),
       `missing enrichment card ${id}`,
@@ -177,7 +260,7 @@ test("ontology-enrichment + default flywheel rank cg-v ladder #1–#8", () => {
   assert.equal(inputs.civic_graph_capability_ladder.schema, LADDER_SCHEMA);
 
   // Production ledger already holds older proposed cards open. Strip any cg-v
-  // entries so this test models the first emit of the ladder (fresh propose).
+  // entries so this test models the first emit of the still-open ladder.
   const liveLedger = loadJson("ontology/queue/ledger.json");
   const seedLedger = {
     ...liveLedger,
@@ -195,18 +278,18 @@ test("ontology-enrichment + default flywheel rank cg-v ladder #1–#8", () => {
     limit: 100,
   });
 
-  const top8 = queue.cards.slice(0, 8).map((c) => c.id);
-  assert.deepEqual(top8, EXPECTED_RANKED_LADDER_IDS);
-  for (let i = 0; i < 8; i += 1) {
+  const topN = queue.cards.slice(0, OPEN_LADDER_RANKED.length).map((c) => c.id);
+  assert.deepEqual(topN, OPEN_LADDER_RANKED);
+  for (let i = 0; i < OPEN_LADDER_RANKED.length; i += 1) {
     assert.equal(queue.cards[i].rank, i + 1);
     assert.equal(queue.cards[i].evidence.kind, "civic-graph-capability");
   }
   assert.equal(
     queue.dimension_metrics["ontology-enrichment"]?.civic_graph_capability_cards,
-    8,
+    OPEN_LADDER_EMIT_ORDER.length,
   );
 
-  // Empty-ledger path still ranks all eight ladder cards relative to each other.
+  // Empty-ledger path still ranks open ladder cards relative to each other.
   const fresh = runMultiFlywheel({
     inputs,
     ledger: emptyLedger({ updated_at: "1970-01-01T00:00:00.000Z" }),
@@ -216,5 +299,21 @@ test("ontology-enrichment + default flywheel rank cg-v ladder #1–#8", () => {
   const ladderOnly = fresh.queue.cards
     .filter((c) => String(c.id).includes("mf-ontology-enrichment-cg-v"))
     .map((c) => c.id);
-  assert.deepEqual(ladderOnly, EXPECTED_RANKED_LADDER_IDS);
+  assert.deepEqual(ladderOnly, OPEN_LADDER_RANKED);
+
+  // Full-fail synthetic ladder still tops ranks 1–8 when seeded alone.
+  const fullInputs = {
+    ...inputs,
+    civic_graph_capability_ladder: fullFailLadder(ladder),
+  };
+  const fullRun = runMultiFlywheel({
+    inputs: fullInputs,
+    ledger: seedLedger,
+    generated_at: "1970-01-01T00:00:00.000Z",
+    limit: 100,
+  });
+  assert.deepEqual(
+    fullRun.queue.cards.slice(0, 8).map((c) => c.id),
+    FULL_LADDER_RANKED,
+  );
 });

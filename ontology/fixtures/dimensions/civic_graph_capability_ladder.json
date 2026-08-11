@@ -2,22 +2,25 @@
   "schema": "cityscroll.civic_graph_capability_ladder.v1",
   "observed_at": "2026-08-11",
   "policy_version": "v0",
-  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps — those live under coverage dimension.",
+  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps — those live under coverage dimension. Re-measured 2026-08-11 after person-hub dual-write (#798) and mandate densify (#799): mandate observed_count>0 quiets report/rule v3 cards; backlinks 7 still <10 so contract card remains open.",
   "already_in_flywheel": [
     {
       "id": "crol-list/mf-coverage-source-records-not-declared-cfb-campaign-contributions",
-      "role": "v2-support dual-write CFB observations",
-      "dimension": "coverage"
+      "role": "v2-support dual-write CFB observations (fixed)",
+      "dimension": "coverage",
+      "status": "fixed"
     },
     {
       "id": "crol-list/mf-coverage-source-records-not-declared-city-clerk-elobbyist",
-      "role": "v2-support dual-write eLobbyist observations",
-      "dimension": "coverage"
+      "role": "v2-support dual-write eLobbyist observations (fixed)",
+      "dimension": "coverage",
+      "status": "fixed"
     },
     {
       "id": "crol-list/mf-coverage-source-records-not-declared-nyc-council-members",
-      "role": "v2-support dual-write Council Members hub source",
-      "dimension": "coverage"
+      "role": "v2-support dual-write Council Members hub source (fixed)",
+      "dimension": "coverage",
+      "status": "fixed"
     },
     {
       "id": "crol-list/mf-ontology-enrichment-civic-graph-object-grounding-gap",
@@ -26,8 +29,9 @@
     },
     {
       "id": "crol-list/mf-data-integrity-red-flag-meeting-person-votes",
-      "role": "v2-support person vote honesty",
-      "dimension": "data-integrity"
+      "role": "v2-support person vote honesty (fixed)",
+      "dimension": "data-integrity",
+      "status": "fixed"
     },
     {
       "id": "crol-list/checkbook-spending-payment-retention",
@@ -83,10 +87,10 @@
       "agency_count": 49,
       "mandate_count": 2931,
       "detectable_mandate_count": 703,
-      "observed_count": 0,
+      "observed_count": 3,
       "report_or_study_candidate_count": 1,
-      "notice_backlink_notices": 1,
-      "notice_backlink_edges": 1,
+      "notice_backlink_notices": 6,
+      "notice_backlink_edges": 7,
       "process_conformance_lookup": "site/data/process_conformance_lookup.json",
       "backlinks_lookup": "site/data/notice_mandate_backlinks_lookup.json"
     },
