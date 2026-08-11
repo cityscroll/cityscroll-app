@@ -967,7 +967,13 @@ person_name.mjs`, `lobby_targets.mjs`, `org_resolve.mjs`; site builders
 ≥30% and reviewed precision ≥95%: `node tools/build_official_influence.mjs`.
 Receipt: `site/data/person_hub_sources/verification_receipts/`. Decision-
 constellation promotion (≥30 roll-call events) remains independent of the hub.
-Verify: `node --test test/person_hub.test.mjs test/official_influence.test.mjs`.
+**Source-records dual-write (shadow):** host retention
+`node tools/retain_person_hub_source_records.mjs --from-fixture --publish` (+
+`--check`) keeps publisher rows as `source_records`-shaped snapshots under
+`PERSON_HUB_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/person_hub_source_records.mjs`).
+Public pages do not read those observations. Verify:
+`node --test test/person_hub.test.mjs test/official_influence.test.mjs
+test/person_hub_source_records.test.mjs worker/test/person_hub_source_records.test.mjs`.
 
 ## Content and testing — lifecycle gap taxonomy
 
@@ -1642,7 +1648,9 @@ do not consume the observations. Measured live (2026-08-02): Checkbook contracts
 `complete`; PASSPort contracts+RFx `complete` (ingest dual-write); Legistar events/items/votes
 `complete` (meeting-outcomes dual-write); Legistar attachments `empty-declared-live` (nested
 Attachments bag empty — Agenda/Minutes live on Events); City Record `partial`; NYCHA, ABO,
-doing-business, NYCIDA `gap`. Named metric `source_coverage` = live complete/total (**7/13**).
+doing-business, NYCIDA `gap`. Person-hub constellation (Council Members / eLobbyist / CFB)
+host retention + dual-write landed 2026-08-11. Named metric `source_coverage` = live
+complete/total (**10/16**).
 Verify:
 `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json &&
 node --test test/source_coverage_honesty.test.mjs worker/test/er_source_coverage.test.mjs

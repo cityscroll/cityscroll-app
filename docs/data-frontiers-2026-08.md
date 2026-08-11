@@ -98,6 +98,22 @@ Receipt: [`site/data/person_hub_sources/verification_receipts/person_hub_influen
 
 Rebuild: `node tools/build_person_hub.mjs` then `node tools/build_official_influence.mjs`.
 
+### Source-records dual-write (crank 5, 2026-08-11)
+
+**Gap:** product joins shipped, but the three person-hub streams were still `source-records-not-declared` in the coverage matrix (flywheel ranks 1–3).
+
+**Result:** host retention + fail-soft dual-write adapter under `PERSON_HUB_SOURCE_RECORD_DUAL_WRITE` (default off in beta; on in production vars). Stable keys: `council-member:<id>:<term_start>`, `lobby-reg:<registration>:<client>:<lobbyist>:<year>:<targets_hash>`, `cfb-contrib:<recipid>:<donor>:<election>:<amount>:<office>`. Fixture kill sample (committed person-hub fixtures) retained **208** rows and cleared gates:
+
+| Stream | Usefulness | Precision | Retained |
+|---|---:|---:|---:|
+| Council Members | **40/40 (100%)** exact PersonId | **100%** | 40 |
+| eLobbyist | **39/44 (88.64%)** person-shaped mentions | **100%** | 51 |
+| CFB contributions | **31/59 (52.54%)** distinct recipients | **100%** | 117 |
+
+Receipt: [`site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json`](../site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json). Matrix: `entity_resolution/source_coverage.json` now **10/16 complete**. Rebuild/retain: `node tools/retain_person_hub_source_records.mjs --from-fixture --publish` (or live without `--from-fixture`); verify `--check`. Public person hub and influence lookups remain the reader path; dual-write is shadow-only.
+
+**Next joinable cards after this crank (post-emit rank order):** `zap-projects` source-records dual-write (coverage #1); residual dual-write gaps (doing-business, NYCIDA, ABO, NYCHA); undersampled not-published claims (money-location residual, planning budget, subcontract goal); civic-graph grounding gaps.
+
 ## Agency rename / successor densify (OTI former names)
 
 **Gap:** agency dual names and successors (DoITT→OTI, DCA→DCWP, Art Commission→PDC, and related renames) break entity resolution when legacy and current surfaces mint different canonical ids. The existing crosswalk already joined City Record strings to OTI roster cards (`t3jq-9nkf`); residual work is densifying the roster's published `alternate_or_former_names` / `alternate_or_former_acronyms` into the shared resolve path rather than inventing a second agency ER subsystem.
