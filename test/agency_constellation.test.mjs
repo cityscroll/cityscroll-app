@@ -28,6 +28,9 @@ const intelligence = JSON.parse(
 const certification = JSON.parse(
   readFileSync(join(ROOT, "site/data/exam_certification_constellation.json"), "utf8"),
 );
+const staffingExams = JSON.parse(
+  readFileSync(join(ROOT, "site/data/staffing_exams.json"), "utf8"),
+);
 const obligations = existsSync(join(ROOT, "site/data/agency_obligations_lookup.json"))
   ? JSON.parse(readFileSync(join(ROOT, "site/data/agency_obligations_lookup.json"), "utf8"))
   : null;
@@ -94,7 +97,12 @@ test("all reviewed constellation-only routes have an explicit non-fuzzy disposit
 });
 
 test("Parks constellation spans contracts, meetings, rules, obligations, and staffing", () => {
-  const view = buildAgencyConstellationView(PARKS, { intelligence, certification, obligations });
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+  });
   assert.equal(view.kind, "agency-constellation");
   assert.equal(view.subject_ref, "agency:id:parks-and-recreation");
   assert.equal(view.display_name, "Parks and Recreation");
@@ -115,6 +123,14 @@ test("Parks constellation spans contracts, meetings, rules, obligations, and sta
   assert.ok(byId.staffing.count >= 1);
   assert.ok(byId.staffing.items.length >= 1);
   assert.equal(byId.staffing.method, "publisher_certification_record_v1");
+  // Staffing count is document-backed only — never the raw certification edge total.
+  const documentable = new Set(
+    (staffingExams.exams || []).map((exam) => String(exam.exam_number || "").trim()).filter(Boolean),
+  );
+  assert.ok(byId.staffing.count <= documentable.size);
+  for (const item of byId.staffing.items) {
+    assert.ok(documentable.has(String(item.id)), `staffing item ${item.id} must be document-backed`);
+  }
   assert.equal(view.summary.matched_categories, 5);
   assert.equal(view.summary.er_match_basis, AGENCY_CONSTELLATION_ER_BASIS);
   assert.equal(view.summary.iteration, "v1");
@@ -172,7 +188,12 @@ test("empty categories stay honest and never invent items", () => {
 });
 
 test("rendered document is a parcel-shaped civic object with ER basis stamp", () => {
-  const view = buildAgencyConstellationView(PARKS, { intelligence, certification, obligations });
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+  });
   const html = renderAgencyConstellationDocument(view);
   assert.match(html, /data-civic-object-kind="agency-constellation"/);
   assert.match(html, /data-subject-ref="agency:id:parks-and-recreation"/);
@@ -199,7 +220,11 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
 });
 
 test("Parks edges carry real provenance and a shareable why-inspector", () => {
-  const view = buildAgencyConstellationView(PARKS, { intelligence, certification });
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    staffing_exams: staffingExams,
+  });
   assert.ok(view.claims.length >= 4);
 
   const contracts = view.categories.find((category) => category.id === "contracts");

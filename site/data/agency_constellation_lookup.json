@@ -8,8 +8,8 @@
     "parks-and-recreation",
     "housing-preservation-and-development"
   ],
-  "agency_count": 88,
-  "multi_category_count": 59,
+  "agency_count": 83,
+  "multi_category_count": 55,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
     "board-of-corrections": "board-of-correction",
@@ -57,7 +57,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 230,
+          "count": 20,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -90,7 +90,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 47,
+          "count": 7,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -123,7 +123,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 61,
+          "count": 8,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -189,7 +189,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 5,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -321,7 +321,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -330,7 +330,7 @@
       "subject_ref": "agency:id:borough-president-brooklyn",
       "display_name": "Office of the Borough President of Brooklyn",
       "path": "/agencies/borough-president-brooklyn/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -353,41 +353,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 3,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "borough-president-manhattan": {
-      "subject_ref": "agency:id:borough-president-manhattan",
-      "display_name": "Office of the Borough President of Manhattan",
-      "path": "/agencies/borough-president-manhattan/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 7,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -420,7 +387,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 5,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -453,7 +420,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 157,
+          "count": 27,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -486,7 +453,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 15,
+          "count": 2,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -495,7 +462,7 @@
       "subject_ref": "agency:id:campaign-finance-board",
       "display_name": "Campaign Finance Board",
       "path": "/agencies/campaign-finance-board/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -518,8 +485,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -561,7 +528,7 @@
       "subject_ref": "agency:id:city-clerk",
       "display_name": "Office of the City Clerk",
       "path": "/agencies/city-clerk/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -584,8 +551,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 8,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -651,7 +618,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 53,
+          "count": 8,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -783,40 +750,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 259,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "civil-service-commission": {
-      "subject_ref": "agency:id:civil-service-commission",
-      "display_name": "Civil Service Commission",
-      "path": "/agencies/civil-service-commission/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 6,
+          "count": 35,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -849,7 +783,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 22,
+          "count": 4,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -882,7 +816,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 17,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -891,7 +825,7 @@
       "subject_ref": "agency:id:commission-on-racial-equity",
       "display_name": "Commission on Racial Equity",
       "path": "/agencies/commission-on-racial-equity/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -914,8 +848,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -981,7 +915,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 148,
+          "count": 11,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -990,7 +924,7 @@
       "subject_ref": "agency:id:conflicts-of-interest-board",
       "display_name": "Conflicts of Interest Board",
       "path": "/agencies/conflicts-of-interest-board/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -1013,8 +947,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1047,7 +981,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 87,
+          "count": 12,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1080,7 +1014,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 286,
+          "count": 38,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1089,7 +1023,7 @@
       "subject_ref": "agency:id:criminal-justice-coordinator",
       "display_name": "Criminal Justice Coordinator",
       "path": "/agencies/criminal-justice-coordinator/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -1112,8 +1046,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1122,7 +1056,7 @@
       "subject_ref": "agency:id:cultural-affairs",
       "display_name": "Department of Cultural Affairs",
       "path": "/agencies/cultural-affairs/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -1145,8 +1079,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1212,7 +1146,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 168,
+          "count": 25,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1245,7 +1179,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 53,
+          "count": 6,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1278,7 +1212,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 33,
+          "count": 11,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1311,7 +1245,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 60,
+          "count": 5,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1344,7 +1278,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 26,
+          "count": 2,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1377,7 +1311,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 5,
+          "count": 2,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1410,7 +1344,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 292,
+          "count": 35,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1419,7 +1353,7 @@
       "subject_ref": "agency:id:emergency-management",
       "display_name": "New York City Emergency Management",
       "path": "/agencies/emergency-management/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -1442,8 +1376,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1476,7 +1410,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 69,
+          "count": 6,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1509,7 +1443,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 339,
+          "count": 40,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1542,7 +1476,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 7,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1575,7 +1509,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 117,
+          "count": 17,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1608,7 +1542,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 30,
+          "count": 7,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1641,7 +1575,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 272,
+          "count": 36,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1674,7 +1608,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 310,
+          "count": 32,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1707,7 +1641,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 180,
+          "count": 15,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1740,7 +1674,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 399,
+          "count": 37,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1773,7 +1707,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 155,
+          "count": 22,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1806,7 +1740,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 279,
+          "count": 28,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1815,7 +1749,7 @@
       "subject_ref": "agency:id:independent-budget-office",
       "display_name": "Independent Budget Office",
       "path": "/agencies/independent-budget-office/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -1838,8 +1772,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1872,7 +1806,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 127,
+          "count": 14,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1905,7 +1839,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 24,
+          "count": 4,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1938,7 +1872,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 10,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1971,7 +1905,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 78,
+          "count": 8,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -1980,7 +1914,7 @@
       "subject_ref": "agency:id:management-and-budget",
       "display_name": "Mayor's Office of Management and Budget",
       "path": "/agencies/management-and-budget/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -2003,8 +1937,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 11,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2037,7 +1971,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 9,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2103,40 +2037,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 481,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "new-york-city-fire-pension-fund": {
-      "subject_ref": "agency:id:new-york-city-fire-pension-fund",
-      "display_name": "New York City Fire Pension Fund",
-      "path": "/agencies/new-york-city-fire-pension-fund/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 13,
+          "count": 26,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2169,7 +2070,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 72,
+          "count": 6,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2202,7 +2103,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 14,
+          "count": 2,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2235,7 +2136,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 4,
+          "count": 2,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2244,7 +2145,7 @@
       "subject_ref": "agency:id:office-of-collective-bargaining",
       "display_name": "Office of Collective Bargaining",
       "path": "/agencies/office-of-collective-bargaining/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
           "status": "empty",
@@ -2267,8 +2168,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2301,7 +2202,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 30,
+          "count": 4,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2334,40 +2235,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 4,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "office-of-the-actuary": {
-      "subject_ref": "agency:id:office-of-the-actuary",
-      "display_name": "New York City Office of the Actuary",
-      "path": "/agencies/office-of-the-actuary/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 4,
+          "count": 1,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2376,7 +2244,7 @@
       "subject_ref": "agency:id:office-of-the-mayor",
       "display_name": "Office of the Mayor",
       "path": "/agencies/office-of-the-mayor/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
@@ -2399,8 +2267,8 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
-          "status": "matched",
-          "count": 4,
+          "status": "empty",
+          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2433,7 +2301,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 240,
+          "count": 33,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2466,7 +2334,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 32,
+          "count": 3,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2499,7 +2367,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 519,
+          "count": 61,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2532,40 +2400,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 55,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    "public-administrator-new-york-county": {
-      "subject_ref": "agency:id:public-administrator-new-york-county",
-      "display_name": "New York County Public Administrator",
-      "path": "/agencies/public-administrator-new-york-county/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "matched",
-          "count": 1,
+          "count": 6,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2631,7 +2466,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 24,
+          "count": 5,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2697,7 +2532,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 213,
+          "count": 24,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2730,7 +2565,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 37,
+          "count": 4,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2763,7 +2598,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 12,
+          "count": 2,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2796,7 +2631,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 71,
+          "count": 5,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2829,7 +2664,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 59,
+          "count": 8,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2862,7 +2697,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 360,
+          "count": 39,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2895,7 +2730,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 61,
+          "count": 5,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -2928,7 +2763,7 @@
         },
         "staffing": {
           "status": "matched",
-          "count": 65,
+          "count": 10,
           "method": "publisher_certification_record_v1"
         }
       }

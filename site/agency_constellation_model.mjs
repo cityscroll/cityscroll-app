@@ -257,18 +257,57 @@ function domainItems(block, limit = 8) {
     .slice(0, limit);
 }
 
-function staffingItems(certification, agencyRef, limit = 8) {
+/**
+ * Exam numbers that have staffing-guide documents (/exams/:id/).
+ * Certification edges alone are not enough — historical list rows may name
+ * exams outside the current guide, and linking them falls through to the SPA.
+ * @param {{ staffing_exams?: object|Array, staffing_exam_numbers?: Set|Array }} sources
+ * @returns {Set<string>|null} null when the caller did not supply a corpus
+ */
+export function documentableExamNumberSet(sources = {}) {
+  if (sources?.staffing_exam_numbers instanceof Set) {
+    return new Set([...sources.staffing_exam_numbers].map((value) => String(value).trim()).filter(Boolean));
+  }
+  if (Array.isArray(sources?.staffing_exam_numbers)) {
+    return new Set(sources.staffing_exam_numbers.map((value) => String(value).trim()).filter(Boolean));
+  }
+  const rows = Array.isArray(sources?.staffing_exams?.exams)
+    ? sources.staffing_exams.exams
+    : Array.isArray(sources?.staffing_exams)
+      ? sources.staffing_exams
+      : null;
+  if (!rows) return null;
+  return new Set(
+    rows.map((row) => String(row?.exam_number || row?.exam_no || "").trim()).filter(Boolean),
+  );
+}
+
+/**
+ * @param {object} certification
+ * @param {string} agencyRef
+ * @param {{ limit?: number, documentableExamNumbers?: Set<string>|null }} [options]
+ */
+function staffingItems(certification, agencyRef, options = {}) {
+  const limit = Number.isFinite(options.limit) ? options.limit : 8;
+  const documentableExamNumbers = options.documentableExamNumbers ?? null;
   const edges = (Array.isArray(certification?.edges) ? certification.edges : [])
     .filter((edge) => edge?.to === agencyRef && edge?.type === "certified_to_agency");
   const titles = new Map(
     (Array.isArray(certification?.by_exam) ? certification.by_exam : [])
       .map((exam) => [String(exam.exam_no || "").trim(), clean(exam.title, 200) || null]),
   );
+  const seen = new Set();
   return edges
     .map((edge) => {
       const examRef = clean(edge.from, 40);
       const examNo = examRef.replace(/^exam:/, "");
       if (!examNo) return null;
+      // Exam documents and the edge route only accept four-digit exam numbers.
+      if (!/^\d{4}$/.test(examNo)) return null;
+      // When a staffing-guide corpus is supplied, only list exams that have pages.
+      if (documentableExamNumbers && !documentableExamNumbers.has(examNo)) return null;
+      if (seen.has(examNo)) return null;
+      seen.add(examNo);
       const through = clean(edge.observed?.through || edge.observed?.from, 40) || null;
       const evidence = edge.evidence && typeof edge.evidence === "object" ? edge.evidence : null;
       const provenance = evidence
@@ -393,7 +432,15 @@ function standableItems(items = []) {
   });
 }
 
-function categoryFromDomain(spec, intelligence, identity, certification, obligationsLookup, conformanceView = null) {
+function categoryFromDomain(
+  spec,
+  intelligence,
+  identity,
+  certification,
+  obligationsLookup,
+  conformanceView = null,
+  documentableExamNumbers = null,
+) {
   if (spec.id === "obligations") {
     const { total, items: preview, all_items, view, conformance } = obligationItems(obligationsLookup, identity, 12, conformanceView);
     const claimAll = (all_items || preview).map((item) => attachClaim(item, {
@@ -439,15 +486,20 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
 
   if (spec.id === "staffing") {
     const agencyRef = `agency:id:${identity.canonical_id}`;
-    const claimed = staffingItems(certification, agencyRef).map((item) => attachClaim(item, {
+    // Count every document-backed certification edge; only preview a short list.
+    const claimed = staffingItems(certification, agencyRef, {
+      limit: Number.MAX_SAFE_INTEGER,
+      documentableExamNumbers,
+    }).map((item) => attachClaim(item, {
       categoryId: spec.id,
       relation: spec.relation,
       identity,
     }));
-    const items = standableItems(claimed);
-    const agencyRow = (Array.isArray(certification?.by_agency) ? certification.by_agency : [])
-      .find((row) => row.agency_id === identity.canonical_id || row.ref === agencyRef);
-    const total = Number(agencyRow?.edge_count) || items.length;
+    const standable = standableItems(claimed);
+    // Count is the document-backed join size — never the raw certification edge
+    // total (those include historical exams with no /exams/:id/ page).
+    const total = standable.length;
+    const items = standable.slice(0, 8);
     const warrant_summary = summarizeCategoryWarrants(items);
     return {
       id: spec.id,
@@ -493,7 +545,7 @@ function categoryFromDomain(spec, intelligence, identity, certification, obligat
 /**
  * Build one agency constellation view from committed materializations.
  * @param {string} idOrName
- * @param {{ intelligence?: object, certification?: object, obligations?: object, cross_spine_gate?: object, generated_at?: string }} sources
+ * @param {{ intelligence?: object, certification?: object, obligations?: object, staffing_exams?: object|Array, staffing_exam_numbers?: Set|Array, cross_spine_gate?: object, generated_at?: string }} sources
  */
 export function buildAgencyConstellationView(idOrName, sources = {}) {
   const identity = reconcileAgencyIdentity(idOrName, sources.publisher_agency_rows || []);
@@ -506,6 +558,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     || null;
   const certification = sources.certification || null;
   const obligations = sources.obligations || null;
+  const documentableExamNumbers = documentableExamNumberSet(sources);
 
   let conformanceView = null;
   const committed = sources.process_conformance?.by_agency?.[identity.canonical_id] || null;
@@ -573,7 +626,15 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   }
 
   const categories = AGENCY_CONSTELLATION_CATEGORIES.map((spec) =>
-    categoryFromDomain(spec, intelligence, identity, certification, obligations, conformanceView));
+    categoryFromDomain(
+      spec,
+      intelligence,
+      identity,
+      certification,
+      obligations,
+      conformanceView,
+      documentableExamNumbers,
+    ));
 
   const matched = categories.filter((category) => category.status === "matched").length;
   const claims = categories.flatMap((category) =>

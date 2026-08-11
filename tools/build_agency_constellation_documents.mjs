@@ -42,6 +42,7 @@ function readJson(path) {
 function loadSources() {
   const intelligencePath = join(SITE, "data/entity_intelligence_lookup.json");
   const certificationPath = join(SITE, "data/exam_certification_constellation.json");
+  const staffingExamsPath = join(SITE, "data/staffing_exams.json");
   const obligationsPath = join(SITE, "data/agency_obligations_lookup.json");
   const processConformancePath = join(SITE, "data/process_conformance_lookup.json");
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
@@ -55,6 +56,9 @@ function loadSources() {
   return {
     intelligence: readJson(intelligencePath),
     certification: existsSync(certificationPath) ? readJson(certificationPath) : null,
+    // Staffing-guide corpus gates which certification exams become public links.
+    // Without it, historical civil-service list rows would link to missing /exams/:id/ pages.
+    staffing_exams: existsSync(staffingExamsPath) ? readJson(staffingExamsPath) : null,
     obligations: existsSync(obligationsPath) ? readJson(obligationsPath) : null,
     process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
