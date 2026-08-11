@@ -12,6 +12,7 @@ import {
   agencyPath,
   agencySubjectRef,
   buildAgencyConstellationView,
+  constellationObjectHref,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
@@ -320,6 +321,146 @@ test("tentative edges stay off the public list rather than shipping with hedges"
   assert.match(html, /1 linked/);
   assert.doesNotMatch(html, /not verified/i);
   assert.doesNotMatch(html, /maybe1|Possible award/);
+});
+
+test("constellationObjectHref prefers notice documents over SPA hash routes", () => {
+  assert.equal(
+    constellationObjectHref({
+      request_id: "20260724010",
+      subject_ref: "notice:20260724010",
+      href: "#notice/20260724010",
+      label: "Heat Pump Water Heaters",
+    }),
+    "/notices/20260724010",
+  );
+  assert.equal(
+    constellationObjectHref({
+      subject_ref: "notice:20210917109",
+      href: "#notice/20210917109",
+      label: "Award notice",
+    }),
+    "/notices/20210917109",
+  );
+  // Exam paths already document-shaped; leave them alone.
+  assert.equal(
+    constellationObjectHref({
+      subject_ref: "exam:7016",
+      href: "/exams/7016/",
+      label: "Caseworker",
+    }),
+    "/exams/7016/",
+  );
+});
+
+test("constellationObjectHref links contract rows without a notice to the vendor profile", () => {
+  assert.equal(
+    constellationObjectHref({
+      object_kind: "contract",
+      subject_ref: "contract:MA1-857-20228801961",
+      contract_id: "MA1-857-20228801961",
+      label: "QUADIENT INC",
+      href: null,
+      provenance: { source_system: "passport-public-contracts" },
+    }),
+    "/vendors/QUADIENT/",
+  );
+  assert.equal(
+    constellationObjectHref({
+      object_kind: "contract",
+      subject_ref: "contract:MA1-857-20220000136",
+      contract_id: "MA1-857-20220000136",
+      label: "T MINA SUPPLY LLC",
+      href: null,
+    }),
+    "/vendors/T%20MINA%20SUPPLY/",
+  );
+  // Null remains null when there is no notice and no firm name to route.
+  assert.equal(
+    constellationObjectHref({
+      object_kind: "contract",
+      subject_ref: "contract:CT-unknown",
+      label: null,
+      href: null,
+    }),
+    null,
+  );
+});
+
+test("agency contracts render document notice links and vendor links for passport rows", () => {
+  const view = buildAgencyConstellationView("citywide-administrative-services", {
+    intelligence: {
+      by_ref: {
+        "agency:id:citywide-administrative-services": {
+          domains: {
+            money: {
+              status: "matched",
+              count: 2,
+              objects: [
+                {
+                  subject_ref: "notice:20260724010",
+                  request_id: "20260724010",
+                  object_kind: "award",
+                  label: "Heat Pump Water Heaters",
+                  when: "2026-07-30",
+                  href: "#notice/20260724010",
+                  link_type: "published_by_agency",
+                  confidence: "strong",
+                  method: "agency_canonical_v1",
+                  provenance: {
+                    source_system: "ocp-recent-contract-awards",
+                    source_record_id: "ocp:20260724010",
+                    source_fields: ["agency_name"],
+                    basis: "money_agency_name",
+                    input_value: "Citywide Administrative Services",
+                  },
+                },
+                {
+                  subject_ref: "contract:MA1-857-20228801961",
+                  object_kind: "contract",
+                  contract_id: "MA1-857-20228801961",
+                  label: "QUADIENT INC",
+                  when: "12/16/2021",
+                  href: null,
+                  link_type: "published_by_agency",
+                  confidence: "strong",
+                  method: "agency_canonical_v1",
+                  provenance: {
+                    source_system: "passport-public-contracts",
+                    source_record_id: "passport:MA1-857-20228801961",
+                    source_fields: ["agency_name"],
+                    basis: "money_agency_name",
+                    input_value: "Citywide Administrative Services",
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+    certification: { edges: [], by_agency: [], by_exam: [] },
+  });
+  const contracts = view.categories.find((category) => category.id === "contracts");
+  assert.equal(contracts.items.length, 2);
+  const noticeItem = contracts.items.find((item) => item.id === "20260724010");
+  const contractItem = contracts.items.find((item) => item.subject_ref === "contract:MA1-857-20228801961");
+  assert.equal(noticeItem.href, "/notices/20260724010");
+  assert.equal(contractItem.href, "/vendors/QUADIENT/");
+  assert.equal(noticeItem.claim.object_href, "/notices/20260724010");
+  assert.equal(contractItem.claim.object_href, "/vendors/QUADIENT/");
+
+  const html = renderAgencyConstellationDocument(view);
+  assert.match(
+    html,
+    /class="ui-constellation-link agency-edge-link" href="\/notices\/20260724010"[^>]*>[\s\S]*?Heat Pump Water Heaters/,
+  );
+  assert.doesNotMatch(html, /agency-edge-link" href="#notice\/20260724010"/);
+  assert.match(
+    html,
+    /class="ui-constellation-link agency-edge-link" href="\/vendors\/QUADIENT\/"[^>]*>[\s\S]*?QUADIENT INC/,
+  );
+  // Exact warrant tokens stay claim inspectors, not the object destination.
+  assert.match(html, /edge-prov-why[\s\S]*?claim=contracts%3Anotice%3A20260724010/);
 });
 
 test("lookup materialization includes Parks multi-category demo when built", () => {
