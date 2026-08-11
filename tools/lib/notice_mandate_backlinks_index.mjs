@@ -24,7 +24,11 @@ import {
   buildMandateMeetingsView,
 } from "../../site/mandate_meetings_bridge.mjs";
 import { buildMandateRulesBridgeView } from "../../site/mandate_rules_bridge.mjs";
-import { MANDATE_RULE_PUBLICATION_TIER } from "../../site/process_conformance.mjs";
+import { buildMandateReportsReceiptView } from "../../site/mandate_reports_receipt.mjs";
+import {
+  MANDATE_RULE_PUBLICATION_TIER,
+  OBSERVATION_STATUS,
+} from "../../site/process_conformance.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -138,6 +142,43 @@ export function collectFromRulesView(view, byNotice = new Map()) {
 }
 
 /**
+ * Collect public report filing-receipt → notice backlinks.
+ * Only standable process-conformance observations (status=observed).
+ */
+export function collectFromReportsView(view, byNotice = new Map()) {
+  if (!view || !Array.isArray(view.mandates)) return byNotice;
+  const agency = agencyFields(view);
+  for (const mandate of view.mandates) {
+    const receipt = mandate?.filing_receipt || mandate?.observed_record;
+    if (!receipt?.request_id && !receipt?.href) continue;
+    if (mandate?.observation_status && mandate.observation_status !== OBSERVATION_STATUS.OBSERVED) {
+      continue;
+    }
+    const noticeId = receipt.request_id
+      || noticeIdFromSubject(receipt.subject_ref || receipt.href);
+    pushBacklink(byNotice, noticeId, {
+      ...agency,
+      mandate_id: mandate.mandate_id || mandate.obligation_id || mandate.subject_ref,
+      duty_text: mandate.duty_text,
+      citation: mandate.citation,
+      source_href: mandate.source_href,
+      relation: "mandate_report_filing",
+      publication_tier: MANDATE_RULE_PUBLICATION_TIER,
+    });
+  }
+  return byNotice;
+}
+
+/** Build report-bridge conformance items from the process-conformance lookup. */
+function reportsConformanceItems(agencyId, processConformance) {
+  const observations = processConformance?.by_agency?.[agencyId]?.observations || {};
+  return Object.entries(observations).map(([mandate_id, observation]) => ({
+    mandate_id,
+    observation,
+  }));
+}
+
+/**
  * Land-use edges target ZAP projects, not City Record notices, in v1.
  * If a public edge still carries a notice request_id, index it.
  */
@@ -209,6 +250,12 @@ export function buildNoticeMandateBacklinksLookup(sources = {}) {
       conformanceItems: rulesConformanceItems(id, sources.processConformance),
     });
     collectFromRulesView(rules, byNotice);
+
+    const reports = buildMandateReportsReceiptView(id, {
+      obligationsLookup: obligations,
+      conformanceItems: reportsConformanceItems(id, sources.processConformance),
+    });
+    collectFromReportsView(reports, byNotice);
 
     const land = buildMandateLandUseView(id, {
       ...common,

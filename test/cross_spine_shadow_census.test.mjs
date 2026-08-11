@@ -20,7 +20,8 @@ test("production shadow census reproduces the committed bridge baseline", () => 
     mandate_meeting: { public_inferred: 3, evidence_only: 48 },
     mandate_land_use: { public_inferred: 0, evidence_only: 9 },
     mandate_contract: { public_inferred: 1, evidence_only: 0 },
-    mandate_rule: { public_inferred: 0, evidence_only: 0 },
+    // Sanitation CWZ mandate_rule public edge after rule-attachment densify.
+    mandate_rule: { public_inferred: 1, evidence_only: 0 },
   });
   for (const relation of Object.values(receipt.relations)) {
     assert.ok(relation.denominators.pre_route_pairs >= relation.totals.public_inferred + relation.totals.evidence_only);

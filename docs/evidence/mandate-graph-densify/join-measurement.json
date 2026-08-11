@@ -1,0 +1,85 @@
+{
+  "schema": "cityscroll.mandate_graph_densify_measurement.v1",
+  "as_of": "2026-08-11",
+  "wave": "mand-graph-03/04 + reverse-backlink expansion",
+  "inputs": {
+    "rules_domain_rows": 100,
+    "reports_domain_rows": 10,
+    "procurement_trigger_mandates": 11
+  },
+  "process_conformance": {
+    "detectable_mandates": 703,
+    "observed_count_before": 0,
+    "observed_count_after": 3,
+    "public_edges": [
+      {
+        "agency_id": "commission-on-human-rights",
+        "mandate_id": "53107-001",
+        "notice_id": "20251001039",
+        "relation": "mandate_report_filing",
+        "method": "city_record_annual_report_publication_v1",
+        "precision_note": "Structural: statute requires City Record annual report; notice is that agency annual report series."
+      },
+      {
+        "agency_id": "commission-on-human-rights",
+        "mandate_id": "55348-004",
+        "notice_id": "20251001039",
+        "relation": "mandate_report_filing",
+        "method": "city_record_annual_report_publication_v1",
+        "precision_note": "Same structural City Record annual-report series as 53107-001."
+      },
+      {
+        "agency_id": "sanitation",
+        "mandate_id": "64116-001",
+        "notice_id": "20260605008",
+        "relation": "mandate_rule_filing",
+        "method": "topic_token_overlap_v1 + attachment densify",
+        "precision_note": "Gold CWZ field case: agency exact, commercial/waste/zone topic+body, nyc-charter:753 citation after GetFile PDF densify."
+      }
+    ],
+    "rejected_false_positives_during_build": [
+      "ACS concept-report title matches (procurement concept papers) excluded from reports densify",
+      "Weak bare section:1 / section:16 citation-only publishes blocked by isStrongCitationKey"
+    ]
+  },
+  "notice_mandate_backlinks": {
+    "notices_before": 1,
+    "edges_before": 1,
+    "notices_after": 6,
+    "edges_after": 7,
+    "by_relation_after": {
+      "implemented_by_contract": 1,
+      "mandate_report_filing": 2,
+      "mandate_rule_filing": 1,
+      "requires_public_hearing": 3
+    }
+  },
+  "procurement_contract_residual": {
+    "trigger_mandates": 11,
+    "public_edges": 1,
+    "template": {
+      "agency_id": "homeless-services",
+      "mandate_id": "66056-006",
+      "notice_id": "20210820102",
+      "relation": "implemented_by_contract"
+    },
+    "honest_residual": "10 of 11 procurement-trigger mandates lack a strong notice→contract authority-key edge with subject-scope overlap in the current entity-intelligence money dossier; no edge invented."
+  },
+  "precision_gate": {
+    "policy": "cross_spine_edge_policy_v2 / mandate_rule min_precision 0.9",
+    "rule_publication_requires": [
+      "agency_exact",
+      "expected_event_match",
+      "topic_overlap>=2",
+      "rule_body_overlap",
+      "strong citation_law_match",
+      "temporal_compatible",
+      "negative_evidence_free"
+    ],
+    "report_publication_requires": [
+      "agency_exact via collectAgencyObservationCandidates",
+      "report_or_study signal",
+      "topic score>=2 or structural annual-report join"
+    ]
+  }
+}
