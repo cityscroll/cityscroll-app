@@ -2,9 +2,21 @@
   "description": "Load-bearing deterministic variants for full-dollar formatting, feed field inclusion, and current permalink forms.",
   "currency": {
     "valid_positive_amounts": [
-      { "input": 1, "full": "$1", "on_page": "$1" },
-      { "input": 1000, "full": "$1,000", "on_page": "$1K" },
-      { "input": 1234567.89, "full": "$1,234,567.89", "on_page": "$1.23M" }
+      {
+        "input": 1,
+        "full": "$1",
+        "on_page": "$1"
+      },
+      {
+        "input": 1000,
+        "full": "$1,000",
+        "on_page": "$1K"
+      },
+      {
+        "input": 1234567.89,
+        "full": "$1,234,567.89",
+        "on_page": "$1.23M"
+      }
     ],
     "worker_usd_closure_count": 5
   },
@@ -26,8 +38,10 @@
       "url": "https://cityscroll.org/notices/20260805014",
       "title": "Playground reconstruction",
       "date": "2026-08-05T00:00:00.000",
-      "summary": "Parks & Recreation · $1,234,567.89 · → Acme & Sons LLC · due 2026-08-20 · event 2026-08-12 · 1 Centre Street",
-      "eventDate": "2026-08-12T10:30:00.000"
+      "summary": "Parks & Recreation \u00b7 $1,234,567.89 \u00b7 \u2192 Acme & Sons LLC \u00b7 due 2026-08-20 \u00b7 event 2026-08-12 \u00b7 1 Centre Street",
+      "eventDate": "2026-08-12T10:30:00.000",
+      "phase": "Award",
+      "nextStep": "Due 2026-08-20"
     }
   },
   "permalinks": [

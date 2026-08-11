@@ -267,7 +267,7 @@ test("money awards rollup renders real vendor_name, never blanket vendor unliste
     assert.equal(result.error, undefined, result.error || "no error");
     assert.equal(sent.length, 1, "rollup must send one consolidated digest");
     const html = sent[0].html;
-    assert.match(html, /contract money/);
+    assert.match(html, /Contracts and RFPs|contract money/);
     assert.match(html, /awards only/);
     assert.match(html, /Adkins Cleaning &amp; Landscaping LLC|Adkins Cleaning & Landscaping LLC/);
     assert.match(html, /Family Services Network of New York Inc/);

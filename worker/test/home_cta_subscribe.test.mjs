@@ -102,7 +102,7 @@ test("homepage CTA payload: empty money + weekly → confirm email, nothing stor
     assert.equal(subKeys.length, 0, "nothing stored until confirm click");
     assert.equal(sent.length, 1);
     assert.match(sent[0].html, /confirm/i);
-    assert.match(sent[0].html, /all notices|contract money/i);
+    assert.match(sent[0].html, /all notices|Contracts and RFPs|contract money/i);
     assert.match(sent[0].html, /weekly/i);
     assert.equal(sent[0].to, "reader@example.com");
   } finally {
