@@ -76,8 +76,9 @@ test("Following list preview is a slim subset — dig item awareness stays digIt
     new URL("../site/following_view.mjs", import.meta.url),
     "utf8",
   );
-  // Following shows title/summary for scope preview, not a third dig-item renderer.
-  assert.match(following, /function previewItem/);
+  // Following uses a documented digItem-shaped slim subset (phase/next-step chips),
+  // not the full digItemHTML / subDigestHtml email item renderer.
+  assert.match(following, /function followingPreviewItemHtml/);
   assert.doesNotMatch(following, /function digItemHTML/);
-  assert.match(following, /14 days|still-watching/i);
+  assert.match(following, /14 quiet days|still-watching/i);
 });
