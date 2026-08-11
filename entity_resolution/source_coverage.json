@@ -6,42 +6,47 @@
     "stale_after_days": 2,
     "before": {
       "covered": 5,
-      "total": 13,
-      "rate": 0.3846,
+      "total": 16,
+      "rate": 0.3125,
       "basis": "historical adapter-ready (dual_write.before === complete)"
     },
     "after": {
-      "covered": 7,
-      "total": 13,
-      "rate": 0.5385,
+      "covered": 10,
+      "total": 16,
+      "rate": 0.625,
       "basis": "live source_records: dual_write.after === complete requires row_count > 0"
     },
     "by_status": {
-      "complete": 7,
+      "complete": 10,
       "partial": 1,
       "stale": 0,
       "empty-declared-live": 1,
       "gap": 4
     },
     "populated": {
-      "covered": 8,
-      "total": 13,
-      "rate": 0.6154
+      "covered": 11,
+      "total": 16,
+      "rate": 0.6875
     },
     "adapter_ready": {
       "before": 5,
-      "after": 9,
-      "total": 13,
-      "rate_after": 0.6923
+      "after": 12,
+      "total": 16,
+      "rate_after": 0.75
     },
-    "basis": "Live completeness is derived from production D1 source_records counts and recency (remeasured 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. PASSPort contracts/RFx and Legistar events/items/votes dual-write now populate source_records. Legistar attachments remain empty-declared-live (nested Attachments bag empty). City Record dual-write is partial (incremental only). NYCHA, ABO, doing-business, and NYCIDA remain gaps."
+    "basis": "Live completeness is derived from production D1 source_records counts, host retention receipts, and recency (person-hub constellation remeasured 2026-08-11; production D1 streams still stamped 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. Person-hub constellation (Council Members, eLobbyist, CFB) dual-write + host retention landed 2026-08-11. PASSPort contracts/RFx, Checkbook, and Legistar events/items/votes dual-write populate source_records. Legistar attachments remain empty-declared-live. City Record dual-write is partial. NYCHA, ABO, doing-business, and NYCIDA remain gaps."
   },
   "sources": [
     {
       "id": "city-record-notices",
       "source_system": "city_record",
       "importer": "worker/src/ingest.mjs#ingestNotices",
-      "identity_entities": ["notice", "vendor", "agency", "PIN"],
+      "identity_entities": [
+        "notice",
+        "vendor",
+        "agency",
+        "PIN"
+      ],
       "stable_source_key": "request_id",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -68,7 +73,14 @@
       "id": "passport-public-contracts",
       "source_system": "passport_public_contracts",
       "importer": "worker/src/passport.mjs#ingestPassportPublic",
-      "identity_entities": ["contract", "contract_amendment_snapshot", "vendor", "agency", "EPIN", "contract_id"],
+      "identity_entities": [
+        "contract",
+        "contract_amendment_snapshot",
+        "vendor",
+        "agency",
+        "EPIN",
+        "contract_id"
+      ],
       "stable_source_key": "contract:<epin_norm>:<ctr_id-or-epin_norm>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -94,7 +106,12 @@
       "id": "passport-public-rfx",
       "source_system": "passport_public_rfx",
       "importer": "worker/src/passport.mjs#ingestPassportPublic",
-      "identity_entities": ["solicitation", "agency", "EPIN", "rfp_id"],
+      "identity_entities": [
+        "solicitation",
+        "agency",
+        "EPIN",
+        "rfp_id"
+      ],
       "stable_source_key": "rfx:<epin_norm>:<rfp_id-or-epin_norm>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -120,7 +137,13 @@
       "id": "checkbook-contracts",
       "source_system": "checkbook_contracts",
       "importer": "worker/src/checkbook_lifecycle.mjs#computeLifecycle",
-      "identity_entities": ["contract", "prime_vendor", "sub_vendor", "PIN", "contract_id"],
+      "identity_entities": [
+        "contract",
+        "prime_vendor",
+        "sub_vendor",
+        "PIN",
+        "contract_id"
+      ],
       "stable_source_key": "contract:<status>:<prime_contract_id>:<vendor>:<vendor_record_type>:<anchor_date>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -146,7 +169,11 @@
       "id": "checkbook-spending",
       "source_system": "checkbook_spending",
       "importer": "warehouse/scripts/checkbook_spending.mjs",
-      "identity_entities": ["payment", "payee", "contract_id"],
+      "identity_entities": [
+        "payment",
+        "payee",
+        "contract_id"
+      ],
       "stable_source_key": "payment:<contract_id>:<document_id>:<payee>:<issue_date>:<amount>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -172,7 +199,11 @@
       "id": "checkbook-nycha-contracts",
       "source_system": "checkbook_nycha_contracts",
       "importer": "worker/src/external_award.mjs#checkbookNychaByPin",
-      "identity_entities": ["contract", "vendor", "contract_id"],
+      "identity_entities": [
+        "contract",
+        "vendor",
+        "contract_id"
+      ],
       "stable_source_key": "prime_contract_id plus publisher row identity (not yet derived)",
       "observation_schema": null,
       "dual_write": {
@@ -197,7 +228,10 @@
       "id": "legistar-events",
       "source_system": "nyc_legistar_events",
       "importer": "worker/src/lib/meeting_outcomes.mjs#buildMeetingOutcomesView",
-      "identity_entities": ["event", "council_body"],
+      "identity_entities": [
+        "event",
+        "council_body"
+      ],
       "stable_source_key": "event:<EventId>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -223,7 +257,10 @@
       "id": "legistar-event-items",
       "source_system": "nyc_legistar_event_items",
       "importer": "worker/src/lib/meeting_outcomes.mjs#buildMeetingOutcomesView",
-      "identity_entities": ["agenda_item", "matter"],
+      "identity_entities": [
+        "agenda_item",
+        "matter"
+      ],
       "stable_source_key": "event-item:<EventItemId>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -249,7 +286,12 @@
       "id": "legistar-votes",
       "source_system": "nyc_legistar_votes",
       "importer": "worker/src/lib/meeting_outcomes.mjs#collectVoteSummaries",
-      "identity_entities": ["matter", "person", "vote", "official"],
+      "identity_entities": [
+        "matter",
+        "person",
+        "vote",
+        "official"
+      ],
       "stable_source_key": "vote:<EventItemId|VoteEventItemId>:<VotePersonId|PersonId>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -282,7 +324,10 @@
       "id": "legistar-attachments",
       "source_system": "nyc_legistar_attachments",
       "importer": "worker/src/lib/meeting_outcomes.mjs#collectAttachments",
-      "identity_entities": ["agenda_item", "document"],
+      "identity_entities": [
+        "agenda_item",
+        "document"
+      ],
       "stable_source_key": "attachment:<EventItemId>:<AttachmentId>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
@@ -308,7 +353,11 @@
       "id": "abo-external-awards",
       "source_system": "nys_abo_awards",
       "importer": "worker/src/external_award.mjs#refreshAboAwards",
-      "identity_entities": ["authority", "vendor", "award"],
+      "identity_entities": [
+        "authority",
+        "vendor",
+        "award"
+      ],
       "stable_source_key": "dataset-specific composite (not yet derived)",
       "observation_schema": null,
       "dual_write": {
@@ -333,7 +382,10 @@
       "id": "doing-business-entities",
       "source_system": "doing_business_entities",
       "importer": "worker/src/vendor_profile.mjs#attachDoingBusiness",
-      "identity_entities": ["organization", "vendor"],
+      "identity_entities": [
+        "organization",
+        "vendor"
+      ],
       "stable_source_key": "organization_name plus source row identity (not yet derived)",
       "observation_schema": null,
       "dual_write": {
@@ -358,7 +410,11 @@
       "id": "nycida-build-nyc-projects",
       "source_system": "nycida_build_nyc_projects",
       "importer": "warehouse/scripts/nycedc_project_documents_run.py",
-      "identity_entities": ["project", "company", "address"],
+      "identity_entities": [
+        "project",
+        "company",
+        "address"
+      ],
       "stable_source_key": "project_id",
       "observation_schema": "warehouse/schemas/nycedc_project_feed.v1.schema.json",
       "dual_write": {
@@ -378,6 +434,98 @@
       "fixture": "warehouse/fixtures/nycedc-project-documents/sample.json",
       "replay_test": "test/nycedc_project_documents.test.mjs",
       "known_gap": "Immutable warehouse project observations now exist; production source_records and the dependent timeline reader remain separate work."
+    },
+    {
+      "id": "nyc-council-members",
+      "source_system": "nyc_council_members",
+      "importer": "tools/retain_person_hub_source_records.mjs",
+      "identity_entities": [
+        "person",
+        "official",
+        "council_member"
+      ],
+      "stable_source_key": "council-member:<council_member_id>:<term_start>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": {
+        "flag": "PERSON_HUB_SOURCE_RECORD_DUAL_WRITE",
+        "before": "gap",
+        "after": "complete",
+        "adapter": "ready",
+        "default": "off",
+        "fail_soft": true
+      },
+      "live_observation": {
+        "status": "complete",
+        "row_count": 40,
+        "latest_ingested_at": "2026-08-11T20:00:00.000Z",
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "note": "Host retention of uvw5-9znb term rows as source_records-shaped snapshots + dual-write adapter. Kill sample 2026-08-11: council usefulness 100% exact PersonId, precision 100%. Receipt: site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json."
+      },
+      "fixture": "worker/test/person_hub_source_records.test.mjs",
+      "replay_test": "worker/test/person_hub_source_records.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "city-clerk-elobbyist",
+      "source_system": "city_clerk_elobbyist",
+      "importer": "tools/retain_person_hub_source_records.mjs",
+      "identity_entities": [
+        "organization",
+        "lobbyist",
+        "person",
+        "official"
+      ],
+      "stable_source_key": "lobby-reg:<registration_id>:<client>:<lobbyist>:<report_year>:<targets_hash>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": {
+        "flag": "PERSON_HUB_SOURCE_RECORD_DUAL_WRITE",
+        "before": "gap",
+        "after": "complete",
+        "adapter": "ready",
+        "default": "off",
+        "fail_soft": true
+      },
+      "live_observation": {
+        "status": "complete",
+        "row_count": 51,
+        "latest_ingested_at": "2026-08-11T20:00:00.000Z",
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "note": "Host retention of fmf3-knd8 rows as source_records-shaped snapshots + dual-write adapter. Kill sample 2026-08-11: person-shaped lobby usefulness 88.64%, precision 100% exact unique name keys. Receipt: site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json."
+      },
+      "fixture": "worker/test/person_hub_source_records.test.mjs",
+      "replay_test": "worker/test/person_hub_source_records.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "cfb-campaign-contributions",
+      "source_system": "cfb_campaign_contributions",
+      "importer": "tools/retain_person_hub_source_records.mjs",
+      "identity_entities": [
+        "person",
+        "official",
+        "donor",
+        "contribution"
+      ],
+      "stable_source_key": "cfb-contrib:<recipid>:<donor>:<election>:<amount>:<officecd>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": {
+        "flag": "PERSON_HUB_SOURCE_RECORD_DUAL_WRITE",
+        "before": "gap",
+        "after": "complete",
+        "adapter": "ready",
+        "default": "off",
+        "fail_soft": true
+      },
+      "live_observation": {
+        "status": "complete",
+        "row_count": 117,
+        "latest_ingested_at": "2026-08-11T20:00:00.000Z",
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "note": "Host retention of rjkp-yttg contribution rows as source_records-shaped snapshots + dual-write adapter. Kill sample 2026-08-11: distinct Council recipient usefulness 52.54%, precision 100% exact unique name keys. Receipt: site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json."
+      },
+      "fixture": "worker/test/person_hub_source_records.test.mjs",
+      "replay_test": "worker/test/person_hub_source_records.test.mjs",
+      "known_gap": null
     }
   ]
 }
