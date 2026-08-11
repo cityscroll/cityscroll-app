@@ -25,6 +25,7 @@ export function buildSubsidyProjectPanelView(payload) {
       address: clean(row.address),
       requested_benefit: finiteOrNull(row.requested_benefit),
       estimated_public_cost: finiteOrNull(row.estimated_public_cost),
+      project_cost: finiteOrNull(row.project_cost),
       lifecycle_dates,
       official_documents_url,
     });
@@ -55,6 +56,9 @@ export function subsidyProjectPanelHTML(payloadOrView, opts = {}) {
     const facts = [];
     facts.push(factRow(t("subsidy_project_company_lbl"), project.company, esc));
     if (project.address) facts.push(factRow(t("subsidy_project_address_lbl"), project.address, esc));
+    if (project.project_cost != null) {
+      facts.push(factRow(t("subsidy_money_total_project_cost_lbl"), money(project.project_cost), esc));
+    }
     if (project.requested_benefit != null) {
       facts.push(factRow(t("subsidy_money_requested_lbl"), money(project.requested_benefit), esc));
     }
@@ -136,6 +140,7 @@ function defaultT(key) {
     subsidy_project_heading: "Official project records",
     subsidy_project_company_lbl: "Company",
     subsidy_project_address_lbl: "Project address",
+    subsidy_money_total_project_cost_lbl: "Total project cost",
     subsidy_money_requested_lbl: "Requested benefit",
     subsidy_money_estimated_lbl: "Estimated public cost",
     subsidy_project_lifecycle_dates_lbl: "Lifecycle dates",

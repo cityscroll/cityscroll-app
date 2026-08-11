@@ -40,6 +40,10 @@ function rc2ProjectToLifecycleRow(project, requestId) {
     project_address: project.address,
     requested_benefit_amount: project.requested_benefit,
     estimated_public_cost: project.estimated_public_cost,
+    // Receipt-backed project_cost is a source field when minutes/spreadsheets state it.
+    // Preserve null; never invent a cost from benefit or public-cost siblings.
+    project_cost: project.project_cost,
+    total_project_cost: project.project_cost,
     application_date: application.date,
     application_status: application.status,
     board_decision_date: board.date,
