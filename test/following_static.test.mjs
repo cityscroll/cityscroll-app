@@ -56,7 +56,7 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /name="filter"[^>]+value="[^"]*curb/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
   assert.match(html, /following-cadence-card/);
-  assert.match(html, /Monday check-in even if empty/);
+  assert.match(html, /Monday note even when nothing is new/);
   assert.match(html, /data-following-rule-line/);
   assert.match(html, /Notify me when/);
   assert.match(html, /following-digitem|following-dig-title/);
@@ -238,7 +238,7 @@ test("composeWatchRuleSentence makes refine conjunction visible", () => {
     matchCount: 0,
   }, templates);
   assert.equal(citywideDaily.citywideDailyWarn, true);
-  assert.match(renderFollowingDocument(citywideDaily), /citywide and daily/);
+  assert.match(renderFollowingDocument(citywideDaily), /covers the whole city/);
 });
 
 test("Following preview items use digItem-shaped phase, next step, and deep link", () => {
@@ -268,13 +268,13 @@ test("Following pack cards explain rollup attention cost before commit", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
   assert.match(html, /data-pack-attention/);
   assert.match(html, /one weekly email with \d+ sections/);
-  assert.match(html, /Sample subject: CityScroll: still watching/);
+  assert.match(html, /Sample subject line: CityScroll: still watching/);
   const attention = packAttentionCopy({
     title: "Demo",
     watches: [{ label: "A" }, { label: "B" }],
   }, { frequency: "weekly" });
   assert.equal(attention.watchCount, 2);
-  assert.match(attention.summary, /2 watches → one weekly email with 2 sections/);
+  assert.match(attention.summary, /makes 2 watches\. You get one weekly email with 2 sections/);
   assert.equal(attention.sampleSubject, "CityScroll: still watching — 2 watches");
 });
 

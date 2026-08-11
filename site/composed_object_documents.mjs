@@ -211,9 +211,9 @@ function packMembersMarkup(view) {
   return `<section class="node-section node-card civic-object-section" data-export-class="object_members" data-pack-attention="1">
     <h2>Watches in this pack</h2>
     <p class="following-pack-cost" data-pack-cost>${esc(attention.summary)}</p>
-    <p class="muted node-muted" data-pack-sample-subject>Sample subject: ${esc(attention.sampleSubject)}</p>
+    <p class="muted node-muted" data-pack-sample-subject>Sample subject line: ${esc(attention.sampleSubject)}</p>
     <ul class="node-record-list">${items}</ul>
-    <p class="muted node-muted">Each watch still uses one confirmation email when you subscribe from a pack member link. With more than one active watch on the same address, CityScroll sends one combined email with a section per watch.</p>
+    <p class="muted node-muted">Each watch needs its own confirm link. When you have more than one watch, we send one email with a part for each watch.</p>
   </section>`;
 }
 

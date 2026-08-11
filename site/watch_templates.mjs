@@ -151,7 +151,7 @@ export function packAttentionCopy(template, opts = {}) {
   const watchWord = n === 1 ? "watch" : "watches";
   const summary = n === 0
     ? "This set has no watches yet."
-    : `This set creates ${n} ${watchWord} → one ${frequency} email with ${n} ${sectionWord}.`;
+    : `This set makes ${n} ${watchWord}. You get one ${frequency} email with ${n} ${sectionWord}.`;
   const sampleSubject = n > 1
     ? `CityScroll: still watching — ${n} watches`
     : `CityScroll: still watching — ${labels[0] || template?.title || "your watches"}`;

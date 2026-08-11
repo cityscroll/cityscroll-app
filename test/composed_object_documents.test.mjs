@@ -23,7 +23,7 @@ test("monitor packs are independently addressable typed documents", () => {
   assert.match(html, /data-object-export="xlsx"/);
   assert.match(html, /data-pack-attention/);
   assert.match(html, /one weekly email with \d+ sections/);
-  assert.match(html, /Sample subject: CityScroll: still watching/);
+  assert.match(html, /Sample subject line: CityScroll: still watching/);
 });
 
 test("composed-object rendering fails closed on reader-facing cruft", () => {

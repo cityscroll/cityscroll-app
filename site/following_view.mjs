@@ -350,7 +350,7 @@ function topicPlacePickersHtml(view) {
 function ruleLineHtml(view) {
   if (!view.requested) return "";
   const warn = view.citywideDailyWarn
-    ? `<p class="following-warning" data-following-citywide-warn role="status">This watch is citywide and daily — quiet days stay silent, but matches anywhere in the city can email you. Add a place or switch to weekly for a lighter inbox.</p>`
+    ? `<p class="following-warning" data-following-citywide-warn role="status">This daily watch covers the whole city. Quiet days stay quiet. A match in any borough can email you. Pick a place or choose weekly to cut noise.</p>`
     : "";
   return `<div class="following-rule" data-following-rule-panel>
     <p class="following-rule-line" data-following-rule-line>${esc(view.ruleSentence)}</p>
@@ -388,17 +388,17 @@ function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
   const weeklyOn = view.frequency === "weekly";
   const idBase = form === "subscribe" ? "following-sub" : "following";
   return `<fieldset class="following-cadence" data-following-cadence>
-    <legend>Cadence</legend>
-    <div class="following-cadence-cards" role="radiogroup" aria-label="Email cadence">
+    <legend>How often to email</legend>
+    <div class="following-cadence-cards">
       <label class="following-cadence-card${dailyOn ? " is-selected" : ""}">
         <input type="radio" name="${esc(name)}" value="daily"${dailyOn ? " checked" : ""} data-following-freq="daily">
         <span class="following-cadence-title">Daily</span>
-        <span class="following-cadence-copy">Email only when something matches. Quiet days stay silent. Heartbeat after about 14 quiet days.</span>
+        <span class="following-cadence-copy">Email only on match days. Quiet days stay quiet. After about 14 quiet days, we send a short check-in.</span>
       </label>
       <label class="following-cadence-card${weeklyOn ? " is-selected" : ""}">
-        <input type="radio" name="${esc(name)}" value="weekly"${weeklyOn ? " checked" : ""} data-following-freq="weekly" id="${idBase}-freq-weekly">
+        <input type="radio" name="${esc(name)}" value="weekly"${weeklyOn ? " checked" : ""} data-following-freq="weekly">
         <span class="following-cadence-title">Weekly</span>
-        <span class="following-cadence-copy">Monday check-in even if empty.</span>
+        <span class="following-cadence-copy">A Monday note even when nothing is new.</span>
       </label>
     </div>
   </fieldset>`;
@@ -428,7 +428,7 @@ function templateHtml(template) {
   return `<article class="following-pack" data-pack-id="${esc(template.id)}">
     <h3>${esc(template.title)}</h3>
     <p class="following-pack-cost" data-pack-attention>${esc(attention.summary)}</p>
-    <p class="following-pack-subject muted">Sample subject: ${esc(attention.sampleSubject)}</p>
+    <p class="following-pack-subject muted">Sample subject line: ${esc(attention.sampleSubject)}</p>
     <details><summary>Show watches</summary><ul>${watches}</ul></details>
     ${constellationLink({ href, label: "Open this pack", className: "following-pack-link", escape: esc })}
   </article>`;
@@ -507,7 +507,7 @@ export function renderFollowingBody(view) {
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
-    data-msg-citywide-daily-warn="This watch is citywide and daily — quiet days stay silent, but matches anywhere in the city can email you. Add a place or switch to weekly for a lighter inbox."
+    data-msg-citywide-daily-warn="This daily watch covers the whole city. Quiet days stay quiet. A match in any borough can email you. Pick a place or choose weekly to cut noise."
     data-following-lens="${esc(view.lens)}"
     data-following-filter="${esc(JSON.stringify(view.filter))}">
     <section class="following-hero">
