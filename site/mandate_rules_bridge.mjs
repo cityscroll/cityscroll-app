@@ -1,4 +1,4 @@
-import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 
 /**
  * Mandates → Rules constellation card (first iteration).
@@ -7,6 +7,8 @@ import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs"
  * to the agency's Rules-lens City Record filings (proposal → hearing → adoption).
  * Join path: mandate → agency identity → Rules-lens records. Per-mandate
  * observed filings from process-conformance topic join appear when present.
+ * Co-located graph neighbors (source law + agency Rules/Meetings/Contracts
+ * scopes) always open from each mandate row even when observed_links is 0.
  *
  * Product term: mandates. Upstream extract vocabulary is not user-facing.
  */
@@ -14,6 +16,14 @@ import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs"
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import {
+  mandateMatterEdgeFromRow,
+  mandateRulesSectionTitle,
+  mandateRulesStatusParts,
+  normalizeMandateGraphNeighbors,
+  renderMandateRowGraphActions,
+  renderMandateSectionNeighborActions,
+} from "./mandate_graph_neighbors.mjs";
 import { noticeDocumentPath } from "./notice_permalink.mjs";
 import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import {
@@ -86,6 +96,9 @@ export function agencyRulesFollowHref(agencyIdOrName, { frequency = "weekly" } =
  *   rulesCount?: number,
  *   rulesBrowseHref?: string,
  *   rulesFollowHref?: string,
+ *   meetingsBrowseHref?: string,
+ *   contractsBrowseHref?: string,
+ *   graphNeighbors?: object,
  *   conformanceItems?: object[],
  *   limit?: number,
  * }} sources
@@ -106,6 +119,14 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
     if (mid) confById.set(mid, item);
   }
 
+  const graphNeighbors = normalizeMandateGraphNeighbors({
+    rules_browse_href: sources.rulesBrowseHref || sources.graphNeighbors?.rules_browse_href,
+    meetings_browse_href: sources.meetingsBrowseHref
+      || sources.graphNeighbors?.meetings_browse_href,
+    contracts_browse_href: sources.contractsBrowseHref
+      || sources.graphNeighbors?.contracts_browse_href,
+  });
+
   const limit = Math.max(1, Math.min(Number(sources.limit) || 12, 40));
   const mandates = rulemaking.slice(0, limit).map((row) => {
     const conf = confById.get(row.obligation_id) || null;
@@ -124,6 +145,7 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
         publication: MANDATE_RULE_PUBLICATION_TIER,
       }
       : null;
+    const matter = mandateMatterEdgeFromRow(row);
     return {
       mandate_id: row.obligation_id,
       subject_ref: mandateSubjectRef(row.obligation_id),
@@ -133,7 +155,9 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
       deadline_date: clean(row.deadline?.computed_date, 20) || null,
       deadline_text: clean(row.deadline?.text || row.deadline_text, 240) || null,
       recurrence: clean(row.recurrence, 40) || null,
-      source_href: clean(row.source?.legistar_url || row.href, 400) || null,
+      matter_id: matter?.matter_id || null,
+      source_href: matter?.href || null,
+      source_law_relation: matter ? "source_law" : null,
       observation_status: observed
         ? OBSERVATION_STATUS.OBSERVED
         : (obs?.status || null),
@@ -186,15 +210,22 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
       rules_items: [],
       copy: MANDATE_RULES_BRIDGE_COPY,
       share_path: agencyMandateRulesPath(identity.canonical_id),
-      rules_browse_href: sources.rulesBrowseHref || "",
+      rules_browse_href: graphNeighbors?.rules_browse_href || sources.rulesBrowseHref || "",
       rules_follow_href: sources.rulesFollowHref
         || agencyRulesFollowHref(identity.canonical_id),
       rulemaking_mandates_follow_href: agencyObligationsFollowHref(identity.canonical_id, {
         deliverableType: "rulemaking",
       }),
+      graph_neighbors: graphNeighbors,
+      section_title: mandateRulesSectionTitle({ observed_links: 0 }),
     };
   }
 
+  const counts = {
+    rulemaking_mandates: mandateTotal,
+    rules_filings: rulesTotal,
+    observed_links: observedCount,
+  };
   return {
     schema: MANDATE_RULES_BRIDGE_SCHEMA,
     method: MANDATE_RULES_BRIDGE_METHOD,
@@ -203,21 +234,19 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
     agency_id: identity.canonical_id,
     agency_name: identity.canonical_name,
     subject_ref: `agency:id:${identity.canonical_id}`,
-    counts: {
-      rulemaking_mandates: mandateTotal,
-      rules_filings: rulesTotal,
-      observed_links: observedCount,
-    },
+    counts,
     mandates,
     rules_items: rulesItems,
     copy: MANDATE_RULES_BRIDGE_COPY,
     share_path: agencyMandateRulesPath(identity.canonical_id),
-    rules_browse_href: sources.rulesBrowseHref || "",
+    rules_browse_href: graphNeighbors?.rules_browse_href || sources.rulesBrowseHref || "",
     rules_follow_href: sources.rulesFollowHref
       || agencyRulesFollowHref(identity.canonical_id),
     rulemaking_mandates_follow_href: agencyObligationsFollowHref(identity.canonical_id, {
       deliverableType: "rulemaking",
     }),
+    graph_neighbors: graphNeighbors,
+    section_title: mandateRulesSectionTitle(counts),
   };
 }
 
@@ -228,17 +257,13 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
 export function renderMandateRulesBridgeSection(view) {
   if (!view || view.status !== "matched") return "";
   const counts = view.counts || {};
-  const statusLine = [
-    counts.rulemaking_mandates
-      ? `${counts.rulemaking_mandates} rulemaking mandate${counts.rulemaking_mandates === 1 ? "" : "s"}`
-      : null,
-    counts.rules_filings
-      ? `${counts.rules_filings} Rules filing${counts.rules_filings === 1 ? "" : "s"}`
-      : null,
-    counts.observed_links
-      ? `${counts.observed_links} linked filing${counts.observed_links === 1 ? "" : "s"}`
-      : null,
-  ].filter(Boolean).join(" · ");
+  const statusLine = mandateRulesStatusParts(counts).join(" · ");
+  const sectionTitle = view.section_title || mandateRulesSectionTitle(counts);
+  const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
+    rules_browse_href: view.rules_browse_href,
+    meetings_browse_href: view.meetings_browse_href,
+    contracts_browse_href: view.contracts_browse_href,
+  });
 
   const mandateList = (view.mandates || []).length
     ? `<ul class="node-record-list mandate-rules-mandates" data-bridge-side="mandates">${
@@ -254,15 +279,19 @@ export function renderMandateRulesBridgeSection(view) {
         const observed = item.observed_record?.href
           ? ` · ${constellationLink({ href: item.observed_record.href, label: `City Record: ${item.observed_record.label || item.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
           : "";
-        const source = item.source_href
-          ? ` · ${officialSourceLink({ href: item.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
-          : "";
+        const neighbors = renderMandateRowGraphActions({
+          source_href: item.source_href,
+          matter_id: item.matter_id,
+          graph_neighbors: graphNeighbors,
+          prefer: "rules",
+          escape: esc,
+        });
         const chip = item.observation_status === OBSERVATION_STATUS.OBSERVED
           ? `<span class="mandate-obs-chip mandate-obs-observed" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}">${esc(item.observation_label || "Observed in City Record")}</span>`
           : "";
-        return `<li class="node-record mandate-rules-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="rulemaking"${item.observation_status ? ` data-observation-status="${esc(item.observation_status)}"` : ""}>
+        return `<li class="node-record mandate-rules-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="rulemaking"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${item.observation_status ? ` data-observation-status="${esc(item.observation_status)}"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
-          <span class="muted node-muted">${meta}${observed}${source}</span>
+          <span class="muted node-muted">${meta}${observed}${neighbors}</span>
         </li>`;
       }).join("")
     }</ul>`
@@ -291,10 +320,17 @@ export function renderMandateRulesBridgeSection(view) {
     parts.push(`<h3 class="node-subhead">Rules-lens activity</h3>${rulesList}`);
   }
 
+  // Section chrome: Rules (home lens) plus co-located Meetings/Contracts scopes.
+  const neighborChrome = renderMandateSectionNeighborActions({
+    graph_neighbors: {
+      rules_browse_href: view.rules_browse_href || graphNeighbors?.rules_browse_href,
+      meetings_browse_href: graphNeighbors?.meetings_browse_href,
+      contracts_browse_href: graphNeighbors?.contracts_browse_href,
+    },
+    escape: esc,
+  });
   const actions = [
-    view.rules_browse_href
-      ? `<a class="node-action civic-object-action" href="${esc(view.rules_browse_href)}">Open in Rules</a>`
-      : "",
+    neighborChrome,
     view.rulemaking_mandates_follow_href
       ? `<a class="node-action civic-object-action" href="${esc(view.rulemaking_mandates_follow_href)}">Watch rulemaking mandates</a>`
       : "",
@@ -307,8 +343,8 @@ export function renderMandateRulesBridgeSection(view) {
   ].filter(Boolean).join("");
 
   const copy = view.copy || MANDATE_RULES_BRIDGE_COPY;
-  return `<section id="mandates-rules" class="node-section node-card civic-object-section mandate-rules-bridge" data-agency-constellation-card="mandates-rules" data-method="${esc(view.method || MANDATE_RULES_BRIDGE_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members">
-    <h2>Rulemaking mandates · Rules activity <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
+  return `<section id="mandates-rules" class="node-section node-card civic-object-section mandate-rules-bridge" data-agency-constellation-card="mandates-rules" data-method="${esc(view.method || MANDATE_RULES_BRIDGE_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members"${(counts.observed_links || 0) === 0 ? ' data-mandate-edges="co-located-only"' : ""}>
+    <h2>${esc(sectionTitle)} <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || MANDATE_RULES_BRIDGE_COPY.lead)}</p>
     ${parts.join("")}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}

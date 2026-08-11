@@ -1,4 +1,4 @@
-import { constellationLink, officialSourceDisclosure } from "./affordance_grammar.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 
 /**
  * Mandates → Required Reports receipt card (first iteration).
@@ -6,13 +6,22 @@ import { constellationLink, officialSourceDisclosure } from "./affordance_gramma
  * Connects report-type statutory mandates (deliverable_type = report) to the
  * observed City Record filing when process-conformance topic join hits — a
  * filing receipt that the required report appeared in the public record.
- * Where no filing is observed yet, show the mandate and deadline only.
+ * Where no filing is observed yet, show the mandate and deadline only, with
+ * co-located graph neighbors (source law + agency Contracts/Rules/Meetings).
  *
  * Product term: mandates. Upstream extract vocabulary is not user-facing.
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
+import {
+  mandateMatterEdgeFromRow,
+  mandateReportsSectionTitle,
+  mandateReportsStatusParts,
+  normalizeMandateGraphNeighbors,
+  renderMandateRowGraphActions,
+  renderMandateSectionNeighborActions,
+} from "./mandate_graph_neighbors.mjs";
 import { OBSERVATION_LABELS, OBSERVATION_STATUS } from "./process_conformance.mjs";
 
 export const MANDATE_REPORTS_RECEIPT_SCHEMA = "cityscroll.mandate_reports_receipt.v1";
@@ -58,6 +67,10 @@ export function agencyMandateReportsPath(agencyIdOrName) {
  * @param {{
  *   obligationsLookup?: object,
  *   conformanceItems?: object[],
+ *   rulesBrowseHref?: string,
+ *   meetingsBrowseHref?: string,
+ *   contractsBrowseHref?: string,
+ *   graphNeighbors?: object,
  *   limit?: number,
  * }} sources
  */
@@ -74,6 +87,14 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
     const mid = item?.mandate_id || item?.obligation_id;
     if (mid) confById.set(mid, item);
   }
+
+  const graphNeighbors = normalizeMandateGraphNeighbors({
+    rules_browse_href: sources.rulesBrowseHref || sources.graphNeighbors?.rules_browse_href,
+    meetings_browse_href: sources.meetingsBrowseHref
+      || sources.graphNeighbors?.meetings_browse_href,
+    contracts_browse_href: sources.contractsBrowseHref
+      || sources.graphNeighbors?.contracts_browse_href,
+  });
 
   const limit = Math.max(1, Math.min(Number(sources.limit) || 12, 40));
   // Prefer rows that already have a filing receipt so demos scan the matched ones first.
@@ -103,6 +124,7 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
         signal_kind: clean(obs.observed_record.signal_kind, 40) || "report_or_study",
       }
       : null;
+    const matter = mandateMatterEdgeFromRow(row);
     return {
       mandate_id: row.obligation_id,
       duty_text: clean(row.duty_text, 500),
@@ -111,7 +133,9 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
       deadline_date: clean(row.deadline?.computed_date, 20) || null,
       deadline_text: clean(row.deadline?.text || row.deadline_text, 240) || null,
       recurrence: clean(row.recurrence, 40) || null,
-      source_href: clean(row.source?.legistar_url || row.href, 400) || null,
+      matter_id: matter?.matter_id || null,
+      source_href: matter?.href || null,
+      source_law_relation: matter ? "source_law" : null,
       // Only surface standable observed status on the public card — no "expected not yet" chips.
       observation_status: receipt ? OBSERVATION_STATUS.OBSERVED : null,
       observation_label: receipt
@@ -145,9 +169,15 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
       report_mandates_follow_href: agencyObligationsFollowHref(identity.canonical_id, {
         deliverableType: "report",
       }),
+      graph_neighbors: graphNeighbors,
+      section_title: mandateReportsSectionTitle({ filing_receipts: 0 }),
     };
   }
 
+  const counts = {
+    report_mandates: mandateTotal,
+    filing_receipts: receiptCount,
+  };
   return {
     schema: MANDATE_REPORTS_RECEIPT_SCHEMA,
     method: MANDATE_REPORTS_RECEIPT_METHOD,
@@ -156,16 +186,15 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
     agency_id: identity.canonical_id,
     agency_name: identity.canonical_name,
     subject_ref: `agency:id:${identity.canonical_id}`,
-    counts: {
-      report_mandates: mandateTotal,
-      filing_receipts: receiptCount,
-    },
+    counts,
     mandates,
     copy: MANDATE_REPORTS_RECEIPT_COPY,
     share_path: agencyMandateReportsPath(identity.canonical_id),
     report_mandates_follow_href: agencyObligationsFollowHref(identity.canonical_id, {
       deliverableType: "report",
     }),
+    graph_neighbors: graphNeighbors,
+    section_title: mandateReportsSectionTitle(counts),
   };
 }
 
@@ -177,14 +206,13 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
 export function renderMandateReportsReceiptSection(view) {
   if (!view || view.status !== "matched") return "";
   const counts = view.counts || {};
-  const statusLine = [
-    counts.report_mandates
-      ? `${counts.report_mandates} report mandate${counts.report_mandates === 1 ? "" : "s"}`
-      : null,
-    counts.filing_receipts
-      ? `${counts.filing_receipts} filing receipt${counts.filing_receipts === 1 ? "" : "s"}`
-      : null,
-  ].filter(Boolean).join(" · ");
+  const statusLine = mandateReportsStatusParts(counts).join(" · ");
+  const sectionTitle = view.section_title || mandateReportsSectionTitle(counts);
+  const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
+    rules_browse_href: view.rules_browse_href,
+    meetings_browse_href: view.meetings_browse_href,
+    contracts_browse_href: view.contracts_browse_href,
+  });
 
   const mandateList = (view.mandates || []).length
     ? `<ul class="node-record-list mandate-reports-mandates" data-bridge-side="report-mandates">${
@@ -201,19 +229,30 @@ export function renderMandateReportsReceiptSection(view) {
         const receiptLine = receipt?.href
           ? ` · ${constellationLink({ href: receipt.href, label: `${FILING_RECEIPT_LABEL}: ${receipt.label || receipt.request_id}`, className: "mandate-filing-receipt-link agency-edge-link", attributes: { "data-filing-receipt": "1" }, escape: esc })}${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
           : "";
+        const neighbors = renderMandateRowGraphActions({
+          source_href: item.source_href,
+          matter_id: item.matter_id,
+          graph_neighbors: graphNeighbors,
+          prefer: "contracts",
+          escape: esc,
+        });
         const chip = receipt
           ? `<span class="mandate-obs-chip mandate-obs-observed mandate-filing-receipt-chip" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-filing-receipt="1">${esc(FILING_RECEIPT_LABEL)}</span>`
           : "";
-        return `<li class="node-record mandate-reports-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="report"${receipt ? ` data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-has-filing-receipt="1"` : ""}>
+        return `<li class="node-record mandate-reports-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="report"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${receipt ? ` data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-has-filing-receipt="1"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
-          <span class="muted node-muted">${meta}${receiptLine}</span>
+          <span class="muted node-muted">${meta}${receiptLine}${neighbors}</span>
         </li>`;
       }).join("")
     }</ul>`
     : "";
-  const sourceItems = (view.mandates || []).filter((item) => item.source_href).map((item) => ({ href: item.source_href, label: item.duty_text || "Source law" }));
 
+  const neighborChrome = renderMandateSectionNeighborActions({
+    graph_neighbors: graphNeighbors,
+    escape: esc,
+  });
   const actions = [
+    neighborChrome,
     view.report_mandates_follow_href
       ? `<a class="node-action civic-object-action" href="${esc(view.report_mandates_follow_href)}">Watch report mandates</a>`
       : "",
@@ -223,11 +262,10 @@ export function renderMandateReportsReceiptSection(view) {
   ].filter(Boolean).join("");
 
   const copy = view.copy || MANDATE_REPORTS_RECEIPT_COPY;
-  return `<section id="mandates-reports" class="node-section node-card civic-object-section mandate-reports-receipt" data-agency-constellation-card="mandates-reports" data-method="${esc(view.method || MANDATE_REPORTS_RECEIPT_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members">
-    <h2>Report mandates · Filing receipts <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
+  return `<section id="mandates-reports" class="node-section node-card civic-object-section mandate-reports-receipt" data-agency-constellation-card="mandates-reports" data-method="${esc(view.method || MANDATE_REPORTS_RECEIPT_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members"${(counts.filing_receipts || 0) === 0 ? ' data-mandate-edges="co-located-only"' : ""}>
+    <h2>${esc(sectionTitle)} <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || MANDATE_REPORTS_RECEIPT_COPY.lead)}</p>
     ${mandateList}
-    ${officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc })}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
 }

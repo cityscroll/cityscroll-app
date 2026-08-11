@@ -642,13 +642,32 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
 
   // Mandates → Rules bridge: rulemaking duties joined to Rules-lens filings
   // via agency identity; per-mandate observed filings when topic join hits.
+  // Co-located graph neighbors (agency-scoped Rules/Meetings/Contracts) always
+  // stamp onto mandate rows even when observed_links is 0 (mand-graph-01).
   const rulesCategory = categories.find((category) => category.id === "rules") || null;
+  const meetingsCategory = categories.find((category) => category.id === "meetings") || null;
+  const contractsCategory = categories.find((category) => category.id === "contracts") || null;
+  const rulesBrowseHref = rulesCategory?.view_all_href
+    || agencyCategoryBrowseHref(identity.canonical_id, "rules");
+  const meetingsBrowseHref = meetingsCategory?.view_all_href
+    || agencyCategoryBrowseHref(identity.canonical_id, "meetings");
+  const contractsBrowseHref = contractsCategory?.view_all_href
+    || agencyCategoryBrowseHref(identity.canonical_id, "contracts");
+  const mandateGraphNeighbors = {
+    rules_browse_href: rulesBrowseHref,
+    meetings_browse_href: meetingsBrowseHref,
+    contracts_browse_href: contractsBrowseHref,
+  };
+  if (conformanceView && !conformanceView.graph_neighbors) {
+    conformanceView.graph_neighbors = mandateGraphNeighbors;
+  }
   const mandatesRules = buildMandateRulesBridgeView(identity.canonical_id, {
     obligationsLookup: obligations,
     rulesItems: rulesCategory?.items || [],
     rulesCount: rulesCategory?.count || 0,
-    rulesBrowseHref: rulesCategory?.view_all_href
-      || agencyCategoryBrowseHref(identity.canonical_id, "rules"),
+    rulesBrowseHref,
+    meetingsBrowseHref,
+    contractsBrowseHref,
     rulesFollowHref: agencyRulesFollowHref(identity.canonical_id),
     conformanceItems: conformanceView?.items || [],
     limit: 12,
@@ -680,6 +699,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   const mandatesReports = buildMandateReportsReceiptView(identity.canonical_id, {
     obligationsLookup: obligations,
     conformanceItems: conformanceView?.items || [],
+    rulesBrowseHref,
+    meetingsBrowseHref,
+    contractsBrowseHref,
     limit: 12,
   });
 
@@ -688,19 +710,20 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   const mandatesPredictions = buildAgencyMandatePredictionsView(identity.canonical_id, {
     obligationsLookup: obligations,
     conformanceItems: conformanceView?.items || [],
+    rulesBrowseHref,
+    meetingsBrowseHref,
+    contractsBrowseHref,
     limit: 16,
     includeCadenceOnly: true,
   });
 
   // Mandates → procurement records → contracts. The bridge accepts only an
   // agency block + procurement duty + subject overlap + exact PIN/EPIN path.
-  const contractsCategory = categories.find((category) => category.id === "contracts") || null;
   const mandatesContracts = buildMandateContractsBridgeView(identity.canonical_id, {
     obligationsLookup: obligations,
     intelligenceDossier: intelligence,
     crossSpineGate: sources.cross_spine_gate || null,
-    contractsBrowseHref: contractsCategory?.view_all_href
-      || agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
+    contractsBrowseHref,
     contractsFollowHref: contractsCategory?.follow_href,
     limit: 16,
   });
