@@ -59,7 +59,7 @@ test("RC-1 gates every source-target bridge independently at 30 percent", () => 
   const result = python(`
 import json, sys
 sys.path.insert(0, "warehouse/lib")
-from procurement_plans import build_bridge_measurement
+from procurement_plans import build_bridge_measurement, join_plan_id_to_target_ids
 
 fixture = json.load(open("warehouse/fixtures/procurement-plans/collector.json"))
 measurement, edges = build_bridge_measurement(
@@ -83,6 +83,40 @@ assert measurement["paths"]["capital_projects_dashboard_to_passport"]["materiali
 assert all(edge["target_source"].startswith("passport") for edge in edges)
 assert measurement["false_positive_review"]["reviewed"] >= 1
 assert measurement["false_positive_review"]["false_positives"] >= 1
+
+# Product prefix join is deterministic and preferred over exact-only.
+hits = join_plan_id_to_target_ids(
+    "06823P0008",
+    {"06823P0008001"},
+    {"06823P0008": ["06823P0008001"]},
+)
+assert hits and hits[0][0] == "pin_prefix_of_epin"
+plans = fixture["bridge_plans"] + [{
+    "source_record_id": "mocs_ll63:FY27RNACS8",
+    "source": "mocs_ll63",
+    "source_url": "https://example.test/ll63.xlsx",
+    "agency": "Administration for Children's Services",
+    "description": "Renewal consulting",
+    "term_start": "2026-07-01",
+    "term_end": "2029-06-30",
+    "published_identifiers": ["06823P0008"],
+}]
+targets = fixture["bridge_targets"] + [{
+    "source": "passport_contract",
+    "target_id": "pp-prefix",
+    "source_url": "https://a0333-passportpublic.nyc.gov/contracts.html",
+    "agency": "Administration for Children's Services",
+    "title": "Renewal consulting",
+    "date": "2026-08-01",
+    "identifiers": ["06823P0008001"],
+}]
+m2, e2 = build_bridge_measurement(
+    plans, targets, sample_size=5, sample_method="identifier_bearing",
+    usefulness_threshold=0.30, review_labels=fixture["review_labels"],
+    materialize_population=True,
+)
+assert m2["paths"]["mocs_ll63_to_passport"]["materialize"] is True
+assert any(edge["method"] == "pin_prefix_of_epin" for edge in e2)
 print("OK")
 `);
   assert.equal(result.status, 0, result.stderr || result.stdout);
@@ -163,7 +197,7 @@ test("RC-1 public materialization uses receipt-backed Pages-safe shards", () => 
     "utf8",
   ));
   const receipt = JSON.parse(readFileSync(
-    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-04.json"),
+    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json"),
     "utf8",
   ));
   assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");
@@ -175,6 +209,11 @@ test("RC-1 public materialization uses receipt-backed Pages-safe shards", () => 
   ));
   assert.equal(lookup.schema, "cityscroll.procurement_planning.thread-lookup.v1");
   assert.equal(receipt.payload_contract.production_bridge_edges, lookup.rows.length);
+  assert.ok(lookup.rows.length > 0, "prefix re-measure ships bridge edges");
+  assert.ok(
+    lookup.rows.some((row) => row.edge?.method === "pin_prefix_of_epin"),
+    "expected pin_prefix_of_epin edges in thread lookup",
+  );
   assert.ok(manifest.shard_contract.max_bytes < 25 * 1024 * 1024);
 
   for (const [collection, descriptor] of Object.entries(manifest.collections)) {

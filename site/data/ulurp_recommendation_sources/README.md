@@ -27,29 +27,24 @@ Resource APIs:
 
 ## Product decision (measured)
 
-Strict ULURP-token joins (see `worker/src/lib/ulurp_recommendations_join.mjs`) fall
-**below the ~30% usefulness threshold** for edge materialization on the land-use
-product universe:
+Usefulness is gated on the **recommendation-row** denominator (joinable catalog
+rows), not ZAP-universe catalog coverage. Re-gated 2026-08-11:
 
-| Universe | Joined | Total | Rate |
-|---|---:|---:|---:|
-| ZAP projects with non-null `ulurp_numbers` → recommendations **or** PDFs | 152 | 27,971 | **0.54%** |
-| Same → recommendations only (`4j6i-9rmr`) | 81 | 27,971 | **0.29%** |
-| Same → PDFs only (`gt5i-dmde`) | 71 | 27,971 | **0.25%** |
+| Universe | Joined | Total | Rate | Role |
+|---|---:|---:|---:|---|
+| Recommendation rows that hit a ZAP project | 80 | 91 | **87.91%** | **Gate** |
+| PDF rows that hit a ZAP project | 73 | 88 | **82.95%** | Gate sibling |
+| ZAP projects with non-null `ulurp_numbers` → either source | 152 | 27,971 | **0.54%** | Contrast only |
+| Same → recommendations only | 81 | 27,971 | **0.29%** | Contrast only |
+| Same → PDFs only | 71 | 27,971 | **0.25%** | Contrast only |
 
-Reverse coverage (recommendation/PDF rows that hit some ZAP project) is high
-(~88% / ~83%): the catalogs are real but tiny absolute N, mostly completed
-Brooklyn/Manhattan history.
+The catalogs are real but tiny absolute N (borough-scoped history). A sparse Land
+panel mounts only on strict ULURP-token hits; misses omit the panel.
 
-Receipts: `verification_receipts/ulurp_recommendations_2026-07-30.json` and the
-`join_measurement` blocks on source contracts `ulurp-recommendations` and
-`ulurp-recommendation-pdfs`.
-
-**Stop rule applied:** ship the measured reconnaissance and disabled source
-contracts; do **not** edge-materialize Borough President recommendation panels onto
-land/ZAP outcomes until a higher-coverage citywide source exists (or usefulness is
-re-measured above threshold). Keep the existing class-(a) land-outcome pointer
-(ZAP decision documents).
+Receipts: `verification_receipts/ulurp_recommendations_2026-08-11.json` (ship),
+`verification_receipts/ulurp_recommendations_2026-07-30.json` (historical contrast),
+lookup `site/data/ulurp_recommendations_lookup.json`, panel
+`site/ulurp_recommendation_panel.mjs`, gate policy `ontology/join_gate_policy.mjs`.
 
 ## Join strategies
 

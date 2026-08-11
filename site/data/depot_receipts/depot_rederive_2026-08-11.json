@@ -868,6 +868,72 @@
       ]
     },
     {
+      "id": "ulurp-recommendation-pdfs-x-unregistered-zoning-application-portal-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-zap-api-outcomes-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-zap-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendations-x-unregistered-zoning-application-portal-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendations-x-zap-api-outcomes-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendations-x-zap-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
       "worth_materializing": "maybe",
       "score": 1,
@@ -971,6 +1037,15 @@
         "agency_+_description_+_term_(reviewed_candidate_only)"
       ],
       "gaps_would_close": []
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-ulurp-recommendations-via-ulurp_numbers",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": []
     }
   ],
   "passport_field_case": {
@@ -994,5 +1069,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "3b236434bfae4712c44e6251aeafb33e888650c06b16c0294693450b634087aa"
+  "registry_sha256": "3409f98199da38a15101b8505ff26bc009b9c87e06a88220f12018043e6aca91"
 }

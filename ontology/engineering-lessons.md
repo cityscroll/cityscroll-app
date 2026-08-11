@@ -61,3 +61,22 @@ Recurring flywheel class `cross-spine-contradiction` appeared 2 times in one run
 - **Dimensions:** readability
 
 Recurring flywheel class `unusable-joined-view` appeared 2 times in one run. Sample cards: crol-list/mf-readability-view-raw-source-records-dump, crol-list/mf-readability-view-gap-taxonomy-dense-table. Related context: admin.possibly_same; worker/src/lib/possibly_same.mjs; ontology/fixtures/dimensions/readability_views.json; docs.gap_taxonomy; docs/gap-taxonomy.md. When fixing one instance, scan siblings of the same class before closing the queue item.
+
+### Join False Negative (`join-false-negative`)
+
+- **First noted:** 2026-08-11
+- **Count this run:** 2
+- **Dimensions:** coverage, data-integrity
+
+Two high-value joins were falsely gated by measurement shape, not by a real absence of links:
+
+1. **Stricter join than the product already ships.** RC-1 plan→PASSPort used exact `identifier_key` equality only. The product passport join already documents `pin_prefix_of_epin` / `epin_prefix_of_pin` (and strip-suffix). On identifier-bearing plans the prefix strategy joined ~76% with precision 1.0, while exact-only looked dead.
+2. **Wrong usefulness denominator.** ULURP Borough President recommendations were killed on ZAP-universe catalog coverage (0.54%) even though **recommendation-row** hit rate was ~88%. Catalog coverage is contrast; the gate denominator is the joinable candidate rows for that edge.
+
+**Standing rule (encoded in `ontology/join_gate_policy.mjs`):**
+
+- When gating a join, prefer the product's already-documented strategies; at minimum measure exact **and** product strategies and report the better.
+- Compute usefulness against the joinable-candidate denominator for that card, not an unrelated whole universe.
+- Keep wrong-universe guards (Property Disposition ≠ ZAP; capital FMS ≠ City Record PIN).
+
+Verify: `node --test test/join_gate_policy.test.mjs`. RC-1 receipt: `site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json`. ULURP receipt: `site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-08-11.json`.
