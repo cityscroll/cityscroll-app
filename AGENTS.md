@@ -137,7 +137,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   smoke (`python3 test/functional/27_project_connections_live.py`) together.
 - Following is static-first at `site/following/index.html` and edge-rendered at `GET /following`
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
-  its summary, preview count, results, and `/subscribe` form. Personal watches load only through
+  its summary, preview count, results, and `/subscribe` form. Create flow: live conjunction rule
+  line (`composeWatchRuleSentence`), digItem-shaped preview cards, cadence radio cards with
+  quiet-day/weekly consequences, pack attention cost (`packAttentionCopy`). Client promotes
+  Your watches first when `/following/personal` returns ≥1 watch (manage-first tabs). Canonical
+  manage URL is `/following/#your-following` (digest footers use session exchange when a token
+  is available; `/prefs` remains account-level). Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
 - Vendor profiles receive their city-footprint read model inside the daily
   `refreshVendorProfiles` KV bucket. The section header, destination link, and destination result
@@ -1400,6 +1405,22 @@ worker/test/digest_ops_awareness_continuity.test.mjs
 test/digest_preview_awareness.test.mjs worker/test/alert_temporal.test.mjs`.
 Evidence: `node tools/render_digest_awareness_evidence.mjs` and
 `node tools/render_preview_ops_parity_evidence.mjs`.
+
+## Digest delivery UI (email as first-class surface)
+
+Rendered digests are product UI: multi-watch rollup opens with total new · since ·
+TOC jump links (`rollupTocEntries` / `rollupDigestHtml`); quiet sections are
+one-line (`Label — no new matches`), not full item chrome. Match evidence sits
+under the title before actions (`evidenceLineHtml` / `digEvidenceHTML`, brand
+blue rule). Quiet/heartbeat bodies include a still-subscribed sentence; prefs
+edits “apply to the next digest (about 9am Eastern)” while unsubscribe is
+immediate. Heartbeat is documented at 14 days (not user-tunable without product
+OK). Following list preview stays a slim title/summary subset — dig-item
+awareness remains `digItemHTML` ↔ `subDigestHtml` only. Verify:
+`cd worker && node --test test/digest_delivery_ui.test.mjs test/digest_rollup.test.mjs
+test/rollup.test.mjs test/prefs_lib.test.mjs` and
+`node --test test/digest_preview_awareness.test.mjs test/alerts_rollup_prefs.test.mjs`.
+Docs: `docs/digest-rollup-prefs.md`.
 
 ## Context-carrying alert entry
 

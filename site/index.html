@@ -1366,7 +1366,8 @@
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
   .digitem .dc a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px} /* non-color cue — WCAG 1.4.1: oxblood-vs-ink is only 1.74:1 */
   mark{background:#fbf1d8;color:inherit;padding:0 1px;border-radius:2px} /* the matched keyword — see matchEvidence(); unscoped so every lens list (not just the digest preview) can reuse it */
-  .digitem .dev,.row .dev,.fcard .dev,.panel .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color; .panel covers showNotice()'s deep-linked permalink view (w12-12) */
+  /* Match-evidence line: under title, before actions; brand blue rule + cream mark (same as email). */
+  .digitem .dev,.row .dev,.fcard .dev,.panel .dev{font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);font-style:normal;margin:5px 0 6px;padding:5px 8px;border-left:3px solid var(--blue,#1a44e0);background:color-mix(in srgb, var(--blue,#1a44e0) 6%, #fff);border-radius:0 4px 4px 0}
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f6f7f9;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
   /* Multi-watch digest rollup + preference surface — demoted behind progressive disclosure */
@@ -2339,7 +2340,9 @@
         <div class="rollup-prefs-box" id="alerts-rollup-prefs-box">
           <p data-i18n="alerts_rollup_prefs_lead">Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer.</p>
           <p><a id="alertsPrefsManage" class="act" href="https://cityscroll.org/prefs" data-i18n="alerts_rollup_manage_btn">Manage watches</a></p>
-          <p class="muted" style="font-size:12.5px" data-i18n="alerts_rollup_cutover">Preference changes take effect on the next daily digest run (~9am Eastern).</p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_rollup_cutover">Changes apply to the next digest (about 9am Eastern).</p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_heartbeat_help">If a daily watch is quiet for 14 days, we send a still-watching note so silence never looks like an outage.</p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_unsub_immediate">Unsubscribe takes effect immediately.</p>
         </div>
       </div>
     </details>

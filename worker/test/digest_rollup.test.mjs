@@ -326,11 +326,16 @@ test("multi-watch with only one matching section: subject names N watches, body 
     assert.doesNotMatch(mail.subject, /^CityScroll: \d+ new — contract money/);
     assert.match(mail.html, /your daily digest/i);
     assert.match(mail.html, /of 3 watches with updates/i);
-    // Quiet + weekly sections stay in the body (not collapsed to a single-watch email).
-    assert.match(mail.html, /zzzznonexistentterm|Nothing new for this watch/i);
+    // Multi-watch TOC jump index for scan recovery.
+    assert.match(mail.html, /data-rollup-toc="1"/);
+    assert.match(mail.html, /In this email/i);
+    // Quiet + weekly sections stay in the body as one-line quiet rows (not full chrome).
+    assert.match(mail.html, /data-rollup-quiet="1"/);
+    assert.match(mail.html, /no new matches|zzzznonexistentterm/i);
     // FIXTURE_NOW freezes wall clock so weekly skip path is deterministic (non-Monday).
     assert.match(mail.html, /weekly|Monday/i);
     assert.match(mail.html, /Unsubscribe from all|unsubscribe/i);
+    assert.match(mail.html, /takes effect immediately|next digest/i);
   });
 });
 

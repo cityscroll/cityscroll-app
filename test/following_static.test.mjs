@@ -7,10 +7,14 @@ import { alertsHref } from "../site/alerts_context_carry.mjs";
 import {
   buildFollowingViewModel,
   canonicalFollowingLens,
+  composeWatchRuleSentence,
+  followingPreviewItemHtml,
   followingUrlFromWatch,
+  isCitywideWatchScope,
   renderFollowingDocument,
   watchFromFollowingParams,
 } from "../site/following_view.mjs";
+import { packAttentionCopy } from "../site/watch_templates.mjs";
 
 const templates = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
 
@@ -51,6 +55,11 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /<form[^>]+method="post"[^>]+action="https:\/\/api\.cityscroll\.org\/subscribe"/);
   assert.match(html, /name="filter"[^>]+value="[^"]*curb/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
+  assert.match(html, /following-cadence-card/);
+  assert.match(html, /Monday note even when nothing is new/);
+  assert.match(html, /data-following-rule-line/);
+  assert.match(html, /Notify me when/);
+  assert.match(html, /following-digitem|following-dig-title/);
   assert.match(html, /Click it to start the watch/);
   assert.doesNotMatch(html, /href="https:\/\/cityscroll\.org\/prefs"/);
   assert.doesNotMatch(html, /Email and privacy|Confirm first|double opt-in/i);
@@ -204,4 +213,75 @@ test("Following cold transfer stays below the existing static-first ceiling", ()
   ];
   const bytes = files.reduce((sum, path) => sum + gzipSync(readFileSync(new URL(path, import.meta.url))).length, 0);
   assert.ok(bytes <= 455_000, `Following cold transfer ${bytes} exceeds 455,000 bytes`);
+});
+
+test("composeWatchRuleSentence makes refine conjunction visible", () => {
+  assert.equal(
+    composeWatchRuleSentence("money", {
+      keywords: ["housing"],
+      agency: "Parks",
+      borough: "Brooklyn",
+    }),
+    "Notify me when Contracts and RFPs match keyword housing AND agency Parks AND in Brooklyn.",
+  );
+  assert.equal(
+    composeWatchRuleSentence("money", {}),
+    "Notify me when Contracts and RFPs match citywide.",
+  );
+  assert.equal(isCitywideWatchScope({ keywords: ["housing"] }), true);
+  assert.equal(isCitywideWatchScope({ borough: "Queens" }), false);
+  const citywideDaily = buildFollowingViewModel({
+    lens: "money",
+    filter: { keywords: ["housing"] },
+    frequency: "daily",
+    requested: true,
+    matchCount: 0,
+  }, templates);
+  assert.equal(citywideDaily.citywideDailyWarn, true);
+  assert.match(renderFollowingDocument(citywideDaily), /covers the whole city/);
+});
+
+test("Following preview items use digItem-shaped phase, next step, and deep link", () => {
+  const html = followingPreviewItemHtml({
+    id: "20260805001",
+    title: "Queens curb redesign hearing",
+    url: "https://cityscroll.org/notices/20260805001",
+    summary: "Transportation · event 2026-08-12",
+    phase: "Hearing / meeting",
+    nextStep: "Event 2026-08-12",
+  });
+  assert.match(html, /following-digitem/);
+  assert.match(html, /following-dig-phase[^>]*>Hearing \/ meeting/);
+  assert.match(html, /Next step:/);
+  assert.match(html, /Open on CityScroll/);
+  const empty = renderFollowingDocument(buildFollowingViewModel({
+    lens: "money",
+    filter: { keywords: ["zzz-no-match"] },
+    requested: true,
+    matchCount: 0,
+    previewItems: [],
+  }, templates));
+  assert.match(empty, /No matches now — still watch for new/);
+});
+
+test("Following pack cards explain rollup attention cost before commit", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  assert.match(html, /data-pack-attention/);
+  assert.match(html, /one weekly email with \d+ sections/);
+  assert.match(html, /Sample subject line: CityScroll: still watching/);
+  const attention = packAttentionCopy({
+    title: "Demo",
+    watches: [{ label: "A" }, { label: "B" }],
+  }, { frequency: "weekly" });
+  assert.equal(attention.watchCount, 2);
+  assert.match(attention.summary, /makes 2 watches\. You get one weekly email with 2 sections/);
+  assert.equal(attention.sampleSubject, "CityScroll: still watching — 2 watches");
+});
+
+test("Following exposes surface tabs for manage-first promotion", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  assert.match(html, /data-following-tabs/);
+  assert.match(html, /data-following-tab="watches"/);
+  assert.match(html, /data-following-tab="create"/);
+  assert.match(html, /data-following-personal-mode=/);
 });

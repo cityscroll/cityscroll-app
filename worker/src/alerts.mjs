@@ -53,11 +53,16 @@ import {
   rollupSendDecision,
   rollupSubject,
   rollupBodySections,
+  rollupTocEntries,
+  rollupSectionAnchorId,
+  isQuietRollupSection,
+  quietRollupSectionLine,
   toRollupDayLogEntry,
   accountLogId,
   sectionWantsSend,
 } from "./lib/rollup.mjs";
 import { prefsLink } from "./prefs.mjs";
+import { CUTOVER_COPY, UNSUB_IMMEDIATE_COPY } from "./lib/prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 import {
@@ -112,6 +117,17 @@ export function subDigestDecision({ lens, freshCount, freq, lastSentDate, today,
     return { action: Number(freshCount) > 0 ? "match" : "none" };
   }
   return digestDecision({ freshCount, freq, lastSentDate, today, heartbeatDays });
+}
+
+/**
+ * Canonical “Manage watches” destination: Following personal after session exchange.
+ * Falls through to null so callers can use a prefs token link when no session token exists.
+ */
+export function followingManageUrl({ base = "https://api.cityscroll.org", sessionTok = null } = {}) {
+  if (!sessionTok) return null;
+  const next = "https://cityscroll.org/following/#your-following";
+  const origin = String(base || "https://api.cityscroll.org").replace(/\/$/, "");
+  return `${origin}/session?token=${encodeURIComponent(sessionTok)}&next=${encodeURIComponent(next)}`;
 }
 
 // Collapse one cron (or queue-consumer aggregate) into a public, low-cardinality receipt.
@@ -954,7 +970,13 @@ export async function processOneSub(env, s, ctx) {
       const healthNote = healthStatus.quiet
         ? searchHealthNoteHtml({ lang, quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
         : "";
-      const manageUrl = await prefsLink(env, s.email);
+      // Pins-scoped magic-link token: every notice link carries it so a click
+      // quietly recognizes the browser (session cookie) without a login form.
+      // Manage watches lands on Following personal (canonical); prefs remains
+      // the account-level cadence/email surface for token-only entry.
+      const sessionTok = await issueEmailSessionToken(env, s.email);
+      const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      const manageUrl = followingManageUrl({ base, sessionTok }) || await prefsLink(env, s.email);
       manageUrlPresent = !!manageUrl;
       if (hasActivity) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
@@ -969,10 +991,7 @@ export async function processOneSub(env, s, ctx) {
         // encodeWatchFilter()) or a lens deep-links don't cover (rezone links straight to ZAP
         // below, never through here).
         const w = encodeWatchFilter(s.lens, s.filter);
-        // Pins-scoped magic-link token: every notice link carries it so a click
-        // quietly recognizes the browser (session cookie) without a login form.
-        const sessionTok = await issueEmailSessionToken(env, s.email);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, base, forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
@@ -1139,10 +1158,11 @@ export async function processAccountRollup(env, subs, ctx) {
     if (underCap && decision.wantSend) {
       const lang = (wanting[0] && wanting[0].lang) || (subs[0] && subs[0].lang) || "en";
       const unsubAllUrl = await unsubAllLink(env, email);
-      const manageUrl = await prefsLink(env, email);
-      manageUrlPresent = !!manageUrl;
       const sessionTok = await issueEmailSessionToken(env, email);
       const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      // Canonical watch list: Following personal via session exchange; prefs is fallback.
+      const manageUrl = followingManageUrl({ base, sessionTok }) || await prefsLink(env, email);
+      manageUrlPresent = !!manageUrl;
       // Account watch count (all evaluated sections, including quiet/weekly) drives the
       // multi-watch subject form even when only one section wanted send.
       const watchCount = sections.length;
@@ -1154,6 +1174,11 @@ export async function processAccountRollup(env, subs, ctx) {
         quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
         watchCount,
       });
+      const sinceDates = (bodySections.length ? bodySections : wanting)
+        .map((sec) => sec.since)
+        .filter((d) => /^\d{4}-\d{2}-\d{2}/.test(String(d || "")))
+        .map((d) => String(d).slice(0, 10))
+        .sort();
       const html = rollupDigestHtml({
         sections: bodySections.length ? bodySections : wanting,
         wantingCount: wanting.length,
@@ -1164,6 +1189,8 @@ export async function processAccountRollup(env, subs, ctx) {
         sessionTok,
         base,
         today: ctx.today,
+        totalNew: decision.totalNew,
+        since: sinceDates[0] || null,
       });
       const payload = emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
@@ -2223,13 +2250,16 @@ function titleHtml(title, ev, esc) {
 // evidenceLineHtml: a one-line "why this matched" note for a match NOT in the title -- a
 // snippet from the description, or (last resort, ev.field==="unknown") just the term -- so
 // an item never appears with nothing visible explaining the match.
+// Skipped when the title itself already carries the hit (ev.field === "title").
+// Placed under the title / before action chrome so scan order leads with match evidence.
 function evidenceLineHtml(ev, esc, lang) {
   if (!ev || ev.field === "title") return "";
-  const mark = (s) => `<mark style="background:#ffe58a;padding:0 1px">${esc(s)}</mark>`;
+  const mark = (s) => `<mark style="background:#fbf1d8;color:inherit;padding:0 1px">${esc(s)}</mark>`;
   const html = ev.field === "description"
     ? emailT(lang, "digest_match_snippet", { snippet: `${esc(ev.before)}${mark(ev.hit)}${esc(ev.after)}` })
     : emailT(lang, "digest_match_unknown", { term: mark(ev.term) });
-  return `<div style="color:#666;font-size:12px;font-style:italic;margin-top:2px">${html}</div>`;
+  // CityScroll brand: system-ui + blue rule (same accent as prefs / primary CTAs), not italic-muted.
+  return `<div data-match-evidence="1" style="margin:5px 0 6px;padding:5px 8px;border-left:3px solid #1a44e0;background:#f4f6fb;color:#12181f;font:13px/1.45 system-ui,sans-serif">${html}</div>`;
 }
 
 // Time + action awareness (phase, open/closing-soon/closed, extracted next step).
@@ -2274,11 +2304,11 @@ function digestHtml(w, rows) {
       acts.push(`<a href="${REQ_URL(r.request_id)}">↗ View in City Record</a>`);
       const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r.due_date)]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li data-digest-item="1" style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b><br>
+      return `<li data-digest-item="1" style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b>
+        ${evidenceLineHtml(ev, esc, "en")}
         <span style="color:#555;font-size:13px">${sub}</span><br>
         ${temporalActionHtml(r, esc, "en", { kind: digestKind, today })}
         ${digestMeetingDetailsHtml(r, esc)}
-        ${evidenceLineHtml(ev, esc, "en")}
         <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
     })
     .join("");
@@ -2589,12 +2619,12 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const propertyStage = itemKind === "property" && r.property_watch
       ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
       : "";
-    return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+    return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b>
+      ${evidenceLineHtml(ev, esc, lang)}
       <span style="color:#555;font-size:13px">${meta}</span><br>
       ${propertyStage}
       ${temporalActionHtml(r, esc, lang, { kind: itemKind, today })}
       ${digestMeetingDetailsHtml(r, esc, base)}
-      ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
 
@@ -2669,36 +2699,41 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     ${listHtml}
     ${forecastsHtml}
     ${healthNote}
-    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click)${manageLine}.</p>
+    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click — ${esc(emailT(lang, "digest_unsub_immediate"))})${manageLine}. ${esc(emailT(lang, "digest_prefs_cutover"))}</p>
   </div>`;
 }
 
 // The "no news" email — a weekly check-in or a daily heartbeat. Same house style as the digest so
 // silence never reads as a malfunction: the subscriber hears from us on a predictable cadence.
-function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "", manageUrl = null) {
+// Explicit still-subscribed sentence so quiet is never confused with an outage.
+export function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "", manageUrl = null) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const sinceStr = since ? `since ${shortDate(since)}` : "so far";
   const leadKey = action === "weekly-empty" ? "quiet_nothing_week" : "quiet_still_watching";
   const leadTpl = emailT(lang, leadKey, { label, since: sinceStr });
   // Replace the label placeholder with bold markup (emailT escapes nothing; we escape the label)
   const lead = leadTpl.replace(esc(label), `<b>${esc(label)}</b>`);
+  const stillKey = action === "weekly-empty" ? "quiet_still_subscribed_week" : "quiet_still_subscribed";
+  const stillTpl = emailT(lang, stillKey, { date: since ? shortDate(since) : "your last check-in" });
   const manageLine = manageUrl
     ? ` · <a href="${esc(manageUrl)}">${esc(emailT(lang, "digest_manage"))}</a>`
     : "";
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll</h2>
     <p style="color:#333">${lead}</p>
+    <p data-quiet-still-subscribed="1" style="color:#12181f;font-size:14px;margin:10px 0">${esc(stillTpl)}</p>
     <p style="color:#666;font-size:13px">${esc(emailT(lang, "quiet_working"))}</p>
     ${healthNote}
-    <p style="color:#999;font-size:12px">${esc(emailT(lang, "quiet_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click)${manageLine}.</p>
+    <p style="color:#999;font-size:12px">${esc(emailT(lang, "quiet_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click — ${esc(emailT(lang, "digest_unsub_immediate"))})${manageLine}. ${esc(emailT(lang, "digest_prefs_cutover"))}</p>
   </div>`;
 }
 
 /**
- * Consolidated multi-watch digest HTML: one section per evaluated watch (matches,
- * quiet, or cadence-skipped). Footer: manage prefs + unsub all.
+ * Consolidated multi-watch digest HTML: TOC jump index + one section per evaluated
+ * watch. Quiet sections are one-line (no full item chrome). Footer: manage prefs +
+ * unsub all with latency honesty.
  */
-function rollupDigestHtml({
+export function rollupDigestHtml({
   sections = [],
   wantingCount = null,
   watchCount = null,
@@ -2708,6 +2743,8 @@ function rollupDigestHtml({
   sessionTok = null,
   base = "https://api.cityscroll.org",
   today: todayOverride = null,
+  totalNew: totalNewOverride = null,
+  since = null,
 } = {}) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
@@ -2716,26 +2753,43 @@ function rollupDigestHtml({
   const nWant = Number.isFinite(Number(wantingCount))
     ? Number(wantingCount)
     : sections.filter((s) => (Number(s.new) || 0) > 0 || (Number(s.forecasts) || 0) > 0 || s.action === "match" || s.action === "heartbeat" || s.action === "weekly-empty").length;
+  const totalNew = Number.isFinite(Number(totalNewOverride))
+    ? Number(totalNewOverride)
+    : sections.reduce((n, s) => n + (Number(s.new) || (Array.isArray(s.freshRows) ? s.freshRows.length : 0)), 0);
+  const sinceBit = since ? ` · since ${shortDate(since)}` : "";
   const summaryLine = nTotal > 1
-    ? `${nWant} of ${nTotal} watches with updates`
-    : `${nWant} watch${nWant === 1 ? "" : "es"} with updates`;
+    ? `${totalNew} new · ${nWant} of ${nTotal} watches with updates${sinceBit}`
+    : `${totalNew} new · ${nWant} watch${nWant === 1 ? "" : "es"} with updates${sinceBit}`;
   const today = /^\d{4}-\d{2}-\d{2}/.test(String(todayOverride || ""))
     ? String(todayOverride).slice(0, 10)
     : new Date().toISOString().slice(0, 10);
 
-  const sectionHtml = sections.map((sec) => {
+  const toc = rollupTocEntries(sections);
+  // Jump index only when multi-watch — single section does not need a TOC.
+  const tocHtml = toc.length > 1
+    ? `<nav data-rollup-toc="1" aria-label="Watches in this digest" style="margin:0 0 18px;padding:10px 12px;background:#f4f6fb;border:1px solid #dde1e7;border-radius:8px;font:13px/1.5 system-ui,sans-serif">
+        <div style="font-weight:600;color:#12181f;margin:0 0 6px">In this email</div>
+        <ul style="list-style:none;padding:0;margin:0">${toc.map((entry) => {
+          const status = entry.quiet
+            ? `<span style="color:#5b6470">${esc(entry.statusLabel)}</span>`
+            : `<span style="color:#1a44e0;font-weight:600">${esc(entry.statusLabel)}</span>`;
+          return `<li style="margin:0 0 4px"><a href="#${esc(entry.id)}" style="color:#12181f;text-decoration:underline;text-underline-offset:2px">${esc(entry.label)}</a> — ${status}</li>`;
+        }).join("")}</ul>
+      </nav>`
+    : "";
+
+  const sectionHtml = sections.map((sec, index) => {
     const label = sec.label || sec.queryLabel || sec.lens || "Watch";
-    if (sec.skipped) {
-      const skipNote = sec.skipped === "weekly"
-        ? "This watch is weekly — next check is Monday."
-        : sec.skipped === "paused"
-          ? "This watch is paused."
-          : `Skipped (${sec.skipped}).`;
-      return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
-        <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
-        <p style="color:#666;font-style:italic;margin:0">${esc(skipNote)}</p>
-      </section>`;
+    const anchorId = rollupSectionAnchorId(label, index);
+    const tocEntry = toc[index] || { statusLabel: "no new matches", quiet: true };
+
+    // Quiet / skipped: one line only (progressive disclosure) — keeps multi-watch honesty
+    // without full section chrome costing scan attention.
+    if (sec.skipped || isQuietRollupSection(sec)) {
+      const line = quietRollupSectionLine(label, tocEntry.statusLabel);
+      return `<p id="${esc(anchorId)}" data-rollup-quiet="1" style="margin:0 0 10px;padding:6px 0;font:13px/1.45 system-ui,sans-serif;color:#5b6470;border-bottom:1px solid #e5dfd3">${esc(line)}</p>`;
     }
+
     // Award-arrival watches only (lens "award"). Money awards share query kind
     // "award" but must render as City Record notices with vendor_name.
     if (isAwardWatchSection(sec) && Array.isArray(sec.awardCandidates)) {
@@ -2749,9 +2803,9 @@ function rollupDigestHtml({
       const contextLink = requestId
         ? `<p style="font-size:13px"><a href="https://cityscroll.org/notices/${encodeURIComponent(requestId)}">View the watched notice on CityScroll</a></p>`
         : "";
-      return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
-        <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
-        <ul style="list-style:none;padding:0;margin:0">${items || `<li style="color:#666;font-style:italic">No new award updates.</li>`}</ul>
+      return `<section id="${esc(anchorId)}" data-rollup-section="1" style="margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid #e5dfd3">
+        <h3 style="font-family:system-ui;font-size:15px;margin:0 0 8px;color:#12181f">${esc(label)} <span style="font-weight:500;color:#5b6470;font-size:13px">· ${esc(tocEntry.statusLabel)}</span></h3>
+        <ul style="list-style:none;padding:0;margin:0">${items}</ul>
         ${contextLink}
       </section>`;
     }
@@ -2795,12 +2849,12 @@ function rollupDigestHtml({
       const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";
-      return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b>
+        ${evidenceLineHtml(ev, esc, lang)}
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${propertyStage}
         ${temporalActionHtml(r, esc, lang, { kind: rowKind, today })}
         ${digestMeetingDetailsHtml(r, esc, base)}
-        ${evidenceLineHtml(ev, esc, lang)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
     };
     const items = rows.map(renderRow).join("");
@@ -2812,13 +2866,10 @@ function rollupDigestHtml({
       ).join("")}</ul>`;
     }
 
-    const quiet = rows.length === 0 && forecasts.length === 0;
-    const body = quiet
-      ? `<p style="color:#666;font-style:italic;margin:0">Nothing new for this watch.</p>${sec.healthNote || ""}`
-      : `${sec.kind === "district" ? districtGroupedListHtml(rows, renderRow, esc) : `<ul style="list-style:none;padding:0;margin:0">${items}</ul>`}${forecastsHtml}${sec.healthNote || ""}`;
+    const body = `${sec.kind === "district" ? districtGroupedListHtml(rows, renderRow, esc) : `<ul style="list-style:none;padding:0;margin:0">${items}</ul>`}${forecastsHtml}${sec.healthNote || ""}`;
 
-    return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
-      <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
+    return `<section id="${esc(anchorId)}" data-rollup-section="1" style="margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid #e5dfd3">
+      <h3 style="font-family:system-ui;font-size:15px;margin:0 0 8px;color:#12181f">${esc(label)} <span style="font-weight:500;color:#5b6470;font-size:13px">· ${esc(tocEntry.statusLabel)}</span></h3>
       ${body}
     </section>`;
   }).join("");
@@ -2826,13 +2877,16 @@ function rollupDigestHtml({
   const manageLine = manageUrl
     ? `<a href="${esc(manageUrl)}">${esc(emailT(lang, "digest_manage"))}</a> · `
     : "";
+  const cutover = emailT(lang, "digest_prefs_cutover") || CUTOVER_COPY;
+  const unsubImmediate = emailT(lang, "digest_unsub_immediate") || UNSUB_IMMEDIATE_COPY;
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll — your daily digest</h2>
-    <p style="color:#555;font-size:14px">${esc(summaryLine)}</p>
+    <p data-rollup-summary="1" style="color:#555;font-size:14px">${esc(summaryLine)}</p>
+    ${tocHtml}
     ${sectionHtml}
     <p style="color:#999;font-size:12px;margin-top:20px">
-      ${manageLine}<a href="${esc(unsubAllUrl)}">${esc(emailT(lang, "digest_unsubscribe_all"))}</a> (one-click).
-      Preference changes take effect on the next daily run (~9am Eastern).
+      ${manageLine}<a href="${esc(unsubAllUrl)}">${esc(emailT(lang, "digest_unsubscribe_all"))}</a> (one-click — ${esc(unsubImmediate)}).
+      ${esc(cutover)}
     </p>
   </div>`;
 }

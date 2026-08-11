@@ -1,5 +1,5 @@
 import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
-import { normalizeWatchTemplateRegistry } from "./watch_templates.mjs";
+import { normalizeWatchTemplateRegistry, packAttentionCopy } from "./watch_templates.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import {
   renderCivicDocumentAssets,
@@ -25,7 +25,7 @@ const LENS_LABELS = Object.freeze({
   property: "Property",
   rules: "Rules",
   meetings: "Hearings and meetings",
-  district: "District digest",
+  district: "Council district weekly",
   entity: "Agency or vendor",
   mandates: "Mandates",
 });
@@ -147,6 +147,88 @@ function scopeSummary(lens, filter) {
   return chips;
 }
 
+/**
+ * Live plain-English conjunction for the watch program (keyword ∩ agency ∩ place).
+ * Pure: used by server HTML, client island updates, and unit tests.
+ */
+export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
+  const wanted = canonicalFollowingLens(lens);
+  const topic = LENS_LABELS[wanted] || wanted;
+  const f = filter && typeof filter === "object" ? filter : {};
+  const clauses = [];
+
+  if (wanted === "district") {
+    const n = f.councilDistrict || "?";
+    return `Notify me for Council District ${n} weekly digest.`;
+  }
+  if (wanted === "mandates" || wanted === "obligations") {
+    const who = f.agency || f.agency_id || "this agency";
+    if (f.mandate_id) return `Notify me for mandate ${f.mandate_id} at ${who}.`;
+    const type = f.deliverable_type ? String(f.deliverable_type).replace(/_/g, " ") : null;
+    if (type === "report") return `Notify me when ${who} report mandates expect filings.`;
+    if (type === "rulemaking") return `Notify me when ${who} rulemaking mandates expect filings.`;
+    if (type) return `Notify me for ${who} ${type} mandates.`;
+    return `Notify me for ${who} mandates — expected filings.`;
+  }
+  if (wanted === "entity") {
+    const kind = f.kind === "agency" ? "agency" : "vendor";
+    const name = f.name || "this name";
+    return `Notify me when City Record names the ${kind} ${name}.`;
+  }
+
+  const keywords = Array.isArray(f.keywords) ? f.keywords.filter(Boolean) : [];
+  if (keywords.length) clauses.push(`keyword ${keywords.join(" ")}`);
+  if (f.agency) clauses.push(`agency ${f.agency}`);
+  if (f.name && wanted !== "entity") clauses.push(`name ${f.name}`);
+  if (f.noticeType === "award") clauses.push("awards only");
+  else if (f.noticeType === "solicitation") clauses.push("open solicitations only");
+  const place = f.borough || f.boro || f.neighborhood || null;
+  if (place) clauses.push(`in ${place}`);
+  if (f.councilDistrict) clauses.push(`Council District ${f.councilDistrict}`);
+  if (f.communityDistrict) clauses.push(`community district ${f.communityDistrict}`);
+  if (f.dateWindow || f.when) clauses.push(`time ${f.dateWindow || f.when}`);
+
+  if (!clauses.length) {
+    return `Notify me when ${topic} match citywide.`;
+  }
+  const joined = clauses.map((c, i) => (i === 0 ? c : `AND ${c}`)).join(" ");
+  return `Notify me when ${topic} match ${joined}.`;
+}
+
+/** True when the filter has no geography pin (citywide / unscoped place). */
+export function isCitywideWatchScope(filter = {}) {
+  const f = filter && typeof filter === "object" ? filter : {};
+  return !(f.borough || f.boro || f.councilDistrict || f.neighborhood || f.communityDistrict);
+}
+
+/**
+ * Slim digItem-shaped preview card (title, meta, phase chip, next step, deep link).
+ * Shares the awareness fields feedItems may attach without pulling the full digest renderer.
+ */
+export function followingPreviewItemHtml(item) {
+  const row = item || {};
+  const mapped = migrateLegacyUrl(row.url || "/browse/");
+  const href = mapped.target || row.url || "/browse/";
+  const title = row.title || "Untitled record";
+  const summary = row.summary ? `<p class="following-dig-meta">${esc(row.summary)}</p>` : "";
+  const phase = row.phase
+    ? `<span class="following-dig-phase">${esc(row.phase)}</span>`
+    : "";
+  const next = row.nextStep
+    ? `<p class="following-dig-next"><span class="following-dig-next-label">Next step:</span> ${esc(row.nextStep)}</p>`
+    : "";
+  const chips = phase
+    ? `<div class="following-dig-awareness" aria-label="Status">${phase}</div>`
+    : "";
+  return `<li class="following-digitem" data-preview-id="${esc(row.id)}">
+    <div class="following-dig-title">${constellationLink({ href, label: title, className: "following-record-link", escape: esc })}</div>
+    ${summary}
+    ${chips}
+    ${next}
+    <p class="following-dig-open">${constellationLink({ href, label: "Open on CityScroll", className: "following-record-open", escape: esc })}</p>
+  </li>`;
+}
+
 export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
   const watch = normalizedWatch(input.lens || "money", input.filter || {});
   const requested = input.requested == null
@@ -155,18 +237,24 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
   const previewItems = Array.isArray(input.previewItems) ? input.previewItems.slice(0, 5) : [];
   const matchCount = cleanCount(input.matchCount);
   const registry = normalizeWatchTemplateRegistry(templateRegistry);
+  const frequency = cleanFrequency(input.frequency);
+  const ruleSentence = composeWatchRuleSentence(watch.lens, watch.filter, { frequency });
+  const citywide = isCitywideWatchScope(watch.filter);
   return {
     schema: "cityscroll.following_view.v1",
     ...watch,
     requested,
-    frequency: cleanFrequency(input.frequency),
+    frequency,
     matchCount: matchCount == null && requested ? previewItems.length : matchCount,
     previewItems,
     previewError: input.previewError || null,
     scopeSummary: scopeSummary(watch.lens, watch.filter),
+    ruleSentence,
+    citywide,
+    citywideDailyWarn: citywide && frequency === "daily" && requested,
     templates: registry.templates,
     followingUrl: followingUrlFromWatch(watch, {
-      frequency: cleanFrequency(input.frequency),
+      frequency,
       matchCount,
     }),
   };
@@ -259,6 +347,17 @@ function topicPlacePickersHtml(view) {
   </div>`;
 }
 
+function ruleLineHtml(view) {
+  if (!view.requested) return "";
+  const warn = view.citywideDailyWarn
+    ? `<p class="following-warning" data-following-citywide-warn role="status">This daily watch covers the whole city. Quiet days stay quiet. A match in any borough can email you. Pick a place or choose weekly to cut noise.</p>`
+    : "";
+  return `<div class="following-rule" data-following-rule-panel>
+    <p class="following-rule-line" data-following-rule-line>${esc(view.ruleSentence)}</p>
+    ${warn}
+  </div>`;
+}
+
 function scopeHtml(view) {
   if (!view.requested) return "";
   const chips = view.scopeSummary.map((chip) => (
@@ -272,12 +371,8 @@ function scopeHtml(view) {
     <h2 id="following-scope-heading">Watch criteria</h2>
     <ul class="following-scope-chips" aria-label="Watch criteria">${chips}</ul>
     ${countLine}
+    ${ruleLineHtml(view)}
   </section>`;
-}
-
-function previewItem(item) {
-  const mapped = migrateLegacyUrl(item.url || "/browse/");
-  return `<li data-preview-id="${esc(item.id)}">${constellationLink({ href: mapped.target, label: item.title || "Untitled record", className: "following-record-link", escape: esc })}${item.summary ? `<p>${esc(item.summary)}</p>` : ""}</li>`;
 }
 
 function previewHtml(view) {
@@ -286,8 +381,8 @@ function previewHtml(view) {
   const body = view.previewError
     ? `<p class="following-note" role="status">${esc(view.previewError)}</p>`
     : view.previewItems.length
-      ? `<ol>${view.previewItems.map(previewItem).join("")}</ol>`
-      : `<p class="following-empty">No records match now. The watch can still tell you when a new match appears.</p>`;
+      ? `<ol class="following-diglist">${view.previewItems.map(followingPreviewItemHtml).join("")}</ol>`
+      : `<p class="following-empty">No matches now — still watch for new.</p>`;
   return `<section class="following-preview" data-following-preview-panel data-scope-count="${count}" aria-labelledby="following-preview-heading">
     <p class="following-kicker">Preview</p><h2 id="following-preview-heading">${count} matching records</h2>
     <p>${view.previewItems.length < count ? `${view.previewItems.length} recent matches are shown.` : "Every current match is shown."}</p>
@@ -295,27 +390,64 @@ function previewHtml(view) {
   </section>`;
 }
 
+function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
+  const dailyOn = view.frequency !== "weekly";
+  const weeklyOn = view.frequency === "weekly";
+  const idBase = form === "subscribe" ? "following-sub" : "following";
+  return `<fieldset class="following-cadence" data-following-cadence>
+    <legend>How often to email</legend>
+    <div class="following-cadence-cards">
+      <label class="following-cadence-card${dailyOn ? " is-selected" : ""}">
+        <input type="radio" name="${esc(name)}" value="daily"${dailyOn ? " checked" : ""} data-following-freq="daily">
+        <span class="following-cadence-title">Daily</span>
+        <span class="following-cadence-copy">Email only on match days. Quiet days stay quiet. After about 14 quiet days, we send a short check-in.</span>
+      </label>
+      <label class="following-cadence-card${weeklyOn ? " is-selected" : ""}">
+        <input type="radio" name="${esc(name)}" value="weekly"${weeklyOn ? " checked" : ""} data-following-freq="weekly">
+        <span class="following-cadence-title">Weekly</span>
+        <span class="following-cadence-copy">A Monday note even when nothing is new.</span>
+      </label>
+    </div>
+  </fieldset>`;
+}
+
 function subscribeHtml(view) {
-  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Pick a topic or place to see matches.</p></section>`;
+  if (!view.requested) {
+    return `<section class="following-subscribe" data-following-subscribe-panel>
+      <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
+      <p>Pick a topic or place to see matches.</p>
+      <p class="following-note" data-following-delivery-help>No new matches means no email. That is on purpose. After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
+    </section>`;
+  }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
       <input type="hidden" name="lens" value="${esc(view.lens)}">
       <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
-      <input type="hidden" name="freq" value="${esc(view.frequency)}">
+      <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
       <input type="hidden" name="lang" value="en">
-      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-confirm-note"></label>
+      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-confirm-note following-delivery-help"></label>
       <button type="submit">Email me this watch</button>
       <p id="following-confirm-note">We send one link first. Click it to start the watch.</p>
+      <p id="following-delivery-help" class="following-note" data-following-delivery-help>
+        No new matches means no email. That is on purpose. After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.
+      </p>
       <p data-following-submit-status role="status" aria-live="polite"></p>
     </form>
   </section>`;
 }
 
 function templateHtml(template) {
+  const attention = packAttentionCopy(template, { frequency: "weekly" });
   const watches = template.watches.map((watch) => `<li>${esc(watch.label)}.</li>`).join("");
   const href = `/following/packs/${encodeURIComponent(template.id)}/`;
-  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This pack has ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details>${constellationLink({ href, label: "Open this pack", className: "following-pack-link", escape: esc })}</article>`;
+  return `<article class="following-pack" data-pack-id="${esc(template.id)}">
+    <h3>${esc(template.title)}</h3>
+    <p class="following-pack-cost" data-pack-attention>${esc(attention.summary)}</p>
+    <p class="following-pack-subject muted">Sample subject line: ${esc(attention.sampleSubject)}</p>
+    <details><summary>Show watches</summary><ul>${watches}</ul></details>
+    ${constellationLink({ href, label: "Open this pack", className: "following-pack-link", escape: esc })}
+  </article>`;
 }
 
 function controlsHtml(view) {
@@ -326,49 +458,61 @@ function controlsHtml(view) {
     <input type="hidden" name="lens" value="${esc(view.lens)}">
     <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
     ${borough ? `<input type="hidden" name="boro" value="${esc(borough)}">` : ""}
-    <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…"></label>
-    <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency"></label>
-    <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51"></label>
-    <label>Cadence<select name="freq"><option value="daily"${view.frequency === "daily" ? " selected" : ""}>Daily</option><option value="weekly"${view.frequency === "weekly" ? " selected" : ""}>Weekly, Mondays</option></select></label>
+    <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
+    <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency" data-following-refine="agency"></label>
+    <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" data-following-refine="council"></label>
+    ${cadenceCardsHtml(view)}
     <button type="submit">See matches</button>
     <p data-following-preview-status role="status" aria-live="polite"></p>
-  </form>`;
+  </form>
+  ${view.requested ? "" : ruleLineHtml({ ...view, requested: true, ruleSentence: composeWatchRuleSentence(view.lens, view.filter), citywideDailyWarn: false })}`;
 }
 
 function personalSectionHtml(view) {
   // Mid-create: collapse the (often empty) saved-watches region so it is not
-  // dead weight above the criteria → matches → create flow.
+  // dead weight above the criteria → matches → create flow. Client promotes
+  // this section when a recognized session has one or more watches.
   const demoted = !!view.requested;
   const list = `<div data-personal-watch-list><p>Open a CityScroll email to see your watches.</p></div><p data-personal-status role="status" aria-live="polite"></p>`;
   if (demoted) {
-    return `<section id="your-following" class="following-personal following-personal--demoted" data-following-personal-mode="demoted" aria-labelledby="following-personal-heading">
+    return `<section id="your-following" class="following-personal following-personal--demoted" data-following-panel="watches" data-following-personal-mode="demoted" aria-labelledby="following-personal-heading">
       <details class="following-personal-details">
         <summary><span class="following-kicker">Saved</span> <span id="following-personal-heading">Your watches</span></summary>
         ${list}
       </details>
     </section>`;
   }
-  return `<section id="your-following" class="following-personal" data-following-personal-mode="secondary" aria-labelledby="following-personal-heading">
+  return `<section id="your-following" class="following-personal" data-following-panel="watches" data-following-personal-mode="secondary" aria-labelledby="following-personal-heading">
     <p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2>${list}
   </section>`;
 }
 
 function createSectionHtml(view) {
-  return `<section id="create" class="following-create" aria-labelledby="following-create-heading">
+  return `<section id="create" class="following-create" data-following-panel="create" aria-labelledby="following-create-heading">
     <p class="following-kicker">Create</p>
     <h2 id="following-create-heading">Pick a topic or place</h2>
     ${controlsHtml(view)}
   </section>`;
 }
 
+function surfaceTabsHtml() {
+  // Client promotes “Your watches” when a recognized session has saved watches.
+  return `<nav class="following-surface-tabs" data-following-tabs hidden role="tablist" aria-label="Following sections">
+    <button type="button" class="following-surface-tab" role="tab" id="following-tab-watches" data-following-tab="watches" aria-controls="your-following" aria-selected="false">Your watches</button>
+    <button type="button" class="following-surface-tab" role="tab" id="following-tab-create" data-following-tab="create" aria-controls="create" aria-selected="true">Create a watch</button>
+    <button type="button" class="following-surface-tab" role="tab" id="following-tab-packs" data-following-tab="packs" aria-controls="packs" aria-selected="false">Watch sets</button>
+  </nav>`;
+}
+
 export function renderFollowingBody(view) {
   const create = createSectionHtml(view);
-  // Handoff landing: scope chips + count before create/email so the program is verifiable.
-  const scopeLead = scopeHtml(view);
-  const workspace = `<div class="following-workspace" data-following-workspace>${previewHtml(view)}${subscribeHtml(view)}</div>`;
+  // Handoff landing: scope chips + count + rule line before email (workspace order).
+  // Panel workspace attribute supports the multi-watch surface tabs from main.
+  const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
-  const packs = `<section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
-  // Create flow leads; saved watches are secondary (collapsed when mid-create).
+  const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
+  // Create flow leads for first-time / empty sessions; client reorders when
+  // a recognized multi-watch account loads.
   return `<main id="main" data-following-root data-personal-url="${API_BASE}/following/personal"
     data-following-layout="${view.requested ? "create-first" : "browse"}"
     data-msg-duplicate="You already follow these filters. Manage the saved watch instead of making a copy."
@@ -380,11 +524,14 @@ export function renderFollowingBody(view) {
     data-msg-submit-error="We could not send the link. Check the address and try again."
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
-    data-msg-personal-error="Could not save that change. Try again.">
+    data-msg-personal-error="Could not save that change. Try again."
+    data-msg-citywide-daily-warn="This daily watch covers the whole city. Quiet days stay quiet. A match in any borough can email you. Pick a place or choose weekly to cut noise."
+    data-following-lens="${esc(view.lens)}"
+    data-following-filter="${esc(JSON.stringify(view.filter))}">
     <section class="following-hero">
       <h1>Following</h1>
     </section>
-    ${scopeLead}
+    ${surfaceTabsHtml()}
     ${create}
     ${workspace}
     ${personal}
