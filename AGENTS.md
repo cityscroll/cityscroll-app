@@ -2439,8 +2439,14 @@ both the live and restored databases.
   the interactive SPA (`?tab=`).
 - Categories: contracts + meetings + rules (entity-intelligence agency edges),
   **mandates** (rules → obligations facet + process-conformance expected vs observed), and staffing exams
-  (publisher `certified_to_agency` edges). Match basis stamped
+  (publisher `certified_to_agency` edges **intersected with** the staffing-guide
+  corpus in `site/data/staffing_exams.json` — only exams that have `/exams/:id/`
+  documents are listed/counted; historical civil-service list rows alone must not
+  become links). Match basis stamped
   `agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1`.
+  Unmatched `/exams/:id/` never falls through to the SPA contracts shell
+  (`handleExam` requires `data-exam-document="1"`; otherwise 404
+  `exam-unavailable`). Detector: `test/agency_exam_document_links.test.mjs`.
 - Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
 - **Provenance inspector (EBCG general):** pure `site/graph_edge_provenance.mjs`
   attaches where/how/warrant-class claims to each listed edge. Always-on chrome
