@@ -1,0 +1,864 @@
+{
+  "schema": "cityscroll.person_hub_influence_receipt.v1",
+  "observed_on": "2026-08-11",
+  "observed_at_utc": "2026-08-11T19:22:17.361Z",
+  "sources": {
+    "person_hub": "uvw5-9znb",
+    "elobbyist": "fmf3-knd8",
+    "campaign_contributions": "rjkp-yttg"
+  },
+  "person_hub": {
+    "person_count": 215,
+    "vote_corpus_join_rate": 1,
+    "demo_pass": true,
+    "promoted": true
+  },
+  "lobby": {
+    "kill_sample_rows": 2000,
+    "person_shaped_mentions": 66669,
+    "joined_mentions": 64116,
+    "usefulness": 0.9617,
+    "precision": 1,
+    "reviewed_sample_size": 40,
+    "gate": {
+      "usefulness_threshold": 0.3,
+      "precision_floor": 0.95,
+      "usefulness": 0.9617,
+      "precision": 1,
+      "usefulness_pass": true,
+      "precision_pass": true,
+      "promoted": true
+    },
+    "edge_count": 2440,
+    "person_count": 61,
+    "reviewed": [
+      {
+        "target_key": "JULIE MENIN",
+        "target_display": "NYC Council Members Julie Menin",
+        "person_id": "7803",
+        "hub_name": "Julie Menin",
+        "match_key": "JULIE MENIN",
+        "client_name": "Consolidated Edison Company of New York, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "GALE BREWER",
+        "target_display": "NYC Council Members Gale Brewer",
+        "person_id": "5259",
+        "hub_name": "Gale A. Brewer",
+        "match_key": "GALE BREWER",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SIMCHA FELDER",
+        "target_display": "NYC Council Members Simcha Felder",
+        "person_id": "5289",
+        "hub_name": "Simcha Felder",
+        "match_key": "SIMCHA FELDER",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "JAMES GENNARO",
+        "target_display": "NYC Council Members James Gennaro",
+        "person_id": "5273",
+        "hub_name": "James F. Gennaro",
+        "match_key": "JAMES GENNARO",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "DARLENE MEALY",
+        "target_display": "NYC Council Members Darlene Mealy",
+        "person_id": "6272",
+        "hub_name": "Darlene Mealy",
+        "match_key": "DARLENE MEALY",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SHAUN ABREU",
+        "target_display": "NYC Council Members Shaun Abreu",
+        "person_id": "7804",
+        "hub_name": "Shaun Abreu",
+        "match_key": "SHAUN ABREU",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SHIRLEY ALDEBOL",
+        "target_display": "NYC Council Members Shirley Aldebol",
+        "person_id": "7896",
+        "hub_name": "Shirley Aldebol",
+        "match_key": "SHIRLEY ALDEBOL",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "JOANN ARIOLA",
+        "target_display": "NYC Council Members Joann Ariola",
+        "person_id": "7819",
+        "hub_name": "Joann Ariola",
+        "match_key": "JOANN ARIOLA",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "ALEXA AVILES",
+        "target_display": "NYC Council Members Alexa Aviles",
+        "person_id": "7825",
+        "hub_name": "Alexa Avilés",
+        "match_key": "ALEXA AVILES",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "CHRIS BANKS",
+        "target_display": "NYC Council Members Chris Banks",
+        "person_id": "7864",
+        "hub_name": "Chris Banks",
+        "match_key": "CHRIS BANKS",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SELVENA BROOKS POWERS",
+        "target_display": "NYC Council Members Selvena Brooks-Powers",
+        "person_id": "7796",
+        "hub_name": "Selvena N. Brooks-Powers",
+        "match_key": "SELVENA BROOKS POWERS",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "TIFFANY CABAN",
+        "target_display": "NYC Council Members Tiffany Caban",
+        "person_id": "7813",
+        "hub_name": "Tiffany L. Cabán",
+        "match_key": "TIFFANY CABAN",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "DAVID CARR",
+        "target_display": "NYC Council Members David Carr",
+        "person_id": "7833",
+        "hub_name": "David M. Carr",
+        "match_key": "DAVID CARR",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "CARMEN DE LA ROSA",
+        "target_display": "NYC Council Members Carmen De La Rosa",
+        "person_id": "7806",
+        "hub_name": "Carmen N. De La Rosa",
+        "match_key": "CARMEN DE LA ROSA",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "ERIC DINOWITZ",
+        "target_display": "NYC Council Members Eric Dinowitz",
+        "person_id": "7799",
+        "hub_name": "Eric Dinowitz",
+        "match_key": "ERIC DINOWITZ",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "ELSIE ENCARNACION",
+        "target_display": "NYC Council Members Elsie Encarnacion",
+        "person_id": "7895",
+        "hub_name": "Elsie Encarnación",
+        "match_key": "ELSIE ENCARNACION",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "HARVEY D EPSTEIN",
+        "target_display": "NYC Council Members Harvey D. Epstein",
+        "person_id": "7893",
+        "hub_name": "Harvey D. Epstein",
+        "match_key": "HARVEY D EPSTEIN",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "AMANDA FARIAS",
+        "target_display": "NYC Council Members Amanda Farias",
+        "person_id": "7810",
+        "hub_name": "Amanda C. Farías",
+        "match_key": "AMANDA FARIAS",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "OSWALD FELIZ",
+        "target_display": "NYC Council Members Oswald Feliz",
+        "person_id": "7798",
+        "hub_name": "Oswald J. Feliz",
+        "match_key": "OSWALD FELIZ",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "JENNIFER GUTIERREZ",
+        "target_display": "NYC Council Members Jennifer Gutierrez",
+        "person_id": "7821",
+        "hub_name": "Jennifer Gutiérrez",
+        "match_key": "JENNIFER GUTIERREZ",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SHAHANA K HANIF",
+        "target_display": "NYC Council Members Shahana K. Hanif",
+        "person_id": "7826",
+        "hub_name": "Shahana K. Hanif",
+        "match_key": "SHAHANA K HANIF",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "TY HANKERSON",
+        "target_display": "NYC Council Members Ty Hankerson",
+        "person_id": "7899",
+        "hub_name": "Ty Hankerson",
+        "match_key": "TY HANKERSON",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "KAMILLAH HANKS",
+        "target_display": "NYC Council Members Kamillah Hanks",
+        "person_id": "7832",
+        "hub_name": "Kamillah Hanks",
+        "match_key": "KAMILLAH HANKS",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "CRYSTAL HUDSON",
+        "target_display": "NYC Council Members Crystal Hudson",
+        "person_id": "7822",
+        "hub_name": "Crystal Hudson",
+        "match_key": "CRYSTAL HUDSON",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "RITA C JOSEPH",
+        "target_display": "NYC Council Members Rita C. Joseph",
+        "person_id": "7827",
+        "hub_name": "Rita C. Joseph",
+        "match_key": "RITA C JOSEPH",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SHEKAR KRISHNAN",
+        "target_display": "NYC Council Members Shekar Krishnan",
+        "person_id": "7815",
+        "hub_name": "Shekar Krishnan",
+        "match_key": "SHEKAR KRISHNAN",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "LINDA LEE",
+        "target_display": "NYC Council Members Linda Lee",
+        "person_id": "7814",
+        "hub_name": "Linda Lee",
+        "match_key": "LINDA LEE",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "FARAH LOUIS",
+        "target_display": "NYC Council Members Farah Louis",
+        "person_id": "7785",
+        "hub_name": "Farah N. Louis",
+        "match_key": "FARAH LOUIS",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "VIRGINIA MALONEY",
+        "target_display": "NYC Council Members Virginia Maloney",
+        "person_id": "7894",
+        "hub_name": "Virginia Maloney",
+        "match_key": "VIRGINIA MALONEY",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "CHRISTOPHER MARTE",
+        "target_display": "NYC Council Members Christopher Marte",
+        "person_id": "7801",
+        "hub_name": "Christopher Marte",
+        "match_key": "CHRISTOPHER MARTE",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "JULIE MENIN",
+        "target_display": "NYC Council Members Julie Menin",
+        "person_id": "7803",
+        "hub_name": "Julie Menin",
+        "match_key": "JULIE MENIN",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "FRANK MORANO",
+        "target_display": "NYC Council Members Frank Morano",
+        "person_id": "7887",
+        "hub_name": "Frank Morano",
+        "match_key": "FRANK MORANO",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "MERCEDES NARCISSE",
+        "target_display": "NYC Council Members Mercedes Narcisse",
+        "person_id": "7829",
+        "hub_name": "Mercedes Narcisse",
+        "match_key": "MERCEDES NARCISSE",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "SANDY NURSE",
+        "target_display": "NYC Council Members Sandy Nurse",
+        "person_id": "7824",
+        "hub_name": "Sandy Nurse",
+        "match_key": "SANDY NURSE",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "CHI OSSE",
+        "target_display": "NYC Council Members Chi Osse",
+        "person_id": "7823",
+        "hub_name": "Chi A. Ossé",
+        "match_key": "CHI OSSE",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "VICKIE PALADINO",
+        "target_display": "NYC Council Members Vickie Paladino",
+        "person_id": "7811",
+        "hub_name": "Vickie Paladino",
+        "match_key": "VICKIE PALADINO",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "LINCOLN RESTLER",
+        "target_display": "NYC Council Members Lincoln Restler",
+        "person_id": "7820",
+        "hub_name": "Lincoln Restler",
+        "match_key": "LINCOLN RESTLER",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "KEVIN RILEY",
+        "target_display": "NYC Council Members Kevin Riley",
+        "person_id": "7794",
+        "hub_name": "Kevin C. Riley",
+        "match_key": "KEVIN RILEY",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "YUSEF SALAAM",
+        "target_display": "NYC Council Members Yusef Salaam",
+        "person_id": "7866",
+        "hub_name": "Yusef Salaam",
+        "match_key": "YUSEF SALAAM",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "target_key": "JUSTIN E SANCHEZ",
+        "target_display": "NYC Council Members Justin E. Sanchez",
+        "person_id": "7897",
+        "hub_name": "Justin E. Sanchez",
+        "match_key": "JUSTIN E SANCHEZ",
+        "client_name": "The Partnership for New York City, Inc.",
+        "report_year": "2026",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      }
+    ]
+  },
+  "cfb": {
+    "kill_sample_rows": 5000,
+    "distinct_recipients": 108,
+    "joined_recipients": 53,
+    "usefulness": 0.4907,
+    "precision": 1,
+    "reviewed_sample_size": 40,
+    "gate": {
+      "usefulness_threshold": 0.3,
+      "precision_floor": 0.95,
+      "usefulness": 0.4907,
+      "precision": 1,
+      "usefulness_pass": true,
+      "precision_pass": true,
+      "promoted": true
+    },
+    "edge_count": 1398,
+    "person_count": 59,
+    "reviewed": [
+      {
+        "recipid": "2455",
+        "recipname": "Restler, Lincoln",
+        "person_id": "7820",
+        "hub_name": "Lincoln Restler",
+        "match_key": "LINCOLN RESTLER",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1159",
+        "recipname": "Narcisse, Mercedes",
+        "person_id": "7829",
+        "hub_name": "Mercedes Narcisse",
+        "match_key": "MERCEDES NARCISSE",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2756",
+        "recipname": "Salaam, Yusef",
+        "person_id": "7866",
+        "hub_name": "Yusef Salaam",
+        "match_key": "YUSEF SALAAM",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2909",
+        "recipname": "Maloney, Virginia",
+        "person_id": "7894",
+        "hub_name": "Virginia Maloney",
+        "match_key": "VIRGINIA MALONEY",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2256",
+        "recipname": "Hanif, Shahana",
+        "person_id": "7826",
+        "hub_name": "Shahana K. Hanif",
+        "match_key": "SHAHANA HANIF",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2311",
+        "recipname": "Feliz, Oswald",
+        "person_id": "7798",
+        "hub_name": "Oswald J. Feliz",
+        "match_key": "OSWALD FELIZ",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2436",
+        "recipname": "Caban, Tiffany",
+        "person_id": "7813",
+        "hub_name": "Tiffany L. Cabán",
+        "match_key": "TIFFANY CABAN",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "313",
+        "recipname": "Felder, Simcha",
+        "person_id": "5289",
+        "hub_name": "Simcha Felder",
+        "match_key": "SIMCHA FELDER",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2002",
+        "recipname": "Gjonaj, Mark",
+        "person_id": "7743",
+        "hub_name": "Mark Gjonaj",
+        "match_key": "MARK GJONAJ",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2061",
+        "recipname": "Yeger, Kalman",
+        "person_id": "7749",
+        "hub_name": "Kalman Yeger",
+        "match_key": "KALMAN YEGER",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2349",
+        "recipname": "De La Rosa, Carmen N",
+        "person_id": "7806",
+        "hub_name": "Carmen N. De La Rosa",
+        "match_key": "CARMEN N DE LA ROSA",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1996",
+        "recipname": "Hanks, Kamillah M",
+        "person_id": "7832",
+        "hub_name": "Kamillah Hanks",
+        "match_key": "KAMILLAH HANKS",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2246",
+        "recipname": "Joseph, Rita C",
+        "person_id": "7827",
+        "hub_name": "Rita C. Joseph",
+        "match_key": "RITA C JOSEPH",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1717",
+        "recipname": "Kagan, Ari",
+        "person_id": "7830",
+        "hub_name": "Ari Kagan",
+        "match_key": "ARI KAGAN",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2310",
+        "recipname": "Nurse, Sandy",
+        "person_id": "7824",
+        "hub_name": "Sandy Nurse",
+        "match_key": "SANDY NURSE",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1902",
+        "recipname": "Salamanca, Rafael",
+        "person_id": "7714",
+        "hub_name": "Rafael Salamanca, Jr.",
+        "match_key": "RAFAEL SALAMANCA",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2357",
+        "recipname": "Gutierrez, Jennifer",
+        "person_id": "7821",
+        "hub_name": "Jennifer Gutiérrez",
+        "match_key": "JENNIFER GUTIERREZ",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1256",
+        "recipname": "Cabrera, Fernando L",
+        "person_id": "7561",
+        "hub_name": "Fernando Cabrera",
+        "match_key": "FERNANDO CABRERA",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1529",
+        "recipname": "Menin, Julie",
+        "person_id": "7803",
+        "hub_name": "Julie Menin",
+        "match_key": "JULIE MENIN",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "399",
+        "recipname": "Brewer, Gale",
+        "person_id": "5259",
+        "hub_name": "Gale A. Brewer",
+        "match_key": "GALE BREWER",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2371",
+        "recipname": "Osse, Chi",
+        "person_id": "7823",
+        "hub_name": "Chi A. Ossé",
+        "match_key": "CHI OSSE",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2923",
+        "recipname": "Thomas-Henry, Shanel",
+        "person_id": "7898",
+        "hub_name": "Shanel Thomas-Henry",
+        "match_key": "SHANEL THOMAS HENRY",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1624",
+        "recipname": "Brooks-Powers, Selvena",
+        "person_id": "7796",
+        "hub_name": "Selvena N. Brooks-Powers",
+        "match_key": "SELVENA BROOKS POWERS",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "283",
+        "recipname": "Gennaro, James F",
+        "person_id": "5273",
+        "hub_name": "James F. Gennaro",
+        "match_key": "JAMES F GENNARO",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2327",
+        "recipname": "Riley, Kevin C",
+        "person_id": "7794",
+        "hub_name": "Kevin C. Riley",
+        "match_key": "KEVIN C RILEY",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2029",
+        "recipname": "Sanchez, Justin",
+        "person_id": "7897",
+        "hub_name": "Justin E. Sanchez",
+        "match_key": "JUSTIN SANCHEZ",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1945",
+        "recipname": "Farias, Amanda",
+        "person_id": "7810",
+        "hub_name": "Amanda C. Farías",
+        "match_key": "AMANDA FARIAS",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2758",
+        "recipname": "Zhuang, Susan",
+        "person_id": "7867",
+        "hub_name": "Susan Zhuang",
+        "match_key": "SUSAN ZHUANG",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "846",
+        "recipname": "Mealy, Darlene",
+        "person_id": "6272",
+        "hub_name": "Darlene Mealy",
+        "match_key": "DARLENE MEALY",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2306",
+        "recipname": "Aviles, Alexa",
+        "person_id": "7825",
+        "hub_name": "Alexa Avilés",
+        "match_key": "ALEXA AVILES",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "1987",
+        "recipname": "Marte, Christopher",
+        "person_id": "7801",
+        "hub_name": "Christopher Marte",
+        "match_key": "CHRISTOPHER MARTE",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2763",
+        "recipname": "Marmorato, Kristy",
+        "person_id": "7865",
+        "hub_name": "Kristy Marmorato",
+        "match_key": "KRISTY MARMORATO",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2380",
+        "recipname": "Won, Julie",
+        "person_id": "7816",
+        "hub_name": "Julie Won",
+        "match_key": "JULIE WON",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2918",
+        "recipname": "Santosuosso, Kayla",
+        "person_id": "7901",
+        "hub_name": "Kayla Santosuosso",
+        "match_key": "KAYLA SANTOSUOSSO",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2942",
+        "recipname": "Wong, Phil W",
+        "person_id": "7900",
+        "hub_name": "Phil Wong",
+        "match_key": "PHIL WONG",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2902",
+        "recipname": "Aldebol, Shirley",
+        "person_id": "7896",
+        "hub_name": "Shirley Aldebol",
+        "match_key": "SHIRLEY ALDEBOL",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2267",
+        "recipname": "Hudson, Crystal",
+        "person_id": "7822",
+        "hub_name": "Crystal Hudson",
+        "match_key": "CRYSTAL HUDSON",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2860",
+        "recipname": "Epstein, Harvey D",
+        "person_id": "7893",
+        "hub_name": "Harvey D. Epstein",
+        "match_key": "HARVEY D EPSTEIN",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2843",
+        "recipname": "Encarnacion, Elsie",
+        "person_id": "7895",
+        "hub_name": "Elsie Encarnación",
+        "match_key": "ELSIE ENCARNACION",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      },
+      {
+        "recipid": "2384",
+        "recipname": "Paladino, Vickie",
+        "person_id": "7811",
+        "hub_name": "Vickie Paladino",
+        "match_key": "VICKIE PALADINO",
+        "label": "same",
+        "review_reason": "unique_hub_match_key"
+      }
+    ]
+  },
+  "verdict": {
+    "person_hub": "SHIP person identity family",
+    "lobby": "SHIP lobby edges (usefulness and precision cleared)",
+    "cfb": "SHIP CFB recipient edges (usefulness and precision cleared)",
+    "official_constellation": "Vote retention event gate (≥30 distinct roll-call events) is independent; person hub does not force constellation promotion."
+  }
+}

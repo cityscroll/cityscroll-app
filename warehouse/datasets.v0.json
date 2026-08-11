@@ -15,7 +15,7 @@
     "card": "WH-02",
     "strategy": "smallest_or_most_valuable_first_sequential",
     "first_pick": "ocp-recent-contract-awards",
-    "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows — real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
+    "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
     "queue": [
       "ocp-recent-contract-awards",
       "zap-projects",
@@ -87,8 +87,39 @@
       "default_limit": 50,
       "wh02_full_export": true,
       "soda_order": "member_id ASC, committee_id ASC, start_date ASC",
-      "required_fields": ["member_id", "full_name", "committee", "appointment_type", "start_date", "end_date", "committee_id", "id"],
+      "required_fields": [
+        "member_id",
+        "full_name",
+        "committee",
+        "appointment_type",
+        "start_date",
+        "end_date",
+        "committee_id",
+        "id"
+      ],
       "notes": "Bulk-side historical committee membership. Publish only exact member_id rows attached to the committed people-domain corpus."
+    },
+    "nyc-council-members": {
+      "id": "nyc-council-members",
+      "source_contract_id": "nyc-council-members",
+      "name": "NYC Council Members (1999 to Present)",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "uvw5-9znb",
+      "table_name": "nyc_council_members",
+      "bulk_class": "TINY",
+      "default_limit": 1000,
+      "wh02_full_export": false,
+      "soda_order": "council_member_id ASC, term_start ASC",
+      "required_fields": [
+        "council_member_id",
+        "name",
+        "term_start",
+        "term_end",
+        "district",
+        "office_id"
+      ],
+      "notes": "Person hub: council_member_id equals Legistar PersonId. Materialize via tools/build_person_hub.mjs."
     },
     "abo-local-authorities": {
       "id": "abo-local-authorities",
@@ -223,7 +254,7 @@
       "required_fields": [
         "project_id"
       ],
-      "notes": "WH-06 third bulk pack + fetchBbls materialization. ~132k rows; project_id ↔ BBL."
+      "notes": "WH-06 third bulk pack + fetchBbls materialization. ~132k rows; project_id \u2194 BBL."
     },
     "dob-certificate-of-occupancy": {
       "id": "dob-certificate-of-occupancy",
