@@ -83,3 +83,4 @@ lens per PR; keep capability parity and re-run the lens's characterization + cap
 Update the ledger when a card ships (mark it, link the commit). Keep the template recap in
 sync with the Property reference instance if the reference changes. When every lens has
 adopted the template, retire the cards section and keep the template as the standing spec.
+
