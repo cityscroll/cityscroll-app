@@ -18,7 +18,9 @@ import {
 import {
   buildNoticeMandateBacklinksLookup,
   collectFromContractView,
+  collectFromReportsView,
 } from "../tools/lib/notice_mandate_backlinks_index.mjs";
+import { OBSERVATION_STATUS } from "../site/process_conformance.mjs";
 import { renderEdgeNotice } from "../site/pages_edge.mjs";
 import {
   CROSS_BRIDGE_MANDATE_SUBJECT_REF,
@@ -105,6 +107,37 @@ test("contract view collector indexes public edges only by notice id", () => {
   assert.equal(row.mandate_id, CROSS_BRIDGE_OBLIGATION_ID);
   assert.equal(row.watch_href, undefined);
   assert.doesNotMatch(JSON.stringify(row), /mandate:|subject_ref|evidence_only/);
+});
+
+test("reports view collector indexes observed filing receipts only", () => {
+  const byNotice = collectFromReportsView({
+    agency_id: "commission-on-human-rights",
+    agency_name: "Commission on Human Rights",
+    mandates: [
+      {
+        mandate_id: "53107-001",
+        duty_text: "Submit an annual report and publish it in the City Record.",
+        citation: "Admin Code § 8-105",
+        source_href: "https://example.test/law",
+        observation_status: OBSERVATION_STATUS.OBSERVED,
+        filing_receipt: {
+          request_id: "20251001039",
+          label: "FY25 Annual Report",
+          href: "#notice/20251001039",
+        },
+      },
+      {
+        mandate_id: "x-miss",
+        duty_text: "Submit a climate survey report.",
+        observation_status: null,
+        filing_receipt: null,
+      },
+    ],
+  });
+  assert.equal(byNotice.has("20251001039"), true);
+  assert.equal(byNotice.get("20251001039")[0].relation, "mandate_report_filing");
+  assert.equal(byNotice.get("20251001039")[0].mandate_id, "53107-001");
+  assert.equal(byNotice.has("x-miss"), false);
 });
 
 test("lookup and render are empty-safe and omit absence copy", () => {

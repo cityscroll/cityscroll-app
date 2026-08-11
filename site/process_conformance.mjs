@@ -28,7 +28,13 @@ import {
   RULE_LIFECYCLE_STATUSES,
   compactCitationLawKeys,
   compactEvidenceTokens,
+  expandCitationKeyParents,
+  isStrongCitationKey,
 } from "./rule_evidence_stamps.mjs";
+import {
+  isAnnualReportPublicationTitle,
+  mandateRequiresCityRecordAnnualReport,
+} from "./reports_domain_observations.mjs";
 import {
   TOPIC_NORMALIZATION_VERSION,
   normalizeTopicEvidence,
@@ -194,12 +200,16 @@ export function normalizeObservationCandidate(raw = {}) {
   const stamp = raw.rule_evidence && typeof raw.rule_evidence === "object"
     ? raw.rule_evidence
     : {};
+  const reportStamp = raw.report_evidence && typeof raw.report_evidence === "object"
+    ? raw.report_evidence
+    : {};
   const blob = `${label} ${type} ${section}`.toLowerCase();
   const isRules = domain === "rules"
     || section.includes("agency rules")
     || /rule|regulatory agenda|proposed rule|adoption of rules|emergency rule/.test(blob);
-  const isReportShaped = /\breport\b|\bstudy\b|\bsurvey\b|\bevaluation\b|\bplan\b|\bstrategy\b/.test(blob)
-    && !isRules;
+  const isReportShaped = domain === "reports"
+    || raw.signal_kind === "report_or_study"
+    || (/\breport\b|\bstudy\b|\bsurvey\b|\bevaluation\b|\bplan\b|\bstrategy\b/.test(blob) && !isRules);
   const isHearing = domain === "meetings"
     || /public hearing|hearing/.test(blob);
   let signalKind = clean(raw.signal_kind, 40) || null;
@@ -211,7 +221,9 @@ export function normalizeObservationCandidate(raw = {}) {
   }
   const stampedTopicKeys = Array.isArray(stamp.topic_keys)
     ? compactEvidenceTokens(stamp.topic_keys.join(" "))
-    : [];
+    : Array.isArray(reportStamp.topic_keys)
+      ? compactEvidenceTokens(reportStamp.topic_keys.join(" "))
+      : [];
   const stampedBodyTopicKeys = Array.isArray(stamp.body_topic_keys)
     ? compactEvidenceTokens(stamp.body_topic_keys.join(" "))
     : [];
@@ -226,13 +238,14 @@ export function normalizeObservationCandidate(raw = {}) {
     agency_id: agencyId,
     agency_name: agencyName,
     signal_kind: signalKind,
-    domain: domain || (isRules ? "rules" : isHearing ? "meetings" : "city_record"),
+    domain: domain
+      || (isRules ? "rules" : isHearing ? "meetings" : isReportShaped ? "reports" : "city_record"),
     href: clean(raw.href, 240)
       || (requestId ? `#notice/${encodeURIComponent(requestId)}` : null),
     source_system: clean(raw.source_system || raw.provenance?.source_system || "city_record", 80),
     body,
     citation,
-    citation_keys: [...new Set([
+    citation_keys: expandCitationKeyParents([
       ...stampedCitationKeys,
       ...citationLawKeys([
         citation,
@@ -241,7 +254,7 @@ export function normalizeObservationCandidate(raw = {}) {
         raw.body,
         raw.rule_body,
       ].filter(Boolean).join(" ")),
-    ])].slice(0, 32),
+    ]).slice(0, 32),
     lifecycle_status: RULE_LIFECYCLE_STATUSES.includes(lifecycleStatus) ? lifecycleStatus : null,
     effective_date: datePart(stamp.effective_date || raw.effective_date),
     adoption_date: datePart(stamp.adoption_date || raw.adoption_date),
@@ -251,18 +264,20 @@ export function normalizeObservationCandidate(raw = {}) {
     ].map((item) => clean(item, 120)).filter(Boolean))].slice(0, 8),
     tokens: stampedTopicKeys.length ? stampedTopicKeys : contentTokens(label),
     body_topic_keys: stampedBodyTopicKeys,
+    annual_report: reportStamp.annual_report === true || isAnnualReportPublicationTitle(label),
   };
 }
 
 /**
  * Collect observation candidates for one agency from committed materializations.
- * Rules domain observations + entity-intelligence rules objects + meetings rows.
+ * Rules + meetings + report publication densify + entity-intelligence rows.
  */
 export function collectAgencyObservationCandidates({
   agencyId,
   agencyName = null,
   rulesDomain = null,
   meetingsDomain = null,
+  reportsDomain = null,
   entityIntelligence = null,
 } = {}) {
   const identity = resolveAgencyIdentity(agencyId || agencyName);
@@ -310,6 +325,17 @@ export function collectAgencyObservationCandidates({
     });
   }
 
+  for (const row of reportsDomain?.rows || []) {
+    if (!agencyMatches(row.agency_name || row.agency)) continue;
+    push({
+      ...row,
+      domain: "reports",
+      signal_kind: "report_or_study",
+      agency_id: id,
+      agency_name: name,
+    });
+  }
+
   const ref = id ? `agency:id:${id}` : null;
   const ei = entityIntelligence?.by_ref?.[ref]
     || entityIntelligence?.by_subject_ref?.[ref]
@@ -345,6 +371,27 @@ export function collectAgencyObservationCandidates({
 
 /** Score whether a candidate notice is a topic match for a mandate duty. */
 export function scoreTopicMatch(dutyText, candidate) {
+  // Structural City Record annual-report join: statute requires publishing an
+  // annual report in the City Record, and the notice is that agency's annual
+  // report publication. Two grounded keys — not title-token luck.
+  if (
+    mandateRequiresCityRecordAnnualReport(dutyText)
+    && (
+      candidate?.annual_report === true
+      || isAnnualReportPublicationTitle(candidate?.label || candidate?.short_title)
+    )
+    && (
+      candidate?.signal_kind === "report_or_study"
+      || candidate?.domain === "reports"
+    )
+  ) {
+    return {
+      score: 2,
+      shared: ["annual", "report"],
+      method: "city_record_annual_report_publication_v1",
+      normalization: null,
+    };
+  }
   const dutyTerms = contentTokens(dutyText);
   const noticeTerms = Array.isArray(candidate?.tokens)
     ? candidate.tokens
@@ -390,17 +437,17 @@ export function scoreTopicMatch(dutyText, candidate) {
 }
 
 function mandateCitationKeys(mandate) {
-  return citationLawKeys([
+  return expandCitationKeyParents(citationLawKeys([
     mandate?.citation,
     mandate?.source?.citation,
     mandate?.file_number,
     mandate?.law_number_display,
     mandate?.matter_id,
-  ].filter(Boolean).join(" "));
+  ].filter(Boolean).join(" ")));
 }
 
 function candidateCitationKeys(candidate) {
-  return [...new Set([
+  return expandCitationKeyParents([
     ...(Array.isArray(candidate?.citation_keys) ? candidate.citation_keys : []),
     ...citationLawKeys([
     candidate?.citation,
@@ -411,7 +458,7 @@ function candidateCitationKeys(candidate) {
     candidate?.law_text,
     candidate?.body,
     ].filter(Boolean).join(" ")),
-  ])];
+  ]);
 }
 
 function agencyEvidenceMatches(mandate, candidate) {
@@ -466,7 +513,10 @@ export function evaluateRuleEvidence(mandate, candidate, { expectedKind = "rule_
   const mandateKeys = mandateCitationKeys(mandate);
   const candidateKeys = candidateCitationKeys(candidate);
   const citationLawOverlap = mandateKeys.filter((key) => candidateKeys.includes(key));
-  const citationLawMatch = candidate?.citation_law_match === true || citationLawOverlap.length > 0;
+  // Require at least one scheme-qualified / subsection-bearing key. Bare
+  // section:1 / section:16 tokens from densified PDFs are not standable alone.
+  const strongCitationOverlap = citationLawOverlap.filter(isStrongCitationKey);
+  const citationLawMatch = candidate?.citation_law_match === true || strongCitationOverlap.length > 0;
   const negativeEvidence = negativeEvidenceFor(mandate, candidate, temporalCompatible);
   const features = {
     agency_exact: agencyEvidenceMatches(mandate, candidate),
@@ -652,6 +702,7 @@ export function buildAgencyConformanceView(agencyIdOrName, {
   obligationsLookup = null,
   rulesDomain = null,
   meetingsDomain = null,
+  reportsDomain = null,
   entityIntelligence = null,
   asOf = null,
   limit = 40,
@@ -665,6 +716,7 @@ export function buildAgencyConformanceView(agencyIdOrName, {
     agencyName: identity.canonical_name,
     rulesDomain,
     meetingsDomain,
+    reportsDomain,
     entityIntelligence,
   });
   const today = validDate(asOf) || new Date().toISOString().slice(0, 10);
@@ -733,6 +785,7 @@ export function buildAgencyConformanceView(agencyIdOrName, {
       sources: [
         "rules_domain_observations",
         "meetings_domain_observations",
+        "reports_domain_observations",
         "entity_intelligence.rules",
         "entity_intelligence.meetings",
       ],
@@ -772,6 +825,7 @@ export function buildProcessConformanceLookup({
   obligationsLookup = null,
   rulesDomain = null,
   meetingsDomain = null,
+  reportsDomain = null,
   entityIntelligence = null,
   asOf = null,
   agencyIds = null,
@@ -791,6 +845,7 @@ export function buildProcessConformanceLookup({
       obligationsLookup,
       rulesDomain,
       meetingsDomain,
+      reportsDomain,
       entityIntelligence,
       asOf: today,
       // Full mandate text lives in agency_obligations_lookup; store observation

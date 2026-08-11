@@ -1,0 +1,84 @@
+{
+  "rows": [
+    {
+      "request_id": "20260804009",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "Binding Report June 2026",
+      "start_date": "2026-08-11T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20260804008",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "Advisory Report June 2026",
+      "start_date": "2026-08-11T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20260701045",
+      "agency_name": "Charter Revision Commission",
+      "short_title": "Notice of Adopted Final Report",
+      "start_date": "2026-07-07T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20260612029",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "Advisory Report for May 2026",
+      "start_date": "2026-06-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20260612030",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "Binding Report for May 2026",
+      "start_date": "2026-06-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20260511003",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "Binding Report April 2026",
+      "start_date": "2026-05-15T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20260511002",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "Advisory Report April 2026",
+      "start_date": "2026-05-15T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20251001039",
+      "agency_name": "Commission on Human Rights",
+      "short_title": "NYC Commission on Human Rights FY25 Annual Report",
+      "start_date": "2025-10-10T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20241001005",
+      "agency_name": "Commission on Human Rights",
+      "short_title": "FY24 CCHR Annual Report",
+      "start_date": "2024-10-08T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    },
+    {
+      "request_id": "20231002002",
+      "agency_name": "Commission on Human Rights",
+      "short_title": "CCHR Annual Report FY23",
+      "start_date": "2023-10-10T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Special Materials"
+    }
+  ]
+}

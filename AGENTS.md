@@ -38,7 +38,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `/notices/<id>`. SPA-safe renderer `site/notice_mandate_backlinks.mjs` (no bridge/ER
   imports); build-time index `tools/lib/notice_mandate_backlinks_index.mjs` →
   `site/data/notice_mandate_backlinks_lookup.json` via
-  `node tools/build_notice_mandate_backlinks.mjs`. Edge stamps in `renderEdgeNotice`; SPA
+  `node tools/build_notice_mandate_backlinks.mjs`. Collectors include contracts, meetings,
+  land, rules **and report filing receipts**. Edge stamps in `renderEdgeNotice`; SPA
   hydrates through `fillContext` in `site/app/notice-context.mjs` and skips when the edge
   card is already present. Public rows may carry a bare `mandate_id` (product filter key)
   so the card can offer “Watch this mandate” via `mandateFollowHref` — never store graph
@@ -2553,19 +2554,31 @@ both the live and restored databases.
 - v1 detectors: `rulemaking` and `report` against Agency Rules / report-shaped
   City Record notices (agency identity + topic-token join). Other deliverable
   types wait for a stronger detector.
+- **Report densify:** `site/data/reports_domain_observations.json` via
+  `node tools/build_reports_domain_observations.mjs` (Special Materials annual
+  reports; excludes concept papers and procurement). Structural join
+  `city_record_annual_report_publication_v1` when a duty requires publishing an
+  annual report in the City Record. Demo: CCHR
+  `/agencies/commission-on-human-rights/#mandates-reports`.
 - Rulemaking evidence stamps are derived by the pure
   `site/rule_evidence_stamps.mjs` extractor. The rules snapshot builder reads
   source body fields transiently, commits only bounded topic/citation keys,
-  lifecycle/date enums, and discards the prose. `normalizeObservationCandidate`
-  and `evaluateRuleEvidence` consume the stamp through the existing
-  `mandate_rule` policy gate. Refresh rules alone with
-  `node tools/build_rules_meetings_domain_observations.mjs --rules-only`; verify
-  with `node --test test/rule_evidence_stamps.test.mjs`.
+  lifecycle/date enums, and discards the prose. When SODA bodies are empty,
+  `node tools/densify_rule_evidence_attachments.mjs` densifies from City Record
+  GetFile PDFs (bounded, polite). Citation match requires a **strong** key
+  (`nyc-charter:*` / `nyc-admin-code:*` / subsection-bearing `section:*`) —
+  bare `section:1` never publishes. `normalizeObservationCandidate` and
+  `evaluateRuleEvidence` consume the stamp through the existing `mandate_rule`
+  policy gate. Refresh rules alone with
+  `node tools/build_rules_meetings_domain_observations.mjs --rules-only`; then
+  attachment densify + `node tools/build_process_conformance.mjs`. Verify with
+  `node --test test/rule_evidence_stamps.test.mjs test/rule_attachment_densify.test.mjs`.
+  Demo: Sanitation CWZ `/agencies/sanitation/#mandates-rules`.
 - Surface: agency constellation `#mandates-conformance` (shareable
   `/agencies/<id>/#mandates-conformance`). Seams left for full event logs and
   Process Mining Manifesto enrichment later.
-- Verify: `node --test test/process_conformance.test.mjs`. Demo Parks:
-  `/agencies/parks-and-recreation/#mandates-conformance`.
+- Verify: `node --test test/process_conformance.test.mjs test/reports_domain_observations.test.mjs`.
+  Measurement: `docs/evidence/mandate-graph-densify/join-measurement.json`.
 
 ## Mandate co-located graph neighbors (mand-graph-01)
 

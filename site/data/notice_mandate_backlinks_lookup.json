@@ -1,12 +1,15 @@
 {
   "schema": "cityscroll.notice_mandate_backlinks.v1",
   "method": "notice_mandate_backlinks_v1",
-  "generated_at": "2026-08-09T16:48:30.344Z",
+  "generated_at": "2026-08-11T21:12:40.861Z",
   "counts": {
-    "notices": 1,
-    "edges": 1,
+    "notices": 6,
+    "edges": 7,
     "by_relation": {
-      "implemented_by_contract": 1
+      "implemented_by_contract": 1,
+      "mandate_report_filing": 2,
+      "requires_public_hearing": 3,
+      "mandate_rule_filing": 1
     }
   },
   "by_notice": {
@@ -22,6 +25,88 @@
         "agency_href": "/agencies/homeless-services/",
         "publication_tier": "public_inferred",
         "mandate_id": "66056-006"
+      }
+    ],
+    "20251001039": [
+      {
+        "duty_text": "Submit an annual report to the mayor and the council, publish it in the City Record, and include the specified information regarding inquiries, investigations, complaints, and education and outreach efforts.",
+        "citation": "Section 1, amending Administrative Code § 8-105(10)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=53107",
+        "relation": "mandate_report_filing",
+        "relation_label": "Report filing receipt for this duty",
+        "agency_id": "commission-on-human-rights",
+        "agency_name": "Commission on Human Rights",
+        "agency_href": "/agencies/commission-on-human-rights/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "53107-001"
+      },
+      {
+        "duty_text": "To submit an annual report to the mayor and the council, which report shall be published in The City Record.",
+        "citation": "§ 905(e)(1)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=55348",
+        "relation": "mandate_report_filing",
+        "relation_label": "Report filing receipt for this duty",
+        "agency_id": "commission-on-human-rights",
+        "agency_name": "Commission on Human Rights",
+        "agency_href": "/agencies/commission-on-human-rights/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "55348-004"
+      }
+    ],
+    "20260605006": [
+      {
+        "duty_text": "Hold a required public hearing on a sidewalk-cafe petition and decide whether to approve, disapprove, or approve it with modifications; file approval decisions with the Council.",
+        "citation": "Administrative Code § 19-160.2(c)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68103",
+        "relation": "requires_public_hearing",
+        "relation_label": "Public hearing for this duty",
+        "agency_id": "transportation",
+        "agency_name": "Transportation",
+        "agency_href": "/agencies/transportation/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "68103-008"
+      }
+    ],
+    "20260605007": [
+      {
+        "duty_text": "Hold a required public hearing on a sidewalk-cafe petition and decide whether to approve, disapprove, or approve it with modifications; file approval decisions with the Council.",
+        "citation": "Administrative Code § 19-160.2(c)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68103",
+        "relation": "requires_public_hearing",
+        "relation_label": "Public hearing for this duty",
+        "agency_id": "transportation",
+        "agency_name": "Transportation",
+        "agency_href": "/agencies/transportation/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "68103-008"
+      }
+    ],
+    "20260605008": [
+      {
+        "duty_text": "Regulate the conduct of businesses authorized to collect commercial waste in commercial waste zones and establish and enforce specified standards and requirements.",
+        "citation": "New York City Charter § 753(e)(2)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=64116",
+        "relation": "mandate_rule_filing",
+        "relation_label": "Rules filing for this duty",
+        "agency_id": "sanitation",
+        "agency_name": "Sanitation",
+        "agency_href": "/agencies/sanitation/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "64116-001"
+      }
+    ],
+    "20260716009": [
+      {
+        "duty_text": "Hold a required public hearing on a sidewalk-cafe petition and decide whether to approve, disapprove, or approve it with modifications; file approval decisions with the Council.",
+        "citation": "Administrative Code § 19-160.2(c)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68103",
+        "relation": "requires_public_hearing",
+        "relation_label": "Public hearing for this duty",
+        "agency_id": "transportation",
+        "agency_name": "Transportation",
+        "agency_href": "/agencies/transportation/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "68103-008"
       }
     ]
   }
