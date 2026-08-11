@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.multi_flywheel_ledger.v0",
   "policy_version": "v0",
-  "updated_at": "2026-08-11T15:00:00.000Z",
+  "updated_at": "1970-01-01T00:00:00.000Z",
   "cards": {
     "crol-list/mf-data-integrity-red-flag-subsidy-field-company-place-money": {
       "status": "fixed",
@@ -20,7 +20,474 @@
       "fixed_at": "2026-08-11T15:00:00.000Z",
       "fixed_note": "Board stage attaches on accepted RC-2 corpus; feed-down empty stages use not_yet_ingested/omit, not class-(b).",
       "demo_win": "Later subsidy stages only claim city does not publish after a successful project join that still lacks the stage."
+    },
+    "crol-list/mf-data-integrity-red-flag-meeting-person-votes": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Credibility red flag: ~100% not-published for meeting-person-votes",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate:meeting-person-votes classification!=red_flag",
+      "content_hash": "6bed4fc36f17773d",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Council hearings show named yes/no roll call when Legistar published votes for the event."
+    },
+    "crol-list/mf-readability-view-raw-source-records-dump": {
+      "status": "proposed",
+      "dimension": "readability",
+      "title": "Redesign unusable joined view: raw-source-records-dump",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # readability:raw-source-records-dump",
+      "content_hash": "8bac918654f8700e",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "The false-split desk shows grouped publisher rails instead of a raw source-record dump."
+    },
+    "crol-list/mf-cross-source-consistency-disagree-notice-20231222103-contract-amount": {
+      "status": "proposed",
+      "dimension": "cross-source-consistency",
+      "title": "Reconcile cross-source contract_amount on notice:20231222103",
+      "verify": "node --test worker/test/claim_layer.test.mjs # public_claim_labeled_disagree",
+      "content_hash": "a139b76565f2d325",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "OCP and City Record award amounts both remain labeled; the lifecycle shows disagreement without inventing a winner."
+    },
+    "crol-list/mf-cross-source-consistency-claim-labels-passport-contracts-x-checkbook-contracts": {
+      "status": "proposed",
+      "dimension": "cross-source-consistency",
+      "title": "Label every public disagreement in PASSPort contracts \u00d7 Checkbook contracts",
+      "verify": "node -e \"const x=require('./ontology/fixtures/dimensions/cross_source_disagreements.json'); const r=x.claim_labeled_disagree_families.find((v)=>v.id==='passport-contracts-x-checkbook-contracts'); process.exit(r && r.eligible > 0 && r.labeled === r.eligible ? 0 : 1)\"",
+      "content_hash": "074414a6c322e41b",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Conflicting values in PASSPort contracts \u00d7 Checkbook contracts retain both source assertions without a silent winner."
+    },
+    "crol-list/mf-cross-source-consistency-spine-notice-demo-confirmed-separate": {
+      "status": "proposed",
+      "dimension": "cross-source-consistency",
+      "title": "Resolve cross-spine contradiction: notice:demo-confirmed-separate",
+      "verify": "node tools/cross_spine_validate.mjs --fixtures ontology/fixtures/cross_spine --check",
+      "content_hash": "91e70bf088970828",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Subject notice:demo-confirmed-separate agrees across ER, process spine, and lifecycle identity keys."
+    },
+    "crol-list/mf-cross-source-consistency-spine-notice-demo-pin-mismatch": {
+      "status": "proposed",
+      "dimension": "cross-source-consistency",
+      "title": "Resolve cross-spine contradiction: notice:demo-pin-mismatch",
+      "verify": "node tools/cross_spine_validate.mjs --fixtures ontology/fixtures/cross_spine --check",
+      "content_hash": "b2734eeebb2a21a6",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Subject notice:demo-pin-mismatch agrees across ER, process spine, and lifecycle identity keys."
+    },
+    "crol-list/mf-ontology-enrichment-procurement-lifecycle-coherence": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Close measured procurement lifecycle coherence gaps",
+      "verify": "node -e \"const s=require('./worker/test/fixtures/lifecycle-coherence/expected_coherence.json'); process.exit(s.procurement_lifecycle_coherence_rate === 1 && s.award_solicitation_recovery_rate === 1 ? 0 : 1)\"",
+      "content_hash": "9434571a422a821f",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Procurement timelines remain ordered, reconcile amounts, and recover a sourced solicitation for every eligible award."
+    },
+    "crol-list/mf-data-integrity-broken-join-bid-tabulations.bid_count": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Repair broken join for feature bid-tabulations.bid_count",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # data-integrity:bid-tabulations.bid_count",
+      "content_hash": "606b0503b4a41f39",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Award cards show a measured bid count when a useful joinable tabulation source is enabled."
+    },
+    "crol-list/mf-location-resolution-map-high-no-place-signal-money": {
+      "status": "proposed",
+      "dimension": "location-resolution",
+      "title": "Map money corpus still has a high no_place_signal residual",
+      "verify": "node tools/build_district_activity.mjs --check",
+      "content_hash": "2a7729842971c04f",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "money events either resolve to a place/citywide/virtual bag or document a more specific unlocated reason than generic no_place_signal."
+    },
+    "crol-list/mf-ontology-enrichment-coverage-doing-business-entities": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Dual-write or retain observations for doing-business-entities",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # doing-business-entities after=complete",
+      "content_hash": "49d97578c3d48f8d",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source observations for doing-business-entities are retained immutably and raise source_coverage."
+    },
+    "crol-list/mf-ontology-enrichment-temporal-completeness": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Complete missing civic-event clocks",
+      "verify": "node -e \"const s=require('./worker/test/fixtures/civic-time/expected_temporal_completeness.json'); process.exit(s.temporal_completeness_rate === 1 ? 0 : 1)\"",
+      "content_hash": "96d5e703bb4af1f2",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Every measured civic event carries the applicable event, publication, observation, and processing clocks."
+    },
+    "crol-list/mf-ontology-coherence-rule-exam_post_list_during_open_application": {
+      "status": "proposed",
+      "dimension": "ontology-coherence",
+      "title": "Resolve ontology coherence: exam post list during open application",
+      "verify": "node --test test/ontology_coherence.test.mjs test/land_phase_spine.test.mjs",
+      "content_hash": "b869884beeb2122f",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Generated exam timelines no longer contradict themselves on exam_post_list_during_open_application; sample cards: #exam/9999-coherence-sample."
+    },
+    "crol-list/mf-coverage-dual-write-abo-external-awards": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Close observation coverage gap: abo-external-awards",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # abo-external-awards after=complete",
+      "content_hash": "c5c949d3f6413c68",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source abo-external-awards retains immutable observations and counts as covered."
+    },
+    "crol-list/mf-coverage-dual-write-city-record-notices": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Close observation coverage gap: city-record-notices",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # city-record-notices after=complete",
+      "content_hash": "4b7604c47f6cf51f",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source city-record-notices retains immutable observations and counts as covered."
+    },
+    "crol-list/mf-coverage-dual-write-doing-business-entities": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Close observation coverage gap: doing-business-entities",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # doing-business-entities after=complete",
+      "content_hash": "6c17ed918e02e873",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source doing-business-entities retains immutable observations and counts as covered."
+    },
+    "crol-list/mf-coverage-dual-write-nycida-build-nyc-projects": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Close observation coverage gap: nycida-build-nyc-projects",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nycida-build-nyc-projects after=complete",
+      "content_hash": "a166dea3116f4e56",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source nycida-build-nyc-projects retains immutable observations and counts as covered."
+    },
+    "crol-list/mf-cross-source-consistency-disagree-contract-ct107120248803393-vendor-name": {
+      "status": "proposed",
+      "dimension": "cross-source-consistency",
+      "title": "Reconcile cross-source vendor_name on contract:CT107120248803393",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # consistency:contract:CT107120248803393:vendor_name reconciled",
+      "content_hash": "6159bdd6424fd665",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Truncated Checkbook vendor names do not raise a false mismatch when stems match."
+    },
+    "crol-list/mf-ontology-enrichment-coverage-abo-external-awards": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Dual-write or retain observations for abo-external-awards",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # abo-external-awards after=complete",
+      "content_hash": "b1e957756697f1f3",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source observations for abo-external-awards are retained immutably and raise source_coverage."
+    },
+    "crol-list/mf-ontology-enrichment-coverage-checkbook-nycha-contracts": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Dual-write or retain observations for checkbook-nycha-contracts",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # checkbook-nycha-contracts after=complete",
+      "content_hash": "03e41673315df271",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source observations for checkbook-nycha-contracts are retained immutably and raise source_coverage."
+    },
+    "crol-list/mf-ontology-enrichment-coverage-nycida-build-nyc-projects": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Dual-write or retain observations for nycida-build-nyc-projects",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nycida-build-nyc-projects after=complete",
+      "content_hash": "cfa687b80ce7c32e",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source observations for nycida-build-nyc-projects are retained immutably and raise source_coverage."
+    },
+    "crol-list/mf-data-integrity-always-null-passport.rfx_document_url": {
+      "status": "proposed",
+      "dimension": "data-integrity",
+      "title": "Restore non-null example for feature passport.rfx_document_url",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # data-integrity:passport.rfx_document_url",
+      "content_hash": "dd65d481b0d18c6b",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Solicitation package documents open from the notice handoff when the city publishes a joinable URL."
+    },
+    "crol-list/mf-readability-view-gap-taxonomy-dense-table": {
+      "status": "proposed",
+      "dimension": "readability",
+      "title": "Redesign unusable joined view: gap-taxonomy-dense-table",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # readability:gap-taxonomy-dense-table overall>=0.5",
+      "content_hash": "1de9fe14e59d3515",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Gap inventory reads as ranked opportunities with class labels, not a dense dump table."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-active-civil-service-list": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: active-civil-service-list",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # active-civil-service-list present",
+      "content_hash": "840614ffe7bb0782",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source active-civil-service-list retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-annual-examination-schedule": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: annual-examination-schedule",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # annual-examination-schedule present",
+      "content_hash": "629315207796beb6",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source annual-examination-schedule retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-city-council-committee-membership": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: city-council-committee-membership",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # city-council-committee-membership present",
+      "content_hash": "c80b7e365cdd518d",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source city-council-committee-membership retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-city-council-district-boundaries": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: city-council-district-boundaries",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # city-council-district-boundaries present",
+      "content_hash": "cdb08436ba6aec54",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source city-council-district-boundaries retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-citywide-payroll": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: citywide-payroll",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # citywide-payroll present",
+      "content_hash": "0f615bf31b59d72d",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source citywide-payroll retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-civil-service-list-certification": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: civil-service-list-certification",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # civil-service-list-certification present",
+      "content_hash": "edaeca9088074b5b",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source civil-service-list-certification retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-civil-service-titles": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: civil-service-titles",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # civil-service-titles present",
+      "content_hash": "ff541754314b6fca",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source civil-service-titles retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-community-district-boundaries": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: community-district-boundaries",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # community-district-boundaries present",
+      "content_hash": "5d90001b65531630",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source community-district-boundaries retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-dcas-annual-exam-outcomes": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: dcas-annual-exam-outcomes",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dcas-annual-exam-outcomes present",
+      "content_hash": "98bccca0855476de",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source dcas-annual-exam-outcomes retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-dcas-eligible-list-utilization": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: dcas-eligible-list-utilization",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dcas-eligible-list-utilization present",
+      "content_hash": "bc1d322099a2efda",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source dcas-eligible-list-utilization retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-dcas-vehicle-auction-list": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: dcas-vehicle-auction-list",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dcas-vehicle-auction-list present",
+      "content_hash": "40ac5be7b052fb7e",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source dcas-vehicle-auction-list retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-dob-certificate-of-occupancy": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: dob-certificate-of-occupancy",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dob-certificate-of-occupancy present",
+      "content_hash": "e3ca2f365f08c41d",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source dob-certificate-of-occupancy retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-dob-now-job-filings": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: dob-now-job-filings",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dob-now-job-filings present",
+      "content_hash": "3baba4b741a99c65",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source dob-now-job-filings retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-dof-tax-lien-sale-lists": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: dof-tax-lien-sale-lists",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dof-tax-lien-sale-lists present",
+      "content_hash": "09322808bb3e5054",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source dof-tax-lien-sale-lists retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-expense-budget": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: expense-budget",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # expense-budget present",
+      "content_hash": "4648b8a5dc5c599f",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source expense-budget retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-legacy-dob-job-filings": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: legacy-dob-job-filings",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # legacy-dob-job-filings present",
+      "content_hash": "8b3494f9e40a1a64",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source legacy-dob-job-filings retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-mandatory-inclusionary-housing": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: mandatory-inclusionary-housing",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # mandatory-inclusionary-housing present",
+      "content_hash": "d7d512e55f137aaa",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source mandatory-inclusionary-housing retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-mappluto": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: mappluto",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # mappluto present",
+      "content_hash": "c6561156d411fa30",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source mappluto retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-non-council-board-minutes": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: non-council-board-minutes",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # non-council-board-minutes present",
+      "content_hash": "7c53755c505101c2",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source non-council-board-minutes retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-nyc-agencies": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: nyc-agencies",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nyc-agencies present",
+      "content_hash": "e0fcd87516fd9b87",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source nyc-agencies retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-nyc-geosearch": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: nyc-geosearch",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nyc-geosearch present",
+      "content_hash": "a31902c78eba7c99",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source nyc-geosearch retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-nyc-jobs-postings": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: nyc-jobs-postings",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nyc-jobs-postings present",
+      "content_hash": "c3695e2fecbe1c18",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source nyc-jobs-postings retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-nyc-rules-rss": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: nyc-rules-rss",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nyc-rules-rss present",
+      "content_hash": "4ea2f1d703d2ac32",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source nyc-rules-rss retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-ocp-current-solicitations": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: ocp-current-solicitations",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # ocp-current-solicitations present",
+      "content_hash": "453e78b952d3d33e",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source ocp-current-solicitations retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-ocp-recent-contract-awards": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: ocp-recent-contract-awards",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # ocp-recent-contract-awards present",
+      "content_hash": "ac0e29c9feae596b",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source ocp-recent-contract-awards retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-suitability-city-owned-leased-property-ll48": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: suitability-city-owned-leased-property-ll48",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # suitability-city-owned-leased-property-ll48 present",
+      "content_hash": "1ae397a03f4dcad7",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source suitability-city-owned-leased-property-ll48 retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-zap-api-outcomes": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: zap-api-outcomes",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # zap-api-outcomes present",
+      "content_hash": "e5936ca63821c085",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source zap-api-outcomes retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/mf-coverage-source-records-not-declared-zap-bbl": {
+      "status": "proposed",
+      "dimension": "coverage",
+      "title": "Add immutable observation coverage: zap-bbl",
+      "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # zap-bbl present",
+      "content_hash": "31ab3fee0f071c48",
+      "last_seen_at": "1970-01-01T00:00:00.000Z",
+      "demo_win": "Source zap-bbl retains immutable D1 observations without changing its product-delivery status."
+    },
+    "crol-list/frontier-rc3-non-council-minutes-votes": {
+      "id": "crol-list/frontier-rc3-non-council-minutes-votes",
+      "status": "fixed",
+      "title": "RC-3 non-Council minutes registry + kill sample (edge stopped)",
+      "dimension": "coverage",
+      "fixed_at": "2026-08-11T18:30:00.000Z",
+      "verify": "node --test test/non_council_outcomes_infrastructure.test.mjs",
+      "evidence": {
+        "join_rate": 0.0,
+        "joined": 0,
+        "total": 10,
+        "collectable_pages": 17,
+        "prior_collectable_pages": 8,
+        "materialize": false,
+        "receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json"
+      },
+      "notes": "Inventory expanded; usefulness gate failed; join_bridge_enabled remains false."
     }
-  },
-  "note": "Idempotency ledger for the multi-dimension flywheel. 2026-08-11 crank fixed RC-2 dependent money/stage credibility red flags after the accepted NYCEDC project join."
+  }
 }
