@@ -45,32 +45,38 @@ lens per PR; keep capability parity and re-run the lens's characterization + cap
 - **Verify:** `node --test test/*money*` + money capture; a11y + reading-level + stray-english green.
 - **Landed shape:** method is the primary rail; keyword stays visible; mode, agency, amount,
   and timing share one disclosure; sort sits beside the result count; current solicitations
-  precede the labeled archive.
+  precede the labeled archive. Award mode collapses ≥3 same-except-date rows via
+  `same_consolidation`.
 
-### card lens-tmpl-02 — Staffing (`#staffing`)
+### card lens-tmpl-02 — Staffing (`#staffing`) — adopted
 - **Do:** primary facet = **exam format** (or salary band) — the job-seeker's first cut;
   secondary (fee, no-experience, agency, keyword) behind "More filters"; sort beside count.
   Staffing already uses `aria-pressed` chips — keep that; unify with the toolbar.
 - **Parity:** format, salary band, fee, no-experience, agency, keyword, watch, export.
-- **Verify:** `node --test test/deadline_exam_cards.test.mjs test/noe_differentiators.test.mjs` + staffing capture.
+- **Verify:** `node --test test/deadline_exam_cards.test.mjs test/noe_differentiators.test.mjs test/staffing_action_first.test.mjs` + staffing capture.
+- **Landed shape:** search + More filters toolbar; exam format as primary rail; secondary
+  facets (interest, eligibility, window, salary, fee, experience) in one disclosure; active
+  filter strip + result count.
 
-### card lens-tmpl-03 — Land / ZAP (`#land`)
+### card lens-tmpl-03 — Land / ZAP (`#land`) — adopted
 - **Do:** primary facet = **process stage / status** (or borough); ULURP status, hearings,
   geo, keyword behind "More filters"; keep the statutory-clock chrome out of the toolbar.
 - **Parity:** status, hearings filter, cd/council/boro, keyword, watch, export.
 - **Verify:** `node --test test/land_*` + land capture.
 
-### card lens-tmpl-04 — Meetings (`#meetings`)
+### card lens-tmpl-04 — Meetings (`#meetings`) — adopted
 - **Do:** primary facet = **process stage** (scheduled → agenda → held → outcomes);
   place grouping, agency, keyword behind "More filters"; fold the stepper.
 - **Parity:** process stage, group=place, agency, keyword, near-me, watch, export.
 - **Verify:** `node --test test/meetings_explorer.test.mjs` + meetings capture.
 
-### card lens-tmpl-05 — Rules (`#rules`)
+### card lens-tmpl-05 — Rules (`#rules`) — adopted
 - **Do:** primary facet = **rulemaking phase**; agency + keyword behind "More filters";
   fold the rule-phase stepper into "How this works."
 - **Parity:** phase, agency, keyword, watch, export.
-- **Verify:** `node --test test/rules_explorer.test.mjs` + rules capture.
+- **Verify:** `node --test test/rules_explorer.test.mjs test/rules_lens_organization.test.mjs` + rules capture.
+- **Landed shape:** methodology in collapsed "How this list works"; search + More filters;
+  phase rail primary; agency/borough secondary; active filter strip + count.
 
 ## Maintaining this file
 

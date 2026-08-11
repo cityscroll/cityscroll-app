@@ -341,7 +341,8 @@ function careerFacetControlsHTML(){
     const values=facet==="interest"
       ? careerData.interest_areas.filter(area=>careerData.exams.some(exam=>exam.interest_area===area))
       : examFacetOptionValues(careerData.exams,facet,{today,statusFor:CrolStaffing.statusFor});
-    box.closest(".career-facet-field").hidden=values.length===0;
+    const fieldHost=box.closest(".career-facet-field");
+    if(fieldHost) fieldHost.hidden=values.length===0;
     if(!values.length){ box.innerHTML=""; continue; }
     const all="all";
     const links=[careerFacetLinkHTML(facet,all,filters)];
@@ -854,6 +855,54 @@ function careerFilters(){
     ...careerFacetState,
   };
 }
+function updateStaffingMoreFiltersState(){
+  const filters=careerFilters();
+  const active=[
+    filters.interest && filters.interest!=="all",
+    filters.eligibility && filters.eligibility!=="open_competitive",
+    filters.window && filters.window!=="actionable",
+    filters.salary_band && filters.salary_band!=="all",
+    filters.fee_level && filters.fee_level!=="all",
+    filters.no_experience && filters.no_experience!=="all",
+  ].filter(Boolean).length;
+  const badge=$("#staffing-filter-badge");
+  if(badge){
+    badge.hidden=active===0;
+    badge.textContent=active?t("property_filters_active",{n:active}):"";
+  }
+  const strip=$("#staffing-active-filters");
+  if(!strip) return;
+  const chips=[];
+  if(filters.query) chips.push(`<span class="qchip">${escUiHtml(filters.query)}</span>`);
+  if(filters.format && filters.format!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("format",filters.format))}</span>`);
+  if(filters.interest && filters.interest!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("interest",filters.interest))}</span>`);
+  if(filters.eligibility && filters.eligibility!=="open_competitive") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("eligibility",filters.eligibility))}</span>`);
+  if(filters.window && filters.window!=="actionable") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("window",filters.window))}</span>`);
+  if(filters.salary_band && filters.salary_band!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("salary",filters.salary_band))}</span>`);
+  if(filters.fee_level && filters.fee_level!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("fee",filters.fee_level))}</span>`);
+  if(filters.no_experience && filters.no_experience!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("experience",filters.no_experience))}</span>`);
+  strip.innerHTML=chips.length
+    ? `<div class="nlunderstood searchactive"><span role="status">${t("nl_understood_label")} ${chips.join(" ")}</span><button type="button" class="mini" data-staffing-clear-filters>${t("clear_filters_btn")}</button></div>`
+    : "";
+  strip.querySelector("[data-staffing-clear-filters]")?.addEventListener("click",()=>{
+    const query=$("#career-query");
+    if(query) query.value="";
+    const eligibility=$("#career-eligibility");
+    if(eligibility) eligibility.value="open_competitive";
+    careerFacetState={
+      interest:"all",
+      window:"actionable",
+      format:"all",
+      salary_band:"all",
+      fee_level:"all",
+      no_experience:"all",
+    };
+    careerSelected=null;
+    careerLimit=16;
+    renderCareerGuide();
+    updateHash();
+  });
+}
 function careerExamsForActiveScope(baseExams){
   const exams=Array.isArray(baseExams)?baseExams:[];
   if(!staffingScopeKey()) return exams;
@@ -899,6 +948,9 @@ function renderCareerGuide(){
     exams=CrolStaffing.filterExams(scopedPool,careerFilters(),today);
   }
   syncStaffingModeUI();
+  updateStaffingMoreFiltersState();
+  const countEl=$("#career-result-count");
+  if(countEl) countEl.textContent=exams.length?t("results_count",{n:fmtNumber(exams.length)}):"";
   const shown=exams.slice(0,careerLimit);
   $("#career-results").innerHTML=shown.length
     ? (careerSelected?shown.map(careerCardHTML).join(""):careerResultsHTML(shown))+(exams.length>shown.length?`<div class="career-more"><button type="button" id="career-more">${t("career_show_more",{n:fmtNumber(exams.length-shown.length)})}</button></div>`:"")

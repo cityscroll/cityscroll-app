@@ -261,10 +261,17 @@ function topicPlacePickersHtml(view) {
 
 function scopeHtml(view) {
   if (!view.requested) return "";
-  const chips = view.scopeSummary.map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
+  const chips = view.scopeSummary.map((chip) => (
+    `<li class="qchip following-scope-chip" data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`
+  )).join("");
+  const count = view.matchCount;
+  const countLine = count == null
+    ? ""
+    : `<p class="following-scope-count" data-scope-count="${esc(String(count))}">${esc(String(count))} matching records</p>`;
   return `<section class="following-scope" data-following-scope-panel aria-labelledby="following-scope-heading">
     <h2 id="following-scope-heading">Watch criteria</h2>
-    <ul aria-label="Watch criteria">${chips}</ul>
+    <ul class="following-scope-chips" aria-label="Watch criteria">${chips}</ul>
+    ${countLine}
   </section>`;
 }
 
@@ -356,7 +363,9 @@ function createSectionHtml(view) {
 
 export function renderFollowingBody(view) {
   const create = createSectionHtml(view);
-  const workspace = `<div class="following-workspace" data-following-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
+  // Handoff landing: scope chips + count before create/email so the program is verifiable.
+  const scopeLead = scopeHtml(view);
+  const workspace = `<div class="following-workspace" data-following-workspace>${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
   const packs = `<section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
   // Create flow leads; saved watches are secondary (collapsed when mid-create).
@@ -375,6 +384,7 @@ export function renderFollowingBody(view) {
     <section class="following-hero">
       <h1>Following</h1>
     </section>
+    ${scopeLead}
     ${create}
     ${workspace}
     ${personal}

@@ -237,6 +237,11 @@
   .row .ragency{color:var(--blue)}
   .money-row-card{position:relative;border-bottom:1px solid var(--rule);min-width:0}
   .money-row-card>.row{border-bottom:0;min-width:0}
+  .money-award-cluster .money-cluster-count{font:650 12px/1.35 var(--font-interface);color:var(--color-text-muted);margin:4px 0 0}
+  .money-award-cluster .money-cluster-details{margin-top:8px}
+  .money-award-cluster .money-cluster-details>summary{cursor:pointer;font:650 12px/1.3 var(--font-interface);color:var(--color-action)}
+  .money-award-cluster .money-cluster-members{margin-top:8px;border-top:1px solid var(--rule);padding-top:4px}
+  .money-award-cluster .money-cluster-members .money-row-card{border-bottom:1px dashed var(--rule)}
   .money-row-card>.money-row-action{position:absolute;z-index:1;inset-block-start:13px;inset-inline-end:16px;justify-content:center;max-width:132px;padding:8px 10px;font-size:12px;line-height:1.2;text-align:center}
   .money-row-card>.money-row-action~.row .rtitle{min-height:36px}
   .money-row-card>.money-row-action[data-money-row-action="solicitation"]~.row .rtitle{padding-inline-end:92px}
@@ -1004,11 +1009,17 @@
   .career-browser-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .career-browser-head h2{font:700 clamp(2rem,5vw,3.35rem)/1 var(--font-display);letter-spacing:-.025em;margin:0;max-width:760px}
   .career-browser-head p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
-  .career-controls{display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(3,minmax(145px,.7fr));gap:10px;margin:14px 0 12px}
-  .career-controls .field{min-width:0}
+  .career-toolbar{margin:14px 0 12px}
+  .career-toolbar .field.kw{flex:1 1 280px}
+  .career-toolbar .lens-toolbar-actions{margin-inline-start:auto}
+  .career-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0;min-width:min(520px,90vw)}
+  .career-more-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .career-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin:var(--space-3) 0 var(--space-2)}
+  .career-resultbar{margin:var(--space-3) 0 var(--space-1)}
   .career-facet-field{display:flex;flex-direction:column;gap:6px}
   .career-facet-label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .career-facet-links{display:flex;flex-wrap:wrap;align-content:flex-start;gap:5px;min-height:30px}
+  #career-format-facets.lens-primary-rail{margin-bottom:var(--space-2)}
   .career-source{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:#f6f7f9;border-inline-start:4px solid var(--green);padding:10px 12px;margin:0 0 14px;font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .career-source.stale{border-inline-start-color:var(--rose);background:#eef2ff}
   .career-source details{flex:0 0 auto}
@@ -1086,7 +1097,7 @@
     .staffing-hire-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3) var(--space-4);padding:var(--space-3)}
     .staffing-hire-agency-field{grid-column:1/-1}
     .career-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .career-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .career-more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media(max-width:560px){
     .staffing-feed{padding-top:18px}
@@ -1100,7 +1111,8 @@
     .staffing-feed-meta{display:block}.staffing-feed-meta p{margin-top:4px}
     .staffing-notice-list:has(.staffing-notice-card){grid-template-columns:1fr}
     .career-fact{display:block;padding:4px 5px}.career-fact b,.career-fact span{display:block}.career-fact b{font-size:15px}.career-fact span{font-size:10px}
-    .career-controls,.career-result-grid{grid-template-columns:1fr}
+    .career-more-grid,.career-result-grid{grid-template-columns:1fr}
+    .career-toolbar .lens-toolbar-actions{margin-inline-start:0}
     .career-action-facts{grid-template-columns:1fr}
     .career-source{display:block}.career-source details{margin-top:7px}
     .career-card-head{display:block}.career-exam-number{display:block;margin-top:5px}
@@ -1244,10 +1256,20 @@
   .hearingintro{background:#f6f7f9;border:1px solid var(--rule);border-inline-start:3px solid var(--blue);border-radius:8px;padding:11px 14px;margin-top:14px;font:13px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .hearingintro b{color:var(--ink)}
   /* Rules domain explorer (process ontology on the list — same shape as property disposition). */
+  /* Rules lens template */
+  #rules-toolbar .field.kw{flex:1 1 320px}
+  #rules-toolbar .lens-toolbar-actions{margin-inline-start:auto}
+  #rules-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
   .rules-domain-intro{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
   .rules-domain-heading{font:700 22px/1.15 var(--font-display);margin:0 0 8px}
-  .rules-domain-deck{font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:820px;margin:0 0 12px}
+  .rules-domain-deck,.rules-method-copy{font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:820px;margin:0 0 12px}
+  .rules-method-copy{margin:var(--space-2) 0 0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-canvas-subtle);font:13px/1.5 var(--font-interface);color:var(--color-text-soft)}
   .rules-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin:var(--space-3) 0 var(--space-2)}
+  #rules-resultbar{margin-top:var(--space-3)}
+  #rulesfeed{margin-top:var(--space-3)}
+  @media(max-width:820px){
+    #rules-toolbar .lens-toolbar-actions{margin-inline-start:0}
+  }
   .rules-stage-control{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-1);min-width:0}
   .rules-stage-control.chiprow{margin-top:0}
   .rules-stage-filter .ct{margin-inline-start:var(--space-1);color:var(--color-text-muted);font-weight:500;letter-spacing:0}
@@ -1734,45 +1756,57 @@
           </div>
           <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
         </div>
-        <div class="career-controls">
-          <div class="field">
+        <div class="lens-toolbar career-toolbar" id="career-toolbar">
+          <div class="field kw">
             <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
             <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder">
           </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
-            <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
-            <div id="career-interest-context"></div>
+          <div class="lens-toolbar-actions">
+            <details class="utility-overflow lens-more-filters" id="staffing-more-filters">
+              <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="staffing-filter-badge" hidden></span></summary>
+              <div class="utility-overflow-content lens-more-content">
+                <div class="lens-controls-grid career-more-grid">
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
+                    <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
+                    <div id="career-interest-context"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</span>
+                    <div id="career-eligibility-facets" class="career-facet-links" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
+                    <select id="career-eligibility" hidden aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label">
+                      <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
+                      <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
+                      <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
+                    </select>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
+                    <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-salary-band-facets-label" data-i18n="career_salary_band_label">Starting salary</span>
+                    <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary" role="group" aria-labelledby="career-salary-band-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-fee-level-facets-label" data-i18n="career_fee_level_label">Application fee</span>
+                    <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee" role="group" aria-labelledby="career-fee-level-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
+                    <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
+                  </div>
+                </div>
+              </div>
+            </details>
+            <button type="button" class="watchbtn" data-lens="people" data-i18n="watch_this_search">Watch this search</button>
           </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</span>
-            <div id="career-eligibility-facets" class="career-facet-links" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
-            <select id="career-eligibility" hidden aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label">
-              <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
-              <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
-              <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
-            </select>
-          </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
-            <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
-          </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</span>
-            <div id="career-format-facets" class="career-facet-links" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
-          </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-salary-band-facets-label" data-i18n="career_salary_band_label">Starting salary</span>
-            <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary" role="group" aria-labelledby="career-salary-band-facets-label"></div>
-          </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-fee-level-facets-label" data-i18n="career_fee_level_label">Application fee</span>
-            <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee" role="group" aria-labelledby="career-fee-level-facets-label"></div>
-          </div>
-          <div class="field career-facet-field">
-            <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
-            <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
-          </div>
+        </div>
+        <div class="career-rail-label lens-primary-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</div>
+        <div id="career-format-facets" class="career-facet-links lens-primary-rail" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
+        <div class="lens-search-state" id="staffing-active-filters" data-search-state="people"></div>
+        <div class="lens-resultbar career-resultbar" id="career-resultbar">
+          <span class="lens-count" id="career-result-count" aria-live="polite"></span>
         </div>
         <div class="career-source" id="career-source" role="status">
           <span data-i18n="career_loading">Loading the DCAS exam guide…</span>
@@ -2043,21 +2077,34 @@
 
 <section id="tab-rules" class="tabpane">
   <div class="wrap">
-    <div class="rules-domain-intro" id="rules-domain-intro">
+    <div class="rules-domain-intro lens-intro" id="rules-domain-intro">
       <p class="career-kicker" data-i18n="rules_domain_kicker">City agency rulemaking</p>
-      <h2 class="rules-domain-heading lens-entry-heading" tabindex="-1" data-i18n="rules_domain_heading">Proposal, public process, adoption</h2>
-      <p class="rules-domain-deck" data-i18n="rules_domain_deck">City Record Agency Rules notices are grouped by rulemaking stage — proposal, public process (comment and hearing), adoption, then effective date — when the connection between notices is clear.</p>
-      <div class="rules-rail-label lens-primary-label" id="rules-process-label" data-i18n="rules_process_rail_label">Includes phase</div>
-      <div id="rulesprocessrail" role="group" aria-labelledby="rules-process-label"></div>
-      <p class="rules-action-band-note muted" data-i18n="rules_action_band_rail_label">What you can do now</p>
+      <h2 class="rules-domain-heading lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="rules_domain_heading">Proposal, public process, adoption</h2>
+      <details class="lens-method rules-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <p class="rules-domain-deck rules-method-copy" data-i18n="rules_domain_deck">City Record Agency Rules notices are grouped by rulemaking stage — proposal, public process (comment and hearing), adoption, then effective date — when the connection between notices is clear.</p>
+        <p class="rules-action-band-note muted" data-i18n="rules_action_band_rail_label">What you can do now</p>
+      </details>
     </div>
-    <div class="controls">
-      <div class="field agency-scope-field"><span class="field-label" id="rules-agency-label" data-i18n="agency_label">Agency</span><div id="rules-agency-rail"><button type="button" class="ui-filter-chip" aria-pressed="true" data-scope-edge="rules.agency.all" data-filter-href="#rules" data-i18n="all_agencies">All agencies</button></div></div>
-      <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="rules-borough-rail"></div></div>
+    <div class="lens-toolbar" id="rules-toolbar">
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="rules-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="rules-filter-badge" hidden></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field agency-scope-field"><span class="field-label" id="rules-agency-label" data-i18n="agency_label">Agency</span><div id="rules-agency-rail"><button type="button" class="ui-filter-chip" aria-pressed="true" data-scope-edge="rules.agency.all" data-filter-href="#rules" data-i18n="all_agencies">All agencies</button></div></div>
+              <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="rules-borough-rail"></div></div>
+            </div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button>
+      </div>
     </div>
-    <div class="lens-resultbar"><span class="lens-count" id="rules-count" aria-hidden="true"></span></div>
+    <div class="rules-rail-label lens-primary-label" id="rules-process-label" data-i18n="rules_process_rail_label">Includes phase</div>
+    <div class="chiprow lens-primary-rail" id="rulesprocessrail" role="group" aria-labelledby="rules-process-label"></div>
+    <div class="lens-search-state" data-search-state="rules"></div>
+    <div class="lens-resultbar" id="rules-resultbar"><span class="lens-count" id="rules-count" aria-hidden="true"></span></div>
     <div class="exportbar">
       <span class="export-band" id="rules-export-band" hidden>
         <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
@@ -2143,8 +2190,8 @@
          (refreshQuizDisplay / aWatchChange). No second parallel form. -->
     <div class="grid">
       <div class="panel" id="quizpanel" style="padding:16px 18px 18px">
-      <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Get email alerts</h2>
-      <p class="alerts-lead" data-i18n="alerts_flow_lead">Pick what to watch, enter your email, and subscribe. One form — no account required.</p>
+      <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Follow CityScroll</h2>
+      <p class="alerts-lead" data-i18n="alerts_flow_lead">Pick what to follow, enter your email, and subscribe. One form — no account required.</p>
 
       <!-- Context-carry lead: filled when arriving with #alerts?lens=…&filter=… (or notice/project). -->
       <div id="acontextlead" class="alert-context-lead" hidden role="status" style="margin:0 0 14px;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);max-width:62ch"></div>

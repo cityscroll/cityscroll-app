@@ -515,8 +515,19 @@ function paintAlertContextLead(seedMeta){
       else if(a && a.deadline && a.deadline.label) nextStep = a.deadline.label;
     }catch(_e){}
   }
+  // Scope as chips so the program is knowledge-in-the-world, not buried in form fields.
+  const chipBits = String(scopeBits || "")
+    .split(/\s*·\s*|\s*,\s*|\s{2,}/)
+    .map((bit) => bit.trim())
+    .filter(Boolean);
+  const chipHtml = chipBits.length
+    ? `<ul class="alert-context-scope-chips" aria-label="${escUiHtml(t("alert_context_scope",{scope:""}).replace(/:\s*$/,"").trim()||"Watch criteria")}">${
+        chipBits.map((bit) => `<li class="qchip active-scope-chip">${escUiHtml(bit)}</li>`).join("")
+      }</ul>`
+    : "";
   const parts = [];
   parts.push(`<p class="alert-context-lead-main">${t("alert_context_scope",{scope:escUiHtml(scopeBits)})}</p>`);
+  if(chipHtml) parts.push(chipHtml);
   if(alertEntryMatchCount!=null){
     parts.push(`<p class="alert-context-count">${tn("alert_context_count",alertEntryMatchCount)}</p>`);
   }

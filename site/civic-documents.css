@@ -1650,6 +1650,59 @@ select {
   }
 }
 
+/* Near-you surface switch (list-first on small screens; dual on desktop). */
+.near-surface-switch {
+  display: none;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 var(--space-2);
+  flex-wrap: wrap;
+}
+.near-surface-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: 650 13px/1.2 var(--font-interface);
+  text-decoration: none;
+}
+.near-surface-link.is-active,
+.near-surface-link[aria-current="true"] {
+  background: var(--color-action);
+  border-color: var(--color-action);
+  color: var(--color-surface);
+}
+
+.following-scope-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.following-scope-chip,
+.alert-context-scope-chips .qchip {
+  display: inline-flex;
+  align-items: center;
+}
+.alert-context-scope-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.following-scope-count {
+  margin: var(--space-2) 0 0;
+  font: 650 13px/1.4 var(--font-interface);
+  color: var(--color-text-soft);
+}
+
 @media (max-width: 560px) {
   body {
     font-size: 1rem;
@@ -1715,12 +1768,27 @@ select {
     padding-block: var(--space-6);
   }
 
+  /* Mobile: list with exact count first; map is a secondary surface. */
+  .near-surface-switch {
+    display: flex;
+  }
+  [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface-panel="list"],
+  [data-near-you-root]:not([data-near-mobile-surface="map"]) [data-near-surface-panel="map"] {
+    display: none;
+  }
+  [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface="map"],
+  [data-near-you-root]:not([data-near-mobile-surface="map"]) [data-near-surface="list"] {
+    background: var(--color-action);
+    border-color: var(--color-action);
+    color: var(--color-surface);
+  }
+
   .near-map-wrap {
     padding: var(--space-2);
   }
 
   .near-map-wrap svg {
-    height: 48vh;
+    height: 36vh;
   }
 
   .map-label-borough {

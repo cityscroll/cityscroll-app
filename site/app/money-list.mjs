@@ -489,6 +489,62 @@ function partitionMoneyRows(rows, today=todayISO()){
     closed:indexed.filter(item=>moneyRowIsClosed(item.row,today)),
   };
 }
+let moneySameConsolidationPromise=null;
+function moneySameConsolidation(){
+  return moneySameConsolidationPromise||=import("../same_consolidation.mjs").catch(()=>null);
+}
+function moneyAwardTitleStem(row){
+  return String(noticeDisplayTitle(row)||"")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g," ")
+    .replace(/\s+/g," ")
+    .trim()
+    .slice(0,80);
+}
+function moneyAwardGroupHTML(entry, terms){
+  const members=Array.isArray(entry.members)?entry.members:[];
+  if(!members.length) return "";
+  const lead=members[0];
+  const dates=members.map((row)=>String(row.start_date||"").slice(0,10)).filter(Boolean).sort();
+  const range=dates.length
+    ? (dates[0]===dates[dates.length-1]?fdate(dates[0]):`${fdate(dates[0])} – ${fdate(dates[dates.length-1])}`)
+    : "";
+  const title=noticeDisplayTitle(lead);
+  const agencyMention=listEntityMentionHTML({kind:"agency",value:lead.agency_name,escape:escUiHtml,relation:"publishes_record"});
+  const vendorMention=lead.vendor_name?listEntityMentionHTML({kind:"vendor",value:lead.vendor_name,escape:escUiHtml,relation:"named_vendor"}):"";
+  const amount=money(lead.contract_amount);
+  const memberRows=members.map((row,idx)=>{
+    const i=currentRows.indexOf(row);
+    return moneyRowHTML(row, i>=0?i:idx, terms);
+  }).join("");
+  return `<article class="money-row-card money-award-cluster" data-money-cluster="1">
+    <div class="row money-cluster-summary" tabindex="0" role="group">
+      <p class="rtitle">${escUiHtml(title)}</p>
+      <p class="rmeta">${amount?`<span class="tag amt">${amount}</span>`:""}<span class="ragency" lang="en" dir="ltr">${agencyMention}</span>${vendorMention?` · ${vendorMention}`:""}${range?` · ${escUiHtml(range)}`:""}</p>
+      <p class="money-cluster-count">${t("property_cluster_summary",{description:t("property_cluster_fallback"),n:fmtNumber(entry.count)})}</p>
+      <details class="money-cluster-details">
+        <summary>${t("property_cluster_show")}</summary>
+        <div class="money-cluster-members">${memberRows}</div>
+      </details>
+    </div>
+  </article>`;
+}
+async function consolidateMoneyAwardRows(rows){
+  if(mode!=="award" || !rows.length) return null;
+  const tools=await moneySameConsolidation();
+  if(!tools || typeof tools.groupSameExcept!=="function") return null;
+  return tools.groupSameExcept(rows,{
+    fields:["agency_name","title_stem","vendor_name","contract_amount","pin","start_date"],
+    except:["start_date"],
+    threshold:3,
+    normalize:(value,field,row)=>{
+      if(field==="title_stem") return moneyAwardTitleStem(row);
+      if(field==="contract_amount") return value==null||value===""?"":String(Number(value));
+      if(field==="start_date") return String(value||"").slice(0,10);
+      return value==null?"":String(value).trim().toLowerCase();
+    },
+  });
+}
 function renderList(autoSelect){
   if(!currentRows.length){
     $("#list").innerHTML = scopedHistoryGap(currentRows)
@@ -509,6 +565,20 @@ function renderList(autoSelect){
       closed.forEach(item=>parts.push(moneyRowHTML(item.row,item.index,terms)));
     }
     $("#list").innerHTML=parts.join("");
+  }else if(mode==="award"){
+    // Paint immediately; replace with small-multiples clusters when ≥3 awards match except date.
+    $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
+    consolidateMoneyAwardRows(currentRows).then((entries)=>{
+      if(!entries || !document.querySelector("#list")) return;
+      if(!entries.some((entry)=>entry.kind==="same-except-group")) return;
+      const parts=entries.map((entry)=>{
+        if(entry.kind==="same-except-group") return moneyAwardGroupHTML(entry, terms);
+        const row=entry.item||entry;
+        const i=currentRows.indexOf(row);
+        return moneyRowHTML(row, i>=0?i:0, terms);
+      });
+      $("#list").innerHTML=parts.join("");
+    }).catch(()=>{});
   }else{
     $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
   }

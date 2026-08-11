@@ -188,9 +188,21 @@ function renderRulesAgencyScopeLinks(){
   bindCardinalityAdaptiveFacets(host);
 }
 
+function updateRulesMoreFiltersState(){
+  const active=[
+    !!rulesAgency,
+    !!rulesBorough,
+  ].filter(Boolean).length;
+  const badge=$("#rules-filter-badge");
+  if(!badge) return;
+  badge.hidden=active===0;
+  badge.textContent=active?t("property_filters_active",{n:active}):"";
+}
+
 async function renderRulesExplorer(){
   renderRulesAgencyScopeLinks();
   renderRulesBoroughScopeLinks();
+  updateRulesMoreFiltersState();
   const tools=await rulesExplorerTools();
   const bandTools=await rulesActionBandTools();
   const processRail=$("#rulesprocessrail");
@@ -291,6 +303,7 @@ async function renderRulesExplorer(){
   feedEl.innerHTML=html;
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
+  try{ renderSearchComponents("rules"); }catch(_e){}
 }
 
 // Open stages are actionable; settled stages stay quiet.
