@@ -972,7 +972,7 @@ export async function processOneSub(env, s, ctx) {
         // Pins-scoped magic-link token: every notice link carries it so a click
         // quietly recognizes the browser (session cookie) without a login form.
         const sessionTok = await issueEmailSessionToken(env, s.email);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
@@ -1163,6 +1163,7 @@ export async function processAccountRollup(env, subs, ctx) {
         lang,
         sessionTok,
         base,
+        today: ctx.today,
       });
       const payload = emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
@@ -2480,12 +2481,15 @@ function districtGroupedListHtml(rows, renderItem, esc) {
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
 // straight to ZAP below and never touches CityScroll's own notice view.
-export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null) {
+export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null, todayOverride = null) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
   // Event-clock "today" for open / closing-soon / closed — render-only; does not affect send timing.
-  const today = new Date().toISOString().slice(0, 10);
+  // Prefer the digest run clock (ctx.today) so awareness matches the evaluated day and tests can pin it.
+  const today = /^\d{4}-\d{2}-\d{2}/.test(String(todayOverride || ""))
+    ? String(todayOverride).slice(0, 10)
+    : new Date().toISOString().slice(0, 10);
   const item = (r) => {
     const itemKind = kind === "district" ? r.district_kind : kind;
     const itemClass = kind === "district" ? ' class="district-item"' : "";
@@ -2703,6 +2707,7 @@ function rollupDigestHtml({
   lang = "en",
   sessionTok = null,
   base = "https://api.cityscroll.org",
+  today: todayOverride = null,
 } = {}) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
@@ -2714,6 +2719,9 @@ function rollupDigestHtml({
   const summaryLine = nTotal > 1
     ? `${nWant} of ${nTotal} watches with updates`
     : `${nWant} watch${nWant === 1 ? "" : "es"} with updates`;
+  const today = /^\d{4}-\d{2}-\d{2}/.test(String(todayOverride || ""))
+    ? String(todayOverride).slice(0, 10)
+    : new Date().toISOString().slice(0, 10);
 
   const sectionHtml = sections.map((sec) => {
     const label = sec.label || sec.queryLabel || sec.lens || "Watch";
@@ -2752,7 +2760,6 @@ function rollupDigestHtml({
     const forecasts = sec.forecastRows || [];
     const keywords = sec.keywords || [];
     const w = sec.w || null;
-    const today = new Date().toISOString().slice(0, 10);
     const renderRow = (r) => {
       const itemKind = sec.kind === "district" ? r.district_kind : sec.kind;
       const itemClass = sec.kind === "district" ? ' class="district-item"' : "";
