@@ -198,3 +198,87 @@ test("provider failure leaves the rollup item owed and records no sent result", 
   }});
   sqlite.close();
 });
+
+// Field case (mailbox, 2026-08-11): multi-watch rollup with a money "awards only"
+// watch showed "vendor unlisted" for every award. Money awards compile with query
+// kind "award" (same token as award-arrival watches). Outbox attach + rollup HTML
+// previously treated notice rows as awardCandidates and read c.vendor instead of
+// vendor_name. Gate award-watch rendering on lens === "award".
+test("money awards rollup renders real vendor_name, never blanket vendor unlisted", async () => {
+  const { sqlite, DB } = makeDb();
+  const moneyAwards = sub("money-awards", "money", {
+    keywords: ["contract", "award", "solicitation", "payment", "subsidy", "IDA"],
+    noticeType: "award",
+  });
+  // Second active watch forces account rollup (one consolidated email).
+  const companion = sub("rules-noise", "rules", { keywords: ["noise"] });
+  const awards = [
+    {
+      request_id: "20260811001",
+      start_date: "2026-08-11T00:00:00.000",
+      agency_name: "Transportation",
+      short_title: "Landscape maintenance Bronx Area 1",
+      vendor_name: "Adkins Cleaning & Landscaping LLC",
+      contract_amount: "1000000",
+      type_of_notice_description: "Award",
+      pin: "PIN-A",
+    },
+    {
+      request_id: "20260811002",
+      start_date: "2026-08-11T00:00:00.000",
+      agency_name: "Homeless Services",
+      short_title: "Integrated Commercial Hotels Program",
+      vendor_name: "Family Services Network of New York Inc",
+      contract_amount: "53938463",
+      type_of_notice_description: "Award",
+      pin: "PIN-B",
+    },
+    {
+      request_id: "20260811003",
+      start_date: "2026-08-11T00:00:00.000",
+      agency_name: "Youth and Community Development",
+      short_title: "FY27 Beacon Program NAE",
+      vendor_name: "Aspira of New York Inc",
+      contract_amount: "2951591",
+      type_of_notice_description: "Award",
+      pin: "PIN-C",
+    },
+  ];
+  const original = globalThis.fetch;
+  const sent = [];
+  globalThis.fetch = async (url, options) => {
+    const target = String(url);
+    if (target.includes("api.resend.com/emails")) {
+      sent.push(JSON.parse(options.body));
+      return { ok: true, json: async () => ({ id: "provider:test" }) };
+    }
+    if (target.includes("data.cityofnewyork.us") || target.includes("resource/")) {
+      // Money awards query includes type_of_notice_description='Award'.
+      if (target.includes("Award") || /type_of_notice_description.%27Award/.test(target)) {
+        return { ok: true, json: async () => awards };
+      }
+      return { ok: true, json: async () => [] };
+    }
+    return { ok: true, json: async () => [] };
+  };
+  try {
+    const runContext = ctx();
+    const result = await processAccountRollup(env(DB), [moneyAwards, companion], runContext.ctx);
+    assert.equal(result.error, undefined, result.error || "no error");
+    assert.equal(sent.length, 1, "rollup must send one consolidated digest");
+    const html = sent[0].html;
+    assert.match(html, /contract money/);
+    assert.match(html, /awards only/);
+    assert.match(html, /Adkins Cleaning &amp; Landscaping LLC|Adkins Cleaning & Landscaping LLC/);
+    assert.match(html, /Family Services Network of New York Inc/);
+    assert.match(html, /Aspira of New York Inc/);
+    assert.match(html, /Landscape maintenance Bronx Area 1/);
+    const unlisted = (html.match(/vendor unlisted/g) || []).length;
+    assert.equal(unlisted, 0, `money awards must not render award-watch "vendor unlisted" fallback; got ${unlisted}`);
+    // Genuine award-arrival silence: do not invent vendor labels when absent.
+    assert.doesNotMatch(html, /(?:vendor unlisted){2,}/);
+  } finally {
+    globalThis.fetch = original;
+    sqlite.close();
+  }
+});

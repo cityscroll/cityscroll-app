@@ -738,6 +738,16 @@ function sameRenderedItem(a, b) {
   return false;
 }
 
+/**
+ * Award-arrival watches (lens "award") carry NYCHA/ABO candidates on
+ * awardCandidates. Money awards compile with query kind "award" too — that is
+ * a notice-list shape (freshRows + vendor_name), not award-watch candidates.
+ * Gate the award-watch outbox path on lens, never on query kind alone.
+ */
+function isAwardWatchSection(section) {
+  return section?.lens === "award";
+}
+
 /** Add the durable owed set to the ordinary section renderer, never by source date. */
 function attachOwedRows(sections, owed) {
   const byWatch = new Map();
@@ -754,14 +764,14 @@ function attachOwedRows(sections, owed) {
     if (!entries.length) continue;
     section.outboxItems = entries.map(({ item }) => item);
     const carried = entries.map(({ row }) => row);
-    if (section.kind === "award") {
+    if (isAwardWatchSection(section)) {
       const current = Array.isArray(section.awardCandidates) ? section.awardCandidates : [];
       section.awardCandidates = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
     } else {
       const current = Array.isArray(section.freshRows) ? section.freshRows : [];
       section.freshRows = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
     }
-    section.new = (section.kind === "award" ? section.awardCandidates : section.freshRows).length;
+    section.new = (isAwardWatchSection(section) ? section.awardCandidates : section.freshRows).length;
     section.noticeIds = [...new Set([
       ...(Array.isArray(section.noticeIds) ? section.noticeIds : []),
       ...carried.map((row) => row.request_id).filter(Boolean),
@@ -962,7 +972,7 @@ export async function processOneSub(env, s, ctx) {
         // Pins-scoped magic-link token: every notice link carries it so a click
         // quietly recognizes the browser (session cookie) without a login form.
         const sessionTok = await issueEmailSessionToken(env, s.email);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
@@ -1153,6 +1163,7 @@ export async function processAccountRollup(env, subs, ctx) {
         lang,
         sessionTok,
         base,
+        today: ctx.today,
       });
       const payload = emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
@@ -1500,7 +1511,8 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", session
     ? `${base}/session?token=${encodeURIComponent(sessionTok)}&next=${encodeURIComponent(dest)}`
     : dest;
   const items = candidates.map((c) => {
-    const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
+    const vendorName = c.vendor || c.vendor_name;
+    const vendor = vendorName ? esc(vendorName) : esc(emailT(lang, "award_watch_vendor_unlisted"));
     const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
     if (c.kind === "exact") {
       return `<li data-digest-item="1" style="margin:0 0 14px"><b>${esc(emailT(lang, "award_watch_exact_label"))}</b><br>
@@ -2469,12 +2481,15 @@ function districtGroupedListHtml(rows, renderItem, esc) {
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
 // straight to ZAP below and never touches CityScroll's own notice view.
-export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null) {
+export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null, todayOverride = null) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
   // Event-clock "today" for open / closing-soon / closed — render-only; does not affect send timing.
-  const today = new Date().toISOString().slice(0, 10);
+  // Prefer the digest run clock (ctx.today) so awareness matches the evaluated day and tests can pin it.
+  const today = /^\d{4}-\d{2}-\d{2}/.test(String(todayOverride || ""))
+    ? String(todayOverride).slice(0, 10)
+    : new Date().toISOString().slice(0, 10);
   const item = (r) => {
     const itemKind = kind === "district" ? r.district_kind : kind;
     const itemClass = kind === "district" ? ' class="district-item"' : "";
@@ -2562,7 +2577,12 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
           : "Official rule page";
       acts.unshift(`<a href="${esc(r.action_band.action_url)}">${esc(bandAct)}</a>`);
     }
-    const meta = [r.agency_name, usd(r.contract_amount),
+    // Awards: show the published vendor when City Record provides it (same shape
+    // as digItemHTML). "vendor unlisted" is reserved for award-arrival watches
+    // that lack a counterparty, not money award notice digests.
+    const meta = [r.agency_name,
+      itemKind === "award" && r.vendor_name ? r.vendor_name : "",
+      usd(r.contract_amount),
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
@@ -2687,6 +2707,7 @@ function rollupDigestHtml({
   lang = "en",
   sessionTok = null,
   base = "https://api.cityscroll.org",
+  today: todayOverride = null,
 } = {}) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
@@ -2698,6 +2719,9 @@ function rollupDigestHtml({
   const summaryLine = nTotal > 1
     ? `${nWant} of ${nTotal} watches with updates`
     : `${nWant} watch${nWant === 1 ? "" : "es"} with updates`;
+  const today = /^\d{4}-\d{2}-\d{2}/.test(String(todayOverride || ""))
+    ? String(todayOverride).slice(0, 10)
+    : new Date().toISOString().slice(0, 10);
 
   const sectionHtml = sections.map((sec) => {
     const label = sec.label || sec.queryLabel || sec.lens || "Watch";
@@ -2712,9 +2736,12 @@ function rollupDigestHtml({
         <p style="color:#666;font-style:italic;margin:0">${esc(skipNote)}</p>
       </section>`;
     }
-    if (sec.kind === "award" && Array.isArray(sec.awardCandidates)) {
+    // Award-arrival watches only (lens "award"). Money awards share query kind
+    // "award" but must render as City Record notices with vendor_name.
+    if (isAwardWatchSection(sec) && Array.isArray(sec.awardCandidates)) {
       const items = sec.awardCandidates.map((c) => {
-        const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
+        const vendorName = c.vendor || c.vendor_name;
+        const vendor = vendorName ? esc(vendorName) : esc(emailT(lang, "award_watch_vendor_unlisted"));
         const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
         return `<li data-digest-item="1" style="margin:0 0 10px">${meta}</li>`;
       }).join("");
@@ -2733,7 +2760,6 @@ function rollupDigestHtml({
     const forecasts = sec.forecastRows || [];
     const keywords = sec.keywords || [];
     const w = sec.w || null;
-    const today = new Date().toISOString().slice(0, 10);
     const renderRow = (r) => {
       const itemKind = sec.kind === "district" ? r.district_kind : sec.kind;
       const itemClass = sec.kind === "district" ? ' class="district-item"' : "";
@@ -2760,7 +2786,12 @@ function rollupDigestHtml({
       if (w) qs.push(`w=${w}`);
       const rowKind = itemKind || "rfp";
       const noticeLink = `${base}/r/${encodeURIComponent(rowKind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
-      const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
+      // Money awards share query kind "award" with award-arrival watches; still
+      // render City Record vendor_name on the notice meta line.
+      const meta = [r.agency_name,
+        rowKind === "award" && r.vendor_name ? r.vendor_name : "",
+        usd(r.contract_amount),
+        dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
       const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";
