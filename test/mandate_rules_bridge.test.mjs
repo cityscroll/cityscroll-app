@@ -171,13 +171,21 @@ test("Parks constellation document surfaces Mandates → Rules card", () => {
 
   const html = renderAgencyConstellationDocument(view);
   assert.match(html, /id="mandates-rules"/);
-  assert.match(html, /Rulemaking mandates · Rules activity/);
+  // Parks has zero public observed_links — honest title omits "Rules activity".
+  if ((view.mandates_rules.counts?.observed_links || 0) === 0) {
+    assert.match(html, /Rulemaking mandates/);
+    assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
+  } else {
+    assert.match(html, /Rulemaking mandates · Rules activity/);
+  }
   assert.match(html, /data-agency-constellation-card="mandates-rules"/);
   assert.match(html, /data-bridge-side="mandates"/);
   assert.match(html, /data-bridge-side="rules"/);
   assert.match(html, /Open in Rules/);
   assert.match(html, /Watch rulemaking mandates/);
   assert.match(html, /Follow Rules activity/);
+  // Per-row Source law (matter edge) on co-located neighbors.
+  assert.match(html, /data-mandate-edge="source_law"/);
   // No disclaimerslop.
   assert.doesNotMatch(html, /not a compliance verdict|not verified identity|fabricat/i);
   assert.deepEqual(detectNodePageCruft(html), []);

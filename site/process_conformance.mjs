@@ -1,4 +1,4 @@
-import { constellationLink, officialSourceDisclosure } from "./affordance_grammar.mjs";
+import { constellationLink } from "./affordance_grammar.mjs";
 
 /**
  * Process conformance (first praxis wave): expected statutory mandate events
@@ -8,6 +8,9 @@ import { constellationLink, officialSourceDisclosure } from "./affordance_gramma
  * signal is reliable; otherwise enrichment_pending — never fabricate observations.
  * User-facing copy states the observation plainly without "not X but Y" hedges.
  *
+ * Co-located graph neighbors (source law + agency Rules/Meetings/Contracts)
+ * open from each observed row even when denser mandate→filing edges are thin.
+ *
  * Vocabulary: product term is **mandates** (upstream extract may say obligations).
  *
  * Later seams: full event logs, van der Aalst-style process mining enrichment
@@ -15,6 +18,12 @@ import { constellationLink, officialSourceDisclosure } from "./affordance_gramma
  */
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import {
+  mandateMatterEdgeFromRow,
+  normalizeMandateGraphNeighbors,
+  renderMandateRowGraphActions,
+  renderMandateSectionNeighborActions,
+} from "./mandate_graph_neighbors.mjs";
 import {
   RULE_LIFECYCLE_STATUSES,
   compactCitationLawKeys,
@@ -894,10 +903,11 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   ].filter(Boolean).join(" · ");
 
   const items = publicItems.slice(0, limit);
-  const sourceItems = items.filter((item) => item.source_href).map((item) => ({
-    href: item.source_href,
-    label: item.duty_text || "Source law",
-  }));
+  const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
+    rules_browse_href: view.rules_browse_href,
+    meetings_browse_href: view.meetings_browse_href,
+    contracts_browse_href: view.contracts_browse_href,
+  });
   const list = items.length
     ? `<ul class="node-record-list mandates-conformance-list">${items.map((item) => {
       const obs = item.observation || {};
@@ -910,33 +920,46 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
       const observedLink = obs.observed_record?.href
         ? ` · ${constellationLink({ href: obs.observed_record.href, label: `City Record: ${obs.observed_record.label || obs.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
         : "";
+      const matter = mandateMatterEdgeFromRow(item);
+      const neighbors = renderMandateRowGraphActions({
+        source_href: item.source_href || matter?.href,
+        matter_id: item.matter_id || matter?.matter_id,
+        graph_neighbors: graphNeighbors,
+        prefer: item.deliverable_type === "rulemaking" ? "rules" : "contracts",
+        escape: esc,
+      });
       const meta = [
         item.deliverable_type,
         expected.label || null,
         deadline,
         item.recurrence,
       ].filter(Boolean).map(esc).join(" · ");
-      return `<li class="node-record mandate-conformance-item" data-mandate-id="${esc(item.mandate_id)}" data-observation-status="${esc(status)}" data-compliance-verdict="not_adjudicated">
+      const matterId = item.matter_id || matter?.matter_id || "";
+      return `<li class="node-record mandate-conformance-item" data-mandate-id="${esc(item.mandate_id)}" data-observation-status="${esc(status)}" data-compliance-verdict="not_adjudicated"${matterId ? ` data-matter-id="${esc(matterId)}"` : ""}>
         <div class="node-record-main">
           <span class="mandate-obs-chip mandate-obs-${esc(status)}" data-observation-label="${esc(status)}">${esc(statusLabel)}</span>
           ${esc(item.duty_text)}
         </div>
-        <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}</span>
+        <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}${neighbors}</span>
       </li>`;
     }).join("")}</ul>`
     : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency in the current materialization.")}</p>`;
 
+  const neighborChrome = renderMandateSectionNeighborActions({
+    graph_neighbors: graphNeighbors,
+    escape: esc,
+  });
   const share = view.share_path
     ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this mandates view</a>`
     : "";
+  const actions = [neighborChrome, share].filter(Boolean).join("");
 
   const copy = view.copy || view.honesty || CONFORMANCE_COPY;
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
     <h2>Mandates · expected vs observed <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
     ${list}
-    ${officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc })}
-    ${share ? `<p class="node-inline-actions civic-object-inline-actions">${share}</p>` : ""}
+    ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
 }
 
