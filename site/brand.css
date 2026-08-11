@@ -97,11 +97,13 @@
 .ui-constellation-link:hover{text-decoration-thickness:2.5px}
 .ui-official-source-link.ui-official-source-link{display:inline-flex;align-items:baseline;gap:.3em;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-text,#171a21);box-shadow:none;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .ui-official-source-link:hover{text-decoration-style:solid}
-.ui-filter-chip.ui-filter-chip{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 11px;border:1px solid var(--color-action,#1b3a8f);border-radius:999px;background:transparent;color:var(--color-action,#1b3a8f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer;text-decoration:none}
+/* gap separates label text from .ct count; do not rely on a whitespace text node (flex collapses it). */
+.ui-filter-chip.ui-filter-chip{display:inline-flex;align-items:center;justify-content:center;gap:.35em;min-height:44px;padding:6px 11px;border:1px solid var(--color-action,#1b3a8f);border-radius:999px;background:transparent;color:var(--color-action,#1b3a8f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer;text-decoration:none}
 .ui-filter-chip[aria-pressed="true"]{background:var(--color-action,#1b3a8f);color:var(--color-surface,#fff)}
 .ui-filter-chip:hover{box-shadow:0 0 0 2px color-mix(in srgb,var(--color-action,#1b3a8f),transparent 78%)}
 .ui-constellation-link:focus-visible,.ui-official-source-link:focus-visible,.ui-filter-chip:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}
 .ui-static-fact{color:var(--color-text-muted,#606776);text-decoration:none;cursor:default}
+.ui-static-fact .ct{margin-inline-start:.35em}
 
 /* Shared cardinality-adaptive facet layout. */
 .cardinality-facet{min-width:min(100%,320px)}
