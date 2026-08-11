@@ -1,7 +1,26 @@
 {
   "schema": "cityscroll.multi_flywheel_ledger.v0",
   "policy_version": "v0",
-  "updated_at": "1970-01-01T00:00:00.000Z",
-  "cards": {},
-  "note": "Idempotency ledger for the multi-dimension flywheel. Runners merge proposed cards here; fixed cards with a passing verify gate are never re-emitted."
+  "updated_at": "2026-08-11T15:00:00.000Z",
+  "cards": {
+    "crol-list/mf-data-integrity-red-flag-subsidy-field-company-place-money": {
+      "status": "fixed",
+      "dimension": "data-integrity",
+      "title": "Credibility red flag: ~100% not-published for subsidy-field-company-place-money",
+      "verify": "node --test test/rc2_dependent_fields.test.mjs test/subsidy_hearing_money.test.mjs",
+      "fixed_at": "2026-08-11T15:00:00.000Z",
+      "fixed_note": "RC-2 accepted join (5/12=41.67%, 0 FP). Dependent fields measured; product shows positive money/company/place only. Claim sample healthy.",
+      "demo_win": "Aged IDA notices show real project costs instead of a false city-does-not-publish money mask."
+    },
+    "crol-list/mf-data-integrity-red-flag-subsidy-stage-feed-backed": {
+      "status": "fixed",
+      "dimension": "data-integrity",
+      "title": "Credibility red flag: ~100% not-published for subsidy-stage-feed-backed",
+      "verify": "node --test test/rc2_dependent_fields.test.mjs test/subsidy_hearing_money.test.mjs",
+      "fixed_at": "2026-08-11T15:00:00.000Z",
+      "fixed_note": "Board stage attaches on accepted RC-2 corpus; feed-down empty stages use not_yet_ingested/omit, not class-(b).",
+      "demo_win": "Later subsidy stages only claim city does not publish after a successful project join that still lacks the stage."
+    }
+  },
+  "note": "Idempotency ledger for the multi-dimension flywheel. 2026-08-11 crank fixed RC-2 dependent money/stage credibility red flags after the accepted NYCEDC project join."
 }

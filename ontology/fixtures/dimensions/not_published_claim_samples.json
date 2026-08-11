@@ -10,50 +10,50 @@
   "claims": [
     {
       "id": "subsidy-field-company-place-money",
-      "field": "requested_benefit / estimated_public_cost",
+      "field": "requested_benefit / estimated_public_cost / project_cost",
       "surface": "notice_detail.subsidy_lifecycle money slots",
-      "render": "site/index.html subsidy panel · subsidy_money_unknown_html",
-      "i18n_keys": ["subsidy_money_unknown_html", "subsidy_company_unknown_html", "subsidy_place_unknown_html"],
+      "render": "positive money facts only; empty slots omitted (no class-(b) mask)",
+      "i18n_keys": [],
       "gap_id": "subsidy-field-company-place-money",
       "visibility": "high",
       "would_appear_in": "Build NYC / NYCIDA project documents",
-      "public_source": "City Record SODA dg92-zbpx notice bodies; EDC project docs landing",
+      "public_source": "City Record SODA dg92-zbpx notice bodies; host-side NYCEDC project minutes/spreadsheets",
       "sample": {
         "recent": {
           "size": 20,
-          "not_published": 20,
-          "entry_ids": ["20260617040", "20250227021", "202407*", "2025-ida-sample"]
+          "not_published": 0,
+          "entry_ids": ["20251229015", "20260313009", "20260414006", "20220525018", "2025-ida-sample"]
         },
         "historical": {
           "size": 20,
-          "not_published": 20,
+          "not_published": 0,
           "entry_ids": ["20220525018", "20231004016", "20240617012", "2022-2024-ida-sample"]
         },
-        "non_null_examples": 0,
+        "non_null_examples": 8,
         "public_source_has_data": true,
-        "public_source_evidence": "City Record notice 20220525018 body prints Total Project Cost $10,667,606 and $2,900,000; production /subsidy-lifecycle money fields null 0/40 IDA-ish notices (join method city-record-hearing, feed unavailable).",
-        "classification_hint": "mislabeled",
-        "fix": "Stop class-(b) money copy when feed_status=unavailable; parse Total Project Cost from City Record body or ingest durable Build NYC machine path.",
-        "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate:subsidy-field-company-place-money red_flag"
+        "public_source_evidence": "RC-2 accepted join (5/12=41.67%, 0 false positives) fills company/address on all joined projects and at least one money field on 3/5; City Record hearing path parses Total Project Cost on demo 20220525018. Product shows positive facts only and omits empty slots — no class-(b) 'city does not publish' money mask. Receipt: site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json.",
+        "classification_hint": "healthy",
+        "fix": "Keep source-null money null; continue densifying project_cost from minutes/spreadsheets without inventing sibling amounts.",
+        "verify": "node --test test/rc2_dependent_fields.test.mjs test/subsidy_hearing_money.test.mjs"
       },
-      "demo_win": "Aged IDA notices show real project costs (or honest not-yet-ingested / source-unreachable copy) instead of a false 'city does not publish' money mask."
+      "demo_win": "Aged IDA notices show real project costs (or omit the money slot) instead of a false 'city does not publish' money mask."
     },
     {
       "id": "subsidy-stage-feed-backed",
       "field": "board / closing / compliance stages",
       "surface": "notice_detail.subsidy_lifecycle later stages",
-      "render": "Unpopulated subsidy stages are omitted",
+      "render": "Unpopulated subsidy stages are omitted; feed-down uses not_yet_ingested",
       "i18n_keys": [],
       "gap_id": "subsidy-outcome-absent",
       "visibility": "high",
       "sample": {
-        "recent": { "size": 15, "not_published": 15 },
-        "historical": { "size": 15, "not_published": 15 },
-        "non_null_examples": 0,
+        "recent": { "size": 15, "not_published": 0 },
+        "historical": { "size": 15, "not_published": 0 },
+        "non_null_examples": 5,
         "public_source_has_data": true,
-        "public_source_evidence": "EDC board/hearings pages and cost-benefit packages are promised in hearing notices; production never attaches Build NYC project feed (feed_status unavailable). Taxonomy marks stage empties not_yet_ingested while UI says city does not publish.",
-        "classification_hint": "mislabeled",
-        "fix": "When feed_status=unavailable, label later stages source-unreachable / not-yet-ingested, not class-(b) withhold."
+        "public_source_evidence": "RC-2 board_decision date+outcome attach on 5/5 accepted projects; later closing/compliance stages stay source-null (honest absence). When the live EDC feed is unavailable, later empty stages use not_yet_ingested / omitted panels — not class-(b) withhold. Receipt: site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json.",
+        "classification_hint": "healthy",
+        "fix": "Only claim class-(b) after a successful project-feed join that still lacks an aged stage; never invent outcomes from scheduled hearings."
       },
       "demo_win": "Later subsidy stages only claim 'city does not publish' after a successful project-record join that still lacks the stage."
     },
