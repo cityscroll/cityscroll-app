@@ -1,0 +1,35 @@
+{
+  "agency": "citywide-administrative-services",
+  "base": "http://127.0.0.1:<ephemeral>",
+  "agency_path": "/agencies/citywide-administrative-services/",
+  "checks": [
+    {
+      "id": "diamond_notice_navigates",
+      "label": "Heat Pump Water Heaters",
+      "from": "/agencies/citywide-administrative-services/",
+      "href": "/notices/20260724010",
+      "landed_url": "/notices/20260724010",
+      "ok": true
+    },
+    {
+      "id": "contract_row_navigates_vendor",
+      "label": "QUADIENT INC",
+      "from": "/agencies/citywide-administrative-services/",
+      "href": "/vendors/QUADIENT/",
+      "landed_url": "/vendors/QUADIENT/",
+      "ok": true
+    },
+    {
+      "id": "exam_document_control_path",
+      "href": "/exams/6101/",
+      "landed_url": "/exams/6101/",
+      "ok": true
+    }
+  ],
+  "frames": [
+    "site/media/review/agency-page-links/dcas-contracts-before-click.png",
+    "site/media/review/agency-page-links/dcas-notice-after-diamond-click.png",
+    "site/media/review/agency-page-links/dcas-vendor-after-contract-click.png",
+    "site/media/review/agency-page-links/dcas-exam-control-path.png"
+  ]
+}

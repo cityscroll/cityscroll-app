@@ -64,3 +64,5 @@ warehouse/fixtures/**/bulk_sample.csv
 tools/law_mandates/cache/
 tools/law_mandates/output/
 tools/law_mandates/private/
+.venv-playwright/
+civic-content-gates/*.egg-info/
