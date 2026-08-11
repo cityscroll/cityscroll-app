@@ -1,8 +1,12 @@
 // MAPE intelligence flywheel — pure analyze/plan over committed inventories.
 // Monitor inputs are read by tools/intelligence_flywheel.mjs; this module never
 // dispatches agents or mutates production state. Emitted cards are P3+ work.
+// Part of the Civic Graph evaluation harness (coverage / agreement / actionability
+// / grounding).
 
 import { createHash } from "node:crypto";
+import { groundingMetrics } from "./grounding.mjs";
+import { loadOntologyRegistry } from "./load.mjs";
 
 export const INTELLIGENCE_RECEIPT_SCHEMA = "cityscroll.intelligence_receipt.v0";
 export const FLYWHEEL_POLICY_VERSION = "v0";
@@ -36,6 +40,7 @@ function stableHash(parts) {
  *   { sample_size, actionable (deep count), rate (deep/sample), by_class?, basis?, non_deep? }
  *   Must NOT be derived from ACTION_TYPES enum length (always rate=1 when non-empty).
  * @param {object} [input.registry_sync] — checkOntologyRegistrySync result
+ * @param {object} [input.registry] — Civic Graph registry (grounding metrics); loads default when omitted
  * @param {string} [input.mode] — fixture|live
  * @param {string} [input.generated_at]
  * @param {object} [input.previous_receipt]
@@ -58,6 +63,15 @@ export function buildIntelligenceReceipt(input = {}) {
   const cross = input.cross_spine || {};
   const actionability = input.actionability || {};
   const registrySync = input.registry_sync || {};
+  let registry = input.registry || null;
+  if (!registry) {
+    try {
+      registry = loadOntologyRegistry();
+    } catch {
+      registry = null;
+    }
+  }
+  const grounding = registry ? groundingMetrics(registry) : {};
 
   const metrics = {
     source_coverage_rate: Number.isFinite(coverageRate) ? coverageRate : null,
@@ -79,6 +93,7 @@ export function buildIntelligenceReceipt(input = {}) {
     actionability_rate_sample: numberOrNull(actionability.rate),
     actionability_sample_size: numberOrNull(actionability.sample_size),
     registry_sync_ok: typeof registrySync.ok === "boolean" ? registrySync.ok : null,
+    ...grounding,
   };
 
   const previous = input.previous_receipt?.metrics || null;
@@ -106,6 +121,7 @@ export function buildIntelligenceReceipt(input = {}) {
         cross_spine: Boolean(input.cross_spine),
         actionability: Boolean(input.actionability),
         registry_sync: Boolean(input.registry_sync),
+        registry_grounding: Boolean(registry),
       },
     },
   };
@@ -284,6 +300,31 @@ export function planEnrichmentCards({
         "ontology/fixtures/dimensions/actionability_sample.json",
         "site/action_registry.js",
       ],
+    }));
+  }
+
+  // Civic Graph grounding frontier: gap-grounded object types that still lack
+  // first-class product backing. One card (not one per type) so the queue stays
+  // actionable; dual-write holes remain separate coverage cards.
+  const objectGapCount = Number(receipt?.metrics?.object_grounding_gap);
+  if (Number.isFinite(objectGapCount) && objectGapCount > 0) {
+    cards.push(makeCard({
+      class: "registry",
+      id_slug: "civic-graph-object-grounding-gap",
+      title: "Deepen Civic Graph objects still at grounding=gap",
+      // Above class-(a) depot cards (max ~60) so the grounding frontier is not
+      // sliced off the 25-card emission cap while dual-write coverage still leads.
+      rank_score: 65,
+      evidence: {
+        object_grounding_gap: objectGapCount,
+        object_grounding_built: receipt.metrics.object_grounding_built,
+        object_grounding_partial: receipt.metrics.object_grounding_partial,
+        object_grounding_built_rate: receipt.metrics.object_grounding_built_rate,
+        link_grounding_gap: receipt.metrics.link_grounding_gap,
+      },
+      verify: "node --test test/ontology_registry.test.mjs test/intelligence_flywheel.test.mjs",
+      needs_human: null,
+      context: ["ontology/registry.v0.json", "ontology/grounding.mjs", "docs/adr/ontology-registry-v0.md"],
     }));
   }
 

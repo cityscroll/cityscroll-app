@@ -2044,7 +2044,17 @@ test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs` and
 `python3 test/standards/demo_links.py`. Captures:
 `python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
 
-## Multi-dimension improvement flywheel
+## Civic Graph + multi-dimension improvement flywheel
+
+**Civic Graph** is the backstage object–link–action catalog at
+`ontology/registry.v0.json` (overview: [`docs/civic-graph.md`](docs/civic-graph.md);
+ADR: [`docs/adr/ontology-registry-v0.md`](docs/adr/ontology-registry-v0.md)).
+Each object/link carries **grounding** `built` | `partial` | `gap` (helpers:
+`ontology/grounding.mjs`). ER type families remain the link-not-merge identity
+layer — not the whole ontology. The evaluation harness scores coverage,
+agreement, actionability, and grounding (`tools/intelligence_flywheel.mjs` +
+multi-dimension `tools/flywheel-run.mjs`) and emits ranked enrichment cards only
+when metrics show a real gap.
 
 Standing MAPE loops under `ontology/` emit a ranked, deduplicated card queue (not a
 one-shot backlog). Dimensions: data-integrity, readability, ontology-enrichment,
@@ -2058,7 +2068,7 @@ CLI `node tools/audit_ontology_coherence.mjs`. Entrypoint:
 `node tools/flywheel-run.mjs --fixture --emit <dir>`. Idempotent ledger:
 `ontology/queue/ledger.json`. Consumer contract + schedule:
 [`docs/multi-flywheel.md`](docs/multi-flywheel.md). Verify:
-`./tools/verify_multi_flywheel.sh` and `node --test test/ontology_coherence.test.mjs`.
+`./tools/verify_ontology_flywheel.sh` and `node --test test/ontology_coherence.test.mjs`.
 Hourly CI artifact: `multi-flywheel-queue` (`.github/workflows/multi-flywheel.yml`).
 Recurring classes append to `ontology/engineering-lessons.md`. Do not hand-author
 parallel metric-driven roadmap cards; re-run the flywheel after merges.
