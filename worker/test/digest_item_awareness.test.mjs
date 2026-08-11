@@ -254,6 +254,8 @@ test("sparse notice without response fields stays pointer-only (no invented CTA)
 // ---- subDigestHtml wiring -------------------------------------------------
 
 test("subDigestHtml embeds awareness for solicitation and award items", () => {
+  // Pin the event clock (same TODAY as pure awareness tests). Wall-clock today
+  // would close the 2026-08-10 due date after that day and drop the Next step CTA.
   const html = subDigestHtml(
     "money — construction",
     "rfp",
@@ -264,6 +266,11 @@ test("subDigestHtml embeds awareness for solicitation and award items", () => {
     [],
     "en",
     [],
+    null,
+    "",
+    null,
+    null,
+    TODAY,
   );
   assert.match(html, /Closing soon|Open through|Solicitation/i);
   assert.match(html, /Next step:/);
@@ -275,8 +282,18 @@ test("subDigestHtml embeds awareness for solicitation and award items", () => {
     [award],
     "https://api.cityscroll.org/unsubscribe?token=test",
     "2026-07-31",
+    "https://api.cityscroll.org",
+    [],
+    "en",
+    [],
+    null,
+    "",
+    null,
+    null,
+    TODAY,
   );
   assert.match(awardHtml, /Award/);
+  assert.match(awardHtml, /Acme Snow &amp; Ice LLC|Acme Snow & Ice LLC/);
   assert.match(awardHtml, /Awarded to Acme|Next step:/i);
 });
 
