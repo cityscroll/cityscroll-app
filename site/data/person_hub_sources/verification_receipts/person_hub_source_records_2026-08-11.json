@@ -1,0 +1,117 @@
+{
+  "schema": "cityscroll.person_hub_source_records_verification.v1",
+  "observed_on": "2026-08-11",
+  "observed_at_utc": "2026-08-11T20:00:00.000Z",
+  "mode": "fixture",
+  "sources": {
+    "person_hub": "uvw5-9znb",
+    "elobbyist": "fmf3-knd8",
+    "campaign_contributions": "rjkp-yttg"
+  },
+  "kill_sample": {
+    "council_input_rows": 40,
+    "lobby_input_rows": 80,
+    "cfb_input_rows": 120,
+    "strategy": "committed person_hub fixtures (council_members / elobbyist_sample / cfb_sample)"
+  },
+  "streams": {
+    "council": {
+      "retained": 40,
+      "usefulness": {
+        "joined": 40,
+        "total": 40,
+        "rate": 1,
+        "floor": 0.3,
+        "denominator": "retained Council Members term rows",
+        "numerator": "rows whose council_member_id is present in the person hub"
+      },
+      "precision": {
+        "true_positives": 40,
+        "false_positives": 0,
+        "attempts": 40,
+        "rate": 1,
+        "floor": 0.95,
+        "basis": "exact council_member_id = Legistar PersonId with non-empty hub name"
+      },
+      "gates": {
+        "usefulness_floor": 0.3,
+        "precision_floor": 0.95,
+        "usefulness_cleared": true,
+        "precision_cleared": true,
+        "materialize": true
+      }
+    },
+    "lobby": {
+      "retained": 51,
+      "usefulness": {
+        "joined": 1124,
+        "total": 1268,
+        "rate": 0.8864,
+        "floor": 0.3,
+        "denominator": "person-shaped lobbyist_targets mentions on retained rows",
+        "numerator": "mentions that resolve to a unique person-hub name key"
+      },
+      "precision": {
+        "true_positives": 40,
+        "false_positives": 0,
+        "attempts": 40,
+        "rate": 1,
+        "floor": 0.95,
+        "basis": "reviewed exact unique person-name key joins only"
+      },
+      "gates": {
+        "usefulness_floor": 0.3,
+        "precision_floor": 0.95,
+        "usefulness_cleared": true,
+        "precision_cleared": true,
+        "materialize": true
+      }
+    },
+    "cfb": {
+      "retained": 117,
+      "usefulness": {
+        "joined": 31,
+        "total": 59,
+        "rate": 0.5254,
+        "floor": 0.3,
+        "denominator": "distinct CFB City Council recipients on retained rows",
+        "numerator": "recipients that resolve to a unique person-hub name key"
+      },
+      "precision": {
+        "true_positives": 31,
+        "false_positives": 0,
+        "attempts": 31,
+        "rate": 1,
+        "floor": 0.95,
+        "basis": "reviewed exact unique person-name key joins only"
+      },
+      "gates": {
+        "usefulness_floor": 0.3,
+        "precision_floor": 0.95,
+        "usefulness_cleared": true,
+        "precision_cleared": true,
+        "materialize": true
+      }
+    }
+  },
+  "counts": {
+    "council_retained": 40,
+    "lobby_retained": 51,
+    "cfb_retained": 117,
+    "source_records": 208
+  },
+  "gates": {
+    "usefulness_floor": 0.3,
+    "precision_floor": 0.95,
+    "usefulness_cleared": true,
+    "precision_cleared": true,
+    "materialize": true
+  },
+  "materialize": true,
+  "notes": [
+    "Retention keeps individual publisher rows as source_records-shaped snapshots.",
+    "Council Members join is exact council_member_id = Legistar PersonId.",
+    "eLobbyist and CFB joins reuse exact unique person-name keys (no fuzzy invent).",
+    "Public person hub and influence lookups remain the reader path; dual-write is shadow-only."
+  ]
+}

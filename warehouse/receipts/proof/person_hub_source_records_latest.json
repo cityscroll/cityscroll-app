@@ -1,0 +1,20 @@
+{
+  "schema": "cityscroll.person_hub_source_records_proof.v1",
+  "observed_on": "2026-08-11",
+  "materialize": true,
+  "counts": {
+    "council_retained": 40,
+    "lobby_retained": 51,
+    "cfb_retained": 117,
+    "source_records": 208
+  },
+  "streams": {
+    "council_usefulness": 1,
+    "lobby_usefulness": 0.8864,
+    "cfb_usefulness": 0.5254,
+    "council_precision": 1,
+    "lobby_precision": 1,
+    "cfb_precision": 1
+  },
+  "verification_receipt": "site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json"
+}

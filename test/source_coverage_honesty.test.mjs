@@ -190,12 +190,13 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
   }
   const result = validateSourceCoverageMatrix(matrix);
   assert.equal(result.ok, true, result.errors.join("; "));
-  // Remeasured 2026-08-02: PASSPort contracts/RFx + Legistar events/items/votes
-  // dual-write populate source_records (complete 7/13). Attachments stay empty.
-  assert.equal(result.measurement.after.covered, 7);
+  // Remeasured 2026-08-11: PASSPort + Legistar + Checkbook + person-hub
+  // constellation dual-write/retain populate source_records (complete 10/16).
+  // Attachments stay empty-declared-live.
+  assert.equal(result.measurement.after.covered, 10);
   assert.equal(result.measurement.by_status["empty-declared-live"], 1);
   assert.equal(result.measurement.by_status.partial, 1);
-  assert.equal(result.measurement.by_status.complete, 7);
+  assert.equal(result.measurement.by_status.complete, 10);
   assert.equal(result.measurement.by_status.gap, 4);
   for (const id of [
     "passport-public-contracts",
@@ -203,6 +204,9 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
     "legistar-events",
     "legistar-event-items",
     "legistar-votes",
+    "nyc-council-members",
+    "city-clerk-elobbyist",
+    "cfb-campaign-contributions",
   ]) {
     const row = matrix.sources.find((s) => s.id === id);
     assert.equal(row?.dual_write?.after, "complete", id);
@@ -215,7 +219,7 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
     { cwd: ROOT, encoding: "utf8" },
   );
   assert.equal(check.status, 0, check.stderr || check.stdout);
-  assert.match(check.stdout, /live 7\/13 complete/);
+  assert.match(check.stdout, /live 10\/16 complete/);
   assert.match(check.stdout, /empty-declared-live=1/);
 });
 
