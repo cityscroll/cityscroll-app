@@ -2558,6 +2558,20 @@ both the live and restored databases.
 - Verify: `node --test test/process_conformance.test.mjs`. Demo Parks:
   `/agencies/parks-and-recreation/#mandates-conformance`.
 
+## Mandate co-located graph neighbors (mand-graph-01)
+
+- Even when per-mandate → notice/contract edges are empty, every mandate row
+  still opens grounded neighbors: **Source law** (exact `matter_id` /
+  `source.legistar_url`) plus agency-scoped **Open in Rules / Meetings /
+  Contracts** via `agencyCategoryBrowseHref` + `entity_refs_all agency:id`.
+- Pure helpers: `site/mandate_graph_neighbors.mjs` (honest H2/nav titles when
+  `observed_links` / `filing_receipts` are 0 — no “Filing receipts” claim without
+  a receipt). Wired into rules / reports / predictions / conformance renderers.
+- Never fabricate mandate→entity filing edges; densify waves are separate.
+- Verify: `node --test test/mandate_graph_neighbors.test.mjs`. Capture:
+  `python3 tools/capture_mandate_graph_01.py`. Demo:
+  `/agencies/parks-and-recreation/#mandates-rules`.
+
 ## Mandates → Rules constellation card (v1)
 
 - Agency-level bridge from **rulemaking** mandates (`deliverable_type =
@@ -2569,6 +2583,7 @@ both the live and restored databases.
   `site/agency_constellation.mjs` as `view.mandates_rules`. Shareable
   `/agencies/<id>/#mandates-rules`. Scopes: Open in Rules (browse facet),
   Watch rulemaking mandates (obligations free-watch), Follow Rules activity.
+  Per-row graph neighbors: see **Mandate co-located graph neighbors** above.
 - Rebuild: `node tools/build_agency_constellation_documents.mjs`. Capture:
   `python3 tools/capture_mandate_rules_bridge.py`. Verify:
   `node --test test/mandate_rules_bridge.test.mjs`. Demo Parks:
@@ -2579,6 +2594,7 @@ both the live and restored databases.
 - Agency-level bridge from **report** mandates (`deliverable_type = report`) to
   an observed City Record **filing receipt** when process-conformance topic join
   hits. Unmatched mandates list duty + deadline only — no absence caveats.
+  H2 says “Filing receipts” only when `filing_receipts > 0`.
 - Pure model: `site/mandate_reports_receipt.mjs` (`buildMandateReportsReceiptView`
   / `renderMandateReportsReceiptSection`). Wired from
   `site/agency_constellation.mjs` as `view.mandates_reports`. Shareable
