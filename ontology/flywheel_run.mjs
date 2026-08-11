@@ -65,6 +65,9 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
   const notice_land_join_scorecard = readJson(
     "docs/evidence/notice-land-join-resolution.json",
   );
+  const civic_graph_capability_ladder = readJson(
+    "ontology/fixtures/dimensions/civic_graph_capability_ladder.json",
+  );
   const source_coverage = readJson("entity_resolution/source_coverage.json");
   const gap_taxonomy = readJson("site/data/gap_taxonomy.json");
   const source_contracts = readJson("site/data/source_contracts.json");
@@ -127,6 +130,7 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
     temporal_scorecard,
     lifecycle_coherence_scorecard,
     notice_land_join_scorecard,
+    civic_graph_capability_ladder,
     source_coverage,
     source_contracts,
     staffing_exams,

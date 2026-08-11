@@ -51,6 +51,18 @@ completeness and procurement lifecycle-coherence scorecards. This keeps civic
 time and lifecycle regressions in the established enrichment loop rather than
 creating a parallel process dimension.
 
+It also emits the **Civic Graph capability ladder** (`cg-v*`) from measured
+frontier metrics in
+`ontology/fixtures/dimensions/civic_graph_capability_ladder.json` via pure
+`ontology/dimensions/civic_graph_capability.mjs`. While payment, influence,
+roll-call, and mandate thresholds fail, ranked cards open for payment registry
++ surface (v1), influence link types / roll-call densify / official walk (v2),
+and mandate densify (v3). Cards quiet when the fixture metrics clear — close
+by implementing, re-measuring the fixture, re-running the flywheel, and
+marking ledger `fixed` after `verify` is green. Coverage dual-write gaps for
+CFB / eLobbyist / Council Members stay owned by the `coverage` dimension
+(listed under `already_in_flywheel` on the fixture).
+
 ### Surface-load sampling
 
 The interface sampler implements the cognitive-load study's capture walk and
