@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -766,6 +766,15 @@
         "unset"
       ],
       "description": "Usage writes only when exactly production (plus USAGE_ANALYTICS binding)."
+    },
+    {
+      "name": "CIVIC_TIME_EVENT_WRITE",
+      "values": [
+        "true",
+        "false",
+        "unset"
+      ],
+      "description": "When true, append civic-time event envelopes to D1 civic_time_events after Money lifecycle attach. Default off (false/unset): pure adapter seam only, no durable writes."
     }
   ],
   "traffic_class": {
