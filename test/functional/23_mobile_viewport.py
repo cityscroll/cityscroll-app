@@ -150,15 +150,18 @@ def run(base: str) -> None:
                 assert contract["paths"] == contract["areas"], contract
                 assert contract["enhanced"] == "true", contract
                 assert contract["listFirst"], contract
-                # Map density stays in the DOM for COUNT=LIST; the Map surface reveals it.
-                assert contract["mapHidden"] or page.locator("[data-near-surface='map']").count() == 0, contract
-                map_switch = page.locator("[data-near-surface='map']")
-                if map_switch.count():
+                # Enhanced mobile defaults to the list surface; Map remains one tap away.
+                if contract["enhanced"] == "true":
+                    assert contract["mapHidden"], contract
+                    map_switch = page.locator("[data-near-surface='map']")
+                    assert map_switch.count() > 0, contract
                     map_switch.first.click()
                     page.locator(".near-area-list a").first.wait_for(state="visible", timeout=10_000)
                     assert page.evaluate(
                         """() => getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')).display !== 'none'"""
                     )
+                else:
+                    page.locator(".near-area-list a").first.wait_for(state="visible", timeout=10_000)
 
             if name == "rule detail":
                 phase_buttons = page.locator(".rule-phase-stepper .lc-step")

@@ -1768,16 +1768,19 @@ select {
     padding-block: var(--space-6);
   }
 
-  /* Mobile: list with exact count first; map is a secondary surface. */
+  /* Mobile: list-first document order; surface switch is progressive enhancement.
+     Without JS both panels stay visible (map under results). With JS, choosing a
+     surface focuses one panel while the other stays available via the switch. */
   .near-surface-switch {
     display: flex;
   }
-  [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface-panel="list"],
-  [data-near-you-root]:not([data-near-mobile-surface="map"]) [data-near-surface-panel="map"] {
+  [data-near-you-root][data-near-mobile-surface="list"] [data-near-surface-panel="map"],
+  [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface-panel="list"] {
     display: none;
   }
   [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface="map"],
-  [data-near-you-root]:not([data-near-mobile-surface="map"]) [data-near-surface="list"] {
+  [data-near-you-root][data-near-mobile-surface="list"] [data-near-surface="list"],
+  [data-near-you-root]:not([data-near-mobile-surface]) [data-near-surface="list"] {
     background: var(--color-action);
     border-color: var(--color-action);
     color: var(--color-surface);
