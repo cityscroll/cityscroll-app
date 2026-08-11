@@ -1,15 +1,25 @@
-# Ontology (catalog + multi-dimension improvement flywheel)
+# Civic Graph (catalog + multi-dimension improvement flywheel)
 
-Backstage **object–link–action catalog** and **MAPE improvement flywheels** for CityScroll.
-Not a microservice, not a public route, not a graph database.
+Backstage **Civic Graph**: the unified **object–link–action catalog** and **MAPE
+improvement flywheels** for CityScroll. Not a microservice, not a public route,
+not a graph database.
+
+Entity resolution type families remain the **link-not-merge identity layer** —
+they do not replace the wider civic noun set in `registry.v0.json`.
+
+Each object and link type carries a **grounding** state (`built` | `partial` |
+`gap`) from the measured existence matrix. The evaluation harness scores
+coverage, agreement, actionability, and grounding, then emits ranked enrichment
+cards only when metrics show a real gap.
 
 ## Layout
 
 | Path | Role |
 | --- | --- |
-| `registry.v0.json` | Committed catalog of object types, link types, event kinds, assertions, kinetic actions |
+| `registry.v0.json` | Civic Graph catalog: object types, link types, event kinds, assertions, kinetic actions + grounding |
+| `grounding.mjs` | Grounding states, validation, receipt metrics |
 | `load.mjs` / `sync.mjs` / `live_inventory.mjs` | Load registry; import live allowlists; fail on drift |
-| `flywheel.mjs` | Pure receipt + enrichment card planner (ontology-enrichment dimension) |
+| `flywheel.mjs` | Pure intelligence receipt + enrichment card planner (ontology-enrichment dimension) |
 | `flywheel_run.mjs` | Multi-dimension orchestrator (all dimensions → reconciled queue) |
 | `dimensions/` | Evaluators: data-integrity (**population not-published-rate** core), readability, ontology-enrichment, coverage, cross-source-consistency |
 | `dimensions/not_published_rate.mjs` | Pure rate + classification for “city does not publish X” credibility audit |
@@ -21,7 +31,7 @@ Not a microservice, not a public route, not a graph database.
 | `queue/` | Emitted-queue schema + idempotency ledger |
 | `index.mjs` | Package exports |
 
-Docs: [`docs/multi-flywheel.md`](../docs/multi-flywheel.md) · ADR: [`docs/adr/ontology-registry-v0.md`](../docs/adr/ontology-registry-v0.md).
+Docs: [`docs/civic-graph.md`](../docs/civic-graph.md) · [`docs/multi-flywheel.md`](../docs/multi-flywheel.md) · ADR: [`docs/adr/ontology-registry-v0.md`](../docs/adr/ontology-registry-v0.md).
 
 ## Verify
 

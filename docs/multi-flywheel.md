@@ -186,7 +186,9 @@ are append-only and keyed by class token so re-runs stay idempotent.
 
 | Path | Role |
 | --- | --- |
-| `ontology/registry.v0.json` | Object–link–action catalog |
+| `ontology/registry.v0.json` | Civic Graph object–link–action catalog (+ grounding) |
+| `ontology/grounding.mjs` | Grounding states (`built` / `partial` / `gap`) + receipt metrics |
+| `docs/civic-graph.md` | Product-facing Civic Graph overview |
 | `ontology/flywheel.mjs` | Legacy intelligence receipt + enrichment planner |
 | `ontology/flywheel_run.mjs` | Multi-dimension orchestrator (pure) |
 | `ontology/dimensions/*` | Per-dimension evaluators |

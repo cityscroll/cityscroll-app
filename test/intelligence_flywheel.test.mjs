@@ -60,6 +60,11 @@ test("buildIntelligenceReceipt is deterministic for fixed inputs", () => {
   assert.equal(a.metrics.source_coverage_rate, source_coverage.measurement.after.rate);
   assert.ok(a.metrics.gap_class_a_open >= 0);
   assert.equal(a.metrics.registry_sync_ok, true);
+  assert.ok(Number.isFinite(a.metrics.object_grounding_built));
+  assert.ok(Number.isFinite(a.metrics.object_grounding_gap));
+  assert.ok(a.metrics.object_grounding_gap >= 1);
+  assert.ok(Number.isFinite(a.metrics.object_grounding_built_rate));
+  assert.equal(a.provenance.inputs.registry_grounding, true);
 });
 
 test("planEnrichmentCards emits coverage cards for dual-write gaps (P3+)", () => {
@@ -98,6 +103,10 @@ test("planEnrichmentCards emits coverage cards for dual-write gaps (P3+)", () =>
     assert.ok(card.verify && card.verify.length > 0);
     assert.ok(Number.isInteger(card.rank) && card.rank >= 1);
   }
+  assert.ok(
+    cards.some((c) => c.id.includes("civic-graph-object-grounding-gap")),
+    "expected grounding-gap card when object_grounding_gap > 0",
+  );
   const withCards = attachCards(receipt, cards);
   assert.equal(withCards.cards_emitted.length, cards.length);
   assert.ok(withCards.provenance.content_hash);
