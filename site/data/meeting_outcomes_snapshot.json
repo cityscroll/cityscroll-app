@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-08-04T06:51:40.084Z",
+  "generated_at": "2026-08-10T13:08:13.019Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 324,
+  "record_count": 319,
   "present_count": 16,
-  "absent_count": 308,
+  "absent_count": 303,
   "by_notice": {
     "20260707022": {
       "request_id": "20260707022",
@@ -161,9 +161,48 @@
           "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -192,9 +231,48 @@
           "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -210,9 +288,48 @@
           "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -228,9 +345,48 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -246,9 +402,48 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -264,9 +459,48 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         }
       ]
@@ -304,9 +538,48 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -322,9 +595,48 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -340,9 +652,48 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -358,9 +709,48 @@
           "outcome": "P-C Item Laid Over by Comm",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -376,9 +766,48 @@
           "outcome": "P-C Item Laid Over by Comm",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 6,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 7,
+            "by_person": [
+              {
+                "person_id": "7801",
+                "person_name": "Christopher Marte",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7825",
+                "person_name": "Alexa Avilés",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7798",
+                "person_name": "Oswald J. Feliz",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7832",
+                "person_name": "Kamillah Hanks",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7824",
+                "person_name": "Sandy Nurse",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7823",
+                "person_name": "Chi A. Ossé",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         }
       ]
@@ -833,9 +1262,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -851,9 +1329,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -869,9 +1396,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -887,9 +1463,58 @@
           "outcome": "Approved by Subcommittee with Modifications",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         }
       ]
@@ -1023,9 +1648,58 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1041,9 +1715,58 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1059,9 +1782,58 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         }
       ]
@@ -1164,9 +1936,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1182,9 +2003,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1200,9 +2070,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1218,9 +2137,58 @@
           "outcome": "Approved by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         }
       ]
@@ -1258,9 +2226,58 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1276,9 +2293,58 @@
           "outcome": "Laid Over by Subcommittee",
           "votes": {
             "result": "Passed",
-            "yes": null,
-            "no": null,
-            "abstain": 1
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
           }
         },
         {
@@ -1492,6 +2558,10 @@
         }
       ]
     },
+    "20260728026": {
+      "request_id": "20260728026",
+      "snapshot_state": "absent"
+    },
     "20260714002": {
       "request_id": "20260714002",
       "snapshot_state": "absent"
@@ -1516,8 +2586,24 @@
       "request_id": "20260708002",
       "snapshot_state": "absent"
     },
+    "20260729019": {
+      "request_id": "20260729019",
+      "snapshot_state": "absent"
+    },
     "20260713006": {
       "request_id": "20260713006",
+      "snapshot_state": "absent"
+    },
+    "20260729005": {
+      "request_id": "20260729005",
+      "snapshot_state": "absent"
+    },
+    "20260729020": {
+      "request_id": "20260729020",
+      "snapshot_state": "absent"
+    },
+    "20260727031": {
+      "request_id": "20260727031",
       "snapshot_state": "absent"
     },
     "20260723005": {
@@ -2682,46 +3768,6 @@
     },
     "20260109014": {
       "request_id": "20260109014",
-      "snapshot_state": "absent"
-    },
-    "20260107017": {
-      "request_id": "20260107017",
-      "snapshot_state": "absent"
-    },
-    "20260121003": {
-      "request_id": "20260121003",
-      "snapshot_state": "absent"
-    },
-    "20260106029": {
-      "request_id": "20260106029",
-      "snapshot_state": "absent"
-    },
-    "20260105025": {
-      "request_id": "20260105025",
-      "snapshot_state": "absent"
-    },
-    "20260121004": {
-      "request_id": "20260121004",
-      "snapshot_state": "absent"
-    },
-    "20260116002": {
-      "request_id": "20260116002",
-      "snapshot_state": "absent"
-    },
-    "20260115017": {
-      "request_id": "20260115017",
-      "snapshot_state": "absent"
-    },
-    "20260108027": {
-      "request_id": "20260108027",
-      "snapshot_state": "absent"
-    },
-    "20260112014": {
-      "request_id": "20260112014",
-      "snapshot_state": "absent"
-    },
-    "20260129024": {
-      "request_id": "20260129024",
       "snapshot_state": "absent"
     }
   }

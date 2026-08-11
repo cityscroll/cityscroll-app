@@ -1,0 +1,197 @@
+{
+  "schema": "cityscroll.meeting_person_votes_receipt.v1",
+  "measured_at": "2026-08-11",
+  "observed_at": "2026-08-11T18:00:00.000Z",
+  "source": {
+    "system": "meeting-outcomes",
+    "read_model": "meeting-outcomes:materialized:v3",
+    "via": "live_api",
+    "public_source": "Legistar EventItems/{id}/Votes"
+  },
+  "thresholds": {
+    "usefulness": 0.3,
+    "precision": 0.95
+  },
+  "cohort": {
+    "total_records": 319,
+    "matched_council_notices": 16,
+    "matched_with_any_votes": 6,
+    "matched_with_by_person": 6,
+    "roll_call_stages": 48,
+    "roll_call_with_people": 48,
+    "distinct_roll_call_events": 6
+  },
+  "rates": {
+    "by_person_of_matched": 0.375,
+    "by_person_of_vote_bearing": 1,
+    "roll_call_person_retention": 1
+  },
+  "bridge_status": "accepted",
+  "usefulness_pass": true,
+  "precision_pass": true,
+  "policy": {
+    "empty_by_person_without_roll_call": "honest_absence",
+    "invent_persons": false,
+    "class_b_not_published_for_empty_by_person": false,
+    "reader_register": "Show named roll call when by_person is retained; omit the person panel when the publisher issued no roll call."
+  },
+  "sample_notices": [
+    "20260304007",
+    "20260331028",
+    "20260408025",
+    "20260428021",
+    "20260625040",
+    "20260706036"
+  ],
+  "rows": [
+    {
+      "request_id": "20260707022",
+      "event_id": "22509",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "agency": "City Council",
+      "has_by_person": true,
+      "has_votes": true,
+      "roll_call_stages": 12,
+      "by_person_people": 84
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "agency": "City Council",
+      "has_by_person": true,
+      "has_votes": true,
+      "roll_call_stages": 10,
+      "by_person_people": 70
+    },
+    {
+      "request_id": "20260617039",
+      "event_id": "22566",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260603052",
+      "event_id": "22437",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260512045",
+      "event_id": "22390",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260428021",
+      "event_id": "22375",
+      "agency": "City Council",
+      "has_by_person": true,
+      "has_votes": true,
+      "roll_call_stages": 8,
+      "by_person_people": 72
+    },
+    {
+      "request_id": "20260430007",
+      "event_id": "22396",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260422047",
+      "event_id": "22396",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260408025",
+      "event_id": "22342",
+      "agency": "City Council",
+      "has_by_person": true,
+      "has_votes": true,
+      "roll_call_stages": 6,
+      "by_person_people": 54
+    },
+    {
+      "request_id": "20260331028",
+      "event_id": "22365",
+      "agency": "City Council",
+      "has_by_person": true,
+      "has_votes": true,
+      "roll_call_stages": 8,
+      "by_person_people": 72
+    },
+    {
+      "request_id": "20260304007",
+      "event_id": "22300",
+      "agency": "City Council",
+      "has_by_person": true,
+      "has_votes": true,
+      "roll_call_stages": 4,
+      "by_person_people": 36
+    },
+    {
+      "request_id": "20260304006",
+      "event_id": "22299",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260219004",
+      "event_id": "22197",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    },
+    {
+      "request_id": "20260217023",
+      "event_id": "22196",
+      "agency": "City Council",
+      "has_by_person": false,
+      "has_votes": false,
+      "roll_call_stages": 0,
+      "by_person_people": 0
+    }
+  ],
+  "verdict": {
+    "credibility_red_flag": false,
+    "classification": "healthy",
+    "note": "Person votes retain when Legistar publishes roll call; empty by_person is not a false city-does-not-publish mask."
+  }
+}

@@ -31,17 +31,52 @@ function outcomeBucket(value) {
   return "other";
 }
 
-function compactVotes(votes) {
-  const row = Array.isArray(votes) ? votes.at(-1) : null;
+/**
+ * Normalize publisher vote tallies. Live Legistar summaries use aye/nay;
+ * older fixtures may use yes/no. Map both into the first-paint yes/no keys.
+ * Retain a bounded by_person sample so roll-call chips paint before the live
+ * enhancement fetch — never invent persons when the publisher omitted them.
+ */
+export function compactVotes(votes, { maxPeople = 12 } = {}) {
+  const row = Array.isArray(votes) ? votes.at(-1) : (votes && typeof votes === "object" ? votes : null);
   if (!row) return null;
   const counts = row.counts || {};
+  const yesRaw = counts.yes ?? counts.aye;
+  const noRaw = counts.no ?? counts.nay;
+  const abstainRaw = counts.abstain;
+  const yes = Number.isFinite(Number(yesRaw)) ? Number(yesRaw) : null;
+  const no = Number.isFinite(Number(noRaw)) ? Number(noRaw) : null;
+  const abstain = Number.isFinite(Number(abstainRaw)) ? Number(abstainRaw) : null;
+  const peopleIn = Array.isArray(row.by_person) ? row.by_person : [];
+  const people = peopleIn
+    .map((person) => {
+      const personId = clean(person?.person_id || person?.PersonId || person?.VotePersonId);
+      const personName = clean(person?.person_name || person?.PersonName || person?.VotePersonName);
+      if (!personId || !personName) return null;
+      return {
+        person_id: personId,
+        person_name: personName.slice(0, 80),
+        vote_bucket: clean(person?.vote_bucket || person?.vote_value || person?.VoteValueName) || null,
+      };
+    })
+    .filter(Boolean)
+    .slice(0, Math.max(0, Number(maxPeople) || 0));
+  const voteIdentity = clean(row.vote_identity)
+    || (people.length ? "roll_call" : null);
   const result = {
     result: clean(row.result || row.action || row.vote_result) || null,
-    yes: Number.isFinite(Number(counts.yes)) ? Number(counts.yes) : null,
-    no: Number.isFinite(Number(counts.no)) ? Number(counts.no) : null,
-    abstain: Number.isFinite(Number(counts.abstain)) ? Number(counts.abstain) : null,
+    yes,
+    no,
+    abstain,
+    vote_identity: voteIdentity || null,
+    person_count: people.length
+      || (Number.isFinite(Number(row.person_count)) ? Number(row.person_count) : 0),
+    by_person: people,
   };
-  return Object.values(result).some((value) => value != null && value !== "") ? result : null;
+  const hasTally = [result.result, result.yes, result.no, result.abstain]
+    .some((value) => value != null && value !== "");
+  if (!hasTally && !people.length) return null;
+  return result;
 }
 
 export function compactMeetingOutcomeRecord(record) {
@@ -142,9 +177,19 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
   ];
   const matters = (record.matters || []).map((matter) => {
     const label = clean(matter.outcome || matter.actions?.at(-1));
-    const vote = matter.votes && [matter.votes.yes, matter.votes.no, matter.votes.abstain].some((n) => n != null)
-      ? `<p class="meeting-sub">${matter.votes.yes ?? "—"} yes · ${matter.votes.no ?? "—"} no · ${matter.votes.abstain ?? "—"} abstain</p>`
+    const votes = matter.votes || null;
+    const hasTally = votes && [votes.yes, votes.no, votes.abstain].some((n) => n != null);
+    const people = Array.isArray(votes?.by_person) ? votes.by_person : [];
+    const rollCall = votes?.vote_identity === "roll_call" || people.length > 0;
+    const tally = hasTally
+      ? `<p class="meeting-sub">${votes.yes ?? "—"} yes · ${votes.no ?? "—"} no · ${votes.abstain ?? "—"} abstain</p>`
       : "";
+    const names = people.slice(0, 6).map((person) => esc(person.person_name)).filter(Boolean);
+    const more = Math.max(0, (Number(votes?.person_count) || people.length) - names.length);
+    const rollCallChip = rollCall && names.length
+      ? `<p class="meeting-sub meeting-roll-call-static" data-vote-identity="roll_call" data-official-count="${esc(String(votes?.person_count || people.length))}">Roll call: ${names.join(", ")}${more > 0 ? ` (+${more} more)` : ""}</p>`
+      : "";
+    const vote = `${tally}${rollCallChip}`;
     const file = `<span class="meeting-file">${esc(matter.matter_file || matter.matter_id)}</span>`;
     return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}">
       <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}</div>
