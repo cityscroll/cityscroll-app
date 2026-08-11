@@ -2466,6 +2466,12 @@ both the live and restored databases.
   (`handleExam` requires `data-exam-document="1"`; otherwise 404
   `exam-unavailable`). Detector: `test/agency_exam_document_links.test.mjs`.
 - Edge serves constellation HTML when present; `?tab=` keeps the interactive SPA.
+- **Edge object hrefs (document hosts):** `constellationObjectHref` in
+  `site/agency_constellation_model.mjs` turns notice rows into `/notices/<id>`
+  (never SPA `#notice/<id>` — that keeps the browser on the agency page) and
+  Passport/Checkbook contract rows without a City Record notice into
+  `/vendors/<stem>/`. Exact warrant chips stay `?claim=` inspectors. Rebuild
+  pages after model edits. Capture: `python3 tools/capture_agency_page_links.py`.
 - **Provenance inspector (EBCG general):** pure `site/graph_edge_provenance.mjs`
   attaches where/how/warrant-class claims to each listed edge. Always-on chrome
   is a subtle warrant token (`exact` / `probable` / `reviewed`); full where/how

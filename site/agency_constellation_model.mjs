@@ -67,6 +67,8 @@ import {
   isStandablePublicClaim,
   summarizeCategoryWarrants,
 } from "./graph_edge_provenance.mjs";
+import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { noticeDocumentPath } from "./notice_permalink.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -213,6 +215,67 @@ function attachClaim(item, { categoryId, relation, identity }) {
   return claim ? { ...item, claim } : item;
 }
 
+/**
+ * Destination for one constellation edge on a standalone agency document.
+ *
+ * Agency pages are static document hosts, not the SPA shell. SPA hash routes
+ * such as `#notice/<id>` therefore do not leave the agency page. Notice rows
+ * must use the canonical `/notices/<id>` document path (same grammar as
+ * exams → `/exams/<id>/`). Passport / Checkbook contract rows often have no
+ * City Record notice; when a firm name is present, link the vendor profile.
+ *
+ * @param {object} object
+ * @returns {string|null}
+ */
+export function constellationObjectHref(object = {}) {
+  const requestId = clean(object.request_id, 80);
+  const rawHref = clean(object.href, 200);
+  const subjectRef = clean(object.subject_ref, 120);
+
+  // Explicit notice id wins over a stale SPA hash carried from entity-intelligence.
+  if (requestId) {
+    const path = noticeDocumentPath(requestId);
+    if (path) return path;
+  }
+
+  const hashNotice = rawHref.match(/^#notice\/([^?#]+)/);
+  if (hashNotice) {
+    let id = hashNotice[1];
+    try {
+      id = decodeURIComponent(id);
+    } catch {
+      // Keep the raw fragment id; noticeDocumentPath still encodes safely.
+    }
+    const path = noticeDocumentPath(id);
+    if (path) return path;
+  }
+
+  const noticeSubject = subjectRef.match(/^notice:([A-Za-z0-9_-]{1,80})$/);
+  if (noticeSubject) {
+    const path = noticeDocumentPath(noticeSubject[1]);
+    if (path) return path;
+  }
+
+  // Keep non-hash paths already resolved (exams, absolute URLs, browse scopes).
+  if (rawHref && !rawHref.startsWith("#")) return rawHref;
+
+  // Contract subjects without a notice: vendor profile is the existing public
+  // surface for the named firm (label is the firm name on PASSPort rows).
+  const isContract = object.object_kind === "contract"
+    || subjectRef.startsWith("contract:")
+    || Boolean(clean(object.contract_id, 80));
+  if (isContract) {
+    const vendorName = clean(object.vendor_name || object.label, 240);
+    if (vendorName && !/^contract:/i.test(vendorName)) {
+      const ref = entityRouteRef("vendor", vendorName);
+      const href = ref ? entityHref({ ref, label: vendorName }) : "";
+      if (href) return href;
+    }
+  }
+
+  return null;
+}
+
 function domainItems(block, limit = 8) {
   const objects = Array.isArray(block?.objects) ? block.objects : [];
   return objects
@@ -235,16 +298,23 @@ function domainItems(block, limit = 8) {
           input_value: clean(object.provenance.input_value, 240) || null,
         }
         : null;
+      const label = clean(object.label || subjectRef, 240);
       return {
         id: requestId || subjectRef,
         subject_ref: subjectRef,
-        label: clean(object.label || subjectRef, 240),
+        label,
         date: clean(object.when, 40) || null,
         source: clean(provenance?.source_system || object.provenance?.source_system || "City Record", 80),
         relation: clean(object.link_type, 80) || null,
         confidence,
         method: clean(object.method || object.provenance?.basis || "agency_canonical_v1", 80),
-        href: clean(object.href, 200) || (requestId ? `#notice/${encodeURIComponent(requestId)}` : null),
+        href: constellationObjectHref({
+          ...object,
+          request_id: requestId,
+          subject_ref: subjectRef,
+          label,
+          href: object.href,
+        }),
         provenance,
         // Shadow ER ids are not on this public materialization — leave unset
         // so the inspector labels them as next enrichment rather than inventing them.
