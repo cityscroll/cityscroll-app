@@ -1,5 +1,3 @@
-import { officialSourceDisclosure } from "./affordance_grammar.mjs";
-
 /**
  * Mandates prediction-alerts (capstone): deadline/recurrence → expected civic event.
  *
@@ -7,6 +5,9 @@ import { officialSourceDisclosure } from "./affordance_grammar.mjs";
  * agency watchers receive an earlier-stage digest alert ahead of the deadline.
  * Scenario graph branch: mandate → predicted event E by deadline D → alert
  * ahead of D → (later) observed via process conformance.
+ *
+ * Co-located graph neighbors (source law + agency Rules/Meetings/Contracts)
+ * open from each prediction row even when no observed filing edge exists.
  *
  * v1 method is deadline + cadence only (no ML). Seam for richer prediction
  * (process-conformance feedback, phase-duration models) is left open via
@@ -18,6 +19,12 @@ import { officialSourceDisclosure } from "./affordance_grammar.mjs";
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
+import {
+  mandateMatterEdgeFromRow,
+  normalizeMandateGraphNeighbors,
+  renderMandateRowGraphActions,
+  renderMandateSectionNeighborActions,
+} from "./mandate_graph_neighbors.mjs";
 import { canonicalMandateId } from "./mandate_subject_ref.mjs";
 import {
   DETECTABLE_DELIVERABLES,
@@ -236,6 +243,8 @@ export function buildMandatePrediction(row = {}, opts = {}) {
   const duty = clean(row.duty_text || row.short_title, 500);
   if (!duty) return null;
 
+  const matter = mandateMatterEdgeFromRow(row);
+
   // Cadence-only: recurring predictable duty with no computable date — surface
   // the expected event + recurrence without inventing a calendar day.
   if (!resolved) {
@@ -244,14 +253,15 @@ export function buildMandatePrediction(row = {}, opts = {}) {
     return {
       mandate_id: mandateId,
       obligation_id: mandateId,
-      matter_id: clean(row.matter_id, 40) || null,
+      matter_id: matter?.matter_id || null,
       agency_id: clean(row.agency_id, 120) || null,
       agency_name: clean(row.agency_name, 200) || null,
       duty_text: duty,
       deliverable_type: deliverable,
       citation: clean(row.citation, 200) || null,
       recurrence: cadence,
-      source_href: clean(row.source?.legistar_url || row.legistar_url || row.href, 400) || null,
+      source_href: matter?.href || null,
+      source_law_relation: matter ? "source_law" : null,
       expected_event: {
         kind: expected.kind,
         label: expected.label,
@@ -290,14 +300,15 @@ export function buildMandatePrediction(row = {}, opts = {}) {
   return {
     mandate_id: mandateId,
     obligation_id: mandateId,
-    matter_id: clean(row.matter_id, 40) || null,
+    matter_id: matter?.matter_id || null,
     agency_id: clean(row.agency_id, 120) || null,
     agency_name: clean(row.agency_name, 200) || null,
     duty_text: duty,
     deliverable_type: deliverable,
     citation: clean(row.citation, 200) || null,
     recurrence: resolved.recurrence,
-    source_href: clean(row.source?.legistar_url || row.legistar_url || row.href, 400) || null,
+    source_href: matter?.href || null,
+    source_law_relation: matter ? "source_law" : null,
     expected_event: {
       kind: expected.kind,
       label: expected.label,
@@ -360,6 +371,13 @@ export function buildAgencyMandatePredictionsView(agencyIdOrName, sources = {}) 
 
   const today = validDate(sources.todayISO) || new Date().toISOString().slice(0, 10);
   const includeCadenceOnly = sources.includeCadenceOnly !== false;
+  const graphNeighbors = normalizeMandateGraphNeighbors({
+    rules_browse_href: sources.rulesBrowseHref || sources.graphNeighbors?.rules_browse_href,
+    meetings_browse_href: sources.meetingsBrowseHref
+      || sources.graphNeighbors?.meetings_browse_href,
+    contracts_browse_href: sources.contractsBrowseHref
+      || sources.graphNeighbors?.contracts_browse_href,
+  });
   const predictions = [];
   for (const row of predictable) {
     const conf = confById.get(row.obligation_id) || null;
@@ -430,6 +448,7 @@ export function buildAgencyMandatePredictionsView(agencyIdOrName, sources = {}) 
         deliverableType: "report",
         windowDays: 90,
       }),
+      graph_neighbors: graphNeighbors,
     };
   }
 
@@ -442,6 +461,7 @@ export function buildAgencyMandatePredictionsView(agencyIdOrName, sources = {}) 
     agency_name: identity.canonical_name,
     subject_ref: `agency:id:${identity.canonical_id}`,
     as_of: today,
+    graph_neighbors: graphNeighbors,
     counts: {
       predictable_mandates: predictable.length,
       predictions: predictions.length,
@@ -608,6 +628,11 @@ export function renderMandatePredictionsSection(view) {
       ? `${counts.approaching} approaching`
       : null,
   ].filter(Boolean).join(" · ");
+  const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
+    rules_browse_href: view.rules_browse_href,
+    meetings_browse_href: view.meetings_browse_href,
+    contracts_browse_href: view.contracts_browse_href,
+  });
 
   const list = (view.predictions || []).length
     ? `<ul class="node-record-list mandate-predictions-list" data-bridge-side="predicted-events">${
@@ -628,20 +653,32 @@ export function renderMandatePredictionsSection(view) {
           item.deliverable_type,
           item.citation,
         ].filter(Boolean).map(esc).join(" · ");
+        const neighbors = renderMandateRowGraphActions({
+          source_href: item.source_href,
+          matter_id: item.matter_id,
+          graph_neighbors: graphNeighbors,
+          prefer: item.deliverable_type === "rulemaking" ? "rules" : "contracts",
+          escape: esc,
+        });
         const chip = item.prediction_band_label
           ? `<span class="mandate-pred-chip mandate-pred-${esc(item.prediction_band || "far")}" data-prediction-band="${esc(item.prediction_band || "")}">${esc(item.prediction_band_label)}</span>`
           : (item.deadline_source === "cadence_only"
             ? `<span class="mandate-pred-chip mandate-pred-cadence" data-prediction-band="cadence">Recurring</span>`
             : "");
-        return `<li class="node-record mandate-prediction" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="${esc(item.deliverable_type)}" data-expected-event-kind="${esc(item.expected_event?.kind || "")}"${item.expected_deadline ? ` data-expected-deadline="${esc(item.expected_deadline)}"` : ""}${item.prediction_band ? ` data-prediction-band="${esc(item.prediction_band)}"` : ""}>
+        return `<li class="node-record mandate-prediction" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="${esc(item.deliverable_type)}" data-expected-event-kind="${esc(item.expected_event?.kind || "")}"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${item.expected_deadline ? ` data-expected-deadline="${esc(item.expected_deadline)}"` : ""}${item.prediction_band ? ` data-prediction-band="${esc(item.prediction_band)}"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
-          <span class="muted node-muted">${meta}</span>
+          <span class="muted node-muted">${meta}${neighbors}</span>
         </li>`;
       }).join("")
     }</ul>`
     : "";
 
+  const neighborChrome = renderMandateSectionNeighborActions({
+    graph_neighbors: graphNeighbors,
+    escape: esc,
+  });
   const actions = [
+    neighborChrome,
     view.follow_href
       ? `<a class="node-action civic-object-action" href="${esc(view.follow_href)}">Watch expected mandate events</a>`
       : "",
@@ -655,16 +692,12 @@ export function renderMandatePredictionsSection(view) {
       ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this view</a>`
       : "",
   ].filter(Boolean).join("");
-  const sourceItems = (view.predictions || [])
-    .filter((item) => item.source_href)
-    .map((item) => ({ href: item.source_href, label: item.duty_text || "Source law" }));
 
   const copy = view.copy || MANDATE_PREDICTION_COPY;
-  return `<section id="mandates-predictions" class="node-section node-card civic-object-section mandate-prediction-alerts" data-agency-constellation-card="mandates-predictions" data-method="${esc(view.method || MANDATE_PREDICTION_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members" data-as-of="${esc(view.as_of || "")}">
+  return `<section id="mandates-predictions" class="node-section node-card civic-object-section mandate-prediction-alerts" data-agency-constellation-card="mandates-predictions" data-method="${esc(view.method || MANDATE_PREDICTION_METHOD)}" data-status="${esc(view.status)}" data-export-class="object_members" data-as-of="${esc(view.as_of || "")}" data-mandate-edges="co-located-only">
     <h2>Expected mandate events <span class="muted node-muted">(${esc(statusLine || "linked")})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || MANDATE_PREDICTION_COPY.lead)}</p>
     ${list}
-    ${officialSourceDisclosure({ items: sourceItems, label: "Open source laws", escape: esc })}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
 }

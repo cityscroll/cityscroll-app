@@ -424,7 +424,13 @@ test("constellation does not surface evidence-only rule candidates as mandate ed
 
   const html = renderAgencyConstellationDocument(view);
   assert.doesNotMatch(html, /id="mandates-conformance"/);
-  assert.match(html, /Rulemaking mandates · Rules activity/);
+  // Evidence-only rows are not public observed_links — honest title omits "Rules activity".
+  if ((view.mandates_rules?.counts?.observed_links || 0) === 0) {
+    assert.match(html, /Rulemaking mandates/);
+    assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
+  } else {
+    assert.match(html, /Rulemaking mandates · Rules activity/);
+  }
   const rulesBridge = html.match(/<section id="mandates-rules"[\s\S]*?<\/section>/)?.[0] || "";
   assert.doesNotMatch(rulesBridge, /data-observation-status="observed"|City Record:/);
   assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);

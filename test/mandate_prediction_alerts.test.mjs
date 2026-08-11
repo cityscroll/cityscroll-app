@@ -162,7 +162,7 @@ test("live Parks materialization yields standable predictions", () => {
   assert.doesNotMatch(JSON.stringify(view), /not X but Y|may not be complete|disclaimer/i);
 });
 
-test("prediction citations use the official-source disclosure and preserve unresolved citations", () => {
+test("prediction citations use per-row Source law matter edges and preserve unresolved citations", () => {
   assert.ok(obligations, "agency_obligations_lookup.json required");
   const view = buildAgencyMandatePredictionsView(PARKS, {
     obligationsLookup: obligations,
@@ -173,10 +173,12 @@ test("prediction citations use the official-source disclosure and preserve unres
   const resolved = view.predictions.filter((item) => item.citation && item.source_href);
   const sourceUrls = new Set(resolved.map((item) => item.source_href));
 
-  assert.match(html, /<summary class="node-action">Open source laws<\/summary>/);
-  assert.equal(
-    [...html.matchAll(/href="(https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&amp;ID=\d+)"/g)].length,
-    sourceUrls.size,
+  // Source law is per-row (co-located matter edge), not a collapsed disclosure.
+  assert.match(html, /data-mandate-edge="source_law"/);
+  assert.doesNotMatch(html, /Open source laws/);
+  assert.ok(
+    ([...html.matchAll(/href="(https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&amp;ID=\d+)"/g)].length)
+      >= sourceUrls.size,
   );
   assert.ok(resolved.every((item) => sourceUrls.has(item.source_href)));
   assert.equal(
@@ -200,7 +202,7 @@ test("prediction citations use the official-source disclosure and preserve unres
     }],
   });
   assert.match(unresolved, /Administrative Code § 99-999/);
-  assert.doesNotMatch(unresolved, /nyc\.legistar\.com|Open source laws/);
+  assert.doesNotMatch(unresolved, /nyc\.legistar\.com|Open source laws|data-mandate-edge="source_law"/);
 });
 
 test("prediction source links resolve for two additional agencies", () => {
@@ -219,11 +221,15 @@ test("prediction source links resolve for two additional agencies", () => {
         .map((item) => item.source_href),
     );
     assert.ok(citationCount > 0, `${agency} has prediction citations`);
-    assert.equal(
-      [...html.matchAll(/href="https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&amp;ID=\d+"/g)].length,
-      resolvedUrls.size,
-      `${agency} source-law links are deduplicated by authoritative URL`,
+    // Per-row Source law matter edges: one Gateway link per prediction that has a URL.
+    const gatewayHits = [
+      ...html.matchAll(/href="https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&amp;ID=\d+"/g),
+    ].length;
+    assert.ok(
+      gatewayHits >= resolvedUrls.size,
+      `${agency} surfaces Source law for resolved citations`,
     );
+    assert.match(html, /data-mandate-edge="source_law"/);
     assert.equal(
       resolvedUrls.size,
       new Set(view.predictions.filter((item) => item.citation).map((item) => item.source_href)).size,

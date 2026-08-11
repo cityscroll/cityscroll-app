@@ -21,6 +21,10 @@ import {
 import {
   agencyMandateRulesPath,
 } from "./mandate_rules_bridge.mjs";
+import {
+  mandateReportsNavLabel,
+  mandateRulesNavLabel,
+} from "./mandate_graph_neighbors.mjs";
 import { agencyMandatesConformancePath } from "./process_conformance.mjs";
 import {
   gateNodePageRender,
@@ -101,6 +105,9 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const showMandatesRulesNav = bridgeSource?.status === "matched";
   const showMandatesReportsNav = reportsSource?.status === "matched";
   const showMandatesPredictionsNav = predictionsSource?.status === "matched";
+  // Honest nav: do not claim filing receipts / Rules activity edges when none.
+  const reportsNavLabel = mandateReportsNavLabel(reportsSource?.counts || {});
+  const rulesNavLabel = mandateRulesNavLabel(bridgeSource?.counts || {});
   const actions = renderNodeActions([
     { kind: "link", label: "Get updates about this agency's public records", href: view.follow_href, primary: true, className: "civic-object-action" },
     mandatesHref
@@ -110,10 +117,10 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ? { kind: "link", label: "Expected mandate events", href: mandatesPredictionsHref, className: "civic-object-action" }
       : null,
     showMandatesReportsNav
-      ? { kind: "link", label: "Report mandates · Filing receipts", href: mandatesReportsHref, className: "civic-object-action" }
+      ? { kind: "link", label: reportsNavLabel, href: mandatesReportsHref, className: "civic-object-action" }
       : null,
     showMandatesRulesNav
-      ? { kind: "link", label: "Rulemaking mandates · Rules activity", href: mandatesRulesHref, className: "civic-object-action" }
+      ? { kind: "link", label: rulesNavLabel, href: mandatesRulesHref, className: "civic-object-action" }
       : null,
     obligationsFollow
       ? { kind: "link", label: "Watch mandates and deadlines", href: obligationsFollow, className: "civic-object-action" }
@@ -164,8 +171,8 @@ export function renderAgencyConstellationDocument(view, options = {}) {
         ${constellationLink({ href: view.scope_href, label: "Open this agency in Contracts", className: "agency-pivot-link", attributes: { "data-subject-ref": view.subject_ref }, escape: esc })}
         · ${constellationLink({ href: mandatesHref, label: "Mandates expected vs observed", className: "agency-pivot-link", escape: esc })}
         ${showMandatesPredictionsNav ? `· ${constellationLink({ href: mandatesPredictionsHref, label: "Expected mandate events", className: "agency-pivot-link", escape: esc })}` : ""}
-        ${showMandatesReportsNav ? `· ${constellationLink({ href: mandatesReportsHref, label: "Report mandates · Filing receipts", className: "agency-pivot-link", escape: esc })}` : ""}
-        ${showMandatesRulesNav ? `· ${constellationLink({ href: mandatesRulesHref, label: "Rulemaking mandates · Rules activity", className: "agency-pivot-link", escape: esc })}` : ""}
+        ${showMandatesReportsNav ? `· ${constellationLink({ href: mandatesReportsHref, label: reportsNavLabel, className: "agency-pivot-link", escape: esc })}` : ""}
+        ${showMandatesRulesNav ? `· ${constellationLink({ href: mandatesRulesHref, label: rulesNavLabel, className: "agency-pivot-link", escape: esc })}` : ""}
         · ${constellationLink({ href: view.interactive_profile_href, label: "Interactive profile", className: "agency-pivot-link", escape: esc })}
         · ${constellationLink({ href: "#edge-provenance", label: "Connection evidence", className: "agency-pivot-link", escape: esc })}${demoAsOfLink}
       </p>
