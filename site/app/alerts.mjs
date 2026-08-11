@@ -689,8 +689,11 @@ function syncAlertsPrefsManageLink(){
   const manage = document.getElementById("alertsPrefsManage");
   if(!manage) return;
   const banner = document.getElementById("sessionBanner");
-  const fromSession = banner && banner.dataset.open === "true" ? (banner.dataset.prefsUrl || "") : "";
-  manage.href = fromSession || "https://cityscroll.org/prefs";
+  // Canonical watch list is Following personal; prefs stays account-level.
+  const fromSession = banner && banner.dataset.open === "true"
+    ? (banner.dataset.manageUrl || banner.dataset.prefsUrl || "")
+    : "";
+  manage.href = fromSession || "https://cityscroll.org/following/#your-following";
 }
 async function renderAlertsRollupPrefs(){
   const groupsEl = document.getElementById("alerts-rollup-groups");

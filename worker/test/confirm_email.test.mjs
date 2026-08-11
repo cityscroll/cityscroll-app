@@ -1,38 +1,38 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { describeFilter } from "../src/lib/confirm_email.mjs";
+import { confirmEmailHtml, describeFilter, describeFilterChips } from "../src/lib/confirm_email.mjs";
 import { subCanonical } from "../src/lib/subscriptions.mjs";
 
 test("describeFilter renders a money threshold query", () => {
   assert.equal(
     describeFilter("money", { minAmount: 1000000, keywords: ["construction"] }),
-    "contract money — about “construction” · ≥ $1,000,000"
+    "Contracts and RFPs — about “construction” · ≥ $1,000,000"
   );
 });
 
 test("describeFilter renders a person lookup with the recovered name", () => {
   assert.equal(
     describeFilter("people", { lookupType: "person", keywords: ["rodriguez"] }),
-    "people & roles — a person named “rodriguez”"
+    "Staffing and exams — a person named “rodriguez”"
   );
 });
 
 test("describeFilter names an exam interest-area watch", () => {
   assert.equal(
     describeFilter("people", { view:"guide", interestArea:"public-safety", interestLabel:"Public safety" }),
-    "civil-service exams — Public safety"
+    "Civil-service exams — Public safety"
   );
 });
 
 test("describeFilter renders a land query with borough + status", () => {
   assert.equal(
     describeFilter("land", { boro: "Brooklyn", keywords: ["rezoning"], status: "all" }),
-    "land & rezonings — about “rezoning” · in Brooklyn · including closed"
+    "Zoning — about “rezoning” · in Brooklyn · including closed"
   );
 });
 
 test("describeFilter falls back to 'all notices' when empty", () => {
-  assert.equal(describeFilter("rules", {}), "rules & notices — all notices");
+  assert.equal(describeFilter("rules", {}), "Rules — all notices");
 });
 
 test("describeFilter names a single-mandate exact-id watch", () => {
@@ -42,14 +42,28 @@ test("describeFilter names a single-mandate exact-id watch", () => {
       agency: "Homeless Services",
       mandate_id: "66056-006",
     }),
-    "mandate 66056-006 for “Homeless Services”",
+    "Mandate 66056-006 for Homeless Services",
   );
   assert.equal(
     describeFilter("obligations", {
       agency_id: "parks-and-recreation",
       agency: "Parks and Recreation",
     }),
-    "mandates for “Parks and Recreation”",
+    "Parks and Recreation mandates — expected filings",
+  );
+});
+
+test("describeFilter uses plain-language district and report-mandate labels", () => {
+  assert.equal(
+    describeFilter("district", { councilDistrict: "33" }),
+    "Council District 33 weekly digest",
+  );
+  assert.equal(
+    describeFilter("mandates", {
+      agency: "Parks and Recreation",
+      deliverable_type: "report",
+    }),
+    "Parks and Recreation report mandates — expected filings",
   );
 });
 
@@ -59,7 +73,7 @@ test("describeFilter: agency + notice type + category + amount ceiling — the m
       keywords: ["construction"], agency: "Parks and Recreation", category: "Construction/Construction Services",
       noticeType: "award", minAmount: 1000000, maxAmount: 5000000, months: 3,
     }),
-    "contract money — about “construction” · awards only · ≥ $1,000,000 · ≤ $5,000,000 · " +
+    "Contracts and RFPs — about “construction” · awards only · ≥ $1,000,000 · ≤ $5,000,000 · " +
       "category “Construction/Construction Services” · agency “Parks and Recreation” · due within 3 mo"
   );
 });
@@ -67,8 +81,25 @@ test("describeFilter: agency + notice type + category + amount ceiling — the m
 test("describeFilter: noticeType alone (no amount) still renders — closes the old amount-implies-type gap", () => {
   assert.equal(
     describeFilter("money", { noticeType: "solicitation", agency: "Sanitation" }),
-    "contract money — open solicitations only · agency “Sanitation”"
+    "Contracts and RFPs — open solicitations only · agency “Sanitation”"
   );
+});
+
+test("confirm email is a brand-first single-CTA first touch with scope chips", () => {
+  const html = confirmEmailHtml({
+    confirmUrl: "https://api.cityscroll.org/confirm?t=demo",
+    lens: "money",
+    filter: { keywords: ["housing"], agency: "Parks", borough: "Brooklyn" },
+    freq: "daily",
+  });
+  assert.match(html, /letter-spacing:\.16em;text-transform:uppercase;color:#1a44e0/);
+  assert.match(html, /background:#1a44e0;color:#ffffff/);
+  assert.match(html, /padding:16px 28px/);
+  assert.match(html, /housing/);
+  assert.match(html, /Parks|Brooklyn/);
+  assert.match(html, /border-radius:999px;background:#eef2ff/);
+  assert.doesNotMatch(html, /font-family:Georgia,serif;max-width:560px/);
+  assert.equal(describeFilterChips("money", { keywords: ["housing"], agency: "Parks" }).length >= 2, true);
 });
 
 test("describeFilter names a typed agency scope carried by the watch", () => {

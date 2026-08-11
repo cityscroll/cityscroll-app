@@ -2,7 +2,7 @@
 
 import { nearYouUrlFromScope, scopeFromLensState } from "./scope_v0.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
-import { normalizeWatchTemplateRegistry } from "./watch_templates.mjs";
+import { normalizeWatchTemplateRegistry, packAttentionCopy } from "./watch_templates.mjs";
 import {
   gateNodePageRender,
   renderCivicDocumentAssets,
@@ -206,8 +206,15 @@ function parcelLedgerMarkup(view, asOfDay = null) {
 }
 
 function packMembersMarkup(view) {
+  const attention = packAttentionCopy(view, { frequency: "weekly" });
   const items = view.watches.map((watch) => `<li class="node-record">${constellationLink({ href: followingUrlFromWatch(watch, { frequency: "weekly" }), label: watch.label, className: "composed-object-link", escape: esc })}${watch.subject_refs.length ? `<ul class="node-record-list">${watch.subject_refs.map(subjectLink).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("");
-  return `<section class="node-section node-card civic-object-section" data-export-class="object_members"><h2>Watches in this pack</h2><ul class="node-record-list">${items}</ul></section>`;
+  return `<section class="node-section node-card civic-object-section" data-export-class="object_members" data-pack-attention="1">
+    <h2>Watches in this pack</h2>
+    <p class="following-pack-cost" data-pack-cost>${esc(attention.summary)}</p>
+    <p class="muted node-muted" data-pack-sample-subject>Sample subject: ${esc(attention.sampleSubject)}</p>
+    <ul class="node-record-list">${items}</ul>
+    <p class="muted node-muted">Each watch still uses one confirmation email when you subscribe from a pack member link. With more than one active watch on the same address, CityScroll sends one combined email with a section per watch.</p>
+  </section>`;
 }
 
 function digestMembersMarkup(view) {

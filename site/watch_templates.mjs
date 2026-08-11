@@ -137,6 +137,28 @@ export function describeWatchLine(watch) {
 }
 
 /**
+ * Attention-cost copy for a multi-watch pack before commit.
+ * Explains one rollup email with N sections (not N emails).
+ * @param {{ title?: string, watches?: { label?: string }[] }|null} template
+ * @param {{ frequency?: string }} [opts]
+ */
+export function packAttentionCopy(template, opts = {}) {
+  const watches = Array.isArray(template?.watches) ? template.watches : [];
+  const n = watches.length;
+  const frequency = opts.frequency === "daily" ? "daily" : "weekly";
+  const labels = watches.map((w) => clean(w?.label) || "watch").filter(Boolean);
+  const sectionWord = n === 1 ? "section" : "sections";
+  const watchWord = n === 1 ? "watch" : "watches";
+  const summary = n === 0
+    ? "This set has no watches yet."
+    : `This set creates ${n} ${watchWord} → one ${frequency} email with ${n} ${sectionWord}.`;
+  const sampleSubject = n > 1
+    ? `CityScroll: still watching — ${n} watches`
+    : `CityScroll: still watching — ${labels[0] || template?.title || "your watches"}`;
+  return { watchCount: n, frequency, labels, summary, sampleSubject };
+}
+
+/**
  * Load registry (browser). Tests pass the object directly.
  * @param {{ fetchImpl?: typeof fetch, url?: string }} [opts]
  */
