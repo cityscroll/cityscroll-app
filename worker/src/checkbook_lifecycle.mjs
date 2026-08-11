@@ -39,6 +39,7 @@ import {
 } from "./lib/ocp_awards.mjs";
 import { lookupOcpFromWarehouseMaterialization } from "./lib/ocp_warehouse_lookup.mjs";
 import { attachMoneyCivicEvents } from "./lib/civic_time.mjs";
+import { writeLifecycleCivicEvents } from "./lib/civic_time_writer.mjs";
 import { attachAwardPrimeGoal } from "./lib/award_prime_goal.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
@@ -487,6 +488,8 @@ export async function computeLifecycle(env, requestId, noticeRow) {
       processed_at: new Date().toISOString(),
       run_id: `contract-lifecycle:${requestId}`,
     });
+    // Flag-gated durable append (CIVIC_TIME_EVENT_WRITE, default off). Fail-soft.
+    await writeLifecycleCivicEvents(env, noPinLifecycle);
     // Re-stamp after OCP so prime/dollar resolution sees the side-car.
     noPinLifecycle = attachAwardPrimeGoal(noPinLifecycle, r);
     return { lifecycle: noPinLifecycle, ok: true };
@@ -593,6 +596,9 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     processed_at: new Date().toISOString(),
     run_id: `contract-lifecycle:${requestId}`,
   });
+  // Flag-gated durable append (CIVIC_TIME_EVENT_WRITE, default off). Fail-soft —
+  // persistence never blocks the public lifecycle response.
+  await writeLifecycleCivicEvents(env, lifecycle);
 
   // Re-stamp award→prime→goal after OCP/PASSPort so industry/prime/dollars see side-cars.
   lifecycle = attachAwardPrimeGoal(lifecycle, r);
