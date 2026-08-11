@@ -224,6 +224,27 @@ The committed denominator and overlap receipt is
 500-row stratified graph slice is stored in
 `site/data/procurement_spine_sources.json`.
 
+
+## Checkbook Spending payment retention
+
+`checkbook_spending.mjs` seeds the population-backed Checkbook Contracts graph,
+pulls Spending by exact `contract_id` (PIN is rejected on the Spending domain),
+and retains **individual payment rows** as `source_records`-shaped snapshots —
+not spent-to-date summaries alone. A stratified kill sample must clear
+usefulness ≥30% and precision ≥95% before the graph slice publishes.
+
+```bash
+node warehouse/scripts/checkbook_spending.mjs --from-fixture --kill-sample 5
+node warehouse/scripts/checkbook_spending.mjs --kill-sample 50 --publish
+node warehouse/scripts/checkbook_spending.mjs --check
+```
+
+The public receipt is
+`warehouse/receipts/proof/checkbook_spending_population_latest.json`; the dated
+verification receipt lives under
+`site/data/checkbook_spending_sources/verification_receipts/`.
+
+
 ## ZAP milestone and disposition statistics
 
 The ZAP bulk receipt profiles milestone/status-date coverage used by the land

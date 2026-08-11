@@ -519,9 +519,8 @@ export function slimProcurementMaterializationReceipt(materialization) {
 
 /**
  * Load procurement-spine observations without turning source keys into vendor
- * identity claims. PASSPort and Checkbook each carry measured populations and
- * independent graph caps; Checkbook Spending remains a compatibility row until
- * its own population denominator exists.
+ * identity claims. PASSPort, Checkbook Contracts, and Checkbook Spending each
+ * carry measured populations and independent graph caps when population_backed.
  */
 export function collectProcurementSpineObservations(root, opts = {}) {
   const doc = loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"));
