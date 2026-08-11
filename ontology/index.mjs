@@ -9,6 +9,16 @@ export {
 } from "./load.mjs";
 
 export {
+  GROUNDING_STATES,
+  GROUNDING_NOTE,
+  isGroundingState,
+  validateEntryGrounding,
+  validateRegistryGrounding,
+  summarizeGrounding,
+  groundingMetrics,
+} from "./grounding.mjs";
+
+export {
   collectLiveInventory,
   ASSERTION_CLASSIFICATIONS,
   ER_TYPE_FAMILIES,

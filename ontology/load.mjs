@@ -1,9 +1,11 @@
-// Pure loader for ontology/registry.v0.json — catalog only, no I/O side effects
-// beyond reading the committed registry file when loadOntologyRegistry() is called.
+// Pure loader for ontology/registry.v0.json — Civic Graph catalog only, no I/O
+// side effects beyond reading the committed registry when loadOntologyRegistry()
+// is called.
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateRegistryGrounding } from "./grounding.mjs";
 
 export const ONTOLOGY_REGISTRY_SCHEMA = "cityscroll.ontology.registry.v0";
 export const ONTOLOGY_REGISTRY_RELATIVE = "ontology/registry.v0.json";
@@ -43,6 +45,8 @@ export function validateRegistryShape(registry) {
       throw new TypeError(`kinetic_action_types.${key} must be an array`);
     }
   }
+  // Civic Graph v0: every object/link/event/kinetic entry carries grounding.
+  validateRegistryGrounding(registry);
   return true;
 }
 

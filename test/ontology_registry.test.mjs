@@ -10,6 +10,9 @@ import {
   collectLiveInventory,
   ONTOLOGY_REGISTRY_SCHEMA,
   idsWithStatus,
+  GROUNDING_STATES,
+  summarizeGrounding,
+  validateRegistryGrounding,
 } from "../ontology/index.mjs";
 import {
   PUBLIC_GRAPH_EDGE_TYPES,
@@ -114,4 +117,44 @@ test("live inventory is non-empty and stable-shaped", () => {
   assert.ok(live.event_kinds.length >= 15);
   assert.ok(live.reader_actions.length >= 10);
   assert.ok(live.product_method_log.includes("review_decision"));
+});
+
+test("every object and link carries Civic Graph grounding (built|partial|gap)", () => {
+  const registry = loadOntologyRegistry();
+  assert.equal(validateRegistryGrounding(registry), true);
+  for (const entry of registry.object_types) {
+    assert.ok(GROUNDING_STATES.includes(entry.grounding), entry.id);
+    if (entry.status === "unregistered") {
+      assert.notEqual(entry.grounding, "built", entry.id);
+    }
+  }
+  for (const entry of registry.link_types) {
+    assert.ok(GROUNDING_STATES.includes(entry.grounding), entry.id);
+  }
+  for (const entry of registry.event_kinds) {
+    assert.ok(GROUNDING_STATES.includes(entry.grounding), entry.id);
+  }
+  const summary = summarizeGrounding(registry);
+  assert.ok(summary.objects.built + summary.objects.partial + summary.objects.gap === registry.object_types.length);
+  assert.ok(summary.object_gap_ids.includes("payment"));
+  assert.ok(summary.link_gap_ids.includes("paid_under") || summary.link_gap_ids.includes("registered_as"));
+  assert.equal(registry.civic_graph?.name, "Civic Graph");
+  assert.ok(Array.isArray(registry.civic_graph?.remaining_stack));
+  assert.ok(registry.civic_graph.remaining_stack.length >= 3);
+});
+
+test("design-matrix product joins are cataloged even when unregistered", () => {
+  const registry = loadOntologyRegistry();
+  const links = new Map(registry.link_types.map((e) => [e.id, e]));
+  for (const id of [
+    "passport_contract_for",
+    "passport_rfx_for",
+    "notice_for_meeting",
+    "comment_deadline_of",
+    "milestone_of",
+    "subsidy_stage_of",
+  ]) {
+    assert.ok(links.has(id), id);
+    assert.equal(links.get(id).status, "unregistered");
+  }
 });
