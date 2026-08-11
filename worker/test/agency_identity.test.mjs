@@ -85,12 +85,14 @@ test("the class generalizes: several real agency strings each resolve to a plaus
 });
 
 test("agency rename pairs share one identity card (false-split residual closed)", () => {
-  // Gold gv0-026 / gv0-030 / gv0-032: modern and legacy spellings must land on the
-  // same precompiled crosswalk entry — not two entities with separate cards.
+  // Gold gv0-026 / gv0-030 / gv0-032 plus OTI-densified former names: modern and
+  // legacy spellings must land on the same precompiled crosswalk entry.
   const pairs = [
     ["Dept of Info Tech & Telecomm", "Office of Technology and Innovation", /Technology and Innovation|OTI/i],
     ["District Attorney - New York County", "Manhattan District Attorney's Office", /Manhattan District Attorney/i],
     ["Department of Business Services", "Department of Small Business Services", /Small Business Services/i],
+    ["Art Commission", "Public Design Commission", /Public Design Commission|PDC/i],
+    ["Office of Emergency Management", "New York City Emergency Management", /Emergency Management/i],
   ];
   for (const [left, right, nameRe] of pairs) {
     const a = enrichAgency(entries, left);
@@ -106,6 +108,10 @@ test("agency rename pairs share one identity card (false-split residual closed)"
     canonicalAgency("Manhattan District Attorney's Office").canonical_id,
     canonicalAgency("Brooklyn District Attorney's Office").canonical_id,
   );
+  // Crosswalk carries publisher former-name stamps when densified.
+  const oti = entries["information-technology-and-telecommunications"];
+  assert.ok(oti?.former_names?.length >= 1);
+  assert.equal(oti.successor_basis, "oti_alternate_or_former_names_v1");
 });
 
 test("route-id collisions collapse only reviewed punctuation and prefix variants", () => {

@@ -1,0 +1,220 @@
+{
+  "schema": "cityscroll.agency_successor_kill_sample.v1",
+  "as_of": "2026-08-11",
+  "downloaded": "2026-08-11",
+  "mode": "fixture",
+  "source": {
+    "id": "t3jq-9nkf",
+    "name": "NYC Agencies and Governance Organizations",
+    "attribution": "Office of Technology and Innovation (OTI)",
+    "url": "https://data.cityofnewyork.us/d/t3jq-9nkf",
+    "parent_roster_rows": 306,
+    "former_name_rows": 53
+  },
+  "precision_floor": 0.95,
+  "edges": {
+    "extracted": 76,
+    "home_cold_path": "agency_groups_residual_only"
+  },
+  "kill_sample": {
+    "positives": {
+      "total": 10,
+      "resolved_before": 10,
+      "resolved_after": 10,
+      "residual_before": 0,
+      "residual_after": 0,
+      "fixed": 0,
+      "fix_rate_on_residual": 1,
+      "rows": [
+        {
+          "id": "ks-doit-oti-gold",
+          "former": "Dept of Info Tech & Telecomm",
+          "current": "Office of Technology and Innovation",
+          "gold_id": "gv0-026",
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "DoITT folded into OTI"
+        },
+        {
+          "id": "ks-doit-full",
+          "former": "Department of Information Technology and Telecommunications",
+          "current": "Office of Technology and Innovation",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "OTI alternate_or_former_names full title"
+        },
+        {
+          "id": "ks-dca-dcwp",
+          "former": "Department of Consumer Affairs",
+          "current": "Department of Consumer and Worker Protection",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "DCA → DCWP"
+        },
+        {
+          "id": "ks-art-pdc",
+          "former": "Art Commission",
+          "current": "Public Design Commission",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "Art Commission → PDC"
+        },
+        {
+          "id": "ks-sbs",
+          "former": "Department of Business Services",
+          "current": "Department of Small Business Services",
+          "gold_id": "gv0-032",
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "Business Services → SBS"
+        },
+        {
+          "id": "ks-da-ny-county",
+          "former": "New York County District Attorney's Office",
+          "current": "Manhattan District Attorney's Office",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "County vs borough DA naming (OTI former)"
+        },
+        {
+          "id": "ks-da-kings",
+          "former": "Kings County District Attorney's Office",
+          "current": "Brooklyn District Attorney's Office",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "County vs borough DA naming"
+        },
+        {
+          "id": "ks-endgbv",
+          "former": "Mayor's Office to Combat Domestic Violence",
+          "current": "Mayor's Office to End Domestic and Gender-Based Violence",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "ENDGBV rename"
+        },
+        {
+          "id": "ks-oem",
+          "former": "Office of Emergency Management",
+          "current": "New York City Emergency Management",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "OEM → NYCEM"
+        },
+        {
+          "id": "ks-doe-nycps",
+          "former": "Department of Education",
+          "current": "New York City Public Schools",
+          "gold_id": null,
+          "before_same": true,
+          "after_same": true,
+          "fixed": false,
+          "still_broken": false,
+          "notes": "DOE rebrand to NYCPS (OTI former)"
+        }
+      ]
+    },
+    "negatives": {
+      "total": 5,
+      "held": 5,
+      "false_merges": 0,
+      "rows": [
+        {
+          "id": "ks-da-manhattan-brooklyn",
+          "left": "Manhattan District Attorney's Office",
+          "right": "Brooklyn District Attorney's Office",
+          "gold_id": "gv0-031",
+          "before_same": false,
+          "after_same": false,
+          "held": true,
+          "notes": "Same office type, different boroughs"
+        },
+        {
+          "id": "ks-corr-board",
+          "left": "Department of Correction",
+          "right": "Board of Correction",
+          "gold_id": null,
+          "before_same": false,
+          "after_same": false,
+          "held": true,
+          "notes": "Department vs oversight board"
+        },
+        {
+          "id": "ks-transit-mta",
+          "left": "N.Y.C. Transit Authority",
+          "right": "Metropolitan Transportation Authority",
+          "gold_id": null,
+          "before_same": false,
+          "after_same": false,
+          "held": true,
+          "notes": "Operating unit vs parent authority"
+        },
+        {
+          "id": "ks-parks-dpr-police",
+          "left": "Department of Parks and Recreation",
+          "right": "Police Department",
+          "gold_id": null,
+          "before_same": false,
+          "after_same": false,
+          "held": true,
+          "notes": "Unrelated agencies"
+        },
+        {
+          "id": "ks-finance-omb",
+          "left": "Department of Finance",
+          "right": "Office of Management and Budget",
+          "gold_id": null,
+          "before_same": false,
+          "after_same": false,
+          "held": true,
+          "notes": "Unrelated fiscal agencies"
+        }
+      ]
+    }
+  },
+  "rates": {
+    "precision": 1,
+    "residual_fix_rate": 1,
+    "positive_coverage_after": 1,
+    "negative_hold_rate": 1
+  },
+  "precision": 1,
+  "clears_precision_bar": true,
+  "materialize_edges": true,
+  "crosswalk_stamp": {
+    "stamped_entries": 0,
+    "stamped_surfaces": 0,
+    "applied_count": 0
+  },
+  "residual": {
+    "before": 0,
+    "after": 0,
+    "fixed": 0,
+    "fix_rate_on_residual": 1,
+    "product_positive_coverage": 1
+  }
+}
