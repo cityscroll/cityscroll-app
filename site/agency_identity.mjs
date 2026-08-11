@@ -2,6 +2,11 @@
 //
 // City Record publishes agency_name as free text. These reviewed groups keep a
 // stable route id while preserving every source spelling for exact source queries.
+//
+// OTI-published former names densify through site/agency_successor_aliases.mjs
+// (tools/build_agency_successors.mjs) so renames resolve to one canonical id.
+
+import { successorPreferredFor } from "./agency_successor_aliases.mjs";
 
 export const AGENCY_GROUPS = Object.freeze({
   "Administration for Children's Services": ["ADMIN FOR CHILDREN'S SERVICES", "ADMIN FOR CHILDRENS SERVICES", "ADMIN FOR CHILDREN'S SVCS", "ADMIN FOR CHILDRENS SVCS", "ADMIN FOR CHILDREN' SVCS"],
@@ -180,19 +185,71 @@ function classifiedRouteIdentity(value, { includeSuperseded = false } = {}) {
   });
 }
 
-export function resolveAgencyIdentity(value) {
+function groupForKey(key) {
+  if (!key) return null;
+  let group = PREFERRED_BY_KEY.get(key);
+  if (!group) {
+    const withoutDepartment = key.replace(/^(?:NYC )?(?:DEPARTMENT|DEPT) OF /, "");
+    group = PREFERRED_BY_KEY.get(withoutDepartment) || null;
+  }
+  return group || null;
+}
+
+function resolveSuccessorAlias(raw, successor) {
+  if (!successor?.preferred) return null;
+  let preferredRaw = stripDisplaySuffix(successor.preferred);
+  // One alignment hop: OTI current name may itself densify onto a reviewed group.
+  const hop = successorPreferredFor(preferredRaw, agencyComparisonKey);
+  if (hop?.preferred && agencyComparisonKey(hop.preferred) !== agencyComparisonKey(preferredRaw)) {
+    preferredRaw = stripDisplaySuffix(hop.preferred);
+  }
+  const preferredKey = agencyComparisonKey(preferredRaw);
+  const preferredGroup = groupForKey(preferredKey)
+    || GROUP_BY_ID.get(agencyCanonicalId(preferredRaw))
+    || null;
+  if (preferredGroup) {
+    return Object.freeze({
+      ...preferredGroup,
+      variants: Object.freeze(uniqueStrings([
+        ...(preferredGroup.variants || []),
+        raw,
+        successor.former_surface,
+      ])),
+      route_classification: "oti_former_name_successor",
+      successor_of: successor.former_surface,
+    });
+  }
+  const preferredName = fallbackName(preferredRaw);
+  return Object.freeze({
+    canonical_id: agencyCanonicalId(preferredName),
+    canonical_name: preferredName,
+    variants: Object.freeze(uniqueStrings([preferredName, raw, successor.former_surface])),
+    matched: true,
+    route_classification: "oti_former_name_successor",
+    successor_of: successor.former_surface,
+  });
+}
+
+export function resolveAgencyIdentity(value, { skipSuccessors = false } = {}) {
   const raw = stripDisplaySuffix(value);
   const classified = classifiedRouteIdentity(raw);
   if (classified) return classified;
   const routeId = raw.toLowerCase();
   if (GROUP_BY_ID.has(routeId)) return GROUP_BY_ID.get(routeId);
   const key = agencyComparisonKey(raw);
-  let group = PREFERRED_BY_KEY.get(key);
-  if (!group) {
-    const withoutDepartment = key.replace(/^(?:NYC )?(?:DEPARTMENT|DEPT) OF /, "");
-    group = PREFERRED_BY_KEY.get(withoutDepartment);
+
+  // OTI former-name densify runs before group match so a published current
+  // name (NYCEM, NYCPS) can align onto the reviewed City Record group id, and
+  // a published former name (Art Commission) can join its successor.
+  if (!skipSuccessors) {
+    const successor = successorPreferredFor(raw, agencyComparisonKey);
+    const successorHit = resolveSuccessorAlias(raw, successor);
+    if (successorHit) return successorHit;
   }
+
+  const group = groupForKey(key);
   if (group) return group;
+
   const canonical_name = fallbackName(patternCanonical(raw, key));
   const canonical_id = agencyCanonicalId(canonical_name);
   return Object.freeze({ canonical_id, canonical_name, variants: Object.freeze([raw || canonical_name].filter(Boolean)), matched: false });
