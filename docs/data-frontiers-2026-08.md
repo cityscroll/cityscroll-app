@@ -84,6 +84,20 @@ joined 1/50 notices (2%) and measured 50% fuzzy precision, so it stopped below
 both gates. The payload contains no matches and the dependent reader surface
 does not fire.
 
+## Person / official identity hub (2026-08-11)
+
+**Gap:** official constellation beyond vote retention — district/term identity, lobby targets, and campaign-finance recipients bound to the same `official:{person_id}` family as Legistar roll-call votes.
+
+| Source | Dataset | Kill-sample measurement | Gate | Disposition |
+|---|---|---|---|---|
+| Council Members | `uvw5-9znb` | `council_member_id` = Legistar PersonId; vote corpus **19/19 (100%)**; demos 7801 Marte / 7785 Louis | Exact ID | **Shipped** person hub (`site/data/person_hub_lookup.json`) — 215 people, 558 term rows |
+| eLobbyist | `fmf3-knd8` | Person-shaped targets **64,116 / 66,669 (96.17%)**; reviewed precision **100%** (exact unique name keys) | ≥30% / ≥95% | **Shipped** lobby edges (`site/data/official_lobby_influence_lookup.json`) — Org→Lobbyist→Official |
+| CFB contributions | `rjkp-yttg` | Distinct City Council recipients **53 / 108 (49.07%)**; reviewed precision **100%** | ≥30% / ≥95% | **Shipped** recipient/donor sample edges (`site/data/official_cfb_influence_lookup.json`) |
+
+Receipt: [`site/data/person_hub_sources/verification_receipts/person_hub_influence_2026-08-11.json`](../site/data/person_hub_sources/verification_receipts/person_hub_influence_2026-08-11.json). Methods port the free-text target parser and conservative org consolidate used in the public influence-graph research prototype; public edges stay exact unique name keys only. The independent official **decision-constellation** promotion bar (≥30 distinct roll-call events at ≥95% person-id retention) is unchanged — the committed people densify remains below that event count, so reader copy stays “published roll calls in this corpus” while hub identity and influence panels still render when gated edges exist.
+
+Rebuild: `node tools/build_person_hub.mjs` then `node tools/build_official_influence.mjs`.
+
 ## Inventory additions and maintenance actions
 
 The three census-derived gaps should be added to the executable inventory on the next taxonomy update:

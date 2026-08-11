@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_on": "2026-08-03",
+  "observed_on": "2026-08-11",
   "sources": [
     {
       "id": "mandatory-inclusionary-housing",
@@ -8,7 +8,15 @@
       "identifier": "m79g-k9r4",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["project_id", "status", "project_nam", "date_adopte", "zr_ulurpno", "mih_option", "cd"]
+      "fields": [
+        "project_id",
+        "status",
+        "project_nam",
+        "date_adopte",
+        "zr_ulurpno",
+        "mih_option",
+        "cd"
+      ]
     },
     {
       "id": "city-record",
@@ -226,7 +234,11 @@
       "identifier": "kpav-sd4t",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["agency", "civil_service_title", "title_code_no"]
+      "fields": [
+        "agency",
+        "civil_service_title",
+        "title_code_no"
+      ]
     },
     {
       "id": "civil-service-titles",
@@ -234,7 +246,10 @@
       "identifier": "nzjr-3966",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["title", "descr"]
+      "fields": [
+        "title",
+        "descr"
+      ]
     },
     {
       "id": "dcas-eligible-list-utilization",
@@ -761,6 +776,59 @@
         "project",
         "pdf_download",
         "ulurp_application_number"
+      ]
+    },
+    {
+      "id": "nyc-council-members",
+      "kind": "socrata",
+      "identifier": "uvw5-9znb",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "name",
+        "council_member_id",
+        "term_start",
+        "term_end",
+        "district",
+        "office_id"
+      ]
+    },
+    {
+      "id": "city-clerk-elobbyist",
+      "kind": "socrata",
+      "identifier": "fmf3-knd8",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "client_id",
+        "client_name",
+        "lobbyist_id",
+        "lobbyist_name",
+        "lobbyist_targets",
+        "compensation_total",
+        "report_year",
+        "registration_id",
+        "start_date",
+        "end_date"
+      ]
+    },
+    {
+      "id": "cfb-campaign-contributions",
+      "kind": "socrata",
+      "identifier": "rjkp-yttg",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "election",
+        "officecd",
+        "recipid",
+        "recipname",
+        "candfirst",
+        "name",
+        "amnt",
+        "date",
+        "schedule",
+        "c_code"
       ]
     }
   ]

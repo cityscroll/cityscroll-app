@@ -960,6 +960,18 @@ worker/test/legistar_source_records.test.mjs`.
 Demo: `#official/7801` (recent votes) · `#official/7801?notice=20260706036&event=22526`
 (hearing scope) · notice `20260706036` full roll call.
 
+**Person hub + influence edges:** Council Members `uvw5-9znb` is the official
+identity hub — `council_member_id` equals Legistar PersonId (demos 7801/7785).
+Rebuild: `node tools/build_person_hub.mjs` → `site/data/person_hub_lookup.json`
+(district/term on `#official/{id}`). eLobbyist `fmf3-knd8` and CFB `rjkp-yttg`
+bind via exact unique person-name keys only (`entity_resolution/officials/
+person_name.mjs`, `lobby_targets.mjs`, `org_resolve.mjs`; site builders
+`site/official_influence.mjs`). Materialize only when kill-sample usefulness
+≥30% and reviewed precision ≥95%: `node tools/build_official_influence.mjs`.
+Receipt: `site/data/person_hub_sources/verification_receipts/`. Decision-
+constellation promotion (≥30 roll-call events) remains independent of the hub.
+Verify: `node --test test/person_hub.test.mjs test/official_influence.test.mjs`.
+
 ## Content and testing — lifecycle gap taxonomy
 
 **Standing contract:** every absent-data state on a lifecycle surface must tell the reader *which kind of gap* it is. Never ship an undifferentiated “no record” / “unknown” / blank slot when the product has decided a field is missing.
