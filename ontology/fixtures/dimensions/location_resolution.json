@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.location_resolution_inventory.v0",
-  "measured_at": "2026-08-04",
+  "measured_at": "2026-08-11",
   "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources (located rates, unlocated_reasons, citywide/virtual bags) so zero-located and high no_place_signal map lenses emit flywheel cards.",
   "lenses": [
     {
@@ -29,16 +29,18 @@
   "map_aggregates": {
     "schema": "cityscroll.district_activity.v1",
     "boundary_vintage": "2026-05-26",
-    "built_at": "2026-08-04T18:12:53.771Z",
+    "built_at": "2026-08-09T16:47:58.958Z",
     "path": "site/data/district_activity.json",
     "sources": {
       "land": {
         "corpus": "zap_projects_warehouse_lookup",
-        "counted": 236,
-        "located": 236,
+        "counted": 231,
+        "located": 231,
         "located_rate": 1,
         "by_method": {
-          "cd_centroid_council": 231
+          "cd_centroid_council": 226,
+          "citywide": 3,
+          "unknown": 2
         }
       },
       "property": {
@@ -47,27 +49,25 @@
         "located": 133,
         "located_rate": 1,
         "by_method": {
-          "coordinates_pip": 125
+          "coordinates_pip": 125,
+          "unknown": 8
         }
       },
       "meetings": {
         "corpus": "meetings_domain_observations",
         "counted": 119,
-        "located": 108,
-        "located_rate": 0.907563025210084,
+        "located": 106,
+        "located_rate": 0.8907563025210085,
         "by_method": {
-          "matter_body_borough": 14,
-          "civic_address_pip": 37,
-          "cd_centroid_council": 16,
-          "matter_title_place": 7,
           "rule_default_citywide": 10,
+          "civic_address_pip": 39,
+          "matter_body_borough": 11,
+          "cd_centroid_council": 15,
+          "matter_title_place": 9,
           "venue_line": 9,
-          "citywide_phrase": 1,
           "venue_column": 6,
-          "citywide": 2,
-          "classic_affected_area": 2,
-          "virtual_only": 3,
-          "agency_hq": 1
+          "virtual_only": 5,
+          "citywide": 2
         }
       },
       "rules": {
@@ -99,15 +99,16 @@
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 11,
+      "meetings": 13,
       "money": 212
     },
     "unlocated_reasons": {
       "land": {},
       "property": {},
       "meetings": {
-        "external_board_page_needed": 9,
-        "body_place_omitted": 2
+        "body_place_omitted": 3,
+        "external_board_page_needed": 1,
+        "multi_event_directory": 9
       },
       "rules": {},
       "money": {
@@ -118,14 +119,14 @@
       "land": 3,
       "property": 0,
       "rules": 97,
-      "meetings": 13,
+      "meetings": 12,
       "money": 42
     },
     "virtual": {
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 3,
+      "meetings": 5,
       "money": 0
     }
   },

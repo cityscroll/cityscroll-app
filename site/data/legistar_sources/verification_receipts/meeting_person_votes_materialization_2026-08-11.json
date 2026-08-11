@@ -1,0 +1,119 @@
+{
+  "schema": "cityscroll.metric_receipt.v1",
+  "metric": "meeting_person_votes_materialization_rate",
+  "related_metrics": [
+    "person_vote_retention_rate",
+    "official_votes_on_edge_rate"
+  ],
+  "measured_at": "2026-08-11",
+  "subject": "Named by_person roll-call rows on live matched Council meeting-outcomes materialization",
+  "universe": {
+    "source": "GET https://api.cityscroll.org/meeting-outcomes (paginated list)",
+    "cohort": "join.matched === true Council hearing records in the live materialization",
+    "cohort_size": 16,
+    "list_records_fetched": 319,
+    "note": "List includes unmatched/absent rows; usefulness denominator is matched Council hearings only."
+  },
+  "join_strategy": {
+    "notice_to_event": "exact_date_body_tokens (existing Legistar join)",
+    "vote_person_fields": ["VotePersonId", "VotePersonName", "VoteValueName"],
+    "identity": "exact numeric person_id only; official:{person_id} when retained",
+    "rejected": [
+      "fuzzy name-only official identity",
+      "invented roll calls for voice votes / tally_only matters"
+    ]
+  },
+  "gates": {
+    "usefulness_threshold": 0.3,
+    "precision_floor": 0.95
+  },
+  "measurement": {
+    "matched_council_hearings": 16,
+    "with_nonempty_by_person": 6,
+    "without_by_person": 10,
+    "usefulness_rate": 0.375,
+    "usefulness_pass": true,
+    "person_rows_reviewed": 388,
+    "person_rows_valid": 388,
+    "precision_rate": 1,
+    "precision_pass": true,
+    "precision_criteria": "person_id + person_name + vote_bucket present; official id bound when retained"
+  },
+  "stratified_sample": {
+    "recent": {
+      "size": 8,
+      "with_by_person": 3,
+      "not_published": 5,
+      "entry_ids": [
+        "20260707022",
+        "20260707021",
+        "20260706036",
+        "20260625040",
+        "20260617039",
+        "20260603052",
+        "20260512045",
+        "20260428021"
+      ],
+      "positive_ids": [
+        "20260706036",
+        "20260625040",
+        "20260428021"
+      ]
+    },
+    "historical": {
+      "size": 7,
+      "with_by_person": 3,
+      "not_published": 4,
+      "entry_ids": [
+        "20260422047",
+        "20260408025",
+        "20260331028",
+        "20260304007",
+        "20260304006",
+        "20260219004",
+        "20260217023"
+      ],
+      "positive_ids": [
+        "20260408025",
+        "20260331028",
+        "20260304007"
+      ]
+    },
+    "combined_not_published_rate": 0.6,
+    "combined_label": "9/15 empty by_person on stratified sample (below 0.85 suspicious / 0.95 red-flag thresholds)"
+  },
+  "examples": {
+    "demo_notice_id": "20260706036",
+    "demo_event_id": "22526",
+    "demo_first_person": "Christopher Marte",
+    "demo_person_id": "7801",
+    "positive_notices": [
+      "20260706036",
+      "20260625040",
+      "20260428021",
+      "20260408025",
+      "20260331028",
+      "20260304007"
+    ]
+  },
+  "product_surfaces": [
+    "GET /meeting-outcomes → agenda_items[].matters[].votes[].by_person",
+    "site/app/meetings.mjs meetingRollCallChipHTML / meetingRollCallTableHTML",
+    "site/data/people_domain_observations.json",
+    "site/data/person_votes_lookup.json",
+    "#official/{person_id}"
+  ],
+  "residual": {
+    "empty_by_person_on_matched": 10,
+    "interpretation": "Most empties are publisher voice votes / committee actions without Legistar Votes person rows (tally_only or action-only). Do not label every empty slot as never_ingested or class-(b) withhold.",
+    "decision_constellation_gate": "Independent ≥30 distinct roll-call events bar is unchanged; committed densify remains below that event count so reader copy stays published_roll_calls_in_this_corpus."
+  },
+  "verdict": "SHIP / KEEP LIVE — usefulness 6/16 (37.5%) and reviewed precision 388/388 (100%) clear the 30% / 95% gates. VotePerson* retention is live on matched Council materialization; flywheel meeting-person-votes credibility sample is no longer a ~100% never_ingested red flag.",
+  "prior": {
+    "measured_at": "2026-08-01",
+    "with_by_person": 0,
+    "sample_n": 15,
+    "classification": "never_ingested",
+    "basis": "Mapper expected PersonId/PersonName while live Votes only publish VotePerson*; tallies formed but by_person stayed empty until field mapping fix + rematerialization."
+  }
+}

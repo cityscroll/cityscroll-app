@@ -463,6 +463,7 @@ test("data-integrity core: population not-published-rate emits red flags continu
   assert.ok(personVotes);
   assert.equal(personVotes.red_flag, false);
   assert.equal(personVotes.classification, "healthy");
+  assert.ok(personVotes.rate.rate < 0.85, "person-vote empty rate below suspicious threshold");
   assert.ok(personVotes.rate.non_null >= 1);
 
   // Secondary feature inventory still works
@@ -481,6 +482,7 @@ test("data-integrity core: population not-published-rate emits red flags continu
   const sampleOnly = evaluateNotPublishedClaims(samples.claims);
   assert.equal(sampleOnly.metrics.red_flags, 0);
   assert.ok(sampleOnly.metrics.healthy >= 3);
+  assert.ok(sampleOnly.metrics.genuinely_withheld >= 1);
 });
 
 test("readability scores views and cards unusable ones", () => {
