@@ -108,6 +108,56 @@ function normalizeSection(value) {
     .replace(/[.,;:]+$/g, "");
 }
 
+/**
+ * Emit parent citation keys so § 753(e)(2) also matches a densified
+ * “Section 753 of the Charter” stamp without inventing a new relation.
+ * Only expands when the source key already carries a parenthetical subsection.
+ */
+export function expandCitationKeyParents(keys = [], { limit = RULE_EVIDENCE_STAMP_LIMITS.citation_keys } = {}) {
+  const out = [];
+  const seen = new Set();
+  const add = (key) => {
+    const clean = String(key || "").toLowerCase().trim();
+    if (!clean || seen.has(clean) || out.length >= limit) return;
+    seen.add(clean);
+    out.push(clean);
+  };
+  for (const key of Array.isArray(keys) ? keys : []) {
+    add(key);
+    const match = String(key || "").toLowerCase().match(
+      /^(nyc-charter|nyc-admin-code|section):([0-9]+[a-z]?)(?:[().].+)$/,
+    );
+    if (!match) continue;
+    add(`${match[1]}:${match[2]}`);
+    // Prefer scheme-qualified parent forms for charter / admin-code so a bare
+    // section:1 from PDF prose cannot satisfy a specific mandate alone.
+    if (match[1] === "nyc-charter" || match[1] === "nyc-admin-code") {
+      add(`${match[1]}:${match[2]}`);
+    }
+  }
+  return out;
+}
+
+/**
+ * Strong citation keys may alone establish citation_law_match.
+ * Bare `section:N` tokens are too generic in densified PDF prose.
+ */
+export function isStrongCitationKey(key) {
+  const value = String(key || "").toLowerCase().trim();
+  if (!value) return false;
+  if (/^(nyc-charter|nyc-admin-code|local-law|rcny):/.test(value)) return true;
+  // section with real subsection / multi-part identifier (16-306, 753(e)(2))
+  if (/^section:[0-9]+[a-z0-9]*[()-]/.test(value)) return true;
+  if (/^section:[0-9]+-[0-9]/.test(value)) return true;
+  return false;
+}
+
+function isPlausibleSectionToken(value) {
+  const token = normalizeSection(value).replace(/^§/, "");
+  // Reject OCR/prose fragments (“section:and”, “section:by”).
+  return /^[0-9]+[a-z0-9().-]*$/i.test(token);
+}
+
 /** Canonical legal references shared by the snapshot and mandate evaluator. */
 export function compactCitationLawKeys(value, { limit = RULE_EVIDENCE_STAMP_LIMITS.citation_keys } = {}) {
   const text = compactText(value).toLowerCase();
@@ -116,12 +166,46 @@ export function compactCitationLawKeys(value, { limit = RULE_EVIDENCE_STAMP_LIMI
   const add = (key) => {
     if (key && !keys.includes(key) && keys.length < limit) keys.push(key);
   };
+  const addCharter = (raw) => {
+    if (!isPlausibleSectionToken(raw)) return;
+    const section = normalizeSection(raw).replace(/^§/, "");
+    add(`nyc-charter:${section}`);
+    // Parent form for subsection matches against densified “Section N” stamps.
+    const parent = section.match(/^([0-9]+[a-z]?)/i);
+    if (parent) add(`nyc-charter:${parent[1].toLowerCase()}`);
+  };
+  const addAdmin = (raw) => {
+    if (!isPlausibleSectionToken(raw)) return;
+    const section = normalizeSection(raw).replace(/^§/, "");
+    add(`nyc-admin-code:${section}`);
+    const parent = section.match(/^([0-9]+[a-z]?)/i);
+    if (parent) add(`nyc-admin-code:${parent[1].toLowerCase()}`);
+  };
+  const addSection = (raw) => {
+    if (!isPlausibleSectionToken(raw)) return;
+    const section = normalizeSection(raw).replace(/^§/, "");
+    add(`section:${section}`);
+    const parent = section.match(/^([0-9]+[a-z]?)/i);
+    if (parent && parent[1].toLowerCase() !== section) add(`section:${parent[1].toLowerCase()}`);
+  };
 
+  // “Charter § 753” / “NYC Charter section 1043”
   for (const match of text.matchAll(/(?:new york city|nyc|city)?\s*charter\s*(?:§{1,2}|section)?\s*(\d[a-z0-9().-]*)/g)) {
-    add(`nyc-charter:${normalizeSection(match[1]).replace(/^§/, "")}`);
+    addCharter(match[1]);
+  }
+  // Inverted City Record PDF form: “Section 753 and Section 1043(g) of the Charter”
+  for (const match of text.matchAll(
+    /sections?\s+((?:[0-9][a-z0-9().-]*|\s+|,|and|&|sections?)+?)\s+of\s+(?:the\s+)?(?:new york city|nyc|city)?\s*charter/g,
+  )) {
+    for (const part of match[1].match(/[0-9][a-z0-9().-]*/g) || []) addCharter(part);
   }
   for (const match of text.matchAll(/(?:new york city|nyc|city)?\s*administrative\s+code\s*(?:§{1,2}|section)?\s*(\d[a-z0-9().-]*)/g)) {
-    add(`nyc-admin-code:${normalizeSection(match[1]).replace(/^§/, "")}`);
+    addAdmin(match[1]);
+  }
+  for (const match of text.matchAll(
+    /sections?\s+((?:[0-9][a-z0-9().-]*|\s+|,|and|&|sections?)+?)\s+of\s+(?:the\s+)?(?:new york city|nyc|city)?\s*administrative\s+code/g,
+  )) {
+    for (const part of match[1].match(/[0-9][a-z0-9().-]*/g) || []) addAdmin(part);
   }
   for (const match of text.matchAll(/\b(\d{1,2})\s+rcny\s*(?:§{1,2}|section)?\s*([a-z0-9][a-z0-9().-]*)/g)) {
     add(`rcny:${match[1]}:${normalizeSection(match[2]).replace(/^§/, "")}`);
@@ -129,10 +213,10 @@ export function compactCitationLawKeys(value, { limit = RULE_EVIDENCE_STAMP_LIMI
   for (const match of text.matchAll(/\blocal\s+law(?:\s+(?:no\.?|number))?\s*([a-z0-9.-]+)(?:\s+of\s+(\d{4}))?/g)) {
     add(match[2] ? `local-law:${match[2]}:${match[1]}` : `local-law:${match[1]}`);
   }
-  for (const match of text.matchAll(/(?:§{1,2}|section)\s*([a-z0-9][a-z0-9().-]*)/g)) {
-    add(`section:${normalizeSection(match[1]).replace(/^§/, "")}`);
+  for (const match of text.matchAll(/(?:§{1,2}|section)\s*([0-9][a-z0-9().-]*)/g)) {
+    addSection(match[1]);
   }
-  return keys;
+  return expandCitationKeyParents(keys, { limit });
 }
 
 function validIsoDate(year, month, day) {

@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.mandate_rule_attachment_densify.v1",
+  "built_at": "2026-08-11T21:11:59.676Z",
+  "method": "city_record_getfile_pdf_v1",
+  "attempted_count": 5,
+  "densified_count": 5,
+  "densified_ids": [
+    "20260327013",
+    "20260402006",
+    "20260605008",
+    "20260624032",
+    "20260708002"
+  ],
+  "failures": []
+}

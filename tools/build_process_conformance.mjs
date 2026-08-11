@@ -35,6 +35,7 @@ function loadSources() {
     obligationsLookup: readJson(obligationsPath),
     rulesDomain: optional("data/rules_domain_observations.json"),
     meetingsDomain: optional("data/meetings_domain_observations.json"),
+    reportsDomain: optional("data/reports_domain_observations.json"),
     entityIntelligence: optional("data/entity_intelligence_lookup.json"),
   };
 }
@@ -46,6 +47,7 @@ export function writeProcessConformanceArtifacts({ check = false } = {}) {
     sources.obligationsLookup?.generated_at,
     sources.rulesDomain?.generated_at,
     sources.meetingsDomain?.generated_at,
+    sources.reportsDomain?.retrieved_at || sources.reportsDomain?.generated_at,
     sources.entityIntelligence?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const generatedDates = generatedAt.match(/\d{4}-\d{2}-\d{2}/g) || [];
