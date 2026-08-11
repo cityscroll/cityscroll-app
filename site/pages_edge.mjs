@@ -96,14 +96,66 @@ export function edgeRequestKind(urlValue) {
 
 const DOCUMENT_LANGS = new Set(["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]);
 
+/** True when HTML is a built exam document, not the SPA shell or another surface. */
+export function isExamDocumentHtml(html) {
+  return typeof html === "string" && html.includes('data-exam-document="1"');
+}
+
+/**
+ * Honest not-found for an exam id with no staffing document.
+ * Never fall through to the contracts SPA shell.
+ */
+export function renderExamUnavailable(examNumber) {
+  const id = String(examNumber || "").trim();
+  const title = id ? `Exam ${id}` : "Exam";
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)} · CityScroll</title>
+<link rel="canonical" href="https://cityscroll.org/exams/${esc(id)}/">
+</head>
+<body>
+<main id="main" class="panel route-item" data-edge-rendered="exam-unavailable" data-exam-number="${esc(id)}" tabindex="-1">
+  <p class="ftype">Civil service exam</p>
+  <h1 class="rolename">${esc(title)}</h1>
+  <p>This exam is not in the current staffing guide on CityScroll.</p>
+  <p><a href="/browse/staffing/">Browse staffing exams</a></p>
+</main>
+</body>
+</html>`;
+}
+
+function examUnavailableResponse(examNumber, status = 404) {
+  return new Response(renderExamUnavailable(examNumber), {
+    status,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=60, s-maxage=60, stale-while-revalidate=60",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+}
+
 async function handleExam(request, env, examNumber) {
   const url = new URL(request.url);
   const asset = await staticAsset(env, request, `/exams/${examNumber}/`);
-  if (!asset.ok) return asset;
+  // Missing document or SPA-fallback body: never rewrite the home shell as an exam page.
+  if (!asset.ok) return examUnavailableResponse(examNumber, asset.status === 404 ? 404 : asset.status);
+  const body = await asset.text();
+  if (!isExamDocumentHtml(body)) return examUnavailableResponse(examNumber, 404);
   const language = DOCUMENT_LANGS.has(url.searchParams.get("lang")) && url.searchParams.get("lang") !== "en"
     ? url.searchParams.get("lang") : null;
   const canonical = `https://cityscroll.org/exams/${examNumber}/${language ? `?lang=${encodeURIComponent(language)}` : ""}`;
-  const response = rewrittenResponse(asset, 200, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  const document = new Response(body, { status: 200, headers: asset.headers });
+  const response = rewrittenResponse(document, 200, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  // Node unit tests do not provide the Workers HTMLRewriter runtime.
+  if (typeof HTMLRewriter === "undefined") {
+    return request.method === "HEAD"
+      ? new Response(null, { status: 200, headers: response.headers })
+      : response;
+  }
   const transformed = new HTMLRewriter()
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
