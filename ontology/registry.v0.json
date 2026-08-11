@@ -326,14 +326,18 @@
     },
     {
       "id": "payment",
-      "status": "unregistered",
+      "status": "registered",
       "layer": "semantic",
-      "reason": "Checkbook Spending rows are summarized; no immutable source_records dual-write yet (source_coverage checkbook-spending).",
-      "primary_key_pattern": "payment:{row_id}",
+      "reason": "Checkbook Spending payments retained as individual source_records-shaped rows (host collector + request-time dual-write). Kill sample 2026-08-11: usefulness 22/50 (44%), precision 31/31 (100%).",
+      "primary_key_pattern": "payment:{contract_id}:{document_id}:{payee}:{issue_date}:{amount}",
       "families": [
         "er:procurement"
       ],
-      "backing": [],
+      "backing": [
+        "source_records",
+        "procurement_spine_sources.checkbook_spending",
+        "checkbook_spending_population_receipt"
+      ],
       "properties_ref": [
         "contract_amount"
       ],

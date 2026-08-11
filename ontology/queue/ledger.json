@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.multi_flywheel_ledger.v0",
   "policy_version": "v0",
-  "updated_at": "1970-01-01T00:00:00.000Z",
+  "updated_at": "2026-08-11T19:30:00.000Z",
   "cards": {
     "crol-list/mf-data-integrity-red-flag-subsidy-field-company-place-money": {
       "status": "fixed",
@@ -488,6 +488,16 @@
         "receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json"
       },
       "notes": "Inventory expanded; usefulness gate failed; join_bridge_enabled remains false."
+    },
+    "crol-list/checkbook-spending-payment-retention": {
+      "status": "fixed",
+      "dimension": "coverage",
+      "title": "Checkbook Spending payment retention (payment\u2194contract gap)",
+      "verify": "node --test test/checkbook_spending_collector.test.mjs && node warehouse/scripts/checkbook_spending.mjs --check",
+      "fixed_at": "2026-08-11T19:30:00.000Z",
+      "fixed_note": "Host collector retains individual Checkbook Spending payment rows as source_records-shaped snapshots; kill sample usefulness 22/50 (44%), precision 31/31 (100%) exact contract_id. Graph slice + ontology payment object registered.",
+      "demo_win": "Money spine shows retained payment documents on joined contracts instead of spent-to-date summaries alone."
     }
-  }
+  },
+  "note": "2026-08-11 also closed Checkbook Spending payment retention after a dated kill sample cleared 30%/95% gates."
 }

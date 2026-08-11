@@ -1,0 +1,48 @@
+{
+  "schema": "cityscroll.checkbook_spending.fixture.v1",
+  "observed_at": "2026-08-11T12:00:00Z",
+  "seed_contracts": [
+    {
+      "contract_id": "CT-ALPHA",
+      "pin": "10026P0001001",
+      "prime_vendor": "Alpha & Prime LLC",
+      "agency": "Department of Alpha",
+      "spent": 400
+    },
+    {
+      "contract_id": "CT-BETA",
+      "pin": "20026P0002001",
+      "prime_vendor": "Beta Prime Inc",
+      "agency": "Department of Beta",
+      "spent": 100
+    },
+    {
+      "contract_id": "CT-GAMMA",
+      "pin": "30026P0003001",
+      "prime_vendor": "Gamma Quiet LLC",
+      "agency": "Department of Gamma",
+      "spent": 0
+    },
+    {
+      "contract_id": "CT-DELTA",
+      "pin": "40026P0004001",
+      "prime_vendor": "Delta Spent Inc",
+      "agency": "Department of Delta",
+      "spent": 50
+    },
+    {
+      "contract_id": "CT-EPSILON",
+      "pin": "50026P0005001",
+      "prime_vendor": "Epsilon Zero LLC",
+      "agency": "Department of Epsilon",
+      "spent": 0
+    }
+  ],
+  "pages": {
+    "CT-ALPHA:1": "<response><status><result>success</result></status><result_records><record_count>2</record_count><spending_transactions><transaction><agency>Department of Alpha</agency><contract_id>CT-ALPHA</contract_id><document_id>CHK-ALPHA-001</document_id><check_amount>250.00</check_amount><issue_date>2026-05-10</issue_date><payee_name>Alpha &amp; Prime LLC</payee_name><fiscal_year>2026</fiscal_year><spending_category>Contracts</spending_category></transaction><transaction><agency>Department of Alpha</agency><contract_id>CT-ALPHA</contract_id><document_id>CHK-ALPHA-002</document_id><check_amount>150.00</check_amount><issue_date>2026-06-01</issue_date><payee_name>Alpha &amp; Prime LLC</payee_name><fiscal_year>2026</fiscal_year><spending_category>Contracts</spending_category></transaction></spending_transactions></result_records></response>",
+    "CT-BETA:1": "<response><status><result>success</result></status><result_records><record_count>1</record_count><spending_transactions><transaction><agency>Department of Beta</agency><contract_id>CT-BETA</contract_id><document_id>CHK-BETA-001</document_id><check_amount>100.00</check_amount><issue_date>2026-04-15</issue_date><payee_name>Beta Prime Inc</payee_name><fiscal_year>2026</fiscal_year><spending_category>Contracts</spending_category></transaction></spending_transactions></result_records></response>",
+    "CT-GAMMA:1": "<response><status><result>success</result></status><result_records><record_count>0</record_count><spending_transactions></spending_transactions></result_records></response>",
+    "CT-DELTA:1": "<response><status><result>success</result></status><result_records><record_count>1</record_count><spending_transactions><transaction><agency>Department of Delta</agency><contract_id>CT-DELTA</contract_id><document_id>CHK-DELTA-001</document_id><check_amount>50.00</check_amount><issue_date>2026-03-01</issue_date><payee_name>Delta Spent Inc</payee_name><fiscal_year>2026</fiscal_year><spending_category>Contracts</spending_category></transaction></spending_transactions></result_records></response>",
+    "CT-EPSILON:1": "<response><status><result>success</result></status><result_records><record_count>0</record_count><spending_transactions></spending_transactions></result_records></response>"
+  }
+}

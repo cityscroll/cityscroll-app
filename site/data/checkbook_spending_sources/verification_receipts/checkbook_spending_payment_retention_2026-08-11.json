@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.checkbook_spending_payment_retention_verification.v1",
+  "observed_on": "2026-08-11",
+  "source": {
+    "publisher": "Office of the New York City Comptroller",
+    "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+    "endpoint": "https://www.checkbooknyc.com/api",
+    "pulled_at": "2026-08-11T19:25:33.574Z",
+    "type_of_data": "Spending",
+    "spending_category": "c",
+    "spending_category_label": "Contracts",
+    "join_path": "Contracts graph seed → Spending by contract_id (PIN rejected on Spending domain)"
+  },
+  "kill_sample": {
+    "n": 50,
+    "strategy": "stratified 80% spent>0 / 20% spent=0 from population-backed checkbook_contracts, sorted contract_id",
+    "contracts_with_payments": 22,
+    "retained_payments": 31
+  },
+  "usefulness": {
+    "joined": 22,
+    "total": 50,
+    "rate": 0.44,
+    "floor": 0.3,
+    "denominator": "seed contracts from the population-backed Checkbook Contracts graph",
+    "numerator": "seed contracts with ≥1 retained Checkbook Spending payment row"
+  },
+  "precision": {
+    "true_positives": 31,
+    "false_positives": 0,
+    "attempts": 31,
+    "rate": 1,
+    "floor": 0.95,
+    "basis": "publisher contract_id equals seed / exact spine id; seed mismatches are false positives; pin_prefix_of_epin accepted only for residual pin joins"
+  },
+  "methods": {
+    "exact_contract_id": 31
+  },
+  "gates": {
+    "usefulness_floor": 0.3,
+    "precision_floor": 0.95,
+    "usefulness_cleared": true,
+    "precision_cleared": true,
+    "materialize": true
+  },
+  "materialize": true,
+  "population_backed": true,
+  "notes": [
+    "Checkbook Spending rejects PIN filters (code 1101); join is Contracts→Spending by contract_id.",
+    "Retention keeps individual payment rows as source_records-shaped snapshots, not spent-to-date summaries.",
+    "pin_prefix_of_epin is available for residual pin recovery; the kill sample primary path is exact contract_id."
+  ]
+}
