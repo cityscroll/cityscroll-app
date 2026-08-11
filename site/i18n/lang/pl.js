@@ -1726,6 +1726,8 @@
     alerts_rollup_prefs_lead: "Zmień częstotliwość, wstrzymaj obserwację lub zrezygnuj z subskrypcji w centrum preferencji powiązanym w stopce każdego przeglądu.",
     alerts_rollup_manage_btn: "Zarządzaj obserwowanymi",
     alerts_rollup_cutover: "Zmiany preferencji obowiązują od następnego codziennego wysłania przeglądu (~9:00 czasu wschodniego).",
+    alerts_unsub_immediate: "Wypisanie działa natychmiast.",
+    alerts_heartbeat_help: "Jeśli codzienne powiadomienie milczy przez 14 dni, wysyłamy notatkę, że nadal czuwamy — cisza nie ma wyglądać jak awaria.",
     alerts_rollup_section_quiet: "Nic nowego dla tej obserwacji.",
     alerts_rollup_no_groups: "Brak aktywnych obserwacji do grupowania.",
     alerts_rollup_watch_fallback: "Obserwacja",

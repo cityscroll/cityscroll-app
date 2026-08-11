@@ -1707,6 +1707,8 @@
     alerts_rollup_prefs_lead: "Chanje frekans, sispann yon alèt, oswa dezabòne nan sant preferans ki nan pye chak rezime.",
     alerts_rollup_manage_btn: "Jere alèt yo",
     alerts_rollup_cutover: "Chanjman preferans yo pran efè nan pwochen voye rezime chak jou a (~9am lè Lès).",
+    alerts_unsub_immediate: "Dezabònman pran efè imedyatman.",
+    alerts_heartbeat_help: "Si yon alèt chak jou rete trankil pandan 14 jou, nou voye yon nòt ki di n ap toujou gade — silans pa sanble yon pann.",
     alerts_rollup_section_quiet: "Pa gen anyen nouvo pou alèt sa a.",
     alerts_rollup_no_groups: "Pa gen alèt aktif pou gwoupe.",
     alerts_rollup_watch_fallback: "Alèt",

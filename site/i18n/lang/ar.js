@@ -1715,6 +1715,8 @@
     alerts_rollup_prefs_lead: "غيّر التكرار أو أوقف متابعة مؤقتًا أو ألغِ الاشتراك من مركز التفضيلات المرتبط في تذييل كل ملخص.",
     alerts_rollup_manage_btn: "إدارة المتابعات",
     alerts_rollup_cutover: "تسري تغييرات التفضيلات في إرسال الملخص اليومي التالي (~9 صباحًا بالتوقيت الشرقي).",
+    alerts_unsub_immediate: "يلغي الاشتراك مفعوله فورًا.",
+    alerts_heartbeat_help: "إذا بقيت مراقبة يومية بلا نتائج لمدة 14 يومًا، نرسل ملاحظة «ما زلنا نراقب» حتى لا يُفهم الصمت كعطل.",
     alerts_rollup_section_quiet: "لا جديد لهذه المتابعة.",
     alerts_rollup_no_groups: "لا توجد متابعات نشطة للتجميع.",
     alerts_rollup_watch_fallback: "متابعة",

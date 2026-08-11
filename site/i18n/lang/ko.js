@@ -1708,6 +1708,8 @@
     alerts_rollup_prefs_lead: "각 다이제스트 바닥글의 환경설정 센터에서 주기를 바꾸거나 알림을 일시중지하거나 구독을 해지하세요.",
     alerts_rollup_manage_btn: "알림 관리",
     alerts_rollup_cutover: "환경설정 변경은 다음 일일 다이제스트 발송 시 적용됩니다(동부 표준시 오전 9시경).",
+    alerts_unsub_immediate: "구독 해지는 즉시 적용됩니다.",
+    alerts_heartbeat_help: "일일 알림이 14일 동안 새 일치 없이 조용하면, 장애로 오해하지 않도록 계속 지켜보고 있다는 안내를 보냅니다.",
     alerts_rollup_section_quiet: "이 알림에는 새 소식이 없습니다.",
     alerts_rollup_no_groups: "그룹으로 묶을 활성 알림이 없습니다.",
     alerts_rollup_watch_fallback: "알림",
