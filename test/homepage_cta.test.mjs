@@ -94,7 +94,7 @@ test("i18n carries homepage CTA keys in English", () => {
   for (const key of ["home_cta_prompt", "home_cta_submit", "home_cta_topics", "lang_switcher_label"]) {
     assert.match(i18n, new RegExp(`${key}\\s*:`));
   }
-  assert.match(i18n, /home_cta_prompt:\s*"Want email updates\?"/);
+  assert.match(i18n, /home_cta_prompt:\s*"Want email updates on this\?"/);
   assert.match(i18n, /home_cta_submit:\s*"Sign up"/);
   assert.match(i18n, /home_cta_topics:\s*"or pick topics"/);
 });

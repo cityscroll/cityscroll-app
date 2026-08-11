@@ -67,7 +67,7 @@ test("bare #alerts is not a context-carry entry", () => {
 });
 
 test("i18n carries single-flow lead copy", () => {
-  assert.match(i18n, /quiz_heading:\s*"Get email alerts"/);
+  assert.match(i18n, /quiz_heading:\s*"Follow CityScroll"/);
   assert.match(i18n, /alerts_flow_lead:/);
   assert.match(i18n, /alerts_email_step_label:\s*"Your email"/);
 });

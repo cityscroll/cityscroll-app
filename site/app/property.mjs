@@ -276,18 +276,29 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
       }).join("")
     }</ol>`;
     const matchedPhases=phaseView.phases.filter(p=>p.matched);
-    const cards=matchedPhases.map(p=>{
+    const currentId=cur&&cur.id;
+    const currentCards=matchedPhases.filter(p=>p.id===currentId).map(p=>{
+      return `<div class="stage"><div class="box matched">
+        <div class="stage-name">${dispositionStageLabel(p.id)}</div>
+        ${lifecycleNoticeEventsHTML(p.events)}
+      </div></div>`;
+    }).join("");
+    const historyCards=matchedPhases.filter(p=>p.id!==currentId).map(p=>{
       return `<div class="stage"><div class="box matched">
         <div class="stage-name">${dispositionStageLabel(p.id)}</div>
         ${lifecycleNoticeEventsHTML(p.events)}
       </div></div>`;
     }).join('<div class="connector" aria-hidden="true">→</div>');
+    const historyWrap=historyCards
+      ? `<details class="lc-phase-history disposition-phase-history"><summary>${t("lifecycle_phase_show_history")}</summary><div class="chain disposition-phase-cards">${historyCards}</div></details>`
+      : "";
     return `<div class="chain-h">${t("disposition_spine_heading")}</div>
       ${cycleContextMark}
       ${actionLead}
       ${stepper}
       ${timingEstimate}
-      ${cards?`<div class="chain disposition-phase-cards">${cards}</div>`:""}`;
+      ${currentCards?`<div class="chain disposition-phase-cards">${currentCards}</div>`:""}
+      ${historyWrap}`;
   }
 
   // Flat fallback when the phase module is unavailable — matched stages only.

@@ -444,7 +444,15 @@ export function renderNearYouBody(view) {
     </form>
     ${view.mapped ? "" : `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place, and the page does not switch to a different set of records.</aside>`}
     ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}
-    <section class="near-map-section" aria-labelledby="near-map-heading">
+    <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
+      <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">Records (${view.results.count})</a>
+      <a class="near-surface-link" href="#near-map-heading" data-near-surface="map">Map</a>
+    </nav>
+    <section class="near-results" aria-labelledby="near-results-heading" data-results-count="${view.results.count}" data-near-surface-panel="list">
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records for these filters</h2></div></div>
+      ${recordList(view.results.records)}
+    </section>
+    <section class="near-map-section" aria-labelledby="near-map-heading" data-near-surface-panel="map">
       <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
         <div class="map-controls js-only" hidden>
           <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
@@ -472,10 +480,6 @@ export function renderNearYouBody(view) {
           <ol class="near-area-list">${areas || "<li>No areas match these filters.</li>"}</ol>
         </div>
       </div>
-    </section>
-    <section class="near-results" aria-labelledby="near-results-heading" data-results-count="${view.results.count}">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records for these filters</h2></div></div>
-      ${recordList(view.results.records)}
     </section>
     <section class="near-bags" aria-labelledby="near-bags-heading">
       <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>

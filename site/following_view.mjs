@@ -360,10 +360,17 @@ function ruleLineHtml(view) {
 
 function scopeHtml(view) {
   if (!view.requested) return "";
-  const chips = view.scopeSummary.map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
+  const chips = view.scopeSummary.map((chip) => (
+    `<li class="qchip following-scope-chip" data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`
+  )).join("");
+  const count = view.matchCount;
+  const countLine = count == null
+    ? ""
+    : `<p class="following-scope-count" data-scope-count="${esc(String(count))}">${esc(String(count))} matching records</p>`;
   return `<section class="following-scope" data-following-scope-panel aria-labelledby="following-scope-heading">
     <h2 id="following-scope-heading">Watch criteria</h2>
-    <ul aria-label="Watch criteria">${chips}</ul>
+    <ul class="following-scope-chips" aria-label="Watch criteria">${chips}</ul>
+    ${countLine}
     ${ruleLineHtml(view)}
   </section>`;
 }
@@ -499,6 +506,8 @@ function surfaceTabsHtml() {
 
 export function renderFollowingBody(view) {
   const create = createSectionHtml(view);
+  // Handoff landing: scope chips + count + rule line before email (workspace order).
+  // Panel workspace attribute supports the multi-watch surface tabs from main.
   const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
   const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
