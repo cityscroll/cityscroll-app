@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-broken-join-bid-tabulations.bid_count",
+  "status": "proposed",
+  "dimension": "data-integrity",
+  "title": "Repair broken join for feature bid-tabulations.bid_count",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # data-integrity:bid-tabulations.bid_count",
+  "content_hash": "606b0503b4a41f39",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Award cards show a measured bid count when a useful joinable tabulation source is enabled."
+}

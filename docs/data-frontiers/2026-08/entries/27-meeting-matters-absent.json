@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "meeting-matters-absent",
+  "rank": 27,
+  "gap_inventory_row": "`meeting-matters-absent` — event has no agenda items yet",
+  "source_and_access": "Same authenticated Legistar Events/{id}/EventItems route.",
+  "join_feasibility": "**Measured:** 59/59 modern joined events had EventItems in the dated sample.",
+  "reader_value": "**4** — Meetings; explains what is being heard.",
+  "effort": "**API pull**",
+  "disposition": "**Landed/timing:** empty before agenda publication is not collection debt."
+}

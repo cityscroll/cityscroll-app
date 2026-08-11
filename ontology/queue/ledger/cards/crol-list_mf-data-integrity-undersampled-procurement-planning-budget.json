@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-undersampled-procurement-planning-budget",
+  "status": "proposed",
+  "dimension": "data-integrity",
+  "title": "Sample not-published rate for claim procurement-planning-budget",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate sample n>=10 for procurement-planning-budget",
+  "content_hash": "8678873dc1820749",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Claim procurement-planning-budget has a measured recent+historical not-published rate so credibility can be audited continuously."
+}

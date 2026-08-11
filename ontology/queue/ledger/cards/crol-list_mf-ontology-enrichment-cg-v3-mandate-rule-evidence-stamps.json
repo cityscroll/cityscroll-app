@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v3-mandate-rule-evidence-stamps",
+  "status": "fixed",
+  "dimension": "ontology-enrichment",
+  "title": "Stamp rule body and citation keys so mandate_rule can publish",
+  "verify": "node tools/cross_spine_eval.mjs --check-policy && node --test test/process_conformance.test.mjs test/rule_evidence_stamps.test.mjs test/mandate_rules_bridge.test.mjs",
+  "content_hash": "760413743ffa79d1",
+  "last_seen_at": "2026-08-11T22:30:00.000Z",
+  "demo_win": "Near-miss rulemaking mandates (e.g. Sanitation CWZ field cases) move to observed when body_topic_keys and citation_law_keys stamp, without relaxing held-out precision.",
+  "fixed_at": "2026-08-11T22:30:00.000Z",
+  "fixed_note": "Quieted after mandate densify: observed filings present; report/rule stamp path live."
+}

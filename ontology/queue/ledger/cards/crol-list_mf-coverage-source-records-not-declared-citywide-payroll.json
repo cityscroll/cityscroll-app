@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-citywide-payroll",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: citywide-payroll",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # citywide-payroll present",
+  "content_hash": "0f615bf31b59d72d",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source citywide-payroll retains immutable D1 observations without changing its product-delivery status."
+}

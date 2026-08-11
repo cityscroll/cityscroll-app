@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-procurement-payment-unmatched",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: procurement-payment-unmatched",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for procurement-payment-unmatched",
+  "content_hash": "e05345d719272c10",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap procurement-payment-unmatched shows joined public data instead of “not yet shown here”."
+}

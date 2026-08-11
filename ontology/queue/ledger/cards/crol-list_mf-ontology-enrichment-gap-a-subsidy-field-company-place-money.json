@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-subsidy-field-company-place-money",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: subsidy-field-company-place-money",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for subsidy-field-company-place-money",
+  "content_hash": "5bdbe367663d56a6",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap subsidy-field-company-place-money shows joined public data instead of “not yet shown here”."
+}

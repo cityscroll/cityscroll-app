@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "exam-outcome-aggregate",
+  "rank": 29,
+  "gap_inventory_row": "`exam-outcome-aggregate` — post-cycle aggregate",
+  "source_and_access": "[Civil Service List (Active)](https://data.cityofnewyork.us/d/vx8i-nprf), Socrata group-by at exam level, plus annual DCAS outcome publications.",
+  "join_feasibility": "**Measured:** 494/1,109 (44.54%) closed exams joined by exact normalized exam number; open exams were 0/141 because lists are not yet established.",
+  "reader_value": "**4** — Staffing; applicants see list size and establishment timing.",
+  "effort": "**API pull + manual**",
+  "disposition": "**Landed:** maintain annual snapshot and privacy-safe aggregation."
+}

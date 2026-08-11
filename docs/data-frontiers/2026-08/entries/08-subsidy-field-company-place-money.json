@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "subsidy-field-company-place-money",
+  "rank": 8,
+  "gap_inventory_row": "`subsidy-field-company-place-money` — blank company, place, or money on a joined project",
+  "source_and_access": "NYCEDC annual project spreadsheets and linked project documents from the rank-2 source.",
+  "join_feasibility": "**Measured on accepted RC-2 corpus:** company **5/5**, address **5/5**, any money **3/5** (requested benefit 2/5, estimated public cost 3/5, project_cost 0/5 in the live minutes materialization) ([receipt](../site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json)).",
+  "reader_value": "**4** — Money, Map, company profiles, and neighbors; supplies beneficiary, location, project cost, and assistance.",
+  "effort": "**Scrape**",
+  "disposition": "**Partially unblocked by RC-2.** Positive facts ship; source-null money slots stay omitted (no class-(b) mask)."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-annual-examination-schedule",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: annual-examination-schedule",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # annual-examination-schedule present",
+  "content_hash": "629315207796beb6",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source annual-examination-schedule retains immutable D1 observations without changing its product-delivery status."
+}

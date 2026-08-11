@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-cross-source-consistency-disagree-contract-ct107120248803393-vendor-name",
+  "status": "proposed",
+  "dimension": "cross-source-consistency",
+  "title": "Reconcile cross-source vendor_name on contract:CT107120248803393",
+  "verify": "node --test test/multi_flywheel_dimensions.test.mjs # consistency:contract:CT107120248803393:vendor_name reconciled",
+  "content_hash": "6159bdd6424fd665",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Truncated Checkbook vendor names do not raise a false mismatch when stems match."
+}

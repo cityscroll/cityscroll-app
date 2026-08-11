@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "rules-event-date-unpublished",
+  "rank": 16,
+  "gap_inventory_row": "`rules-event-date-unpublished` — a joined rule lacks a lifecycle date",
+  "source_and_access": "Logical home: the [NYC Rules page and RSS feed](https://rules.cityofnewyork.us/feed/).",
+  "join_feasibility": "**Blocked for the missing field.** Once the official joined item omits a date, there is no second verified feed to recover it.",
+  "reader_value": "**4** — Rules; commenters and regulated parties need hearing, comment-close, adoption, and effective dates.",
+  "effort": "**Partnership-blocked**",
+  "disposition": "Publication-monitor only. Do not infer dates from adjacent stages."
+}

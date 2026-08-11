@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-payment-unmatched",
+  "rank": 24,
+  "gap_inventory_row": "`procurement-payment-unmatched` — payments",
+  "source_and_access": "[Checkbook Spending API](https://www.checkbooknyc.com/data-feeds/api), joined Contracts → Spending by `contract_id`.",
+  "join_feasibility": "**Measured (2026-08-11):** stratified 50-contract kill sample retained payments on **22/50 (44%)** seed contracts with **31/31 (100%)** exact `contract_id` precision; pin residual join reuses `pin_prefix_of_epin` ([receipt](../site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json)).",
+  "reader_value": "**5** — Money; taxpayers and vendors see paid-to-date.",
+  "effort": "**API pull**",
+  "disposition": "**Landed (payment retention):** host collector retains individual payment rows as `source_records`-shaped snapshots + population-backed graph slice; request-time dual-write unchanged. Residual unmatched contracts stay unmatched without inventing payments."
+}

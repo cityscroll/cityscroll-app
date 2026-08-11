@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-cross-source-consistency-claim-labels-passport-contracts-x-checkbook-contracts",
+  "status": "proposed",
+  "dimension": "cross-source-consistency",
+  "title": "Label every public disagreement in PASSPort contracts × Checkbook contracts",
+  "verify": "node -e \"const x=require('./ontology/fixtures/dimensions/cross_source_disagreements.json'); const r=x.claim_labeled_disagree_families.find((v)=>v.id==='passport-contracts-x-checkbook-contracts'); process.exit(r && r.eligible > 0 && r.labeled === r.eligible ? 0 : 1)\"",
+  "content_hash": "074414a6c322e41b",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Conflicting values in PASSPort contracts × Checkbook contracts retain both source assertions without a silent winner."
+}

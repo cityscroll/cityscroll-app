@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-rules-event-spine-unmatched",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: rules-event-spine-unmatched",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for rules-event-spine-unmatched",
+  "content_hash": "93af620f85eeacf0",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap rules-event-spine-unmatched shows joined public data instead of “not yet shown here”."
+}

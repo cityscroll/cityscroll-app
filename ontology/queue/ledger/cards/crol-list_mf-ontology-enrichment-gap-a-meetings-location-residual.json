@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-gap-a-meetings-location-residual",
+  "status": "proposed",
+  "dimension": "ontology-enrichment",
+  "title": "Close class-(a) gap: meetings-location-residual",
+  "verify": "node --test test/gap_taxonomy.test.mjs # and field-case coverage for meetings-location-residual",
+  "content_hash": "04f130b6b0d7158e",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Class-(a) gap meetings-location-residual shows joined public data instead of “not yet shown here”."
+}

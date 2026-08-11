@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-dual-write-city-record-notices",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Close observation coverage gap: city-record-notices",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # city-record-notices after=complete",
+  "content_hash": "4b7604c47f6cf51f",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source city-record-notices retains immutable observations and counts as covered."
+}

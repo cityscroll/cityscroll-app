@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-red-flag-subsidy-stage-feed-backed",
+  "status": "fixed",
+  "dimension": "data-integrity",
+  "title": "Credibility red flag: ~100% not-published for subsidy-stage-feed-backed",
+  "verify": "node --test test/rc2_dependent_fields.test.mjs test/subsidy_hearing_money.test.mjs",
+  "fixed_at": "2026-08-11T15:00:00.000Z",
+  "fixed_note": "Board stage attaches on accepted RC-2 corpus; feed-down empty stages use not_yet_ingested/omit, not class-(b).",
+  "demo_win": "Later subsidy stages only claim city does not publish after a successful project join that still lacks the stage."
+}

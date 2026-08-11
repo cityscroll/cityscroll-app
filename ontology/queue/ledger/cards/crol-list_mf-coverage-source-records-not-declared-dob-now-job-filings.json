@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-dob-now-job-filings",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: dob-now-job-filings",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dob-now-job-filings present",
+  "content_hash": "3baba4b741a99c65",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source dob-now-job-filings retains immutable D1 observations without changing its product-delivery status."
+}

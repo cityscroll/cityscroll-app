@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-dcas-eligible-list-utilization",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: dcas-eligible-list-utilization",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # dcas-eligible-list-utilization present",
+  "content_hash": "bc1d322099a2efda",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source dcas-eligible-list-utilization retains immutable D1 observations without changing its product-delivery status."
+}

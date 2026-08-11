@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-mandatory-inclusionary-housing",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: mandatory-inclusionary-housing",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # mandatory-inclusionary-housing present",
+  "content_hash": "d7d512e55f137aaa",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source mandatory-inclusionary-housing retains immutable D1 observations without changing its product-delivery status."
+}

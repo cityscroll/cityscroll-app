@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-coherence-rule-exam_post_list_during_open_application",
+  "status": "proposed",
+  "dimension": "ontology-coherence",
+  "title": "Resolve ontology coherence: exam post list during open application",
+  "verify": "node --test test/ontology_coherence.test.mjs test/land_phase_spine.test.mjs",
+  "content_hash": "b869884beeb2122f",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Generated exam timelines no longer contradict themselves on exam_post_list_during_open_application; sample cards: #exam/9999-coherence-sample."
+}

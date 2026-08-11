@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-data-integrity-red-flag-subsidy-field-company-place-money",
+  "status": "fixed",
+  "dimension": "data-integrity",
+  "title": "Credibility red flag: ~100% not-published for subsidy-field-company-place-money",
+  "verify": "node --test test/rc2_dependent_fields.test.mjs test/subsidy_hearing_money.test.mjs",
+  "fixed_at": "2026-08-11T15:00:00.000Z",
+  "fixed_note": "RC-2 accepted join (5/12=41.67%, 0 FP). Dependent fields measured; product shows positive money/company/place only. Claim sample healthy.",
+  "demo_win": "Aged IDA notices show real project costs instead of a false city-does-not-publish money mask."
+}

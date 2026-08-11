@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "procurement-pending-unmatched",
+  "rank": 22,
+  "gap_inventory_row": "`procurement-pending-unmatched` — pending registration",
+  "source_and_access": "[Checkbook Contracts API](https://www.checkbooknyc.com/data-feeds/api) plus PASSPort Public contracts/RFx dumps.",
+  "join_feasibility": "**Measured:** exact/normalized EPIN coverage from either PASSPort source is 5,660/7,254 (78%) of modern PIN-bearing Procurement notices.",
+  "reader_value": "**4** — Money and award lifecycle.",
+  "effort": "**API pull**",
+  "disposition": "**Landed:** keep residual monitoring, not a new collector."
+}

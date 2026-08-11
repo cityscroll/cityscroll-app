@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-nyc-agencies",
+  "status": "proposed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: nyc-agencies",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # nyc-agencies present",
+  "content_hash": "e0fcd87516fd9b87",
+  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "demo_win": "Source nyc-agencies retains immutable D1 observations without changing its product-delivery status."
+}

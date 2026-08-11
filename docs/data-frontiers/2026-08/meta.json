@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.data_frontiers_meta.v0",
+  "edition": "2026-08",
+  "entry_count": 31,
+  "projection": "docs/data-frontiers-2026-08.md",
+  "note": "Per-entry records under entries/ are the source of truth for the ranked table. Rebuild the projection with node tools/build_data_frontiers.mjs."
+}
