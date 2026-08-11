@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
-  "observed_on": "2026-08-09",
-  "generated_at": "2026-08-09T14:51:06.230Z",
+  "observed_on": "2026-08-11",
+  "generated_at": "2026-08-11T19:25:33.574Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -106,14 +106,31 @@
     },
     "checkbook_spending": {
       "source_system": "checkbook-spending",
-      "coverage_status": "unknown",
-      "population_backed": false,
+      "coverage_status": "measured",
+      "population_backed": true,
+      "source_url": "https://www.checkbooknyc.com/api",
+      "pulled_at": "2026-08-11T19:25:33.574Z",
+      "population": {
+        "seed_contracts": 50,
+        "retained_payments": 31,
+        "unique_contracts_with_payments": 22,
+        "sha256": "53c6a6f92df3f31e0d2986ba857437986190962d476c2a46067b1595cd5ecc8d"
+      },
       "modern_awards": {
-        "joined": null,
-        "total": null,
-        "rate": null,
-        "basis": "Population denominator not materialized"
-      }
+        "joined": 22,
+        "total": 50,
+        "rate": 0.44,
+        "basis": "seed contracts from the population-backed Checkbook Contracts graph"
+      },
+      "precision": {
+        "true_positives": 31,
+        "false_positives": 0,
+        "attempts": 31,
+        "rate": 1,
+        "floor": 0.95,
+        "basis": "publisher contract_id equals seed / exact spine id; seed mismatches are false positives; pin_prefix_of_epin accepted only for residual pin joins"
+      },
+      "failure_state": null
     }
   },
   "rows": {
@@ -220658,13 +220675,314 @@
     ],
     "checkbook_spending": [
       {
-        "document_id": "CHK-Zesty-001",
-        "issue_date": "2026-08-01",
-        "payee_name": "Make it Zesty LLC",
-        "contract_id": "CT81626W0043001",
-        "check_amount": "12000.00",
-        "agency_name": "Health and Mental Hygiene",
-        "pin": "81626W0043001"
+        "document_id": "20270068418-1-DSB-EFT",
+        "issue_date": "2026-08-07",
+        "payee_name": "NEIGHBORHOOD ASSOCIATION FOR INTER-CULTURAL AFFAIRS INC",
+        "contract_id": "CT107120278800830",
+        "check_amount": "10468368",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800830:20270068418-1-DSB-EFT:NEIGHBORHOOD ASSOCIATION FOR INTER-CULTURAL AFFAIRS INC:2026-08-07:10468368"
+      },
+      {
+        "document_id": "20270068647-1-DSB-EFT",
+        "issue_date": "2026-08-07",
+        "payee_name": "SERVICES FOR THE UNDERSERVED INC",
+        "contract_id": "CT107120278800946",
+        "check_amount": "1893365.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800946:20270068647-1-DSB-EFT:SERVICES FOR THE UNDERSERVED INC:2026-08-07:1893365.5"
+      },
+      {
+        "document_id": "20270068721-1-DSB-EFT",
+        "issue_date": "2026-08-07",
+        "payee_name": "HOME/LIFE SERVICES, INC",
+        "contract_id": "CT107120278800899",
+        "check_amount": "9159068",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800899:20270068721-1-DSB-EFT:HOME/LIFE SERVICES, INC:2026-08-07:9159068"
+      },
+      {
+        "document_id": "20270068750-1-DSB-EFT",
+        "issue_date": "2026-08-07",
+        "payee_name": "SUS-URGENT HOUSING PROGRAMS INC",
+        "contract_id": "CT107120278801486",
+        "check_amount": "5647087.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278801486:20270068750-1-DSB-EFT:SUS-URGENT HOUSING PROGRAMS INC:2026-08-07:5647087.5"
+      },
+      {
+        "document_id": "20270067212-1-DSB-EFT",
+        "issue_date": "2026-08-06",
+        "payee_name": "CAMBA INC",
+        "contract_id": "CT107120278800127",
+        "check_amount": "5492600.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800127:20270067212-1-DSB-EFT:CAMBA INC:2026-08-06:5492600.5"
+      },
+      {
+        "document_id": "20270067405-1-DSB-EFT",
+        "issue_date": "2026-08-06",
+        "payee_name": "HIGHLAND PARK COMMUNITY DEVELOPMENT CORP.",
+        "contract_id": "CT107120278800941",
+        "check_amount": "16736095",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800941:20270067405-1-DSB-EFT:HIGHLAND PARK COMMUNITY DEVELOPMENT CORP.:2026-08-06:16736095"
+      },
+      {
+        "document_id": "20270065204-1-DSB-EFT",
+        "issue_date": "2026-08-05",
+        "payee_name": "COMMUNITY MEDIATION SERVICES, INC.",
+        "contract_id": "CT107120278801054",
+        "check_amount": "8067979",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278801054:20270065204-1-DSB-EFT:COMMUNITY MEDIATION SERVICES, INC.:2026-08-05:8067979"
+      },
+      {
+        "document_id": "20270065204-1-DSB-EFT",
+        "issue_date": "2026-08-05",
+        "payee_name": "COMMUNITY MEDIATION SERVICES, INC.",
+        "contract_id": "CT107120278801054",
+        "check_amount": "2788578",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278801054:20270065204-1-DSB-EFT:COMMUNITY MEDIATION SERVICES, INC.:2026-08-05:2788578"
+      },
+      {
+        "document_id": "20270065275-1-DSB-EFT",
+        "issue_date": "2026-08-05",
+        "payee_name": "GEEL COMMUNITY SERVICES INC",
+        "contract_id": "CT106920278801352",
+        "check_amount": "68714.85",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278801352:20270065275-1-DSB-EFT:GEEL COMMUNITY SERVICES INC:2026-08-05:68714.85"
+      },
+      {
+        "document_id": "20270065275-1-DSB-EFT",
+        "issue_date": "2026-08-05",
+        "payee_name": "GEEL COMMUNITY SERVICES INC",
+        "contract_id": "CT106920278801352",
+        "check_amount": "14268.3",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278801352:20270065275-1-DSB-EFT:GEEL COMMUNITY SERVICES INC:2026-08-05:14268.3"
+      },
+      {
+        "document_id": "20270062245-1-DSB-EFT",
+        "issue_date": "2026-08-03",
+        "payee_name": "K SYSTEMS SOLUTIONS LLC",
+        "contract_id": "CT105720278801357",
+        "check_amount": "22917.6",
+        "agency_name": "Fire Department",
+        "pin": null,
+        "source_system_id": "payment:CT105720278801357:20270062245-1-DSB-EFT:K SYSTEMS SOLUTIONS LLC:2026-08-03:22917.6"
+      },
+      {
+        "document_id": "20270059649-1-DSB-EFT",
+        "issue_date": "2026-07-31",
+        "payee_name": "NEIGHBORHOOD ASSOCIATION FOR INTER-CULTURAL AFFAIRS INC",
+        "contract_id": "CT107120278800152",
+        "check_amount": "11288103",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800152:20270059649-1-DSB-EFT:NEIGHBORHOOD ASSOCIATION FOR INTER-CULTURAL AFFAIRS INC:2026-07-31:11288103"
+      },
+      {
+        "document_id": "20270059656-1-DSB-EFT",
+        "issue_date": "2026-07-31",
+        "payee_name": "SANCTUARY FOR FAMILIES INC",
+        "contract_id": "CT106920278800505",
+        "check_amount": "655408.6",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278800505:20270059656-1-DSB-EFT:SANCTUARY FOR FAMILIES INC:2026-07-31:655408.6"
+      },
+      {
+        "document_id": "20270059656-1-DSB-EFT",
+        "issue_date": "2026-07-31",
+        "payee_name": "SANCTUARY FOR FAMILIES INC",
+        "contract_id": "CT106920278800505",
+        "check_amount": "487256",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278800505:20270059656-1-DSB-EFT:SANCTUARY FOR FAMILIES INC:2026-07-31:487256"
+      },
+      {
+        "document_id": "20270059656-1-DSB-EFT",
+        "issue_date": "2026-07-31",
+        "payee_name": "SANCTUARY FOR FAMILIES INC",
+        "contract_id": "CT106920278800505",
+        "check_amount": "43316.9",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278800505:20270059656-1-DSB-EFT:SANCTUARY FOR FAMILIES INC:2026-07-31:43316.9"
+      },
+      {
+        "document_id": "20270070181-1-DSB-AD",
+        "issue_date": "2026-07-31",
+        "payee_name": "VOLUNTEERS OF AMERICA GREATER NEW YORK INC",
+        "contract_id": "CT107120278800945",
+        "check_amount": "9364749",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800945:20270070181-1-DSB-AD:VOLUNTEERS OF AMERICA GREATER NEW YORK INC:2026-07-31:9364749"
+      },
+      {
+        "document_id": "20270058800-1-DSB-EFT",
+        "issue_date": "2026-07-30",
+        "payee_name": "SANCTUARY FOR FAMILIES INC",
+        "contract_id": "CT106920278800507",
+        "check_amount": "189972",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278800507:20270058800-1-DSB-EFT:SANCTUARY FOR FAMILIES INC:2026-07-30:189972"
+      },
+      {
+        "document_id": "20270058800-1-DSB-EFT",
+        "issue_date": "2026-07-30",
+        "payee_name": "SANCTUARY FOR FAMILIES INC",
+        "contract_id": "CT106920278800507",
+        "check_amount": "154067",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278800507:20270058800-1-DSB-EFT:SANCTUARY FOR FAMILIES INC:2026-07-30:154067"
+      },
+      {
+        "document_id": "20270058800-1-DSB-EFT",
+        "issue_date": "2026-07-30",
+        "payee_name": "SANCTUARY FOR FAMILIES INC",
+        "contract_id": "CT106920278800507",
+        "check_amount": "18629",
+        "agency_name": "Department of Social Services",
+        "pin": null,
+        "source_system_id": "payment:CT106920278800507:20270058800-1-DSB-EFT:SANCTUARY FOR FAMILIES INC:2026-07-30:18629"
+      },
+      {
+        "document_id": "20270058882-1-DSB-EFT",
+        "issue_date": "2026-07-30",
+        "payee_name": "BRONX PARENT HOUSING NETWORK INC",
+        "contract_id": "CT107120278800934",
+        "check_amount": "3404349",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800934:20270058882-1-DSB-EFT:BRONX PARENT HOUSING NETWORK INC:2026-07-30:3404349"
+      },
+      {
+        "document_id": "20270058882-1-DSB-EFT",
+        "issue_date": "2026-07-30",
+        "payee_name": "BRONX PARENT HOUSING NETWORK INC",
+        "contract_id": "CT107120278800934",
+        "check_amount": "2455828.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800934:20270058882-1-DSB-EFT:BRONX PARENT HOUSING NETWORK INC:2026-07-30:2455828.5"
+      },
+      {
+        "document_id": "20270058911-1-DSB-EFT",
+        "issue_date": "2026-07-30",
+        "payee_name": "SERVICES FOR THE UNDERSERVED INC",
+        "contract_id": "CT107120278800160",
+        "check_amount": "3235016.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800160:20270058911-1-DSB-EFT:SERVICES FOR THE UNDERSERVED INC:2026-07-30:3235016.5"
+      },
+      {
+        "document_id": "20270069224-1-DSB-AD",
+        "issue_date": "2026-07-30",
+        "payee_name": "NEIGHBORS 4 NEIGHBORS INCORPORATED",
+        "contract_id": "CT107120278801107",
+        "check_amount": "3625243.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278801107:20270069224-1-DSB-AD:NEIGHBORS 4 NEIGHBORS INCORPORATED:2026-07-30:3625243.5"
+      },
+      {
+        "document_id": "20270069224-1-DSB-AD",
+        "issue_date": "2026-07-30",
+        "payee_name": "NEIGHBORS 4 NEIGHBORS INCORPORATED",
+        "contract_id": "CT107120278801107",
+        "check_amount": "1745606.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278801107:20270069224-1-DSB-AD:NEIGHBORS 4 NEIGHBORS INCORPORATED:2026-07-30:1745606.5"
+      },
+      {
+        "document_id": "20270036194-1-DSB-EFT",
+        "issue_date": "2026-07-20",
+        "payee_name": "SERVICES FOR THE UNDERSERVED INC",
+        "contract_id": "CT107120278800109",
+        "check_amount": "2595038.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800109:20270036194-1-DSB-EFT:SERVICES FOR THE UNDERSERVED INC:2026-07-20:2595038.5"
+      },
+      {
+        "document_id": "20270031053-1-DSB-EFT",
+        "issue_date": "2026-07-15",
+        "payee_name": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
+        "contract_id": "CT105420268808209",
+        "check_amount": "50336.16",
+        "agency_name": "Civilian Complaint Review Board",
+        "pin": null,
+        "source_system_id": "payment:CT105420268808209:20270031053-1-DSB-EFT:NEW YORK STATE INDUSTRIES FOR THE DISABLED INC:2026-07-15:50336.16"
+      },
+      {
+        "document_id": "20270031053-1-DSB-EFT",
+        "issue_date": "2026-07-15",
+        "payee_name": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
+        "contract_id": "CT105420268808209",
+        "check_amount": "24663.84",
+        "agency_name": "Civilian Complaint Review Board",
+        "pin": null,
+        "source_system_id": "payment:CT105420268808209:20270031053-1-DSB-EFT:NEW YORK STATE INDUSTRIES FOR THE DISABLED INC:2026-07-15:24663.84"
+      },
+      {
+        "document_id": "20270023591-1-DSB-EFT",
+        "issue_date": "2026-07-13",
+        "payee_name": "NEIGHBORHOOD ASSOCIATION FOR INTER-CULTURAL AFFAIRS INC",
+        "contract_id": "CT107120278800153",
+        "check_amount": "3151250",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800153:20270023591-1-DSB-EFT:NEIGHBORHOOD ASSOCIATION FOR INTER-CULTURAL AFFAIRS INC:2026-07-13:3151250"
+      },
+      {
+        "document_id": "20270023969-1-DSB-EFT",
+        "issue_date": "2026-07-13",
+        "payee_name": "AFRICAN AMERICAN PLANNING COMMISSION INC",
+        "contract_id": "CT107120278800009",
+        "check_amount": "4834836.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800009:20270023969-1-DSB-EFT:AFRICAN AMERICAN PLANNING COMMISSION INC:2026-07-13:4834836.5"
+      },
+      {
+        "document_id": "20270024913-1-DSB-EFT",
+        "issue_date": "2026-07-13",
+        "payee_name": "CENTER FOR FAMILY LIFE IN SUNSET PARK INC",
+        "contract_id": "CT106820278800073",
+        "check_amount": "851502.71",
+        "agency_name": "Administration for Children's Services",
+        "pin": null,
+        "source_system_id": "payment:CT106820278800073:20270024913-1-DSB-EFT:CENTER FOR FAMILY LIFE IN SUNSET PARK INC:2026-07-13:851502.71"
+      },
+      {
+        "document_id": "20270022155-1-DSB-EFT",
+        "issue_date": "2026-07-10",
+        "payee_name": "Westhab, Inc.",
+        "contract_id": "CT107120278800190",
+        "check_amount": "5853748.5",
+        "agency_name": "Department of Homeless Services",
+        "pin": null,
+        "source_system_id": "payment:CT107120278800190:20270022155-1-DSB-EFT:WESTHAB, INC.:2026-07-10:5853748.5"
       }
     ],
     "passport_contracts_materialization": [
@@ -220720,6 +221038,14 @@
       },
       "strategy": "reserve half the cap for exact PASSPort/City Record overlap and half for new unique contract ids; fill unused capacity deterministically newest-first",
       "receipt": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
+    },
+    "checkbook_spending": {
+      "graph_cap": 500,
+      "graph_source": "rows.checkbook_spending",
+      "graph_rows": 31,
+      "strategy": "newest issue_date first; retain individual payment rows (not spent-to-date summaries)",
+      "receipt": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+      "verification_receipt": "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json"
     }
   }
 }
