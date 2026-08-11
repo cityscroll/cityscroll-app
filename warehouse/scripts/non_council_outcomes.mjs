@@ -324,7 +324,7 @@ export async function main(argv = process.argv.slice(2)) {
         : !policyEnabled
           ? "policy_join_bridge_disabled"
           : promotion.reason,
-      receipt: "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json",
+      receipt: "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json",
       precision_receipt: args.fixture
         ? "warehouse/receipts/proof/rc3_non_council_outcome_precision_2026-08-05.json"
         : null,
