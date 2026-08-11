@@ -179,7 +179,7 @@ test("Parks constellation document surfaces Required Reports receipt card", () =
   assert.match(html, /data-agency-constellation-card="mandates-reports"/);
   assert.match(html, /data-bridge-side="report-mandates"/);
   assert.match(html, /Watch report mandates/);
-  // Per-row Source law matter edge + co-located graph neighbors.
+  // Per-row Source law matter edge (agency browse is section chrome only).
   assert.match(html, /data-mandate-edge="source_law"/);
   // No disclaimerslop on the public surface.
   assert.doesNotMatch(html, /not a compliance verdict|not verified identity|fabricat/i);

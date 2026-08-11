@@ -7,8 +7,8 @@ import { constellationLink } from "./affordance_grammar.mjs";
  * to the agency's Rules-lens City Record filings (proposal → hearing → adoption).
  * Join path: mandate → agency identity → Rules-lens records. Per-mandate
  * observed filings from process-conformance topic join appear when present.
- * Co-located graph neighbors (source law + agency Rules/Meetings/Contracts
- * scopes) always open from each mandate row even when observed_links is 0.
+ * Per-row actions are mandate-specific (Source law + linked filing when
+ * observed). Agency Rules/Meetings/Contracts browse is section chrome only.
  *
  * Product term: mandates. Upstream extract vocabulary is not user-facing.
  */
@@ -279,10 +279,11 @@ export function renderMandateRulesBridgeSection(view) {
         const observed = item.observed_record?.href
           ? ` · ${constellationLink({ href: item.observed_record.href, label: `City Record: ${item.observed_record.label || item.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
           : "";
+        // Per-row: Source law only. Observed City Record filing is linked above.
+        // Agency-wide browse chips stay in section chrome — never on every card.
         const neighbors = renderMandateRowGraphActions({
           source_href: item.source_href,
           matter_id: item.matter_id,
-          graph_neighbors: graphNeighbors,
           prefer: "rules",
           escape: esc,
         });

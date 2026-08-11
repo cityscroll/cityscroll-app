@@ -229,10 +229,11 @@ export function renderMandateReportsReceiptSection(view) {
         const receiptLine = receipt?.href
           ? ` · ${constellationLink({ href: receipt.href, label: `${FILING_RECEIPT_LABEL}: ${receipt.label || receipt.request_id}`, className: "mandate-filing-receipt-link agency-edge-link", attributes: { "data-filing-receipt": "1" }, escape: esc })}${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
           : "";
+        // Per-row: Source law only. Filing receipt is linked above when present.
+        // Agency-wide browse chips stay in section chrome — never on every card.
         const neighbors = renderMandateRowGraphActions({
           source_href: item.source_href,
           matter_id: item.matter_id,
-          graph_neighbors: graphNeighbors,
           prefer: "contracts",
           escape: esc,
         });

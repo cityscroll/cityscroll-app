@@ -138,7 +138,7 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
   assert.match(html, /id="mandates-rules"/);
   assert.match(html, /City Record: Final Rule/);
   assert.match(html, /href="\/notices\/20260407013"/);
-  assert.match(html, /Open in Rules|Follow Rules activity|Watch rulemaking mandates/);
+  assert.match(html, /Browse agency Rules|Follow Rules activity|Watch rulemaking mandates/);
   assert.doesNotMatch(html, /not X but Y|not yet shown|fabricat|disclaimer/i);
   // Reader headings use "mandates", not upstream "obligations" labels.
   assert.match(html, /Rulemaking mandates/);
@@ -181,10 +181,11 @@ test("Parks constellation document surfaces Mandates → Rules card", () => {
   assert.match(html, /data-agency-constellation-card="mandates-rules"/);
   assert.match(html, /data-bridge-side="mandates"/);
   assert.match(html, /data-bridge-side="rules"/);
-  assert.match(html, /Open in Rules/);
+  assert.match(html, /Browse agency Rules/);
+  assert.match(html, /data-scope="agency"/);
   assert.match(html, /Watch rulemaking mandates/);
   assert.match(html, /Follow Rules activity/);
-  // Per-row Source law (matter edge) on co-located neighbors.
+  // Per-row Source law (matter edge) — not agency-wide Open-in chips.
   assert.match(html, /data-mandate-edge="source_law"/);
   // No disclaimerslop.
   assert.doesNotMatch(html, /not a compliance verdict|not verified identity|fabricat/i);

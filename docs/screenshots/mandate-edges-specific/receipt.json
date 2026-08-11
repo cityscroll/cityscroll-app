@@ -1,0 +1,43 @@
+{
+  "schema": "cityscroll.mandate_edges_specific.v1",
+  "diagnosis": "Per-row Open in Rules/Meetings/Contracts chips were always agencyCategoryBrowseHref (published_by_agency / agency:id), identical across every mandate card.",
+  "coverage": {
+    "environmental_protection": {
+      "total_mandates": 128,
+      "per_mandate_observed_edges": 0
+    },
+    "parks_and_recreation": {
+      "total_mandates": 59,
+      "per_mandate_observed_edges": 0
+    },
+    "citywide_process_conformance_observed": 3,
+    "notice_mandate_backlink_edges": 7
+  },
+  "before_open_in_chip_counts": {
+    "epa_mandates_rules": 39,
+    "epa_mandates_reports": 30,
+    "epa_mandates_predictions": 27,
+    "parks_mandates_rules": 15,
+    "parks_mandates_reports": 36,
+    "parks_mandates_predictions": 18
+  },
+  "fix": "Rows keep Source law (matter-specific) only; agency-wide browse is section chrome labeled Browse agency * with data-scope=agency. Real per-mandate links may still be passed as mandate_links when edges exist.",
+  "screenshots": [
+    "epa-after-1440.png",
+    "epa-before-1440.png",
+    "epa-mandates-predictions-after-1440.png",
+    "epa-mandates-predictions-before-1440.png",
+    "epa-mandates-reports-after-1440.png",
+    "epa-mandates-reports-before-1440.png",
+    "epa-mandates-rules-after-1440.png",
+    "epa-mandates-rules-before-1440.png",
+    "parks-after-1440.png",
+    "parks-before-1440.png",
+    "parks-mandates-predictions-after-1440.png",
+    "parks-mandates-predictions-before-1440.png",
+    "parks-mandates-reports-after-1440.png",
+    "parks-mandates-reports-before-1440.png",
+    "parks-mandates-rules-after-1440.png",
+    "parks-mandates-rules-before-1440.png"
+  ]
+}

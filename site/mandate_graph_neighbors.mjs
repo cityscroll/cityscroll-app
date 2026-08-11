@@ -1,11 +1,13 @@
 /**
- * Mandate co-located graph neighbors (mand-graph-01).
+ * Mandate graph neighbors (mand-graph-01, specificity fix).
  *
- * Before dense per-mandate → notice/contract edges land, every mandate row still
- * sits next to real graph entities for the same agency (source law / Legistar
- * matter, Rules, Meetings, Contracts). This module surfaces those as clickable
- * connections from mandate chrome — exact matter_id + agency:id scopes only.
- * Never fabricates a mandate→entity filing edge.
+ * Per-mandate row actions must be mandate-specific:
+ *   - Source law (exact Legistar matter_id) always when present
+ *   - Linked entity chips only when a real mandate→entity edge exists
+ *
+ * Agency-wide Rules / Meetings / Contracts browse scopes are section chrome
+ * only (`renderMandateSectionNeighborActions`), labeled as agency-wide so they
+ * never look like a per-mandate connection. Never invent a mandate→entity edge.
  */
 
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
@@ -44,9 +46,9 @@ export function mandateMatterEdgeFromRow(row = {}) {
 }
 
 /**
- * Compact graph-neighbor destinations already scoped to the agency.
+ * Compact agency-wide graph-neighbor destinations.
  * Callers supply browse hrefs built with agencyCategoryBrowseHref — this
- * module does not invent scopes.
+ * module does not invent scopes. These are section chrome only.
  */
 export function normalizeMandateGraphNeighbors(raw = {}) {
   const out = {
@@ -58,6 +60,64 @@ export function normalizeMandateGraphNeighbors(raw = {}) {
     return null;
   }
   return out;
+}
+
+/**
+ * Real per-mandate entity links only. Each entry needs an href; no agency
+ * browse fallback. Empty / missing fields are dropped (source-null stays null).
+ *
+ * @param {Array<{ key?: string, href?: string, label?: string, relation?: string }>|object|null} raw
+ * @returns {Array<{ key: string|null, href: string, label: string, relation: string|null }>}
+ */
+export function normalizeMandateScopedLinks(raw = []) {
+  const list = Array.isArray(raw)
+    ? raw
+    : (raw && typeof raw === "object" ? Object.values(raw) : []);
+  const out = [];
+  const seen = new Set();
+  for (const item of list) {
+    if (!item || typeof item !== "object") continue;
+    const href = clean(item.href, 400);
+    if (!href) continue;
+    if (seen.has(href)) continue;
+    seen.add(href);
+    const key = clean(item.key || item.lens || item.category, 40) || null;
+    const relation = clean(item.relation || item.signal_kind || key, 60) || null;
+    const label = clean(item.label, 80)
+      || (key === "rules" ? "Linked Rules filing"
+        : key === "meetings" ? "Linked meeting"
+          : key === "contracts" ? "Linked contract"
+            : key === "report" || key === "reports" ? "Filing receipt"
+              : "Linked record");
+    out.push({ key, href, label, relation });
+  }
+  return out;
+}
+
+/**
+ * Build mandate-scoped link entries from an observed filing / edge record.
+ * Returns [] when the record has no href — never invents.
+ *
+ * @param {{ href?: string, request_id?: string, label?: string, signal_kind?: string }|null} record
+ * @param {{ kind?: string, label?: string }} opts
+ */
+export function mandateScopedLinksFromRecord(record, opts = {}) {
+  if (!record) return [];
+  const href = clean(record.href, 400);
+  if (!href) return [];
+  const kind = clean(opts.kind || record.signal_kind || "record", 40) || "record";
+  const key = kind === "rule_filing" || kind === "rules" ? "rules"
+    : kind === "report_or_study" || kind === "report" || kind === "reports" ? "report"
+      : kind === "public_hearing" || kind === "meetings" ? "meetings"
+        : kind === "contract" || kind === "contracts" || kind === "implemented_by_contract"
+          ? "contracts"
+          : kind;
+  return normalizeMandateScopedLinks([{
+    key,
+    href,
+    label: opts.label || null,
+    relation: clean(record.signal_kind || key, 60) || key,
+  }]);
 }
 
 /**
@@ -135,14 +195,20 @@ export function mandateReportsStatusParts(counts = {}) {
 }
 
 /**
- * Per-row primary actions: Source law (Legistar matter) + Open in Rules /
- * Meetings / Contracts when the view carries agency-scoped browse hrefs.
+ * Per-row primary actions: Source law (Legistar matter) + only real
+ * mandate-scoped entity links.
+ *
+ * Agency-wide `graph_neighbors` browse hrefs are intentionally ignored here —
+ * they are section chrome (`renderMandateSectionNeighborActions`). A mandate
+ * card must never imply a specific connection it does not have.
  *
  * @param {{
  *   source_href?: string|null,
  *   matter_id?: string|null,
+ *   mandate_links?: Array<object>|null,
+ *   scoped_links?: Array<object>|null,
  *   graph_neighbors?: object|null,
- *   prefer?: "rules"|"meetings"|"contracts"|null,
+ *   prefer?: "rules"|"meetings"|"contracts"|"report"|null,
  *   escape?: (s: string) => string,
  * }} opts
  * @returns {string} HTML fragment (leading " · " pieces) or empty string
@@ -153,7 +219,6 @@ export function renderMandateRowGraphActions(opts = {}) {
     matter_id: opts.matter_id,
     source_href: opts.source_href,
   });
-  const neighbors = normalizeMandateGraphNeighbors(opts.graph_neighbors || {});
   const prefer = opts.prefer || null;
   const pieces = [];
 
@@ -170,30 +235,11 @@ export function renderMandateRowGraphActions(opts = {}) {
     }));
   }
 
-  const openLinks = [];
-  if (neighbors?.rules_browse_href) {
-    openLinks.push({
-      key: "rules",
-      href: neighbors.rules_browse_href,
-      label: "Open in Rules",
-    });
-  }
-  if (neighbors?.meetings_browse_href) {
-    openLinks.push({
-      key: "meetings",
-      href: neighbors.meetings_browse_href,
-      label: "Open in Meetings",
-    });
-  }
-  if (neighbors?.contracts_browse_href) {
-    openLinks.push({
-      key: "contracts",
-      href: neighbors.contracts_browse_href,
-      label: "Open in Contracts",
-    });
-  }
+  // Real per-mandate edges only. graph_neighbors (agency browse) is not used.
+  const openLinks = normalizeMandateScopedLinks(
+    opts.mandate_links || opts.scoped_links || [],
+  );
 
-  // Prefer the section's home lens first, then the remaining co-located scopes.
   openLinks.sort((left, right) => {
     if (prefer && left.key === prefer) return -1;
     if (prefer && right.key === prefer) return 1;
@@ -206,7 +252,9 @@ export function renderMandateRowGraphActions(opts = {}) {
       label: link.label,
       className: "agency-edge-link",
       attributes: {
-        "data-mandate-graph-neighbor": link.key,
+        "data-mandate-scoped": "1",
+        ...(link.relation ? { "data-mandate-edge": link.relation } : {}),
+        ...(link.key ? { "data-mandate-graph-neighbor": link.key } : {}),
       },
       escape,
     }));
@@ -217,9 +265,9 @@ export function renderMandateRowGraphActions(opts = {}) {
 }
 
 /**
- * Section-level chrome: Contracts + Meetings (and Rules when not already the
- * primary section action). Used when the H2 leads with co-located neighbors
- * rather than claiming per-mandate filing edges.
+ * Section-level agency-wide browse chrome. Labeled honestly as agency scope so
+ * it is never mistaken for a per-mandate edge. Used once under the section H2,
+ * not on every mandate card.
  */
 export function renderMandateSectionNeighborActions(opts = {}) {
   const escape = typeof opts.escape === "function" ? opts.escape : escDefault;
@@ -228,13 +276,19 @@ export function renderMandateSectionNeighborActions(opts = {}) {
   const omit = new Set(Array.isArray(opts.omit) ? opts.omit : []);
   const links = [];
   if (neighbors.rules_browse_href && !omit.has("rules")) {
-    links.push(`<a class="node-action civic-object-action" href="${escape(neighbors.rules_browse_href)}" data-mandate-graph-neighbor="rules">Open in Rules</a>`);
+    links.push(
+      `<a class="node-action civic-object-action" href="${escape(neighbors.rules_browse_href)}" data-mandate-graph-neighbor="rules" data-scope="agency">Browse agency Rules</a>`,
+    );
   }
   if (neighbors.meetings_browse_href && !omit.has("meetings")) {
-    links.push(`<a class="node-action civic-object-action" href="${escape(neighbors.meetings_browse_href)}" data-mandate-graph-neighbor="meetings">Open in Meetings</a>`);
+    links.push(
+      `<a class="node-action civic-object-action" href="${escape(neighbors.meetings_browse_href)}" data-mandate-graph-neighbor="meetings" data-scope="agency">Browse agency Meetings</a>`,
+    );
   }
   if (neighbors.contracts_browse_href && !omit.has("contracts")) {
-    links.push(`<a class="node-action civic-object-action" href="${escape(neighbors.contracts_browse_href)}" data-mandate-graph-neighbor="contracts">Open in Contracts</a>`);
+    links.push(
+      `<a class="node-action civic-object-action" href="${escape(neighbors.contracts_browse_href)}" data-mandate-graph-neighbor="contracts" data-scope="agency">Browse agency Contracts</a>`,
+    );
   }
   return links.join("");
 }

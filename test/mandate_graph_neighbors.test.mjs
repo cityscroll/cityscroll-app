@@ -11,7 +11,9 @@ import {
   mandateRulesNavLabel,
   mandateRulesSectionTitle,
   mandateRulesStatusParts,
+  mandateScopedLinksFromRecord,
   normalizeMandateGraphNeighbors,
+  normalizeMandateScopedLinks,
   renderMandateRowGraphActions,
   renderMandateSectionNeighborActions,
 } from "../site/mandate_graph_neighbors.mjs";
@@ -32,6 +34,7 @@ import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
+const EPA = "environmental-protection";
 
 const intelligence = JSON.parse(
   readFileSync(join(ROOT, "site/data/entity_intelligence_lookup.json"), "utf8"),
@@ -83,37 +86,88 @@ test("honest section titles drop edge-sounding copy when no public joins", () =>
   );
 });
 
-test("per-row graph actions include Source law diamond Open-in scopes", () => {
+test("per-row actions keep Source law and ignore agency-wide graph_neighbors", () => {
   const neighbors = normalizeMandateGraphNeighbors({
     rules_browse_href: "/browse/rules/?agency=Parks",
     meetings_browse_href: "/browse/meetings/?agency=Parks",
     contracts_browse_href: "/browse/contracts/?agency=Parks",
   });
-  const html = renderMandateRowGraphActions({
+  // Agency-wide browse must NOT appear on the mandate row.
+  const hollow = renderMandateRowGraphActions({
     source_href: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=60950",
     matter_id: "60950",
     graph_neighbors: neighbors,
     prefer: "rules",
   });
-  assert.match(html, /Source law/);
-  assert.match(html, /data-mandate-edge="source_law"/);
-  assert.match(html, /data-matter-id="60950"/);
-  assert.match(html, /Open in Rules/);
-  assert.match(html, /Open in Meetings/);
-  assert.match(html, /Open in Contracts/);
-  assert.match(html, /ui-constellation-link/);
-  assert.match(html, /ui-official-source-link/);
-  // Prefer Rules first among open-in links.
-  const rulesAt = html.indexOf("Open in Rules");
-  const meetingsAt = html.indexOf("Open in Meetings");
-  assert.ok(rulesAt >= 0 && meetingsAt > rulesAt);
+  assert.match(hollow, /Source law/);
+  assert.match(hollow, /data-mandate-edge="source_law"/);
+  assert.match(hollow, /data-matter-id="60950"/);
+  assert.doesNotMatch(hollow, /Open in Rules|Browse agency Rules/);
+  assert.doesNotMatch(hollow, /Open in Meetings|Browse agency Meetings/);
+  assert.doesNotMatch(hollow, /Open in Contracts|Browse agency Contracts/);
+  assert.doesNotMatch(hollow, /data-mandate-graph-neighbor/);
+  assert.match(hollow, /ui-official-source-link/);
+
+  // Real per-mandate edge is painted when provided.
+  const scoped = renderMandateRowGraphActions({
+    source_href: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=60950",
+    matter_id: "60950",
+    mandate_links: [{
+      key: "rules",
+      href: "/notices/20260605008",
+      label: "Linked Rules filing",
+      relation: "mandate_rule_filing",
+    }],
+    prefer: "rules",
+  });
+  assert.match(scoped, /Source law/);
+  assert.match(scoped, /Linked Rules filing/);
+  assert.match(scoped, /data-mandate-scoped="1"/);
+  assert.match(scoped, /href="\/notices\/20260605008"/);
+  assert.match(scoped, /data-mandate-graph-neighbor="rules"/);
+  assert.doesNotMatch(scoped, /Browse agency Rules/);
+
+  // Section chrome keeps agency browse, labeled honestly as agency-wide.
   const chrome = renderMandateSectionNeighborActions({ graph_neighbors: neighbors });
-  assert.match(chrome, /Open in Rules/);
-  assert.match(chrome, /Open in Meetings/);
-  assert.match(chrome, /Open in Contracts/);
+  assert.match(chrome, /Browse agency Rules/);
+  assert.match(chrome, /Browse agency Meetings/);
+  assert.match(chrome, /Browse agency Contracts/);
+  assert.match(chrome, /data-scope="agency"/);
+  assert.doesNotMatch(chrome, /Open in Rules/);
 });
 
-test("Parks rules rows always open Source law + Open in Rules (zero observed links)", () => {
+test("normalizeMandateScopedLinks drops empty hrefs and dedupes", () => {
+  assert.deepEqual(normalizeMandateScopedLinks([
+    { key: "rules", href: "", label: "x" },
+    { key: "rules", href: "/notices/1", label: "First" },
+    { key: "rules", href: "/notices/1", label: "Dup" },
+    { key: "contracts", href: "/notices/2" },
+  ]), [
+    {
+      key: "rules",
+      href: "/notices/1",
+      label: "First",
+      relation: "rules",
+    },
+    {
+      key: "contracts",
+      href: "/notices/2",
+      label: "Linked contract",
+      relation: "contracts",
+    },
+  ]);
+  assert.deepEqual(mandateScopedLinksFromRecord(null), []);
+  assert.deepEqual(mandateScopedLinksFromRecord({ label: "no href" }), []);
+  const fromObs = mandateScopedLinksFromRecord(
+    { href: "/notices/20251001039", signal_kind: "report_or_study" },
+    { kind: "report" },
+  );
+  assert.equal(fromObs.length, 1);
+  assert.equal(fromObs[0].key, "report");
+  assert.equal(fromObs[0].href, "/notices/20251001039");
+});
+
+test("Parks rules rows keep Source law and drop hollow agency Open-in chips", () => {
   assert.ok(obligations, "agency_obligations_lookup.json required");
   const rulesBrowse = agencyCategoryBrowseHref(PARKS, "rules");
   const meetingsBrowse = agencyCategoryBrowseHref(PARKS, "meetings");
@@ -139,20 +193,34 @@ test("Parks rules rows always open Source law + Open in Rules (zero observed lin
   assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
   assert.doesNotMatch(html, /0 linked filing/);
   assert.match(html, /data-mandate-edges="co-located-only"/);
-  // Every mandate row carries Source law + Open in Rules.
+
   const rows = html.match(/class="node-record mandate-rules-mandate"/g) || [];
   assert.ok(rows.length >= 1);
   const sourceLaw = html.match(/data-mandate-edge="source_law"/g) || [];
-  const openRules = html.match(/data-mandate-graph-neighbor="rules"/g) || [];
   assert.ok(sourceLaw.length >= rows.length, "each row has Source law");
-  assert.ok(openRules.length >= rows.length, "each row has Open in Rules");
-  // Section chrome still exposes Meetings + Contracts scopes.
-  assert.match(html, /data-mandate-graph-neighbor="meetings"/);
-  assert.match(html, /data-mandate-graph-neighbor="contracts"/);
+
+  // Hollow per-row agency chips are gone: every Open-in / Browse agency link is
+  // section chrome with data-scope="agency", never repeated on each card.
+  const rowBlockMatch = html.match(
+    /data-bridge-side="mandates">([\s\S]*?)<\/ul>/,
+  );
+  assert.ok(rowBlockMatch, "mandate list present");
+  const rowBlock = rowBlockMatch[1];
+  assert.doesNotMatch(rowBlock, /data-mandate-graph-neighbor/);
+  assert.doesNotMatch(rowBlock, /Browse agency |Open in /);
+  // Distinct Source law targets across rows (not one agency filter).
+  const matterIds = [...rowBlock.matchAll(/data-matter-id="(\d+)"/g)].map((m) => m[1]);
+  assert.ok(new Set(matterIds).size >= Math.min(2, rows.length) || rows.length === 1);
+
+  // Section chrome still exposes honest agency-wide scopes once.
+  assert.match(html, /data-mandate-graph-neighbor="rules"[^>]*data-scope="agency"/);
+  assert.match(html, /data-mandate-graph-neighbor="meetings"[^>]*data-scope="agency"/);
+  assert.match(html, /data-mandate-graph-neighbor="contracts"[^>]*data-scope="agency"/);
+  assert.match(html, /Browse agency Rules/);
   assert.match(html, /Gateway\.aspx\?M=L&amp;ID=/);
 });
 
-test("Parks reports H2 is Report mandates when filing_receipts is zero", () => {
+test("Parks reports rows keep Source law without repeating agency-wide chips", () => {
   assert.ok(obligations, "agency_obligations_lookup.json required");
   const view = buildMandateReportsReceiptView(PARKS, {
     obligationsLookup: obligations,
@@ -167,11 +235,48 @@ test("Parks reports H2 is Report mandates when filing_receipts is zero", () => {
   assert.match(html, /<h2>Report mandates /);
   assert.doesNotMatch(html, /Report mandates · Filing receipts/);
   assert.match(html, /Source law/);
-  assert.match(html, /Open in Contracts|Open in Rules|Open in Meetings/);
   assert.match(html, /data-mandate-edges="co-located-only"/);
+
+  const rowBlockMatch = html.match(
+    /data-bridge-side="report-mandates">([\s\S]*?)<\/ul>/,
+  );
+  assert.ok(rowBlockMatch);
+  assert.doesNotMatch(rowBlockMatch[1], /data-mandate-graph-neighbor/);
+  // Section chrome is agency-wide and labeled as such.
+  assert.match(html, /Browse agency Rules|Browse agency Meetings|Browse agency Contracts/);
+  assert.match(html, /data-scope="agency"/);
 });
 
-test("Parks constellation document wires co-located mandate graph neighbors", () => {
+test("EPA and Parks mandate cards no longer share identical agency-wide Open-in chips", () => {
+  assert.ok(obligations, "agency_obligations_lookup.json required");
+  for (const agencyId of [EPA, PARKS]) {
+    const view = buildAgencyConstellationView(agencyId, {
+      intelligence,
+      certification,
+      obligations,
+      process_conformance: processConformance,
+    });
+    const html = renderAgencyConstellationDocument(view);
+    // Extract mandate row lists across rules / reports / predictions.
+    const rowBlocks = [
+      ...html.matchAll(/data-bridge-side="(?:mandates|report-mandates|predicted-events)">([\s\S]*?)<\/ul>/g),
+    ].map((m) => m[1]);
+    assert.ok(rowBlocks.length >= 1, `${agencyId} has mandate row lists`);
+    for (const block of rowBlocks) {
+      // No hollow agency Open-in chips on cards.
+      assert.doesNotMatch(
+        block,
+        /Browse agency |Open in (Rules|Meetings|Contracts)/,
+        `${agencyId} mandate rows must not carry agency-wide browse chips`,
+      );
+      assert.doesNotMatch(block, /data-mandate-graph-neighbor/);
+    }
+    // Source law remains and differs by matter when multiple mandates exist.
+    assert.match(html, /data-mandate-edge="source_law"/);
+  }
+});
+
+test("Parks constellation document wires honest section-level agency neighbors", () => {
   assert.ok(obligations, "agency_obligations_lookup.json required");
   const view = buildAgencyConstellationView(PARKS, {
     intelligence,
@@ -191,8 +296,9 @@ test("Parks constellation document wires co-located mandate graph neighbors", ()
   assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
   assert.match(html, /Report mandates/);
   assert.match(html, /Rulemaking mandates/);
-  // Diamond constellation styling retained for graph neighbors.
-  assert.match(html, /ui-constellation-link[^>]*data-mandate-graph-neighbor="rules"/);
+  // Agency-wide browse lives in section chrome with honest labels.
+  assert.match(html, /data-mandate-graph-neighbor="rules"[^>]*data-scope="agency"/);
+  assert.match(html, /Browse agency Rules/);
   assert.match(html, /data-mandate-edge="source_law"/);
   assert.deepEqual(detectNodePageCruft(html), []);
 });
