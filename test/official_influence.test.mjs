@@ -9,11 +9,13 @@ import {
   buildLobbyInfluenceLookup,
   measureCfbRecipientJoin,
   buildCfbInfluenceLookup,
+  reviewPersonNameJoin,
+} from "../site/official_influence.mjs";
+import {
   renderLobbyInfluenceHTML,
   renderCfbInfluenceHTML,
   renderPersonHubFactsHTML,
-  reviewPersonNameJoin,
-} from "../site/official_influence.mjs";
+} from "../site/official_influence_ui.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const council = JSON.parse(
@@ -87,6 +89,19 @@ test("CFB recipient measurement uses unique name keys only", () => {
   } else {
     assert.equal(lookup.edge_count, 0);
   }
+});
+
+test("browser influence UI module stays inside the site document root", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { fileURLToPath } = await import("node:url");
+  const path = await import("node:path");
+  const root = path.dirname(fileURLToPath(import.meta.url));
+  const ui = readFileSync(path.join(root, "../site/official_influence_ui.mjs"), "utf8");
+  const entities = readFileSync(path.join(root, "../site/app/entities.mjs"), "utf8");
+  assert.doesNotMatch(ui, /from\s+["'][^"']*entity_resolution/);
+  assert.doesNotMatch(ui, /import\s*\(\s*["'][^"']*entity_resolution/);
+  assert.match(entities, /official_influence_ui\.mjs/);
+  assert.doesNotMatch(entities, /import\(["']\.\.\/official_influence\.mjs["']\)/);
 });
 
 test("influence panels omit empty bags and avoid methodology cruft", () => {

@@ -219,20 +219,28 @@ async function showOfficial(personId, opts){
 
   // Recent across matters: full precompute list (newest first already in lookup).
   const recentVotes = preVotes.slice(0, 40);
-  const influenceModule = await import("../official_influence.mjs");
-  const personHubLookup = await loadPersonHubLookup();
-  const hubBag = personHubLookup?.gate?.promoted
-    ? (personHubLookup?.by_person_id?.[id] || null)
-    : null;
-  if(hubBag?.person_name && !displayName) displayName = hubBag.person_name;
-  const lobbyLookup = await loadLobbyInfluenceLookup();
-  const lobbyBag = (lobbyLookup?.gate?.promoted && lobbyLookup?.by_person_id?.[id])
-    ? lobbyLookup.by_person_id[id]
-    : { edges: [] };
-  const cfbLookup = await loadCfbInfluenceLookup();
-  const cfbBag = (cfbLookup?.gate?.promoted && cfbLookup?.by_person_id?.[id])
-    ? cfbLookup.by_person_id[id]
-    : { donors: [] };
+  // Influence UI is SPA-safe (no entity_resolution). Fail soft so hub/lobby JSON
+  // misses never block the roll-call official page (demo: #official/7801).
+  let influenceModule = null;
+  let hubBag = null;
+  let lobbyBag = { edges: [] };
+  let cfbBag = { donors: [] };
+  try{
+    influenceModule = await import("../official_influence_ui.mjs");
+    const personHubLookup = await loadPersonHubLookup();
+    hubBag = personHubLookup?.gate?.promoted
+      ? (personHubLookup?.by_person_id?.[id] || null)
+      : null;
+    if(hubBag?.person_name && !displayName) displayName = hubBag.person_name;
+    const lobbyLookup = await loadLobbyInfluenceLookup();
+    if(lobbyLookup?.gate?.promoted && lobbyLookup?.by_person_id?.[id]){
+      lobbyBag = lobbyLookup.by_person_id[id];
+    }
+    const cfbLookup = await loadCfbInfluenceLookup();
+    if(cfbLookup?.gate?.promoted && cfbLookup?.by_person_id?.[id]){
+      cfbBag = cfbLookup.by_person_id[id];
+    }
+  }catch(e){ /* influence panels are optional enrichment */ }
   const name = displayName || hubBag?.person_name || id;
   const officialConnections = await import("../official_connections.mjs");
   const officialView = officialConnections.buildOfficialConnectionView(
@@ -294,12 +302,12 @@ async function showOfficial(personId, opts){
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px" id="official-skim" data-official-id="${safeId}" data-event-id="${escUiHtml(String(resolvedEventId || ""))}" data-notice-id="${escUiHtml(noticeId || "")}" data-precompute-votes="${recentVotes.length}">
       <div class="ftype" style="margin-bottom:6px">${kicker}</div>
       <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(name)}</h2>
-      ${influenceModule.renderPersonHubFactsHTML(hubBag, { escapeHtml:escUiHtml })}
+      ${influenceModule ? influenceModule.renderPersonHubFactsHTML(hubBag, { escapeHtml:escUiHtml }) : ""}
       ${eventLine}
       ${recentVotes.length || scopedVotes.length ? officialConnections.renderOfficialCoverageHTML(officialView, { translate:t }) : ""}
       ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
-      ${influenceModule.renderLobbyInfluenceHTML(lobbyBag, { escapeHtml:escUiHtml, translate:t })}
-      ${influenceModule.renderCfbInfluenceHTML(cfbBag, { escapeHtml:escUiHtml })}
+      ${influenceModule ? influenceModule.renderLobbyInfluenceHTML(lobbyBag, { escapeHtml:escUiHtml, translate:t }) : ""}
+      ${influenceModule ? influenceModule.renderCfbInfluenceHTML(cfbBag, { escapeHtml:escUiHtml }) : ""}
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
         ${noticeLink}
