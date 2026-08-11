@@ -7,6 +7,10 @@ import {
   planEnrichmentCards,
 } from "../flywheel.mjs";
 import { makeDimensionCard } from "./shared.mjs";
+import {
+  civicGraphCapabilityCards,
+  civicGraphCapabilityMetrics,
+} from "./civic_graph_capability.mjs";
 
 export const DIMENSION_ID = "ontology-enrichment";
 
@@ -53,6 +57,7 @@ export function evaluateOntologyEnrichment(input = {}) {
   }));
   cards.push(...temporalScorecardCards(input));
   cards.push(...noticeLandJoinScorecardCards(input));
+  cards.push(...civicGraphCapabilityCards(input));
 
   return {
     dimension: DIMENSION_ID,
@@ -71,6 +76,7 @@ export function evaluateOntologyEnrichment(input = {}) {
         noticeLandJoinRate(input.notice_land_join_scorecard),
       notice_land_malformed_unresolved:
         noticeLandMalformed(input.notice_land_join_scorecard),
+      ...civicGraphCapabilityMetrics(input),
     },
     cards,
     receipt,
