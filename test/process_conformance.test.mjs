@@ -261,7 +261,7 @@ test("resolveMandateObservation never emits compliance verdicts", () => {
       duty_text: "Promulgate rules relating to special event permits",
       deliverable_type: "rulemaking",
       deadline: { computed_date: "2026-06-01" },
-      citation: "§1",
+      citation: "Administrative Code § 18-142(a)",
     },
     [{
       request_id: "20260514002",
@@ -269,8 +269,8 @@ test("resolveMandateObservation never emits compliance verdicts", () => {
       when: "2026-05-18",
       signal_kind: "rule_filing",
       href: "#notice/20260514002",
-      body: "These rules establish special event permits under § 1.",
-      citation: "§1",
+      body: "These rules establish special event permits under Administrative Code § 18-142(a).",
+      citation: "Administrative Code § 18-142(a)",
       tokens: contentTokens("DPR Proposed Amendment of Rules Relating to Special Event Permits"),
     }],
   );
@@ -404,7 +404,7 @@ test("committed process_conformance lookup covers Parks", () => {
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
 });
 
-test("constellation does not surface evidence-only rule candidates as mandate edges", () => {
+test("constellation surfaces only public Sanitation CWZ rule edges after attachment densify", () => {
   const intelligence = JSON.parse(readFileSync(join(ROOT, "site/data/entity_intelligence_lookup.json"), "utf8"));
   const certification = JSON.parse(readFileSync(join(ROOT, "site/data/exam_certification_constellation.json"), "utf8"));
   const obligations = JSON.parse(readFileSync(OBLIGATIONS, "utf8"));
@@ -419,12 +419,16 @@ test("constellation does not surface evidence-only rule candidates as mandate ed
   assert.equal(byId.obligations.label, "Mandates");
   assert.equal(byId.obligations.status, "matched");
   assert.ok(byId.obligations.conformance);
-  assert.equal(view.mandates_conformance.counts.evidence_only, 2);
+  // Public CWZ mandate_rule edge densified from GetFile PDF stamps.
+  assert.ok((view.mandates_conformance.counts.observed || 0) >= 1);
   assert.match(view.mandates_href, /#mandates-conformance/);
 
   const html = renderAgencyConstellationDocument(view);
-  assert.doesNotMatch(html, /id="mandates-conformance"/);
-  // Evidence-only rows are not public observed_links — honest title omits "Rules activity".
+  // Densified public CWZ observation mounts expected-vs-observed + rules bridge.
+  assert.match(html, /id="mandates-conformance"/);
+  assert.match(html, /id="mandates-rules"/);
+  assert.match(html, /Mandates · expected vs observed|Expected vs observed/i);
+  // Honest rules title: "Rules activity" only when observed_links exist (graph-01).
   if ((view.mandates_rules?.counts?.observed_links || 0) === 0) {
     assert.match(html, /Rulemaking mandates/);
     assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
@@ -432,7 +436,10 @@ test("constellation does not surface evidence-only rule candidates as mandate ed
     assert.match(html, /Rulemaking mandates · Rules activity/);
   }
   const rulesBridge = html.match(/<section id="mandates-rules"[\s\S]*?<\/section>/)?.[0] || "";
-  assert.doesNotMatch(rulesBridge, /data-observation-status="observed"|City Record:/);
+  // Public CWZ edge renders a City Record notice link from the observed chip.
+  assert.match(rulesBridge, /data-mandate-id="64116-001"[^>]*data-observation-status="observed"/);
+  assert.match(rulesBridge, /City Record:.*Commercial Waste Zones|#notice\/20260605008|\/notices\/20260605008/);
+  // Evidence-only rows may remain listed without City Record edge links.
   assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);
   assert.doesNotMatch(html, /awaiting detector|This pass matches|corpus checked|This pass covers/i);
 });
@@ -451,7 +458,7 @@ test("buildProcessConformanceLookup is pure over fixture inputs", () => {
             deliverable_type: "rulemaking",
             deadline: { computed_date: "2026-06-01", text: null },
             recurrence: "one-time",
-            citation: "§1",
+            citation: "Administrative Code § 18-142(a)",
             source: { legistar_url: "https://example.test/law" },
             certification: { status: "auto_certified" },
           }],
@@ -463,11 +470,21 @@ test("buildProcessConformanceLookup is pure over fixture inputs", () => {
         request_id: "20260514002",
         agency_name: "Parks and Recreation",
         short_title: "DPR Proposed Amendment of Rules Relating to Special Event Permits",
-        body: "These rules establish special event permits under §1.",
-        citation: "§1",
+        body: "These rules establish special event permits under Administrative Code § 18-142(a).",
+        citation: "Administrative Code § 18-142(a)",
         start_date: "2026-05-18T00:00:00.000",
         section_name: "Agency Rules",
         type_of_notice_description: "Public Hearings",
+        rule_evidence: {
+          schema: "cityscroll.rule_evidence_stamp.v1",
+          topic_keys: ["special", "event", "permits"],
+          body_topic_keys: ["special", "event", "permits"],
+          citation_keys: ["nyc-admin-code:18-142(a)", "nyc-admin-code:18-142"],
+          lifecycle_status: "proposal",
+          effective_date: null,
+          adoption_date: null,
+          negative_evidence: [],
+        },
       }],
     },
     asOf: "2026-08-07",

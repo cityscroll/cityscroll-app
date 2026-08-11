@@ -33,6 +33,8 @@ export const BACKLINK_RELATION_LABELS = Object.freeze({
   requires_land_use_action: "Land-use action for this duty",
   mandate_rule_filing: "Rules filing for this duty",
   requires_rule_filing: "Rules filing for this duty",
+  mandate_report_filing: "Report filing receipt for this duty",
+  requires_report_filing: "Report filing receipt for this duty",
 });
 
 const clean = (value, max = 500) => String(value ?? "")

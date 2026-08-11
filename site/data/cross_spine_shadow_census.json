@@ -1577,7 +1577,7 @@
     },
     "mandate_rule": {
       "totals": {
-        "public_inferred": 0,
+        "public_inferred": 1,
         "evidence_only": 0
       },
       "denominators": {
@@ -1585,8 +1585,12 @@
         "source_rows": 4900,
         "pre_route_pairs": 24500
       },
-      "by_tier": {},
-      "by_reason": {},
+      "by_tier": {
+        "public_inferred": 1
+      },
+      "by_reason": {
+        "public_inferred": 1
+      },
       "by_agency": {
         "administration-for-childrens-services": {
           "denominators": {
@@ -2024,9 +2028,11 @@
             "source_rows": 100,
             "pre_route_pairs": 800
           },
-          "public_inferred": 0,
+          "public_inferred": 1,
           "evidence_only": 0,
-          "reason_counts": {}
+          "reason_counts": {
+            "public_inferred": 1
+          }
         },
         "small-business-services": {
           "denominators": {
@@ -2079,7 +2085,9 @@
           "reason_counts": {}
         }
       },
-      "by_source_system": {}
+      "by_source_system": {
+        "city_record": 1
+      }
     }
   }
 }
