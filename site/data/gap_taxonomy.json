@@ -471,7 +471,11 @@
         "agency",
         "document_id",
         "event_date",
-        "BBL"
+        "BBL",
+        "project_name",
+        "company_name",
+        "project_address",
+        "labeled_Total_Project_Cost_in_notice_body"
       ],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
@@ -846,7 +850,9 @@
         "project_name",
         "company_name",
         "project_address",
-        "request_id_when_present"
+        "request_id_when_present",
+        "board_date",
+        "explicit_motion/vote_language"
       ],
       "join_coverage": {},
       "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
@@ -1217,6 +1223,7 @@
         "city-record-attachment-export-cliff",
         "procurement-ocp-recent-awards",
         "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
         "subsidy-field-city-record-hearing-feed",
         "meetings-location-residual",
         "property-parcel-key-residual"
@@ -1547,6 +1554,101 @@
       "evidence": "Shared keys PIN, request_id; 4 taxonomy gap(s) could close."
     },
     {
+      "id": "nycida-build-nyc-projects-x-ocp-recent-contract-awards-via-request_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "ocp-recent-contract-awards",
+      "key_path": [
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards",
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ],
+      "score": 4,
+      "evidence": "Shared keys request_id; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ],
+      "score": 4,
+      "evidence": "Shared keys project_id; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ],
+      "score": 4,
+      "evidence": "Shared keys project_id; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ],
+      "score": 4,
+      "evidence": "Shared keys project_id; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "zap-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ],
+      "score": 4,
+      "evidence": "Shared keys project_id; 4 taxonomy gap(s) could close."
+    },
+    {
       "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
       "source_a": "checkbook-contracts",
       "source_b": "checkbook-spending",
@@ -1710,45 +1812,27 @@
       "evidence": "Shared keys BBL; 3 taxonomy gap(s) could close."
     },
     {
-      "id": "nycida-build-nyc-projects-x-ocp-recent-contract-awards-via-request_id",
-      "source_a": "nycida-build-nyc-projects",
-      "source_b": "ocp-recent-contract-awards",
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "nycida-build-nyc-projects",
       "key_path": [
         "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards",
-        "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed"
-      ],
-      "score": 3,
-      "evidence": "Shared keys request_id; 3 taxonomy gap(s) could close."
-    },
-    {
-      "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
-      "source_a": "nycida-build-nyc-projects",
-      "source_b": "unregistered-zoning-application-portal-projects",
-      "key_path": [
-        "project_id"
       ],
       "status": "candidate",
       "realized_coverage": null,
       "worth_materializing": "maybe",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed",
-        "land-outcome-detail"
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ],
       "score": 3,
-      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
+      "evidence": "Shared keys request_id; 3 taxonomy gap(s) could close."
     },
     {
-      "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
-      "source_a": "nycida-build-nyc-projects",
-      "source_b": "zap-api-outcomes",
+      "id": "mandatory-inclusionary-housing-x-nycida-build-nyc-projects-via-project_id",
+      "source_a": "mandatory-inclusionary-housing",
+      "source_b": "nycida-build-nyc-projects",
       "key_path": [
         "project_id"
       ],
@@ -1757,44 +1841,8 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed",
-        "land-outcome-detail"
-      ],
-      "score": 3,
-      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
-    },
-    {
-      "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
-      "source_a": "nycida-build-nyc-projects",
-      "source_b": "zap-bbl",
-      "key_path": [
-        "project_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed",
-        "land-outcome-detail"
-      ],
-      "score": 3,
-      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
-    },
-    {
-      "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
-      "source_a": "nycida-build-nyc-projects",
-      "source_b": "zap-projects",
-      "key_path": [
-        "project_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed",
-        "land-outcome-detail"
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ],
       "score": 3,
       "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
@@ -1849,40 +1897,6 @@
       ],
       "score": 2,
       "evidence": "Shared keys BBL; 2 taxonomy gap(s) could close."
-    },
-    {
-      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
-      "source_a": "current-solicitations-ocp",
-      "source_b": "nycida-build-nyc-projects",
-      "key_path": [
-        "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed"
-      ],
-      "score": 2,
-      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
-    },
-    {
-      "id": "mandatory-inclusionary-housing-x-nycida-build-nyc-projects-via-project_id",
-      "source_a": "mandatory-inclusionary-housing",
-      "source_b": "nycida-build-nyc-projects",
-      "key_path": [
-        "project_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "subsidy-stage-unmatched",
-        "subsidy-field-city-record-hearing-feed"
-      ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
     },
     {
       "id": "ocp-recent-contract-awards-x-passport-public-contracts-via-PIN",
@@ -2866,39 +2880,68 @@
         ]
       },
       "notices_affected_estimate": "IDA/Build NYC/EDC-eligible City Record notices without a linked stage document.",
-      "evidence": "Source contract nycida-build-nyc-projects is live. Stage rows exist only when a public document is linked; empty stage is incomplete join to published project pages."
+      "evidence": "RC-2 accepted corpus attaches board_decision date+outcome on 5/5 projects; application/closing/compliance remain source-null (0/5) in the minutes sample (receipt site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json). Empty later stages are incomplete source extraction or not yet published — not a silent withhold when the board minute exists."
     },
     {
       "id": "subsidy-outcome-absent",
       "surface": "subsidy lifecycle · stage outcome",
-      "class": "not_published",
-      "disposition": "publication_blocked",
-      "would_appear_in": "Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released",
-      "notices_affected_estimate": "Linked subsidy projects whose public docs omit an explicit outcome string.",
-      "evidence": "Worker subsidy assembler marks outcome unknown when board_decision_outcome and similar fields are blank on the public project record."
+      "class": "not_yet_ingested",
+      "disposition": "open",
+      "public_source": {
+        "name": "NYCIDA/Build NYC board minutes and closing packages",
+        "access": "Host-side PDF/HTML collection",
+        "landing_page": "https://edc.nyc/nycida/financial-public-documents",
+        "update_cadence": "After each board meeting",
+        "join_keys": [
+          "project_name",
+          "company_name",
+          "board date",
+          "explicit motion/vote language"
+        ]
+      },
+      "notices_affected_estimate": "Linked subsidy projects whose public docs omit an explicit outcome string for a later stage.",
+      "evidence": "RC-2 board outcomes attach when minutes use explicit motion/vote language (5/5 approved on the accepted corpus). Closing/compliance outcomes stay null when the source omits them. Never infer approval from a scheduled hearing. Receipt: site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json."
     },
     {
       "id": "subsidy-project-unmatched",
       "surface": "subsidy lifecycle · no project join",
-      "class": "not_published",
+      "class": "not_yet_ingested",
       "disposition": "open",
-      "would_appear_in": "NYCIDA/Build NYC financial public documents page if a project record is released for the notice",
-      "notices_affected_estimate": "IDA-related City Record notices without a public project page match.",
-      "evidence": "No batch open dataset maps City Record request_id to Build NYC project_id; joins are fuzzy on name/address."
+      "public_source": {
+        "name": "NYCIDA/Build NYC public documents",
+        "access": "Host-side HTML/XLSX/PDF collection (edge fetch often Cloudflare-blocked)",
+        "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+        "update_cadence": "Board minutes and annual project spreadsheets as published",
+        "join_keys": [
+          "project_name",
+          "company_name",
+          "project_address",
+          "request_id when present"
+        ]
+      },
+      "notices_affected_estimate": "IDA-related City Record notices without a receipt-backed project match.",
+      "evidence": "RC-2 host-side collector + warehouse feed landed. Fixed kill sample joined 5/12 (41.67%) by unique name+address+date with 0 false positives (receipt site/data/nycedc_sources/verification_receipts/nycedc_project_documents_2026-08-04.json). Receipt-backed panel ships for matched notices; residual unmatched hearings stay unmatched without inventing a project. Class (a) residual — not a city withhold of project documents that exist on EDC."
     },
     {
       "id": "subsidy-field-company-place-money",
       "surface": "subsidy lifecycle · company / place / money fields",
-      "i18n_keys": [
-        "subsidy_company_unknown_html",
-        "subsidy_place_unknown_html",
-        "subsidy_money_unknown_html"
-      ],
-      "class": "not_published",
-      "disposition": "publication_blocked",
-      "would_appear_in": "the linked Build NYC project record if those fields are filled on publication",
-      "notices_affected_estimate": "Matched projects with sparse public fields.",
-      "evidence": "Fields are optional on public project pages; worker exposes explicit unknown reasons when blank. Class (b) only when a real Build NYC project row is linked — never for city-record-hearing fallback."
+      "i18n_keys": [],
+      "class": "not_yet_ingested",
+      "disposition": "open",
+      "public_source": {
+        "name": "NYCIDA/Build NYC project documents + City Record hearing bodies",
+        "access": "Host-side minutes/spreadsheets; City Record SODA body parse for labeled costs",
+        "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+        "update_cadence": "As board minutes and notices publish",
+        "join_keys": [
+          "project_name",
+          "company_name",
+          "project_address",
+          "labeled Total Project Cost in notice body"
+        ]
+      },
+      "notices_affected_estimate": "Matched projects with sparse public money fields; hearing-only notices without a labeled cost.",
+      "evidence": "On the accepted RC-2 corpus, company and address fill 5/5; any money field fills 3/5 (requested benefit 2/5, estimated public cost 3/5, project_cost 0/5 in the live minutes materialization). Product shows positive facts only and omits empty slots — no class-(b) mask. Receipt: site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json."
     },
     {
       "id": "subsidy-field-city-record-hearing-feed",
@@ -3252,7 +3295,7 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-08",
+    "observed_on": "2026-08-11",
     "source_contracts_fingerprint": "e7971f8ef07a349303d8ee5cadddb2b6fe9dcb860a9635f37021440672e6b5db",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 75,

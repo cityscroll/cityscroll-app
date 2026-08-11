@@ -415,8 +415,10 @@ test("data-integrity core: population not-published-rate emits red flags continu
   const features = loadJson("ontology/fixtures/dimensions/data_integrity_features.json");
 
   const enumerated = enumerateNotPublishedClaims(gap_taxonomy);
-  assert.ok(enumerated.some((c) => c.id === "subsidy-field-company-place-money"));
+  // Class-(b) registers only — RC-2 money/stage gaps are now class-(a) residuals
+  // (not false "city does not publish" claims) and live in the sample inventory.
   assert.ok(enumerated.every((c) => c.source === "gap_taxonomy" || c.id));
+  assert.ok(enumerated.some((c) => c.id === "procurement-solicitation-documents"));
 
   const result = evaluateDataIntegrity({
     gap_taxonomy,
@@ -425,14 +427,14 @@ test("data-integrity core: population not-published-rate emits red flags continu
   });
   assert.equal(result.dimension, "data-integrity");
   assert.ok(result.metrics.not_published_claims_checked >= 5);
-  assert.ok(result.metrics.not_published_red_flags >= 2, "expected ≥2 red flags");
+  assert.ok(result.metrics.not_published_red_flags >= 1, "expected ≥1 red flag");
   assert.ok(result.metrics.not_published_genuinely_withheld >= 1);
-  assert.ok(result.metrics.not_published_healthy >= 1);
+  assert.ok(result.metrics.not_published_healthy >= 2);
 
   // Core red flags from credibility audit
   assert.ok(
-    result.cards.some((c) => c.id.includes("subsidy-field-company-place-money")),
-    "Build NYC money ~100% not-published red flag",
+    !result.cards.some((c) => c.id.includes("subsidy-field-company-place-money")),
+    "RC-2 money slots no longer emit a false class-(b) red flag",
   );
   assert.ok(
     result.cards.some((c) => c.id.includes("meeting-person-votes")),
@@ -446,9 +448,14 @@ test("data-integrity core: population not-published-rate emits red flags continu
 
   const money = result.findings.find((f) => f.claim_id === "subsidy-field-company-place-money");
   assert.ok(money);
-  assert.equal(money.red_flag, true);
-  assert.equal(money.rate.rate, 1);
-  assert.equal(money.classification, "mislabeled");
+  assert.equal(money.red_flag, false);
+  assert.equal(money.rate.rate, 0);
+  assert.equal(money.classification, "healthy");
+
+  const stages = result.findings.find((f) => f.claim_id === "subsidy-stage-feed-backed");
+  assert.ok(stages);
+  assert.equal(stages.red_flag, false);
+  assert.equal(stages.classification, "healthy");
 
   // Secondary feature inventory still works
   assert.ok(result.metrics.features_checked >= 5);
@@ -464,7 +471,8 @@ test("data-integrity core: population not-published-rate emits red flags continu
 
   // Pure path without gap taxonomy still evaluates sample inventory
   const sampleOnly = evaluateNotPublishedClaims(samples.claims);
-  assert.ok(sampleOnly.metrics.red_flags >= 2);
+  assert.ok(sampleOnly.metrics.red_flags >= 1);
+  assert.ok(sampleOnly.metrics.healthy >= 2);
 });
 
 test("readability scores views and cards unusable ones", () => {

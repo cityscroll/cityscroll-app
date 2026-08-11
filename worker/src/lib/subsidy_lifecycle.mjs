@@ -384,6 +384,11 @@ export function parseNYCIDAProjects(rawRows) {
       bbls: splitBbls(row.bbls || []),
       requested_benefit: moneyState(row.requested_benefit_amount || row.requested_benefits),
       estimated_cost: moneyState(row.estimated_public_cost || row.estimated_cost || row.public_cost),
+      // Source-stated project/development cost when present (RC-2 board minutes /
+      // annual spreadsheet). Null stays null — never invent from benefit fields.
+      total_project_cost: toAmount(
+        row.total_project_cost || row.project_cost || row.total_development_cost || "",
+      ),
       application: {
         date: toDate(pickFirst(row.application_date, row.applied_date)),
         status: plainText(row.application_status || row.application_result || "submitted"),
@@ -744,8 +749,10 @@ export function assembleSubsidyLifecycle(notices = [], projects = []) {
       money: {
         requested_benefit: matched.requested_benefit,
         estimated_cost: matched.estimated_cost,
-        // City Record hearing-derived totals (null when the feed row supplied money).
-        total_project_cost: fromCityRecord ? (matched.total_project_cost ?? null) : null,
+        // Prefer an explicit source-stated project cost from either the City Record
+        // hearing body or a receipt-backed NYCEDC/Build NYC project row. Null when
+        // the publisher did not state a total — never invent from other money slots.
+        total_project_cost: matched.total_project_cost ?? null,
         total_development_cost: fromCityRecord ? (matched.total_development_cost ?? null) : null,
         hearing_costs: fromCityRecord && Array.isArray(matched.hearing_costs)
           ? matched.hearing_costs
