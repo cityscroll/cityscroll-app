@@ -1,0 +1,5313 @@
+{
+  "schema": "cityscroll.ulurp_recommendations.lookup.v1",
+  "generated_at": "2026-08-11T18:57:46Z",
+  "mode": "live",
+  "bridge": {
+    "status": "accepted",
+    "materialize": true,
+    "usefulness_threshold": 0.3,
+    "precision": 1,
+    "gate_rate_id": "recommendation_rows_hit_zap",
+    "gate_rate": 0.8791,
+    "strategy": "exact_ulurp_token",
+    "wrong_universe_note": "Property Disposition City Record notices are not ZAP ULURP projects and must not be used as a success metric."
+  },
+  "counts": {
+    "recommendation_rows": 91,
+    "pdf_rows": 88,
+    "ulurp_keys": 449
+  },
+  "by_ulurp_key": {
+    "210106PCK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1427 Ralph Avenue",
+          "community_board_s": "18",
+          "council_district_s": "45",
+          "ulurp_number_s": "210106 PCK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2021-04-13T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210173HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Bed-Stuy Central and North NIHOP Cluster (UDAAP)",
+          "community_board_s": "3",
+          "council_district_s": "36",
+          "ulurp_number_s": "210173 HAK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-03-31T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210033ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "606 Neptune Avenue",
+          "community_board_s": "13",
+          "council_district_s": "48",
+          "ulurp_number_s": "210033 ZMK M 210034 LDK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-03-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210034LDK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "606 Neptune Avenue",
+          "community_board_s": "13",
+          "council_district_s": "48",
+          "ulurp_number_s": "210033 ZMK M 210034 LDK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-03-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "M210034LDK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "606 Neptune Avenue",
+          "community_board_s": "13",
+          "council_district_s": "48",
+          "ulurp_number_s": "210033 ZMK M 210034 LDK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-03-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210049ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "300 Huntington Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "210049 ZMK N210051 ZAK N210056 LDK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210051ZAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "300 Huntington Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "210049 ZMK N210051 ZAK N210056 LDK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N210051ZAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "300 Huntington Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "210049 ZMK N210051 ZAK N210056 LDK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210056LDK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "300 Huntington Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "210049 ZMK N210051 ZAK N210056 LDK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N210056LDK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "300 Huntington Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "210049 ZMK N210051 ZAK N210056 LDK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210138ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Acme Smoked Fish/Gem Street Rezoning",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "210138 ZMK 210139 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210139ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Acme Smoked Fish/Gem Street Rezoning",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "210138 ZMK 210139 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200344ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Suydam Street Rezoning",
+          "community_board_s": "4",
+          "council_district_s": "34",
+          "ulurp_number_s": "200344 ZMK N200343 ZRK 200326 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-11T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200343ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Suydam Street Rezoning",
+          "community_board_s": "4",
+          "council_district_s": "34",
+          "ulurp_number_s": "200344 ZMK N200343 ZRK 200326 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-11T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N200343ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Suydam Street Rezoning",
+          "community_board_s": "4",
+          "council_district_s": "34",
+          "ulurp_number_s": "200344 ZMK N200343 ZRK 200326 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-11T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200326ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Suydam Street Rezoning",
+          "community_board_s": "4",
+          "council_district_s": "34",
+          "ulurp_number_s": "200344 ZMK N200343 ZRK 200326 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-11T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210109HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "HPD New Penn Development",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "210109 HAK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-02-09T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210043ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "135-137 Bedford Avenue Rezoning",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "210043 ZMK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-02-03T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210061ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "86 Fleet Place",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "N210061ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-02-03T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N210061ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "86 Fleet Place",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "N210061ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-02-03T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210130ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Neighborhoods: Gerritsen Beach",
+          "community_board_s": "15",
+          "council_district_s": "46",
+          "ulurp_number_s": "210130 ZMK N210131 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-01-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210131ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Neighborhoods: Gerritsen Beach",
+          "community_board_s": "15",
+          "council_district_s": "46",
+          "ulurp_number_s": "210130 ZMK N210131 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-01-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N210131ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Neighborhoods: Gerritsen Beach",
+          "community_board_s": "15",
+          "council_district_s": "46",
+          "ulurp_number_s": "210130 ZMK N210131 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-01-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "210132ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Neighborhoods: Sheepshead Bay",
+          "community_board_s": "15",
+          "council_district_s": "48",
+          "ulurp_number_s": "N210132 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-01-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N210132ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Neighborhoods: Sheepshead Bay",
+          "community_board_s": "15",
+          "council_district_s": "48",
+          "ulurp_number_s": "N210132 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2021-01-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200356PPK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "69 Adams Street",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "200356 PPK",
+          "borough_president": "Disapproved with Conditions",
+          "recommendation_date": "2021-01-20T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200029ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "737 Fourth Avenue Rezoning",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "200029 ZMK N200030 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-12-31T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200030ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "737 Fourth Avenue Rezoning",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "200029 ZMK N200030 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-12-31T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N200030ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "737 Fourth Avenue Rezoning",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "200029 ZMK N200030 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-12-31T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190447ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "9114 Fifth Avenue Rezoning",
+          "community_board_s": "10",
+          "council_district_s": "43",
+          "ulurp_number_s": "190447 ZMK 190448 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-12-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190448ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "9114 Fifth Avenue Rezoning",
+          "community_board_s": "10",
+          "council_district_s": "43",
+          "ulurp_number_s": "190447 ZMK 190448 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2021-12-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180486ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1620 Cortelyou Road",
+          "community_board_s": "14",
+          "council_district_s": "40",
+          "ulurp_number_s": "180486 ZMK 180497 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-12-14T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180497ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1620 Cortelyou Road",
+          "community_board_s": "14",
+          "council_district_s": "40",
+          "ulurp_number_s": "180486 ZMK 180497 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-12-14T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200062ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "16th Avenue Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "200062 ZMK N200063 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2020-11-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200063ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "16th Avenue Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "200062 ZMK N200063 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2020-11-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "N200063ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "16th Avenue Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "200062 ZMK N200063 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2020-11-25T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200086ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1501-1555 60th Street Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "200086 ZMK 200087 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-10-13T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200087ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1501-1555 60th Street Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "200086 ZMK 200087 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-10-13T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200092ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "312 Coney Island Avenue - Caton Place",
+          "community_board_s": "7",
+          "council_district_s": "39",
+          "ulurp_number_s": "200092 ZMK 200093 ZRK 200094 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-09-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200093ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "312 Coney Island Avenue - Caton Place",
+          "community_board_s": "7",
+          "council_district_s": "39",
+          "ulurp_number_s": "200092 ZMK 200093 ZRK 200094 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-09-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200094ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "312 Coney Island Avenue - Caton Place",
+          "community_board_s": "7",
+          "council_district_s": "39",
+          "ulurp_number_s": "200092 ZMK 200093 ZRK 200094 ZSK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-09-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "150178ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "265 Front Street",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "150178 ZMK 180178 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2020-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180178ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "265 Front Street",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "150178 ZMK 180178 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2020-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200158ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Bedford Avenue Overlay Extension",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "200158 ZMK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200056ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "803 Rockaway Avenue",
+          "community_board_s": "16",
+          "council_district_s": "42",
+          "ulurp_number_s": "200056 ZMK 200057 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-09-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200057ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "803 Rockaway Avenue",
+          "community_board_s": "16",
+          "council_district_s": "42",
+          "ulurp_number_s": "200056 ZMK 200057 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-09-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200085ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1510 Broadway",
+          "community_board_s": "16",
+          "council_district_s": "41",
+          "ulurp_number_s": "200085 ZMK 200082 ZRK 200084 HAK 200083 PQK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-04-09T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200082ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1510 Broadway",
+          "community_board_s": "16",
+          "council_district_s": "41",
+          "ulurp_number_s": "200085 ZMK 200082 ZRK 200084 HAK 200083 PQK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-04-09T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200084HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1510 Broadway",
+          "community_board_s": "16",
+          "council_district_s": "41",
+          "ulurp_number_s": "200085 ZMK 200082 ZRK 200084 HAK 200083 PQK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-04-09T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200083PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1510 Broadway",
+          "community_board_s": "16",
+          "council_district_s": "41",
+          "ulurp_number_s": "200085 ZMK 200082 ZRK 200084 HAK 200083 PQK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-04-09T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200155HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Dekalb Commons NCP-NIHOP (UDAAP)",
+          "community_board_s": "3",
+          "council_district_s": "36",
+          "ulurp_number_s": "200155 HAK",
+          "borough_president": "Approved, Approved with Conditions, Disapproved with Conditions",
+          "recommendation_date": "2020-04-03T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "160146MMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Industry City",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "160146 MMK, 190296 ZMK, 190296 ZMK, 190297 ZSK, 190298 ZRK",
+          "borough_president": "Approved, Approved with Conditions, Disapproved with Conditions",
+          "recommendation_date": "2020-03-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190296ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Industry City",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "160146 MMK, 190296 ZMK, 190296 ZMK, 190297 ZSK, 190298 ZRK",
+          "borough_president": "Approved, Approved with Conditions, Disapproved with Conditions",
+          "recommendation_date": "2020-03-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190297ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Industry City",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "160146 MMK, 190296 ZMK, 190296 ZMK, 190297 ZSK, 190298 ZRK",
+          "borough_president": "Approved, Approved with Conditions, Disapproved with Conditions",
+          "recommendation_date": "2020-03-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190298ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Industry City",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "160146 MMK, 190296 ZMK, 190296 ZMK, 190297 ZSK, 190298 ZRK",
+          "borough_president": "Approved, Approved with Conditions, Disapproved with Conditions",
+          "recommendation_date": "2020-03-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190377ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "5914 Bay Parkway Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "190377 ZMK 190378 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-02-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190378ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "5914 Bay Parkway Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "44",
+          "ulurp_number_s": "190377 ZMK 190378 ZRK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-02-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200188HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Old Stanley - 641 Chauncey",
+          "community_board_s": "4",
+          "council_district_s": "37",
+          "ulurp_number_s": "200188 HAK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-02-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200106HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1559-1563 Prospect Place, Weeksville NCP (UDAAP)",
+          "community_board_s": "8",
+          "council_district_s": "41",
+          "ulurp_number_s": "200106 HAK",
+          "borough_president": "Approved",
+          "recommendation_date": "2020-02-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190011ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "50 Old Fulton Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "190011 ZMK",
+          "borough_president": "Disapproved with Conditions",
+          "recommendation_date": "2020-01-23T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200059ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "90 Sands Street Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "200059 ZMK 200060 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2020-01-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "200060ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "90 Sands Street Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "200059 ZMK 200060 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2020-01-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190453HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Rochester Suydam (UDAAP)",
+          "community_board_s": "3",
+          "council_district_s": "3641",
+          "ulurp_number_s": "190453 HAK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-01-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190256ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Grand Avenue and Pacific Street Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "190256 ZMK 190257 ZRK",
+          "borough_president": "Disapproved with Conditions",
+          "recommendation_date": "2020-01-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190257ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Grand Avenue and Pacific Street Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "190256 ZMK 190257 ZRK",
+          "borough_president": "Disapproved with Conditions",
+          "recommendation_date": "2020-01-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190172ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "271 Sea Breeze Avenue",
+          "community_board_s": "13",
+          "council_district_s": "47",
+          "ulurp_number_s": "190172 ZMK",
+          "borough_president": "Approved with Conditions",
+          "recommendation_date": "2020-01-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190409HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "515 Blake Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190409 HAK, 190410 ZMK, 190411 ZRK, 190421 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190410ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "515 Blake Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190409 HAK, 190410 ZMK, 190411 ZRK, 190421 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190411ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "515 Blake Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190409 HAK, 190410 ZMK, 190411 ZRK, 190421 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190421ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "515 Blake Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190409 HAK, 190410 ZMK, 190411 ZRK, 190421 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-09-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190394PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Housing and Open Space - Brooklyn",
+          "community_board_s": "1315",
+          "council_district_s": "464748",
+          "ulurp_number_s": "190394 PQK, 190395 PPK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-08-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190395PPK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Resilient Housing and Open Space - Brooklyn",
+          "community_board_s": "1315",
+          "council_district_s": "464748",
+          "ulurp_number_s": "190394 PQK, 190395 PPK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-08-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190452PCK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Green Gems Garden Addition",
+          "community_board_s": "5",
+          "council_district_s": "37",
+          "ulurp_number_s": "190452 PCK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-08-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190303ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "6003 8th Avenue Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "38",
+          "ulurp_number_s": "190303 ZMK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-08-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190379ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1247 Atlantic Avenue Pool (Special Permit)",
+          "community_board_s": "3",
+          "council_district_s": "36",
+          "ulurp_number_s": "190379 ZSK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-08-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180524ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "101 Fleet Place Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180524 ZMK, 180525 ZRK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2019-08-14T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180525ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "101 Fleet Place Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180524 ZMK, 180525 ZRK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2019-08-14T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190353HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "776-780 Myrtle Avenue (UDAAP)",
+          "community_board_s": "3",
+          "council_district_s": "36",
+          "ulurp_number_s": "190353 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-07-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190116MMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "New York City Borough-Based Jail System (Brooklyn)",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "190116 MMK, 190339 ZSK, 190333 PSY, 190334 ZRY",
+          "borough_president": "Approved/disapproved with conditions",
+          "recommendation_date": "2019-07-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190339ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "New York City Borough-Based Jail System (Brooklyn)",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "190116 MMK, 190339 ZSK, 190333 PSY, 190334 ZRY",
+          "borough_president": "Approved/disapproved with conditions",
+          "recommendation_date": "2019-07-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190333PSY": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "New York City Borough-Based Jail System (Brooklyn)",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "190116 MMK, 190339 ZSK, 190333 PSY, 190334 ZRY",
+          "borough_president": "Approved/disapproved with conditions",
+          "recommendation_date": "2019-07-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190334ZRY": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "New York City Borough-Based Jail System (Brooklyn)",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "190116 MMK, 190339 ZSK, 190333 PSY, 190334 ZRY",
+          "borough_president": "Approved/disapproved with conditions",
+          "recommendation_date": "2019-07-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190373HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Brownsville South NCP Cluster",
+          "community_board_s": "16",
+          "council_district_s": "37",
+          "ulurp_number_s": "190373 HAK, 190374 HUK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-06-24T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190374HUK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Brownsville South NCP Cluster",
+          "community_board_s": "16",
+          "council_district_s": "37",
+          "ulurp_number_s": "190373 HAK, 190374 HUK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-06-24T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190222ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "3513 Atlantic Avenue Rezoning",
+          "community_board_s": "5",
+          "council_district_s": "37",
+          "ulurp_number_s": "190222 ZMK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-06-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190286HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "East New York North NCP (UDAAP)",
+          "community_board_s": "5",
+          "council_district_s": "37",
+          "ulurp_number_s": "190286 HAK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-06-07T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190291PCK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Spring Creek Park Addition - Site Selection/Acquisition",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190291 PCK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-05-24T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180164ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "273 Avenue U Rezoning",
+          "community_board_s": "11",
+          "council_district_s": "47",
+          "ulurp_number_s": "180164 ZMK, 180165 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-05-17T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180165ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "273 Avenue U Rezoning",
+          "community_board_s": "11",
+          "council_district_s": "47",
+          "ulurp_number_s": "180164 ZMK, 180165 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-05-17T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190177HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Brownsville North - Ocean Hill NCP Cluster",
+          "community_board_s": "16",
+          "council_district_s": "41",
+          "ulurp_number_s": "190177 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-03-11T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180292ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "2 Howard Avenue Rezoning",
+          "community_board_s": "3",
+          "council_district_s": "41",
+          "ulurp_number_s": "180292 ZMK 180293 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-03-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180293ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "2 Howard Avenue Rezoning",
+          "community_board_s": "3",
+          "council_district_s": "41",
+          "ulurp_number_s": "180292 ZMK 180293 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-03-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190211PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Community District 3 Sanitation Garage",
+          "community_board_s": "1",
+          "council_district_s": "34",
+          "ulurp_number_s": "190211 PQK, 190212 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-02-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190212PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Community District 3 Sanitation Garage",
+          "community_board_s": "1",
+          "council_district_s": "34",
+          "ulurp_number_s": "190211 PQK, 190212 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-02-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190181PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "813 Sterling Place - Friends of Crown Heights",
+          "community_board_s": "8",
+          "council_district_s": "36",
+          "ulurp_number_s": "190181 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-02-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190182PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "ACS 370 New Lots",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190182 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-02-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190160HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1921 Atlantic Avenue - MWBE Site B",
+          "community_board_s": "3",
+          "council_district_s": "41",
+          "ulurp_number_s": "190160 HAK 190161 ZMK 190162 ZRK 190163 HUK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190161ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1921 Atlantic Avenue - MWBE Site B",
+          "community_board_s": "3",
+          "council_district_s": "41",
+          "ulurp_number_s": "190160 HAK 190161 ZMK 190162 ZRK 190163 HUK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190162ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1921 Atlantic Avenue - MWBE Site B",
+          "community_board_s": "3",
+          "council_district_s": "41",
+          "ulurp_number_s": "190160 HAK 190161 ZMK 190162 ZRK 190163 HUK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190163HUK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1921 Atlantic Avenue - MWBE Site B",
+          "community_board_s": "3",
+          "council_district_s": "41",
+          "ulurp_number_s": "190160 HAK 190161 ZMK 190162 ZRK 190163 HUK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180042ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1010 Pacific Street Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "180042 ZMK, 180043 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-12T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180043ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1010 Pacific Street Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "180042 ZMK, 180043 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-12T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "160175ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1050 Pacific Street Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "160175 ZMK,\n160176 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-07T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "160176ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1050 Pacific Street Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "160175 ZMK,\n160176 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-02-07T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "160226PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Urban Strategies Day Care Center",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "160226 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-02-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190083ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "103 North 13th Street Special Permit",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "190083 ZRK 190084 ZSK 190085 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190084ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "103 North 13th Street Special Permit",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "190083 ZRK 190084 ZSK 190085 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190085ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "103 North 13th Street Special Permit",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "190083 ZRK 190084 ZSK 190085 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180171ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "McDonald Avenue Catering (Rezoning)",
+          "community_board_s": "12",
+          "council_district_s": "39",
+          "ulurp_number_s": "180171 ZMK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-24T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190176PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "460 Atlantic Avenue Child Care and Senior Center",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "190176 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2019-01-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190053ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1640 Flatbush Avenue",
+          "community_board_s": "14",
+          "council_district_s": "45",
+          "ulurp_number_s": "190053 ZMK 190054 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190054ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1640 Flatbush Avenue",
+          "community_board_s": "14",
+          "council_district_s": "45",
+          "ulurp_number_s": "190053 ZMK 190054 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180294ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "41 Summit Street Rezoning",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "180294 ZMK 180295 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-14T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180295ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "41 Summit Street Rezoning",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "180294 ZMK 180295 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2019-01-14T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190078HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "63 Stockholm Street - Bushwick Alliance",
+          "community_board_s": "4",
+          "council_district_s": "34",
+          "ulurp_number_s": "190078 HAK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-12-29T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190071ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "809 Atlantic Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "190071 ZRK 190074 ZRK 190072 ZSK 190073 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-12-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190074ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "809 Atlantic Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "190071 ZRK 190074 ZRK 190072 ZSK 190073 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-12-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190072ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "809 Atlantic Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "190071 ZRK 190074 ZRK 190072 ZSK 190073 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-12-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190073ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "809 Atlantic Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "190071 ZRK 190074 ZRK 190072 ZSK 190073 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-12-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180459ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "570 Fulton Street Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180459 ZMK 180457 ZRK 180458 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180457ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "570 Fulton Street Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180459 ZMK 180457 ZRK 180458 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180458ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "570 Fulton Street Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180459 ZMK 180457 ZRK 180458 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170458ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "W 22nd - W 23rd Street Coney Island Rezoning",
+          "community_board_s": "13",
+          "council_district_s": "47",
+          "ulurp_number_s": "170458 ZMK, 170459 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2018-11-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170459ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "W 22nd - W 23rd Street Coney Island Rezoning",
+          "community_board_s": "13",
+          "council_district_s": "47",
+          "ulurp_number_s": "170458 ZMK, 170459 ZRK",
+          "borough_president": "Disapproved",
+          "recommendation_date": "2018-11-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190038HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "461 Alabama Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190038 HAK 190039 HUK 190037 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190039HUK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "461 Alabama Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190038 HAK 190039 HUK 190037 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "190037ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "461 Alabama Avenue",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "190038 HAK 190039 HUK 190037 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180388ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "12 Franklin Street Special Permit",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "180388 ZRK 180387 ZSK 180389 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180387ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "12 Franklin Street Special Permit",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "180388 ZRK 180387 ZSK 180389 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180389ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "12 Franklin Street Special Permit",
+          "community_board_s": "1",
+          "council_district_s": "33",
+          "ulurp_number_s": "180388 ZRK 180387 ZSK 180389 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180393ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Caton Park Nursing Home Rezoning",
+          "community_board_s": "14",
+          "council_district_s": "40",
+          "ulurp_number_s": "180393 ZMK, 180394 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180394ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Caton Park Nursing Home Rezoning",
+          "community_board_s": "14",
+          "council_district_s": "40",
+          "ulurp_number_s": "180393 ZMK, 180394 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180229ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "895 Bedford Avenue Rezoning",
+          "community_board_s": "3",
+          "council_district_s": "33",
+          "ulurp_number_s": "180229 ZMK, 180230 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180230ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "895 Bedford Avenue Rezoning",
+          "community_board_s": "3",
+          "council_district_s": "33",
+          "ulurp_number_s": "180229 ZMK, 180230 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-11-02T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180344ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "29 Jay Street Rezoning and ZR Amendment",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "180344 ZMK, 180345 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-10-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180345ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "29 Jay Street Rezoning and ZR Amendment",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "180344 ZMK, 180345 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-10-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170147ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Franklin Avenue Rezoning",
+          "community_board_s": "9",
+          "council_district_s": "35",
+          "ulurp_number_s": "170147 ZMK, 170148 ZRK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-09-27T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170148ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Franklin Avenue Rezoning",
+          "community_board_s": "9",
+          "council_district_s": "35",
+          "ulurp_number_s": "170147 ZMK, 170148 ZRK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-09-27T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180489ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Marcus Garvey Apartments LSGD",
+          "community_board_s": "16",
+          "council_district_s": "4142",
+          "ulurp_number_s": "180489 ZMK, 180487 ZRK, 180488 ZSK, 180490 ZSK, 180486 PCK, 180485 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-09-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180487ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Marcus Garvey Apartments LSGD",
+          "community_board_s": "16",
+          "council_district_s": "4142",
+          "ulurp_number_s": "180489 ZMK, 180487 ZRK, 180488 ZSK, 180490 ZSK, 180486 PCK, 180485 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-09-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180488ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Marcus Garvey Apartments LSGD",
+          "community_board_s": "16",
+          "council_district_s": "4142",
+          "ulurp_number_s": "180489 ZMK, 180487 ZRK, 180488 ZSK, 180490 ZSK, 180486 PCK, 180485 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-09-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180490ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Marcus Garvey Apartments LSGD",
+          "community_board_s": "16",
+          "council_district_s": "4142",
+          "ulurp_number_s": "180489 ZMK, 180487 ZRK, 180488 ZSK, 180490 ZSK, 180486 PCK, 180485 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-09-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180486PCK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Marcus Garvey Apartments LSGD",
+          "community_board_s": "16",
+          "council_district_s": "4142",
+          "ulurp_number_s": "180489 ZMK, 180487 ZRK, 180488 ZSK, 180490 ZSK, 180486 PCK, 180485 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-09-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180485HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Marcus Garvey Apartments LSGD",
+          "community_board_s": "16",
+          "council_district_s": "4142",
+          "ulurp_number_s": "180489 ZMK, 180487 ZRK, 180488 ZSK, 180490 ZSK, 180486 PCK, 180485 HAK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-09-04T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170146PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Friends of Crown Heights 17",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "170146 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-08-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180186ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "3901 9th Avenue Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "38",
+          "ulurp_number_s": "180186 ZMK, 180187 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-08-20T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180187ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "3901 9th Avenue Rezoning",
+          "community_board_s": "12",
+          "council_district_s": "38",
+          "ulurp_number_s": "180186 ZMK, 180187 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-08-20T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180418PCK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "DOT BK Fleet Services Site Selection & Acquisition",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "180418 PCK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-08-13T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180188ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "180 Myrtle Avenue - ZR",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180188 ZRK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-08-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "160363PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Friends of Crown Heights 16 (963 Park Place)",
+          "community_board_s": "8",
+          "council_district_s": "36",
+          "ulurp_number_s": "160363 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-08-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "160331PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "PAL Arnold & Marie Schwartz Early Learn Center",
+          "community_board_s": "5",
+          "council_district_s": "42",
+          "ulurp_number_s": "160331 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-08-06T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170213ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "57 Caton Place Rezoning",
+          "community_board_s": "7",
+          "council_district_s": "39",
+          "ulurp_number_s": "170213 ZMK, 170214 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-07-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170214ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "57 Caton Place Rezoning",
+          "community_board_s": "7",
+          "council_district_s": "39",
+          "ulurp_number_s": "170213 ZMK, 170214 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-07-05T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180029ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1881-1883 McDonald Avenue Rezoning",
+          "community_board_s": "15",
+          "council_district_s": "44",
+          "ulurp_number_s": "180029 ZMK, 180030 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-07-03T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180030ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1881-1883 McDonald Avenue Rezoning",
+          "community_board_s": "15",
+          "council_district_s": "44",
+          "ulurp_number_s": "180029 ZMK, 180030 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-07-03T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170164ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "205 Park Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "170164 ZMK, 170165 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-06-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170165ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "205 Park Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "170164 ZMK, 170165 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-06-22T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180216ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "80 Flatbush Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "180216 ZMK 170217 ZRK 180218 ZSK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-06-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170217ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "80 Flatbush Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "180216 ZMK 170217 ZRK 180218 ZSK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-06-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180218ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "80 Flatbush Avenue Rezoning",
+          "community_board_s": "2",
+          "council_district_s": "33",
+          "ulurp_number_s": "180216 ZMK 170217 ZRK 180218 ZSK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-06-19T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170047ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "55-63 Summit Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "170047 ZMK, 170046 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-06-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "170046ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "55-63 Summit Street",
+          "community_board_s": "6",
+          "council_district_s": "39",
+          "ulurp_number_s": "170047 ZMK, 170046 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-06-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "150252PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "265 Marcus Garvey Boulevard",
+          "community_board_s": "3",
+          "council_district_s": "36",
+          "ulurp_number_s": "150252 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-06-15T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180256PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "NYPD Evidence Storage Erie Basin (PQ)",
+          "community_board_s": "6",
+          "council_district_s": "38",
+          "ulurp_number_s": "180256 PQK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-05-21T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180148ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1601 DeKalb Avenue Rezoning",
+          "community_board_s": "4",
+          "council_district_s": "37",
+          "ulurp_number_s": "180148 ZMK, 180149 ZRK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-04-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180149ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1601 DeKalb Avenue Rezoning",
+          "community_board_s": "4",
+          "council_district_s": "37",
+          "ulurp_number_s": "180148 ZMK, 180149 ZRK",
+          "borough_president": "Disapproved with conditions",
+          "recommendation_date": "2018-04-30T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180244HAK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1019-1029 Fulton Street UDAAP, Special Permit",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180244 HAK, 180245 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-04-26T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180245ZSK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "1019-1029 Fulton Street UDAAP, Special Permit",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180244 HAK, 180245 ZSK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-04-26T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180096ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "142-150 South Portland",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180096 ZMK, 180097 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-03-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180097ZRK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "142-150 South Portland",
+          "community_board_s": "2",
+          "council_district_s": "35",
+          "ulurp_number_s": "180096 ZMK, 180097 ZRK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-03-28T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "150253PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "St. Andrew's Community Day Care Center",
+          "community_board_s": "7",
+          "council_district_s": "38",
+          "ulurp_number_s": "150253 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-02-09T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180095ZMK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "35 Underhill Avenue Rezoning",
+          "community_board_s": "8",
+          "council_district_s": "35",
+          "ulurp_number_s": "180095 ZMK",
+          "borough_president": "Approved with conditions",
+          "recommendation_date": "2018-01-18T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "150187PQK": {
+      "recommendations": [
+        {
+          "ulurp_application_name": "Friends of Crown Heights 11",
+          "community_board_s": "9",
+          "council_district_s": "35",
+          "ulurp_number_s": "150187 PQK",
+          "borough_president": "Approved",
+          "recommendation_date": "2018-01-10T00:00:00.000"
+        }
+      ],
+      "pdfs": []
+    },
+    "180066ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-11-20T00:00:00.000",
+          "project": "172-174 East 73rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-11-20%20MBP%20Brewer%20Recommendation%20to%20CPC%20re%20C%20180066%20ZSM%20172-174%20East%2073rd%20Street_digital.pdf",
+          "ulurp_application_number": "C 180066 ZSM"
+        }
+      ]
+    },
+    "C180066ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-11-20T00:00:00.000",
+          "project": "172-174 East 73rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-11-20%20MBP%20Brewer%20Recommendation%20to%20CPC%20re%20C%20180066%20ZSM%20172-174%20East%2073rd%20Street_digital.pdf",
+          "ulurp_application_number": "C 180066 ZSM"
+        }
+      ]
+    },
+    "180023ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-11-20T00:00:00.000",
+          "project": "350 East 88th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-11-20%20MBP%20Brewer%20Recommendation%20to%20CPC%20re%20C%20180023%20ZSM%20350%20E%2088th%20Street_digital.pdf",
+          "ulurp_application_number": "C 180023 ZSM"
+        }
+      ]
+    },
+    "C180023ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-11-20T00:00:00.000",
+          "project": "350 East 88th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-11-20%20MBP%20Brewer%20Recommendation%20to%20CPC%20re%20C%20180023%20ZSM%20350%20E%2088th%20Street_digital.pdf",
+          "ulurp_application_number": "C 180023 ZSM"
+        }
+      ]
+    },
+    "150349PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-11-09T00:00:00.000",
+          "project": "LSSNY Center 14",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-20-11%20C%20150349%20PQM%20LSSNY%20Center%2014.pdf",
+          "ulurp_application_number": "C 150349 PQM"
+        }
+      ]
+    },
+    "C150349PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-11-09T00:00:00.000",
+          "project": "LSSNY Center 14",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-20-11%20C%20150349%20PQM%20LSSNY%20Center%2014.pdf",
+          "ulurp_application_number": "C 150349 PQM"
+        }
+      ]
+    },
+    "160207PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-31T00:00:00.000",
+          "project": "Escuela Hispana Montessori 2",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/C%20160207%20PQM%20Escuela%20Hispana%20Montessori%202_final.pdf",
+          "ulurp_application_number": "C 160207 PQM"
+        }
+      ]
+    },
+    "C160207PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-31T00:00:00.000",
+          "project": "Escuela Hispana Montessori 2",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/C%20160207%20PQM%20Escuela%20Hispana%20Montessori%202_final.pdf",
+          "ulurp_application_number": "C 160207 PQM"
+        }
+      ]
+    },
+    "170452ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-25T00:00:00.000",
+          "project": "19 East 72nd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/C%20170452%20ZSM%2019%20E%2072nd%20Street_digital.pdf",
+          "ulurp_application_number": "C 170452 ZSM"
+        }
+      ]
+    },
+    "C170452ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-25T00:00:00.000",
+          "project": "19 East 72nd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/C%20170452%20ZSM%2019%20E%2072nd%20Street_digital.pdf",
+          "ulurp_application_number": "C 170452 ZSM"
+        }
+      ]
+    },
+    "170464ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-21T00:00:00.000",
+          "project": "449 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/C%20170464%20ZSM%20449%20Broadway_digital.pdf",
+          "ulurp_application_number": "C 170464 ZSM"
+        }
+      ]
+    },
+    "C170464ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-21T00:00:00.000",
+          "project": "449 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/C%20170464%20ZSM%20449%20Broadway_digital.pdf",
+          "ulurp_application_number": "C 170464 ZSM"
+        }
+      ]
+    },
+    "170361ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "C170361ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170362ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "N170362ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170363HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "C170363HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170364PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "C170364PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170365ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "C170365ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170366ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "C170366ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170367ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "C170367ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170368ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "N170368ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-08-02T00:00:00.000",
+          "project": "Sendero Verde - East 111th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-08-02%20MBP%20Recommendation%20re%20Nos%20%20C%20170361%20ZMM%20et%20al%20-%20-%20Sendero%20Verde%20%20East%20111th%20Street.pdf",
+          "ulurp_application_number": "C 170361 ZMM, N 170362 ZRM, C 170363 HAM, C170364 PQM, C 170365 ZSM, C 170365 ZSM, C 170366 ZSM, C 170367 ZSM, N 170368 ZCM"
+        }
+      ]
+    },
+    "170358ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "1970-01-01T11:55:49.000",
+          "project": "East Harlem Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/355410421-Final-Manhattan-B-P-Recommendation-Re-Nos-C-170358-ZMM-Et-Al-East-Harlem-Rezoning.pdf",
+          "ulurp_application_number": "C 170358 ZMM, N 170359 ZRM, C 170360 HAM"
+        }
+      ]
+    },
+    "C170358ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "1970-01-01T11:55:49.000",
+          "project": "East Harlem Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/355410421-Final-Manhattan-B-P-Recommendation-Re-Nos-C-170358-ZMM-Et-Al-East-Harlem-Rezoning.pdf",
+          "ulurp_application_number": "C 170358 ZMM, N 170359 ZRM, C 170360 HAM"
+        }
+      ]
+    },
+    "170359ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "1970-01-01T11:55:49.000",
+          "project": "East Harlem Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/355410421-Final-Manhattan-B-P-Recommendation-Re-Nos-C-170358-ZMM-Et-Al-East-Harlem-Rezoning.pdf",
+          "ulurp_application_number": "C 170358 ZMM, N 170359 ZRM, C 170360 HAM"
+        }
+      ]
+    },
+    "N170359ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "1970-01-01T11:55:49.000",
+          "project": "East Harlem Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/355410421-Final-Manhattan-B-P-Recommendation-Re-Nos-C-170358-ZMM-Et-Al-East-Harlem-Rezoning.pdf",
+          "ulurp_application_number": "C 170358 ZMM, N 170359 ZRM, C 170360 HAM"
+        }
+      ]
+    },
+    "170360HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "1970-01-01T11:55:49.000",
+          "project": "East Harlem Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/355410421-Final-Manhattan-B-P-Recommendation-Re-Nos-C-170358-ZMM-Et-Al-East-Harlem-Rezoning.pdf",
+          "ulurp_application_number": "C 170358 ZMM, N 170359 ZRM, C 170360 HAM"
+        }
+      ]
+    },
+    "C170360HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "1970-01-01T11:55:49.000",
+          "project": "East Harlem Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/355410421-Final-Manhattan-B-P-Recommendation-Re-Nos-C-170358-ZMM-Et-Al-East-Harlem-Rezoning.pdf",
+          "ulurp_application_number": "C 170358 ZMM, N 170359 ZRM, C 170360 HAM"
+        }
+      ]
+    },
+    "170382ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-07-20T00:00:00.000",
+          "project": "SoHo Tower",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-07-20%20MBP%20Brewer%20to%20DCP%20re%20C%20170382%20ZSM%20-%20SoHo%20Tower_digital.pdf",
+          "ulurp_application_number": "C 170382 ZSM, N 170383 ZCM"
+        }
+      ]
+    },
+    "C170382ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-07-20T00:00:00.000",
+          "project": "SoHo Tower",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-07-20%20MBP%20Brewer%20to%20DCP%20re%20C%20170382%20ZSM%20-%20SoHo%20Tower_digital.pdf",
+          "ulurp_application_number": "C 170382 ZSM, N 170383 ZCM"
+        }
+      ]
+    },
+    "170383ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-07-20T00:00:00.000",
+          "project": "SoHo Tower",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-07-20%20MBP%20Brewer%20to%20DCP%20re%20C%20170382%20ZSM%20-%20SoHo%20Tower_digital.pdf",
+          "ulurp_application_number": "C 170382 ZSM, N 170383 ZCM"
+        }
+      ]
+    },
+    "N170383ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-07-20T00:00:00.000",
+          "project": "SoHo Tower",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-07-20%20MBP%20Brewer%20to%20DCP%20re%20C%20170382%20ZSM%20-%20SoHo%20Tower_digital.pdf",
+          "ulurp_application_number": "C 170382 ZSM, N 170383 ZCM"
+        }
+      ]
+    },
+    "170282ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-29T00:00:00.000",
+          "project": "East River Fifties/Sutton Place Text Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-29%20MBPO%20Recommendation%20N%20170282%20ZRM%20East%20River%20Fifties%20Alliance%20Sutton%20Place%20Text%20Amendment%20FINAL.pdf",
+          "ulurp_application_number": "N 170282 ZRM"
+        }
+      ]
+    },
+    "N170282ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-29T00:00:00.000",
+          "project": "East River Fifties/Sutton Place Text Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-29%20MBPO%20Recommendation%20N%20170282%20ZRM%20East%20River%20Fifties%20Alliance%20Sutton%20Place%20Text%20Amendment%20FINAL.pdf",
+          "ulurp_application_number": "N 170282 ZRM"
+        }
+      ]
+    },
+    "170066PCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-29T00:00:00.000",
+          "project": "NYPD 107th Street Parking Facility",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-29%20MBP%20Recommendation%20C%20170066%20PCM%20NYPD%20107th%20Street%20Parking%20FINAL.pdf",
+          "ulurp_application_number": "C 170066 PCM"
+        }
+      ]
+    },
+    "C170066PCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-29T00:00:00.000",
+          "project": "NYPD 107th Street Parking Facility",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-29%20MBP%20Recommendation%20C%20170066%20PCM%20NYPD%20107th%20Street%20Parking%20FINAL.pdf",
+          "ulurp_application_number": "C 170066 PCM"
+        }
+      ]
+    },
+    "170275ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-02T00:00:00.000",
+          "project": "East 126th Street Depot Harlem Burial Site",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-02%20MBP%20Recommendation%20re%20C%20170275%20ZMM%20et%20al%20-%20East%20126th%20Street%20....pdf",
+          "ulurp_application_number": "170275 ZMM, 170278 PPM, 170093 MMM"
+        }
+      ]
+    },
+    "170278PPM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-02T00:00:00.000",
+          "project": "East 126th Street Depot Harlem Burial Site",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-02%20MBP%20Recommendation%20re%20C%20170275%20ZMM%20et%20al%20-%20East%20126th%20Street%20....pdf",
+          "ulurp_application_number": "170275 ZMM, 170278 PPM, 170093 MMM"
+        }
+      ]
+    },
+    "170093MMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-06-02T00:00:00.000",
+          "project": "East 126th Street Depot Harlem Burial Site",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-06-02%20MBP%20Recommendation%20re%20C%20170275%20ZMM%20et%20al%20-%20East%20126th%20Street%20....pdf",
+          "ulurp_application_number": "170275 ZMM, 170278 PPM, 170093 MMM"
+        }
+      ]
+    },
+    "170192ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-22T00:00:00.000",
+          "project": "462 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-19%20C%20170192%20ZSM%20462%20Broadway_digital.pdf",
+          "ulurp_application_number": "C 170192 ZSM"
+        }
+      ]
+    },
+    "C170192ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-22T00:00:00.000",
+          "project": "462 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-19%20C%20170192%20ZSM%20462%20Broadway_digital.pdf",
+          "ulurp_application_number": "C 170192 ZSM"
+        }
+      ]
+    },
+    "170158ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-22T00:00:00.000",
+          "project": "34th Street Heliport",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-22%20MBP%20Recommendation%20re%20_C170158ZSM-34thStreetHeliport.pdf",
+          "ulurp_application_number": "C 170158 ZSM"
+        }
+      ]
+    },
+    "C170158ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-22T00:00:00.000",
+          "project": "34th Street Heliport",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-22%20MBP%20Recommendation%20re%20_C170158ZSM-34thStreetHeliport.pdf",
+          "ulurp_application_number": "C 170158 ZSM"
+        }
+      ]
+    },
+    "170280ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-19T00:00:00.000",
+          "project": "62 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-19%20C%20170280%20ZSM%2062%20Greene%20Street_scan.pdf",
+          "ulurp_application_number": "C 170280 ZSM"
+        }
+      ]
+    },
+    "C170280ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-19T00:00:00.000",
+          "project": "62 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-19%20C%20170280%20ZSM%2062%20Greene%20Street_scan.pdf",
+          "ulurp_application_number": "C 170280 ZSM"
+        }
+      ]
+    },
+    "170227ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-01T00:00:00.000",
+          "project": "ECF East 96 Street Project",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-1%20MBP%20Recommendation%20re%20C%20170226%20ZMM%20et%20al%20-%20ECF%20East%2096%20Street%20Project.pdf",
+          "ulurp_application_number": "C 17066 ZMM, N 170227 ZRM, C 170228 ZSM, C 170229 ZSM"
+        }
+      ]
+    },
+    "N170227ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-01T00:00:00.000",
+          "project": "ECF East 96 Street Project",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-1%20MBP%20Recommendation%20re%20C%20170226%20ZMM%20et%20al%20-%20ECF%20East%2096%20Street%20Project.pdf",
+          "ulurp_application_number": "C 17066 ZMM, N 170227 ZRM, C 170228 ZSM, C 170229 ZSM"
+        }
+      ]
+    },
+    "170228ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-01T00:00:00.000",
+          "project": "ECF East 96 Street Project",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-1%20MBP%20Recommendation%20re%20C%20170226%20ZMM%20et%20al%20-%20ECF%20East%2096%20Street%20Project.pdf",
+          "ulurp_application_number": "C 17066 ZMM, N 170227 ZRM, C 170228 ZSM, C 170229 ZSM"
+        }
+      ]
+    },
+    "C170228ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-01T00:00:00.000",
+          "project": "ECF East 96 Street Project",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-1%20MBP%20Recommendation%20re%20C%20170226%20ZMM%20et%20al%20-%20ECF%20East%2096%20Street%20Project.pdf",
+          "ulurp_application_number": "C 17066 ZMM, N 170227 ZRM, C 170228 ZSM, C 170229 ZSM"
+        }
+      ]
+    },
+    "170229ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-01T00:00:00.000",
+          "project": "ECF East 96 Street Project",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-1%20MBP%20Recommendation%20re%20C%20170226%20ZMM%20et%20al%20-%20ECF%20East%2096%20Street%20Project.pdf",
+          "ulurp_application_number": "C 17066 ZMM, N 170227 ZRM, C 170228 ZSM, C 170229 ZSM"
+        }
+      ]
+    },
+    "C170229ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-05-01T00:00:00.000",
+          "project": "ECF East 96 Street Project",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-05-1%20MBP%20Recommendation%20re%20C%20170226%20ZMM%20et%20al%20-%20ECF%20East%2096%20Street%20Project.pdf",
+          "ulurp_application_number": "C 17066 ZMM, N 170227 ZRM, C 170228 ZSM, C 170229 ZSM"
+        }
+      ]
+    },
+    "170187ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-04-13T00:00:00.000",
+          "project": "East Midtown Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-04-12%20N%20170187%20N%20170186A%20Greater%20East%20Midtown_DIGITAL.pdf",
+          "ulurp_application_number": " N 170186A ZRM, N 170187 ZMM"
+        }
+      ]
+    },
+    "N170187ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-04-13T00:00:00.000",
+          "project": "East Midtown Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-04-12%20N%20170187%20N%20170186A%20Greater%20East%20Midtown_DIGITAL.pdf",
+          "ulurp_application_number": " N 170186A ZRM, N 170187 ZMM"
+        }
+      ]
+    },
+    "170137ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-20T00:00:00.000",
+          "project": "10 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017%20-%2003%20-%2020%20C%20170137%20ZSM%2010%20Greene%20Street_scan.pdf",
+          "ulurp_application_number": "C 170137 ZSM"
+        }
+      ]
+    },
+    "C170137ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-20T00:00:00.000",
+          "project": "10 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017%20-%2003%20-%2020%20C%20170137%20ZSM%2010%20Greene%20Street_scan.pdf",
+          "ulurp_application_number": "C 170137 ZSM"
+        }
+      ]
+    },
+    "170236ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-17T00:00:00.000",
+          "project": "361 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-03-17%20C%20170236%20ZSM%20361%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 170236 ZSM"
+        }
+      ]
+    },
+    "C170236ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-17T00:00:00.000",
+          "project": "361 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-03-17%20C%20170236%20ZSM%20361%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 170236 ZSM"
+        }
+      ]
+    },
+    "170235ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-17T00:00:00.000",
+          "project": "359 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-03-17%20C%20170235%20ZSM%20359%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 170235 ZSM"
+        }
+      ]
+    },
+    "C170235ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-17T00:00:00.000",
+          "project": "359 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-03-17%20C%20170235%20ZSM%20359%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 170235 ZSM"
+        }
+      ]
+    },
+    "170237ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-17T00:00:00.000",
+          "project": "357 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-03-17%20C%201701237%20ZSM%20357%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 170237 ZSM"
+        }
+      ]
+    },
+    "C170237ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2017-03-17T00:00:00.000",
+          "project": "357 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2017-03-17%20C%201701237%20ZSM%20357%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 170237 ZSM"
+        }
+      ]
+    },
+    "170081ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "C170081ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "170082ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "N170082ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "170085HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "C170085HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "170083ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "N170083ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "170084ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "N170084ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-28T00:00:00.000",
+          "project": "The Frederick",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-28%20MBP%20Recommendation%20re%20C%20170081%20ZMM%20et%20al%20-%20The%20Frederick.pdf",
+          "ulurp_application_number": "C 170081 ZMM, N 170082 ZRM, C 170085 HAM, N 170083 ZAM,N 170084 ZCM"
+        }
+      ]
+    },
+    "170048HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Leroy",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C170048HAM%20-%20The%20Leroy.pdf",
+          "ulurp_application_number": "C 170048 HAM, C 170049 PQM"
+        }
+      ]
+    },
+    "C170048HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Leroy",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C170048HAM%20-%20The%20Leroy.pdf",
+          "ulurp_application_number": "C 170048 HAM, C 170049 PQM"
+        }
+      ]
+    },
+    "170049PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Leroy",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C170048HAM%20-%20The%20Leroy.pdf",
+          "ulurp_application_number": "C 170048 HAM, C 170049 PQM"
+        }
+      ]
+    },
+    "C170049PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Leroy",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C170048HAM%20-%20The%20Leroy.pdf",
+          "ulurp_application_number": "C 170048 HAM, C 170049 PQM"
+        }
+      ]
+    },
+    "170050ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Robeson",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C%20170050%20ZMM%20et%20al%20-%20The%20Robeson.pdf",
+          "ulurp_application_number": "C 170050 ZMM, C 170051 HAM, N 170052 ZRM"
+        }
+      ]
+    },
+    "C170050ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Robeson",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C%20170050%20ZMM%20et%20al%20-%20The%20Robeson.pdf",
+          "ulurp_application_number": "C 170050 ZMM, C 170051 HAM, N 170052 ZRM"
+        }
+      ]
+    },
+    "170051HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Robeson",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C%20170050%20ZMM%20et%20al%20-%20The%20Robeson.pdf",
+          "ulurp_application_number": "C 170050 ZMM, C 170051 HAM, N 170052 ZRM"
+        }
+      ]
+    },
+    "C170051HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Robeson",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C%20170050%20ZMM%20et%20al%20-%20The%20Robeson.pdf",
+          "ulurp_application_number": "C 170050 ZMM, C 170051 HAM, N 170052 ZRM"
+        }
+      ]
+    },
+    "170052ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Robeson",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C%20170050%20ZMM%20et%20al%20-%20The%20Robeson.pdf",
+          "ulurp_application_number": "C 170050 ZMM, C 170051 HAM, N 170052 ZRM"
+        }
+      ]
+    },
+    "N170052ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-12-21T00:00:00.000",
+          "project": "The Robeson",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-12-21%20MBP%20Recommendation%20Re%20C%20170050%20ZMM%20et%20al%20-%20The%20Robeson.pdf",
+          "ulurp_application_number": "C 170050 ZMM, C 170051 HAM, N 170052 ZRM"
+        }
+      ]
+    },
+    "160275ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-11-02T00:00:00.000",
+          "project": "532 West 20th Street",
+          "ulurp_application_number": "C 160275 ZSM"
+        }
+      ]
+    },
+    "C160275ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-11-02T00:00:00.000",
+          "project": "532 West 20th Street",
+          "ulurp_application_number": "C 160275 ZSM"
+        }
+      ]
+    },
+    "160336ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "C160336ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "160337ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "N160337ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "160338ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "C160338ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "160339ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "C160339ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "160340HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "C160340HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-09-16T00:00:00.000",
+          "project": "Lexington Gardens II",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-09-16%20C%20160338%20ZSM%20et%20al%20Lexington%20Gardens%20II_digital.pdf",
+          "ulurp_application_number": "C 160336 ZMM,  N 160337 ZRM,C 160338 ZSM,  C 160339 ZSM,C 160340 HAM"
+        }
+      ]
+    },
+    "160213ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-22T00:00:00.000",
+          "project": "1290 Madison Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-22%20MBP%20Recommendation%20re%20C%20160213%20ZSM%201290%20Madison_FINALDCP.PDF",
+          "ulurp_application_number": "C 160213 ZSM"
+        }
+      ]
+    },
+    "C160213ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-22T00:00:00.000",
+          "project": "1290 Madison Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-22%20MBP%20Recommendation%20re%20C%20160213%20ZSM%201290%20Madison_FINALDCP.PDF",
+          "ulurp_application_number": "C 160213 ZSM"
+        }
+      ]
+    },
+    "160254ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Theater Subdistrict Fund Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20Theater%20Subdistrict%20Text%20Amendment%20FINAL.pdf",
+          "ulurp_application_number": "N 160254 ZRM"
+        }
+      ]
+    },
+    "N160254ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Theater Subdistrict Fund Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20Theater%20Subdistrict%20Text%20Amendment%20FINAL.pdf",
+          "ulurp_application_number": "N 160254 ZRM"
+        }
+      ]
+    },
+    "160194ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-18T00:00:00.000",
+          "project": "1968 Second Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-8-17%20160194%20ZMM%201968%20Second%20Avenue.pdf",
+          "ulurp_application_number": "C 160194 ZMM"
+        }
+      ]
+    },
+    "C160194ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-18T00:00:00.000",
+          "project": "1968 Second Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-8-17%20160194%20ZMM%201968%20Second%20Avenue.pdf",
+          "ulurp_application_number": "C 160194 ZMM"
+        }
+      ]
+    },
+    "160308ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "N160308ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160309ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "C160309ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160310ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "C160310ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160311ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "C160311ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160312ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "C160312ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160313ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "C160313ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160314ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "N160314ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160315ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "N160315ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160316ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "N160316ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160317ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "N160317ZCM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-08-16T00:00:00.000",
+          "project": "Pier 40",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-08-16%20MBP%20Recommendation%20re%20HRP%20550%20Washington%20Street%20C%20160310%20ZSM%20et%20al_digital.pdf",
+          "ulurp_application_number": "N 160308 ZRM,  C 160309 ZMM,C 160310 ZSM,  C 160311 ZSM,C 160312 ZSM,  C 160313 ZSM,N 160314 ZAM,  N 160315 ZAM,N 160316 ZAM,  N 160317 ZCM"
+        }
+      ]
+    },
+    "160199ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-30T00:00:00.000",
+          "project": "248 Lafayette Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-30%20C%20160199%20ZSM%20248%20Lafayette%20Street.pdf",
+          "ulurp_application_number": "C 160199 ZSM"
+        }
+      ]
+    },
+    "C160199ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-30T00:00:00.000",
+          "project": "248 Lafayette Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-30%20C%20160199%20ZSM%20248%20Lafayette%20Street.pdf",
+          "ulurp_application_number": "C 160199 ZSM"
+        }
+      ]
+    },
+    "160147ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-18T00:00:00.000",
+          "project": "217 West 29th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-18%20MBP%20Recommendation%20N%20160147%20ZRM_C%20160148%20ZSM_N%20160149%20ZAM_217%20W29th%20St_DIGITAL.pdf",
+          "ulurp_application_number": "N 160147 ZRM,  C 160148 ZSM,N 160149 ZAM"
+        }
+      ]
+    },
+    "N160147ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-18T00:00:00.000",
+          "project": "217 West 29th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-18%20MBP%20Recommendation%20N%20160147%20ZRM_C%20160148%20ZSM_N%20160149%20ZAM_217%20W29th%20St_DIGITAL.pdf",
+          "ulurp_application_number": "N 160147 ZRM,  C 160148 ZSM,N 160149 ZAM"
+        }
+      ]
+    },
+    "160148ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-18T00:00:00.000",
+          "project": "217 West 29th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-18%20MBP%20Recommendation%20N%20160147%20ZRM_C%20160148%20ZSM_N%20160149%20ZAM_217%20W29th%20St_DIGITAL.pdf",
+          "ulurp_application_number": "N 160147 ZRM,  C 160148 ZSM,N 160149 ZAM"
+        }
+      ]
+    },
+    "C160148ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-18T00:00:00.000",
+          "project": "217 West 29th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-18%20MBP%20Recommendation%20N%20160147%20ZRM_C%20160148%20ZSM_N%20160149%20ZAM_217%20W29th%20St_DIGITAL.pdf",
+          "ulurp_application_number": "N 160147 ZRM,  C 160148 ZSM,N 160149 ZAM"
+        }
+      ]
+    },
+    "160149ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-18T00:00:00.000",
+          "project": "217 West 29th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-18%20MBP%20Recommendation%20N%20160147%20ZRM_C%20160148%20ZSM_N%20160149%20ZAM_217%20W29th%20St_DIGITAL.pdf",
+          "ulurp_application_number": "N 160147 ZRM,  C 160148 ZSM,N 160149 ZAM"
+        }
+      ]
+    },
+    "N160149ZAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-07-18T00:00:00.000",
+          "project": "217 West 29th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-07-18%20MBP%20Recommendation%20N%20160147%20ZRM_C%20160148%20ZSM_N%20160149%20ZAM_217%20W29th%20St_DIGITAL.pdf",
+          "ulurp_application_number": "N 160147 ZRM,  C 160148 ZSM,N 160149 ZAM"
+        }
+      ]
+    },
+    "160082ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-06-15T00:00:00.000",
+          "project": "42 West 18th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-06-15%20MBP%20Recommendation%20on%20C%20160082%20ZSM_%20Adorama_DIGITAL.pdf",
+          "ulurp_application_number": "C 160082 ZSM"
+        }
+      ]
+    },
+    "C160082ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-06-15T00:00:00.000",
+          "project": "42 West 18th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-06-15%20MBP%20Recommendation%20on%20C%20160082%20ZSM_%20Adorama_DIGITAL.pdf",
+          "ulurp_application_number": "C 160082 ZSM"
+        }
+      ]
+    },
+    "160137ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-06-01T00:00:00.000",
+          "project": "East Houston Street Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-06-01%20C%20160137%20ZMM%20E%20Houston%20Rezoning_digital.pdf",
+          "ulurp_application_number": "C 160137 ZMM"
+        }
+      ]
+    },
+    "C160137ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-06-01T00:00:00.000",
+          "project": "East Houston Street Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-06-01%20C%20160137%20ZMM%20E%20Houston%20Rezoning_digital.pdf",
+          "ulurp_application_number": "C 160137 ZMM"
+        }
+      ]
+    },
+    "160145ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-05-31T00:00:00.000",
+          "project": "70 Vestry Street Accessory Garage",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-05-31%20C%20160145%20ZSM%2070%20Vestry%20Street%20Accessory%20Garage%20BP%20recommendation.pdf",
+          "ulurp_application_number": "C 160145 ZSM"
+        }
+      ]
+    },
+    "C160145ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-05-31T00:00:00.000",
+          "project": "70 Vestry Street Accessory Garage",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-05-31%20C%20160145%20ZSM%2070%20Vestry%20Street%20Accessory%20Garage%20BP%20recommendation.pdf",
+          "ulurp_application_number": "C 160145 ZSM"
+        }
+      ]
+    },
+    "150438ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-05-05T00:00:00.000",
+          "project": "4650 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-05-05%20MBP%20Recommendation%20re%20Broadway%20Sherman%20Rezoning%20C%20150438%20ZMM%20and%20N%20160154%20ZRM_SCAN.pdf",
+          "ulurp_application_number": "C 150438 ZMM,  N 160164 ZRM"
+        }
+      ]
+    },
+    "C150438ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-05-05T00:00:00.000",
+          "project": "4650 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-05-05%20MBP%20Recommendation%20re%20Broadway%20Sherman%20Rezoning%20C%20150438%20ZMM%20and%20N%20160154%20ZRM_SCAN.pdf",
+          "ulurp_application_number": "C 150438 ZMM,  N 160164 ZRM"
+        }
+      ]
+    },
+    "160164ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-05-05T00:00:00.000",
+          "project": "4650 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-05-05%20MBP%20Recommendation%20re%20Broadway%20Sherman%20Rezoning%20C%20150438%20ZMM%20and%20N%20160154%20ZRM_SCAN.pdf",
+          "ulurp_application_number": "C 150438 ZMM,  N 160164 ZRM"
+        }
+      ]
+    },
+    "N160164ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-05-05T00:00:00.000",
+          "project": "4650 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-05-05%20MBP%20Recommendation%20re%20Broadway%20Sherman%20Rezoning%20C%20150438%20ZMM%20and%20N%20160154%20ZRM_SCAN.pdf",
+          "ulurp_application_number": "C 150438 ZMM,  N 160164 ZRM"
+        }
+      ]
+    },
+    "160166ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-03-25T00:00:00.000",
+          "project": "Water Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-03-25%20MBP%20Recommendation%20re%20Water%20Street%20Upgrades%20N%20160166%20ZRM_DIGITAL.pdf",
+          "ulurp_application_number": "N 160166 ZRM"
+        }
+      ]
+    },
+    "N160166ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2016-03-25T00:00:00.000",
+          "project": "Water Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2016-03-25%20MBP%20Recommendation%20re%20Water%20Street%20Upgrades%20N%20160166%20ZRM_DIGITAL.pdf",
+          "ulurp_application_number": "N 160166 ZRM"
+        }
+      ]
+    },
+    "160049ZRY": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-12-11T00:00:00.000",
+          "project": "Zoning for Quality and Affordability",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-12-11%20MBP%20recommendation%20N%20160049%20ZRY%20ZQA%20FINAL%20DIGITAL.pdf",
+          "ulurp_application_number": "N 160049 ZRY"
+        }
+      ]
+    },
+    "N160049ZRY": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-12-11T00:00:00.000",
+          "project": "Zoning for Quality and Affordability",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-12-11%20MBP%20recommendation%20N%20160049%20ZRY%20ZQA%20FINAL%20DIGITAL.pdf",
+          "ulurp_application_number": "N 160049 ZRY"
+        }
+      ]
+    },
+    "160051ZRY": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-12-11T00:00:00.000",
+          "project": "Mandatory Inclusionary Housing",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-12-11%20MBP%20recommendation%20N%20160051%20ZRY%20MIH%20FINAL%20DIGITAL.pdf",
+          "ulurp_application_number": "N 160051 ZRY"
+        }
+      ]
+    },
+    "N160051ZRY": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-12-11T00:00:00.000",
+          "project": "Mandatory Inclusionary Housing",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-12-11%20MBP%20recommendation%20N%20160051%20ZRY%20MIH%20FINAL%20DIGITAL.pdf",
+          "ulurp_application_number": "N 160051 ZRY"
+        }
+      ]
+    },
+    "150358ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "323 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_C%20150358%20ZSM_323%20Canal%20Street.pdf",
+          "ulurp_application_number": "C 150358 ZSM"
+        }
+      ]
+    },
+    "C150358ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "323 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_C%20150358%20ZSM_323%20Canal%20Street.pdf",
+          "ulurp_application_number": "C 150358 ZSM"
+        }
+      ]
+    },
+    "150384ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "321 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_C%20150384%20ZSM_%20321%20Canal%20Street.pdf",
+          "ulurp_application_number": "C 150384 ZSM"
+        }
+      ]
+    },
+    "C150384ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "321 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_C%20150384%20ZSM_%20321%20Canal%20Street.pdf",
+          "ulurp_application_number": "C 150384 ZSM"
+        }
+      ]
+    },
+    "150416ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "150 Wooster Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_N%20150416%20ZRM%20C%20150417%20ZSM%20and%20C%20150418%20ZSM_%20150%20Wooster.pdf",
+          "ulurp_application_number": "N 150416 ZRM,  C 150417 ZSM,C 150418 ZSM"
+        }
+      ]
+    },
+    "N150416ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "150 Wooster Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_N%20150416%20ZRM%20C%20150417%20ZSM%20and%20C%20150418%20ZSM_%20150%20Wooster.pdf",
+          "ulurp_application_number": "N 150416 ZRM,  C 150417 ZSM,C 150418 ZSM"
+        }
+      ]
+    },
+    "150417ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "150 Wooster Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_N%20150416%20ZRM%20C%20150417%20ZSM%20and%20C%20150418%20ZSM_%20150%20Wooster.pdf",
+          "ulurp_application_number": "N 150416 ZRM,  C 150417 ZSM,C 150418 ZSM"
+        }
+      ]
+    },
+    "C150417ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "150 Wooster Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_N%20150416%20ZRM%20C%20150417%20ZSM%20and%20C%20150418%20ZSM_%20150%20Wooster.pdf",
+          "ulurp_application_number": "N 150416 ZRM,  C 150417 ZSM,C 150418 ZSM"
+        }
+      ]
+    },
+    "150418ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "150 Wooster Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_N%20150416%20ZRM%20C%20150417%20ZSM%20and%20C%20150418%20ZSM_%20150%20Wooster.pdf",
+          "ulurp_application_number": "N 150416 ZRM,  C 150417 ZSM,C 150418 ZSM"
+        }
+      ]
+    },
+    "C150418ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-11-24T00:00:00.000",
+          "project": "150 Wooster Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-11-24_N%20150416%20ZRM%20C%20150417%20ZSM%20and%20C%20150418%20ZSM_%20150%20Wooster.pdf",
+          "ulurp_application_number": "N 150416 ZRM,  C 150417 ZSM,C 150418 ZSM"
+        }
+      ]
+    },
+    "150333ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-08-27T00:00:00.000",
+          "project": "357 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-08-27_%20C%20150333%20ZSM_357%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 150333 ZSM"
+        }
+      ]
+    },
+    "C150333ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-08-27T00:00:00.000",
+          "project": "357 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-08-27_%20C%20150333%20ZSM_357%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 150333 ZSM"
+        }
+      ]
+    },
+    "150334ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-08-27T00:00:00.000",
+          "project": "359 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-08-27%20C%20150334%20ZSM%20359%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 150334 ZSM"
+        }
+      ]
+    },
+    "C150334ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-08-27T00:00:00.000",
+          "project": "359 Canal Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-08-27%20C%20150334%20ZSM%20359%20Canal%20Street_digital.pdf",
+          "ulurp_application_number": "C 150334 ZSM"
+        }
+      ]
+    },
+    "150337ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-08-27T00:00:00.000",
+          "project": "449 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-08-27%20C%20150337%20ZSM%20449%20Broadway_digital.pdf",
+          "ulurp_application_number": "C 150337 ZSM"
+        }
+      ]
+    },
+    "C150337ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-08-27T00:00:00.000",
+          "project": "449 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-08-27%20C%20150337%20ZSM%20449%20Broadway_digital.pdf",
+          "ulurp_application_number": "C 150337 ZSM"
+        }
+      ]
+    },
+    "150147ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-27T00:00:00.000",
+          "project": "520 West 28th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-27%20C%20150147%20ZSM_520%20West%2028th%20Street.pdf",
+          "ulurp_application_number": "C 150147 ZSM"
+        }
+      ]
+    },
+    "C150147ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-27T00:00:00.000",
+          "project": "520 West 28th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-27%20C%20150147%20ZSM_520%20West%2028th%20Street.pdf",
+          "ulurp_application_number": "C 150147 ZSM"
+        }
+      ]
+    },
+    "150203MMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-26T00:00:00.000",
+          "project": "76 Greenwich Avenue / St. Vincent’s Park",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-26%20C%20150203%20MMM%20N%20150237%20ZRM%20St%20Vincents%20Park.pdf",
+          "ulurp_application_number": "C 150203 MMM,  N 150237 ZRM"
+        }
+      ]
+    },
+    "C150203MMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-26T00:00:00.000",
+          "project": "76 Greenwich Avenue / St. Vincent’s Park",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-26%20C%20150203%20MMM%20N%20150237%20ZRM%20St%20Vincents%20Park.pdf",
+          "ulurp_application_number": "C 150203 MMM,  N 150237 ZRM"
+        }
+      ]
+    },
+    "150237ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-26T00:00:00.000",
+          "project": "76 Greenwich Avenue / St. Vincent’s Park",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-26%20C%20150203%20MMM%20N%20150237%20ZRM%20St%20Vincents%20Park.pdf",
+          "ulurp_application_number": "C 150203 MMM,  N 150237 ZRM"
+        }
+      ]
+    },
+    "N150237ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-26T00:00:00.000",
+          "project": "76 Greenwich Avenue / St. Vincent’s Park",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-26%20C%20150203%20MMM%20N%20150237%20ZRM%20St%20Vincents%20Park.pdf",
+          "ulurp_application_number": "C 150203 MMM,  N 150237 ZRM"
+        }
+      ]
+    },
+    "150248ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-18T00:00:00.000",
+          "project": "Hospital for Special Surgery West Wing Addition",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-18%20C%20150248%20ZSM%20Hospital%20for%20Special%20Surgery.pdf",
+          "ulurp_application_number": "C 150248 ZSM"
+        }
+      ]
+    },
+    "C150248ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-18T00:00:00.000",
+          "project": "Hospital for Special Surgery West Wing Addition",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-05-18%20C%20150248%20ZSM%20Hospital%20for%20Special%20Surgery.pdf",
+          "ulurp_application_number": "C 150248 ZSM"
+        }
+      ]
+    },
+    "150121PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-13T00:00:00.000",
+          "project": "La Promesa, 108-110 West 146th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/150121_PQM_150122_PQM_108-110_W_146_Street.pdf",
+          "ulurp_application_number": "150121 PQM,  150122 PQM"
+        },
+        {
+          "date": "2015-03-10T00:00:00.000",
+          "project": "Early Life Center 11 / A. Phillip Randolph Senior Center",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-10%20150121_PQM_150122_PQM_108-110_W_146_Street.pdf",
+          "ulurp_application_number": "150121 PQM,  150122 PQM"
+        }
+      ]
+    },
+    "150122PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-05-13T00:00:00.000",
+          "project": "La Promesa, 108-110 West 146th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/150121_PQM_150122_PQM_108-110_W_146_Street.pdf",
+          "ulurp_application_number": "150121 PQM,  150122 PQM"
+        },
+        {
+          "date": "2015-03-10T00:00:00.000",
+          "project": "Early Life Center 11 / A. Phillip Randolph Senior Center",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-10%20150121_PQM_150122_PQM_108-110_W_146_Street.pdf",
+          "ulurp_application_number": "150121 PQM,  150122 PQM"
+        }
+      ]
+    },
+    "150146ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-04-30T00:00:00.000",
+          "project": "41 Great Jones Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-04-30%20C%20150146%20ZSM%2041%20Great%20Jones%20Street.pdf",
+          "ulurp_application_number": "C 150146 ZSM"
+        }
+      ]
+    },
+    "C150146ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-04-30T00:00:00.000",
+          "project": "41 Great Jones Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-04-30%20C%20150146%20ZSM%2041%20Great%20Jones%20Street.pdf",
+          "ulurp_application_number": "C 150146 ZSM"
+        }
+      ]
+    },
+    "150213ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "project": "20-22 East 71st Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-17%20C%20150213%20ZSM%2020-22%20East%2071st%20St.pdf",
+          "ulurp_application_number": "C 150213 ZSM"
+        }
+      ]
+    },
+    "C150213ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "project": "20-22 East 71st Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-17%20C%20150213%20ZSM%2020-22%20East%2071st%20St.pdf",
+          "ulurp_application_number": "C 150213 ZSM"
+        }
+      ]
+    },
+    "150110ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-03-16T00:00:00.000",
+          "project": "551 West 21st Street Parking Garage",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-16%20C%20150110%20ZSM_551%20West%2021st%20St.pdf",
+          "ulurp_application_number": "C 150110 ZSM"
+        }
+      ]
+    },
+    "C150110ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-03-16T00:00:00.000",
+          "project": "551 West 21st Street Parking Garage",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-16%20C%20150110%20ZSM_551%20West%2021st%20St.pdf",
+          "ulurp_application_number": "C 150110 ZSM"
+        }
+      ]
+    },
+    "090311ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-03-16T00:00:00.000",
+          "project": "510 West 23rd Street Text Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-16%20N%20090311%20ZRM%20510-512%20West%2023rd%20Street.pdf",
+          "ulurp_application_number": "N 090311 ZRM"
+        }
+      ]
+    },
+    "N090311ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-03-16T00:00:00.000",
+          "project": "510 West 23rd Street Text Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-03-16%20N%20090311%20ZRM%20510-512%20West%2023rd%20Street.pdf",
+          "ulurp_application_number": "N 090311 ZRM"
+        }
+      ]
+    },
+    "150128ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "C150128ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "150129ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "C150129ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "150130ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "C150130ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "150127ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "N150127ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "140440MMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "C140440MMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-28T00:00:00.000",
+          "project": "One Vanderbilt / Vanderbilt Corridor",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-28%20C%20150128%20ZSM%20One%20Vanderbilt-Vanderbilt%20Corridor.pdf",
+          "ulurp_application_number": "C 150128 ZSM,  C 150129 ZSM,C 150130 ZSM,  N 150127 ZRM,C 140440 MMM"
+        }
+      ]
+    },
+    "130321ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-27T00:00:00.000",
+          "project": "180 Orchard Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-26_%20C%20130321%20ZSM%20180%20Orchard%20Street.pdf",
+          "ulurp_application_number": "C 130321 ZSM"
+        }
+      ]
+    },
+    "C130321ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-27T00:00:00.000",
+          "project": "180 Orchard Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-26_%20C%20130321%20ZSM%20180%20Orchard%20Street.pdf",
+          "ulurp_application_number": "C 130321 ZSM"
+        }
+      ]
+    },
+    "140404ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-27T00:00:00.000",
+          "project": "39-41 West 23rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-27%20C%20140404%20ZSM%20and%20C%20140405%20ZSM_39%20West%2023rd%20Street.pdf",
+          "ulurp_application_number": "C 140404 ZSM,  C 140405 ZSM"
+        }
+      ]
+    },
+    "C140404ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-27T00:00:00.000",
+          "project": "39-41 West 23rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-27%20C%20140404%20ZSM%20and%20C%20140405%20ZSM_39%20West%2023rd%20Street.pdf",
+          "ulurp_application_number": "C 140404 ZSM,  C 140405 ZSM"
+        }
+      ]
+    },
+    "140405ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-27T00:00:00.000",
+          "project": "39-41 West 23rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-27%20C%20140404%20ZSM%20and%20C%20140405%20ZSM_39%20West%2023rd%20Street.pdf",
+          "ulurp_application_number": "C 140404 ZSM,  C 140405 ZSM"
+        }
+      ]
+    },
+    "C140405ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-27T00:00:00.000",
+          "project": "39-41 West 23rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-27%20C%20140404%20ZSM%20and%20C%20140405%20ZSM_39%20West%2023rd%20Street.pdf",
+          "ulurp_application_number": "C 140404 ZSM,  C 140405 ZSM"
+        }
+      ]
+    },
+    "150167ZRY": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-26T00:00:00.000",
+          "project": "Stairwells Text Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-26%20N%20150167%20ZRY%20Stairwell%20Text%20Amendment.PDF",
+          "ulurp_application_number": "N 150167 ZRY"
+        }
+      ]
+    },
+    "N150167ZRY": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-26T00:00:00.000",
+          "project": "Stairwells Text Amendment",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-26%20N%20150167%20ZRY%20Stairwell%20Text%20Amendment.PDF",
+          "ulurp_application_number": "N 150167 ZRY"
+        }
+      ]
+    },
+    "140407ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "505-513 West 43rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20505-513%20West%2043rd%20Street.pdf",
+          "ulurp_application_number": "N 140407 ZRM,  C 140408 ZSM,C 140409 ZSM"
+        }
+      ]
+    },
+    "N140407ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "505-513 West 43rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20505-513%20West%2043rd%20Street.pdf",
+          "ulurp_application_number": "N 140407 ZRM,  C 140408 ZSM,C 140409 ZSM"
+        }
+      ]
+    },
+    "140408ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "505-513 West 43rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20505-513%20West%2043rd%20Street.pdf",
+          "ulurp_application_number": "N 140407 ZRM,  C 140408 ZSM,C 140409 ZSM"
+        }
+      ]
+    },
+    "C140408ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "505-513 West 43rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20505-513%20West%2043rd%20Street.pdf",
+          "ulurp_application_number": "N 140407 ZRM,  C 140408 ZSM,C 140409 ZSM"
+        }
+      ]
+    },
+    "140409ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "505-513 West 43rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20505-513%20West%2043rd%20Street.pdf",
+          "ulurp_application_number": "N 140407 ZRM,  C 140408 ZSM,C 140409 ZSM"
+        }
+      ]
+    },
+    "C140409ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "505-513 West 43rd Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20505-513%20West%2043rd%20Street.pdf",
+          "ulurp_application_number": "N 140407 ZRM,  C 140408 ZSM,C 140409 ZSM"
+        }
+      ]
+    },
+    "140352PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2015-01-07T00:00:00.000",
+          "project": "UBA eatrice Lewis Senior Center / Addie Mae Collins 3 Child Care Center",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2015-01-07%20C%20140408%20ZSM%20UBA%20Beatrice%20Lewis%20SC%20&%20Addie%20Mae%20Collins%203%20CC.pdf",
+          "ulurp_application_number": "140352 PQM"
+        }
+      ]
+    },
+    "130066ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-12-22T00:00:00.000",
+          "project": "498 Broome Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-12-20_C%20130066%20ZSM%20498%20Broome%20Street.pdf",
+          "ulurp_application_number": "C 130066 ZSM"
+        }
+      ]
+    },
+    "C130066ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-12-22T00:00:00.000",
+          "project": "498 Broome Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-12-20_C%20130066%20ZSM%20498%20Broome%20Street.pdf",
+          "ulurp_application_number": "C 130066 ZSM"
+        }
+      ]
+    },
+    "150077ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-12-17T00:00:00.000",
+          "project": "7 West 21st Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-12-17%20C%20150077%20ZSM%207%20West%2021st%20St.pdf",
+          "ulurp_application_number": "C 150077 ZSM"
+        }
+      ]
+    },
+    "C150077ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-12-17T00:00:00.000",
+          "project": "7 West 21st Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-12-17%20C%20150077%20ZSM%207%20West%2021st%20St.pdf",
+          "ulurp_application_number": "C 150077 ZSM"
+        }
+      ]
+    },
+    "150156BDM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-12-10T00:00:00.000",
+          "project": "Meatpacking Business Improvement District",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-12-10%20N%20150156%20BDM%20Meatpacking%20BID%20DIGITAL.pdf",
+          "ulurp_application_number": "N150156 BDM"
+        }
+      ]
+    },
+    "N150156BDM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-12-10T00:00:00.000",
+          "project": "Meatpacking Business Improvement District",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-12-10%20N%20150156%20BDM%20Meatpacking%20BID%20DIGITAL.pdf",
+          "ulurp_application_number": "N150156 BDM"
+        }
+      ]
+    },
+    "150059ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-24T00:00:00.000",
+          "project": "110 East 70th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-24%20C%20150059%20ZSM%20110%20E%2070th%20Street%20DIGITAL.pdf",
+          "ulurp_application_number": "C 150059 ZSM"
+        }
+      ]
+    },
+    "C150059ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-24T00:00:00.000",
+          "project": "110 East 70th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-24%20C%20150059%20ZSM%20110%20E%2070th%20Street%20DIGITAL.pdf",
+          "ulurp_application_number": "C 150059 ZSM"
+        }
+      ]
+    },
+    "140353ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-24T00:00:00.000",
+          "project": "102 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-25%20C%20140353%20ZSM%20102%20Greene%20St.pdf",
+          "ulurp_application_number": "C 140353 ZSM"
+        }
+      ]
+    },
+    "C140353ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-24T00:00:00.000",
+          "project": "102 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-25%20C%20140353%20ZSM%20102%20Greene%20St.pdf",
+          "ulurp_application_number": "C 140353 ZSM"
+        }
+      ]
+    },
+    "150101ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-12T00:00:00.000",
+          "project": "West Chelsea Expansion",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-12%20C%20150101%20ZMM%20West%20Chelsea%20Expansion_digital.pdf",
+          "ulurp_application_number": "C 150101 ZMM,  N 150102 ZRM"
+        }
+      ]
+    },
+    "C150101ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-12T00:00:00.000",
+          "project": "West Chelsea Expansion",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-12%20C%20150101%20ZMM%20West%20Chelsea%20Expansion_digital.pdf",
+          "ulurp_application_number": "C 150101 ZMM,  N 150102 ZRM"
+        }
+      ]
+    },
+    "150102ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-12T00:00:00.000",
+          "project": "West Chelsea Expansion",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-12%20C%20150101%20ZMM%20West%20Chelsea%20Expansion_digital.pdf",
+          "ulurp_application_number": "C 150101 ZMM,  N 150102 ZRM"
+        }
+      ]
+    },
+    "N150102ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-11-12T00:00:00.000",
+          "project": "West Chelsea Expansion",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-11-12%20C%20150101%20ZMM%20West%20Chelsea%20Expansion_digital.pdf",
+          "ulurp_application_number": "C 150101 ZMM,  N 150102 ZRM"
+        }
+      ]
+    },
+    "140410ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-09-09T00:00:00.000",
+          "project": "42nd Street Auto Showroom",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/N%20140410%20ZRM%20-%20West%2042nd%20Street%20Automobile%20Showroom.pdf",
+          "ulurp_application_number": "N 140410 ZRM"
+        }
+      ]
+    },
+    "N140410ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-09-09T00:00:00.000",
+          "project": "42nd Street Auto Showroom",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/N%20140410%20ZRM%20-%20West%2042nd%20Street%20Automobile%20Showroom.pdf",
+          "ulurp_application_number": "N 140410 ZRM"
+        }
+      ]
+    },
+    "140114ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-09-08T00:00:00.000",
+          "project": "37 Great Jones Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-09-08_C140114_ZSM_37_Great_Jones_Street_Digital.pdf",
+          "ulurp_application_number": "C 140114 ZSM"
+        }
+      ]
+    },
+    "C140114ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-09-08T00:00:00.000",
+          "project": "37 Great Jones Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-09-08_C140114_ZSM_37_Great_Jones_Street_Digital.pdf",
+          "ulurp_application_number": "C 140114 ZSM"
+        }
+      ]
+    },
+    "140330ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-08-27T00:00:00.000",
+          "project": "130 Prince Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-25_C140330_ZSM_130_Prince_Street-Digital.pdf",
+          "ulurp_application_number": "C 140330 ZSM"
+        }
+      ]
+    },
+    "C140330ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-08-27T00:00:00.000",
+          "project": "130 Prince Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-25_C140330_ZSM_130_Prince_Street-Digital.pdf",
+          "ulurp_application_number": "C 140330 ZSM"
+        }
+      ]
+    },
+    "140386HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-07-07T00:00:00.000",
+          "project": "Irish Arts Center",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-7-7_C%20140386%20HAM_Irish%20Arts%20Center.pdf",
+          "ulurp_application_number": "C 140386 HAM"
+        }
+      ]
+    },
+    "C140386HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-07-07T00:00:00.000",
+          "project": "Irish Arts Center",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-7-7_C%20140386%20HAM_Irish%20Arts%20Center.pdf",
+          "ulurp_application_number": "C 140386 HAM"
+        }
+      ]
+    },
+    "140299PPM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "C140299PPM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "140300ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "C140300ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "140301ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "C140301ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "140302ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "C140302ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2013-06-26T00:00:00.000",
+          "project": "19 East Houston",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-06-30_19-E-Houston.pdf",
+          "ulurp_application_number": "C 140299 PPM,  C 140300 ZSM, C 140301 ZSM,  C 140302 ZSM"
+        }
+      ]
+    },
+    "140263ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-06-19T00:00:00.000",
+          "project": "155 Mercer Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014--6-19%20C%20140263%20ZSM_155%20Mercer%20Street.pdf",
+          "ulurp_application_number": "C 140263 ZSM"
+        }
+      ]
+    },
+    "C140263ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-06-19T00:00:00.000",
+          "project": "155 Mercer Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014--6-19%20C%20140263%20ZSM_155%20Mercer%20Street.pdf",
+          "ulurp_application_number": "C 140263 ZSM"
+        }
+      ]
+    },
+    "140204ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-04-30T00:00:00.000",
+          "project": "42 Crosby Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-4-30%20C%20140204%20ZSM%20_42%20Crosby%20Street.pdf",
+          "ulurp_application_number": "C 140204 ZSM,  C 140205 ZSM,C 140206 ZSM"
+        }
+      ]
+    },
+    "C140204ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-04-30T00:00:00.000",
+          "project": "42 Crosby Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-4-30%20C%20140204%20ZSM%20_42%20Crosby%20Street.pdf",
+          "ulurp_application_number": "C 140204 ZSM,  C 140205 ZSM,C 140206 ZSM"
+        }
+      ]
+    },
+    "140205ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-04-30T00:00:00.000",
+          "project": "42 Crosby Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-4-30%20C%20140204%20ZSM%20_42%20Crosby%20Street.pdf",
+          "ulurp_application_number": "C 140204 ZSM,  C 140205 ZSM,C 140206 ZSM"
+        }
+      ]
+    },
+    "C140205ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-04-30T00:00:00.000",
+          "project": "42 Crosby Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-4-30%20C%20140204%20ZSM%20_42%20Crosby%20Street.pdf",
+          "ulurp_application_number": "C 140204 ZSM,  C 140205 ZSM,C 140206 ZSM"
+        }
+      ]
+    },
+    "140206ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-04-30T00:00:00.000",
+          "project": "42 Crosby Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-4-30%20C%20140204%20ZSM%20_42%20Crosby%20Street.pdf",
+          "ulurp_application_number": "C 140204 ZSM,  C 140205 ZSM,C 140206 ZSM"
+        }
+      ]
+    },
+    "C140206ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-04-30T00:00:00.000",
+          "project": "42 Crosby Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-4-30%20C%20140204%20ZSM%20_42%20Crosby%20Street.pdf",
+          "ulurp_application_number": "C 140204 ZSM,  C 140205 ZSM,C 140206 ZSM"
+        }
+      ]
+    },
+    "140233HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-31T00:00:00.000",
+          "project": "492 St. Nicholas Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/201-03-31-C-140233-HAM-492-St-Nicholas.pdf",
+          "ulurp_application_number": "C 140233 HAM,  C 140238 PQM"
+        }
+      ]
+    },
+    "C140233HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-31T00:00:00.000",
+          "project": "492 St. Nicholas Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/201-03-31-C-140233-HAM-492-St-Nicholas.pdf",
+          "ulurp_application_number": "C 140233 HAM,  C 140238 PQM"
+        }
+      ]
+    },
+    "140238PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-31T00:00:00.000",
+          "project": "492 St. Nicholas Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/201-03-31-C-140233-HAM-492-St-Nicholas.pdf",
+          "ulurp_application_number": "C 140233 HAM,  C 140238 PQM"
+        }
+      ]
+    },
+    "C140238PQM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-31T00:00:00.000",
+          "project": "492 St. Nicholas Avenue",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/201-03-31-C-140233-HAM-492-St-Nicholas.pdf",
+          "ulurp_application_number": "C 140233 HAM,  C 140238 PQM"
+        }
+      ]
+    },
+    "140070ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-28T00:00:00.000",
+          "project": "West 117th Street Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-28-C-140070-ZMM-117th-Street-Rezoning.pdf",
+          "ulurp_application_number": "C 140070 ZMM"
+        }
+      ]
+    },
+    "C140070ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-28T00:00:00.000",
+          "project": "West 117th Street Rezoning",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-28-C-140070-ZMM-117th-Street-Rezoning.pdf",
+          "ulurp_application_number": "C 140070 ZMM"
+        }
+      ]
+    },
+    "130208ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "project": "West 106th Street Rezoning ",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-25-C130208-ZMM-West-106-Street-Rezoning.pdf",
+          "ulurp_application_number": "C 130208 ZMM"
+        }
+      ]
+    },
+    "C130208ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "project": "West 106th Street Rezoning ",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-25-C130208-ZMM-West-106-Street-Rezoning.pdf",
+          "ulurp_application_number": "C 130208 ZMM"
+        }
+      ]
+    },
+    "140207HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-17T00:00:00.000",
+          "project": "260 West 153rd Street UDAAP",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-17-C-140207-HAM-260-West-53rd-St-Apartments_digital.pdf",
+          "ulurp_application_number": "C 140207 HAM"
+        }
+      ]
+    },
+    "C140207HAM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-17T00:00:00.000",
+          "project": "260 West 153rd Street UDAAP",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-17-C-140207-HAM-260-West-53rd-St-Apartments_digital.pdf",
+          "ulurp_application_number": "C 140207 HAM"
+        }
+      ]
+    },
+    "140181ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-12T00:00:00.000",
+          "project": "Site 7",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-12-C-140181-ZMM-Site-7_digital.pdf",
+          "ulurp_application_number": "C 140181 ZMM"
+        }
+      ]
+    },
+    "C140181ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-03-12T00:00:00.000",
+          "project": "Site 7",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-03-12-C-140181-ZMM-Site-7_digital.pdf",
+          "ulurp_application_number": "C 140181 ZMM"
+        }
+      ]
+    },
+    "140167ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-26T00:00:00.000",
+          "project": "59-61 Thompson Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-02-26-C-140167-ZSM-59-61-Thompson-Street_digital.pdf",
+          "ulurp_application_number": "C 140167 ZSM"
+        }
+      ]
+    },
+    "C140167ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-26T00:00:00.000",
+          "project": "59-61 Thompson Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-02-26-C-140167-ZSM-59-61-Thompson-Street_digital.pdf",
+          "ulurp_application_number": "C 140167 ZSM"
+        }
+      ]
+    },
+    "140171ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-18T00:00:00.000",
+          "project": "Manhattan West",
+          "pdf_download": "http://manhattanbp.nyc.gov/html/land_use/140171ZRM.shtml",
+          "ulurp_application_number": "N 140171 ZRM"
+        }
+      ]
+    },
+    "N140171ZRM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-18T00:00:00.000",
+          "project": "Manhattan West",
+          "pdf_download": "http://manhattanbp.nyc.gov/html/land_use/140171ZRM.shtml",
+          "ulurp_application_number": "N 140171 ZRM"
+        }
+      ]
+    },
+    "140157ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-12T00:00:00.000",
+          "project": "Rockefeller University",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140157 ZSM,  M 821257D ZAM,  N 140158 ZMM,  N 140159 ZMM,  C 140068(A) MMM"
+        }
+      ]
+    },
+    "C140157ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-12T00:00:00.000",
+          "project": "Rockefeller University",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140157 ZSM,  M 821257D ZAM,  N 140158 ZMM,  N 140159 ZMM,  C 140068(A) MMM"
+        }
+      ]
+    },
+    "140158ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-12T00:00:00.000",
+          "project": "Rockefeller University",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140157 ZSM,  M 821257D ZAM,  N 140158 ZMM,  N 140159 ZMM,  C 140068(A) MMM"
+        }
+      ]
+    },
+    "N140158ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-12T00:00:00.000",
+          "project": "Rockefeller University",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140157 ZSM,  M 821257D ZAM,  N 140158 ZMM,  N 140159 ZMM,  C 140068(A) MMM"
+        }
+      ]
+    },
+    "140159ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-12T00:00:00.000",
+          "project": "Rockefeller University",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140157 ZSM,  M 821257D ZAM,  N 140158 ZMM,  N 140159 ZMM,  C 140068(A) MMM"
+        }
+      ]
+    },
+    "N140159ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-02-12T00:00:00.000",
+          "project": "Rockefeller University",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140157 ZSM,  M 821257D ZAM,  N 140158 ZMM,  N 140159 ZMM,  C 140068(A) MMM"
+        }
+      ]
+    },
+    "130336ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-22T00:00:00.000",
+          "project": "606 West 57th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 130336 ZMM"
+        }
+      ]
+    },
+    "C130336ZMM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-22T00:00:00.000",
+          "project": "606 West 57th Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 130336 ZMM"
+        }
+      ]
+    },
+    "140055ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-21T00:00:00.000",
+          "project": "688 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140055 ZSM,  C 140056 ZSM"
+        }
+      ]
+    },
+    "C140055ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-21T00:00:00.000",
+          "project": "688 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140055 ZSM,  C 140056 ZSM"
+        }
+      ]
+    },
+    "140056ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-21T00:00:00.000",
+          "project": "688 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140055 ZSM,  C 140056 ZSM"
+        }
+      ]
+    },
+    "C140056ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-21T00:00:00.000",
+          "project": "688 Broadway",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140055 ZSM,  C 140056 ZSM"
+        }
+      ]
+    },
+    "140069ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-17T00:00:00.000",
+          "project": "110 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140069 ZSM"
+        }
+      ]
+    },
+    "C140069ZSM": {
+      "recommendations": [],
+      "pdfs": [
+        {
+          "date": "2014-01-17T00:00:00.000",
+          "project": "110 Greene Street",
+          "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/2014-01-17-C-140069-ZSM-104-110-Greene-Street_digital.pdf",
+          "ulurp_application_number": "C 140069 ZSM"
+        }
+      ]
+    }
+  }
+}

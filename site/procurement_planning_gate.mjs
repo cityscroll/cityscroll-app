@@ -9,6 +9,26 @@ function idKey(value) {
   return String(value ?? "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
 }
 
+/** Honest task/line tail after a proper PIN/EPIN prefix (passport join rest_ok). */
+const REST_OK_RE = /^(?:\d+|[A-Z]\d{2,6}|[A-Z]{1,2}\d{2,6})+$/;
+const EPIN_PREFIX_MIN_LEN = 8;
+
+function restOk(rest) {
+  if (rest == null || rest === "") return true;
+  return REST_OK_RE.test(String(rest));
+}
+
+/** True when a and b share a product passport prefix relationship. */
+function identifiersJoin(a, b) {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const shorter = a.length <= b.length ? a : b;
+  const longer = a.length <= b.length ? b : a;
+  if (shorter.length < EPIN_PREFIX_MIN_LEN) return false;
+  if (!longer.startsWith(shorter)) return false;
+  return restOk(longer.slice(shorter.length));
+}
+
 function addRef(refs, source, value) {
   const key = clean(value);
   if (!key) return;
@@ -52,7 +72,13 @@ export function edgeBelongsToThread(edge, thread) {
   const refs = thread.refs.get(clean(edge?.target_source));
   if (target && refs?.size) return refs.has(target);
   const identifier = idKey(edge?.identifier);
-  return !!identifier && thread.identifiers.has(identifier);
+  if (!identifier) return false;
+  if (thread.identifiers.has(identifier)) return true;
+  // Product passport prefix: plan PIN ↔ thread EPIN (or reverse).
+  for (const threadId of thread.identifiers) {
+    if (identifiersJoin(identifier, threadId)) return true;
+  }
+  return false;
 }
 
 /** Return only receipt-passed lookup rows belonging to this exact thread. */

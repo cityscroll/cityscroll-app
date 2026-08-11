@@ -1,0 +1,1905 @@
+{
+  "schema": "cityscroll.procurement_planning.shard.v1",
+  "collection": "bridge_edges",
+  "index": 0,
+  "rows": [
+    {
+      "plan_source_record_id": "mocs_ll1:FY27NDEP108",
+      "plan_source": "mocs_ll1",
+      "target_source": "passport_contract",
+      "target_id": "5182931",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0071001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DEP_LL1_FY27.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27NDEPBWSO5",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5182931",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0071001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_New.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNACS20",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5071945",
+      "method": "pin_prefix_of_epin",
+      "identifier": "06823B0002001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNACS8",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5006722",
+      "method": "pin_prefix_of_epin",
+      "identifier": "06823P0008001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDCWP2",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4651780",
+      "method": "pin_prefix_of_epin",
+      "identifier": "86622N0003001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCWP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP1",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5085155",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0045001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP100",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5001990",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0010001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP102",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4998699",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0021001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP11",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4959531",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0060001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP110",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5215472",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0024001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP111",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5215471",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0023001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP112",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4988528",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0031001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP117",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5158450",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0005001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP118",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4998708",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0039001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP123",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5091957",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0042001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP13",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4975459",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0056001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP133",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5017404",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0038001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP133",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5017405",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0038002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP139",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4955589",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0016001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP144",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5189706",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0002001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP145",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5182931",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0071001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP148",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5057617",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0069001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP15",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5259087",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0059001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP150",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5204854",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0001001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP16",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5088316",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0011001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP164",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5024219",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0032002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP175",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5132782",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0051001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP179",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5182931",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0071001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4765203",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0108001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5768735",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0108001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP180",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5005139",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0035001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP182",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4959531",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0060001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP183",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4765203",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0108001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP183",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5768735",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0108001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP184",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5683908",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0035001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP185",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4749443",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0107001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP185",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5751358",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0107001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP186",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5091957",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0042001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP2",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4744105",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621P0032001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP23",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4995189",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0121001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP24",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5024219",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0032002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP28",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4955100",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0006001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP34",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5057614",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0038001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP42",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4976082",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0009001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP58",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5012659",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0033001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP61",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5061328",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0080001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP62",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4976079",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0055001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP66",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5190055",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0100001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5005139",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623P0035001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP70",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5085160",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0044001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP71",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4894796",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0001001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP74",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5080509",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0048001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP75",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5101706",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0096001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP77",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5187401",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0097001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP90",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5683908",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82622B0035001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP92",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5189271",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0003001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP93",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4749443",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0107001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP93",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5751358",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82621B0107001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP94",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5024221",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0047001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP95",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4988536",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82623B0022001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDEP97",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5160259",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82624B0004001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOB6",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5229447",
+      "method": "pin_prefix_of_epin",
+      "identifier": "81024N0001001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOB_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOB8",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5229447",
+      "method": "pin_prefix_of_epin",
+      "identifier": "81024N0001001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOB_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOHMH25",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5344290",
+      "method": "pin_prefix_of_epin",
+      "identifier": "81625P0003001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOHMH28",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4551741",
+      "method": "pin_prefix_of_epin",
+      "identifier": "81621M0004001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT2",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4672477",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84121B0050001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT35",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4746600",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84122B0010001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT4",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4685363",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84122B0011001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT53",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4669833",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84121B0051001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT60",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4962933",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84122N0002001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT68",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5146493",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84123B0028001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT85",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4955593",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84122B0026001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT85",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5583874",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84122B0026001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT99",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5143816",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84123B0029001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDSNY12",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4782190",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82721B0018001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDSNY16",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4823147",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82721B0017001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDSNY17",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4884895",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82721B0015002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDSNY8",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4823131",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82721B0012001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011420",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011421",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011422",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011423",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011427",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011428",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007006",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011430",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007008",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011420",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011421",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011422",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011423",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011427",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011428",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007006",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011430",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007008",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011420",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011421",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011422",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011423",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011427",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011428",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007006",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011430",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007008",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011420",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011421",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011422",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011423",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011427",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011428",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007006",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDYCD7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5011430",
+      "method": "pin_prefix_of_epin",
+      "identifier": "26023P0007008",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNFDNY10",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4532899",
+      "method": "pin_prefix_of_epin",
+      "identifier": "05721B0345001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNFDNY16",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4607730",
+      "method": "pin_prefix_of_epin",
+      "identifier": "05721B0350001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNFDNY7",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5182298",
+      "method": "pin_prefix_of_epin",
+      "identifier": "05723S0004001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD10",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185276",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD10",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185277",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD10",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185278",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD10",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185279",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD10",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185280",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185276",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185277",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185278",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185279",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD19",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185280",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD31",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185276",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD31",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185277",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD31",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185278",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD31",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185279",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD31",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185280",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD56",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185276",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD56",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185277",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD56",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185278",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD56",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185279",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD56",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185280",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD59",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5326449",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624B0033001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD61",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185276",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD61",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185277",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046004",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD61",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185278",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046005",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD61",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185279",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046003",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNHPD61",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5185280",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80624P0046002",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNNYPD28",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4760865",
+      "method": "pin_prefix_of_epin",
+      "identifier": "05621P0001001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNNYPD28",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5485684",
+      "method": "pin_prefix_of_epin",
+      "identifier": "05621P0001001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNOATH2",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5232932",
+      "method": "pin_prefix_of_epin",
+      "identifier": "82021M0001001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OATH_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS13",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4980693",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80123P0017001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS13",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5492951",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80123P0017001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS14",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5222761",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80124S0027001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS15",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5503551",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80125S0021001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS16",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5574747",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80126N0004001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS18",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5468087",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80125S0020001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS21",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "4771224",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80121N0001001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNSBS21",
+      "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5277789",
+      "method": "pin_prefix_of_epin",
+      "identifier": "80121N0001001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/"
+      }
+    }
+  ]
+}
