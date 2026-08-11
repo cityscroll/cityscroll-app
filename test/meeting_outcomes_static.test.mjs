@@ -4,6 +4,7 @@ import { test } from "node:test";
 
 import {
   buildMeetingOutcomesSnapshot,
+  compactVotes,
   renderMeetingOutcomesFirstPaint,
 } from "../site/meeting_outcomes_static.mjs";
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
@@ -38,4 +39,26 @@ test("known empty meeting snapshot renders honest absence instead of a spinner",
   assert.match(html, /data-meeting-outcomes-state="absent"/);
   assert.match(html, /No decision documents published for this meeting\./);
   assert.doesNotMatch(html, /loading/i);
+});
+
+test("compactVotes accepts aye/nay publisher keys without inventing persons", () => {
+  const withPeople = compactVotes({
+    result: "Passed",
+    counts: { aye: 5, nay: 1, abstain: 0 },
+    vote_identity: "roll_call",
+    by_person: [{ person_id: "1", person_name: "Ada", vote_bucket: "aye" }],
+  });
+  assert.equal(withPeople.yes, 5);
+  assert.equal(withPeople.no, 1);
+  assert.equal(withPeople.by_person.length, 1);
+
+  const tallyOnly = compactVotes({
+    result: "Passed",
+    counts: { aye: 0, nay: 0, abstain: 7 },
+    vote_identity: "tally_only",
+    by_person: [],
+  });
+  assert.equal(tallyOnly.yes, 0);
+  assert.equal(tallyOnly.vote_identity, "tally_only");
+  assert.equal(tallyOnly.by_person.length, 0);
 });
