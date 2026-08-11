@@ -511,6 +511,7 @@ async function landSelect(i, el){
   </div>
   <div id="project-connections"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
+  <div id="land-ulurp-rec"></div>
   <div id="landmap" style="display:none"></div>
   <div id="landpan" class="map-pan-controls" role="group" aria-label="${t("map_pan_group_aria")}" hidden>
     <button type="button" data-map-pan="west" aria-controls="landmap" aria-label="${t("map_pan_west")}">←</button>
@@ -540,6 +541,7 @@ async function landSelect(i, el){
   // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.
   paintLandActionRail($("#land-actions"), r, null, null);
   loadZapOutcomes(r, $("#land-outcomes"), selection);
+  import("../ulurp_recommendation_panel.mjs").then(m=>m.loadUlurpRecommendationPanel($("#land-ulurp-rec"), r, {esc:escUiHtml, externalLinkAttributes:EXT_ATTRS})).catch(()=>{});
   const landURL=landLink(r.project_id);
   const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
   bindQRShare($("#landqr"), landURL);

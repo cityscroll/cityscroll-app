@@ -78,6 +78,44 @@ test("empty RC-1 payload is exactly inert", () => {
   );
 });
 
+test("prefix plan PIN joins a thread EPIN without requiring exact identifier equality", () => {
+  const prefixPlan = {
+    ...plan,
+    source_record_id: "mocs_ll63:FY27RNACS8",
+    source: "mocs_ll63",
+    published_identifiers: ["06823P0008"],
+  };
+  const fixture = payload({
+    plans: [prefixPlan],
+    bridge_edges: [{
+      plan_source_record_id: prefixPlan.source_record_id,
+      plan_source: "mocs_ll63",
+      target_source: "passport_contract",
+      target_id: "ctr-prefix",
+      method: "pin_prefix_of_epin",
+      identifier: "06823P0008001",
+      score: 1,
+      provenance: {
+        plan_url: prefixPlan.source_url,
+        target_url: "https://a0333-passportpublic.nyc.gov/",
+      },
+    }],
+  });
+  const threadLifecycle = {
+    ok: true,
+    pin: "06823P0008",
+    timeline: [{
+      stage: "award",
+      status: "matched",
+      detail: { epin: "06823P0008001", ctr_id: "ctr-prefix" },
+    }],
+  };
+  const joined = attachPlanningPhase(fixture, threadLifecycle, {});
+  assert.notEqual(joined, threadLifecycle);
+  assert.equal(joined.timeline[0].stage, "planning");
+  assert.equal(joined.timeline[0].detail.bridge.method, "pin_prefix_of_epin");
+});
+
 test("fixture RC-1 edge adds the published plan row ahead of its procurement thread", () => {
   const fixture = payload({
     plans: [plan],

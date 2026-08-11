@@ -778,11 +778,7 @@ Land-outcome depth candidate (Borough President positions + letter PDFs). **Meas
 below usefulness** (2026-07-30): strict ULURP-token join on ZAP projects with non-null
 `ulurp_numbers` is **0.54%** either-source (152/27,971), **0.29%** recommendations,
 **0.25%** PDFs. Borough-scoped historical catalogs (91 + 88 rows). Source contracts
-`ulurp-recommendations` and `ulurp-recommendation-pdfs` are **disabled** — no edge
-materialization; keep the class-(a) land-outcome pointer. **Wrong universe:** Property
-Disposition notices are not ZAP projects — do not use that slice as a success metric.
-Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`,
-`site/data/ulurp_recommendation_sources/`.
+`ulurp-recommendations` and `ulurp-recommendation-pdfs` are **live** for a **sparse** Borough President panel gated on the recommendation-row denominator (~88% hit rate), not ZAP-universe catalog coverage (0.54% contrast only). Lookup `site/data/ulurp_recommendations_lookup.json`; panel `site/ulurp_recommendation_panel.mjs`; gate policy `ontology/join_gate_policy.mjs`. **Wrong universe:** Property Disposition notices are not ZAP projects. Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`, `site/data/ulurp_recommendation_sources/`.
 
 ## Land/ZAP event spine
 
@@ -2092,7 +2088,7 @@ CLI `node tools/audit_ontology_coherence.mjs`. Entrypoint:
 `ontology/queue/ledger.json`. Consumer contract + schedule:
 [`docs/multi-flywheel.md`](docs/multi-flywheel.md). Verify:
 `./tools/verify_ontology_flywheel.sh` and `node --test test/ontology_coherence.test.mjs`.
-Hourly CI artifact: `multi-flywheel-queue` (`.github/workflows/multi-flywheel.yml`).
+Join false-negative guard: `ontology/join_gate_policy.mjs` + lesson `join-false-negative` in `ontology/engineering-lessons.md` (prefer product join strategies; gate on joinable-candidate denominators). Hourly CI artifact: `multi-flywheel-queue` (`.github/workflows/multi-flywheel.yml`).
 Recurring classes append to `ontology/engineering-lessons.md`. Do not hand-author
 parallel metric-driven roadmap cards; re-run the flywheel after merges.
 
@@ -2351,12 +2347,14 @@ Host-side FY2027 MOCS LL63/LL1 XLSX collection plus Capital Projects Dashboard
 `fb86-vt7u` lives in `warehouse/scripts/procurement_plans_run.py`. The production
 materialization contains 11,566 MOCS rows and 50,000 capital-project rows in
 the checksum manifest `site/data/procurement_planning_payload.json` and
-10,000-row shards under `site/data/procurement_planning_payload/`; its dated receipt is under
-`site/data/procurement_plan_sources/verification_receipts/`. All six independent
-100-row City Record/PASSPort bridges measured 0%, so no edge or Money planning
-phase may render. Reviewer-labeled agency+title+time candidates remain required
-before a future edge can land. Verify with
-`node --test test/procurement_plans.test.mjs`.
+10,000-row shards under `site/data/procurement_planning_payload/`. Re-measured
+2026-08-11 on identifier-bearing plans with product passport prefix joins:
+LL63→PASSPort 92/121 (76.0%), LL1→PASSPort 1/3 (33.3%), precision 1.0 — 146
+bridge edges ship via `procurement_planning_thread_lookup.json`
+(`site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json`).
+City Record and capital-dashboard paths remain stopped. Remeasure:
+`python3 tools/remeasure_rc1_plan_passport_prefix.py --publish`. Verify with
+`node --test test/procurement_plans.test.mjs test/join_gate_policy.test.mjs`.
 
 ## Non-Council minutes and vote registry
 
