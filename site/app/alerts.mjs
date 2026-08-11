@@ -521,7 +521,7 @@ function paintAlertContextLead(seedMeta){
     .map((bit) => bit.trim())
     .filter(Boolean);
   const chipHtml = chipBits.length
-    ? `<ul class="alert-context-scope-chips" aria-label="${escUiHtml(t("alert_context_scope",{scope:""}).replace(/:\s*$/,"").trim()||"Watch criteria")}">${
+    ? `<ul class="alert-context-scope-chips" aria-label="${escUiHtml(t("alert_context_scope",{scope:scopeBits}))}">${
         chipBits.map((bit) => `<li class="qchip active-scope-chip">${escUiHtml(bit)}</li>`).join("")
       }</ul>`
     : "";
