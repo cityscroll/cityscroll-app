@@ -219,9 +219,9 @@ test("POST pause then unpause", async () => {
   assert.equal(events[0].emailRedacted, REDACTED_EMAIL);
   assert.equal(events[0].subKeyMasked, "sub:w1***");
   assert.equal(events[0].lens, "money");
-  assert.equal(events[0].label, "contract money — about “schools”");
+  assert.equal(events[0].label, "Contracts and RFPs — about “schools”");
   assert.equal(events[0].freq, "daily");
-  assert.equal(events[1].label, "contract money — about “schools”");
+  assert.equal(events[1].label, "Contracts and RFPs — about “schools”");
   assert.equal(events[1].freq, "daily");
   assert.equal(JSON.parse(await env.ALERT_STATE.get("watchlog:latest")).length, 2);
 });
@@ -262,17 +262,17 @@ test("POST update keywords and freq", async () => {
   assert.deepEqual(stored.filter.keywords, ["education", "libraries"]);
   assert.equal(stored.filter.minAmount, 1000000);
   const events = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
-  assert.equal(events[0].label, "contract money — about “education / libraries” · ≥ $1,000,000");
+  assert.equal(events[0].label, "Contracts and RFPs — about “education / libraries” · ≥ $1,000,000");
   assert.equal(events[0].freq, "weekly");
   assert.match(events[0].detail, /freq daily → weekly/);
   assert.match(events[0].detail, /filter: .*schools.* → .*education \/ libraries/);
   assert.deepEqual(events[0].before, {
-    label: "contract money — about “schools” · ≥ $1,000,000",
+    label: "Contracts and RFPs — about “schools” · ≥ $1,000,000",
     freq: "daily",
     paused: false,
   });
   assert.deepEqual(events[0].after, {
-    label: "contract money — about “education / libraries” · ≥ $1,000,000",
+    label: "Contracts and RFPs — about “education / libraries” · ≥ $1,000,000",
     freq: "weekly",
     paused: false,
   });
@@ -318,7 +318,7 @@ test("POST delete one watch", async () => {
   }), env);
   assert.equal(await env.SUBS.get("sub:w1"), null);
   const [event] = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
-  assert.equal(event.label, "contract money — about “a”");
+  assert.equal(event.label, "Contracts and RFPs — about “a”");
   assert.equal(event.freq, "daily");
 });
 
@@ -350,7 +350,7 @@ test("admin watch-log enrich uses live watches and explicit deleted-watch overri
         at,
         action: "delete",
         subKeyMasked: "sub:15***",
-        label: "contract money — awards only · ≥ $100,000,000",
+        label: "Contracts and RFPs — awards only · ≥ $100,000,000",
         freq: "daily",
         detail: "deleted",
       }],
@@ -360,7 +360,7 @@ test("admin watch-log enrich uses live watches and explicit deleted-watch overri
   const result = await res.json();
   assert.deepEqual(result, { scanned: 6, enriched: 4, unchanged: 2 });
   const enriched = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
-  assert.equal(enriched[0].label, "contract money — awards only · ≥ $100,000,000");
+  assert.equal(enriched[0].label, "Contracts and RFPs — awards only · ≥ $100,000,000");
   assert.equal(enriched[0].detail, "deleted");
   assert.equal(enriched[1].label, "vendor “Acacia” — every new City Record notice naming them");
   assert.equal(enriched[1].freq, "weekly");
@@ -446,8 +446,8 @@ test("unsubscribe all token removes every watch", async () => {
   assert.equal(await env.SUBS.get("sub:w2"), null);
   const events = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
   assert.deepEqual(events.map((event) => event.label), [
-    "contract money — about “a”",
-    "contract money — about “b”",
+    "Contracts and RFPs — about “a”",
+    "Contracts and RFPs — about “b”",
   ]);
   assert.deepEqual(events.map((event) => event.freq), ["daily", "daily"]);
 });

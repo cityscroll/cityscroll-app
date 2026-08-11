@@ -36,6 +36,8 @@ export function feedItems(kind, rows) {
         summary: [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant]
           .filter(Boolean).join(" · "),
         eventDate: null,
+        phase: r.public_status || "Land use (ULURP)",
+        nextStep: r.public_status ? `Status: ${r.public_status}` : null,
       };
     }
     if (kind === "obligation") {
@@ -69,8 +71,21 @@ export function feedItems(kind, rows) {
           r.citation,
         ].filter(Boolean).map((part) => stripHtml(part)).join(" · "),
         eventDate: r.deadline_date || null,
+        phase: isPredicted ? (r.expected_event_label || "Expected filing") : (r.deliverable_type || "Mandate"),
+        nextStep: isPredicted
+          ? (Number.isFinite(r.days_to_deadline) && r.days_to_deadline >= 0
+            ? `Expected in ${r.days_to_deadline} day${r.days_to_deadline === 1 ? "" : "s"}`
+            : (r.deadline_date ? `Expected by ${d10(r.deadline_date)}` : null))
+          : (r.deadline_date ? `Statutory deadline ${d10(r.deadline_date)}` : null),
       };
     }
+    const phase = r.type_of_notice_description
+      || (kind === "rfp" ? "Solicitation" : kind === "award" ? "Award" : kind === "rules" ? "Agency Rules" : kind === "hearing" || kind === "meetings" ? "Hearing / meeting" : null);
+    const nextStep = r.due_date
+      ? `Due ${d10(r.due_date)}`
+      : r.event_date
+        ? `Event ${d10(r.event_date)}`
+        : null;
     return {
       id: String(r.request_id || ""),
       url: `https://cityscroll.org/notices/${encodeURIComponent(r.request_id || "")}`,
@@ -82,6 +97,8 @@ export function feedItems(kind, rows) {
         r.street_address_1 && !/not listed|^n\/?a$|^none$|^various|^see /i.test(String(r.street_address_1).trim()) ? stripHtml(r.street_address_1) : "",
       ].filter(Boolean).join(" · "),
       eventDate: r.event_date || r.due_date || null,
+      phase,
+      nextStep,
     };
   }).filter((it) => it.id);
 }
