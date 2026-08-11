@@ -14,17 +14,16 @@
   "precision_floor": 0.95,
   "edges": {
     "extracted": 76,
-    "alias_map": 73,
-    "collisions": []
+    "home_cold_path": "agency_groups_residual_only"
   },
   "kill_sample": {
     "positives": {
       "total": 10,
-      "resolved_before": 4,
+      "resolved_before": 10,
       "resolved_after": 10,
-      "residual_before": 6,
+      "residual_before": 0,
       "residual_after": 0,
-      "fixed": 6,
+      "fixed": 0,
       "fix_rate_on_residual": 1,
       "rows": [
         {
@@ -65,9 +64,9 @@
           "former": "Art Commission",
           "current": "Public Design Commission",
           "gold_id": null,
-          "before_same": false,
+          "before_same": true,
           "after_same": true,
-          "fixed": true,
+          "fixed": false,
           "still_broken": false,
           "notes": "Art Commission → PDC"
         },
@@ -87,9 +86,9 @@
           "former": "New York County District Attorney's Office",
           "current": "Manhattan District Attorney's Office",
           "gold_id": null,
-          "before_same": false,
+          "before_same": true,
           "after_same": true,
-          "fixed": true,
+          "fixed": false,
           "still_broken": false,
           "notes": "County vs borough DA naming (OTI former)"
         },
@@ -98,9 +97,9 @@
           "former": "Kings County District Attorney's Office",
           "current": "Brooklyn District Attorney's Office",
           "gold_id": null,
-          "before_same": false,
+          "before_same": true,
           "after_same": true,
-          "fixed": true,
+          "fixed": false,
           "still_broken": false,
           "notes": "County vs borough DA naming"
         },
@@ -109,9 +108,9 @@
           "former": "Mayor's Office to Combat Domestic Violence",
           "current": "Mayor's Office to End Domestic and Gender-Based Violence",
           "gold_id": null,
-          "before_same": false,
+          "before_same": true,
           "after_same": true,
-          "fixed": true,
+          "fixed": false,
           "still_broken": false,
           "notes": "ENDGBV rename"
         },
@@ -120,9 +119,9 @@
           "former": "Office of Emergency Management",
           "current": "New York City Emergency Management",
           "gold_id": null,
-          "before_same": false,
+          "before_same": true,
           "after_same": true,
-          "fixed": true,
+          "fixed": false,
           "still_broken": false,
           "notes": "OEM → NYCEM"
         },
@@ -131,9 +130,9 @@
           "former": "Department of Education",
           "current": "New York City Public Schools",
           "gold_id": null,
-          "before_same": false,
+          "before_same": true,
           "after_same": true,
-          "fixed": true,
+          "fixed": false,
           "still_broken": false,
           "notes": "DOE rebrand to NYCPS (OTI former)"
         }
@@ -207,14 +206,15 @@
   "clears_precision_bar": true,
   "materialize_edges": true,
   "crosswalk_stamp": {
-    "stamped_entries": 23,
-    "stamped_surfaces": 23,
-    "applied_count": 23
+    "stamped_entries": 0,
+    "stamped_surfaces": 0,
+    "applied_count": 0
   },
   "residual": {
-    "before": 6,
+    "before": 0,
     "after": 0,
-    "fixed": 6,
-    "fix_rate_on_residual": 1
+    "fixed": 0,
+    "fix_rate_on_residual": 1,
+    "product_positive_coverage": 1
   }
 }

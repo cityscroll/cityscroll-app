@@ -3,7 +3,7 @@
 //   node --test test/agency_successors.test.mjs
 
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
@@ -16,7 +16,6 @@ import {
   AGENCY_SUCCESSOR_KILL_SAMPLE,
   AGENCY_SUCCESSOR_PRECISION_FLOOR,
   extractSuccessorEdges,
-  materializeSuccessorAliasMap,
   measureSuccessorKillSample,
   densifyCrosswalkWithSuccessors,
   splitFormerField,
@@ -33,7 +32,7 @@ const receipt = JSON.parse(readFileSync(
 ));
 
 function baseResolve(raw) {
-  return resolveAgencyIdentity(raw, { skipSuccessors: true });
+  return resolveAgencyIdentity(raw);
 }
 
 test("splitFormerField keeps multi-value OTI lists and drops empties", () => {
@@ -61,17 +60,20 @@ test("extractSuccessorEdges emits only publisher-backed former surfaces", () => 
   assert.equal(empty.length, 0);
 });
 
-test("dated kill sample clears the 95% precision bar and closes residual renames", () => {
+test("dated kill sample clears the 95% precision bar on the product path", () => {
   const edges = extractSuccessorEdges(fixture.rows);
-  const aliasMap = materializeSuccessorAliasMap(edges, { baseResolve });
-  const measured = measureSuccessorKillSample({ edges, baseResolve, aliasMap });
+  // Product resolve densifies residual renames via AGENCY_GROUPS (home-cold-safe).
+  const measured = measureSuccessorKillSample({
+    edges,
+    baseResolve,
+    densifiedResolve: baseResolve,
+  });
   assert.equal(AGENCY_SUCCESSOR_KILL_SAMPLE.as_of, "2026-08-11");
   assert.equal(measured.precision, 1);
   assert.ok(measured.precision >= AGENCY_SUCCESSOR_PRECISION_FLOOR);
   assert.equal(measured.negatives.false_merges, 0);
+  assert.equal(measured.positives.resolved_after, measured.positives.total);
   assert.equal(measured.positives.residual_after, 0);
-  assert.equal(measured.positives.fixed, measured.positives.residual_before);
-  assert.equal(measured.positives.fix_rate_on_residual, 1);
   assert.equal(measured.materialize_edges, true);
   assert.equal(measured.clears_precision_bar, true);
 });
@@ -152,9 +154,13 @@ test("committed receipt matches the fixture kill sample", () => {
   assert.equal(receipt.clears_precision_bar, true);
   assert.equal(receipt.materialize_edges, true);
   assert.equal(receipt.residual.after, 0);
-  assert.equal(receipt.residual.fix_rate_on_residual, 1);
   assert.equal(receipt.kill_sample.negatives.false_merges, 0);
-  // Previously-broken residual count is recorded for the fix-rate claim.
-  assert.equal(receipt.residual.before, 6);
-  assert.equal(receipt.residual.fixed, 6);
+  assert.equal(receipt.kill_sample.positives.resolved_after, receipt.kill_sample.positives.total);
+  // Home cold path must not ship a bulk browser alias module.
+  assert.equal(receipt.edges.home_cold_path, "agency_groups_residual_only");
+  assert.equal(
+    existsSync(join(ROOT, "site/agency_successor_aliases.mjs")),
+    false,
+    "bulk alias module must stay off the home cold path",
+  );
 });

@@ -3,10 +3,11 @@
 // City Record publishes agency_name as free text. These reviewed groups keep a
 // stable route id while preserving every source spelling for exact source queries.
 //
-// OTI-published former names densify through site/agency_successor_aliases.mjs
-// (tools/build_agency_successors.mjs) so renames resolve to one canonical id.
-
-import { successorPreferredFor } from "./agency_successor_aliases.mjs";
+// OTI former-name densify (tools/build_agency_successors.mjs) stamps publisher
+// former_names onto worker/src/data/agency_crosswalk.json and measures the kill
+// sample. Residual renames that must share a route id are folded into
+// AGENCY_GROUPS / ROUTE_ALIAS_TARGETS here so the home cold path stays free of
+// a bulk alias module (home.cold wireBytes budget).
 
 export const AGENCY_GROUPS = Object.freeze({
   "Administration for Children's Services": ["ADMIN FOR CHILDREN'S SERVICES", "ADMIN FOR CHILDRENS SERVICES", "ADMIN FOR CHILDREN'S SVCS", "ADMIN FOR CHILDRENS SVCS", "ADMIN FOR CHILDREN' SVCS"],
@@ -31,20 +32,20 @@ export const AGENCY_GROUPS = Object.freeze({
   "Commission on Human Rights": ["HUMAN RIGHTS COMMISSION"],
   "Commission on Racial Equity": ["COMMISSION ON RACIAL EQUITY", "OFFICE OF RACIAL EQUITY"],
   "Comptroller": ["OFFICE OF THE COMPTROLLER"],
-  "Consumer and Worker Protection": ["CONSUMER AFFAIRS", "CONSUMER AND WORKER PROTECTION"],
+  "Consumer and Worker Protection": ["CONSUMER AFFAIRS", "CONSUMER AND WORKER PROTECTION", "Department of Consumer Affairs", "Department of Consumer and Worker Protection"],
   "Correction": ["DEPARTMENT OF CORRECTION"],
   "Criminal Justice Coordinator": ["CRIMINAL JUSTICE COORDINATOR", "OFFICE OF CRIMINAL JUSTICE"],
   "Cultural Affairs": ["CULTURAL AFFAIRS"],
   "Department Of Employment": ["DEPARTMENT OF EMPLOYMENT"],
   "Design and Construction": ["DESIGN AND CONSTRUCTION", "DESIGN & CONSTRUCTION", "DEPT. OF DESIGN & CONSTRUCTION", "Department of Design and Construction"],
-  "District Attorney - Kings County": ["DISTRICT ATTORNEY KINGS COUNTY", "Brooklyn District Attorney's Office"],
-  "District Attorney - New York County": ["DISTRICT ATTORNEY-MANHATTAN", "Manhattan District Attorney's Office"],
-  "District Attorney - Queens County": ["DISTRICT ATTORNEY QNS COUNTY", "Queens District Attorney's Office"],
-  "District Attorney - Richmond County": ["DISTRICT ATTORNEY RICHMOND COU", "Staten Island District Attorney's Office"],
-  "District Attorney - Bronx County": ["BRONX DISTRICT ATTORNEY", "Bronx District Attorney's Office"],
+  "District Attorney - Kings County": ["DISTRICT ATTORNEY KINGS COUNTY", "Brooklyn District Attorney's Office", "Kings County District Attorney's Office"],
+  "District Attorney - New York County": ["DISTRICT ATTORNEY-MANHATTAN", "Manhattan District Attorney's Office", "New York County District Attorney's Office"],
+  "District Attorney - Queens County": ["DISTRICT ATTORNEY QNS COUNTY", "Queens District Attorney's Office", "Queens County District Attorney's Office"],
+  "District Attorney - Richmond County": ["DISTRICT ATTORNEY RICHMOND COU", "Staten Island District Attorney's Office", "Richmond County District Attorney's Office"],
+  "District Attorney - Bronx County": ["BRONX DISTRICT ATTORNEY", "Bronx District Attorney's Office", "Bronx County District Attorney's Office"],
   "Districting Commission": ["DISTRICTING COMMISSION"],
-  "Education": ["DEPARTMENT OF EDUCATION ADMIN"],
-  "Emergency Management": ["OFFICE OF EMERGENCY MANAGEMENT"],
+  "Education": ["DEPARTMENT OF EDUCATION ADMIN", "Department of Education", "New York City Public Schools", "NYC Public Schools"],
+  "Emergency Management": ["OFFICE OF EMERGENCY MANAGEMENT", "Office of Emergency Management", "New York City Emergency Management", "NYC Emergency Management"],
   "Employees' Retirement System": ["NYC EMPLOYEES RETIREMENT SYS"],
   "Environmental Protection": ["DEPT OF ENVIRONMENT PROTECTION"],
   "Finance": ["DEPARTMENT OF FINANCE"],
@@ -56,13 +57,14 @@ export const AGENCY_GROUPS = Object.freeze({
   "Housing Preservation and Development": ["HOUSING PRESERVATION & DVLPMNT", "Department of Housing Preservation and Development", "HPD - NYC Dept of Housing Preservation & Development", "HPD - NYC Dept of Housing Preservation and Development"],
   "Human Resources Administration": ["HRA/DEPT OF SOCIAL SERVICES", "Dept. of Social Svcs/Human Resources Administration"],
   "Independent Budget Office": ["INDEPENDENT BUDGET OFFICE"],
-  "Information Technology and Telecommunications": ["DEPT OF INFO TECH & TELECOMM", "TECHNOLOGY & INNOVATION", "Office of Technology and Innovation", "Office of Technology & Innovation"],
+  "Information Technology and Telecommunications": ["DEPT OF INFO TECH & TELECOMM", "TECHNOLOGY & INNOVATION", "Office of Technology and Innovation", "Office of Technology & Innovation", "Department of Information Technology and Telecommunications"],
   "Investigation": ["DEPARTMENT OF INVESTIGATION"],
   "Juvenile Justice": ["DEPARTMENT OF JUVENILE JUSTICE"],
   "Landmarks Preservation Commission": ["LANDMARKS PRESERVATION COMM", "LPC - NYC Landmarks Preservation Commission"],
   "Law Department": ["LAW DEPARTMENT"],
   "Management and Budget": ["OFFICE OF MANAGEMENT AND BUDGET", "OFFICE OF MANAGEMENT & BUDGET"],
   "Mayor's Office of Contract Services": ["MAYORS OFFICE OF CONTRACT SVCS"],
+  "Mayor's Office to End Domestic and Gender-Based Violence": ["Mayor's Office to Combat Domestic Violence"],
   "New York City Fire Pension Fund": ["NYC FIRE PENSION FUND"],
   "NYC Department of Veterans' Services": ["NYC DEPT OF VETERANS SERVICES", "NYC DEPT OF VETERANS' SERVICES", "Veterans' Services"],
   "Office of Collective Bargaining": ["OFFICE OF COLLECTIVE BARGAININ"],
@@ -75,6 +77,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "Police Department": ["POLICE DEPARTMENT"],
   "Probation": ["DEPARTMENT OF PROBATION"],
   "Public Advocate": ["PUBLIC ADVOCATE"],
+  "Public Design Commission": ["Art Commission"],
   "Records and Information Services": ["DEPT OF RECORDS & INFO SERVICE"],
   "Sanitation": ["DEPARTMENT OF SANITATION"],
   "Small Business Services": ["DEPARTMENT OF BUSINESS SERV.", "Department of Business Services", "Department of Small Business Services", "DEPARTMENT OF SMALL BUSINESS SERVICES"],
@@ -92,7 +95,9 @@ const ROUTE_ALIAS_TARGETS = new Map([
   ["hra-department-of-social-services", "human-resources-administration"],
   ["mayoralty", "office-of-the-mayor"],
   ["n-y-c-housing-authority", "housing-authority"],
+  ["new-york-city-emergency-management", "emergency-management"],
   ["new-york-city-police-department", "police-department"],
+  ["new-york-city-public-schools", "education"],
   ["nyc-employees-retirement-system", "employees-retirement-system"],
   ["nyc-health-and-hospitals-corporation", "nyc-health-hospitals"],
   ["nyc-police-pension-fund", "new-york-city-police-pension-fund"],
@@ -185,71 +190,19 @@ function classifiedRouteIdentity(value, { includeSuperseded = false } = {}) {
   });
 }
 
-function groupForKey(key) {
-  if (!key) return null;
-  let group = PREFERRED_BY_KEY.get(key);
-  if (!group) {
-    const withoutDepartment = key.replace(/^(?:NYC )?(?:DEPARTMENT|DEPT) OF /, "");
-    group = PREFERRED_BY_KEY.get(withoutDepartment) || null;
-  }
-  return group || null;
-}
-
-function resolveSuccessorAlias(raw, successor) {
-  if (!successor?.preferred) return null;
-  let preferredRaw = stripDisplaySuffix(successor.preferred);
-  // One alignment hop: OTI current name may itself densify onto a reviewed group.
-  const hop = successorPreferredFor(preferredRaw, agencyComparisonKey);
-  if (hop?.preferred && agencyComparisonKey(hop.preferred) !== agencyComparisonKey(preferredRaw)) {
-    preferredRaw = stripDisplaySuffix(hop.preferred);
-  }
-  const preferredKey = agencyComparisonKey(preferredRaw);
-  const preferredGroup = groupForKey(preferredKey)
-    || GROUP_BY_ID.get(agencyCanonicalId(preferredRaw))
-    || null;
-  if (preferredGroup) {
-    return Object.freeze({
-      ...preferredGroup,
-      variants: Object.freeze(uniqueStrings([
-        ...(preferredGroup.variants || []),
-        raw,
-        successor.former_surface,
-      ])),
-      route_classification: "oti_former_name_successor",
-      successor_of: successor.former_surface,
-    });
-  }
-  const preferredName = fallbackName(preferredRaw);
-  return Object.freeze({
-    canonical_id: agencyCanonicalId(preferredName),
-    canonical_name: preferredName,
-    variants: Object.freeze(uniqueStrings([preferredName, raw, successor.former_surface])),
-    matched: true,
-    route_classification: "oti_former_name_successor",
-    successor_of: successor.former_surface,
-  });
-}
-
-export function resolveAgencyIdentity(value, { skipSuccessors = false } = {}) {
+export function resolveAgencyIdentity(value) {
   const raw = stripDisplaySuffix(value);
   const classified = classifiedRouteIdentity(raw);
   if (classified) return classified;
   const routeId = raw.toLowerCase();
   if (GROUP_BY_ID.has(routeId)) return GROUP_BY_ID.get(routeId);
   const key = agencyComparisonKey(raw);
-
-  // OTI former-name densify runs before group match so a published current
-  // name (NYCEM, NYCPS) can align onto the reviewed City Record group id, and
-  // a published former name (Art Commission) can join its successor.
-  if (!skipSuccessors) {
-    const successor = successorPreferredFor(raw, agencyComparisonKey);
-    const successorHit = resolveSuccessorAlias(raw, successor);
-    if (successorHit) return successorHit;
+  let group = PREFERRED_BY_KEY.get(key);
+  if (!group) {
+    const withoutDepartment = key.replace(/^(?:NYC )?(?:DEPARTMENT|DEPT) OF /, "");
+    group = PREFERRED_BY_KEY.get(withoutDepartment);
   }
-
-  const group = groupForKey(key);
   if (group) return group;
-
   const canonical_name = fallbackName(patternCanonical(raw, key));
   const canonical_id = agencyCanonicalId(canonical_name);
   return Object.freeze({ canonical_id, canonical_name, variants: Object.freeze([raw || canonical_name].filter(Boolean)), matched: false });
