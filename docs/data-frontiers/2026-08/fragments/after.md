@@ -4,7 +4,7 @@
 
 **Infrastructure:** build a polite, checkpointed collector for the official FY2027 LL63 and LL1 agency indexes and their XLSX plan files, normalize agency, description, procurement method, industry, term, quarter, and any published identifiers, and separately ingest the Capital Projects Dashboard `fb86-vt7u` through Socrata/OData. Measure each candidate bridge to PASSPort/City Record on a fixed modern sample; accept only deterministic IDs or precision-reviewed agency+title+time matches, publish a receipt with numerator/denominator/false-positive review, and stop each source path below the repository’s 30% usefulness threshold. **Dependent surface:** when a plan row lands with sufficient confidence, automatically open the Money planning phase and vendor forecast card showing purpose, expected quarter, method, and budget provenance; unmatched notices and plans remain separate and no budget is inferred from an agency total.
 
-**Result (2026-08-04):** the full 101-workbook pass materialized 11,566 MOCS rows plus 50,000 Capital Projects rows. All six independent 100-row City Record/PASSPort bridge paths joined 0/100, so every path stopped below 30%, no edge materialized, and the dependent planning phase remains inert.
+**Result (2026-08-04 exact/fixed-sorted; 2026-08-11 prefix re-measure):** the full 101-workbook pass materialized 11,566 MOCS rows plus 50,000 Capital Projects rows. The original fixed-sorted 100-row samples joined 0/100 on exact `identifier_key` equality and stopped every path. Re-measurement on the **identifier-bearing** plan denominator with product passport prefix joins (`pin_prefix_of_epin` / `epin_prefix_of_pin`) cleared the gates: MOCS LL63→PASSPort **92/121 (76.0%)** and LL1→PASSPort **1/3 (33.3%)**, both at **precision 1.0**, shipping **146** receipt-backed plan↔contract edges into the Money planning thread lookup ([receipt](../site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json)). City Record and capital-dashboard paths remain stopped. Source-null plan fields stay null.
 
 ### RC-2 — Establish a durable NYCIDA/Build NYC project-document feed
 
@@ -42,11 +42,51 @@ Receipt: [`site/data/person_hub_sources/verification_receipts/person_hub_influen
 
 Rebuild: `node tools/build_person_hub.mjs` then `node tools/build_official_influence.mjs`.
 
+### Source-records dual-write (crank 5, 2026-08-11)
+
+**Gap:** product joins shipped, but the three person-hub streams were still `source-records-not-declared` in the coverage matrix (flywheel ranks 1–3).
+
+**Result:** host retention + fail-soft dual-write adapter under `PERSON_HUB_SOURCE_RECORD_DUAL_WRITE` (default off in beta; on in production vars). Stable keys: `council-member:<id>:<term_start>`, `lobby-reg:<registration>:<client>:<lobbyist>:<year>:<targets_hash>`, `cfb-contrib:<recipid>:<donor>:<election>:<amount>:<office>`. Fixture kill sample (committed person-hub fixtures) retained **208** rows and cleared gates:
+
+| Stream | Usefulness | Precision | Retained |
+|---|---:|---:|---:|
+| Council Members | **40/40 (100%)** exact PersonId | **100%** | 40 |
+| eLobbyist | **39/44 (88.64%)** person-shaped mentions | **100%** | 51 |
+| CFB contributions | **31/59 (52.54%)** distinct recipients | **100%** | 117 |
+
+Receipt: [`site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json`](../site/data/person_hub_sources/verification_receipts/person_hub_source_records_2026-08-11.json). Matrix: `entity_resolution/source_coverage.json` now **10/16 complete**. Rebuild/retain: `node tools/retain_person_hub_source_records.mjs --from-fixture --publish` (or live without `--from-fixture`); verify `--check`. Public person hub and influence lookups remain the reader path; dual-write is shadow-only.
+
+**Next joinable cards after this crank (post-emit rank order):** `zap-projects` source-records dual-write (coverage #1); residual dual-write gaps (doing-business, NYCIDA, ABO, NYCHA); undersampled not-published claims (money-location residual, planning budget, subcontract goal); civic-graph grounding gaps.
+
 ## Agency rename / successor densify (OTI former names)
 
 **Gap:** agency dual names and successors (DoITT→OTI, DCA→DCWP, Art Commission→PDC, and related renames) break entity resolution when legacy and current surfaces mint different canonical ids. The existing crosswalk already joined City Record strings to OTI roster cards (`t3jq-9nkf`); residual work is densifying the roster's published `alternate_or_former_names` / `alternate_or_former_acronyms` into the shared resolve path rather than inventing a second agency ER subsystem.
 
 **Result (2026-08-11):** fixture-backed densify of the OTI former-name slice (53 of 306 roster rows) extracted 76 publisher-backed edges. A dated kill sample of 10 known renames + 5 hard negatives measured **precision 100%** (floor 95%), **0 false merges**, and product resolve covers **10/10** positives (gold `gv0-026` remains joined). Materialized into `worker/src/data/agency_crosswalk.json` (`former_names` / `former_acronyms` stamps). Residual route-id densify lives in `site/agency_identity.mjs` `AGENCY_GROUPS` only — a bulk browser alias module was rejected for the home.cold wireBytes budget. Rebuild: `node tools/build_agency_successors.mjs --fixture` (or live SODA without `--fixture`); gate: `--check`. Receipt: [`site/data/agency_sources/verification_receipts/agency_successors_2026-08-11.json`](../site/data/agency_sources/verification_receipts/agency_successors_2026-08-11.json).
+
+### ULURP Borough President recommendations — re-gated on recommendation rows
+
+**Prior false gate (2026-07-30):** usefulness was computed on the whole ZAP
+ulurp-numbered universe (152/27,971 = 0.54%) and the sources were disabled.
+
+**Correct gate (2026-08-11):** recommendation-row hit rate **80/91 (87.91%)**
+and PDF-row hit rate **73/88 (82.95%)**, precision 1.0 by strict ULURP-token
+intersection ([receipt](../site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-08-11.json)).
+Sparse Land panel ships from `site/data/ulurp_recommendations_lookup.json` via
+`site/ulurp_recommendation_panel.mjs` only on token hits. Property Disposition
+remains the wrong universe. ZAP-universe catalog coverage stays contrast-only.
+
+### Meeting person-vote materialization (flywheel crank, 2026-08-11)
+
+The data-integrity red flag `meeting-person-votes` claimed ~100% empty `by_person` on matched Council hearings after an earlier VotePerson* field-mapping miss. Live re-measure against the matched meeting-outcomes materialization:
+
+| Metric | Value | Gate |
+|---|---:|---|
+| Matched Council hearings with non-empty `by_person` | **6 / 16 (37.5%)** | ≥30% usefulness |
+| Reviewed person-row precision (`person_id` + name + bucket + official bind) | **388 / 388 (100%)** | ≥95% precision |
+| Stratified credibility sample empty rate | **9 / 15 (60%)** | below 85% suspicious / 95% red-flag |
+
+**Disposition:** keep the edge live; mark the flywheel card fixed; residual empties stay honest voice/action-only slots (do not invent roll call). Receipt: [`site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json`](../site/data/legistar_sources/verification_receipts/meeting_person_votes_materialization_2026-08-11.json). Demo: `#notice/20260706036` → event `22526` (Christopher Marte and peers).
 
 ## Inventory additions and maintenance actions
 

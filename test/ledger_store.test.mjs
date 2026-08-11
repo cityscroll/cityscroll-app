@@ -201,7 +201,7 @@ test("two independent card updates produce non-overlapping file sets", () => {
   assert.equal(merged.cards["crol-list/card-two"].status, "fixed");
 });
 
-test("repo ledger store folds to 82 cards with stable schema", () => {
+test("repo ledger store folds committed cards with stable schema", () => {
   assert.ok(existsSync(join(ROOT, "ontology/queue/ledger/cards")));
   const ledger = loadLedgerStore(REPO_LEDGER);
   assert.equal(ledger.schema, LEDGER_SCHEMA);
