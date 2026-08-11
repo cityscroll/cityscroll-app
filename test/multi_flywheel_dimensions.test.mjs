@@ -427,18 +427,20 @@ test("data-integrity core: population not-published-rate emits red flags continu
   });
   assert.equal(result.dimension, "data-integrity");
   assert.ok(result.metrics.not_published_claims_checked >= 5);
-  assert.ok(result.metrics.not_published_red_flags >= 1, "expected ≥1 red flag");
+  // Population credibility red flags can clear to zero when every sampled
+  // "city does not publish" claim is healthy or a verified genuine withhold.
+  assert.ok(result.metrics.not_published_red_flags >= 0);
   assert.ok(result.metrics.not_published_genuinely_withheld >= 1);
-  assert.ok(result.metrics.not_published_healthy >= 2);
+  assert.ok(result.metrics.not_published_healthy >= 3);
 
-  // Core red flags from credibility audit
+  // Core credibility audits that previously red-flagged are now healthy
   assert.ok(
     !result.cards.some((c) => c.id.includes("subsidy-field-company-place-money")),
     "RC-2 money slots no longer emit a false class-(b) red flag",
   );
   assert.ok(
-    result.cards.some((c) => c.id.includes("meeting-person-votes")),
-    "person votes never-ingested red flag",
+    !result.cards.some((c) => c.id.includes("meeting-person-votes")),
+    "person roll-call retention no longer emits a never-ingested red flag",
   );
   // Genuinely withheld package docs must NOT emit a red-flag bug card
   assert.ok(
@@ -457,6 +459,12 @@ test("data-integrity core: population not-published-rate emits red flags continu
   assert.equal(stages.red_flag, false);
   assert.equal(stages.classification, "healthy");
 
+  const personVotes = result.findings.find((f) => f.claim_id === "meeting-person-votes");
+  assert.ok(personVotes);
+  assert.equal(personVotes.red_flag, false);
+  assert.equal(personVotes.classification, "healthy");
+  assert.ok(personVotes.rate.non_null >= 1);
+
   // Secondary feature inventory still works
   assert.ok(result.metrics.features_checked >= 5);
   assert.ok(result.cards.some((c) => c.id.includes("passport.rfx_document_url")));
@@ -471,8 +479,8 @@ test("data-integrity core: population not-published-rate emits red flags continu
 
   // Pure path without gap taxonomy still evaluates sample inventory
   const sampleOnly = evaluateNotPublishedClaims(samples.claims);
-  assert.ok(sampleOnly.metrics.red_flags >= 1);
-  assert.ok(sampleOnly.metrics.healthy >= 2);
+  assert.equal(sampleOnly.metrics.red_flags, 0);
+  assert.ok(sampleOnly.metrics.healthy >= 3);
 });
 
 test("readability scores views and cards unusable ones", () => {
