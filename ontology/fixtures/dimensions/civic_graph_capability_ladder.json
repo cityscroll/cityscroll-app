@@ -1,0 +1,100 @@
+{
+  "schema": "cityscroll.civic_graph_capability_ladder.v1",
+  "observed_at": "2026-08-11",
+  "policy_version": "v0",
+  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps — those live under coverage dimension.",
+  "already_in_flywheel": [
+    {
+      "id": "crol-list/mf-coverage-source-records-not-declared-cfb-campaign-contributions",
+      "role": "v2-support dual-write CFB observations",
+      "dimension": "coverage"
+    },
+    {
+      "id": "crol-list/mf-coverage-source-records-not-declared-city-clerk-elobbyist",
+      "role": "v2-support dual-write eLobbyist observations",
+      "dimension": "coverage"
+    },
+    {
+      "id": "crol-list/mf-coverage-source-records-not-declared-nyc-council-members",
+      "role": "v2-support dual-write Council Members hub source",
+      "dimension": "coverage"
+    },
+    {
+      "id": "crol-list/mf-ontology-enrichment-civic-graph-object-grounding-gap",
+      "role": "generic gap-object frontier (includes payment)",
+      "dimension": "ontology-enrichment"
+    },
+    {
+      "id": "crol-list/mf-data-integrity-red-flag-meeting-person-votes",
+      "role": "v2-support person vote honesty",
+      "dimension": "data-integrity"
+    },
+    {
+      "id": "crol-list/checkbook-spending-payment-retention",
+      "role": "v1 prerequisite FIXED — payment rows retained",
+      "status": "fixed",
+      "dimension": "coverage"
+    }
+  ],
+  "metrics": {
+    "payment": {
+      "object_grounding": "gap",
+      "object_status": "registered",
+      "paid_under_status": "unregistered",
+      "paid_under_grounding": "gap",
+      "paid_under_reason_stale": true,
+      "retention_usefulness": 0.44,
+      "retention_precision": 1.0,
+      "retention_materialize": true,
+      "dual_write_after": "complete",
+      "dual_write_row_count": 344,
+      "receipt": "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json"
+    },
+    "official_influence": {
+      "hub_person_count": 215,
+      "hub_promoted": true,
+      "lobby_edge_count": 2440,
+      "lobby_person_count": 61,
+      "lobby_usefulness": 0.9617,
+      "lobby_precision": 1.0,
+      "cfb_edge_count": 1398,
+      "cfb_person_count": 59,
+      "cfb_usefulness": 0.4907,
+      "cfb_precision": 1.0,
+      "registry_has_lobby_link_type": false,
+      "registry_has_cfb_link_type": false,
+      "receipt": "site/data/person_hub_sources/verification_receipts/person_hub_influence_2026-08-11.json"
+    },
+    "votes": {
+      "person_count": 19,
+      "row_count": 341,
+      "eligible_event_count": 12,
+      "constellation_event_bar": 30,
+      "retention_rate": 1.0,
+      "retention_pass": true,
+      "event_count_pass": false,
+      "constellation_promoted": false,
+      "vote_object_status": "unregistered",
+      "votes_on_status": "registered",
+      "votes_on_grounding": "partial",
+      "lookup": "site/data/person_votes_lookup.json"
+    },
+    "mandates": {
+      "agency_count": 49,
+      "mandate_count": 2931,
+      "detectable_mandate_count": 703,
+      "observed_count": 0,
+      "report_or_study_candidate_count": 1,
+      "notice_backlink_notices": 1,
+      "notice_backlink_edges": 1,
+      "process_conformance_lookup": "site/data/process_conformance_lookup.json",
+      "backlinks_lookup": "site/data/notice_mandate_backlinks_lookup.json"
+    },
+    "agency_successors": {
+      "edge_count": 76,
+      "precision": 1.0,
+      "promoted": true,
+      "receipt": "site/data/agency_sources/verification_receipts/agency_successors_2026-08-11.json"
+    }
+  }
+}

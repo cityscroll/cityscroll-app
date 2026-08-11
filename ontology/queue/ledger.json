@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.multi_flywheel_ledger.v0",
   "policy_version": "v0",
-  "updated_at": "2026-08-11T22:00:00.000Z",
-  "note": "2026-08-11 also closed Checkbook Spending payment retention after a dated kill sample cleared 30%/95% gates. Also closed meeting-person-votes credibility red flag (live by_person retention). Also closed person-hub constellation source-records dual-write (Council Members / eLobbyist / CFB; complete 10/16).",
+  "updated_at": "2026-08-11T22:30:00.000Z",
+  "note": "2026-08-11 also closed Checkbook Spending payment retention after a dated kill sample cleared 30%/95% gates. Also closed meeting-person-votes credibility red flag (live by_person retention). Also closed person-hub constellation source-records dual-write (Council Members / eLobbyist / CFB; complete 10/16). Proposed Civic Graph capability ladder cards (cg-v1/v2/v3) via ontology-enrichment civic_graph_capability emitter.",
   "cards": {
     "crol-list/mf-data-integrity-red-flag-subsidy-field-company-place-money": {
       "status": "fixed",
@@ -802,6 +802,78 @@
       "fixed_at": "2026-08-11T22:00:00.000Z",
       "fixed_note": "Host retention + PERSON_HUB_SOURCE_RECORD_DUAL_WRITE. Kill sample usefulness 100% (40/40 exact PersonId), precision 100%. Receipt person_hub_source_records_2026-08-11.json.",
       "demo_win": "Publisher rows for the person-hub constellation retain immutable source_records-shaped observations without changing public delivery."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Register paid_under and promote payment grounding after retention",
+      "verify": "node -e \"const r=require('./ontology/registry.v0.json'); const p=r.object_types.find(o=>o.id==='payment'); const l=r.link_types.find(x=>x.id==='paid_under'); if(!p||p.grounding==='gap') process.exit(1); if(!l||l.status!=='registered'||l.grounding==='gap') process.exit(1); if(/unregistered|not dual-written/i.test(l.reason||'')) process.exit(1);\"",
+      "content_hash": "8c2943231997c4e0",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "Registry treats payment as a realized object and paid_under as a first-class contract→payment link, so Follow-the-Dollars can walk individual Checkbook payment rows."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Surface retained payment rows on lifecycle and vendor footprint",
+      "verify": "node --test test/lifecycle_coherence_field_cases.test.mjs test/lifecycle_render.test.mjs worker/test/checkbook_lifecycle.test.mjs # retained payment rows on joined contract",
+      "content_hash": "254dfc2b440fd359",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "On a joined award notice, Follow-the-Dollars lists retained Checkbook payment documents (date, amount, payee) for the contract, with honest unavailable when none retained."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Catalog lobby and CFB influence edges in Civic Graph registry",
+      "verify": "node -e \"const r=require('./ontology/registry.v0.json'); const ids=new Set(r.link_types.map(l=>l.id)); if(!ids.has('lobby_targets_official')&&!ids.has('lobby_client_targets_official')) process.exit(1); if(!ids.has('contribution_to_official')&&!ids.has('campaign_contribution_to_official')) process.exit(1);\" && node --test test/ontology_registry.test.mjs test/official_influence.test.mjs test/person_hub.test.mjs",
+      "content_hash": "c444c3c27b0b2efc",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "Civic Graph names lobby and campaign-finance influence as first-class link types backed by the promoted person-hub lookups, so official pages walk org → official without ad-hoc lookup-only edges."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Densify person roll-call events past decision-constellation bar",
+      "verify": "node -e \"const v=require('./site/data/person_votes_lookup.json'); const g=v.coverage&&v.coverage.gate; if(!g||g.retention_pass!==true||g.event_count_pass!==true||g.promoted!==true) process.exit(1);\" && node --test test/person_votes.test.mjs test/official_entity_family.test.mjs",
+      "content_hash": "8036420c2c4f18e0",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "Person pages and meeting outcomes use decision-constellation language only after ≥30 distinct retained roll-call events at ≥95% person-id retention; vote objects are catalog-honest."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v3-mandate-report-candidates": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Densify report_or_study observation candidates for report mandates",
+      "verify": "node -e \"const p=require('./site/data/process_conformance_lookup.json'); const s=p.summary||{}; if(!(Number(s.observed_count)>0)) process.exit(1);\" && node --test test/process_conformance.test.mjs test/mandate_reports_receipt.test.mjs",
+      "content_hash": "1970beb41ee7e7b2",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "At least one agency shows a real City Record report filing receipt on a report mandate without false merges on the held-out sample."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Deep-link official influence panels into votes and matters",
+      "verify": "node --test test/person_hub.test.mjs test/official_influence.test.mjs test/person_votes.test.mjs test/meeting_view_readability.test.mjs",
+      "content_hash": "f434f5cb865caea7",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "On #official/7801 (and influence demos), lobby and CFB edges deep-link to related published roll-call matters and City Record notices when votes densify allows — no invented edges."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v3-mandate-rule-evidence-stamps": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Stamp rule body and citation keys so mandate_rule can publish",
+      "verify": "node tools/cross_spine_eval.mjs --check-policy && node --test test/process_conformance.test.mjs test/rule_evidence_stamps.test.mjs test/mandate_rules_bridge.test.mjs",
+      "content_hash": "760413743ffa79d1",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "Near-miss rulemaking mandates (e.g. Sanitation CWZ field cases) move to observed when body_topic_keys and citation_law_keys stamp, without relaxing held-out precision."
+    },
+    "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks": {
+      "status": "proposed",
+      "dimension": "ontology-enrichment",
+      "title": "Expand mandate→contract public edges beyond the single DHS template",
+      "verify": "node -e \"const b=require('./site/data/notice_mandate_backlinks_lookup.json'); const n=Number(b.counts&&b.counts.edges); if(!(n>=5)) process.exit(1);\" && node --test test/notice_mandate_backlinks.test.mjs",
+      "content_hash": "f401a9351448241d",
+      "last_seen_at": "2026-08-11T22:30:00.000Z",
+      "demo_win": "At least five public mandate→contract reverse edges render on notice documents, expanded from the DHS Administrative Code template without title-only invent."
     }
   }
 }

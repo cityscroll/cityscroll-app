@@ -2101,6 +2101,15 @@ Join false-negative guard: `ontology/join_gate_policy.mjs` + lesson `join-false-
 Recurring classes append to `ontology/engineering-lessons.md`. Do not hand-author
 parallel metric-driven roadmap cards; re-run the flywheel after merges.
 
+**Civic Graph capability ladder (`cg-v*`):** metric-driven cards inside
+`ontology-enrichment` from
+`ontology/dimensions/civic_graph_capability.mjs` + fixture
+`ontology/fixtures/dimensions/civic_graph_capability_ladder.json`. Emit while
+payment / influence / roll-call / mandate thresholds fail (v1 payment registry+
+surface → v2 influence + densify + official walk → v3 mandate densify); quiet
+when fixture metrics clear. Characterization:
+`node --test test/civic_graph_capability_ladder.test.mjs`.
+
 **Actionability sample (honesty):** `actionability_rate_sample` is the **deep**
 destination-class rate over a committed handoff sample — not
 `ACTION_TYPES.length` (that always yielded rate=1 and could not police
