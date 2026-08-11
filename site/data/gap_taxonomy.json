@@ -3203,8 +3203,8 @@
           "event_item_id"
         ]
       },
-      "notices_affected_estimate": "Items listed on the agenda but not yet acted upon at materialization time. Most acted items already show an inline outcome (Approved, Passed) from EventItemActionName; per-person roll-call detail is published on the endpoint only when a roll-call vote is taken (~10% of events).",
-      "evidence": "Authenticated edge materialization fetches roll-call tallies best-effort for flagged items. Voice votes and many committee approvals carry no roll-call rows on the API; those slots show the action outcome instead of a gap. Empty roll-call with no outcome is pending Council action, not a missing ingest."
+      "notices_affected_estimate": "Items listed on the agenda but not yet acted upon at materialization time. Most acted items already show an inline outcome (Approved, Passed) from EventItemActionName; per-person roll-call detail is published on the endpoint only when a roll-call vote is taken (live matched materialization 2026-08-11: 6/16 hearings with non-empty by_person).",
+      "evidence": "Authenticated edge materialization retains VotePerson* identities on nested Votes (person_vote_retention_rate=1 on audited events). Live matched Council hearings expose by_person on 6/16 (37.5%) with 388/388 person-row precision (receipt meeting_person_votes_materialization_2026-08-11.json). Voice votes and many committee approvals carry no roll-call rows on the API; those slots show the action outcome instead of a gap. Empty roll-call with no outcome is pending Council action or publisher voice vote, not a missing ingest."
     },
     {
       "id": "meeting-matters-absent",
