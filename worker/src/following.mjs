@@ -3,6 +3,9 @@ import {
   buildFollowingViewModel,
   followingLensNeedsRedirect,
   renderFollowingDocument,
+  buildFollowingGraphContext,
+  followingWatchIdentityHtml,
+  followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
 import { compileSub } from "./lib/compile.mjs";
@@ -64,8 +67,11 @@ function hiddenCredential(token, watch) {
 
 function personalWatchHtml(watch, credential) {
   const action = watch.paused ? "unpause" : "pause";
+  const context = buildFollowingGraphContext(watch, { backToEntity: true });
   return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}">
-    <div class="following-watch-heading"><h3>${esc(watch.query)}</h3><p class="watch-meta">${watch.paused ? "Paused" : "Active"}</p></div>
+    <div class="following-watch-heading"><h3>${esc(watch.query || context.ruleSentence)}</h3><p class="watch-meta">${watch.paused ? "Paused" : "Active"}</p></div>
+    ${followingWatchIdentityHtml(context, { heading: "Watch details", headingTag: "h4", backToEntity: true })}
+    ${followingWatchScopeLinksHtml(context)}
     <div class="following-watch-controls">
       <form method="post" action="${SITE_ORIGIN}/prefs" data-watch-action>
         ${hiddenCredential(credential, watch)}<input type="hidden" name="action" value="update">
