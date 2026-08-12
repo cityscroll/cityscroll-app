@@ -206,7 +206,7 @@ HNTB_AWARD_LIFECYCLE = {
     "ok": True,
     "pin": "07123E0076001",
     "pin_strategy": "exact",
-    "assembly_version": 3,
+    "assembly_version": 4,
     "timeline": [
         {
             "stage": "award",

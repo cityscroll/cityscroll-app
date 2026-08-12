@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.payment_row_surface_verification.v1",
+  "observed_on": "2026-08-11",
+  "capability_id": "cg-v1-payment-row-surface",
+  "depends_on": {
+    "card_id": "crol-list/checkbook-spending-payment-retention",
+    "retention_receipt": "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json",
+    "usefulness": { "joined": 22, "total": 50, "rate": 0.44 },
+    "precision": { "true_positives": 31, "false_positives": 0, "rate": 1.0 }
+  },
+  "surface": {
+    "lifecycle_assembly_version": 4,
+    "payment_rows_cap": 12,
+    "fields": ["document_id", "payee", "amount", "date", "fiscal_year", "contract_id"],
+    "render": "site/app/procurement-phase.mjs lifecyclePaymentRowsHTML on Follow-the-Dollars",
+    "honest_absence": "No payment_rows HTML when spending is empty, error, or not retained"
+  },
+  "gates": {
+    "usefulness_cleared": true,
+    "precision_cleared": true,
+    "materialize": true,
+    "surface_shipped": true
+  },
+  "notes": [
+    "Individual Checkbook Spending rows were already fetched for paid-to-date totals; this card stamps and renders them.",
+    "Vendor footprint payments section continues to use entity-intelligence payment objects; lifecycle is the check-level trail."
+  ]
+}
