@@ -6,6 +6,7 @@ import {
   buildContextualSuggestions,
   renderContextualSuggestions,
 } from "./contextual_suggestions.mjs";
+import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -709,6 +710,25 @@ function browseEdgeInventory(facet, rows, currentRefs) {
 
 export { browseEdgeInventory };
 
+/** Adapt Browse's bounded, already-materialized intersections to the shared rail. */
+export function buildBrowseEdgeSummary(view) {
+  const refs = view?.scope?.refs || [];
+  const source = refs[0] || null;
+  const inventory = Array.isArray(view?.edgeInventory) ? view.edgeInventory : [];
+  return normalizeEdgeSummaryRecords(inventory.map((edge) => ({
+    source_kind: source?.kind || "browse",
+    source_id: source?.ref || null,
+    edge_type: `browse_related_${edge.kind || "record"}`,
+    label: `${edge.label || "Related records"} related to this ${view.facet || "browse"} scope`,
+    target_kind: edge.kind || "record",
+    target_name: edge.label || null,
+    count: edge.count,
+    href: edge.pivotHref || null,
+    scope: { facet: view.facet || null, search: view.scopeSearch || null },
+    as_of: view.asOf || null,
+  })));
+}
+
 export function buildBrowseView(facet, payload = {}, params = new URLSearchParams(), options = {}) {
   const config = BROWSE_FACETS[facet];
   if (!config) return null;
@@ -792,6 +812,8 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     liveOnlyFilters: liveOnlyFilters(search),
     hasQuery: [...search].some(([key]) => !DOCUMENT_FILTERS.has(key)),
     contextualSuggestions,
+    edgeInventory: edgeInventory.edgeInventory,
+    edgePairs: edgeInventory.edgePairs,
   };
 }
 
@@ -854,6 +876,11 @@ export function renderBrowseView(view) {
     : "";
   const scopeChip = renderScopeChip(view.scope, view.config, view.scopeSearch);
   const contextualSuggestions = renderContextualSuggestions(view.contextualSuggestions);
+  const edgeRail = renderEdgeSummaryRail(buildBrowseEdgeSummary(view), {
+    heading: "Related records",
+    id: "browse-edge-summary-heading",
+    className: "browse-edge-summary",
+  });
   const cards = view.rows.map((row) => {
     const href = rowHref(view.facet, row);
     const title = rowTitle(view.facet, row) || "Untitled record";
@@ -878,7 +905,7 @@ export function renderBrowseView(view) {
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${asOfMismatch}${scopeChip}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${asOfMismatch}${scopeChip}${edgeRail}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
 }
 
 export function browseAssetPath(facet) {

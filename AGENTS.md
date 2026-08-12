@@ -114,6 +114,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## Main site module boundaries
 
+- **Typed edge summaries:** `site/edge_summary.mjs` is the shared normalization and rail renderer
+  for Browse intersections, agency constellation categories, vendor footprints, and bounded
+  mandate previews. Producers own read-model counts and scoped hrefs; keep `empty` and `unknown`
+  distinct and preserve null counts. The agency lookup is regenerated with
+  `node tools/build_agency_constellation_documents.mjs --check`.
+
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.
   `site/index.html` owns markup/CSS, `site/app/main.mjs` owns ordered loading, and application
   modules stay below 100 KB. Source-extraction tests read modules through
