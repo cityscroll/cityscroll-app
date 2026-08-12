@@ -176,7 +176,7 @@ function moneyActiveFilterItems(filter) {
   var excludeSpecial = f.excludeSpecial === true;
   if (!category && !maxAmount && !months && !excludeSpecial) return [];
 
-  var noticeType = f.noticeType === "award" || f.noticeType === "allrfp" || f.noticeType === "archive"
+  var noticeType = f.noticeType === "award" || f.noticeType === "allrfp"
     ? f.noticeType
     : "solicitation";
   var agency = compactText(f.agency, 160);

@@ -66,6 +66,13 @@ AWARD_ROW = {
     "selection_method_description": "Competitive Sealed Bids",
     "additional_description_1": "Award of contract for rehabilitation of water tunnel shafts.",
 }
+PARKS_ARCHIVE_AWARD = {
+    "request_id": "20210514115", "start_date": "2021-05-21", "agency_name": "Parks and Recreation",
+    "type_of_notice_description": "Award", "category_description": "Services (other than human services)",
+    "short_title": "Jazz Concert Series April 2021 to June 2021, Citywide",
+    "pin": "84621C0021001", "contract_amount": "19995", "vendor_name": "jazz foundation of america inc",
+    "selection_method_description": "Competitive Sealed Bids",
+}
 # Dedicated #notice/ permalink fixture (crol-hotfix3-m8): a Solicitation with every
 # how-to-respond field populated (contact/address/email, like RFP_OPEN) so the guard's
 # deep-link walk exercises the full glance + action-button + how-to-respond chrome. due_date
@@ -918,7 +925,7 @@ EXTERNAL_AWARD = {
 
 # Every fixture string value that may surface in the UI as DATA (legitimately English).
 # section_name is intentionally omitted — sections render as chrome and must translate.
-_DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW, NOTICE_PERMALINK_ROW] + CHAIN_ROWS + PROPERTY_ROWS
+_DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, PARKS_ARCHIVE_AWARD, HEARING_ROW, NOTICE_PERMALINK_ROW] + CHAIN_ROWS + PROPERTY_ROWS
               + RULES_ROWS + MEETINGS_ROWS + ZAP_ROWS + PAY_ROLES + CSL_ROLES + PERSONNEL_ROWS + TITLE_CROSSWALK
               + AGENCIES_TODAY + METHOD_FACET + FORECAST_ROWS["forecasts"] + AUTHORITY_AWARDS)
 _DATA_FIELDS_EXCLUDED = {"section_name"}
@@ -959,6 +966,8 @@ def _soda_response(url):
         return [{"n": "5"}]
     if "sum(contract_amount) as t" in sel:
         return [{"t": "1200000"}]
+    if "agency_name='Parks and Recreation'" in where and "type_of_notice_description='Award'" in where:
+        return [PARKS_ARCHIVE_AWARD]
     if sel == "start_date,due_date":
         return []  # agencyNorms ad-window sample: too small → no flag
     if "request_id='" in where:

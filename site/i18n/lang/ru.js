@@ -235,7 +235,6 @@
     mode_open: "Открытые запросы предложений (RFP) — приём сейчас",
     mode_allrfp: "Все RFP",
     mode_award: "Недавние присуждения контрактов ($)",
-    mode_archive: "Архивные награды и контракты",
     agency_label: "Ведомство",
     scope_relation_published_by: "опубликовано ведомством",
     scope_relation_connection: "связь",

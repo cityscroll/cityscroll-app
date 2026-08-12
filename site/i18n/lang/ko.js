@@ -235,7 +235,6 @@
     mode_open: "공개 제안요청서 (RFP) — 현재 접수 중",
     mode_allrfp: "모든 RFP",
     mode_award: "최근 낙찰 ($)",
-    mode_archive: "보관된 낙찰 및 계약",
     agency_label: "기관",
     scope_relation_published_by: "게시 기관",
     scope_relation_connection: "연결",

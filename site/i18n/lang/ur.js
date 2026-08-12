@@ -237,7 +237,6 @@
     mode_open: "کھلی درخواستِ تجاویز (RFP) — ابھی قبول ہو رہی ہیں",
     mode_allrfp: "تمام RFP",
     mode_award: "حالیہ ایوارڈز ($)",
-    mode_archive: "محفوظ شدہ ایوارڈز اور معاہدے",
     agency_label: "ادارہ",
     scope_relation_published_by: "ادارے کی جانب سے شائع شدہ",
     scope_relation_connection: "رابطہ",

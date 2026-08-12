@@ -234,7 +234,6 @@
     mode_open: "Demann Pwopozisyon (RFP) louvri — l ap aksepte kounye a",
     mode_allrfp: "Tout RFP yo",
     mode_award: "Akòdman resan yo ($)",
-    mode_archive: "Akòdman ak kontra achive",
     agency_label: "Ajans",
     scope_relation_published_by: "pibliye pa",
     scope_relation_connection: "koneksyon",

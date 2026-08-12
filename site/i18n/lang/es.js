@@ -235,7 +235,6 @@
     mode_open: "Solicitudes de propuestas (RFP) abiertas — aceptando ahora",
     mode_allrfp: "Todas las RFP",
     mode_award: "Adjudicaciones recientes ($)",
-    mode_archive: "Adjudicaciones y contratos archivados",
     agency_label: "Agencia",
     all_agencies: "Todas las agencias",
     scope_relation_published_by: "publicado por",

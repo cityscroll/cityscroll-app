@@ -21,7 +21,7 @@ const MODE_LABEL_KEYS = Object.freeze({
   open: "mode_open",
   allrfp: "mode_allrfp",
   award: "mode_award",
-  archive: "mode_archive",
+  archive: "head_archive",
 });
 
 const LOCATION_LABEL_KEYS = Object.freeze({

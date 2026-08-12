@@ -235,7 +235,6 @@
     mode_open: "公开的征求建议书 (RFP) — 正在接受",
     mode_allrfp: "所有 RFP",
     mode_award: "近期中标（授予合同）($)",
-    mode_archive: "已归档的授标与合同",
     agency_label: "机构",
     scope_relation_published_by: "发布方",
     scope_relation_connection: "连接",

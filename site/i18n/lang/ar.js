@@ -237,7 +237,6 @@
     mode_open: "طلبات تقديم عروض (RFP) مفتوحة — يُقبل التقديم الآن",
     mode_allrfp: "كل طلبات تقديم العروض",
     mode_award: "الترسيات الأخيرة ($)",
-    mode_archive: "الترسيات والعقود المؤرشفة",
     agency_label: "الجهة",
     scope_relation_published_by: "نشرته الجهة",
     scope_relation_connection: "صلة",

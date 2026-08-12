@@ -242,7 +242,6 @@
     mode_open:        "Demandes de propositions (RFP) ouvertes — acceptées actuellement",
     mode_allrfp:      "Toutes les RFP",
     mode_award:       "Attributions récentes ($)",
-    mode_archive:     "Attributions et contrats archivés",
     agency_label:     "Agence",
     scope_relation_published_by: "publié par",
     scope_relation_connection: "connexion",

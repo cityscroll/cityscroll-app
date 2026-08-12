@@ -235,7 +235,6 @@
     mode_open: "খোলা প্রস্তাবের অনুরোধ (RFP) — এখন গ্রহণ করা হচ্ছে",
     mode_allrfp: "সব RFP",
     mode_award: "সাম্প্রতিক প্রদান ($)",
-    mode_archive: "আর্কাইভ করা পুরস্কার ও চুক্তি",
     agency_label: "সংস্থা",
     scope_relation_published_by: "প্রকাশ করেছে",
     scope_relation_connection: "সংযোগ",

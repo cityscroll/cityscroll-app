@@ -397,7 +397,6 @@ const STRINGS = {
     mode_open:        "Open Requests for Proposals (RFPs) — accepting now",
     mode_allrfp:      "All RFPs",
     mode_award:       "Recent Awards ($)",
-    mode_archive:     "Archived awards and contracts",
     agency_label:     "Agency",
     all_agencies:     "All agencies",
     scope_relation_published_by: "published by",
