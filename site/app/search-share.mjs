@@ -746,9 +746,6 @@ function renderSearchComponents(lens, options){
   renderNLQPresets();
 }
 
-// opts lets a second entry point (the 60-second quiz's own keyword field, below) reuse this
-// exact resolve→echo→apply sequence against its own input instead of the injected Ask box's
-// "#nlq-<lens>" — same interpretation, same echo container, no duplicated logic.
 async function nlTranslateLens(lens, opts){
   const inpSel=(opts&&opts.inputSel)||("#nlq-"+lens);
   const text=(opts&&opts.text!=null)?opts.text:($(inpSel)?.value.trim()||"");
@@ -760,17 +757,18 @@ async function nlTranslateLens(lens, opts){
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
   $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, inpSel, chips.length===0);
   if(btn) btn.disabled=false;
-  const linkFilter={...f};
-  if(["land","property","rules","meetings"].includes(lens)) linkFilter.keywords=stripImpliedKeywords(lens, f.keywords);
+  const context=globalThis.CrolPlaceContext;
+  const inputFilter={...f};
+  if(["land","property","rules","meetings"].includes(lens)) inputFilter.keywords=stripImpliedKeywords(lens, f.keywords);
+  const contextual=context?.lensSearchState?.(inputFilter, lens, buildSearchDeepLink);
+  const linkFilter=contextual?.filter||inputFilter;
   const deepLink=buildSearchDeepLink(lens, linkFilter);
-  await NL[lens].apply(f);
+  const carriedDeepLink=contextual?.hash||deepLink;
+  await NL[lens].apply(linkFilter);
   if(chips.length) $("#nltrans-"+lens).innerHTML="";
-  renderSearchComponents(lens, {hash:deepLink, label:text});
+  renderSearchComponents(lens, {hash:carriedDeepLink, label:text});
 }
 
-// Daily validation keeps examples non-empty; `tools/validate_presets.mjs --write` refreshes
-// this fallback and the Worker copy. Live metadata may also identify lineage/forecast-rich
-// examples. Fallbacks never guess those signals.
 const NL_SUGGESTIONS_FALLBACK = {
   money: [0, 1, 2, 3, 4, 5, 6, 7],
   people: [1, 3],
