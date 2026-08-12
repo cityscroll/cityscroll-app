@@ -927,8 +927,14 @@ export function buildBrowseLanding(payloads = {}, options = {}) {
   };
 }
 
+// A top-level object is useful only when its primary content has a positive,
+// known count. Unknown and empty counts stay hidden until the content is ready.
+export function browseObjectIsReady(card) {
+  return typeof card?.count === "number" && Number.isFinite(card.count) && card.count > 0;
+}
+
 export function renderBrowseLanding(landing) {
-  const cards = (landing?.cards || []).map((card) => {
+  const cards = (landing?.cards || []).filter(browseObjectIsReady).map((card) => {
     const facts = Array.isArray(card.facts) && card.facts.length
       ? card.facts
       : card.count == null
