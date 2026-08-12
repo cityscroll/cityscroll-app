@@ -183,7 +183,7 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
   assert.match(html, /Mandates/);
   assert.match(html, /Source law/);
   assert.match(html, /Watch mandates and deadlines|Watch obligations and deadlines/);
-  assert.match(html, /auto_certified_quote_verify_v1|auto-certified|expected vs observed/i);
+  assert.match(html, /auto_certified_quote_verify_v1|auto-certified|expected vs evidence|expected vs observed/i);
   assert.doesNotMatch(html, /non-compliance|out of compliance|missed the deadline and failed/i);
   assert.doesNotMatch(html, /human review|clerk review|cairn/i);
 });

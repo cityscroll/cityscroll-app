@@ -114,7 +114,7 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
         mandate_id: CROSS_BRIDGE_OBLIGATION_ID,
         observation: {
           status: OBSERVATION_STATUS.OBSERVED,
-          label: "Observed in City Record",
+          label: "Evidence found",
           observed_record: {
             request_id: "20260407013",
             label: "Final Rule - Rules relating to Safety Standards for Refrigeration Systems",
@@ -132,11 +132,14 @@ test("per-mandate observed Rules filing surfaces when topic join hits", () => {
   assert.equal(view.mandates[0].subject_ref, CROSS_BRIDGE_MANDATE_SUBJECT_REF);
   assert.equal(view.mandates[0].observed_record.request_id, "20260407013");
   assert.equal(view.mandates[0].observed_record.href, "/notices/20260407013");
+  assert.equal(view.mandates[0].observation_label, "Evidence found");
   assert.equal(view.rules_items[0].href, "/notices/20260407013");
   assert.equal(view.rules_items[1].href, "/custom/notice/20260407014");
   const html = renderMandateRulesBridgeSection(view);
   assert.match(html, /id="mandates-rules"/);
-  assert.match(html, /City Record: Final Rule/);
+  assert.match(html, /Final Rule - Rules relating to Safety Standards/);
+  assert.match(html, /Evidence found/);
+  assert.doesNotMatch(html, /City Record:/);
   assert.match(html, /href="\/notices\/20260407013"/);
   assert.match(html, /Browse agency Rules|Follow Rules activity|Watch rulemaking mandates/);
   assert.doesNotMatch(html, /not X but Y|not yet shown|fabricat|disclaimer/i);
@@ -206,6 +209,7 @@ test("Buildings live materialization can show observed rulemaking → Rules link
   if (observed.length === 0) return; // corpus may thin; Parks coverage above is the demo bar
   assert.ok(observed[0].observed_record.request_id);
   const html = renderMandateRulesBridgeSection(view.mandates_rules);
-  assert.match(html, /City Record:/);
+  assert.match(html, /Evidence found/);
+  assert.doesNotMatch(html, /City Record:/);
   assert.match(html, /data-observation-status="observed"/);
 });
