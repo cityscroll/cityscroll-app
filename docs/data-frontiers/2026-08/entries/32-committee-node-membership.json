@@ -5,8 +5,8 @@
   "rc": "CG-4",
   "gap_inventory_row": "**CG-4** `committee-node-membership` — publisher-keyed committee nodes and temporal member_of observations",
   "source_and_access": "Authenticated NYC Council Legistar `persons/{PersonId}/officerecords` using `LEGISTAR_API_TOKEN`; person identity is the exact `OfficeRecordPersonId` → `council_member_id` join and committee identity is `OfficeRecordBodyId`.",
-  "join_feasibility": "**Conditional:** node contract and history-preserving materializer landed. The dated 30-person sample could not run in this environment because the authenticated token was unavailable; public edges remain held. Receipt: `site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json`.",
+  "join_feasibility": "**Conditional:** node contract, history-preserving materializer, and an authenticated CI sample path are landed. The committed receipt records the latest sample result; public edges are exposed only when the receipt clears the gate. Receipt: `site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json`.",
   "reader_value": "**5** — Officials and Civic Graph; temporal committee roles are descriptive and do not imply influence, control, support, or votes.",
   "effort": "**API pull**",
-  "disposition": "Node design and source contract landed; publish member_of only after exact-key precision ≥95%, 100% accepted-row review, zero name-only edges, and the required denominator/overlap receipt."
+  "disposition": "Node design and source contract landed; CI publishes member_of only after exact-key precision ≥95%, 100% accepted-row review, zero name-only edges, and the required denominator/overlap receipt."
 }
