@@ -182,7 +182,7 @@ export function selectStratifiedEventItems(candidates, target = SAMPLE_TARGET) {
     }
     const eventId = CLEAN(candidate?.event?.EventId);
     const itemId = CLEAN(candidate?.item?.EventItemId);
-    if (!eventId || !itemId || selectedItems.has(itemId) || selectedEvents.has(eventId)) continue;
+    if (!eventId || !itemId || selectedItems.has(itemId)) continue;
     selected.push(candidate);
     selectedItems.add(itemId);
     selectedEvents.add(eventId);
