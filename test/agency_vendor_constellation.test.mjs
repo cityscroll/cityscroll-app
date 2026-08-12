@@ -49,6 +49,8 @@ test("top-vendor section renders bounded rollup rows as diamond entity nodes", (
   assert.match(html, /aria-hidden="true">◆<\/span>/);
   assert.match(html, /\$150/);
   assert.match(html, /Open all agency contracts/);
+  assert.match(html, /data-edge-summary-schema="cityscroll\.edge_summary\.v1"/);
+  assert.match(html, /Available: 1 record/);
 });
 
 test("vendor category composes into the agency model and ordered document", () => {

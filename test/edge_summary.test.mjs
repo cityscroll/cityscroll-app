@@ -60,12 +60,13 @@ test("empty and unknown states render as explicit states, never asserted zeroes"
   ]);
 
   assert.match(html, /data-edge-state="empty"/);
-  assert.match(html, /None in this materialization/);
+  assert.match(html, /Empty in this scoped materialization/);
   assert.match(html, /data-edge-state="unknown"/);
-  assert.match(html, /Not measured/);
-  assert.doesNotMatch(html, /None in this materialization[^<]*0/);
-  assert.match(html, /aria-label="Rules: issued rules; None in this materialization"/);
-  assert.match(html, /aria-label="Meetings: related meetings; Not measured"/);
+  assert.match(html, /Unknown \/ not indexed/);
+  assert.match(html, /data-edge-availability="empty-in-scope"/);
+  assert.match(html, /data-edge-availability="unknown-unindexed"/);
+  assert.match(html, /aria-label="Rules: issued rules; Empty in this scoped materialization"/);
+  assert.match(html, /aria-label="Meetings: related meetings; Unknown \/ not indexed"/);
 });
 
 test("agency category totals produce the same typed records used by the rail", () => {

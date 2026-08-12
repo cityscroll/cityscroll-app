@@ -21,7 +21,9 @@ import {
   parcelRef,
 } from "./parcel_scope.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
+import { buildParcelBiographyEdgeSummary } from "./parcel_biography_ui.mjs";
 import { asOfFilterCanNarrow, buildLedgerSummary, projectAgencyConstellationAsOf, renderCivicTimeLedgerPanel } from "./civic_time_ledger.mjs";
+import { renderEdgeSummaryRail } from "./edge_summary.mjs";
 
 export const CIVIC_OBJECT_EXPORT_REGISTRY = Object.freeze({
   "monitor-pack": Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
@@ -216,7 +218,7 @@ function parcelMembersMarkup(view) {
       heading: label,
       exportClass: "object_members",
       extraClass: "node-card civic-object-section",
-      attrs: { "data-parcel-biography-domain": kind },
+      attrs: { "data-parcel-biography-domain": kind, id: `parcel-biography-${kind}` },
       body: `<ul class="node-record-list">${section.items.map(parcelRecordItem).join("")}</ul>`,
     });
   }).filter(Boolean).join("");
@@ -283,6 +285,17 @@ export function renderComposedObjectDocument(view, options = {}) {
     : isPack
       ? packMembersMarkup(view)
       : digestMembersMarkup(view);
+  const edgeRail = isParcel
+    ? renderEdgeSummaryRail(buildParcelBiographyEdgeSummary(view, {
+      hrefForKind: (kind) => view.sections?.[kind]?.items?.length
+        ? `#parcel-biography-${kind}`
+        : parcelBiographyHref(view.bbl),
+    }), {
+      heading: "Connected parcel records",
+      id: "parcel-edge-summary-heading",
+      className: "parcel-edge-summary",
+    })
+    : "";
   const ledger = isParcel ? parcelLedgerMarkup(view, options.asOf || null) : "";
   const pivot = isPack
     ? ""
@@ -309,7 +322,7 @@ export function renderComposedObjectDocument(view, options = {}) {
   // Property is not a primary nav route; highlight Browse for parcel documents.
   const mastHighlight = isParcel ? "browse" : "following";
   const ledgerRuntime = isParcel ? '<script type="module" src="/civic_time_ledger_runtime.mjs"></script>' : "";
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: mastHighlight, surfaceClass: "civic-object-mast" })}<main id="main" class="node-document civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">${back}<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">${esc(kicker)}</p><h1>${esc(title)}</h1><p class="node-lede">${esc(lede)}</p>${pivot}</header>${actionMarkup(view, watchHref)}${ledger}${members}</main>${renderNodeFooter({ extraClass: "civic-object-footer" })}<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script>${ledgerRuntime}</body></html>`);
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: mastHighlight, surfaceClass: "civic-object-mast" })}<main id="main" class="node-document civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">${back}<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">${esc(kicker)}</p><h1>${esc(title)}</h1><p class="node-lede">${esc(lede)}</p>${pivot}</header>${edgeRail}${actionMarkup(view, watchHref)}${ledger}${members}</main>${renderNodeFooter({ extraClass: "civic-object-footer" })}<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script>${ledgerRuntime}</body></html>`);
 }
 
 function exportRows(payload) {
