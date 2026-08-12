@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { buildDistrictDigestView, buildMonitorPackView, buildParcelBiographyView, districtDigestPath, districtDigestSubjectRef, districtPivotHref, monitorPackPath, monitorPackSubjectRef, parcelPath, parcelSectionLabel, renderComposedObjectDocument } from "../site/composed_object_documents.mjs";
+import { PARCEL_PROCESS_SECTION_ORDER } from "../site/parcel_scope.mjs";
 import { projectAgencyConstellationAsOf } from "../site/civic_time_ledger.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/watch_templates.json", import.meta.url), "utf8"));
@@ -49,12 +50,15 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.equal(parcelPath(bbl), `/parcels/${bbl}/`);
   assert.equal(view.kind, "parcel");
   assert.deepEqual(view.sections && Object.keys(view.sections), ["property", "land", "ll48", "tax_lien", "cofo"]);
+  assert.deepEqual([...PARCEL_PROCESS_SECTION_ORDER], ["property", "land", "tax_lien", "ll48", "cofo"]);
   const html = renderComposedObjectDocument(view);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/parcels\/\d{10}\//);
   assert.match(html, /lens=property/);
   // Watch filter is URL-encoded in the href (colon → %3A).
   assert.match(html, new RegExp(`subject_refs_all(?:.|\\n)*?bbl(?:%3A|:)${bbl}`));
   assert.match(html, /reader-friendly record of public information connected with this parcel/);
+  assert.match(html, /Public records connected with this parcel, arranged by civic process/);
+  assert.doesNotMatch(html, /grouped by source/i);
   assert.doesNotMatch(html, /public records that name this exact parcel/i);
   assert.match(html, /data-export-class="object_identity"/);
   assert.match(html, /data-export-class="object_actions"/);
@@ -71,13 +75,19 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.match(html, /class="[^"]*node-actions/);
   assert.match(html, /class="[^"]*node-action[^"]*primary/);
   assert.match(html, /data-node-document="1"/);
-  // Populated source groups render as labeled cards; empty groups are omitted.
-  const populated = Object.entries(view.sections).filter(([, section]) => section.items?.length);
+  // Populated civic-process sections render as labeled cards; empty ones omit.
+  const populated = PARCEL_PROCESS_SECTION_ORDER
+    .filter((kind) => view.sections[kind]?.items?.length)
+    .map((kind) => [kind, view.sections[kind]]);
   assert.ok(populated.length >= 1, "demo parcel should have at least one populated section");
   for (const [kind] of populated) {
     const label = parcelSectionLabel(kind);
     assert.match(html, new RegExp(`data-parcel-biography-domain="${kind}"[^>]*>[\\s\\S]*?<h2>${label}<\\/h2>`));
   }
+  // Rendered section cards follow civic-process order, not source-object insertion.
+  const domainOrder = [...html.matchAll(/data-parcel-biography-domain="([^"]+)"/g)].map((m) => m[1]);
+  const expectedOrder = populated.map(([kind]) => kind);
+  assert.deepEqual(domainOrder, expectedOrder, "parcel sections must render in civic-process order");
   for (const [kind, section] of Object.entries(view.sections)) {
     if (section.items?.length) continue;
     assert.doesNotMatch(html, new RegExp(`data-parcel-biography-domain="${kind}"`));
@@ -85,15 +95,30 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.doesNotMatch(html, /No .* listed for this parcel/i);
   assert.doesNotMatch(html, /No linked record is listed/i);
   assert.doesNotMatch(html, /date not published|Sources and limits/i);
-  assert.deepEqual(detectNodePageCruft(html), []);
-  const landHeadings = html.match(/>Land projects</g) || [];
+  // Source is provenance ↗ only — never a primary City Record button or source-name organizer.
+  const primaryActions = [...html.matchAll(/class="[^"]*primary[^"]*"[^>]*>([^<]+)</g)].map((m) => m[1]);
+  assert.ok(primaryActions.includes("Watch this parcel"));
+  assert.ok(primaryActions.every((label) => !/city record/i.test(label)));
+  assert.doesNotMatch(html, /class="node-muted">City Record Online/);
+  assert.doesNotMatch(html, />City Record Online</);
+  if (view.sections.property?.items?.length) {
+    assert.match(html, /ui-official-source-link[^>]+RequestDetail/);
+    assert.match(html, /Official notice<span aria-hidden="true">↗<\/span>/);
+  }
   if (view.sections.land?.items?.length) {
-    assert.equal(landHeadings.length, 1, "Land projects section must appear exactly once when populated");
+    assert.match(html, /ui-official-source-link[^>]+zap\.planning\.nyc\.gov\/projects\//);
+  }
+  assert.deepEqual(detectNodePageCruft(html), []);
+  const landHeadings = html.match(/>Land-use process</g) || [];
+  if (view.sections.land?.items?.length) {
+    assert.equal(landHeadings.length, 1, "Land-use process section must appear exactly once when populated");
   } else {
     assert.equal(landHeadings.length, 0, "empty land section must be omitted");
   }
   assert.equal(parcelSectionLabel("ll48"), "City-owned or leased property suitability");
-  assert.equal(parcelSectionLabel("land"), "Land projects");
+  assert.equal(parcelSectionLabel("land"), "Land-use process");
+  assert.equal(parcelSectionLabel("tax_lien"), "Tax-lien status");
+  assert.equal(parcelSectionLabel("property"), "Property disposition");
   assert.equal(parcelSectionLabel("unknown"), null);
   const asOf = projectAgencyConstellationAsOf(view, "2021-12-31", { axis: "valid" });
   assert.ok(asOf.as_of, "parcel projection should retain the shared ledger contract");

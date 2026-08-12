@@ -12,8 +12,14 @@ import {
   renderNodeFooter,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
-import { constellationLink } from "./affordance_grammar.mjs";
-import { buildObservedParcelBiography, parcelBiographyHref, parcelRef } from "./parcel_scope.mjs";
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+import {
+  buildObservedParcelBiography,
+  PARCEL_PROCESS_SECTION_ORDER,
+  parcelBiographyHref,
+  parcelItemOfficialSource,
+  parcelRef,
+} from "./parcel_scope.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
 import { asOfFilterCanNarrow, buildLedgerSummary, projectAgencyConstellationAsOf, renderCivicTimeLedgerPanel } from "./civic_time_ledger.mjs";
 
@@ -71,19 +77,32 @@ export function buildParcelBiographyView({ bbl, crossDomain, taxLien, cofo } = {
   return { ...view, kind: "parcel", id: view.bbl, path: parcelPath(view.bbl), subject_ref: view.parcel_ref };
 }
 
-/** Stable reader labels for parcel biography source groups (one label per kind). */
+/** Stable reader labels for parcel biography civic-process sections. */
 export function parcelSectionLabel(kind) {
   return kind === "cofo"
     ? "Certificates of Occupancy"
     : kind === "ll48"
       ? "City-owned or leased property suitability"
       : kind === "tax_lien"
-        ? "Tax-lien lists"
+        ? "Tax-lien status"
         : kind === "property"
-          ? "Property dispositions"
+          ? "Property disposition"
           : kind === "land"
-            ? "Land projects"
+            ? "Land-use process"
             : null;
+}
+
+export { parcelItemOfficialSource };
+
+function orderedParcelSections(sections = {}) {
+  const known = new Set(PARCEL_PROCESS_SECTION_ORDER);
+  const ordered = PARCEL_PROCESS_SECTION_ORDER
+    .filter((kind) => sections[kind])
+    .map((kind) => [kind, sections[kind]]);
+  for (const [kind, section] of Object.entries(sections)) {
+    if (!known.has(kind)) ordered.push([kind, section]);
+  }
+  return ordered;
 }
 
 export function districtPivotHref(id) {
@@ -152,23 +171,45 @@ function subjectLink(ref, hrefOverride = null) {
     : match?.[1] === "project"
     ? `Project ${match[2]}`
     : match?.[1] === "notice"
-    ? `City Record notice ${match[2]}`
+    ? `Notice ${match[2]}`
     : value;
   return href ? constellationLink({ href, label, className: "composed-object-link", attributes: { "data-subject-ref": ref }, escape: esc }) : esc(label);
 }
 
 function parcelRecordItem(item) {
-  const metadata = [item.source, item.date].filter(Boolean).join(" · ");
+  const label = clean(item.label || item.id) || "Record";
+  const href = item.href || subjectHref(item.subject_ref);
+  // Primary travel is internal (◆ constellation). Source name is omit-by-default;
+  // a trailing ↗ opens the official record only when a genuine deep link exists.
+  const main = href
+    ? constellationLink({
+      href,
+      label,
+      className: "composed-object-link",
+      attributes: item.subject_ref ? { "data-subject-ref": item.subject_ref } : {},
+      escape: esc,
+    })
+    : esc(label);
+  const official = parcelItemOfficialSource(item);
+  const provenance = official
+    ? ` ${officialSourceLink({
+      href: official.href,
+      label: official.label,
+      className: "node-source-link",
+      escape: esc,
+    })}`
+    : "";
+  const date = clean(item.date);
   return `<li class="node-record">
-    <div class="node-record-main">${subjectLink(item.subject_ref, item.href)} — ${esc(item.label || item.id)}</div>
-    ${metadata ? `<span class="muted node-muted">${esc(metadata)}</span>` : ""}
+    <div class="node-record-main">${main}${provenance}</div>
+    ${date ? `<span class="muted node-muted">${esc(date)}</span>` : ""}
   </li>`;
 }
 
 function parcelMembersMarkup(view) {
-  // One top-level card per source group that has items. Empty groups are
-  // omitted entirely (no "no records listed" absence disclaimers).
-  return Object.entries(view.sections || {}).map(([kind, section]) => {
+  // One top-level card per civic-process section that has items. Empty sections
+  // are omitted entirely (no "no records listed" absence disclaimers).
+  return orderedParcelSections(view.sections || {}).map(([kind, section]) => {
     const label = parcelSectionLabel(kind);
     if (!label || !section.items?.length) return "";
     return renderNodeSection({
@@ -184,7 +225,7 @@ function parcelMembersMarkup(view) {
 function parcelLedgerView(view) {
   return {
     ...view,
-    categories: Object.entries(view.sections || {}).map(([id, section]) => ({
+    categories: orderedParcelSections(view.sections || {}).map(([id, section]) => ({
       id,
       label: parcelSectionLabel(id) || id,
       status: section.items?.length ? "matched" : "empty",
@@ -251,7 +292,7 @@ export function renderComposedObjectDocument(view, options = {}) {
   const lede = isPack
     ? (view.serves || view.description)
     : isParcel
-      ? "Public records connected with this parcel, grouped by source. These entries link to the original records available here."
+      ? "Public records connected with this parcel, arranged by civic process."
       : `This digest has ${view.total} current public records for this council district.`;
   const kicker = isPack ? "Monitor pack" : isParcel ? "Parcel record" : "District digest";
   const back = isParcel
