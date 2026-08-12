@@ -35,11 +35,18 @@ export function normalizeWatchTemplateRegistry(raw) {
       watches,
       title_key: clean(t.title_key) || null,
       description_key: clean(t.description_key) || null,
+      ...(Object.prototype.hasOwnProperty.call(t, "matchCount")
+        ? { matchCount: cleanCount(t.matchCount) }
+        : {}),
+      ...(Object.prototype.hasOwnProperty.call(t, "resultsHref")
+        ? { resultsHref: clean(t.resultsHref) || null }
+        : {}),
     });
   }
   return {
     schema_version: Number(raw?.schema_version) || WATCH_TEMPLATES_SCHEMA_VERSION,
     pattern: clean(raw?.pattern) || "watch_template_registry",
+    results_backed: raw?.results_backed === true,
     templates: out,
   };
 }
@@ -193,4 +200,10 @@ function clean(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
   return s || null;
+}
+
+function cleanCount(value) {
+  if (value == null || value === "") return null;
+  const count = Number(value);
+  return Number.isInteger(count) && count >= 0 && count <= 10000 ? count : null;
 }

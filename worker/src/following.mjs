@@ -1,4 +1,7 @@
 import templates from "../../site/data/watch_templates.json" with { type: "json" };
+import moneyOpen from "../../site/data/money_default_open.json" with { type: "json" };
+import rulesOpen from "../../site/data/rules_domain_observations.json" with { type: "json" };
+import meetingsOpen from "../../site/data/meetings_domain_observations.json" with { type: "json" };
 import {
   buildFollowingViewModel,
   followingLensNeedsRedirect,
@@ -8,6 +11,7 @@ import {
   followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
+import { buildResultsBackedWatchTemplateRegistry } from "../../site/following_suggestions.mjs";
 import { compileSub } from "./lib/compile.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { resolveLens, sanitize } from "./lib/filter.mjs";
@@ -17,6 +21,11 @@ import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
+const suggestedTemplates = buildResultsBackedWatchTemplateRegistry(templates, {
+  money: moneyOpen,
+  rules: rulesOpen,
+  meetings: meetingsOpen,
+});
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -136,7 +145,7 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     matchCount: parsed.matchCount ?? preview.count,
     previewItems: preview.items,
     previewError: preview.error,
-  }, templates);
+  }, suggestedTemplates);
   const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
   return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
 }
