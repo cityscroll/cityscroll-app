@@ -30,19 +30,31 @@ const FIXTURE = path.join(
   "worker/test/fixtures/entity-intelligence/people_domain_observations.json",
 );
 const RECEIPT_DIR = path.join(ROOT, "site/data/legistar_sources/verification_receipts");
-const OFFICIAL_RETENTION_RECEIPT = (() => {
+function retentionReceiptPathForPeople(peopleDoc = null) {
   const fallback = path.join(RECEIPT_DIR, "official_person_vote_retention_2026-08-02.json");
   try {
-    const latest = readdirSync(RECEIPT_DIR)
-      .filter((name) => name.startsWith("official_person_vote_retention_"))
-      .filter((name) => name.endsWith(".json"))
+    const names = readdirSync(RECEIPT_DIR)
+      .filter((name) => name.startsWith("official_person_vote_retention_") && name.endsWith(".json"))
       .sort()
-      .pop();
-    return latest ? path.join(RECEIPT_DIR, latest) : fallback;
+      .reverse();
+    const eventIds = new Set(
+      (peopleDoc?.rows || []).map((row) => String(row?.event_id || "").trim()).filter(Boolean),
+    );
+    for (const name of names) {
+      const candidate = path.join(RECEIPT_DIR, name);
+      try {
+        const receipt = JSON.parse(readFileSync(candidate, "utf8"));
+        const receiptEvents = new Set((receipt.by_event || []).map((row) => String(row?.event_id || "").trim()));
+        if (eventIds.size && [...eventIds].every((id) => receiptEvents.has(id))) return candidate;
+      } catch {
+        // Ignore an incomplete receipt and continue to the prior dated receipt.
+      }
+    }
+    return names.length ? path.join(RECEIPT_DIR, names[0]) : fallback;
   } catch {
     return fallback;
   }
-})();
+}
 
 function parseArgs(argv) {
   const out = { check: false, fixture: false };
@@ -73,8 +85,9 @@ function main() {
       console.error("person_votes_lookup: empty by_person_id");
       process.exit(1);
     }
-    const expectedCoverage = buildPersonVotesLookup(loadPeople(false), {
-      retentionReceipt: JSON.parse(readFileSync(OFFICIAL_RETENTION_RECEIPT, "utf8")),
+    const people = loadPeople(false);
+    const expectedCoverage = buildPersonVotesLookup(people, {
+      retentionReceipt: JSON.parse(readFileSync(retentionReceiptPathForPeople(people), "utf8")),
     }).coverage;
     if (JSON.stringify(doc.coverage) !== JSON.stringify(expectedCoverage)) {
       console.error("person_votes_lookup: coverage block is stale — rebuild the lookup");
@@ -96,7 +109,7 @@ function main() {
   const people = loadPeople(args.fixture);
   const retentionReceipt = args.fixture
     ? null
-    : JSON.parse(readFileSync(OFFICIAL_RETENTION_RECEIPT, "utf8"));
+    : JSON.parse(readFileSync(retentionReceiptPathForPeople(people), "utf8"));
   const lookup = buildPersonVotesLookup(people, { retentionReceipt });
   mkdirSync(path.dirname(OUT), { recursive: true });
   writeFileSync(OUT, `${JSON.stringify(lookup, null, 2)}\n`);
