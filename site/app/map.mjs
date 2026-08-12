@@ -42,6 +42,9 @@ async function adoptDocument(href) {
   const next = new DOMParser().parseFromString(await response.text(), "text/html");
   const incoming = next.querySelector("[data-near-you-root]");
   if (!incoming) throw new Error("near-you-document-root-missing");
+  const currentMast = document.querySelector(".document-mast");
+  const incomingMast = next.querySelector(".document-mast");
+  if (currentMast && incomingMast) currentMast.replaceWith(document.importNode(incomingMast, true));
   for (const selector of [
     ".near-hero",
     ".near-place-guide",
@@ -63,6 +66,8 @@ async function adoptDocument(href) {
   const title = next.querySelector("title")?.textContent;
   if (title) document.title = title;
   history.pushState({ nearYou: true }, "", href);
+  const placeContext = await import("./place-context.mjs");
+  placeContext.sync();
   wireIsland();
   root.querySelector("#near-results-heading")?.focus?.({ preventScroll: true });
 }

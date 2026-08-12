@@ -1,5 +1,9 @@
 import { migrateLegacyUrl } from "./route_migration.mjs";
 
+if (globalThis.location?.search || globalThis.location?.hash?.includes("?")) {
+  import("./app/place-context.mjs");
+}
+
 export function legacyForwardTarget(value) {
   const mapped = migrateLegacyUrl(value);
   return mapped.migrated ? mapped.target : null;

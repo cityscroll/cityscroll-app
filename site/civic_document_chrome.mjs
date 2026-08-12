@@ -28,6 +28,7 @@ function classNames(...parts) {
 }
 
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { appendPlaceContextToHref, placeContextFromScope } from "./place_context.mjs";
 
 export function renderCivicDocumentAssets(assetPrefix = "/") {
   const prefix = prefixFor(assetPrefix);
@@ -45,15 +46,19 @@ function brandMark() {
   </svg>`;
 }
 
-export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass = "" } = {}) {
+export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass = "", scope = null } = {}) {
   const base = String(siteBase || "").replace(/\/$/, "");
   const home = base || "/";
+  const context = placeContextFromScope(scope);
   const links = [
     ["now", "Now"],
     ["near-you", "Near you"],
     ["following", "Following"],
     ["browse", "Browse"],
-  ].map(([route, label]) => `<a${current === route ? ' aria-current="page"' : ""} href="${esc(`${base}/${route}/`)}">${label}</a>`).join("");
+  ].map(([route, label]) => {
+    const href = appendPlaceContextToHref(`${base}/${route}/`, context);
+    return `<a${current === route ? ' aria-current="page"' : ""} href="${esc(href)}">${label}</a>`;
+  }).join("");
   const classes = classNames("document-mast", surfaceClass);
   return `<header class="${esc(classes)}"><div class="document-mast-inner">
     <a class="document-brand brand-lockup home" href="${esc(home)}">${brandMark()}<span>CityScroll</span></a>
