@@ -11,6 +11,7 @@
 import { daysUntil } from "./rules_action_bands.mjs";
 import { extractCommentFacts, hasOpenCommentWindow } from "./rules_participation.mjs";
 import { noticeDocumentUrl } from "./notice_permalink.mjs";
+import { inferHearingLogistics } from "./hearing_logistics.mjs";
 
 export const RULES_MEMBER_BLURB_SCHEMA_VERSION = 2;
 
@@ -53,6 +54,12 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
   const classification = memberBlurbClassification(noticeRow, rec);
   const bodyBit = excerptChange(noticeRow, rec);
   const whoAffected = whoIsAffected(agency, title, bodyBit);
+  const hearingLogistics = inferHearingLogistics({
+    body: [noticeRow?.additional_description_1, rec?.city_record?.additional_description_1].filter(Boolean).join(" "),
+    sourceLinks: [noticeRow?.meeting_access?.remote_join_url, noticeRow?.participation?.remote_join_url].filter(Boolean),
+    physicalLocation: noticeRow?.meeting_access?.in_person_location || noticeRow?.venue?.address,
+  });
+  const access = noticeRow?.meeting_access || rec?.meeting_access || hearingLogistics;
   const stage = facts.stage_comment_open
     ? "comment-open"
     : normalizeLooseStage(rec?.stage || noticeRow?._ruleStage?.stage);
@@ -94,7 +101,10 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
       actionLine = `Public comments are open through ${deadlineHuman}.`;
     }
   } else if (facts.hearing_date && daysUntil(facts.hearing_date, opts.now) >= 0) {
-    actionLine = `A public hearing is scheduled for ${humanDate(facts.hearing_date)}.`;
+    const mode = access?.mode === "remote" ? " It will be held online."
+      : access?.mode === "hybrid" ? " It will offer online and in-person attendance."
+        : access?.mode === "in-person" ? " It will be held in person." : "";
+    actionLine = `A public hearing is scheduled for ${humanDate(facts.hearing_date)}.${mode}`;
   } else if (stage === "adopted" || stage === "effective") {
     const eff = isoDate(rec?.nyc_rules?.effective_date || noticeRow?._ruleStage?.nyc_rules?.effective_date);
     actionLine = eff
@@ -117,7 +127,10 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
       prompt = "If this affects your members, consider submitting a short public comment before the deadline. A useful comment names who you are, how the rule hits your operation, and what you ask the agency to consider.";
     }
   } else if (facts.hearing_date && daysUntil(facts.hearing_date, opts.now) >= 0) {
-    prompt = "If this hearing matters to your members, share the date and any testimony instructions from the official notice.";
+    const join = access?.remote_join_url || hearingLogistics.remote_join_url;
+    prompt = join
+      ? `Members can join the online hearing at ${join}. Share the date and any testimony instructions from the official notice.`
+      : "If this hearing matters to your members, share the date and any testimony instructions from the official notice.";
   } else {
     prompt = "Forward this to members who track this agency so they can review the official text.";
   }
@@ -145,6 +158,8 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
       notice_url: noticeUrl,
       classification: classification?.id || null,
       classification_source: classification?.source || null,
+      hearing_mode: access?.mode || null,
+      hearing_join_url: access?.remote_join_url || hearingLogistics.remote_join_url || null,
       city_record_notice_type: rawType,
       change_excerpt: bodyBit,
     },
@@ -194,6 +209,7 @@ export function memberBlurbClassification(noticeRow, rec = null) {
 function excerptChange(noticeRow, rec) {
   const body = clean(
     noticeRow?.additional_description_1
+    || noticeRow?.source_body
     || rec?.city_record?.additional_description_1
     || "",
   );
@@ -215,11 +231,17 @@ function excerptChange(noticeRow, rec) {
     }
   }
 
-  // Title-only: rephrase lightly when it already names the subject.
-  if (/relating to|regarding|amend|require|prohibit|establish/i.test(title)) {
-    return `It ${title.replace(/^(notice of (?:adoption|proposed rule making|public hearing)[:\s-]*)/i, "").replace(/\.$/, "")}.`
-      .replace(/\s+/g, " ")
-      .replace(/^It\s+It/i, "It");
+  // Title-only: describe the subject without treating a noun phrase as a sentence.
+  const subject = title
+    .replace(/^(?:notice of (?:adoption|proposed rule making|public hearing)[:\s-]*)/i, "")
+    .replace(/[.!?]+$/, "")
+    .trim();
+  const relating = subject.match(/^(?:new )?rules? relating to (.+)$/i);
+  if (relating) return `The rule concerns ${relating[1].trim()}.`;
+  const amendment = subject.match(/^amendment of rules? relating to (.+)$/i);
+  if (amendment) return `The rule would amend rules relating to ${amendment[1].trim()}.`;
+  if (/regarding|require|prohibit|establish/i.test(subject)) {
+    return `The rule concerns ${subject.replace(/^.*?\b(?:regarding|require|prohibit|establish)\b\s*/i, "")}.`;
   }
   return null;
 }
@@ -245,6 +267,9 @@ function whoIsAffected(agency, title, bodyBit) {
   }
   if (/sanitation|dsny|container|waste|recycl/.test(hay)) {
     return "It is most relevant to building owners, managers, and businesses that handle waste and recycling.";
+  }
+  if (/rat inspection|rat inspections/.test(hay)) {
+    return "It is most relevant to organizations and members who work with rat inspections and public-health rules.";
   }
   return `It is most relevant to organizations and members who work with ${agency}.`;
 }

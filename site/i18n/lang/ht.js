@@ -539,6 +539,7 @@
     read_official_notice: "Li avi ofisyèl la",
     next_action_heading: "Kisa mwen ka fè kounye a?",
     next_action_watch: "Swiv avi sa a",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Swiv rezonaj sa a",
     next_action_land_guide: "Swiv etap patisipasyon itilizasyon tè yo anba a",
     next_action_land_steps_missing: "Pa gen etap patisipasyon pibliye pou rezonaj sa a ankò.",

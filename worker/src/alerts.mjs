@@ -64,6 +64,7 @@ import {
 import { prefsLink } from "./prefs.mjs";
 import { CUTOVER_COPY, UNSUB_IMMEDIATE_COPY } from "./lib/prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
+import { buildHearingView, HEARINGS_KV_KEY } from "./hearings.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 import {
   SECTION_STATUS,
@@ -90,6 +91,8 @@ import {
   partitionDigestJobsByHold,
   resolveDigestShadowHold,
 } from "./digest_shadow_hold.mjs";
+
+let alertHearingRefresh = null;
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -906,6 +909,10 @@ export async function processOneSub(env, s, ctx) {
       propertyStageSeenIds = evaluated.markSeenIds;
     }
     const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
+    if (s.lens === "rules") {
+      const hearingView = await hearingViewForAlertRows(env, rows);
+      rows = attachMaterializedHearing(rows, hearingView);
+    }
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
     reconciled.markSeenIds.push(...propertyStageSeenIds);
     for (const row of rows) {
@@ -1824,6 +1831,8 @@ async function evaluateCatchUpSub(env, s, ctx) {
     let evaluatedRows = rows;
     if (s.lens === "rules") {
       const rulesView = await readJsonKv(env.ALERT_STATE, RULES_KV_KEY);
+      const hearingView = await hearingViewForAlertRows(env, rows);
+      rows = attachMaterializedHearing(rows, hearingView);
       evaluatedRows = reconcileTemporalCandidates({
         lens: s.lens,
         rows,
@@ -2271,11 +2280,11 @@ function temporalActionHtml(row, esc, lang = "en", opts = {}) {
 
 function digestMeetingDetailsHtml(row, esc, calendarBase = "https://api.cityscroll.org") {
   const isMeeting = row?.section_name === "Public Hearings and Meetings"
-    || (row?.section_name === "Agency Rules" && row?.type_of_notice_description === "Public Hearings");
+    || (row?.section_name === "Agency Rules" && row?.event_date);
   if (!isMeeting || !row?.event_date) return "";
   const normalized = normalizeHearing(row);
   const access = normalized.meeting_access || {};
-  const mode = access.mode === "remote" ? "Remote" : access.mode === "hybrid" ? "Hybrid" : access.mode === "in-person" ? "In person" : "Mode not stated";
+  const mode = access.mode === "remote" ? "Online" : access.mode === "hybrid" ? "Hybrid" : access.mode === "in-person" ? "In person" : "Mode not stated";
   const facts = [`Mode: ${mode}`];
   if (access.in_person_location) facts.push(`Location: ${access.in_person_location}`);
   const join = access.remote_join_url;
@@ -2286,6 +2295,37 @@ function digestMeetingDetailsHtml(row, esc, calendarBase = "https://api.cityscro
     : null;
   if (calendar) facts.push(`<a href="${esc(calendar)}">Add to calendar</a>`);
   return `<div data-meeting-access="1" style="color:#444;font-size:13px;margin:3px 0">${facts.map((fact) => fact.includes("<a ") ? fact : esc(fact)).join(" · ")}</div>`;
+}
+
+function attachMaterializedHearing(rows, hearingView) {
+  const byId = new Map((hearingView?.hearings || []).map((hearing) => [String(hearing.request_id), hearing]));
+  return (rows || []).map((row) => {
+    const hearing = byId.get(String(row?.request_id || ""));
+    if (!hearing) return row;
+    return {
+      ...row,
+      event_date: row.event_date || hearing.event_date || null,
+      venue: row.venue || hearing.venue || null,
+      participation: row.participation || hearing.participation || null,
+      meeting_access: row.meeting_access || hearing.meeting_access || null,
+      hearing_record: hearing,
+    };
+  });
+}
+
+async function hearingViewForAlertRows(env, rows) {
+  const cached = await readJsonKv(env.ALERT_STATE, HEARINGS_KV_KEY);
+  const cachedIds = new Set((cached?.hearings || []).map((hearing) => String(hearing.request_id)));
+  const missingRuleHearing = (rows || []).some((row) => (
+    row?.section_name === "Agency Rules"
+    && row?.event_date
+    && !cachedIds.has(String(row.request_id))
+  ));
+  if (!missingRuleHearing) return cached;
+  if (!alertHearingRefresh) {
+    alertHearingRefresh = buildHearingView(globalThis.fetch, new Date()).catch(() => cached);
+  }
+  return alertHearingRefresh;
 }
 
 function digestHtml(w, rows) {

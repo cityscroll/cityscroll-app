@@ -63,6 +63,10 @@ export function hearingCalendarICS(record, options = {}) {
     || r.participation?.links?.find((link) => link?.label === "Join online")?.url
     || null;
   const dialIn = access.dial_in || r.participation?.phones || [];
+  const mode = access.mode === "remote" ? "Online"
+    : access.mode === "hybrid" ? "Hybrid"
+      : access.mode === "in-person" ? "In person" : null;
+  const calendarLocation = location || mode;
   const source = httpsUrl(r.official_notice_url) || httpsUrl(r.source_url) || null;
   const now = options.now ? new Date(options.now) : new Date();
   const dtstamp = (Number.isNaN(now.getTime()) ? new Date() : now).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
@@ -83,9 +87,9 @@ export function hearingCalendarICS(record, options = {}) {
     const end = {year: value.getUTCFullYear(), month: value.getUTCMonth() + 1, day: value.getUTCDate(), hour: value.getUTCHours(), minute: value.getUTCMinutes(), second: value.getUTCSeconds()};
     lines.push(`DTSTART;TZID=America/New_York:${stamp(start)}`, `DTEND;TZID=America/New_York:${stamp(end)}`);
   }
-  lines.push(`SUMMARY:${esc(title)}`, ...(location ? [`LOCATION:${esc(location)}`] : []),
+  lines.push(`SUMMARY:${esc(title)}`, ...(calendarLocation ? [`LOCATION:${esc(calendarLocation)}`] : []),
     ...(joinUrl ? [`URL:${esc(joinUrl)}`] : []),
-    `DESCRIPTION:${esc([agency, location ? `Location: ${location}` : null, joinUrl ? `Join online: ${joinUrl}` : null, dialIn.length ? `Dial-in: ${dialIn.join(", ")}` : null, source ? `Official source: ${source}` : null].filter(Boolean).join("\n"))}`,
+    `DESCRIPTION:${esc([agency, mode ? `Mode: ${mode}` : null, location ? `Location: ${location}` : null, joinUrl ? `Join online: ${joinUrl}` : null, dialIn.length ? `Dial-in: ${dialIn.join(", ")}` : null, access.passcode ? `Passcode: ${access.passcode}` : null, source ? `Official source: ${source}` : null].filter(Boolean).join("\n"))}`,
     "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Hearing tomorrow", "END:VALARM", "END:VEVENT", "END:VCALENDAR", "");
   return lines.map(fold).join("\r\n");
 }

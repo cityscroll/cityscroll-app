@@ -66,6 +66,26 @@ test("notice share generators emit canonical document permalinks", () => {
   }
 });
 
+test("rat-inspection rule blurb never prefixes the title with a broken 'It' clause", () => {
+  const blurb = buildMemberBlurb({
+    request_id: "20260803009",
+    agency_name: "Health and Mental Hygiene",
+    short_title: "New Rules Relating to Rat Inspections",
+    type_of_notice_description: "Public Hearings",
+    additional_description_1: "To participate in the public hearing, enter to register at this Zoom meeting: https://health-nyc.zoomgov.com/j/1659561163",
+  }, {
+    stage: "hearing",
+    nyc_rules: { hearing_date: "2026-09-14" },
+  }, { now: "2026-08-12", siteBase: "https://cityscroll.org" });
+  assert.ok(blurb?.text);
+  assert.doesNotMatch(blurb.text, /It New Rules Relating to Rat Inspections\./);
+  assert.match(blurb.text, /rat inspections/i);
+  assert.match(blurb.text, /September 14, 2026/);
+  assert.match(blurb.text, /held online/i);
+  assert.match(blurb.text, /health-nyc\.zoomgov\.com\/j\/1659561163/);
+  assert.equal(blurb.fields.hearing_mode, "remote");
+});
+
 function sourceFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name);

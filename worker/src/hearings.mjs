@@ -6,6 +6,7 @@
 import { applyGeocode, normalizeHearing } from "./lib/hearings.mjs";
 import { withDistricts } from "./lib/council_district.mjs";
 import { hearingCalendarICS } from "../../site/hearing_attend_pack.mjs";
+import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -26,7 +27,7 @@ function todayISO(now = new Date()) {
 async function fetchRows(fetchImpl, now) {
   const params = new URLSearchParams({
     "$select": SELECT,
-    "$where": `(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND event_date >= '${todayISO(now)}T00:00:00'`,
+    "$where": `(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND event_date IS NOT NULL)) AND event_date >= '${todayISO(now)}T00:00:00'`,
     "$order": "event_date ASC",
     "$limit": "500",
   });
@@ -35,6 +36,24 @@ async function fetchRows(fetchImpl, now) {
   const rows = await response.json();
   if (!Array.isArray(rows)) throw new Error("hearing SODA returned a non-array response");
   return rows;
+}
+
+async function enrichRuleSource(fetchImpl, row) {
+  const bodyPresent = [
+    row.additional_description_1, row.additional_description_2, row.additional_description_3,
+    row.other_info_1, row.other_info_2, row.other_info_3,
+    row.printout_1, row.printout_2, row.printout_3,
+  ].some(Boolean);
+  if (row.section_name !== "Agency Rules" || !row.event_date || bodyPresent) return row;
+  try {
+    const url = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(row.request_id || "")}`;
+    const response = await fetchImpl(url, { headers: { Accept: "text/html" } });
+    if (!response.ok) return row;
+    const signals = sourceSignalsFromHtml(await response.text());
+    return { ...row, source_body: signals.body || null, source_links: signals.sourceLinks };
+  } catch {
+    return row;
+  }
 }
 
 async function geocodeAddress(fetchImpl, address) {
@@ -76,7 +95,8 @@ async function geocodeAll(fetchImpl, addresses) {
 
 export async function buildHearingView(fetchImpl = fetch, now = new Date()) {
   const rows = await fetchRows(fetchImpl, now);
-  const normalized = rows.map(normalizeHearing);
+  const enriched = await Promise.all(rows.map((row) => enrichRuleSource(fetchImpl, row)));
+  const normalized = enriched.map(normalizeHearing);
   const addresses = normalized.flatMap((record) => [
     record.venue.address,
     ...record.affected_area.addresses.map((address) => address.label),
@@ -138,8 +158,10 @@ export async function handleHearings(request, env, ctx) {
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
   const age = parsed?.generated_at ? Date.now() - new Date(parsed.generated_at).getTime() : Infinity;
+  const requestedId = new URL(request.url).searchParams.get("id") || null;
 
-  if (!parsed || age > MAX_AGE_MS) {
+  const requestedMissing = requestedId && !parsed?.hearings?.some((hearing) => hearing?.request_id === requestedId);
+  if (!parsed || age > MAX_AGE_MS || requestedMissing) {
     try {
       const view = await buildHearingView(fetch, new Date());
       raw = JSON.stringify(view);
@@ -176,7 +198,16 @@ export async function handleMeetingICS(request, env) {
   if (!parsed) {
     try { parsed = await buildHearingView(fetch, new Date()); } catch { parsed = null; }
   }
-  const record = (parsed?.hearings || []).find((hearing) => hearing?.request_id === id);
+  let record = (parsed?.hearings || []).find((hearing) => hearing?.request_id === id);
+  // A daily view can be fresh by age while missing a notice published after its
+  // refresh. Rebuild on an id miss so a dated rule hearing does not degrade to
+  // the misleading "meeting not found" response.
+  if (!record) {
+    try {
+      const refreshed = await buildHearingView(fetch, new Date());
+      record = (refreshed?.hearings || []).find((hearing) => hearing?.request_id === id);
+    } catch { /* preserve the honest not-found below */ }
+  }
   if (!record) return new Response("meeting not found", { status: 404 });
   const ics = hearingCalendarICS({
     ...record,
