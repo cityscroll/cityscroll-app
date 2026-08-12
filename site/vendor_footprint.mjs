@@ -206,7 +206,7 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
-    ${renderEdgeSummaryRail(edgeSummary.filter((record) => record.href), { heading: "Vendor connections", id: "vendor-edge-summary-heading", className: "vendor-edge-summary" })}
+    ${renderEdgeSummaryRail(edgeSummary, { heading: "Vendor connections", id: "vendor-edge-summary-heading", className: "vendor-edge-summary" })}
     <div class="ei-domains">${sections}</div>
   </div>`;
 }

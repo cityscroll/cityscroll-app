@@ -144,7 +144,9 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   const sections = renderAgencyConstellationSections(sectionView);
   const edgeSummary = buildAgencyEdgeSummary(displayView);
-  const edgeRail = renderEdgeSummaryRail(edgeSummary.filter((record) => record.state === "matched"), {
+  // Show every supported family, including empty and unknown states, so an
+  // all-empty constellation is not mistaken for an omitted read model.
+  const edgeRail = renderEdgeSummaryRail(edgeSummary, {
     heading: "Connected records",
     id: "agency-edge-summary-heading",
     className: "agency-edge-summary",

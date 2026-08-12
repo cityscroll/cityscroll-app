@@ -109,6 +109,7 @@
    read model; this component only makes the next destination legible. */
 .edge-summary-rail{min-width:0;margin:var(--space-4,16px) 0;padding:var(--space-3,12px);border:1px solid var(--color-border,var(--cs-n-100));border-radius:var(--radius-md,10px);background:var(--color-surface,var(--cs-white))}
 .edge-summary-rail h2{margin:0 0 var(--space-2,8px);font:700 .75rem/1.2 var(--font-label,system-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft,var(--cs-n-700))}
+.edge-summary-scope-note{margin:0 0 var(--space-2,8px);color:var(--color-text-muted,var(--cs-n-500));font:500 .78rem/1.35 var(--font-label,system-ui)}
 .edge-summary-rail ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--space-2,8px);margin:0;padding:0;list-style:none}
 .edge-summary-item{min-width:0;border-top:2px solid var(--color-border,var(--cs-n-100))}
 .edge-summary-link,.edge-summary-text{display:flex;min-width:0;flex-direction:column;gap:3px;padding:var(--space-2,8px) 0;text-decoration:none}
