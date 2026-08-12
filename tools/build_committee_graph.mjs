@@ -84,6 +84,25 @@ async function main() {
     json("site/data/official_committee_memberships_lookup.json"),
   ]);
   const sample = samplePeople(people, socrata);
+  if (process.argv.includes("--check")) {
+    const [existingGraphText, existingReceiptText] = await Promise.all([
+      readFile(OUTPUTS[0], "utf8"),
+      readFile(RECEIPT, "utf8"),
+    ]);
+    const existingGraph = JSON.parse(existingGraphText);
+    const existingReceipt = JSON.parse(existingReceiptText);
+    const publicationAllowed = committeeGateAllowsPublication(existingReceipt);
+    if (existingGraph.publication !== (publicationAllowed ? "published" : "held")) {
+      throw new Error("committee graph publication does not match the committed receipt gate");
+    }
+    if (!publicationAllowed && existingGraph.public_edges.length !== 0) {
+      throw new Error("held committee sample exposed public membership edges");
+    }
+    const expectedGraphText = await readFile(OUTPUTS[1], "utf8");
+    if (existingGraphText !== expectedGraphText) throw new Error("committee graph twin artifacts differ");
+    console.log(`committee graph ok sample_complete=${existingReceipt.sample_acquisition?.complete === true} publication=${existingGraph.publication}`);
+    return;
+  }
   const acquisition = await acquire(sample.personIds, process.env.LEGISTAR_API_TOKEN);
   const gate = buildCommitteeGateReceipt({
     observedAt: OBSERVED_AT,
@@ -109,16 +128,6 @@ async function main() {
   graph.gate = gate;
   const serialized = `${JSON.stringify(graph, null, 2)}\n`;
   const receipt = receiptProjection(gate);
-  if (process.argv.includes("--check")) {
-    for (const output of OUTPUTS) {
-      const existing = await readFile(output, "utf8");
-      if (existing !== serialized) throw new Error(`stale committee graph: ${output}`);
-    }
-    const existingReceipt = await readFile(RECEIPT, "utf8");
-    if (existingReceipt !== `${JSON.stringify(receipt, null, 2)}\n`) throw new Error("stale committee gate receipt");
-    console.log(`committee graph ok sample_complete=${acquisition.sampleComplete} publication=${gate.gate.publication_status}`);
-    return;
-  }
   for (const output of OUTPUTS) {
     mkdirSync(path.dirname(output), { recursive: true });
     await writeFile(output, serialized);
