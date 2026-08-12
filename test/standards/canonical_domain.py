@@ -161,7 +161,7 @@ def main() -> None:
     # merge-stable __I18N_ASSET_VERSION__ tokens). Field case 2026-07-30.
     if 'const SITE_FALLBACK_ORIGIN = "https://cityscroll.pages.dev/";' not in mirror:
         failures.append("mirror: site failover must use the stamped cityscroll.pages.dev artifact")
-    if 'const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";' not in mirror:
+    if 'const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/cityscroll-app/main/";' not in mirror:
         failures.append("mirror: public repository-document failover seam is missing")
     if 'redirect: "manual"' not in mirror:
         failures.append("mirror: origin fetches must not auto-follow redirects back to CityScroll")

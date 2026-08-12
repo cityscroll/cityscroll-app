@@ -167,7 +167,7 @@ test("handleMirror: keeps public repository documentation on the root-source sea
     const res = await handleMirror(new Request("https://cityscroll.org/docs/architecture.md"));
     assert.equal(
       calls[1],
-      "https://raw.githubusercontent.com/cityscroll/crol-list/main/docs/architecture.md",
+      "https://raw.githubusercontent.com/cityscroll/cityscroll-app/main/docs/architecture.md",
     );
     assert.equal(await res.text(), "# Architecture");
   } finally {

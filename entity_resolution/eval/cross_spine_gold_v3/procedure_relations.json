@@ -3,7 +3,7 @@
   "gold_version": "cross_spine_gold_v3",
   "source_gold_version": "cross_spine_gold_v2",
   "vocabulary_version": "land_use_procedure_v1",
-  "vocabulary_source_url": "https://github.com/cityscroll/crol-list/blob/main/worker/src/lib/subject_registry.mjs",
+  "vocabulary_source_url": "https://github.com/cityscroll/cityscroll-app/blob/main/worker/src/lib/subject_registry.mjs",
   "relations": [
     "mandate_governs_procedure",
     "project_participates_in_procedure"

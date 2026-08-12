@@ -72,7 +72,7 @@ ${PR_70_MAJOR_TEXT}
 test("an internal/tooling PR (real PR #77, unlabeled) produces no entry even though it carries the marker section", () => {
   const result = computeEntryAddition([], {
     number: 77,
-    url: "https://github.com/cityscroll/crol-list/pull/77",
+    url: "https://github.com/cityscroll/cityscroll-app/pull/77",
     mergedAt: "2026-07-17",
     body: PR_77_INTERNAL_TOOLING_BODY,
     labels: ["bug"],
@@ -85,7 +85,7 @@ test("an internal/tooling PR (real PR #77, unlabeled) produces no entry even tho
 test("a minor-fix PR (real PR #55, unlabeled) produces no entry even though the fix is genuinely user-visible", () => {
   const result = computeEntryAddition([], {
     number: 55,
-    url: "https://github.com/cityscroll/crol-list/pull/55",
+    url: "https://github.com/cityscroll/cityscroll-app/pull/55",
     mergedAt: "2026-07-15",
     body: PR_55_MINOR_FIX_BODY,
     labels: [],
@@ -97,7 +97,7 @@ test("a minor-fix PR (real PR #55, unlabeled) produces no entry even though the 
 test("a major user-facing PR (real PR #70), labeled changelog:major, produces its entry", () => {
   const result = computeEntryAddition([], {
     number: 70,
-    url: "https://github.com/cityscroll/crol-list/pull/70",
+    url: "https://github.com/cityscroll/cityscroll-app/pull/70",
     mergedAt: "2026-07-17",
     body: PR_70_MAJOR_BODY,
     labels: ["enhancement", MAJOR_LABEL],
