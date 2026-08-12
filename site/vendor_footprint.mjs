@@ -174,6 +174,12 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
     count: group.edge_count,
     state: group.edge_state,
     href: group.href || null,
+    source: {
+      kind: "vendor",
+      id: model.root.ref || null,
+      name: displayName,
+      canonical_href: model.root.ref ? `/vendors/${encodeURIComponent(model.root.stem || displayName)}/` : null,
+    },
     scope: { domain: group.domain, object_kind: group.kind || null },
     as_of: model.provenance?.observed_on || null,
   })));

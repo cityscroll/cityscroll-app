@@ -181,6 +181,12 @@ export function entityChipHTML(entity = {}, options = {}) {
 
   const relation = clean(entity.relation, 80);
   const evidence = readerEvidenceText(entity.evidence);
+  const source = options.source && typeof options.source === "object" ? options.source : null;
+  const targetId = parsed.kind === "vendor"
+    ? decoded(parsed.id.slice("stem:".length))
+    : parsed.kind === "agency"
+      ? parsed.id.replace(/^id:/, "")
+      : parsed.id;
   const extraClass = clean(options.className, 80).replace(/[^a-zA-Z0-9 _-]/g, "");
   const classes = ["pivot", "entity-pivot", extraClass].filter(Boolean).join(" ");
   const link = constellationLink({
@@ -191,6 +197,16 @@ export function entityChipHTML(entity = {}, options = {}) {
       "data-entity-ref": entity.ref,
       "data-link-confidence": confidence,
       ...(relation ? { "data-relation": relation } : {}),
+      ...(source ? {
+        "data-pivot-schema": "cityscroll.edge_summary.v1",
+        "data-pivot-status": "accepted",
+        "data-pivot-relation-label": relation || "related record",
+        "data-pivot-target-kind": parsed.kind,
+        "data-pivot-target-id": targetId,
+        "data-pivot-source-kind": source.kind || "",
+        "data-pivot-source-id": source.id || "",
+        "aria-label": `${relation || "Related record"}: ${displayLabel}; from ${source.name || source.kind || "this record"}`,
+      } : {}),
     },
     escape: escapeHTML,
   });
