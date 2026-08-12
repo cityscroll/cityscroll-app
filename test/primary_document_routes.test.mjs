@@ -278,6 +278,24 @@ test("Browse landing counts are labeled with source dates without coverage cavea
   assert.doesNotMatch(html, /Counts describe|full historical history|bounded|joined by parcel/i);
 });
 
+test("Browse landing hides objects without a positive primary count", () => {
+  const landing = buildBrowseLanding({
+    contracts: { open_as_of: "2026-08-03", notices: [{ request_id: "1" }] },
+  });
+  const html = renderBrowseLanding(landing);
+  assert.match(html, /id="source-contracts"/);
+  assert.doesNotMatch(html, /id="source-places"/);
+  assert.doesNotMatch(html, />Places<\/h3>/);
+  assert.equal(landing.cards.length, 6, "the six civic-object groups remain in the model");
+});
+
+test("Browse landing omits the empty card grid when no object is ready", () => {
+  const html = renderBrowseLanding(buildBrowseLanding({}));
+  assert.match(html, /data-build-rendered="browse-landing"/);
+  assert.doesNotMatch(html, /browse-source-grid/);
+  assert.doesNotMatch(html, /<article class="browse-source-card"/);
+});
+
 test("public identity copy describes a linked multi-source record", () => {
   const index = read("../site/index.html");
   const about = read("../site/about.html");
