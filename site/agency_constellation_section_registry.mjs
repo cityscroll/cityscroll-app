@@ -11,6 +11,7 @@ import { processConformanceSection } from "./agency_constellation_sections/proce
 import { provenanceSection } from "./agency_constellation_sections/provenance.mjs";
 import { rulesSection } from "./agency_constellation_sections/rules.mjs";
 import { staffingSection } from "./agency_constellation_sections/staffing.mjs";
+import { vendorsSection } from "./agency_constellation_sections/vendors.mjs";
 
 const registeredSections = [
   asOfSection,
@@ -21,6 +22,7 @@ const registeredSections = [
   mandateContractsSection,
   mandateLandUseSection,
   contractsSection,
+  vendorsSection,
   meetingsSection,
   rulesSection,
   processConformanceSection,

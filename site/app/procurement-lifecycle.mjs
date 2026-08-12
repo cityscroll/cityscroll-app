@@ -459,10 +459,10 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
       extraHTML += `<div class="lc-pct">${t("lifecycle_paid_to_date_html",{amount:lifecycleMoney(d.total_spent)})}</div>`;
     }
     if((entry.stage === "award" || entry.stage === "pending") && d.vendor){
-      extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b></div>`;
+      extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${globalThis.pivotA?.(globalThis.vendorHref?.(d.vendor), d.vendor) || escUiHtml(d.vendor)}</b></div>`;
     }
     if(entry.stage === "registered" && d.vendor){
-      extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b></div>`;
+      extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${globalThis.pivotA?.(globalThis.vendorHref?.(d.vendor), d.vendor) || escUiHtml(d.vendor)}</b></div>`;
     }
     if(entry.stage === "pending" && d.passport_status){
       extraHTML += `<div class="lc-pct">${escUiHtml(d.passport_status)}</div>`;
@@ -492,7 +492,7 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
       const cands = entry.detail.candidates.map(c => {
         const amt = c.current_amount != null ? c.current_amount : (c.amount || 0);
         const dt = c.registration_date || c.received_date || null;
-        return `<div>${lifecycleMoney(amt)}${dt ? " · " + fdate(dt) : ""}${c.contract_id ? ` · <code>${c.contract_id}</code>` : ""}</div>`;
+        return `<div>${lifecycleMoney(amt)}${dt ? " · " + fdate(dt) : ""}${c.vendor ? ` · ${globalThis.pivotA?.(globalThis.vendorHref?.(c.vendor), c.vendor) || escUiHtml(c.vendor)}` : ""}${c.contract_id ? ` · <code>${c.contract_id}</code>` : ""}</div>`;
       }).join("");
       detailHTML += `<div class="lc-candidates">${cands}</div>`;
     }
@@ -525,7 +525,7 @@ function lifecycleOcpAwardHTML(data){
     let cands = "";
     if(Array.isArray(ocp.candidates) && ocp.candidates.length){
       cands = `<div class="lc-candidates">${ocp.candidates.map(c =>
-        `<div>${money(c.amount) || "—"}${c.date ? " · " + fdate(c.date) : ""}${c.vendor ? " · " + escUiHtml(c.vendor) : ""}${c.request_id ? ` · <code>${escUiHtml(c.request_id)}</code>` : ""}</div>`
+        `<div>${money(c.amount) || "—"}${c.date ? " · " + fdate(c.date) : ""}${c.vendor ? " · " + (globalThis.pivotA?.(globalThis.vendorHref?.(c.vendor), c.vendor) || escUiHtml(c.vendor)) : ""}${c.request_id ? ` · <code>${escUiHtml(c.request_id)}</code>` : ""}</div>`
       ).join("")}</div>`;
     }
     return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${t("lifecycle_ocp_ambiguous_html")}${cands}</div>`;
@@ -535,7 +535,7 @@ function lifecycleOcpAwardHTML(data){
   const d = ocp.detail;
   let body = t("lifecycle_ocp_matched_html",{
     source: srcLink,
-    vendor: d.vendor ? `<b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b>` : "—",
+    vendor: d.vendor ? `<b lang="en" dir="ltr">${globalThis.pivotA?.(globalThis.vendorHref?.(d.vendor), d.vendor) || escUiHtml(d.vendor)}</b>` : "—",
     amount: money(d.amount) || "—",
     date: d.date ? fdate(d.date) : "—"
   });
