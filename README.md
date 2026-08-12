@@ -69,13 +69,27 @@ and [Following](https://cityscroll.org/following/?lens=property&filter=%7B%22key
 
 The links on a record can be combined instead of starting a new search. Try an [HPD contract scope](https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D), a [Timbale Terrace project constellation](https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%2C%22project%3A2022M0258%22%5D%7D), or [follow that HPD scope](https://cityscroll.org/following/?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D). Each link keeps the typed connection in the URL so the next view can use it.
 
-Cross-category agency constellations (first iteration) gather one agency across contracts, meetings, rules, statutory mandates, and staffing exams — same parcel-style “records by source” shape. Demo: [Parks and Recreation](https://cityscroll.org/agencies/parks-and-recreation/) (`agency:id:parks-and-recreation`), with per-category Browse scopes, statutory mandates (agency → duty → deadline → recurrence with source-law links), and free watches for City Record notices or mandate deadlines (optional deliverable type / deadline window).
+Cross-category agency constellations gather one agency across contracts, meetings, rules, statutory mandates, and staffing exams — same parcel-style “records by source” shape. Demo: [Parks and Recreation](https://cityscroll.org/agencies/parks-and-recreation/) (`agency:id:parks-and-recreation`), with per-category Browse scopes, statutory mandates (agency → duty → deadline → recurrence with source-law links), and free watches for City Record notices or mandate deadlines (optional deliverable type / deadline window). Agency renames densify from the OTI roster’s former names plus a small reviewed residual map so one constellation route stays stable when the city’s spelling changes.
 
 ### From notices to a civic graph
 
-CityScroll is increasingly organized around the thing a record is about, not just the system that published it. Typed `◆` constellation links let you pivot among agencies, vendors, projects, parcels, and officials. The public entity graph connects related records across money, land, property, rules, meetings, people, and franchise data without merging the underlying publisher records.
+CityScroll is organized around the thing a record is about, not just the system that published it. Typed `◆` constellation links let you pivot among agencies, vendors, projects, parcels, and officials. The public entity graph connects related records across money, land, property, rules, meetings, people, and franchise data without merging the underlying publisher records.
 
-The graph includes exact-key joins for authority keys, contract IDs, BBLs, and ULURP/project identifiers, plus measured relation links for statutory mandates to rules, meetings, contracts, and land-use actions. Every published connection carries provenance. Candidates that do not clear the relation’s precision gate remain evidence-only and are not presented as a fact.
+The graph includes exact-key joins for authority keys, contract IDs, BBLs, and ULURP/project identifiers, plus measured relation links for statutory mandates to rules, meetings, contracts, and land-use actions. Every published connection carries provenance. Candidates that do not clear the relation’s precision gate remain evidence-only and are not presented as a fact. Mandate-to-entity edges are mandate-specific when a reliable join exists; where per-mandate coverage is sparse, the page keeps honest agency-wide Browse scopes rather than inventing per-duty connections.
+
+The **Civic Graph** registry (`ontology/registry.v0.json`) is the backstage catalog of civic objects, links, and actions with grounding labels (`built` / `partial` / `gap`). A multi-dimension evaluation harness scores coverage and emits ranked enrichment cards when metrics show a real gap — engineering infrastructure, not a public product surface. Overview: [`docs/civic-graph.md`](docs/civic-graph.md).
+
+### Officials, votes, and influence
+
+Council member identity is a **person hub**: Open Data Council Members (`uvw5-9znb`) binds `council_member_id` to Legistar `PersonId`, so an official profile can carry district/term, retained roll-call votes, and measured influence edges. Demo: [official 7801](https://cityscroll.org/#official/7801) (recent votes) or the same id scoped to a hearing via `?notice=` / `?event=`.
+
+When Legistar publishes `VotePersonId` / `VotePersonName` rows, meeting outcomes keep person-level roll call (`roll_call`); when rows lack identity, the UI stays `tally_only` and does not invent names. Lobby targets (City Clerk eLobbyist) and campaign-finance recipients (CFB contributions) join only on exact unique person-name keys after usefulness and precision gates clear — partial coverage is labeled, not padded.
+
+### Follow the dollars
+
+Procurement notices that join a registered Checkbook contract can show paid-to-date and individual payment rows on the lifecycle timeline and the notice **Follow the dollars** panel. Spending is joined by `contract_id` after the Contracts-domain seed (Checkbook Spending rejects PIN filters). Payment retention is population-backed and gate-measured; empty or unmatched stages stay classed as not-yet-shown or not-published rather than a confident zero.
+
+Planning context for identifier-bearing MOCS Local Law 63 / Local Law 1 plan rows can attach when a receipt-backed plan→PASSPort prefix join clears the same usefulness/precision bars; capital-dashboard bridges remain stopped.
 
 ### The Civic Time Ledger
 
@@ -90,8 +104,9 @@ When a notice’s useful details live in a DOCX or text-layer PDF, CityScroll ca
 Empty lifecycle slots say **which kind of gap** they are: not yet joined from a public
 source, or not published by the city at all — never a blank “unknown.” The
 [API page](https://cityscroll.org/api.html) links the public delivery surfaces and
-describes what feeds are live and how they are used. External data products that need
-complete City Record source rows can follow the
+describes what feeds are live and how they are used. The generated source register is
+[`docs/data-sources.md`](docs/data-sources.md) (from `site/data/source_contracts.json`).
+External data products that need complete City Record source rows can follow the
 [bulk and incremental corpus access guide](docs/city-record-corpus-access.md).
 
 City Record is one input to this work, not the destination of every path. The reader surface

@@ -1,0 +1,8 @@
+cfb-campaign-contributions|surfaces=Officials|coverage=Ship CFB recipient edges. Usefulness 49.07% and precision 100% clear 30%/95% gates.
+city-clerk-elobbyist|surfaces=Officials|coverage=Ship lobby edges. Usefulness 96.17% and precision 100% clear 30%/95% gates.
+city-council-committee-membership|surfaces=Officials|coverage=Publish the 308 exact-key rows for 12 people; leave three people as an explicit gap.
+nyc-council-legistar|surfaces=Notices & search, Meetings, Officials|coverage=Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materia
+nyc-council-members|surfaces=Meetings, Officials|coverage=Ship person hub. Exact PersonId identity; district and term stamp on official profiles.
+nyc-agencies|surfaces=Agency profiles|coverage=Contract verifier checks 6 required fields.
+checkbook-spending|surfaces=Notices & search, Money|coverage=Ship payment retention. Usefulness 44% and precision 100% clear the 30%/95% gates; Follow-the-Dollars reads retained rows by contract_id.
+all surfaces: ['Agency profiles', 'Alerts', 'Gap register', 'Land', 'Map', 'Meetings', 'Money', 'Notices & search', 'Officials', 'Property', 'Rules', 'Staffing']
