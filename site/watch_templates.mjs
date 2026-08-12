@@ -89,6 +89,10 @@ export function normalizeFilter(filter) {
     ? f.subject_refs_all.map((ref) => clean(ref)).filter((ref) => ref && !/\s/.test(ref)).slice(0, 20)
     : [];
   if (subjectRefs.length) out.subject_refs_all = [...new Set(subjectRefs)];
+  const entityRefs = Array.isArray(f.entity_refs_all)
+    ? f.entity_refs_all.map((ref) => clean(ref)).filter((ref) => ref && !/\s/.test(ref)).slice(0, 20)
+    : [];
+  if (entityRefs.length) out.entity_refs_all = [...new Set(entityRefs)];
   return out;
 }
 

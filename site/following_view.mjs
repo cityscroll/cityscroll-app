@@ -1,6 +1,13 @@
-import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
+import {
+  normalizeScope,
+  routeHashFromScope,
+  scopeFromWatch,
+  scopeWithEntity,
+  watchFromScope,
+} from "./scope_v0.mjs";
 import { normalizeWatchTemplateRegistry, packAttentionCopy } from "./watch_templates.mjs";
-import { migrateLegacyUrl } from "./route_migration.mjs";
+import { canonicalizeBrowseUrl, migrateLegacyUrl } from "./route_migration.mjs";
+import { entityHref, entityRouteRef, parseEntityRef } from "./entity_pivot.mjs";
 import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
@@ -123,6 +130,178 @@ export function followingUrlFromWatch(watch, options = {}) {
   return `${base}?${params}`;
 }
 
+const BROWSE_FACETS = Object.freeze({
+  money: "contracts",
+  people: "staffing",
+  land: "zoning",
+  property: "property",
+  rules: "rules",
+  meetings: "meetings",
+});
+
+function entityPivotForWatch(watch) {
+  const filter = watch?.filter && typeof watch.filter === "object" ? watch.filter : {};
+  const refs = [
+    ...(Array.isArray(filter.entity_refs_all) ? filter.entity_refs_all : []),
+    ...(Array.isArray(filter.subject_refs_all) ? filter.subject_refs_all : []),
+  ];
+  let ref = refs.map((candidate) => String(candidate || "").trim()).find((candidate) => parseEntityRef(candidate));
+  if (!ref && watch?.lens === "entity" && filter.name) {
+    ref = entityRouteRef(filter.kind === "agency" ? "agency" : "vendor", filter.name);
+  }
+  if (!ref) return null;
+  const parsed = parseEntityRef(ref);
+  if (!parsed) return null;
+  const label = String(filter.name || filter.agency || "").trim()
+    || (parsed.kind === "agency"
+      ? parsed.id.replace(/^id:/, "")
+      : parsed.kind === "vendor"
+        ? decodeURIComponent(parsed.id.replace(/^stem:/, ""))
+        : parsed.id);
+  const href = entityHref({ ref, label });
+  if (!href) return null;
+  return { ref, kind: parsed.kind, label, href };
+}
+
+function currentMatchesHref(watch) {
+  const normalized = normalizedWatch(watch?.lens || "money", watch?.filter || {});
+  const entity = entityPivotForWatch(normalized);
+  let scope = scopeFromWatch(normalized);
+  if (entity) scope = scopeWithEntity(scope, entity.ref);
+  const surface = normalized.lens === "entity" ? "money" : normalized.lens;
+  if (surface === "district") {
+    const council = normalized.filter.councilDistrict;
+    return council ? `/near-you/?v=0&lens=district&council=${encodeURIComponent(council)}` : "/near-you/";
+  }
+  const facet = BROWSE_FACETS[surface];
+  if (!facet) return followingUrlFromWatch(normalized, { frequency: watch?.frequency || watch?.freq });
+  const hash = routeHashFromScope(normalizeScope(scope), { surface });
+  return canonicalizeBrowseUrl(`/browse/${facet}/?${hash.split("?")[1] || ""}`);
+}
+
+/**
+ * Public graph context for one watch. The object is also used by the personal
+ * endpoint and watch-set renderer so all three surfaces share the same pivots.
+ */
+export function buildFollowingGraphContext(watch = {}, options = {}) {
+  const normalized = normalizedWatch(watch.lens || "money", watch.filter || {});
+  const frequency = cleanFrequency(options.frequency || watch.frequency || watch.freq);
+  const filter = normalized.filter;
+  const entity = entityPivotForWatch(normalized);
+  return {
+    schema: "cityscroll.following_graph_context.v1",
+    ...normalized,
+    filter,
+    frequency,
+    ruleSentence: composeWatchRuleSentence(normalized.lens, filter, { frequency }),
+    scopeSummary: scopeSummary(normalized.lens, filter),
+    currentMatchesHref: currentMatchesHref({ ...normalized, frequency }),
+    entity,
+    topicLabel: LENS_LABELS[normalized.lens] || normalized.lens,
+    placeLabel: filter.borough || filter.boro || filter.neighborhood || "Citywide",
+    keywordLabel: Array.isArray(filter.keywords) && filter.keywords.length
+      ? filter.keywords.join(" ") : null,
+    agencyLabel: filter.agency || null,
+    districtLabel: filter.councilDistrict
+      ? `Council District ${filter.councilDistrict}`
+      : filter.communityDistrict || null,
+    followingHref: followingUrlFromWatch(normalized, { frequency }),
+    backToEntity: !!options.backToEntity,
+  };
+}
+
+function typedPivotAttributes(entity, relation = "watch_target") {
+  if (!entity) return {};
+  return {
+    "data-entity-ref": entity.ref,
+    "data-subject-ref": entity.ref,
+    "data-pivot-kind": entity.kind,
+    "data-pivot-relation": relation,
+  };
+}
+
+function graphLink({ href, label, className, entity, relation } = {}) {
+  return constellationLink({
+    href,
+    label,
+    className,
+    attributes: typedPivotAttributes(entity, relation),
+    escape: esc,
+  });
+}
+
+function watchIdentityRows(context) {
+  const rows = [
+    ["Topic", context.topicLabel, null],
+    ["Place", context.placeLabel, null],
+    ["Keyword", context.keywordLabel, null],
+    ["Agency", context.agencyLabel, null],
+    ["District", context.districtLabel, null],
+  ].filter(([, value]) => value);
+  if (context.entity) {
+    rows.push(["Entity", graphLink({
+      href: context.entity.href,
+      label: context.entity.label,
+      className: "following-entity-link",
+      entity: context.entity,
+    }), true]);
+  }
+  return rows.map(([label, value, html]) => `<div class="following-identity-row"><dt>${esc(label)}</dt><dd>${html ? value : esc(value)}</dd></div>`).join("");
+}
+
+export function followingWatchScopeLinksHtml(context, { entityClass = "following-watch-entity" } = {}) {
+  const scopeLinks = context.scopeSummary.map((item) => (
+    `<li>${constellationLink({
+      href: context.currentMatchesHref,
+      label: item.label,
+      className: "following-watch-scope-link",
+      attributes: { "data-following-scope-link": item.axis },
+      escape: esc,
+    })}</li>`
+  )).join("");
+  const entityLink = context.entity
+    ? `<li>${graphLink({
+      href: context.entity.href,
+      label: context.entity.label,
+      className: entityClass,
+      entity: context.entity,
+    })}</li>`
+    : "";
+  return `<ul class="following-watch-scope-links" aria-label="Watch links">${scopeLinks}${entityLink}</ul>`;
+}
+
+export function followingWatchIdentityHtml(context, {
+  heading = "Watch identity",
+  headingTag = "h2",
+  includeActions = true,
+  backToEntity = context.backToEntity,
+  className = "",
+} = {}) {
+  if (!context) return "";
+  const entityAction = context.entity
+    ? graphLink({
+      href: context.entity.href,
+      label: `${backToEntity ? "Back to" : "Open"} ${context.entity.label}`,
+      className: "following-entity-action",
+      entity: context.entity,
+      relation: "watch_target",
+    })
+    : "";
+  const actions = includeActions
+    ? `<nav class="following-identity-actions" aria-label="Watch destinations">
+      ${constellationLink({ href: context.currentMatchesHref, label: "See current matches", className: "following-current-matches", attributes: { "data-following-current-matches": "true" }, escape: esc })}
+      ${entityAction}
+    </nav>`
+    : "";
+  return `<section class="following-watch-identity${className ? ` ${esc(className)}` : ""}" data-following-watch-identity>
+    <p class="following-kicker">Orientation</p><${headingTag}>${esc(heading)}</${headingTag}>
+    <dl class="following-identity-facts">${watchIdentityRows(context)}</dl>
+    <p class="following-identity-rule" data-following-identity-rule>${esc(context.ruleSentence)}</p>
+    <p class="following-identity-cadence">Cadence: <strong data-following-identity-cadence>${esc(context.frequency === "weekly" ? "Weekly" : "Daily")}</strong></p>
+    ${actions}
+  </section>`;
+}
+
 function scopeSummary(lens, filter) {
   const chips = [{ axis: "topic", label: LENS_LABELS[lens] || lens }];
   const values = [
@@ -240,6 +419,7 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
   const frequency = cleanFrequency(input.frequency);
   const ruleSentence = composeWatchRuleSentence(watch.lens, watch.filter, { frequency });
   const citywide = isCitywideWatchScope(watch.filter);
+  const graphContext = buildFollowingGraphContext({ ...watch, frequency });
   return {
     schema: "cityscroll.following_view.v1",
     ...watch,
@@ -252,6 +432,7 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     ruleSentence,
     citywide,
     citywideDailyWarn: citywide && frequency === "daily" && requested,
+    graphContext,
     templates: registry.templates,
     followingUrl: followingUrlFromWatch(watch, {
       frequency,
@@ -439,13 +620,18 @@ function subscribeHtml(view) {
 
 function templateHtml(template) {
   const attention = packAttentionCopy(template, { frequency: "weekly" });
-  const watches = template.watches.map((watch) => `<li>${esc(watch.label)}.</li>`).join("");
+  const watches = template.watches.map((watch) => {
+    const context = buildFollowingGraphContext(watch, { frequency: "weekly", backToEntity: true });
+    return `<li class="following-pack-watch" data-following-pack-watch>
+      ${followingWatchScopeLinksHtml(context, { entityClass: "following-pack-watch-entity" })}.
+    </li>`;
+  }).join("");
   const href = `/following/packs/${encodeURIComponent(template.id)}/`;
   return `<article class="following-pack" data-pack-id="${esc(template.id)}">
     <h3>${esc(template.title)}</h3>
     <p class="following-pack-cost" data-pack-attention>${esc(attention.summary)}</p>
     <p class="following-pack-subject muted">Sample subject line: ${esc(attention.sampleSubject)}</p>
-    <details><summary>Show watches</summary><ul>${watches}</ul></details>
+    <ul class="following-pack-watch-list">${watches}</ul>
     ${constellationLink({ href, label: "Open this pack", className: "following-pack-link", escape: esc })}
   </article>`;
 }
@@ -508,7 +694,8 @@ export function renderFollowingBody(view) {
   const create = createSectionHtml(view);
   // Handoff landing: scope chips + count + rule line before email (workspace order).
   // Panel workspace attribute supports the multi-watch surface tabs from main.
-  const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
+  const identity = view.requested ? followingWatchIdentityHtml(view.graphContext) : "";
+  const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${identity}${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
   const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
   // Create flow leads for first-time / empty sessions; client reorders when
