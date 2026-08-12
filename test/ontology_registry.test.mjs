@@ -137,8 +137,16 @@ test("every object and link carries Civic Graph grounding (built|partial|gap)", 
   }
   const summary = summarizeGrounding(registry);
   assert.ok(summary.objects.built + summary.objects.partial + summary.objects.gap === registry.object_types.length);
-  assert.ok(summary.object_gap_ids.includes("payment"));
-  assert.ok(summary.link_gap_ids.includes("paid_under") || summary.link_gap_ids.includes("registered_as"));
+  // payment + paid_under promoted after Checkbook Spending retention (cg-v1).
+  assert.ok(!summary.object_gap_ids.includes("payment"));
+  assert.ok(!summary.link_gap_ids.includes("paid_under"));
+  assert.ok(summary.objects.built >= 1);
+  const payment = registry.object_types.find((o) => o.id === "payment");
+  const paidUnder = registry.link_types.find((l) => l.id === "paid_under");
+  assert.equal(payment?.grounding, "built");
+  assert.equal(paidUnder?.status, "registered");
+  assert.equal(paidUnder?.grounding, "built");
+  assert.ok(summary.link_gap_ids.includes("registered_as"));
   assert.equal(registry.civic_graph?.name, "Civic Graph");
   assert.ok(Array.isArray(registry.civic_graph?.remaining_stack));
   assert.ok(registry.civic_graph.remaining_stack.length >= 3);
