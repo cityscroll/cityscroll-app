@@ -146,6 +146,7 @@ test("chainHTML with phase tools: one default City Record link for blanket pool"
 
   const { chainHTML } = new Function(
     "t", "tn", "window", "constellationLink",
+    "const v=x=>escUiHtml(x);\n" +
     extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") +
     extractFn("cleanText") + extractFn("boxClass") + extractFn("money") + extractFn("fdate") +
     extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +

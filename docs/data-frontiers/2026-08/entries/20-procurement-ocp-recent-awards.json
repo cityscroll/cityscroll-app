@@ -4,8 +4,8 @@
   "rank": 20,
   "gap_inventory_row": "`procurement-ocp-recent-awards` — award enrichment",
   "source_and_access": "[Recent Contract Awards](https://data.cityofnewyork.us/d/qyyg-4tf5), Socrata API/export keyed by PIN/request ID/agency.",
-  "join_feasibility": "**Unmeasured assessment: high for this exact gap row.** The dataset is verified and bulk-loaded locally, but the inventory row lacks a dated residual join rate.",
+  "join_feasibility": "**Measured (2026-08-12):** the existing award-corroborated PASSPort census contains 12,782 rows. A legacy source-order cap of 500 admitted 1,500 exact money edges and dropped 12,283 rows carrying 36,848 potential edges; the agency-stratified 1,550-row cap admits 4,650 edges and leaves 11,233 rows outside the bounded graph. The compressed read-model ceiling is 445,000 bytes: 1,550 rows measured 440,788 bytes, while 1,600 measured 445,087 bytes ([receipt](../evidence/passport-ei-densify/comparison.json)).",
   "reader_value": "**3** — Money and award detail; adds OCP fields beyond City Record.",
   "effort": "**API pull**",
-  "disposition": "**Reconcile, not collect:** warehouse materialization already exists; measure residual coverage and retire or narrow the row."
+  "disposition": "**Existing source densified.** The graph cap is now agency-stratified and raised to the measured payload ceiling; source-null fields remain null and dropped rows do not create edges. Continue measuring the residual census as the source refreshes."
 }

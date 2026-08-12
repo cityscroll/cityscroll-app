@@ -1,19 +1,47 @@
 {
   "schema": "cityscroll.notice_mandate_backlinks.v1",
   "method": "notice_mandate_backlinks_v1",
-  "generated_at": "2026-08-11T21:12:40.861Z",
+  "generated_at": "2026-08-12T16:01:38.782Z",
   "counts": {
-    "notices": 6,
-    "edges": 7,
+    "notices": 8,
+    "edges": 9,
     "by_relation": {
-      "implemented_by_contract": 1,
+      "implemented_by_contract": 3,
       "mandate_report_filing": 2,
       "requires_public_hearing": 3,
       "mandate_rule_filing": 1
     }
   },
   "by_notice": {
+    "20210727108": [
+      {
+        "duty_text": "Commence to renegotiate existing shelter contracts, to the extent permitted, and terminate contracts when operators do not accept the new terms within the specified period.",
+        "citation": "Administrative Code § 6-109.2(i)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=66056",
+        "relation": "implemented_by_contract",
+        "relation_label": "Procurement record for this duty",
+        "agency_id": "homeless-services",
+        "agency_name": "Homeless Services",
+        "agency_href": "/agencies/homeless-services/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "66056-006"
+      }
+    ],
     "20210820102": [
+      {
+        "duty_text": "Commence to renegotiate existing shelter contracts, to the extent permitted, and terminate contracts when operators do not accept the new terms within the specified period.",
+        "citation": "Administrative Code § 6-109.2(i)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=66056",
+        "relation": "implemented_by_contract",
+        "relation_label": "Procurement record for this duty",
+        "agency_id": "homeless-services",
+        "agency_name": "Homeless Services",
+        "agency_href": "/agencies/homeless-services/",
+        "publication_tier": "public_inferred",
+        "mandate_id": "66056-006"
+      }
+    ],
+    "20211029113": [
       {
         "duty_text": "Commence to renegotiate existing shelter contracts, to the extent permitted, and terminate contracts when operators do not accept the new terms within the specified period.",
         "citation": "Administrative Code § 6-109.2(i)",

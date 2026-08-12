@@ -925,6 +925,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   const mandatesContracts = buildMandateContractsBridgeView(identity.canonical_id, {
     obligationsLookup: obligations,
     intelligenceDossier: intelligence,
+    procurementAwards: sources.procurement_awards || sources.procurementAwards || null,
     crossSpineGate: sources.cross_spine_gate || null,
     contractsBrowseHref,
     contractsFollowHref: contractsCategory?.follow_href,

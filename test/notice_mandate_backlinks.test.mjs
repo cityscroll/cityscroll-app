@@ -250,9 +250,13 @@ test("live materialization from sources stays public-only", () => {
   const gate = JSON.parse(
     readFileSync(join(ROOT, "site/data/cross_spine_edge_gate.json"), "utf8"),
   );
+  const procurementAwards = JSON.parse(
+    readFileSync(join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"), "utf8"),
+  );
   const lookup = buildNoticeMandateBacklinksLookup({
     obligationsLookup: obligations,
     intelligence,
+    procurementAwards,
     crossSpineGate: gate,
     meetingsDomain: { rows: [] },
     rulesDomain: { rows: [], row_count: 0 },

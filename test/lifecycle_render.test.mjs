@@ -42,6 +42,7 @@ const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: 
 
 const sandbox = new Function(
   "t", "tn", "window", "officialSourceLink",
+  "const v=x=>escUiHtml(x);\n" +
   extractFn("money") +
   extractFn("fdate") +
   extractConst("escUiHtml") +
