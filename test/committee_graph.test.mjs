@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   buildCommitteeGateReceipt,
   buildCommitteeGraph,
+  committeeGateAllowsPublication,
   normalizeOfficeRecord,
   sourceRowHash,
 } from "../site/committee_graph.mjs";
@@ -81,6 +82,103 @@ test("committee gate records an honest authenticated-sample miss", () => {
   assert.equal(receipt.gate.publication_status, "held");
   assert.equal(receipt.source.name_only_edges, 0);
   assert.equal(receipt.sample_plan.requested, 30);
+});
+
+function sampleIds() {
+  return Array.from({ length: 30 }, (_, index) => String(index + 1));
+}
+
+function officeRow(person = "7801") {
+  return {
+    OfficeRecordPersonId: person,
+    OfficeRecordBodyId: "5261",
+    OfficeRecordBodyName: "Subcommittee on Landmarks",
+    OfficeRecordTitle: "Member",
+    OfficeRecordStartDate: "2024-01-01",
+    OfficeRecordEndDate: null,
+  };
+}
+
+test("committee gate publishes at the 95% exact-key threshold", () => {
+  const rows = [...Array.from({ length: 19 }, () => officeRow()), officeRow("not-in-person-hub")];
+  const receipt = buildCommitteeGateReceipt({
+    observedAt: "2026-08-12T00:00:00.000Z",
+    samplePersonIds: sampleIds(),
+    currentPersonIds: sampleIds().slice(0, 20),
+    formerPersonIds: sampleIds().slice(20, 25),
+    socrataPersonIds: sampleIds().slice(25),
+    rows,
+    peopleDoc: people,
+  });
+  assert.equal(receipt.review.denominator, 20);
+  assert.equal(receipt.review.exact_key_precision, 0.95);
+  assert.deepEqual(receipt.review.field_review, {
+    exact_person_id_rows: 19,
+    exact_body_id_rows: 20,
+    body_name_rows: 20,
+    title_rows: 20,
+    date_order_reviewed_rows: 19,
+    date_order_valid_rows: 19,
+  });
+  assert.equal(receipt.review.current_vs_historical_overlap.current_and_historical_person_count, 0);
+  assert.equal(committeeGateAllowsPublication(receipt), true);
+  assert.equal(receipt.gate.publication_allowed, true);
+});
+
+test("committee gate holds below 95% precision", () => {
+  const rows = [...Array.from({ length: 18 }, () => officeRow()), officeRow("not-in-person-hub"), officeRow("also-not-in-person-hub")];
+  const receipt = buildCommitteeGateReceipt({
+    observedAt: "2026-08-12T00:00:00.000Z",
+    samplePersonIds: sampleIds(),
+    rows,
+    peopleDoc: people,
+  });
+  assert.equal(receipt.review.exact_key_precision, 0.9);
+  assert.equal(committeeGateAllowsPublication(receipt), false);
+  assert.equal(receipt.gate.publication_status, "held");
+});
+
+test("committee gate holds whenever a name-only edge is reported", () => {
+  const receipt = buildCommitteeGateReceipt({
+    observedAt: "2026-08-12T00:00:00.000Z",
+    samplePersonIds: sampleIds(),
+    rows: [officeRow()],
+    peopleDoc: people,
+    nameOnlyEdges: 1,
+  });
+  assert.equal(receipt.review.exact_key_precision, 1);
+  assert.equal(receipt.review.body_name_mismatches, 0);
+  assert.equal(receipt.source.name_only_edges, 1);
+  assert.equal(receipt.gate.publication_allowed, false);
+  assert.equal(committeeGateAllowsPublication(receipt), false);
+});
+
+test("committee gate holds when an accepted row has no publisher title", () => {
+  const row = officeRow();
+  delete row.OfficeRecordTitle;
+  const receipt = buildCommitteeGateReceipt({
+    observedAt: "2026-08-12T00:00:00.000Z",
+    samplePersonIds: sampleIds(),
+    rows: [row],
+    peopleDoc: people,
+  });
+  assert.equal(receipt.review.field_review.title_rows, 0);
+  assert.equal(receipt.review.exact_key_precision, 0);
+  assert.equal(receipt.gate.publication_allowed, false);
+});
+
+test("committee gate holds when one BodyId has conflicting publisher names", () => {
+  const first = officeRow();
+  const second = { ...officeRow(), OfficeRecordBodyName: "Renamed committee" };
+  const receipt = buildCommitteeGateReceipt({
+    observedAt: "2026-08-12T00:00:00.000Z",
+    samplePersonIds: sampleIds(),
+    rows: [first, second],
+    peopleDoc: people,
+  });
+  assert.equal(receipt.review.body_name_mismatches, 1);
+  assert.equal(receipt.gate.publication_allowed, false);
+  assert.equal(committeeGateAllowsPublication(receipt), false);
 });
 
 test("source-row hashes are stable and normalized office records preserve null dates", () => {

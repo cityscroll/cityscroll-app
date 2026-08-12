@@ -54,6 +54,14 @@
     "unknown_person_ids": null,
     "missing_required_fields": null,
     "body_name_mismatches": null,
+    "field_review": {
+      "exact_person_id_rows": null,
+      "exact_body_id_rows": null,
+      "body_name_rows": null,
+      "title_rows": null,
+      "date_order_reviewed_rows": null,
+      "date_order_valid_rows": null
+    },
     "current_vs_historical_overlap": {
       "current_person_count": 20,
       "historical_person_count": 5,
@@ -72,6 +80,7 @@
   },
   "sample_acquisition": {
     "complete": false,
+    "retrieved_at": "2026-08-12T00:00:00.000Z",
     "request_errors": []
   }
 }

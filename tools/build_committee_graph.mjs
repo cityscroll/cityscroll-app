@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import {
   buildCommitteeGateReceipt,
   buildCommitteeGraph,
+  committeeGateAllowsPublication,
 } from "../site/committee_graph.mjs";
 import { fetchLegistarPersonOfficeRecords } from "../worker/src/lib/legistar_client.mjs";
 
@@ -20,7 +21,7 @@ const RECEIPT = path.join(
   ROOT,
   "site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json",
 );
-const OBSERVED_AT = "2026-08-12T00:00:00.000Z";
+const OBSERVED_AT = process.env.COMMITTEE_RETRIEVED_AT || "2026-08-12T00:00:00.000Z";
 // The publication gate is the dated 30-person sample: 20 current-term, 5 recent-former, 5 Socrata overlap.
 
 async function json(relative) {
@@ -96,9 +97,10 @@ async function main() {
   });
   gate.sample_acquisition = {
     complete: acquisition.sampleComplete,
+    retrieved_at: OBSERVED_AT,
     request_errors: acquisition.request_errors || [],
   };
-  gate.gate.publication_allowed = gate.gate.publication_allowed && acquisition.sampleComplete;
+  gate.gate.publication_allowed = committeeGateAllowsPublication(gate) && acquisition.sampleComplete;
   gate.gate.publication_status = gate.gate.publication_allowed ? "published" : "held";
   const graph = buildCommitteeGraph(acquisition.rows || [], people, {
     retrievedAt: OBSERVED_AT,

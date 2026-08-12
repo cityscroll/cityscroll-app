@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 
 export const COMMITTEE_GRAPH_SCHEMA = "cityscroll.committee_graph.v1";
 export const COMMITTEE_GATE_SAMPLE_SIZE = 30;
+export const COMMITTEE_GATE_PRECISION_MINIMUM = 0.95;
 export const COMMITTEE_SOURCE_URL = "https://webapi.legistar.com/v1/nyc/persons";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -42,6 +43,10 @@ function bodyName(raw) {
   return clean(raw.OfficeRecordBodyName ?? raw.BodyName ?? raw.body_name);
 }
 
+function titleValue(raw) {
+  return clean(raw.OfficeRecordTitle ?? raw.Title ?? raw.title);
+}
+
 export function isExcludedGovernanceBody(name) {
   const normalized = clean(name).toLowerCase();
   return normalized === "city council"
@@ -61,7 +66,7 @@ export function normalizeOfficeRecord(raw = {}, { retrievedAt = null } = {}) {
   const body = bodyId(raw);
   const name = bodyName(raw);
   if (!person || !body || !name || isExcludedGovernanceBody(name)) return null;
-  const title = clean(raw.OfficeRecordTitle ?? raw.Title ?? raw.title) || null;
+  const title = titleValue(raw) || null;
   const sourceRowHashValue = sourceRowHash(raw);
   return {
     official_id: `official:${person}`,
@@ -183,6 +188,7 @@ export function buildCommitteeGateReceipt({
   peopleDoc = {},
   error = null,
   sampleComplete = true,
+  nameOnlyEdges = 0,
 } = {}) {
   const sampleAvailable = Array.isArray(rows) && sampleComplete;
   const known = personIds(peopleDoc);
@@ -191,12 +197,29 @@ export function buildCommitteeGateReceipt({
     : [];
   const exactRows = nonExcludedRows.filter((row) => {
     const id = personId(row);
-    return known.has(id) && Boolean(bodyId(row)) && Boolean(bodyName(row));
+    return known.has(id) && Boolean(bodyId(row)) && Boolean(bodyName(row)) && Boolean(titleValue(row));
   });
   const accepted = exactRows.map((row) => normalizeOfficeRecord(row, { retrievedAt: observedAt })).filter(Boolean);
   const reviewed = nonExcludedRows.length;
   const dateOrderFailures = accepted.filter((row) => row.valid_from && row.valid_to && row.valid_from > row.valid_to).length;
   const exactKeyPrecision = sampleAvailable && reviewed ? Number((exactRows.length / reviewed).toFixed(4)) : null;
+  const bodyNames = new Map();
+  let bodyNameMismatches = 0;
+  for (const row of nonExcludedRows) {
+    const id = bodyId(row);
+    const name = bodyName(row);
+    if (!id || !name) continue;
+    if (!bodyNames.has(id)) bodyNames.set(id, name);
+    else if (bodyNames.get(id) !== name) bodyNameMismatches += 1;
+  }
+  const fieldReview = {
+    exact_person_id_rows: sampleAvailable ? nonExcludedRows.filter((row) => known.has(personId(row))).length : null,
+    exact_body_id_rows: sampleAvailable ? nonExcludedRows.filter((row) => Boolean(bodyId(row))).length : null,
+    body_name_rows: sampleAvailable ? nonExcludedRows.filter((row) => Boolean(bodyName(row))).length : null,
+    title_rows: sampleAvailable ? nonExcludedRows.filter((row) => Boolean(titleValue(row))).length : null,
+    date_order_reviewed_rows: sampleAvailable ? accepted.length : null,
+    date_order_valid_rows: sampleAvailable ? accepted.length - dateOrderFailures : null,
+  };
   const currentHistoryOverlap = {
     current_person_count: currentPersonIds.length,
     historical_person_count: formerPersonIds.length,
@@ -207,8 +230,24 @@ export function buildCommitteeGateReceipt({
   const publicationAllowed = sampleAvailable
     && samplePersonIds.length === COMMITTEE_GATE_SAMPLE_SIZE
     && reviewed > 0
-    && exactKeyPrecision >= 0.95
-    && dateOrderFailures === 0;
+    && exactKeyPrecision >= COMMITTEE_GATE_PRECISION_MINIMUM
+    && dateOrderFailures === 0
+    && bodyNameMismatches === 0
+    && nameOnlyEdges === 0;
+  const gateReason = publicationAllowed
+    ? "Authenticated sample clears exact-key precision and history review."
+    : (error
+      || (!sampleAvailable
+        ? "Authenticated sample is unavailable; public membership edges remain held."
+        : exactKeyPrecision < COMMITTEE_GATE_PRECISION_MINIMUM
+          ? "Exact-key precision is below the publication threshold; public membership edges remain held."
+          : bodyNameMismatches > 0
+            ? "Conflicting BodyName values were observed for a BodyId; public membership edges remain held."
+            : nameOnlyEdges > 0
+              ? "Name-only edges were reported; public membership edges remain held."
+              : dateOrderFailures > 0
+                ? "OfficeRecord date ordering failed; public membership edges remain held."
+                : "The authenticated sample plan is incomplete; public membership edges remain held."));
   return {
     schema: "cityscroll.committee_gate_receipt.v1",
     observed_at: observedAt,
@@ -223,7 +262,7 @@ export function buildCommitteeGateReceipt({
       endpoint: "GET https://webapi.legistar.com/v1/nyc/persons/{PersonId}/officerecords",
       auth_token_env: "LEGISTAR_API_TOKEN",
       exact_join: "OfficeRecordPersonId = person_hub.council_member_id",
-      name_only_edges: 0,
+      name_only_edges: nameOnlyEdges,
       error,
     },
     review: {
@@ -232,19 +271,43 @@ export function buildCommitteeGateReceipt({
       exact_key_precision: exactKeyPrecision,
       date_order_failures: sampleAvailable ? dateOrderFailures : null,
       unknown_person_ids: sampleAvailable ? nonExcludedRows.filter((row) => !known.has(personId(row))).length : null,
-      missing_required_fields: sampleAvailable ? nonExcludedRows.filter((row) => !bodyId(row) || !bodyName(row) || !personId(row)).length : null,
-      body_name_mismatches: null,
+      missing_required_fields: sampleAvailable
+        ? nonExcludedRows.filter((row) => !bodyId(row) || !bodyName(row) || !personId(row) || !titleValue(row)).length
+        : null,
+      body_name_mismatches: sampleAvailable ? bodyNameMismatches : null,
+      field_review: fieldReview,
       current_vs_historical_overlap: currentHistoryOverlap,
       denominator: sampleAvailable ? reviewed : null,
     },
     gate: {
-      exact_key_precision_minimum: 0.95,
-      name_only_edges: 0,
+      exact_key_precision_minimum: COMMITTEE_GATE_PRECISION_MINIMUM,
+      name_only_edges: nameOnlyEdges,
       publication_allowed: publicationAllowed,
       publication_status: publicationAllowed ? "published" : "held",
-      reason: publicationAllowed
-        ? "Authenticated sample clears exact-key precision and history review."
-        : (error || "Authenticated sample is unavailable; public membership edges remain held."),
+      reason: gateReason,
     },
   };
+}
+
+/**
+ * Keep publication as a receipt-level decision. A build may retain source
+ * observations while this predicate is false, but it must never expose the
+ * corresponding public edges.
+ */
+export function committeeGateAllowsPublication(receipt = {}) {
+  const review = receipt.review || {};
+  const gate = receipt.gate || {};
+  const samplePlan = receipt.sample_plan || {};
+  const acquisition = receipt.sample_acquisition;
+  return acquisition?.complete !== false
+    && samplePlan.requested === COMMITTEE_GATE_SAMPLE_SIZE
+    && Array.isArray(samplePlan.person_ids)
+    && samplePlan.person_ids.length === COMMITTEE_GATE_SAMPLE_SIZE
+    && Number.isFinite(review.denominator)
+    && review.denominator > 0
+    && Number.isFinite(review.exact_key_precision)
+    && review.exact_key_precision >= COMMITTEE_GATE_PRECISION_MINIMUM
+    && review.date_order_failures === 0
+    && review.body_name_mismatches === 0
+    && gate.name_only_edges === 0;
 }
