@@ -144,24 +144,43 @@ export async function fetchLegistarMatterAttachments({ matterId, token, fetchImp
  * Fetch Legistar Events whose EventDate falls in the look-back window, newest first.
  * Paginates with $top/$skip up to EVENTS_MAX_PAGES. Returns raw Legistar event rows.
  */
-export async function fetchLegistarEvents({ token, fetchImpl = fetch, now = new Date(), lookbackDays = LEGISTAR_LOOKBACK_DAYS }) {
+export async function fetchLegistarEvents({
+  token,
+  fetchImpl = fetch,
+  now = new Date(),
+  lookbackDays = LEGISTAR_LOOKBACK_DAYS,
+  startDate = null,
+  endDate = null,
+  pageSize = EVENTS_PAGE_SIZE,
+  maxPages = EVENTS_MAX_PAGES,
+} = {}) {
   if (!token) return [];
-  const since = new Date(now.getTime() - lookbackDays * 86_400_000)
-    .toISOString().replace(/\.\d{3}Z$/, "Z");
+  const since = startDate
+    ? new Date(startDate).toISOString().replace(/\.\d{3}Z$/, "Z")
+    : new Date(now.getTime() - lookbackDays * 86_400_000)
+      .toISOString().replace(/\.\d{3}Z$/, "Z");
+  const until = endDate
+    ? new Date(endDate).toISOString().replace(/\.\d{3}Z$/, "Z")
+    : null;
   // Pass the raw OData filter; URLSearchParams encodes once (do not pre-encode).
-  const filter = `EventDate ge datetime'${since}'`;
+  const filter = [
+    `EventDate ge datetime'${since}'`,
+    until ? `EventDate lt datetime'${until}'` : null,
+  ].filter(Boolean).join(" and ");
   const rows = [];
-  for (let page = 0; page < EVENTS_MAX_PAGES; page += 1) {
+  const boundedPageSize = Math.max(1, Math.min(1_000, Number(pageSize) || EVENTS_PAGE_SIZE));
+  const boundedMaxPages = Math.max(1, Math.min(100, Number(maxPages) || EVENTS_MAX_PAGES));
+  for (let page = 0; page < boundedMaxPages; page += 1) {
     const params = {
-      $top: String(EVENTS_PAGE_SIZE),
-      $skip: String(page * EVENTS_PAGE_SIZE),
+      $top: String(boundedPageSize),
+      $skip: String(page * boundedPageSize),
       $orderby: "EventDate desc",
       $filter: filter,
     };
     const batch = await fetchJson(fetchImpl, authedUrl("Events", token, params));
     if (!batch.length) break;
     rows.push(...batch);
-    if (batch.length < EVENTS_PAGE_SIZE) break;
+    if (batch.length < boundedPageSize) break;
   }
   return rows;
 }
