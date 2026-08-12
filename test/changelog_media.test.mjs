@@ -12,7 +12,7 @@ import { renderEntries, validateEntries } from "../tools/gen_changelog.mjs";
 const plainEntry = {
   pr: 79,
   merged_at: "2026-07-17",
-  url: "https://github.com/cityscroll/crol-list/pull/79",
+  url: "https://github.com/cityscroll/cityscroll-app/pull/79",
   text: "A plain update stays plain.",
 };
 
@@ -124,9 +124,9 @@ test("before: a consolidated entry had no way to record which PRs it folded in; 
     ...plainEntry,
     pr: 80,
     merged_prs: [
-      { pr: 70, url: "https://github.com/cityscroll/crol-list/pull/70" },
-      { pr: 76, url: "https://github.com/cityscroll/crol-list/pull/76" },
-      { pr: 80, url: "https://github.com/cityscroll/crol-list/pull/80" },
+      { pr: 70, url: "https://github.com/cityscroll/cityscroll-app/pull/70" },
+      { pr: 76, url: "https://github.com/cityscroll/cityscroll-app/pull/76" },
+      { pr: 80, url: "https://github.com/cityscroll/cityscroll-app/pull/80" },
     ],
   };
   assert.doesNotThrow(() => validateEntries([consolidated]));

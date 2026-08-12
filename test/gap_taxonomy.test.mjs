@@ -169,7 +169,7 @@ test("gap taxonomy registry enumerates class a/b gaps with evidence and ranked i
       `${gap.id}: executable disposition`,
     );
     if (gap.disposition === "landed") {
-      assert.match(gap.closure_receipt || "", /^https:\/\/github\.com\/cityscroll\/crol-list\/pull\/\d+$/, gap.id);
+      assert.match(gap.closure_receipt || "", /^https:\/\/github\.com\/cityscroll\/cityscroll-app\/pull\/\d+$/, gap.id);
     }
     if (gap.class === "not_yet_ingested") {
       assert.ok(gap.public_source?.name, gap.id);

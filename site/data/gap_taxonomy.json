@@ -2886,7 +2886,7 @@
       "i18n_key": "notice_attachment_chip_one",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/411",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/411",
       "public_source": {
         "name": "City Record Online file attachments",
         "access": "Socrata dg92-zbpx document_links before 2025; a856 RequestDetail attachment panels from 2025 onward",
@@ -2906,7 +2906,7 @@
       "i18n_key": "lifecycle_unmatched_pending_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/141",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/141",
       "public_source": {
         "name": "Checkbook NYC Contracts",
         "access": "Checkbook NYC data feeds API, type Contracts",
@@ -2938,7 +2938,7 @@
       "surface": "contract lifecycle · registered stage",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/141",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/141",
       "public_source": {
         "name": "Checkbook NYC Contracts",
         "access": "Checkbook NYC data feeds API, type Contracts",
@@ -2971,7 +2971,7 @@
       "i18n_key": "lifecycle_unmatched_payment_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/141",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/141",
       "public_source": {
         "name": "Checkbook NYC Spending",
         "access": "Checkbook NYC data feeds API, type Spending",
@@ -3037,7 +3037,7 @@
       "i18n_key": "lifecycle_ocp_unmatched_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/176",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/176",
       "public_source": {
         "name": "Recent Contract Awards (OCP)",
         "access": "NYC Open Data Socrata dataset qyyg-4tf5",
@@ -3185,7 +3185,7 @@
       "i18n_key": "meeting_outcomes_unmatched_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/191",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/191",
       "public_source": {
         "name": "NYC Council Legistar API",
         "access": "Legistar web API (authenticated)",
@@ -3252,7 +3252,7 @@
       "surface": "Agency Rules notice detail · lifecycle event slots without an NYC Rules join",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/252",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/252",
       "public_source": {
         "name": "NYC Rules RSS feed",
         "access": "Official NYC Rules RSS 2.0 feed",
@@ -3282,7 +3282,7 @@
       "i18n_key": "career_outcomes_not_yet_ingested_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/175",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/175",
       "public_source": {
         "name": "DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts",
         "access": "NYC Government Publications (manual snapshot) + Open Data vx8i-nprf group-by aggregates",
@@ -3312,7 +3312,7 @@
       "i18n_key": "career_fee_salary_not_yet_ingested_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/366",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/366",
       "public_source": {
         "name": "DCAS open-competitive exam schedule and Notices of Examination",
         "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
@@ -3389,7 +3389,7 @@
       "surface": "land / ZAP · final decision documents beyond status",
       "class": "not_yet_ingested",
       "disposition": "landed",
-      "closure_receipt": "https://github.com/cityscroll/crol-list/pull/188",
+      "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/188",
       "public_source": {
         "name": "Zoning Application Portal projects",
         "access": "NYC Open Data hgx4-8ukb (+ tax lots 2iga-a6mk)",

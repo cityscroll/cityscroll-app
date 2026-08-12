@@ -14,7 +14,7 @@ const ORIGIN = "https://crol-list.org";
 // merge-stable; only the deploy artifact substitutes it. Field case 2026-07-30: raw
 // GitHub fallback served the unsubstituted placeholder on the live homepage.
 const SITE_FALLBACK_ORIGIN = "https://cityscroll.pages.dev/";
-const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";
+const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/cityscroll-app/main/";
 const FORWARD_REQUEST_HEADERS = ["accept", "accept-language", "if-none-match", "if-modified-since", "user-agent"];
 const MIRROR_HOSTS = new Set([
   "cityscroll.org",

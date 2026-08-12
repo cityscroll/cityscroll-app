@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.cloudflare-native-builds.v1",
-  "repository": "cityscroll/crol-list",
+  "repository": "cityscroll/cityscroll-app",
   "source_control": "github",
   "pages": {
     "project": "cityscroll",
