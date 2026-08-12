@@ -48,9 +48,9 @@ function itemHTML(item, kind, h) {
       escape: h.escape,
     })}`
     : "";
-  const dateLine = item.date
-    ? `<span class="muted parcel-biography-item-meta">${h.escape(biographyDate(item.date, h))}</span>`
-    : "";
+  // Always keep a date line so undated rows stay explicit ("date not published")
+  // without reintroducing source-name organizers.
+  const dateLine = `<span class="muted parcel-biography-item-meta">${h.escape(biographyDate(item.date, h))}</span>`;
   const conflicts = (item.conflicts || []).map((conflict) => `<span class="note parcel-biography-conflict">${h.escape(conflict.note || "Conflicting source values retained")}: ${conflict.values.map((value) => `${h.escape(value.source)} = ${h.escape(value.value)}`).join(" · ")}</span>`).join("");
   return `<li data-parcel-biography-item="${h.escape(kind)}" data-link-confidence="strong">
     <span class="ei-obj-main" lang="en" dir="ltr">${label}${provenance}</span>

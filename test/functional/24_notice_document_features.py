@@ -366,13 +366,28 @@ def main() -> None:
         assert "observed parcel biography" in biography.inner_text().lower()
         assert biography.locator("[data-parcel-biography-domain]").count() == 5
         assert biography.locator("[data-parcel-biography-domain='property'] a[href^='#notice/']").count() >= 1
-        land_links = biography.locator("[data-parcel-biography-domain='land'] a")
-        assert land_links.count() >= 1
-        for index in range(land_links.count()):
-            href = land_links.nth(index).get_attribute("href") or ""
+        # Internal land pivots stay on the project document route; optional official
+        # provenance ↗ links are separate and must not replace those pivots.
+        land_pivots = biography.locator(
+            "[data-parcel-biography-domain='land'] a[href^='#land/']"
+        )
+        assert land_pivots.count() >= 1
+        for index in range(land_pivots.count()):
+            href = land_pivots.nth(index).get_attribute("href") or ""
             assert href.startswith("#land/") and "unsupported-filter" not in href, (
                 f"parcel land pivot must use the supported project document route: {href}"
             )
+        land_official = biography.locator(
+            "[data-parcel-biography-domain='land'] a.ui-official-source-link"
+        )
+        for index in range(land_official.count()):
+            link = land_official.nth(index)
+            href = link.get_attribute("href") or ""
+            assert "zap.planning.nyc.gov/projects/" in href, (
+                f"land official-source provenance should deep-link ZAP: {href}"
+            )
+            assert (link.get_attribute("target") or "") == "_blank"
+            assert "noopener" in (link.get_attribute("rel") or "")
         assert biography.locator("[data-parcel-biography-domain='tax_lien'][data-status='observed']").count() == 1
         assert biography.locator("[data-parcel-coverage]").count() == 0
         assert biography.locator(".parcel-biography-item-meta").count() >= 3
@@ -382,6 +397,9 @@ def main() -> None:
         assert "coverage:" not in biography_text
         assert "snapshot" not in biography_text
         assert "complete parcel history" not in biography.inner_text().lower()
+        # Source-name organizers stay off the public parcel biography.
+        assert "city record online" not in biography_text
+        assert "grouped by source" not in biography_text
         parcel_pivot = biography.locator("a[data-entity-ref='bbl:1020260015']").first
         assert parcel_pivot.is_visible()
         assert "entity_refs_all" in (parcel_pivot.get_attribute("href") or "")
