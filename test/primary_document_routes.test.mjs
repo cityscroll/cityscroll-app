@@ -5,6 +5,7 @@ import { join } from "node:path";
 
 import {
   BROWSE_FACETS,
+  BROWSE_GROUPS,
   buildBrowseLanding,
   buildBrowseView,
   browseActionTime,
@@ -41,15 +42,33 @@ test("primary navigation is four real document links on every promoted shell", (
   const root = read("../site/index.html");
   const routes = {
     money: "/browse/contracts/",
-    people: "/browse/staffing/",
     land: "/browse/zoning/",
-    property: "/browse/property/",
     rules: "/browse/rules/",
     meetings: "/browse/meetings/",
+    people: "/browse/staffing/",
   };
   assert.match(root, /class="browse-child-nav"/);
-  for (const [facet, route] of Object.entries(routes)) {
-    assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${facet}"`), `${facet} is a real Browse child link`);
+  assert.match(root, /Civic objects/);
+  for (const [group, route] of Object.entries(routes)) {
+    assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${group}"`), `${group} keeps a canonical Browse destination`);
+  }
+  assert.match(root, /Land \+ property/);
+  assert.doesNotMatch(root, /href="\/browse\/places\//);
+  assert.deepEqual(BROWSE_GROUPS.map((group) => group.label), [
+    "Money",
+    "Land + property",
+    "Rules + mandates",
+    "Meetings + decisions",
+    "People + organizations",
+    "Places",
+  ]);
+  const peopleGroup = BROWSE_GROUPS.find((group) => group.id === "people-organizations");
+  assert.equal(peopleGroup.children.find((child) => child.facet === "staffing").label, "Jobs + exams");
+  assert.deepEqual(peopleGroup.children.filter((child) => ["vendors", "committees"].includes(child.id)).map((child) => child.label), ["Vendors", "Committees"]);
+  for (const [facet, config] of Object.entries(BROWSE_FACETS)) {
+    const child = BROWSE_GROUPS.flatMap((group) => group.children).find((candidate) => candidate.facet === facet);
+    assert.ok(child, `${facet} remains represented in the civic-object groups`);
+    assert.equal(child.route || config.route, config.route, `${facet} keeps its existing destination`);
   }
 });
 
@@ -186,7 +205,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(landing, /href="\/browse\/contracts\/"/);
   assert.match(landing, /40 open opportunities/);
   assert.match(landing, /228 civil-service exams/);
-  assert.match(landing, /Pick a city topic\. Filter by agency, place, status, date, or search term\./);
+  assert.match(landing, /Pick a civic object\. Follow the edges between people, places, agencies, money, and decisions\./);
   assert.match(landing, /<details class="browse-source-disclosure"><summary>Official data from…<\/summary>/);
   assert.doesNotMatch(landing, /every source|source view|source lenses/i);
   assert.deepEqual(detectNodePageCruft(landing), []);
@@ -210,10 +229,10 @@ test("Browse landing counts are labeled with source dates without coverage cavea
   }, { staffingExamCount: 228, staffingExamAsOf: "2026-07-22" });
   assert.equal(landing.cards.length, 6);
   assert.equal(landing.cards[0].count, 3);
-  assert.equal(landing.cards[1].secondaryCount, 228);
+  assert.equal(landing.cards.find((card) => card.id === "people-organizations").secondaryCount, 228);
   const html = renderBrowseLanding(landing);
   assert.match(html, /Updated 2026-08-03/);
-  assert.match(html, /class="ui-constellation-link browse-card-link"/);
+  assert.match(html, /class="ui-constellation-link browse-source-action"/);
   assert.match(html, /class="ui-static-fact browse-card-sources"/);
   assert.doesNotMatch(html, /Counts describe|full historical history|bounded|joined by parcel/i);
 });

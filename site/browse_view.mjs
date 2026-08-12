@@ -79,6 +79,78 @@ export const BROWSE_FACETS = Object.freeze({
   },
 });
 
+// Civic-object navigation is a presentation taxonomy. The facet ids and routes
+// above remain the content and URL contract for every existing Browse view.
+export const BROWSE_GROUPS = Object.freeze([
+  {
+    id: "money",
+    label: "Money",
+    primaryFacet: "contracts",
+    description: "Solicitations, awards, payment trails, and the vendors and agencies connected to them.",
+    sources: "Award census · open solicitation snapshot",
+    children: [
+      { id: "contracts", facet: "contracts", label: "Contracts", linkLabel: "Browse money" },
+      { id: "vendors", label: "Vendors" },
+    ],
+  },
+  {
+    id: "land-property",
+    label: "Land + property",
+    primaryFacet: "zoning",
+    description: "Land-use projects, parcels, dispositions, sales, and exact BBL connections.",
+    sources: "ZAP · property observations · parcel joins",
+    children: [
+      { id: "land", facet: "zoning", label: "Land", linkLabel: "Browse land" },
+      { id: "property", facet: "property", label: "Property", linkLabel: "Browse property" },
+    ],
+  },
+  {
+    id: "rules-mandates",
+    label: "Rules + mandates",
+    primaryFacet: "rules",
+    description: "Rules, obligations, deadlines, and the records that implement them.",
+    sources: "Agency Rules · agency obligation registry",
+    children: [
+      { id: "rules", facet: "rules", label: "Rules", linkLabel: "Browse rules" },
+      { id: "mandates", label: "Mandates" },
+    ],
+  },
+  {
+    id: "meetings-decisions",
+    label: "Meetings + decisions",
+    primaryFacet: "meetings",
+    description: "Agendas, hearings, testimony, outcomes, and published roll calls.",
+    sources: "Meeting snapshot · outcome snapshot · roll-call view",
+    children: [
+      { id: "meetings", facet: "meetings", label: "Meetings", linkLabel: "Browse meetings" },
+      { id: "committees", label: "Committees" },
+    ],
+  },
+  {
+    id: "people-organizations",
+    label: "People + organizations",
+    primaryFacet: "staffing",
+    description: "Officials, agencies, vendors, committees, and the relationships joining them.",
+    sources: "Person hub · committee graph · agency constellation",
+    children: [
+      { id: "jobs-exams", facet: "staffing", label: "Jobs + exams" },
+      { id: "vendors", label: "Vendors" },
+      { id: "committees", label: "Committees" },
+    ],
+  },
+  {
+    id: "places",
+    label: "Places",
+    primaryFacet: null,
+    description: "Community boards, council districts, boroughs, and what is happening near each place.",
+    sources: "Community-board geography",
+    children: [
+      { id: "near-you", label: "Near you", route: "/near-you/", linkLabel: "Near you" },
+      { id: "community-boards", label: "Community boards" },
+    ],
+  },
+]);
+
 const BROWSE_SCOPE_POLICY = Object.freeze({
   contracts: {
     agencyField: "agency_name",
@@ -818,16 +890,33 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
 }
 
 export function buildBrowseLanding(payloads = {}, options = {}) {
-  const cards = Object.entries(BROWSE_FACETS).map(([facet, config]) => {
-    const payload = payloads[facet] || {};
-    const view = buildBrowseView(facet, payload);
+  const metrics = options.groupMetrics && typeof options.groupMetrics === "object"
+    ? options.groupMetrics
+    : {};
+  const cards = BROWSE_GROUPS.map((group) => {
+    const children = group.children.map((child) => {
+      const config = child.facet ? BROWSE_FACETS[child.facet] : null;
+      const payload = child.facet ? payloads[child.facet] || {} : {};
+      const view = config ? buildBrowseView(child.facet, payload) : null;
+      return {
+        ...child,
+        route: child.route || config?.route || null,
+        count: view?.total ?? null,
+        asOf: view?.asOf || null,
+      };
+    });
+    const primary = children.find((child) => child.facet === group.primaryFacet) || null;
+    const metric = metrics[group.id] && typeof metrics[group.id] === "object" ? metrics[group.id] : {};
     return {
-      facet,
-      ...config,
-      count: view.total,
-      asOf: view.asOf,
-      secondaryCount: facet === "staffing" ? Number(options.staffingExamCount) || 0 : null,
-      secondaryAsOf: facet === "staffing" ? isoDay(options.staffingExamAsOf) : null,
+      ...group,
+      facet: primary?.facet || group.id,
+      count: primary?.count ?? null,
+      countLabel: primary?.facet ? BROWSE_FACETS[primary.facet].countLabel : null,
+      asOf: primary?.asOf || null,
+      facts: Array.isArray(metric.facts) ? metric.facts : null,
+      children,
+      secondaryCount: group.id === "people-organizations" ? Number(options.staffingExamCount) || null : null,
+      secondaryAsOf: group.id === "people-organizations" ? isoDay(options.staffingExamAsOf) : null,
     };
   });
   const dated = cards.flatMap((card) => [card.asOf, card.secondaryAsOf]).filter(Boolean).sort();
@@ -840,24 +929,41 @@ export function buildBrowseLanding(payloads = {}, options = {}) {
 
 export function renderBrowseLanding(landing) {
   const cards = (landing?.cards || []).map((card) => {
-    const primary = `${card.count.toLocaleString("en-US")} ${card.countLabel}`;
-    const secondary = card.secondaryCount
-      ? ` · ${card.secondaryCount.toLocaleString("en-US")} civil-service exams${card.secondaryAsOf ? ` as of ${esc(card.secondaryAsOf)}` : ""}`
-      : "";
+    const facts = Array.isArray(card.facts) && card.facts.length
+      ? card.facts
+      : card.count == null
+        ? []
+        : [{ value: card.count, label: card.countLabel }];
+    const primary = facts
+      .filter((fact) => fact && fact.value != null && fact.label)
+      .map((fact) => `${Number(fact.value).toLocaleString("en-US")} ${fact.label}${fact.asOf ? ` as of ${esc(fact.asOf)}` : ""}`)
+      .join(" · ");
+    const childLinks = (card.children || []).map((child) => child.route
+      ? constellationLink({
+        href: child.route,
+        label: child.id === "jobs-exams" && card.secondaryCount
+          ? `${child.label} · ${card.secondaryCount.toLocaleString("en-US")} civil-service exams`
+          : child.linkLabel || `Browse ${child.label.toLowerCase()}`,
+        className: child.id === "jobs-exams" && card.secondaryCount
+          ? "browse-source-action browse-child-pill"
+          : "browse-source-action",
+        escape: esc,
+      })
+      : `<span class="browse-child-pill" data-browse-child="${esc(child.id)}">${esc(child.label)}</span>`).join("");
     return `<article class="browse-source-card" id="source-${esc(card.facet)}">
-      <p class="browse-source-count">${esc(primary)}${secondary}</p>
-      <h3>${constellationLink({ href: card.route, label: card.label, className: "browse-card-link", escape: esc })}</h3>
+      ${primary ? `<p class="browse-source-count">${esc(primary)}</p>` : ""}
+      <h3>${esc(card.label)}</h3>
       <p class="browse-source-description">${esc(card.description)}</p>
       <p class="browse-source-asof">${staticFact({ label: card.asOf ? `Updated ${card.asOf}` : "Update date unavailable", className: "browse-card-date", escape: esc })}</p>
       <details class="browse-source-disclosure"><summary>Official data from…</summary><p>${staticFact({ label: card.sources, className: "browse-card-sources", escape: esc })}</p></details>
-      ${constellationLink({ href: card.route, label: `Browse ${card.label.toLowerCase()}`, className: "browse-source-action", escape: esc })}
+      <div class="browse-source-actions">${childLinks}</div>
     </article>`;
   }).join("");
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
-      <p>Pick a city topic. Filter by agency, place, status, date, or search term.</p>
+      <p>Pick a civic object. Follow the edges between people, places, agencies, money, and decisions.</p>
     </header>
     <div class="browse-source-grid">${cards}</div>
   </div>`;
