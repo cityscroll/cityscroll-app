@@ -1,0 +1,10 @@
+cfb-campaign-contributions|surfaces=Source register|coverage=Contract verifier checks 5 required fields.
+city-clerk-elobbyist|surfaces=Source register|coverage=Contract verifier checks 4 required fields.
+city-council-committee-membership|surfaces=Meetings|coverage=Contract verifier checks 8 required fields.
+nyc-council-legistar|surfaces=Notices & search, Meetings|coverage=Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the 
+nyc-council-members|surfaces=Land, Meetings|coverage=Contract verifier checks 6 required fields.
+mocs-ll63-plans|surfaces=Notices & search, Money|coverage=Contract verifier checks 7 required fields.
+nyc-agencies|surfaces=Agency profiles|coverage=Contract verifier checks 6 required fields.
+checkbook-spending|surfaces=Money|coverage=Contract verifier checks 4 required fields.
+---
+all surfaces: ['Agency profiles', 'Alerts', 'Gap register', 'Land', 'Map', 'Meetings', 'Money', 'Notices & search', 'Property', 'Rules', 'Source register', 'Staffing']
