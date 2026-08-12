@@ -1771,12 +1771,24 @@
       "kind": "html",
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "publisher_cadence": "Updated as meetings, agenda items, and votes change",
-      "product_freshness": "Daily edge materialization fetches authenticated Events (180-day window) and builds the meeting-outcomes read model. The daily site build copies a bounded per-notice snapshot, including explicit absent records, into meeting_outcomes_snapshot.json for notice-document first paint; the client endpoint remains a freshness enhancement. Person-level VotePersonId rows densify into person_votes_lookup.json for official profiles when identity is retained.",
-      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, matters, action outcomes, roll-call votes, attachments, and supporting documents. When VotePersonId/VotePersonName rows are retained, person-level votes feed official profiles and votes_on edges (roll_call identity; tally_only when rows lack person identity).",
+      "product_freshness": "Daily edge materialization fetches authenticated Events (180-day window) and builds the meeting-outcomes read model. The daily site build copies a bounded per-notice snapshot, including explicit absent records, into meeting_outcomes_snapshot.json for notice-document first paint; the client endpoint remains a freshness enhancement. Person-level VotePersonId rows densify into person_votes_lookup.json for official profiles when identity is retained. OfficeRecord histories use the same authenticated path and retain source-row observations with retrieval timestamps; their member_of edge is held behind a dated exact-key sample gate.",
+      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, matters, action outcomes, roll-call votes, attachments, and supporting documents. When VotePersonId/VotePersonName rows are retained, person-level votes feed official profiles and votes_on edges (roll_call identity; tally_only when rows lack person identity). OfficeRecords provide BodyId-keyed committee nodes and descriptive temporal member_of observations only.",
       "code_references": [
         {
           "path": "worker/src/lib/legistar_client.mjs",
           "contains": "fetchLegistarEvents"
+        },
+        {
+          "path": "worker/src/lib/legistar_client.mjs",
+          "contains": "fetchLegistarPersonOfficeRecords"
+        },
+        {
+          "path": "site/committee_graph.mjs",
+          "contains": "source_row_hash"
+        },
+        {
+          "path": "tools/build_committee_graph.mjs",
+          "contains": "30"
         },
         {
           "path": "worker/src/lib/meeting_outcomes.mjs",
@@ -1807,7 +1819,14 @@
         "event_title",
         "start_time",
         "event_date",
-        "committee/body_name_in_notice_title"
+        "committee/body_name_in_notice_title",
+        "OfficeRecordPersonId",
+        "council_member_id",
+        "OfficeRecordBodyId",
+        "OfficeRecordBodyName",
+        "OfficeRecordTitle",
+        "OfficeRecordStartDate",
+        "OfficeRecordEndDate"
       ],
       "join_measurement": {
         "observed_on": "2026-07-30",
@@ -1856,7 +1875,19 @@
             "rate": 0.1017
           }
         },
-        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materialization shipped: daily ingest from webapi.legistar.com/v1/nyc with Worker secret LEGISTAR_API_TOKEN."
+        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materialization shipped: daily ingest from webapi.legistar.com/v1/nyc with Worker secret LEGISTAR_API_TOKEN.",
+        "office_records_gate": {
+          "observed_on": "2026-08-12",
+          "sample_plan": {
+            "current_term": 20,
+            "recent_former": 5,
+            "already_in_socrata_lookup": 5,
+            "denominator": 30
+          },
+          "receipt": "site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json",
+          "public_edge_status": "held",
+          "reason": "Authenticated office-record sample was unavailable in the build environment; no membership edges are published."
+        }
       },
       "probe_endpoint": "https://webapi.legistar.com/v1/nyc/Bodies?$top=1",
       "endpoint_format": "json-api",

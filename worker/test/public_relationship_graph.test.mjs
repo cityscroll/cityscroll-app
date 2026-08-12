@@ -150,7 +150,7 @@ test("public graph returns only typed, evidence-bearing procurement relationship
     const graph = await readPublicRelationshipGraph(env.DB, ENTITY_ID, { depth: 2, fanOut: 20 });
     assert.equal(graph.version, PUBLIC_RELATIONSHIP_GRAPH_VERSION);
     assert.deepEqual(PUBLIC_GRAPH_NODE_TYPES, [
-      "vendor", "agency", "solicitation", "contract", "award", "official", "person-leader",
+      "vendor", "agency", "solicitation", "contract", "award", "official", "committee", "community-board", "person-leader",
       "mandate", "project", "procedure", "borough", "community-district", "council-district",
     ]);
     assert.deepEqual(PUBLIC_GRAPH_EDGE_TYPES, [
@@ -159,10 +159,13 @@ test("public graph returns only typed, evidence-bearing procurement relationship
       "published_by_agency",
       "references_contract",
       "votes_on",
+      "member_of",
       "agency_led_by",
       "mandate_governs_procedure",
       "project_participates_in_procedure",
       "located_in",
+      "covers",
+      "intersects",
     ]);
     assert.equal(graph.root.id, ENTITY_ID);
     // Procurement fixture graph does not emit official nodes; allowlist still includes them.
@@ -188,6 +191,19 @@ test("public graph returns only typed, evidence-bearing procurement relationship
   } finally {
     sqlite.close();
   }
+});
+
+test("public graph exposes the gated community-board overlay as static civic objects", async () => {
+  const response = await handlePublicRelationshipGraph(new Request(
+    "https://api.cityscroll.org/entity-relationships?id=community-board%3Abrooklyn-cb-08&format=json",
+  ), {});
+  assert.equal(response.status, 200);
+  const graph = await response.json();
+  assert.equal(graph.root.id, "community-board:brooklyn-cb-08");
+  assert.equal(graph.root.type, "community-board");
+  assert.ok(graph.edges.some((edge) => edge.type === "covers"));
+  assert.ok(graph.edges.some((edge) => edge.type === "intersects"));
+  assert.ok(graph.edges.every((edge) => edge.provenance.source.system));
 });
 
 test("graph traversal clamps depth and fan-out with an explicit boundary", async () => {

@@ -1,0 +1,105 @@
+{
+  "schema": "cityscroll.committee_graph.v1",
+  "generated_at": "2026-08-12T00:00:00.000Z",
+  "identity": {
+    "official_key": "official:{OfficeRecordPersonId}",
+    "committee_key": "committee:{OfficeRecordBodyId}",
+    "name_identity_forbidden": true
+  },
+  "history": {
+    "observations_retained": 0,
+    "duplicate_person_body_rows_retained": 0,
+    "current_membership_is_derived_only": true
+  },
+  "rejected": {
+    "unknown_person": 0,
+    "missing_identity_fields": 0,
+    "excluded_governance_body": 0
+  },
+  "nodes": [],
+  "observations": [],
+  "public_edges": [],
+  "edge_observations": [],
+  "public_graph": {
+    "nodes": [],
+    "edges": []
+  },
+  "publication": "held",
+  "gate": {
+    "schema": "cityscroll.committee_gate_receipt.v1",
+    "observed_at": "2026-08-12T00:00:00.000Z",
+    "sample_plan": {
+      "requested": 30,
+      "current_term": 20,
+      "recent_former": 5,
+      "already_in_socrata_lookup": 5,
+      "person_ids": [
+        "5259",
+        "5273",
+        "5289",
+        "6272",
+        "7785",
+        "7794",
+        "7796",
+        "7798",
+        "7799",
+        "7801",
+        "7803",
+        "7804",
+        "7806",
+        "7808",
+        "7809",
+        "7810",
+        "7811",
+        "7812",
+        "7813",
+        "7814",
+        "7264",
+        "7714",
+        "7739",
+        "7740",
+        "7741",
+        "7818",
+        "7823",
+        "7824",
+        "7825",
+        "7832"
+      ]
+    },
+    "source": {
+      "endpoint": "GET https://webapi.legistar.com/v1/nyc/persons/{PersonId}/officerecords",
+      "auth_token_env": "LEGISTAR_API_TOKEN",
+      "exact_join": "OfficeRecordPersonId = person_hub.council_member_id",
+      "name_only_edges": 0,
+      "error": "LEGISTAR_API_TOKEN is not configured"
+    },
+    "review": {
+      "accepted_non_council_non_advocate_rows": null,
+      "reviewed_non_council_non_advocate_rows": null,
+      "exact_key_precision": null,
+      "date_order_failures": null,
+      "unknown_person_ids": null,
+      "missing_required_fields": null,
+      "body_name_mismatches": null,
+      "current_vs_historical_overlap": {
+        "current_person_count": 20,
+        "historical_person_count": 5,
+        "current_and_historical_person_count": 0,
+        "current_and_socrata_person_count": 0,
+        "historical_and_socrata_person_count": 0
+      },
+      "denominator": null
+    },
+    "gate": {
+      "exact_key_precision_minimum": 0.95,
+      "name_only_edges": 0,
+      "publication_allowed": false,
+      "publication_status": "held",
+      "reason": "LEGISTAR_API_TOKEN is not configured"
+    },
+    "sample_acquisition": {
+      "complete": false,
+      "request_errors": []
+    }
+  }
+}

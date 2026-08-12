@@ -88,3 +88,26 @@ Listed also under `registry.v0.json` → `civic_graph.remaining_stack`:
 - Multi-dimension flywheel: [`docs/multi-flywheel.md`](multi-flywheel.md)
 - ER taxonomy: [`docs/adr/entity-resolution-taxonomy.md`](adr/entity-resolution-taxonomy.md)
 - Civic-time: [`docs/adr/civic-time-event-contract.md`](adr/civic-time-event-contract.md)
+
+## Committee and community-board geography promotion
+
+The committee and community-board candidates are now registered as bounded Civic
+Graph object families. Committee identity is the publisher-issued Legistar
+`OfficeRecordBodyId`; `BodyName` is a mutable label. The `official → member_of →
+committee` relation is descriptive and temporal only. Each accepted OfficeRecord
+observation keeps its source-row hash and retrieval timestamp, including repeated
+person/body rows; current membership is a derived view and never replaces history.
+The authenticated 30-person receipt is the publication gate. On 2026-08-12 the
+Legistar token was unavailable in the build environment, so the committee node
+design is registered but public membership edges remain held:
+[`committee_sample_2026-08-12.json`](../site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json).
+
+Community boards use the committed source registry's `body_id` as the private
+stable product key. The published geography read model maps each board to its
+regular community district and exposes a many-to-many
+`community-district → intersects → council-district` overlay. The overlay uses
+polygon segment crossing or containment with boundary-touch semantics; it does
+not use a centroid shortcut. The 2026-05-26 boundary vintage is stamped on every
+derived edge. The dated receipt reproduces all 237 measured pairs across 59
+regular community districts (4.02 Council districts per community district):
+[`overlay_2026-08-12.json`](../site/data/community_board_geography/verification_receipts/overlay_2026-08-12.json).
