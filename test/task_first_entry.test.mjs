@@ -153,7 +153,7 @@ test("hash parser recognizes collection and item task routes", () => {
   assert.equal(TaskFirst.taskItemHash("can-i-bid", "20260624023"), "#task/can-i-bid/20260624023");
 });
 
-test("task pane is additive — civic domain tabs stay in place", () => {
+test("task pane is additive — civic-object tabs stay in place", () => {
   // Homepage scenario entry links were removed (owner noise cut); task-first remains a
   // deep-link hash route (#task/…) with its own pane, not a replacement for category tabs.
   assert.match(html, /id="tab-task"/);
@@ -161,9 +161,10 @@ test("task pane is additive — civic domain tabs stay in place", () => {
   assert.match(html, /function showTaskFirst\(/);
   assert.match(html, /"task\/can-i-bid"/);
   assert.match(html, /"task\/what-will-change"/);
-  for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
-    assert.match(html, new RegExp(`data-tab="${lens}"`));
+  for (const group of ["money", "people", "land", "rules", "meetings"]) {
+    assert.match(html, new RegExp(`data-tab="${group}"`));
   }
+  assert.match(html, /Civic objects/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
 });

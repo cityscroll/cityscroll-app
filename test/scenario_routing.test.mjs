@@ -10,13 +10,15 @@ const analytics = readFileSync(new URL("../site/analytics.js", import.meta.url),
 // Category tabs and task-first deep links remain; analytics still tolerates scenario attributes
 // if they reappear elsewhere.
 
-test("homepage scenario grid is gone; civic domains stay while Following is promoted", () => {
+test("homepage scenario grid is gone; civic objects stay while Following is promoted", () => {
   assert.doesNotMatch(html, /scenario-nav/);
   assert.doesNotMatch(html, /class="scenario-route"/);
   assert.doesNotMatch(html, /data-i18n="scenario_heading"/);
-  for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
-    assert.match(html, new RegExp(`data-tab="${lens}"`));
+  for (const group of ["money", "people", "land", "rules", "meetings"]) {
+    assert.match(html, new RegExp(`data-tab="${group}"`));
   }
+  assert.match(html, /Civic objects/);
+  assert.match(html, /browse-object-tab-placeholder">Places/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
 });

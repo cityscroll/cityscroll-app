@@ -75,7 +75,7 @@ def people_opens_on_a_populated_example(pw):
             f"{page.evaluate('document.activeElement?.id')!r}"
         )
 
-    # Every source tab is a clean document entry, and each entry focus lands on
+    # Every source entry is a clean document entry, and each entry focus lands on
     # that lens's heading rather than a list or demoted section.
     for tab, heading in (
         ("money", ""),
@@ -85,14 +85,23 @@ def people_opens_on_a_populated_example(pw):
         ("rules", ""),
         ("meetings", ""),
     ):
-        page.click(f'.tabbtn[data-tab="{tab}"]')
+        if tab == "property":
+            page.goto(f"{BASE}browse/property/", timeout=30000)
+            page.wait_for_load_state("load")
+        else:
+            page.click(f'.tabbtn[data-tab="{tab}"]')
         page.wait_for_timeout(100)
         route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
         expected_path = f"/browse/{ {'money':'contracts','people':'staffing','land':'zoning'}.get(tab, tab) }/"
         if route != {"pathname": expected_path, "search": "", "hash": ""}:
             failures.append(f"{tab} tab did not mint its clean document route — got: {route!r}")
         actual_focus = page.evaluate("document.activeElement?.id")
-        if tab == "people":
+        if tab == "property":
+            # Property is reached through the Land + property group's existing
+            # child route. Its static document does not own SPA tab focus.
+            page.goto(BASE, timeout=30000)
+            page.wait_for_load_state("load")
+        elif tab == "people":
             if actual_focus != heading:
                 failures.append(f"{tab} entry focus landed on {actual_focus!r}, not {heading!r}")
         else:

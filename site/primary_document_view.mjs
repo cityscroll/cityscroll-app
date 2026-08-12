@@ -48,10 +48,12 @@ function activateTab(html, tab) {
   let out = html
     .replaceAll('class="tabbtn active"', 'class="tabbtn"')
     .replaceAll('class="tabpane active"', 'class="tabpane"');
-  out = out.replace(
-    new RegExp(`class="tabbtn"([^>]*\\bdata-tab="${tab}")`),
-    'class="tabbtn active"$1',
-  );
+  const groupPattern = new RegExp(`class="tabbtn"([^>]*\\bdata-route-facets="[^\"]*\\b${tab}\\b[^\"]*")`);
+  const tabPattern = new RegExp(`class="tabbtn"([^>]*\\bdata-tab="${tab}")`);
+  const grouped = out.replace(groupPattern, 'class="tabbtn active"$1');
+  out = grouped.includes('class="tabbtn active"')
+    ? grouped
+    : out.replace(tabPattern, 'class="tabbtn active"$1');
   out = out.replace(`id="tab-${tab}" class="tabpane"`, `id="tab-${tab}" class="tabpane active"`);
   return out;
 }
