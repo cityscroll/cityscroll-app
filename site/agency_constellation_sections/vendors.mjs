@@ -1,5 +1,6 @@
 import { renderNodeSection } from "../civic_document_chrome.mjs";
 import { entityChipHTML } from "../entity_pivot.mjs";
+import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "../edge_summary.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -16,6 +17,19 @@ const money = (value) => Number.isFinite(Number(value))
 
 export function renderAgencyTopVendorsSection(category) {
   if (!category || category.status !== "matched" || !category.items?.length) return "";
+  const edgeSummary = normalizeEdgeSummaryRecords([{
+    source_kind: "agency",
+    source_id: category.agency_id || null,
+    edge_type: category.relation || "top_vendor_by_award_12mo",
+    label: category.label || "Top vendors by award value",
+    target_kind: "vendor",
+    target_name: category.label || "Top vendors by award value",
+    count: category.count ?? category.items.length,
+    state: "matched",
+    href: category.view_all_href || null,
+    scope: { relation_family: "top_vendors", as_of: category.as_of || null },
+    as_of: category.as_of || null,
+  }]);
   const list = `<ul class="node-record-list agency-top-vendors-list">${category.items.map((item) => {
     const vendor = entityChipHTML({
       ref: item.subject_ref,
@@ -42,7 +56,7 @@ export function renderAgencyTopVendorsSection(category) {
       "data-window-start": category.window_start || "",
       "data-window-as-of": category.as_of || "",
     },
-    body: `${list}${action}`,
+    body: `${renderEdgeSummaryRail(edgeSummary, { heading: "Vendor connections", id: "agency-vendor-edge-summary-heading", className: "agency-vendor-edge-summary" })}${list}${action}`,
   });
 }
 
@@ -50,8 +64,9 @@ export const vendorsSection = Object.freeze({
   id: "vendors",
   order: 41,
   render(view) {
-    return renderAgencyTopVendorsSection(
-      view.displayView.categories.find((category) => category.id === "vendors"),
-    );
+    const category = view.displayView.categories.find((entry) => entry.id === "vendors");
+    return renderAgencyTopVendorsSection(category
+      ? { ...category, agency_id: view.displayView.canonical_id }
+      : category);
   },
 });

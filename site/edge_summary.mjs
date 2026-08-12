@@ -8,6 +8,11 @@
 
 export const EDGE_SUMMARY_SCHEMA = "cityscroll.edge_summary.v1";
 export const EDGE_SUMMARY_STATES = Object.freeze(["matched", "empty", "unknown"]);
+export const EDGE_SUMMARY_STATE_MEANINGS = Object.freeze({
+  matched: "available",
+  empty: "empty-in-scope",
+  unknown: "unknown-unindexed",
+});
 
 const MAX_TEXT = 500;
 
@@ -109,15 +114,21 @@ export function edgeRelationLabel(recordOrType) {
     certified_to_agency: "staffing exams certified to this agency",
     top_vendor_by_award_12mo: "top vendors by award value",
     linked_to_vendor: "records linked to this vendor",
+    sits_on_parcel: "records connected to this parcel",
+    legal_occupancy_on_parcel: "occupancy records for this parcel",
+    appeared_on_published_list: "published tax-lien list appearances",
+    suitability_record_for_exact_bbl: "suitability records for this parcel",
   })[relation] || relation.replaceAll("_", " ");
 }
 
-function stateCopy(record) {
+export function edgeSummaryStateCopy(record) {
   if (record.state === "matched") {
-    return record.count == null ? "Count unavailable" : `${record.count.toLocaleString("en-US")} ${record.count === 1 ? "record" : "records"}`;
+    return record.count == null
+      ? "Available: count unavailable"
+      : `Available: ${record.count.toLocaleString("en-US")} ${record.count === 1 ? "record" : "records"}`;
   }
-  if (record.state === "empty") return "None in this materialization";
-  return "Not measured";
+  if (record.state === "empty") return "Empty in this scoped materialization";
+  return "Unknown / not indexed";
 }
 
 function targetCopy(record) {
@@ -127,7 +138,7 @@ function targetCopy(record) {
 function recordLabel(record) {
   const target = targetCopy(record);
   const relation = edgeRelationLabel(record);
-  return `${target}: ${relation}; ${stateCopy(record)}`;
+  return `${target}: ${relation}; ${edgeSummaryStateCopy(record)}`;
 }
 
 /**
@@ -146,7 +157,7 @@ export function renderEdgeSummaryRail(records, {
   const items = normalized.map((record) => {
     const destination = targetCopy(record);
     const relation = edgeRelationLabel(record);
-    const status = stateCopy(record);
+    const status = edgeSummaryStateCopy(record);
     const label = recordLabel(record);
     const targetKind = record.target_kind || "record";
     const metadata = [
@@ -155,12 +166,13 @@ export function renderEdgeSummaryRail(records, {
       status,
       record.as_of ? `as of ${record.as_of}` : null,
     ].filter(Boolean).join(" · ");
+    const availability = EDGE_SUMMARY_STATE_MEANINGS[record.state] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
     const content = record.href
       ? `<a class="edge-summary-link" href="${escapeHTML(record.href)}" aria-label="${escapeHTML(label)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></a>`
       : `<span class="edge-summary-text" aria-label="${escapeHTML(label)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></span>`;
-    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}</li>`;
+    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}</li>`;
   }).join("");
-  return `<section class="edge-summary-rail ${escapeHTML(className)}" data-edge-summary-schema="${EDGE_SUMMARY_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2><ul>${items}</ul></section>`;
+  return `<section class="edge-summary-rail ${escapeHTML(className)}" data-edge-summary-schema="${EDGE_SUMMARY_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2><p class="edge-summary-scope-note">This summary is limited to the relation families shown; other entity families are outside this materialization.</p><ul>${items}</ul></section>`;
 }
 
 export function edgeSummaryState(status, count) {

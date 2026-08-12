@@ -1075,7 +1075,7 @@ export function renderMandatesConformanceSection(view) {
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
     <h2 id="mandates-conformance-heading">Mandates · expected vs evidence <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
-    ${renderEdgeSummaryRail(edgeSummary.filter((record) => record.href), { heading: "Mandate connections", id: "mandate-edge-summary-heading", className: "mandate-edge-summary" })}
+    ${renderEdgeSummaryRail(edgeSummary, { heading: "Mandate connections", id: "mandate-edge-summary-heading", className: "mandate-edge-summary" })}
     <p class="mandates-scroll-affordance" id="mandates-scroll-help">Scroll to view all mandates</p>
     <div class="mandates-conformance-scroll" role="region" tabindex="0" aria-labelledby="mandates-conformance-heading" aria-describedby="mandates-scroll-help">${list}</div>
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
