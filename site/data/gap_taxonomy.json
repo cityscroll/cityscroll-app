@@ -845,7 +845,14 @@
         "event_title",
         "start_time",
         "event_date",
-        "committee/body_name_in_notice_title"
+        "committee/body_name_in_notice_title",
+        "OfficeRecordPersonId",
+        "council_member_id",
+        "OfficeRecordBodyId",
+        "OfficeRecordBodyName",
+        "OfficeRecordTitle",
+        "OfficeRecordStartDate",
+        "OfficeRecordEndDate"
       ],
       "join_coverage": {
         "predicted": {
@@ -2517,6 +2524,22 @@
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "nyc-council-legistar-x-nyc-council-members-via-council_member_id",
+      "source_a": "nyc-council-legistar",
+      "source_b": "nyc-council-members",
+      "key_path": [
+        "council_member_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "meeting-matters-absent"
+      ],
+      "score": 1,
+      "evidence": "Shared keys council_member_id; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "ocp-recent-contract-awards-x-passport-public-rfx-via-PIN",
       "source_a": "ocp-recent-contract-awards",
       "source_b": "passport-public-rfx",
@@ -3506,9 +3529,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-12",
-    "source_contracts_fingerprint": "b46fd04476b2d121ee67b4b1296537b751d8c97e130c85c7bfd0bd005414b0c3",
+    "source_contracts_fingerprint": "7f0f68e10c50571c908d5fc4d5ea817878cf19676bd21766c6c1a943a82ffea8",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 83,
+    "candidate_crosswalks": 84,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

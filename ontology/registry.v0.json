@@ -405,6 +405,47 @@
       "grounding": "partial"
     },
     {
+      "id": "committee",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "Publisher-issued Legistar BodyId is the stable identity; BodyName remains a mutable label. Membership edge publication is held until the dated authenticated sample clears its exact-key gate.",
+      "primary_key_pattern": "committee:{OfficeRecordBodyId}",
+      "families": [],
+      "backing": [
+        "public_graph.node",
+        "nyc_legistar_office_records",
+        "committee_graph_lookup"
+      ],
+      "properties_ref": [
+        "body_id",
+        "body_name"
+      ],
+      "grounding": "partial"
+    },
+    {
+      "id": "community-board",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "The committed source registry inventories 59 community boards with stable product body_id keys; source collection is intentionally bounded and not citywide-complete.",
+      "primary_key_pattern": "community-board:{borough-cb-NN}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [
+        "public_graph.node",
+        "community_board_source_registry",
+        "community_board_geography_lookup"
+      ],
+      "properties_ref": [
+        "body_id",
+        "borough",
+        "district",
+        "directory_url",
+        "observed_on"
+      ],
+      "grounding": "partial"
+    },
+    {
       "id": "person-leader",
       "status": "registered",
       "layer": "semantic",
@@ -623,6 +664,49 @@
       ],
       "label": "Votes on",
       "grounding": "partial"
+    },
+    {
+      "id": "member_of",
+      "status": "registered",
+      "from": "official",
+      "to": "committee",
+      "reason": "Descriptive temporal role edge from exact OfficeRecordPersonId + OfficeRecordBodyId. It does not imply influence, support, control, or a vote; no matter referral edge is included.",
+      "backing": [
+        "public_graph.edge",
+        "nyc_legistar_office_records",
+        "committee_graph_lookup"
+      ],
+      "label": "Member of",
+      "grounding": "partial"
+    },
+    {
+      "id": "covers",
+      "status": "registered",
+      "from": "community-board",
+      "to": "community-district",
+      "reason": "Exact borough + district mapping from the committed board registry to the regular DCP community-district boundary feature.",
+      "backing": [
+        "public_graph.edge",
+        "community_board_source_registry",
+        "community_board_geography_lookup"
+      ],
+      "label": "Covers",
+      "grounding": "built"
+    },
+    {
+      "id": "intersects",
+      "status": "registered",
+      "from": "community-district",
+      "to": "council-district",
+      "reason": "Many-to-many polygon segment-crossing or containment overlay over the 59 regular community districts and 51 Council districts. Boundary vintage is stamped on every edge; centroid assignment is rejected.",
+      "backing": [
+        "public_graph.edge",
+        "nyc_dcp_community_districts",
+        "nyc_dcp_council_districts",
+        "community_board_geography_lookup"
+      ],
+      "label": "Intersects",
+      "grounding": "built"
     },
     {
       "id": "agency_led_by",

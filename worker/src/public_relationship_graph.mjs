@@ -13,10 +13,18 @@ import {
   serializePublicRelationshipGraph,
 } from "../../entity_resolution/publication/relationship_graph.mjs";
 import crosswalk from "./data/agency_crosswalk.json" with { type: "json" };
+import communityBoardGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import { enrichAgency } from "./lib/agency_identity.mjs";
 
 const GRAPH_CACHE = "public, max-age=300";
 export const GRAPH_RECORD_LIMIT = 250;
+
+function staticGraphForId(id) {
+  const nodes = communityBoardGeography.public_graph?.nodes || [];
+  return nodes.some((node) => node.id === id)
+    ? communityBoardGeography.public_graph
+    : null;
+}
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -150,9 +158,17 @@ export function renderPublicRelationshipGraphPage(graph) {
 }
 
 export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = {}) {
-  if (!db) return null;
   const entityId = clean(canonicalEntityId);
   if (!entityId || entityId.length > 300) return null;
+  const staticGraph = staticGraphForId(entityId);
+  if (staticGraph) {
+    return serializePublicRelationshipGraph([], {
+      ...opts,
+      rootId: entityId,
+      publishedGraph: staticGraph,
+    });
+  }
+  if (!db) return null;
   const result = await db.prepare(
     `SELECT entity.id AS entity_id, entity.entity_type, entity.display_name,
             record.source_system, record.source_system_id,
@@ -191,10 +207,10 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
 
 export async function handlePublicRelationshipGraph(request, env) {
   if (request.method !== "GET") return json({ error: "method-not-allowed" }, 405);
-  if (!env?.DB) return json({ error: "no-store" }, 503);
   const url = new URL(request.url);
   const entityId = clean(url.searchParams.get("id"));
   if (!entityId || entityId.length > 300) return json({ error: "id-required" }, 400);
+  if (!env?.DB && !staticGraphForId(entityId)) return json({ error: "no-store" }, 503);
 
   const depth = positiveInteger(url.searchParams.get("depth"), PUBLIC_GRAPH_DEFAULT_DEPTH);
   const fanOut = positiveInteger(url.searchParams.get("fan_out"), PUBLIC_GRAPH_DEFAULT_FAN_OUT);

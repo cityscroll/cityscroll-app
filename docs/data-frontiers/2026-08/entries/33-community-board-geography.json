@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.data_frontier_entry.v0",
+  "id": "community-board-geography",
+  "rank": 33,
+  "rc": "CG-4",
+  "gap_inventory_row": "**CG-4** `community-board-geography` — board nodes and many-to-many district intersections",
+  "source_and_access": "Committed `site/data/non_council_outcome_sources/source_registry.json` for 59 board identities plus WGS84 DCP polygons in `site/data/district_boundaries.json` from Community Districts `5crt-au7u` and City Council Districts `872g-cjhh`.",
+  "join_feasibility": "**Measured:** 59/59 exact board-to-community-district mappings and 237 polygon segment-crossing/containment pairs across 59 regular community districts and 51 Council districts; average 4.02 Council districts per community district. Boundary vintage 2026-05-26 is stamped on every edge. Receipt: `site/data/community_board_geography/verification_receipts/overlay_2026-08-12.json`.",
+  "reader_value": "**5** — Browse and Civic Graph; a board path preserves the full district overlay and distinguishes governance bodies from geography.",
+  "effort": "**Geometry build**",
+  "disposition": "Published behind the exact 237-pair gate; centroid one-to-one assignment is rejected. The board source inventory remains intentionally not citywide-complete."
+}
