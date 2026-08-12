@@ -6,7 +6,7 @@ import {
   buildContextualSuggestions,
   renderContextualSuggestions,
 } from "./contextual_suggestions.mjs";
-import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
+import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLink } from "./edge_summary.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -893,7 +893,19 @@ export function renderBrowseView(view) {
     const place = rowPlace(view.facet, row);
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity
-      ? constellationLink({ href: `/agencies/${encodeURIComponent(agencyIdentity.canonical_id)}/`, label: agency, className: "browse-agency-link", escape: esc })
+      ? renderEntityPivotLink({
+        relation_label: view.facet === "zoning" ? "applicant agency" : "published by agency",
+        target_kind: "agency",
+        target_id: agencyIdentity.canonical_id,
+        target_name: agency,
+        canonical_href: `/agencies/${encodeURIComponent(agencyIdentity.canonical_id)}/`,
+        source: {
+          kind: view.facet === "zoning" ? "project" : "notice",
+          id: rowId(view.facet, row),
+          name: title,
+          canonical_href: href || null,
+        },
+      }, { className: "browse-agency-link", escape: esc })
       : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}">
       ${actionMarkup}

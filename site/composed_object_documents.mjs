@@ -23,7 +23,7 @@ import {
 import { bblReaderLabel } from "./bbl_reader.mjs";
 import { buildParcelBiographyEdgeSummary } from "./parcel_biography_ui.mjs";
 import { asOfFilterCanNarrow, buildLedgerSummary, projectAgencyConstellationAsOf, renderCivicTimeLedgerPanel } from "./civic_time_ledger.mjs";
-import { renderEdgeSummaryRail } from "./edge_summary.mjs";
+import { ENTITY_PIVOT_SCHEMA, renderEdgeSummaryRail } from "./edge_summary.mjs";
 
 export const CIVIC_OBJECT_EXPORT_REGISTRY = Object.freeze({
   "monitor-pack": Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
@@ -164,7 +164,7 @@ function actionMarkup(view, watchHref) {
   });
 }
 
-function subjectLink(ref, hrefOverride = null) {
+function subjectLink(ref, hrefOverride = null, source = {}) {
   const href = hrefOverride || subjectHref(ref);
   const value = clean(ref);
   const match = value.match(/^([a-z-]+):(.+)$/);
@@ -175,10 +175,26 @@ function subjectLink(ref, hrefOverride = null) {
     : match?.[1] === "notice"
     ? `Notice ${match[2]}`
     : value;
-  return href ? constellationLink({ href, label, className: "composed-object-link", attributes: { "data-subject-ref": ref }, escape: esc }) : esc(label);
+  const target = value.match(/^([a-z-]+):(.+)$/);
+  return href ? constellationLink({
+    href,
+    label,
+    className: "composed-object-link",
+    attributes: {
+      "data-subject-ref": ref,
+      "data-pivot-schema": ENTITY_PIVOT_SCHEMA,
+      "data-pivot-status": "accepted",
+      "data-pivot-relation-label": "linked record",
+      "data-pivot-target-kind": target?.[1] || "record",
+      "data-pivot-target-id": target?.[2] || "",
+      "data-pivot-source-kind": source.kind || "",
+      "data-pivot-source-id": source.id || "",
+    },
+    escape: esc,
+  }) : esc(label);
 }
 
-function parcelRecordItem(item) {
+function parcelRecordItem(item, view) {
   const label = clean(item.label || item.id) || "Record";
   const href = item.href || subjectHref(item.subject_ref);
   // Primary travel is internal (◆ constellation). Source name is omit-by-default;
@@ -188,7 +204,16 @@ function parcelRecordItem(item) {
       href,
       label,
       className: "composed-object-link",
-      attributes: item.subject_ref ? { "data-subject-ref": item.subject_ref } : {},
+      attributes: item.subject_ref ? {
+        "data-subject-ref": item.subject_ref,
+        "data-pivot-schema": ENTITY_PIVOT_SCHEMA,
+        "data-pivot-status": "accepted",
+        "data-pivot-relation-label": item.relation || "linked record",
+        "data-pivot-target-kind": item.subject_ref.split(":", 1)[0] || "record",
+        "data-pivot-target-id": item.subject_ref.split(":").slice(1).join(":") || "",
+        "data-pivot-source-kind": "parcel",
+        "data-pivot-source-id": view?.bbl || "",
+      } : {},
       escape: esc,
     })
     : esc(label);
@@ -219,7 +244,7 @@ function parcelMembersMarkup(view) {
       exportClass: "object_members",
       extraClass: "node-card civic-object-section",
       attrs: { "data-parcel-biography-domain": kind, id: `parcel-biography-${kind}` },
-      body: `<ul class="node-record-list">${section.items.map(parcelRecordItem).join("")}</ul>`,
+      body: `<ul class="node-record-list">${section.items.map((item) => parcelRecordItem(item, view)).join("")}</ul>`,
     });
   }).filter(Boolean).join("");
 }
@@ -250,7 +275,7 @@ function parcelLedgerMarkup(view, asOfDay = null) {
 
 function packMembersMarkup(view) {
   const attention = packAttentionCopy(view, { frequency: "weekly" });
-  const items = view.watches.map((watch) => `<li class="node-record">${constellationLink({ href: followingUrlFromWatch(watch, { frequency: "weekly" }), label: watch.label, className: "composed-object-link", escape: esc })}${watch.subject_refs.length ? `<ul class="node-record-list">${watch.subject_refs.map(subjectLink).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("");
+  const items = view.watches.map((watch) => `<li class="node-record">${constellationLink({ href: followingUrlFromWatch(watch, { frequency: "weekly" }), label: watch.label, className: "composed-object-link", escape: esc })}${watch.subject_refs.length ? `<ul class="node-record-list">${watch.subject_refs.map((ref) => subjectLink(ref, null, { kind: "monitor-pack", id: view.id })).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("");
   return `<section class="node-section node-card civic-object-section" data-export-class="object_members" data-pack-attention="1">
     <h2>Watches in this pack</h2>
     <p class="following-pack-cost" data-pack-cost>${esc(attention.summary)}</p>
@@ -264,7 +289,7 @@ function digestMembersMarkup(view) {
   return view.sections.map((section) => {
     const items = section.items.map((item) => {
       const ref = item.request_id ? `notice:${item.request_id}` : item.project_id ? `project:${item.project_id}` : null;
-      return `<li class="node-record">${ref ? subjectLink(ref) : esc(item.short_title || item.project_name || item.district_item_id)}</li>`;
+      return `<li class="node-record">${ref ? subjectLink(ref, null, { kind: "district-digest", id: view.id }) : esc(item.short_title || item.project_name || item.district_item_id)}</li>`;
     }).join("");
     return `<section class="node-section node-card civic-object-section" data-export-class="object_members"><h2>${esc(section.label)}</h2><ul class="node-record-list">${items}</ul></section>`;
   }).join("");

@@ -5,21 +5,25 @@ import {
 } from "../graph_edge_provenance.mjs";
 import { renderMandatesConformanceSection } from "../process_conformance.mjs";
 import { constellationLink, officialSourceDisclosure } from "../affordance_grammar.mjs";
+import { renderEntityPivotLink } from "../edge_summary.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
-function itemLink(item) {
+function itemLink(item, source = {}) {
   const label = esc(item.label || item.subject_ref || item.id);
   if (!item.href) return label;
-  return constellationLink({
-    href: item.href,
-    label: item.label || item.subject_ref || item.id,
-    className: "agency-edge-link",
-    attributes: { "data-subject-ref": item.subject_ref || "" },
-    escape: esc,
-  });
+  const subject = String(item.subject_ref || "").match(/^([a-z-]+):(.+)$/);
+  const targetKind = item.target_kind || ({ notice: "notice", project: "project", exam: "exam", vendor: "vendor" }[subject?.[1]] || "record");
+  return renderEntityPivotLink({
+    relation_label: item.relation || "related record",
+    target_kind: targetKind,
+    target_id: item.target_id || subject?.[2] || item.id || null,
+    target_name: item.label || item.subject_ref || item.id,
+    canonical_href: item.href,
+    source,
+  }, { className: "agency-edge-link", escape: esc });
 }
 
 function obligationMeta(item) {
@@ -44,7 +48,7 @@ function statusLabel(category) {
   return `${Number(category.count) || category.items?.length || 0} linked`;
 }
 
-export function renderAgencyCategorySection(category) {
+export function renderAgencyCategorySection(category, source = {}) {
   if (
     !category
     || category.status === "empty"
@@ -99,7 +103,7 @@ export function renderAgencyCategorySection(category) {
     const meta = [sourceSystemReaderLabel(item.source) || item.source, item.date]
       .filter(Boolean).join(" · ");
     return `<li class="node-record" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
-      <div class="node-record-main">${itemLink(item)}${why ? ` ${why}` : ""}</div>
+      <div class="node-record-main">${itemLink(item, source)}${why ? ` ${why}` : ""}</div>
       ${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}
     </li>`;
   }).join("")}</ul>`;
@@ -170,6 +174,12 @@ export function categorySection(id, order, extras = {}) {
     render(view) {
       return renderAgencyCategorySection(
         view.displayView.categories.find((category) => category.id === id),
+        {
+          kind: "agency",
+          id: view.displayView.canonical_id,
+          name: view.displayView.display_name,
+          canonical_href: view.displayView.path,
+        },
       );
     },
   });
