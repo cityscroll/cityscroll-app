@@ -70,6 +70,7 @@ from i18n_fixtures import (  # noqa: E402
     CHAIN_ROWS,
     LAND_PIPELINE_ZAP_OUTCOMES,
     NOTICE_LAND_ZAP_OUTCOMES,
+    PARKS_ARCHIVE_AWARD,
     ZAP_ROWS,
     install_routes,
 )
@@ -339,6 +340,8 @@ def install_demo_routes(page) -> None:
             route.fulfill(status=200, content_type="application/json", body=json.dumps([CANNONSVILLE_NOTICE]))
         elif exact_request and exact_request.group(1) == "20231222103":
             route.fulfill(status=200, content_type="application/json", body=json.dumps([HNTB_AWARD_NOTICE]))
+        elif "agency_name='Parks and Recreation'" in where and "type_of_notice_description='Award'" in where:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps([PARKS_ARCHIVE_AWARD]))
         elif exact_pin and exact_pin.group(1) in MATTER_PINS:
             pin = exact_pin.group(1)
             rows = [

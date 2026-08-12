@@ -798,6 +798,7 @@
     head_open: "Solicitudes de propuestas (RFP) abiertas",
     head_allrfp: "Todas las RFP",
     head_award: "Adjudicaciones recientes",
+    head_archive: "Adjudicaciones y contratos archivados",
     head_closing_this_week: " · cierra esta semana",
     no_titles_match: "Ningún título coincide. Pruebe con una palabra más amplia.",
     no_personnel: "Ningún aviso de personal coincide con ese nombre. Pruebe con un apellido.",

@@ -9,7 +9,7 @@
 import { nearYouUrlFromScope } from "./scope_v0.mjs";
 import { normalizeScope, routeHashFromScope, scopeFromLensState } from "./scope_v0.mjs";
 
-export const PROCUREMENT_MODE_KEYS = Object.freeze(["open", "allrfp", "award"]);
+export const PROCUREMENT_MODE_KEYS = Object.freeze(["open", "allrfp", "award", "archive"]);
 export const PROCUREMENT_ACTION_LOCATION_KEYS = Object.freeze([
   "contract_action_address",
   "submission_address",
@@ -21,6 +21,7 @@ const MODE_LABEL_KEYS = Object.freeze({
   open: "mode_open",
   allrfp: "mode_allrfp",
   award: "mode_award",
+  archive: "head_archive",
 });
 
 const LOCATION_LABEL_KEYS = Object.freeze({

@@ -798,6 +798,7 @@
     head_open: "公开的征求建议书 (RFP)",
     head_allrfp: "所有征求建议书 (RFP)",
     head_award: "近期中标（授予合同）",
+    head_archive: "已归档的授标与合同",
     head_closing_this_week: " · 本周截止",
     no_titles_match: "没有匹配的标题。请尝试更宽泛的关键词。",
     no_personnel: "没有与该姓名匹配的人事通告。请尝试用姓氏搜索。",

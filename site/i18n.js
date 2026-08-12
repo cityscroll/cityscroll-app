@@ -1248,6 +1248,7 @@ const STRINGS = {
     head_open:              "Open Requests for Proposals (RFPs)",
     head_allrfp:            "All RFPs",
     head_award:             "Recent Awards",
+    head_archive:           "Archived awards and contracts",
     head_closing_this_week: " · closing this week",
 
     // Empty states

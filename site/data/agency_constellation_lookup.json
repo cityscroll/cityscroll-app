@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-05T10:40:50.286Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-09T15:17:29.522Z",
+  "generated_at": "2026-08-03|2026-08-03T20:19:13.639Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-09T15:17:29.522Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -33,12 +33,12 @@
       "subject_ref": "agency:id:administration-for-childrens-services",
       "display_name": "Administration for Children's Services",
       "path": "/agencies/administration-for-childrens-services/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -48,7 +48,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -161,12 +161,12 @@
       "subject_ref": "agency:id:administrative-trials-and-hearings",
       "display_name": "Office of Administrative Trials and Hearings",
       "path": "/agencies/administrative-trials-and-hearings/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -176,7 +176,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -289,12 +289,12 @@
       "subject_ref": "agency:id:aging",
       "display_name": "Department for the Aging",
       "path": "/agencies/aging/",
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -304,7 +304,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -422,7 +422,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -431,8 +431,8 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 10,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -461,7 +461,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -471,7 +471,7 @@
         "meetings": {
           "status": "matched",
           "count": 2,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -500,7 +500,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -510,7 +510,7 @@
         "meetings": {
           "status": "matched",
           "count": 3,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -539,7 +539,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -549,7 +549,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -578,7 +578,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -588,7 +588,7 @@
         "meetings": {
           "status": "matched",
           "count": 3,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -617,7 +617,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -627,7 +627,7 @@
         "meetings": {
           "status": "matched",
           "count": 2,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -651,12 +651,12 @@
       "subject_ref": "agency:id:borough-president-brooklyn",
       "display_name": "Office of the Borough President of Brooklyn",
       "path": "/agencies/borough-president-brooklyn/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -666,7 +666,7 @@
         "meetings": {
           "status": "matched",
           "count": 3,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -695,7 +695,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -705,7 +705,7 @@
         "meetings": {
           "status": "matched",
           "count": 2,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -729,12 +729,12 @@
       "subject_ref": "agency:id:buildings",
       "display_name": "Department of Buildings",
       "path": "/agencies/buildings/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -744,7 +744,7 @@
         "meetings": {
           "status": "matched",
           "count": 2,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -862,7 +862,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -872,7 +872,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -913,7 +913,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -923,7 +923,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -952,7 +952,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -961,8 +961,8 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 7,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -991,7 +991,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1001,7 +1001,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1025,12 +1025,12 @@
       "subject_ref": "agency:id:city-council",
       "display_name": "New York City Council",
       "path": "/agencies/city-council/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1040,7 +1040,7 @@
         "meetings": {
           "status": "matched",
           "count": 6,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -1064,12 +1064,12 @@
       "subject_ref": "agency:id:city-planning",
       "display_name": "Department of City Planning",
       "path": "/agencies/city-planning/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 4,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1079,7 +1079,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1164,7 +1164,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1174,7 +1174,7 @@
         "meetings": {
           "status": "matched",
           "count": 6,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1198,12 +1198,12 @@
       "subject_ref": "agency:id:city-university",
       "display_name": "City University of New York",
       "path": "/agencies/city-university/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1213,46 +1213,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      },
-      "top_vendors": []
-    },
-    "city-university-construction-fund": {
-      "subject_ref": "agency:id:city-university-construction-fund",
-      "display_name": "city-university-construction-fund",
-      "path": "/agencies/city-university-construction-fund/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -1280,8 +1241,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
-          "method": "agency_canonical_v1"
+          "count": 5,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1290,8 +1251,8 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 10,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -1404,12 +1365,12 @@
       "subject_ref": "agency:id:civilian-complaint-review-board",
       "display_name": "Civilian Complaint Review Board",
       "path": "/agencies/civilian-complaint-review-board/",
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1419,7 +1380,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1455,12 +1416,12 @@
       "subject_ref": "agency:id:commission-on-human-rights",
       "display_name": "City Commission on Human Rights",
       "path": "/agencies/commission-on-human-rights/",
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1470,7 +1431,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1511,7 +1472,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1521,7 +1482,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -1550,7 +1511,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1560,7 +1521,7 @@
         "meetings": {
           "status": "matched",
           "count": 5,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -1584,12 +1545,12 @@
       "subject_ref": "agency:id:comptroller",
       "display_name": "Office of the New York City Comptroller",
       "path": "/agencies/comptroller/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1599,7 +1560,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1717,7 +1678,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -1727,7 +1688,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1751,12 +1712,12 @@
       "subject_ref": "agency:id:consumer-and-worker-protection",
       "display_name": "Department of Consumer and Worker Protection",
       "path": "/agencies/consumer-and-worker-protection/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 5,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1766,7 +1727,7 @@
         "meetings": {
           "status": "matched",
           "count": 5,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -1879,12 +1840,12 @@
       "subject_ref": "agency:id:correction",
       "display_name": "Department of Correction",
       "path": "/agencies/correction/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -1894,7 +1855,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2012,7 +1973,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -2022,7 +1983,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2046,12 +2007,12 @@
       "subject_ref": "agency:id:cultural-affairs",
       "display_name": "Department of Cultural Affairs",
       "path": "/agencies/cultural-affairs/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -2061,7 +2022,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2170,45 +2131,6 @@
         }
       ]
     },
-    "department-of-social-services": {
-      "subject_ref": "agency:id:department-of-social-services",
-      "display_name": "Department of Social Services",
-      "path": "/agencies/department-of-social-services/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      },
-      "top_vendors": []
-    },
     "design-and-construction": {
       "subject_ref": "agency:id:design-and-construction",
       "display_name": "Department of Design and Construction",
@@ -2217,8 +2139,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 3,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -2228,7 +2150,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2346,7 +2268,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -2356,7 +2278,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2385,7 +2307,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -2395,7 +2317,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2424,7 +2346,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -2434,7 +2356,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2552,7 +2474,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -2562,7 +2484,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2591,7 +2513,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -2601,7 +2523,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2621,6 +2543,45 @@
       },
       "top_vendors": []
     },
+    "economic-development-corporation": {
+      "subject_ref": "agency:id:economic-development-corporation",
+      "display_name": "Economic Development Corporation",
+      "path": "/agencies/economic-development-corporation/",
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "matched",
+          "count": 3,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "top_vendors": []
+    },
     "education": {
       "subject_ref": "agency:id:education",
       "display_name": "New York City Public Schools",
@@ -2629,8 +2590,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -2640,7 +2601,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2753,12 +2714,12 @@
       "subject_ref": "agency:id:emergency-management",
       "display_name": "New York City Emergency Management",
       "path": "/agencies/emergency-management/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -2768,7 +2729,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -2886,7 +2847,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -2896,7 +2857,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -3013,8 +2974,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 3,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3024,7 +2985,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -3137,12 +3098,12 @@
       "subject_ref": "agency:id:equal-employment-practices-commission",
       "display_name": "Equal Employment Practices Commission",
       "path": "/agencies/equal-employment-practices-commission/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -3150,9 +3111,9 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
+          "status": "matched",
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -3176,12 +3137,12 @@
       "subject_ref": "agency:id:finance",
       "display_name": "Department of Finance",
       "path": "/agencies/finance/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3191,7 +3152,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -3304,12 +3265,12 @@
       "subject_ref": "agency:id:financial-information-services-agency",
       "display_name": "Financial Information Services Agency",
       "path": "/agencies/financial-information-services-agency/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 4,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3319,7 +3280,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -3414,8 +3375,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3425,7 +3386,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -3538,12 +3499,12 @@
       "subject_ref": "agency:id:health-and-mental-hygiene",
       "display_name": "Department of Health and Mental Hygiene",
       "path": "/agencies/health-and-mental-hygiene/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3553,7 +3514,7 @@
         "meetings": {
           "status": "matched",
           "count": 2,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -3670,8 +3631,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3681,7 +3642,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -3794,12 +3755,12 @@
       "subject_ref": "agency:id:housing-authority",
       "display_name": "New York City Housing Authority",
       "path": "/agencies/housing-authority/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
+          "status": "matched",
+          "count": 12,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -3809,7 +3770,7 @@
         "meetings": {
           "status": "matched",
           "count": 3,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -3837,8 +3798,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3848,7 +3809,7 @@
         "meetings": {
           "status": "matched",
           "count": 3,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -3961,12 +3922,12 @@
       "subject_ref": "agency:id:human-resources-administration",
       "display_name": "Human Resources Administration",
       "path": "/agencies/human-resources-administration/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -3976,7 +3937,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4094,7 +4055,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -4104,7 +4065,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4132,8 +4093,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4143,7 +4104,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -4261,7 +4222,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4271,7 +4232,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4318,12 +4279,12 @@
       "subject_ref": "agency:id:landmarks-preservation-commission",
       "display_name": "Landmarks Preservation Commission",
       "path": "/agencies/landmarks-preservation-commission/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4332,8 +4293,8 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 7,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -4369,12 +4330,12 @@
       "subject_ref": "agency:id:law-department",
       "display_name": "New York City Law Department",
       "path": "/agencies/law-department/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4384,7 +4345,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4464,12 +4425,12 @@
       "subject_ref": "agency:id:management-and-budget",
       "display_name": "Mayor's Office of Management and Budget",
       "path": "/agencies/management-and-budget/",
-      "matched_categories": 3,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4479,7 +4440,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4548,12 +4509,12 @@
       "subject_ref": "agency:id:mayors-office-of-contract-services",
       "display_name": "Mayor's Office of Contract Services",
       "path": "/agencies/mayors-office-of-contract-services/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4563,7 +4524,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -4621,12 +4582,12 @@
       "subject_ref": "agency:id:mayors-office-of-criminal-justice",
       "display_name": "Mayor's Office of Criminal Justice",
       "path": "/agencies/mayors-office-of-criminal-justice/",
-      "matched_categories": 2,
+      "matched_categories": 1,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 8,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4636,7 +4597,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4754,7 +4715,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -4764,7 +4725,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4793,7 +4754,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -4803,7 +4764,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4832,7 +4793,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4842,7 +4803,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4889,12 +4850,12 @@
       "subject_ref": "agency:id:nyc-health-hospitals",
       "display_name": "NYC Health + Hospitals",
       "path": "/agencies/nyc-health-hospitals/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
+          "status": "matched",
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -4904,7 +4865,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4933,7 +4894,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -4943,7 +4904,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -4967,12 +4928,12 @@
       "subject_ref": "agency:id:office-of-labor-relations",
       "display_name": "Office of Labor Relations",
       "path": "/agencies/office-of-labor-relations/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -4980,9 +4941,9 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
+          "status": "matched",
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5034,7 +4995,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5044,7 +5005,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5080,12 +5041,12 @@
       "subject_ref": "agency:id:office-of-the-mayor",
       "display_name": "Office of the Mayor",
       "path": "/agencies/office-of-the-mayor/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 8,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5095,7 +5056,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -5208,12 +5169,12 @@
       "subject_ref": "agency:id:parks-and-recreation",
       "display_name": "Department of Parks and Recreation",
       "path": "/agencies/parks-and-recreation/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5223,7 +5184,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -5341,7 +5302,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -5351,7 +5312,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5379,8 +5340,8 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
-          "method": "agency_canonical_v1"
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5390,7 +5351,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5503,12 +5464,12 @@
       "subject_ref": "agency:id:probation",
       "display_name": "Department of Probation",
       "path": "/agencies/probation/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5518,7 +5479,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5636,7 +5597,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -5646,7 +5607,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5666,6 +5627,45 @@
       },
       "top_vendors": []
     },
+    "public-design-commission": {
+      "subject_ref": "agency:id:public-design-commission",
+      "display_name": "Public Design Commission",
+      "path": "/agencies/public-design-commission/",
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "top_vendors": []
+    },
     "records-and-information-services": {
       "subject_ref": "agency:id:records-and-information-services",
       "display_name": "Department of Records and Information Services",
@@ -5675,7 +5675,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5685,7 +5685,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -5726,7 +5726,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -5736,7 +5736,7 @@
         "meetings": {
           "status": "matched",
           "count": 5,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -5760,12 +5760,12 @@
       "subject_ref": "agency:id:sanitation",
       "display_name": "New York City Department of Sanitation",
       "path": "/agencies/sanitation/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5775,7 +5775,7 @@
         "meetings": {
           "status": "matched",
           "count": 2,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -5888,12 +5888,12 @@
       "subject_ref": "agency:id:small-business-services",
       "display_name": "Department of Small Business Services",
       "path": "/agencies/small-business-services/",
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -5903,7 +5903,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -6021,7 +6021,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -6031,7 +6031,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -6055,12 +6055,12 @@
       "subject_ref": "agency:id:taxi-and-limousine-commission",
       "display_name": "New York City Taxi and Limousine Commission",
       "path": "/agencies/taxi-and-limousine-commission/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -6070,7 +6070,7 @@
         "meetings": {
           "status": "matched",
           "count": 1,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -6183,12 +6183,12 @@
       "subject_ref": "agency:id:teachers-retirement-system",
       "display_name": "Teachers' Retirement System of City of New York",
       "path": "/agencies/teachers-retirement-system/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -6196,9 +6196,9 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
+          "status": "matched",
+          "count": 1,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -6222,12 +6222,12 @@
       "subject_ref": "agency:id:transportation",
       "display_name": "New York City Department of Transportation",
       "path": "/agencies/transportation/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -6236,8 +6236,8 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "count": 8,
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "matched",
@@ -6355,7 +6355,7 @@
         "contracts": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "empty",
@@ -6365,7 +6365,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",
@@ -6389,12 +6389,12 @@
       "subject_ref": "agency:id:youth-and-community-development",
       "display_name": "Department of Youth and Community Development",
       "path": "/agencies/youth-and-community-development/",
-      "matched_categories": 4,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_canonical_v1"
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
           "status": "matched",
@@ -6404,7 +6404,7 @@
         "meetings": {
           "status": "empty",
           "count": 0,
-          "method": "agency_canonical_v1"
+          "method": "agency_browse_snapshot_v1"
         },
         "rules": {
           "status": "empty",

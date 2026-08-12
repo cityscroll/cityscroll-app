@@ -1068,26 +1068,35 @@
     },
     {
       "id": "agency-edge-provenance-parks",
-      "url": "agencies/parks-and-recreation/?claim=contracts%3Anotice%3A20210514115",
-      "feature": "edge-provenance-inspector",
-      "description": "Inspect why a Parks contracts connection is linked: source record and warrant class.",
+      "url": "browse/contracts/?mode=archive&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&q=Jazz%20Concert%20Series",
+      "feature": "agency-archive-contracts",
+      "description": "Open the archived Parks contract record through the all-linked archive view.",
       "expectations": {
-        "pathname": "/agencies/parks-and-recreation/",
+        "pathname": "/browse/contracts/",
         "visible": [
           {
-            "selector": "[data-edge-provenance-panel]"
+            "selector": "[data-money-mode=\"archive\"]",
+            "text": "Archived awards and contracts"
           },
           {
-            "selector": ".edge-prov-inspector",
-            "text": "Why do we believe this"
+            "selector": "#list .row",
+            "text": "Jazz Concert Series April 2021 to June 2021, Citywide"
           },
           {
-            "selector": "[data-warrant-class=\"exact\"]"
+            "selector": "#detail .glance",
+            "text": "Parks and Recreation"
           }
         ],
         "notVisible": [
           {
-            "selector": "[data-edge-prov-empty]"
+            "selector": "#list .empty"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#mode",
+            "property": "value",
+            "equals": "archive"
           }
         ]
       }
