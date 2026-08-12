@@ -65,8 +65,46 @@ test("empty and unknown states render as explicit states, never asserted zeroes"
   assert.match(html, /Unknown \/ not indexed/);
   assert.match(html, /data-edge-availability="empty-in-scope"/);
   assert.match(html, /data-edge-availability="unknown-unindexed"/);
-  assert.match(html, /aria-label="Rules: issued rules; Empty in this scoped materialization"/);
-  assert.match(html, /aria-label="Meetings: related meetings; Unknown \/ not indexed"/);
+  assert.match(html, /aria-label="issued rules; target kind: rule; count: Empty in this scoped materialization; scope: not specified; as of: unavailable"/);
+  assert.match(html, /aria-label="related meetings; target kind: meeting; count: Unknown \/ not indexed; scope: not specified; as of: unavailable"/);
+  assert.doesNotMatch(html, /<a class="edge-summary-link"/);
+});
+
+test("matched edges link with typed accessible metadata while names never mint routes", () => {
+  const html = renderEdgeSummaryRail([
+    {
+      source_kind: "agency",
+      source_id: "parks-and-recreation",
+      edge_type: "hosts_meeting",
+      relation_label: "related meetings and hearings",
+      target_kind: "meeting",
+      target_id: "20260805001",
+      target_name: "Public hearing",
+      href: "/notices/20260805001",
+      count: 1,
+      state: "matched",
+      scope: { facet: "meetings", entity_ref: "agency:id:parks-and-recreation" },
+      as_of: "2026-08-11",
+    },
+    {
+      source_kind: "agency",
+      source_id: "parks-and-recreation",
+      edge_type: "related_committee",
+      relation_label: "related committees",
+      target_kind: "committee",
+      target_id: "5261",
+      target_name: "Land Use Committee",
+      count: 2,
+      state: "matched",
+      scope: { facet: "meetings", entity_ref: "agency:id:parks-and-recreation" },
+      as_of: "2026-08-11",
+    },
+  ]);
+
+  assert.match(html, /<a class="edge-summary-link" href="\/notices\/20260805001\?as_of=2026-08-11"/);
+  assert.match(html, /aria-label="related meetings and hearings; target kind: meeting; count: Available: 1 record; scope: facet: meetings, entity ref: agency:id:parks-and-recreation; as of: 2026-08-11"/);
+  assert.doesNotMatch(html, /href="[^"]*5261/);
+  assert.match(html, /data-edge-state="matched"/);
 });
 
 test("agency category totals produce the same typed records used by the rail", () => {
@@ -131,6 +169,8 @@ test("Browse intersections expose the same typed edge contract", () => {
   const vendor = records.find((record) => record.target_kind === "vendor");
   assert.ok(vendor);
   assert.equal(vendor.count, 1);
+  assert.equal(vendor.target_id, "stem:EXAMPLE");
+  assert.match(vendor.href, /\/vendors\/EXAMPLE\//);
   const html = renderBrowseView(view);
   assert.match(html, /edge-summary-rail/);
   assert.match(html, /Related records/);
