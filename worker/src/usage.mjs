@@ -9,7 +9,7 @@
 //
 // Defensive: any KV error → zeros + { degraded: true }, never throws.
 
-import { lastNDays, meterKey, buildUsageBody } from "./lib/usage.mjs";
+import { lastNDays, meterKey, legacyMeterKey, buildUsageBody } from "./lib/usage.mjs";
 
 const ALLOW = new Set([
   "https://cityscroll.org",
@@ -46,7 +46,10 @@ export async function handleUsage(req, env) {
       return json(buildUsageBody({ todayCalls: 0, last7dCalls: 0, now, degraded: true }), 200, cors);
     }
     const days = lastNDays(now, 7); // [today, …, 6 days ago]
-    const raw = await Promise.all(days.map((d) => store.get(meterKey(d))));
+    const raw = await Promise.all(days.map(async (d) => {
+      const current = await store.get(meterKey(d));
+      return current == null ? store.get(legacyMeterKey(d)) : current;
+    }));
     const counts = raw.map((c) => parseInt(c || "0", 10) || 0);
     const todayCalls = counts[0];
     const last7dCalls = counts.reduce((a, b) => a + b, 0);
