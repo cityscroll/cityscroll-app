@@ -497,7 +497,7 @@ export function renderNearYouDocument(view, options = {}) {
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
 <link rel="canonical" href="${esc(view.shareHref)}">${renderCivicDocumentAssets(assetPrefix)}</head>
 <body><a class="skip" href="#main">Skip to content</a>
-${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, surfaceClass: "near-mast" })}
+${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, scope: view.scope, surfaceClass: "near-mast" })}
 ${renderNearYouBody(view)}
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
