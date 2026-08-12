@@ -6,35 +6,35 @@
     "stale_after_days": 2,
     "before": {
       "covered": 5,
-      "total": 17,
-      "rate": 0.2941,
+      "total": 18,
+      "rate": 0.2778,
       "basis": "historical adapter-ready (dual_write.before === complete)"
     },
     "after": {
-      "covered": 11,
-      "total": 17,
-      "rate": 0.6471,
+      "covered": 12,
+      "total": 18,
+      "rate": 0.6667,
       "basis": "live source_records: dual_write.after === complete requires row_count > 0"
     },
     "by_status": {
-      "complete": 11,
+      "complete": 12,
       "partial": 1,
       "stale": 0,
       "empty-declared-live": 1,
       "gap": 4
     },
     "populated": {
-      "covered": 12,
-      "total": 17,
-      "rate": 0.7059
+      "covered": 13,
+      "total": 18,
+      "rate": 0.7222
     },
     "adapter_ready": {
       "before": 5,
-      "after": 13,
-      "total": 17,
-      "rate_after": 0.7647
+      "after": 14,
+      "total": 18,
+      "rate_after": 0.7778
     },
-    "basis": "Live completeness is derived from production D1 source_records counts, host retention receipts, and recency (person-hub constellation remeasured 2026-08-11; ULURP recommendation PDFs retained 2026-08-12; production D1 streams still stamped 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. Person-hub constellation (Council Members, eLobbyist, CFB) dual-write + host retention landed 2026-08-11. PASSPort contracts/RFx, Checkbook, Legistar events/items/votes, and ULURP recommendation PDFs dual-write adapters populate source_records. Legistar attachments remain empty-declared-live. City Record dual-write is partial. NYCHA, ABO, doing-business, and NYCIDA remain gaps."
+    "basis": "Live completeness is derived from production D1 source_records counts, host retention receipts, and recency (person-hub constellation remeasured 2026-08-11; ULURP recommendation feeds retained 2026-08-12; production D1 streams still stamped 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. Person-hub constellation (Council Members, eLobbyist, CFB) dual-write + host retention landed 2026-08-11. PASSPort contracts/RFx, Checkbook, Legistar events/items/votes, and ULURP recommendation feeds dual-write adapters populate source_records. Legistar attachments remain empty-declared-live. City Record dual-write is partial. NYCHA, ABO, doing-business, and NYCIDA remain gaps."
   },
   "sources": [
     {
@@ -556,6 +556,32 @@
       },
       "fixture": "worker/test/ulurp_recommendation_source_records.test.mjs",
       "replay_test": "worker/test/ulurp_recommendation_source_records.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "ulurp-recommendations",
+      "source_system": "ulurp_recommendations",
+      "importer": "tools/retain_ulurp_recommendation_rows_source_records.mjs",
+      "identity_entities": ["recommendation", "project", "ULURP"],
+      "stable_source_key": "ulurp-recommendation:<ulurp_number_s>:<recommendation_date>:<borough_president>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": {
+        "flag": "ULURP_RECOMMENDATION_SOURCE_RECORD_DUAL_WRITE",
+        "before": "gap",
+        "after": "complete",
+        "adapter": "ready",
+        "default": "off",
+        "fail_soft": true
+      },
+      "live_observation": {
+        "status": "complete",
+        "row_count": 91,
+        "latest_ingested_at": "2026-08-12T00:00:00.000Z",
+        "measured_at": "2026-08-12T00:00:00.000Z",
+        "note": "Host retention of 4j6i-9rmr recommendation rows as source_records-shaped snapshots plus shadow dual-write adapter. Kill sample 2026-08-12: exact ULURP-token usefulness 80/91 (87.91%), reviewed precision 100%. Receipt: site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_source_records_2026-08-12.json."
+      },
+      "fixture": "worker/test/ulurp_recommendation_rows_source_records.test.mjs",
+      "replay_test": "worker/test/ulurp_recommendation_rows_source_records.test.mjs",
       "known_gap": null
     }
   ]
