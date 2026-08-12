@@ -63,7 +63,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `cfb-campaign-contributions` | landed | recipname, person_name_key | — | 49.1% (distinct_recipients) |
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
 | `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
-| `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
+| `checkbook-spending` | landed | contract_id, PIN, check_amount, check_date | — | 44% (contracts_with_payments) |
 | `city-clerk-elobbyist` | landed | lobbyist_targets, person_name_key | — | 96.2% (person_shaped_mentions) |
 | `city-council-committee-membership` | landed | member_id | — | 5.8% (linked_rows) |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
@@ -117,7 +117,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 |---|---|---|---|---|
 | `checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-contracts` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
 | `checkbook-contracts-x-passport-public-rfx-via-PIN` | `checkbook-contracts` × `passport-public-rfx` | PIN | yes | 5 |
-| `checkbook-spending-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-spending` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
+| `checkbook-spending-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-spending` × `passport-public-contracts` | contract_id · PIN | yes | 5 |
 | `checkbook-spending-x-passport-public-rfx-via-PIN` | `checkbook-spending` × `passport-public-rfx` | PIN | yes | 5 |
 | `checkbook-contracts-x-ocp-recent-contract-awards-via-PIN` | `checkbook-contracts` × `ocp-recent-contract-awards` | PIN | yes | 4 |
 | `checkbook-spending-x-ocp-recent-contract-awards-via-PIN` | `checkbook-spending` × `ocp-recent-contract-awards` | PIN | yes | 4 |
@@ -153,7 +153,7 @@ graph LR
   zap_projects[zap-projects] -->|project_id| zap_api_outcomes[zap-api-outcomes]
   checkbook_contracts-.->|PIN/contract_id candidate| passport_public_contracts
   checkbook_contracts-.->|PIN candidate| passport_public_rfx
-  checkbook_spending-.->|PIN/contract_id candidate| passport_public_contracts
+  checkbook_spending-.->|contract_id/PIN candidate| passport_public_contracts
   checkbook_spending-.->|PIN candidate| passport_public_rfx
   checkbook_contracts-.->|PIN candidate| ocp_recent_contract_awards
   checkbook_spending-.->|PIN candidate| ocp_recent_contract_awards
@@ -202,4 +202,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `87f293f2f82f…` · materialized 11 · candidates 83 · class changes 0.
+Last refresh fingerprint: `b46fd04476b2…` · materialized 11 · candidates 83 · class changes 0.

@@ -411,12 +411,24 @@
       "source_contract_id": "checkbook-spending",
       "status": "landed",
       "join_keys": [
-        "PIN",
         "contract_id",
+        "PIN",
         "check_amount",
         "check_date"
       ],
-      "join_coverage": {},
+      "join_coverage": {
+        "realized": {
+          "rate": 0.44,
+          "joined": 22,
+          "total": 50,
+          "metric": "contracts_with_payments",
+          "observed_on": "2026-08-11",
+          "universe": "Stratified 50-contract kill sample from the population-backed Checkbook Contracts graph (80% spent>0 / 20% spent=0)",
+          "strategy": "Contracts graph seed → Spending by exact contract_id (PIN rejected on Spending domain); optional residual pin_prefix_of_epin only when exact id fails",
+          "verdict": "Ship payment retention. Usefulness 44% and precision 100% clear the 30%/95% gates; Follow-the-Dollars reads retained rows by contract_id.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
       "delivery_tier": "edge-materialized"
     },
@@ -1513,8 +1525,8 @@
       "source_a": "checkbook-spending",
       "source_b": "passport-public-contracts",
       "key_path": [
-        "PIN",
-        "contract_id"
+        "contract_id",
+        "PIN"
       ],
       "status": "candidate",
       "realized_coverage": null,
@@ -3493,8 +3505,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-11",
-    "source_contracts_fingerprint": "87f293f2f82fc82b5912a928f6713b6c4df808e7854a69f50e0f4e6d7043624a",
+    "observed_on": "2026-08-12",
+    "source_contracts_fingerprint": "b46fd04476b2d121ee67b4b1296537b751d8c97e130c85c7bfd0bd005414b0c3",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 83,
     "class_changes": 0,

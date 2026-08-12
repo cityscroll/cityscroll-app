@@ -179,3 +179,19 @@ test("self-contained renderer keeps graph detail and table views available", () 
   assert.match(html, /wishlist=s\.wishlist\?'<h3>Wishlist<\/h3><p>'\+escapeHtml\(s\.wishlist\.label\)\+'<\/p>':''/);
   assert.doesNotMatch(html, /wishlist=s\.wishlist\?'<h3>Wishlist<\/h3><p><a href=/);
 });
+
+test("person hub and influence sources map to Officials with measured coverage", () => {
+  const byId = Object.fromEntries(graph.sources.map((source) => [source.id, source]));
+  for (const id of ["nyc-council-members", "city-clerk-elobbyist", "cfb-campaign-contributions"]) {
+    assert.ok(byId[id], id);
+    assert.ok(byId[id].surfaces.includes("Officials"), `${id} surfaces`);
+    assert.doesNotMatch(byId[id].surfaces.join(" "), /\bLand\b/);
+    assert.match(byId[id].coverage, /Ship|Publish|Usefulness|precision|PersonId|person hub/i);
+  }
+  const spending = byId["checkbook-spending"];
+  assert.ok(spending.surfaces.includes("Money"));
+  assert.match(spending.coverage, /payment retention|Follow-the-Dollars/i);
+  const agencies = byId["nyc-agencies"];
+  assert.ok(agencies.surfaces.includes("Agency profiles"));
+  assert.equal(agencies.surfaces.includes("Officials"), false);
+});

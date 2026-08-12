@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.docs_capability_refresh.v1",
+  "observed_on": "2026-08-11",
+  "surfaces": {
+    "README.md": {
+      "role": "public open-source front page",
+      "changes": [
+        "person hub + influence (lobby/CFB)",
+        "Follow the dollars / payment retention",
+        "agency-successor densify",
+        "mandate-edge sparsity honesty",
+        "Civic Graph registry + multi-dimension harness (engineering, not public UI)"
+      ]
+    },
+    "docs/data-sources.md": {
+      "role": "generated public source register; feeds desk /data-sources via data-source-graph",
+      "source_of_truth": "site/data/source_contracts.json",
+      "changes": [
+        "checkbook-spending join_keys + join_measurement + Follow-the-Dollars used_for",
+        "nyc-agencies successor densify",
+        "legistar person-level votes",
+        "person hub / influence used_for precision"
+      ]
+    },
+    "data-source-graph": {
+      "role": "desk-consumable topology (gitignored generated artifact)",
+      "changes": [
+        "Officials surface class",
+        "coverageFor reads join_measurement.verdict",
+        "Land rule no longer false-matches person hub 'district'",
+        "Meetings rule no longer false-matches bare 'council' on person sources"
+      ],
+      "before_surfaces": "docs/screenshots/docs-capability-refresh/data-sources-surfaces-before.txt",
+      "after_surfaces": "docs/screenshots/docs-capability-refresh/data-sources-surfaces-after.txt",
+      "screenshots": [
+        "docs/screenshots/docs-capability-refresh/data-sources-graph-after-1440.png",
+        "docs/screenshots/docs-capability-refresh/data-sources-graph-after-390.png",
+        "docs/screenshots/docs-capability-refresh/data-sources-table-officials-after-1440.png"
+      ]
+    },
+    "desk_capabilities": {
+      "note": "Product capability board at desk.cityscroll.org/capabilities is generated in the private team site from team-capabilities data, not this public repository. Public capability summary lives in README.md."
+    }
+  }
+}

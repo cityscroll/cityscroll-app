@@ -38,13 +38,15 @@ const WORKER_JOBS = {
 const SURFACE_RULES = [
   ["Notices & search", /notice|core|feed|attachment|aggregate/i],
   ["Alerts", /alert|subscription|watch/i],
-  ["Money", /procurement|contract|award|solicitation|payment|vendor|rfp|subsidy/i],
-  ["Land", /land|zoning|zap|rezoning|ulurp|tax-lot|mappluto|district/i],
+  ["Money", /procurement|contract|award|solicitation|payment|vendor|rfp|subsidy|follow-the-dollars|follow the dollars/i],
+  ["Land", /land|zoning|zap|rezoning|ulurp|tax-lot|mappluto|community.?district|council.?district|district boundar/i],
   ["Property", /property|parcel|bbl|demolition|tax-lien/i],
   ["Rules", /rule|comment|adoption|effective date/i],
-  ["Meetings", /meeting|council|agenda|vote|hearing/i],
+  ["Meetings", /meeting|agenda|vote|hearing|legistar|roll-?call/i],
+  // Officials is distinct from Meetings: person hub, influence edges, and person-level votes.
+  ["Officials", /official|person hub|person.?id|lobby|campaign finance|influence|votes_on|council member/i],
   ["Staffing", /staff|payroll|civil-service|exam|title and pay|hiring/i],
-  ["Agency profiles", /agency|governance|leadership|budget/i],
+  ["Agency profiles", /agency|governance|leadership|budget|successor|former.?name/i],
 ];
 
 function sha256(text) {
@@ -172,8 +174,13 @@ function surfacesFor(contract) {
 }
 
 function coverageFor(contract) {
-  const realized = contract.join_measurement?.realized;
-  if (realized?.verdict) return realized.verdict;
+  const measurement = contract.join_measurement;
+  if (measurement && typeof measurement === "object") {
+    if (measurement.realized?.verdict) return measurement.realized.verdict;
+    if (typeof measurement.verdict === "string" && measurement.verdict.trim()) {
+      return measurement.verdict.trim();
+    }
+  }
   if (contract.gap) return contract.gap;
   const required = Array.isArray(contract.required_fields) ? contract.required_fields.length : 0;
   return required
