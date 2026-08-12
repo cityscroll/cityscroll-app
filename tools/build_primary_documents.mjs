@@ -4,9 +4,11 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
+import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import {
   buildBrowseDocument,
   buildBrowseLandingDocument,
+  buildBrowseConceptDocument,
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
 
@@ -75,6 +77,15 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
+  const conceptSources = {
+    people,
+    committees,
+    awards,
+    places,
+  };
+  for (const kind of Object.keys(BROWSE_CONCEPTS)) {
+    outputs.push(output(`browse/${kind}`, buildBrowseConceptDocument(shell, kind, conceptSources)));
+  }
   for (const [facet, payload] of Object.entries(payloads)) {
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), { route: `/browse/${facet}/` })));
   }
