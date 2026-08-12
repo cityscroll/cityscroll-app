@@ -206,6 +206,44 @@ test("contracts conformance: a three-way typed scope is an all-ref intersection 
   }
 });
 
+test("connection_relation is a real facet predicate and as_of mismatches are visible", () => {
+  const payload = {
+    open_as_of: "2026-08-11",
+    notices: [
+      {
+        request_id: "contract-one",
+        agency_name: "Police Department",
+        short_title: "Open police services",
+        type_of_notice_description: "Solicitation",
+      },
+    ],
+  };
+  const correct = new URLSearchParams({
+    facet: JSON.stringify({
+      entity_refs_all: ["agency:id:police-department"],
+      connection_relation: "published_by_agency",
+    }),
+    as_of: "2026-08-11",
+  });
+  const wrongRelation = new URLSearchParams({
+    facet: JSON.stringify({
+      entity_refs_all: ["agency:id:police-department"],
+      connection_relation: "hosts_meeting",
+    }),
+  });
+  const matchingView = buildBrowseView("contracts", payload, correct, { limit: 10 });
+  assert.equal(matchingView.total, 1);
+  assert.equal(matchingView.asOfMismatch, false);
+  assert.equal(buildBrowseView("contracts", payload, wrongRelation).total, 0);
+
+  const stale = new URLSearchParams(correct);
+  stale.set("as_of", "2026-08-10");
+  const staleHtml = renderBrowseView(buildBrowseView("contracts", payload, stale));
+  assert.match(staleHtml, /browse-as-of-mismatch/);
+  assert.match(staleHtml, /2026-08-10/);
+  assert.match(staleHtml, /2026-08-11/);
+});
+
 test("meetings field regression: agency and borough scopes keep affected-area matches", () => {
   const payload = {
     rows: [

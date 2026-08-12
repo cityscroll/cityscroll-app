@@ -21,7 +21,6 @@ function currentMoneyRouteScope(){
   return CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
 }
 function moneyModeHref(modeKey, scope){
-  if (!["open", "allrfp", "award"].includes(modeKey)) return "";
   const next = CrolScope.normalizeScope(scope);
   next.facets.values = { ...next.facets.values, mode: modeKey };
   const rawHash = CrolScope.routeHashFromScope(next, { surface: "money" });
@@ -40,9 +39,7 @@ function setClosingWeekState(active){
   link.setAttribute("aria-pressed", String(!!active));
 }
 function syncProcurementFacetRails(){
-  const activeMode = ["open", "allrfp", "award"].includes(String($("#mode")?.value || ""))
-    ? String($("#mode").value)
-    : "open";
+  const activeMode = String($("#mode")?.value || "open");
   const scope = currentMoneyRouteScope();
   const modeRail = document.getElementById(["money", "mode", "rail"].join("-"));
   modeRail?.querySelectorAll(".ui-filter-chip").forEach((link) => {
@@ -144,7 +141,7 @@ const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,1
 function moneyActiveFilterChip(item){
   const value = item.value;
   if(item.kind==="noticeType"){
-    const label = value==="award" ? t("nl_filter_award") : value==="allrfp" ? t("head_allrfp") : t("nl_filter_open_rfp");
+    const label = value==="award" ? t("nl_filter_award") : value==="allrfp" ? t("head_allrfp") : value==="archive" ? t("head_archive") : t("nl_filter_open_rfp");
     return `<span class="qchip">${t("nl_filter_notice_label")} <b>${label}</b></span>`;
   }
   if(item.kind==="agency") return `<span class="qchip">${t("agency_label")} <b>${enTitle(value)}</b></span>`;
@@ -171,7 +168,7 @@ function routeScopeFacetChip(){
 function renderMoneyActiveFilters(){
   const box=$("#moneyactivefilters"); if(!box) return;
   const filter={
-    noticeType:mode==="award"?"award":mode==="allrfp"?"allrfp":"solicitation",
+    noticeType:mode==="award"?"award":mode==="allrfp"?"allrfp":mode==="archive"?"archive":"solicitation",
     agency:$("#agency").value,
     keywords:$("#kw").value.trim(),
     minAmount:$("#minamt").value,
@@ -271,7 +268,11 @@ async function search(){
     return;
   }
 
-  let where = mode === "award" ? "type_of_notice_description='Award'" : "type_of_notice_description='Solicitation'";
+  let where = mode === "award"
+    ? "type_of_notice_description='Award'"
+    : mode === "archive"
+      ? "type_of_notice_description=" + "'Award'" + " OR type_of_notice_description=" + "'Solicitation'"
+      : "type_of_notice_description='Solicitation'";
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
   if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
@@ -287,12 +288,16 @@ async function search(){
   let order;
   if(sort === "amount") order = "contract_amount DESC";
   else if(sort === "newest") order = "start_date DESC";
-  else order = mode === "award" ? "start_date DESC" : mode === "allrfp" ? "due_date DESC" : "due_date ASC";
+  else order = mode === "award" || mode === "archive"
+    ? "start_date DESC"
+    : mode === "allrfp" ? "due_date DESC" : "due_date ASC";
 
   updateHash();
   syncProcurementFacetRails();
   loadMethodFacet(facetWhere, kw);
-  const heads = {open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award")};
+  const heads = {
+    open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award"), archive:t("head_archive"),
+  };
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? t("head_closing_this_week") : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   busyList("#list");
@@ -386,15 +391,6 @@ async function loadMethodFacet(where, kw){
   }
 }
 
-// moneyRowHTML: one Money/Contracts result row -- same title-highlight/evidence-line reuse of
-// matchEvidence()/digTitleHTML()/digEvidenceHTML() as the Alerts-page ask preview's digItemHTML().
-// terms is [] for plain browsing (no #kw typed), so matchEvidence returns null and the row
-// renders exactly as it did before this existed.
-//
-// Solicitation M/WBE chips: pure extract from list fields (selection_method + body chunk).
-// Default 20-day floors stay off the list; only distinctive method/goal markers show.
-// Named distinctly from procurement-phase ensureMwbeGoalSurfaceTools so the
-// reconstructed inline script (module-dom-equivalence) does not double-declare.
 let moneyListMwbeSurfacePromise = null;
 function moneyListMwbeSurfaceTools(){
   if(!moneyListMwbeSurfacePromise){
@@ -403,7 +399,6 @@ function moneyListMwbeSurfaceTools(){
   return moneyListMwbeSurfacePromise;
 }
 function solicitationListChipsHTML(r){
-  // Sync path uses cached module when already loaded; otherwise empty until async patch.
   const tools = moneyListMwbeSurfacePromise && moneyListMwbeSurfacePromise._value
     ? moneyListMwbeSurfacePromise._value
     : null;
@@ -416,10 +411,6 @@ function solicitationListChipsHTML(r){
     return `<span class="tag ${escUiHtml(tone)}">${escUiHtml(label)}</span>`;
   }).join("")}</div>`;
 }
-// List presentation adapter over the one existing procurement interpretation path.
-// noticeActionMatter owns notice classification and compileActionRail owns deadline /
-// destination rules; this function only chooses whether that primary rail action is
-// eligible for the compact Money-row surface.
 function moneyListPrimaryAction(r, today=todayISO()){
   if(!globalThis.CrolActions || typeof CrolActions.compileActionRail!=="function") return null;
   if(typeof globalThis.noticeActionMatter!=="function") return null;
@@ -566,7 +557,6 @@ function renderList(autoSelect){
     }
     $("#list").innerHTML=parts.join("");
   }else if(mode==="award"){
-    // Paint immediately; replace with small-multiples clusters when ≥3 awards match except date.
     $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
     consolidateMoneyAwardRows(currentRows).then((entries)=>{
       if(!entries || !document.querySelector("#list")) return;
@@ -583,8 +573,6 @@ function renderList(autoSelect){
     $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
   }
   const keepId=autoSelect===false&&selectedRFP?selectedRFP.request_id:null;
-  // Prefetch M/WBE chip tools and inject chips in place — never replace the whole list
-  // (that would race loadLineageBadges and wipe .lineage-slot markers).
   ensureMwbeListChipsReady().then((tools)=>{
     if(!tools || !document.querySelector("#list .row")) return;
     document.querySelectorAll("#list .row").forEach((el)=>{
@@ -611,7 +599,6 @@ function renderList(autoSelect){
   loadLineageBadges();
 }
 
-// One post-paint batch marks confirmed histories; the ceiling rejects widened PIN collisions.
 const LINEAGE_MIN_STAGES = 2;
 const LINEAGE_MAX_STAGES = 15;
 function isBlanketChain(chain){

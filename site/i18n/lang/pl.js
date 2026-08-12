@@ -806,6 +806,7 @@
     head_open: "Otwarte Zapytania ofertowe (RFP)",
     head_allrfp: "Wszystkie RFP",
     head_award: "Ostatnie przyznania",
+    head_archive: "Zarchiwizowane zamówienia i umowy",
     head_closing_this_week: " · zamyka się w tym tygodniu",
     no_titles_match: "Żaden tytuł nie pasuje. Spróbuj szerszego słowa.",
     no_personnel: "Żadne ogłoszenie kadrowe nie pasuje do tego nazwiska. Spróbuj samego nazwiska.",

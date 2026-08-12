@@ -7,6 +7,7 @@ import test from "node:test";
 import {
   AGENCY_CONSTELLATION_CATEGORIES,
   AGENCY_CONSTELLATION_ER_BASIS,
+  agencyCategoryArchiveHref,
   agencyCategoryBrowseHref,
   agencyConstellationFollowHref,
   agencyPath,
@@ -136,6 +137,65 @@ test("Parks constellation spans contracts, meetings, rules, obligations, and sta
   assert.equal(view.summary.matched_categories, 5);
   assert.equal(view.summary.er_match_basis, AGENCY_CONSTELLATION_ER_BASIS);
   assert.equal(view.summary.iteration, "v1");
+});
+
+test("agency previews and Browse destinations share open/linked totals and snapshot dates", () => {
+  const moneyOpen = {
+    open_as_of: "2026-08-11",
+    notices: Array.from({ length: 10 }, (_, index) => ({
+      request_id: `police-contract-${index + 1}`,
+      agency_name: "Police Department",
+      entity_refs_all: ["agency:id:police-department"],
+      short_title: `Open police service ${index + 1}`,
+      type_of_notice_description: "Solicitation",
+      due_date: `2026-09-${String(index + 10).padStart(2, "0")}`,
+      start_date: "2026-08-01",
+    })),
+  };
+  const meetingsDomain = {
+    retrieved_at: "2026-08-11",
+    rows: Array.from({ length: 3 }, (_, index) => ({
+      request_id: `police-meeting-${index + 1}`,
+      agency_name: "Police Department",
+      entity_refs_all: ["agency:id:police-department"],
+      title: `Police public hearing ${index + 1}`,
+      type_of_notice_description: "Public Hearing",
+      event_date: `2026-09-${String(index + 10).padStart(2, "0")}`,
+    })),
+  };
+  const view = buildAgencyConstellationView("police-department", {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+    money_open: moneyOpen,
+    meetings_domain: meetingsDomain,
+  });
+  const byId = Object.fromEntries(view.categories.map((category) => [category.id, category]));
+
+  assert.equal(byId.contracts.count, 10);
+  assert.equal(byId.contracts.total_count, 10);
+  assert.equal(byId.contracts.items.length, 8);
+  assert.equal(byId.contracts.as_of, "2026-08-11");
+  assert.equal(byId.contracts.universe, "open");
+  assert.match(byId.contracts.view_all_href, /connection_relation/);
+  assert.match(byId.contracts.view_all_href, /mode=open/);
+  assert.match(byId.contracts.view_all_href, /as_of=2026-08-11/);
+  assert.match(agencyCategoryArchiveHref("police-department", "contracts"), /mode=archive/);
+
+  assert.equal(byId.meetings.count, 3);
+  assert.equal(byId.meetings.total_count, 3);
+  assert.equal(byId.meetings.items.length, 3);
+  assert.equal(byId.meetings.as_of, "2026-08-11");
+  assert.equal(byId.meetings.universe, "linked");
+  assert.match(byId.meetings.view_all_href, /connection_relation/);
+  assert.match(byId.meetings.view_all_href, /as_of=2026-08-11/);
+
+  const html = renderAgencyConstellationDocument(view);
+  assert.match(html, /Showing 8 of 10 open/);
+  assert.match(html, /data-total-count="10"/);
+  assert.match(html, /Open records as of 2026-08-11/);
+  assert.match(html, /Browse archived awards and contracts/);
 });
 
 test("agency scope carries across category browse URLs", () => {
