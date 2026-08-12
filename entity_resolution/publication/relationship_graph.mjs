@@ -22,6 +22,10 @@ export const PUBLIC_GRAPH_NODE_TYPES = Object.freeze([
   "award",
   // Official person-level identity for Council roll-call votes (meeting outcomes).
   "official",
+  // Publisher-backed Legistar committee identity; BodyName is descriptive only.
+  "committee",
+  // Community-board governance body from the bounded source registry.
+  "community-board",
   // Publisher-backed agency principal officer.
   "person-leader",
   "mandate",
@@ -39,11 +43,15 @@ export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
   "references_contract",
   // official → matter|agenda_item (populated from retained Legistar person votes).
   "votes_on",
+  // official → committee, descriptive temporal role only.
+  "member_of",
   // agency → person-leader (from the agency governance crosswalk).
   "agency_led_by",
   "mandate_governs_procedure",
   "project_participates_in_procedure",
   "located_in",
+  "covers",
+  "intersects",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
@@ -52,10 +60,13 @@ export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
   published_by_agency: "Published by agency",
   references_contract: "References contract",
   votes_on: "Votes on",
+  member_of: "Member of",
   agency_led_by: "Agency led by",
   mandate_governs_procedure: "Mandate governs procedure",
   project_participates_in_procedure: "Project participates in procedure",
   located_in: "Located in",
+  covers: "Covers",
+  intersects: "Intersects",
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -288,7 +299,11 @@ function selectedTypes(requested, allowlist) {
  */
 export function serializePublicRelationshipGraph(rows = [], opts = {}) {
   const list = Array.isArray(rows) ? rows : [];
-  const root = publicEntity(list[0]);
+  const publishedGraph = opts.publishedGraph || {};
+  const publishedNodes = Array.isArray(publishedGraph.nodes) ? publishedGraph.nodes : [];
+  const publishedEdges = Array.isArray(publishedGraph.edges) ? publishedGraph.edges : [];
+  const root = publicEntity(list[0])
+    || publicEntity(publishedNodes.find((node) => clean(node?.id) === clean(opts.rootId)));
   if (!root || !PUBLIC_GRAPH_NODE_TYPES.includes(root.type)) return null;
 
   const requestedDepth = requestedInteger(opts.depth, PUBLIC_GRAPH_DEFAULT_DEPTH);
@@ -303,6 +318,9 @@ export function serializePublicRelationshipGraph(rows = [], opts = {}) {
     confidence: { status: "not_published", basis: "canonical_link" },
   }]]);
   const allEdges = new Map();
+
+  for (const node of publishedNodes) addNode(allNodes, node);
+  for (const edge of publishedEdges) addEdge(allEdges, edge);
 
   for (const row of list) {
     const observation = observationGraph(root, row);

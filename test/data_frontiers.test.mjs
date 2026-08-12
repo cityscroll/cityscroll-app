@@ -79,10 +79,10 @@ test("parse + render table is a pure projection of entries", () => {
 test("repo projection matches entries (pure projection check)", () => {
   assert.ok(existsSync(ENTRIES), "per-entry frontier records must exist");
   const entries = loadFrontierEntries(ENTRIES);
-  assert.equal(entries.length, 31);
+  assert.equal(entries.length, 33);
   const result = buildFrontiersProjection(ROOT, "2026-08", { check: true });
   assert.equal(result.checked, true);
-  assert.equal(result.entries.length, 31);
+  assert.equal(result.entries.length, 33);
   // Table section alone is a pure projection of entries
   const md = readFileSync(PROJECTION, "utf8");
   const { tableMarkdown } = splitFrontiersMarkdown(md);
