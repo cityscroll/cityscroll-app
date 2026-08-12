@@ -328,7 +328,7 @@
       "id": "payment",
       "status": "registered",
       "layer": "semantic",
-      "reason": "Checkbook Spending payments retained as individual source_records-shaped rows (host collector + request-time dual-write). Kill sample 2026-08-11: usefulness 22/50 (44%), precision 31/31 (100%).",
+      "reason": "Checkbook Spending payments retained as individual source_records-shaped rows (host collector + request-time dual-write). Kill sample 2026-08-11: usefulness 22/50 (44%), precision 31/31 (100%). Promoted to built grounding after the retention gate cleared (cg-v1).",
       "primary_key_pattern": "payment:{contract_id}:{document_id}:{payee}:{issue_date}:{amount}",
       "families": [
         "er:procurement"
@@ -336,12 +336,13 @@
       "backing": [
         "source_records",
         "procurement_spine_sources.checkbook_spending",
-        "checkbook_spending_population_receipt"
+        "checkbook_spending_population_receipt",
+        "checkbook_spending_payment_retention_receipt"
       ],
       "properties_ref": [
         "contract_amount"
       ],
-      "grounding": "gap"
+      "grounding": "built"
     },
     {
       "id": "matter",
@@ -598,13 +599,18 @@
     },
     {
       "id": "paid_under",
-      "status": "unregistered",
+      "status": "registered",
       "from": "contract",
       "to": "payment",
-      "reason": "Payment object unregistered; spending not dual-written.",
-      "backing": [],
+      "reason": "Contract→payment edge from retained Checkbook Spending rows joined by exact contract_id (host retention + request-time dual-write). Kill sample 2026-08-11: 22/50 seed contracts retained ≥1 payment (44%), precision 31/31 (100%). Product edge name payment_on_contract aliases this link on cross-domain money objects.",
+      "backing": [
+        "source_records",
+        "checkbook_spending_payment_retention",
+        "cross_domain.payment_on_contract",
+        "procurement_spine_sources.checkbook_spending"
+      ],
       "label": "Paid under",
-      "grounding": "gap"
+      "grounding": "built"
     },
     {
       "id": "votes_on",

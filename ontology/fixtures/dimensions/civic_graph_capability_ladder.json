@@ -2,7 +2,7 @@
   "schema": "cityscroll.civic_graph_capability_ladder.v1",
   "observed_at": "2026-08-11",
   "policy_version": "v0",
-  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps — those live under coverage dimension. Re-measured 2026-08-11 after person-hub dual-write (#798) and mandate densify (#799): mandate observed_count>0 quiets report/rule v3 cards; backlinks 7 still <10 so contract card remains open.",
+  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps \u2014 those live under coverage dimension. Re-measured 2026-08-11 after person-hub dual-write (#798) and mandate densify (#799): mandate observed_count>0 quiets report/rule v3 cards; backlinks 7 still <10 so contract card remains open. paid_under registry + payment grounding promoted (cg-v1-paid-under-registry); payment_row_surface_shipped remains false until Follow-the-Dollars check-level rows ship.",
   "already_in_flywheel": [
     {
       "id": "crol-list/mf-coverage-source-records-not-declared-cfb-campaign-contributions",
@@ -35,24 +35,32 @@
     },
     {
       "id": "crol-list/checkbook-spending-payment-retention",
-      "role": "v1 prerequisite FIXED — payment rows retained",
+      "role": "v1 prerequisite FIXED \u2014 payment rows retained",
       "status": "fixed",
       "dimension": "coverage"
+    },
+    {
+      "id": "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
+      "role": "v1 FIXED \u2014 paid_under registered; payment grounding built",
+      "dimension": "ontology-enrichment",
+      "status": "fixed"
     }
   ],
   "metrics": {
     "payment": {
-      "object_grounding": "gap",
+      "object_grounding": "built",
       "object_status": "registered",
-      "paid_under_status": "unregistered",
-      "paid_under_grounding": "gap",
-      "paid_under_reason_stale": true,
+      "paid_under_status": "registered",
+      "paid_under_grounding": "built",
+      "paid_under_reason_stale": false,
       "retention_usefulness": 0.44,
       "retention_precision": 1.0,
       "retention_materialize": true,
       "dual_write_after": "complete",
       "dual_write_row_count": 344,
-      "receipt": "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json"
+      "payment_row_surface_shipped": false,
+      "receipt": "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json",
+      "registry_receipt": "site/data/checkbook_spending_sources/verification_receipts/paid_under_registry_2026-08-11.json"
     },
     "official_influence": {
       "hub_person_count": 215,

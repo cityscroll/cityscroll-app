@@ -77,7 +77,12 @@ export function civicGraphCapabilityCards(input = {}) {
       ],
       lesson_class: "civic-graph-v1-payment-link",
     }));
+  }
 
+  // Surface is independent of the registry card so a shipped paid_under does not
+  // hide the still-open reader work (check-level Follow-the-Dollars rows).
+  const paymentSurfaceOpen = pay.payment_row_surface_shipped !== true;
+  if (paymentReady && paymentSurfaceOpen) {
     cards.push(makeDimensionCard({
       dimension: DIMENSION_ID,
       slug: "cg-v1-payment-row-surface",
@@ -90,6 +95,7 @@ export function civicGraphCapabilityCards(input = {}) {
         observed_at: observedAt,
         payment_dual_write_row_count: pay.dual_write_row_count ?? null,
         retention_materialize: pay.retention_materialize ?? null,
+        payment_row_surface_shipped: pay.payment_row_surface_shipped === true,
         depends_on_capability: "cg-v1-paid-under-registry",
         unlock: "reader sees check-level payment trail, not only spent-to-date",
       },

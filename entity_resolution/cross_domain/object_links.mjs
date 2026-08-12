@@ -168,7 +168,8 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
     registry: false,
   },
   payment_on_contract: {
-    description: "Spending document is drawn on a contract id",
+    // Product edge name; Civic Graph catalogs the same relation as paid_under.
+    description: "Spending document is drawn on a contract id (alias of paid_under)",
     domains: Object.freeze(["money"]),
     registry: false,
   },
