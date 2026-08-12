@@ -4,6 +4,7 @@ import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
+import { entityChipHTML, entityRouteRef } from "./entity_pivot.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -11,7 +12,7 @@ const NOTICE_FIELDS = [
   "request_id", "start_date", "event_date", "due_date", "agency_name",
   "type_of_notice_description", "section_name", "short_title", "pin",
   "category_description", "selection_method_description", "street_address_1",
-  "additional_description_1",
+  "additional_description_1", "vendor_name",
 ].join(",");
 
 function esc(value) {
@@ -207,6 +208,15 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       className: "notice-agency-link",
     })
     : esc(agency);
+  const vendor = String(row.vendor_name || "").trim();
+  const vendorLink = vendor
+    ? entityChipHTML({
+      ref: entityRouteRef("vendor", vendor),
+      label: vendor,
+      link_confidence: "strong",
+      relation: "named_vendor",
+    })
+    : "";
   const attachmentUrl = !row.additional_description_1 ? firstNoticeAttachmentUrl(row) : null;
   const facts = [
     ["Published", row.start_date], ["Event", row.event_date],
@@ -220,7 +230,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     <article class="panel route-item" tabindex="-1">
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
-      <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}

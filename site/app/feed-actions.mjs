@@ -691,7 +691,7 @@ function actionRailGuideHTML(actions){
     headingKey=guide.mode==="selection"?"award_guide_selection_heading":"award_guide_heading";
     const regDate=guide.registration_date?fdate(guide.registration_date):null;
     facts=[
-      guide.vendor?fact("award_vendor",`<dt>${t("award_guide_vendor_label")}</dt><dd lang="en" dir="ltr"><b>${escUiHtml(guide.vendor)}</b></dd>`):"",
+      guide.vendor?fact("award_vendor",`<dt>${t("award_guide_vendor_label")}</dt><dd lang="en" dir="ltr"><b>${globalThis.pivotA?.(globalThis.vendorHref?.(guide.vendor), guide.vendor) || escUiHtml(guide.vendor)}</b></dd>`):"",
       guide.amount?fact("award_amount",`<dt>${t("award_guide_amount_label")}</dt><dd><b>${escUiHtml(guide.amount)}</b></dd>`):"",
       regDate?fact("award_registered",`<dt>${t("award_guide_registered_label")}</dt><dd>${escUiHtml(regDate)}</dd>`):"",
       guide.pending_registration&&!guide.registered
@@ -705,12 +705,12 @@ function actionRailGuideHTML(actions){
       else if(guide.selection_phase==="intent_to_negotiate") steps.push(t("award_guide_selection_intent_negotiate_step"));
       else if(guide.selection_phase==="vendor_list") steps.push(t("award_guide_selection_vendor_list_step"));
       else steps.push(t("award_guide_selection_intent_award_step"));
-      if(guide.vendor) steps.push(step(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}),"award_vendor"));
+      if(guide.vendor) steps.push(step(t("award_guide_vendor_step",{vendor:globalThis.pivotA?.(globalThis.vendorHref?.(guide.vendor), guide.vendor) || escUiHtml(guide.vendor)}),"award_vendor"));
       if(guide.amount) steps.push(step(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}),"award_amount"));
       steps.push(step(t("award_guide_no_bid_step"),"award_no_bid"));
       steps.push(t("award_guide_selection_watch_step"));
     }else{
-      if(guide.vendor) steps.push(step(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}),"award_vendor"));
+      if(guide.vendor) steps.push(step(t("award_guide_vendor_step",{vendor:globalThis.pivotA?.(globalThis.vendorHref?.(guide.vendor), guide.vendor) || escUiHtml(guide.vendor)}),"award_vendor"));
       if(guide.amount) steps.push(step(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}),"award_amount"));
       if(guide.registered&&regDate) steps.push(step(t("award_guide_registered_step",{date:escUiHtml(regDate)}),"award_registered"));
       else if(guide.pending_registration) steps.push(t("award_guide_pending_step"));

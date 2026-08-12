@@ -28,6 +28,7 @@ import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
+import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -49,6 +50,7 @@ function loadSources() {
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
   const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
+  const ocpAwardsPath = join(SITE, "data/ocp_awards_warehouse_lookup.json");
   const publisherCrosswalkPath = join(ROOT, "worker/src/data/agency_crosswalk.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
@@ -65,6 +67,7 @@ function loadSources() {
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
+    ocp_awards: existsSync(ocpAwardsPath) ? readJson(ocpAwardsPath) : null,
     publisher_crosswalk: readJson(publisherCrosswalkPath),
   };
 }
@@ -331,8 +334,14 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.certification?.generated_at,
     sources.obligations?.generated_at,
     sources.process_conformance?.generated_at,
+    sources.ocp_awards?.materialized_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
+  const vendorRollups = buildAgencyVendorRollups(sources.ocp_awards?.rows || [], {
+    asOf: sources.ocp_awards?.materialized_at,
+    publisherRows,
+    limit: 8,
+  });
   const identityReport = buildAgencyRouteIdentityReport(sources, publisherRows, generatedAt);
   const reconciledSources = reconcileAgencyConstellationSources(sources, publisherRows);
   const byId = {};
@@ -341,6 +350,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
   for (const id of candidateAgencyIds(reconciledSources)) {
     const view = buildAgencyConstellationView(id, {
       ...reconciledSources,
+      vendor_rollups: vendorRollups,
       generated_at: generatedAt,
     });
     if (!view) continue;
@@ -358,6 +368,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
           method: category.method,
         }]),
       ),
+      top_vendors: view.categories.find((category) => category.id === "vendors")?.items || [],
     };
     documents.push([
       join(SITE, "agencies", id, "index.html"),
@@ -382,7 +393,9 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       certification_generated_at: sources.certification?.generated_at || null,
       obligations_generated_at: sources.obligations?.generated_at || null,
       process_conformance_generated_at: sources.process_conformance?.generated_at || null,
-      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, mandates, and process-conformance expected-vs-observed.",
+      vendor_rollup_as_of: vendorRollups.as_of,
+      vendor_rollup_window_start: vendorRollups.window_start,
+      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed.",
     },
   };
 

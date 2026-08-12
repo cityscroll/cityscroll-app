@@ -2,14 +2,14 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-09T15:17:29.522Z",
+  "generated_at": "2026-08-05T10:40:50.286Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-09T15:17:29.522Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
     "housing-preservation-and-development"
   ],
   "agency_count": 83,
-  "multi_category_count": 55,
+  "multi_category_count": 60,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
     "board-of-corrections": "board-of-correction",
@@ -33,12 +33,17 @@
       "subject_ref": "agency:id:administration-for-childrens-services",
       "display_name": "Administration for Children's Services",
       "path": "/agencies/administration-for-childrens-services/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -60,18 +65,113 @@
           "count": 20,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:SCO%20FAMILY%20OF%20SERVICES",
+          "subject_ref": "vendor:stem:SCO%20FAMILY%20OF%20SERVICES",
+          "label": "SCO Family of Services",
+          "href": "/vendors/SCO%20FAMILY%20OF%20SERVICES/",
+          "award_count": 8,
+          "award_total": 440728065,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
+          "subject_ref": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
+          "label": "Jewish Child Care Association of New York",
+          "href": "/vendors/JEWISH%20CHILD%20CARE%20ASSOCIATION/",
+          "award_count": 7,
+          "award_total": 322922964,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20CHILDREN%20S%20VILLAGE",
+          "subject_ref": "vendor:stem:THE%20CHILDREN%20S%20VILLAGE",
+          "label": "The Children's Village",
+          "href": "/vendors/THE%20CHILDREN%20S%20VILLAGE/",
+          "award_count": 9,
+          "award_total": 320414948,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20FOUNDLING",
+          "subject_ref": "vendor:stem:NEW%20YORK%20FOUNDLING",
+          "label": "New York Foundling",
+          "href": "/vendors/NEW%20YORK%20FOUNDLING/",
+          "award_count": 15,
+          "award_total": 284181543,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
+          "subject_ref": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
+          "label": "The Children's Aid Society",
+          "href": "/vendors/THE%20CHILDREN%20S%20AID%20SOCIETY/",
+          "award_count": 8,
+          "award_total": 281766561,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
+          "subject_ref": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
+          "label": "Good Shepherd Services",
+          "href": "/vendors/GOOD%20SHEPHERD%20SERVICES/",
+          "award_count": 8,
+          "award_total": 222639105,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CATHOLIC%20GUARDIAN%20SERVICES",
+          "subject_ref": "vendor:stem:CATHOLIC%20GUARDIAN%20SERVICES",
+          "label": "Catholic Guardian Services",
+          "href": "/vendors/CATHOLIC%20GUARDIAN%20SERVICES/",
+          "award_count": 5,
+          "award_total": 210761377,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GRAHAM-WINDHAM",
+          "subject_ref": "vendor:stem:GRAHAM-WINDHAM",
+          "label": "Graham-Windham",
+          "href": "/vendors/GRAHAM-WINDHAM/",
+          "award_count": 7,
+          "award_total": 203690868,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "administrative-trials-and-hearings": {
       "subject_ref": "agency:id:administrative-trials-and-hearings",
       "display_name": "Office of Administrative Trials and Hearings",
       "path": "/agencies/administrative-trials-and-hearings/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -93,18 +193,113 @@
           "count": 7,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:COURTCALL",
+          "subject_ref": "vendor:stem:COURTCALL",
+          "label": "CourtCall LLC",
+          "href": "/vendors/COURTCALL/",
+          "award_count": 1,
+          "award_total": 1618542,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ACCURATE%20COMMUNICATION",
+          "subject_ref": "vendor:stem:ACCURATE%20COMMUNICATION",
+          "label": "Accurate Communication Inc.",
+          "href": "/vendors/ACCURATE%20COMMUNICATION/",
+          "award_count": 1,
+          "award_total": 219648,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+          "label": "Compulink Technologies Inc",
+          "href": "/vendors/COMPULINK%20TECHNOLOGIES/",
+          "award_count": 2,
+          "award_total": 156156,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:TOMEX%20ELECTRONICS",
+          "subject_ref": "vendor:stem:TOMEX%20ELECTRONICS",
+          "label": "Tomex Electronics Inc",
+          "href": "/vendors/TOMEX%20ELECTRONICS/",
+          "award_count": 1,
+          "award_total": 128311,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PEER%20CONSULTING%20RESOURCES",
+          "subject_ref": "vendor:stem:PEER%20CONSULTING%20RESOURCES",
+          "label": "Peer Consulting Resources Inc",
+          "href": "/vendors/PEER%20CONSULTING%20RESOURCES/",
+          "award_count": 1,
+          "award_total": 99978,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AMERICAN%20COMPUTER%20CONSULTANTS",
+          "subject_ref": "vendor:stem:AMERICAN%20COMPUTER%20CONSULTANTS",
+          "label": "American Computer Consultants Inc",
+          "href": "/vendors/AMERICAN%20COMPUTER%20CONSULTANTS/",
+          "award_count": 1,
+          "award_total": 98328,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BLENDERBOX",
+          "subject_ref": "vendor:stem:BLENDERBOX",
+          "label": "Blenderbox Inc",
+          "href": "/vendors/BLENDERBOX/",
+          "award_count": 1,
+          "award_total": 83600,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BLINK%20SUPPLIES",
+          "subject_ref": "vendor:stem:BLINK%20SUPPLIES",
+          "label": "Blink Supplies Inc",
+          "href": "/vendors/BLINK%20SUPPLIES/",
+          "award_count": 1,
+          "award_total": 70005,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "aging": {
       "subject_ref": "agency:id:aging",
       "display_name": "Department for the Aging",
       "path": "/agencies/aging/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -126,7 +321,97 @@
           "count": 8,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:NEW%20PARTNERS",
+          "subject_ref": "vendor:stem:NEW%20PARTNERS",
+          "label": "New Partners Inc.",
+          "href": "/vendors/NEW%20PARTNERS/",
+          "award_count": 1,
+          "award_total": 22303065,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CATHOLIC%20CHARITIES%20NEIGHBORHOOD%20SERVICES",
+          "subject_ref": "vendor:stem:CATHOLIC%20CHARITIES%20NEIGHBORHOOD%20SERVICES",
+          "label": "Catholic Charities Neighborhood Services Inc",
+          "href": "/vendors/CATHOLIC%20CHARITIES%20NEIGHBORHOOD%20SERVICES/",
+          "award_count": 1,
+          "award_total": 19666472,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20FOUNDATION%20FOR%20SENIOR%20CITIZENS",
+          "subject_ref": "vendor:stem:NEW%20YORK%20FOUNDATION%20FOR%20SENIOR%20CITIZENS",
+          "label": "New York Foundation for Senior Citizens",
+          "href": "/vendors/NEW%20YORK%20FOUNDATION%20FOR%20SENIOR%20CITIZENS/",
+          "award_count": 2,
+          "award_total": 19390252,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PEOPLE%20CARE",
+          "subject_ref": "vendor:stem:PEOPLE%20CARE",
+          "label": "People Care Inc.",
+          "href": "/vendors/PEOPLE%20CARE/",
+          "award_count": 1,
+          "award_total": 19149145,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED",
+          "subject_ref": "vendor:stem:THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED",
+          "label": "The Jewish Association for Services for the Aged",
+          "href": "/vendors/THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED/",
+          "award_count": 4,
+          "award_total": 19057058,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PERSONAL%20-%20TOUCH%20HOME%20CARE",
+          "subject_ref": "vendor:stem:PERSONAL%20-%20TOUCH%20HOME%20CARE",
+          "label": "Personal - Touch Home Care of NY, Inc.",
+          "href": "/vendors/PERSONAL%20-%20TOUCH%20HOME%20CARE/",
+          "award_count": 1,
+          "award_total": 18524439,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FORT%20GREENE%20COUNCIL",
+          "subject_ref": "vendor:stem:FORT%20GREENE%20COUNCIL",
+          "label": "Fort Greene Council Inc.",
+          "href": "/vendors/FORT%20GREENE%20COUNCIL/",
+          "award_count": 1,
+          "award_total": 12085841,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RISEBORO%20COMMUNITY%20PARTNERSHIP",
+          "subject_ref": "vendor:stem:RISEBORO%20COMMUNITY%20PARTNERSHIP",
+          "label": "Riseboro Community Partnership Inc",
+          "href": "/vendors/RISEBORO%20COMMUNITY%20PARTNERSHIP/",
+          "award_count": 1,
+          "award_total": 11293506,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "board-meetings": {
       "subject_ref": "agency:id:board-meetings",
@@ -138,6 +423,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -159,7 +449,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "board-of-correction": {
       "subject_ref": "agency:id:board-of-correction",
@@ -171,6 +462,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -192,7 +488,8 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "board-of-education-retirement-system": {
       "subject_ref": "agency:id:board-of-education-retirement-system",
@@ -204,6 +501,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -225,7 +527,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "board-of-elections": {
       "subject_ref": "agency:id:board-of-elections",
@@ -237,6 +540,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -258,7 +566,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "board-of-standards-and-appeals": {
       "subject_ref": "agency:id:board-of-standards-and-appeals",
@@ -271,6 +580,11 @@
           "count": 0,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "matched",
           "count": 3,
@@ -291,7 +605,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "borough-president-bronx": {
       "subject_ref": "agency:id:borough-president-bronx",
@@ -304,6 +619,11 @@
           "count": 0,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "matched",
           "count": 2,
@@ -324,7 +644,8 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "borough-president-brooklyn": {
       "subject_ref": "agency:id:borough-president-brooklyn",
@@ -336,6 +657,11 @@
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -357,7 +683,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "borough-president-queens": {
       "subject_ref": "agency:id:borough-president-queens",
@@ -369,6 +696,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -390,18 +722,24 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "buildings": {
       "subject_ref": "agency:id:buildings",
       "display_name": "Department of Buildings",
       "path": "/agencies/buildings/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -423,18 +761,113 @@
           "count": 27,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:2050%20PARTNERS",
+          "subject_ref": "vendor:stem:2050%20PARTNERS",
+          "label": "2050 Partners LLC",
+          "href": "/vendors/2050%20PARTNERS/",
+          "award_count": 1,
+          "award_total": 1600000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:IAQ%20SYSTEMS",
+          "subject_ref": "vendor:stem:IAQ%20SYSTEMS",
+          "label": "IAQ Systems Inc",
+          "href": "/vendors/IAQ%20SYSTEMS/",
+          "award_count": 1,
+          "award_total": 647200,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THORNTON%20TOMASETTI",
+          "subject_ref": "vendor:stem:THORNTON%20TOMASETTI",
+          "label": "Thornton Tomasetti Inc",
+          "href": "/vendors/THORNTON%20TOMASETTI/",
+          "award_count": 1,
+          "award_total": 549200,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BUSINESS%20RELOCATION%20SERVICES",
+          "subject_ref": "vendor:stem:BUSINESS%20RELOCATION%20SERVICES",
+          "label": "Business Relocation Services Inc.",
+          "href": "/vendors/BUSINESS%20RELOCATION%20SERVICES/",
+          "award_count": 1,
+          "award_total": 249919,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AWE-HUH%20CREATIVE%20SERVICES",
+          "subject_ref": "vendor:stem:AWE-HUH%20CREATIVE%20SERVICES",
+          "label": "Awe-Huh Creative Services LLC",
+          "href": "/vendors/AWE-HUH%20CREATIVE%20SERVICES/",
+          "award_count": 1,
+          "award_total": 121500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AITA%20CONSULTING%20SERVICES",
+          "subject_ref": "vendor:stem:AITA%20CONSULTING%20SERVICES",
+          "label": "Aita Consulting Services Inc",
+          "href": "/vendors/AITA%20CONSULTING%20SERVICES/",
+          "award_count": 1,
+          "award_total": 121030,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ABSORB%20SOFTWARE",
+          "subject_ref": "vendor:stem:ABSORB%20SOFTWARE",
+          "label": "Absorb Software, Inc.",
+          "href": "/vendors/ABSORB%20SOFTWARE/",
+          "award_count": 1,
+          "award_total": 60000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INTIVITY",
+          "subject_ref": "vendor:stem:INTIVITY",
+          "label": "Intivity Inc",
+          "href": "/vendors/INTIVITY/",
+          "award_count": 1,
+          "award_total": 58958,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "business-integrity-commission": {
       "subject_ref": "agency:id:business-integrity-commission",
       "display_name": "Business Integrity Commission",
       "path": "/agencies/business-integrity-commission/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -456,7 +889,20 @@
           "count": 2,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:EMPIREVISTA%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:EMPIREVISTA%20TECHNOLOGIES",
+          "label": "EmpireVista Technologies LLC",
+          "href": "/vendors/EMPIREVISTA%20TECHNOLOGIES/",
+          "award_count": 1,
+          "award_total": 203460,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "campaign-finance-board": {
       "subject_ref": "agency:id:campaign-finance-board",
@@ -468,6 +914,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -489,7 +940,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "charter-revision-commission": {
       "subject_ref": "agency:id:charter-revision-commission",
@@ -501,6 +953,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -522,7 +979,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "city-clerk": {
       "subject_ref": "agency:id:city-clerk",
@@ -534,6 +992,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -555,7 +1018,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "city-council": {
       "subject_ref": "agency:id:city-council",
@@ -567,6 +1031,11 @@
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -588,18 +1057,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "city-planning": {
       "subject_ref": "agency:id:city-planning",
       "display_name": "Department of City Planning",
       "path": "/agencies/city-planning/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 4,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 5,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -621,7 +1096,64 @@
           "count": 8,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:EVERGREEN%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:EVERGREEN%20TECHNOLOGIES",
+          "label": "Evergreen Technologies LLC",
+          "href": "/vendors/EVERGREEN%20TECHNOLOGIES/",
+          "award_count": 1,
+          "award_total": 393750,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE",
+          "subject_ref": "vendor:stem:ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE",
+          "label": "Environmental Systems Research Institute Inc",
+          "href": "/vendors/ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE/",
+          "award_count": 1,
+          "award_total": 110386,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PLACER%20LABS",
+          "subject_ref": "vendor:stem:PLACER%20LABS",
+          "label": "Placer Labs Inc",
+          "href": "/vendors/PLACER%20LABS/",
+          "award_count": 1,
+          "award_total": 99000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MOUGONDHA%20ACHARYA",
+          "subject_ref": "vendor:stem:MOUGONDHA%20ACHARYA",
+          "label": "Mougondha Acharya",
+          "href": "/vendors/MOUGONDHA%20ACHARYA/",
+          "award_count": 1,
+          "award_total": 58134,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
+          "subject_ref": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
+          "label": "Costar Realty Information, Inc.",
+          "href": "/vendors/COSTAR%20REALTY%20INFORMATION/",
+          "award_count": 1,
+          "award_total": 41440,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "city-planning-commission": {
       "subject_ref": "agency:id:city-planning-commission",
@@ -633,6 +1165,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -654,7 +1191,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "city-university": {
       "subject_ref": "agency:id:city-university",
@@ -666,6 +1204,11 @@
           "status": "matched",
           "count": 2,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -687,7 +1230,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "city-university-construction-fund": {
       "subject_ref": "agency:id:city-university-construction-fund",
@@ -699,6 +1243,11 @@
           "status": "matched",
           "count": 2,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -720,18 +1269,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "citywide-administrative-services": {
       "subject_ref": "agency:id:citywide-administrative-services",
       "display_name": "Department of Citywide Administrative Services",
       "path": "/agencies/citywide-administrative-services/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 8,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -753,18 +1308,113 @@
           "count": 35,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:UNIVERSAL%20PROTECTION%20SERVICE",
+          "subject_ref": "vendor:stem:UNIVERSAL%20PROTECTION%20SERVICE",
+          "label": "Universal Protection Service LLC",
+          "href": "/vendors/UNIVERSAL%20PROTECTION%20SERVICE/",
+          "award_count": 1,
+          "award_total": 948271375,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ARON%20SECURITY",
+          "subject_ref": "vendor:stem:ARON%20SECURITY",
+          "label": "Aron Security Inc",
+          "href": "/vendors/ARON%20SECURITY/",
+          "award_count": 1,
+          "award_total": 428805858,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INTER-CON%20SECURITY%20SYSTEMS",
+          "subject_ref": "vendor:stem:INTER-CON%20SECURITY%20SYSTEMS",
+          "label": "Inter-Con Security Systems Incorporated",
+          "href": "/vendors/INTER-CON%20SECURITY%20SYSTEMS/",
+          "award_count": 1,
+          "award_total": 399671340,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:REV%20AMBULANCE%20GROUP%20ORLANDO",
+          "subject_ref": "vendor:stem:REV%20AMBULANCE%20GROUP%20ORLANDO",
+          "label": "REV Ambulance Group Orlando Inc",
+          "href": "/vendors/REV%20AMBULANCE%20GROUP%20ORLANDO/",
+          "award_count": 1,
+          "award_total": 277636183,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:UNITED%20METRO%20ENERGY",
+          "subject_ref": "vendor:stem:UNITED%20METRO%20ENERGY",
+          "label": "United Metro Energy Corp.",
+          "href": "/vendors/UNITED%20METRO%20ENERGY/",
+          "award_count": 2,
+          "award_total": 190311487.5,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GABRIELLI%20TRUCK%20SALES",
+          "subject_ref": "vendor:stem:GABRIELLI%20TRUCK%20SALES",
+          "label": "Gabrielli Truck Sales Ltd.",
+          "href": "/vendors/GABRIELLI%20TRUCK%20SALES/",
+          "award_count": 11,
+          "award_total": 104475879,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:TILCON%20NEW%20YORK",
+          "subject_ref": "vendor:stem:TILCON%20NEW%20YORK",
+          "label": "Tilcon New York Inc.",
+          "href": "/vendors/TILCON%20NEW%20YORK/",
+          "award_count": 1,
+          "award_total": 89306200,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ENVIRONMENTAL%20OPERATING%20SOLUTIONS",
+          "subject_ref": "vendor:stem:ENVIRONMENTAL%20OPERATING%20SOLUTIONS",
+          "label": "Environmental Operating Solutions, Inc.",
+          "href": "/vendors/ENVIRONMENTAL%20OPERATING%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 86011200,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "civilian-complaint-review-board": {
       "subject_ref": "agency:id:civilian-complaint-review-board",
       "display_name": "Civilian Complaint Review Board",
       "path": "/agencies/civilian-complaint-review-board/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -786,18 +1436,36 @@
           "count": 4,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+          "subject_ref": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+          "label": "New York State Industries for the Disabled Inc",
+          "href": "/vendors/NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED/",
+          "award_count": 1,
+          "award_total": 75000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "commission-on-human-rights": {
       "subject_ref": "agency:id:commission-on-human-rights",
       "display_name": "City Commission on Human Rights",
       "path": "/agencies/commission-on-human-rights/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -819,7 +1487,20 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:T%20R%20JOY%20ASSOCIATES",
+          "subject_ref": "vendor:stem:T%20R%20JOY%20ASSOCIATES",
+          "label": "T R Joy & Associates Inc",
+          "href": "/vendors/T%20R%20JOY%20ASSOCIATES/",
+          "award_count": 1,
+          "award_total": 202294,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "commission-on-racial-equity": {
       "subject_ref": "agency:id:commission-on-racial-equity",
@@ -831,6 +1512,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -852,7 +1538,8 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "community-boards": {
       "subject_ref": "agency:id:community-boards",
@@ -864,6 +1551,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -885,18 +1577,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "comptroller": {
       "subject_ref": "agency:id:comptroller",
       "display_name": "Office of the New York City Comptroller",
       "path": "/agencies/comptroller/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -918,7 +1616,97 @@
           "count": 11,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:MODINE%20CONTRACTING",
+          "subject_ref": "vendor:stem:MODINE%20CONTRACTING",
+          "label": "Modine Contracting Corp.",
+          "href": "/vendors/MODINE%20CONTRACTING/",
+          "award_count": 1,
+          "award_total": 295812,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ACCESS%20COMPUTER%20FLOORS",
+          "subject_ref": "vendor:stem:ACCESS%20COMPUTER%20FLOORS",
+          "label": "Access Computer Floors LLC",
+          "href": "/vendors/ACCESS%20COMPUTER%20FLOORS/",
+          "award_count": 1,
+          "award_total": 169335,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
+          "subject_ref": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
+          "label": "Gioia P Ambrette Inc DBA Newcastle Communications",
+          "href": "/vendors/GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS/",
+          "award_count": 1,
+          "award_total": 63360,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "label": "Quality and Assurance Technology Corp.",
+          "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
+          "award_count": 1,
+          "award_total": 60469.5,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MOLA%20GROUP",
+          "subject_ref": "vendor:stem:MOLA%20GROUP",
+          "label": "Mola Group Corp.",
+          "href": "/vendors/MOLA%20GROUP/",
+          "award_count": 1,
+          "award_total": 48070.82,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RKM%20STRATEGIC%20CONSULTING",
+          "subject_ref": "vendor:stem:RKM%20STRATEGIC%20CONSULTING",
+          "label": "RKM Strategic Consulting, LLC",
+          "href": "/vendors/RKM%20STRATEGIC%20CONSULTING/",
+          "award_count": 1,
+          "award_total": 45000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:Y%20AND%20S%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:Y%20AND%20S%20TECHNOLOGIES",
+          "label": "Y and S Technologies, Inc.",
+          "href": "/vendors/Y%20AND%20S%20TECHNOLOGIES/",
+          "award_count": 1,
+          "award_total": 21403,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ACCURATE%20COMMUNICATION",
+          "subject_ref": "vendor:stem:ACCURATE%20COMMUNICATION",
+          "label": "Accurate Communication Inc.",
+          "href": "/vendors/ACCURATE%20COMMUNICATION/",
+          "award_count": 1,
+          "award_total": 15461.25,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "conflicts-of-interest-board": {
       "subject_ref": "agency:id:conflicts-of-interest-board",
@@ -930,6 +1718,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -951,18 +1744,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "consumer-and-worker-protection": {
       "subject_ref": "agency:id:consumer-and-worker-protection",
       "display_name": "Department of Consumer and Worker Protection",
       "path": "/agencies/consumer-and-worker-protection/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 5,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -984,18 +1783,113 @@
           "count": 12,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:EAST%20RIVER%20DEVELOPMENT%20ALLIANCE",
+          "subject_ref": "vendor:stem:EAST%20RIVER%20DEVELOPMENT%20ALLIANCE",
+          "label": "East River Development Alliance, Inc.",
+          "href": "/vendors/EAST%20RIVER%20DEVELOPMENT%20ALLIANCE/",
+          "award_count": 1,
+          "award_total": 5330675,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BRONXWORKS",
+          "subject_ref": "vendor:stem:BRONXWORKS",
+          "label": "Bronxworks Inc",
+          "href": "/vendors/BRONXWORKS/",
+          "award_count": 1,
+          "award_total": 4111146,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS",
+          "subject_ref": "vendor:stem:NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS",
+          "label": "Neighborhood Trust Financial Partners Inc.",
+          "href": "/vendors/NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS/",
+          "award_count": 1,
+          "award_total": 2487540,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CHHAYA%20COMMUNITY%20DEVELOPMENT",
+          "subject_ref": "vendor:stem:CHHAYA%20COMMUNITY%20DEVELOPMENT",
+          "label": "Chhaya Community Development Corporation",
+          "href": "/vendors/CHHAYA%20COMMUNITY%20DEVELOPMENT/",
+          "award_count": 1,
+          "award_total": 1225950,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:OVERWATCH%20SERVICES",
+          "subject_ref": "vendor:stem:OVERWATCH%20SERVICES",
+          "label": "Overwatch Services LLC",
+          "href": "/vendors/OVERWATCH%20SERVICES/",
+          "award_count": 1,
+          "award_total": 995865,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INFOPEOPLE",
+          "subject_ref": "vendor:stem:INFOPEOPLE",
+          "label": "Infopeople Corporation",
+          "href": "/vendors/INFOPEOPLE/",
+          "award_count": 1,
+          "award_total": 898307,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+          "subject_ref": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+          "label": "New York State Industries for the Disabled Inc",
+          "href": "/vendors/NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED/",
+          "award_count": 3,
+          "award_total": 222000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GENERATION%20WEALTH",
+          "subject_ref": "vendor:stem:GENERATION%20WEALTH",
+          "label": "Generation Wealth LLC",
+          "href": "/vendors/GENERATION%20WEALTH/",
+          "award_count": 1,
+          "award_total": 99999,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "correction": {
       "subject_ref": "agency:id:correction",
       "display_name": "Department of Correction",
       "path": "/agencies/correction/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1017,7 +1911,97 @@
           "count": 38,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+          "subject_ref": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+          "label": "The Fortune Society, Inc.",
+          "href": "/vendors/THE%20FORTUNE%20SOCIETY/",
+          "award_count": 2,
+          "award_total": 18001170,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20PETEY%20GREENE%20PROGRAM",
+          "subject_ref": "vendor:stem:THE%20PETEY%20GREENE%20PROGRAM",
+          "label": "The Petey Greene Program, Inc.",
+          "href": "/vendors/THE%20PETEY%20GREENE%20PROGRAM/",
+          "award_count": 1,
+          "award_total": 12416976,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:KEEFE%20GROUP",
+          "subject_ref": "vendor:stem:KEEFE%20GROUP",
+          "label": "Keefe Group LLC",
+          "href": "/vendors/KEEFE%20GROUP/",
+          "award_count": 1,
+          "award_total": 12000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FEDCAP%20NYC",
+          "subject_ref": "vendor:stem:FEDCAP%20NYC",
+          "label": "Fedcap NYC, Inc.",
+          "href": "/vendors/FEDCAP%20NYC/",
+          "award_count": 1,
+          "award_total": 7974328,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:TAMCO%20MECHANICAL",
+          "subject_ref": "vendor:stem:TAMCO%20MECHANICAL",
+          "label": "Tamco Mechanical Inc.",
+          "href": "/vendors/TAMCO%20MECHANICAL/",
+          "award_count": 2,
+          "award_total": 6742564,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SECURUS%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:SECURUS%20TECHNOLOGIES",
+          "label": "Securus Technologies LLC",
+          "href": "/vendors/SECURUS%20TECHNOLOGIES/",
+          "award_count": 1,
+          "award_total": 3941456,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
+          "subject_ref": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
+          "label": "The Osborne Association, Inc.",
+          "href": "/vendors/THE%20OSBORNE%20ASSOCIATION/",
+          "award_count": 1,
+          "award_total": 3900204,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ROUTERATI",
+          "subject_ref": "vendor:stem:ROUTERATI",
+          "label": "Routerati Inc",
+          "href": "/vendors/ROUTERATI/",
+          "award_count": 7,
+          "award_total": 3637846,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "criminal-justice-coordinator": {
       "subject_ref": "agency:id:criminal-justice-coordinator",
@@ -1029,6 +2013,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1050,18 +2039,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "cultural-affairs": {
       "subject_ref": "agency:id:cultural-affairs",
       "display_name": "Department of Cultural Affairs",
       "path": "/agencies/cultural-affairs/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 3,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1083,7 +2078,97 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:R%20V%20INDUSTRIAL%20ELECTRICAL%20SUPPLY",
+          "subject_ref": "vendor:stem:R%20V%20INDUSTRIAL%20ELECTRICAL%20SUPPLY",
+          "label": "R&V Industrial Electrical Supply LLC",
+          "href": "/vendors/R%20V%20INDUSTRIAL%20ELECTRICAL%20SUPPLY/",
+          "award_count": 1,
+          "award_total": 1297125,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PATCHAMP",
+          "subject_ref": "vendor:stem:PATCHAMP",
+          "label": "Patchamp Inc.",
+          "href": "/vendors/PATCHAMP/",
+          "award_count": 1,
+          "award_total": 1258588,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VIDEO%20HI-TECH",
+          "subject_ref": "vendor:stem:VIDEO%20HI-TECH",
+          "label": "Video Hi-Tech Corp",
+          "href": "/vendors/VIDEO%20HI-TECH/",
+          "award_count": 1,
+          "award_total": 1196908,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:STEINWAY",
+          "subject_ref": "vendor:stem:STEINWAY",
+          "label": "Steinway, Inc.",
+          "href": "/vendors/STEINWAY/",
+          "award_count": 1,
+          "award_total": 563732,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FAUST%20HARRISON%20PIANOS",
+          "subject_ref": "vendor:stem:FAUST%20HARRISON%20PIANOS",
+          "label": "Faust Harrison Pianos Inc.",
+          "href": "/vendors/FAUST%20HARRISON%20PIANOS/",
+          "award_count": 1,
+          "award_total": 313572,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AMERICAN%20COMPUTER%20CONSULTANTS",
+          "subject_ref": "vendor:stem:AMERICAN%20COMPUTER%20CONSULTANTS",
+          "label": "American Computer Consultants Inc",
+          "href": "/vendors/AMERICAN%20COMPUTER%20CONSULTANTS/",
+          "award_count": 1,
+          "award_total": 112000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MOUGONDHA%20ACHARYA",
+          "subject_ref": "vendor:stem:MOUGONDHA%20ACHARYA",
+          "label": "Mougondha Acharya",
+          "href": "/vendors/MOUGONDHA%20ACHARYA/",
+          "award_count": 1,
+          "award_total": 67750,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MEGA%20BUSINESS%20SYSTEMS",
+          "subject_ref": "vendor:stem:MEGA%20BUSINESS%20SYSTEMS",
+          "label": "Mega Business Systems",
+          "href": "/vendors/MEGA%20BUSINESS%20SYSTEMS/",
+          "award_count": 1,
+          "award_total": 37192,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "department-of-social-services": {
       "subject_ref": "agency:id:department-of-social-services",
@@ -1096,6 +2181,11 @@
           "count": 6,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "empty",
           "count": 0,
@@ -1116,18 +2206,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "design-and-construction": {
       "subject_ref": "agency:id:design-and-construction",
       "display_name": "Department of Design and Construction",
       "path": "/agencies/design-and-construction/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1149,7 +2245,97 @@
           "count": 25,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:P%20T%20II%20CONTRACTING",
+          "subject_ref": "vendor:stem:P%20T%20II%20CONTRACTING",
+          "label": "P&T II Contracting Corp",
+          "href": "/vendors/P%20T%20II%20CONTRACTING/",
+          "award_count": 2,
+          "award_total": 77662658,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DIFAZIO%20IND",
+          "subject_ref": "vendor:stem:DIFAZIO%20IND",
+          "label": "Difazio Ind LLC",
+          "href": "/vendors/DIFAZIO%20IND/",
+          "award_count": 2,
+          "award_total": 73690267,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JRCRUZ",
+          "subject_ref": "vendor:stem:JRCRUZ",
+          "label": "JRCRUZ Corp",
+          "href": "/vendors/JRCRUZ/",
+          "award_count": 3,
+          "award_total": 63001912,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:IANNELLI%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:IANNELLI%20CONSTRUCTION",
+          "label": "Iannelli Construction Co Inc",
+          "href": "/vendors/IANNELLI%20CONSTRUCTION/",
+          "award_count": 1,
+          "award_total": 54750141,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CITNALTA%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:CITNALTA%20CONSTRUCTION",
+          "label": "Citnalta Construction Corp.",
+          "href": "/vendors/CITNALTA%20CONSTRUCTION/",
+          "award_count": 1,
+          "award_total": 53570415,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ZAMAN%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:ZAMAN%20CONSTRUCTION",
+          "label": "Zaman Construction Corp.",
+          "href": "/vendors/ZAMAN%20CONSTRUCTION/",
+          "award_count": 3,
+          "award_total": 52751985,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
+          "subject_ref": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
+          "label": "Dewberry-GF Resident Engineering JV",
+          "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INFRA%20TECH%20LOZIER%20ENGINEERING%20JV",
+          "subject_ref": "vendor:stem:INFRA%20TECH%20LOZIER%20ENGINEERING%20JV",
+          "label": "Infra Tech Lozier Engineering JV",
+          "href": "/vendors/INFRA%20TECH%20LOZIER%20ENGINEERING%20JV/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "district-attorney-bronx-county": {
       "subject_ref": "agency:id:district-attorney-bronx-county",
@@ -1161,6 +2347,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1182,7 +2373,8 @@
           "count": 6,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "district-attorney-kings-county": {
       "subject_ref": "agency:id:district-attorney-kings-county",
@@ -1194,6 +2386,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1215,18 +2412,24 @@
           "count": 11,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "district-attorney-new-york-county": {
       "subject_ref": "agency:id:district-attorney-new-york-county",
       "display_name": "Manhattan District Attorney's Office",
       "path": "/agencies/district-attorney-new-york-county/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1248,7 +2451,97 @@
           "count": 5,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:W%20O%20DONNELL%20CONSULTING",
+          "subject_ref": "vendor:stem:W%20O%20DONNELL%20CONSULTING",
+          "label": "W. O'Donnell Consulting, Inc.",
+          "href": "/vendors/W%20O%20DONNELL%20CONSULTING/",
+          "award_count": 1,
+          "award_total": 704900,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "label": "Quality and Assurance Technology Corp",
+          "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
+          "award_count": 2,
+          "award_total": 497026.68,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+          "label": "Compulink Technologies Inc",
+          "href": "/vendors/COMPULINK%20TECHNOLOGIES/",
+          "award_count": 6,
+          "award_total": 268987.92000000004,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:4TECH%20SOLUTIONS",
+          "subject_ref": "vendor:stem:4TECH%20SOLUTIONS",
+          "label": "4Tech Solutions, LLC",
+          "href": "/vendors/4TECH%20SOLUTIONS/",
+          "award_count": 2,
+          "award_total": 122983.04,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:EMPIREVISTA%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:EMPIREVISTA%20TECHNOLOGIES",
+          "label": "EmpireVista Technologies LLC",
+          "href": "/vendors/EMPIREVISTA%20TECHNOLOGIES/",
+          "award_count": 1,
+          "award_total": 99729.54,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NW3C%20INC%20DBA%20THE%20NATIONAL%20WHITE%20COLLAR%20CRIME%20CENTER",
+          "subject_ref": "vendor:stem:NW3C%20INC%20DBA%20THE%20NATIONAL%20WHITE%20COLLAR%20CRIME%20CENTER",
+          "label": "NW3C, Inc. dba the National White Collar Crime Center",
+          "href": "/vendors/NW3C%20INC%20DBA%20THE%20NATIONAL%20WHITE%20COLLAR%20CRIME%20CENTER/",
+          "award_count": 1,
+          "award_total": 73500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY%20GROUP%20DBA%20QNA%20TECH",
+          "subject_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY%20GROUP%20DBA%20QNA%20TECH",
+          "label": "Quality and Assurance Technology Group dba QNA Tech",
+          "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY%20GROUP%20DBA%20QNA%20TECH/",
+          "award_count": 1,
+          "award_total": 62100.16,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INSIGHT%20PUBLIC%20SECTOR",
+          "subject_ref": "vendor:stem:INSIGHT%20PUBLIC%20SECTOR",
+          "label": "Insight Public Sector Inc.",
+          "href": "/vendors/INSIGHT%20PUBLIC%20SECTOR/",
+          "award_count": 1,
+          "award_total": 50579.5,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "district-attorney-queens-county": {
       "subject_ref": "agency:id:district-attorney-queens-county",
@@ -1261,6 +2554,11 @@
           "count": 0,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "empty",
           "count": 0,
@@ -1281,7 +2579,8 @@
           "count": 2,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "district-attorney-richmond-county": {
       "subject_ref": "agency:id:district-attorney-richmond-county",
@@ -1294,6 +2593,11 @@
           "count": 0,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "empty",
           "count": 0,
@@ -1314,18 +2618,24 @@
           "count": 2,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "education": {
       "subject_ref": "agency:id:education",
       "display_name": "New York City Public Schools",
       "path": "/agencies/education/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1347,18 +2657,113 @@
           "count": 35,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:REPLICATIONS",
+          "subject_ref": "vendor:stem:REPLICATIONS",
+          "label": "Replications Inc.",
+          "href": "/vendors/REPLICATIONS/",
+          "award_count": 2,
+          "award_total": 4134882,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20EDGE",
+          "subject_ref": "vendor:stem:NEW%20YORK%20EDGE",
+          "label": "New York Edge Inc.",
+          "href": "/vendors/NEW%20YORK%20EDGE/",
+          "award_count": 2,
+          "award_total": 3230250,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20HOME%20FOR%20LITTLE%20WANDERERS",
+          "subject_ref": "vendor:stem:THE%20HOME%20FOR%20LITTLE%20WANDERERS",
+          "label": "The Home for Little Wanderers Inc.",
+          "href": "/vendors/THE%20HOME%20FOR%20LITTLE%20WANDERERS/",
+          "award_count": 2,
+          "award_total": 3194663,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FEIGI%20TAUB%20HALBERSTAM%20AUDIOLOGY%20AND%20SPEECH%20PATHOLOGY",
+          "subject_ref": "vendor:stem:FEIGI%20TAUB%20HALBERSTAM%20AUDIOLOGY%20AND%20SPEECH%20PATHOLOGY",
+          "label": "Feigi Taub Halberstam Audiology and Speech Pathology",
+          "href": "/vendors/FEIGI%20TAUB%20HALBERSTAM%20AUDIOLOGY%20AND%20SPEECH%20PATHOLOGY/",
+          "award_count": 1,
+          "award_total": 2686377,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NY%20SPEAKS%20SPEECH%20LANGUAGE%20PATHOLOGY",
+          "subject_ref": "vendor:stem:NY%20SPEAKS%20SPEECH%20LANGUAGE%20PATHOLOGY",
+          "label": "NY Speaks Speech Language Pathology PLLC",
+          "href": "/vendors/NY%20SPEAKS%20SPEECH%20LANGUAGE%20PATHOLOGY/",
+          "award_count": 1,
+          "award_total": 2235491,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:EAST%20SIDE%20HOUSE",
+          "subject_ref": "vendor:stem:EAST%20SIDE%20HOUSE",
+          "label": "East Side House Inc.",
+          "href": "/vendors/EAST%20SIDE%20HOUSE/",
+          "award_count": 1,
+          "award_total": 1981500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SAMUEL%20FIELD%20YM%20YWHA",
+          "subject_ref": "vendor:stem:SAMUEL%20FIELD%20YM%20YWHA",
+          "label": "Samuel Field YM & YWHA Inc",
+          "href": "/vendors/SAMUEL%20FIELD%20YM%20YWHA/",
+          "award_count": 1,
+          "award_total": 1919367,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS",
+          "subject_ref": "vendor:stem:VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS",
+          "label": "Variety Boys and Girls Club of Queens Inc.",
+          "href": "/vendors/VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS/",
+          "award_count": 1,
+          "award_total": 1891504,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "emergency-management": {
       "subject_ref": "agency:id:emergency-management",
       "display_name": "New York City Emergency Management",
       "path": "/agencies/emergency-management/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1380,18 +2785,113 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:GXO%20LOGISTICS%20WORLDWIDE",
+          "subject_ref": "vendor:stem:GXO%20LOGISTICS%20WORLDWIDE",
+          "label": "GXO Logistics Worldwide LLC",
+          "href": "/vendors/GXO%20LOGISTICS%20WORLDWIDE/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:S%20J%20TOUR%20BUS",
+          "subject_ref": "vendor:stem:S%20J%20TOUR%20BUS",
+          "label": "S & J Tour & Bus Inc",
+          "href": "/vendors/S%20J%20TOUR%20BUS/",
+          "award_count": 1,
+          "award_total": 3297120,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SLAM%20TECHNICAL%20SERVICES",
+          "subject_ref": "vendor:stem:SLAM%20TECHNICAL%20SERVICES",
+          "label": "SLAM Technical Services LLC",
+          "href": "/vendors/SLAM%20TECHNICAL%20SERVICES/",
+          "award_count": 1,
+          "award_total": 634226,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BUFFALO%20COMPUTER%20GRAPHICS",
+          "subject_ref": "vendor:stem:BUFFALO%20COMPUTER%20GRAPHICS",
+          "label": "Buffalo Computer Graphics Inc",
+          "href": "/vendors/BUFFALO%20COMPUTER%20GRAPHICS/",
+          "award_count": 1,
+          "award_total": 623517,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DNS%20MEDIA%20GROUP",
+          "subject_ref": "vendor:stem:DNS%20MEDIA%20GROUP",
+          "label": "DNS Media Group Inc",
+          "href": "/vendors/DNS%20MEDIA%20GROUP/",
+          "award_count": 1,
+          "award_total": 460000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE",
+          "subject_ref": "vendor:stem:ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE",
+          "label": "Environmental Systems Research Institute Inc",
+          "href": "/vendors/ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE/",
+          "award_count": 2,
+          "award_total": 293450,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS",
+          "subject_ref": "vendor:stem:LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS",
+          "label": "Life Style Awards & Promotional Products",
+          "href": "/vendors/LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS/",
+          "award_count": 1,
+          "award_total": 250000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20DESIGN%20AND%20BRANDING",
+          "subject_ref": "vendor:stem:THE%20DESIGN%20AND%20BRANDING",
+          "label": "The Design and Branding Company Inc.",
+          "href": "/vendors/THE%20DESIGN%20AND%20BRANDING/",
+          "award_count": 1,
+          "award_total": 250000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "employees-retirement-system": {
       "subject_ref": "agency:id:employees-retirement-system",
       "display_name": "Employees' Retirement System",
       "path": "/agencies/employees-retirement-system/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1413,18 +2913,113 @@
           "count": 6,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:BLUE%20HILL%20DATA%20SERVICES",
+          "subject_ref": "vendor:stem:BLUE%20HILL%20DATA%20SERVICES",
+          "label": "Blue Hill Data Services",
+          "href": "/vendors/BLUE%20HILL%20DATA%20SERVICES/",
+          "award_count": 1,
+          "award_total": 3289608,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:LEXISNEXIS%20RISK%20SOLUTIONS",
+          "subject_ref": "vendor:stem:LEXISNEXIS%20RISK%20SOLUTIONS",
+          "label": "LexisNexis Risk Solutions Inc",
+          "href": "/vendors/LEXISNEXIS%20RISK%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 3272554,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DOYLE%20SECURITY%20SERVICES",
+          "subject_ref": "vendor:stem:DOYLE%20SECURITY%20SERVICES",
+          "label": "Doyle Security Services Inc.",
+          "href": "/vendors/DOYLE%20SECURITY%20SERVICES/",
+          "award_count": 1,
+          "award_total": 1441300,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VPMA%20GLOBAL%20SERVICES",
+          "subject_ref": "vendor:stem:VPMA%20GLOBAL%20SERVICES",
+          "label": "VPMA Global Services LLC.",
+          "href": "/vendors/VPMA%20GLOBAL%20SERVICES/",
+          "award_count": 1,
+          "award_total": 1437169,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:UNIVERSAL%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:UNIVERSAL%20TECHNOLOGIES",
+          "label": "Universal Technologies, LLC",
+          "href": "/vendors/UNIVERSAL%20TECHNOLOGIES/",
+          "award_count": 2,
+          "award_total": 1233264,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CNC%20CONSULTING",
+          "subject_ref": "vendor:stem:CNC%20CONSULTING",
+          "label": "CNC Consulting Inc.",
+          "href": "/vendors/CNC%20CONSULTING/",
+          "award_count": 3,
+          "award_total": 1216800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INFO%20PEOPLE",
+          "subject_ref": "vendor:stem:INFO%20PEOPLE",
+          "label": "InFo People Corporation",
+          "href": "/vendors/INFO%20PEOPLE/",
+          "award_count": 2,
+          "award_total": 944998.1599999999,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GARTNER",
+          "subject_ref": "vendor:stem:GARTNER",
+          "label": "Gartner Inc.",
+          "href": "/vendors/GARTNER/",
+          "award_count": 1,
+          "award_total": 658500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "environmental-protection": {
       "subject_ref": "agency:id:environmental-protection",
       "display_name": "Department of Environmental Protection",
       "path": "/agencies/environmental-protection/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1446,7 +3041,97 @@
           "count": 40,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:WELKIN%20MECHANICAL",
+          "subject_ref": "vendor:stem:WELKIN%20MECHANICAL",
+          "label": "Welkin Mechanical",
+          "href": "/vendors/WELKIN%20MECHANICAL/",
+          "award_count": 1,
+          "award_total": 326448000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
+          "subject_ref": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
+          "label": "Newtown Creek CSO Partners A Joint Venture",
+          "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
+          "award_count": 1,
+          "award_total": 221792412,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ECCO%20III%20ENTERPRISES",
+          "subject_ref": "vendor:stem:ECCO%20III%20ENTERPRISES",
+          "label": "ECCO III Enterprises Inc",
+          "href": "/vendors/ECCO%20III%20ENTERPRISES/",
+          "award_count": 1,
+          "award_total": 146000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HAZEN%20-%20THORNTON%20TOMASETTI%20JV",
+          "subject_ref": "vendor:stem:HAZEN%20-%20THORNTON%20TOMASETTI%20JV",
+          "label": "Hazen - Thornton Tomasetti JV",
+          "href": "/vendors/HAZEN%20-%20THORNTON%20TOMASETTI%20JV/",
+          "award_count": 1,
+          "award_total": 124690852,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HAZEN%20SAWYER",
+          "subject_ref": "vendor:stem:HAZEN%20SAWYER",
+          "label": "Hazen & Sawyer",
+          "href": "/vendors/HAZEN%20SAWYER/",
+          "award_count": 1,
+          "award_total": 72616879,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RJ%20INDUSTRIES",
+          "subject_ref": "vendor:stem:RJ%20INDUSTRIES",
+          "label": "RJ Industries, Inc",
+          "href": "/vendors/RJ%20INDUSTRIES/",
+          "award_count": 1,
+          "award_total": 71238800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DELVE%20UNDERGROUND%20ENGINEERING",
+          "subject_ref": "vendor:stem:DELVE%20UNDERGROUND%20ENGINEERING",
+          "label": "Delve Underground Engineering PLLC",
+          "href": "/vendors/DELVE%20UNDERGROUND%20ENGINEERING/",
+          "award_count": 1,
+          "award_total": 58599756,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HENNINGSON%20DURHAM%20RICHARDSON",
+          "subject_ref": "vendor:stem:HENNINGSON%20DURHAM%20RICHARDSON",
+          "label": "Henningson Durham & Richardson PC",
+          "href": "/vendors/HENNINGSON%20DURHAM%20RICHARDSON/",
+          "award_count": 5,
+          "award_total": 47572277,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "equal-employment-practices-commission": {
       "subject_ref": "agency:id:equal-employment-practices-commission",
@@ -1458,6 +3143,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1479,18 +3169,24 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "finance": {
       "subject_ref": "agency:id:finance",
       "display_name": "Department of Finance",
       "path": "/agencies/finance/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 3,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -1512,18 +3208,113 @@
           "count": 17,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:RIS%20NYC",
+          "subject_ref": "vendor:stem:RIS%20NYC",
+          "label": "RIS NYC",
+          "href": "/vendors/RIS%20NYC/",
+          "award_count": 1,
+          "award_total": 114600000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:TYLER%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:TYLER%20TECHNOLOGIES",
+          "label": "Tyler Technologies Inc",
+          "href": "/vendors/TYLER%20TECHNOLOGIES/",
+          "award_count": 2,
+          "award_total": 17255740,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SOURCECORP%20BPS",
+          "subject_ref": "vendor:stem:SOURCECORP%20BPS",
+          "label": "Sourcecorp BPS Inc.",
+          "href": "/vendors/SOURCECORP%20BPS/",
+          "award_count": 1,
+          "award_total": 6745524,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VISION%20GOVERNMENT%20SOLUTIONS",
+          "subject_ref": "vendor:stem:VISION%20GOVERNMENT%20SOLUTIONS",
+          "label": "Vision Government Solutions, Inc.",
+          "href": "/vendors/VISION%20GOVERNMENT%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 4847386,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
+          "subject_ref": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
+          "label": "Immediate Mailing Services Inc",
+          "href": "/vendors/IMMEDIATE%20MAILING%20SERVICES/",
+          "award_count": 1,
+          "award_total": 2626800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JURISOLUTIONS",
+          "subject_ref": "vendor:stem:JURISOLUTIONS",
+          "label": "JURISolutions, Inc.",
+          "href": "/vendors/JURISOLUTIONS/",
+          "award_count": 1,
+          "award_total": 1500000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SOLVEXIA%20PTY",
+          "subject_ref": "vendor:stem:SOLVEXIA%20PTY",
+          "label": "Solvexia Pty Ltd.",
+          "href": "/vendors/SOLVEXIA%20PTY/",
+          "award_count": 1,
+          "award_total": 1010000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES",
+          "label": "Wonderware, Inc. Core Business Technologies",
+          "href": "/vendors/WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES/",
+          "award_count": 1,
+          "award_total": 1000800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "financial-information-services-agency": {
       "subject_ref": "agency:id:financial-information-services-agency",
       "display_name": "Financial Information Services Agency",
       "path": "/agencies/financial-information-services-agency/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 4,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 6,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1545,18 +3336,91 @@
           "count": 7,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:CGI%20TECHNOLOGIES%20AND%20SOLUTIONS",
+          "subject_ref": "vendor:stem:CGI%20TECHNOLOGIES%20AND%20SOLUTIONS",
+          "label": "CGI Technologies and Solutions Inc.",
+          "href": "/vendors/CGI%20TECHNOLOGIES%20AND%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 13229010.03,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+          "subject_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+          "label": "Compulink Technologies Inc",
+          "href": "/vendors/COMPULINK%20TECHNOLOGIES/",
+          "award_count": 8,
+          "award_total": 774006.0700000001,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMPCITI%20BUSINESS%20SOLUTIONS",
+          "subject_ref": "vendor:stem:COMPCITI%20BUSINESS%20SOLUTIONS",
+          "label": "CompCiti Business Solutions",
+          "href": "/vendors/COMPCITI%20BUSINESS%20SOLUTIONS/",
+          "award_count": 5,
+          "award_total": 237354,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VCLOUD%20TECH",
+          "subject_ref": "vendor:stem:VCLOUD%20TECH",
+          "label": "VCloud Tech Inc",
+          "href": "/vendors/VCLOUD%20TECH/",
+          "award_count": 1,
+          "award_total": 70065.62,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ITEGIX",
+          "subject_ref": "vendor:stem:ITEGIX",
+          "label": "Itegix LLC",
+          "href": "/vendors/ITEGIX/",
+          "award_count": 2,
+          "award_total": 64779,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS",
+          "subject_ref": "vendor:stem:RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS",
+          "label": "Raj Somas DBA Rusd Solutions",
+          "href": "/vendors/RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 24508.75,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "fire-department": {
       "subject_ref": "agency:id:fire-department",
       "display_name": "Fire Department of the City of New York",
       "path": "/agencies/fire-department/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1578,18 +3442,113 @@
           "count": 36,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:PURVIS%20SYSTEMS",
+          "subject_ref": "vendor:stem:PURVIS%20SYSTEMS",
+          "label": "Purvis Systems, Inc.",
+          "href": "/vendors/PURVIS%20SYSTEMS/",
+          "award_count": 1,
+          "award_total": 49170358,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SKYLINE%20ELECTRICAL%20CONTRACTOR",
+          "subject_ref": "vendor:stem:SKYLINE%20ELECTRICAL%20CONTRACTOR",
+          "label": "Skyline Electrical Contractor Corp",
+          "href": "/vendors/SKYLINE%20ELECTRICAL%20CONTRACTOR/",
+          "award_count": 2,
+          "award_total": 18195000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:POLARIS%20ELECTRICAL%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:POLARIS%20ELECTRICAL%20CONSTRUCTION",
+          "label": "Polaris Electrical Construction Inc.",
+          "href": "/vendors/POLARIS%20ELECTRICAL%20CONSTRUCTION/",
+          "award_count": 2,
+          "award_total": 18190353,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS",
+          "subject_ref": "vendor:stem:FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS",
+          "label": "Franco Belli Plumbing & Heating & Sons, Inc.",
+          "href": "/vendors/FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS/",
+          "award_count": 2,
+          "award_total": 13093940,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CRESCENT%20CONTRACTING",
+          "subject_ref": "vendor:stem:CRESCENT%20CONTRACTING",
+          "label": "Crescent Contracting Corp.",
+          "href": "/vendors/CRESCENT%20CONTRACTING/",
+          "award_count": 1,
+          "award_total": 9214440,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ATLANTIC%20ROLLING%20STEEL%20DOOR",
+          "subject_ref": "vendor:stem:ATLANTIC%20ROLLING%20STEEL%20DOOR",
+          "label": "Atlantic Rolling Steel Door Corp.",
+          "href": "/vendors/ATLANTIC%20ROLLING%20STEEL%20DOOR/",
+          "award_count": 2,
+          "award_total": 3000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VIRTAIR",
+          "subject_ref": "vendor:stem:VIRTAIR",
+          "label": "Virtair Inc",
+          "href": "/vendors/VIRTAIR/",
+          "award_count": 1,
+          "award_total": 2452144,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INDUSTRIAL%20STRENGTH%20INDUSTRIES",
+          "subject_ref": "vendor:stem:INDUSTRIAL%20STRENGTH%20INDUSTRIES",
+          "label": "Industrial Strength Industries LLC",
+          "href": "/vendors/INDUSTRIAL%20STRENGTH%20INDUSTRIES/",
+          "award_count": 6,
+          "award_total": 2310447,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "health-and-mental-hygiene": {
       "subject_ref": "agency:id:health-and-mental-hygiene",
       "display_name": "Department of Health and Mental Hygiene",
       "path": "/agencies/health-and-mental-hygiene/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -1611,18 +3570,113 @@
           "count": 32,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:WORKINGBUILDING",
+          "subject_ref": "vendor:stem:WORKINGBUILDING",
+          "label": "Workingbuilding Inc.",
+          "href": "/vendors/WORKINGBUILDING/",
+          "award_count": 1,
+          "award_total": 220240676,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RESEARCH%20FOUNDATION%20FOR%20MENTAL%20HYGIENE",
+          "subject_ref": "vendor:stem:RESEARCH%20FOUNDATION%20FOR%20MENTAL%20HYGIENE",
+          "label": "Research Foundation for Mental Hygiene, Inc.",
+          "href": "/vendors/RESEARCH%20FOUNDATION%20FOR%20MENTAL%20HYGIENE/",
+          "award_count": 2,
+          "award_total": 146715213,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20JERICHO%20PROJECT",
+          "subject_ref": "vendor:stem:THE%20JERICHO%20PROJECT",
+          "label": "The Jericho Project",
+          "href": "/vendors/THE%20JERICHO%20PROJECT/",
+          "award_count": 3,
+          "award_total": 88635952,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SERVICES%20FOR%20THE%20UNDERSERVED",
+          "subject_ref": "vendor:stem:SERVICES%20FOR%20THE%20UNDERSERVED",
+          "label": "Services For The Underserved Inc.",
+          "href": "/vendors/SERVICES%20FOR%20THE%20UNDERSERVED/",
+          "award_count": 3,
+          "award_total": 65725323,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:UNIQUE%20PEOPLE%20SERVICES",
+          "subject_ref": "vendor:stem:UNIQUE%20PEOPLE%20SERVICES",
+          "label": "Unique People Services, Inc.",
+          "href": "/vendors/UNIQUE%20PEOPLE%20SERVICES/",
+          "award_count": 4,
+          "award_total": 63606248,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES",
+          "subject_ref": "vendor:stem:BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES",
+          "label": "Brooklyn Community Housing & Services, Inc.",
+          "href": "/vendors/BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES/",
+          "award_count": 1,
+          "award_total": 61554338,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WOMEN%20IN%20NEED",
+          "subject_ref": "vendor:stem:WOMEN%20IN%20NEED",
+          "label": "Women In Need, Inc.",
+          "href": "/vendors/WOMEN%20IN%20NEED/",
+          "award_count": 3,
+          "award_total": 51587919,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+          "subject_ref": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+          "label": "The Fortune Society Inc",
+          "href": "/vendors/THE%20FORTUNE%20SOCIETY/",
+          "award_count": 3,
+          "award_total": 50321624,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "homeless-services": {
       "subject_ref": "agency:id:homeless-services",
       "display_name": "Department of Homeless Services",
       "path": "/agencies/homeless-services/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1644,7 +3698,97 @@
           "count": 15,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:HANYC%20FOUNDATION",
+          "subject_ref": "vendor:stem:HANYC%20FOUNDATION",
+          "label": "HANYC Foundation Inc.",
+          "href": "/vendors/HANYC%20FOUNDATION/",
+          "award_count": 1,
+          "award_total": 1864916717,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMMON%20GROUND%20MANAGEMENT",
+          "subject_ref": "vendor:stem:COMMON%20GROUND%20MANAGEMENT",
+          "label": "Common Ground Management Corp",
+          "href": "/vendors/COMMON%20GROUND%20MANAGEMENT/",
+          "award_count": 6,
+          "award_total": 1011960027,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BOWERY%20RESIDENTS%20COMMITTEE",
+          "subject_ref": "vendor:stem:BOWERY%20RESIDENTS%20COMMITTEE",
+          "label": "Bowery Residents' Committee, Inc.",
+          "href": "/vendors/BOWERY%20RESIDENTS%20COMMITTEE/",
+          "award_count": 6,
+          "award_total": 375229433,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
+          "subject_ref": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
+          "label": "Samaritan Daytop Village Inc",
+          "href": "/vendors/SAMARITAN%20DAYTOP%20VILLAGE/",
+          "award_count": 4,
+          "award_total": 323436909,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ACACIA%20NETWORK%20HOUSING",
+          "subject_ref": "vendor:stem:ACACIA%20NETWORK%20HOUSING",
+          "label": "Acacia Network Housing Inc",
+          "href": "/vendors/ACACIA%20NETWORK%20HOUSING/",
+          "award_count": 3,
+          "award_total": 291794076,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BRONX%20PARENT%20HOUSING%20NETWORK",
+          "subject_ref": "vendor:stem:BRONX%20PARENT%20HOUSING%20NETWORK",
+          "label": "Bronx Parent Housing Network Inc",
+          "href": "/vendors/BRONX%20PARENT%20HOUSING%20NETWORK/",
+          "award_count": 4,
+          "award_total": 282334362,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT",
+          "subject_ref": "vendor:stem:HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT",
+          "label": "Highland Park Community Development Corp.",
+          "href": "/vendors/HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT/",
+          "award_count": 2,
+          "award_total": 180610423,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
+          "subject_ref": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
+          "label": "Volunteers of America Greater New York Inc",
+          "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
+          "award_count": 3,
+          "award_total": 162897402,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "housing-authority": {
       "subject_ref": "agency:id:housing-authority",
@@ -1656,6 +3800,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -1677,18 +3826,24 @@
           "count": 37,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "housing-preservation-and-development": {
       "subject_ref": "agency:id:housing-preservation-and-development",
       "display_name": "Department of Housing Preservation and Development",
       "path": "/agencies/housing-preservation-and-development/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -1710,18 +3865,113 @@
           "count": 22,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:AMERICAN%20NATIONAL%20RED%20CROSS",
+          "subject_ref": "vendor:stem:AMERICAN%20NATIONAL%20RED%20CROSS",
+          "label": "American National Red Cross",
+          "href": "/vendors/AMERICAN%20NATIONAL%20RED%20CROSS/",
+          "award_count": 1,
+          "award_total": 85461988,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HELP%20SOCIAL%20SERVICE",
+          "subject_ref": "vendor:stem:HELP%20SOCIAL%20SERVICE",
+          "label": "Help Social Service Corporation",
+          "href": "/vendors/HELP%20SOCIAL%20SERVICE/",
+          "award_count": 1,
+          "award_total": 23949438,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WEST%20HARLEM%20GROUP%20ASSISTANCE",
+          "subject_ref": "vendor:stem:WEST%20HARLEM%20GROUP%20ASSISTANCE",
+          "label": "West Harlem Group Assistance Inc.",
+          "href": "/vendors/WEST%20HARLEM%20GROUP%20ASSISTANCE/",
+          "award_count": 1,
+          "award_total": 16176304,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SOUTH%20BRONX%20COMMUNITY%20MANAGEMENT",
+          "subject_ref": "vendor:stem:SOUTH%20BRONX%20COMMUNITY%20MANAGEMENT",
+          "label": "South Bronx Community Management Company Inc.",
+          "href": "/vendors/SOUTH%20BRONX%20COMMUNITY%20MANAGEMENT/",
+          "award_count": 1,
+          "award_total": 15418471,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:STATEWIDE%20DEMOLITION",
+          "subject_ref": "vendor:stem:STATEWIDE%20DEMOLITION",
+          "label": "Statewide Demolition Corp",
+          "href": "/vendors/STATEWIDE%20DEMOLITION/",
+          "award_count": 16,
+          "award_total": 13011364,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SKCS",
+          "subject_ref": "vendor:stem:SKCS",
+          "label": "SKCS LLC",
+          "href": "/vendors/SKCS/",
+          "award_count": 1,
+          "award_total": 9778525,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GTM%20CONTRACTING",
+          "subject_ref": "vendor:stem:GTM%20CONTRACTING",
+          "label": "GTM Contracting Inc",
+          "href": "/vendors/GTM%20CONTRACTING/",
+          "award_count": 3,
+          "award_total": 8850000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:URBAN%20HOMESTEADING%20ASSISTANCE%20UHAB",
+          "subject_ref": "vendor:stem:URBAN%20HOMESTEADING%20ASSISTANCE%20UHAB",
+          "label": "Urban Homesteading Assistance UHAB Inc",
+          "href": "/vendors/URBAN%20HOMESTEADING%20ASSISTANCE%20UHAB/",
+          "award_count": 1,
+          "award_total": 8711039,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "human-resources-administration": {
       "subject_ref": "agency:id:human-resources-administration",
       "display_name": "Human Resources Administration",
       "path": "/agencies/human-resources-administration/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1743,7 +3993,97 @@
           "count": 28,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
+          "subject_ref": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
+          "label": "University Behavioral Associates, Inc.",
+          "href": "/vendors/UNIVERSITY%20BEHAVIORAL%20ASSOCIATES/",
+          "award_count": 2,
+          "award_total": 76349526,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AMERICA%20WORKS",
+          "subject_ref": "vendor:stem:AMERICA%20WORKS",
+          "label": "America Works of New York Inc.",
+          "href": "/vendors/AMERICA%20WORKS/",
+          "award_count": 3,
+          "award_total": 65351992,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:FEDCAP%20NYC",
+          "subject_ref": "vendor:stem:FEDCAP%20NYC",
+          "label": "Fedcap NYC Inc.",
+          "href": "/vendors/FEDCAP%20NYC/",
+          "award_count": 2,
+          "award_total": 64083168,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DB%20GRANT%20ASSOCIATES",
+          "subject_ref": "vendor:stem:DB%20GRANT%20ASSOCIATES",
+          "label": "DB Grant Associates Inc.",
+          "href": "/vendors/DB%20GRANT%20ASSOCIATES/",
+          "award_count": 2,
+          "award_total": 61550108,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ARBOR%20E%20T",
+          "subject_ref": "vendor:stem:ARBOR%20E%20T",
+          "label": "Arbor E&T LLC",
+          "href": "/vendors/ARBOR%20E%20T/",
+          "award_count": 1,
+          "award_total": 52693964,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:URBAN%20RESOURCE%20INSTITUTE",
+          "subject_ref": "vendor:stem:URBAN%20RESOURCE%20INSTITUTE",
+          "label": "Urban Resource Institute",
+          "href": "/vendors/URBAN%20RESOURCE%20INSTITUTE/",
+          "award_count": 5,
+          "award_total": 50497747,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)",
+          "subject_ref": "vendor:stem:NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)",
+          "label": "National Association On Drug Abuse Problems (NYS)",
+          "href": "/vendors/NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)/",
+          "award_count": 1,
+          "award_total": 29501390,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SAFE%20HORIZON",
+          "subject_ref": "vendor:stem:SAFE%20HORIZON",
+          "label": "Safe Horizon Inc.",
+          "href": "/vendors/SAFE%20HORIZON/",
+          "award_count": 7,
+          "award_total": 24956716,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "independent-budget-office": {
       "subject_ref": "agency:id:independent-budget-office",
@@ -1755,6 +4095,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -1776,18 +4121,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "information-technology-and-telecommunications": {
       "subject_ref": "agency:id:information-technology-and-telecommunications",
       "display_name": "Office of Technology and Innovation",
       "path": "/agencies/information-technology-and-telecommunications/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1809,18 +4160,113 @@
           "count": 14,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:DELL%20MARKETING%20L%20P",
+          "subject_ref": "vendor:stem:DELL%20MARKETING%20L%20P",
+          "label": "Dell Marketing L.P.",
+          "href": "/vendors/DELL%20MARKETING%20L%20P/",
+          "award_count": 1,
+          "award_total": 573752890,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
+          "subject_ref": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
+          "label": "International Business Machines Corp",
+          "href": "/vendors/INTERNATIONAL%20BUSINESS%20MACHINES/",
+          "award_count": 2,
+          "award_total": 82745510,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SPRUCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:SPRUCE%20TECHNOLOGY",
+          "label": "Spruce Technology Inc",
+          "href": "/vendors/SPRUCE%20TECHNOLOGY/",
+          "award_count": 3,
+          "award_total": 50891632,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ACCENTURE",
+          "subject_ref": "vendor:stem:ACCENTURE",
+          "label": "Accenture LLP",
+          "href": "/vendors/ACCENTURE/",
+          "award_count": 2,
+          "award_total": 50090532,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:EXPERIS%20US",
+          "subject_ref": "vendor:stem:EXPERIS%20US",
+          "label": "Experis US LLC",
+          "href": "/vendors/EXPERIS%20US/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PRUTECH%20SOLUTIONS",
+          "subject_ref": "vendor:stem:PRUTECH%20SOLUTIONS",
+          "label": "Prutech Solutions, Inc.",
+          "href": "/vendors/PRUTECH%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SLALOM",
+          "subject_ref": "vendor:stem:SLALOM",
+          "label": "Slalom Inc",
+          "href": "/vendors/SLALOM/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WORLD%20WIDE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:WORLD%20WIDE%20TECHNOLOGY",
+          "label": "World Wide Technology LLC",
+          "href": "/vendors/WORLD%20WIDE%20TECHNOLOGY/",
+          "award_count": 1,
+          "award_total": 50000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "investigation": {
       "subject_ref": "agency:id:investigation",
       "display_name": "Department of Investigation",
       "path": "/agencies/investigation/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1842,18 +4288,47 @@
           "count": 4,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:KNZ%20SOLUTIONS",
+          "subject_ref": "vendor:stem:KNZ%20SOLUTIONS",
+          "label": "KNZ Solutions Inc.",
+          "href": "/vendors/KNZ%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 222833,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SHI%20INTERNATIONAL",
+          "subject_ref": "vendor:stem:SHI%20INTERNATIONAL",
+          "label": "SHI International Corp",
+          "href": "/vendors/SHI%20INTERNATIONAL/",
+          "award_count": 1,
+          "award_total": 160244,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "landmarks-preservation-commission": {
       "subject_ref": "agency:id:landmarks-preservation-commission",
       "display_name": "Landmarks Preservation Commission",
       "path": "/agencies/landmarks-preservation-commission/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -1875,18 +4350,36 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:RM%20SOLUTIONS%20GROUP",
+          "subject_ref": "vendor:stem:RM%20SOLUTIONS%20GROUP",
+          "label": "RM Solutions Group, Inc.",
+          "href": "/vendors/RM%20SOLUTIONS%20GROUP/",
+          "award_count": 1,
+          "award_total": 99500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "law-department": {
       "subject_ref": "agency:id:law-department",
       "display_name": "New York City Law Department",
       "path": "/agencies/law-department/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 5,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1908,18 +4401,80 @@
           "count": 8,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:NORTON%20ROSE%20FULBRIGHT%20US",
+          "subject_ref": "vendor:stem:NORTON%20ROSE%20FULBRIGHT%20US",
+          "label": "Norton Rose Fulbright US LLP",
+          "href": "/vendors/NORTON%20ROSE%20FULBRIGHT%20US/",
+          "award_count": 1,
+          "award_total": 4999999,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BRYANT%20RABBINO",
+          "subject_ref": "vendor:stem:BRYANT%20RABBINO",
+          "label": "Bryant Rabbino LLP",
+          "href": "/vendors/BRYANT%20RABBINO/",
+          "award_count": 1,
+          "award_total": 2000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ALFRED%20EXECUTIVE%20TRANSPORTATION",
+          "subject_ref": "vendor:stem:ALFRED%20EXECUTIVE%20TRANSPORTATION",
+          "label": "Alfred Executive Transportation LLC",
+          "href": "/vendors/ALFRED%20EXECUTIVE%20TRANSPORTATION/",
+          "award_count": 1,
+          "award_total": 630000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MINDBREEZE",
+          "subject_ref": "vendor:stem:MINDBREEZE",
+          "label": "Mindbreeze Corporation",
+          "href": "/vendors/MINDBREEZE/",
+          "award_count": 1,
+          "award_total": 487379,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WINIFRED%20EILEEN%20CAMPBELL",
+          "subject_ref": "vendor:stem:WINIFRED%20EILEEN%20CAMPBELL",
+          "label": "Winifred Eileen Campbell",
+          "href": "/vendors/WINIFRED%20EILEEN%20CAMPBELL/",
+          "award_count": 1,
+          "award_total": 446000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "management-and-budget": {
       "subject_ref": "agency:id:management-and-budget",
       "display_name": "Mayor's Office of Management and Budget",
       "path": "/agencies/management-and-budget/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 4,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -1941,19 +4496,70 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:GANNETT%20FLEMING%20ENGINEERS%20ARCHITECTS",
+          "subject_ref": "vendor:stem:GANNETT%20FLEMING%20ENGINEERS%20ARCHITECTS",
+          "label": "Gannett Fleming Engineers & Architects PC",
+          "href": "/vendors/GANNETT%20FLEMING%20ENGINEERS%20ARCHITECTS/",
+          "award_count": 1,
+          "award_total": 3500000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ACCENT%20ON%20LANGUAGES",
+          "subject_ref": "vendor:stem:ACCENT%20ON%20LANGUAGES",
+          "label": "Accent on Languages Inc",
+          "href": "/vendors/ACCENT%20ON%20LANGUAGES/",
+          "award_count": 1,
+          "award_total": 150000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:IHS%20GLOBAL",
+          "subject_ref": "vendor:stem:IHS%20GLOBAL",
+          "label": "IHS Global Inc.",
+          "href": "/vendors/IHS%20GLOBAL/",
+          "award_count": 1,
+          "award_total": 75557,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
+          "subject_ref": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
+          "label": "Costar Realty Information, Inc.",
+          "href": "/vendors/COSTAR%20REALTY%20INFORMATION/",
+          "award_count": 1,
+          "award_total": 46738,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "mayors-office-of-contract-services": {
       "subject_ref": "agency:id:mayors-office-of-contract-services",
       "display_name": "Mayor's Office of Contract Services",
       "path": "/agencies/mayors-office-of-contract-services/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "matched",
+          "count": 3,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "matched",
           "count": 1,
@@ -1974,19 +4580,59 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:IN%20OUR%20SHOES",
+          "subject_ref": "vendor:stem:IN%20OUR%20SHOES",
+          "label": "In Our Shoes LLC",
+          "href": "/vendors/IN%20OUR%20SHOES/",
+          "award_count": 1,
+          "award_total": 498500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HIRE%20BREAKTHROUGH",
+          "subject_ref": "vendor:stem:HIRE%20BREAKTHROUGH",
+          "label": "Hire Breakthrough LLC",
+          "href": "/vendors/HIRE%20BREAKTHROUGH/",
+          "award_count": 1,
+          "award_total": 123400,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SHI%20INTERNATIONAL",
+          "subject_ref": "vendor:stem:SHI%20INTERNATIONAL",
+          "label": "Shi International Corp.",
+          "href": "/vendors/SHI%20INTERNATIONAL/",
+          "award_count": 2,
+          "award_total": 122905,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "mayors-office-of-criminal-justice": {
       "subject_ref": "agency:id:mayors-office-of-criminal-justice",
       "display_name": "Mayor's Office of Criminal Justice",
       "path": "/agencies/mayors-office-of-criminal-justice/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 8,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "empty",
           "count": 0,
@@ -2007,7 +4653,97 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
+          "subject_ref": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
+          "label": "The Legal Aid Society",
+          "href": "/vendors/THE%20LEGAL%20AID%20SOCIETY/",
+          "award_count": 1,
+          "award_total": 246622514,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BROOKLYN%20DEFENDER%20SERVICES",
+          "subject_ref": "vendor:stem:BROOKLYN%20DEFENDER%20SERVICES",
+          "label": "Brooklyn Defender Services",
+          "href": "/vendors/BROOKLYN%20DEFENDER%20SERVICES/",
+          "award_count": 2,
+          "award_total": 102629011,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20BRONX%20DEFENDERS",
+          "subject_ref": "vendor:stem:THE%20BRONX%20DEFENDERS",
+          "label": "The Bronx Defenders",
+          "href": "/vendors/THE%20BRONX%20DEFENDERS/",
+          "award_count": 1,
+          "award_total": 40084208.5,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES",
+          "subject_ref": "vendor:stem:NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES",
+          "label": "New York County Defender Services",
+          "href": "/vendors/NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES/",
+          "award_count": 1,
+          "award_total": 30951971.5,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEIGHBORHOOD%20DEFENDER%20SERVICE",
+          "subject_ref": "vendor:stem:NEIGHBORHOOD%20DEFENDER%20SERVICE",
+          "label": "Neighborhood Defender Service Inc",
+          "href": "/vendors/NEIGHBORHOOD%20DEFENDER%20SERVICE/",
+          "award_count": 1,
+          "award_total": 16627002.5,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JUSTICE%20INNOVATION",
+          "subject_ref": "vendor:stem:JUSTICE%20INNOVATION",
+          "label": "Justice Innovation Inc",
+          "href": "/vendors/JUSTICE%20INNOVATION/",
+          "award_count": 1,
+          "award_total": 14940442,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES",
+          "subject_ref": "vendor:stem:CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES",
+          "label": "Center for Alternative Sentencing and Employment Services Inc.",
+          "href": "/vendors/CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES/",
+          "award_count": 1,
+          "award_total": 10650766,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+          "subject_ref": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+          "label": "The Fortune Society Inc",
+          "href": "/vendors/THE%20FORTUNE%20SOCIETY/",
+          "award_count": 1,
+          "award_total": 3164529,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "n-y-c-transit-authority": {
       "subject_ref": "agency:id:n-y-c-transit-authority",
@@ -2019,6 +4755,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2040,7 +4781,8 @@
           "count": 26,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "new-york-city-police-pension-fund": {
       "subject_ref": "agency:id:new-york-city-police-pension-fund",
@@ -2052,6 +4794,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2073,18 +4820,24 @@
           "count": 6,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "nyc-department-of-veterans-services": {
       "subject_ref": "agency:id:nyc-department-of-veterans-services",
       "display_name": "Department of Veterans' Services",
       "path": "/agencies/nyc-department-of-veterans-services/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2106,7 +4859,31 @@
           "count": 2,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP",
+          "subject_ref": "vendor:stem:NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP",
+          "label": "New York Legal Assistance Group Inc",
+          "href": "/vendors/NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP/",
+          "award_count": 1,
+          "award_total": 250000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VETERAN%20ADVOCACY%20PROJECT",
+          "subject_ref": "vendor:stem:VETERAN%20ADVOCACY%20PROJECT",
+          "label": "Veteran Advocacy Project Inc",
+          "href": "/vendors/VETERAN%20ADVOCACY%20PROJECT/",
+          "award_count": 1,
+          "award_total": 250000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "nyc-health-hospitals": {
       "subject_ref": "agency:id:nyc-health-hospitals",
@@ -2119,6 +4896,11 @@
           "count": 0,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "empty",
           "count": 0,
@@ -2139,7 +4921,8 @@
           "count": 2,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "office-of-collective-bargaining": {
       "subject_ref": "agency:id:office-of-collective-bargaining",
@@ -2152,6 +4935,11 @@
           "count": 0,
           "method": "agency_canonical_v1"
         },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
         "meetings": {
           "status": "empty",
           "count": 0,
@@ -2172,18 +4960,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "office-of-labor-relations": {
       "subject_ref": "agency:id:office-of-labor-relations",
       "display_name": "Office of Labor Relations",
       "path": "/agencies/office-of-labor-relations/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2205,18 +4999,47 @@
           "count": 4,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:GROUP%20HEALTH",
+          "subject_ref": "vendor:stem:GROUP%20HEALTH",
+          "label": "Group Health Incorporated",
+          "href": "/vendors/GROUP%20HEALTH/",
+          "award_count": 1,
+          "award_total": 950000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WUKKOUT",
+          "subject_ref": "vendor:stem:WUKKOUT",
+          "label": "Wukkout LLC",
+          "href": "/vendors/WUKKOUT/",
+          "award_count": 2,
+          "award_total": 304500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "office-of-special-narcotics-prosecutor": {
       "subject_ref": "agency:id:office-of-special-narcotics-prosecutor",
       "display_name": "Office of the Special Narcotics Prosecutor",
       "path": "/agencies/office-of-special-narcotics-prosecutor/",
-      "matched_categories": 1,
+      "matched_categories": 2,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2238,18 +5061,36 @@
           "count": 1,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:VCLOUD%20TECH",
+          "subject_ref": "vendor:stem:VCLOUD%20TECH",
+          "label": "VCloud Tech Inc",
+          "href": "/vendors/VCLOUD%20TECH/",
+          "award_count": 1,
+          "award_total": 424785.97,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "office-of-the-mayor": {
       "subject_ref": "agency:id:office-of-the-mayor",
       "display_name": "Office of the Mayor",
       "path": "/agencies/office-of-the-mayor/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 8,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2271,18 +5112,113 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:ADROIT%20CONSULTANTS",
+          "subject_ref": "vendor:stem:ADROIT%20CONSULTANTS",
+          "label": "Adroit Consultants LLC",
+          "href": "/vendors/ADROIT%20CONSULTANTS/",
+          "award_count": 1,
+          "award_total": 1000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JACOBS%20CIVIL%20CONSULTANTS",
+          "subject_ref": "vendor:stem:JACOBS%20CIVIL%20CONSULTANTS",
+          "label": "Jacobs Civil Consultants",
+          "href": "/vendors/JACOBS%20CIVIL%20CONSULTANTS/",
+          "award_count": 1,
+          "award_total": 1000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:STRATEGIC%20VALUE%20SOLUTIONS",
+          "subject_ref": "vendor:stem:STRATEGIC%20VALUE%20SOLUTIONS",
+          "label": "Strategic Value Solutions Inc.",
+          "href": "/vendors/STRATEGIC%20VALUE%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 1000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20MAYOR%20S%20FUND%20TO%20ADVANCE%20NEW%20YORK%20CITY",
+          "subject_ref": "vendor:stem:THE%20MAYOR%20S%20FUND%20TO%20ADVANCE%20NEW%20YORK%20CITY",
+          "label": "The Mayor's Fund to Advance New York City",
+          "href": "/vendors/THE%20MAYOR%20S%20FUND%20TO%20ADVANCE%20NEW%20YORK%20CITY/",
+          "award_count": 1,
+          "award_total": 700000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MARSH",
+          "subject_ref": "vendor:stem:MARSH",
+          "label": "Marsh USA LLC",
+          "href": "/vendors/MARSH/",
+          "award_count": 2,
+          "award_total": 382000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "label": "Quality and Assurance Technology Corp.",
+          "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
+          "award_count": 1,
+          "award_total": 134333,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CHECKR",
+          "subject_ref": "vendor:stem:CHECKR",
+          "label": "Checkr Inc",
+          "href": "/vendors/CHECKR/",
+          "award_count": 1,
+          "award_total": 99999,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES",
+          "subject_ref": "vendor:stem:GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES",
+          "label": "Great Performances Artists as Waitresses Inc",
+          "href": "/vendors/GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES/",
+          "award_count": 1,
+          "award_total": 99999,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "parks-and-recreation": {
       "subject_ref": "agency:id:parks-and-recreation",
       "display_name": "Department of Parks and Recreation",
       "path": "/agencies/parks-and-recreation/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -2304,7 +5240,97 @@
           "count": 33,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:WOLLMAN%20PARK%20PARTNERS%20II",
+          "subject_ref": "vendor:stem:WOLLMAN%20PARK%20PARTNERS%20II",
+          "label": "Wollman Park Partners II LLC",
+          "href": "/vendors/WOLLMAN%20PARK%20PARTNERS%20II/",
+          "award_count": 1,
+          "award_total": 91359274,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CAC%20INDUSTRIES",
+          "subject_ref": "vendor:stem:CAC%20INDUSTRIES",
+          "label": "CAC Industries Inc",
+          "href": "/vendors/CAC%20INDUSTRIES/",
+          "award_count": 1,
+          "award_total": 68175045,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:KNOX%20GOLF%20ACADEMY",
+          "subject_ref": "vendor:stem:KNOX%20GOLF%20ACADEMY",
+          "label": "Knox Golf Academy",
+          "href": "/vendors/KNOX%20GOLF%20ACADEMY/",
+          "award_count": 1,
+          "award_total": 35500000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:WILLIAM%20A%20GROSS%20CONSTRUCTION%20ASSOCIATES",
+          "subject_ref": "vendor:stem:WILLIAM%20A%20GROSS%20CONSTRUCTION%20ASSOCIATES",
+          "label": "William A Gross Construction Associates Inc.",
+          "href": "/vendors/WILLIAM%20A%20GROSS%20CONSTRUCTION%20ASSOCIATES/",
+          "award_count": 7,
+          "award_total": 30824688,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:TRANSDEV%20FLEET%20SERVICES",
+          "subject_ref": "vendor:stem:TRANSDEV%20FLEET%20SERVICES",
+          "label": "Transdev Fleet Services Inc.",
+          "href": "/vendors/TRANSDEV%20FLEET%20SERVICES/",
+          "award_count": 1,
+          "award_total": 27049151,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:STANTEC%20CONSULTING%20SERVICES",
+          "subject_ref": "vendor:stem:STANTEC%20CONSULTING%20SERVICES",
+          "label": "Stantec Consulting Services Inc",
+          "href": "/vendors/STANTEC%20CONSULTING%20SERVICES/",
+          "award_count": 3,
+          "award_total": 27000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PIONEER%20LANDSCAPING%20ASPHALT%20PAVING",
+          "subject_ref": "vendor:stem:PIONEER%20LANDSCAPING%20ASPHALT%20PAVING",
+          "label": "Pioneer Landscaping & Asphalt Paving Inc",
+          "href": "/vendors/PIONEER%20LANDSCAPING%20ASPHALT%20PAVING/",
+          "award_count": 2,
+          "award_total": 22557465,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CP%20PERMA%20PAVING%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:CP%20PERMA%20PAVING%20CONSTRUCTION",
+          "label": "CP Perma Paving Construction Inc",
+          "href": "/vendors/CP%20PERMA%20PAVING%20CONSTRUCTION/",
+          "award_count": 1,
+          "award_total": 19428098,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "payroll-administration": {
       "subject_ref": "agency:id:payroll-administration",
@@ -2316,6 +5342,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2337,18 +5368,24 @@
           "count": 3,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "police-department": {
       "subject_ref": "agency:id:police-department",
       "display_name": "New York City Police Department",
       "path": "/agencies/police-department/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 8,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -2370,18 +5407,113 @@
           "count": 61,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
+          "subject_ref": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
+          "label": "International Business Machines Corp",
+          "href": "/vendors/INTERNATIONAL%20BUSINESS%20MACHINES/",
+          "award_count": 1,
+          "award_total": 105690406,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AXON%20ENTERPRISE",
+          "subject_ref": "vendor:stem:AXON%20ENTERPRISE",
+          "label": "Axon Enterprise, Inc.",
+          "href": "/vendors/AXON%20ENTERPRISE/",
+          "award_count": 1,
+          "award_total": 57450298,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INTEGRATED%20PARKING%20SOLUTIONS",
+          "subject_ref": "vendor:stem:INTEGRATED%20PARKING%20SOLUTIONS",
+          "label": "Integrated Parking Solutions, LLC",
+          "href": "/vendors/INTEGRATED%20PARKING%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 33111038,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GRYPHON%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:GRYPHON%20CONSTRUCTION",
+          "label": "Gryphon Construction Inc.",
+          "href": "/vendors/GRYPHON%20CONSTRUCTION/",
+          "award_count": 1,
+          "award_total": 10374367,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ZHL%20GROUP",
+          "subject_ref": "vendor:stem:ZHL%20GROUP",
+          "label": "ZHL Group Inc.",
+          "href": "/vendors/ZHL%20GROUP/",
+          "award_count": 1,
+          "award_total": 6487000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:LEADSONLINE",
+          "subject_ref": "vendor:stem:LEADSONLINE",
+          "label": "LeadsOnline LLC",
+          "href": "/vendors/LEADSONLINE/",
+          "award_count": 1,
+          "award_total": 3126630,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20ANIMAL%20MEDICAL%20CENTER",
+          "subject_ref": "vendor:stem:THE%20ANIMAL%20MEDICAL%20CENTER",
+          "label": "The Animal Medical Center",
+          "href": "/vendors/THE%20ANIMAL%20MEDICAL%20CENTER/",
+          "award_count": 1,
+          "award_total": 2431925,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING",
+          "subject_ref": "vendor:stem:REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING",
+          "label": "Reworld Holding Corporation FKA Covanta Holding Co.",
+          "href": "/vendors/REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING/",
+          "award_count": 1,
+          "award_total": 1852170,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "probation": {
       "subject_ref": "agency:id:probation",
       "display_name": "Department of Probation",
       "path": "/agencies/probation/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2403,7 +5535,97 @@
           "count": 6,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
+          "subject_ref": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
+          "label": "The Osborne Association Inc.",
+          "href": "/vendors/THE%20OSBORNE%20ASSOCIATION/",
+          "award_count": 2,
+          "award_total": 937500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES",
+          "subject_ref": "vendor:stem:CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES",
+          "label": "Center for Employment Opportunities Inc",
+          "href": "/vendors/CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES/",
+          "award_count": 1,
+          "award_total": 570808,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT",
+          "subject_ref": "vendor:stem:NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT",
+          "label": "New York Center for Interpersonal Development Inc",
+          "href": "/vendors/NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT/",
+          "award_count": 2,
+          "award_total": 465673,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CATALIS%20COURTS%20LAND%20RECORDS",
+          "subject_ref": "vendor:stem:CATALIS%20COURTS%20LAND%20RECORDS",
+          "label": "Catalis Courts & Land Records LLC",
+          "href": "/vendors/CATALIS%20COURTS%20LAND%20RECORDS/",
+          "award_count": 1,
+          "award_total": 408852,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
+          "subject_ref": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
+          "label": "Living Redemption Community Development Corporation",
+          "href": "/vendors/LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT/",
+          "award_count": 1,
+          "award_total": 269113,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HEALTH%20PEOPLE",
+          "subject_ref": "vendor:stem:HEALTH%20PEOPLE",
+          "label": "Health People Inc.",
+          "href": "/vendors/HEALTH%20PEOPLE/",
+          "award_count": 1,
+          "award_total": 262500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
+          "subject_ref": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
+          "label": "Jewish Child Care Association of New York",
+          "href": "/vendors/JEWISH%20CHILD%20CARE%20ASSOCIATION/",
+          "award_count": 1,
+          "award_total": 262500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:RISING%20GROUND",
+          "subject_ref": "vendor:stem:RISING%20GROUND",
+          "label": "Rising Ground Inc.",
+          "href": "/vendors/RISING%20GROUND/",
+          "award_count": 1,
+          "award_total": 197500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "public-advocate": {
       "subject_ref": "agency:id:public-advocate",
@@ -2415,6 +5637,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2436,18 +5663,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "records-and-information-services": {
       "subject_ref": "agency:id:records-and-information-services",
       "display_name": "Department of Records and Information Services",
       "path": "/agencies/records-and-information-services/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 1,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2469,7 +5702,20 @@
           "count": 5,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:DIGITAL%20TRANSITIONS",
+          "subject_ref": "vendor:stem:DIGITAL%20TRANSITIONS",
+          "label": "Digital Transitions Inc",
+          "href": "/vendors/DIGITAL%20TRANSITIONS/",
+          "award_count": 1,
+          "award_total": 107643,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "rent-guidelines-board": {
       "subject_ref": "agency:id:rent-guidelines-board",
@@ -2481,6 +5727,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -2502,18 +5753,24 @@
           "count": 0,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "sanitation": {
       "subject_ref": "agency:id:sanitation",
       "display_name": "New York City Department of Sanitation",
       "path": "/agencies/sanitation/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -2535,18 +5792,113 @@
           "count": 24,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:THE%20NATURAL%20LANDSCAPE",
+          "subject_ref": "vendor:stem:THE%20NATURAL%20LANDSCAPE",
+          "label": "The Natural Landscape of New York",
+          "href": "/vendors/THE%20NATURAL%20LANDSCAPE/",
+          "award_count": 1,
+          "award_total": 50380557,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PRISMATIC%20DEVELOPMENT",
+          "subject_ref": "vendor:stem:PRISMATIC%20DEVELOPMENT",
+          "label": "Prismatic Development Corp.",
+          "href": "/vendors/PRISMATIC%20DEVELOPMENT/",
+          "award_count": 1,
+          "award_total": 46144800,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AFFORDABLE%20SERVICES%20GROUP",
+          "subject_ref": "vendor:stem:AFFORDABLE%20SERVICES%20GROUP",
+          "label": "Affordable Services Group LLC",
+          "href": "/vendors/AFFORDABLE%20SERVICES%20GROUP/",
+          "award_count": 1,
+          "award_total": 30639060,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DENALI%20WATER%20SOLUTIONS",
+          "subject_ref": "vendor:stem:DENALI%20WATER%20SOLUTIONS",
+          "label": "Denali Water Solutions LLC",
+          "href": "/vendors/DENALI%20WATER%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 26880087,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:APTIM%20ENVIRONMENTAL%20INFRASTRUCTURE",
+          "subject_ref": "vendor:stem:APTIM%20ENVIRONMENTAL%20INFRASTRUCTURE",
+          "label": "APTIM Environmental & Infrastructure, Inc.",
+          "href": "/vendors/APTIM%20ENVIRONMENTAL%20INFRASTRUCTURE/",
+          "award_count": 2,
+          "award_total": 26537000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PEN%20ENTERPRISES",
+          "subject_ref": "vendor:stem:PEN%20ENTERPRISES",
+          "label": "Pen Enterprises, Inc.",
+          "href": "/vendors/PEN%20ENTERPRISES/",
+          "award_count": 2,
+          "award_total": 22190000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:VEOLIA%20ES%20TECHNICAL%20SOLUTIONS",
+          "subject_ref": "vendor:stem:VEOLIA%20ES%20TECHNICAL%20SOLUTIONS",
+          "label": "Veolia Es Technical Solutions LLC",
+          "href": "/vendors/VEOLIA%20ES%20TECHNICAL%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 18100000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CASTLE%20GATE%20ENGINEERING%20P%20C",
+          "subject_ref": "vendor:stem:CASTLE%20GATE%20ENGINEERING%20P%20C",
+          "label": "Castle Gate Engineering P.C.",
+          "href": "/vendors/CASTLE%20GATE%20ENGINEERING%20P%20C/",
+          "award_count": 1,
+          "award_total": 17198398,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "small-business-services": {
       "subject_ref": "agency:id:small-business-services",
       "display_name": "Department of Small Business Services",
       "path": "/agencies/small-business-services/",
-      "matched_categories": 4,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2568,7 +5920,97 @@
           "count": 4,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:NEW%20YORK%20CITY%20ECONOMIC%20DEVELOPMENT",
+          "subject_ref": "vendor:stem:NEW%20YORK%20CITY%20ECONOMIC%20DEVELOPMENT",
+          "label": "New York City Economic Development Corporation",
+          "href": "/vendors/NEW%20YORK%20CITY%20ECONOMIC%20DEVELOPMENT/",
+          "award_count": 2,
+          "award_total": 2134863648,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GOVERNORS%20ISLAND",
+          "subject_ref": "vendor:stem:GOVERNORS%20ISLAND",
+          "label": "Governors Island Corporation",
+          "href": "/vendors/GOVERNORS%20ISLAND/",
+          "award_count": 1,
+          "award_total": 394100395,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:DB%20GRANT%20ASSOCIATES",
+          "subject_ref": "vendor:stem:DB%20GRANT%20ASSOCIATES",
+          "label": "DB Grant Associates Inc",
+          "href": "/vendors/DB%20GRANT%20ASSOCIATES/",
+          "award_count": 3,
+          "award_total": 45966647,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
+          "subject_ref": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
+          "label": "Educational Data Systems Inc.",
+          "href": "/vendors/EDUCATIONAL%20DATA%20SYSTEMS/",
+          "award_count": 3,
+          "award_total": 14362229,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BROOKLYN%20LEGAL%20SERVICES%20CORPORATION%20A",
+          "subject_ref": "vendor:stem:BROOKLYN%20LEGAL%20SERVICES%20CORPORATION%20A",
+          "label": "Brooklyn Legal Services Corporation A",
+          "href": "/vendors/BROOKLYN%20LEGAL%20SERVICES%20CORPORATION%20A/",
+          "award_count": 1,
+          "award_total": 12000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:COMMUNITY%20REINVESTMENT%20FUND",
+          "subject_ref": "vendor:stem:COMMUNITY%20REINVESTMENT%20FUND",
+          "label": "Community Reinvestment Fund Inc.",
+          "href": "/vendors/COMMUNITY%20REINVESTMENT%20FUND/",
+          "award_count": 1,
+          "award_total": 8597000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:ARBOR%20E%20T",
+          "subject_ref": "vendor:stem:ARBOR%20E%20T",
+          "label": "Arbor E&T LLC",
+          "href": "/vendors/ARBOR%20E%20T/",
+          "award_count": 1,
+          "award_total": 4497938,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20HOPE%20PROGRAM",
+          "subject_ref": "vendor:stem:THE%20HOPE%20PROGRAM",
+          "label": "The Hope Program Inc.",
+          "href": "/vendors/THE%20HOPE%20PROGRAM/",
+          "award_count": 1,
+          "award_total": 1867888,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "tax-commission": {
       "subject_ref": "agency:id:tax-commission",
@@ -2580,6 +6022,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2601,18 +6048,24 @@
           "count": 2,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "taxi-and-limousine-commission": {
       "subject_ref": "agency:id:taxi-and-limousine-commission",
       "display_name": "New York City Taxi and Limousine Commission",
       "path": "/agencies/taxi-and-limousine-commission/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 1,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -2634,7 +6087,97 @@
           "count": 5,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:CAPSTONE%20STRATEGY%20GROUP",
+          "subject_ref": "vendor:stem:CAPSTONE%20STRATEGY%20GROUP",
+          "label": "Capstone Strategy Group LLC",
+          "href": "/vendors/CAPSTONE%20STRATEGY%20GROUP/",
+          "award_count": 1,
+          "award_total": 562517,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+          "subject_ref": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+          "label": "New York State Industries for the Disabled Inc",
+          "href": "/vendors/NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED/",
+          "award_count": 1,
+          "award_total": 456946,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:INTERNATIONAL%20LANGUAGE%20SERVICES",
+          "subject_ref": "vendor:stem:INTERNATIONAL%20LANGUAGE%20SERVICES",
+          "label": "International Language Services Inc",
+          "href": "/vendors/INTERNATIONAL%20LANGUAGE%20SERVICES/",
+          "award_count": 1,
+          "award_total": 450000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+          "label": "Quality and Assurance Technology Corp",
+          "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
+          "award_count": 1,
+          "award_total": 394380,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS",
+          "subject_ref": "vendor:stem:MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS",
+          "label": "MYCA Multimedia & Training Solutions LLC",
+          "href": "/vendors/MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 254400,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PRESHER%20WINDOWS",
+          "subject_ref": "vendor:stem:PRESHER%20WINDOWS",
+          "label": "Presher Windows LLC",
+          "href": "/vendors/PRESHER%20WINDOWS/",
+          "award_count": 1,
+          "award_total": 145598,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BA%20GLOBAL%20CONSTRUCTION",
+          "subject_ref": "vendor:stem:BA%20GLOBAL%20CONSTRUCTION",
+          "label": "BA Global Construction Corp.",
+          "href": "/vendors/BA%20GLOBAL%20CONSTRUCTION/",
+          "award_count": 1,
+          "award_total": 75000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MOLA%20GROUP",
+          "subject_ref": "vendor:stem:MOLA%20GROUP",
+          "label": "Mola Group Corp.",
+          "href": "/vendors/MOLA%20GROUP/",
+          "award_count": 1,
+          "award_total": 38454,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "teachers-retirement-system": {
       "subject_ref": "agency:id:teachers-retirement-system",
@@ -2646,6 +6189,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2667,18 +6215,24 @@
           "count": 8,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "transportation": {
       "subject_ref": "agency:id:transportation",
       "display_name": "New York City Department of Transportation",
       "path": "/agencies/transportation/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "matched",
@@ -2700,7 +6254,97 @@
           "count": 39,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:AMERICAN%20TRAFFIC%20SOLUTIONS",
+          "subject_ref": "vendor:stem:AMERICAN%20TRAFFIC%20SOLUTIONS",
+          "label": "American Traffic Solutions, Inc.",
+          "href": "/vendors/AMERICAN%20TRAFFIC%20SOLUTIONS/",
+          "award_count": 1,
+          "award_total": 998468155,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:E-J%20ELECTRIC%20INSTALLATION",
+          "subject_ref": "vendor:stem:E-J%20ELECTRIC%20INSTALLATION",
+          "label": "E-J Electric Installation Company",
+          "href": "/vendors/E-J%20ELECTRIC%20INSTALLATION/",
+          "award_count": 4,
+          "award_total": 116896789,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:JOHN%20CIVETTA%20SONS",
+          "subject_ref": "vendor:stem:JOHN%20CIVETTA%20SONS",
+          "label": "John Civetta & Sons Inc.",
+          "href": "/vendors/JOHN%20CIVETTA%20SONS/",
+          "award_count": 1,
+          "award_total": 109417500,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HELLMAN%20ELECTRIC",
+          "subject_ref": "vendor:stem:HELLMAN%20ELECTRIC",
+          "label": "Hellman Electric LLC",
+          "href": "/vendors/HELLMAN%20ELECTRIC/",
+          "award_count": 4,
+          "award_total": 75028089,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:HYLAN%20DATACOM%20ELECTRICAL",
+          "subject_ref": "vendor:stem:HYLAN%20DATACOM%20ELECTRICAL",
+          "label": "Hylan Datacom & Electrical LLC",
+          "href": "/vendors/HYLAN%20DATACOM%20ELECTRICAL/",
+          "award_count": 3,
+          "award_total": 61166079,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:METROEXPRESS%20SERVICES",
+          "subject_ref": "vendor:stem:METROEXPRESS%20SERVICES",
+          "label": "MetroExpress Services Inc.",
+          "href": "/vendors/METROEXPRESS%20SERVICES/",
+          "award_count": 3,
+          "award_total": 43152675,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:PAUL%20J%20SCARIANO",
+          "subject_ref": "vendor:stem:PAUL%20J%20SCARIANO",
+          "label": "Paul J. Scariano Inc",
+          "href": "/vendors/PAUL%20J%20SCARIANO/",
+          "award_count": 1,
+          "award_total": 32890000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:MICHAEL%20STAPLETON%20ASSOCIATES",
+          "subject_ref": "vendor:stem:MICHAEL%20STAPLETON%20ASSOCIATES",
+          "label": "Michael Stapleton Associates, Ltd.",
+          "href": "/vendors/MICHAEL%20STAPLETON%20ASSOCIATES/",
+          "award_count": 1,
+          "award_total": 25784874,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "triborough-bridge-and-tunnel-authority": {
       "subject_ref": "agency:id:triborough-bridge-and-tunnel-authority",
@@ -2712,6 +6356,11 @@
           "status": "empty",
           "count": 0,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2733,18 +6382,24 @@
           "count": 5,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": []
     },
     "youth-and-community-development": {
       "subject_ref": "agency:id:youth-and-community-development",
       "display_name": "Department of Youth and Community Development",
       "path": "/agencies/youth-and-community-development/",
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
           "count": 6,
           "method": "agency_canonical_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
           "status": "empty",
@@ -2766,7 +6421,97 @@
           "count": 10,
           "method": "publisher_certification_record_v1"
         }
-      }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:KINGS%20BAY%20YM%20-YWHA",
+          "subject_ref": "vendor:stem:KINGS%20BAY%20YM%20-YWHA",
+          "label": "Kings Bay YM -YWHA Inc.",
+          "href": "/vendors/KINGS%20BAY%20YM%20-YWHA/",
+          "award_count": 2,
+          "award_total": 48387600,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:CAMBA",
+          "subject_ref": "vendor:stem:CAMBA",
+          "label": "CAMBA Inc",
+          "href": "/vendors/CAMBA/",
+          "award_count": 8,
+          "award_total": 45292441,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
+          "subject_ref": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
+          "label": "Grand Street Settlement Inc",
+          "href": "/vendors/GRAND%20STREET%20SETTLEMENT/",
+          "award_count": 5,
+          "award_total": 39517940,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:EAST%20SIDE%20HOUSE",
+          "subject_ref": "vendor:stem:EAST%20SIDE%20HOUSE",
+          "label": "East Side House Inc",
+          "href": "/vendors/EAST%20SIDE%20HOUSE/",
+          "award_count": 3,
+          "award_total": 37095863,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
+          "subject_ref": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
+          "label": "The Children's Aid Society",
+          "href": "/vendors/THE%20CHILDREN%20S%20AID%20SOCIETY/",
+          "award_count": 7,
+          "award_total": 29399831,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
+          "subject_ref": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
+          "label": "Good Shepherd Services",
+          "href": "/vendors/GOOD%20SHEPHERD%20SERVICES/",
+          "award_count": 6,
+          "award_total": 28805159,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SCAN-HARBOR",
+          "subject_ref": "vendor:stem:SCAN-HARBOR",
+          "label": "SCAN-Harbor Inc.",
+          "href": "/vendors/SCAN-HARBOR/",
+          "award_count": 4,
+          "award_total": 28506677,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:THE%20CHILD%20CENTER",
+          "subject_ref": "vendor:stem:THE%20CHILD%20CENTER",
+          "label": "The Child Center of NY Inc",
+          "href": "/vendors/THE%20CHILD%20CENTER/",
+          "award_count": 3,
+          "award_total": 26505359,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     }
   },
   "provenance": {
@@ -2774,6 +6519,8 @@
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
     "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z",
-    "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, mandates, and process-conformance expected-vs-observed."
+    "vendor_rollup_as_of": "2026-08-05",
+    "vendor_rollup_window_start": "2025-08-05",
+    "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
   }
 }
