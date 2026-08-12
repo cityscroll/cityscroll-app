@@ -96,6 +96,13 @@ function updateRuleLine() {
   for (const line of root.querySelectorAll("[data-following-rule-line]")) {
     line.textContent = sentence;
   }
+  for (const line of root.querySelectorAll("[data-following-identity-rule]")) {
+    line.textContent = sentence;
+  }
+  const cadenceLabel = frequency === "weekly" ? "Weekly" : "Daily";
+  for (const label of root.querySelectorAll("[data-following-identity-cadence]")) {
+    label.textContent = cadenceLabel;
+  }
   const citywideDaily = isCitywideWatchScope(filter) && frequency === "daily";
   for (const panel of root.querySelectorAll("[data-following-rule-panel]")) {
     let warn = panel.querySelector("[data-following-citywide-warn]");
