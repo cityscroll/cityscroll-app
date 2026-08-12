@@ -8,6 +8,7 @@ import {
   HEARINGS_KV_KEY,
   refreshHearings,
 } from "../src/hearings.mjs";
+import { normalizeHearing } from "../src/lib/hearings.mjs";
 
 const TEST_NOW = new Date();
 
@@ -70,7 +71,8 @@ test("materialized view queries both hearing-bearing sections and geocodes venue
   const where = new URL(calls[0]).searchParams.get("$where");
   assert.match(where, /Public Hearings and Meetings/);
   assert.match(where, /Agency Rules/);
-  assert.match(where, /type_of_notice_description='Public Hearings'/);
+  assert.match(where, /section_name='Agency Rules' AND event_date IS NOT NULL/);
+  assert.doesNotMatch(where, /section_name='Agency Rules'.*type_of_notice_description='Public Hearings'/);
   assert.equal(view.hearings[0].venue.borough, "Manhattan");
   assert.deepEqual(view.hearings[0].affected_area.boroughs, ["Queens"]);
   assert.deepEqual(view.counts, { total: 1, local: 1, citywide: 0, unlocated: 0 });
@@ -117,4 +119,91 @@ test("meeting ICS is built from the materialized hearing record", async () => {
   const body = await response.text();
   assert.match(body, /URL:https:\/\/zoom\.us\/j\/123456789/);
   assert.match(body, /LOCATION:Room 120/);
+});
+
+test("rule notices with a hearing date are included even when their notice type is generic", async () => {
+  const row = {
+    request_id: "20260803009",
+    start_date: "2026-08-12T00:00:00.000",
+    event_date: "2026-09-14T10:00:00.000",
+    agency_name: "Health and Mental Hygiene",
+    type_of_notice_description: "Notice",
+    section_name: "Agency Rules",
+    short_title: "New Rules Relating to Rat Inspections",
+  };
+  const calls = [];
+  const fetchRule = async (url) => {
+    calls.push(String(url));
+    if (String(url).startsWith("https://data.cityofnewyork.us/")) {
+      return new Response(JSON.stringify([row]), { status: 200 });
+    }
+    return new Response("", { status: 200 });
+  };
+  const view = await buildHearingView(fetchRule, new Date("2026-08-12T12:00:00.000Z"));
+  assert.equal(view.hearings[0]?.request_id, "20260803009");
+  const where = new URL(calls[0]).searchParams.get("$where");
+  assert.doesNotMatch(where, /section_name='Agency Rules'.*type_of_notice_description='Public Hearings'/);
+});
+
+test("ICS refreshes a fresh cache miss for the dated rule hearing", async () => {
+  const kv = memoryKV();
+  await kv.put(HEARINGS_KV_KEY, JSON.stringify({
+    generated_at: TEST_NOW.toISOString(),
+    hearings: [],
+  }));
+  const row = {
+    request_id: "20260803009",
+    start_date: "2026-08-03T00:00:00.000",
+    event_date: "2026-09-14T10:00:00.000",
+    agency_name: "Health and Mental Hygiene",
+    type_of_notice_description: "Notice",
+    section_name: "Agency Rules",
+    short_title: "New Rules Relating to Rat Inspections",
+  };
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (target.startsWith("https://data.cityofnewyork.us/")) {
+      return new Response(JSON.stringify([row]), { status: 200 });
+    }
+    if (target.includes("a856-cityrecord.nyc.gov/RequestDetail/20260803009")) {
+      return new Response(
+        '<p>To participate in the public hearing, enter to register at this Zoom meeting.</p>'
+          + '<a href="https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1">Join</a>',
+        { status: 200, headers: { "content-type": "text/html" } },
+      );
+    }
+    return new Response(JSON.stringify({ features: [] }), { status: 200 });
+  };
+  try {
+    const response = await handleMeetingICS(
+      new Request("https://api.cityscroll.org/meeting.ics?id=20260803009"),
+      { ALERT_STATE: kv },
+    );
+    assert.equal(response.status, 200);
+    const body = await response.text();
+    assert.match(body, /DTSTART;TZID=America\/New_York:20260914T100000/);
+    assert.match(body, /SUMMARY:New Rules Relating to Rat Inspections/);
+    assert.match(body, /LOCATION:Online/);
+    const unfolded = body.replace(/\r\n[ \t]/g, "");
+    assert.match(unfolded, /Join online: https:\/\/health-nyc\.zoomgov\.com\/j\/1659561163/);
+    assert.match(unfolded, /Mode: Online/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("City Record hearing source text supplies online mode and the join URL", () => {
+  const record = normalizeHearing({
+    request_id: "20260803009",
+    event_date: "2026-09-14T10:00:00.000",
+    agency_name: "Health and Mental Hygiene",
+    section_name: "Agency Rules",
+    type_of_notice_description: "Public Hearings",
+    short_title: "New Rules Relating to Rat Inspections",
+    source_body: "To participate in the public hearing, enter to register at this Zoom meeting.",
+    source_links: ["https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1"],
+  });
+  assert.equal(record.meeting_access.mode, "remote");
+  assert.equal(record.meeting_access.remote_join_url, "https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1");
 });

@@ -540,6 +540,7 @@
     read_official_notice: "Leer aviso oficial",
     next_action_heading: "¿Qué puedo hacer ahora?",
     next_action_watch: "Seguir este aviso",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Vigile este rezonamiento",
     next_action_land_guide: "Siga los pasos de participación en el uso del suelo indicados abajo",
     next_action_land_steps_missing: "Aún no se publican pasos de participación para este rezonamiento.",

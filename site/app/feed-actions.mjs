@@ -313,7 +313,7 @@ function participationLinksHTML(record){
   }).join("");
 }
 function noticeActionMatter(r, ruleRecord, lifecycleData){
-  const hearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
+  const hearing=r.hearing||isMeetingOutcomesEligible(r)&&normalizeHearingRow(r);
   const participation=((hearing&&hearing.participation&&hearing.participation.links)||[])
     .map(link=>hearingSafeURL(link.url)).find(Boolean)||null;
   const zapParticipation=participation&&/^https:\/\/zap\.planning\.nyc\.gov\//i.test(participation);
