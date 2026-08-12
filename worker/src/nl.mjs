@@ -7,15 +7,18 @@
 //   1. Input length cap (a paragraph, not a novel).
 //   2. Hard daily call ceiling (Workers KV counter) → over cap returns { degraded:true },
 //      and the browser falls back to its on-device heuristic.
-//   3. Tiny max_tokens (the answer is a small JSON object).
+//   3. Per-IP daily ceiling, separate from the surface ceiling.
+//   4. Tiny max_tokens (the answer is a small JSON object).
 // Worst case ≈ MAX_CALLS_PER_DAY × (~600 in + ~200 out tokens) on Haiku ≈ tens of cents/day.
 
 import { sanitize, filterConfidence, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES } from "./lib/filter.mjs";
 import { bumpStat, bumpStatAllTime, bumpCategoryStat, bumpCategoryDayStat, bumpHistDay } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
+import { overActorLimit, overSurfaceCap } from "./lib/meter.mjs";
 
 const MODEL = "claude-haiku-4-5";
+const DEFAULT_MAX_PER_IP_DAY = 60;
 
 // Field catalogue — the schema for each lens is assembled from its LENSES[] field list.
 const FIELD_DEFS = {
@@ -126,8 +129,18 @@ export async function handleNl(req, env) {
   const lens = LENSES[body.lens] ? body.lens : "money"; // unknown/missing → money (back-compat)
   if (!text) return json({ error: "empty" }, 400, cors);
 
-  // Denial-of-wallet ceiling. Over cap → client uses its on-device heuristic.
-  if (await overDailyCap(env)) return json({ degraded: true, reason: "daily-cap" }, 200, cors);
+  // Denial-of-wallet ceilings. The per-IP bucket is distinct from the surface bucket;
+  // both fail closed for this paid public endpoint. Over cap → client uses its on-device
+  // heuristic. The meter is only reached after request validation, so rejected requests
+  // do not consume either budget.
+  const ip = req.headers.get("CF-Connecting-IP") || "";
+  const ipCap = Number(env.NL_MAX_PER_IP_DAY) || DEFAULT_MAX_PER_IP_DAY;
+  if (await overActorLimit(env.NL_METER, "nl", ip, ipCap, { failClosed: true })) {
+    return json({ degraded: true, reason: "ip-cap" }, 200, cors);
+  }
+  if (await overSurfaceCap(env.NL_METER, "nl", MAX_CALLS_PER_DAY, { failClosed: true })) {
+    return json({ degraded: true, reason: "daily-cap" }, 200, cors);
+  }
 
   const now = new Date();
   await bumpStatAllTime(env.NL_METER, "nl_search");
@@ -148,24 +161,6 @@ export async function handleNl(req, env) {
   });
   // Graceful degradation either way: the browser falls back to its on-device parser.
   return json(res, 200, cors);
-}
-
-// Daily call ceiling via Workers KV. Eventual consistency means concurrent calls could
-// slightly under-count near the cap — fine for a soft denial-of-wallet stop. Day keys
-// auto-expire after 2 days so the namespace never grows.
-async function overDailyCap(env) {
-  try {
-    const store = env.NL_METER;
-    if (!store) return false;
-    const day = new Date().toISOString().slice(0, 10);
-    const key = `nl:${day}`;
-    const cur = parseInt((await store.get(key)) || "0", 10) || 0;
-    if (cur >= MAX_CALLS_PER_DAY) return true;
-    await store.put(key, String(cur + 1), { expirationTtl: 172800 });
-    return false;
-  } catch {
-    return false;
-  }
 }
 
 function json(obj, status, cors) {

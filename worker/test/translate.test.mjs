@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import { getOrTranslate, handleTranslate } from "../src/translate.mjs";
 import { sourceHash, translateNoticeFields } from "../src/lib/translate_notice.mjs";
 import { noticeSourceText } from "../src/lib/translate_invariants.mjs";
+import { overActorLimit } from "../src/lib/meter.mjs";
 
 const NOTICE = {
   request_id: "20220314107",
@@ -165,12 +166,14 @@ test("getOrTranslate: serves D1 cache without calling the model", async () => {
   let fetchCalls = 0;
   const orig = globalThis.fetch;
   globalThis.fetch = async () => { fetchCalls++; throw new Error("should not fetch"); };
+  const meter = kvStore();
   try {
-    const result = await getOrTranslate({ DB: db, NL_METER: kvStore() }, NOTICE.request_id, "es");
+    const result = await getOrTranslate({ DB: db, NL_METER: meter }, NOTICE.request_id, "es", "203.0.113.10");
     assert.equal(result.ok, true);
     assert.equal(result.cached, true);
     assert.equal(result.title, payload.title);
     assert.equal(fetchCalls, 0);
+    assert.equal(meter._map.size, 0);
   } finally {
     globalThis.fetch = orig;
   }
@@ -201,6 +204,51 @@ test("getOrTranslate: over daily cap fails closed on miss", async () => {
   );
   assert.equal(result.ok, false);
   assert.equal(result.reason, "daily-cap");
+});
+
+test("getOrTranslate: per-IP cap fails closed before a new model call", async () => {
+  const ip = "203.0.113.10";
+  const db = fakeDB({ notices: { [NOTICE.request_id]: NOTICE } });
+  const meter = kvStore();
+  assert.equal(await overActorLimit(meter, "translate", ip, 1), false);
+  const originalFetch = globalThis.fetch;
+  let modelCalls = 0;
+  globalThis.fetch = async () => { modelCalls++; throw new Error("model must not run"); };
+  try {
+    const result = await getOrTranslate(
+      { DB: db, NL_METER: meter, TRANSLATE_MAX_PER_IP_DAY: "1", ANTHROPIC_API_KEY: "test-key" },
+      NOTICE.request_id,
+      "es",
+      ip,
+    );
+    assert.deepEqual(result, { ok: false, reason: "ip-cap" });
+    assert.equal(modelCalls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("getOrTranslate: meter failure fails closed without a new model call", async () => {
+  const db = fakeDB({ notices: { [NOTICE.request_id]: NOTICE } });
+  const brokenMeter = {
+    async get() { throw new Error("meter unavailable"); },
+    async put() { throw new Error("meter unavailable"); },
+  };
+  const originalFetch = globalThis.fetch;
+  let modelCalls = 0;
+  globalThis.fetch = async () => { modelCalls++; throw new Error("model must not run"); };
+  try {
+    const result = await getOrTranslate(
+      { DB: db, NL_METER: brokenMeter, ANTHROPIC_API_KEY: "test-key" },
+      NOTICE.request_id,
+      "es",
+      "203.0.113.10",
+    );
+    assert.deepEqual(result, { ok: false, reason: "ip-cap" });
+    assert.equal(modelCalls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("handleTranslate: rejects bad id and bad lang", async () => {

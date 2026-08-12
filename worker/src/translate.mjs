@@ -11,7 +11,7 @@
 // supplies an optional unofficial aid.
 
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
-import { overSurfaceCap } from "./lib/meter.mjs";
+import { overActorLimit, overSurfaceCap } from "./lib/meter.mjs";
 import {
   isTranslateLang,
   sourceHash,
@@ -21,6 +21,7 @@ import {
 import { noticeSourceText } from "./lib/translate_invariants.mjs";
 
 const DEFAULT_MAX_PER_DAY = 150;
+const DEFAULT_MAX_PER_IP_DAY = 30;
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const SELECT =
   "request_id,start_date,agency_name,type_of_notice_description,category_description,"
@@ -109,7 +110,7 @@ async function cachePut(env, requestId, lang, payload) {
  * Read D1; on miss, meter + translate + verify + store. Cache hits never spend the meter
  * and never call the model (precompute-first / no per-pageview upstream).
  */
-export async function getOrTranslate(env, requestId, lang) {
+export async function getOrTranslate(env, requestId, lang, clientIp = "") {
   const row = await fetchNoticeRow(env, requestId);
   if (!row) return { ok: false, reason: "not-found" };
 
@@ -117,9 +118,15 @@ export async function getOrTranslate(env, requestId, lang) {
   const cached = await cacheGet(env, requestId, lang, hash);
   if (cached) return cached;
 
-  // Only brand-new translations count against the daily ceiling. Fail closed.
+  // Only brand-new translations count against the daily ceilings. Both meters fail
+  // closed here: cache hits have already returned above, while a meter outage withholds
+  // only this new model spend and returns the existing cache-only response.
+  const ipCap = Number(env.TRANSLATE_MAX_PER_IP_DAY) || DEFAULT_MAX_PER_IP_DAY;
+  if (await overActorLimit(env.NL_METER, "translate", clientIp, ipCap, { failClosed: true })) {
+    return { ok: false, reason: "ip-cap" };
+  }
   const max = Number(env.TRANSLATE_MAX_CALLS_PER_DAY) || DEFAULT_MAX_PER_DAY;
-  if (await overSurfaceCap(env.NL_METER, "translate", max)) {
+  if (await overSurfaceCap(env.NL_METER, "translate", max, { failClosed: true })) {
     return { ok: false, reason: "daily-cap" };
   }
 
@@ -177,7 +184,8 @@ export async function handleTranslate(req, env, pathname, ctx) {
     }
   }
 
-  const result = await getOrTranslate(env, rawId, lang);
+  const ip = req.headers.get("CF-Connecting-IP") || "";
+  const result = await getOrTranslate(env, rawId, lang, ip);
   const ok = result.ok === true;
   const body = ok
     ? {
