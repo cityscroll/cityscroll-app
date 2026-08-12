@@ -797,6 +797,7 @@
     head_open: "Demann Pwopozisyon (RFP) louvri",
     head_allrfp: "Tout RFP yo",
     head_award: "Akòdman resan yo",
+    head_archive: "Akòdman ak kontra achive",
     head_closing_this_week: " · fèmen semèn sa a",
     no_titles_match: "Okenn tit pa koresponn. Eseye yon mo pi laj.",
     no_personnel: "Okenn avi pèsonèl pa koresponn ak non sa a. Eseye yon siyati.",

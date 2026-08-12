@@ -23,13 +23,14 @@ const boundaries = JSON.parse(readFileSync(
 ));
 
 test("procurement mode facets are exact, canonical, and shareable", () => {
-  assert.deepEqual(PROCUREMENT_MODE_KEYS, ["open", "allrfp", "award"]);
+  assert.deepEqual(PROCUREMENT_MODE_KEYS, ["open", "allrfp", "award", "archive"]);
   assert.deepEqual(
     PROCUREMENT_MODE_KEYS.map(procurementModeHref),
     [
       "/browse/contracts/?mode=open",
       "/browse/contracts/?mode=allrfp",
       "/browse/contracts/?mode=award",
+      "/browse/contracts/?mode=archive",
     ],
   );
   assert.equal(procurementModeHref("unknown"), "");

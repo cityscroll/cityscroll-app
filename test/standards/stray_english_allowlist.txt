@@ -150,3 +150,6 @@ view=tax-lien
 # Route-scoped stylesheet selectors and asset names; these are DOM plumbing, not chrome.
 link[data-route-style="
 property.css
+type_of_notice_description=
+OR type_of_notice_description=
+'Award'
