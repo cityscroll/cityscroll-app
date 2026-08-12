@@ -225,9 +225,8 @@ test("public identity copy describes a linked multi-source record", () => {
     assert.doesNotMatch(html, /search interface over|searches the City Record Open Data|the City Record, made legible|The City Record, searchable/i);
   }
   assert.match(index, /NYC’s public record/);
-  assert.match(index, /1,099,194 City Record notices/);
-  assert.match(index, /228 civil-service exams/);
-  assert.match(index, /4 other main public systems/);
+  assert.match(index, /agencies, mandates, parcels, people, and processes/);
+  assert.match(index, /City Record as one source among five/);
   assert.match(index, /August 5, 2026/);
   assert.match(about, /NYC’s public record, linked/);
 });
