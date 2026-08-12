@@ -97,18 +97,22 @@ function bodyOf(candidate) {
 }
 
 function actionOf(item) {
-  return CLEAN(item?.EventItemActionName)
-    || CLEAN(item?.EventItemPassedFlagName)
-    || CLEAN(item?.EventItemRollCallFlag)
+  return fieldText(item?.EventItemActionName)
+    || fieldText(item?.EventItemPassedFlagName)
+    || fieldText(item?.EventItemRollCallFlag)
     || "unlabelled";
 }
 
 function voteLikely(item) {
   return Boolean(
-    CLEAN(item?.EventItemRollCallFlag)
-    || CLEAN(item?.EventItemPassedFlagName)
-    || CLEAN(item?.EventItemActionName),
+    fieldText(item?.EventItemRollCallFlag)
+    || fieldText(item?.EventItemPassedFlagName)
+    || fieldText(item?.EventItemActionName),
   );
+}
+
+function fieldText(value) {
+  return value === false || value == null ? "" : CLEAN(value);
 }
 
 function stratumForDate(value) {
