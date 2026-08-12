@@ -22,6 +22,7 @@ export const OUTPUT = join(ROOT, "site/data/notice_mandate_backlinks_lookup.json
 const INPUTS = Object.freeze({
   obligations: "site/data/agency_obligations_lookup.json",
   intelligence: "site/data/entity_intelligence_lookup.json",
+  procurementAwards: "site/data/ocp_awards_warehouse_lookup.json",
   meetings: "site/data/meetings_domain_observations.json",
   rules: "site/data/rules_domain_observations.json",
   processConformance: "site/data/process_conformance_lookup.json",
@@ -42,6 +43,7 @@ function loadSources() {
   return {
     obligationsLookup: sources.obligations,
     intelligence: sources.intelligence,
+    procurementAwards: sources.procurementAwards,
     meetingsDomain: sources.meetings,
     rulesDomain: sources.rules,
     processConformance: sources.processConformance,

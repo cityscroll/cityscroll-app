@@ -539,12 +539,12 @@ test("lookup materialization includes Parks multi-category demo when built", () 
   assert.equal(lookup.by_id["housing-authority"].subject_ref, "agency:id:housing-authority");
 
   const report = JSON.parse(readFileSync(join(ROOT, "site/data/agency_route_identity_report.json"), "utf8"));
-  assert.equal(report.constellation_only_source_count, 21);
+  assert.equal(report.constellation_only_source_count, 22);
   assert.deepEqual(report.classification_counts, {
     alias_to_canonical: 15,
     legitimate_non_crosswalk_entity: 4,
-    unresolved: 2,
+    unresolved: 3,
   });
-  assert.equal(report.cases.length, 21);
+  assert.equal(report.cases.length, 22);
   assert.ok(report.cases.every((row) => row.classification && row.basis));
 });

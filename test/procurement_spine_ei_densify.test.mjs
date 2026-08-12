@@ -22,7 +22,9 @@ import {
 } from "../tools/lib/entity_intelligence_build.mjs";
 import {
   buildIntelligenceCorpus,
+  linkObservation,
   observationFromMoneyRow,
+  observationFromPassportContractRow,
   observationFromRulesRow,
 } from "../entity_resolution/cross_domain/index.mjs";
 import { buildEpinIndex, joinPinToEpin } from "../worker/src/lib/passport_join.mjs";
@@ -127,12 +129,66 @@ describe("passport contract materialization selection", () => {
     assert.ok((doc.rows?.passport_contracts || []).length > 1000);
     const selected = selectPassportContractsForMaterialization(doc);
     assert.equal(selected.cap, DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP);
+    assert.equal(selected.cap, 1550);
     assert.ok(
       selected.selected_rows > 2,
       `expected densified passport materialization >2, got ${selected.selected_rows}`,
     );
     assert.ok(selected.selected_rows <= selected.cap);
     assert.ok((doc.materialization?.passport_contracts?.graph_cap || 0) >= 500);
+  });
+
+  it("stratifies census selection across agencies instead of following census order", () => {
+    const doc = {
+      rows: {
+        passport_contracts_materialization: [],
+        passport_contracts: [
+          { ctr_id: "a-1", agency: "Agency A", vendor: "A1" },
+          { ctr_id: "a-2", agency: "Agency A", vendor: "A2" },
+          { ctr_id: "a-3", agency: "Agency A", vendor: "A3" },
+          { ctr_id: "b-1", agency: "Agency B", vendor: "B1" },
+          { ctr_id: "b-2", agency: "Agency B", vendor: "B2" },
+          { ctr_id: "c-1", agency: "Agency C", vendor: "C1" },
+          { ctr_id: "null-1", agency: null, vendor: "Null Agency" },
+        ],
+      },
+    };
+    const selected = selectPassportContractsForMaterialization(doc, { cap: 5 });
+    assert.deepEqual(selected.rows.map((row) => row.ctr_id), [
+      "null-1", "a-1", "b-1", "c-1", "a-2",
+    ]);
+    assert.equal(selected.selected_agency_count, 4);
+    assert.equal(selected.selected_by_agency["(source-null)"], 1);
+    assert.equal(selected.selected_by_agency["AGENCY A"], 2);
+    assert.equal(selected.rows[0].agency, null, "source-null agency remains null");
+    assert.match(selected.strategy, /agency-stratified round-robin/);
+  });
+
+  it("keeps exact IDs and source-null fields honest while deduping compatibility rows", () => {
+    const shared = { ctr_id: "shared", agency: null, vendor: null };
+    const selected = selectPassportContractsForMaterialization({
+      rows: {
+        passport_contracts_materialization: [shared],
+        passport_contracts: [
+          shared,
+          { ctr_id: "real", agency: "Agency A", vendor: null },
+        ],
+      },
+    }, { cap: 10 });
+    assert.equal(selected.selected_rows, 2);
+    assert.equal(selected.rows[0].agency, null);
+    assert.equal(selected.rows[0].vendor, null);
+    assert.equal(selected.rows[1].vendor, null);
+    assert.deepEqual(selected.rows.map((row) => row.ctr_id), ["shared", "real"]);
+
+    const nullObservation = observationFromPassportContractRow(selected.rows[0]);
+    assert.equal(nullObservation, null, "a row with no source identity stays absent");
+    const agencyOnly = observationFromPassportContractRow(selected.rows[1]);
+    const links = linkObservation(agencyOnly).links;
+    assert.deepEqual(links.map((link) => link.type), ["published_by_agency"]);
+    assert.equal(agencyOnly.vendor_name, null);
+    assert.equal(agencyOnly.pin, null);
+    assert.equal(agencyOnly.epin, null);
   });
 });
 

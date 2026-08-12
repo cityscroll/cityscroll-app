@@ -258,7 +258,7 @@ function sourceUpdatedHTML(refreshed){
 // Fuzzy ABO awards render as a "possible" timeline (distinct from the exact NYCHA box below).
 function aboAwardsTimelineHTML(awards, source){
   const rows = awards.map(a=>{
-    const vendor = a.vendor ? `<b lang="en" dir="ltr">${globalThis.pivotA?.(globalThis.vendorHref?.(a.vendor), a.vendor) || escUiHtml(a.vendor)}</b>` : `<b>${t("past_winners_vendor_unlisted")}</b>`;
+    const vendor = a.vendor ? `<b lang="en" dir="ltr">${globalThis.v?.(a.vendor)||escUiHtml(a.vendor)}</b>` : `<b>${t("past_winners_vendor_unlisted")}</b>`;
     const description = a.description ? `<span lang="en" dir="ltr"> — ${escUiHtml(a.description)}</span>` : "";
     const meta = [money(a.amount), a.process ? `<span lang="en" dir="ltr">${escUiHtml(a.process)}</span>` : ""].filter(Boolean).join(" · ");
     return `<div class="tl">
@@ -279,7 +279,7 @@ function nychaAwardBoxHTML(c, pin){
       <div class="stage-name">${t("mode_award")}</div><div class="when">${fdate(c.approved||c.start)}</div>
       <div class="bt" lang="en" dir="ltr">${escUiHtml(c.purpose||`${t("lifecycle_dollars_contract_lbl")} ${c.id||pin}`)}</div>
       ${money(c.amount)?`<div class="amt">${money(c.amount)}</div>`:""}
-      ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${globalThis.pivotA?.(globalThis.vendorHref?.(c.vendor), c.vendor) || escUiHtml(c.vendor)}</b></div>`:""}
+      ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${globalThis.v?.(c.vendor)||escUiHtml(c.vendor)}</b></div>`:""}
       ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
     </div></div></div>
     <div class="pnote">${checkbookNychaLink(c.id)}</div>`;
@@ -869,7 +869,7 @@ function paperTrailPhaseHTML(view, r){
   const lead = `<div class="lc-phase-lead">
     <div class="lc-phase-now-label">${t("paper_trail_now_label")}</div>
     <p class="lc-phase-now-phase">${escUiHtml(phaseName)}</p>
-    <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.notice_type || "—")}${cur.milestone_label?` · ${escUiHtml(cur.milestone_label)}`:""}${cur.since?` · ${t("paper_trail_since",{date:fdate(cur.since)})}`:""}${cur.vendor_name?`<br>→ ${globalThis.pivotA?.(globalThis.vendorHref?.(cur.vendor_name), cur.vendor_name) || escUiHtml(cur.vendor_name)}`:""}</p>
+    <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.notice_type || "—")}${cur.milestone_label?` · ${escUiHtml(cur.milestone_label)}`:""}${cur.since?` · ${t("paper_trail_since",{date:fdate(cur.since)})}`:""}${cur.vendor_name?`<br>→ ${globalThis.v?.(cur.vendor_name)||escUiHtml(cur.vendor_name)}`:""}</p>
     <p class="lc-phase-action">${actionHTML}</p>
     ${view.next?`<p class="lc-phase-next">${t("paper_trail_next_html",{phase:escUiHtml(paperTrailPhaseLabel(view.next))})}</p>`:""}
   </div>`;
@@ -1078,7 +1078,6 @@ function renderDetail(r, chain, stats, loadContext = true){
 
 // parseNL() itself lives in nl_parse.js (lazy plain global — same convention as
 // i18n.js), so it can be require()'d from a Node test with no DOM involved.
-// Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.AGENCY_ABBR = AGENCY_ABBR;
 globalThis.CADENCE_MAX_GAP_RATIO = CADENCE_MAX_GAP_RATIO;
 globalThis.CADENCE_MIN_AWARDS = CADENCE_MIN_AWARDS;

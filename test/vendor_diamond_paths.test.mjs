@@ -6,11 +6,13 @@ import { entityChipHTML, entityRouteRef } from "../site/entity_pivot.mjs";
 const feed = readFileSync(new URL("../site/app/feed-actions.mjs", import.meta.url), "utf8");
 const lifecycle = readFileSync(new URL("../site/app/procurement-lifecycle.mjs", import.meta.url), "utf8");
 const money = readFileSync(new URL("../site/app/money-history.mjs", import.meta.url), "utf8");
+const entities = readFileSync(new URL("../site/app/entities.mjs", import.meta.url), "utf8");
 
 test("previously plain vendor paths use the shared typed pivot renderer", () => {
-  assert.match(feed, /globalThis\.pivotA\?\..*globalThis\.vendorHref/);
-  assert.match(lifecycle, /globalThis\.pivotA\?\..*globalThis\.vendorHref/);
-  assert.match(money, /globalThis\.pivotA\?\..*globalThis\.vendorHref/);
+  assert.match(entities, /globalThis\.v\s*=\s*v\s*=>\s*pivotA\(vendorHref\(v\),\s*v\)/);
+  assert.match(feed, /globalThis\.v\?\..*escUiHtml/);
+  assert.match(lifecycle, /globalThis\.v\?\..*escUiHtml/);
+  assert.match(money, /globalThis\.v\?\..*escUiHtml/);
   assert.doesNotMatch(feed, /<b>\$\{escUiHtml\(guide\.vendor\)\}<\/b>/);
   assert.doesNotMatch(lifecycle, /<b lang="en" dir="ltr">\$\{escUiHtml\(d\.vendor\)\}<\/b>/);
   assert.doesNotMatch(money, /<b lang="en" dir="ltr">\$\{escUiHtml\(c\.vendor\)\}<\/b>/);
