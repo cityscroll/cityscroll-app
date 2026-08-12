@@ -82,6 +82,11 @@ preserved. The 2026-08-12 exact-token kill sample measured 73/88 (82.95%)
 usefulness and 100% reviewed precision, clearing the 30% / 95% materialization
 bars. Receipt: [`ulurp_recommendation_pdfs_source_records_2026-08-12.json`](../site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendation_pdfs_source_records_2026-08-12.json).
 
+The companion recommendation table is retained as immutable source observations:
+91 publisher rows with an 80/91 (87.91%) exact-token usefulness rate and 100%
+reviewed precision in the 2026-08-12 kill sample. Receipt:
+[`ulurp_recommendations_source_records_2026-08-12.json`](../site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_source_records_2026-08-12.json).
+
 ### Meeting person-vote materialization (flywheel crank, 2026-08-11)
 
 The data-integrity red flag `meeting-person-votes` claimed ~100% empty `by_person` on matched Council hearings after an earlier VotePerson* field-mapping miss. Live re-measure against the matched meeting-outcomes materialization:

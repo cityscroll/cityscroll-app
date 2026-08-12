@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.ulurp_recommendation_source_records_proof.v1",
+  "observed_on": "2026-08-12",
+  "materialize": true,
+  "counts": {
+    "input_rows": 91,
+    "retained": 91,
+    "source_records": 91,
+    "joined": 80
+  },
+  "usefulness": 0.8791,
+  "precision": 1,
+  "verification_receipt": "site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_source_records_2026-08-12.json"
+}
