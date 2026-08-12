@@ -105,6 +105,14 @@ test("Meetings uses positive public labels for notice-only entries", () => {
   assert.doesNotMatch(card, /meetings_list_no_agency|who_affected_not_stated|affected_not_stated|venue_not_stated/);
 });
 
+test("Meeting cards render the agency constellation pivot exactly once", () => {
+  const card = extractFunction(feedSource, "meetingsExplorerCardHTML");
+  const agencyPivots = card.match(/pivotA\(agencyHref\(agency\),\s*agency\)/g) || [];
+  assert.equal(agencyPivots.length, 1);
+  assert.match(card, /<span class="tag place">\$\{pivotA\(agencyHref\(agency\), agency\)\}<\/span>/);
+  assert.doesNotMatch(card, /\$\{agency\?" · "\+pivotA\(agencyHref\(agency\),agency\):""\}/);
+});
+
 test("Meetings lens chrome consumes the shared design-language tokens", () => {
   const start = html.indexOf("/* Meetings lens template */");
   const end = html.indexOf("/* Map exploration", start);
