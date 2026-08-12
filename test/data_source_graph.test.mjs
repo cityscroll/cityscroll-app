@@ -12,6 +12,7 @@ import {
   declaredInputPaths,
   generatedGraphFiles,
   inputManifest,
+  latestFreshnessDate,
   renderGraphHtml,
   writeGeneratedGraphFiles,
 } from "../tools/data_source_graph.mjs";
@@ -24,6 +25,7 @@ test("generated topology covers every documented source with all four layers", (
   const sourceContracts = graph.sources.filter((source) => source.node_class === "source-contract");
   assert.equal(sourceContracts.length, registry.contracts.length);
   assert.deepEqual(new Set(sourceContracts.map((source) => source.id)), new Set(registry.contracts.map((source) => source.id)));
+  assert.ok(Date.parse(graph.current_as_of) >= Date.parse(latestFreshnessDate(registry)));
   const documentedNames = [...sourceDocument.matchAll(/^\| (?:live|build-time|manual|disabled) \| [^|]+ \| \[([^\]]+)\]/gm)].map((match) => match[1]);
   assert.deepEqual(new Set(sourceContracts.map((source) => source.name)), new Set(documentedNames));
   for (const source of graph.sources) {
@@ -153,6 +155,30 @@ test("a new source contract appears without hand-editing diagram markup", () => 
   const built = buildDataSourceGraph({ registry: { contracts: [...registry.contracts, synthetic] }, inputs: [] });
   assert.ok(built.sources.some((source) => source.id === synthetic.id));
   assert.match(renderGraphHtml(built), /New Source Fixture/);
+});
+
+test("current-as-of is the latest real registry or receipt date", () => {
+  assert.equal(latestFreshnessDate({ contracts: [] }), null);
+  const base = {
+    id: "freshness-fixture",
+    name: "Freshness Fixture",
+    owner: "NYC Test Department",
+    status: "live",
+    scope: "runtime",
+    kind: "socrata",
+    publisher_cadence: "Daily",
+    product_freshness: "Queried when requested.",
+    used_for: "A freshness test surface.",
+    join_measurement: { observed_on: "2026-08-11" },
+  };
+  const built = buildDataSourceGraph({ registry: { contracts: [base] }, inputs: [] });
+  assert.equal(built.current_as_of, "2026-08-11");
+  assert.match(renderGraphHtml(built), /Current as of Aug 11, 2026/);
+
+  const newer = { ...base, join_measurement: { observed_on: "2026-08-12" } };
+  const advanced = buildDataSourceGraph({ registry: { contracts: [newer] }, inputs: [] });
+  assert.equal(advanced.current_as_of, "2026-08-12");
+  assert.match(renderGraphHtml(advanced), /Current as of Aug 12, 2026/);
 });
 
 test("a rehearsal cron does not replace the production ingest cadence", () => {

@@ -276,6 +276,27 @@ function slug(value) {
 
 const BLOCKED_SOURCE_STATUSES = new Set(["blocked", "application-possible", "declined"]);
 
+export function latestFreshnessDate(registry, evidence = []) {
+  const candidates = [
+    ...dateCandidates(registry),
+    ...evidence.map((item) => item?.at).filter((value) => typeof value === "string"),
+  ].filter((value) => Number.isFinite(Date.parse(value)));
+  if (!candidates.length) return null;
+  return candidates
+    .sort((left, right) => Date.parse(right) - Date.parse(left))[0]
+    .slice(0, 10);
+}
+
+function formatFreshnessDate(value) {
+  if (!value) return null;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00Z`));
+}
+
 function deriveBlockedSources(gapTaxonomy) {
   return (gapTaxonomy.partnership_blocked_sources || []).map((source) => {
     const requiredStrings = ["id", "wishlist_gap_id", "name", "data_offered", "collecting_body", "platform", "status", "status_note"];
@@ -387,10 +408,12 @@ export function buildDataSourceGraph({
   const bodies = [...new Map(sources.map((source) => [source.body_id, { id: source.body_id, name: source.body }])).values()];
   const surfaces = [...new Set(sources.flatMap((source) => source.surfaces))].sort();
   const sourcesHash = sha256(inputs.map((input) => `${input.path}:${input.sha256}`).join("\n"));
+  const evidence = [...receipts.values()].flat();
   return {
-    schema_version: 2,
+    schema_version: 3,
     title: "CityScroll data-source topology",
     description: "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
+    current_as_of: latestFreshnessDate(registry, evidence),
     sources_hash: sourcesHash,
     declared_inputs: inputs,
     cron: { expressions: cron.expressions },
@@ -425,7 +448,7 @@ export function renderGraphHtml(graph) {
 </style></head><body><main class="shell">
 <div class="eyebrow">Maintainer architecture</div><h1>Where CityScroll’s data comes from</h1>
 <p class="lede">Trace each collecting body through its concrete endpoint, the job and measured cadence that ingest it, and the product surfaces that consume it. Dashed ghost paths show access-gated sources in the position where they would connect if acquired.</p>
-<div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span><span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
+<div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span>${graph.current_as_of ? `<span class="pill">Current as of ${esc(formatFreshnessDate(graph.current_as_of))}</span>` : ""}<span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
 <div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Access-gated source path</span></div>
 <div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, institution, or access route…"><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="graphToggle" type="button" aria-pressed="true">Graph view</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button></div></div>
 <section class="graph-view" id="graphView"><div class="workspace"><div class="canvas"><div class="column-heads"><div><b>1 · Collecting bodies</b><span>Institutions that originate data</span></div><div><b>2 · Datasets / endpoints</b><span>Concrete source identity</span></div><div><b>3 · Our ingest</b><span>Job, cadence, transform</span></div><div><b>4 · Surfaces</b><span>Features that consume it</span></div></div><svg id="sourceGraph" role="img" aria-label="Data source topology graph"></svg></div><aside class="details" id="details" aria-live="polite"><div class="empty-detail"><div class="eyebrow">Source detail</div><h2>Select a dataset</h2><p>The selected path will highlight across all four layers.</p></div></aside></div></section>
