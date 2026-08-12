@@ -163,7 +163,7 @@ function entityPivotForWatch(watch) {
   return { ref, kind: parsed.kind, label, href };
 }
 
-function currentMatchesHref(watch) {
+export function currentMatchesHref(watch) {
   const normalized = normalizedWatch(watch?.lens || "money", watch?.filter || {});
   const entity = entityPivotForWatch(normalized);
   let scope = scopeFromWatch(normalized);
@@ -620,6 +620,13 @@ function subscribeHtml(view) {
 
 function templateHtml(template) {
   const attention = packAttentionCopy(template, { frequency: "weekly" });
+  const matchCount = Number.isInteger(template.matchCount) ? template.matchCount : null;
+  const countLine = matchCount == null
+    ? ""
+    : `<p class="following-pack-count" data-pack-match-count="${esc(String(matchCount))}">${esc(String(matchCount))} matching records</p>`;
+  const sampleSubject = matchCount == null
+    ? `<p class="following-pack-subject muted">Sample subject line: ${esc(attention.sampleSubject)}</p>`
+    : "";
   const watches = template.watches.map((watch) => {
     const context = buildFollowingGraphContext(watch, { frequency: "weekly", backToEntity: true });
     return `<li class="following-pack-watch" data-following-pack-watch>
@@ -627,11 +634,14 @@ function templateHtml(template) {
     </li>`;
   }).join("");
   const href = `/following/packs/${encodeURIComponent(template.id)}/`;
+  const resultsHref = template.resultsHref || currentMatchesHref(template.watches[0]);
   return `<article class="following-pack" data-pack-id="${esc(template.id)}">
     <h3>${esc(template.title)}</h3>
     <p class="following-pack-cost" data-pack-attention>${esc(attention.summary)}</p>
-    <p class="following-pack-subject muted">Sample subject line: ${esc(attention.sampleSubject)}</p>
+    ${countLine}
+    ${sampleSubject}
     <ul class="following-pack-watch-list">${watches}</ul>
+    ${resultsHref ? constellationLink({ href: resultsHref, label: "See matches", className: "following-pack-results-link", escape: esc }) : ""}
     ${constellationLink({ href, label: "Open this pack", className: "following-pack-link", escape: esc })}
   </article>`;
 }

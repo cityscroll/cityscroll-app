@@ -155,6 +155,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   manage URL is `/following/#your-following` (digest footers use session exchange when a token
   is available; `/prefs` remains account-level). Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
+  Suggested Watch sets are results-backed: `site/following_suggestions.mjs` gates and counts the
+  editorial shapes against the canonical open money, rules, and meetings snapshots. Both
+  `tools/build_following_page.mjs` and `worker/src/following.mjs` must pass that generated registry
+  to the shared renderer; do not render the static registry directly as public suggestions.
 - Vendor profiles receive their city-footprint read model inside the daily
   `refreshVendorProfiles` KV bucket. The section header, destination link, and destination result
   label share `result_count_receipt`; keep parity covered by
