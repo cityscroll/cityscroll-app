@@ -54,7 +54,7 @@ const OFFICIAL_RETENTION_RECEIPTS = path.join(
   ROOT,
   "site/data/legistar_sources/verification_receipts",
 );
-function loadLatestOfficialRetentionReceipt() {
+function loadLatestOfficialRetentionReceipt(preferredEventIds = []) {
   const base = "official_person_vote_retention_";
   const fallback = path.join(
     OFFICIAL_RETENTION_RECEIPTS,
@@ -64,13 +64,19 @@ function loadLatestOfficialRetentionReceipt() {
     const candidates = readdirSync(OFFICIAL_RETENTION_RECEIPTS)
       .filter((name) => name.startsWith(base) && name.endsWith(".json"))
       .sort();
+    const wanted = new Set((preferredEventIds || []).map((id) => String(id).trim()).filter(Boolean));
+    for (const name of candidates.slice().reverse()) {
+      const candidate = path.join(OFFICIAL_RETENTION_RECEIPTS, name);
+      const receipt = JSON.parse(readFileSync(candidate, "utf8"));
+      const receiptEvents = new Set((receipt.by_event || []).map((row) => String(row?.event_id || "").trim()));
+      if (wanted.size && [...wanted].every((id) => receiptEvents.has(id))) return receipt;
+    }
     const latest = candidates.length ? path.join(OFFICIAL_RETENTION_RECEIPTS, candidates.at(-1)) : fallback;
     return JSON.parse(readFileSync(latest, "utf8"));
   } catch {
     return JSON.parse(readFileSync(fallback, "utf8"));
   }
 }
-const OFFICIAL_RETENTION_RECEIPT = loadLatestOfficialRetentionReceipt();
 const MEETINGS_RESIDUAL_SOURCES = JSON.parse(
   readFileSync(path.join(ROOT, "site/data/meetings_location_residual_sources.json"), "utf8"),
 );
@@ -186,7 +192,7 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds =
   );
   // Person-page index (#official/{id}) — same densify, keyed by person_id.
   const voteLookup = buildPersonVotesLookup(peopleDoc, {
-    retentionReceipt: OFFICIAL_RETENTION_RECEIPT,
+    retentionReceipt: loadLatestOfficialRetentionReceipt(eventIds),
   });
   writeFileSync(OUT_PERSON_VOTES, `${JSON.stringify(voteLookup, null, 2)}\n`);
   console.log(

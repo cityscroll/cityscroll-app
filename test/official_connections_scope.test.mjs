@@ -25,8 +25,14 @@ const RECEIPT_PATH = (() => {
   const candidates = readdirSync(receiptDir)
     .filter((name) => typeof name === "string" && name.startsWith("official_person_vote_retention_") && name.endsWith(".json"))
     .sort();
-  const latest = candidates.at(-1);
-  return path.join(receiptDir, latest || "official_person_vote_retention_2026-08-02.json");
+  const eventIds = new Set((people.rows || []).map((row) => String(row?.event_id || "").trim()).filter(Boolean));
+  for (const name of candidates.slice().reverse()) {
+    const candidate = path.join(receiptDir, name);
+    const receipt = JSON.parse(readFileSync(candidate, "utf8"));
+    const receiptEvents = new Set((receipt.by_event || []).map((row) => String(row?.event_id || "").trim()));
+    if (eventIds.size && [...eventIds].every((id) => receiptEvents.has(id))) return candidate;
+  }
+  return path.join(receiptDir, candidates.at(-1) || "official_person_vote_retention_2026-08-02.json");
 })();
 const receipt = JSON.parse(readFileSync(RECEIPT_PATH, "utf8"));
 const RECEIPT_AUDIT = receipt.after_live_audit
