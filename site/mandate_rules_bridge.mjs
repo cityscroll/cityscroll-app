@@ -162,7 +162,7 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
         ? OBSERVATION_STATUS.OBSERVED
         : (obs?.status || null),
       observation_label: observed
-        ? (OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED] || "Observed in City Record")
+        ? (OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED] || "Evidence found")
         : (obs?.label || null),
       observed_record: observed,
     };
@@ -276,10 +276,12 @@ export function renderMandateRulesBridgeSection(view) {
           item.recurrence,
           item.citation,
         ].filter(Boolean).map(esc).join(" · ");
+        // Evidence link uses the filing title only (↗). Source-system provenance
+        // is optional / omit-by-default — never a primary "City Record" button.
         const observed = item.observed_record?.href
-          ? ` · ${constellationLink({ href: item.observed_record.href, label: `City Record: ${item.observed_record.label || item.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
+          ? ` · ${constellationLink({ href: item.observed_record.href, label: item.observed_record.label || item.observed_record.request_id, className: "agency-edge-link", escape: esc })}`
           : "";
-        // Per-row: Source law only. Observed City Record filing is linked above.
+        // Per-row: Source law only. Matched evidence is linked above when present.
         // Agency-wide browse chips stay in section chrome — never on every card.
         const neighbors = renderMandateRowGraphActions({
           source_href: item.source_href,
@@ -288,7 +290,7 @@ export function renderMandateRulesBridgeSection(view) {
           escape: esc,
         });
         const chip = item.observation_status === OBSERVATION_STATUS.OBSERVED
-          ? `<span class="mandate-obs-chip mandate-obs-observed" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}">${esc(item.observation_label || "Observed in City Record")}</span>`
+          ? `<span class="mandate-obs-chip mandate-obs-observed" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}">${esc(item.observation_label || OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED] || "Evidence found")}</span>`
           : "";
         return `<li class="node-record mandate-rules-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="rulemaking"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${item.observation_status ? ` data-observation-status="${esc(item.observation_status)}"` : ""}>
           <div class="node-record-main">${chip}${esc(item.duty_text)}</div>

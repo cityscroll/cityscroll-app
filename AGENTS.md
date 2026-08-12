@@ -2477,7 +2477,7 @@ both the live and restored databases.
   servers serve them when present after a build; missing pages fall through to
   the interactive SPA (`?tab=`).
 - Categories: contracts + meetings + rules (entity-intelligence agency edges),
-  **mandates** (rules → obligations facet + process-conformance expected vs observed), and staffing exams
+  **mandates** (rules → obligations facet + process-conformance expected vs evidence), and staffing exams
   (publisher `certified_to_agency` edges **intersected with** the staffing-guide
   corpus in `site/data/staffing_exams.json` — only exams that have `/exams/:id/`
   documents are listed/counted; historical civil-service list rows alone must not
@@ -2554,20 +2554,23 @@ both the live and restored databases.
   `/agencies/probation/?as_of=2024-06-01`.
 
 
-## Process conformance · expected vs observed (v1)
+## Process conformance · expected vs evidence (v1)
 
 - First praxis surface for process mining / conformance-checking on civic
   lifecycles: per-mandate **expected** civic event (rule filing, report, …) +
-  deadline vs whether that event is **observed** in City Record.
+  deadline vs whether matching **evidence** appears in current sources.
 - Pure model: `site/process_conformance.mjs`. Build:
   `node tools/build_process_conformance.mjs` (+ `--check`). Artifact:
   `site/data/process_conformance_lookup.json`. Capture:
   `python3 tools/capture_process_conformance.py`.
-- Reader labels: observed in City Record · expected, not yet in City Record ·
-  on track · awaiting a City Record detector. Join only when the public-record
-  signal is reliable; otherwise leave enrichment pending — never invent
-  observations. User-facing copy states the observation plainly (no
-  disclaimer hedges).
+- Reader labels are **evidence-relative** (not City Record-relative): Evidence
+  found · Expected; no matching evidence in current sources · on track ·
+  awaiting an evidence detector. Keep machine status keys (`observed`,
+  `expected_not_yet_observed`, …) and `is_compliance_verdict: false` /
+  `data-compliance-verdict="not_adjudicated"`. Matched evidence links use the
+  filing title + ↗ only — never a primary "City Record" button. Join only when
+  the public-record signal is reliable; otherwise leave enrichment pending —
+  never invent observations.
 - v1 detectors: `rulemaking` and `report` against Agency Rules / report-shaped
   City Record notices (agency identity + topic-token join). Other deliverable
   types wait for a stronger detector.

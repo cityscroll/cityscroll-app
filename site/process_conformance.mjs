@@ -2,14 +2,16 @@ import { constellationLink } from "./affordance_grammar.mjs";
 
 /**
  * Process conformance (first praxis wave): expected statutory mandate events
- * vs observations in the public record.
+ * vs matching evidence in current public sources.
  *
  * Implementation choice (not user-facing copy): only join when the public-record
  * signal is reliable; otherwise enrichment_pending — never fabricate observations.
- * User-facing copy states the observation plainly without "not X but Y" hedges.
+ * Reader labels are evidence-relative ("Evidence found" / "Expected; no matching
+ * evidence…"); machine status keys stay stable. Matched evidence links use the
+ * filing title + ↗ only — never a primary source-system button.
  *
- * Per-row actions are mandate-specific (Source law + linked City Record filing
- * when observed). Agency Rules/Meetings/Contracts browse is section chrome only.
+ * Per-row actions are mandate-specific (Source law + linked evidence filing when
+ * present). Agency Rules/Meetings/Contracts browse is section chrome only.
  *
  * Vocabulary: product term is **mandates** (upstream extract may say obligations).
  *
@@ -59,13 +61,13 @@ export const OBSERVATION_STATUS = Object.freeze({
 });
 
 export const OBSERVATION_LABELS = Object.freeze({
-  [OBSERVATION_STATUS.OBSERVED]: "Observed in City Record",
+  [OBSERVATION_STATUS.OBSERVED]: "Evidence found",
   // Internal-only status: retained as evidence, never rendered as a public edge.
   [OBSERVATION_STATUS.EVIDENCE_ONLY]: "Evidence retained without a public link",
-  [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: "Expected, not yet in City Record",
+  [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: "Expected; no matching evidence in current sources",
   [OBSERVATION_STATUS.ON_TRACK]: "On track — deadline still ahead",
   // Internal-only status: the public renderer filters these items before display.
-  [OBSERVATION_STATUS.ENRICHMENT_PENDING]: "Awaiting a City Record detector",
+  [OBSERVATION_STATUS.ENRICHMENT_PENDING]: "Awaiting an evidence detector",
 });
 
 /**
@@ -125,7 +127,7 @@ export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
 /** Reader-facing intro for the mandates conformance section (useful framing only). */
 export const CONFORMANCE_COPY = Object.freeze({
   lead:
-    "Statutory mandates with expected public-record events — rule filings, reports — and matching City Record notices when they appear.",
+    "Statutory mandates with expected public-record events — rule filings, reports — and matching evidence from current sources when it appears.",
 });
 
 /** @deprecated use CONFORMANCE_COPY — kept as alias for older call sites. */
@@ -601,7 +603,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       ...base,
       status: OBSERVATION_STATUS.ENRICHMENT_PENDING,
       label: OBSERVATION_LABELS[OBSERVATION_STATUS.ENRICHMENT_PENDING],
-      note: `No City Record detector for “${deliverable}” yet.`,
+      note: `No evidence detector for “${deliverable}” yet.`,
       observed_record: null,
       match: null,
     };
@@ -651,7 +653,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       ...base,
       status: OBSERVATION_STATUS.OBSERVED,
       label: OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED],
-      note: "Matched a City Record filing by agency identity and shared topic tokens.",
+      note: "Matched evidence by agency identity and shared topic tokens.",
       observed_record: {
         request_id: best.candidate.request_id,
         label: best.candidate.label,
@@ -672,14 +674,14 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
     };
   }
 
-  // Not observed in the checked public-record corpus.
+  // No matching evidence in the checked public-record corpus.
   const futureDeadline = deadlineDate && deadlineDate > today;
   if (futureDeadline) {
     return {
       ...base,
       status: OBSERVATION_STATUS.ON_TRACK,
       label: OBSERVATION_LABELS[OBSERVATION_STATUS.ON_TRACK],
-      note: `Expected ${expected.label} by ${deadlineDate}. No matching City Record filing yet.`,
+      note: `Expected ${expected.label} by ${deadlineDate}. No matching evidence in current sources yet.`,
       observed_record: null,
       match: null,
     };
@@ -689,7 +691,7 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
     ...base,
     status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
     label: OBSERVATION_LABELS[OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED],
-    note: `Expected ${expected.label}${deadlineDate ? ` by ${deadlineDate}` : ""}. No matching City Record filing in the current corpus.`,
+    note: `Expected ${expected.label}${deadlineDate ? ` by ${deadlineDate}` : ""}. No matching evidence in current sources.`,
     observed_record: null,
     match: null,
   };
@@ -953,9 +955,9 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
   ));
   if (!publicItems.length) return "";
   const statusLine = [
-    `${counts.observed || 0} observed`,
+    counts.observed > 0 ? `${counts.observed} with evidence` : null,
     counts.on_track > 0 ? `${counts.on_track} on track` : null,
-  ].filter(Boolean).join(" · ");
+  ].filter(Boolean).join(" · ") || "linked";
 
   const items = publicItems.slice(0, limit);
   const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
@@ -972,11 +974,14 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
       const deadline = expected.deadline_date
         ? `deadline ${expected.deadline_date}`
         : (expected.deadline_text ? `deadline: ${expected.deadline_text}` : null);
+      // Evidence link uses the filing title only (↗ from constellationLink).
+      // Source-system provenance is optional and omit-by-default — never a
+      // primary "City Record" button label on mandate status rows.
       const observedLink = obs.observed_record?.href
-        ? ` · ${constellationLink({ href: obs.observed_record.href, label: `City Record: ${obs.observed_record.label || obs.observed_record.request_id}`, className: "agency-edge-link", escape: esc })}`
+        ? ` · ${constellationLink({ href: obs.observed_record.href, label: obs.observed_record.label || obs.observed_record.request_id, className: "agency-edge-link", escape: esc })}`
         : "";
       const matter = mandateMatterEdgeFromRow(item);
-      // Per-row: Source law only. Observed City Record filing is linked above.
+      // Per-row: Source law only. Matched evidence is linked above when present.
       // Agency-wide browse chips stay in section chrome — never on every card.
       const neighbors = renderMandateRowGraphActions({
         source_href: item.source_href || matter?.href,
@@ -1012,7 +1017,7 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
 
   const copy = view.copy || view.honesty || CONFORMANCE_COPY;
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
-    <h2>Mandates · expected vs observed <span class="muted node-muted">(${esc(statusLine)})</span></h2>
+    <h2>Mandates · expected vs evidence <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
     ${list}
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
