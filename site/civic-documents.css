@@ -744,6 +744,23 @@ select {
   font-variant-numeric: tabular-nums;
 }
 
+.edge-prov-cross-spine-token {
+  margin-inline-start: .35rem;
+  padding-inline-start: .35rem;
+  border-inline-start: 1px solid currentColor;
+  font-weight: 700;
+}
+
+.edge-prov-why-review,
+.edge-prov-cross-spine-review .edge-prov-cross-spine-token {
+  color: var(--color-caution, #8a5a00);
+}
+
+.edge-prov-why-unmatched,
+.edge-prov-cross-spine-unmatched .edge-prov-cross-spine-token {
+  color: var(--color-text-muted);
+}
+
 .edge-prov-panel .edge-prov-panel-body {
   margin-block-start: var(--space-3);
 }
@@ -814,6 +831,44 @@ select {
 .edge-prov-warrant-not_yet_classified {
   border-style: dotted;
   color: var(--color-text-muted);
+}
+
+.edge-prov-cross-spine {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font: 700 .75rem/1.3 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .02em;
+}
+
+.edge-prov-cross-spine-confirmed {
+  border-color: color-mix(in srgb, var(--color-action) 40%, var(--color-border));
+  color: var(--color-action);
+}
+
+.edge-prov-cross-spine-review {
+  border-style: dashed;
+  border-color: var(--color-caution, #8a5a00);
+  color: var(--color-caution, #8a5a00);
+}
+
+.edge-prov-cross-spine-unmatched {
+  border-style: dotted;
+  color: var(--color-text-muted);
+}
+
+.edge-prov-boundary {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .875rem;
+  line-height: 1.45;
+}
+
+.edge-prov-row-unavailable dd {
+  color: var(--color-text-muted);
+  font-style: italic;
 }
 
 .edge-prov-honesty {

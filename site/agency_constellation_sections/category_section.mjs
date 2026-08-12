@@ -22,6 +22,9 @@ function itemLink(item, source = {}) {
     target_id: item.target_id || subject?.[2] || item.id || null,
     target_name: item.label || item.subject_ref || item.id,
     canonical_href: item.href,
+    cross_spine: item.claim?.cross_spine || null,
+    cross_spine_confidence: item.claim?.cross_spine?.confidence || null,
+    cross_spine_explicit: item.claim?.cross_spine?.explicit || false,
     source,
   }, { className: "agency-edge-link", escape: esc });
 }

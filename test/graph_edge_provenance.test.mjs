@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  CROSS_SPINE_CONFIDENCE,
   WARRANT_CLASSES,
   buildEdgeProvenanceClaim,
   claimInspectHref,
   edgeClaimId,
   identityStanceForEdge,
+  isStandablePublicClaim,
   normalizePublicConfidence,
   parseClaimParam,
   renderEdgeProvenanceInspector,
@@ -209,4 +211,36 @@ test("inspector panel and why-control render warrant classes without fabricating
   assert.match(inactivePanel, /data-edge-provenance-panel="1"[^>]* hidden/);
   assert.match(inactivePanel, /data-edge-prov-body="1"><\/div>/);
   assert.doesNotMatch(inactivePanel, /Open a warrant chip/);
+});
+
+test("cross-spine confidence stays in the exact set and preserves null evidence", () => {
+  assert.deepEqual(CROSS_SPINE_CONFIDENCE, ["confirmed", "review", "unmatched"]);
+  const review = buildEdgeProvenanceClaim({
+    id: "review-1",
+    subject_ref: "notice:review-1",
+    label: "Review edge",
+    confidence: "strong",
+    method: "agency_canonical_v1",
+    cross_spine: { confidence: "review" },
+    href: null,
+    provenance: {
+      source_system: "city_record",
+      source_record_id: null,
+      source_fields: null,
+      observed_at: null,
+    },
+  }, { category_id: "contracts" });
+
+  assert.equal(review.cross_spine.confidence, "review");
+  assert.equal(review.cross_spine.explicit, true);
+  assert.equal(review.where.source_record_id.available, false);
+  assert.equal(review.where.source_fields.available, false);
+  assert.equal(review.where.source_fields.value, null);
+  assert.equal(review.object_href, null);
+  assert.equal(review.confidence.standable, false);
+  assert.equal(isStandablePublicClaim(review), false);
+  assert.match(renderWhyBelieveControl(review), /data-cross-spine-confidence="review"/);
+  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /Cross-spine: review/);
+  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /Source fields[\s\S]*Unavailable/);
+  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /does not choose a winner or merge identities/);
 });

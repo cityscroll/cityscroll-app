@@ -123,6 +123,10 @@
 .entity-pivot-source{margin:0 0 var(--space-2,8px);font:500 .8rem/1.35 var(--font-label,system-ui);overflow-wrap:anywhere}
 .entity-pivot-held{display:inline-flex;gap:.35rem;align-items:baseline;color:var(--color-text-muted,var(--cs-n-500));border-bottom:1px dashed var(--color-caution,var(--cs-caution));overflow-wrap:anywhere}
 .entity-pivot-provisional{font:600 .72rem/1.25 var(--font-label,system-ui);color:var(--color-caution,var(--cs-caution));overflow-wrap:anywhere}
+.edge-summary-provenance{margin-top:var(--space-1);border-top:1px solid var(--color-border);font:500 .76rem/1.35 var(--font-label)}
+.edge-summary-provenance summary{cursor:pointer;padding:var(--space-1) 0;color:var(--color-text-muted);overflow-wrap:anywhere}
+.edge-summary-provenance-review summary{color:var(--color-caution);border-left:3px solid var(--color-caution);padding-left:.35rem}
+.edge-summary-provenance-unmatched summary{color:var(--color-text-muted);border-left:3px solid var(--color-border-strong);padding-left:.35rem}
 
 /* Shared cardinality-adaptive facet layout. */
 .cardinality-facet{min-width:min(100%,320px)}

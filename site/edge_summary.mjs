@@ -1,3 +1,5 @@
+import { normalizeCrossSpineConfidence } from "../ontology/cross_spine.mjs";
+
 /**
  * Shared typed edge-summary contract.
  *
@@ -134,6 +136,38 @@ function normalizeSource(input = {}) {
   };
 }
 
+function normalizeEdgeProvenance(input = {}) {
+  const provenance = input.provenance && typeof input.provenance === "object"
+    ? input.provenance
+    : {};
+  const nested = input.cross_spine && typeof input.cross_spine === "object"
+    ? input.cross_spine
+    : (provenance.cross_spine && typeof provenance.cross_spine === "object"
+      ? provenance.cross_spine
+      : {});
+  const rawConfidence = nested.confidence
+    ?? input.cross_spine_confidence
+    ?? provenance.cross_spine_confidence
+    ?? null;
+  return Object.freeze({
+    source_system: provenance.source_system ?? null,
+    source_record_id: provenance.source_record_id ?? null,
+    source_fields: Array.isArray(provenance.source_fields) ? [...provenance.source_fields] : null,
+    join_method: provenance.join_method ?? provenance.basis ?? input.join_method ?? null,
+    observed_at: provenance.observed_at ?? input.as_of ?? null,
+    cross_spine_confidence: normalizeCrossSpineConfidence(rawConfidence) || "unmatched",
+    cross_spine_explicit: input.cross_spine_explicit ?? rawConfidence != null,
+  });
+}
+
+function crossSpinePivotFields(input = {}) {
+  const provenance = normalizeEdgeProvenance(input);
+  return {
+    cross_spine_confidence: provenance.cross_spine_confidence,
+    cross_spine_explicit: provenance.cross_spine_explicit,
+  };
+}
+
 /** Normalize a relation on the le-01 edge-summary narrow waist. */
 export function normalizeEntityPivot(input = {}, defaults = {}) {
   const raw = { ...defaults, ...input };
@@ -153,6 +187,8 @@ export function normalizeEntityPivot(input = {}, defaults = {}) {
     target_name: targetName == null ? null : text(targetName, 240),
     canonical_href: status === "accepted" ? route.href : null,
     source: Object.freeze(source),
+    provenance: normalizeEdgeProvenance(raw),
+    ...crossSpinePivotFields(raw),
     scope: cloneScope(raw.scope),
     as_of: raw.as_of == null ? null : text(raw.as_of, 40),
     status,
@@ -196,6 +232,12 @@ function targetDisplay(pivot) {
 /** Render one typed pivot; held edges remain visible text with no fabricated link. */
 export function renderEntityPivotLink(pivotInput = {}, { className = "", escape = escapeHTML } = {}) {
   const pivot = normalizeEntityPivot(pivotInput);
+  const crossSpineConfidence = normalizeCrossSpineConfidence(
+    pivotInput.cross_spine_confidence || pivotInput.cross_spine,
+  ) || "unmatched";
+  const crossSpineExplicit = pivotInput.cross_spine_explicit
+    ?? (pivotInput.cross_spine_confidence != null || pivotInput.cross_spine != null);
+  const crossSpineBlocksLink = crossSpineExplicit && crossSpineConfidence !== "confirmed";
   const sourceName = pivot.source.name || pivot.source.kind || "this record";
   const accessible = `${pivot.relation_label}: ${targetDisplay(pivot)}; from ${sourceName}`;
   const classes = ["ui-constellation-link", className].filter(Boolean).join(" ");
@@ -212,10 +254,14 @@ export function renderEntityPivotLink(pivotInput = {}, { className = "", escape 
       ]
       : []),
     ...(pivotInput.link_confidence ? [`data-link-confidence="${escape(pivotInput.link_confidence)}"`] : []),
+    `data-cross-spine-confidence="${escape(crossSpineConfidence)}"`,
   ].join(" ");
   const body = `<span aria-hidden="true">◆</span>${escape(pivot.target_name || pivot.target_id || "Related record")} <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>`;
-  if (pivot.status !== "accepted") {
-    return `<span class="${escape(classes)} entity-pivot-held" ${attrs} aria-label="${escape(accessible)}">${body}<span class="entity-pivot-provisional">Provisional: destination not verified</span></span>`;
+  if (pivot.status !== "accepted" || crossSpineBlocksLink) {
+    const reason = crossSpineBlocksLink
+      ? `Cross-spine: ${crossSpineConfidence}`
+      : "Provisional: destination not verified";
+    return `<span class="${escape(classes)} entity-pivot-held entity-pivot-cross-spine-${escape(crossSpineConfidence)}" ${attrs} aria-label="${escape(`${accessible}; cross-spine confidence: ${crossSpineConfidence}`)}">${body}<span class="entity-pivot-provisional">${escape(reason)}</span></span>`;
   }
   return `<a class="${escape(classes)}" href="${escape(pivot.canonical_href)}" ${attrs} aria-label="${escape(accessible)}">${body}</a>`;
 }
@@ -259,6 +305,8 @@ export function normalizeEdgeSummaryRecord(input = {}, defaults = {}) {
     scope: cloneScope(raw.scope),
     as_of: raw.as_of == null ? null : text(raw.as_of, 40),
     source: pivot.source,
+    provenance: normalizeEdgeProvenance(raw),
+    ...crossSpinePivotFields(raw),
   });
 }
 
@@ -322,6 +370,27 @@ function scopeCopy(scope) {
   return entries.length ? `scope: ${entries.join(", ")}` : "scope: not specified";
 }
 
+function provenanceValue(value) {
+  if (Array.isArray(value)) return value.length ? value.join(", ") : "Unavailable";
+  return value == null || value === "" ? "Unavailable" : String(value);
+}
+
+export function renderEdgeSummaryProvenance(record = {}) {
+  const provenance = record.provenance || normalizeEdgeProvenance(record);
+  const confidence = normalizeCrossSpineConfidence(record.cross_spine_confidence)
+    || provenance.cross_spine_confidence
+    || "unmatched";
+  const fields = [
+    ["Relation", record.relation_label || record.edge_type],
+    ["Source", provenance.source_system],
+    ["Source record", provenance.source_record_id],
+    ["Source fields", provenance.source_fields],
+    ["Join method", provenance.join_method],
+    ["Observed / as of", provenance.observed_at || record.as_of],
+  ].map(([label, value]) => `<div class="edge-summary-provenance-row"><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(provenanceValue(value))}</dd></div>`).join("");
+  return `<details class="edge-summary-provenance edge-summary-provenance-${escapeHTML(confidence)}" data-edge-provenance="1" data-cross-spine-confidence="${escapeHTML(confidence)}"><summary>Why this connection? <span class="edge-summary-confidence">${escapeHTML(confidence)}</span></summary><dl>${fields}</dl><p class="edge-summary-provenance-boundary">This check compares claims. It does not choose a winner or merge identities.</p></details>`;
+}
+
 function recordLabel(record, targetKind) {
   const relation = record.relation_label || edgeRelationLabel(record);
   return [
@@ -367,12 +436,16 @@ export function renderEdgeSummaryRail(records, {
       target_name: destination,
       canonical_href: destinationRoute.href,
     });
-    const heldEdge = record.state === "matched" && pivot.status !== "accepted";
-    const canLink = record.state === "matched" && pivot.status === "accepted";
+    const crossSpineBlocksLink = record.cross_spine_explicit && record.cross_spine_confidence !== "confirmed";
+    const heldEdge = record.state === "matched" && (pivot.status !== "accepted" || crossSpineBlocksLink);
+    const canLink = record.state === "matched" && pivot.status === "accepted" && !crossSpineBlocksLink;
+    const heldReason = crossSpineBlocksLink
+      ? ` · Cross-spine: ${record.cross_spine_confidence}`
+      : (heldEdge ? " · Provisional: destination not verified" : "");
     const content = canLink
-      ? `<a class="edge-summary-link" href="${escapeHTML(pivot.canonical_href)}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="accepted" data-pivot-relation-label="${escapeHTML(relation)}" data-pivot-target-kind="${escapeHTML(targetKind)}" data-pivot-target-id="${escapeHTML(record.target_id || "")}" data-pivot-source-kind="${escapeHTML(record.source?.kind || record.source_kind || "")}" data-pivot-source-id="${escapeHTML(record.source?.id || record.source_id || "")}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></a>`
-      : `<span class="edge-summary-text${heldEdge ? " entity-pivot-held" : ""}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="${heldEdge ? "held" : escapeHTML(record.state)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldEdge ? " · Provisional: destination not verified" : ""}</span></span>`;
-    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}</li>`;
+      ? `<a class="edge-summary-link" href="${escapeHTML(pivot.canonical_href)}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="accepted" data-pivot-relation-label="${escapeHTML(relation)}" data-pivot-target-kind="${escapeHTML(targetKind)}" data-pivot-target-id="${escapeHTML(record.target_id || "")}" data-pivot-source-kind="${escapeHTML(record.source?.kind || record.source_kind || "")}" data-pivot-source-id="${escapeHTML(record.source?.id || record.source_id || "")}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></a>`
+      : `<span class="edge-summary-text${heldEdge ? " entity-pivot-held" : ""}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="${heldEdge ? "held" : escapeHTML(record.state)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldReason}</span></span>`;
+    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence || "unmatched")}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}${renderEdgeSummaryProvenance(record)}</li>`;
   }).join("");
   const source = normalized.find((record) => record.source?.name)?.source;
   const sourceAffordance = source?.name

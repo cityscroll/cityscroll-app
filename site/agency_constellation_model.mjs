@@ -318,7 +318,10 @@ function domainItems(block, limit = 8) {
   return objects
     .map((object) => {
       const confidence = publicConfidence(object?.confidence);
-      if (!confidence) return null;
+      const crossSpine = object?.cross_spine && typeof object.cross_spine === "object"
+        ? object.cross_spine
+        : null;
+      if (!confidence && !crossSpine && object?.cross_spine_confidence == null) return null;
       const requestId = clean(object.request_id, 80);
       const subjectRef = clean(object.subject_ref, 120)
         || (requestId ? `notice:${requestId}` : "");
@@ -333,6 +336,7 @@ function domainItems(block, limit = 8) {
           basis: clean(object.provenance.basis, 120) || null,
           observed_at: clean(object.provenance.observed_at, 40) || null,
           input_value: clean(object.provenance.input_value, 240) || null,
+          cross_spine: object.provenance.cross_spine || null,
         }
         : null;
       const label = clean(object.label || subjectRef, 240);
@@ -343,7 +347,10 @@ function domainItems(block, limit = 8) {
         date: clean(object.when, 40) || null,
         source: clean(provenance?.source_system || object.provenance?.source_system || "City Record", 80),
         relation: clean(object.link_type, 80) || null,
-        confidence,
+        confidence: confidence || "not_scored",
+        cross_spine: crossSpine || (object.cross_spine_confidence != null
+          ? { confidence: object.cross_spine_confidence }
+          : null),
         method: clean(object.method || object.provenance?.basis || "agency_canonical_v1", 80),
         href: constellationObjectHref({
           ...object,
@@ -538,6 +545,9 @@ function obligationItems(obligationsLookup, identity, limit = 8, conformanceView
 function standableItems(items = []) {
   return (Array.isArray(items) ? items : []).filter((item) => {
     if (!item?.claim) return true;
+    // T4 keeps explicit cross-spine review and unmatched edges visible. Their
+    // destination renderer still holds the edge unless confidence is confirmed.
+    if (item.claim.cross_spine?.explicit) return true;
     return isStandablePublicClaim(item.claim);
   });
 }
@@ -803,6 +813,8 @@ export function buildAgencyEdgeSummary(viewOrCategories, options = {}) {
         name: options.source_name || viewOrCategories?.display_name || sourceId,
         canonical_href: sourceId ? agencyPath(sourceId) : null,
       },
+      provenance: category.provenance || null,
+      cross_spine: category.cross_spine || null,
       as_of: category.as_of || null,
     };
   }), { source_kind: sourceKind, source_id: sourceId });

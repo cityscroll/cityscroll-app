@@ -1,3 +1,8 @@
+import {
+  CROSS_SPINE_CONFIDENCE,
+  normalizeCrossSpineConfidence,
+} from "../ontology/cross_spine.mjs";
+
 /**
  * Evidence-bearing civic graph — edge / claim provenance inspection (first iteration).
  *
@@ -10,6 +15,7 @@
 
 export const GRAPH_EDGE_PROVENANCE_SCHEMA = "cityscroll.graph_edge_provenance.v1";
 export const GRAPH_EDGE_PROVENANCE_METHOD = "graph_edge_provenance_v1";
+export { CROSS_SPINE_CONFIDENCE };
 
 /** Exact publisher key / registry match vs score-based linkage vs person-accepted review. */
 export const WARRANT_CLASSES = Object.freeze({
@@ -105,7 +111,10 @@ const MISSING = Object.freeze({
  * `publisher_record` is a strong publisher stamp, not a numeric score.
  */
 export function normalizePublicConfidence(value) {
-  const confidence = clean(value, 40).toLowerCase();
+  const raw = typeof value === "object" && value !== null
+    ? value.status || value.band || value.confidence
+    : value;
+  const confidence = clean(raw, 40).toLowerCase();
   if (confidence === "strong" || confidence === "publisher_record") return "strong";
   if (confidence === "tentative" || confidence === "possible") return "tentative";
   if (confidence === "not_scored" || confidence === "unknown") return "not_scored";
@@ -210,6 +219,7 @@ export function identityStanceForEdge(input = {}) {
 /** Whether a claim is strong enough to list on a public graph surface. */
 export function isStandablePublicClaim(claim) {
   if (!claim) return false;
+  if (claim.cross_spine?.explicit && claim.cross_spine.confidence !== "confirmed") return false;
   const warrant = claim.how?.warrant_class;
   const band = claim.confidence?.band;
   if (warrant === "not_yet_classified") return false;
@@ -257,6 +267,37 @@ function fieldOrMissing(value, max = 240) {
   return { available: true, value: text };
 }
 
+function firstPresent(records, key) {
+  for (const record of records) {
+    if (record && Object.prototype.hasOwnProperty.call(record, key)) return record[key];
+  }
+  return undefined;
+}
+
+function firstValue(records, key, fallback = undefined) {
+  const value = firstPresent(records, key);
+  return value === undefined ? fallback : value;
+}
+
+function crossSpineConfidenceForItem(item, provenance, evidence) {
+  const nested = item.cross_spine && typeof item.cross_spine === "object"
+    ? item.cross_spine
+    : {};
+  const provenanceCrossSpine = provenance.cross_spine && typeof provenance.cross_spine === "object"
+    ? provenance.cross_spine
+    : {};
+  const confidence = firstPresent([nested, provenanceCrossSpine], "confidence");
+  const joinConfidence = firstPresent([nested, item, provenance, evidence], "join_confidence");
+  const crossSpineConfidence = firstPresent([nested, item, provenance, evidence], "cross_spine_confidence");
+  const raw = confidence !== undefined
+    ? confidence
+    : (joinConfidence !== undefined ? joinConfidence : crossSpineConfidence);
+  return {
+    confidence: normalizeCrossSpineConfidence(raw) || "unmatched",
+    explicit: raw != null,
+  };
+}
+
 /**
  * Build a portable provenance claim from a constellation (or other graph) edge item.
  * Only carries fields present on the edge; missing slots use the missing marker.
@@ -271,7 +312,13 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
   });
   if (!claimId) return null;
 
-  const method = clean(item.method, 120) || null;
+  const method = clean(
+    item.method
+      || item.provenance?.basis
+      || item.provenance?.join_method
+      || item.confidence?.basis,
+    120,
+  ) || null;
   const confidence = normalizePublicConfidence(item.confidence) || "not_scored";
   const warrant = warrantClassForEdge({
     method,
@@ -293,35 +340,59 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
     ? item.evidence
     : {};
 
+  const provenanceSource = provenance.source && typeof provenance.source === "object"
+    ? provenance.source
+    : {};
   const sourceSystem = clean(
-    provenance.source_system || evidence.source_system || item.source,
+    firstValue(
+      [provenance, evidence],
+      "source_system",
+      firstValue([provenanceSource], "system", item.source),
+    ),
     120,
   ) || null;
   const sourceRecordId = clean(
-    provenance.source_record_id || evidence.source_record_id || item.source_record_id,
+    firstValue(
+      [provenance, evidence],
+      "source_record_id",
+      firstValue([provenanceSource], "id", item.source_record_id),
+    ),
     200,
   ) || null;
-  const sourceFields = Array.isArray(provenance.source_fields)
-    ? provenance.source_fields.map((field) => clean(field, 80)).filter(Boolean)
-    : Array.isArray(evidence.source_fields)
-      ? evidence.source_fields.map((field) => clean(field, 80)).filter(Boolean)
-      : [];
+  const rawSourceFields = firstPresent([provenance, evidence], "source_fields");
+  const sourceFields = Array.isArray(rawSourceFields)
+    ? rawSourceFields.map((field) => clean(field, 80)).filter(Boolean)
+    : null;
   const inputValue = clean(
-    provenance.input_value || evidence.input_value || item.input_value,
+    firstValue([provenance, evidence], "input_value", item.input_value),
     240,
   ) || null;
   const basis = clean(
-    provenance.basis || evidence.basis || item.basis,
+    firstValue(
+      [provenance, evidence],
+      "basis",
+      firstValue([provenance, evidence], "join_method", item.basis),
+    ),
     120,
   ) || null;
   const observedAt = clean(
-    provenance.observed_at || evidence.observed_at || item.date,
+    firstValue(
+      [provenance, evidence],
+      "observed_at",
+      item.observed_at
+        ?? item.as_of
+        ?? item.retrieved_at
+        ?? item.retrieved_on
+        ?? item.date,
+    ),
     40,
   ) || null;
   const sourceExcerpt = clean(
-    provenance.source_excerpt || evidence.source_excerpt || item.source_excerpt,
+    firstValue([provenance, evidence], "source_excerpt", item.source_excerpt),
     500,
   ) || null;
+  const crossSpine = crossSpineConfidenceForItem(item, provenance, evidence);
+  const crossSpineStandable = !crossSpine.explicit || crossSpine.confidence === "confirmed";
 
   // Shadow ER tables (entity_link / resolution_run) are not public consumers yet.
   const entityLinkId = clean(item.entity_link_id || item.link_id, 120) || null;
@@ -332,7 +403,7 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
 
   const missing = [];
   if (!sourceRecordId) missing.push("source_record_id");
-  if (!sourceFields.length) missing.push("source_fields");
+  if (!sourceFields?.length) missing.push("source_fields");
   if (!inputValue) missing.push("input_value");
   if (!sourceExcerpt) missing.push("source_excerpt");
   if (!entityLinkId) missing.push("entity_link_id");
@@ -346,15 +417,15 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
     subject_ref: subjectRef,
     root_ref: clean(context.root_ref || item.root_ref, 120) || null,
     category_id: categoryId || null,
-    relation: clean(item.relation || context.relation, 80) || null,
+    relation: clean(item.relation ?? item.type ?? context.relation, 80) || null,
     label: clean(item.label || subjectRef, 240),
     object_href: clean(item.href, 200) || null,
     where: {
       source_system: sourceSystem ? fieldOrMissing(sourceSystem) : { ...MISSING },
       source_record_id: sourceRecordId ? fieldOrMissing(sourceRecordId) : { ...MISSING },
-      source_fields: sourceFields.length
+      source_fields: sourceFields?.length
         ? { available: true, value: sourceFields }
-        : { ...MISSING, value: [] },
+        : { ...MISSING, value: null },
       input_value: inputValue ? fieldOrMissing(inputValue) : { ...MISSING },
       observed_at: observedAt ? fieldOrMissing(observedAt) : { ...MISSING },
       basis: basis ? fieldOrMissing(basis) : { ...MISSING },
@@ -366,14 +437,20 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
       warrant_label: warrant.label,
       decision: clean(item.decision || item.review_status, 80) || null,
     },
+    cross_spine: {
+      confidence: crossSpine.confidence,
+      explicit: crossSpine.explicit,
+      boundary: "This check compares claims. It does not choose a winner or merge identities.",
+    },
     confidence: {
       band: confidence,
       identity_stance: stance.id,
       identity_label: stance.label,
-      standable: warrant.id === "exact" || warrant.id === "reviewed"
-        || (warrant.id === "probabilistic" && confidence === "strong"),
+      standable: crossSpineStandable && (warrant.id === "exact" || warrant.id === "reviewed"
+        || (warrant.id === "probabilistic" && confidence === "strong")),
       counts_as_verified_total: (warrant.id === "exact" || warrant.id === "reviewed")
-        && confidence === "strong",
+        && confidence === "strong"
+        && crossSpineStandable,
     },
     enrichment: {
       entity_link_id: entityLinkId ? fieldOrMissing(entityLinkId) : { ...MISSING },
@@ -418,9 +495,11 @@ export function summarizeCategoryWarrants(items = []) {
   return summary;
 }
 
-function renderFieldRow(label, field) {
+function renderFieldRow(label, field, { showMissing = false } = {}) {
   if (!field || field.available === false) {
-    return "";
+    return showMissing
+      ? `<div class="edge-prov-row edge-prov-row-unavailable" data-available="false"><dt>${esc(label)}</dt><dd>Unavailable</dd></div>`
+      : "";
   }
   const display = field.value;
   const value = Array.isArray(display)
@@ -434,10 +513,14 @@ export function renderWhyBelieveControl(claim, { className = "" } = {}) {
   if (!claim?.claim_id) return "";
   const href = claim.inspect_href || `#claim-${encodeURIComponent(claim.claim_id)}`;
   const warrant = WARRANT_CLASSES[claim.how?.warrant_class] || WARRANT_CLASSES.not_yet_classified;
+  const crossSpine = CROSS_SPINE_CONFIDENCE.includes(claim.cross_spine?.confidence)
+    ? claim.cross_spine.confidence
+    : "unmatched";
   const token = warrant.token || warrant.short?.toLowerCase() || warrant.id;
-  const classes = ["edge-prov-why", `edge-prov-why-${warrant.id}`, className].filter(Boolean).join(" ");
+  const classes = ["edge-prov-why", `edge-prov-why-${warrant.id}`, `edge-prov-cross-spine-${crossSpine}`, className].filter(Boolean).join(" ");
   const aria = `Connection evidence: ${warrant.label}`;
-  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" href="${esc(href)}" aria-label="${esc(aria)}" title="${esc(aria)}"><span class="edge-prov-token">${esc(token)}</span></a>`;
+  const title = `${aria}; cross-spine confidence: ${crossSpine}`;
+  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-cross-spine-confidence="${esc(crossSpine)}" href="${esc(href)}" aria-label="${esc(aria)}" title="${esc(title)}"><span class="edge-prov-token">${esc(token)}</span><span class="edge-prov-cross-spine-token">${esc(crossSpine)}</span></a>`;
 }
 
 /** Optional compact warrant key (not always-on chrome). */
@@ -453,32 +536,40 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
   if (!claim?.claim_id) return "";
   const warrant = WARRANT_CLASSES[claim.how?.warrant_class] || WARRANT_CLASSES.not_yet_classified;
   const stance = IDENTITY_STANCES[claim.confidence?.identity_stance] || IDENTITY_STANCES.not_scored;
+  const crossSpine = CROSS_SPINE_CONFIDENCE.includes(claim.cross_spine?.confidence)
+    ? claim.cross_spine.confidence
+    : "unmatched";
   const openAttr = open ? " open" : "";
   const objectLink = claim.object_href
     ? `<p class="edge-prov-object"><a href="${esc(claim.object_href)}">${esc(claim.label)}</a></p>`
     : `<p class="edge-prov-object"><strong>${esc(claim.label)}</strong></p>`;
 
-  return `<article class="edge-prov-inspector" id="claim-${esc(claim.claim_id)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-identity-stance="${esc(stance.id)}"${openAttr ? ' data-open="true"' : ""}>
+  return `<article class="edge-prov-inspector" id="claim-${esc(claim.claim_id)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-identity-stance="${esc(stance.id)}" data-cross-spine-confidence="${esc(crossSpine)}"${openAttr ? ' data-open="true"' : ""}>
     <header class="edge-prov-header">
       <p class="edge-prov-kicker">Why do we believe this?</p>
       ${objectLink}
       <p class="edge-prov-warrants">
         <span class="edge-prov-warrant edge-prov-warrant-${esc(warrant.id)}" data-warrant-class="${esc(warrant.id)}">${esc(warrant.label)}</span>
+        <span class="edge-prov-cross-spine edge-prov-cross-spine-${esc(crossSpine)}" data-cross-spine-confidence="${esc(crossSpine)}">Cross-spine: ${esc(crossSpine)}</span>
       </p>
     </header>
     <section class="edge-prov-block" aria-labelledby="edge-prov-where-${esc(claim.claim_id)}">
       <h3 id="edge-prov-where-${esc(claim.claim_id)}">Where it came from</h3>
       <dl class="edge-prov-dl">
+        ${renderFieldRow("Relation", claim.relation ? { available: true, value: claim.relation } : null, { showMissing: true })}
         ${renderFieldRow("Source", claim.where.source_system?.available
           ? { available: true, value: sourceSystemReaderLabel(claim.where.source_system.value) || claim.where.source_system.value }
-          : claim.where.source_system)}
-        ${renderFieldRow("Source record", claim.where.source_record_id)}
-        ${renderFieldRow("Observed", claim.where.observed_at)}
+          : claim.where.source_system, { showMissing: true })}
+        ${renderFieldRow("Source record", claim.where.source_record_id, { showMissing: true })}
+        ${renderFieldRow("Source fields", claim.where.source_fields, { showMissing: true })}
+        ${renderFieldRow("Join method", claim.how.method, { showMissing: true })}
+        ${renderFieldRow("Observed / as of", claim.where.observed_at, { showMissing: true })}
         ${renderFieldRow("Source excerpt", claim.where.source_excerpt)}
         ${renderFieldRow("Link record", claim.enrichment?.entity_link_id)}
         ${renderFieldRow("Resolution run", claim.enrichment?.resolution_run_id)}
       </dl>
     </section>
+    <p class="edge-prov-boundary">${esc(claim.cross_spine?.boundary || "This check compares claims. It does not choose a winner or merge identities.")}</p>
     ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}">Share this claim</a></p>` : ""}
   </article>`;
 }
@@ -533,6 +624,9 @@ export function edgeProvenanceClientScript() {
     }
     const warrant = claim.how?.warrant_class || "not_yet_classified";
     const stance = claim.confidence?.identity_stance || "not_scored";
+    const crossSpine = ["confirmed", "review", "unmatched"].includes(claim.cross_spine?.confidence)
+      ? claim.cross_spine.confidence
+      : "unmatched";
     const where = claim.where || {};
     const sourceLabel = (s) => {
       const map = { city_record: "City Record", warehouse: "Warehouse materialization", socrata: "NYC Open Data", enacted_local_law: "Enacted local law" };
@@ -542,7 +636,9 @@ export function edgeProvenanceClientScript() {
     const escText = (s) => String(s ?? "").replace(/[<>&]/g, (c) => ({ "<":"&lt;",">":"&gt;","&":"&amp;" }[c]));
     const field = (label, f, opts = {}) => {
       if (!f || f.available === false) {
-        return "";
+        return opts.showMissing
+          ? '<div class="edge-prov-row edge-prov-row-unavailable" data-available="false"><dt>' + escText(label) + '</dt><dd>Unavailable</dd></div>'
+          : "";
       }
       let raw = f.value;
       if (opts.source && !Array.isArray(raw)) raw = sourceLabel(raw);
@@ -552,15 +648,18 @@ export function edgeProvenanceClientScript() {
     const objectHtml = claim.object_href
       ? '<p class="edge-prov-object"><a href="' + escText(claim.object_href) + '">' + escText(claim.label) + "</a></p>"
       : '<p class="edge-prov-object"><strong>' + escText(claim.label) + "</strong></p>";
-    body.innerHTML = '<article class="edge-prov-inspector" id="claim-' + escText(claim.claim_id) + '" data-edge-claim="' + escText(claim.claim_id) + '" data-warrant-class="' + escText(warrant) + '" data-identity-stance="' + escText(stance) + '" data-open="true">'
+    body.innerHTML = '<article class="edge-prov-inspector" id="claim-' + escText(claim.claim_id) + '" data-edge-claim="' + escText(claim.claim_id) + '" data-warrant-class="' + escText(warrant) + '" data-identity-stance="' + escText(stance) + '" data-cross-spine-confidence="' + escText(crossSpine) + '" data-open="true">'
       + '<header class="edge-prov-header"><p class="edge-prov-kicker">Why do we believe this?</p>' + objectHtml
-      + '<p class="edge-prov-warrants"><span class="edge-prov-warrant edge-prov-warrant-' + escText(warrant) + '">' + escText(claim.how?.warrant_label || warrant) + '</span> '
+      + '<p class="edge-prov-warrants"><span class="edge-prov-warrant edge-prov-warrant-' + escText(warrant) + '">' + escText(claim.how?.warrant_label || warrant) + '</span> <span class="edge-prov-cross-spine edge-prov-cross-spine-' + escText(crossSpine) + '">Cross-spine: ' + escText(crossSpine) + '</span>'
       + "</p></header>"
       + '<section class="edge-prov-block"><h3>Where it came from</h3><dl class="edge-prov-dl">'
-      + field("Source", where.source_system, { source: true }) + field("Source record", where.source_record_id)
-      + field("Observed", where.observed_at) + field("Source excerpt", where.source_excerpt)
+      + field("Relation", claim.relation ? { available: true, value: claim.relation } : null, { showMissing: true })
+      + field("Source", where.source_system, { source: true, showMissing: true }) + field("Source record", where.source_record_id, { showMissing: true })
+      + field("Source fields", where.source_fields, { showMissing: true }) + field("Join method", claim.how?.method, { showMissing: true })
+      + field("Observed / as of", where.observed_at, { showMissing: true }) + field("Source excerpt", where.source_excerpt)
       + field("Link record", claim.enrichment?.entity_link_id)
       + field("Resolution run", claim.enrichment?.resolution_run_id) + "</dl></section>"
+      + '<p class="edge-prov-boundary">' + escText(claim.cross_spine?.boundary || "This check compares claims. It does not choose a winner or merge identities.") + "</p>"
       + (claim.share_href ? '<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="' + escText(claim.claim_id) + '" href="' + escText(claim.share_href) + '">Share this claim</a></p>' : "")
       + "</article>";
     panel.setAttribute("data-active-claim", claim.claim_id);

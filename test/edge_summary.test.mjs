@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   EDGE_SUMMARY_SCHEMA,
   normalizeEdgeSummaryRecord,
+  renderEdgeSummaryProvenance,
   renderEdgeSummaryRail,
 } from "../site/edge_summary.mjs";
 import { buildAgencyEdgeSummary } from "../site/agency_constellation_model.mjs";
@@ -195,4 +196,34 @@ test("vendor footprint consumes the shared renderer and retains unknown denomina
   assert.match(html, /data-edge-summary-schema="cityscroll\.edge_summary\.v1"/);
   assert.match(html, /Vendor connections/);
   assert.doesNotMatch(html, /Payments[^<]*0/);
+});
+
+test("edge summaries disclose cross-spine review without linking or filling null evidence", () => {
+  const record = normalizeEdgeSummaryRecord({
+    edge_type: "related_committee",
+    relation_label: "related committees",
+    target_kind: "committee",
+    target_name: "Land Use Committee",
+    count: 1,
+    state: "matched",
+    href: "/browse/meetings/",
+    cross_spine: { confidence: "review" },
+    provenance: {
+      source_system: "legistar",
+      source_record_id: null,
+      source_fields: null,
+      basis: "committee_id",
+      observed_at: null,
+    },
+  });
+  const html = renderEdgeSummaryRail([record]);
+  assert.equal(record.provenance.source_record_id, null);
+  assert.equal(record.provenance.source_fields, null);
+  assert.equal(record.cross_spine_confidence, "review");
+  assert.doesNotMatch(html, /<a class="edge-summary-link"/);
+  assert.match(html, /data-edge-provenance="1"/);
+  assert.match(html, /data-cross-spine-confidence="review"/);
+  assert.match(html, /Source record[\s\S]*Unavailable/);
+  assert.match(html, /Source fields[\s\S]*Unavailable/);
+  assert.match(renderEdgeSummaryProvenance(record), /does not choose a winner or merge identities/);
 });
