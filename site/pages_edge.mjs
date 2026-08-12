@@ -4,7 +4,8 @@ import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
-import { entityChipHTML, entityRouteRef } from "./entity_pivot.mjs";
+import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { renderEntityPivotLink } from "./edge_summary.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -201,21 +202,33 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     </div>`;
   }
   const identity = resolveAgencyIdentity(agency);
+  const noticeSource = {
+    kind: "notice",
+    id: id,
+    name: title,
+    canonical_href: `/notices/${encodeURIComponent(id)}`,
+  };
   const agencyLink = identity.matched
-    ? constellationLink({
-      href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
-      label: agency,
-      className: "notice-agency-link",
-    })
+    ? renderEntityPivotLink({
+      relation_label: "published by agency",
+      target_kind: "agency",
+      target_id: identity.canonical_id,
+      target_name: agency,
+      canonical_href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
+      source: noticeSource,
+    }, { className: "notice-agency-link", escape: esc })
     : esc(agency);
   const vendor = String(row.vendor_name || "").trim();
   const vendorLink = vendor
-    ? entityChipHTML({
-      ref: entityRouteRef("vendor", vendor),
-      label: vendor,
+    ? renderEntityPivotLink({
+      relation_label: "named vendor",
+      target_kind: "vendor",
+      target_id: vendor,
+      target_name: vendor,
       link_confidence: "strong",
-      relation: "named_vendor",
-    })
+      canonical_href: entityHref({ ref: entityRouteRef("vendor", vendor), label: vendor }),
+      source: noticeSource,
+    }, { className: "notice-vendor-link", escape: esc })
     : "";
   const attachmentUrl = !row.additional_description_1 ? firstNoticeAttachmentUrl(row) : null;
   const facts = [
@@ -225,11 +238,23 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   ].filter(([, value]) => value);
   // Public mandate backlinks only — empty lookup / unmatched notice → no section.
   const mandateBacklinksHTML = renderNoticeMandateBacklinksForId(mandateBacklinksLookup, id, { esc });
+  const projectId = String(row.project_id || row.project || row.ulurp_number || "").trim();
+  const projectPivot = /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(projectId)
+    ? `<p class="notice-entity-pivot">${renderEntityPivotLink({
+      relation_label: "related land-use project",
+      target_kind: "project",
+      target_id: projectId,
+      target_name: row.project_name || projectId,
+      canonical_href: `#land/${encodeURIComponent(projectId)}`,
+      source: noticeSource,
+    }, { className: "notice-project-link", escape: esc })}</p>`
+    : "";
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
     <article class="panel route-item" tabindex="-1">
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
+      ${projectPivot}
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}

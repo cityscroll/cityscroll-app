@@ -797,6 +797,12 @@ export function buildAgencyEdgeSummary(viewOrCategories, options = {}) {
         mode: category.universe === "open" ? "open" : null,
         entity_ref: sourceId ? `agency:id:${sourceId}` : null,
       },
+      source: {
+        kind: sourceKind,
+        id: sourceId,
+        name: options.source_name || viewOrCategories?.display_name || sourceId,
+        canonical_href: sourceId ? agencyPath(sourceId) : null,
+      },
       as_of: category.as_of || null,
     };
   }), { source_kind: sourceKind, source_id: sourceId });
@@ -902,7 +908,11 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         meetings_domain: sources.meetings_domain,
       },
     ));
-  const edgeSummary = buildAgencyEdgeSummary({ categories, canonical_id: identity.canonical_id });
+  const edgeSummary = buildAgencyEdgeSummary({
+    categories,
+    canonical_id: identity.canonical_id,
+    display_name: identity.canonical_name,
+  });
 
   const matched = categories.filter((category) => category.status === "matched").length;
   const claims = categories.flatMap((category) =>

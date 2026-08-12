@@ -15,7 +15,7 @@ const money = (value) => Number.isFinite(Number(value))
   }).format(Number(value))
   : "Award total unavailable";
 
-export function renderAgencyTopVendorsSection(category) {
+export function renderAgencyTopVendorsSection(category, source = {}) {
   if (!category || category.status !== "matched" || !category.items?.length) return "";
   const edgeSummary = normalizeEdgeSummaryRecords([{
     source_kind: "agency",
@@ -27,6 +27,12 @@ export function renderAgencyTopVendorsSection(category) {
     count: category.count ?? category.items.length,
     state: "matched",
     href: category.view_all_href || null,
+    source: {
+      kind: source.kind || "agency",
+      id: source.id || category.agency_id || null,
+      name: source.name || "this agency",
+      canonical_href: source.canonical_href || null,
+    },
     scope: { relation_family: "top_vendors", as_of: category.as_of || null },
     as_of: category.as_of || null,
   }]);
@@ -36,7 +42,15 @@ export function renderAgencyTopVendorsSection(category) {
       label: item.label,
       link_confidence: item.confidence || "strong",
       relation: item.relation || "top_vendor_by_award_12mo",
-    }, { className: "agency-top-vendor-link" });
+    }, {
+      className: "agency-top-vendor-link",
+      source: {
+        kind: "agency",
+        id: source.id || null,
+        name: source.name || "this agency",
+        canonical_href: source.canonical_href || null,
+      },
+    });
     const awards = `${Number(item.award_count) || 0} award${Number(item.award_count) === 1 ? "" : "s"}`;
     return `<li class="node-record" data-vendor-ref="${esc(item.subject_ref)}">
       <div class="node-record-main">${vendor}</div>
@@ -65,8 +79,14 @@ export const vendorsSection = Object.freeze({
   order: 41,
   render(view) {
     const category = view.displayView.categories.find((entry) => entry.id === "vendors");
-    return renderAgencyTopVendorsSection(category
-      ? { ...category, agency_id: view.displayView.canonical_id }
-      : category);
+    return renderAgencyTopVendorsSection(
+      category ? { ...category, agency_id: view.displayView.canonical_id } : category,
+      {
+        kind: "agency",
+        id: view.displayView.canonical_id,
+        name: view.displayView.display_name,
+        canonical_href: view.displayView.path,
+      },
+    );
   },
 });
