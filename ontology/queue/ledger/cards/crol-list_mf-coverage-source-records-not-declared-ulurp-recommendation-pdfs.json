@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-coverage-source-records-not-declared-ulurp-recommendation-pdfs",
+  "status": "fixed",
+  "dimension": "coverage",
+  "title": "Add immutable observation coverage: ulurp-recommendation-pdfs",
+  "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # ulurp-recommendation-pdfs present",
+  "fixed_at": "2026-08-12T00:00:00.000Z",
+  "fixed_note": "Host retention of 86 identity-bearing rows from the 88-row gt5i-dmde publisher table. Kill sample exact ULURP-token usefulness 73/88 (82.95%), reviewed precision 100%; both gates clear. Receipt: site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendation_pdfs_source_records_2026-08-12.json.",
+  "demo_win": "Publisher PDF rows retain immutable source_records-shaped observations without changing public delivery."
+}
