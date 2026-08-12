@@ -13,6 +13,7 @@ export const EDGE_SUMMARY_STATE_MEANINGS = Object.freeze({
   empty: "empty-in-scope",
   unknown: "unknown-unindexed",
 });
+export const ENTITY_PIVOT_SCHEMA = EDGE_SUMMARY_SCHEMA;
 
 const MAX_TEXT = 500;
 
@@ -68,24 +69,154 @@ function canonicalHref(href, asOf) {
   }
 }
 
+const VERIFIED_INTERNAL_ROUTES = [
+  /^\/(?:notices|agencies|vendors|officials)\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?$/,
+  /^\/browse\/(?:contracts|staffing|zoning|property|rules|meetings)\/?(?:\?.*)?$/,
+  /^\/browse\/?(?:\?.*)?$/,
+  /^\/parcels\/\d{10}\/?(?:\?.*)?$/,
+  /^\/exams\/\d{4}\/?(?:\?.*)?$/,
+  /^\/(?:near-you|following)(?:\/[^?#]*)?\/?(?:\?.*)?$/,
+  /^#parcel-biography-(?:property|land|tax_lien|ll48|cofo)$/,
+  /^\/#land\/[A-Za-z0-9_%~-]+(?:\?.*)?$/,
+  /^#land\/[A-Za-z0-9_%~-]+(?:\?.*)?$/,
+];
+
+/** The route inventory is deliberately closed: a display name never mints a URL. */
+export function entityPivotRouteStatus(href) {
+  const value = canonicalHref(href);
+  if (!value) return { verified: false, reason: "missing_destination", href: null };
+  const verified = VERIFIED_INTERNAL_ROUTES.some((pattern) => pattern.test(value));
+  return { verified, reason: verified ? null : "unsupported_destination", href: value };
+}
+
+function normalizeSource(input = {}) {
+  const source = input.source && typeof input.source === "object" ? input.source : {};
+  const kind = text(source.kind || input.source_kind, 80);
+  const id = source.id ?? input.source_id;
+  const name = source.name ?? input.source_name;
+  const href = source.canonical_href ?? source.href ?? input.source_href;
+  return {
+    kind,
+    id: id == null ? null : text(id, 240),
+    name: name == null ? null : text(name, 240),
+    canonical_href: canonicalHref(href),
+  };
+}
+
+/** Normalize a relation on the le-01 edge-summary narrow waist. */
+export function normalizeEntityPivot(input = {}, defaults = {}) {
+  const raw = { ...defaults, ...input };
+  const targetName = raw.target_name ?? raw.target_label ?? raw.name;
+  const targetId = raw.target_id ?? raw.id;
+  const relation = raw.relation_label
+    || (raw.label ? edgeRelationLabel({ edge_type: raw.edge_type || raw.relation, label: raw.label, target_name: targetName }) : null)
+    || edgeRelationLabel(raw.edge_type || raw.relation);
+  const route = entityPivotRouteStatus(raw.canonical_href ?? raw.href);
+  const source = normalizeSource(raw);
+  const status = raw.status === "held" || raw.pivot_state === "held" || !route.verified ? "held" : "accepted";
+  return Object.freeze({
+    schema: ENTITY_PIVOT_SCHEMA,
+    relation_label: text(relation, 240) || "related records",
+    target_kind: text(raw.target_kind, 80),
+    target_id: targetId == null ? null : text(targetId, 240),
+    target_name: targetName == null ? null : text(targetName, 240),
+    canonical_href: status === "accepted" ? route.href : null,
+    source: Object.freeze(source),
+    scope: cloneScope(raw.scope),
+    as_of: raw.as_of == null ? null : text(raw.as_of, 40),
+    status,
+    hold_reason: status === "held" ? (raw.hold_reason || route.reason) : null,
+  });
+}
+
+export function normalizeEntityPivots(records, defaults = {}) {
+  return (Array.isArray(records) ? records : []).map((record) => normalizeEntityPivot(record, defaults));
+}
+
+/** Fail a build/test when a supposedly accepted edge points outside the route inventory. */
+export function assertEntityPivotClosure(records = []) {
+  const failures = (Array.isArray(records) ? records : []).flatMap((record, index) => {
+    const route = record?.canonical_href ?? record?.href;
+    const status = entityPivotRouteStatus(route);
+    return route && !status.verified ? [{ index, href: String(route), reason: status.reason }] : [];
+  });
+  if (failures.length) {
+    throw new Error(`Entity pivot route closure failed: ${failures.map((item) => `${item.index}:${item.href}`).join(", ")}`);
+  }
+  return true;
+}
+
+function targetDisplay(pivot) {
+  const kind = text(pivot.target_kind, 80);
+  const name = text(pivot.target_name, 240) || text(pivot.target_id, 240) || "Related record";
+  return kind ? `${kind.replaceAll("_", " ")} · ${name}` : name;
+}
+
+/** Render one typed pivot; held edges remain visible text with no fabricated link. */
+export function renderEntityPivotLink(pivotInput = {}, { className = "", escape = escapeHTML } = {}) {
+  const pivot = normalizeEntityPivot(pivotInput);
+  const sourceName = pivot.source.name || pivot.source.kind || "this record";
+  const accessible = `${pivot.relation_label}: ${targetDisplay(pivot)}; from ${sourceName}`;
+  const classes = ["ui-constellation-link", className].filter(Boolean).join(" ");
+  const attrs = [
+    `data-pivot-schema="${escape(ENTITY_PIVOT_SCHEMA)}"`,
+    `data-pivot-status="${escape(pivot.status)}"`,
+    `data-pivot-relation-label="${escape(pivot.relation_label)}"`,
+    `data-pivot-target-kind="${escape(pivot.target_kind || "")}"`,
+    `data-pivot-target-id="${escape(pivot.target_id || "")}"`,
+    ...(pivot.source.kind || pivot.source.id || pivot.source.name
+      ? [
+        `data-pivot-source-kind="${escape(pivot.source.kind || "")}"`,
+        `data-pivot-source-id="${escape(pivot.source.id || "")}"`,
+      ]
+      : []),
+    ...(pivotInput.link_confidence ? [`data-link-confidence="${escape(pivotInput.link_confidence)}"`] : []),
+  ].join(" ");
+  const body = `<span aria-hidden="true">◆</span>${escape(pivot.target_name || pivot.target_id || "Related record")} <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>`;
+  if (pivot.status !== "accepted") {
+    return `<span class="${escape(classes)} entity-pivot-held" ${attrs} aria-label="${escape(accessible)}">${body}<span class="entity-pivot-provisional">Provisional: destination not verified</span></span>`;
+  }
+  return `<a class="${escape(classes)}" href="${escape(pivot.canonical_href)}" ${attrs} aria-label="${escape(accessible)}">${body}</a>`;
+}
+
+export function renderEntityPivotRail(records, options = {}) {
+  const pivots = normalizeEntityPivots(records);
+  if (!pivots.length) return options.empty || "";
+  const source = options.source || pivots.find((pivot) => pivot.source.name)?.source || {};
+  const heading = options.heading || "Jump to related";
+  const id = options.id || "entity-pivot-heading";
+  const items = pivots.map((pivot) => `<li class="entity-pivot-item" data-pivot-status="${escapeHTML(pivot.status)}">${renderEntityPivotLink(pivot, { className: options.className || "", escape: escapeHTML })}</li>`).join("");
+  const sourceAffordance = source.name
+    ? (source.canonical_href
+      ? `<p class="entity-pivot-source"><a href="${escapeHTML(source.canonical_href)}">Back to ${escapeHTML(source.name)}</a></p>`
+      : `<p class="entity-pivot-source">Related from ${escapeHTML(source.name)}</p>`)
+    : "";
+  return `<section class="entity-pivot-rail ${escapeHTML(options.railClassName || "")}" data-entity-pivot-schema="${ENTITY_PIVOT_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2>${sourceAffordance}<ul>${items}</ul></section>`;
+}
+
 /** Normalize one materialized relation without inventing missing facts. */
 export function normalizeEdgeSummaryRecord(input = {}, defaults = {}) {
   const raw = { ...defaults, ...input };
   const count = normalizedCount(raw.count);
   const state = normalizedState(raw.state || raw.status, count);
+  const pivot = normalizeEntityPivot(raw);
   return Object.freeze({
     schema: EDGE_SUMMARY_SCHEMA,
     source_kind: text(raw.source_kind),
     source_id: raw.source_id == null ? null : text(raw.source_id, 240),
     edge_type: text(raw.edge_type || raw.relation, 120),
+    relation_label: pivot.relation_label,
     label: text(raw.label, 240),
     target_kind: text(raw.target_kind, 80),
+    target_id: raw.target_id == null ? null : text(raw.target_id, 240),
     target_name: raw.target_name == null ? null : text(raw.target_name, 240),
     count,
     state,
     href: canonicalHref(raw.href, raw.as_of),
+    canonical_href: canonicalHref(raw.canonical_href ?? raw.href, raw.as_of),
     scope: cloneScope(raw.scope),
     as_of: raw.as_of == null ? null : text(raw.as_of, 40),
+    source: pivot.source,
   });
 }
 
@@ -137,7 +268,7 @@ function targetCopy(record) {
 
 function recordLabel(record) {
   const target = targetCopy(record);
-  const relation = edgeRelationLabel(record);
+  const relation = record.relation_label || edgeRelationLabel(record);
   return `${target}: ${relation}; ${edgeSummaryStateCopy(record)}`;
 }
 
@@ -156,7 +287,7 @@ export function renderEdgeSummaryRail(records, {
   if (!normalized.length) return empty;
   const items = normalized.map((record) => {
     const destination = targetCopy(record);
-    const relation = edgeRelationLabel(record);
+    const relation = record.relation_label || edgeRelationLabel(record);
     const status = edgeSummaryStateCopy(record);
     const label = recordLabel(record);
     const targetKind = record.target_kind || "record";
@@ -167,12 +298,25 @@ export function renderEdgeSummaryRail(records, {
       record.as_of ? `as of ${record.as_of}` : null,
     ].filter(Boolean).join(" · ");
     const availability = EDGE_SUMMARY_STATE_MEANINGS[record.state] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
-    const content = record.href
-      ? `<a class="edge-summary-link" href="${escapeHTML(record.href)}" aria-label="${escapeHTML(label)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></a>`
-      : `<span class="edge-summary-text" aria-label="${escapeHTML(label)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></span>`;
+    const pivot = normalizeEntityPivot({
+      ...record,
+      relation_label: relation,
+      target_name: destination,
+      canonical_href: record.href,
+    });
+    const heldEdge = record.state === "matched" && pivot.status !== "accepted";
+    const content = pivot.status === "accepted"
+      ? `<a class="edge-summary-link" href="${escapeHTML(record.href)}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="accepted" data-pivot-relation-label="${escapeHTML(relation)}" data-pivot-target-kind="${escapeHTML(targetKind)}" data-pivot-target-id="${escapeHTML(record.target_id || "")}" data-pivot-source-kind="${escapeHTML(record.source?.kind || record.source_kind || "")}" data-pivot-source-id="${escapeHTML(record.source?.id || record.source_id || "")}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}</span></a>`
+      : `<span class="edge-summary-text${heldEdge ? " entity-pivot-held" : ""}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="${heldEdge ? "held" : escapeHTML(record.state)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldEdge ? " · Provisional: destination not verified" : ""}</span></span>`;
     return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}</li>`;
   }).join("");
-  return `<section class="edge-summary-rail ${escapeHTML(className)}" data-edge-summary-schema="${EDGE_SUMMARY_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2><p class="edge-summary-scope-note">This summary is limited to the relation families shown; other entity families are outside this materialization.</p><ul>${items}</ul></section>`;
+  const source = normalized.find((record) => record.source?.name)?.source;
+  const sourceAffordance = source?.name
+    ? (source.canonical_href
+      ? `<p class="entity-pivot-source"><a href="${escapeHTML(source.canonical_href)}">Back to ${escapeHTML(source.name)}</a></p>`
+      : `<p class="entity-pivot-source">Related from ${escapeHTML(source.name)}</p>`)
+    : "";
+  return `<section class="edge-summary-rail ${escapeHTML(className)}" data-edge-summary-schema="${EDGE_SUMMARY_SCHEMA}" data-entity-pivot-schema="${ENTITY_PIVOT_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2><p class="edge-summary-scope-note">This summary is limited to the relation families shown; other entity families are outside this materialization.</p>${sourceAffordance}<ul>${items}</ul></section>`;
 }
 
 export function edgeSummaryState(status, count) {

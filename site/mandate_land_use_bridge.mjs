@@ -1,6 +1,7 @@
 /** Mandates → land-use/zoning cross-entity edges for agency constellations. */
 
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
+import { renderEntityPivotLink } from "./edge_summary.mjs";
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
@@ -863,7 +864,14 @@ export function renderMandateLandUseSection(view) {
       if (path.land_action.public_status) meta += ` · ${path.land_action.public_status}`;
       if (path.land_action.date) meta += ` · ${path.land_action.date}`;
       return `<li class="node-record mandate-land-use-record" data-mandate-procedure-edge="${esc(path.mandate_edge.id)}" data-project-procedure-edge="${esc(path.project_edge.id)}" data-edge-claim-row="${esc(path.claim?.claim_id || path.id)}">
-        <div class="node-record-main">${constellationLink({ href: path.land_action.href, label: path.land_action.label, className: "agency-edge-link", attributes: { "data-subject-ref": path.land_action.subject_ref }, escape: esc })}${why ? ` ${why}` : ""}</div>
+        <div class="node-record-main">${renderEntityPivotLink({
+          relation_label: "project participates in this procedure",
+          target_kind: "project",
+          target_id: path.land_action.project_id || path.land_action.subject_ref?.replace(/^project:/, "") || null,
+          target_name: path.land_action.label,
+          canonical_href: path.land_action.href,
+          source: { kind: "mandate", id: mandate.mandate_id, name: mandate.duty_text, canonical_href: view.share_path },
+        }, { className: "agency-edge-link", escape: esc })}${why ? ` ${why}` : ""}</div>
         <span class="muted node-muted">${esc(meta)}</span>
       </li>`;
     }).join("");
@@ -894,7 +902,14 @@ export function renderMandateLandUseSection(view) {
       if (edge.land_action.public_status) meta += ` · ${edge.land_action.public_status}`;
       if (edge.land_action.date) meta += ` · ${edge.land_action.date}`;
       return `<li class="node-record mandate-land-use-record" data-mandate-land-use-edge="${esc(edge.entity_link.id)}" data-edge-claim-row="${esc(edge.claim?.claim_id || edge.entity_link.id)}">
-        <div class="node-record-main">${constellationLink({ href: edge.land_action.href, label: edge.land_action.label, className: "agency-edge-link", attributes: { "data-subject-ref": edge.land_action.subject_ref }, escape: esc })}${why ? ` ${why}` : ""}</div>
+        <div class="node-record-main">${renderEntityPivotLink({
+          relation_label: "requires land-use action",
+          target_kind: "project",
+          target_id: edge.land_action.project_id || edge.land_action.subject_ref?.replace(/^project:/, "") || null,
+          target_name: edge.land_action.label,
+          canonical_href: edge.land_action.href,
+          source: { kind: "mandate", id: mandate.mandate_id, name: mandate.duty_text, canonical_href: view.share_path },
+        }, { className: "agency-edge-link", escape: esc })}${why ? ` ${why}` : ""}</div>
         <span class="muted node-muted">${esc(meta)}</span>
       </li>`;
     }).join("");
