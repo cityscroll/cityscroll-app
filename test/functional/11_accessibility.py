@@ -66,7 +66,8 @@ FAIL_IMPACTS = {"critical", "serious"}
 # w10-04: heading-order (NYC Web Content Style Guide — heading levels "should not be
 # skipped") is also axe 'moderate', so without a ratchet entry it's invisible to the gate.
 RATCHET_RULES = {"landmark-one-main", "region", "heading-order"}
-TABS = ["people", "land", "property", "rules", "meetings"]  # money is active on load
+# Property is a child of the Land + property group; Places is a non-route placeholder.
+TABS = ["people", "land", "rules", "meetings"]  # money is active on load
 LANGS = ["en", "es"]
 VIEWPORTS = [(390, 844), (1440, 900)]
 

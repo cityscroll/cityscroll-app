@@ -34,9 +34,46 @@ export function primaryDocumentOutputs() {
   };
   const outputs = [output("now", buildNowDocument(shell, nowSources))];
   const staffingExams = json("/data/staffing_exams.json");
+  const awards = json("/data/ocp_awards_warehouse_lookup.json");
+  const landProjects = json("/data/zap_projects_warehouse_lookup.json");
+  const property = json("/data/property_domain_observations.json");
+  const obligations = json("/data/agency_obligations_lookup.json");
+  const meetings = json("/data/meetings_domain_observations.json");
+  const outcomes = json("/data/meeting_outcomes_snapshot.json");
+  const people = json("/data/person_hub_lookup.json");
+  const committees = json("/data/committee_graph_lookup.json");
+  const agencies = json("/data/agency_constellation_lookup.json");
+  const places = json("/data/community_board_geography_lookup.json");
   outputs.push(output("browse", buildBrowseLandingDocument(shell, payloads, {
     staffingExamCount: Array.isArray(staffingExams.exams) ? staffingExams.exams.length : 0,
     staffingExamAsOf: staffingExams.data_current_as_of,
+    groupMetrics: {
+      money: { facts: [
+        { value: awards.row_count, label: "awards" },
+        { value: payloads.contracts?.notices?.length ?? null, label: "open opportunities" },
+      ] },
+      "land-property": { facts: [
+        { value: landProjects.row_count, label: "land projects" },
+        { value: property.property_count, label: "property records" },
+      ] },
+      "rules-mandates": { facts: [
+        { value: obligations.summary?.obligation_count ?? null, label: "obligations" },
+        { value: obligations.summary?.with_deadline_signal_count ?? null, label: "deadline signals" },
+      ] },
+      "meetings-decisions": { facts: [
+        { value: meetings.row_count, label: "meeting rows" },
+        { value: outcomes.present_count, label: "outcome snapshots" },
+      ] },
+      "people-organizations": { facts: [
+        { value: people.person_count, label: "people" },
+        { value: committees.observations?.length ?? null, label: "committee edges" },
+        { value: agencies.agency_count, label: "agencies" },
+      ] },
+      places: { facts: [
+        { value: places.inventory?.boards_inventoried ?? null, label: "boards" },
+        { value: places.receipt?.pair_count ?? null, label: "district intersections" },
+      ] },
+    },
   })));
   for (const [facet, payload] of Object.entries(payloads)) {
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), { route: `/browse/${facet}/` })));

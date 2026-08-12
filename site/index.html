@@ -112,7 +112,7 @@
   .browse-child-nav{width:min(100%,920px);margin:7px auto 0;padding:8px 10px 9px;border-top:1px solid var(--rule);background:var(--paper-2);border-radius:9px 9px 0 0}
   [data-primary-context="now"] .browse-child-nav:empty{display:none}
   .browse-facet-label{margin:0 0 3px;color:var(--muted);font:750 9px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
-  .browse-child-tabs{margin:0;gap:2px}
+  .browse-child-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:0;gap:2px}
   .browse-child-tabs .tabbtn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 13px;font-size:11px;letter-spacing:.1em;text-decoration:none;border-radius:7px 7px 0 0}
   .browse-child-tabs .tabbtn.active{background:var(--card)}
   .now-surface{max-width:1180px;margin:0 auto;padding:4px 0 30px}.now-back{margin:0 0 12px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif}.now-back a{text-decoration:none}
@@ -1555,14 +1555,14 @@
       <a class="now-entry" href="/browse/"><strong>Browse</strong><span>Explore city topics</span></a>
     </nav>
     <div class="browse-child-nav" id="browse-child-nav">
-      <p class="browse-facet-label">Civic domains</p>
-      <nav class="tabs browse-child-tabs" aria-label="Browse civic domains">
-        <a class="tabbtn active" href="/browse/contracts/" data-tab="money" data-i18n="tab_money">Contracts</a>
-        <a class="tabbtn" href="/browse/staffing/" data-tab="people" data-i18n="tab_people">Staffing</a>
-        <a class="tabbtn" href="/browse/zoning/" data-tab="land" data-i18n="tab_land">Zoning</a>
-        <a class="tabbtn" href="/browse/property/" data-tab="property" data-i18n="tab_property">Property</a>
-        <a class="tabbtn" href="/browse/rules/" data-tab="rules" data-i18n="tab_rules">Rules</a>
-        <a class="tabbtn" href="/browse/meetings/" data-tab="meetings" data-i18n="tab_meetings">Meetings</a>
+      <p class="browse-facet-label">Civic objects</p>
+      <nav class="tabs browse-child-tabs" aria-label="Civic objects">
+        <a class="tabbtn active" href="/browse/contracts/" data-tab="money">Money</a>
+        <a class="tabbtn" href="/browse/zoning/" data-tab="land" data-route-facets="land property">Land + property</a>
+        <a class="tabbtn" href="/browse/rules/" data-tab="rules">Rules + mandates</a>
+        <a class="tabbtn" href="/browse/meetings/" data-tab="meetings">Meetings + decisions</a>
+        <a class="tabbtn" href="/browse/staffing/" data-tab="people">People + organizations</a>
+        <span class="tabbtn browse-object-tab-placeholder">Places</span>
       </nav>
     </div>
     <div id="langNotice" class="lang-notice" hidden></div>
@@ -1577,7 +1577,7 @@
 </header>
 <main id="main" tabindex="-1">
 
-<!-- ============ BROWSE (parent landing; civic domains remain the child documents) ============ -->
+<!-- ============ BROWSE ============ -->
 <section id="tab-browse" class="tabpane">
   <div class="wrap">
     <div id="browseview"></div>
@@ -1716,9 +1716,7 @@
     <div class="grid">
       <div class="panel">
         <div class="panelbar">
-          <!-- search() owns this dynamic heading. Leaving data-i18n here lets the initial
-               applyStrings() pass overwrite a deep-linked Award heading with the static
-               default after the correct search has already rendered. -->
+          <!-- search() owns this heading; data-i18n preserves the default after deep-link rendering. -->
           <h2><span id="reshead">Open RFPs</span></h2>
           <span class="export-actions">
             <span class="export-band" id="money-export-band" hidden>
