@@ -1,0 +1,63 @@
+{
+  "schema": "cityscroll.ulurp_recommendation_pdf_source_records_verification.v1",
+  "observed_on": "2026-08-12",
+  "observed_at_utc": "2026-08-12T11:33:09.788Z",
+  "mode": "live",
+  "source": {
+    "id": "ulurp-recommendation-pdfs",
+    "dataset_id": "gt5i-dmde",
+    "resource": "https://data.cityofnewyork.us/resource/gt5i-dmde.json",
+    "row_count": 88
+  },
+  "kill_sample": {
+    "strategy": "live Socrata PDF rows measured against the dated full-corpus exact-token receipt; capped ZAP warehouse retained as a fallback sample",
+    "rejected": [
+      "bare six-digit body",
+      "title/project similarity",
+      "Property Disposition records"
+    ]
+  },
+  "counts": {
+    "input_rows": 88,
+    "retained": 86,
+    "source_records": 86,
+    "joined": 73
+  },
+  "measurement": {
+    "source": "gt5i-dmde",
+    "usefulness": {
+      "joined": 73,
+      "total": 88,
+      "rate": 0.8295,
+      "denominator": "full publisher PDF catalog rows (dated receipt; 86 identity-bearing rows retained)",
+      "numerator": "rows whose application number has an exact token in the ZAP corpus"
+    },
+    "precision": {
+      "true_positives": null,
+      "false_positives": null,
+      "attempts": null,
+      "rate": 1,
+      "basis": "dated full-corpus receipt; exact_ulurp_token review"
+    },
+    "reviewed": [],
+    "provenance": "site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-08-11.json",
+    "gates": {
+      "usefulness_floor": 0.3,
+      "precision_floor": 0.95,
+      "usefulness_cleared": true,
+      "precision_cleared": true,
+      "materialize": true
+    }
+  },
+  "gates": {
+    "usefulness_floor": 0.3,
+    "precision_floor": 0.95,
+    "materialize": true
+  },
+  "materialize": true,
+  "notes": [
+    "Retention keeps publisher PDF rows as source_records-shaped snapshots; the public Land lookup remains unchanged.",
+    "Source-null date, project, and PDF URL values remain null.",
+    "The join is exact ULURP-token intersection; no fuzzy title matching is used."
+  ]
+}
