@@ -787,15 +787,20 @@ export function buildBrowseEdgeSummary(view) {
   const refs = view?.scope?.refs || [];
   const source = refs[0] || null;
   const inventory = Array.isArray(view?.edgeInventory) ? view.edgeInventory : [];
+  const scopeHref = view?.facet && view?.scopeSearch
+    ? `/browse/${view.facet}/?${view.scopeSearch}`
+    : null;
   return normalizeEdgeSummaryRecords(inventory.map((edge) => ({
     source_kind: source?.kind || "browse",
     source_id: source?.ref || null,
     edge_type: `browse_related_${edge.kind || "record"}`,
     label: `${edge.label || "Related records"} related to this ${view.facet || "browse"} scope`,
     target_kind: edge.kind || "record",
+    target_id: edge.id || null,
     target_name: edge.label || null,
     count: edge.count,
-    href: edge.pivotHref || null,
+    object_href: edge.pivotHref || null,
+    scope_href: scopeHref,
     scope: { facet: view.facet || null, search: view.scopeSearch || null },
     as_of: view.asOf || null,
   })));

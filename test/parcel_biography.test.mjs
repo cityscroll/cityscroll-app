@@ -72,8 +72,13 @@ test("parcel biography summarizes every supported family and preserves typed det
   assert.match(html, /Empty in this scoped materialization/);
   assert.match(html, /Unknown \/ not indexed/);
   for (const kind of ["property", "land", "tax_lien", "ll48", "cofo"]) {
-    assert.match(html, new RegExp(`href="#parcel-biography-${kind}"`));
     assert.match(html, new RegExp(`id="parcel-biography-${kind}"`));
+  }
+  for (const kind of ["property", "cofo"]) {
+    assert.match(html, new RegExp(`href="#parcel-biography-${kind}"`));
+  }
+  for (const kind of ["land", "tax_lien", "ll48"]) {
+    assert.doesNotMatch(html, new RegExp(`<a[^>]+href="#parcel-biography-${kind}"`));
   }
   assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20260101001"/);
 });

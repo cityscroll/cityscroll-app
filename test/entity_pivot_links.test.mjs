@@ -6,6 +6,7 @@ import {
   assertEntityPivotClosure,
   normalizeEntityPivot,
   normalizeEdgeSummaryRecord,
+  resolveEdgeSummaryDestination,
   renderEntityPivotLink,
 } from "../site/edge_summary.mjs";
 
@@ -115,5 +116,48 @@ test("unsupported destinations are held and the closure assertion fails instead 
   assert.throws(
     () => assertEntityPivotClosure([{ canonical_href: "/committees/5261/" }]),
     /route closure failed/,
+  );
+});
+
+test("destination resolution prefers a verified object and falls back to a verified scope", () => {
+  assert.deepEqual(
+    resolveEdgeSummaryDestination({
+      target_id: "20260805001",
+      object_href: "/notices/20260805001",
+      scope_href: "/browse/meetings/?facet=agency",
+    }),
+    {
+      verified: true,
+      reason: null,
+      href: "/notices/20260805001",
+      kind: "object",
+    },
+  );
+  assert.deepEqual(
+    resolveEdgeSummaryDestination({
+      target_id: "5261",
+      target_name: "Land Use Committee",
+      object_href: "/committees/5261/",
+      scope_href: "/browse/meetings/?facet=agency",
+    }),
+    {
+      verified: true,
+      reason: null,
+      href: "/browse/meetings/?facet=agency",
+      kind: "scope",
+    },
+  );
+  assert.deepEqual(
+    resolveEdgeSummaryDestination({ canonical_href: "/agencies/parks-and-recreation/#mandates-conformance" }),
+    {
+      verified: true,
+      reason: null,
+      href: "/agencies/parks-and-recreation/#mandates-conformance",
+      kind: "scope",
+    },
+  );
+  assert.deepEqual(
+    resolveEdgeSummaryDestination({ target_id: "5261", target_name: "Land Use Committee" }),
+    { verified: false, reason: "missing_destination", href: null, kind: null },
   );
 });
