@@ -540,6 +540,7 @@
     read_official_notice: "Читать официальное объявление",
     next_action_heading: "Что можно сделать сейчас?",
     next_action_watch: "Следить за этим объявлением",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Следить за этим резонингом",
     next_action_land_guide: "Следуйте шагам участия в землепользовании ниже",
     next_action_land_steps_missing: "Шаги участия для этого резонинга ещё не опубликованы.",

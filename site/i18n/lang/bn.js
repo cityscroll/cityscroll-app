@@ -540,6 +540,7 @@
     read_official_notice: "সরকারি বিজ্ঞপ্তি পড়ুন",
     next_action_heading: "আমি এখন কী করতে পারি?",
     next_action_watch: "এই বিজ্ঞপ্তি অনুসরণ করুন",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Watch this rezoning",
     next_action_land_guide: "Follow the land-use participation steps below",
     next_action_land_steps_missing: "No participation steps are published for this rezoning yet.",

@@ -543,6 +543,7 @@
     read_official_notice: "قراءة الإشعار الرسمي",
     next_action_heading: "ماذا يمكنني أن أفعل الآن؟",
     next_action_watch: "متابعة هذا الإشعار",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Watch this rezoning",
     next_action_land_guide: "Follow the land-use participation steps below",
     next_action_land_steps_missing: "No participation steps are published for this rezoning yet.",
