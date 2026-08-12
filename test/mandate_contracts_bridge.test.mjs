@@ -29,6 +29,9 @@ const obligations = JSON.parse(
 const intelligence = JSON.parse(
   readFileSync(join(ROOT, "site/data/entity_intelligence_lookup.json"), "utf8"),
 );
+const procurementAwards = JSON.parse(
+  readFileSync(join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"), "utf8"),
+);
 
 test("shareable path anchors the Mandates → Contracts section", () => {
   assert.equal(
@@ -140,13 +143,15 @@ test("committed live corpus links Homeless Services shelter mandates through awa
   const view = buildMandateContractsBridgeView(HOMELESS_SERVICES, {
     obligationsLookup: obligations,
     intelligenceDossier: dossier,
+    procurementAwards,
   });
   assert.equal(view.status, "matched");
   assert.ok(view.counts.mandates >= 1);
   assert.ok(view.counts.contracts >= 1);
   assert.ok(view.edges.some((row) => row.mandate_id === "66056-006"));
   assert.equal(view.counts.mandates, 1);
-  assert.equal(view.counts.contracts, 1);
+  assert.ok(view.counts.contracts >= 1);
+  assert.ok(view.edges.some((row) => row.procurement_record.request_id === "20210820102"));
   assert.ok(view.edges.every((row) => /renewal/i.test(row.procurement_record.label)));
   assert.ok(view.edges.every((row) => row.contract.subject_ref.startsWith("contract:")));
   assert.ok(view.edges.every((row) => row.procurement_record.href.startsWith("#notice/")));
@@ -196,6 +201,7 @@ test("constellation model registers claims and renders the standalone bridge sec
   const view = buildAgencyConstellationView(HOMELESS_SERVICES, {
     intelligence,
     obligations,
+    procurement_awards: procurementAwards,
   });
   assert.equal(view.mandates_contracts.status, "matched");
   assert.match(view.mandates_contracts_href, /#mandates-contracts$/);

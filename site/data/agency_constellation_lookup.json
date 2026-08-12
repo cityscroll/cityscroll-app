@@ -2,18 +2,17 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-03|2026-08-03T20:19:13.639Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-09T15:17:29.522Z",
+  "generated_at": "2026-08-03|2026-08-03T20:19:13.639Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
     "housing-preservation-and-development"
   ],
-  "agency_count": 83,
+  "agency_count": 82,
   "multi_category_count": 60,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
     "board-of-corrections": "board-of-correction",
-    "city-university-of-new-york": "city-university",
     "dcasdivision-of-municipal-supply-service": "citywide-administrative-services",
     "district-attorney-special-narcotics": "office-of-special-narcotics-prosecutor",
     "hra-department-of-social-services": "human-resources-administration",
@@ -26,7 +25,8 @@
     "office-of-administrative-trials-and-hearings": "administrative-trials-and-hearings",
     "office-of-contract-services": "mayors-office-of-contract-services",
     "office-of-criminal-justice-002": "mayors-office-of-criminal-justice",
-    "office-of-payroll-administration": "payroll-administration"
+    "office-of-payroll-administration": "payroll-administration",
+    "office-of-the-chief-medical-examiner": "chief-medical-examiner"
   },
   "by_id": {
     "administration-for-childrens-services": {
@@ -491,45 +491,6 @@
       },
       "top_vendors": []
     },
-    "board-of-education-retirement-system": {
-      "subject_ref": "agency:id:board-of-education-retirement-system",
-      "display_name": "Board of Education Retirement System",
-      "path": "/agencies/board-of-education-retirement-system/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      },
-      "top_vendors": []
-    },
     "board-of-elections": {
       "subject_ref": "agency:id:board-of-elections",
       "display_name": "Board of Elections",
@@ -981,6 +942,134 @@
         }
       },
       "top_vendors": []
+    },
+    "chief-medical-examiner": {
+      "subject_ref": "agency:id:chief-medical-examiner",
+      "display_name": "Office of the Chief Medical Examiner",
+      "path": "/agencies/chief-medical-examiner/",
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "matched",
+          "count": 8,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "top_vendors": [
+        {
+          "id": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
+          "subject_ref": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
+          "label": "National Medical Services, Inc.",
+          "href": "/vendors/NATIONAL%20MEDICAL%20SERVICES/",
+          "award_count": 1,
+          "award_total": 2500000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:YSKOUD",
+          "subject_ref": "vendor:stem:YSKOUD",
+          "label": "YSKOUD LLC",
+          "href": "/vendors/YSKOUD/",
+          "award_count": 1,
+          "award_total": 1378060,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AMAZONAS%20PAINTING",
+          "subject_ref": "vendor:stem:AMAZONAS%20PAINTING",
+          "label": "Amazonas Painting Corp",
+          "href": "/vendors/AMAZONAS%20PAINTING/",
+          "award_count": 1,
+          "award_total": 1000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:SPRUCE%20TECHNOLOGY",
+          "subject_ref": "vendor:stem:SPRUCE%20TECHNOLOGY",
+          "label": "Spruce Technology Inc.",
+          "href": "/vendors/SPRUCE%20TECHNOLOGY/",
+          "award_count": 1,
+          "award_total": 1000000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:NICHEVISION%20FORENSICS",
+          "subject_ref": "vendor:stem:NICHEVISION%20FORENSICS",
+          "label": "NicheVision Forensics LLC",
+          "href": "/vendors/NICHEVISION%20FORENSICS/",
+          "award_count": 1,
+          "award_total": 778347,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:BECKMAN%20COULTER",
+          "subject_ref": "vendor:stem:BECKMAN%20COULTER",
+          "label": "Beckman Coulter Inc",
+          "href": "/vendors/BECKMAN%20COULTER/",
+          "award_count": 2,
+          "award_total": 497538,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:AVANTI%20MECHANICAL",
+          "subject_ref": "vendor:stem:AVANTI%20MECHANICAL",
+          "label": "Avanti Mechanical LLC",
+          "href": "/vendors/AVANTI%20MECHANICAL/",
+          "award_count": 1,
+          "award_total": 300000,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        {
+          "id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
+          "subject_ref": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
+          "label": "Olympic Plumbing & Heating Services, Inc.",
+          "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
+          "award_count": 1,
+          "award_total": 250680,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "city-clerk": {
       "subject_ref": "agency:id:city-clerk",
@@ -1668,45 +1757,6 @@
           "method": "agency_vendor_awards_12mo_v1"
         }
       ]
-    },
-    "conflicts-of-interest-board": {
-      "subject_ref": "agency:id:conflicts-of-interest-board",
-      "display_name": "Conflicts of Interest Board",
-      "path": "/agencies/conflicts-of-interest-board/",
-      "matched_categories": 1,
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      },
-      "top_vendors": []
     },
     "consumer-and-worker-protection": {
       "subject_ref": "agency:id:consumer-and-worker-protection",
@@ -6515,7 +6565,7 @@
     }
   },
   "provenance": {
-    "intelligence_generated_at": "2026-08-09T15:17:29.522Z",
+    "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
     "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z",

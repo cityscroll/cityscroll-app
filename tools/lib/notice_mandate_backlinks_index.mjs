@@ -234,6 +234,7 @@ export function buildNoticeMandateBacklinksLookup(sources = {}) {
     const contracts = buildMandateContractsBridgeView(id, {
       ...common,
       intelligenceDossier: dossier,
+      procurementAwards: sources.procurementAwards || sources.procurement_awards || null,
     });
     collectFromContractView(contracts, byNotice);
 

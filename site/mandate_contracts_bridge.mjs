@@ -108,12 +108,63 @@ function contractIdFromRef(ref) {
   return clean(ref, 160).replace(/^contract:/, "");
 }
 
-function procurementObjects(dossier) {
-  return (Array.isArray(dossier?.domains?.money?.objects)
+const procurementRowIndexCache = new WeakMap();
+
+function procurementRowIndex(source) {
+  if (!source || typeof source !== "object") return new Map();
+  if (procurementRowIndexCache.has(source)) return procurementRowIndexCache.get(source);
+  const rows = Array.isArray(source)
+    ? source
+    : (Array.isArray(source.rows) ? source.rows : []);
+  const index = new Map();
+  for (const row of rows) {
+    const requestId = clean(row?.request_id || row?.requestId, 80);
+    if (requestId && !index.has(requestId)) index.set(requestId, row);
+  }
+  procurementRowIndexCache.set(source, index);
+  return index;
+}
+
+function procurementNoticeFromSourceRow(row, requestId) {
+  const id = clean(row?.request_id || row?.requestId || requestId, 80);
+  const description = clean(row?.type_of_notice_description || row?.object_kind, 120).toLowerCase();
+  const objectKind = /solicit|request for proposal|rfp/.test(description)
+    ? "solicitation"
+    : "award";
+  const label = clean(row?.short_title || row?.title || row?.description, 300);
+  if (!id || !label) return null;
+  return {
+    object_kind: objectKind,
+    subject_ref: `notice:${id}`,
+    request_id: id,
+    label,
+    href: `#notice/${encodeURIComponent(id)}`,
+    when: clean(row?.start_date || row?.date, 40) || null,
+    provenance: {
+      source_system: "ocp-recent-contract-awards",
+      source_record_id: `ocp-recent-contract-awards:${id}`,
+      source_fields: ["request_id", "type_of_notice_description", "short_title", "start_date"],
+    },
+  };
+}
+
+function procurementObjects(dossier, procurementAwards, linksByNotice) {
+  const objects = (Array.isArray(dossier?.domains?.money?.objects)
     ? dossier.domains.money.objects
     : [])
     .filter((row) => ["award", "solicitation", "intent_to_award"].includes(row?.object_kind))
     .filter((row) => clean(row?.subject_ref, 160).startsWith("notice:"));
+  const seen = new Set(objects.map((row) => clean(row?.subject_ref, 160)).filter(Boolean));
+  const index = procurementRowIndex(procurementAwards);
+  for (const noticeRef of linksByNotice?.keys?.() || []) {
+    if (seen.has(noticeRef)) continue;
+    const requestId = clean(noticeRef, 160).replace(/^notice:/, "");
+    const notice = procurementNoticeFromSourceRow(index.get(requestId), requestId);
+    if (!notice) continue;
+    seen.add(notice.subject_ref);
+    objects.push(notice);
+  }
+  return objects;
 }
 
 function contractLinks(dossier) {
@@ -205,8 +256,15 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
   const bucket = sources.obligationsLookup?.by_agency?.[identity.canonical_id];
   const mandates = (Array.isArray(bucket?.obligations) ? bucket.obligations : [])
     .filter(isProcurementMandate);
-  const notices = procurementObjects(sources.intelligenceDossier);
   const linksByNotice = contractLinks(sources.intelligenceDossier);
+  // The dossier intentionally keeps a bounded cold preview. Rehydrate only
+  // notices that already have an exact contract link from the population-backed
+  // award source, so edge coverage is not limited by the browse payload cap.
+  const notices = procurementObjects(
+    sources.intelligenceDossier,
+    sources.procurementAwards,
+    linksByNotice,
+  );
   const gate = publicationGate(sources.crossSpineGate);
   const edgePolicy = crossSpinePolicy(gate);
   const limit = Math.max(1, Math.min(Number(sources.limit) || 16, 40));
