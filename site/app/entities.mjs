@@ -1213,7 +1213,6 @@ async function showVendor(name, initialTab){
   applyActiveHistoryRouteScroll();
 }
 
-// Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.VENDOR_SUFFIX = VENDOR_SUFFIX;
 globalThis.agencyForecastTeaser = agencyForecastTeaser;
 globalThis.agencyHref = agencyHref;
@@ -1239,6 +1238,7 @@ globalThis.showVendor = showVendor;
 globalThis.showVendorLive = showVendorLive;
 globalThis.vendorChronoRowHTML = vendorChronoRowHTML;
 globalThis.vendorHref = vendorHref;
+globalThis.v = v => pivotA(vendorHref(v), v) || escUiHtml(v);
 globalThis.vendorMentionItemsHTML = vendorMentionItemsHTML;
 globalThis.vendorNamesMatch = vendorNamesMatch;
 globalThis.vendorPhaseActionHTML = vendorPhaseActionHTML;

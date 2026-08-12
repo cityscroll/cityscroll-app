@@ -31,8 +31,13 @@ import { buildEpinIndex, joinPinToEpin } from "../../worker/src/lib/passport_joi
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
-/** Population-backed PASSPort contracts admitted into the EI graph (not the 2-row crosswalk demo). */
-export const DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP = 500;
+/**
+ * Population-backed PASSPort contracts admitted into the EI graph (not the
+ * 2-row crosswalk demo). The cap is the measured compressed read-model
+ * ceiling; selection below is agency-stratified so this budget does not turn
+ * census order into an agency priority.
+ */
+export const DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP = 1550;
 /** Population-backed Checkbook contracts admitted after collector-side normalization. */
 export const DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP = 500;
 /** OCP awards admitted into the EI graph; selection prefers PIN↔EPIN joins to the passport slice. */
@@ -404,9 +409,37 @@ export function selectPassportContractsForMaterialization(doc, opts = {}) {
     push(row);
     if (rows.length >= cap) break;
   }
+
+  // The census is not ordered as an agency sample. Fill the remaining budget
+  // round-robin across agency buckets, retaining source order inside each
+  // bucket. This gives every observed agency a turn before any agency gets a
+  // second row, while keeping exact source values (including nulls) intact.
+  const byAgency = new Map();
   for (const row of census) {
-    if (rows.length >= cap) break;
-    push(row);
+    const id = clean(row?.ctr_id || row?.contract_id || row?.epin || row?.epin_norm);
+    if (!id || seen.has(id)) continue;
+    const agency = clean(row?.agency_name || row?.agency);
+    const bucketKey = agency ? agency.toUpperCase() : "(source-null)";
+    if (!byAgency.has(bucketKey)) byAgency.set(bucketKey, []);
+    byAgency.get(bucketKey).push(row);
+  }
+  const agencyKeys = [...byAgency.keys()].sort((a, b) => a.localeCompare(b));
+  let progress = true;
+  while (rows.length < cap && progress) {
+    progress = false;
+    for (const agencyKey of agencyKeys) {
+      const bucket = byAgency.get(agencyKey);
+      if (!bucket?.length) continue;
+      push(bucket.shift());
+      progress = true;
+      if (rows.length >= cap) break;
+    }
+  }
+  const selectedByAgency = {};
+  for (const row of rows) {
+    const agency = clean(row?.agency_name || row?.agency);
+    const bucketKey = agency ? agency.toUpperCase() : "(source-null)";
+    selectedByAgency[bucketKey] = (selectedByAgency[bucketKey] || 0) + 1;
   }
   return {
     rows,
@@ -414,9 +447,12 @@ export function selectPassportContractsForMaterialization(doc, opts = {}) {
     compatibility_rows: compatibility.length,
     selected_rows: rows.length,
     cap,
+    selected_agency_count: Object.keys(selectedByAgency).length,
+    selected_by_agency: selectedByAgency,
     strategy:
       "population-backed census (rows.passport_contracts) capped for entity-intelligence; "
-      + "compatibility examples (passport_contracts_materialization) included first",
+      + "compatibility examples included first, then agency-stratified round-robin "
+      + "within the remaining cap",
   };
 }
 

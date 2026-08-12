@@ -64,6 +64,7 @@ function escUiHtml(s) {
 
 const sandbox = new Function(
   "t", "tn", "window", "money", "fdate", "cleanText", "vendorStem", "escUiHtml", "officialSourceLink",
+  "const v=x=>escUiHtml(x);\n" +
   extractConst("escUiHtml").replace(/^const escUiHtml = /, "const escUiHtmlLocal = ") + "\n" +
   // Prefer the real extracted escUiHtml if present; fall back to injected one.
   "const _esc = (typeof escUiHtmlLocal === 'function') ? escUiHtmlLocal : escUiHtml;\n" +

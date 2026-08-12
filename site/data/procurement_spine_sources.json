@@ -221019,11 +221019,11 @@
   },
   "materialization": {
     "passport_contracts": {
-      "graph_cap": 500,
+      "graph_cap": 1550,
       "graph_source": "rows.passport_contracts",
       "compatibility_examples": 2,
       "compatibility_source": "rows.passport_contracts_materialization",
-      "strategy": "Entity-intelligence selects up to graph_cap rows from the population-backed census (compatibility examples first). Cap matches the OCP award materialization budget so money multi-kind edges densify without crowding the 200-root graph. Checkbook crosswalk demos still use the bounded compatibility examples only.",
+      "strategy": "Entity-intelligence selects up to graph_cap rows from the population-backed census using compatibility examples first and agency-stratified round-robin. The cap is the measured compressed read-model ceiling; exact linked edges are rehydrated from the award source when a bounded preview omits a linked notice. Checkbook crosswalk demos still use the bounded compatibility examples only.",
       "census_rows": 12782
     },
     "checkbook_contracts": {
