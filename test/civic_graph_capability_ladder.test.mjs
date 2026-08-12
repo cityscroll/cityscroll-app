@@ -52,10 +52,10 @@ const FULL_LADDER_RANKED = [
   "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
 ];
 
-// Currently open after mandate densify: report/rule cards quiet (observed_count>0);
-// contract card remains until backlink edges reach 10.
+// Currently open after paid_under registry promotion: surface still open;
+// report/rule cards quiet (observed_count>0); contract card remains until
+// backlink edges reach 10.
 const OPEN_LADDER_EMIT_ORDER = [
-  "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
   "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
   "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
   "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
@@ -64,7 +64,6 @@ const OPEN_LADDER_EMIT_ORDER = [
 ];
 
 const OPEN_LADDER_RANKED = [
-  "crol-list/mf-ontology-enrichment-cg-v1-paid-under-registry",
   "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
   "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
   "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
@@ -137,13 +136,13 @@ test("committed fixture emits the still-open cg-v ladder cards", () => {
     (a, b) => (b.rank_score - a.rank_score) || String(a.id).localeCompare(String(b.id)),
   );
   assert.deepEqual(byScore.map((c) => c.id), OPEN_LADDER_RANKED);
-  assert.equal(byScore[0].rank_score, 97);
-  assert.equal(byScore[1].rank_score, 95);
+  assert.equal(byScore[0].rank_score, 95);
+  assert.equal(byScore[1].rank_score, 94);
 
   const metrics = civicGraphCapabilityMetrics({ civic_graph_capability_ladder: ladder });
   assert.equal(metrics.civic_graph_ladder_loaded, true);
   assert.equal(metrics.civic_graph_capability_cards, OPEN_LADDER_EMIT_ORDER.length);
-  assert.equal(metrics.paid_under_status, "unregistered");
+  assert.equal(metrics.paid_under_status, "registered");
   assert.equal(metrics.rollcall_event_count, 12);
   // Mandate densify on main raised observed_count; report/rule cards quiet.
   assert.ok(Number(metrics.mandate_observed_count) > 0);
@@ -170,7 +169,7 @@ test("emitter stays quiet without a ladder inventory", () => {
   );
 });
 
-test("cards quiet when payment registry metrics clear", () => {
+test("registry card quiets when paid_under is registered; surface needs its own ship flag", () => {
   const ladder = loadJson("ontology/fixtures/dimensions/civic_graph_capability_ladder.json");
   const cleared = structuredClone(ladder);
   cleared.metrics.payment = {
@@ -180,14 +179,28 @@ test("cards quiet when payment registry metrics clear", () => {
     paid_under_status: "registered",
     paid_under_grounding: "built",
     paid_under_reason_stale: false,
+    payment_row_surface_shipped: false,
   };
   const cards = civicGraphCapabilityCards({ civic_graph_capability_ladder: cleared });
   assert.equal(
-    cards.filter((c) => String(c.id).includes("cg-v1-")).length,
-    0,
-    "v1 payment cards must quiet when paid_under is registered and non-gap",
+    cards.some((c) => String(c.id).endsWith("cg-v1-paid-under-registry")),
+    false,
+    "registry card quiets when paid_under is registered and non-gap",
+  );
+  assert.equal(
+    cards.some((c) => String(c.id).endsWith("cg-v1-payment-row-surface")),
+    true,
+    "surface card stays open until payment_row_surface_shipped",
   );
   assert.ok(cards.some((c) => c.id.includes("cg-v2-")));
+
+  cleared.metrics.payment.payment_row_surface_shipped = true;
+  const bothQuiet = civicGraphCapabilityCards({ civic_graph_capability_ladder: cleared });
+  assert.equal(
+    bothQuiet.filter((c) => String(c.id).includes("cg-v1-")).length,
+    0,
+    "both v1 cards quiet when registry is built and surface is shipped",
+  );
 });
 
 test("roll-call densify quiets past the constellation event bar", () => {
