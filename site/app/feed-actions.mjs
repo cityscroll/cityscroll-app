@@ -1216,7 +1216,7 @@ function meetingsExplorerCardHTML(entry){
     : "";
   const factsHTML=`${areaFact}${venueFact}${affectsFact}`;
   return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
-      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${agency?" · "+pivotA(agencyHref(agency),agency):""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
+      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       ${processLine}
       ${actionLead}
       <div class="ftitle"><a href="${noticeHref}">${excerptHtml(title,400)}</a></div>
