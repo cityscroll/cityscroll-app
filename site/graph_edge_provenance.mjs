@@ -140,6 +140,7 @@ export function warrantClassForEdge(input = {}) {
   if (
     method.includes("publisher_certification")
     || method.includes("agency_canonical")
+    || method.includes("agency_browse_snapshot")
     || method.includes("pin_exact")
     || method.includes("exact_")
     || method.endsWith("_exact")
@@ -192,6 +193,7 @@ export function identityStanceForEdge(input = {}) {
     && (
       method.includes("publisher_certification")
       || method.includes("agency_canonical")
+      || method.includes("agency_browse_snapshot")
       || method.includes("pin_exact")
       || method.includes("enacted_law_mandate")
       || method.includes("auto_certified_quote")

@@ -377,7 +377,7 @@ function deeplinkClampField(name, v){
     case "place": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "requestId": return typeof v==="string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
     case "entity_refs_all": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0,20) : [];
-    case "connection_relation": return typeof v==="string" && ["published_by_agency","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
+    case "connection_relation": return typeof v==="string" && ["published_by_agency","hosts_meeting","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
     case "closingWeek": return !!v;
     case "route": return v==="agency" || v==="vendor" ? v : null;
     case "tab": return v==="forecast" || v==="overview" ? v : null;
@@ -916,7 +916,7 @@ function applyHash(){
   try{
     if(tab === "money"){
       // Reset first: a shared hash must produce the same filter from any prior in-page state.
-      $("#mode").value = ["open","allrfp","award"].includes(q.get("mode")) ? q.get("mode") : "open";
+      $("#mode").value = ["open","allrfp","award","archive"].includes(q.get("mode")) ? q.get("mode") : "open";
       $("#agency").value = "";
       forceSelect("#agency", q.get("agency") || agencyFromRouteFacet(activeRouteFacetValues));
       $("#kw").value = q.get("q") || "";

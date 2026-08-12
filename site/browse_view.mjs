@@ -18,6 +18,7 @@ export const BROWSE_FACETS = Object.freeze({
     container: "list",
     dataPath: "/data/money_default_open.json",
     rowsKey: "notices",
+    connectionRelation: "published_by_agency",
   },
   staffing: {
     tab: "people",
@@ -73,6 +74,7 @@ export const BROWSE_FACETS = Object.freeze({
     container: "meetingsfeed",
     dataPath: "/data/meetings_domain_observations.json",
     rowsKey: "rows",
+    connectionRelation: "hosts_meeting",
   },
 });
 
@@ -114,6 +116,7 @@ const EDGE_FILTERS = new Set([
   "cd",
   "community_district",
   "council",
+  "as_of",
 ]);
 const DOCUMENT_FILTERS = new Set(["lang", "legacy"]);
 
@@ -487,6 +490,10 @@ export function rowMatchesProcurementMode(row, mode) {
   if (target === "award") {
     return String(row?.type_of_notice_description || "").toLocaleLowerCase().includes("award");
   }
+  if (target === "archive") {
+    const type = String(row?.type_of_notice_description || "").toLocaleLowerCase();
+    return !type || type.includes("award") || type.includes("solicitation");
+  }
   return true;
 }
 
@@ -622,6 +629,12 @@ function rowMatchesScopeRefs(row, facet, requestedRefs, applicableKinds) {
   ));
 }
 
+function rowMatchesConnectionRelation(facet, relation) {
+  if (!relation) return true;
+  const expected = BROWSE_FACETS[facet]?.connectionRelation;
+  return !expected || relation === expected;
+}
+
 function suggestionEdgeLabel(item) {
   if (item.kind === "agency") {
     const identity = resolveAgencyIdentity(item.id);
@@ -707,9 +720,11 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const communityDistrict = String(search.get("cd") || search.get("community_district") || "").trim();
   const councilDistrict = String(search.get("council") || "").trim();
   const asOf = payload.open_as_of || payload.generated_at || payload.retrieved_at || null;
+  const requestedAsOf = isoDay(search.get("as_of"));
   const rows = Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
   const limit = Number.isFinite(options.limit) ? Math.max(1, Math.floor(options.limit)) : 40;
   const scopeState = scopeFromFacetParams(facet, search);
+  const connectionRelation = String(scopeState.parsed?.facets?.values?.connection_relation || "").trim();
   const applicability = scopeApplicability(facet, rows, scopeState);
   const matchedBase = rows.filter((row) => {
     const text = corpus(row);
@@ -720,6 +735,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     if (communityDistrict && !rowMatchesCommunityDistrict(row, communityDistrict)) return false;
     if (councilDistrict && !rowMatchesCouncilDistrict(row, councilDistrict)) return false;
     if (facet === "contracts" && !matchesClosing(row, search.get("closing"), asOf)) return false;
+    if (!rowMatchesConnectionRelation(facet, connectionRelation)) return false;
     return true;
   });
   const matched = scopeState.hasScopeFacet && applicability.canApplyScope
@@ -770,6 +786,8 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     preScopeTotal: matchedBase.length,
     rows: matched.slice(0, limit),
     asOf: isoDay(asOf),
+    requestedAsOf,
+    asOfMismatch: Boolean(requestedAsOf && isoDay(asOf) && requestedAsOf !== isoDay(asOf)),
     scopeSearch: search.toString(),
     liveOnlyFilters: liveOnlyFilters(search),
     hasQuery: [...search].some(([key]) => !DOCUMENT_FILTERS.has(key)),
@@ -856,8 +874,11 @@ export function renderBrowseView(view) {
       <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc })].filter(Boolean).join(" · ")}</p>
     </article>`;
   }).join("");
-  const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${scopeChip}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
+  const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}" data-as-of="${esc(view.asOf || "")}" data-requested-as-of="${esc(view.requestedAsOf || "")}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
+  const asOfMismatch = view.asOfMismatch
+    ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
+    : "";
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${asOfMismatch}${scopeChip}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
 }
 
 export function browseAssetPath(facet) {

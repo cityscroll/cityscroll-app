@@ -69,6 +69,11 @@ import {
 } from "./graph_edge_provenance.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { noticeDocumentPath } from "./notice_permalink.mjs";
+import {
+  AGENCY_BROWSE_PREVIEW_LIMIT,
+  agencyBrowseRowObject,
+  buildAgencyBrowseContract,
+} from "./agency_browse_contract.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -174,13 +179,30 @@ function browseHrefFromScope(scope, browseFacet, surface) {
   return canonicalizeBrowseUrl(`/browse/${browseFacet}/${query ? `?${query}` : ""}`);
 }
 
-export function agencyCategoryBrowseHref(id, categoryId, { language = "en" } = {}) {
+function appendBrowseQuery(href, { asOf = "", mode = "" } = {}) {
+  const url = new URL(href, "https://cityscroll.org");
+  const day = String(asOf || "").match(/^\d{4}-\d{2}-\d{2}/)?.[0] || "";
+  if (mode) url.searchParams.set("mode", mode);
+  if (day) url.searchParams.set("as_of", day);
+  return `${url.pathname}${url.search}`;
+}
+
+export function agencyCategoryBrowseHref(id, categoryId, { language = "en", asOf = "", mode = "" } = {}) {
   const category = AGENCY_CONSTELLATION_CATEGORIES.find((entry) => entry.id === categoryId);
   if (!category) return "";
   if (category.id === "vendors") return agencyCategoryBrowseHref(id, "contracts", { language });
   const scope = agencyConstellationScope(id, { language, domain: category.surface });
   scope.facets.values.connection_relation = category.relation;
-  return browseHrefFromScope(normalizeScope(scope, { language }), category.browse_facet, category.surface);
+  if (category.id === "contracts") scope.facets.values.mode = mode || "open";
+  return appendBrowseQuery(
+    browseHrefFromScope(normalizeScope(scope, { language }), category.browse_facet, category.surface),
+    { asOf, mode: category.id === "contracts" ? (mode || "open") : "" },
+  );
+}
+
+export function agencyCategoryArchiveHref(id, categoryId, { language = "en" } = {}) {
+  if (categoryId !== "contracts") return "";
+  return agencyCategoryBrowseHref(id, categoryId, { language, mode: "archive" });
 }
 
 export function agencyCategoryFollowHref(id, categoryId, { frequency = "weekly" } = {}) {
@@ -525,6 +547,7 @@ function categoryFromDomain(
   conformanceView = null,
   documentableExamNumbers = null,
   vendorRollups = null,
+  browseSources = {},
 ) {
   if (spec.id === "vendors") {
     const rollup = vendorRollups?.by_id?.[identity.canonical_id] || [];
@@ -629,6 +652,63 @@ function categoryFromDomain(
       warrant_summary,
       method: "publisher_certification_record_v1",
       view_all_href: agencyCategoryBrowseHref(identity.canonical_id, spec.id),
+      follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
+    };
+  }
+
+  const browsePayload = spec.id === "contracts"
+    ? browseSources.money_open
+    : spec.id === "meetings"
+      ? browseSources.meetings_domain
+      : null;
+  if (browsePayload) {
+    const browse = buildAgencyBrowseContract({
+      facet: spec.browse_facet,
+      identity,
+      payload: browsePayload,
+      relation: spec.relation,
+      mode: spec.id === "contracts" ? "open" : "",
+      limit: AGENCY_BROWSE_PREVIEW_LIMIT,
+    });
+    const sourceSystem = browsePayload.source?.system
+      || browsePayload.source?.name
+      || (spec.id === "meetings" ? "city_record" : "city_record");
+    const claimed = (browse?.rows || [])
+      .map((row) => agencyBrowseRowObject(row, {
+        facet: spec.browse_facet,
+        relation: spec.relation,
+        sourceSystem,
+      }))
+      .filter(Boolean)
+      .map((item) => attachClaim(item, {
+        categoryId: spec.id,
+        relation: spec.relation,
+        identity,
+      }));
+    const items = standableItems(claimed);
+    const total = Number(browse?.total) || 0;
+    const matched = total > 0;
+    const asOf = browse?.asOf || null;
+    return {
+      id: spec.id,
+      label: spec.label,
+      relation: spec.relation,
+      status: matched ? "matched" : "empty",
+      gap_class: matched ? null : "empty_in_corpus",
+      note: matched ? null : spec.empty_note,
+      count: total,
+      total_count: total,
+      items,
+      as_of: asOf,
+      universe: spec.id === "contracts" ? "open" : "linked",
+      warrant_summary: summarizeCategoryWarrants(items),
+      method: "agency_browse_snapshot_v1",
+      view_all_href: matched
+        ? agencyCategoryBrowseHref(identity.canonical_id, spec.id, { asOf, mode: spec.id === "contracts" ? "open" : "" })
+        : "",
+      archive_href: spec.id === "contracts"
+        ? agencyCategoryArchiveHref(identity.canonical_id, spec.id)
+        : "",
       follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
     };
   }
@@ -753,6 +833,10 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       conformanceView,
       documentableExamNumbers,
       sources.vendor_rollups || null,
+      {
+        money_open: sources.money_open,
+        meetings_domain: sources.meetings_domain,
+      },
     ));
 
   const matched = categories.filter((category) => category.status === "matched").length;
@@ -892,7 +976,8 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       iteration: "v1",
     },
     follow_href: agencyConstellationFollowHref(identity.canonical_id),
-    scope_href: agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
+    scope_href: contractsCategory?.view_all_href
+      || agencyCategoryBrowseHref(identity.canonical_id, "contracts"),
     mandates_href: agencyMandatesConformancePath(identity.canonical_id),
     mandates_rules_href: agencyMandateRulesPath(identity.canonical_id),
     ...(mandatesMeetings?.status === "matched"

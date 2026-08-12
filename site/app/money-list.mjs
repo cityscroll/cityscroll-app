@@ -21,7 +21,7 @@ function currentMoneyRouteScope(){
   return CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
 }
 function moneyModeHref(modeKey, scope){
-  if (!["open", "allrfp", "award"].includes(modeKey)) return "";
+  if (!["open", "allrfp", "award", "archive"].includes(modeKey)) return "";
   const next = CrolScope.normalizeScope(scope);
   next.facets.values = { ...next.facets.values, mode: modeKey };
   const rawHash = CrolScope.routeHashFromScope(next, { surface: "money" });
@@ -40,7 +40,7 @@ function setClosingWeekState(active){
   link.setAttribute("aria-pressed", String(!!active));
 }
 function syncProcurementFacetRails(){
-  const activeMode = ["open", "allrfp", "award"].includes(String($("#mode")?.value || ""))
+  const activeMode = ["open", "allrfp", "award", "archive"].includes(String($("#mode")?.value || ""))
     ? String($("#mode").value)
     : "open";
   const scope = currentMoneyRouteScope();
@@ -144,7 +144,7 @@ const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,1
 function moneyActiveFilterChip(item){
   const value = item.value;
   if(item.kind==="noticeType"){
-    const label = value==="award" ? t("nl_filter_award") : value==="allrfp" ? t("head_allrfp") : t("nl_filter_open_rfp");
+    const label = value==="award" ? t("nl_filter_award") : value==="allrfp" ? t("head_allrfp") : value==="archive" ? t("head_archive") : t("nl_filter_open_rfp");
     return `<span class="qchip">${t("nl_filter_notice_label")} <b>${label}</b></span>`;
   }
   if(item.kind==="agency") return `<span class="qchip">${t("agency_label")} <b>${enTitle(value)}</b></span>`;
@@ -171,7 +171,7 @@ function routeScopeFacetChip(){
 function renderMoneyActiveFilters(){
   const box=$("#moneyactivefilters"); if(!box) return;
   const filter={
-    noticeType:mode==="award"?"award":mode==="allrfp"?"allrfp":"solicitation",
+    noticeType:mode==="award"?"award":mode==="allrfp"?"allrfp":mode==="archive"?"archive":"solicitation",
     agency:$("#agency").value,
     keywords:$("#kw").value.trim(),
     minAmount:$("#minamt").value,
@@ -271,7 +271,11 @@ async function search(){
     return;
   }
 
-  let where = mode === "award" ? "type_of_notice_description='Award'" : "type_of_notice_description='Solicitation'";
+  let where = mode === "award"
+    ? "type_of_notice_description='Award'"
+    : mode === "archive"
+      ? "(type_of_notice_description='Award' OR type_of_notice_description='Solicitation') AND request_id IS NOT NULL"
+      : "type_of_notice_description='Solicitation'";
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
   if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
@@ -287,12 +291,16 @@ async function search(){
   let order;
   if(sort === "amount") order = "contract_amount DESC";
   else if(sort === "newest") order = "start_date DESC";
-  else order = mode === "award" ? "start_date DESC" : mode === "allrfp" ? "due_date DESC" : "due_date ASC";
+  else order = mode === "award" || mode === "archive"
+    ? "start_date DESC"
+    : mode === "allrfp" ? "due_date DESC" : "due_date ASC";
 
   updateHash();
   syncProcurementFacetRails();
   loadMethodFacet(facetWhere, kw);
-  const heads = {open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award")};
+  const heads = {
+    open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award"), archive:t("head_archive"),
+  };
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? t("head_closing_this_week") : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   busyList("#list");

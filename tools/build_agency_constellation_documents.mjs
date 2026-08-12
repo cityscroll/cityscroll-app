@@ -48,6 +48,7 @@ function loadSources() {
   const processConformancePath = join(SITE, "data/process_conformance_lookup.json");
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
+  const moneyOpenPath = join(SITE, "data/money_default_open.json");
   const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
   const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
   const ocpAwardsPath = join(SITE, "data/ocp_awards_warehouse_lookup.json");
@@ -65,6 +66,7 @@ function loadSources() {
     process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
+    money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
     ocp_awards: existsSync(ocpAwardsPath) ? readJson(ocpAwardsPath) : null,
@@ -273,13 +275,18 @@ function activeAgencySources(sources) {
 export function buildAgencyRouteIdentityReport(rawSources, publisherRows, generatedAt = "unknown") {
   const publisherIds = new Set(publisherRows.map((row) => row.canonical_id));
   const decisions = new Map(AGENCY_ROUTE_CLASSIFICATIONS.map((row) => [row.source_id, row]));
+  // Route identity is the residual over the durable intelligence/certification
+  // census. Browse snapshots drive category membership, but must not make a
+  // previously reviewed route disappear merely because its current open
+  // snapshot is empty.
+  const identitySources = { ...rawSources, money_open: null };
   const cases = activeAgencySources(rawSources)
     .filter((row) => !publisherIds.has(row.source_id))
     // The residual is defined over public constellation candidates, not every
     // tentative agency root in the wider intelligence artifact. Explicitly
     // reviewed cases stay in the census even after their resolver collapses.
     .filter((row) => decisions.has(row.source_id)
-      || (buildAgencyConstellationView(row.source_id, rawSources)?.summary?.matched_categories || 0) > 0)
+      || (buildAgencyConstellationView(row.source_id, identitySources)?.summary?.matched_categories || 0) > 0)
     .map((row) => {
       const decision = decisions.get(row.source_id);
       const identity = agencySourceIdentity(row.source_id, row.names[0], publisherRows);
@@ -334,6 +341,9 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.certification?.generated_at,
     sources.obligations?.generated_at,
     sources.process_conformance?.generated_at,
+    sources.money_open?.generated_at,
+    sources.money_open?.open_as_of,
+    sources.meetings_domain?.retrieved_at,
     sources.ocp_awards?.materialized_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
