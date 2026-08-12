@@ -1,6 +1,8 @@
 /** Pure HTML renderer for the observed parcel biography view model. */
 
+import { officialSourceLink } from "./affordance_grammar.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
+import { PARCEL_PROCESS_SECTION_ORDER, parcelItemOfficialSource } from "./parcel_scope.mjs";
 
 function safeHelpers(helpers = {}) {
   const escape = typeof helpers.escape === "function"
@@ -36,13 +38,23 @@ function itemHTML(item, kind, h) {
     cofo: "property_xd_relation_cofo",
     ll48: "property_xd_relation_ll48",
   }[kind];
+  // Provenance is trailing ↗ only (omit-by-default source-name prose).
+  const official = parcelItemOfficialSource(item);
+  const provenance = official
+    ? ` ${officialSourceLink({
+      href: official.href,
+      label: official.label,
+      className: "parcel-biography-source",
+      escape: h.escape,
+    })}`
+    : "";
+  // Always keep a date line so undated rows stay explicit ("date not published")
+  // without reintroducing source-name organizers.
+  const dateLine = `<span class="muted parcel-biography-item-meta">${h.escape(biographyDate(item.date, h))}</span>`;
   const conflicts = (item.conflicts || []).map((conflict) => `<span class="note parcel-biography-conflict">${h.escape(conflict.note || "Conflicting source values retained")}: ${conflict.values.map((value) => `${h.escape(value.source)} = ${h.escape(value.value)}`).join(" · ")}</span>`).join("");
   return `<li data-parcel-biography-item="${h.escape(kind)}" data-link-confidence="strong">
-    <span class="ei-obj-main" lang="en" dir="ltr">${label}</span>
-    <span class="muted parcel-biography-item-meta">${h.t("property_xd_source_date", {
-      source: `<span lang="en" dir="ltr">${h.escape(item.source)}</span>`,
-      date: h.escape(biographyDate(item.date, h)),
-    })}</span>
+    <span class="ei-obj-main" lang="en" dir="ltr">${label}${provenance}</span>
+    ${dateLine}
     <span class="muted parcel-biography-relation">${h.t(relationKey)}</span>
     ${conflicts}
   </li>`;
@@ -76,16 +88,15 @@ export function parcelBiographySectionHTML(view, kind, helpers = {}) {
 export function observedParcelBiographyHTML(view, { href = "", ...helpers } = {}) {
   const h = safeHelpers(helpers);
   if (!view?.ok) return "";
+  const sections = PARCEL_PROCESS_SECTION_ORDER
+    .map((kind) => parcelBiographySectionHTML(view, kind, h))
+    .join("");
   return `<section class="parcel-biography" data-parcel-biography="1" data-parcel-ref="${h.escape(view.parcel_ref)}">
     <div class="chain-h">${h.t("property_xd_heading")}</div>
     <p class="parcel-biography-bbl">${h.parcelPivot(view.bbl, bblReaderLabel(view.bbl) || h.t("property_xd_bbl_label", { bbl: view.bbl }))}</p>
     <p class="note">${h.t("property_xd_deck")}</p>
     <div class="parcel-biography-domains">
-      ${parcelBiographySectionHTML(view, "property", h)}
-      ${parcelBiographySectionHTML(view, "land", h)}
-      ${parcelBiographySectionHTML(view, "ll48", h)}
-      ${parcelBiographySectionHTML(view, "tax_lien", h)}
-      ${parcelBiographySectionHTML(view, "cofo", h)}
+      ${sections}
     </div>
     <div class="factions"><a class="act" href="${h.escape(href)}">${h.t("property_xd_view_scope")}</a></div>
   </section>`;

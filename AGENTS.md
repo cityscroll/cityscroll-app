@@ -96,9 +96,13 @@ composed objects keep `civic-object-*`; both inherit the shared rules. Rebuild:
 artifact** — gitignored; never commit the regenerated pages in capability PRs.
 Production emits them through `tools/build_cloudflare_pages.mjs`. Commit only the
 lookup (`site/data/agency_constellation_lookup.json`) and the directory index
-(`site/agencies/index.html`). Parcel source labels: `parcelSectionLabel` in
-`site/composed_object_documents.mjs` (do not inline a partial ternary — `ll48`
-must not fall through to "Land projects").
+(`site/agencies/index.html`). Parcel sections are **civic-process ordered**
+(`PARCEL_PROCESS_SECTION_ORDER` in `site/parcel_scope.mjs`: property disposition
+→ land-use process → tax-lien status → related actions). Labels via
+`parcelSectionLabel` in `site/composed_object_documents.mjs` (do not inline a
+partial ternary — `ll48` must not fall through to "Land-use process"). Source
+names stay off section organizers; official records use trailing `↗` via
+`officialSourceLink` / `parcelItemOfficialSource` only.
 Evidence captures: `python3 tools/capture_node_page_design.py --label after`.
 
 **Reader surface (same shape as `sub_outreach.mjs` / property commercial sale-gate):**
