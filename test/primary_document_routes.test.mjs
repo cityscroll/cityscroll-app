@@ -345,6 +345,18 @@ test("notice agency facts link only to reviewed agency pages", () => {
   assert.doesNotMatch(unresolved, /href="\/agencies\/agency-without-a-profile\//);
 });
 
+test("notice edge first paint links an accepted vendor to its canonical profile", () => {
+  const html = renderEdgeNotice({
+    request_id: "20260806014",
+    short_title: "Information technology services",
+    agency_name: "Police Department",
+    vendor_name: "General Dynamics Information Technology Inc",
+    type_of_notice_description: "Award",
+  }, "20260806014");
+  assert.match(html, /<dt>Vendor<\/dt><dd[^>]*>.*href="\/vendors\/GENERAL%20DYNAMICS%20INFORMATION%20TECHNOLOGY\/"/);
+  assert.match(html, /data-link-confidence="strong"/);
+});
+
 test("missing notice response is a CityScroll object shell with internal continuation", () => {
   const html = renderEdgeNotice(null, "20991231999");
   assert.match(html, /data-edge-rendered="notice-unavailable"/);

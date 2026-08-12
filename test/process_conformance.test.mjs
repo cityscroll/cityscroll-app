@@ -9,6 +9,7 @@ import {
   OBSERVATION_STATUS,
   PROCESS_CONFORMANCE_METHOD,
   PROCESS_CONFORMANCE_SCHEMA,
+  MANDATE_CONFORMANCE_STYLE,
   agencyMandatesConformancePath,
   buildAgencyConformanceView,
   buildProcessConformanceLookup,
@@ -344,6 +345,7 @@ test("mandates conformance renders matched rows without absence placeholders", (
   const html = renderMandatesConformanceSection({
     status: "matched",
     counts: { observed: 1, expected_not_yet_observed: 1, on_track: 0 },
+    share_path: "/agencies/parks-and-recreation/#mandates-conformance",
     items: [{
       mandate_id: "dob-observed",
       duty_text: "Publish the matched report",
@@ -364,6 +366,10 @@ test("mandates conformance renders matched rows without absence placeholders", (
   assert.match(html, /Publish the matched report/);
   assert.match(html, /Evidence found/);
   assert.match(html, /1 with evidence/);
+  assert.match(html, /class="mandates-conformance-scroll"[^>]*role="region"[^>]*tabindex="0"/);
+  assert.match(html, /Scroll to view all mandates/);
+  assert.match(html, /Open all mandates/);
+  assert.match(MANDATE_CONFORMANCE_STYLE, /\.mandates-conformance-scroll\s*\{[\s\S]*block-size: 28rem/);
   assert.doesNotMatch(html, /City Record:/);
   assert.doesNotMatch(html, /Publish the unmatched report|Expected, not yet in City Record|Expected; no matching evidence in current sources/);
 });

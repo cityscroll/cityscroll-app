@@ -88,7 +88,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       : `No linked records dated on or before ${effectiveAsOf}.`)
     : (matched
       ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories.`
-      : "Public records for this agency appear here when contracts, meetings, rules, mandates, or staffing exams join to its published identity.");
+      : "Public records for this agency appear here when contracts, vendors, meetings, rules, mandates, or staffing exams join to its published identity.");
   const kicker = effectiveAsOf
     ? `Agency constellation · as of ${effectiveAsOf}`
     : "Agency constellation";
@@ -152,7 +152,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${esc(title)}${effectiveAsOf ? ` · as of ${esc(effectiveAsOf)}` : ""} · Agency constellation · CityScroll</title>
-  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, meetings, rules, mandates, and staffing exams.`)}">
+  <meta name="description" content="${esc(`Cross-category public records for ${title}: contracts, vendors, meetings, rules, mandates, and staffing exams.`)}">
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
