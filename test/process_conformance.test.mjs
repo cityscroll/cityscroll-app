@@ -312,7 +312,9 @@ test("resolveMandateObservation never emits compliance verdicts", () => {
     { asOf: "2026-08-07" },
   );
   assert.equal(notYet.status, OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED);
-  assert.match(notYet.note, /No matching City Record filing/i);
+  assert.equal(notYet.label, "Expected; no matching evidence in current sources");
+  assert.match(notYet.note, /No matching evidence in current sources/i);
+  assert.equal(observed.label, "Evidence found");
 });
 
 test("shareable path anchors mandates conformance", () => {
@@ -331,7 +333,7 @@ test("mandates conformance omits zero-observed views and absence rows", () => {
       duty_text: "Publish an annual report",
       observation: {
         status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
-        label: "Expected, not yet in City Record",
+        label: "Expected; no matching evidence in current sources",
       },
     }],
   });
@@ -347,7 +349,7 @@ test("mandates conformance renders matched rows without absence placeholders", (
       duty_text: "Publish the matched report",
       observation: {
         status: OBSERVATION_STATUS.OBSERVED,
-        label: "Observed in City Record",
+        label: "Evidence found",
         observed_record: { href: "/notices/1", label: "Matched report" },
       },
     }, {
@@ -355,12 +357,15 @@ test("mandates conformance renders matched rows without absence placeholders", (
       duty_text: "Publish the unmatched report",
       observation: {
         status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
-        label: "Expected, not yet in City Record",
+        label: "Expected; no matching evidence in current sources",
       },
     }],
   });
   assert.match(html, /Publish the matched report/);
-  assert.doesNotMatch(html, /Publish the unmatched report|Expected, not yet in City Record/);
+  assert.match(html, /Evidence found/);
+  assert.match(html, /1 with evidence/);
+  assert.doesNotMatch(html, /City Record:/);
+  assert.doesNotMatch(html, /Publish the unmatched report|Expected, not yet in City Record|Expected; no matching evidence in current sources/);
 });
 
 test("Parks conformance view labels real mandates without compliance verdicts", () => {
@@ -389,9 +394,17 @@ test("Parks conformance view labels real mandates without compliance verdicts", 
     assert.equal(item.observation.is_compliance_verdict, false);
     assert.equal(item.observation.adjudication, "not_adjudicated");
   }
-  assert.match(view.copy?.lead || view.honesty?.lead || "", /mandate|City Record/i);
+  assert.match(view.copy?.lead || view.honesty?.lead || "", /mandate|evidence|public-record/i);
   assert.match(view.share_path, /#mandates-conformance/);
   assert.doesNotMatch(JSON.stringify(view), /agency broke the law|out of compliance|missed its mandate/i);
+  for (const item of view.items) {
+    if (item.observation.status === OBSERVATION_STATUS.OBSERVED) {
+      assert.equal(item.observation.label, "Evidence found");
+    }
+    if (item.observation.status === OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED) {
+      assert.equal(item.observation.label, "Expected; no matching evidence in current sources");
+    }
+  }
 });
 
 test("committed process_conformance lookup covers Parks", () => {
@@ -427,7 +440,8 @@ test("constellation surfaces only public Sanitation CWZ rule edges after attachm
   // Densified public CWZ observation mounts expected-vs-observed + rules bridge.
   assert.match(html, /id="mandates-conformance"/);
   assert.match(html, /id="mandates-rules"/);
-  assert.match(html, /Mandates · expected vs observed|Expected vs observed/i);
+  assert.match(html, /Mandates · expected vs evidence|expected vs evidence/i);
+  assert.match(html, /Evidence found/);
   // Honest rules title: "Rules activity" only when observed_links exist (graph-01).
   if ((view.mandates_rules?.counts?.observed_links || 0) === 0) {
     assert.match(html, /Rulemaking mandates/);
@@ -436,12 +450,14 @@ test("constellation surfaces only public Sanitation CWZ rule edges after attachm
     assert.match(html, /Rulemaking mandates · Rules activity/);
   }
   const rulesBridge = html.match(/<section id="mandates-rules"[\s\S]*?<\/section>/)?.[0] || "";
-  // Public CWZ edge renders a City Record notice link from the observed chip.
+  // Public CWZ edge renders a notice link from the evidence chip (title + ↗, no City Record button).
   assert.match(rulesBridge, /data-mandate-id="64116-001"[^>]*data-observation-status="observed"/);
-  assert.match(rulesBridge, /City Record:.*Commercial Waste Zones|#notice\/20260605008|\/notices\/20260605008/);
-  // Evidence-only rows may remain listed without City Record edge links.
+  assert.match(rulesBridge, /Commercial Waste Zones|#notice\/20260605008|\/notices\/20260605008/);
+  assert.doesNotMatch(rulesBridge, /City Record:/);
+  // Evidence-only rows may remain listed without public edge links.
   assert.doesNotMatch(html, /not a compliance|not a verdict|ignored the law|out of compliance|missed its mandate/i);
   assert.doesNotMatch(html, /awaiting detector|This pass matches|corpus checked|This pass covers/i);
+  assert.doesNotMatch(html, /Observed in City Record|Expected, not yet in City Record/);
 });
 
 test("buildProcessConformanceLookup is pure over fixture inputs", () => {

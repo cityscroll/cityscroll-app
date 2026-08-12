@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.agency_constellation_capture.v1",
+  "feature": "ds-04-mandate-evidence-relative",
+  "agency": "sanitation",
+  "anchor": "#mandates-conformance",
+  "viewports": [
+    390,
+    1440
+  ],
+  "before_source": "docs/screenshots/mandate-graph-densify/sanitation-conformance-section-*.png",
+  "checks": {
+    "after_chip": "Evidence found",
+    "after_count_line": "1 with evidence",
+    "after_heading": "Mandates \u00b7 expected vs evidence",
+    "after_no_observed_in_city_record": true,
+    "after_no_city_record_button_label": true
+  }
+}

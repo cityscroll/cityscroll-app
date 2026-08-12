@@ -101,7 +101,7 @@ test("filing receipt surfaces when process-conformance observes a report filing"
         mandate_id: "demo-report-1",
         observation: {
           status: OBSERVATION_STATUS.OBSERVED,
-          label: "Observed in City Record",
+          label: "Evidence found",
           observed_record: {
             request_id: "20251215001",
             label: "Annual Building Safety Report for Calendar Year 2025",
@@ -115,7 +115,7 @@ test("filing receipt surfaces when process-conformance observes a report filing"
         mandate_id: "demo-report-2",
         observation: {
           status: OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED,
-          label: "Expected, not yet in City Record",
+          label: "Expected; no matching evidence in current sources",
           observed_record: null,
         },
       },

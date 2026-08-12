@@ -139,7 +139,7 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
       // Only surface standable observed status on the public card — no "expected not yet" chips.
       observation_status: receipt ? OBSERVATION_STATUS.OBSERVED : null,
       observation_label: receipt
-        ? (OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED] || "Observed in City Record")
+        ? (OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED] || "Evidence found")
         : null,
       filing_receipt: receipt,
       // Alias kept for callers that already read observed_record on mandate bridges.
