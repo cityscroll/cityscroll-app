@@ -965,13 +965,14 @@ export function renderBrowseLanding(landing) {
       <div class="browse-source-actions">${childLinks}</div>
     </article>`;
   }).join("");
+  const cardGrid = cards ? `<div class="browse-source-grid">${cards}</div>` : "";
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
       <p>Pick a civic object. Follow the edges between people, places, agencies, money, and decisions.</p>
     </header>
-    <div class="browse-source-grid">${cards}</div>
+    ${cardGrid}
   </div>`;
 }
 

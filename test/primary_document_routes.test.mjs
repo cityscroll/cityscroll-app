@@ -248,6 +248,13 @@ test("Browse landing hides objects without a positive primary count", () => {
   assert.equal(landing.cards.length, 6, "the six civic-object groups remain in the model");
 });
 
+test("Browse landing omits the empty card grid when no object is ready", () => {
+  const html = renderBrowseLanding(buildBrowseLanding({}));
+  assert.match(html, /data-build-rendered="browse-landing"/);
+  assert.doesNotMatch(html, /browse-source-grid/);
+  assert.doesNotMatch(html, /<article class="browse-source-card"/);
+});
+
 test("public identity copy describes a linked multi-source record", () => {
   const index = read("../site/index.html");
   const about = read("../site/about.html");
