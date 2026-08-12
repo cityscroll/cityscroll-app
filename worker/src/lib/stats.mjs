@@ -7,7 +7,7 @@
 
 export const STATS_TTL = 40 * 24 * 3600; // 40 days — enough for a 30-day window with slack
 
-// UTC YYYY-MM-DD, matching the `nl:<day>` / `sendcount:<day>` convention elsewhere.
+// UTC YYYY-MM-DD, matching the `m:nl:<day>` / `sendcount:<day>` convention elsewhere.
 export function dayStr(d) {
   return d.toISOString().slice(0, 10);
 }

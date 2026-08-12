@@ -8,13 +8,34 @@
 // contract (empty text / bad lens / no key / non-ok response / missing tool_use) is unchanged.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseLensFilter } from "../src/nl.mjs";
+import { handleNl, parseLensFilter } from "../src/nl.mjs";
 import { filterConfidence } from "../src/lib/filter.mjs";
 
 function mockAnthropic(toolInput) {
   return async () => ({
     ok: true,
     json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input: toolInput }] }),
+  });
+}
+
+function kvStore(seed = {}) {
+  const map = new Map(Object.entries(seed));
+  return {
+    async get(k) { return map.has(k) ? map.get(k) : null; },
+    async put(k, v) { map.set(k, String(v)); },
+    _map: map,
+  };
+}
+
+function nlRequest(ip = "203.0.113.10") {
+  return new Request("https://api.cityscroll.org/nl", {
+    method: "POST",
+    headers: {
+      origin: "https://cityscroll.org",
+      "CF-Connecting-IP": ip,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ lens: "money", text: "education contracts over 200k" }),
   });
 }
 
@@ -101,6 +122,55 @@ test("parseLensFilter: response with no tool_use block -> degraded 'no-tool' (ne
   try {
     const res = await parseLensFilter({ ANTHROPIC_API_KEY: "test-key" }, "money", "anything");
     assert.deepEqual(res, { degraded: true, reason: "no-tool" });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleNl: per-IP cap returns the existing graceful degradation", async () => {
+  const originalFetch = globalThis.fetch;
+  let modelCalls = 0;
+  globalThis.fetch = async () => {
+    modelCalls++;
+    return mockAnthropic({
+      keywords: ["education"], minAmount: 200000, months: null, agency: null,
+      maxAmount: null, category: null, noticeType: null, excludeSpecial: false,
+    })();
+  };
+  try {
+    const env = {
+      ANTHROPIC_API_KEY: "test-key",
+      NL_METER: kvStore(),
+      NL_MAX_PER_IP_DAY: "1",
+    };
+    const first = await handleNl(nlRequest(), env);
+    const second = await handleNl(nlRequest(), env);
+    assert.equal(first.status, 200);
+    assert.equal((await first.json()).degraded, undefined);
+    assert.deepEqual(await second.json(), { degraded: true, reason: "ip-cap" });
+    assert.equal(modelCalls, 1);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleNl: meter failure fails closed without a model call", async () => {
+  const originalFetch = globalThis.fetch;
+  let modelCalls = 0;
+  globalThis.fetch = async () => { modelCalls++; throw new Error("model must not run"); };
+  const brokenMeter = {
+    async get() { throw new Error("meter unavailable"); },
+    async put() { throw new Error("meter unavailable"); },
+  };
+  try {
+    const res = await handleNl(nlRequest(), {
+      ANTHROPIC_API_KEY: "test-key",
+      NL_METER: brokenMeter,
+      NL_MAX_PER_IP_DAY: "1",
+    });
+    assert.equal(res.status, 200);
+    assert.deepEqual(await res.json(), { degraded: true, reason: "ip-cap" });
+    assert.equal(modelCalls, 0);
   } finally {
     globalThis.fetch = originalFetch;
   }
