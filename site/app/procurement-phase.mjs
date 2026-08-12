@@ -427,6 +427,7 @@ function lifecycleDollarsHTML(data, notice){
       </dl>
       ${vendorNote}
       ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
+      ${globalThis.__lcPaymentRowsHTML?.(pay?.detail)||""}
       ${lagNote}
       ${ceilingNote}
       <div class="pnote">${officialSourceLink({ href: contractLink, label: t("lifecycle_source_checkbook"), escape: escUiHtml })}</div>
@@ -599,7 +600,8 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
     bindProcurementPhaseUI(el);
   }
   if(dollarsEl && /^(Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"")){
-    dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
+    await import("../payment_rows_ui.mjs").catch(()=>{});
+    if(document.contains(dollarsEl)) dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
   }
   // Sub-outreach rides the same precomputed lifecycle; paint only allowlisted facts.
   if(subEl){
