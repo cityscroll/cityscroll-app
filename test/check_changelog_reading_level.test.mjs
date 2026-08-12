@@ -159,7 +159,7 @@ test(
       baseHtml: BASE_HTML,
       i18nSource: Buffer.from(""),
       number: 74,
-      url: "https://github.com/cityscroll/crol-list/pull/74",
+      url: "https://github.com/cityscroll/cityscroll-app/pull/74",
       mergedAt: "2026-07-17",
       body: bodyWithMarker(PR_74_ORIGINAL),
       labels: [MAJOR_LABEL],
@@ -187,7 +187,7 @@ test(
       baseHtml: BASE_HTML,
       i18nSource: Buffer.from(""),
       number: 72,
-      url: "https://github.com/cityscroll/crol-list/pull/72",
+      url: "https://github.com/cityscroll/cityscroll-app/pull/72",
       mergedAt: "2026-07-17",
       body: bodyWithMarker(PR_72_ORIGINAL),
       labels: [MAJOR_LABEL],
@@ -212,7 +212,7 @@ test(
         baseHtml: BASE_HTML,
         i18nSource: Buffer.from(""),
         number,
-        url: `https://github.com/cityscroll/crol-list/pull/${number}`,
+        url: `https://github.com/cityscroll/cityscroll-app/pull/${number}`,
         mergedAt: "2026-07-17",
         body: bodyWithMarker(text),
         labels: [MAJOR_LABEL],
@@ -254,7 +254,7 @@ test(
           "--base-html", baseHtmlPath,
           "--i18n", i18nPath,
           "--number", "74",
-          "--url", "https://github.com/cityscroll/crol-list/pull/74",
+          "--url", "https://github.com/cityscroll/cityscroll-app/pull/74",
           "--merged-at", "2026-07-17",
           "--body-file", bodyPath,
           "--labels", MAJOR_LABEL,
@@ -290,7 +290,7 @@ test(
         execFileSync(
           process.execPath,
           [SCRIPT, "--base-data", baseDataPath, "--base-html", baseHtmlPath, "--i18n", i18nPath,
-            "--number", "74", "--url", "https://github.com/cityscroll/crol-list/pull/74",
+            "--number", "74", "--url", "https://github.com/cityscroll/cityscroll-app/pull/74",
             "--merged-at", "2026-07-17", "--body-file", regressBody, "--labels", MAJOR_LABEL,
             "--baseline", baselinePath],
           { encoding: "utf8", stdio: "pipe" }
@@ -307,7 +307,7 @@ test(
       const out = execFileSync(
         process.execPath,
         [SCRIPT, "--base-data", baseDataPath, "--base-html", baseHtmlPath, "--i18n", i18nPath,
-          "--number", "74", "--url", "https://github.com/cityscroll/crol-list/pull/74",
+          "--number", "74", "--url", "https://github.com/cityscroll/cityscroll-app/pull/74",
           "--merged-at", "2026-07-17", "--body-file", passBody, "--labels", MAJOR_LABEL,
           "--baseline", baselinePath],
         { encoding: "utf8" }

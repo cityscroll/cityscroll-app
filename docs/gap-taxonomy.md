@@ -19,14 +19,14 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 
 | Gap | Class | Disposition | Public home or “would appear in” | Closure receipt |
 |---|---|---|---|---|
-| notice detail · attachment metadata | a | landed | City Record Online file attachments | [receipt](https://github.com/cityscroll/crol-list/pull/411) |
-| contract lifecycle · pending stage | a | landed | Checkbook NYC Contracts | [receipt](https://github.com/cityscroll/crol-list/pull/141) |
-| contract lifecycle · registered stage | a | landed | Checkbook NYC Contracts | [receipt](https://github.com/cityscroll/crol-list/pull/141) |
-| contract lifecycle · payment stage | a | landed | Checkbook NYC Spending | [receipt](https://github.com/cityscroll/crol-list/pull/141) |
+| notice detail · attachment metadata | a | landed | City Record Online file attachments | [receipt](https://github.com/cityscroll/cityscroll-app/pull/411) |
+| contract lifecycle · pending stage | a | landed | Checkbook NYC Contracts | [receipt](https://github.com/cityscroll/cityscroll-app/pull/141) |
+| contract lifecycle · registered stage | a | landed | Checkbook NYC Contracts | [receipt](https://github.com/cityscroll/cityscroll-app/pull/141) |
+| contract lifecycle · payment stage | a | landed | Checkbook NYC Spending | [receipt](https://github.com/cityscroll/cityscroll-app/pull/141) |
 | contract lifecycle · provenance when PIN missing | b | publication_blocked | Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID | — |
 | contract lifecycle · tender / package documents **CLASS CHANGE** | b | measured_stop | City Record Online file attachments (GetFile on a856-cityrecord.nyc.gov) if the notice published package documents | — |
 | OCDS tender/numberOfTenderers · contestability package | a | measured_stop | Bid Tabulations (Historical) | — |
-| award detail enrichment beyond City Record | a | landed | Recent Contract Awards (OCP) | [receipt](https://github.com/cityscroll/crol-list/pull/176) |
+| award detail enrichment beyond City Record | a | landed | Recent Contract Awards (OCP) | [receipt](https://github.com/cityscroll/cityscroll-app/pull/176) |
 | OCDS planning/budget and planning/rationale | b | measured_stop | the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data | — |
 | award notice · prime-win sub-outreach (data wishlist only) | b | publication_blocked | agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id — https://comptroller.nyc.gov/reports/nyc-contracts/ | — |
 | subsidy lifecycle · per-stage empty slot | a | open | NYCIDA/Build NYC public documents | — |
@@ -34,19 +34,19 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | subsidy lifecycle · no project join | a | open | NYCIDA/Build NYC public documents | — |
 | subsidy lifecycle · company / place / money fields | a | open | NYCIDA/Build NYC project documents + City Record hearing bodies | — |
 | subsidy lifecycle · company / place / money when only City Record hearing is joined | a | open | NYCIDA/Build NYC public documents | — |
-| Council meeting outcomes · no event join | a | landed | NYC Council Legistar API | [receipt](https://github.com/cityscroll/crol-list/pull/191) |
+| Council meeting outcomes · no event join | a | landed | NYC Council Legistar API | [receipt](https://github.com/cityscroll/cityscroll-app/pull/191) |
 | Council meeting outcomes · matter without roll-call detail | a | timing | NYC Council Legistar votes | — |
 | Council meeting outcomes · event without agenda matters | a | timing | NYC Council Legistar agenda items | — |
 | non-Council hearings · votes | b | publication_blocked | borough president websites and community board minutes / vote pages if released as a citywide machine-readable open data feed (not only member rosters) | — |
-| Agency Rules notice detail · lifecycle event slots without an NYC Rules join | a | landed | NYC Rules RSS feed | [receipt](https://github.com/cityscroll/crol-list/pull/252) |
+| Agency Rules notice detail · lifecycle event slots without an NYC Rules join | a | landed | NYC Rules RSS feed | [receipt](https://github.com/cityscroll/cityscroll-app/pull/252) |
 | Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule | b | publication_blocked | the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date | — |
-| staffing exam cards · post-cycle outcomes | a | landed | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts | [receipt](https://github.com/cityscroll/crol-list/pull/175) |
+| staffing exam cards · post-cycle outcomes | a | landed | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts | [receipt](https://github.com/cityscroll/cityscroll-app/pull/175) |
 | per-applicant exam results | b | publication_blocked | DCAS candidate portals only if individual results were released as public open data (they are not) | — |
-| staffing exam card · fee or salary null **CLASS CHANGE** | a | landed | DCAS open-competitive exam schedule and Notices of Examination | [receipt](https://github.com/cityscroll/crol-list/pull/366) |
+| staffing exam card · fee or salary null **CLASS CHANGE** | a | landed | DCAS open-competitive exam schedule and Notices of Examination | [receipt](https://github.com/cityscroll/cityscroll-app/pull/366) |
 | agency awards empty state · verified absent | b | publication_blocked | NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset | — |
 | notice external-award empty after ABO check | a | measured_stop | NYS Authorities Budget Office procurement datasets | — |
 | Property commercial watch · non-fleet surplus goods | b | publication_blocked | a DCAS-hosted item-level feed or an authorized GovDeals client API/export if DCAS and GovDeals release one | — |
-| land / ZAP · final decision documents beyond status | a | landed | Zoning Application Portal projects | [receipt](https://github.com/cityscroll/crol-list/pull/188) |
+| land / ZAP · final decision documents beyond status | a | landed | Zoning Application Portal projects | [receipt](https://github.com/cityscroll/cityscroll-app/pull/188) |
 | Money map · place-of-performance coverage | b | publication_blocked | a contract-keyed public place-of-performance or service-area field released by the procuring agency or PASSPort | — |
 | Meetings map · unresolved matter or venue geography | a | measured_stop | City Record Online | — |
 | Property · parcel-linked notice context | a | open | City Record Online | — |
