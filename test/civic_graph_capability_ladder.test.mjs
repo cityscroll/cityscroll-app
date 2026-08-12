@@ -59,7 +59,6 @@ const OPEN_LADDER_EMIT_ORDER = [
   "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
   "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
   "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
-  "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
   "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
 ];
 
@@ -67,7 +66,6 @@ const OPEN_LADDER_RANKED = [
   "crol-list/mf-ontology-enrichment-cg-v1-payment-row-surface",
   "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
   "crol-list/mf-ontology-enrichment-cg-v2-rollcall-event-densify",
-  "crol-list/mf-ontology-enrichment-cg-v2-official-walk-surface",
   "crol-list/mf-ontology-enrichment-cg-v3-mandate-contract-backlinks",
 ];
 
@@ -94,6 +92,7 @@ function fullFailLadder(base) {
     cfb_precision: 1.0,
     registry_has_lobby_link_type: false,
     registry_has_cfb_link_type: false,
+    official_walk_surface_shipped: false,
   };
   ladder.metrics.votes = {
     ...ladder.metrics.votes,
