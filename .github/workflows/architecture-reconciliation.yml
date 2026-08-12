@@ -1,0 +1,36 @@
+name: Architecture reconciliation
+
+on:
+  pull_request:
+    paths:
+      - "ARCHITECTURE.md"
+      - "architecture/**"
+      - "docs/adr/**"
+      - "docs/architecture.md"
+      - "entity_resolution/**"
+      - "ontology/**"
+      - "warehouse/**"
+      - "worker/**"
+      - "tools/build_architecture_facts.mjs"
+      - "tools/reconcile_architecture.mjs"
+      - ".github/workflows/architecture-reconciliation.yml"
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  reconcile:
+    name: Reconcile architecture evidence
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check architecture reconciliation
+        run: node tools/reconcile_architecture.mjs --check --no-write
