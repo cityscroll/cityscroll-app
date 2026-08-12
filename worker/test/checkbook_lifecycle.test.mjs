@@ -32,6 +32,8 @@ import {
   detectAmendments,
   pinMatchStrategy,
   checkbookSuccess,
+  projectPaymentRows,
+  PAYMENT_ROWS_DETAIL_CAP,
 } from "../src/lib/checkbook_lifecycle.mjs";
 
 // ---------------------------------------------------------------------------
@@ -270,6 +272,13 @@ test("FULL lifecycle: solicitation → pending → registered → payment with s
   assert.equal(payment.detail.total_spent, 1500000);
   assert.equal(payment.detail.latest_payment_date, "2025-08-20");
   assert.equal(payment.detail.payment_state, "paid");
+  assert.ok(Array.isArray(payment.detail.payment_rows), "payment_rows stamped for Follow-the-Dollars");
+  assert.equal(payment.detail.payment_rows.length, 2);
+  assert.equal(payment.detail.payment_rows_shown, 2);
+  assert.equal(payment.detail.payment_rows_capped, false);
+  assert.equal(payment.detail.payment_rows[0].date, "2025-08-20");
+  assert.ok(payment.detail.payment_rows[0].amount != null);
+  assert.ok(payment.detail.payment_rows[0].payee);
 
   // Source timestamps propagate
   assert.equal(pending.source_timestamp, "2025-03-15");
@@ -1270,3 +1279,20 @@ test("OCP side-car: reach failure marks unknown (not unmatched gap)", withMocked
   const body = await res.json();
   assert.equal(body.ocp_award.status, "unknown");
 }));
+
+test("projectPaymentRows: newest-first, capped, preserves source-null", () => {
+  const rows = projectPaymentRows([
+    { id: "A", vendor: "ACME", amount: 100, date: "2025-01-01", year: "2025", contractId: "CT1" },
+    { id: "B", vendor: "ACME", amount: 200, date: "2025-06-01", year: "2025", contractId: "CT1" },
+    { id: "C", vendor: null, amount: 50, date: "2025-03-01", year: "2025", contractId: "CT1" },
+  ], { limit: 2 });
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].document_id, "B");
+  assert.equal(rows[0].amount, 200);
+  assert.equal(rows[1].document_id, "C");
+  assert.equal(rows[1].payee, null);
+  assert.equal(projectPaymentRows([], { limit: 5 }).length, 0);
+  assert.equal(projectPaymentRows(null).length, 0);
+  assert.ok(PAYMENT_ROWS_DETAIL_CAP >= 1);
+});
+

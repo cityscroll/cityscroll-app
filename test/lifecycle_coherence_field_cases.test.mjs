@@ -17,7 +17,14 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { assembleLifecycle } from "../worker/src/lib/checkbook_lifecycle.mjs";
+import {
+  lifecyclePaymentRowsHTML,
+  installPaymentRowsBridge,
+} from "../site/payment_rows_ui.mjs";
 import { officialSourceLink } from "../site/affordance_grammar.mjs";
+
+// SPA bridge used by extracted lifecycleDollarsHTML.
+installPaymentRowsBridge();
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -93,7 +100,7 @@ const sandbox = new Function(
   extractFn("cleanText") +
   extractFn("vendorStem") +
   extractFn("vendorNamesMatch") +
-  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecycleCommittedUnderrun, lifecyclePaymentSummaryHTML, isContractLifecycleEligible };"
+  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, fdate, cleanText, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecycleCommittedUnderrun, lifecyclePaymentSummaryHTML, isContractLifecycleEligible };"
 );
 
 const {
@@ -101,6 +108,8 @@ const {
   lifecycleDollarsHTML,
   money,
   lifecycleMoney,
+  fdate,
+  cleanText,
   vendorNamesMatch,
   checkbookSearchUrl,
   lifecyclePaymentState,
@@ -109,6 +118,12 @@ const {
   lifecyclePaymentSummaryHTML,
   isContractLifecycleEligible,
 } = sandbox(t, tn, windowStub, officialSourceLink);
+
+// Wire payment-row island deps used by lifecycleDollarsHTML via global bridge.
+globalThis.fdate = fdate;
+globalThis.lifecycleMoney = lifecycleMoney;
+globalThis.cleanText = cleanText;
+installPaymentRowsBridge();
 
 // Live-shaped fixture: HNTB award #notice/20260623008 (registered matched, payment was unknown)
 const HNTB_NOTICE = {
@@ -610,10 +625,29 @@ const URI_LIFECYCLE = {
         latest_payment_amount: 82821.3,
         fiscal_year: "2025",
         payment_state: "paid",
+        payment_rows: [
+          { document_id: "DOC-7", payee: "URBAN RESOURCE INSTITUTE", amount: 82821.3, date: "2025-01-15", fiscal_year: "2025", contract_id: "CT100220248801490" },
+          { document_id: "DOC-6", payee: "URBAN RESOURCE INSTITUTE", amount: 50000, date: "2024-11-01", fiscal_year: "2025", contract_id: "CT100220248801490" },
+        ],
+        payment_rows_shown: 2,
+        payment_rows_capped: true,
       },
     },
   ],
 };
+
+test("URI field case: Follow-the-Dollars lists retained payment rows (date, amount, payee)", () => {
+  const dollars = lifecycleDollarsHTML(URI_LIFECYCLE, URI_NOTICE);
+  assert.match(dollars, /data-payment-rows="1"/);
+  assert.match(dollars, /Recent payments/i);
+  assert.match(dollars, /URBAN RESOURCE INSTITUTE/);
+  assert.match(dollars, /\$83K/);
+  assert.match(dollars, /DOC-7/);
+  assert.match(dollars, /Showing 2 of 7 payments/i);
+  // No rows when payment detail omits payment_rows
+  assert.equal(lifecyclePaymentRowsHTML({ total_payments: 2, payment_state: "paid" }), "");
+  assert.equal(lifecyclePaymentRowsHTML(null), "");
+});
 
 test("URI field case: single-row 57% of ceiling is complete — no multi-contract warning, ceiling note shown", () => {
   assert.equal(
