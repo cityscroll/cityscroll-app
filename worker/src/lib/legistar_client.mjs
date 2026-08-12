@@ -91,6 +91,23 @@ export async function fetchLegistarBodies({ token, fetchImpl = fetch } = {}) {
 }
 
 /**
+ * Fetch the publisher's complete office-record history for one Legistar person.
+ * OfficeRecordPersonId and OfficeRecordBodyId are the only identity keys used
+ * by committee graph materialization; BodyName is descriptive only.
+ */
+export async function fetchLegistarPersonOfficeRecords({
+  personId,
+  token,
+  fetchImpl = fetch,
+} = {}) {
+  if (!token || !personId) return [];
+  return fetchJson(
+    fetchImpl,
+    authedUrl(`persons/${encodeURIComponent(personId)}/officerecords`, token),
+  );
+}
+
+/**
  * Fetch enacted Introductions in a bounded date range. The API's Matter rows
  * include MatterText1..MatterText5 and report URLs; callers can fetch the
  * nested matter attachments separately when the text fields are empty.

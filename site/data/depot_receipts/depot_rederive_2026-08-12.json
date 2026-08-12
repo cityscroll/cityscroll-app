@@ -801,6 +801,17 @@
       ]
     },
     {
+      "id": "nyc-council-legistar-x-nyc-council-members-via-council_member_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "council_member_id"
+      ],
+      "gaps_would_close": [
+        "meeting-matters-absent"
+      ]
+    },
+    {
       "id": "ocp-recent-contract-awards-x-passport-public-rfx-via-PIN",
       "worth_materializing": "maybe",
       "score": 1,
@@ -1069,5 +1080,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "6190b7184263cac4fa1c40d44139a3c08ab4a02e459f9dc342b5b58de775619a"
+  "registry_sha256": "a808c7612db4b92bee550d4a8f8aa742e7c2b484d64427d68676923af42e831e"
 }

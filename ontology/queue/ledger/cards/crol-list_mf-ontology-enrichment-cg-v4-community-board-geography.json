@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger_card.v0",
+  "id": "crol-list/mf-ontology-enrichment-cg-v4-community-board-geography",
+  "status": "fixed",
+  "dimension": "ontology-enrichment",
+  "title": "Promote community-board nodes and the many-to-many district overlay",
+  "verify": "node --test test/community_board_geography.test.mjs worker/test/public_relationship_graph.test.mjs && node tools/build_community_board_geography.mjs --check",
+  "fixed_at": "2026-08-12T00:00:00.000Z",
+  "fixed_note": "59 registry-backed community-board nodes, exact board-to-community-district covers edges, and a polygon-derived 237-pair community-district-to-Council-district intersects overlay landed. Boundary vintage 2026-05-26 is stamped on every derived edge. Receipt: site/data/community_board_geography/verification_receipts/overlay_2026-08-12.json.",
+  "demo_win": "A board's public graph path distinguishes the governance body from its district and preserves every measured Council-district overlap instead of collapsing geography to a centroid."
+}
