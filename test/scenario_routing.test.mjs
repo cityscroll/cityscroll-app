@@ -18,7 +18,7 @@ test("homepage scenario grid is gone; civic objects stay while Following is prom
     assert.match(html, new RegExp(`data-tab="${group}"`));
   }
   assert.match(html, /Civic objects/);
-  assert.match(html, /browse-object-tab-placeholder">Places/);
+  assert.match(html, /href="\/browse\/places\/"[^>]*data-tab="places">Places/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
 });

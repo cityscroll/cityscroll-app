@@ -7,6 +7,7 @@ import {
 } from "./browse_view.mjs";
 import { buildNowSurface } from "./now_surface.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
+import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -181,7 +182,23 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
     primaryContext: "browse",
   });
   html = activateTab(html, config.tab);
+  html = html.replace(`href="${config.route}"`, `href="${config.route}" aria-current="page"`);
   html = addRouteStyles(html, ["browse.css"]);
   if (facet === "property") html = addRouteStyles(html, ["property.css"]);
   return replaceElementContent(html, config.container, renderBrowseView(view));
+}
+
+export function buildBrowseConceptDocument(shell, kind, sources) {
+  const config = BROWSE_CONCEPTS[kind];
+  if (!config) throw new Error(`Unknown Browse concept: ${kind}`);
+  let html = pageMetadata(shell, {
+    title: `${config.title} · Browse · CityScroll`,
+    description: config.description,
+    canonical: canonicalRoute(config.route),
+    primaryHref: "/browse/",
+    primaryContext: "browse",
+  });
+  html = activateTab(html, config.tab);
+  html = addRouteStyles(html, ["browse.css"]);
+  return replaceElementContent(html, "browseview", renderBrowseConceptLanding(buildBrowseConceptLanding(kind, sources)));
 }
