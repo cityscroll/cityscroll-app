@@ -1,0 +1,2324 @@
+{
+  "schema": "cityscroll.architecture.facts.v1",
+  "generator": {
+    "name": "tools/build_architecture_facts.mjs",
+    "version": "1.0.0"
+  },
+  "generated_at": "2026-08-12T22:07:22Z",
+  "commit": "79c2c19a9a52939e62c190ca0f5b4a1968b67fbd",
+  "source_paths": [
+    "entity_resolution",
+    "ontology/live_inventory.mjs",
+    "ontology/registry.v0.json",
+    "site/mandate_contracts_bridge.mjs",
+    "site/mandate_land_use_bridge.mjs",
+    "site/mandate_meetings_bridge.mjs",
+    "site/official_influence.mjs",
+    "site/person_hub.mjs",
+    "site/process_conformance.mjs",
+    "test/agency_successors.test.mjs",
+    "test/authority_key_registry.test.mjs",
+    "test/boards_wall.test.mjs",
+    "test/cross_domain_object_links.test.mjs",
+    "test/cross_spine_edge_policy.test.mjs",
+    "test/entity_resolution_alias_proposals.test.mjs",
+    "test/entity_resolution_assertion_evidence.test.mjs",
+    "test/entity_resolution_authority.test.mjs",
+    "test/entity_resolution_blocker.test.mjs",
+    "test/entity_resolution_clerical_audit.test.mjs",
+    "test/entity_resolution_entity_components.test.mjs",
+    "test/entity_resolution_labeling_function_accounting.test.mjs",
+    "test/entity_resolution_scorer_bakeoff.test.mjs",
+    "test/entity_resolution_shadow_monitor.test.mjs",
+    "test/exam_certification_constellation.test.mjs",
+    "test/franchise_concession_spine.test.mjs",
+    "test/legistar_client.test.mjs",
+    "test/official_entity_family.test.mjs",
+    "test/ontology_registry.test.mjs",
+    "test/person_hub.test.mjs",
+    "test/person_leader_referents.test.mjs",
+    "test/process_conformance.test.mjs",
+    "test/procurement_spine_ei_densify.test.mjs",
+    "test/property_cross_domain.test.mjs",
+    "test/published_walls_candidate_generation.test.mjs",
+    "test/review_action_export.test.mjs",
+    "test/source_coverage_honesty.test.mjs",
+    "test/topic_normalization.test.mjs",
+    "test/vendor_footprint.test.mjs",
+    "test/warehouse_entity_intelligence_index.test.mjs",
+    "test/warehouse_er_batch.test.mjs",
+    "tools/build_boards_wall_receipt.mjs",
+    "tools/build_clerical_label_batch.mjs",
+    "tools/build_entity_intelligence.mjs",
+    "tools/build_exam_certification_constellation.mjs",
+    "tools/build_procurement_crosswalk.mjs",
+    "tools/build_property_cross_domain.mjs",
+    "tools/build_property_ll48_lookup.mjs",
+    "tools/build_published_wall_candidates.mjs",
+    "tools/build_rules_meetings_domain_observations.mjs",
+    "tools/build_title_code_family_coverage.mjs",
+    "tools/check_er_source_coverage.mjs",
+    "tools/cross_spine_eval.mjs",
+    "tools/export_entity_audit_sample.mjs",
+    "tools/export_er_clerical_audit.mjs",
+    "tools/export_review_actions_to_gold.mjs",
+    "tools/lib/entity_intelligence_build.mjs",
+    "tools/lib/property_disposition_cohort.mjs",
+    "tools/measure_passport_ei_densify.mjs",
+    "tools/run_er_shadow_monitor.mjs",
+    "warehouse/datasets.v0.json",
+    "warehouse/lib/catalog.mjs",
+    "warehouse/lib/query.mjs",
+    "warehouse/scripts/convert_parquet.py",
+    "warehouse/scripts/ingest.py",
+    "warehouse/scripts/register_duckdb.py",
+    "worker/migrations",
+    "worker/src/admin.mjs",
+    "worker/src/agency.mjs",
+    "worker/src/entity_dossier.mjs",
+    "worker/src/entity_intelligence.mjs",
+    "worker/src/lib/abo_awards_join.mjs",
+    "worker/src/lib/entity_link.mjs",
+    "worker/src/lib/franchise_concession_spine.mjs",
+    "worker/src/lib/legistar_client.mjs",
+    "worker/src/lib/normalize.mjs",
+    "worker/src/lib/possibly_same.mjs",
+    "worker/src/lib/subject_registry.mjs",
+    "worker/src/lib/zoning_statistics.mjs",
+    "worker/src/public_relationship_graph.mjs",
+    "worker/src/worker.mjs",
+    "worker/test/entity_audit_sampling.test.mjs",
+    "worker/test/entity_dossier.test.mjs",
+    "worker/test/entity_intelligence.test.mjs",
+    "worker/test/entity_resolution_matcher.test.mjs",
+    "worker/test/entity_resolution_package.test.mjs",
+    "worker/test/entity_resolution_publication.test.mjs",
+    "worker/test/possibly_same_admin.test.mjs",
+    "worker/test/private_evidence_workspace.test.mjs",
+    "worker/test/public_relationship_graph.test.mjs",
+    "worker/wrangler.toml"
+  ],
+  "routes": {
+    "config": [
+      {
+        "environment": "production",
+        "pattern": "api.cityscroll.org",
+        "custom_domain": true,
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 11
+        }
+      },
+      {
+        "environment": "production",
+        "pattern": "api.crol-list.org",
+        "custom_domain": true,
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 12
+        }
+      },
+      {
+        "environment": "production",
+        "pattern": "cityscroll.org/near-you*",
+        "zone_name": "cityscroll.org",
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 13
+        }
+      },
+      {
+        "environment": "production",
+        "pattern": "cityscroll.org/following*",
+        "zone_name": "cityscroll.org",
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 14
+        }
+      },
+      {
+        "environment": "production",
+        "pattern": "cityscroll.org/prefs*",
+        "zone_name": "cityscroll.org",
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 15
+        }
+      },
+      {
+        "environment": "beta",
+        "pattern": "api-beta.cityscroll.org",
+        "custom_domain": true,
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 149
+        }
+      },
+      {
+        "environment": "beta",
+        "pattern": "api-beta.crol-list.org",
+        "custom_domain": true,
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 150
+        }
+      }
+    ],
+    "dispatch": [
+      {
+        "path": "/near-you",
+        "match": "exact",
+        "handler": "handleNearYou",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 83
+        }
+      },
+      {
+        "path": "/near-you/",
+        "match": "exact",
+        "handler": "handleNearYou",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 83
+        }
+      },
+      {
+        "path": "/following",
+        "match": "exact",
+        "handler": "handleFollowing",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 84
+        }
+      },
+      {
+        "path": "/following/",
+        "match": "exact",
+        "handler": "handleFollowing",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 84
+        }
+      },
+      {
+        "path": "/following/personal",
+        "match": "exact",
+        "handler": "handleFollowing",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 84
+        }
+      },
+      {
+        "path": "/prefs",
+        "match": "exact",
+        "handler": "handlePrefs",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 85
+        }
+      },
+      {
+        "path": "/nl",
+        "match": "exact",
+        "handler": "handleNl",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 88
+        }
+      },
+      {
+        "path": "/mcp",
+        "match": "exact",
+        "handler": "handleMcp",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 89
+        }
+      },
+      {
+        "path": "/notice",
+        "match": "exact",
+        "handler": "handleNotice",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 90
+        }
+      },
+      {
+        "path": "/checkbook",
+        "match": "exact",
+        "handler": "handleCheckbook",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 91
+        }
+      },
+      {
+        "path": "/forecast",
+        "match": "exact",
+        "handler": "handleForecast",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 92
+        }
+      },
+      {
+        "path": "/forecast/accuracy",
+        "match": "exact",
+        "handler": "handleForecastAccuracy",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 93
+        }
+      },
+      {
+        "path": "/usage",
+        "match": "exact",
+        "handler": "handleUsage",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 94
+        }
+      },
+      {
+        "path": "/subscribe",
+        "match": "exact",
+        "handler": "handleSubscribe",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 95
+        }
+      },
+      {
+        "path": "/confirm",
+        "match": "exact",
+        "handler": "handleConfirm",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 96
+        }
+      },
+      {
+        "path": "/unsubscribe",
+        "match": "exact",
+        "handler": "handleUnsubscribe",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 97
+        }
+      },
+      {
+        "path": "/session",
+        "match": "exact",
+        "handler": "handleSession",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 99
+        }
+      },
+      {
+        "path": "/session/logout",
+        "match": "exact",
+        "handler": "handleSession",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 99
+        }
+      },
+      {
+        "path": "/pins",
+        "match": "exact",
+        "handler": "handlePins",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 100
+        }
+      },
+      {
+        "path": "/feedback",
+        "match": "exact",
+        "handler": "handleFeedback",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 101
+        }
+      },
+      {
+        "path": "/feed.xml",
+        "match": "exact",
+        "handler": "handleFeed",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 102
+        }
+      },
+      {
+        "path": "/feed.json",
+        "match": "exact",
+        "handler": "handleFeed",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 102
+        }
+      },
+      {
+        "path": "/feed.ics",
+        "match": "exact",
+        "handler": "handleFeed",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 102
+        }
+      },
+      {
+        "path": "/batch",
+        "match": "exact",
+        "handler": "handleBatch",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 103
+        }
+      },
+      {
+        "path": "/agencies",
+        "match": "exact",
+        "handler": "handleAgencies",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 104
+        }
+      },
+      {
+        "path": "/entity-dossier",
+        "match": "exact",
+        "handler": "handleEntityDossier",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 108
+        }
+      },
+      {
+        "path": "/entity-relationships",
+        "match": "exact",
+        "handler": "handlePublicRelationshipGraph",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 109
+        }
+      },
+      {
+        "path": "/entity-intelligence",
+        "match": "exact",
+        "handler": "handleEntityIntelligence",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 110
+        }
+      },
+      {
+        "path": "/attachment-metadata",
+        "match": "exact",
+        "handler": "handleAttachmentMetadata",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 111
+        }
+      },
+      {
+        "path": "/attachment-metadata/receipt",
+        "match": "exact",
+        "handler": "handleAttachmentMetadata",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 111
+        }
+      },
+      {
+        "path": "/externalaward",
+        "match": "exact",
+        "handler": "handleExternalAward",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 112
+        }
+      },
+      {
+        "path": "/agency",
+        "match": "exact",
+        "handler": "handleAgency",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 113
+        }
+      },
+      {
+        "path": "/vendor-profile",
+        "match": "exact",
+        "handler": "handleVendorProfile",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 114
+        }
+      },
+      {
+        "path": "/contract-lifecycle",
+        "match": "exact",
+        "handler": "handleContractLifecycle",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 115
+        }
+      },
+      {
+        "path": "/subsidy-lifecycle",
+        "match": "exact",
+        "handler": "handleSubsidyLifecycle",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 116
+        }
+      },
+      {
+        "path": "/hearings",
+        "match": "exact",
+        "handler": "handleHearings",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 117
+        }
+      },
+      {
+        "path": "/meeting.ics",
+        "match": "exact",
+        "handler": "handleMeetingICS",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 118
+        }
+      },
+      {
+        "path": "/property-locations",
+        "match": "exact",
+        "handler": "handleProperties",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 119
+        }
+      },
+      {
+        "path": "/franchise-concessions",
+        "match": "exact",
+        "handler": "handleFranchiseConcessions",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 120
+        }
+      },
+      {
+        "path": "/meeting-outcomes",
+        "match": "exact",
+        "handler": "handleMeetingOutcomes",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 121
+        }
+      },
+      {
+        "path": "/zap-outcomes",
+        "match": "exact",
+        "handler": "handleZapOutcomes",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 122
+        }
+      },
+      {
+        "path": "/rules",
+        "match": "exact",
+        "handler": "handleRules",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 123
+        }
+      },
+      {
+        "path": "/suggestions",
+        "match": "exact",
+        "handler": "handleSuggestions",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 125
+        }
+      },
+      {
+        "path": "/stats",
+        "match": "exact",
+        "handler": "handleStats",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 128
+        }
+      },
+      {
+        "path": "/events",
+        "match": "exact",
+        "handler": "handleEvent",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 129
+        }
+      },
+      {
+        "path": "/admin/subs",
+        "match": "exact",
+        "handler": "handleAdminSubs",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 132
+        }
+      },
+      {
+        "path": "/admin/watch-log",
+        "match": "exact",
+        "handler": "handleAdminWatchLog",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 133
+        }
+      },
+      {
+        "path": "/admin/watch-log/enrich",
+        "match": "exact",
+        "handler": "handleAdminWatchLogEnrich",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 134
+        }
+      },
+      {
+        "path": "/admin/feedback",
+        "match": "exact",
+        "handler": "handleAdminFeedback",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 135
+        }
+      },
+      {
+        "path": "/admin/possibly-same",
+        "match": "exact",
+        "handler": "handleAdminPossiblySame",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 136
+        }
+      },
+      {
+        "path": "/admin/ops-contract",
+        "match": "exact",
+        "handler": "handleAdminOpsContract",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 137
+        }
+      },
+      {
+        "path": "/admin/stats",
+        "match": "exact",
+        "handler": "handleAdminStats",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 138
+        }
+      },
+      {
+        "path": "/admin/owed-backlog",
+        "match": "exact",
+        "handler": "handleAdminOwedBacklog",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 139
+        }
+      },
+      {
+        "path": "/admin/next-digest-preview",
+        "match": "exact",
+        "handler": "handleAdminNextDigestPreview",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 140
+        }
+      },
+      {
+        "path": "/admin/digest-backfill",
+        "match": "exact",
+        "handler": "handleAdminDigestBackfill",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 141
+        }
+      },
+      {
+        "path": "/admin/digest-rollup",
+        "match": "exact",
+        "handler": "handleAdminDigestRollup",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 142
+        }
+      },
+      {
+        "path": "/admin/digest-shadow",
+        "match": "exact",
+        "handler": "handleAdminDigestShadow",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 143
+        }
+      },
+      {
+        "path": "/admin/digest-send-test",
+        "match": "exact",
+        "handler": "handleAdminDigestSendTest",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 144
+        }
+      },
+      {
+        "path": "/admin/suggest-refresh",
+        "match": "exact",
+        "handler": "handleAdminSuggestRefresh",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 145
+        }
+      },
+      {
+        "path": "/admin/meeting-outcomes-refresh",
+        "match": "exact",
+        "handler": "handleAdminMeetingOutcomesRefresh",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 146
+        }
+      },
+      {
+        "path": "/admin/zap-outcomes-refresh",
+        "match": "exact",
+        "handler": "handleAdminZapOutcomesRefresh",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 147
+        }
+      },
+      {
+        "path": "/admin/digest-catchup",
+        "match": "exact",
+        "handler": "handleAdminDigestCatchUp",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 148
+        }
+      },
+      {
+        "path": "/admin/passport-ingest",
+        "match": "exact",
+        "handler": "handleAdminPassportIngest",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 149
+        }
+      },
+      {
+        "path": "/admin/attachment-metadata",
+        "match": "exact",
+        "handler": "handleAdminAttachmentMetadata",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 150
+        }
+      }
+    ]
+  },
+  "bindings": {
+    "environments": {
+      "production": {
+        "vars": {
+          "ALERTS_LIVE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 36
+            }
+          },
+          "ANALYTICS_ENVIRONMENT": {
+            "value": "production",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 37
+            }
+          },
+          "CITY_RECORD_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 39
+            }
+          },
+          "PASSPORT_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 40
+            }
+          },
+          "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 41
+            }
+          },
+          "LEGISTAR_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 42
+            }
+          },
+          "PERSON_HUB_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 43
+            }
+          },
+          "ULURP_RECOMMENDATION_PDF_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 44
+            }
+          },
+          "ULURP_RECOMMENDATION_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 45
+            }
+          },
+          "ENTITY_LINK_DUAL_WRITE": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 46
+            }
+          },
+          "CIVIC_TIME_EVENT_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 49
+            }
+          },
+          "CONFIRM_BASE": {
+            "value": "https://api.cityscroll.org",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 50
+            }
+          },
+          "ALERTS_FROM": {
+            "value": "CityScroll <alerts@cityscroll.org>",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 52
+            }
+          },
+          "ALERTS_REPLY_TO": {
+            "value": "alerts@crol-list.org",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 55
+            }
+          },
+          "MAX_PER_RUN": {
+            "value": "25",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 57
+            }
+          },
+          "MAX_SENDS_PER_DAY": {
+            "value": "50",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 58
+            }
+          },
+          "HEARTBEAT_DAYS": {
+            "value": "14",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 60
+            }
+          },
+          "DIGEST_SHADOW_DARK_DAYS": {
+            "value": "3",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 63
+            }
+          },
+          "DIGEST_SHADOW_ALERTS": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 64
+            }
+          },
+          "FEEDBACK_TO": {
+            "value": "feedback@cityscroll.org",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 66
+            }
+          },
+          "SUBSCRIBE_ADDRESS": {
+            "value": "subscribe@crol-list.org",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 68
+            }
+          },
+          "INBOUND_MAX_PER_DAY": {
+            "value": "100",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 69
+            }
+          },
+          "MCP_MAX_CALLS_PER_DAY": {
+            "value": "200",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 70
+            }
+          },
+          "MCP_MAX_PER_IP_DAY": {
+            "value": "300",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 71
+            }
+          },
+          "TRANSLATE_MAX_CALLS_PER_DAY": {
+            "value": "150",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 74
+            }
+          },
+          "QUEUE_DIGESTS": {
+            "value": "true",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 76
+            }
+          },
+          "ANALYTICS_ACCOUNT_ID": {
+            "value": "8162581cb1d97e20a172031adb8a13af",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 77
+            }
+          },
+          "ANALYTICS_DATASET": {
+            "value": "crol_usage_events_v1",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 78
+            }
+          },
+          "ANALYTICS_MEASURED_SINCE": {
+            "value": "2026-07-27",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 79
+            }
+          },
+          "SOURCE_VAULT_ENABLED": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 82
+            }
+          }
+        },
+        "analytics_engine_datasets": [
+          {
+            "binding": "USAGE_ANALYTICS",
+            "dataset": "crol_usage_events_v1",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 90
+            }
+          }
+        ],
+        "queues": {
+          "producers": [
+            {
+              "binding": "DIGEST_QUEUE",
+              "queue": "crol-digests",
+              "source": {
+                "path": "worker/wrangler.toml",
+                "line": 98
+              }
+            }
+          ],
+          "consumers": [
+            {
+              "queue": "crol-digests",
+              "max_batch_size": 10,
+              "max_batch_timeout": 30,
+              "max_retries": 3,
+              "max_concurrency": 1,
+              "dead_letter_queue": "crol-digests-dlq",
+              "source": {
+                "path": "worker/wrangler.toml",
+                "line": 102
+              }
+            }
+          ]
+        },
+        "d1_databases": [
+          {
+            "binding": "DB",
+            "database_name": "crol-notices",
+            "database_id": "df70a39c-6465-4b4a-b108-a792c79e74e8",
+            "migrations_dir": "migrations",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 113
+            }
+          }
+        ],
+        "kv_namespaces": [
+          {
+            "binding": "NL_METER",
+            "id": "f410ee870b954e2980ee646312704014",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 122
+            }
+          },
+          {
+            "binding": "ALERT_STATE",
+            "id": "451ce64e616b49b6837682e75cb07756",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 126
+            }
+          },
+          {
+            "binding": "SUBS",
+            "id": "a7addee904774e7c90f9be447f927b20",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 133
+            }
+          },
+          {
+            "binding": "FEEDBACK",
+            "id": "75d85d23ec914d8ea44bc3e9bb540afd",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 140
+            }
+          }
+        ],
+        "r2_buckets": null
+      },
+      "beta": {
+        "vars": {
+          "DEPLOYMENT_CHANNEL": {
+            "value": "beta",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 155
+            }
+          },
+          "ALERTS_LIVE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 156
+            }
+          },
+          "CITY_RECORD_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 157
+            }
+          },
+          "PASSPORT_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 158
+            }
+          },
+          "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 159
+            }
+          },
+          "LEGISTAR_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 160
+            }
+          },
+          "PERSON_HUB_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 161
+            }
+          },
+          "ULURP_RECOMMENDATION_PDF_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 162
+            }
+          },
+          "ULURP_RECOMMENDATION_SOURCE_RECORD_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 163
+            }
+          },
+          "ENTITY_LINK_DUAL_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 164
+            }
+          },
+          "CIVIC_TIME_EVENT_WRITE": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 165
+            }
+          },
+          "QUEUE_DIGESTS": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 166
+            }
+          },
+          "ANALYTICS_ENVIRONMENT": {
+            "value": "preview",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 167
+            }
+          },
+          "SOURCE_VAULT_ENABLED": {
+            "value": "false",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 168
+            }
+          },
+          "CONFIRM_BASE": {
+            "value": "https://api-beta.cityscroll.org",
+            "source": {
+              "path": "worker/wrangler.toml",
+              "line": 169
+            }
+          }
+        },
+        "analytics_engine_datasets": null,
+        "queues": {
+          "producers": null,
+          "consumers": null
+        },
+        "d1_databases": null,
+        "kv_namespaces": null,
+        "r2_buckets": null
+      }
+    }
+  },
+  "crons": {
+    "schedules": [
+      {
+        "schedule": "0 10 * * *",
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 25
+        }
+      },
+      {
+        "schedule": "0 13 * * *",
+        "source": {
+          "path": "worker/wrangler.toml",
+          "line": 26
+        }
+      }
+    ],
+    "source": {
+      "path": "worker/wrangler.toml"
+    }
+  },
+  "warehouse": {
+    "registry": {
+      "schema_version": 1,
+      "dataset_count": 14,
+      "dataset_ids": [
+        "abo-local-authorities",
+        "abo-local-development-corporations",
+        "abo-state-authorities",
+        "capital-projects-dashboard",
+        "city-council-committee-membership",
+        "city-record",
+        "dob-certificate-of-occupancy",
+        "dof-tax-lien-sale-lists",
+        "doing-business-entities",
+        "nyc-council-members",
+        "nycedc-project-documents",
+        "ocp-recent-contract-awards",
+        "zap-bbl",
+        "zap-projects"
+      ],
+      "source": {
+        "path": "warehouse/datasets.v0.json"
+      }
+    },
+    "engines": [
+      {
+        "name": "parquet",
+        "source": {
+          "path": "warehouse/scripts/ingest.py"
+        }
+      },
+      {
+        "name": "duckdb",
+        "source": {
+          "path": "warehouse/scripts/ingest.py"
+        }
+      }
+    ],
+    "adapters": [
+      {
+        "name": "catalog",
+        "source": {
+          "path": "warehouse/lib/catalog.mjs"
+        }
+      },
+      {
+        "name": "query",
+        "source": {
+          "path": "warehouse/lib/query.mjs"
+        }
+      },
+      {
+        "name": "doing_business_lookup",
+        "source": {
+          "path": "warehouse/lib/doing_business_lookup.mjs"
+        }
+      },
+      {
+        "name": "ocp_lookup",
+        "source": {
+          "path": "warehouse/lib/ocp_lookup.mjs"
+        }
+      },
+      {
+        "name": "zap_bbl_lookup",
+        "source": {
+          "path": "warehouse/lib/zap_bbl_lookup.mjs"
+        }
+      },
+      {
+        "name": "zap_lookup",
+        "source": {
+          "path": "warehouse/lib/zap_lookup.mjs"
+        }
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "id": "0001",
+      "name": "notices",
+      "file": "worker/migrations/0001_notices.sql",
+      "source": {
+        "path": "worker/migrations/0001_notices.sql"
+      }
+    },
+    {
+      "id": "0002",
+      "name": "prior_cycle",
+      "file": "worker/migrations/0002_prior_cycle.sql",
+      "source": {
+        "path": "worker/migrations/0002_prior_cycle.sql"
+      }
+    },
+    {
+      "id": "0003",
+      "name": "external_awards",
+      "file": "worker/migrations/0003_external_awards.sql",
+      "source": {
+        "path": "worker/migrations/0003_external_awards.sql"
+      }
+    },
+    {
+      "id": "0004",
+      "name": "contract_lifecycle",
+      "file": "worker/migrations/0004_contract_lifecycle.sql",
+      "source": {
+        "path": "worker/migrations/0004_contract_lifecycle.sql"
+      }
+    },
+    {
+      "id": "0005",
+      "name": "subsidy_lifecycle",
+      "file": "worker/migrations/0005_subsidy_lifecycle.sql",
+      "source": {
+        "path": "worker/migrations/0005_subsidy_lifecycle.sql"
+      }
+    },
+    {
+      "id": "0006",
+      "name": "notice_translations",
+      "file": "worker/migrations/0006_notice_translations.sql",
+      "source": {
+        "path": "worker/migrations/0006_notice_translations.sql"
+      }
+    },
+    {
+      "id": "0007",
+      "name": "passport_public",
+      "file": "worker/migrations/0007_passport_public.sql",
+      "source": {
+        "path": "worker/migrations/0007_passport_public.sql"
+      }
+    },
+    {
+      "id": "0008",
+      "name": "source_records",
+      "file": "worker/migrations/0008_source_records.sql",
+      "source": {
+        "path": "worker/migrations/0008_source_records.sql"
+      }
+    },
+    {
+      "id": "0009",
+      "name": "entity_link",
+      "file": "worker/migrations/0009_entity_link.sql",
+      "source": {
+        "path": "worker/migrations/0009_entity_link.sql"
+      }
+    },
+    {
+      "id": "0010",
+      "name": "action_log",
+      "file": "worker/migrations/0010_action_log.sql",
+      "source": {
+        "path": "worker/migrations/0010_action_log.sql"
+      }
+    },
+    {
+      "id": "0010",
+      "name": "false_split_disposition",
+      "file": "worker/migrations/0010_false_split_disposition.sql",
+      "source": {
+        "path": "worker/migrations/0010_false_split_disposition.sql"
+      }
+    },
+    {
+      "id": "0010",
+      "name": "notice_facts",
+      "file": "worker/migrations/0010_notice_facts.sql",
+      "source": {
+        "path": "worker/migrations/0010_notice_facts.sql"
+      }
+    },
+    {
+      "id": "0011",
+      "name": "prediction_assertions",
+      "file": "worker/migrations/0011_prediction_assertions.sql",
+      "source": {
+        "path": "worker/migrations/0011_prediction_assertions.sql"
+      }
+    },
+    {
+      "id": "0012",
+      "name": "attachment_metadata",
+      "file": "worker/migrations/0012_attachment_metadata.sql",
+      "source": {
+        "path": "worker/migrations/0012_attachment_metadata.sql"
+      }
+    },
+    {
+      "id": "0013",
+      "name": "attachment_text",
+      "file": "worker/migrations/0013_attachment_text.sql",
+      "source": {
+        "path": "worker/migrations/0013_attachment_text.sql"
+      }
+    },
+    {
+      "id": "0014",
+      "name": "digest_shadow",
+      "file": "worker/migrations/0014_digest_shadow.sql",
+      "source": {
+        "path": "worker/migrations/0014_digest_shadow.sql"
+      }
+    },
+    {
+      "id": "0015",
+      "name": "digest_shadow_hold",
+      "file": "worker/migrations/0015_digest_shadow_hold.sql",
+      "source": {
+        "path": "worker/migrations/0015_digest_shadow_hold.sql"
+      }
+    },
+    {
+      "id": "0016",
+      "name": "notice_fts",
+      "file": "worker/migrations/0016_notice_fts.sql",
+      "source": {
+        "path": "worker/migrations/0016_notice_fts.sql"
+      }
+    },
+    {
+      "id": "0017",
+      "name": "resolution_provenance",
+      "file": "worker/migrations/0017_resolution_provenance.sql",
+      "source": {
+        "path": "worker/migrations/0017_resolution_provenance.sql"
+      }
+    },
+    {
+      "id": "0018",
+      "name": "digest_outbox",
+      "file": "worker/migrations/0018_digest_outbox.sql",
+      "source": {
+        "path": "worker/migrations/0018_digest_outbox.sql"
+      }
+    },
+    {
+      "id": "0019",
+      "name": "civic_time_events",
+      "file": "worker/migrations/0019_civic_time_events.sql",
+      "source": {
+        "path": "worker/migrations/0019_civic_time_events.sql"
+      }
+    }
+  ],
+  "entity_resolution": {
+    "package": {
+      "path": "entity_resolution/index.mjs",
+      "exists": true,
+      "source": {
+        "path": "entity_resolution/index.mjs"
+      }
+    },
+    "module_count": 54,
+    "modules": [
+      "entity_resolution/authority_keys/index.mjs",
+      "entity_resolution/candidate_generation/boards_wall.mjs",
+      "entity_resolution/candidate_generation/index.mjs",
+      "entity_resolution/candidate_generation/published_walls.mjs",
+      "entity_resolution/cross_domain/edge_policy.mjs",
+      "entity_resolution/cross_domain/index.mjs",
+      "entity_resolution/cross_domain/object_links.mjs",
+      "entity_resolution/cross_domain/procurement_crosswalk.mjs",
+      "entity_resolution/cross_domain/property_links.mjs",
+      "entity_resolution/cross_domain/vendor_coverage_key.mjs",
+      "entity_resolution/eval/blockers/token_v0.mjs",
+      "entity_resolution/eval/clerical_audit.mjs",
+      "entity_resolution/eval/entity_audit_sampling.mjs",
+      "entity_resolution/eval/review_action_export.mjs",
+      "entity_resolution/eval/run_authority.mjs",
+      "entity_resolution/eval/run_bakeoff.mjs",
+      "entity_resolution/eval/run_entity_components.mjs",
+      "entity_resolution/eval/run_labeling_function_accounting.mjs",
+      "entity_resolution/eval/run_metrics.mjs",
+      "entity_resolution/evaluation/authority.mjs",
+      "entity_resolution/evaluation/bakeoff.mjs",
+      "entity_resolution/evaluation/entity_components.mjs",
+      "entity_resolution/evaluation/index.mjs",
+      "entity_resolution/evaluation/labeling_functions.mjs",
+      "entity_resolution/evaluation/shadow_monitoring.mjs",
+      "entity_resolution/evaluation/source_coverage_honesty.mjs",
+      "entity_resolution/exam_certifications/index.mjs",
+      "entity_resolution/features/index.mjs",
+      "entity_resolution/hash.mjs",
+      "entity_resolution/index.mjs",
+      "entity_resolution/leaders/index.mjs",
+      "entity_resolution/matchers/index.mjs",
+      "entity_resolution/normalizers/agency.mjs",
+      "entity_resolution/normalizers/index.mjs",
+      "entity_resolution/normalizers/vendor_stem.mjs",
+      "entity_resolution/officials/index.mjs",
+      "entity_resolution/officials/lobby_targets.mjs",
+      "entity_resolution/officials/org_resolve.mjs",
+      "entity_resolution/officials/person_name.mjs",
+      "entity_resolution/policies/index.mjs",
+      "entity_resolution/provenance.mjs",
+      "entity_resolution/publication/dossier.mjs",
+      "entity_resolution/publication/index.mjs",
+      "entity_resolution/publication/link_confidence.mjs",
+      "entity_resolution/publication/relationship_graph.mjs",
+      "entity_resolution/referents/index.mjs",
+      "entity_resolution/review/active_review.mjs",
+      "entity_resolution/review/assertion_evidence.mjs",
+      "entity_resolution/review/index.mjs",
+      "entity_resolution/review/investigation_workspace.mjs",
+      "entity_resolution/review/llm_alias_proposals.mjs",
+      "entity_resolution/scorers/contract.mjs",
+      "entity_resolution/scorers/conventional_v2.mjs",
+      "entity_resolution/scorers/index.mjs"
+    ],
+    "importers": [
+      {
+        "file": "worker/src/admin.mjs",
+        "imports": [
+          "entity_resolution/review/index.mjs"
+        ],
+        "source": {
+          "path": "worker/src/admin.mjs"
+        }
+      },
+      {
+        "file": "worker/src/agency.mjs",
+        "imports": [
+          "entity_resolution/leaders/index.mjs"
+        ],
+        "source": {
+          "path": "worker/src/agency.mjs"
+        }
+      },
+      {
+        "file": "worker/src/entity_dossier.mjs",
+        "imports": [
+          "entity_resolution/publication/dossier.mjs",
+          "entity_resolution/publication/link_confidence.mjs"
+        ],
+        "source": {
+          "path": "worker/src/entity_dossier.mjs"
+        }
+      },
+      {
+        "file": "worker/src/entity_intelligence.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs",
+          "entity_resolution/cross_domain/vendor_coverage_key.mjs"
+        ],
+        "source": {
+          "path": "worker/src/entity_intelligence.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/abo_awards_join.mjs",
+        "imports": [
+          "entity_resolution/normalizers/vendor_stem.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/abo_awards_join.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/entity_link.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/index.mjs",
+          "entity_resolution/provenance.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/entity_link.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/franchise_concession_spine.mjs",
+        "imports": [
+          "entity_resolution/normalizers/vendor_stem.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/franchise_concession_spine.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/legistar_client.mjs",
+        "imports": [
+          "entity_resolution/officials/index.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/legistar_client.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/normalize.mjs",
+        "imports": [
+          "entity_resolution/normalizers/index.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/normalize.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/possibly_same.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/index.mjs",
+          "entity_resolution/features/index.mjs",
+          "entity_resolution/review/active_review.mjs",
+          "entity_resolution/review/assertion_evidence.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/possibly_same.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/subject_registry.mjs",
+        "imports": [
+          "entity_resolution/authority_keys/index.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/subject_registry.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/zoning_statistics.mjs",
+        "imports": [
+          "entity_resolution/normalizers/index.mjs",
+          "entity_resolution/publication/link_confidence.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/zoning_statistics.mjs"
+        }
+      },
+      {
+        "file": "worker/src/public_relationship_graph.mjs",
+        "imports": [
+          "entity_resolution/publication/relationship_graph.mjs"
+        ],
+        "source": {
+          "path": "worker/src/public_relationship_graph.mjs"
+        }
+      },
+      {
+        "file": "worker/test/entity_audit_sampling.test.mjs",
+        "imports": [
+          "entity_resolution/eval/entity_audit_sampling.mjs"
+        ],
+        "source": {
+          "path": "worker/test/entity_audit_sampling.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/entity_dossier.test.mjs",
+        "imports": [
+          "entity_resolution/publication/link_confidence.mjs"
+        ],
+        "source": {
+          "path": "worker/test/entity_dossier.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/entity_intelligence.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "worker/test/entity_intelligence.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/entity_resolution_matcher.test.mjs",
+        "imports": [
+          "entity_resolution/eval/run_metrics.mjs",
+          "entity_resolution/features/index.mjs",
+          "entity_resolution/matchers/index.mjs",
+          "entity_resolution/policies/index.mjs"
+        ],
+        "source": {
+          "path": "worker/test/entity_resolution_matcher.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/entity_resolution_package.test.mjs",
+        "imports": [
+          "entity_resolution/index.mjs",
+          "entity_resolution/normalizers/index.mjs"
+        ],
+        "source": {
+          "path": "worker/test/entity_resolution_package.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/entity_resolution_publication.test.mjs",
+        "imports": [
+          "entity_resolution/publication/index.mjs"
+        ],
+        "source": {
+          "path": "worker/test/entity_resolution_publication.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/possibly_same_admin.test.mjs",
+        "imports": [
+          "entity_resolution/review/index.mjs"
+        ],
+        "source": {
+          "path": "worker/test/possibly_same_admin.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/private_evidence_workspace.test.mjs",
+        "imports": [
+          "entity_resolution/review/index.mjs"
+        ],
+        "source": {
+          "path": "worker/test/private_evidence_workspace.test.mjs"
+        }
+      },
+      {
+        "file": "worker/test/public_relationship_graph.test.mjs",
+        "imports": [
+          "entity_resolution/publication/relationship_graph.mjs"
+        ],
+        "source": {
+          "path": "worker/test/public_relationship_graph.test.mjs"
+        }
+      },
+      {
+        "file": "site/mandate_contracts_bridge.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs",
+          "entity_resolution/cross_domain/object_links.mjs"
+        ],
+        "source": {
+          "path": "site/mandate_contracts_bridge.mjs"
+        }
+      },
+      {
+        "file": "site/mandate_land_use_bridge.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "site/mandate_land_use_bridge.mjs"
+        }
+      },
+      {
+        "file": "site/mandate_meetings_bridge.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "site/mandate_meetings_bridge.mjs"
+        }
+      },
+      {
+        "file": "site/official_influence.mjs",
+        "imports": [
+          "entity_resolution/officials/index.mjs",
+          "entity_resolution/officials/lobby_targets.mjs",
+          "entity_resolution/officials/org_resolve.mjs",
+          "entity_resolution/officials/person_name.mjs"
+        ],
+        "source": {
+          "path": "site/official_influence.mjs"
+        }
+      },
+      {
+        "file": "site/person_hub.mjs",
+        "imports": [
+          "entity_resolution/officials/index.mjs",
+          "entity_resolution/officials/person_name.mjs"
+        ],
+        "source": {
+          "path": "site/person_hub.mjs"
+        }
+      },
+      {
+        "file": "site/process_conformance.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "site/process_conformance.mjs"
+        }
+      },
+      {
+        "file": "tools/build_boards_wall_receipt.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/boards_wall.mjs"
+        ],
+        "source": {
+          "path": "tools/build_boards_wall_receipt.mjs"
+        }
+      },
+      {
+        "file": "tools/build_clerical_label_batch.mjs",
+        "imports": [
+          "entity_resolution/eval/clerical_audit.mjs"
+        ],
+        "source": {
+          "path": "tools/build_clerical_label_batch.mjs"
+        }
+      },
+      {
+        "file": "tools/build_entity_intelligence.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/vendor_coverage_key.mjs"
+        ],
+        "source": {
+          "path": "tools/build_entity_intelligence.mjs"
+        }
+      },
+      {
+        "file": "tools/build_exam_certification_constellation.mjs",
+        "imports": [
+          "entity_resolution/exam_certifications/index.mjs"
+        ],
+        "source": {
+          "path": "tools/build_exam_certification_constellation.mjs"
+        }
+      },
+      {
+        "file": "tools/build_procurement_crosswalk.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/procurement_crosswalk.mjs"
+        ],
+        "source": {
+          "path": "tools/build_procurement_crosswalk.mjs"
+        }
+      },
+      {
+        "file": "tools/build_property_cross_domain.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "tools/build_property_cross_domain.mjs"
+        }
+      },
+      {
+        "file": "tools/build_property_ll48_lookup.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "tools/build_property_ll48_lookup.mjs"
+        }
+      },
+      {
+        "file": "tools/build_published_wall_candidates.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/published_walls.mjs"
+        ],
+        "source": {
+          "path": "tools/build_published_wall_candidates.mjs"
+        }
+      },
+      {
+        "file": "tools/build_rules_meetings_domain_observations.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "tools/build_rules_meetings_domain_observations.mjs"
+        }
+      },
+      {
+        "file": "tools/build_title_code_family_coverage.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/published_walls.mjs"
+        ],
+        "source": {
+          "path": "tools/build_title_code_family_coverage.mjs"
+        }
+      },
+      {
+        "file": "tools/check_er_source_coverage.mjs",
+        "imports": [
+          "entity_resolution/evaluation/source_coverage_honesty.mjs"
+        ],
+        "source": {
+          "path": "tools/check_er_source_coverage.mjs"
+        }
+      },
+      {
+        "file": "tools/cross_spine_eval.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "tools/cross_spine_eval.mjs"
+        }
+      },
+      {
+        "file": "tools/export_entity_audit_sample.mjs",
+        "imports": [
+          "entity_resolution/eval/entity_audit_sampling.mjs"
+        ],
+        "source": {
+          "path": "tools/export_entity_audit_sample.mjs"
+        }
+      },
+      {
+        "file": "tools/export_er_clerical_audit.mjs",
+        "imports": [
+          "entity_resolution/eval/clerical_audit.mjs"
+        ],
+        "source": {
+          "path": "tools/export_er_clerical_audit.mjs"
+        }
+      },
+      {
+        "file": "tools/export_review_actions_to_gold.mjs",
+        "imports": [
+          "entity_resolution/eval/review_action_export.mjs"
+        ],
+        "source": {
+          "path": "tools/export_review_actions_to_gold.mjs"
+        }
+      },
+      {
+        "file": "tools/lib/entity_intelligence_build.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs",
+          "entity_resolution/normalizers/vendor_stem.mjs"
+        ],
+        "source": {
+          "path": "tools/lib/entity_intelligence_build.mjs"
+        }
+      },
+      {
+        "file": "tools/lib/property_disposition_cohort.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/property_links.mjs"
+        ],
+        "source": {
+          "path": "tools/lib/property_disposition_cohort.mjs"
+        }
+      },
+      {
+        "file": "tools/measure_passport_ei_densify.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "tools/measure_passport_ei_densify.mjs"
+        }
+      },
+      {
+        "file": "tools/run_er_shadow_monitor.mjs",
+        "imports": [
+          "entity_resolution/evaluation/shadow_monitoring.mjs"
+        ],
+        "source": {
+          "path": "tools/run_er_shadow_monitor.mjs"
+        }
+      },
+      {
+        "file": "ontology/live_inventory.mjs",
+        "imports": [
+          "entity_resolution/officials/index.mjs",
+          "entity_resolution/publication/dossier.mjs",
+          "entity_resolution/publication/relationship_graph.mjs",
+          "entity_resolution/review/assertion_evidence.mjs"
+        ],
+        "source": {
+          "path": "ontology/live_inventory.mjs"
+        }
+      },
+      {
+        "file": "test/agency_successors.test.mjs",
+        "imports": [
+          "entity_resolution/normalizers/agency.mjs"
+        ],
+        "source": {
+          "path": "test/agency_successors.test.mjs"
+        }
+      },
+      {
+        "file": "test/authority_key_registry.test.mjs",
+        "imports": [
+          "entity_resolution/authority_keys/index.mjs",
+          "entity_resolution/features/index.mjs",
+          "entity_resolution/matchers/index.mjs"
+        ],
+        "source": {
+          "path": "test/authority_key_registry.test.mjs"
+        }
+      },
+      {
+        "file": "test/boards_wall.test.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/boards_wall.mjs"
+        ],
+        "source": {
+          "path": "test/boards_wall.test.mjs"
+        }
+      },
+      {
+        "file": "test/cross_domain_object_links.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs",
+          "entity_resolution/index.mjs"
+        ],
+        "source": {
+          "path": "test/cross_domain_object_links.test.mjs"
+        }
+      },
+      {
+        "file": "test/cross_spine_edge_policy.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "test/cross_spine_edge_policy.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_alias_proposals.test.mjs",
+        "imports": [
+          "entity_resolution/index.mjs",
+          "test/fixtures/entity_resolution/llm_alias_proposals.json"
+        ],
+        "source": {
+          "path": "test/entity_resolution_alias_proposals.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_assertion_evidence.test.mjs",
+        "imports": [
+          "entity_resolution/review/assertion_evidence.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_assertion_evidence.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_authority.test.mjs",
+        "imports": [
+          "entity_resolution/evaluation/authority.mjs",
+          "entity_resolution/features/index.mjs",
+          "entity_resolution/matchers/index.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_authority.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_blocker.test.mjs",
+        "imports": [
+          "entity_resolution/eval/blockers/token_v0.mjs",
+          "entity_resolution/eval/run_metrics.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_blocker.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_clerical_audit.test.mjs",
+        "imports": [
+          "entity_resolution/eval/clerical_audit.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_clerical_audit.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_entity_components.test.mjs",
+        "imports": [
+          "entity_resolution/eval/run_metrics.mjs",
+          "entity_resolution/evaluation/authority.mjs",
+          "entity_resolution/evaluation/entity_components.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_entity_components.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_labeling_function_accounting.test.mjs",
+        "imports": [
+          "entity_resolution/evaluation/labeling_functions.mjs",
+          "entity_resolution/features/index.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_labeling_function_accounting.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_scorer_bakeoff.test.mjs",
+        "imports": [
+          "entity_resolution/eval/run_metrics.mjs",
+          "entity_resolution/evaluation/bakeoff.mjs",
+          "entity_resolution/features/index.mjs",
+          "entity_resolution/index.mjs",
+          "entity_resolution/matchers/index.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_scorer_bakeoff.test.mjs"
+        }
+      },
+      {
+        "file": "test/entity_resolution_shadow_monitor.test.mjs",
+        "imports": [
+          "entity_resolution/evaluation/shadow_monitoring.mjs"
+        ],
+        "source": {
+          "path": "test/entity_resolution_shadow_monitor.test.mjs"
+        }
+      },
+      {
+        "file": "test/exam_certification_constellation.test.mjs",
+        "imports": [
+          "entity_resolution/exam_certifications/index.mjs"
+        ],
+        "source": {
+          "path": "test/exam_certification_constellation.test.mjs"
+        }
+      },
+      {
+        "file": "test/franchise_concession_spine.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/object_links.mjs"
+        ],
+        "source": {
+          "path": "test/franchise_concession_spine.test.mjs"
+        }
+      },
+      {
+        "file": "test/legistar_client.test.mjs",
+        "imports": [
+          "entity_resolution/officials/index.mjs"
+        ],
+        "source": {
+          "path": "test/legistar_client.test.mjs"
+        }
+      },
+      {
+        "file": "test/official_entity_family.test.mjs",
+        "imports": [
+          "entity_resolution/officials/index.mjs",
+          "entity_resolution/publication/relationship_graph.mjs"
+        ],
+        "source": {
+          "path": "test/official_entity_family.test.mjs"
+        }
+      },
+      {
+        "file": "test/ontology_registry.test.mjs",
+        "imports": [
+          "entity_resolution/publication/relationship_graph.mjs",
+          "entity_resolution/review/assertion_evidence.mjs"
+        ],
+        "source": {
+          "path": "test/ontology_registry.test.mjs"
+        }
+      },
+      {
+        "file": "test/person_hub.test.mjs",
+        "imports": [
+          "entity_resolution/officials/lobby_targets.mjs",
+          "entity_resolution/officials/org_resolve.mjs",
+          "entity_resolution/officials/person_name.mjs"
+        ],
+        "source": {
+          "path": "test/person_hub.test.mjs"
+        }
+      },
+      {
+        "file": "test/person_leader_referents.test.mjs",
+        "imports": [
+          "entity_resolution/index.mjs",
+          "entity_resolution/referents/index.mjs"
+        ],
+        "source": {
+          "path": "test/person_leader_referents.test.mjs"
+        }
+      },
+      {
+        "file": "test/process_conformance.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "test/process_conformance.test.mjs"
+        }
+      },
+      {
+        "file": "test/procurement_spine_ei_densify.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "test/procurement_spine_ei_densify.test.mjs"
+        }
+      },
+      {
+        "file": "test/property_cross_domain.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "test/property_cross_domain.test.mjs"
+        }
+      },
+      {
+        "file": "test/published_walls_candidate_generation.test.mjs",
+        "imports": [
+          "entity_resolution/candidate_generation/published_walls.mjs"
+        ],
+        "source": {
+          "path": "test/published_walls_candidate_generation.test.mjs"
+        }
+      },
+      {
+        "file": "test/review_action_export.test.mjs",
+        "imports": [
+          "entity_resolution/eval/review_action_export.mjs"
+        ],
+        "source": {
+          "path": "test/review_action_export.test.mjs"
+        }
+      },
+      {
+        "file": "test/source_coverage_honesty.test.mjs",
+        "imports": [
+          "entity_resolution/evaluation/source_coverage_honesty.mjs"
+        ],
+        "source": {
+          "path": "test/source_coverage_honesty.test.mjs"
+        }
+      },
+      {
+        "file": "test/topic_normalization.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/edge_policy.mjs"
+        ],
+        "source": {
+          "path": "test/topic_normalization.test.mjs"
+        }
+      },
+      {
+        "file": "test/vendor_footprint.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/vendor_coverage_key.mjs"
+        ],
+        "source": {
+          "path": "test/vendor_footprint.test.mjs"
+        }
+      },
+      {
+        "file": "test/warehouse_entity_intelligence_index.test.mjs",
+        "imports": [
+          "entity_resolution/cross_domain/index.mjs"
+        ],
+        "source": {
+          "path": "test/warehouse_entity_intelligence_index.test.mjs"
+        }
+      },
+      {
+        "file": "test/warehouse_er_batch.test.mjs",
+        "imports": [
+          "entity_resolution/index.mjs"
+        ],
+        "source": {
+          "path": "test/warehouse_er_batch.test.mjs"
+        }
+      }
+    ]
+  },
+  "ontology": {
+    "registry": {
+      "schema": "cityscroll.ontology.registry.v0",
+      "version": "0.4.0",
+      "source": {
+        "path": "ontology/registry.v0.json"
+      }
+    },
+    "sources": [
+      {
+        "name": "action_log",
+        "path": "worker/src/lib/action_log.mjs",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "action_registry",
+        "path": "site/action_registry.js",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "assertion_evidence",
+        "path": "entity_resolution/review/assertion_evidence.mjs",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "civic_time",
+        "path": "worker/src/lib/civic_time.mjs",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "er_taxonomy",
+        "path": "docs/adr/entity-resolution-taxonomy.md",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "process_spine",
+        "path": "worker/src/lib/process_spine.mjs",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "public_dossier",
+        "path": "entity_resolution/publication/dossier.mjs",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      },
+      {
+        "name": "public_graph",
+        "path": "entity_resolution/publication/relationship_graph.mjs",
+        "source": {
+          "path": "ontology/registry.v0.json"
+        }
+      }
+    ],
+    "collection_counts": {
+      "object_types": 32,
+      "link_types": 31,
+      "event_kinds": 37,
+      "assertion_classifications": 2,
+      "assertion_facts": 10
+    }
+  }
+}
