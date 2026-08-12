@@ -6,6 +6,6 @@
   "title": "Register Legistar committee nodes with history-preserving membership observations",
   "verify": "node --test test/committee_graph.test.mjs && node tools/build_committee_graph.mjs --check",
   "fixed_at": "2026-08-12T00:00:00.000Z",
-  "fixed_note": "Committee BodyId identity, exact PersonId join, repeated OfficeRecord history, source-row hashes, and a dated 30-person sample receipt landed. Publication remains held because LEGISTAR_API_TOKEN was unavailable; no public membership edges were fabricated. Receipt: site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json.",
+  "fixed_note": "Committee BodyId identity, exact PersonId join, repeated OfficeRecord history, source-row hashes, and an authenticated CI-gated 30-person sample landed. The latest receipt is authoritative: public membership edges are materialized only when exact-key precision, review, and name-only gates pass. Receipt: site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json.",
   "demo_win": "The graph can retain temporal committee membership without relabeling Council or Public Advocate rows or collapsing appointment history."
 }
