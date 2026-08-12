@@ -15,6 +15,7 @@ import {
   renderLobbyInfluenceHTML,
   renderCfbInfluenceHTML,
   renderPersonHubFactsHTML,
+  renderOfficialWalkHTML,
 } from "../site/official_influence_ui.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -105,19 +106,26 @@ test("browser influence UI module stays inside the site document root", async ()
 });
 
 test("influence panels omit empty bags and avoid methodology cruft", () => {
+  // Product path: lobby stages, CFB flushes walk+lobby+cfb (entities cold call sites unchanged).
   assert.equal(renderLobbyInfluenceHTML({ edges: [] }), "");
   assert.equal(renderCfbInfluenceHTML({ donors: [] }), "");
-  const html = renderLobbyInfluenceHTML({
-    edges: [
-      {
-        from_org_display: "Example Org",
-        lobbyist_name: "Lobby LLC",
-        report_year: "2024",
-      },
-    ],
-  }, { escapeHtml: (v) => String(v) });
+  assert.equal(
+    renderLobbyInfluenceHTML({
+      edges: [
+        {
+          from_org_display: "Example Org",
+          lobbyist_name: "Lobby LLC",
+          report_year: "2024",
+        },
+      ],
+    }, { escapeHtml: (v) => String(v) }),
+    "",
+    "lobby stages and waits for CFB flush",
+  );
+  const html = renderCfbInfluenceHTML({ donors: [] }, { escapeHtml: (v) => String(v) });
   assert.match(html, /data-lobby-status="linked"/);
   assert.match(html, /Example Org/);
+  assert.match(html, /data-official-walk="1"/);
   assert.doesNotMatch(html, /usefulness|precision|gate|fmf3/i);
 
   const facts = renderPersonHubFactsHTML({
@@ -127,6 +135,22 @@ test("influence panels omit empty bags and avoid methodology cruft", () => {
   }, { escapeHtml: (v) => String(v) });
   assert.match(facts, /District 1/);
   assert.match(facts, /2026-01-01/);
+});
+
+test("renderOfficialWalkHTML links only sections that exist", () => {
+  assert.equal(renderOfficialWalkHTML({ hasLobby: true }), "");
+  assert.equal(renderOfficialWalkHTML({ hasLobby: true, hasVotes: false, hasCfb: false }), "");
+  const html = renderOfficialWalkHTML({
+    hasLobby: true,
+    hasCfb: true,
+    hasVotes: true,
+  });
+  assert.match(html, /data-official-walk="1"/);
+  assert.match(html, /#official-lobby/);
+  assert.match(html, /#official-cfb/);
+  assert.match(html, /#official-skim/);
+  assert.match(html, /Lobbying clients/);
+  assert.match(html, /Published roll-call votes/);
 });
 
 test("committed influence lookups expose measurement blocks", () => {

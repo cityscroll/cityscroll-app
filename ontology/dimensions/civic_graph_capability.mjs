@@ -210,7 +210,8 @@ export function civicGraphCapabilityCards(input = {}) {
     }));
   }
 
-  if (influencePromoted) {
+  const officialWalkOpen = infl.official_walk_surface_shipped !== true;
+  if (influencePromoted && officialWalkOpen) {
     cards.push(makeDimensionCard({
       dimension: DIMENSION_ID,
       slug: "cg-v2-official-walk-surface",
@@ -224,6 +225,7 @@ export function civicGraphCapabilityCards(input = {}) {
         hub_person_count: infl.hub_person_count ?? null,
         lobby_edge_count: infl.lobby_edge_count ?? null,
         cfb_edge_count: infl.cfb_edge_count ?? null,
+        official_walk_surface_shipped: infl.official_walk_surface_shipped === true,
         demo_person_ids: ["7801", "7803"],
         depends_on_capability: [
           "cg-v2-influence-link-types",
