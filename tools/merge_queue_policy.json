@@ -2,7 +2,7 @@
   "description": "Operator-applied GitHub merge-queue parameters for main. Not enforced by CI; apply with tools/apply_merge_queue_policy.mjs. Goal: batch independent green PRs into one merge-group validation when they arrive close together, while keeping ALLGREEN so composition failures still block.",
   "ruleset_name": "main merge queue",
   "ruleset_id": 18899568,
-  "repository": "cityscroll/crol-list",
+  "repository": "cityscroll/cityscroll-app",
   "merge_queue": {
     "merge_method": "SQUASH",
     "grouping_strategy": "ALLGREEN",

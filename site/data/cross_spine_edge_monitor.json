@@ -6,7 +6,7 @@
   "gold_version": "cross_spine_gold_v3",
   "policy_version": "cross_spine_edge_policy_v2",
   "source": {
-    "gold_content_hash": "454d2967931b54b2",
+    "gold_content_hash": "724d5db40074bf85",
     "held_out_group_split": true,
     "holdout_bucket": 0,
     "holdout_buckets": 5
@@ -55,14 +55,14 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "77a71956777c7351",
+        "fingerprint": "332abed465043f44",
         "source_systems": [
           "city_record+passport_public_contracts",
           "nyc_legistar",
           "passport_public_contracts"
         ],
         "gold_version": "cross_spine_gold_v3",
-        "gold_content_hash": "454d2967931b54b2",
+        "gold_content_hash": "724d5db40074bf85",
         "eval_version": "cross_spine_eval_v3",
         "policy_version": "cross_spine_edge_policy_v2"
       },
@@ -115,13 +115,13 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "20df481fef582704",
+        "fingerprint": "6824f69390e4d80e",
         "source_systems": [
           "cityscroll_procedure_vocabulary",
           "nyc_charter"
         ],
         "gold_version": "cross_spine_gold_v3",
-        "gold_content_hash": "454d2967931b54b2",
+        "gold_content_hash": "724d5db40074bf85",
         "eval_version": "cross_spine_eval_v3",
         "policy_version": "cross_spine_edge_policy_v2"
       },
@@ -174,13 +174,13 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "460ebd1d2b8c83b4",
+        "fingerprint": "f69dccb16920aa17",
         "source_systems": [
           "nyc_charter",
           "zoning_application_portal"
         ],
         "gold_version": "cross_spine_gold_v3",
-        "gold_content_hash": "454d2967931b54b2",
+        "gold_content_hash": "724d5db40074bf85",
         "eval_version": "cross_spine_eval_v3",
         "policy_version": "cross_spine_edge_policy_v2"
       },
@@ -233,13 +233,13 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "6cd403bcd48d2aa4",
+        "fingerprint": "aece8658e8fda576",
         "source_systems": [
           "city_record",
           "nyc_legistar"
         ],
         "gold_version": "cross_spine_gold_v3",
-        "gold_content_hash": "454d2967931b54b2",
+        "gold_content_hash": "724d5db40074bf85",
         "eval_version": "cross_spine_eval_v3",
         "policy_version": "cross_spine_edge_policy_v2"
       },
@@ -292,13 +292,13 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "a95ee8f159108a38",
+        "fingerprint": "647dbfc60fe588af",
         "source_systems": [
           "city_record",
           "nyc_legistar"
         ],
         "gold_version": "cross_spine_gold_v3",
-        "gold_content_hash": "454d2967931b54b2",
+        "gold_content_hash": "724d5db40074bf85",
         "eval_version": "cross_spine_eval_v3",
         "policy_version": "cross_spine_edge_policy_v2"
       },
@@ -351,13 +351,13 @@
         "status": "pass"
       },
       "provenance": {
-        "fingerprint": "69bb937058d9b400",
+        "fingerprint": "fbed98b25c54c144",
         "source_systems": [
           "cityscroll_procedure_vocabulary",
           "zoning_application_portal"
         ],
         "gold_version": "cross_spine_gold_v3",
-        "gold_content_hash": "454d2967931b54b2",
+        "gold_content_hash": "724d5db40074bf85",
         "eval_version": "cross_spine_eval_v3",
         "policy_version": "cross_spine_edge_policy_v2"
       },

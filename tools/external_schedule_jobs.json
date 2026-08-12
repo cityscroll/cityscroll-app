@@ -6,7 +6,7 @@
     "poll_interval_seconds": 60,
     "state_env": "CROL_EXTERNAL_SCHEDULE_STATE_DIR"
   },
-  "repository": "cityscroll/crol-list",
+  "repository": "cityscroll/cityscroll-app",
   "jobs": [
     {
       "id": "action-links-live",
