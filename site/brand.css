@@ -105,6 +105,21 @@
 .ui-static-fact{color:var(--color-text-muted,#606776);text-decoration:none;cursor:default}
 .ui-static-fact .ct{margin-inline-start:.35em}
 
+/* Shared typed edge-summary rail. Counts and states come from the producer's
+   read model; this component only makes the next destination legible. */
+.edge-summary-rail{min-width:0;margin:var(--space-4,16px) 0;padding:var(--space-3,12px);border:1px solid var(--color-border,var(--cs-n-100));border-radius:var(--radius-md,10px);background:var(--color-surface,var(--cs-white))}
+.edge-summary-rail h2{margin:0 0 var(--space-2,8px);font:700 .75rem/1.2 var(--font-label,system-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft,var(--cs-n-700))}
+.edge-summary-rail ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--space-2,8px);margin:0;padding:0;list-style:none}
+.edge-summary-item{min-width:0;border-top:2px solid var(--color-border,var(--cs-n-100))}
+.edge-summary-link,.edge-summary-text{display:flex;min-width:0;flex-direction:column;gap:3px;padding:var(--space-2,8px) 0;text-decoration:none}
+.edge-summary-link{color:var(--color-action,var(--cs-action))}
+.edge-summary-link:hover,.edge-summary-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
+.edge-summary-link:focus-visible{outline:2px solid var(--color-action,var(--cs-action));outline-offset:3px;border-radius:3px}
+.edge-summary-target{min-width:0;color:var(--color-text,var(--cs-n-900));font-weight:700;overflow-wrap:anywhere}
+.edge-summary-detail{min-width:0;color:var(--color-text-muted,var(--cs-n-500));font:500 .78rem/1.35 var(--font-label,system-ui);overflow-wrap:anywhere}
+.edge-summary-item[data-edge-state="unknown"]{border-top-color:var(--color-caution,var(--cs-caution))}
+.edge-summary-item[data-edge-state="empty"]{border-top-color:var(--color-border-strong,var(--cs-n-300))}
+
 /* Shared cardinality-adaptive facet layout. */
 .cardinality-facet{min-width:min(100%,320px)}
 .agency-scope-field:has(.cardinality-facet-large){flex:1 1 320px}

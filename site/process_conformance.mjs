@@ -26,6 +26,7 @@ import {
   renderMandateRowGraphActions,
   renderMandateSectionNeighborActions,
 } from "./mandate_graph_neighbors.mjs";
+import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
 import {
   RULE_LIFECYCLE_STATUSES,
   compactCitationLawKeys,
@@ -968,6 +969,58 @@ export function renderMandatesConformanceSection(view) {
     meetings_browse_href: view.meetings_browse_href,
     contracts_browse_href: view.contracts_browse_href,
   });
+  const edgeSummary = normalizeEdgeSummaryRecords([
+    {
+      source_kind: "agency",
+      source_id: view.agency_id || null,
+      edge_type: "mandate_observation",
+      label: "Mandates with published evidence",
+      target_kind: "mandate",
+      target_name: "Mandates with published evidence",
+      count: counts.observed == null
+        ? null
+        : (Number.isInteger(Number(counts.observed)) ? Number(counts.observed) : null),
+      href: view.share_path || null,
+      scope: { agency_id: view.agency_id || null, as_of: view.as_of || null },
+      as_of: view.as_of || null,
+    },
+    {
+      source_kind: "agency",
+      source_id: view.agency_id || null,
+      edge_type: "mandate_related_rules",
+      label: "Rules related to these mandates",
+      target_kind: "rule",
+      target_name: "Rules",
+      count: null,
+      state: "unknown",
+      href: graphNeighbors?.rules_browse_href || null,
+      scope: { agency_id: view.agency_id || null },
+    },
+    {
+      source_kind: "agency",
+      source_id: view.agency_id || null,
+      edge_type: "mandate_related_meetings",
+      label: "Meetings related to these mandates",
+      target_kind: "meeting",
+      target_name: "Meetings and hearings",
+      count: null,
+      state: "unknown",
+      href: graphNeighbors?.meetings_browse_href || null,
+      scope: { agency_id: view.agency_id || null },
+    },
+    {
+      source_kind: "agency",
+      source_id: view.agency_id || null,
+      edge_type: "mandate_related_contracts",
+      label: "Contracts related to these mandates",
+      target_kind: "contract",
+      target_name: "Contracts",
+      count: null,
+      state: "unknown",
+      href: graphNeighbors?.contracts_browse_href || null,
+      scope: { agency_id: view.agency_id || null },
+    },
+  ]);
   const list = items.length
     ? `<ul class="node-record-list mandates-conformance-list">${items.map((item) => {
       const obs = item.observation || {};
@@ -1022,6 +1075,7 @@ export function renderMandatesConformanceSection(view) {
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
     <h2 id="mandates-conformance-heading">Mandates · expected vs evidence <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
+    ${renderEdgeSummaryRail(edgeSummary.filter((record) => record.href), { heading: "Mandate connections", id: "mandate-edge-summary-heading", className: "mandate-edge-summary" })}
     <p class="mandates-scroll-affordance" id="mandates-scroll-help">Scroll to view all mandates</p>
     <div class="mandates-conformance-scroll" role="region" tabindex="0" aria-labelledby="mandates-conformance-heading" aria-describedby="mandates-scroll-help">${list}</div>
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}

@@ -41,6 +41,8 @@ import {
   projectAgencyConstellationAsOf,
 } from "./civic_time_ledger.mjs";
 import { constellationLink } from "./affordance_grammar.mjs";
+import { renderEdgeSummaryRail } from "./edge_summary.mjs";
+import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -141,6 +143,12 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     showAsOf,
   });
   const sections = renderAgencyConstellationSections(sectionView);
+  const edgeSummary = buildAgencyEdgeSummary(displayView);
+  const edgeRail = renderEdgeSummaryRail(edgeSummary.filter((record) => record.state === "matched"), {
+    heading: "Connected records",
+    id: "agency-edge-summary-heading",
+    className: "agency-edge-summary",
+  });
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const demoAsOfLink = showAsOf
@@ -177,6 +185,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
         · ${constellationLink({ href: "#edge-provenance", label: "Connection evidence", className: "agency-pivot-link", escape: esc })}${demoAsOfLink}
       </p>
     </header>
+    ${edgeRail}
     ${actions}
     ${sections}
   </main>
