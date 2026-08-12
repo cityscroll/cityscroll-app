@@ -12,13 +12,13 @@ exam pages**. Action controls fell back to default browser buttons.
 
 `renderComposedObjectDocument` labeled sections with an incomplete ternary that
 omitted `ll48`, so both `land` and `ll48` rendered as "Land projects". Fixed by
-exporting and using `parcelSectionLabel` (one label per source kind).
+exporting and using `parcelSectionLabel` (one label per civic-process section).
 
 ## Changed regions (annotated on after/ frames)
 
 - **hero** — shared node masthead title treatment
 - **actions** — styled primary/secondary action buttons (Watch / Copy / Print / Download)
-- **section card** — source groups as card sections (parcel) / exam sections
+- **section card** — civic-process groups as card sections (parcel) / exam sections
 
 ## Files
 

@@ -1,0 +1,10 @@
+{
+  "label": "parcel-by-process",
+  "before": "docs/screenshots/parcel-by-process/before/",
+  "after": "docs/screenshots/parcel-by-process/after/",
+  "change": "Lede no longer says grouped by source; sections ordered property disposition \u2192 land-use process \u2192 tax-lien status \u2192 related actions; source names demoted to trailing official \u2197 only.",
+  "demo_parcels": [
+    "1020260015",
+    "1000960001"
+  ]
+}

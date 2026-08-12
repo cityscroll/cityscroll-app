@@ -4,8 +4,10 @@ import test from "node:test";
 
 import {
   buildObservedParcelBiography,
+  PARCEL_PROCESS_SECTION_ORDER,
   parcelBiographyHref,
   parcelBblFromScope,
+  parcelItemOfficialSource,
   parcelRef,
   scopeWithParcel,
 } from "../site/parcel_scope.mjs";
@@ -60,6 +62,31 @@ test("parcel biography links use the gc-01 canonical scope serializer", () => {
   }, { scope: base, surface: "property", scopeTools });
   assert.match(chip, /data-entity-ref="bbl:1020260015"/);
   assert.match(chip, /href="#property\?boro=Manhattan&amp;process=hearing&amp;facet=/);
+});
+
+test("parcel process order is disposition → land-use → tax-lien → related actions", () => {
+  assert.deepEqual([...PARCEL_PROCESS_SECTION_ORDER], [
+    "property",
+    "land",
+    "tax_lien",
+    "ll48",
+    "cofo",
+  ]);
+  assert.deepEqual(
+    parcelItemOfficialSource({ subject_ref: "notice:20211118008" }),
+    {
+      href: "https://a856-cityrecord.nyc.gov/RequestDetail/20211118008",
+      label: "Official notice",
+    },
+  );
+  assert.deepEqual(
+    parcelItemOfficialSource({ subject_ref: "project:2021M0422" }),
+    {
+      href: "https://zap.planning.nyc.gov/projects/2021M0422",
+      label: "Official project",
+    },
+  );
+  assert.equal(parcelItemOfficialSource({ subject_ref: "bbl:1000960001" }), null);
 });
 
 test("matched observed biography separates disposition, ZAP, and lien-list evidence", () => {

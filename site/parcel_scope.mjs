@@ -19,6 +19,42 @@ export const PARCEL_REF_RE = /^bbl:(\d{10})$/;
 export const PARCEL_BIOGRAPHY_LABEL = "Observed parcel biography";
 export const EXACT_BBL_METHOD = "exact_bbl_v1";
 
+/**
+ * Civic-process order for parcel biography sections (not source order).
+ * Related actions (LL48 suitability, Certificates of Occupancy) trail the
+ * three primary civic processes.
+ */
+export const PARCEL_PROCESS_SECTION_ORDER = Object.freeze([
+  "property",
+  "land",
+  "tax_lien",
+  "ll48",
+  "cofo",
+]);
+
+/**
+ * Official external record for a parcel biography item — used only as a
+ * trailing provenance ↗, never as the primary action or section organizer.
+ */
+export function parcelItemOfficialSource(item) {
+  const ref = clean(item?.subject_ref, 120);
+  const notice = ref.match(/^notice:([A-Za-z0-9_-]{1,80})$/);
+  if (notice) {
+    return {
+      href: `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(notice[1])}`,
+      label: "Official notice",
+    };
+  }
+  const project = ref.match(/^project:([A-Za-z0-9_-]{3,30})$/);
+  if (project) {
+    return {
+      href: `https://zap.planning.nyc.gov/projects/${encodeURIComponent(project[1])}`,
+      label: "Official project",
+    };
+  }
+  return null;
+}
+
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
