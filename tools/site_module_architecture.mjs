@@ -17,6 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { ROUTE_ISLAND_MODULES, SITE_MODULES } from "../test/helpers/site_source.mjs";
+import { runArchitectureFitness } from "./architecture_fitness.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const APP_DIR = path.join(ROOT, "site/app");
@@ -90,6 +91,7 @@ function main(argv) {
 
   if (args.has("--check") || args.has("--update")) {
     validateModuleGraph();
+    runArchitectureFitness();
     console.log(
       `module-graph digest ok: ${computed.normalized_source_sha256} (${computed.normalized_source_bytes} bytes, ${computed.module_count} modules)`,
     );
