@@ -103,6 +103,14 @@ function actionOf(item) {
     || "unlabelled";
 }
 
+function voteLikely(item) {
+  return Boolean(
+    CLEAN(item?.EventItemRollCallFlag)
+    || CLEAN(item?.EventItemPassedFlagName)
+    || CLEAN(item?.EventItemActionName),
+  );
+}
+
 function stratumForDate(value) {
   const day = dateDay(value);
   return SAMPLE_STRATA.find((stratum) => day >= stratum.start && day < stratum.end)?.key || null;
@@ -121,6 +129,8 @@ export function selectStratifiedEventItems(candidates, target = SAMPLE_TARGET) {
   }
   for (const bucket of byStratum.values()) {
     bucket.sort((a, b) =>
+      Number(voteLikely(b?.item)) - Number(voteLikely(a?.item))
+      ||
       dateDay(b?.event?.EventDate).localeCompare(dateDay(a?.event?.EventDate))
       || bodyOf(a).localeCompare(bodyOf(b))
       || CLEAN(a?.item?.EventItemId).localeCompare(CLEAN(b?.item?.EventItemId)),
@@ -318,6 +328,7 @@ function buildReceipt({ measuredAt, candidates, selected, voteResults, holdout, 
       matter_id: CLEAN(row.item.EventItemMatterId) || null,
       body: bodyOf(row) || null,
       action: actionOf(row) || null,
+      vote_likely: voteLikely(row.item),
       stratum: row.stratum,
     })),
     holdout_review: holdout,
