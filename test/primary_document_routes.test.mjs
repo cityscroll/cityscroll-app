@@ -12,6 +12,7 @@ import {
   renderBrowseLanding,
   renderBrowseView,
 } from "../site/browse_view.mjs";
+import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "../site/browse_concept_view.mjs";
 import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
 import edgeWorker, { edgeRequestKind, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -45,7 +46,7 @@ test("primary navigation is four real document links on every promoted shell", (
     land: "/browse/zoning/",
     rules: "/browse/rules/",
     meetings: "/browse/meetings/",
-    people: "/browse/staffing/",
+    people: "/browse/people/",
   };
   assert.match(root, /class="browse-child-nav"/);
   assert.match(root, /Civic objects/);
@@ -53,7 +54,7 @@ test("primary navigation is four real document links on every promoted shell", (
     assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${group}"`), `${group} keeps a canonical Browse destination`);
   }
   assert.match(root, /Land \+ property/);
-  assert.doesNotMatch(root, /href="\/browse\/places\//);
+  assert.match(root, /href="\/browse\/places\//);
   assert.deepEqual(BROWSE_GROUPS.map((group) => group.label), [
     "Money",
     "Land + property",
@@ -70,6 +71,10 @@ test("primary navigation is four real document links on every promoted shell", (
     assert.ok(child, `${facet} remains represented in the civic-object groups`);
     assert.equal(child.route || config.route, config.route, `${facet} keeps its existing destination`);
   }
+  assert.deepEqual(Object.fromEntries(Object.entries(BROWSE_CONCEPTS).map(([kind, config]) => [kind, config.route])), {
+    people: "/browse/people/",
+    places: "/browse/places/",
+  });
 });
 
 test("Browse route matrix rejects retired and unknown facets instead of treating them as the home asset", () => {
@@ -80,6 +85,8 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
   assert.deepEqual(browseRoute("/browse/land/"), { kind: "unknown", facet: "land" });
   assert.deepEqual(browseRoute("/browse/unknown/"), { kind: "unknown", facet: "unknown" });
   assert.deepEqual(browseRoute("/browse/"), { kind: "landing", facet: null });
+  assert.deepEqual(browseRoute("/browse/people/"), { kind: "concept", concept: "people" });
+  assert.deepEqual(browseRoute("/browse/places/"), { kind: "concept", concept: "places" });
 });
 
 test("entity routes serve agency constellation documents when present, else the SPA shell", async () => {
@@ -184,7 +191,7 @@ test("generated agency pivots round-trip to content-bearing entity routes", asyn
 
 test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {
   const outputs = primaryDocumentOutputs();
-  assert.equal(outputs.length, 8);
+  assert.equal(outputs.length, 10);
   for (const [path, generated] of outputs) {
     if (existsSync(path)) assert.equal(readFileSync(path, "utf8"), generated, `${path} is stale`);
     assert.match(generated, /<base href="\/">/);
@@ -210,12 +217,46 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.doesNotMatch(landing, /every source|source view|source lenses/i);
   assert.deepEqual(detectNodePageCruft(landing), []);
   assert.doesNotMatch(landing, /data-browse-facet="contracts"/);
+  for (const kind of Object.keys(BROWSE_CONCEPTS)) {
+    const html = output(`/site/browse/${kind}/index.html`);
+    assert.match(html, new RegExp(`data-browse-concept="${kind}"`));
+    assert.match(html, /data-build-rendered="browse-concept"/);
+    assert.match(html, kind === "people" ? /Officials/ : /Community boards/);
+  }
   for (const facet of Object.keys(BROWSE_FACETS)) {
     const html = output(`/site/browse/${facet}/index.html`);
     assert.match(html, new RegExp(`data-browse-facet="${facet}"`));
     assert.match(html, /data-record-id=/);
     assert.doesNotMatch(html, /data-build-rendered="browse"[\s\S]{0,200}<span class="loading"/);
   }
+});
+
+test("People and Places landings use populated entity and geography indexes", () => {
+  const people = buildBrowseConceptLanding("people", {
+    people: { by_person_id: { "7801": { person_id: "7801", person_name: "Christopher Marte" } } },
+    committees: {
+      publication: "published",
+      nodes: [{ id: "committee:1", type: "committee", name: "Committee on Housing" }],
+      public_edges: [{ type: "member_of", from: "official:7801", to: "committee:1" }],
+    },
+    awards: { rows: [{ vendor_name: "ACME LLC" }] },
+  });
+  const peopleHtml = renderBrowseConceptLanding(people);
+  assert.match(peopleHtml, /href="\/officials\/7801\/"/);
+  assert.match(peopleHtml, /href="\/vendors\/ACME\/"/);
+  assert.match(peopleHtml, /Committee on Housing/);
+  assert.doesNotMatch(peopleHtml, /href="\/committees\//);
+
+  const places = buildBrowseConceptLanding("places", {
+    places: {
+      nodes: [{ id: "community-board:bronx-cb-01", type: "community-board", name: "Bronx Community Board 1", properties: { borough: "Bronx", district: 1 } }],
+      public_edges: [{ type: "covers", from: "community-board:bronx-cb-01", to: "community-district:X01" }],
+    },
+  });
+  const placesHtml = renderBrowseConceptLanding(places);
+  assert.match(placesHtml, /Bronx Community Board 1/);
+  assert.match(placesHtml, /\/near-you\/#map\?level=community_district/);
+  assert.match(placesHtml, /\/community-boards\//);
 });
 
 test("Browse landing counts are labeled with source dates without coverage caveats", () => {
@@ -409,6 +450,8 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/"), "asset");
   assert.equal(edgeRequestKind("https://cityscroll.org/notices/20240515016"), "notice");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/rules/?q=air"), "browse");
+  assert.equal(edgeRequestKind("https://cityscroll.org/browse/people/"), "browse");
+  assert.equal(edgeRequestKind("https://cityscroll.org/browse/places/"), "browse");
   assert.equal(edgeRequestKind("https://cityscroll.org/agencies/design-and-construction/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/vendors/CAMBA/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/officials/7801/"), "entity");
