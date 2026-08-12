@@ -2,8 +2,9 @@
 // and runtime-agnostic (identical under Node tests and the Cloudflare Workers runtime).
 //
 // /usage reports crol-worker's Anthropic (Claude Haiku) spend by reading the NL_METER
-// KV day-counters that /nl already increments — key format `nl:<YYYY-MM-DD>`, see
-// overDailyCap() in ../nl.mjs. Cost is an ESTIMATE: call count × a fixed per-call token
+// KV day-counters that /nl already increments — shared surface-cap key format
+// `m:nl:<YYYY-MM-DD>`, with a legacy `nl:<YYYY-MM-DD>` fallback during migration.
+// Cost is an ESTIMATE: call count × a fixed per-call token
 // estimate × current Haiku per-token prices. It is NOT billed usage.
 
 // The model /nl calls. Mirrors MODEL in ../nl.mjs — keep in sync.
@@ -48,6 +49,12 @@ function dayStr(d) {
 
 // The NL_METER key for a UTC day string.
 export function meterKey(day) {
+  return `m:nl:${day}`;
+}
+
+// /nl used this private key before it adopted the shared meter primitive. Keep reads
+// compatible with counters written immediately before the migration.
+export function legacyMeterKey(day) {
   return `nl:${day}`;
 }
 

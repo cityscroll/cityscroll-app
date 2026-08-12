@@ -6,6 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { capDecision } from "@jimdc/sendcap";
+import { overActorLimit, overSurfaceCap } from "../src/lib/meter.mjs";
 
 // Mirror of alerts.mjs's call shape, so this test breaks if that mapping drifts.
 const decide = ({ fresh = true, live = true, hasEmail = true, sentThisRun = 0, sentToday = 0, maxPerRun = 25, maxPerDay = 50 } = {}) =>
@@ -47,4 +48,21 @@ test("daily cap: at the ceiling, the next send is deferred", () => {
 
 test("per-run cap takes precedence over daily when both are hit", () => {
   assert.equal(decide({ sentThisRun: 25, sentToday: 50 }).capped, "per-run");
+});
+
+class BrokenMeter {
+  async get() { throw new Error("meter unavailable"); }
+  async put() { throw new Error("meter unavailable"); }
+}
+
+test("shared meter defaults stay fail-open for existing mcp/inbound callers", async () => {
+  const broken = new BrokenMeter();
+  assert.equal(await overSurfaceCap(broken, "mcp", 1), false);
+  assert.equal(await overActorLimit(broken, "inbound", "203.0.113.10", 1), false);
+});
+
+test("shared meter can opt into fail-closed behavior", async () => {
+  const broken = new BrokenMeter();
+  assert.equal(await overSurfaceCap(broken, "nl", 1, { failClosed: true }), true);
+  assert.equal(await overActorLimit(broken, "translate", "203.0.113.10", 1, { failClosed: true }), true);
 });
