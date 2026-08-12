@@ -1034,10 +1034,14 @@ Do not commit the generated HTML or JSON: the broad receipt manifest makes eithe
 shared merge-conflict source. The HTML remains dependency-free and byte-stable for
 unchanged inputs, and the composite build action exposes `data-source-graph-dir` for the
 authenticated desk deploy without changing its paths or access gate.
-Blocked-source nodes are declared only in `site/data/gap_taxonomy.json` under
-`partnership_blocked_sources`; downstream authenticated-desk consumers should regenerate from
-`data-source-graph-dir` after updating their crol-list revision. This repository does not deploy
-the desk.
+Surface labels are derived from each contract’s `name` + `used_for` (see `SURFACE_RULES`);
+person hub / lobby / CFB map to **Officials**, not Land (avoid bare `district` in the Land
+rule). Coverage prefers `join_measurement.verdict` when present. Blocked-source nodes are
+declared only in `site/data/gap_taxonomy.json` under `partnership_blocked_sources`;
+downstream authenticated-desk consumers should regenerate from `data-source-graph-dir`
+after updating their crol-list revision. This repository does not deploy the desk.
+Public capability summary for third parties lives in root `README.md`; the desk
+`/capabilities` board is a separate private-team surface.
 
 When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register. After landing a source or stamping `join_measurement`, run `depot_rederive.mjs` so realized coverage, candidate crosswalks, and the ranked queue stay current.
 
