@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.paid_under_registry_verification.v1",
+  "observed_on": "2026-08-11",
+  "capability_id": "cg-v1-paid-under-registry",
+  "depends_on": {
+    "card_id": "crol-list/checkbook-spending-payment-retention",
+    "receipt": "site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json",
+    "usefulness": { "joined": 22, "total": 50, "rate": 0.44, "floor": 0.3 },
+    "precision": { "true_positives": 31, "false_positives": 0, "rate": 1.0, "floor": 0.95 },
+    "materialize": true
+  },
+  "registry": {
+    "object": {
+      "id": "payment",
+      "status": "registered",
+      "grounding_before": "gap",
+      "grounding_after": "built"
+    },
+    "link": {
+      "id": "paid_under",
+      "from": "contract",
+      "to": "payment",
+      "status_before": "unregistered",
+      "status_after": "registered",
+      "grounding_before": "gap",
+      "grounding_after": "built",
+      "product_alias": "payment_on_contract"
+    }
+  },
+  "gates": {
+    "usefulness_cleared": true,
+    "precision_cleared": true,
+    "materialize": true,
+    "promote_registry": true
+  },
+  "notes": [
+    "No new collector — promotion reuses the dated Checkbook Spending payment retention kill sample.",
+    "Cross-domain money edges keep the product type payment_on_contract and map it to Civic Graph paid_under.",
+    "Reader surface for check-level payment rows remains a separate capability (cg-v1-payment-row-surface)."
+  ]
+}
