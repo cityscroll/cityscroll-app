@@ -13,6 +13,7 @@ import {
   validateAction,
 } from "../worker/src/lib/action_registry.mjs";
 import { hearingCalendarICS } from "../site/hearing_attend_pack.mjs";
+import { watchLabelForNotice } from "../site/notice-read.mjs";
 
 const require = createRequire(import.meta.url);
 const { normalizeHearingRow } = require("../site/hearing_location.js");
@@ -316,6 +317,48 @@ test("open rule comments and upcoming hearings use their joined deadlines and ha
   // Non-join agenda URL stays an honest participation link + guide, not "Join online".
   assert.equal(hearing[0].label_key, "participation_link");
   assert.equal(hearing[0].guide?.system, "hearing_extracted");
+});
+
+test("rule watch CTA names the subscribed agency and lens", () => {
+  const actions = compileActionRail({
+    kind: "rule",
+    section_name: "Agency Rules",
+    agency_name: "Health and Mental Hygiene",
+  }, { today: "2026-08-12" });
+  const watch = actions.find((action) => action.type === "watch");
+  assert.equal(watch?.label_key, "next_action_watch");
+  assert.match(watch?.destination || "", /lens=rules/);
+  assert.match(watch?.destination || "", /Health(%20|\+|%20and%20)and/);
+});
+
+test("notice hydration derives the watch label from the scoped Rules subscription", () => {
+  assert.deepEqual(
+    watchLabelForNotice({ agency_name: "Health and Mental Hygiene" }),
+    {
+      label_key: "scope",
+      label_vars: { agency: "Health and Mental Hygiene", lens: "Rules" },
+    },
+  );
+});
+
+test("a dated Agency Rules hearing carries normalized online access into the rule guide", () => {
+  const actions = compileActionRail({
+    kind: "rule",
+    section_name: "Agency Rules",
+    type_of_notice_description: "Notice",
+    request_id: "20260803009",
+    agency_name: "Health and Mental Hygiene",
+    lifecycle_stage: "hearing",
+    hearing_date: "2026-09-14",
+    event_date: "2026-09-14T10:00:00.000",
+    venue: { mode: "virtual", building: null, address: null },
+    participation: {
+      links: [{ label: "Join online", url: "https://health-nyc.zoomgov.com/j/1659561163" }],
+    },
+  }, { today: "2026-08-12" });
+  const guide = actions.find((action) => action.guide)?.guide;
+  assert.equal(guide?.venue_mode, "virtual");
+  assert.equal(guide?.participation_url, "https://health-nyc.zoomgov.com/j/1659561163");
 });
 
 test("ruleHandoff surfaces comment-by deadline, portal, and hearing attend without inventing fields", () => {

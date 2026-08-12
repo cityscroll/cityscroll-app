@@ -15,6 +15,7 @@ import {
 } from "../../../site/location_extract.mjs";
 import { placeFromDerivations } from "../../../site/location_derivation.mjs";
 import { noticeDisplayTitle } from "../../../site/display_title.mjs";
+import { inferHearingLogistics } from "../../../site/hearing_logistics.mjs";
 
 export { plainText };
 
@@ -153,11 +154,9 @@ export function venueFromRow(row) {
     row.state,
     row.zip_code,
   ].filter(Boolean).join(", "));
-  const virtual = /\b(?:online|conference call|zoom|webex|teams meeting|join (?:the )?(?:meeting|hearing)|via (?:phone|telephone|video))\b/i.test(body)
-    || /https?:\/\//i.test(body);
-  const inPerson = !!address;
+  const logistics = inferHearingLogistics({ body, physicalLocation: address });
   return {
-    mode: virtual && inPerson ? "hybrid" : virtual ? "virtual" : inPerson ? "in-person" : "not-stated",
+    mode: logistics.mode === "remote" ? "virtual" : logistics.mode === "unknown" ? "not-stated" : logistics.mode,
     building: plainText(row.building_name),
     address: address || null,
     borough: null,
@@ -277,30 +276,42 @@ function participationLabel(url) {
   return "Participation link";
 }
 
-function meetingAccessFromParts(venue, participation) {
-  const mode = venue?.mode === "virtual"
-    ? "remote"
-    : venue?.mode === "hybrid"
-      ? "hybrid"
-      : venue?.mode === "in-person"
-        ? "in-person"
-        : "unknown";
+function meetingAccessFromParts(venue, participation, body = "", sourceLinks = []) {
+  const inferred = inferHearingLogistics({
+    body,
+    sourceLinks,
+    physicalLocation: [venue?.building, venue?.address].filter(Boolean).join(" · "),
+  });
+  const mode = inferred.mode !== "unknown"
+    ? inferred.mode
+    : venue?.mode === "virtual"
+      ? "remote"
+      : venue?.mode === "hybrid"
+        ? "hybrid"
+        : venue?.mode === "in-person"
+          ? "in-person"
+          : "unknown";
   const location = [venue?.building, venue?.address].filter(Boolean).join(" · ") || null;
-  const joinUrl = participation?.remote_join_url
+  const joinUrl = inferred.remote_join_url
+    || participation?.remote_join_url
     || participation?.links?.find((link) => link?.label === "Join online")?.url
     || null;
   return {
     mode,
     in_person_location: location,
     remote_join_url: joinUrl,
-    dial_in: unique(participation?.phones || []),
+    dial_in: unique([...(inferred.dial_in || []), ...(participation?.phones || [])]),
+    passcode: inferred.passcode || null,
   };
 }
 
 // One outbound participation affordance per notice: prefer a live join URL, else the
 // most specific cleaned URL the body published (longest path wins among equals).
 function participationFromRow(row, body, sourceUrl) {
-  const cleaned = (body.match(URL_RE) || []).map(normalizeParticipationUrl).filter(Boolean);
+  const cleaned = [
+    ...(body.match(URL_RE) || []),
+    ...(Array.isArray(row.source_links) ? row.source_links : []),
+  ].map(normalizeParticipationUrl).filter(Boolean);
   const byKey = new Map();
   for (const url of cleaned) {
     const key = participationUrlKey(url);
@@ -336,6 +347,7 @@ export function normalizeHearing(row) {
     row.printout_1,
     row.printout_2,
     row.printout_3,
+    row.source_body,
   ].filter(Boolean).join(" "));
   const sourceUrl = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(row.request_id || "")}`;
   const audience = AUDIENCES.find(([pattern]) => pattern.test(`${row.short_title || ""} ${body}`));
@@ -354,7 +366,7 @@ export function normalizeHearing(row) {
     affected_area: affectedAreaFromRow(row),
     venue,
     participation,
-    meeting_access: meetingAccessFromParts(venue, participation),
+    meeting_access: row.meeting_access || meetingAccessFromParts(venue, participation, body, row.source_links),
     source_url: sourceUrl,
     description: body.slice(0, 1200),
   };

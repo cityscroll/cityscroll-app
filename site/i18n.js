@@ -740,6 +740,7 @@ const STRINGS = {
     read_official_notice: "Read official notice",
     next_action_heading: "What can I do now?",
     next_action_watch: "Get updates about related records",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Get updates about related land-use activity",
     next_action_unavailable_handoff: "The official action link is not published here.",
     next_action_bid_closed: "The response deadline has passed.",

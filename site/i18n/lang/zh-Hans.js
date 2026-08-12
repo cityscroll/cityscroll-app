@@ -540,6 +540,7 @@
     read_official_notice: "阅读官方公告",
     next_action_heading: "我现在可以做什么？",
     next_action_watch: "关注此公告",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "关注此区划变更",
     next_action_land_guide: "请按下列土地使用参与步骤操作",
     next_action_land_steps_missing: "此区划变更尚未公布参与步骤。",

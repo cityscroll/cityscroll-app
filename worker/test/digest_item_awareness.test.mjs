@@ -212,6 +212,28 @@ test("meeting digest entries carry access facts and a materialized calendar link
   assert.match(html, /meeting\.ics\?id=FIX-MEETING-1/);
 });
 
+test("rule hearing digest entries use explicit Zoom source signals", () => {
+  const html = subDigestHtml(
+    "Rules — hearing scheduled",
+    "rules",
+    [{
+      request_id: "20260803009",
+      short_title: "New Rules Relating to Rat Inspections",
+      section_name: "Agency Rules",
+      type_of_notice_description: "Notice",
+      agency_name: "Health and Mental Hygiene",
+      event_date: "2026-09-14T10:00:00.000",
+      additional_description_1: "To participate in the public hearing, enter to register at this Zoom meeting: https://health-nyc.zoomgov.com/j/1659561163",
+    }],
+    "https://example.com/unsubscribe",
+    "2026-08-12",
+  );
+  assert.match(html, /data-meeting-access="1"/);
+  assert.match(html, /Mode: Online/);
+  assert.match(html, /health-nyc\.zoomgov\.com\/j\/1659561163/);
+  assert.match(html, /meeting\.ics\?id=20260803009/);
+});
+
 // ---- land / rezone: ZAP public status + project handoff -------------------
 
 const rezone = {

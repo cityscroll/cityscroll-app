@@ -543,6 +543,7 @@
     read_official_notice: "سرکاری نوٹس پڑھیں",
     next_action_heading: "میں اب کیا کر سکتا ہوں؟",
     next_action_watch: "اس نوٹس پر نظر رکھیں",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Watch this rezoning",
     next_action_land_guide: "Follow the land-use participation steps below",
     next_action_land_steps_missing: "No participation steps are published for this rezoning yet.",

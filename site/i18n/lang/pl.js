@@ -548,6 +548,7 @@
     read_official_notice: "Przeczytaj oficjalne ogłoszenie",
     next_action_heading: "Co mogę teraz zrobić?",
     next_action_watch: "Obserwuj to ogłoszenie",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Obserwuj tę zmianę zagospodarowania",
     next_action_land_guide: "Wykonaj poniższe kroki udziału w procesie planistycznym",
     next_action_land_steps_missing: "Dla tej zmiany zagospodarowania nie opublikowano jeszcze kroków udziału.",

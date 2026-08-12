@@ -540,6 +540,7 @@
     read_official_notice: "공식 공고 읽기",
     next_action_heading: "지금 무엇을 할 수 있나요?",
     next_action_watch: "이 공고 지켜보기",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "이 재구획을 주시하기",
     next_action_land_guide: "아래의 토지 이용 참여 단계를 따르세요",
     next_action_land_steps_missing: "이 재구획에 대한 참여 단계가 아직 게시되지 않았습니다.",

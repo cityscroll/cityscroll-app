@@ -569,6 +569,7 @@
     read_official_notice: "Lire l’avis officiel",
     next_action_heading: "Que puis-je faire maintenant ?",
     next_action_watch: "Suivre cet avis",
+    scope: "Follow {lens}/{agency}",
     next_action_watch_rezone: "Suivre ce rezonage",
     next_action_land_guide: "Suivez les étapes de participation à l’usage des sols ci-dessous",
     next_action_land_steps_missing: "Aucune étape de participation n’est encore publiée pour ce rezonage.",
