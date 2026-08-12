@@ -621,7 +621,8 @@ export async function computeLifecycle(env, requestId, noticeRow) {
  * subsidy parser_version and rules/meeting-outcomes schema_version guards (#358).
  */
 // v3: stamp award_prime_goal (award → prime identity → honest M/WBE-goal absence).
-export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 3;
+// v4: stamp payment_rows (check-level Checkbook Spending trail on payment stage).
+export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 4;
 
 /**
  * True when a cached lifecycle was assembled by the current recovery/coherence path.

@@ -221,6 +221,46 @@ export const STAGE_PENDING = "pending";
 export const STAGE_REGISTERED = "registered";
 export const STAGE_PAYMENT = "payment";
 
+/** Cap individual payment rows stamped onto payment-stage detail (newest first). */
+export const PAYMENT_ROWS_DETAIL_CAP = 12;
+
+/**
+ * Project Checkbook Spending transactions into public payment-row detail.
+ * Newest issue_date first; preserves source-null as null (never invents payee/date).
+ *
+ * @param {Array<object>|null|undefined} spending
+ * @param {{ limit?: number }} [opts]
+ * @returns {Array<{ document_id: string|null, payee: string|null, amount: number|null, date: string|null, fiscal_year: string|null, contract_id: string|null }>}
+ */
+export function projectPaymentRows(spending, opts = {}) {
+  const limit = Number.isFinite(Number(opts.limit))
+    ? Math.max(0, Math.floor(Number(opts.limit)))
+    : PAYMENT_ROWS_DETAIL_CAP;
+  if (!Array.isArray(spending) || spending.length === 0 || limit === 0) return [];
+  const sorted = spending.slice().sort((a, b) =>
+    String(b?.date || "").localeCompare(String(a?.date || "")),
+  );
+  const out = [];
+  for (const row of sorted) {
+    if (!row || typeof row !== "object") continue;
+    const amount = row.amount != null && Number.isFinite(Number(row.amount))
+      ? Math.round(Number(row.amount) * 100) / 100
+      : null;
+    out.push({
+      document_id: row.id != null && String(row.id).trim() ? String(row.id).trim() : null,
+      payee: row.vendor != null && String(row.vendor).trim() ? String(row.vendor).trim() : null,
+      amount,
+      date: row.date != null && String(row.date).trim() ? String(row.date).trim() : null,
+      fiscal_year: row.year != null && String(row.year).trim() ? String(row.year).trim() : null,
+      contract_id: row.contractId != null && String(row.contractId).trim()
+        ? String(row.contractId).trim()
+        : null,
+    });
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
 /**
  * Full money-chain succession order.
  * Intermediate City Record stages appear on the timeline only when matched
@@ -616,6 +656,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     const sortedSpending = spending.slice().sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
     const latestPayment = sortedSpending[0] || null;
     payDate = (latestPayment && latestPayment.date) || null;
+    const paymentRows = projectPaymentRows(spending, { limit: PAYMENT_ROWS_DETAIL_CAP });
     payDetail = {
       total_payments: spending.length,
       total_spent: Math.round(totalSpent * 100) / 100,
@@ -623,6 +664,10 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       latest_payment_amount: latestPayment ? latestPayment.amount : null,
       fiscal_year: latestPayment ? latestPayment.year : null,
       payment_state: "paid",
+      // Check-level trail for Follow-the-Dollars (cg-v1-payment-row-surface).
+      payment_rows: paymentRows,
+      payment_rows_shown: paymentRows.length,
+      payment_rows_capped: spending.length > paymentRows.length,
     };
   } else if (lookupStatus.spending === "error") {
     // Spending feed failed. Prefer a non-zero paid-to-date from the registered join
