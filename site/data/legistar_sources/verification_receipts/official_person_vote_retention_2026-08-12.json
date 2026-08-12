@@ -32,7 +32,7 @@
   "join_measurement": [
     {
       "stratum": "modern_2025_2026",
-      "notice_count": 1164,
+      "notice_count": 1162,
       "event_count": 1163,
       "strict_matched_notice_count": 61,
       "strict_matched_event_count": 60,
@@ -14065,5 +14065,5 @@
     "worker/src/lib/legistar_client.mjs#summarizePersonVotes",
     "site/person_votes.mjs"
   ],
-  "verified_at": "2026-08-12T14:37:23.858Z"
+  "verified_at": "2026-08-12T11:26:31.241Z"
 }
