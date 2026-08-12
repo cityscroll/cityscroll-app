@@ -74,7 +74,7 @@ export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
 export const AGENCY_CONSTELLATION_ER_BASIS = "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1";
 
-/** v1 slice categories — contracts / meetings / rules / obligations / staffing. */
+/** v1 slice categories — contracts / vendors / meetings / rules / obligations / staffing. */
 export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({
     id: "contracts",
@@ -84,6 +84,15 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     surface: "money",
     relation: "published_by_agency",
     empty_note: "No contract or award notices are linked to this agency in the current materialization.",
+  }),
+  Object.freeze({
+    id: "vendors",
+    domain: "money",
+    label: "Top vendors by award $ (last 12 mo)",
+    browse_facet: "contracts",
+    surface: "money",
+    relation: "top_vendor_by_award_12mo",
+    empty_note: "No named vendors with positive awards are in the current 12-month materialization.",
   }),
   Object.freeze({
     id: "meetings",
@@ -168,6 +177,7 @@ function browseHrefFromScope(scope, browseFacet, surface) {
 export function agencyCategoryBrowseHref(id, categoryId, { language = "en" } = {}) {
   const category = AGENCY_CONSTELLATION_CATEGORIES.find((entry) => entry.id === categoryId);
   if (!category) return "";
+  if (category.id === "vendors") return agencyCategoryBrowseHref(id, "contracts", { language });
   const scope = agencyConstellationScope(id, { language, domain: category.surface });
   scope.facets.values.connection_relation = category.relation;
   return browseHrefFromScope(normalizeScope(scope, { language }), category.browse_facet, category.surface);
@@ -178,6 +188,7 @@ export function agencyCategoryFollowHref(id, categoryId, { frequency = "weekly" 
   const identity = resolveAgencyIdentity(id);
   const ref = agencySubjectRef(identity.canonical_id || id);
   if (!category || !identity.canonical_name) return "/following/";
+  if (category.id === "vendors") return agencyCategoryFollowHref(id, "contracts", { frequency });
   if (category.id === "obligations") {
     // World-state free-watch on statutory mandates / deadlines — not a City Record document match.
     return agencyObligationsFollowHref(identity.canonical_id || id, { frequency });
@@ -450,7 +461,10 @@ function obligationItems(obligationsLookup, identity, limit = 8, conformanceView
       confidence: item.quote_verified || item.certification_status === "auto_certified"
         ? "strong"
         : "tentative",
-      method: conf ? PROCESS_CONFORMANCE_METHOD : AGENCY_OBLIGATIONS_METHOD,
+      // The category row is the certified source-law edge. Conformance is a
+      // separate observation layer and must not downgrade the source-law edge
+      // merely because the full mandate corpus is now present in the scroll view.
+      method: AGENCY_OBLIGATIONS_METHOD,
       href: item.href,
       deliverable_type: item.deliverable_type,
       recurrence: item.recurrence,
@@ -510,7 +524,39 @@ function categoryFromDomain(
   obligationsLookup,
   conformanceView = null,
   documentableExamNumbers = null,
+  vendorRollups = null,
 ) {
+  if (spec.id === "vendors") {
+    const rollup = vendorRollups?.by_id?.[identity.canonical_id] || [];
+    const items = rollup.map((vendor) => ({
+      id: vendor.subject_ref,
+      subject_ref: vendor.subject_ref,
+      label: clean(vendor.label, 320),
+      href: clean(vendor.href, 400),
+      award_count: Number(vendor.award_count) || 0,
+      award_total: Number.isFinite(Number(vendor.award_total)) ? Number(vendor.award_total) : null,
+      confidence: "strong",
+      relation: spec.relation,
+      method: vendorRollups?.method || "agency_vendor_awards_12mo_v1",
+    })).filter((item) => item.label && item.href && item.award_total != null);
+    return {
+      id: spec.id,
+      label: spec.label,
+      relation: spec.relation,
+      status: items.length ? "matched" : "empty",
+      gap_class: items.length ? null : "empty_in_corpus",
+      note: items.length ? null : spec.empty_note,
+      count: items.length,
+      items,
+      award_total: items.reduce((sum, item) => sum + item.award_total, 0),
+      method: vendorRollups?.method || "agency_vendor_awards_12mo_v1",
+      view_all_href: items.length ? agencyCategoryBrowseHref(identity.canonical_id, "contracts") : "",
+      follow_href: items.length ? agencyCategoryFollowHref(identity.canonical_id, "contracts") : "",
+      window_start: vendorRollups?.window_start || null,
+      as_of: vendorRollups?.as_of || null,
+    };
+  }
+
   if (spec.id === "obligations") {
     const { total, items: preview, all_items, view, conformance } = obligationItems(obligationsLookup, identity, 12, conformanceView);
     const claimAll = (all_items || preview).map((item) => attachClaim(item, {
@@ -638,6 +684,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       rulesDomain: sources.rules_domain || null,
       meetingsDomain: sources.meetings_domain || null,
       entityIntelligence: sources.intelligence || null,
+      limit: 500,
     });
     const obsMap = committed.observations || null;
     if (live && obsMap) {
@@ -692,6 +739,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       rulesDomain: sources.rules_domain || null,
       meetingsDomain: sources.meetings_domain || null,
       entityIntelligence: sources.intelligence || null,
+      limit: 500,
     });
   }
 
@@ -704,6 +752,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       obligations,
       conformanceView,
       documentableExamNumbers,
+      sources.vendor_rollups || null,
     ));
 
   const matched = categories.filter((category) => category.status === "matched").length;
@@ -863,6 +912,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       certification_generated_at: certification?.generated_at || null,
       obligations_generated_at: obligations?.generated_at || null,
       process_conformance_generated_at: sources.process_conformance?.generated_at || null,
+      vendor_rollup_as_of: sources.vendor_rollups?.as_of || null,
       methods: [
         "agency_canonical_v1",
         "publisher_certification_record_v1",

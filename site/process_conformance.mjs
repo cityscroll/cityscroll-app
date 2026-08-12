@@ -945,7 +945,7 @@ export function buildProcessConformanceLookup({
 }
 
 /** Compact HTML for constellation embedding (mandates conformance section). */
-export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
+export function renderMandatesConformanceSection(view) {
   if (!view) return "";
   const counts = view.counts || {};
   if (!(counts.observed > 0)) return "";
@@ -959,7 +959,10 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
     counts.on_track > 0 ? `${counts.on_track} on track` : null,
   ].filter(Boolean).join(" · ") || "linked";
 
-  const items = publicItems.slice(0, limit);
+  // The preview is bounded by the scroll container below, not by dropping
+  // records. Counts, evidence labels, source-law links, and graph neighbors
+  // therefore remain complete in the accessible DOM.
+  const items = publicItems;
   const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
     rules_browse_href: view.rules_browse_href,
     meetings_browse_href: view.meetings_browse_href,
@@ -1011,15 +1014,16 @@ export function renderMandatesConformanceSection(view, { limit = 12 } = {}) {
     escape: esc,
   });
   const share = view.share_path
-    ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Share this mandates view</a>`
+    ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Open all mandates</a>`
     : "";
   const actions = [neighborChrome, share].filter(Boolean).join("");
 
   const copy = view.copy || view.honesty || CONFORMANCE_COPY;
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
-    <h2>Mandates · expected vs evidence <span class="muted node-muted">(${esc(statusLine)})</span></h2>
+    <h2 id="mandates-conformance-heading">Mandates · expected vs evidence <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
-    ${list}
+    <p class="mandates-scroll-affordance" id="mandates-scroll-help">Scroll to view all mandates</p>
+    <div class="mandates-conformance-scroll" role="region" tabindex="0" aria-labelledby="mandates-conformance-heading" aria-describedby="mandates-scroll-help">${list}</div>
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
   </section>`;
 }
@@ -1049,5 +1053,24 @@ main:not(:has(#mandates-conformance)) a[href$="#mandates-conformance"] {
 }
 .mandates-conformance .mandate-conformance-item .node-record-main {
   line-height: 1.45;
+}
+.mandates-conformance-scroll {
+  block-size: 28rem;
+  max-block-size: 28rem;
+  overflow-y: auto;
+  padding: 0.2rem;
+  border: 1px solid var(--color-border, #c8c8c8);
+  border-radius: var(--radius-sm, 6px);
+  scrollbar-gutter: stable;
+}
+.mandates-conformance-scroll:focus-visible {
+  outline: 3px solid var(--color-action, #0b57d0);
+  outline-offset: 3px;
+}
+.mandates-scroll-affordance {
+  margin: 0 0 0.5rem;
+  color: var(--color-text-muted, #555);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 `;
