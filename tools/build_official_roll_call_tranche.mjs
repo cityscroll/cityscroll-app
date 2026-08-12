@@ -112,7 +112,8 @@ function voteLikely(item) {
 }
 
 function fieldText(value) {
-  return value === false || value == null ? "" : CLEAN(value);
+  const text = value === false || value == null ? "" : CLEAN(value);
+  return /^(false|no|0|null|undefined)$/i.test(text) ? "" : text;
 }
 
 function stratumForDate(value) {
