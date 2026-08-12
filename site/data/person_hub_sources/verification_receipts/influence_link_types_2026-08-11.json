@@ -1,0 +1,42 @@
+{
+  "schema": "cityscroll.influence_link_types_verification.v1",
+  "observed_on": "2026-08-11",
+  "capability_id": "cg-v2-influence-link-types",
+  "depends_on": {
+    "receipt": "site/data/person_hub_sources/verification_receipts/person_hub_influence_2026-08-11.json",
+    "lobby": {
+      "usefulness": 0.9617,
+      "precision": 1.0,
+      "edge_count": 2440,
+      "lookup": "site/data/official_lobby_influence_lookup.json"
+    },
+    "cfb": {
+      "usefulness": 0.4907,
+      "precision": 1.0,
+      "edge_count": 1398,
+      "lookup": "site/data/official_cfb_influence_lookup.json"
+    }
+  },
+  "registry": {
+    "links_registered": [
+      "lobby_targets_official",
+      "campaign_contribution_to_official"
+    ],
+    "grounding": "built",
+    "product_edge_aliases": {
+      "lobbied_by": "lobby_targets_official",
+      "campaign_contribution": "campaign_contribution_to_official"
+    }
+  },
+  "gates": {
+    "lobby_usefulness_cleared": true,
+    "lobby_precision_cleared": true,
+    "cfb_usefulness_cleared": true,
+    "cfb_precision_cleared": true,
+    "promote_registry": true
+  },
+  "notes": [
+    "No new collector — promotion catalogs already-promoted person-hub influence lookups.",
+    "Exact unique person-name keys only; no fuzzy invent."
+  ]
+}

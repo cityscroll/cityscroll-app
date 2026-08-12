@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
   "version": "0.4.0",
-  "generated_note": "Civic Graph catalog (object–link–action). Catalog only — no production writer or public route. Each object/link carries grounding built|partial|gap from the measured existence matrix. Characterization imports live allowlists and fails if a code type is missing here.",
+  "generated_note": "Civic Graph catalog (object\u2013link\u2013action). Catalog only \u2014 no production writer or public route. Each object/link carries grounding built|partial|gap from the measured existence matrix. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
     "civic_time": "worker/src/lib/civic_time.mjs",
@@ -602,7 +602,7 @@
       "status": "registered",
       "from": "contract",
       "to": "payment",
-      "reason": "Contract→payment edge from retained Checkbook Spending rows joined by exact contract_id (host retention + request-time dual-write). Kill sample 2026-08-11: 22/50 seed contracts retained ≥1 payment (44%), precision 31/31 (100%). Product edge name payment_on_contract aliases this link on cross-domain money objects.",
+      "reason": "Contract\u2192payment edge from retained Checkbook Spending rows joined by exact contract_id (host retention + request-time dual-write). Kill sample 2026-08-11: 22/50 seed contracts retained \u22651 payment (44%), precision 31/31 (100%). Product edge name payment_on_contract aliases this link on cross-domain money objects.",
       "backing": [
         "source_records",
         "checkbook_spending_payment_retention",
@@ -751,7 +751,7 @@
       "grounding": "partial",
       "from": "notice",
       "to": "meeting",
-      "reason": "Council notice→Legistar event join is live in meeting-outcomes but not a shared link-type id.",
+      "reason": "Council notice\u2192Legistar event join is live in meeting-outcomes but not a shared link-type id.",
       "backing": [
         "meeting_outcomes",
         "legistar_join"
@@ -808,6 +808,34 @@
         "entity_intelligence"
       ],
       "label": "Named franchisee"
+    },
+    {
+      "id": "lobby_targets_official",
+      "status": "registered",
+      "from": "vendor",
+      "to": "official",
+      "reason": "eLobbyist client org \u2192 Council official via exact unique person-name keys. Kill sample usefulness 96.17%, precision 100%; 2,440 promoted edges on official_lobby_influence_lookup.",
+      "backing": [
+        "official_lobby_influence_lookup",
+        "person_hub_lookup",
+        "source:fmf3-knd8"
+      ],
+      "label": "Lobby targets official",
+      "grounding": "built"
+    },
+    {
+      "id": "campaign_contribution_to_official",
+      "status": "registered",
+      "from": "donor",
+      "to": "official",
+      "reason": "CFB campaign contribution recipient \u2192 Council official via exact unique person-name keys. Kill sample usefulness 49.07% of distinct recipients, precision 100%; 1,398 promoted edges on official_cfb_influence_lookup. Donor is a display-side party, not a first-class object type.",
+      "backing": [
+        "official_cfb_influence_lookup",
+        "person_hub_lookup",
+        "source:rjkp-yttg"
+      ],
+      "label": "Campaign contribution to official",
+      "grounding": "built"
     }
   ],
   "event_kinds": [
@@ -1661,7 +1689,7 @@
   "civic_graph": {
     "name": "Civic Graph",
     "schema": "cityscroll.ontology.registry.v0",
-    "description": "Unified object–link–action registry for CityScroll civic entities. Identity (ER type families) is the link-not-merge layer, not the whole graph. Evaluation flywheel measures coverage, agreement, actionability, and grounding.",
+    "description": "Unified object\u2013link\u2013action registry for CityScroll civic entities. Identity (ER type families) is the link-not-merge layer, not the whole graph. Evaluation flywheel measures coverage, agreement, actionability, and grounding.",
     "grounding_states": [
       "built",
       "partial",

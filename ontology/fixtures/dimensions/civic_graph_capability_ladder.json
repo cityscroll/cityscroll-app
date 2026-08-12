@@ -2,7 +2,7 @@
   "schema": "cityscroll.civic_graph_capability_ladder.v1",
   "observed_at": "2026-08-11",
   "policy_version": "v0",
-  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps \u2014 those live under coverage dimension. Re-measured 2026-08-11 after person-hub dual-write (#798) and mandate densify (#799): mandate observed_count>0 quiets report/rule v3 cards; backlinks 7 still <10 so contract card remains open. paid_under registry + payment grounding promoted (cg-v1-paid-under-registry); payment_row_surface_shipped=true after Follow-the-Dollars check-level rows (cg-v1-payment-row-surface). Official walk surface shipped (cg-v2-official-walk-surface) without growing home.cold wire.",
+  "note": "Measured Civic Graph capability ladder. ontology-enrichment emits multi-flywheel cards when thresholds fail. Do not hand-duplicate metric-driven coverage cards already emitted for CFB/eLobbyist dual-write gaps \u2014 those live under coverage dimension. Re-measured 2026-08-11 after person-hub dual-write (#798) and mandate densify (#799): mandate observed_count>0 quiets report/rule v3 cards; backlinks 7 still <10 so contract card remains open. paid_under registry + payment grounding promoted (cg-v1-paid-under-registry); payment_row_surface_shipped=true after Follow-the-Dollars check-level rows (cg-v1-payment-row-surface). Official walk surface shipped (cg-v2-official-walk-surface) without growing home.cold wire. Lobby + CFB influence link types cataloged (cg-v2-influence-link-types).",
   "already_in_flywheel": [
     {
       "id": "crol-list/mf-coverage-source-records-not-declared-cfb-campaign-contributions",
@@ -56,6 +56,12 @@
       "role": "v1 FIXED \u2014 Follow-the-Dollars payment rows surface",
       "dimension": "ontology-enrichment",
       "status": "fixed"
+    },
+    {
+      "id": "crol-list/mf-ontology-enrichment-cg-v2-influence-link-types",
+      "role": "v2 FIXED \u2014 lobby_targets_official + campaign_contribution_to_official registered",
+      "dimension": "ontology-enrichment",
+      "status": "fixed"
     }
   ],
   "metrics": {
@@ -86,10 +92,11 @@
       "cfb_person_count": 59,
       "cfb_usefulness": 0.4907,
       "cfb_precision": 1.0,
-      "registry_has_lobby_link_type": false,
-      "registry_has_cfb_link_type": false,
+      "registry_has_lobby_link_type": true,
+      "registry_has_cfb_link_type": true,
       "receipt": "site/data/person_hub_sources/verification_receipts/person_hub_influence_2026-08-11.json",
-      "official_walk_surface_shipped": true
+      "official_walk_surface_shipped": true,
+      "registry_receipt": "site/data/person_hub_sources/verification_receipts/influence_link_types_2026-08-11.json"
     },
     "votes": {
       "person_count": 19,
