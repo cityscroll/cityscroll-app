@@ -74,6 +74,10 @@ import {
   agencyBrowseRowObject,
   buildAgencyBrowseContract,
 } from "./agency_browse_contract.mjs";
+import {
+  edgeRelationLabel,
+  normalizeEdgeSummaryRecords,
+} from "./edge_summary.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -739,6 +743,66 @@ function categoryFromDomain(
 }
 
 /**
+ * Convert category read-model totals into the shared typed edge inventory.
+ * An un-ingested category is unknown, not zero; hrefs still point to the
+ * existing scoped destination so a reader can inspect the bounded surface.
+ */
+export function buildAgencyEdgeSummary(viewOrCategories, options = {}) {
+  const categories = Array.isArray(viewOrCategories)
+    ? viewOrCategories
+    : (viewOrCategories?.categories || []);
+  const sourceId = options.source_id
+    ?? viewOrCategories?.canonical_id
+    ?? viewOrCategories?.id
+    ?? null;
+  const sourceKind = options.source_kind || "agency";
+  return normalizeEdgeSummaryRecords(categories.map((category) => {
+    const state = category.status === "matched"
+      ? "matched"
+      : category.status === "empty"
+        ? "empty"
+        : "unknown";
+    const count = state === "unknown"
+      ? null
+      : (Number.isInteger(Number(category.count)) && Number(category.count) >= 0 ? Number(category.count) : null);
+    const href = category.view_all_href
+      || (category.browse_facet && sourceId
+        ? agencyCategoryBrowseHref(sourceId, category.id, {
+          mode: category.universe === "open" ? "open" : "",
+          asOf: category.as_of || "",
+        })
+        : null);
+    const targetKind = category.id === "vendors"
+      ? "vendor"
+      : category.id === "obligations"
+        ? "mandate"
+        : category.id === "staffing"
+          ? "exam"
+          : category.id === "meetings"
+            ? "meeting"
+            : category.id === "rules" ? "rule" : "contract";
+    return {
+      source_kind: sourceKind,
+      source_id: sourceId,
+      edge_type: category.relation || null,
+      label: `${category.label || targetKind}: ${edgeRelationLabel(category.relation || "related_records")}`,
+      target_kind: targetKind,
+      target_name: category.label || null,
+      count,
+      state,
+      href,
+      scope: {
+        facet: category.browse_facet || null,
+        universe: category.universe || null,
+        mode: category.universe === "open" ? "open" : null,
+        entity_ref: sourceId ? `agency:id:${sourceId}` : null,
+      },
+      as_of: category.as_of || null,
+    };
+  }), { source_kind: sourceKind, source_id: sourceId });
+}
+
+/**
  * Build one agency constellation view from committed materializations.
  * @param {string} idOrName
  * @param {{ intelligence?: object, certification?: object, obligations?: object, staffing_exams?: object|Array, staffing_exam_numbers?: Set|Array, cross_spine_gate?: object, generated_at?: string }} sources
@@ -838,6 +902,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         meetings_domain: sources.meetings_domain,
       },
     ));
+  const edgeSummary = buildAgencyEdgeSummary({ categories, canonical_id: identity.canonical_id });
 
   const matched = categories.filter((category) => category.status === "matched").length;
   const claims = categories.flatMap((category) =>
@@ -949,6 +1014,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     display_name: identity.canonical_name,
     canonical_id: identity.canonical_id,
     categories,
+    edge_summary: edgeSummary,
     claims: allClaims,
     mandates_conformance: conformanceView,
     mandates_rules: mandatesRules,

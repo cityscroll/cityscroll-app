@@ -7,6 +7,7 @@ import {
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { constellationLink } from "./affordance_grammar.mjs";
+import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
 
 const GROUPS = Object.freeze([
   { id: "awards", label: "Awards", domain: "money", kind: "award", surface: "money", mode: "award" },
@@ -123,6 +124,10 @@ export function vendorFootprintModel(response = {}) {
       const scopeCount = Number.isInteger(explicit.scope_count)
         ? explicit.scope_count
         : Math.max(confirmedCount, mentionCount);
+      const denominator = footprint.summary?.section_denominators?.[group.id] || null;
+      const edgeState = denominator?.status === "unknown" && scopeCount === 0
+        ? "unknown"
+        : scopeCount > 0 ? "matched" : "empty";
       const query = response.root.stem || response.root.display_name || "";
       return {
         ...group,
@@ -130,6 +135,9 @@ export function vendorFootprintModel(response = {}) {
         confirmed_count: confirmedCount,
         mention_count: Math.max(confirmedCount, mentionCount),
         scope_count: Math.max(confirmedCount, scopeCount),
+        edge_state: edgeState,
+        edge_count: edgeState === "unknown" ? null : Math.max(confirmedCount, scopeCount),
+        denominator_status: denominator?.status || null,
         href: scopeCount > 0
           ? vendorFootprintScopeHref(response.root.ref, group.id, {
               query,
@@ -156,6 +164,19 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
   const model = vendorFootprintModel(response);
   if (!model) return "";
   const displayName = model.root.display_name || model.root.stem || "this vendor";
+  const edgeSummary = normalizeEdgeSummaryRecords(model.groups.map((group) => ({
+    source_kind: "vendor",
+    source_id: model.root.ref || null,
+    edge_type: "linked_to_vendor",
+    label: `${group.label}: linked to this vendor`,
+    target_kind: group.id === "awards" ? "award" : group.id === "contracts" ? "contract" : group.id === "payments" ? "payment" : group.id,
+    target_name: group.label,
+    count: group.edge_count,
+    state: group.edge_state,
+    href: group.href || null,
+    scope: { domain: group.domain, object_kind: group.kind || null },
+    as_of: model.provenance?.observed_on || null,
+  })));
   const sections = model.groups.filter((group) => group.scope_count > 0).map((group) => {
     const confirmed = group.confirmed_count;
     const mentions = group.mention_count;
@@ -181,10 +202,11 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
       ${viewAll}
     </section>`;
   }).join("");
-  if (!sections) return "";
+  if (!sections && !edgeSummary.some((record) => record.href)) return "";
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
+    ${renderEdgeSummaryRail(edgeSummary.filter((record) => record.href), { heading: "Vendor connections", id: "vendor-edge-summary-heading", className: "vendor-edge-summary" })}
     <div class="ei-domains">${sections}</div>
   </div>`;
 }

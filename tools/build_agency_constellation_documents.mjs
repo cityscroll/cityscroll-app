@@ -380,6 +380,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
           method: category.method,
         }]),
       ),
+      edge_summary: view.edge_summary,
       top_vendors: view.categories.find((category) => category.id === "vendors")?.items || [],
     };
     documents.push([
