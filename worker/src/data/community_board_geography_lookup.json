@@ -95,6 +95,46 @@
       "name": "Bronx Community Board 1",
       "properties": {
         "body_id": "bronx-cb-01",
+        "identity": {
+          "body_id": "bronx-cb-01",
+          "boundary": "community-board:bronx-cb-01",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-01",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-01",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 1,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -128,6 +168,46 @@
       "name": "Bronx Community Board 2",
       "properties": {
         "body_id": "bronx-cb-02",
+        "identity": {
+          "body_id": "bronx-cb-02",
+          "boundary": "community-board:bronx-cb-02",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-02",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-02",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 2,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -161,6 +241,46 @@
       "name": "Bronx Community Board 3",
       "properties": {
         "body_id": "bronx-cb-03",
+        "identity": {
+          "body_id": "bronx-cb-03",
+          "boundary": "community-board:bronx-cb-03",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-03",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-03",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 3,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -194,6 +314,46 @@
       "name": "Bronx Community Board 4",
       "properties": {
         "body_id": "bronx-cb-04",
+        "identity": {
+          "body_id": "bronx-cb-04",
+          "boundary": "community-board:bronx-cb-04",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-04",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-04",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 4,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -227,6 +387,46 @@
       "name": "Bronx Community Board 5",
       "properties": {
         "body_id": "bronx-cb-05",
+        "identity": {
+          "body_id": "bronx-cb-05",
+          "boundary": "community-board:bronx-cb-05",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-05",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-05",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 5,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -260,6 +460,46 @@
       "name": "Bronx Community Board 6",
       "properties": {
         "body_id": "bronx-cb-06",
+        "identity": {
+          "body_id": "bronx-cb-06",
+          "boundary": "community-board:bronx-cb-06",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-06",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-06",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 6,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -293,6 +533,46 @@
       "name": "Bronx Community Board 7",
       "properties": {
         "body_id": "bronx-cb-07",
+        "identity": {
+          "body_id": "bronx-cb-07",
+          "boundary": "community-board:bronx-cb-07",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-07",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-07",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 7,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -326,6 +606,46 @@
       "name": "Bronx Community Board 8",
       "properties": {
         "body_id": "bronx-cb-08",
+        "identity": {
+          "body_id": "bronx-cb-08",
+          "boundary": "community-board:bronx-cb-08",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-08",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-08",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 8,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -359,6 +679,46 @@
       "name": "Bronx Community Board 9",
       "properties": {
         "body_id": "bronx-cb-09",
+        "identity": {
+          "body_id": "bronx-cb-09",
+          "boundary": "community-board:bronx-cb-09",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-09",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-09",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 9,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -392,6 +752,46 @@
       "name": "Bronx Community Board 10",
       "properties": {
         "body_id": "bronx-cb-10",
+        "identity": {
+          "body_id": "bronx-cb-10",
+          "boundary": "community-board:bronx-cb-10",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-10",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-10",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 10,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -425,6 +825,46 @@
       "name": "Bronx Community Board 11",
       "properties": {
         "body_id": "bronx-cb-11",
+        "identity": {
+          "body_id": "bronx-cb-11",
+          "boundary": "community-board:bronx-cb-11",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-11",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-11",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 11,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -458,6 +898,46 @@
       "name": "Bronx Community Board 12",
       "properties": {
         "body_id": "bronx-cb-12",
+        "identity": {
+          "body_id": "bronx-cb-12",
+          "boundary": "community-board:bronx-cb-12",
+          "projections": {
+            "place": {
+              "key": "community-board:bronx-cb-12",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:bronx-cb-12",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Bronx",
         "district": 12,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -491,6 +971,46 @@
       "name": "Brooklyn Community Board 1",
       "properties": {
         "body_id": "brooklyn-cb-01",
+        "identity": {
+          "body_id": "brooklyn-cb-01",
+          "boundary": "community-board:brooklyn-cb-01",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-01",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-01",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 1,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -524,6 +1044,46 @@
       "name": "Brooklyn Community Board 2",
       "properties": {
         "body_id": "brooklyn-cb-02",
+        "identity": {
+          "body_id": "brooklyn-cb-02",
+          "boundary": "community-board:brooklyn-cb-02",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-02",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-02",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 2,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -557,6 +1117,46 @@
       "name": "Brooklyn Community Board 3",
       "properties": {
         "body_id": "brooklyn-cb-03",
+        "identity": {
+          "body_id": "brooklyn-cb-03",
+          "boundary": "community-board:brooklyn-cb-03",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-03",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-03",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 3,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -590,6 +1190,46 @@
       "name": "Brooklyn Community Board 4",
       "properties": {
         "body_id": "brooklyn-cb-04",
+        "identity": {
+          "body_id": "brooklyn-cb-04",
+          "boundary": "community-board:brooklyn-cb-04",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-04",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-04",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 4,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -623,6 +1263,46 @@
       "name": "Brooklyn Community Board 5",
       "properties": {
         "body_id": "brooklyn-cb-05",
+        "identity": {
+          "body_id": "brooklyn-cb-05",
+          "boundary": "community-board:brooklyn-cb-05",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-05",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-05",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 5,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -656,6 +1336,46 @@
       "name": "Brooklyn Community Board 6",
       "properties": {
         "body_id": "brooklyn-cb-06",
+        "identity": {
+          "body_id": "brooklyn-cb-06",
+          "boundary": "community-board:brooklyn-cb-06",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-06",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-06",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 6,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -689,6 +1409,46 @@
       "name": "Brooklyn Community Board 7",
       "properties": {
         "body_id": "brooklyn-cb-07",
+        "identity": {
+          "body_id": "brooklyn-cb-07",
+          "boundary": "community-board:brooklyn-cb-07",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-07",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-07",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 7,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -722,6 +1482,46 @@
       "name": "Brooklyn Community Board 8",
       "properties": {
         "body_id": "brooklyn-cb-08",
+        "identity": {
+          "body_id": "brooklyn-cb-08",
+          "boundary": "community-board:brooklyn-cb-08",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-08",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-08",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 8,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -755,6 +1555,46 @@
       "name": "Brooklyn Community Board 9",
       "properties": {
         "body_id": "brooklyn-cb-09",
+        "identity": {
+          "body_id": "brooklyn-cb-09",
+          "boundary": "community-board:brooklyn-cb-09",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-09",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-09",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 9,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -788,6 +1628,46 @@
       "name": "Brooklyn Community Board 10",
       "properties": {
         "body_id": "brooklyn-cb-10",
+        "identity": {
+          "body_id": "brooklyn-cb-10",
+          "boundary": "community-board:brooklyn-cb-10",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-10",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-10",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 10,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -821,6 +1701,46 @@
       "name": "Brooklyn Community Board 11",
       "properties": {
         "body_id": "brooklyn-cb-11",
+        "identity": {
+          "body_id": "brooklyn-cb-11",
+          "boundary": "community-board:brooklyn-cb-11",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-11",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-11",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 11,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -854,6 +1774,46 @@
       "name": "Brooklyn Community Board 12",
       "properties": {
         "body_id": "brooklyn-cb-12",
+        "identity": {
+          "body_id": "brooklyn-cb-12",
+          "boundary": "community-board:brooklyn-cb-12",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-12",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-12",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 12,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -887,6 +1847,46 @@
       "name": "Brooklyn Community Board 13",
       "properties": {
         "body_id": "brooklyn-cb-13",
+        "identity": {
+          "body_id": "brooklyn-cb-13",
+          "boundary": "community-board:brooklyn-cb-13",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-13",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-13",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 13,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -920,6 +1920,46 @@
       "name": "Brooklyn Community Board 14",
       "properties": {
         "body_id": "brooklyn-cb-14",
+        "identity": {
+          "body_id": "brooklyn-cb-14",
+          "boundary": "community-board:brooklyn-cb-14",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-14",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-14",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 14,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -953,6 +1993,46 @@
       "name": "Brooklyn Community Board 15",
       "properties": {
         "body_id": "brooklyn-cb-15",
+        "identity": {
+          "body_id": "brooklyn-cb-15",
+          "boundary": "community-board:brooklyn-cb-15",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-15",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-15",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 15,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -986,6 +2066,46 @@
       "name": "Brooklyn Community Board 16",
       "properties": {
         "body_id": "brooklyn-cb-16",
+        "identity": {
+          "body_id": "brooklyn-cb-16",
+          "boundary": "community-board:brooklyn-cb-16",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-16",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-16",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 16,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -1019,6 +2139,46 @@
       "name": "Brooklyn Community Board 17",
       "properties": {
         "body_id": "brooklyn-cb-17",
+        "identity": {
+          "body_id": "brooklyn-cb-17",
+          "boundary": "community-board:brooklyn-cb-17",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-17",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-17",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 17,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -1052,6 +2212,46 @@
       "name": "Brooklyn Community Board 18",
       "properties": {
         "body_id": "brooklyn-cb-18",
+        "identity": {
+          "body_id": "brooklyn-cb-18",
+          "boundary": "community-board:brooklyn-cb-18",
+          "projections": {
+            "place": {
+              "key": "community-board:brooklyn-cb-18",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:brooklyn-cb-18",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Brooklyn",
         "district": 18,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -1085,6 +2285,46 @@
       "name": "Manhattan Community Board 1",
       "properties": {
         "body_id": "manhattan-cb-01",
+        "identity": {
+          "body_id": "manhattan-cb-01",
+          "boundary": "community-board:manhattan-cb-01",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-01",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-01",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 1,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1118,6 +2358,46 @@
       "name": "Manhattan Community Board 2",
       "properties": {
         "body_id": "manhattan-cb-02",
+        "identity": {
+          "body_id": "manhattan-cb-02",
+          "boundary": "community-board:manhattan-cb-02",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-02",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-02",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 2,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1151,6 +2431,46 @@
       "name": "Manhattan Community Board 3",
       "properties": {
         "body_id": "manhattan-cb-03",
+        "identity": {
+          "body_id": "manhattan-cb-03",
+          "boundary": "community-board:manhattan-cb-03",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-03",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-03",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 3,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1184,6 +2504,46 @@
       "name": "Manhattan Community Board 4",
       "properties": {
         "body_id": "manhattan-cb-04",
+        "identity": {
+          "body_id": "manhattan-cb-04",
+          "boundary": "community-board:manhattan-cb-04",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-04",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-04",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 4,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1217,6 +2577,46 @@
       "name": "Manhattan Community Board 5",
       "properties": {
         "body_id": "manhattan-cb-05",
+        "identity": {
+          "body_id": "manhattan-cb-05",
+          "boundary": "community-board:manhattan-cb-05",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-05",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-05",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 5,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1250,6 +2650,46 @@
       "name": "Manhattan Community Board 6",
       "properties": {
         "body_id": "manhattan-cb-06",
+        "identity": {
+          "body_id": "manhattan-cb-06",
+          "boundary": "community-board:manhattan-cb-06",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-06",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-06",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 6,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1283,6 +2723,46 @@
       "name": "Manhattan Community Board 7",
       "properties": {
         "body_id": "manhattan-cb-07",
+        "identity": {
+          "body_id": "manhattan-cb-07",
+          "boundary": "community-board:manhattan-cb-07",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-07",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-07",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 7,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1316,6 +2796,46 @@
       "name": "Manhattan Community Board 8",
       "properties": {
         "body_id": "manhattan-cb-08",
+        "identity": {
+          "body_id": "manhattan-cb-08",
+          "boundary": "community-board:manhattan-cb-08",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-08",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-08",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 8,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1349,6 +2869,46 @@
       "name": "Manhattan Community Board 9",
       "properties": {
         "body_id": "manhattan-cb-09",
+        "identity": {
+          "body_id": "manhattan-cb-09",
+          "boundary": "community-board:manhattan-cb-09",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-09",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-09",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 9,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1382,6 +2942,46 @@
       "name": "Manhattan Community Board 10",
       "properties": {
         "body_id": "manhattan-cb-10",
+        "identity": {
+          "body_id": "manhattan-cb-10",
+          "boundary": "community-board:manhattan-cb-10",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-10",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-10",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 10,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1415,6 +3015,46 @@
       "name": "Manhattan Community Board 11",
       "properties": {
         "body_id": "manhattan-cb-11",
+        "identity": {
+          "body_id": "manhattan-cb-11",
+          "boundary": "community-board:manhattan-cb-11",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-11",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-11",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 11,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1448,6 +3088,46 @@
       "name": "Manhattan Community Board 12",
       "properties": {
         "body_id": "manhattan-cb-12",
+        "identity": {
+          "body_id": "manhattan-cb-12",
+          "boundary": "community-board:manhattan-cb-12",
+          "projections": {
+            "place": {
+              "key": "community-board:manhattan-cb-12",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:manhattan-cb-12",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Manhattan",
         "district": 12,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -1481,6 +3161,46 @@
       "name": "Queens Community Board 1",
       "properties": {
         "body_id": "queens-cb-01",
+        "identity": {
+          "body_id": "queens-cb-01",
+          "boundary": "community-board:queens-cb-01",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-01",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-01",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 1,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1514,6 +3234,46 @@
       "name": "Queens Community Board 2",
       "properties": {
         "body_id": "queens-cb-02",
+        "identity": {
+          "body_id": "queens-cb-02",
+          "boundary": "community-board:queens-cb-02",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-02",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-02",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 2,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1547,6 +3307,46 @@
       "name": "Queens Community Board 3",
       "properties": {
         "body_id": "queens-cb-03",
+        "identity": {
+          "body_id": "queens-cb-03",
+          "boundary": "community-board:queens-cb-03",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-03",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-03",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 3,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1580,6 +3380,46 @@
       "name": "Queens Community Board 4",
       "properties": {
         "body_id": "queens-cb-04",
+        "identity": {
+          "body_id": "queens-cb-04",
+          "boundary": "community-board:queens-cb-04",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-04",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-04",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 4,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1613,6 +3453,46 @@
       "name": "Queens Community Board 5",
       "properties": {
         "body_id": "queens-cb-05",
+        "identity": {
+          "body_id": "queens-cb-05",
+          "boundary": "community-board:queens-cb-05",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-05",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-05",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 5,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1646,6 +3526,46 @@
       "name": "Queens Community Board 6",
       "properties": {
         "body_id": "queens-cb-06",
+        "identity": {
+          "body_id": "queens-cb-06",
+          "boundary": "community-board:queens-cb-06",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-06",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-06",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 6,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1679,6 +3599,46 @@
       "name": "Queens Community Board 7",
       "properties": {
         "body_id": "queens-cb-07",
+        "identity": {
+          "body_id": "queens-cb-07",
+          "boundary": "community-board:queens-cb-07",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-07",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-07",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 7,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1712,6 +3672,46 @@
       "name": "Queens Community Board 8",
       "properties": {
         "body_id": "queens-cb-08",
+        "identity": {
+          "body_id": "queens-cb-08",
+          "boundary": "community-board:queens-cb-08",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-08",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-08",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 8,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1745,6 +3745,46 @@
       "name": "Queens Community Board 9",
       "properties": {
         "body_id": "queens-cb-09",
+        "identity": {
+          "body_id": "queens-cb-09",
+          "boundary": "community-board:queens-cb-09",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-09",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-09",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 9,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1778,6 +3818,46 @@
       "name": "Queens Community Board 10",
       "properties": {
         "body_id": "queens-cb-10",
+        "identity": {
+          "body_id": "queens-cb-10",
+          "boundary": "community-board:queens-cb-10",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-10",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-10",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 10,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1811,6 +3891,46 @@
       "name": "Queens Community Board 11",
       "properties": {
         "body_id": "queens-cb-11",
+        "identity": {
+          "body_id": "queens-cb-11",
+          "boundary": "community-board:queens-cb-11",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-11",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-11",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 11,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1844,6 +3964,46 @@
       "name": "Queens Community Board 12",
       "properties": {
         "body_id": "queens-cb-12",
+        "identity": {
+          "body_id": "queens-cb-12",
+          "boundary": "community-board:queens-cb-12",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-12",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-12",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 12,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1877,6 +4037,46 @@
       "name": "Queens Community Board 13",
       "properties": {
         "body_id": "queens-cb-13",
+        "identity": {
+          "body_id": "queens-cb-13",
+          "boundary": "community-board:queens-cb-13",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-13",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-13",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 13,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1910,6 +4110,46 @@
       "name": "Queens Community Board 14",
       "properties": {
         "body_id": "queens-cb-14",
+        "identity": {
+          "body_id": "queens-cb-14",
+          "boundary": "community-board:queens-cb-14",
+          "projections": {
+            "place": {
+              "key": "community-board:queens-cb-14",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:queens-cb-14",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Queens",
         "district": 14,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -1943,6 +4183,46 @@
       "name": "Staten Island Community Board 1",
       "properties": {
         "body_id": "staten-island-cb-01",
+        "identity": {
+          "body_id": "staten-island-cb-01",
+          "boundary": "community-board:staten-island-cb-01",
+          "projections": {
+            "place": {
+              "key": "community-board:staten-island-cb-01",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:staten-island-cb-01",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Staten Island",
         "district": 1,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
@@ -1976,6 +4256,46 @@
       "name": "Staten Island Community Board 2",
       "properties": {
         "body_id": "staten-island-cb-02",
+        "identity": {
+          "body_id": "staten-island-cb-02",
+          "boundary": "community-board:staten-island-cb-02",
+          "projections": {
+            "place": {
+              "key": "community-board:staten-island-cb-02",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:staten-island-cb-02",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Staten Island",
         "district": 2,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
@@ -2009,6 +4329,46 @@
       "name": "Staten Island Community Board 3",
       "properties": {
         "body_id": "staten-island-cb-03",
+        "identity": {
+          "body_id": "staten-island-cb-03",
+          "boundary": "community-board:staten-island-cb-03",
+          "projections": {
+            "place": {
+              "key": "community-board:staten-island-cb-03",
+              "role": "place",
+              "family": "er:location",
+              "relation_families": [
+                "covers"
+              ]
+            },
+            "organization": {
+              "key": "community-board:staten-island-cb-03",
+              "role": "organization",
+              "relation_families": [
+                {
+                  "type": "has_member",
+                  "label": "Has member",
+                  "state": "unknown"
+                },
+                {
+                  "type": "member_of",
+                  "label": "Member of",
+                  "state": "unknown"
+                },
+                {
+                  "type": "hosts_meeting",
+                  "label": "Hosts meeting",
+                  "state": "unknown"
+                },
+                {
+                  "type": "issues_recommendation",
+                  "label": "Issues recommendation",
+                  "state": "unknown"
+                }
+              ]
+            }
+          }
+        },
         "borough": "Staten Island",
         "district": 3,
         "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
@@ -22146,6 +24506,46 @@
         "name": "Bronx Community Board 1",
         "properties": {
           "body_id": "bronx-cb-01",
+          "identity": {
+            "body_id": "bronx-cb-01",
+            "boundary": "community-board:bronx-cb-01",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-01",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-01",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 1,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22179,6 +24579,46 @@
         "name": "Bronx Community Board 2",
         "properties": {
           "body_id": "bronx-cb-02",
+          "identity": {
+            "body_id": "bronx-cb-02",
+            "boundary": "community-board:bronx-cb-02",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-02",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-02",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 2,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22212,6 +24652,46 @@
         "name": "Bronx Community Board 3",
         "properties": {
           "body_id": "bronx-cb-03",
+          "identity": {
+            "body_id": "bronx-cb-03",
+            "boundary": "community-board:bronx-cb-03",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-03",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-03",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 3,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22245,6 +24725,46 @@
         "name": "Bronx Community Board 4",
         "properties": {
           "body_id": "bronx-cb-04",
+          "identity": {
+            "body_id": "bronx-cb-04",
+            "boundary": "community-board:bronx-cb-04",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-04",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-04",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 4,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22278,6 +24798,46 @@
         "name": "Bronx Community Board 5",
         "properties": {
           "body_id": "bronx-cb-05",
+          "identity": {
+            "body_id": "bronx-cb-05",
+            "boundary": "community-board:bronx-cb-05",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-05",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-05",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 5,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22311,6 +24871,46 @@
         "name": "Bronx Community Board 6",
         "properties": {
           "body_id": "bronx-cb-06",
+          "identity": {
+            "body_id": "bronx-cb-06",
+            "boundary": "community-board:bronx-cb-06",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-06",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-06",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 6,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22344,6 +24944,46 @@
         "name": "Bronx Community Board 7",
         "properties": {
           "body_id": "bronx-cb-07",
+          "identity": {
+            "body_id": "bronx-cb-07",
+            "boundary": "community-board:bronx-cb-07",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-07",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-07",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 7,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22377,6 +25017,46 @@
         "name": "Bronx Community Board 8",
         "properties": {
           "body_id": "bronx-cb-08",
+          "identity": {
+            "body_id": "bronx-cb-08",
+            "boundary": "community-board:bronx-cb-08",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-08",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-08",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 8,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22410,6 +25090,46 @@
         "name": "Bronx Community Board 9",
         "properties": {
           "body_id": "bronx-cb-09",
+          "identity": {
+            "body_id": "bronx-cb-09",
+            "boundary": "community-board:bronx-cb-09",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-09",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-09",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 9,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22443,6 +25163,46 @@
         "name": "Bronx Community Board 10",
         "properties": {
           "body_id": "bronx-cb-10",
+          "identity": {
+            "body_id": "bronx-cb-10",
+            "boundary": "community-board:bronx-cb-10",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-10",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-10",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 10,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22476,6 +25236,46 @@
         "name": "Bronx Community Board 11",
         "properties": {
           "body_id": "bronx-cb-11",
+          "identity": {
+            "body_id": "bronx-cb-11",
+            "boundary": "community-board:bronx-cb-11",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-11",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-11",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 11,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22509,6 +25309,46 @@
         "name": "Bronx Community Board 12",
         "properties": {
           "body_id": "bronx-cb-12",
+          "identity": {
+            "body_id": "bronx-cb-12",
+            "boundary": "community-board:bronx-cb-12",
+            "projections": {
+              "place": {
+                "key": "community-board:bronx-cb-12",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:bronx-cb-12",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Bronx",
           "district": 12,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
@@ -22542,6 +25382,46 @@
         "name": "Brooklyn Community Board 1",
         "properties": {
           "body_id": "brooklyn-cb-01",
+          "identity": {
+            "body_id": "brooklyn-cb-01",
+            "boundary": "community-board:brooklyn-cb-01",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-01",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-01",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 1,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22575,6 +25455,46 @@
         "name": "Brooklyn Community Board 2",
         "properties": {
           "body_id": "brooklyn-cb-02",
+          "identity": {
+            "body_id": "brooklyn-cb-02",
+            "boundary": "community-board:brooklyn-cb-02",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-02",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-02",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 2,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22608,6 +25528,46 @@
         "name": "Brooklyn Community Board 3",
         "properties": {
           "body_id": "brooklyn-cb-03",
+          "identity": {
+            "body_id": "brooklyn-cb-03",
+            "boundary": "community-board:brooklyn-cb-03",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-03",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-03",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 3,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22641,6 +25601,46 @@
         "name": "Brooklyn Community Board 4",
         "properties": {
           "body_id": "brooklyn-cb-04",
+          "identity": {
+            "body_id": "brooklyn-cb-04",
+            "boundary": "community-board:brooklyn-cb-04",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-04",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-04",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 4,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22674,6 +25674,46 @@
         "name": "Brooklyn Community Board 5",
         "properties": {
           "body_id": "brooklyn-cb-05",
+          "identity": {
+            "body_id": "brooklyn-cb-05",
+            "boundary": "community-board:brooklyn-cb-05",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-05",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-05",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 5,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22707,6 +25747,46 @@
         "name": "Brooklyn Community Board 6",
         "properties": {
           "body_id": "brooklyn-cb-06",
+          "identity": {
+            "body_id": "brooklyn-cb-06",
+            "boundary": "community-board:brooklyn-cb-06",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-06",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-06",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 6,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22740,6 +25820,46 @@
         "name": "Brooklyn Community Board 7",
         "properties": {
           "body_id": "brooklyn-cb-07",
+          "identity": {
+            "body_id": "brooklyn-cb-07",
+            "boundary": "community-board:brooklyn-cb-07",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-07",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-07",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 7,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22773,6 +25893,46 @@
         "name": "Brooklyn Community Board 8",
         "properties": {
           "body_id": "brooklyn-cb-08",
+          "identity": {
+            "body_id": "brooklyn-cb-08",
+            "boundary": "community-board:brooklyn-cb-08",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-08",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-08",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 8,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22806,6 +25966,46 @@
         "name": "Brooklyn Community Board 9",
         "properties": {
           "body_id": "brooklyn-cb-09",
+          "identity": {
+            "body_id": "brooklyn-cb-09",
+            "boundary": "community-board:brooklyn-cb-09",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-09",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-09",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 9,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22839,6 +26039,46 @@
         "name": "Brooklyn Community Board 10",
         "properties": {
           "body_id": "brooklyn-cb-10",
+          "identity": {
+            "body_id": "brooklyn-cb-10",
+            "boundary": "community-board:brooklyn-cb-10",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-10",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-10",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 10,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22872,6 +26112,46 @@
         "name": "Brooklyn Community Board 11",
         "properties": {
           "body_id": "brooklyn-cb-11",
+          "identity": {
+            "body_id": "brooklyn-cb-11",
+            "boundary": "community-board:brooklyn-cb-11",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-11",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-11",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 11,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22905,6 +26185,46 @@
         "name": "Brooklyn Community Board 12",
         "properties": {
           "body_id": "brooklyn-cb-12",
+          "identity": {
+            "body_id": "brooklyn-cb-12",
+            "boundary": "community-board:brooklyn-cb-12",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-12",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-12",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 12,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22938,6 +26258,46 @@
         "name": "Brooklyn Community Board 13",
         "properties": {
           "body_id": "brooklyn-cb-13",
+          "identity": {
+            "body_id": "brooklyn-cb-13",
+            "boundary": "community-board:brooklyn-cb-13",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-13",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-13",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 13,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -22971,6 +26331,46 @@
         "name": "Brooklyn Community Board 14",
         "properties": {
           "body_id": "brooklyn-cb-14",
+          "identity": {
+            "body_id": "brooklyn-cb-14",
+            "boundary": "community-board:brooklyn-cb-14",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-14",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-14",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 14,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -23004,6 +26404,46 @@
         "name": "Brooklyn Community Board 15",
         "properties": {
           "body_id": "brooklyn-cb-15",
+          "identity": {
+            "body_id": "brooklyn-cb-15",
+            "boundary": "community-board:brooklyn-cb-15",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-15",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-15",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 15,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -23037,6 +26477,46 @@
         "name": "Brooklyn Community Board 16",
         "properties": {
           "body_id": "brooklyn-cb-16",
+          "identity": {
+            "body_id": "brooklyn-cb-16",
+            "boundary": "community-board:brooklyn-cb-16",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-16",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-16",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 16,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -23070,6 +26550,46 @@
         "name": "Brooklyn Community Board 17",
         "properties": {
           "body_id": "brooklyn-cb-17",
+          "identity": {
+            "body_id": "brooklyn-cb-17",
+            "boundary": "community-board:brooklyn-cb-17",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-17",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-17",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 17,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -23103,6 +26623,46 @@
         "name": "Brooklyn Community Board 18",
         "properties": {
           "body_id": "brooklyn-cb-18",
+          "identity": {
+            "body_id": "brooklyn-cb-18",
+            "boundary": "community-board:brooklyn-cb-18",
+            "projections": {
+              "place": {
+                "key": "community-board:brooklyn-cb-18",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:brooklyn-cb-18",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Brooklyn",
           "district": 18,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
@@ -23136,6 +26696,46 @@
         "name": "Manhattan Community Board 1",
         "properties": {
           "body_id": "manhattan-cb-01",
+          "identity": {
+            "body_id": "manhattan-cb-01",
+            "boundary": "community-board:manhattan-cb-01",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-01",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-01",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 1,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23169,6 +26769,46 @@
         "name": "Manhattan Community Board 2",
         "properties": {
           "body_id": "manhattan-cb-02",
+          "identity": {
+            "body_id": "manhattan-cb-02",
+            "boundary": "community-board:manhattan-cb-02",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-02",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-02",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 2,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23202,6 +26842,46 @@
         "name": "Manhattan Community Board 3",
         "properties": {
           "body_id": "manhattan-cb-03",
+          "identity": {
+            "body_id": "manhattan-cb-03",
+            "boundary": "community-board:manhattan-cb-03",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-03",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-03",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 3,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23235,6 +26915,46 @@
         "name": "Manhattan Community Board 4",
         "properties": {
           "body_id": "manhattan-cb-04",
+          "identity": {
+            "body_id": "manhattan-cb-04",
+            "boundary": "community-board:manhattan-cb-04",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-04",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-04",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 4,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23268,6 +26988,46 @@
         "name": "Manhattan Community Board 5",
         "properties": {
           "body_id": "manhattan-cb-05",
+          "identity": {
+            "body_id": "manhattan-cb-05",
+            "boundary": "community-board:manhattan-cb-05",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-05",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-05",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 5,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23301,6 +27061,46 @@
         "name": "Manhattan Community Board 6",
         "properties": {
           "body_id": "manhattan-cb-06",
+          "identity": {
+            "body_id": "manhattan-cb-06",
+            "boundary": "community-board:manhattan-cb-06",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-06",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-06",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 6,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23334,6 +27134,46 @@
         "name": "Manhattan Community Board 7",
         "properties": {
           "body_id": "manhattan-cb-07",
+          "identity": {
+            "body_id": "manhattan-cb-07",
+            "boundary": "community-board:manhattan-cb-07",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-07",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-07",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 7,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23367,6 +27207,46 @@
         "name": "Manhattan Community Board 8",
         "properties": {
           "body_id": "manhattan-cb-08",
+          "identity": {
+            "body_id": "manhattan-cb-08",
+            "boundary": "community-board:manhattan-cb-08",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-08",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-08",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 8,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23400,6 +27280,46 @@
         "name": "Manhattan Community Board 9",
         "properties": {
           "body_id": "manhattan-cb-09",
+          "identity": {
+            "body_id": "manhattan-cb-09",
+            "boundary": "community-board:manhattan-cb-09",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-09",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-09",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 9,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23433,6 +27353,46 @@
         "name": "Manhattan Community Board 10",
         "properties": {
           "body_id": "manhattan-cb-10",
+          "identity": {
+            "body_id": "manhattan-cb-10",
+            "boundary": "community-board:manhattan-cb-10",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-10",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-10",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 10,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23466,6 +27426,46 @@
         "name": "Manhattan Community Board 11",
         "properties": {
           "body_id": "manhattan-cb-11",
+          "identity": {
+            "body_id": "manhattan-cb-11",
+            "boundary": "community-board:manhattan-cb-11",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-11",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-11",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 11,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23499,6 +27499,46 @@
         "name": "Manhattan Community Board 12",
         "properties": {
           "body_id": "manhattan-cb-12",
+          "identity": {
+            "body_id": "manhattan-cb-12",
+            "boundary": "community-board:manhattan-cb-12",
+            "projections": {
+              "place": {
+                "key": "community-board:manhattan-cb-12",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:manhattan-cb-12",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Manhattan",
           "district": 12,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
@@ -23532,6 +27572,46 @@
         "name": "Queens Community Board 1",
         "properties": {
           "body_id": "queens-cb-01",
+          "identity": {
+            "body_id": "queens-cb-01",
+            "boundary": "community-board:queens-cb-01",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-01",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-01",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 1,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23565,6 +27645,46 @@
         "name": "Queens Community Board 2",
         "properties": {
           "body_id": "queens-cb-02",
+          "identity": {
+            "body_id": "queens-cb-02",
+            "boundary": "community-board:queens-cb-02",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-02",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-02",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 2,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23598,6 +27718,46 @@
         "name": "Queens Community Board 3",
         "properties": {
           "body_id": "queens-cb-03",
+          "identity": {
+            "body_id": "queens-cb-03",
+            "boundary": "community-board:queens-cb-03",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-03",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-03",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 3,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23631,6 +27791,46 @@
         "name": "Queens Community Board 4",
         "properties": {
           "body_id": "queens-cb-04",
+          "identity": {
+            "body_id": "queens-cb-04",
+            "boundary": "community-board:queens-cb-04",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-04",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-04",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 4,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23664,6 +27864,46 @@
         "name": "Queens Community Board 5",
         "properties": {
           "body_id": "queens-cb-05",
+          "identity": {
+            "body_id": "queens-cb-05",
+            "boundary": "community-board:queens-cb-05",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-05",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-05",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 5,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23697,6 +27937,46 @@
         "name": "Queens Community Board 6",
         "properties": {
           "body_id": "queens-cb-06",
+          "identity": {
+            "body_id": "queens-cb-06",
+            "boundary": "community-board:queens-cb-06",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-06",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-06",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 6,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23730,6 +28010,46 @@
         "name": "Queens Community Board 7",
         "properties": {
           "body_id": "queens-cb-07",
+          "identity": {
+            "body_id": "queens-cb-07",
+            "boundary": "community-board:queens-cb-07",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-07",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-07",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 7,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23763,6 +28083,46 @@
         "name": "Queens Community Board 8",
         "properties": {
           "body_id": "queens-cb-08",
+          "identity": {
+            "body_id": "queens-cb-08",
+            "boundary": "community-board:queens-cb-08",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-08",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-08",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 8,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23796,6 +28156,46 @@
         "name": "Queens Community Board 9",
         "properties": {
           "body_id": "queens-cb-09",
+          "identity": {
+            "body_id": "queens-cb-09",
+            "boundary": "community-board:queens-cb-09",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-09",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-09",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 9,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23829,6 +28229,46 @@
         "name": "Queens Community Board 10",
         "properties": {
           "body_id": "queens-cb-10",
+          "identity": {
+            "body_id": "queens-cb-10",
+            "boundary": "community-board:queens-cb-10",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-10",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-10",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 10,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23862,6 +28302,46 @@
         "name": "Queens Community Board 11",
         "properties": {
           "body_id": "queens-cb-11",
+          "identity": {
+            "body_id": "queens-cb-11",
+            "boundary": "community-board:queens-cb-11",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-11",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-11",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 11,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23895,6 +28375,46 @@
         "name": "Queens Community Board 12",
         "properties": {
           "body_id": "queens-cb-12",
+          "identity": {
+            "body_id": "queens-cb-12",
+            "boundary": "community-board:queens-cb-12",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-12",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-12",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 12,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23928,6 +28448,46 @@
         "name": "Queens Community Board 13",
         "properties": {
           "body_id": "queens-cb-13",
+          "identity": {
+            "body_id": "queens-cb-13",
+            "boundary": "community-board:queens-cb-13",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-13",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-13",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 13,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23961,6 +28521,46 @@
         "name": "Queens Community Board 14",
         "properties": {
           "body_id": "queens-cb-14",
+          "identity": {
+            "body_id": "queens-cb-14",
+            "boundary": "community-board:queens-cb-14",
+            "projections": {
+              "place": {
+                "key": "community-board:queens-cb-14",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:queens-cb-14",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Queens",
           "district": 14,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
@@ -23994,6 +28594,46 @@
         "name": "Staten Island Community Board 1",
         "properties": {
           "body_id": "staten-island-cb-01",
+          "identity": {
+            "body_id": "staten-island-cb-01",
+            "boundary": "community-board:staten-island-cb-01",
+            "projections": {
+              "place": {
+                "key": "community-board:staten-island-cb-01",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:staten-island-cb-01",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Staten Island",
           "district": 1,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
@@ -24027,6 +28667,46 @@
         "name": "Staten Island Community Board 2",
         "properties": {
           "body_id": "staten-island-cb-02",
+          "identity": {
+            "body_id": "staten-island-cb-02",
+            "boundary": "community-board:staten-island-cb-02",
+            "projections": {
+              "place": {
+                "key": "community-board:staten-island-cb-02",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:staten-island-cb-02",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Staten Island",
           "district": 2,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
@@ -24060,6 +28740,46 @@
         "name": "Staten Island Community Board 3",
         "properties": {
           "body_id": "staten-island-cb-03",
+          "identity": {
+            "body_id": "staten-island-cb-03",
+            "boundary": "community-board:staten-island-cb-03",
+            "projections": {
+              "place": {
+                "key": "community-board:staten-island-cb-03",
+                "role": "place",
+                "family": "er:location",
+                "relation_families": [
+                  "covers"
+                ]
+              },
+              "organization": {
+                "key": "community-board:staten-island-cb-03",
+                "role": "organization",
+                "relation_families": [
+                  {
+                    "type": "has_member",
+                    "label": "Has member",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "member_of",
+                    "label": "Member of",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "hosts_meeting",
+                    "label": "Hosts meeting",
+                    "state": "unknown"
+                  },
+                  {
+                    "type": "issues_recommendation",
+                    "label": "Issues recommendation",
+                    "state": "unknown"
+                  }
+                ]
+              }
+            }
+          },
           "borough": "Staten Island",
           "district": 3,
           "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
