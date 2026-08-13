@@ -7,9 +7,15 @@ from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import sync_playwright
 
-
 ROOT = Path(__file__).resolve().parents[2]
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/")
+
+import sys
+
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
+
+
 TARGET_REF = "agency:id:citywide-administrative-services"
 RULE_AGENCIES = [
     "Administrative Trials and Hearings",
@@ -88,7 +94,7 @@ def main():
             wait_until="domcontentloaded",
             timeout=30000,
         )
-        page.wait_for_selector("#entityview .agencybar", timeout=45000)
+        wait_for_locator(page.locator("#entityview .agencybar"), label="agency profile")
         links = page.evaluate(
             """[...document.querySelectorAll('#entity-intelligence a.ei-view-all')]
             .map(a => a.getAttribute('href')).filter(Boolean)"""
@@ -98,13 +104,15 @@ def main():
         assert meeting_links, "the agency profile must expose its Meetings scope link"
 
         page.goto(BASE.rstrip("/") + meeting_links[0], wait_until="domcontentloaded", timeout=30000)
-        page.wait_for_function(
+        wait_for_function(
+            page,
             "document.querySelector('#tab-meetings')?.classList.contains('active')",
-            timeout=30000,
+            label="Meetings scope activation",
         )
-        page.wait_for_function(
+        wait_for_function(
+            page,
             "Array.isArray(window.feedVisible?.meetings) && window.feedVisible.meetings.length > 0",
-            timeout=45000,
+            label="Meetings scope hydration",
         )
         state = page.evaluate(
             """(() => ({
@@ -141,25 +149,31 @@ def main():
         more = rules.locator("#rules-more-filters")
         if more.count() and not more.evaluate("el => el.open"):
             more.locator("summary").click()
-        rules.wait_for_selector("#rules-agency-rail [data-cardinality-facet]")
-        rules.wait_for_function(
+        wait_for_locator(
+            rules.locator("#rules-agency-rail [data-cardinality-facet]"),
+            label="Rules agency facet",
+        )
+        wait_for_function(
+            rules,
             "document.querySelectorAll('#rules-agency-rail [data-facet-option]').length >= 9",
-            timeout=30000,
+            label="Rules agency facet options",
         )
         agency_input = rules.locator("#rules-agency-rail .facet-typeahead-input")
         agency_input.fill("health")
-        rules.wait_for_function(
+        wait_for_function(
+            rules,
             """() => {
               const options = [...document.querySelectorAll('#rules-agency-rail [data-facet-option]')];
               return options.filter(option => !option.hidden).map(option => option.textContent).some(text => /health and mental hygiene/i.test(text));
             }""",
-            timeout=30000,
+            label="Rules agency typeahead result",
         )
         assert rules.locator("#rules-agency-rail [data-facet-option]:not([hidden])").count() == 1
         agency_input.press("Enter")
-        rules.wait_for_function(
+        wait_for_function(
+            rules,
             "location.hash.includes('health-and-mental-hygiene')",
-            timeout=30000,
+            label="Rules agency scope submission",
         )
         print(
             "PASS: rules agency typeahead filters Health and Mental Hygiene and Enter applies scope",

@@ -15,9 +15,12 @@ rendered as navigation chrome (the Today strip, agency profiles) and MUST transl
 import json
 import re
 from datetime import datetime, timedelta
+from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
 _now = datetime.now()
+_ROOT = Path(__file__).resolve().parents[3]
+PEOPLE_EXAMPLES = json.loads((_ROOT / "site" / "data" / "people_examples.json").read_text())
 
 
 def _iso(days_from_now, hour=12):
@@ -1071,8 +1074,9 @@ def install_routes(page):
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())
     page.route("https://unpkg.com/**", lambda r: r.abort())
-    # Committed seed data: empty in fixtures — the guard exercises the live-search path.
-    page.route("**/data/people_examples.json", fixed([]))
+    # The bare Staffing example is a committed product seed, so the guard never depends on
+    # the live payroll aggregation merely to open the page.
+    page.route("**/data/people_examples.json", fixed(PEOPLE_EXAMPLES))
     page.route("**/data/title_crosswalk.json", fixed(TITLE_CROSSWALK))
     # Wave-2 batch-precompute first paint: align land default snapshot with ZAP_ROWS so
     # #land auto-select still yields "Example Street Rezoning" in hermetic demo/a11y gates.

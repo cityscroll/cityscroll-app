@@ -9,6 +9,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
+from ci_waits import wait_for_function, wait_for_locator, wait_for_url  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 
@@ -27,10 +28,12 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 def assert_item_landing(page, selector):
     target = page.locator(selector)
-    target.wait_for(state="visible")
-    page.wait_for_function(
+    wait_for_locator(target, label=f"{selector} visible")
+    wait_for_function(
+        page,
         "selector => document.activeElement === document.querySelector(selector)",
         arg=selector,
+        label=f"{selector} receives focus",
     )
     landing = target.evaluate(
         """element => ({
@@ -68,9 +71,9 @@ def main():
             page = browser.new_page(viewport={"width": 1440, "height": 900})
             install_routes(page)
             page.goto(base + "#exam/6125", wait_until="load")
-            page.wait_for_url("**/exams/6125/")
+            wait_for_url(page, "**/exams/6125/", label="exam document forwarding")
             document = page.locator('[data-exam-document="1"]')
-            document.wait_for(state="visible")
+            wait_for_locator(document, label="exam document")
             assert page.locator("h1").inner_text().strip()
             assert page.locator('[data-exam-watch="6125"]').count() == 1
             page.close()
@@ -94,19 +97,17 @@ def main():
             for route, selector in in_page_routes:
                 page.evaluate("route => { location.hash = route; }", route)
                 if route.startswith("#agency/"):
-                    page.wait_for_url(
-                        "**/agencies/housing-preservation-and-development/"
-                    )
+                    wait_for_url(page, "**/agencies/housing-preservation-and-development/", label="agency document forwarding")
                 assert_item_landing(page, selector)
 
             page.go_back()
-            page.wait_for_url(
-                "**/agencies/housing-preservation-and-development/"
-            )
+            wait_for_url(page, "**/agencies/housing-preservation-and-development/", label="history back to agency")
             assert_item_landing(page, "#entityview .route-item")
             page.go_forward()
-            page.wait_for_function(
-                "() => location.hash === '#matter/8502026HP0001'"
+            wait_for_function(
+                page,
+                "() => location.hash === '#matter/8502026HP0001'",
+                label="history forward to matter",
             )
             assert_item_landing(page, "#entityview .route-item")
             page.close()
@@ -122,18 +123,20 @@ def main():
             bare = browser.new_page(viewport={"width": 1440, "height": 900})
             install_routes(bare)
             bare.goto(base + "#exam", wait_until="load")
-            bare.wait_for_function(
-                "() => location.hash === '#people?view=guide'"
+            wait_for_function(
+                bare,
+                "() => location.hash === '#people?view=guide'",
+                label="bare exam route forwarding",
             )
             guide = bare.locator("#career-guide")
-            guide.wait_for(state="visible")
+            wait_for_locator(guide, label="career guide")
             assert guide.evaluate(
                 "element => element.getBoundingClientRect().bottom > 0 "
                 "&& element.getBoundingClientRect().top < innerHeight"
             ), "bare #exam did not land on the exam guide"
 
             bare.evaluate("location.hash = '#matter'")
-            bare.wait_for_function("() => location.hash === '#money'")
+            wait_for_function(bare, "() => location.hash === '#money'", label="bare matter route forwarding")
             assert bare.locator("#tab-money").evaluate(
                 "element => element.classList.contains('active')"
             ), "bare #matter did not land on Contracts"

@@ -61,7 +61,7 @@ function isTransientFetchError(error) {
   const name = String(error?.name || "");
   const message = String(error?.message || error || "");
   if (name === "TimeoutError" || name === "AbortError") return true;
-  return /timeout|aborted|ECONNRESET|ENOTFOUND|EAI_AGAIN|fetch failed|network|socket|503|502|504|429/i.test(
+  return /timeout|aborted|ECONNRESET|ENOTFOUND|EAI_AGAIN|fetch failed|network|socket|\b5\d\d\b|429/i.test(
     message,
   );
 }
@@ -85,10 +85,12 @@ async function fetchJSON(url, options) {
     } catch (error) {
       last = error;
       if (error?.permanent || attempt + 1 >= FETCH_ATTEMPTS) break;
-      if (!isTransientFetchError(error) && !/^[45]\d\d /.test(String(error?.message || ""))) {
-        // Unknown errors still back off once before giving up.
-      }
+      if (!isTransientFetchError(error)) break;
       const delay = Math.min(16_000, FETCH_BACKOFF_MS * 2 ** attempt);
+      console.warn(
+        `TRANSIENT preset validation request failed (attempt ${attempt + 1}/${FETCH_ATTEMPTS}); ` +
+        `retrying in ${delay}ms: ${error?.message || error}`,
+      );
       await sleep(delay);
     }
   }
@@ -225,7 +227,7 @@ const SCENARIOS = [
   { id: "legal-meetings", variants: [{ id: "upcoming", href: "#meetings?when=upcoming", labelKey: "tab_meetings", label: "Meetings" }] },
 ];
 
-async function validateScenarios() {
+async function validateLiveScenarios() {
   const countMemo = new Map();
   async function count(variant) {
     if (!countMemo.has(variant.href)) countMemo.set(variant.href, countScenarioHash(variant.href));
@@ -240,6 +242,38 @@ async function validateScenarios() {
     output[preset.id] = { ...selected, counts };
   }
   return output;
+}
+
+function validScenarioSnapshot(snapshot) {
+  return Boolean(
+    snapshot &&
+      typeof snapshot === "object" &&
+      SCENARIOS.every((preset) => {
+        const selected = snapshot[preset.id];
+        return (
+          selected &&
+          preset.variants.some((variant) => variant.id === selected.id && variant.href === selected.href) &&
+          Number(selected.count) >= PRESET_MIN_RESULTS &&
+          selected.counts &&
+          typeof selected.counts === "object"
+        );
+      }),
+  );
+}
+
+async function validateScenarios(previous) {
+  try {
+    return await validateLiveScenarios();
+  } catch (error) {
+    if (CHECK && isTransientFetchError(error) && validScenarioSnapshot(previous?.scenarios)) {
+      console.warn(
+        `TRANSIENT preset validation outage; using committed scenario snapshot ` +
+          `${previous.dataDate || "without data date"} after ${FETCH_ATTEMPTS} bounded attempt(s)`,
+      );
+      return previous.scenarios;
+    }
+    throw error;
+  }
 }
 
 async function resolveSuggestion(candidate) {
@@ -271,7 +305,7 @@ async function mapLimit(items, limit, fn) {
   return results;
 }
 
-async function validateSuggestions(previous) {
+async function validateLiveSuggestions(previous) {
   const previousByKey = new Map(
     (previous?.candidates || []).map((candidate) => [`${candidate.lens}:${candidate.idx}`, candidate]),
   );
@@ -292,6 +326,44 @@ async function validateSuggestions(previous) {
     throw new Error("a generated rotating suggestion has no current results");
   }
   return { minResults: PRESET_MIN_RESULTS, byLens, candidates };
+}
+
+function validSuggestionSnapshot(snapshot) {
+  const lenses = ["money", "people", "land", "property", "rules", "meetings", "alerts"];
+  const poolByKey = new Map(SUGGESTION_POOL.map((candidate) => [`${candidate.lens}:${candidate.idx}`, candidate]));
+  return Boolean(
+    snapshot &&
+      Array.isArray(snapshot.candidates) &&
+      snapshot.candidates.length === SUGGESTION_POOL.length &&
+      snapshot.candidates.every((candidate) => {
+        const poolCandidate = poolByKey.get(`${candidate.lens}:${candidate.idx}`);
+        return Boolean(
+          poolCandidate &&
+            candidate.text === poolCandidate.text &&
+            typeof candidate.text === "string" &&
+            candidate.filter &&
+            typeof candidate.filter === "object" &&
+            Number.isFinite(Number(candidate.count)),
+        );
+      }) &&
+      snapshot.byLens &&
+      lenses.every((lens) => Array.isArray(snapshot.byLens[lens]) && snapshot.byLens[lens].length > 0),
+  );
+}
+
+async function validateSuggestions(previousSuggestions, snapshotDate) {
+  try {
+    return await validateLiveSuggestions(previousSuggestions);
+  } catch (error) {
+    if (CHECK && isTransientFetchError(error) && validSuggestionSnapshot(previousSuggestions)) {
+      console.warn(
+        `TRANSIENT preset suggestion outage; using committed suggestion snapshot ` +
+          `${snapshotDate || "without data date"} after ${FETCH_ATTEMPTS} bounded attempt(s)`,
+      );
+      return previousSuggestions;
+    }
+    throw error;
+  }
 }
 
 function htmlHref(value) {
@@ -351,8 +423,8 @@ const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => nu
 // Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
 // upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
 // fail-closed gate into a flaky one.
-const scenarios = await validateScenarios();
-const suggestions = await validateSuggestions(previous?.suggestions);
+const scenarios = await validateScenarios(previous);
+const suggestions = await validateSuggestions(previous?.suggestions, previous?.dataDate);
 let html = await readFile(INDEX, "utf8");
 let siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
 let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");

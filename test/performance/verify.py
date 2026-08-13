@@ -16,7 +16,14 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
-from playwright.sync_api import Browser, BrowserContext, Page, Route, sync_playwright
+from playwright.sync_api import (
+    Browser,
+    BrowserContext,
+    Page,
+    Route,
+    TimeoutError as PlaywrightTimeoutError,
+    sync_playwright,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -33,6 +40,24 @@ METRIC_KEYS = {
     "settledMs",
     "eventDurationMs",
 }
+LAND_OUTCOME_WAIT_TIMEOUT_MS = 45_000
+LAND_OUTCOME_WAIT_ATTEMPTS = 2
+
+
+def wait_for_land_outcome(page: Page, expression: str, label: str) -> None:
+    """Retry only Playwright readiness timeouts; assertions and budgets stay hard."""
+    for attempt in range(LAND_OUTCOME_WAIT_ATTEMPTS):
+        try:
+            page.wait_for_function(expression, timeout=LAND_OUTCOME_WAIT_TIMEOUT_MS)
+            return
+        except PlaywrightTimeoutError:
+            if attempt + 1 >= LAND_OUTCOME_WAIT_ATTEMPTS:
+                raise
+            print(
+                f"TRANSIENT wait timeout for {label}; retrying "
+                f"(attempt {attempt + 2}/{LAND_OUTCOME_WAIT_ATTEMPTS})",
+                flush=True,
+            )
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -449,15 +474,19 @@ def measure_land_outcomes(
     page.wait_for_selector('.tabbtn[data-tab="land"]')
     # Start from an interaction-ready page. The tab markup is static, but the
     # route-lazy handlers arrive with the application module graph.
-    page.wait_for_function(
-        "() => typeof window.showTab === 'function' && typeof window.landSearch === 'function'"
+    wait_for_land_outcome(
+        page,
+        "() => typeof window.showTab === 'function' && typeof window.landSearch === 'function'",
+        "land module readiness",
     )
-    page.wait_for_function(
+    wait_for_land_outcome(
+        page,
         """() => {
           const count = document.querySelector('#rescount')?.textContent?.trim();
           const list = document.querySelector('#list');
           return !!count && !!list && !list.querySelector('.loading');
-        }"""
+        }""",
+        "land source list readiness",
     )
     started_at = page.evaluate(
         """() => {
@@ -479,12 +508,14 @@ def measure_land_outcomes(
           return started;
         }"""
     )
-    page.wait_for_function(
+    wait_for_land_outcome(
+        page,
         """() => {
           const panel = document.querySelector('#land-outcomes');
           return !!panel?.querySelector('[data-zap-outcomes-first-paint]')
             && !!panel.querySelector('[data-zap-outcomes-state="present"], [data-zap-outcomes-state="absent"]');
-        }"""
+        }""",
+        "land outcomes first paint",
     )
     settled_ms = page.evaluate("window.__landOutcomeFirstPaintAt") - started_at
     state = page.evaluate(
