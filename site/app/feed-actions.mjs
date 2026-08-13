@@ -240,6 +240,7 @@ function hearingViewFilter(){
 function renderMeetingsAgencyScope(records){
   const rail=$("#meetings-agency-scope");
   if(!rail) return;
+  const searchQuery=rail.querySelector(".facet-typeahead-input")?.value||"";
   const selected=$("#meetingsagency")?.value||"";
   const names=[...new Set((records||[]).map(record=>record?.agency).filter(Boolean).concat(selected||[]))].sort((a,b)=>String(a).localeCompare(String(b)));
   const current=location.hash.startsWith("#meetings")
@@ -251,6 +252,7 @@ function renderMeetingsAgencyScope(records){
     selected,
     currentHash:current,
     t,
+    searchQuery,
     escape:escUiHtml,
   });
   bindCardinalityAdaptiveFacets(rail);

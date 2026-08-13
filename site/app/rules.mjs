@@ -177,12 +177,14 @@ function renderRulesBoroughScopeLinks(){
 function renderRulesAgencyScopeLinks(){
   const host=$("#rules-agency-rail");
   if(!host) return;
+  const searchQuery=host.querySelector(".facet-typeahead-input")?.value||"";
   host.innerHTML=agencyScopeLinksHTML({
     surface:"rules",
     agencies:rulesAgencyChoices,
     selected:rulesAgency,
     currentHash:location.hash,
     t,
+    searchQuery,
     escape:escUiHtml,
   });
   bindCardinalityAdaptiveFacets(host);
