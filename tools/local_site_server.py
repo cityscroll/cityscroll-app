@@ -18,6 +18,12 @@ class QuietHandler(SimpleHTTPRequestHandler):
         """Serve a generated clean-route document when the artifact provides one."""
         if not route or ".." in route:
             return False
+        # Agency constellation documents share the /agencies/<id>/index.html
+        # filesystem shape, but ?tab= links must reach the interactive SPA
+        # profile. Leave that route family to _static_agency_constellation,
+        # which already distinguishes the static and interactive variants.
+        if route.startswith("/agencies/"):
+            return False
         document = Path(self.directory) / route.lstrip("/") / "index.html"
         if not document.is_file():
             return False

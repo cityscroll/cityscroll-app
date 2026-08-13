@@ -96,4 +96,11 @@ test("local site server publishes an OS-assigned origin and serves the requested
     assert.equal(clean.status, 200, route);
     assert.match(await clean.text(), /id="main"/, route);
   }
+
+  const agencyProfile = await fetch(new URL(
+    "agencies/citywide-administrative-services/?tab=forecast",
+    base,
+  ));
+  assert.equal(agencyProfile.status, 200);
+  assert.match(await agencyProfile.text(), /id="entityview"/);
 });
