@@ -4,10 +4,21 @@
 
 export const CROSS_SPINE_SCHEMA = "cityscroll.cross_spine_bundle.v0";
 
-const CONFIDENCE = new Set(["confirmed", "review", "unmatched"]);
+// This is the public confidence vocabulary. Keep it closed: a cross-spine
+// check compares claims, but does not choose a winner or merge identities.
+export const CROSS_SPINE_CONFIDENCE = Object.freeze(["confirmed", "review", "unmatched"]);
+const CONFIDENCE = new Set(CROSS_SPINE_CONFIDENCE);
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
+}
+
+export function normalizeCrossSpineConfidence(value) {
+  const candidate = typeof value === "object" && value !== null
+    ? value.confidence || value.join_confidence || value.status
+    : value;
+  const normalized = clean(candidate).toLowerCase();
+  return CONFIDENCE.has(normalized) ? normalized : null;
 }
 
 function normId(value) {
