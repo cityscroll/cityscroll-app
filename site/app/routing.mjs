@@ -11,6 +11,10 @@ import { officialSourceLink } from "../affordance_grammar.mjs";
 const DOCUMENT_FACET_HASHES=Object.freeze({
   contracts:"money",staffing:"people",zoning:"land",property:"property",rules:"rules",meetings:"meetings",
 });
+// These are static Browse documents, not SPA panes. Keep this closed route list
+// aligned with BROWSE_CONCEPTS without importing the renderer into the inline
+// reconstruction path.
+const DOCUMENT_CONCEPT_ROUTES=new Set(["people","places"]);
 function documentRouteRaw(){
   const path=location.pathname.replace(/\/+$/,"")||"/";
   const notice=path.match(/^\/notices\/([A-Za-z0-9_-]{1,80})$/);
@@ -37,6 +41,7 @@ function documentRouteRaw(){
   if(browse){
     const facet=browse[1];
     if(!facet) return "browse";
+    if(DOCUMENT_CONCEPT_ROUTES.has(facet)) return `browse-concept/${facet}`;
     const route=DOCUMENT_FACET_HASHES[facet];
     if(!route) return "";
     const params=new URLSearchParams(location.search); params.delete("lang"); params.delete("legacy");
@@ -842,6 +847,10 @@ function applyHash(){
     globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=null;
     return false;
   }
+  // Concept landing documents are complete static documents. They are not SPA lenses;
+  // leave their server-rendered content in place instead of falling through to the
+  // default Contracts search and rewriting the canonical concept route.
+  if(raw.startsWith("browse-concept/")) return true;
   activeRouteFacetValues=facetValuesFromRouteRaw(raw);
   globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES={...activeRouteFacetValues};
   const resultCountReceipt=Number(activeRouteFacetValues.result_count_receipt);

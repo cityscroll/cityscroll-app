@@ -349,6 +349,10 @@ function showTab(name, push){
 }
 
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
+  // Some civic-object links are document routes without an SPA pane (for example
+  // the static People and Places concept landings). Let those anchors navigate so
+  // the document route and its server-rendered content remain authoritative.
+  if(!document.getElementById(`tab-${b.dataset.tab}`)) return;
   e.preventDefault();
   showTab(b.dataset.tab, true);
 }));
