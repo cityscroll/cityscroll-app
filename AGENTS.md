@@ -123,8 +123,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 - **Typed edge summaries:** `site/edge_summary.mjs` is the shared normalization and rail renderer
   for Browse intersections, agency constellation categories, vendor footprints, and bounded
-  mandate previews. Producers own read-model counts and scoped hrefs; keep `empty` and `unknown`
-  distinct and preserve null counts. The agency lookup is regenerated with
+  mandate previews. Producers own read-model counts and scoped hrefs; keep `matched`, `empty`,
+  and `unknown` distinct and preserve null counts. `rankEdgeSummaryRecords` changes display order
+  only and must never remove a supported family. Agency and vendor readers render every supported
+  category, including honest empty/unknown rows; gated place/committee neighborhoods use
+  `unknown`, not `empty`, when publication is withheld. The agency lookup is regenerated with
   `node tools/build_agency_constellation_documents.mjs --check`.
 
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.

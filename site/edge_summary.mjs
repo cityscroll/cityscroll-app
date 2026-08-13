@@ -51,6 +51,9 @@ function normalizedCount(value) {
 function normalizedState(value, count) {
   const state = text(value, 30)?.toLowerCase();
   if (EDGE_SUMMARY_STATES.includes(state)) return state;
+  if (["not_yet_ingested", "not_ingested", "unavailable", "held", "not_indexed"].includes(state)) {
+    return "unknown";
+  }
   if (count == null) return "unknown";
   return count === 0 ? "empty" : "matched";
 }
@@ -125,11 +128,13 @@ export function resolveEdgeSummaryDestination(input = {}) {
 }
 
 function normalizeSource(input = {}) {
+  if (Object.prototype.hasOwnProperty.call(input, "source") && input.source === null) return null;
   const source = input.source && typeof input.source === "object" ? input.source : {};
   const kind = text(source.kind || input.source_kind, 80);
   const id = source.id ?? input.source_id;
   const name = source.name ?? input.source_name;
   const href = source.canonical_href ?? source.href ?? input.source_href;
+  if (![kind, id, name, href].some((value) => value != null && String(value).trim())) return null;
   return {
     kind,
     id: id == null ? null : text(id, 240),
@@ -240,7 +245,7 @@ export function renderEntityPivotLink(pivotInput = {}, { className = "", escape 
   const crossSpineExplicit = pivotInput.cross_spine_explicit
     ?? (pivotInput.cross_spine_confidence != null || pivotInput.cross_spine != null);
   const crossSpineBlocksLink = crossSpineExplicit && crossSpineConfidence !== "confirmed";
-  const sourceName = pivot.source.name || pivot.source.kind || "this record";
+  const sourceName = pivot.source?.name || pivot.source?.kind || "this record";
   const accessible = `${pivot.relation_label}: ${targetDisplay(pivot)}; from ${sourceName}`;
   const classes = ["ui-constellation-link", className].filter(Boolean).join(" ");
   const attrs = [
@@ -249,10 +254,10 @@ export function renderEntityPivotLink(pivotInput = {}, { className = "", escape 
     `data-pivot-relation-label="${escape(pivot.relation_label)}"`,
     `data-pivot-target-kind="${escape(pivot.target_kind || "")}"`,
     `data-pivot-target-id="${escape(pivot.target_id || "")}"`,
-    ...(pivot.source.kind || pivot.source.id || pivot.source.name
+    ...(pivot.source?.kind || pivot.source?.id || pivot.source?.name
       ? [
-        `data-pivot-source-kind="${escape(pivot.source.kind || "")}"`,
-        `data-pivot-source-id="${escape(pivot.source.id || "")}"`,
+        `data-pivot-source-kind="${escape(pivot.source?.kind || "")}"`,
+        `data-pivot-source-id="${escape(pivot.source?.id || "")}"`,
       ]
       : []),
     ...(pivotInput.link_confidence ? [`data-link-confidence="${escape(pivotInput.link_confidence)}"`] : []),
@@ -271,11 +276,11 @@ export function renderEntityPivotLink(pivotInput = {}, { className = "", escape 
 export function renderEntityPivotRail(records, options = {}) {
   const pivots = normalizeEntityPivots(records);
   if (!pivots.length) return options.empty || "";
-  const source = options.source || pivots.find((pivot) => pivot.source.name)?.source || {};
+  const source = options.source || pivots.find((pivot) => pivot.source?.name)?.source || {};
   const heading = options.heading || "Jump to related";
   const id = options.id || "entity-pivot-heading";
   const items = pivots.map((pivot) => `<li class="entity-pivot-item" data-pivot-status="${escapeHTML(pivot.status)}">${renderEntityPivotLink(pivot, { className: options.className || "", escape: escapeHTML })}</li>`).join("");
-  const sourceAffordance = source.name
+  const sourceAffordance = source?.name
     ? (source.canonical_href
       ? `<p class="entity-pivot-source"><a href="${escapeHTML(source.canonical_href)}">Back to ${escapeHTML(source.name)}</a></p>`
       : `<p class="entity-pivot-source">Related from ${escapeHTML(source.name)}</p>`)
@@ -316,6 +321,48 @@ export function normalizeEdgeSummaryRecord(input = {}, defaults = {}) {
 export function normalizeEdgeSummaryRecords(records, defaults = {}) {
   return (Array.isArray(records) ? records : [])
     .map((record) => normalizeEdgeSummaryRecord(record, defaults));
+}
+
+const EDGE_STATE_RANK = Object.freeze({ matched: 2, empty: 1, unknown: 0 });
+const EDGE_CONFIDENCE_RANK = Object.freeze({ confirmed: 2, review: 1, unmatched: 0 });
+
+/**
+ * Rank for display only. The stable input index is the final tie-breaker so
+ * ranking can never hide a supported family or change equal-signal order.
+ */
+export function edgeSummarySignalRank(record = {}, { context = null } = {}) {
+  const state = normalizedState(record.state || record.status, normalizedCount(record.count));
+  const confidence = normalizeCrossSpineConfidence(record.cross_spine_confidence)
+    || normalizeCrossSpineConfidence(record.cross_spine)
+    || "unmatched";
+  const contextValues = typeof context === "string"
+    ? [context]
+    : context && typeof context === "object"
+      ? [context.edge_type, context.target_kind, context.relation_label].filter(Boolean)
+      : [];
+  const recordText = [record.edge_type, record.target_kind, record.relation_label].filter(Boolean).join(" ").toLowerCase();
+  const contextMatch = contextValues.some((value) => recordText.includes(String(value).toLowerCase())) ? 1 : 0;
+  return [
+    EDGE_STATE_RANK[state] ?? 0,
+    contextMatch,
+    EDGE_CONFIDENCE_RANK[confidence] ?? 0,
+    normalizedCount(record.count) ?? -1,
+  ];
+}
+
+/** Rank summaries by signal while retaining every input record. */
+export function rankEdgeSummaryRecords(records, options = {}) {
+  return normalizeEdgeSummaryRecords(records)
+    .map((record, index) => ({ record, index }))
+    .sort((left, right) => {
+      const leftRank = edgeSummarySignalRank(left.record, options);
+      const rightRank = edgeSummarySignalRank(right.record, options);
+      for (let index = 0; index < leftRank.length; index += 1) {
+        if (leftRank[index] !== rightRank[index]) return rightRank[index] - leftRank[index];
+      }
+      return left.index - right.index;
+    })
+    .map(({ record }) => record);
 }
 
 export function edgeRelationLabel(recordOrType) {
@@ -424,7 +471,7 @@ export function renderEdgeSummaryRail(records, {
   className = "",
   empty = "",
 } = {}) {
-  const normalized = normalizeEdgeSummaryRecords(records);
+  const normalized = rankEdgeSummaryRecords(records);
   if (!normalized.length) return empty;
   const items = normalized.map((record) => {
     const destination = targetCopy(record);

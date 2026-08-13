@@ -169,6 +169,7 @@ export function buildPlaceLocalConstellation(geography = {}, placeId = null) {
     subject_name: node?.name || requested || "Near you",
     source: node?.provenance?.source || null,
     provenance: node?.provenance || null,
+    availability_state: geography.gate?.publication_allowed ? null : "unknown",
     neighbors: adjacent.map((edge) => {
       const targetId = edge.from === requested ? edge.to : edge.from;
       const target = nodes.find((candidate) => candidate?.id === targetId);

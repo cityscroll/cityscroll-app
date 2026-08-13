@@ -5,7 +5,11 @@ import {
 } from "../graph_edge_provenance.mjs";
 import { renderMandatesConformanceSection } from "../process_conformance.mjs";
 import { constellationLink, officialSourceDisclosure } from "../affordance_grammar.mjs";
-import { renderEntityPivotLink } from "../edge_summary.mjs";
+import {
+  EDGE_SUMMARY_STATE_MEANINGS,
+  edgeSummaryStateCopy,
+  renderEntityPivotLink,
+} from "../edge_summary.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -41,7 +45,9 @@ function obligationMeta(item) {
 }
 
 function statusLabel(category) {
-  if (category.status !== "matched") return "";
+  if (category.status !== "matched") {
+    return edgeSummaryStateCopy({ state: category.status, count: category.count });
+  }
   if (category.id === "obligations") return `${category.count} mandates`;
   if (category.total_count != null) {
     const shown = category.items?.length || 0;
@@ -52,14 +58,7 @@ function statusLabel(category) {
 }
 
 export function renderAgencyCategorySection(category, source = {}) {
-  if (
-    !category
-    || category.status === "empty"
-    || category.status === "not_yet_ingested"
-    || (!(category?.items?.length) && !(category?.conformance?.items?.length))
-  ) {
-    return "";
-  }
+  if (!category) return "";
 
   if (category.id === "obligations" && category.conformance?.items?.length) {
     const refine = category.mandate_follow_hrefs
@@ -88,13 +87,14 @@ export function renderAgencyCategorySection(category, source = {}) {
     return body;
   }
 
-  const status = category.id === "obligations"
+  const status = category.id === "obligations" && category.status === "matched"
     ? `${category.count} mandates`
     : (statusLabel(category) || `${category.count} linked`);
   const sourceItems = category.id === "obligations"
     ? category.items.filter((item) => item.href).map((item) => ({ href: item.href, label: item.label || "Source law" }))
     : [];
-  const list = `<ul class="node-record-list">${category.items.map((item) => {
+  const items = Array.isArray(category.items) ? category.items : [];
+  const list = items.length ? `<ul class="node-record-list">${items.map((item) => {
     const warrant = item.claim?.how?.warrant_class || "";
     const why = item.claim ? renderWhyBelieveControl(item.claim) : "";
     if (category.id === "obligations" || item.kind === "obligation") {
@@ -109,7 +109,11 @@ export function renderAgencyCategorySection(category, source = {}) {
       <div class="node-record-main">${itemLink(item, source)}${why ? ` ${why}` : ""}</div>
       ${meta ? `<span class="muted node-muted">${esc(meta)}</span>` : ""}
     </li>`;
-  }).join("")}</ul>`;
+  }).join("")}</ul>` : "";
+  const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
+  const stateNotice = category.status === "matched"
+    ? ""
+    : `<p class="node-muted muted agency-category-state" data-edge-state="${esc(category.status)}" data-edge-availability="${esc(availability)}">${esc(edgeSummaryStateCopy({ state: category.status, count: category.count }))}</p>`;
   const honesty = category.id === "obligations" && category.honesty
     ? `<p class="node-muted muted">${esc(category.honesty)}</p>`
     : "";
@@ -145,6 +149,8 @@ export function renderAgencyCategorySection(category, source = {}) {
     refine,
   ].filter(Boolean).join("");
   const body = [
+    stateNotice,
+    category.status !== "matched" && category.note ? `<p class="node-muted muted">${esc(category.note)}</p>` : "",
     honesty,
     snapshot,
     list,
@@ -158,6 +164,8 @@ export function renderAgencyCategorySection(category, source = {}) {
     attrs: {
       "data-agency-constellation-category": category.id,
       "data-status": category.status,
+      "data-edge-state": category.status,
+      "data-edge-availability": availability,
       ...(category.as_of ? { "data-as-of": category.as_of } : {}),
       ...(category.total_count != null ? { "data-total-count": category.total_count } : {}),
       ...(category.universe ? { "data-universe": category.universe } : {}),

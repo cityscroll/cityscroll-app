@@ -241,9 +241,10 @@ test("empty categories stay honest and never invent items", () => {
     assert.ok(category.note);
   }
   const html = renderAgencyConstellationDocument(view);
-  // Empty categories are omitted from the reader surface (no absence disclaimers).
-  assert.doesNotMatch(html, /data-agency-constellation-category=/);
-  assert.doesNotMatch(html, /none in this materialization/i);
+  // Every supported family stays visible with an explicit measured zero.
+  assert.equal((html.match(/data-agency-constellation-category=/g) || []).length, view.categories.length);
+  assert.match(html, /data-edge-state="empty"/);
+  assert.match(html, /Empty in this scoped materialization/);
   assert.doesNotMatch(html, /not yet shown/i);
   assert.doesNotMatch(html, /fabricat/i);
   assert.deepEqual(detectNodePageCruft(html), []);

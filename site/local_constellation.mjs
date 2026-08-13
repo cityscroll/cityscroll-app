@@ -7,6 +7,7 @@
  */
 
 import {
+  edgeSummaryStateCopy,
   normalizeEdgeSummaryRecords,
   renderEdgeSummaryProvenance,
   resolveEdgeSummaryDestination,
@@ -120,7 +121,8 @@ export function localConstellationRegistry(kind = null) {
 /**
  * Build a local neighborhood from already-materialized edge records.
  * Empty and unknown edge-summary rows are coverage facts, not neighbors, so
- * they do not become visual nodes. A held destination remains visible as text.
+ * they do not become visual nodes; the neighborhood still carries that
+ * availability state. A held destination remains visible as text.
  */
 export function buildLocalConstellation(input = {}, { limit = LOCAL_CONSTELLATION_MAX_NODES } = {}) {
   const raw = input && typeof input === "object" ? input : {};
@@ -149,6 +151,10 @@ export function buildLocalConstellation(input = {}, { limit = LOCAL_CONSTELLATIO
       return record.state === "accepted" || record.state === "held";
     });
   const nodes = candidates.slice(0, boundedLimit);
+  const requestedState = clean(raw.availability_state || raw.state, 30).toLowerCase();
+  const availabilityState = ["matched", "empty", "unknown"].includes(requestedState)
+    ? requestedState
+    : (nodes.length ? "matched" : "empty");
   return Object.freeze({
     schema: LOCAL_CONSTELLATION_SCHEMA,
     version: 1,
@@ -159,7 +165,8 @@ export function buildLocalConstellation(input = {}, { limit = LOCAL_CONSTELLATIO
     subject_name: raw.subject_name ?? raw.name ?? null,
     source: sourceValue(raw),
     provenance: Object.prototype.hasOwnProperty.call(raw, "provenance") ? clone(raw.provenance) : null,
-    status: nodes.length ? "matched" : "empty",
+    status: nodes.length ? "matched" : availabilityState,
+    availability_state: availabilityState,
     bounded: true,
     limit: boundedLimit,
     node_count: nodes.length,
@@ -253,14 +260,14 @@ export function renderLocalConstellationHTML(view, {
 } = {}) {
   if (!view || view.schema !== LOCAL_CONSTELLATION_SCHEMA) return "";
   const title = heading || view.label || "Local connections";
-  const empty = view.status === "empty";
-  const countText = empty
-    ? "No connected records in this materialization."
-    : `${view.nodes.length} connected ${view.nodes.length === 1 ? "record" : "records"}.`;
+  const countText = view.status === "matched"
+    ? `${view.nodes.length} connected ${view.nodes.length === 1 ? "record" : "records"}.`
+    : edgeSummaryStateCopy({ state: view.status, count: view.status === "empty" ? 0 : null });
   const list = view.nodes.length
     ? `<ol class="local-constellation-list" aria-label="Equivalent list of connected records">${view.nodes.map(nodeMarkup).join("")}</ol>`
-    : `<p class="local-constellation-empty" data-local-constellation-empty="true">No connected records in this materialization.</p>`;
-  return `<section class="local-constellation ${esc(className)}" data-local-constellation="1" data-local-constellation-kind="${esc(view.kind)}" data-local-constellation-status="${esc(view.status)}" data-local-constellation-count="${view.node_count}" aria-labelledby="${esc(id)}">
+    : `<p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="${esc(view.status)}">${esc(countText)}</p>`;
+  const availability = view.availability_state || view.status;
+  return `<section class="local-constellation ${esc(className)}" data-local-constellation="1" data-local-constellation-kind="${esc(view.kind)}" data-local-constellation-status="${esc(view.status)}" data-edge-state="${esc(availability)}" data-local-constellation-count="${view.node_count}" aria-labelledby="${esc(id)}">
     <div class="local-constellation-heading"><div><p class="local-constellation-kicker">Local connections</p><h2 id="${esc(id)}">${esc(title)}</h2><p class="local-constellation-summary">${esc(countText)} The map is limited to published neighbors.</p></div></div>
     <div class="local-constellation-body">${mapMarkup(view, id)}<div class="local-constellation-list-wrap">${list}</div></div>
   </section>`;

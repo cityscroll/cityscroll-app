@@ -1,6 +1,11 @@
 import { renderNodeSection } from "../civic_document_chrome.mjs";
 import { entityChipHTML } from "../entity_pivot.mjs";
-import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "../edge_summary.mjs";
+import {
+  EDGE_SUMMARY_STATE_MEANINGS,
+  edgeSummaryStateCopy,
+  normalizeEdgeSummaryRecords,
+  renderEdgeSummaryRail,
+} from "../edge_summary.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -16,7 +21,7 @@ const money = (value) => Number.isFinite(Number(value))
   : "Award total unavailable";
 
 export function renderAgencyTopVendorsSection(category, source = {}) {
-  if (!category || category.status !== "matched" || !category.items?.length) return "";
+  if (!category) return "";
   const edgeSummary = normalizeEdgeSummaryRecords([{
     source_kind: "agency",
     source_id: category.agency_id || null,
@@ -24,8 +29,8 @@ export function renderAgencyTopVendorsSection(category, source = {}) {
     label: category.label || "Top vendors by award value",
     target_kind: "vendor",
     target_name: category.label || "Top vendors by award value",
-    count: category.count ?? category.items.length,
-    state: "matched",
+    count: category.count ?? category.items?.length ?? 0,
+    state: category.status,
     href: category.view_all_href || null,
     source: {
       kind: source.kind || "agency",
@@ -36,7 +41,8 @@ export function renderAgencyTopVendorsSection(category, source = {}) {
     scope: { relation_family: "top_vendors", as_of: category.as_of || null },
     as_of: category.as_of || null,
   }]);
-  const list = `<ul class="node-record-list agency-top-vendors-list">${category.items.map((item) => {
+  const items = Array.isArray(category.items) ? category.items : [];
+  const list = items.length ? `<ul class="node-record-list agency-top-vendors-list">${items.map((item) => {
     const vendor = entityChipHTML({
       ref: item.subject_ref,
       label: item.label,
@@ -56,17 +62,23 @@ export function renderAgencyTopVendorsSection(category, source = {}) {
       <div class="node-record-main">${vendor}</div>
       <span class="muted node-muted">${esc(money(item.award_total))} · ${esc(awards)}</span>
     </li>`;
-  }).join("")}</ul>`;
-  const action = category.view_all_href
+  }).join("")}</ul>` : "";
+  const action = category.status === "matched" && category.view_all_href
     ? `<p class="node-inline-actions civic-object-inline-actions"><a class="node-action civic-object-action" href="${esc(category.view_all_href)}">Open all agency contracts</a></p>`
     : "";
+  const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
+  const heading = category.status === "matched"
+    ? category.label
+    : `${category.label} (${edgeSummaryStateCopy({ state: category.status, count: category.count })})`;
   return renderNodeSection({
-    heading: category.label,
+    heading,
     exportClass: "object_members",
     extraClass: "node-card civic-object-section",
     attrs: {
       "data-agency-constellation-category": category.id,
       "data-status": category.status,
+      "data-edge-state": category.status,
+      "data-edge-availability": availability,
       "data-window-start": category.window_start || "",
       "data-window-as-of": category.as_of || "",
     },
