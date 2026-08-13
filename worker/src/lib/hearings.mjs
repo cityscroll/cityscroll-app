@@ -16,6 +16,10 @@ import {
 import { placeFromDerivations } from "../../../site/location_derivation.mjs";
 import { noticeDisplayTitle } from "../../../site/display_title.mjs";
 import { inferHearingLogistics } from "../../../site/hearing_logistics.mjs";
+import {
+  meetingSourceUrl,
+  normalizeMeetingOrigin,
+} from "../../../site/meeting_origin.mjs";
 
 export { plainText };
 
@@ -367,7 +371,14 @@ export function normalizeHearing(row) {
     venue,
     participation,
     meeting_access: row.meeting_access || meetingAccessFromParts(venue, participation, body, row.source_links),
-    source_url: sourceUrl,
+    source_url: meetingSourceUrl({ ...row, source_url: sourceUrl }, normalizeMeetingOrigin({
+      ...row,
+      source_system: row.source_system || "city_record",
+    })),
+    meeting_origin: normalizeMeetingOrigin({
+      ...row,
+      source_system: row.source_system || "city_record",
+    }),
     description: body.slice(0, 1200),
   };
 }
