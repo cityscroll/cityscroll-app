@@ -9,7 +9,7 @@ from typing import Optional, Sequence
 
 from . import SUITE_MEMBERS
 from . import control_labels, genai_disclosure, heading_punctuation, i18n_keys, link_text
-from . import nyc_copy_lint, page_metadata, reading_level
+from . import disclaimer_slop, nyc_copy_lint, page_metadata, reading_level
 
 
 @dataclass
@@ -53,6 +53,14 @@ def _runner(name: str, site_root: Path, **opts) -> int:
             baseline=opts.get("baseline"),
             fmt=opts.get("format", "table"),
         )
+    if name == "no_disclaimer_slop":
+        return disclaimer_slop.run(
+            site_root,
+            paths=opts.get("pages"),
+            allowlist_file=opts.get("disclaimer_slop_allowlist"),
+            mode=opts.get("disclaimer_slop_mode", "warn"),
+            fmt=opts.get("disclaimer_slop_format", "text"),
+        )
     raise KeyError(f"unknown gate: {name}")
 
 
@@ -68,6 +76,8 @@ def run_suite(
     reading_level_max_grade: Optional[float] = None,
     reading_level_preset: str = "nycsg7",
     skip_reading_level: bool = False,
+    disclaimer_slop_mode: str = "warn",
+    disclaimer_slop_allowlist: Optional[Path] = None,
 ) -> list[GateVerdict]:
     """Run each suite member and return verdicts. Does not short-circuit on failure."""
     site_root = Path(site_root)
@@ -86,6 +96,9 @@ def run_suite(
             "max_grade": reading_level_max_grade,
             "preset": reading_level_preset,
             "format": "table",
+            "disclaimer_slop_mode": disclaimer_slop_mode,
+            "disclaimer_slop_allowlist": disclaimer_slop_allowlist,
+            "disclaimer_slop_format": "text",
         }
         print(f"\n—— {name} ——", flush=True)
         try:
