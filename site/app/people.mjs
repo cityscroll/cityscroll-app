@@ -1231,7 +1231,7 @@ async function pSearch(keepDetail){
 
 // The LIKE query guarantees title evidence; the caller supplies competitive status.
 function roleRowHTML(r, i, terms, comp2, exam){
-  const ev = matchEvidence(r.title_description, "", terms);
+  const ev = resultMatchEvidence(r.title_description, "", terms);
   const status=exam?CrolStaffing.statusFor(exam,careerToday()):null;
   const examLink=exam?`<a class="staffing-exam-link" href="${CrolStaffing.examUrl(exam.exam_number, location.origin)}">
       <span class="tag ${careerStatusClass(status)}">${status==="open"?t("staffing_exam_open_tag"):t("staffing_exam_upcoming_tag")}</span>
@@ -1310,7 +1310,7 @@ function pSelectRole(i, el){
 // Aggregate person evidence uses the first underlying notice that explains the match.
 function personRowHTML(p, i, terms){
   let ev = null;
-  for(const a of p.actions){ const e = matchEvidence(p.name, a.text, terms); if(!ev) ev = e; if(e.field !== "unknown"){ ev = e; break; } }
+  for(const a of p.actions){ const e = resultMatchEvidence(p.name, a.text, terms); if(!ev) ev = e; if(e) break; }
   return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${digTitleHTML(p.name, ev)}</p>
       <p class="rmeta"><span class="ragency" lang="en" dir="ltr">${p.agency}</span> · ${tn("n_notices_meta",p.actions.length)}</p>

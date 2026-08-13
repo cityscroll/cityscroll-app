@@ -444,7 +444,7 @@ function moneyRowHTML(r, i, terms){
   const lead = isAward
     ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
     : deadlineTag(r.due_date);
-  const title = noticeDisplayTitle(r), ev = matchEvidence(title, matchText(r), terms);
+  const title = noticeDisplayTitle(r), ev = resultMatchEvidence(title, matchText(r), terms);
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
   const actionLocationChip=globalThis.MoneyActionLocations?.moneyActionLocationChipHTML?.(r,{t,esc:escUiHtml})||"";
   const primaryAction=moneyListPrimaryActionHTML(r);

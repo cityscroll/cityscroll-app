@@ -1101,7 +1101,7 @@ function hearingVenueText(record){
   };
   return [labels[venue.mode]?t(labels[venue.mode]):"", venue.building, venue.address].filter(Boolean).join(" · ");
 }
-function hearingCardHTML(record){
+function hearingCardHTML(record, terms=[]){
   // Flat fallback when the explorer module fails to load.
   return meetingsExplorerCardHTML({
     kind:"notice",
@@ -1117,7 +1117,7 @@ function hearingCardHTML(record){
     matched_phases:[],
     participation:record.participation||{},
     sibling_notices:[],
-  });
+  }, terms);
 }
 function compactCardActions(primaryAction, secondaryActions){
   const overflow = (secondaryActions || []).filter(Boolean);
@@ -1132,7 +1132,7 @@ function compactCardActions(primaryAction, secondaryActions){
       </details>
     </div>`;
 }
-function meetingsExplorerCardHTML(entry){
+function meetingsExplorerCardHTML(entry, terms=[]){
   const record=entry&&entry.primary;
   if(!record) return "";
   const scope=entry.place_scope||(record.affected_area&&record.affected_area.scope)||"unlocated";
@@ -1203,6 +1203,7 @@ function meetingsExplorerCardHTML(entry){
     if(chips) siblingsHtml=`<div class="meetings-siblings">${t("meetings_siblings_label")}: ${chips}</div>`;
   }
   const title=noticeDisplayTitle({title:entry.title||record.decides||record.title,request_id:record.request_id},t("now_event_meeting"));
+  const ev=resultMatchEvidence(title, matchText(record), terms);
   const areaText=hearingAreaText(record);
   const venueText=hearingVenueText(record);
   const areaFact=areaText
@@ -1223,15 +1224,16 @@ function meetingsExplorerCardHTML(entry){
       ${siblingsHtml}
       ${factsHTML?`<div class="hfacts">${factsHTML}</div>`:""}
       ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
+      ${digEvidenceHTML(ev)}
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
       ${cardAttendPack}
     </article>`;
 }
-function renderHearingGroup(scope, entries){
+function renderHearingGroup(scope, entries, terms=[]){
   if(!entries.length) return "";
   const label=scope==="local"?"local_hearings_group":scope==="citywide"?"citywide_hearings_group":"unlocated_hearings_group";
   const noteText=scope==="citywide"?t("citywide_hearings_note"):"";
-  return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(meetingsExplorerCardHTML).join("")}`;
+  return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("")}`;
 }
 function updateMeetingsMoreFiltersState(){
   const badge=$("#meetings-filter-badge");
@@ -1270,6 +1272,7 @@ async function renderHearingExplorer(){
   }
   if(seq!==hearingRenderSeq) return;
   const rows=selection.rows;
+  const terms=filter.keyword?[filter.keyword]:[];
   const widening=$("#meetingswidening");
   widening.innerHTML=hearingWideningHTML(selection,filter);
   const remove=widening.querySelector("[data-remove-widening]");
@@ -1377,10 +1380,10 @@ async function renderHearingExplorer(){
       : { local:entries.filter(e=>(e.place_scope||"unlocated")==="local"),
           citywide:entries.filter(e=>(e.place_scope||"unlocated")==="citywide"),
           unlocated:entries.filter(e=>(e.place_scope||"unlocated")==="unlocated") };
-    el.innerHTML=["local","citywide","unlocated"].map(scope=>renderHearingGroup(scope, byPlace[scope]||[])).join("");
+    el.innerHTML=["local","citywide","unlocated"].map(scope=>renderHearingGroup(scope, byPlace[scope]||[],terms)).join("");
   } else {
     // Default: single chronological list (near-me / borough filters own place navigation).
-    el.innerHTML=entries.map(meetingsExplorerCardHTML).join("");
+    el.innerHTML=entries.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("");
   }
   el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>copyText(noticeLink(button.dataset.link),button)));
   el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>downloadEventICS(feedRows.meetings[button.dataset.ev.split(":")[1]])));
