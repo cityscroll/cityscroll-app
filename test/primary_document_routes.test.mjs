@@ -528,7 +528,7 @@ test("client island recognizes promoted document routes without converting entit
 test("client island preserves static Browse concept documents", () => {
   const routing = read("../site/app/routing.mjs");
   const core = read("../site/app/core.mjs");
-  assert.match(routing, /BROWSE_CONCEPTS/);
+  assert.match(routing, /DOCUMENT_CONCEPT_ROUTES/);
   assert.match(routing, /browse-concept\//);
   assert.match(routing, /if\(raw\.startsWith\("browse-concept\/"\)\) return true/);
   assert.match(core, /if\(!document\.getElementById\(`tab-\$\{b\.dataset\.tab\}`\)\) return;/);

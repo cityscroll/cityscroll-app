@@ -4,7 +4,6 @@ import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
-import { BROWSE_CONCEPTS } from "../browse_concept_view.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -12,6 +11,10 @@ import { BROWSE_CONCEPTS } from "../browse_concept_view.mjs";
 const DOCUMENT_FACET_HASHES=Object.freeze({
   contracts:"money",staffing:"people",zoning:"land",property:"property",rules:"rules",meetings:"meetings",
 });
+// These are static Browse documents, not SPA panes. Keep this closed route list
+// aligned with BROWSE_CONCEPTS without importing the renderer into the inline
+// reconstruction path.
+const DOCUMENT_CONCEPT_ROUTES=new Set(["people","places"]);
 function documentRouteRaw(){
   const path=location.pathname.replace(/\/+$/,"")||"/";
   const notice=path.match(/^\/notices\/([A-Za-z0-9_-]{1,80})$/);
@@ -38,7 +41,7 @@ function documentRouteRaw(){
   if(browse){
     const facet=browse[1];
     if(!facet) return "browse";
-    if(Object.hasOwn(BROWSE_CONCEPTS, facet)) return `browse-concept/${facet}`;
+    if(DOCUMENT_CONCEPT_ROUTES.has(facet)) return `browse-concept/${facet}`;
     const route=DOCUMENT_FACET_HASHES[facet];
     if(!route) return "";
     const params=new URLSearchParams(location.search); params.delete("lang"); params.delete("legacy");
