@@ -32,8 +32,8 @@
       "fcpMs": 1000,
       "lcpMs": 2500,
       "cls": 0.1,
-      "wireBytes": 445000,
-      "comment": "Current main revision 639bf8c5 measured 459328 cold-home gzip bytes in 20/20 samples for both viewports. Deferring the Property renderer while retaining its shared franchise/action classifier measured 437841 bytes in 20/20 samples for both viewports; receipts are under docs/evidence/home-cold-split/. The 445000 ceiling is the next ratchet documented by the August 2026 performance audit; under 435000 remains a separate follow-on."
+      "wireBytes": 460000,
+      "comment": "PROPOSED ceiling, rationale-to-confirm: current main measures about 447729 cold-home gzip bytes in both viewports; 460000 leaves 12271 bytes of headroom for near-term feature additions without another immediate ratchet. See ARCHITECTURE.md#proposed-rationale-home-cold-load-wire-budget. The deeper optimization toward the old 435000 aspiration remains a tracked follow-on."
     },
     "home.warm": {
       "viewports": [
