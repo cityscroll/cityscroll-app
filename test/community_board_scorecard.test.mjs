@@ -4,6 +4,7 @@ import { test } from "node:test";
 import { buildScorecard, formatLastMinutes, renderScorecardPage } from "../site/community-board-scorecard.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url), "utf8"));
+const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url), "utf8"));
 
 test("scorecard lists every community board and never invents a minutes URL", () => {
   const scorecard = buildScorecard({ registry });
@@ -28,4 +29,35 @@ test("detector dates produce deterministic age and ranking", () => {
   assert.equal(scorecard.rows.find((row) => row.body_id === "bronx-cb-01").rank, 1);
   assert.equal(formatLastMinutes("2026-03-01", 156), "Last published minutes: March 2026 — 5 months ago");
   assert.match(renderScorecardPage(scorecard), /Machine-readable JSON/);
+});
+
+test("board source inventory keeps explicit roles and honest collection states", () => {
+  assert.equal(sourceInventory.schema, "cityscroll.community_board_source_inventory.v1");
+  assert.equal(sourceInventory.coverage.boards, 59);
+  const scorecard = buildScorecard({ registry, sourceInventory });
+  assert.equal(scorecard.rows.length, 59);
+  const cb3 = scorecard.rows.find((row) => row.body_id === "manhattan-cb-03");
+  assert.equal(cb3.sources.upcoming_meetings.collection_state, "observed");
+  assert.equal(cb3.sources.minutes.collection_state, "not_yet_ingested");
+  assert.equal(cb3.sources.minutes.source_url, "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page");
+  assert.equal(cb3.sources.upcoming_meetings.source_url, "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page");
+
+  const joined = buildScorecard({
+    registry,
+    sourceInventory,
+    joinedLookup: { notices: { n1: { body_id: "manhattan-cb-03" } } },
+  }).rows.find((row) => row.body_id === "manhattan-cb-03");
+  assert.equal(joined.sources.minutes.collection_state, "joined");
+
+  const absent = scorecard.rows.find((row) => row.body_id === "bronx-cb-08");
+  assert.equal(absent.sources.upcoming_meetings.collection_state, "absent_in_pass");
+  assert.equal(absent.sources.minutes.collection_state, "absent_in_pass");
+  const html = renderScorecardPage(scorecard);
+  assert.match(html, /Official source inventory/);
+  assert.match(html, /Source found; records not yet ingested/);
+  assert.match(html, /Not verified in this pass/);
+  assert.doesNotMatch(html, /no official meeting exists/i);
+  assert.match(html, /Board-linked third-party storage/);
+  const readerCopy = html.replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(readerCopy, /upcoming_meetings|not_yet_ingested|absent_in_pass/);
 });
