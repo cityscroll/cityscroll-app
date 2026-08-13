@@ -120,7 +120,7 @@ export function buildBoardSourceInventory({ registry, inventory = null, joinedLo
           access_constraint: raw.access_constraint || null,
           collection_state: state,
           origin: origin?.key || null,
-          origin_label: origin?.label || "Source not verified in this pass",
+          origin_label: origin?.label || "Source not listed",
           observed_on: inventoryRow.observed || inventory?.observed_on || registryRow.observed_on || null,
         }];
       }));
@@ -140,9 +140,9 @@ export function buildBoardSourceInventory({ registry, inventory = null, joinedLo
 function stateLabel(state) {
   return {
     observed: "Source observed",
-    not_yet_ingested: "Source found; records not yet ingested",
+    not_yet_ingested: "Source available",
     joined: "Joined to a published notice",
-    absent_in_pass: "Not verified in this pass",
+    absent_in_pass: "Source not listed",
   }[state] || "Source status not measured";
 }
 
@@ -158,7 +158,7 @@ function sourceRoleLabel(role) {
 function sourceCard(source, role) {
   const link = source.source_url
     ? officialSourceLink({ href: source.source_url, label: role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
-    : `<span class="scorecard-muted">Source not verified in this pass</span>`;
+    : `<span class="scorecard-muted">Source not listed</span>`;
   const access = source.access_constraint === "browser_required"
     ? `<span class="scorecard-source-note">Browser access may be required.</span>`
     : "";
@@ -235,17 +235,16 @@ export function renderScorecardPage(scorecard) {
     const freshness = formatLastMinutes(row.last_minutes_date, row.days_since_last_minutes);
     const sources = row.sources && Object.keys(row.sources).length
       ? SOURCE_ROLES.map((role) => sourceCard(row.sources[role], role)).join("")
-      : sourceCard({ source_url: row.minutes_url, collection_state: row.minutes_url ? "not_yet_ingested" : "absent_in_pass", observed_on: row.receipts?.[0]?.observed_on, origin_label: row.minutes_url ? "NYC-hosted official source" : "Source not verified in this pass" }, "minutes");
+      : sourceCard({ source_url: row.minutes_url, collection_state: row.minutes_url ? "not_yet_ingested" : "absent_in_pass", observed_on: row.receipts?.[0]?.observed_on, origin_label: row.minutes_url ? "NYC-hosted official source" : "Source not listed" }, "minutes");
     const completeness = [
       row.notice_completeness == null ? "Notice: not measured" : `Notice: ${row.notice_completeness}% observed`,
       row.media_completeness == null ? "Media: not measured" : `Media: ${row.media_completeness}% observed`,
     ].join(" · ");
     return `<tr><th scope="row"><a href="${esc(row.homepage_url)}">${esc(row.name)}</a><span>${esc(row.borough)} · District ${row.district}</span></th><td>${esc(freshness)}${row.rank ? `<small>Rank ${row.rank} of ${measured}</small>` : ""}</td><td><div class="scorecard-sources">${sources}</div><span class="scorecard-muted">${esc(completeness)}</span></td></tr>`;
   }).join("");
-  const rankingNote = measured
-    ? `The ranking uses ${measured} dated observation${measured === 1 ? "" : "s"}; ties break by board ID so a rebuild produces the same order.`
-    : "No dated checks are available yet, so no board is ranked yet.";
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community board minutes · CityScroll</title><meta name="description" content="A public, receipt-backed view of community board minutes freshness."><link rel="canonical" href="https://cityscroll.org/community-boards/"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"><link rel="stylesheet" href="/community-board-scorecard.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/"><span aria-hidden="true">▣</span><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header><main id="main" class="scorecard"><section class="scorecard-hero"><p class="scorecard-kicker">Public accountability</p><h1>Community board sources</h1><p class="scorecard-dek">See each of New York City’s 59 community boards with its explicit calendar, homepage, and minutes sources. A source that has not been verified in this pass is not a claim that a meeting or record does not exist.</p><p class="scorecard-asof">Sources checked through ${esc(scorecard.as_of)} · ${scorecard.coverage.boards} boards listed · ${measured} with dated minutes freshness receipts</p></section><section class="scorecard-legal" aria-labelledby="scorecard-legal-heading"><h2 id="scorecard-legal-heading">What the public record expects</h2><p>${esc(scorecard.legal_basis.text)} <a href="${esc(scorecard.legal_basis.citation_url)}">Read the Comptroller audit</a>.</p></section><section class="scorecard-method" aria-labelledby="scorecard-method-heading"><h2 id="scorecard-method-heading">How to read these sources</h2><p>“Source found; records not yet ingested” means an explicit publication page is known, but this site has not joined records from it to a published notice. “Not verified in this pass” means the inventory did not resolve a source URL. Neither state says that an official meeting or record does not exist. City Record notices are separate public records. The links above point to pages maintained by NYC or the board. ${esc(rankingNote)}</p></section><section aria-labelledby="scorecard-table-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-table-heading">Official source inventory</h2></div><a class="scorecard-json" href="/data/community_board_minutes_scorecard.json">Machine-readable JSON</a></div><div class="scorecard-table-wrap"><table><thead><tr><th scope="col">Board</th><th scope="col">Minutes freshness</th><th scope="col">Official sources</th></tr></thead><tbody>${rows}</tbody></table></div></section></main></body></html>`;
+  const legalText = "The City Comptroller ";
+  const legalLink = `<a href="${esc(scorecard.legal_basis.citation_url)}">has recommended</a>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community board minutes · CityScroll</title><meta name="description" content="A public, receipt-backed view of community board minutes freshness."><link rel="canonical" href="https://cityscroll.org/community-boards/"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"><link rel="stylesheet" href="/community-board-scorecard.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/"><span aria-hidden="true">▣</span><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header><main id="main" class="scorecard"><section class="scorecard-hero"><h1>Community board sources</h1><p class="scorecard-dek">See each of New York City’s 59 community boards with its explicit calendar, homepage, and minutes sources.</p><p class="scorecard-asof">Sources checked through ${esc(scorecard.as_of)} · ${scorecard.coverage.boards} boards listed</p></section><p class="scorecard-legal">${legalText}${legalLink} that community boards post minutes from the past 12 months.</p><section aria-labelledby="scorecard-table-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-table-heading">Official source inventory</h2></div><a class="scorecard-json" href="/data/community_board_minutes_scorecard.json">Machine-readable JSON</a></div><div class="scorecard-table-wrap"><table><thead><tr><th scope="col">Board</th><th scope="col">Minutes freshness</th><th scope="col">Official sources</th></tr></thead><tbody>${rows}</tbody></table></div></section></main></body></html>`;
 }
 
 export { esc };
