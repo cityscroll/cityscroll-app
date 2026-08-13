@@ -10,7 +10,6 @@ The main constraints are visible in the existing design:
 
 - Public sources remain the source of truth. CityScroll may normalize, join, cache, and materialize them, but it must not silently turn an absent value into a fact. The source contract register in [`site/data/source_contracts.json`](site/data/source_contracts.json) and its generated view in [`docs/data-sources.md`](docs/data-sources.md) define the delivery and evidence boundary.
 - The ordinary read path is precompute-first. Committed site data, build artifacts, and Worker projections make common views predictable; live upstream calls remain for interactive freshness, explicit lookups, ingestion, verification, or a documented fallback. The delivery audit is [`docs/precompute-first-inventory-2026-07-29.md`](docs/precompute-first-inventory-2026-07-29.md).
-- Privacy is a product constraint: there are no accounts, cookies, fingerprints, or visitor profiles. The subscription email is the personal data needed for the double-opt-in alert path; product-use events are bounded aggregates. See [`docs/privacy-baseline.md`](docs/privacy-baseline.md).
 - The site must remain useful when Worker-backed features are unavailable. The static/browser surface has its own data and graceful fallback paths; alerts, feeds, natural-language search, forecasting, and other server features can degrade separately.
 - Identity joins are links, not merges. A source record keeps its publisher identity; cross-source links need a named rule, provenance, and the required confidence or review gate.
 
@@ -24,7 +23,7 @@ The Cloudflare Worker in `worker/` is the server boundary. Its public API host i
 
 The system consumes City Record and other NYC Open Data feeds, DCAS and Legistar data, Checkbook NYC, ZAP, GeoSearch, MapPLUTO, DOB data, ABO datasets, Anthropic for the metered natural-language route, Resend for email, and Cloudflare services. Each source has its own contract and may be live-only, inline-at-build, or edge-materialized. A source that is not published or not joined stays an explicit gap; the product does not infer the missing stage.
 
-The main external outputs are the public site and record documents, saved-search feeds, double-opt-in email digests, public aggregate statistics, and bounded public entity and process views. Operator and spend views are keyed server routes. The system has no CLI product surface; deployment is through the site and Worker pipelines documented in [`docs/release/cloudflare-native-builds.md`](docs/release/cloudflare-native-builds.md).
+The main external outputs are the public site and record documents, saved-search feeds, email digests, public aggregate statistics, and bounded public entity and process views. Operator and spend views are keyed server routes. The system has no CLI product surface; deployment is through the site and Worker pipelines documented in [`docs/release/cloudflare-native-builds.md`](docs/release/cloudflare-native-builds.md).
 
 ## Building blocks
 

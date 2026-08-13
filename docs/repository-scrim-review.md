@@ -1,6 +1,6 @@
-# Repository privacy baseline
+# Repository scrim review
 
-This baseline records the deliberate privacy review completed on 2026-08-04. The review covered the current repository tip, public commit history, and repository-local Git metadata because all three are evaluated before publication.
+This review records the deliberate repository scrim completed on 2026-08-04. The review covered the current repository tip, public commit history, and repository-local Git metadata because all three are evaluated before publication.
 
 The complete inventory contained 1144 occurrences: 1143 were intentional public or non-published local material, 1 was removed from the tip, and none required credential rotation. Each row below records one occurrence, even when several occurrences share one narrowly scoped acceptance entry.
 
