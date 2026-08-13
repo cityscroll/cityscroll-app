@@ -70,3 +70,16 @@ export function scopeFromNearYouUrl(input, { language = "en" } = {}) {
   }
   return normalizeScope(scope, { language });
 }
+
+/** Convert the legacy map hash into the canonical Near-you GET URL. */
+export function nearYouUrlFromMapHash(input, { base = "/near-you/" } = {}) {
+  const hash = String(input || "");
+  if (!/^#map(?:\?|$)/.test(hash)) return null;
+  if (hash === "#map" || hash === "#map?") {
+    const url = new URL(base, "https://cityscroll.invalid");
+    return /^[a-z][a-z\d+.-]*:\/\//i.test(base)
+      ? url.toString()
+      : `${url.pathname}${url.search}`;
+  }
+  return nearYouUrlFromScope(scopeFromRouteHash(hash), { base });
+}
