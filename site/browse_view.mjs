@@ -8,6 +8,7 @@ import {
 } from "./contextual_suggestions.mjs";
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLink } from "./edge_summary.mjs";
 import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
+import { renderWalkEntry } from "./walk_entry.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -972,13 +973,34 @@ export function renderBrowseLanding(landing) {
     </article>`;
   }).join("");
   const cardGrid = cards ? `<div class="browse-source-grid">${cards}</div>` : "";
+  const walkFamilies = (landing?.cards || []).map((card) => {
+    const primary = (card.children || []).find((child) => child.facet === card.primaryFacet)
+      || (card.children || []).find((child) => child.route);
+    return {
+      id: card.id,
+      label: card.label,
+      kicker: card.label,
+      description: card.description,
+      count: card.count,
+      status: card.count == null ? "unknown" : card.count > 0 ? "available" : "empty",
+      href: primary?.route || null,
+    };
+  });
+  const walkEntry = renderWalkEntry({
+    source: "browse",
+    families: walkFamilies,
+    actionHref: "/browse/",
+    actionLabel: "Search records",
+  });
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
       <p>Pick a civic object. Follow the edges between people, places, agencies, money, and decisions.</p>
     </header>
+    ${walkEntry}
     ${cardGrid}
+    <script type="module" src="/app/walk-entry.mjs"></script>
   </div>`;
 }
 
