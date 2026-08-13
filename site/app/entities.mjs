@@ -248,7 +248,6 @@ async function showOfficial(personId, opts){
     ...committeeLookup.by_member_id[id],
     coverage: { eligible_rows: committeeLookup.eligible_row_count, linked_rows: committeeLookup.linked_row_count, row_rate: committeeLookup.row_rate },
     vintage: committeeLookup.vintage,
-    // The official route has no committee document target in this build.
     reverse_edges: [],
   } : { rows: [], coverage: {}, vintage: committeeLookup?.vintage };
   const event = (record && record.council_event) || {};
