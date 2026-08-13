@@ -518,9 +518,9 @@ export function renderWhyBelieveControl(claim, { className = "" } = {}) {
     ? claim.cross_spine.confidence
     : "unmatched";
   const classes = ["edge-prov-why", `edge-prov-why-${warrant.id}`, `edge-prov-cross-spine-${crossSpine}`, className].filter(Boolean).join(" ");
-  const aria = `Connection confidence: ${crossSpine}`;
-  const title = `${aria}; evidence class: ${warrant.label}`;
-  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-cross-spine-confidence="${esc(crossSpine)}" href="${esc(href)}" aria-label="${esc(aria)}" title="${esc(title)}"><span class="edge-prov-confidence edge-prov-confidence-${esc(crossSpine)}">${esc(crossSpine)}</span></a>`;
+  const aria = "View connection details";
+  const title = "View connection evidence";
+  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-cross-spine-confidence="${esc(crossSpine)}" href="${esc(href)}" aria-label="${esc(aria)}" title="${esc(title)}"><span class="edge-prov-details-label edge-prov-confidence-${esc(crossSpine)}">Details</span></a>`;
 }
 
 /** Optional compact warrant key (not always-on chrome). */
@@ -585,7 +585,6 @@ export function renderEdgeProvenancePanel(claims = [], { activeClaimId = null } 
   const claimPayload = JSON.stringify(list).replace(/<\/script/gi, "<\\/script");
   return `<section class="edge-prov-panel node-section node-card civic-object-section" id="edge-provenance" data-edge-provenance-panel="1" data-export-class="object_provenance" aria-labelledby="edge-prov-panel-heading"${hiddenAttr}>
     <h2 id="edge-prov-panel-heading">Connection evidence</h2>
-    <p class="edge-prov-boundary">Connections compare evidence; identities stay separate.</p>
     <div class="edge-prov-panel-body" data-edge-prov-body="1">${body}</div>
     <script type="application/json" id="edge-provenance-claims">${claimPayload}</script>
   </section>`;

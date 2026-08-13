@@ -5,6 +5,13 @@
 .local-constellation-summary{margin:0;color:var(--color-text-soft,#59636f)}
 .local-constellation-body{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,1.4fr);gap:var(--space-4,20px);align-items:center;margin-top:var(--space-4,20px)}
 .local-constellation-map{display:block;width:100%;max-width:360px;height:auto;justify-self:center;color:var(--color-action,#1769aa)}
+.local-district-map{max-width:420px;overflow:visible;color:var(--color-text,#17212b)}
+.local-district-map-shape{stroke:var(--color-surface,#fff);stroke-width:1.3;vector-effect:non-scaling-stroke}
+.local-district-map-adjacent{fill:var(--color-action-soft,#a9cbe2);opacity:.82}
+.local-district-map-central{fill:var(--color-action,#1769aa);opacity:.92;stroke:var(--color-text,#17212b);stroke-width:2;paint-order:stroke;vector-effect:non-scaling-stroke}
+.local-district-map-label{font:600 11px/1 var(--font-label,system-ui);paint-order:stroke;stroke:var(--color-surface,#fff);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.local-district-map-label-central{fill:var(--color-surface,#fff)}
+.local-district-map-label-adjacent{fill:var(--color-text,#17212b)}
 .local-constellation-lines line{stroke:currentColor;stroke-width:1.5;opacity:.35}
 .local-constellation-center{fill:var(--color-action,#1769aa);stroke:var(--color-surface,#fff);stroke-width:3}
 .local-constellation-dots circle{fill:var(--color-surface,#fff);stroke:currentColor;stroke-width:2}
@@ -17,7 +24,6 @@
 .local-constellation-node-dot{color:var(--color-action,#1769aa);font-size:.7rem}
 .local-constellation-relation{grid-column:1/-1;color:var(--color-text-soft,#59636f);font-size:.9rem}
 .local-constellation-held-label{color:var(--color-text-soft,#59636f);font-size:.8rem}
-.local-constellation-list-item .edge-summary-provenance{grid-column:1/-1}
 .local-constellation-empty{margin:var(--space-4,20px) 0 0;color:var(--color-text-soft,#59636f)}
 .local-constellation-preview{margin-top:var(--space-4,20px);padding:var(--space-3,16px);border:1px solid var(--color-border,#d9dde3);border-radius:var(--radius-2,8px);background:var(--color-surface-muted,#f6f8fa)}
 .local-constellation-preview p{margin:0}
