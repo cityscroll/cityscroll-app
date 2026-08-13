@@ -41,6 +41,40 @@ const BAG_LABELS = Object.freeze({
 });
 const BOROUGHS = Object.keys(BOROUGH_META);
 
+// Placement methods are machine provenance. Keep their stable enum values in
+// the read model, but never expose those identifiers as reader-facing copy.
+const PLACEMENT_METHOD_LABELS = Object.freeze({
+  agency_borough: "matched by agency area",
+  agency_community_board: "matched by community board area",
+  agency_hq: "agency headquarters fallback",
+  agency_service_area: "matched by agency service area",
+  cd_centroid_council: "district centroid",
+  civic_address_pip: "matched by civic address",
+  classic_affected_area: "matched by affected area",
+  community_board: "matched by community board area",
+  coordinates_pip: "matched by coordinates",
+  citywide: "citywide placement",
+  citywide_phrase: "matched by citywide notice language",
+  hearing_matter: "matched by hearing matter",
+  matter_address: "matched by matter address",
+  matter_body_borough: "matched by matter borough",
+  matter_title_place: "matched by matter title",
+  neighborhood_place: "matched by neighborhood",
+  publisher_council: "matched by publisher district",
+  publisher_district: "matched by publisher district",
+  "rule-scope": "matched by rule scope",
+  rule_default_citywide: "citywide rule",
+  service_borough: "matched by service area",
+  stamped: "matched by published location",
+  structured_bag: "matched by published location",
+  title_borough: "matched by title borough",
+  vendor_address: "matched by vendor address",
+  vendor_place: "matched by vendor place",
+  venue_column: "matched by venue",
+  venue_line: "matched by venue",
+  virtual_only: "online-only event",
+});
+
 function esc(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -329,6 +363,10 @@ function placeRoleLabel(role) {
   return "Affected area";
 }
 
+function placementMethodLabel(method) {
+  return PLACEMENT_METHOD_LABELS[method] || "location evidence";
+}
+
 function whyHerePath(path) {
   if (!path) return "";
   const mandateLabel = path.mandate?.citation || path.mandate?.relation_label || "Connected mandate";
@@ -352,8 +390,8 @@ function recordCard(record) {
       : esc(meetingOriginLabel(record.meeting_origin))}</div>`
     : "";
   const placementMethods = Array.isArray(record.placement_methods) && record.placement_methods.length
-    ? record.placement_methods.join(", ")
-    : record.basis_method;
+    ? record.placement_methods.map(placementMethodLabel).join(", ")
+    : record.basis_method ? placementMethodLabel(record.basis_method) : null;
   const placement = placementMethods
     ? `${record.basis} · ${placementMethods} placement`
     : record.basis;
