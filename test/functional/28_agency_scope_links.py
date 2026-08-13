@@ -172,7 +172,13 @@ def main():
         agency_input.press("Enter")
         wait_for_function(
             rules,
-            "location.hash.includes('health-and-mental-hygiene')",
+            """() => {
+                const url = new URL(location.href)
+                return url.hash.includes('health-and-mental-hygiene')
+                    || (url.searchParams.get('facet') || '').includes(
+                        'agency:id:health-and-mental-hygiene'
+                    )
+            }""",
             label="Rules agency scope submission",
         )
         print(

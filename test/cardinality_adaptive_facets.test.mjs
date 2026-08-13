@@ -24,6 +24,7 @@ test("small facets use inline links while large agency facets use a searchable t
   const large = agencyScopeLinksHTML({
     surface: "rules",
     agencies: Object.keys(AGENCY_GROUPS).slice(0, 12),
+    searchQuery: "health",
     t: (key) => ({ agency_label: "Agency", all_agencies: "All agencies" })[key] || key,
   });
   assert.match(large, /data-cardinality-facet="large"/);
@@ -33,6 +34,7 @@ test("small facets use inline links while large agency facets use a searchable t
   assert.match(large, /class="ui-constellation-link facet-entity-link"/);
   assert.match(large, /class="ui-filter-chip" aria-pressed=/);
   assert.match(large, /data-agency-scope-link=/);
+  assert.match(large, /class="facet-typeahead-input"[^>]*value="health"/);
   assert.doesNotMatch(large, /<select/);
 });
 

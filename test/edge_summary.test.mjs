@@ -249,10 +249,37 @@ test("edge summaries disclose cross-spine review without linking or filling null
   assert.equal(record.provenance.source_fields, null);
   assert.equal(record.cross_spine_confidence, "review");
   assert.doesNotMatch(html, /<a class="edge-summary-link"/);
-  assert.match(html, /data-edge-provenance="1"/);
+  assert.doesNotMatch(html, /data-edge-provenance="1"/);
   assert.match(html, /data-cross-spine-confidence="review"/);
-  assert.match(html, /edge-summary-confidence">review</);
-  assert.doesNotMatch(html, /Unavailable|does not choose a winner or merge identities/);
-  assert.match(renderEdgeSummaryProvenance(record), /<dt>Source<\/dt><dd>legistar<\/dd>/);
+  assert.match(html, /edge-summary-confidence-review"[^>]*>review</);
+  assert.doesNotMatch(html, /Unavailable|compare evidence|does not choose a winner or merge identities/);
+  assert.match(renderEdgeSummaryProvenance(record), /<dt>Source<\/dt><dd>NYC Council Legistar<\/dd>/);
   assert.doesNotMatch(renderEdgeSummaryProvenance(record), /Source record|Source fields/);
+});
+
+test("shared reader labels humanize raw relations and omit debug provenance by default", () => {
+  const record = normalizeEdgeSummaryRecord({
+    edge_type: "votes_on",
+    relation_label: "votes_on",
+    target_kind: "notice",
+    target_name: "Public notice",
+    count: 1,
+    state: "matched",
+    href: "/notices/20260101001",
+    provenance: {
+      source_system: "Unavailable",
+      source_record_id: "Unavailable",
+      source_fields: ["boro_cd", "coundist"],
+      join_method: "Unavailable",
+    },
+  });
+
+  assert.equal(record.relation_label, "voted on");
+  assert.equal(record.provenance.source_system, null);
+  assert.equal(record.provenance.source_fields.join(", "), "boro_cd, coundist");
+  const html = renderEdgeSummaryRail([record]);
+  assert.match(html, /voted on/);
+  assert.doesNotMatch(html, /Unavailable|boro_cd|coundist|edge-summary-provenance|compare evidence/);
+  assert.match(renderEdgeSummaryProvenance(record), /borough and community district/);
+  assert.match(renderEdgeSummaryProvenance(record), /Council District/);
 });
