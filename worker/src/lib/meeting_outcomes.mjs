@@ -130,6 +130,7 @@ function normalizeNoticeForOutcomes(row = {}) {
     event_date: toLocaleDate(row.event_date || base.event_date),
     start_date: row.start_date || null,
     source_url: base.source_url || null,
+    meeting_origin: base.meeting_origin || "unknown",
     affected_area: base.affected_area,
     venue: base.venue,
   };
@@ -557,6 +558,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
         start_date: notice.start_date,
         event_date: notice.event_date,
         source_url: notice.source_url,
+        meeting_origin: notice.meeting_origin,
         affected_area: notice.affected_area,
         venue: notice.venue,
       },
