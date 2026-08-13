@@ -152,6 +152,9 @@ function titleCodeFamilyHTML(exam, familyMembers = []) {
   const marker = family.marker
     ? ` <span class="exam-title-family-marker" data-confidence-marker="${esc(family.marker)}">inferred</span>`
     : "";
+  const meaning = family.confidence === "publisher"
+    ? `the civil-service job title these exams fill.`
+    : `exams that appear to fill the same civil-service job title.`;
   return renderNodeSection({
     heading: "Explore this title-code family",
     headingId: "exam-title-code-family-heading",
@@ -160,7 +163,7 @@ function titleCodeFamilyHTML(exam, familyMembers = []) {
       "data-title-code-family-surface": "navigational",
       "data-consequence-tier": "navigational_exploratory",
     },
-    body: `<p class="exam-title-family-lede"><span>${esc(family.label)}</span>${marker}: <code>${esc(family.code)}</code>. This is a navigational aid for browsing related exams, not an authoritative determination about title equivalence, eligibility, or appointment.</p><nav class="exam-title-family-list" aria-label="Related exams in this title-code family">${links}</nav>`,
+    body: `<p class="exam-title-family-lede"><span>${esc(family.label)}</span>${marker}: <code>${esc(family.code)}</code> — ${meaning}</p><nav class="exam-title-family-list" aria-label="Related exams in this title-code family">${links}</nav>`,
   });
 }
 
@@ -176,7 +179,6 @@ function predictionHTML(exam) {
     `<p class="exam-prediction-claim" data-prediction-subject="eligible-list-establishment" data-prediction-value="${esc(Number.isFinite(months) ? `${months}-months` : "unknown")}">Expect the eligible list about <strong>${Number.isFinite(months) ? months.toLocaleString("en-US") : "—"} months after applications close.</strong></p>`,
     window ? `<p class="exam-prediction-window">Statistical range ${date(window.p10)}–${date(window.p90)}; median ${date(window.p50)}.</p>` : "",
     `<p class="exam-muted">${basis} <a href="/about.html#staffing-list-establishment-formula">How this range is calculated</a>.</p>`,
-    `<p class="exam-note">This is historical timing information, not a promised date. Actual timing can change.</p>`,
   ].filter(Boolean).join("\n");
 }
 
