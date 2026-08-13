@@ -109,7 +109,7 @@
    read model; this component only makes the next destination legible. */
 .edge-summary-rail{min-width:0;margin:var(--space-4,16px) 0;padding:var(--space-3,12px);border:1px solid var(--color-border,var(--cs-n-100));border-radius:var(--radius-md,10px);background:var(--color-surface,var(--cs-white))}
 .edge-summary-rail h2{margin:0 0 var(--space-2,8px);font:700 .75rem/1.2 var(--font-label,system-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft,var(--cs-n-700))}
-.edge-summary-scope-note{margin:0 0 var(--space-2,8px);color:var(--color-text-muted,var(--cs-n-500));font:500 .78rem/1.35 var(--font-label,system-ui)}
+.edge-summary-boundary{margin:0 0 var(--space-2,8px);color:var(--color-text-muted,var(--cs-n-500));font:500 .72rem/1.35 var(--font-label,system-ui)}
 .edge-summary-rail ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--space-2,8px);margin:0;padding:0;list-style:none}
 .edge-summary-item{min-width:0;border-top:2px solid var(--color-border,var(--cs-n-100))}
 .edge-summary-link,.edge-summary-text{display:flex;min-width:0;flex-direction:column;gap:3px;padding:var(--space-2,8px) 0;text-decoration:none}
@@ -124,7 +124,10 @@
 .entity-pivot-held{display:inline-flex;gap:.35rem;align-items:baseline;color:var(--color-text-muted,var(--cs-n-500));border-bottom:1px dashed var(--color-caution,var(--cs-caution));overflow-wrap:anywhere}
 .entity-pivot-provisional{font:600 .72rem/1.25 var(--font-label,system-ui);color:var(--color-caution,var(--cs-caution));overflow-wrap:anywhere}
 .edge-summary-provenance{margin-top:var(--space-1);border-top:1px solid var(--color-border);font:500 .76rem/1.35 var(--font-label)}
-.edge-summary-provenance summary{cursor:pointer;padding:var(--space-1) 0;color:var(--color-text-muted);overflow-wrap:anywhere}
+.edge-summary-provenance summary{display:flex;align-items:center;gap:.4rem;cursor:pointer;padding:var(--space-1) 0;color:var(--color-text-muted);overflow-wrap:anywhere}
+.edge-summary-confidence,.edge-summary-as-of{display:inline-flex;align-items:center;border:1px solid var(--color-border);border-radius:999px;padding:1px 6px;font-size:.68rem;line-height:1.2}
+.edge-summary-confidence-review{border-style:dashed;border-color:var(--color-caution);color:var(--color-caution)}
+.edge-summary-confidence-unmatched{color:var(--color-text-muted)}
 .edge-summary-provenance-review summary{color:var(--color-caution);border-left:3px solid var(--color-caution);padding-left:.35rem}
 .edge-summary-provenance-unmatched summary{color:var(--color-text-muted);border-left:3px solid var(--color-border-strong);padding-left:.35rem}
 

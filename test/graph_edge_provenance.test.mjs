@@ -92,7 +92,7 @@ test("missing enrichment fields are omitted, not invented", () => {
   const html = renderEdgeProvenanceInspector(claim, { open: true });
   assert.doesNotMatch(html, /Not yet attached/);
   assert.doesNotMatch(html, /Link record|Resolution run|Source excerpt/);
-  assert.match(html, /Why do we believe this\?/);
+  assert.match(html, /edge-prov-confidence-unmatched/);
   assert.doesNotMatch(html, /Confidence is not identity/i);
   assert.doesNotMatch(html, /entity_link:[a-z0-9-]+/i);
   assert.doesNotMatch(html, /Source detail still to attach/);
@@ -185,10 +185,10 @@ test("inspector panel and why-control render warrant classes without fabricating
 
   const why = renderWhyBelieveControl(exact);
   assert.doesNotMatch(why, /Why do we believe this\? ·/);
-  assert.match(why, /edge-prov-token/);
-  assert.match(why, />exact</);
+  assert.match(why, /edge-prov-confidence-unmatched/);
+  assert.match(why, />unmatched</);
   assert.match(why, /data-warrant-class="exact"/);
-  assert.match(why, /aria-label="Connection evidence: Exact match"/);
+  assert.match(why, /aria-label="Connection confidence: unmatched"/);
   assert.match(why, /claim=contracts%3Anotice%3A20030224002/);
 
   const panel = renderEdgeProvenancePanel([exact, reviewed], {
@@ -240,7 +240,6 @@ test("cross-spine confidence stays in the exact set and preserves null evidence"
   assert.equal(review.confidence.standable, false);
   assert.equal(isStandablePublicClaim(review), false);
   assert.match(renderWhyBelieveControl(review), /data-cross-spine-confidence="review"/);
-  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /Cross-spine: review/);
-  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /Source fields[\s\S]*Unavailable/);
-  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /does not choose a winner or merge identities/);
+  assert.match(renderEdgeProvenanceInspector(review, { open: true }), /edge-prov-confidence-review/);
+  assert.doesNotMatch(renderEdgeProvenanceInspector(review, { open: true }), /Source fields|Unavailable|does not choose a winner or merge identities/);
 });

@@ -66,8 +66,8 @@ test("empty and unknown states render as explicit states, never asserted zeroes"
   assert.match(html, /Unknown \/ not indexed/);
   assert.match(html, /data-edge-availability="empty-in-scope"/);
   assert.match(html, /data-edge-availability="unknown-unindexed"/);
-  assert.match(html, /aria-label="issued rules; target kind: rule; count: Empty in this scoped materialization; scope: not specified; as of: unavailable"/);
-  assert.match(html, /aria-label="related meetings; target kind: meeting; count: Unknown \/ not indexed; scope: not specified; as of: unavailable"/);
+  assert.match(html, /aria-label="issued rules; target kind: rule; count: Empty in this scoped materialization; scope: not specified"/);
+  assert.match(html, /aria-label="related meetings; target kind: meeting; count: Unknown \/ not indexed; scope: not specified"/);
   assert.doesNotMatch(html, /<a class="edge-summary-link"/);
 });
 
@@ -223,7 +223,8 @@ test("edge summaries disclose cross-spine review without linking or filling null
   assert.doesNotMatch(html, /<a class="edge-summary-link"/);
   assert.match(html, /data-edge-provenance="1"/);
   assert.match(html, /data-cross-spine-confidence="review"/);
-  assert.match(html, /Source record[\s\S]*Unavailable/);
-  assert.match(html, /Source fields[\s\S]*Unavailable/);
-  assert.match(renderEdgeSummaryProvenance(record), /does not choose a winner or merge identities/);
+  assert.match(html, /edge-summary-confidence">review</);
+  assert.doesNotMatch(html, /Unavailable|does not choose a winner or merge identities/);
+  assert.match(renderEdgeSummaryProvenance(record), /<dt>Source<\/dt><dd>legistar<\/dd>/);
+  assert.doesNotMatch(renderEdgeSummaryProvenance(record), /Source record|Source fields/);
 });

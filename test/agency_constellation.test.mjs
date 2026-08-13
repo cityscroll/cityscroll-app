@@ -306,12 +306,12 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
 
   const claimId = sample.claim.claim_id;
   const html = renderAgencyConstellationDocument(view, { activeClaimId: claimId });
-  assert.match(html, /Why do we believe this\?/); // inspector header only when a claim is open
+  assert.doesNotMatch(html, /Why do we believe this\?/);
   assert.match(html, /data-edge-provenance-panel/);
   assert.match(html, /data-warrant-class="exact"/);
-  assert.match(html, /edge-prov-token/);
-  assert.match(html, />exact</);
-  assert.doesNotMatch(html, /Why do we believe this\? · Exact/);
+  assert.match(html, /edge-prov-confidence-unmatched/);
+  assert.match(html, /Exact match/);
+  assert.doesNotMatch(html, /edge-prov-token|Why do we believe this\? · Exact/);
   assert.doesNotMatch(html, /How links are warranted/);
   assert.doesNotMatch(html, /Sources and limits/);
   assert.doesNotMatch(html, /Confidence is not identity/i);
