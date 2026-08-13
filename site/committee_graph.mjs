@@ -11,6 +11,10 @@ export const COMMITTEE_GRAPH_SCHEMA = "cityscroll.committee_graph.v1";
 export const COMMITTEE_GATE_SAMPLE_SIZE = 30;
 export const COMMITTEE_GATE_PRECISION_MINIMUM = 0.95;
 export const COMMITTEE_SOURCE_URL = "https://webapi.legistar.com/v1/nyc/persons";
+export const COMMITTEE_RELATION_LABELS = Object.freeze({
+  member_of: "member of",
+  has_member: "has member",
+});
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
@@ -98,6 +102,47 @@ function personIds(peopleDoc = {}) {
   return ids;
 }
 
+/** Return the existing public route for an exact official identity. */
+export function officialHrefForId(value) {
+  const id = clean(value).replace(/^official:/, "");
+  return /^\d+$/.test(id) ? `/officials/${encodeURIComponent(id)}/` : null;
+}
+
+/**
+ * Derive the committee-facing edge from one accepted official-facing edge.
+ * The source observation and provenance are carried through unchanged; this
+ * is a directional view, not a second join.
+ */
+export function reciprocalCommitteeEdge(edge = {}, peopleDoc = null) {
+  if (edge?.type !== "member_of") return null;
+  const officialId = clean(edge.from).replace(/^official:/, "");
+  const committeeId = clean(edge.to);
+  const officialHref = officialHrefForId(officialId);
+  if (!officialId || !committeeId || !officialHref) return null;
+  if (peopleDoc && Object.keys(peopleDoc.by_person_id || {}).length > 0
+    && !personIds(peopleDoc).has(officialId)) return null;
+  const sourceKey = edge.source_row_hash || edge.id || `${officialId}:${committeeId}`;
+  return {
+    ...edge,
+    id: `edge:has_member:${committeeId}:official:${officialId}:${sourceKey}`,
+    type: "has_member",
+    from: committeeId,
+    to: `official:${officialId}`,
+    relation_label: COMMITTEE_RELATION_LABELS.has_member,
+    target_href: officialHref,
+    inverse_of: edge.id || null,
+    direction: "inverse",
+    // A reciprocal view has the same evidentiary basis as its source edge.
+    provenance: edge.provenance ?? null,
+  };
+}
+
+export function buildCommitteeReciprocalEdges(edges = [], peopleDoc = null) {
+  return (Array.isArray(edges) ? edges : [])
+    .map((edge) => reciprocalCommitteeEdge(edge, peopleDoc))
+    .filter(Boolean);
+}
+
 export function buildCommitteeGraph(sourceRows = [], peopleDoc = {}, {
   retrievedAt = new Date().toISOString(),
   gate = { publication_allowed: false },
@@ -130,6 +175,7 @@ export function buildCommitteeGraph(sourceRows = [], peopleDoc = {}, {
   const edges = observations.map((row) => ({
     id: `edge:member_of:${row.official_id}:${row.committee_id}:${row.source_row_hash}`,
     type: "member_of",
+    relation_label: COMMITTEE_RELATION_LABELS.member_of,
     from: row.official_id,
     to: row.committee_id,
     title: row.title,
@@ -155,6 +201,10 @@ export function buildCommitteeGraph(sourceRows = [], peopleDoc = {}, {
     },
     confidence: { status: "strong", basis: "exact_publisher_keys" },
   }));
+  const publicEdges = gate.publication_allowed ? edges : [];
+  const publicReverseEdges = gate.publication_allowed
+    ? buildCommitteeReciprocalEdges(publicEdges, peopleDoc)
+    : [];
   return {
     schema: COMMITTEE_GRAPH_SCHEMA,
     generated_at: retrievedAt,
@@ -171,9 +221,10 @@ export function buildCommitteeGraph(sourceRows = [], peopleDoc = {}, {
     rejected,
     nodes,
     observations,
-    public_edges: gate.publication_allowed ? edges : [],
+    public_edges: publicEdges,
+    public_reverse_edges: publicReverseEdges,
     edge_observations: edges,
-    public_graph: { nodes, edges: gate.publication_allowed ? edges : [] },
+    public_graph: { nodes, edges: [...publicEdges, ...publicReverseEdges] },
     publication: gate.publication_allowed ? "published" : "held",
   };
 }

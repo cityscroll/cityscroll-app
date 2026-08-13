@@ -1,4 +1,5 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { renderEntityPivotLink } from "./edge_summary.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
@@ -59,13 +60,29 @@ function committeeItems(graph = {}, people = {}) {
   const names = new Map((graph.nodes || [])
     .filter((node) => node?.type === "committee" && node?.id && node?.name)
     .map((node) => [node.id, { id: node.id, name: node.name, members: [] }]));
-  for (const edge of graph.publication === "published" && Array.isArray(graph.public_edges) ? graph.public_edges : []) {
-    if (edge?.type !== "member_of") continue;
-    const committee = names.get(edge.to);
+  const forwardEdges = graph.publication === "published" && Array.isArray(graph.public_edges)
+    ? graph.public_edges
+    : [];
+  const reverseEdges = graph.publication === "published" && Array.isArray(graph.public_reverse_edges)
+    ? graph.public_reverse_edges
+    : forwardEdges
+      .filter((edge) => edge?.type === "member_of")
+      .map((edge) => ({
+        ...edge,
+        type: "has_member",
+        from: edge.to,
+        to: edge.from,
+        relation_label: "has member",
+        direction: "inverse",
+        inverse_of: edge.id || null,
+      }));
+  for (const edge of reverseEdges) {
+    if (edge?.type !== "has_member") continue;
+    const committee = names.get(edge.from);
     if (!committee) continue;
-    const officialId = String(edge.from || "").replace(/^official:/, "");
+    const officialId = String(edge.to || "").replace(/^official:/, "");
     const person = people.by_person_id?.[officialId];
-    if (person?.person_name && officialId) committee.members.push({ id: officialId, name: person.person_name });
+    if (person?.person_name && officialId) committee.members.push({ id: officialId, name: person.person_name, edge });
   }
   return [...names.values()]
     .map((committee) => ({ ...committee, members: [...new Map(committee.members.map((member) => [member.id, member])).values()] }))
@@ -91,8 +108,17 @@ function renderCommittees(graph, people) {
   if (!items.length) return `<p class="empty">No published committee records are in the current index.</p>`;
   return `<ul class="browse-concept-list browse-committee-list">${items.slice(0, 5).map((committee) => {
     const members = committee.members.length
-      ? `Members: ${committee.members.map((member) => esc(member.name)).join(", ")}.`
-      : "No member profile is linked in this index.";
+      ? `Members: ${committee.members.map((member) => renderEntityPivotLink({
+        relation_label: "has member",
+        target_kind: "official",
+        target_id: member.id,
+        target_name: member.name,
+        target_href: `/officials/${encodeURIComponent(member.id)}/`,
+        source: { kind: "committee", id: committee.id, name: committee.name, canonical_href: null },
+        provenance: member.edge?.provenance ?? null,
+        inverse_of: member.edge?.inverse_of ?? null,
+      }, { escape: esc })).join(", ")}.`
+      : "Reverse coverage unavailable.";
     return `<li><strong>${esc(committee.name)}.</strong> <span class="browse-concept-meta">${members}</span></li>`;
   }).join("")}</ul>`;
 }

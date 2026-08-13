@@ -82,9 +82,9 @@ test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(landLink(ALLEN_STREET.project_id), "https://cityscroll.org/#land/2023M0452");
 });
 
-test("#land/<project_id> continues to resolve and lands on the renamed Zoning tab label", () => {
+test("#land/<project_id> continues to resolve and lands on the renamed Land + property tab label", () => {
   const landMatch = src.match(/<a class="tabbtn"[^>]*data-tab="land"[^>]*>(.*?)<\/a>/);
-  assert.equal(landMatch?.[1], "Zoning");
+  assert.equal(landMatch?.[1], "Land + property");
   const applyHash = extractFn("applyHash");
   assert.match(applyHash, /raw\.startsWith\("land\/"\)/);
   assert.match(applyHash, /showLandEntry\(parseLandHashSegment\(raw\.slice\(5\)\)\);/);
