@@ -19,6 +19,10 @@ import {
   watchFromScope,
 } from "../site/scope_v0.mjs";
 import { nowItemMatchesScope } from "../site/scope_now_adapter.mjs";
+import {
+  nearYouUrlFromMapHash,
+  scopeFromNearYouUrl,
+} from "../site/near_you_scope_runtime.mjs";
 
 test("scope v0 has one inspectable contract and no mutable store", () => {
   const scope = emptyScope("es");
@@ -85,6 +89,38 @@ test("map adapts selected place, basis, and viewport without becoming a second s
 
   const hash = "#map?level=community_district&id=Q04&parent=Queens&lens=money&basis=contract_action_address";
   assert.equal(routeHashFromScope(scopeFromRouteHash(hash), { surface: "map" }), hash);
+});
+
+test("Near-you map hashes canonicalize direct loads and hash changes to the same district scope", () => {
+  const directHash = "#map?level=community_district&parent=Manhattan&id=M03&lens=meetings";
+  const changedHash = "#map?level=community_district&parent=Manhattan&id=M04&lens=meetings";
+  const directUrl = nearYouUrlFromMapHash(directHash);
+  const changedUrl = nearYouUrlFromMapHash(changedHash);
+
+  assert.equal(
+    directUrl,
+    "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M03&level=community_district&id=M03&parent=Manhattan",
+  );
+  assert.equal(
+    changedUrl,
+    "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M04&level=community_district&id=M04&parent=Manhattan",
+  );
+  assert.deepEqual(
+    scopeFromNearYouUrl(directUrl),
+    scopeFromRouteHash(directHash),
+  );
+  assert.deepEqual(
+    scopeFromNearYouUrl("/near-you/?v=0&lens=meetings&level=community_district&parent=Manhattan&id=M03"),
+    scopeFromNearYouUrl(directUrl),
+  );
+  assert.deepEqual(
+    scopeFromNearYouUrl(changedUrl),
+    scopeFromRouteHash(changedHash),
+  );
+
+  const mapSource = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
+  assert.match(mapSource, /void adoptMapHashRoute\(\)/);
+  assert.match(mapSource, /addEventListener\("hashchange"/);
 });
 
 test("Now geography socket narrows existing compiled items and empty scope stays inert", () => {

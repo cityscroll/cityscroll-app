@@ -7,6 +7,7 @@ import {
   zoomViewBox,
 } from "../map_exploration.mjs";
 import { resolveDistricts } from "../council_district_lookup.mjs";
+import { nearYouUrlFromMapHash } from "../near_you_scope_runtime.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
 const wired = new WeakSet();
@@ -70,6 +71,23 @@ async function adoptDocument(href) {
   placeContext.sync();
   wireIsland();
   root.querySelector("#near-results-heading")?.focus?.({ preventScroll: true });
+}
+
+async function adoptMapHashRoute() {
+  const hash = location.hash;
+  const href = nearYouUrlFromMapHash(hash, { base: `${location.origin}/near-you/` });
+  if (!href) return;
+  const target = new URL(href, location.href);
+  const targetRoute = `${target.pathname}${target.search}`;
+  if (`${location.pathname}${location.search}` === targetRoute) {
+    history.replaceState(history.state, "", targetRoute);
+    return;
+  }
+  try {
+    await adoptDocument(target.toString());
+  } catch {
+    location.assign(target.toString());
+  }
 }
 
 async function followWithinIsland(event, href) {
@@ -247,6 +265,10 @@ function wireIsland() {
 
 if (root) {
   wireIsland();
+  addEventListener("hashchange", () => {
+    if (location.hash.startsWith("#map")) void adoptMapHashRoute();
+  });
+  void adoptMapHashRoute();
   addEventListener("popstate", () => location.reload());
 }
 
