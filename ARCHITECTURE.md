@@ -62,6 +62,34 @@ The repository is a modular monolith with separate browser, edge, and host-data 
 
 ## Important decisions
 
+## Proposed rationale: home cold-load wire budget
+
+**Status: PROPOSED — rationale-to-confirm by the site owner.** This section records the
+reasoning behind the current deliberate ceiling; it is not a settled product or performance
+policy until confirmed.
+
+The `home.cold` `wireBytes` budget protects the weight of the first uncached visit to the home
+surface, including the resources needed before the browser has a warm cache. Audience impact is
+an assumption to confirm: this budget is intended to protect NYC residents opening the site on
+slow networks, lower-end mobile devices, or data-capped connections. The measurement is a
+compressed-byte guard for page weight, not a claim about any particular resident's connection or
+device.
+
+A hard number and ratchet exist to make silent page-weight creep visible. Every new home-surface
+dependency or user-facing card consumes part of a shared allowance, so adding it should be a
+conscious trade rather than the default outcome of an otherwise successful feature merge. The
+proposed `460000`-byte ceiling is deliberately above the current main measurement of about
+`447729` bytes, leaving `12271` bytes of near-term headroom. Those values and the audience
+assumption remain proposed until the site owner confirms them.
+
+Loosening the ceiling has a real cost: a higher ceiling can make first paint slower on weak
+connections and transfers more data on each uncached visit. Holding it too tightly has a
+different cost: it can block useful user-facing features or encourage code contortions such as
+deferring the Property feed, which removes required first-load content and breaks route and
+accessibility contracts. The current posture is therefore a deliberate, reviewable ceiling with
+explicit headroom, not permission for unbounded growth. The deeper optimization toward the old
+`435000` aspiration remains a tracked follow-on, not an abandoned goal.
+
 An **ADR** (architecture decision record) captures a decision, its context, and its consequences. This section is the index for those records; it does not invent rationale from the current implementation.
 
 - **Static site plus Cloudflare Worker.** The browser surface stays deployable as static files, while the Worker provides secrets, state, scheduled work, edge reads, and delivery. This split is evidenced by [`site/`](site/) and [`worker/wrangler.toml`](worker/wrangler.toml). Rationale: `rationale required`.
