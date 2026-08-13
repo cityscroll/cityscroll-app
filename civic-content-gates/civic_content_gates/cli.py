@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -52,6 +53,18 @@ def _add_run_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--max-grade", type=float, default=None,
                    help="reading-level hard max grade (gate mode)")
     p.add_argument("--preset", default="nycsg7")
+    p.add_argument(
+        "--no-disclaimer-slop-mode",
+        choices=["warn", "block"],
+        default=os.environ.get("NO_DISCLAIMER_SLOP_MODE", "warn"),
+        help="Plain-language disclaimer check mode (default: warn; block after calibration)",
+    )
+    p.add_argument(
+        "--no-disclaimer-slop-allowlist",
+        type=Path,
+        default=None,
+        help="Reviewed exceptions for the no-disclaimer-slop member",
+    )
     p.add_argument("--machine", action="store_true",
                    help="Print VERDICT lines suitable for before/after comparison")
     p.add_argument("--json", action="store_true", help="Print verdicts as JSON")
@@ -109,6 +122,8 @@ def main(argv=None) -> int:
             reading_level_max_grade=args.max_grade,
             reading_level_preset=args.preset,
             skip_reading_level=args.skip_reading_level,
+            disclaimer_slop_mode=args.no_disclaimer_slop_mode,
+            disclaimer_slop_allowlist=args.no_disclaimer_slop_allowlist,
         )
         if args.json:
             print(json.dumps(
