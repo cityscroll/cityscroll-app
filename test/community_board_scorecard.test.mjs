@@ -54,8 +54,11 @@ test("board source inventory keeps explicit roles and honest collection states",
   assert.equal(absent.sources.minutes.collection_state, "absent_in_pass");
   const html = renderScorecardPage(scorecard);
   assert.match(html, /Official source inventory/);
-  assert.match(html, /Source found; records not yet ingested/);
-  assert.match(html, /Not verified in this pass/);
+  assert.match(html, /The City Comptroller <a href="https:\/\/comptroller\.nyc\.gov\/reports\/audit-report-on-the-twelve-manhattan-community-boards-compliance-with-new-york-city-charter-and-new-york-city-administrative-code-requirements-for-public-meetings-and-hearings-and-for-web\/">has recommended<\/a> that community boards post minutes from the past 12 months\./);
+  assert.match(html, /Source available/);
+  assert.doesNotMatch(html, /Source found; records not yet ingested/);
+  assert.doesNotMatch(html, /Not verified in this pass/);
+  assert.doesNotMatch(html, /Public accountability|What the public record expects|How to read these sources|dated minutes freshness receipts|No dated checks are available yet|in this pass/);
   assert.doesNotMatch(html, /no official meeting exists/i);
   assert.match(html, /Board-linked third-party storage/);
   const readerCopy = html.replace(/<[^>]+>/g, " ");
