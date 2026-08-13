@@ -19,8 +19,23 @@ test("local constellation registry covers the six Browse object kinds", () => {
     assert.equal(view.source, null);
     const html = renderLocalConstellationHTML(view);
     assert.match(html, /data-local-constellation-status="empty"/);
-    assert.match(html, /Empty in this scoped materialization/);
+    assert.doesNotMatch(html, /materialization|published neighbors/);
   }
+});
+
+test("place empty state explains the connection and shows one non-live example", () => {
+  const view = buildLocalConstellation({ kind: "place", subject_ref: "community-district:M03", neighbors: [] });
+  const html = renderLocalConstellationHTML(view);
+  assert.match(html, /Nearby place records link this district to civic areas\./);
+  assert.match(html, /See its community board and the City Council districts that overlap it\./);
+  assert.equal((html.match(/data-local-constellation-preview="true"/g) || []).length, 1);
+  assert.match(html, /Example preview/);
+  assert.match(html, /Manhattan Community Board 3/);
+  assert.match(html, /Covers this district\./);
+  assert.match(html, /A place link can look like this\./);
+  assert.match(html, /data-local-constellation-preview-live="false"/);
+  assert.doesNotMatch(html, /data-local-constellation-preview="true"[^>]*href=/);
+  assert.doesNotMatch(html, /data-local-constellation-preview="true"[^>]*data-pivot/);
 });
 
 test("local constellation is bounded, list-equivalent, and never invents a destination", () => {
@@ -71,6 +86,7 @@ test("committee and place adapters use only published exact-key neighbors", () =
   }, "community-district:X01");
   assert.equal(place.nodes[0].target_kind, "council-district");
   assert.equal(place.nodes[0].href, "/near-you/?council=8");
+  assert.doesNotMatch(renderLocalConstellationHTML(place), /data-local-constellation-preview/);
 
   const held = buildPlaceLocalConstellation({
     gate: { publication_allowed: false },
@@ -78,5 +94,7 @@ test("committee and place adapters use only published exact-key neighbors", () =
     public_edges: [{ type: "intersects", from: "community-district:X01", to: "council-district:8" }],
   }, "community-district:X01");
   assert.equal(held.status, "unknown");
-  assert.match(renderLocalConstellationHTML(held), /Unknown \/ not indexed/);
+  const heldHtml = renderLocalConstellationHTML(held);
+  assert.match(heldHtml, /Unknown \/ not indexed/);
+  assert.doesNotMatch(heldHtml, /data-local-constellation-preview/);
 });
