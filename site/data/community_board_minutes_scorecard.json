@@ -1,12 +1,13 @@
 {
   "schema": "cityscroll.community_board_minutes_scorecard.v1",
   "version": 1,
-  "as_of": "2026-08-04",
+  "as_of": "2026-08-13",
   "source_contract": {
     "detector_schema": "cityscroll.community_board_minutes_gap_detector.v1",
     "detector_artifact": "site/data/community_board_minutes_gap.json",
     "registry": "site/data/non_council_outcome_sources/source_registry.json",
-    "rule": "Only explicit minutes URLs and detector receipts may supply a dated observation; no URL is inferred."
+    "inventory": "site/data/non_council_outcome_sources/board_source_inventory.json",
+    "rule": "Only explicit registry or inventory URLs and detector receipts may supply a source or dated observation; no URL is inferred."
   },
   "legal_basis": {
     "label": "Public records expectation",
@@ -35,11 +36,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/calendar.page",
+          "source_format": "NYC HTML + linked PDF calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -51,17 +76,41 @@
       "district": 2,
       "homepage_url": "https://www.nyc.gov/site/bronxcb2/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb2/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -73,17 +122,41 @@
       "district": 3,
       "homepage_url": "https://www.nyc.gov/site/bronxcb3/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb3/calendar/calendar.page",
+          "source_format": "NYC HTML + monthly PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -95,17 +168,41 @@
       "district": 4,
       "homepage_url": "https://www.nyc.gov/site/bronxcb4/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb4/calendar/calendar.page",
+          "source_format": "NYC HTML + monthly PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -117,17 +214,41 @@
       "district": 5,
       "homepage_url": "https://www.nyc.gov/site/bronxcb5/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb5/calendar/calendar.page",
+          "source_format": "NYC HTML + monthly PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -139,17 +260,41 @@
       "district": 6,
       "homepage_url": "https://cbbronx.cityofnewyork.us/cb6/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+          "source_format": "board-owned WordPress HTML/event calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
+          "source_format": "board-owned HTML + PDF/DOCX",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -167,11 +312,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb7/calendar/calendar.page",
+          "source_format": "NYC HTML + monthly PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -189,11 +358,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -211,11 +404,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb9/calendar/calendar.page",
+          "source_format": "NYC HTML + monthly PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -233,11 +450,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+          "source_format": "NYC HTML + calendar/agenda PDFs",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb10/minutes/minutes.page",
+          "source_format": "NYC HTML index",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -255,11 +496,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
+          "source_format": "NYC HTML + linked PDF calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb11/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -271,17 +536,41 @@
       "district": 12,
       "homepage_url": "https://www.nyc.gov/site/bronxcb12/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/bronxcb12/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -299,11 +588,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb1/calendar/calendar.page",
+          "source_format": "NYC HTML + PDF calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb1/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -321,11 +634,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -343,11 +680,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb3/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb3/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -365,11 +726,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb4/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb4/calendar/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -387,11 +772,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -409,11 +818,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -431,11 +864,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -453,11 +910,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.brooklyncb8.org/meetings/",
+          "source_format": "board-owned HTML calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.brooklyncb8.org/downloads/minutes/",
+          "source_format": "board-owned HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -475,11 +956,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb9/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb9/about/agendas.page",
+          "source_format": "NYC HTML mixed agenda/minutes PDFs",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -497,11 +1002,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbbrooklyn.cityofnewyork.us/cb10/calendar/",
+          "source_format": "board-owned WordPress HTML/event calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -519,11 +1048,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.brooklyncb11.org/calendar/",
+          "source_format": "board-owned WordPress HTML calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.brooklyncb11.org/minutes/",
+          "source_format": "board-owned HTML + DOCX/PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -541,11 +1094,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb12/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -557,17 +1134,41 @@
       "district": 13,
       "homepage_url": "https://www.nyc.gov/site/brooklyncb13/index.page",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -585,11 +1186,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "source_format": "board-owned HTML + Google Calendar/iCalendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
+          "source_format": "board-owned HTML archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -607,11 +1232,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -629,11 +1278,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -651,11 +1324,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbbrooklyn.cityofnewyork.us/cb17/calendar/",
+          "source_format": "board-owned WordPress HTML/event calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -673,11 +1370,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -695,11 +1416,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -711,17 +1456,41 @@
       "district": 2,
       "homepage_url": "https://cbmanhattan.cityofnewyork.us/cb2/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -739,11 +1508,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -761,11 +1554,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/calendar/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -783,11 +1600,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cb5.org/events/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cb5.org/board-actions/",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -805,11 +1646,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbsix.org/meetings-calendar/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -827,11 +1692,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.mcb7.org/quick-links",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.mcb7.org/minutes",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -849,11 +1738,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.cb8m.com/calendar/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.cb8m.com/full-board-archive/",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -871,11 +1784,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.cb9m.org/cal_events",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.cb9m.org/archives",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -893,11 +1830,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/meetings/minutes/",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -915,11 +1876,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.cb11m.org/calendar/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "board_owned",
+          "origin_label": "Board-owned official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://airtable.com/appedcOCWGdk7kppK/shrJ150rk13A8HfPK/tblNt0o4xr7gTHHoY",
+          "source_format": "third-party Airtable view linked by board",
+          "fetch_mode": "browser-required",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "third_party_storage",
+          "origin_label": "Board-linked third-party storage",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -937,11 +1922,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb12/meeting-schedule-overview/",
+          "source_format": "explicit board calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb12/meetings/minutes/",
+          "source_format": "explicit board minutes/archive",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -959,11 +1968,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
+          "source_format": "NYC HTML + linked interactive Google calendar",
+          "fetch_mode": "machine-fetchable HTML; browser/API for interactive view",
+          "access_constraint": "browser_required",
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb1/calendar/board-meeting-agendas-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -981,11 +2014,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb2/meetings/meeting-agendas-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -997,17 +2054,41 @@
       "district": 3,
       "homepage_url": "https://queenscb3.cityofnewyork.us/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://queenscb3.cityofnewyork.us/calendar/",
+          "source_format": "board-owned WordPress HTML",
+          "fetch_mode": "browser/API required",
+          "access_constraint": "browser_required",
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
+          "source_format": "board-owned HTML/PDF",
+          "fetch_mode": "browser/API required",
+          "access_constraint": "browser_required",
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1025,11 +2106,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb4/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb4/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1047,11 +2152,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb5/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb5/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1069,11 +2198,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb6/meetings/meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1091,11 +2244,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
+          "source_format": "NYC HTML meeting/agenda page",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb7/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1113,11 +2290,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb8/calendar/calendar.page",
+          "source_format": "NYC HTML + PDF schedule",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1135,11 +2336,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb9/calendar/calendar.page",
+          "source_format": "NYC HTML + schedule PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb9/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1157,11 +2382,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb10/meetings/agendas-minutes.page",
+          "source_format": "NYC HTML agenda index + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb10/meetings/agendas-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1179,11 +2428,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb11/meetings/meetings.page",
+          "source_format": "NYC HTML with agenda/audio links",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb11/meetings/meeting-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1201,11 +2474,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb12/calendar/calendar.page",
+          "source_format": "NYC HTML + PDF calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb12/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1223,11 +2520,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb13/calendar/calendar.page",
+          "source_format": "NYC HTML",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/queenscb13/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1245,11 +2566,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/queenscb14/calendar/calendar.page",
+          "source_format": "NYC HTML + agenda PDFs",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": null,
+          "source_format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "collection_state": "absent_in_pass",
+          "origin": null,
+          "origin_label": "Source not verified in this pass",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1267,11 +2612,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/statenislandcb1/meetings/meetings.page",
+          "source_format": "NYC HTML + monthly PDF calendars/agenda links",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/statenislandcb1/meetings/minutes.page",
+          "source_format": "NYC HTML + PDF board packets",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1289,11 +2658,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-agendas.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
@@ -1311,11 +2704,35 @@
       "notice_completeness": null,
       "media_completeness": null,
       "freshness_status": "not_measured",
+      "sources": {
+        "upcoming_meetings": {
+          "source_type": "upcoming_meetings",
+          "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/meetings.page",
+          "source_format": "NYC HTML + monthly PDF calendar",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "observed",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        },
+        "minutes": {
+          "source_type": "minutes",
+          "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
+          "source_format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "collection_state": "not_yet_ingested",
+          "origin": "official_nyc",
+          "origin_label": "NYC-hosted official source",
+          "observed_on": "2026-08-13"
+        }
+      },
       "receipts": [
         {
           "kind": "registry",
           "path": "site/data/non_council_outcome_sources/source_registry.json",
-          "observed_on": "2026-08-04"
+          "observed_on": "2026-08-11"
         }
       ],
       "rank": null
