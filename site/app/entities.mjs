@@ -1,12 +1,6 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 
-/* ===================== ENTITY PAGES (vendor / agency) =====================
-   The pivot layer: every agency or vendor mention links here, and each page is a hub of
-   further pivots — the search → entity → pivot loop. Vendor identity is resolved at read
-   time (v1): normalize to a stem (case/punctuation/legal suffixes), prefix-match server-side,
-   then keep only rows whose own stem matches exactly. Honest and zero-infrastructure; a
-   nightly clustered alias table can replace it without changing this page. */
 const agencyHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("agency",cleanText(name)),label:cleanText(name)},{tab}) : "/agencies/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
 const vendorHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("vendor",cleanText(name)),label:cleanText(name)},{tab}) : "/vendors/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
 let agencyCrosswalkPromise = null;
@@ -254,6 +248,7 @@ async function showOfficial(personId, opts){
     ...committeeLookup.by_member_id[id],
     coverage: { eligible_rows: committeeLookup.eligible_row_count, linked_rows: committeeLookup.linked_row_count, row_rate: committeeLookup.row_rate },
     vintage: committeeLookup.vintage,
+    reverse_edges: [],
   } : { rows: [], coverage: {}, vintage: committeeLookup?.vintage };
   const event = (record && record.council_event) || {};
   const resolvedEventId = eventId || event.event_id || (scopedVotes[0] && scopedVotes[0].event_id) || "";

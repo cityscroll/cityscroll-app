@@ -5,6 +5,7 @@ import path from "node:path";
 
 import {
   OFFICIAL_EVENT_GATE,
+  buildOfficialCommitteeView,
   buildOfficialConnectionView,
   measureOfficialCoverage,
   officialConnectionScopeHash,
@@ -167,4 +168,20 @@ test("missing person identity never creates an official scope", () => {
   );
   assert.equal(nameDerived.official.ref, "");
   assert.equal(nameDerived.view_all_href, "");
+});
+
+test("official committee view keeps empty and unknown graph states distinct", () => {
+  const published = buildOfficialCommitteeView(
+    { person_id: "7801", person_name: "Christopher Marte" },
+    {
+      publication: "published",
+      public_edges: [{ type: "member_of", from: "official:7801", to: "committee:5261" }],
+      public_reverse_edges: [{ type: "has_member", from: "committee:5261", to: "official:7801" }],
+    },
+  );
+  assert.equal(published.state, "matched");
+  assert.equal(published.edges.length, 1);
+  assert.equal(published.reverse_edges.length, 1);
+  assert.equal(buildOfficialCommitteeView({ person_id: "7801" }, { publication: "published" }).state, "empty");
+  assert.equal(buildOfficialCommitteeView({ person_id: "7801" }, null).state, "unknown");
 });

@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import {
   buildCommitteeGateReceipt,
   buildCommitteeGraph,
+  buildCommitteeReciprocalEdges,
   committeeGateAllowsPublication,
 } from "../site/committee_graph.mjs";
 import { fetchLegistarPersonOfficeRecords } from "../worker/src/lib/legistar_client.mjs";
@@ -91,12 +92,23 @@ async function main() {
     ]);
     const existingGraph = JSON.parse(existingGraphText);
     const existingReceipt = JSON.parse(existingReceiptText);
+    const people = await json("site/data/person_hub_lookup.json");
     const publicationAllowed = committeeGateAllowsPublication(existingReceipt);
     if (existingGraph.publication !== (publicationAllowed ? "published" : "held")) {
       throw new Error("committee graph publication does not match the committed receipt gate");
     }
     if (!publicationAllowed && existingGraph.public_edges.length !== 0) {
       throw new Error("held committee sample exposed public membership edges");
+    }
+    const expectedReverseEdges = publicationAllowed
+      ? buildCommitteeReciprocalEdges(existingGraph.public_edges, people)
+      : [];
+    if (JSON.stringify(existingGraph.public_reverse_edges || []) !== JSON.stringify(expectedReverseEdges)) {
+      throw new Error("committee graph reciprocal edges are stale");
+    }
+    const expectedGraphEdges = [...(existingGraph.public_edges || []), ...expectedReverseEdges];
+    if (JSON.stringify(existingGraph.public_graph?.edges || []) !== JSON.stringify(expectedGraphEdges)) {
+      throw new Error("committee public graph does not expose reciprocal edges");
     }
     const expectedGraphText = await readFile(OUTPUTS[1], "utf8");
     if (existingGraphText !== expectedGraphText) throw new Error("committee graph twin artifacts differ");
