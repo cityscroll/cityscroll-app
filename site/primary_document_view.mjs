@@ -165,7 +165,7 @@ export function buildBrowseLandingDocument(shell, payloads, options = {}) {
     primaryContext: "browse",
   });
   html = activateTab(html, "browse");
-  html = addRouteStyles(html, ["browse.css"]);
+  html = addRouteStyles(html, ["browse.css", "walk-entry.css"]);
   const landing = buildBrowseLanding(payloads, options);
   return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
 }

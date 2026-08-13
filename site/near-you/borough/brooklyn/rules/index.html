@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/brand.css">
 <link rel="stylesheet" href="/civic-documents.css">
+<link rel="stylesheet" href="/walk-entry.css">
 <link rel="stylesheet" href="/local_constellation.css"></head>
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="document-mast near-mast"><div class="document-mast-inner">
@@ -33,6 +34,45 @@
         <a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22borough%22%3A%22Brooklyn%22%7D&amp;count=3">Watch these filters</a>
         <a href="https://cityscroll.org/near-you?v=0&amp;lens=rules&amp;boro=Brooklyn&amp;level=community_district&amp;parent=Brooklyn">Share this map</a>
       </nav>
+      <section class="walk-entry" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
+    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div><span class="walk-entry-mark">Graph entry</span></div>
+    <form class="walk-entry-form" method="get" action="/near-you?v=0&amp;lens=rules&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn" data-walk-search-form>
+      <label for="walk-entry-query">What are you looking for?</label>
+      <div class="walk-entry-form-row"><input id="walk-entry-query" name="walk_query" value="" maxlength="240" autocomplete="off"><input type="hidden" name="walk_source" value="near_you"><button type="submit">Walk this place</button></div>
+    </form>
+    <div class="walk-entry-chips" data-walk-chips aria-label="Walk context"><span class="walk-entry-chip walk-entry-chip-place"><b>PLACE</b> Brooklyn</span><span class="walk-entry-chip walk-entry-chip-source"><b>START</b> Near You</span></div>
+    <div class="walk-entry-lanes" data-walk-families><article class="walk-entry-lane" data-walk-family-state="unknown">
+      <p class="walk-entry-lane-kicker">Zoning</p>
+      <h3><a data-walk-family="land" href="/near-you?v=0&amp;lens=land&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Zoning</a></h3>
+      <p>No count for this family here.</p>
+      <p class="walk-entry-coverage" data-walk-coverage="unknown">Coverage is unavailable for this view.</p>
+    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
+      <p class="walk-entry-lane-kicker">Property</p>
+      <h3><a data-walk-family="property" href="/near-you?v=0&amp;lens=property&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Property</a></h3>
+      <p>No count for this family here.</p>
+      <p class="walk-entry-coverage" data-walk-coverage="unknown">Coverage is unavailable for this view.</p>
+    </article><article class="walk-entry-lane" data-walk-family-state="available">
+      <p class="walk-entry-lane-kicker">Current records</p>
+      <h3><a data-walk-family="rules" href="/near-you?v=0&amp;lens=rules&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Rules</a></h3>
+      <p>Open these records and follow their links.</p>
+      <p class="walk-entry-coverage" data-walk-coverage="available">3 records in this family</p>
+    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
+      <p class="walk-entry-lane-kicker">Meetings</p>
+      <h3><a data-walk-family="meetings" href="/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Meetings</a></h3>
+      <p>No count for this family here.</p>
+      <p class="walk-entry-coverage" data-walk-coverage="unknown">Coverage is unavailable for this view.</p>
+    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
+      <p class="walk-entry-lane-kicker">Contracts</p>
+      <h3><a data-walk-family="money" href="/near-you?v=0&amp;lens=money&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Contracts</a></h3>
+      <p>No count for this family here.</p>
+      <p class="walk-entry-coverage" data-walk-coverage="unknown">Coverage is unavailable for this view.</p>
+    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
+      <p class="walk-entry-lane-kicker">Staffing</p>
+      <h3><a data-walk-family="people" href="/near-you?v=0&amp;lens=people&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Staffing</a></h3>
+      <p>No count for this family here.</p>
+      <p class="walk-entry-coverage" data-walk-coverage="unknown">Coverage is unavailable for this view.</p>
+    </article></div>
+  </section>
       <section class="local-constellation " data-local-constellation="1" data-local-constellation-kind="place" data-local-constellation-status="empty" data-edge-state="empty" data-local-constellation-count="0" aria-labelledby="place-local-constellation-heading">
     <div class="local-constellation-heading"><div><p class="local-constellation-kicker">Local connections</p><h2 id="place-local-constellation-heading">Nearby place records</h2><p class="local-constellation-summary">Empty in this scoped materialization The map is limited to published neighbors.</p></div></div>
     <div class="local-constellation-body"><div class="local-constellation-map local-constellation-map-empty" aria-hidden="true"><span>○</span></div><div class="local-constellation-list-wrap"><p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="empty">Empty in this scoped materialization</p></div></div>
@@ -1028,4 +1068,5 @@
   </main>
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script defer src="/analytics.js?v=1.3.0"></script>
+<script type="module" src="/app/walk-entry.mjs"></script>
 <script type="module" src="/app/traversal.mjs"></script><script type="module" src="/app/map.mjs"></script></body></html>
