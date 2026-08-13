@@ -81,7 +81,8 @@ test("exam documents expose title-code family navigation as a labeled browse aid
   assert.match(html, /data-title-code-family-surface="navigational"/);
   assert.match(html, /data-consequence-tier="navigational_exploratory"/);
   assert.match(html, /Explore this title-code family/);
-  assert.match(html, /This is a navigational aid for browsing related exams/);
+  assert.match(html, /Publisher-issued title code.*70210.*civil-service job title these exams fill/);
+  assert.doesNotMatch(html, /navigational aid|authoritative determination/i);
   assert.match(html, /class="ui-constellation-link exam-title-family-link"[^>]*href="\/exams\//);
   assert.match(html, /data-title-code-family-member="7312"/);
   assert.deepEqual(detectNodePageCruft(html), []);
