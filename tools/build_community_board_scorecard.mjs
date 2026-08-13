@@ -6,12 +6,19 @@ import { buildScorecard, renderScorecardPage } from "../site/community-board-sco
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
+const SOURCE_INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
+const OUTCOME_LOOKUP = join(ROOT, "site/data/non_council_outcome_lookup.json");
 const DETECTOR = join(ROOT, "site/data/community_board_minutes_gap.json");
 const JSON_OUT = join(ROOT, "site/data/community_board_minutes_scorecard.json");
 const HTML_OUT = join(ROOT, "site/community-boards/index.html");
 const check = process.argv.includes("--check");
 const detector = existsSync(DETECTOR) ? JSON.parse(readFileSync(DETECTOR, "utf8")) : null;
-const scorecard = buildScorecard({ registry: JSON.parse(readFileSync(REGISTRY, "utf8")), detector });
+const scorecard = buildScorecard({
+  registry: JSON.parse(readFileSync(REGISTRY, "utf8")),
+  detector,
+  sourceInventory: JSON.parse(readFileSync(SOURCE_INVENTORY, "utf8")),
+  joinedLookup: JSON.parse(readFileSync(OUTCOME_LOOKUP, "utf8")),
+});
 const json = `${JSON.stringify(scorecard, null, 2)}\n`;
 const html = `${renderScorecardPage(scorecard)}\n`;
 

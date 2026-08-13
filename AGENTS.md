@@ -2436,6 +2436,13 @@ warehouse path with
 `warehouse/.venv/bin/python warehouse/scripts/non_council_outcomes_run.py --from-fixture --limit 8 --max-docs 10`.
 Verify: `node --test test/non_council_outcomes_infrastructure.test.mjs`.
 
+The resident board source surface is built from the explicit 59-board artifact
+`site/data/non_council_outcome_sources/board_source_inventory.json` joined to
+the registry by `site/community-board-scorecard.mjs`; rebuild/check with
+`node tools/build_community_board_scorecard.mjs --check`. Source roles and
+collection states are rendered with human labels, while unresolved inventory
+rows stay `absent_in_pass` internally and never become an absence claim.
+
 ## Franchise/concession MOCS plan bridge
 
 The production fixed sample of 100 modern franchise/concession notices against 11,566 FY2027
