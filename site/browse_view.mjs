@@ -7,6 +7,7 @@ import {
   renderContextualSuggestions,
 } from "./contextual_suggestions.mjs";
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLink } from "./edge_summary.mjs";
+import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -999,6 +1000,8 @@ export function renderBrowseView(view) {
     id: "browse-edge-summary-heading",
     className: "browse-edge-summary",
   });
+  const browseRoute = `${view.config.route}${view.scopeSearch ? `?${view.scopeSearch}` : ""}`;
+  const traversal = renderTraversalPath(traversalFromHref(browseRoute), { currentHref: browseRoute });
   const cards = view.rows.map((row) => {
     const href = rowHref(view.facet, row);
     const title = rowTitle(view.facet, row) || "Untitled record";
@@ -1035,7 +1038,7 @@ export function renderBrowseView(view) {
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${asOfMismatch}${scopeChip}${edgeRail}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${edgeRail}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
 }
 
 export function browseAssetPath(facet) {

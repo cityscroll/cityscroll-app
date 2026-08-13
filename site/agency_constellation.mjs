@@ -153,6 +153,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   });
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
+  const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
   const demoAsOfLink = showAsOf
     ? ` · ${constellationLink({ href: asOfHref(view.path, DEMO_AS_OF_DAY), label: `As of ${DEMO_AS_OF_DAY}`, className: "agency-pivot-link", attributes: { "data-ctl-demo-as-of": "" }, escape: esc })}`
     : "";
@@ -194,6 +195,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
   <script id="civic-object-payload" type="application/json">${payload}</script>
   <script defer src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`) + "export_workflows.js")}"></script>
+  <script type="module" src="${esc(traversalSrc)}"></script>
   <script type="module" src="${esc(runtimeSrc)}"></script>
   <script>${agencyConstellationSectionScripts(sectionView)}</script>
 </body>

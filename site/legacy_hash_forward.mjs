@@ -3,6 +3,7 @@ import { migrateLegacyUrl } from "./route_migration.mjs";
 if (globalThis.location?.search || globalThis.location?.hash?.includes("?")) {
   import("./app/place-context.mjs");
 }
+if (globalThis.location?.hash || globalThis.location?.pathname?.startsWith("/browse/")) import("./app/traversal.mjs");
 
 export function legacyForwardTarget(value) {
   const mapped = migrateLegacyUrl(value);
