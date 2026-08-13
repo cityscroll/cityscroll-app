@@ -68,7 +68,7 @@ const { t, tn, fmtNumber } = new Function(
 )(windowStub);
 
 const {
-  matchEvidence, matchText, digTitleHTML, digEvidenceHTML,
+  matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
   "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML",
@@ -90,6 +90,7 @@ const {
   extractFn("eventTag") +
   extractFn("locateAnyTerm") +
   extractFn("matchEvidence") +
+  extractFn("resultMatchEvidence") +
   extractFn("matchText") +
   extractFn("digTitleHTML") +
   extractFn("digEvidenceHTML") +
@@ -115,7 +116,7 @@ const {
   extractFn("feedCardHTML") +
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +
-  "return { matchEvidence, matchText, digTitleHTML, digEvidenceHTML, moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML };"
+  "return { matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML, moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML };"
 )(t, tn, fmtNumber, windowStub, () => "", landProjectDisplayTitle, noticeDisplayTitle, constellationLink, officialSourceLink);
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
@@ -153,6 +154,19 @@ test("before: additional_description_1 alone has nothing to match 'childcare' ag
 test("matchText: concatenates additional_description_1 and other_info_1, tolerating a blank first field", () => {
   const text = matchText(compassNotice);
   assert.match(text, /high-quality afterschool and summer childcare services/);
+});
+
+test("matchText: includes normalized meeting descriptions in the shared KWIC corpus", () => {
+  const text = matchText({ description: "The hearing will discuss security requirements." });
+  assert.equal(text, "The hearing will discuss security requirements.");
+  const ev = matchEvidence("Public hearing", text, ["security"]);
+  assert.equal(ev.field, "description");
+  assert.equal(ev.hit, "security");
+  assert.match(digEvidenceHTML(ev), /The hearing will discuss <mark>security<\/mark> requirements/);
+});
+
+test("resultMatchEvidence: suppresses a fabricated explanation when the loaded text has no hit", () => {
+  assert.equal(resultMatchEvidence("Public hearing", "No security term here", ["zoning"]), null);
 });
 
 test("before: matching against additional_description_1 only (the old fetch) falls back to the unnamed 'unknown' field", () => {
@@ -269,7 +283,7 @@ test("landRowHTML: a borough contextTerm never falls back to an 'unknown' guess 
   assert.doesNotMatch(html, /class="dev"/);
 });
 
-test("matchEvidence: a real keyword term still falls back to 'unknown' -- only contextTerms are guess-free", () => {
+test("matchEvidence: the legacy digest helper still falls back to 'unknown' -- search cards use the strict wrapper", () => {
   const ev = matchEvidence(woodwardAve.project_name, woodwardAve.project_brief, ["Queens"], []);
   assert.equal(ev.field, "unknown");
 });

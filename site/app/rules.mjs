@@ -63,7 +63,7 @@ function rulesExplorerCardHTML(entry, terms){
   const processLabel=rulesProcessPhaseLabel(processStage);
   const fineStage=entry.fine_stage||null;
   const title=entry.title||cleanText(r.short_title)||"";
-  const mev=matchEvidence(title, matchText(r), terms);
+  const mev=resultMatchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const agency=entry.agency||r.agency_name||"";
   const agencyMention=agency?listEntityMentionHTML({kind:"agency",value:agency,escape:escUiHtml,relation:"publishes_record"}):"";
@@ -887,7 +887,7 @@ function feedCardHTML(key, r, terms){
   // excerptHtml owns decode→truncate→escape; raw slice of cleanText left entities double-escaped
   // when a later path escaped again, and could cut inside "&ldquo;".
   const scopeHtml=excerptHtml(r.additional_description_1,200);
-  const title=noticeDisplayTitle(r), mev=matchEvidence(title, matchText(r), terms);
+  const title=noticeDisplayTitle(r), mev=resultMatchEvidence(title, matchText(r), terms);
   const agencyMention=r.agency_name?listEntityMentionHTML({kind:"agency",value:r.agency_name,escape:escUiHtml,relation:"publishes_record"}):"";
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   // Comment-open is the actionable moment: lead with the official comment-page CTA so the

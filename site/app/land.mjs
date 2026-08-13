@@ -432,7 +432,7 @@ async function landNearby(geo,status){
 // deliberately skips ZAP rows for that reason, but matchEvidence()/digTitleHTML()/
 // digEvidenceHTML() are generic text-in/HTML-out and work on any title+description pair.
 function landRowHTML(r, i, terms, contextTerms){
-  const title = landProjectDisplayTitle(r), ev = matchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
+  const title = landProjectDisplayTitle(r), ev = resultMatchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
   const projectMention=listEntityMentionHTML({kind:"project",value:r.project_id,label:title,escape:escUiHtml,relation:"land_project"});
   const applicantMention=listEntityMentionHTML({kind:"agency",value:r.primary_applicant,escape:escUiHtml,relation:"primary_applicant"});
   return `<div class="row" data-i="${i}" tabindex="0" role="group">
