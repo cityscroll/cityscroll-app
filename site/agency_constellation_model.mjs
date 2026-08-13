@@ -741,10 +741,12 @@ function categoryFromDomain(
     id: spec.id,
     label: spec.label,
     relation: spec.relation,
-    status: matched ? "matched" : (block.status === "not_yet_ingested" ? "not_yet_ingested" : "empty"),
+    status: matched ? "matched" : (block.status === "not_yet_ingested" ? "unknown" : "empty"),
     gap_class: matched ? null : (block.gap_class || "empty_in_corpus"),
     note: matched ? null : (block.note || spec.empty_note),
-    count: items.length || Number(block.count) || 0,
+    count: matched || block.status !== "not_yet_ingested"
+      ? (items.length || Number(block.count) || 0)
+      : null,
     items,
     warrant_summary,
     method: items[0]?.method || "agency_canonical_v1",
@@ -776,7 +778,9 @@ export function buildAgencyEdgeSummary(viewOrCategories, options = {}) {
     const count = state === "unknown"
       ? null
       : (Number.isInteger(Number(category.count)) && Number(category.count) >= 0 ? Number(category.count) : null);
-    const href = category.view_all_href
+    const href = state === "unknown"
+      ? null
+      : category.view_all_href
       || (category.browse_facet && sourceId
         ? agencyCategoryBrowseHref(sourceId, category.id, {
           mode: category.universe === "open" ? "open" : "",
