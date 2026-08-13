@@ -105,6 +105,18 @@ test("Meetings uses positive public labels for notice-only entries", () => {
   assert.doesNotMatch(card, /meetings_list_no_agency|who_affected_not_stated|affected_not_stated|venue_not_stated/);
 });
 
+test("Meeting search cards use the shared bounded match-evidence renderer", () => {
+  const card = extractFunction(feedSource, "meetingsExplorerCardHTML");
+  const group = extractFunction(feedSource, "renderHearingGroup");
+  const render = extractFunction(feedSource, "renderHearingExplorer");
+  assert.match(card, /resultMatchEvidence\(title, matchText\(record\), terms\)/);
+  assert.match(card, /\$\{digEvidenceHTML\(ev\)\}/);
+  assert.match(group, /meetingsExplorerCardHTML\(entry,terms\)/);
+  assert.match(render, /const terms=filter\.keyword\?\[filter\.keyword\]:\[\]/);
+  assert.match(render, /renderHearingGroup\(scope, byPlace\[scope\]\|\|\[\],terms\)/);
+  assert.match(render, /entries\.map\(entry=>meetingsExplorerCardHTML\(entry,terms\)\)/);
+});
+
 test("Meeting cards render the agency constellation pivot exactly once", () => {
   const card = extractFunction(feedSource, "meetingsExplorerCardHTML");
   const agencyPivots = card.match(/pivotA\(agencyHref\(agency\),\s*agency\)/g) || [];

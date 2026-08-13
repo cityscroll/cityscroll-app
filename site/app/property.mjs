@@ -878,7 +878,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
   const title=noticeDisplayTitle(r, t("tab_property")+" "+t("rule_sibling_role_notice")), displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
   const agencyMention=r.agency_name?listEntityMentionHTML({kind:"agency",value:r.agency_name,escape:escUiHtml,relation:"publishes_record"}):"";
-  const mev=matchEvidence(title, matchText(r), terms);
+  const mev=resultMatchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");

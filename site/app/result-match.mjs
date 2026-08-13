@@ -39,8 +39,12 @@ function matchEvidence(title, description, terms, contextTerms, attachmentText){
   if(!words.length) return null;
   return {field:"unknown", term:words[0]};
 }
+function resultMatchEvidence(title, description, terms, contextTerms, attachmentText){
+  const evidence=matchEvidence(title, description, terms, contextTerms, attachmentText);
+  return evidence?.field==="unknown" ? null : evidence;
+}
 function matchText(r){
-  return [cleanText(r.additional_description_1), cleanText(r.other_info_1)].filter(Boolean).join(" ");
+  return [cleanText(r.additional_description_1),cleanText(r.other_info_1),cleanText(r.description)].filter(Boolean).join(" ");
 }
 function matchAttachmentText(r){
   if(r.attachment_text) return cleanText(r.attachment_text);
@@ -128,5 +132,5 @@ function digItemHTML(kind, r, keywords, awarenessTools){
   return `<div class="digitem"><div class="dt"><a href="${landHref}">${enTitle(landProjectDisplayTitle(r))}</a></div><div class="dm">${r.borough||""}${r.community_district?" · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant?" · "+r.primary_applicant:""}${mihOn(r.mih_flag)?" · "+t("affordable_housing_tag"):""}</div>${aw}<div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
 }
 
-Object.assign(globalThis,{locateAnyTerm,matchEvidence,matchText,matchAttachmentText,digTitleHTML,digEvidenceHTML,digContact,ensureDigAwarenessTools,digAwarenessKind,digAwarenessHTML,digItemHTML});
+Object.assign(globalThis,{locateAnyTerm,matchEvidence,resultMatchEvidence,matchText,matchAttachmentText,digTitleHTML,digEvidenceHTML,digContact,ensureDigAwarenessTools,digAwarenessKind,digAwarenessHTML,digItemHTML});
 Object.defineProperty(globalThis,"digAwarenessToolsPromise",{configurable:true,get:()=>digAwarenessToolsPromise,set:value=>{digAwarenessToolsPromise=value;}});
