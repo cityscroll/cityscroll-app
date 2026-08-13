@@ -271,7 +271,8 @@ export function renderTraversalPath(input = {}, { currentHref = "" } = {}) {
   const restartHref = traversalRestartHref(state, currentRoute);
   if (state.status === "held") {
     const current = state.current || state.hops.at(-1)?.destination || { name: "Current record", href: currentRoute };
-    return `<aside class="traversal-path traversal-path-held" data-traversal-status="held" aria-labelledby="traversal-path-heading"><div class="traversal-path-head"><div><p class="traversal-path-kicker">Navigation path</p><h2 id="traversal-path-heading">Current node: ${escapeHTML(nodeLabel(current))}</h2></div><a class="traversal-path-restart" href="${escapeHTML(restartHref)}">Restart at origin</a></div><p class="traversal-path-status" role="status">${escapeHTML(state.reason)}. This path was not changed.</p><p class="traversal-path-note">Path only. This is navigation context, not a new fact.</p></aside>`;
+    const backHref = traversalBackHref(state, currentRoute);
+    return `<aside class="traversal-path traversal-path-held" data-traversal-status="held" aria-label="Traversal history"><div class="traversal-path-head"><a class="traversal-path-back" href="${escapeHTML(backHref)}" aria-label="Back one step" title="Back one step">‹</a><span class="traversal-path-current" aria-current="page">${escapeHTML(nodeLabel(current))}</span><a class="traversal-path-restart" href="${escapeHTML(restartHref)}" aria-label="Restart at origin" title="Restart at origin">↺</a></div><p class="traversal-path-status" role="status">${escapeHTML(state.reason)}</p></aside>`;
   }
   const first = state.hops[0]?.source;
   const nodes = first ? [first, ...state.hops.map((hop) => hop.destination)] : [];
@@ -284,5 +285,5 @@ export function renderTraversalPath(input = {}, { currentHref = "" } = {}) {
     const relation = index > 0 ? `<span class="traversal-path-relation" aria-hidden="true">${escapeHTML(state.hops[index - 1].relation)} →</span>` : "";
     return `<li>${relation}${link}</li>`;
   }).join("");
-  return `<aside class="traversal-path" data-traversal-status="active" data-traversal-hop-count="${state.hops.length}" aria-labelledby="traversal-path-heading"><div class="traversal-path-head"><div><p class="traversal-path-kicker">Navigation path</p><h2 id="traversal-path-heading">Where you came from</h2></div><div class="traversal-path-actions"><a href="${escapeHTML(traversalBackHref(state, currentRoute))}">Back one step</a><a class="traversal-path-restart" href="${escapeHTML(restartHref)}">Restart at origin</a></div></div><ol>${items}</ol><p class="traversal-path-note">Path only. This is navigation context, not a new fact.</p></aside>`;
+  return `<aside class="traversal-path" data-traversal-status="active" data-traversal-hop-count="${state.hops.length}" aria-label="Traversal history"><div class="traversal-path-head"><a class="traversal-path-back" href="${escapeHTML(traversalBackHref(state, currentRoute))}" aria-label="Back one step" title="Back one step">‹</a><ol>${items}</ol><a class="traversal-path-restart" href="${escapeHTML(restartHref)}" aria-label="Restart at origin" title="Restart at origin">↺</a></div></aside>`;
 }
