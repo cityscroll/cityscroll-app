@@ -24,6 +24,7 @@ import {
 import { buildPlaceLocalConstellation } from "./community_board_geography.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
+import { meetingOriginLabel } from "./meeting_origin.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -345,6 +346,17 @@ function whyHerePath(path) {
 }
 
 function recordCard(record) {
+  const meetingSource = record.meeting_origin
+    ? `<div class="near-record-source" data-meeting-origin="${esc(record.meeting_origin)}">${record.source_url
+      ? `<a href="${esc(record.source_url)}" rel="noopener noreferrer">${esc(meetingOriginLabel(record.meeting_origin))}</a>`
+      : esc(meetingOriginLabel(record.meeting_origin))}</div>`
+    : "";
+  const placementMethods = Array.isArray(record.placement_methods) && record.placement_methods.length
+    ? record.placement_methods.join(", ")
+    : record.basis_method;
+  const placement = placementMethods
+    ? `${record.basis} · ${placementMethods} placement`
+    : record.basis;
   return `<li class="near-record" data-record-id="${esc(record.id)}">
     <a class="near-record-title" href="${esc(record.route)}">${esc(record.title)}</a>
     <div class="near-record-meta">
@@ -352,7 +364,8 @@ function recordCard(record) {
       ${record.type ? `<span>${esc(record.type)}</span>` : ""}
       <span>${esc(dateLabel(record.date))}</span>
     </div>
-    <div class="near-record-basis"><strong>${esc(record.basis)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>${whyHerePath(record.why_here)}
+    ${meetingSource}
+    <div class="near-record-basis"><strong>${esc(placement)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>${whyHerePath(record.why_here)}
   </li>`;
 }
 

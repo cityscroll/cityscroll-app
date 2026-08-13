@@ -39,6 +39,10 @@ import {
   compactDerivationStamp,
 } from "../../site/location_derivation.mjs";
 import {
+  meetingSourceUrl,
+  normalizeMeetingOrigin,
+} from "../../site/meeting_origin.mjs";
+import {
   geocodeFromPlaceOrRow,
   buildCommunityToCouncilIndex,
 } from "../../site/civic_address_geocode.mjs";
@@ -213,7 +217,7 @@ export function compactDistrictRecord(lens, row = {}, slots = []) {
   ) || null;
   const status = compactText(row.current_milestone || row.project_status || row.disposition_stage || "", 120) || null;
   const place = compactRecordBasis(lens, slots);
-  return {
+  const record = {
     id,
     title,
     agency,
@@ -225,6 +229,16 @@ export function compactDistrictRecord(lens, row = {}, slots = []) {
     basis_method: place.method,
     route: lens === "land" ? `/#land/${encodeURIComponent(id)}` : `/#notice/${encodeURIComponent(id)}`,
   };
+  if (lens === "meetings") {
+    record.meeting_origin = normalizeMeetingOrigin(row);
+    record.source_url = meetingSourceUrl(row, record.meeting_origin);
+    record.placement_methods = [...new Set([
+      ...(Array.isArray(row.affected_area?.derivation?.methods)
+        ? row.affected_area.derivation.methods : []),
+      ...slots.flatMap((slot) => [slot.source_method, slot.method]),
+    ].filter(Boolean))];
+  }
+  return record;
 }
 
 /**

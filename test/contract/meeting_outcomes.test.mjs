@@ -6,8 +6,18 @@ import {
   applyApiLimits,
   buildMeetingOutcomes,
 } from "../../worker/src/lib/meeting_outcomes.mjs";
+import { normalizeHearing } from "../../worker/src/lib/hearings.mjs";
+import {
+  MEETING_ORIGINS,
+  meetingSourceUrl,
+  normalizeMeetingOrigin,
+} from "../../site/meeting_origin.mjs";
 
 const fixture = JSON.parse(await readFile(new URL("./fixtures/meeting_outcomes.json", import.meta.url), "utf8"));
+const meetingsSnapshot = JSON.parse(await readFile(
+  new URL("../../site/data/meetings_domain_observations.json", import.meta.url),
+  "utf8",
+));
 
 function model() {
   return buildMeetingOutcomes(
@@ -72,6 +82,49 @@ test("notice location and affected-area still surface through normalizeHearing",
   assert.equal(record.notice.affected_area.scope, "local");
   assert.deepEqual(record.notice.affected_area.boroughs, ["Queens"]);
   assert.equal(record.notice.venue.address, "120 Broad Street, New York, NY, 10271");
+  assert.equal(record.notice.meeting_origin, "city_record_notice");
+  assert.match(record.notice.source_url, /CR-1001/);
+});
+
+test("meeting origin vocabulary defaults City Record rows without promoting board signals", () => {
+  assert.deepEqual(MEETING_ORIGINS, [
+    "city_record_notice",
+    "official_community_board_calendar",
+    "official_minutes_joined",
+    "unknown",
+  ]);
+  assert.equal(normalizeMeetingOrigin({ agency_name: "Community Boards" }), "unknown");
+  assert.equal(normalizeMeetingOrigin({
+    agency_name: "Community Boards",
+    source_system: "city_record",
+  }), "city_record_notice");
+  assert.equal(normalizeHearing({
+    request_id: "20260618032",
+    agency_name: "Community Boards",
+    short_title: "Community Board meeting",
+  }).meeting_origin, "city_record_notice");
+});
+
+test("official origins and source URLs require explicit upstream assertions", () => {
+  assert.equal(normalizeMeetingOrigin({
+    meeting_origin: "official_community_board_calendar",
+    agency_name: "Community Boards",
+  }), "official_community_board_calendar");
+  assert.equal(normalizeMeetingOrigin({ meeting_origin: "not-an-origin" }), "unknown");
+  assert.equal(meetingSourceUrl({ meeting_origin: "official_minutes_joined" }), null);
+});
+
+test("committed meeting observations carry origin and City Record source provenance", () => {
+  assert.deepEqual(meetingsSnapshot.meeting_origin_vocabulary, MEETING_ORIGINS);
+  assert.ok(meetingsSnapshot.rows.length > 0);
+  for (const row of meetingsSnapshot.rows) {
+    assert.ok(MEETING_ORIGINS.includes(row.meeting_origin), row.request_id);
+    assert.equal(row.meeting_origin, "city_record_notice", row.request_id);
+    assert.match(row.source_url, new RegExp(`${row.request_id}$`));
+  }
+  const boardRows = meetingsSnapshot.rows.filter((row) => row.agency_name === "Community Boards");
+  assert.ok(boardRows.length > 0);
+  assert.ok(boardRows.every((row) => row.meeting_origin !== "official_community_board_calendar"));
 });
 
 // ---------------------------------------------------------------------------

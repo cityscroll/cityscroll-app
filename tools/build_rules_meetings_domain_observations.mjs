@@ -44,6 +44,11 @@ import {
   MEETING_MATTER_STAMP_SCHEMA,
   extractMeetingMatterStamp,
 } from "../site/meeting_matter_stamps.mjs";
+import {
+  meetingSourceUrl,
+  MEETING_ORIGINS,
+  normalizeMeetingOrigin,
+} from "../site/meeting_origin.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
@@ -366,6 +371,8 @@ function cleanHearing(row) {
     type_of_notice_description: fullRow.type_of_notice_description,
     section_name: fullRow.section_name,
     source_system: "city_record",
+    meeting_origin: normalizeMeetingOrigin(fullRow),
+    source_url: meetingSourceUrl(fullRow),
   };
   // Stamp ULURP / ZAP keys extracted from body — never commit the raw body.
   const landRefs = extractMeetingLandRefs({
@@ -628,11 +635,14 @@ async function main() {
     const rows = (current.rows || []).map((row) => ({
       ...row,
       matter_subject: stampById.get(String(row.request_id)),
+      meeting_origin: normalizeMeetingOrigin({ ...row, source_system: row.source_system || "city_record" }),
+      source_url: meetingSourceUrl({ ...row, source_system: row.source_system || "city_record" }),
     }));
     const next = {
       ...current,
       schema_version: 2,
       meeting_matter_stamp_schema: MEETING_MATTER_STAMP_SCHEMA,
+      meeting_origin_vocabulary: [...MEETING_ORIGINS],
       description:
         "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Source prose is reduced to bounded matter-subject stamps and discarded. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
       matter_subject_stamped_at: retrievedAt,
@@ -740,6 +750,7 @@ async function main() {
   const meetingsDoc = {
     schema_version: 2,
     meeting_matter_stamp_schema: MEETING_MATTER_STAMP_SCHEMA,
+    meeting_origin_vocabulary: [...MEETING_ORIGINS],
     domain: "meetings",
     title: "Meetings domain observations for entity intelligence",
     description:
