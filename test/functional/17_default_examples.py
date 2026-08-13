@@ -3,7 +3,8 @@
 Staffing is posting-first: a blank search is not a prerequisite. Its newest City Record
 appointments render immediately in reverse chronological order, while a query-carrying
 deep link refines the already-visible list. Hermetic fixture routes keep both guarantees in
-CI without live-network dependence.
+CI without live-network dependence. The selected examples are committed seeds, not
+current-data picks, while deep links still win over the defaults.
 """
 import os
 import sys
@@ -21,9 +22,7 @@ def step(tag, name, detail=""):
 
 
 def land_opens_on_a_populated_example(pw):
-    """Regression pin, not a fix: bare #land already renders a real, live-picked project
-    (most-recent by current_milestone_date) with zero clicks — verified so this can't
-    silently regress once Staffing is made to match it."""
+    """Bare #land opens the committed fixture project without a click."""
     failures = []
     browser = pw.chromium.launch()
     page = browser.new_context().new_page()
@@ -31,13 +30,13 @@ def land_opens_on_a_populated_example(pw):
 
     page.goto(f"{BASE}#land", timeout=30000)
     page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    page.locator("#ldetail").wait_for(state="visible", timeout=45000)
     detail = page.locator("#ldetail")
     text = detail.inner_text().strip()
     if "Pick a rezoning" in text or not text:
         failures.append(f"bare #land still shows the empty prompt instead of an example — got: {text!r}")
-    if "example street rezoning" not in text.lower():  # fixture's most-recent ZAP row (current_milestone_date DESC), enTitle() uppercases it
-        failures.append(f"bare #land did not pre-select the most-recent fixture project — got: {text!r}")
+    if "example street rezoning" not in text.lower():
+        failures.append(f"bare #land did not pre-select the committed fixture project — got: {text!r}")
     route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
     if route != {"pathname": "/browse/zoning/", "search": "", "hash": ""}:
         failures.append(f"bare #land did not forward to the clean Zoning route — got: {route!r}")
@@ -54,9 +53,8 @@ def people_opens_on_a_populated_example(pw):
 
     page.goto(f"{BASE}#people", timeout=30000)
     page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    page.locator("#career-results .career-card").first.wait_for(state="visible", timeout=45000)
     first = page.locator("#career-results .career-card").first
-    first.wait_for(state="visible")
     first_text = first.inner_text().strip()
     if "APPLY BY" not in first_text.upper():
         failures.append(f"bare #people did not lead with an exam deadline — got: {first_text!r}")

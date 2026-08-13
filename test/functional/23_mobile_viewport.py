@@ -21,6 +21,7 @@ from playwright.sync_api import Page, sync_playwright
 ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from ci_waits import wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from tools.local_site_server import QuietHandler  # noqa: E402
 
@@ -130,7 +131,11 @@ def run(base: str) -> None:
 
         for name, route, ready in SURFACES:
             page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=30_000)
-            page.locator(ready).first.wait_for(state="visible", timeout=20_000)
+            wait_for_locator(
+                page.locator(ready).first,
+                timeout=45_000,
+                label=f"{name} mobile surface",
+            )
             page.wait_for_timeout(250)
             assert_mobile_surface(page, name)
 
@@ -156,12 +161,18 @@ def run(base: str) -> None:
                     map_switch = page.locator("[data-near-surface='map']")
                     assert map_switch.count() > 0, contract
                     map_switch.first.click()
-                    page.locator(".near-area-list a").first.wait_for(state="visible", timeout=10_000)
+                    wait_for_locator(
+                        page.locator(".near-area-list a").first,
+                        label="Near you map area link",
+                    )
                     assert page.evaluate(
                         """() => getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')).display !== 'none'"""
                     )
                 else:
-                    page.locator(".near-area-list a").first.wait_for(state="visible", timeout=10_000)
+                    wait_for_locator(
+                        page.locator(".near-area-list a").first,
+                        label="Near you area link",
+                    )
 
             if name == "rule detail":
                 phase_buttons = page.locator(".rule-phase-stepper .lc-step")
@@ -172,9 +183,9 @@ def run(base: str) -> None:
                 assert len(set(tops)) == len(tops), f"phase chain still wraps horizontally: {tops}"
 
         page.goto(f"{base}#money", wait_until="domcontentloaded", timeout=30_000)
-        page.locator("#detail").wait_for(state="visible")
+        wait_for_locator(page.locator("#detail"), label="attachment detail surface")
         install_table_fixture(page)
-        page.locator("table.attachment-table").wait_for(state="visible")
+        wait_for_locator(page.locator("table.attachment-table"), label="attachment table")
         assert_mobile_surface(page, "attachment table")
         table_metrics = page.evaluate(
             """() => {
@@ -192,7 +203,7 @@ def run(base: str) -> None:
         assert table_metrics["documentOverflow"] <= 1, table_metrics
 
         page.goto(f"{base}#property", wait_until="domcontentloaded", timeout=30_000)
-        page.locator("#property-domain-intro").wait_for(state="visible", timeout=20_000)
+        wait_for_locator(page.locator("#property-domain-intro"), label="property domain intro")
         page.locator("#property-domain-intro").evaluate(
             """el => el.insertAdjacentHTML('beforeend', `
               <ol class="lc-stepper" aria-label="Example phase disclosure">
@@ -214,7 +225,10 @@ def run(base: str) -> None:
         no_js = browser.new_context(viewport=VIEWPORT, has_touch=True, java_script_enabled=False)
         no_js_page = no_js.new_page()
         no_js_page.goto(f"{base}near-you/", wait_until="domcontentloaded", timeout=30_000)
-        no_js_page.locator(".near-area-list a").first.wait_for(state="visible", timeout=20_000)
+        wait_for_locator(
+            no_js_page.locator(".near-area-list a").first,
+            label="Near you no-JavaScript area link",
+        )
         assert_mobile_surface(no_js_page, "near you without JavaScript")
         no_js_contract = no_js_page.evaluate(
             """() => ({
@@ -229,7 +243,10 @@ def run(base: str) -> None:
         assert no_js_contract["controlsHidden"], no_js_contract
 
         no_js_page.goto(f"{base}following/", wait_until="domcontentloaded", timeout=30_000)
-        no_js_page.locator("[data-following-preview-form]").wait_for(state="visible", timeout=20_000)
+        wait_for_locator(
+            no_js_page.locator("[data-following-preview-form]"),
+            label="Following no-JavaScript preview form",
+        )
         assert_mobile_surface(no_js_page, "following without JavaScript")
         following_contract = no_js_page.evaluate(
             """() => ({
