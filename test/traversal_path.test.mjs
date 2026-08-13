@@ -70,7 +70,8 @@ test("unsupported hops remain visible as a held state with restart", () => {
   const held = traversalFromHref(result.href);
   assert.equal(held.status, "held");
   const html = renderTraversalPath(held, { currentHref: result.href });
-  assert.match(html, /Current node: Committee on Land Use/);
-  assert.match(html, /Restart at origin/);
-  assert.match(html, /not a new fact/);
+  assert.match(html, /aria-label="Back one step"/);
+  assert.match(html, /Committee on Land Use/);
+  assert.match(html, /aria-label="Restart at origin"/);
+  assert.doesNotMatch(html, /not a new fact|Navigation path|Where you came from/);
 });
