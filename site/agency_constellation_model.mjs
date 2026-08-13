@@ -78,6 +78,7 @@ import {
   edgeRelationLabel,
   normalizeEdgeSummaryRecords,
 } from "./edge_summary.mjs";
+import { buildLocalConstellation } from "./local_constellation.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -925,6 +926,18 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     canonical_id: identity.canonical_id,
     display_name: identity.canonical_name,
   });
+  const localConstellation = buildLocalConstellation({
+    kind: "agency",
+    subject_ref: ref,
+    subject_id: identity.canonical_id,
+    subject_name: identity.canonical_name,
+    source: {
+      system: "agency_constellation",
+      generated_at: sources.generated_at || null,
+    },
+    provenance: { method: AGENCY_CONSTELLATION_METHOD },
+    neighbors: edgeSummary,
+  });
 
   const matched = categories.filter((category) => category.status === "matched").length;
   const claims = categories.flatMap((category) =>
@@ -1037,6 +1050,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     canonical_id: identity.canonical_id,
     categories,
     edge_summary: edgeSummary,
+    local_constellation: localConstellation,
     claims: allClaims,
     mandates_conformance: conformanceView,
     mandates_rules: mandatesRules,

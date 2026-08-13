@@ -48,6 +48,7 @@ function outputPath(publicPath) {
 function buildDocuments() {
   const activity = json(join(SITE, "data/district_activity.json"));
   const boundaries = json(join(SITE, "data/district_boundaries.json"));
+  const communityGeography = json(join(SITE, "data/community_board_geography_lookup.json"));
   return commonScopes().map((scope) => {
     const publicPath = commonNearYouPath(scope);
     const urlForScope = (next) => commonNearYouPath(next)
@@ -55,6 +56,7 @@ function buildDocuments() {
     const view = buildNearYouViewModel(scope, activity, boundaries, {
       canonicalBase: CANONICAL_BASE,
       urlForScope,
+      communityGeography,
     });
     return {
       path: outputPath(publicPath),

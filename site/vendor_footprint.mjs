@@ -8,6 +8,7 @@ import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { constellationLink } from "./affordance_grammar.mjs";
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
+import { buildLocalConstellation, ensureLocalConstellationStylesheet, renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const GROUPS = Object.freeze([
   { id: "awards", label: "Awards", domain: "money", kind: "award", surface: "money", mode: "award" },
@@ -100,14 +101,8 @@ export function vendorAgencyIntersectionHref(
 export function vendorFootprintModel(response = {}) {
   const footprint = response?.vendor_footprint;
   if (!footprint || response?.root?.kind !== "vendor") return null;
-  return {
-    root: response.root,
-    qualifier_required: footprint.qualifier_required !== false,
-    award_coverage: footprint.award_coverage || null,
-    census: footprint.census || null,
-    promotion: footprint.promotion || null,
-    provenance: footprint.provenance || null,
-    groups: GROUPS.map((group) => {
+  const query = response.root.stem || response.root.display_name || "";
+  const groups = GROUPS.map((group) => {
       const objects = strongObjects(response, group);
       const explicit = footprint.section_counts?.[group.id] || {};
       const awardFallback = group.id === "awards" ? footprint.award_coverage || {} : {};
@@ -128,7 +123,6 @@ export function vendorFootprintModel(response = {}) {
       const edgeState = denominator?.status === "unknown" && scopeCount === 0
         ? "unknown"
         : scopeCount > 0 ? "matched" : "empty";
-      const query = response.root.stem || response.root.display_name || "";
       return {
         ...group,
         objects,
@@ -146,7 +140,34 @@ export function vendorFootprintModel(response = {}) {
           : "",
         coverage_kind: group.id === "awards" ? "measured" : "unknown",
       };
-    }),
+    });
+  const localConstellation = buildLocalConstellation({
+    kind: "vendor",
+    subject_ref: response.root.ref || null,
+    subject_id: response.root.ref || null,
+    subject_name: response.root.display_name || response.root.stem || null,
+    source: footprint.provenance || null,
+    provenance: footprint.provenance || null,
+    neighbors: groups.flatMap((group) => group.objects.map((object) => ({
+      edge_type: "linked_to_vendor",
+      relation_label: group.label,
+      target_kind: group.kind || group.id,
+      target_id: object.subject_ref || object.request_id || null,
+      target_name: object.label || object.subject_ref || group.label,
+      href: object.href || null,
+      state: object.href ? "matched" : "unknown",
+      provenance: object.provenance || null,
+    }))),
+  });
+  return {
+    root: response.root,
+    qualifier_required: footprint.qualifier_required !== false,
+    award_coverage: footprint.award_coverage || null,
+    census: footprint.census || null,
+    promotion: footprint.promotion || null,
+    provenance: footprint.provenance || null,
+    groups,
+    local_constellation: localConstellation,
   };
 }
 
@@ -163,6 +184,7 @@ function objectHTML(object, formatDate) {
 export function renderVendorFootprintHTML(response = {}, { formatDate = (value) => value } = {}) {
   const model = vendorFootprintModel(response);
   if (!model) return "";
+  ensureLocalConstellationStylesheet();
   const displayName = model.root.display_name || model.root.stem || "this vendor";
   const edgeSummary = normalizeEdgeSummaryRecords(model.groups.map((group) => ({
     source_kind: "vendor",
@@ -213,6 +235,7 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
     ${renderEdgeSummaryRail(edgeSummary, { heading: "Vendor connections", id: "vendor-edge-summary-heading", className: "vendor-edge-summary" })}
+    ${renderLocalConstellationHTML(model.local_constellation, { heading: "Nearby vendor records", id: "vendor-local-constellation-heading" })}
     <div class="ei-domains">${sections}</div>
   </div>`;
 }
