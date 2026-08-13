@@ -135,6 +135,14 @@ function forceAmountSelect(value){
   select.value=val;
 }
 
+function carryWalk(hash, source=location.hash){
+  const walk=new URLSearchParams((source||"").split("?",2)[1]||"").get("walk");
+  if(!walk) return hash;
+  const params=new URLSearchParams(hash.split("?",2)[1]||"");
+  params.set("walk",walk);
+  return `${hash.split("?",1)[0]}?${params}`;
+}
+
 function serializeState(){
   const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
   if(!tab) return location.hash || "#money"; // notice view keeps its own hash
@@ -255,7 +263,7 @@ function serializeState(){
       scope.facets.values.entity_refs_all=[...new Set([...refs, ref])];
     }
   }
-  return CrolScope.routeHashFromScope(scope,{surface:tab});
+  return carryWalk(CrolScope.routeHashFromScope(scope,{surface:tab}));
 }
 function nearYouHref(scope){
   const normalized=CrolScope.normalizeScope(scope,{language:window.LANG||"en"});
@@ -852,8 +860,9 @@ function applyHash(){
     ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
   if(scope){
     const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
-    if(adapted!=="#"+raw){
-      history.replaceState(routeHistoryState({entry:{hash:adapted,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash(adapted));
+    const canonical = carryWalk(adapted, "#"+raw);
+    if(canonical!=="#"+raw){
+      history.replaceState(routeHistoryState({entry:{hash:canonical,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash(canonical));
       return applyHash();
     }
   }
