@@ -1,9 +1,8 @@
 /**
  * Build the exact-code family index used by static exam documents.
  *
- * A family is a browse grouping, not an authoritative title or eligibility
- * assertion. Exact publisher codes are the fact layer; inferred family values
- * keep their quiet marker when a future artifact supplies them.
+ * Exact publisher codes identify the civil-service job title; inferred family
+ * values keep their quiet marker so readers can distinguish a derived grouping.
  */
 
 function clean(value) {
