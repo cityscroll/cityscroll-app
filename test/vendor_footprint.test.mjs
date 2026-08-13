@@ -195,13 +195,15 @@ test("zero confirmed links surface populated name-mention counts without methodo
   assert.match(html, /See Acme&#39;s awards \(273\)/);
 });
 
-test("an empty footprint paints no card", () => {
+test("an empty footprint paints every supported family honestly", () => {
   const html = renderVendorFootprintHTML({
     root: { kind: "vendor", ref: REF, display_name: "Acme" },
     domains: {},
     vendor_footprint: { section_counts: {} },
   });
-  assert.equal(html, "");
+  assert.match(html, /data-footprint-section="awards"/);
+  assert.match(html, /data-footprint-section="franchise"/);
+  assert.match(html, /Empty in this scoped materialization/);
 });
 
 test("promotion removes qualifier labels but never admits tentative rows", () => {

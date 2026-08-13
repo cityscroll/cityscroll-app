@@ -19,7 +19,7 @@ test("local constellation registry covers the six Browse object kinds", () => {
     assert.equal(view.source, null);
     const html = renderLocalConstellationHTML(view);
     assert.match(html, /data-local-constellation-status="empty"/);
-    assert.match(html, /No connected records in this materialization/);
+    assert.match(html, /Empty in this scoped materialization/);
   }
 });
 
@@ -77,5 +77,6 @@ test("committee and place adapters use only published exact-key neighbors", () =
     nodes: [{ id: "community-district:X01", type: "community-district", name: "X01" }],
     public_edges: [{ type: "intersects", from: "community-district:X01", to: "council-district:8" }],
   }, "community-district:X01");
-  assert.equal(held.status, "empty");
+  assert.equal(held.status, "unknown");
+  assert.match(renderLocalConstellationHTML(held), /Unknown \/ not indexed/);
 });

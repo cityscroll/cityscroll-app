@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   EDGE_SUMMARY_SCHEMA,
   normalizeEdgeSummaryRecord,
+  rankEdgeSummaryRecords,
   renderEdgeSummaryProvenance,
   renderEdgeSummaryRail,
 } from "../site/edge_summary.mjs";
@@ -32,6 +33,33 @@ test("normalizes one typed edge without turning null into zero", () => {
   assert.equal(record.state, "unknown");
   assert.equal(record.href, "/browse/contracts/?as_of=2026-08-11");
   assert.deepEqual(record.scope, { facet: "contracts", mode: "open" });
+});
+
+test("preserves null provenance and treats ingestion gaps as unknown", () => {
+  const record = normalizeEdgeSummaryRecord({
+    source: null,
+    status: "not_yet_ingested",
+    count: 0,
+    href: null,
+    target_kind: "rule",
+    target_name: "Rules",
+  });
+  assert.equal(record.source, null);
+  assert.equal(record.href, null);
+  assert.equal(record.count, 0);
+  assert.equal(record.state, "unknown");
+});
+
+test("ranking reorders by signal without hiding any supported family", () => {
+  const ranked = rankEdgeSummaryRecords([
+    { edge_type: "issued_rule", target_kind: "rule", target_name: "Rules", state: "empty", count: 0 },
+    { edge_type: "hosts_meeting", target_kind: "meeting", target_name: "Meetings", state: "matched", count: 1, cross_spine: { confidence: "confirmed" } },
+    { edge_type: "published_by_agency", target_kind: "contract", target_name: "Contracts", state: "matched", count: 8 },
+    { edge_type: "certified_to_agency", target_kind: "exam", target_name: "Exams", state: "unknown", count: null },
+  ]);
+  assert.deepEqual(ranked.map((record) => record.target_kind), ["meeting", "contract", "rule", "exam"]);
+  assert.equal(ranked.length, 4);
+  assert.equal(new Set(ranked.map((record) => record.target_kind)).size, 4);
 });
 
 test("empty and unknown states render as explicit states, never asserted zeroes", () => {
