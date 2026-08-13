@@ -199,7 +199,11 @@ export function buildBrowseConceptDocument(shell, kind, sources) {
     primaryHref: "/browse/",
     primaryContext: "browse",
   });
-  html = activateTab(html, config.tab);
+  // Concept landings live in the Browse document pane; unlike lens routes they do
+  // not have an SPA pane named after the concept. Keep the concept link selected
+  // while making the actual static Browse pane visible.
+  html = activateTab(html, "browse");
+  html = html.replace(`class="tabbtn" href="${config.route}"`, `class="tabbtn active" href="${config.route}"`);
   html = addRouteStyles(html, ["browse.css", "local_constellation.css"]);
   return replaceElementContent(html, "browseview", renderBrowseConceptLanding(buildBrowseConceptLanding(kind, sources)));
 }

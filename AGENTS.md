@@ -184,6 +184,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Now, Near you, Following, and Browse are the primary navigation documents. Contracts,
   Staffing, Zoning, Property, Rules, and Meetings remain complete source views under
   `/browse/<facet>/`; the existing application modules enhance their build-rendered HTML.
+- Browse concept landings at `/browse/people/` and `/browse/places/` are static documents in
+  the `tab-browse` pane, not SPA lenses. Their `.tabbtn` links must delegate to native
+  navigation, and client boot must recognize their routes without falling back to Contracts.
 - `node tools/build_primary_documents.mjs` builds the bounded Now and Browse defaults.
   `site/_worker.js` delegates document requests to `site/pages_edge.mjs`; notice permalinks are
   edge-rendered at `/notices/<request_id>`, while entity and matter hashes remain unchanged.

@@ -14,6 +14,23 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _format, *_args):
         return
 
+    def _static_document(self, route: str, query: str) -> bool:
+        """Serve a generated clean-route document when the artifact provides one."""
+        if not route or ".." in route:
+            return False
+        # Agency constellation documents share the /agencies/<id>/index.html
+        # filesystem shape, but ?tab= links must reach the interactive SPA
+        # profile. Leave that route family to _static_agency_constellation,
+        # which already distinguishes the static and interactive variants.
+        if route.startswith("/agencies/"):
+            return False
+        document = Path(self.directory) / route.lstrip("/") / "index.html"
+        if not document.is_file():
+            return False
+        self.path = f"{route}/" + (f"?{query}" if query else "")
+        super().do_GET()
+        return True
+
     def _static_agency_constellation(self, route: str, query: str) -> bool:
         """Serve build-generated agency constellation documents like production edge.
 
@@ -50,6 +67,8 @@ class QuietHandler(SimpleHTTPRequestHandler):
         raw = self.path
         path_only, _, query = raw.partition("?")
         route = path_only.rstrip("/")
+        if self._static_document(route, query):
+            return
         if self._static_agency_constellation(route, query):
             # Preserve query string (as_of, claim) for shareable views; serve
             # the directory index under /agencies/<id>/.
