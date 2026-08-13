@@ -7,7 +7,11 @@ import {
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { constellationLink } from "./affordance_grammar.mjs";
-import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
+import {
+  edgeSummaryStateCopy,
+  normalizeEdgeSummaryRecords,
+  renderEdgeSummaryRail,
+} from "./edge_summary.mjs";
 import { buildLocalConstellation, ensureLocalConstellationStylesheet, renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const GROUPS = Object.freeze([
@@ -205,32 +209,38 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
     scope: { domain: group.domain, object_kind: group.kind || null },
     as_of: model.provenance?.observed_on || null,
   })));
-  const sections = model.groups.filter((group) => group.scope_count > 0).map((group) => {
+  const edgeByGroup = new Map(edgeSummary.map((record, index) => [model.groups[index].id, record]));
+  const sections = model.groups.map((group) => {
+    const edge = edgeByGroup.get(group.id);
     const confirmed = group.confirmed_count;
     const mentions = group.mention_count;
     let identitySummary = "";
-    if (!confirmed && mentions) {
+    if (group.edge_state !== "matched") {
+      identitySummary = edgeSummaryStateCopy(edge);
+    } else if (!confirmed && mentions) {
       identitySummary = `${mentions.toLocaleString("en-US")} record${mentions === 1 ? "" : "s"} mention this name`;
     } else if (confirmed && mentions > confirmed) {
       identitySummary = `${confirmed.toLocaleString("en-US")} link${confirmed === 1 ? "" : "s"} we’ve confirmed · ${mentions.toLocaleString("en-US")} records mention this name`;
     } else if (confirmed) {
       identitySummary = `${confirmed.toLocaleString("en-US")} link${confirmed === 1 ? "" : "s"} we’ve confirmed`;
     }
-    const objects = group.objects.slice(0, 4);
+    const objects = group.edge_state === "matched" ? group.objects.slice(0, 4) : [];
     const body = objects.length
       ? `<ul class="ei-list">${objects.map((object) => objectHTML(object, formatDate)).join("")}</ul>`
       : "";
     const viewAll = group.href
       ? constellationLink({ href: group.href, label: `See ${displayName}'s ${group.label.toLowerCase()} (${group.scope_count.toLocaleString("en-US")})`, className: "vendor-footprint-scope", escape: escapeHTML })
       : "";
-    return `<section class="ei-domain vendor-footprint-section" data-footprint-section="${group.id}">
-      <h3 class="ei-domain-h">${escapeHTML(group.label)} <span class="ct">${group.scope_count.toLocaleString("en-US")}</span></h3>
+    const countLabel = group.edge_count == null
+      ? edgeSummaryStateCopy(edge)
+      : group.scope_count.toLocaleString("en-US");
+    return `<section class="ei-domain vendor-footprint-section" data-footprint-section="${group.id}" data-edge-state="${escapeHTML(group.edge_state)}" data-edge-availability="${escapeHTML(edge?.state === "empty" ? "empty-in-scope" : edge?.state === "unknown" ? "unknown-unindexed" : "available")}">
+      <h3 class="ei-domain-h">${escapeHTML(group.label)} <span class="ct">${escapeHTML(countLabel)}</span></h3>
       <p class="vendor-footprint-match-summary">${escapeHTML(identitySummary)}</p>
       ${body}
       ${viewAll}
     </section>`;
   }).join("");
-  if (!sections && !edgeSummary.some((record) => record.href)) return "";
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>

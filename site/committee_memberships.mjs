@@ -24,6 +24,7 @@ export function buildCommitteeLocalConstellation(graph = {}, committeeId, people
     subject_name: node?.name || null,
     source: node?.provenance?.source || null,
     provenance: node?.provenance || null,
+    availability_state: graph.publication === "published" ? null : "unknown",
     neighbors: edges.map((edge) => {
       const personId = clean(edge.from).replace(/^official:/, "");
       const person = people.by_person_id?.[personId] || {};
