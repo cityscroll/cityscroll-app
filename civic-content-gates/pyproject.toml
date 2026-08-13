@@ -22,4 +22,4 @@ civic-content-gates = "civic_content_gates.cli:main"
 include = ["civic_content_gates*"]
 
 [tool.setuptools.package-data]
-civic_content_gates = ["nyc_copy_lint_allowlist.txt"]
+civic_content_gates = ["nyc_copy_lint_allowlist.txt", "no_disclaimer_slop_allowlist.txt"]

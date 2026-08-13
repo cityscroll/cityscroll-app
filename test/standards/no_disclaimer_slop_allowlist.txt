@@ -1,0 +1,3 @@
+# Reviewed exceptions for no-disclaimer-slop.
+# Format: RULE_ID<TAB>exact normalized copy
+# Prefer an inline `no-disclaimer-slop: ignore` comment when the exception is local.

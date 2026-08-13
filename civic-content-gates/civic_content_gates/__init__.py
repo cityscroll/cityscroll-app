@@ -20,4 +20,5 @@ SUITE_MEMBERS = (
     "page_metadata",
     "genai_disclosure",
     "reading_level",
+    "no_disclaimer_slop",
 )

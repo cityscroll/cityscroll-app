@@ -6,6 +6,7 @@
 //   3. i18n_keys fails when a shipping language is missing an English key
 //   4. reading_level.py accepts the card-style `--max-grade 7 about.html` path
 //   5. suite runner reports per-gate VERDICT lines for before/after comparison
+//   6. no_disclaimer_slop flags defensive copy while preserving honest boundaries
 //
 // Hermetic fixtures — never mutates site/.
 
@@ -334,11 +335,82 @@ test("suite runner: machine VERDICT lines cover every default member (minus read
     assert.equal(result.status, 0, `suite should pass fixture; out=${result.stdout}\nerr=${result.stderr}`);
     for (const name of [
       "link_text", "control_labels", "i18n_keys", "nyc_copy_lint",
-      "heading_punctuation", "page_metadata", "genai_disclosure",
+      "heading_punctuation", "page_metadata", "genai_disclosure", "no_disclaimer_slop",
     ]) {
       assert.match(result.stdout, new RegExp(`VERDICT ${name} exit=0`));
     }
     assert.doesNotMatch(result.stdout, /VERDICT reading_level/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("no_disclaimer_slop: warns, blocks on request, and preserves honest copy", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-disclaimer-slop-"));
+  try {
+    mkdirSync(join(dir, "generated"), { recursive: true });
+    writeFileSync(
+      join(dir, "index.html"),
+      `<!doctype html><html><body><main>` +
+        `<p>This is a navigational aid, not an authoritative determination.</p>` +
+        `<p>No open results in this scope.</p>` +
+        `<p>Source: City Record. This published layer is evidence, not a live query.</p>` +
+        `</main></body></html>\n`,
+    );
+    writeFileSync(
+      join(dir, "i18n.js"),
+      `const STRINGS = { en: { bad: "This is legal context, not a prediction." } };\n`,
+    );
+    writeFileSync(
+      join(dir, "generated", "template.mjs"),
+      `export const copy = \"This check compares claims. It does not choose a winner or merge identities.\";\n`,
+    );
+
+    const warn = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir, "--no-disclaimer-slop-mode", "warn",
+    ]);
+    assert.equal(warn.status, 0, `warn mode stays non-blocking: ${warn.stderr}`);
+    assert.match(warn.stdout, /navigational-aid disclaimer/);
+    assert.match(warn.stdout, /positive plain statement/);
+    assert.match(warn.stdout, /generated\/template\.mjs/);
+    assert.doesNotMatch(warn.stdout, /No open results in this scope/);
+    assert.doesNotMatch(warn.stdout, /published layer is evidence/);
+
+    const block = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir, "--no-disclaimer-slop-mode", "block",
+    ]);
+    assert.notEqual(block.status, 0, "block mode rejects unreviewed findings");
+
+    writeFileSync(
+      join(dir, "index.html"),
+      `<!doctype html><html><body><main>` +
+        `<!-- no-disclaimer-slop: ignore — reviewed source boundary -->` +
+        `<p>This is a guide, not a verdict.</p>` +
+        `</main></body></html>\n`,
+    );
+    writeFileSync(
+      join(dir, "i18n.js"),
+      `const STRINGS = { en: { bad: \"This is legal context, not a prediction.\" // no-disclaimer-slop: ignore — legal wording\n } };\n`,
+    );
+    writeFileSync(join(dir, "generated", "template.mjs"), "export const copy = \"Plain guide text.\";\n");
+    const ignored = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir, "--no-disclaimer-slop-mode", "block",
+    ]);
+    assert.equal(ignored.status, 0, `reviewed inline exceptions should pass: ${ignored.stderr}`);
+
+    writeFileSync(join(dir, "index.html"), "<p>This is a guide, not a verdict.</p>\n");
+    const allowlist = join(dir, "allowlist.txt");
+    writeFileSync(allowlist, "defensive_hedge_shape\tThis is a guide, not a verdict.\n");
+    const listed = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir,
+      "--no-disclaimer-slop-mode", "block",
+      "--no-disclaimer-slop-allowlist", allowlist,
+    ]);
+    assert.equal(listed.status, 0, `reviewed file exceptions should pass: ${listed.stderr}`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

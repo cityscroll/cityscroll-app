@@ -22,6 +22,7 @@ Runs the local, offline-first gates matching CI's Unit job and required check ma
 Options:
   --with-reading-level  Run readable-or-else locally (same pages/arguments as CI reading-level job).
   --full                Run CI-equivalent heavy gates locally (requires browser tooling).
+  NO_DISCLAIMER_SLOP_MODE=block  Promote the plain-language warning to a blocking check.
   --receipt PATH        Write the full-run JSON receipt to PATH (default: .artifacts/preflight-required-checks.json).
   --help                Show this help text.
 
@@ -224,6 +225,10 @@ run_and_fail python3 test/standards/outline_guard.py
 run_and_fail python3 test/standards/form_border_contrast.py
 run_and_fail python3 test/standards/civic_token_contract.py
 run_and_fail python3 test/standards/nyc_copy_lint.py --gate
+run_banner "Accessibility + language gate (plain-language copy)" "No-disclaimer-slop check" \
+  "python3 test/standards/no_disclaimer_slop.py --mode ${NO_DISCLAIMER_SLOP_MODE:-warn}"
+run_and_fail python3 test/standards/no_disclaimer_slop.py \
+  --mode "${NO_DISCLAIMER_SLOP_MODE:-warn}"
 run_and_fail python3 test/standards/public_surface_vocab.py --gate
 run_and_fail python3 test/standards/claim_first_prediction.py
 run_and_fail node tools/check_public_payload_integrity.mjs
