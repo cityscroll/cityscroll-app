@@ -60,6 +60,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## PR and CI preflight
 
+- Plain-language accessibility copy uses `test/standards/no_disclaimer_slop.py`, which scans
+  rendered HTML, i18n source, page-template strings, and generated HTML. It is warn-first;
+  set `NO_DISCLAIMER_SLOP_MODE=block` locally or the repository variable of the same name in
+  CI after the curated pattern set is calibrated. Reviewed exceptions use the adjacent
+  `no_disclaimer_slop_allowlist.txt` or a local `no-disclaimer-slop: ignore` comment.
 - Run `make prepush` (or `./tools/preflight-required-checks.sh`) before creating or
   handing back a PR URL and before opening a pull request. Install the versioned
   pre-push hook once per clone with `make install-hooks` (`core.hooksPath=tools/git-hooks`);

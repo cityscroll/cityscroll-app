@@ -432,6 +432,16 @@ jobs:
       - name: Build verified site artifact
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         uses: ./.github/actions/build-site
+      - name: No-disclaimer-slop plain-language check (warn-then-block)
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        env:
+          NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'warn' }}
+        run: |
+          set -euo pipefail
+          python3 test/standards/no_disclaimer_slop.py \
+            --root site --mode "$NO_DISCLAIMER_SLOP_MODE" --format github
+          python3 test/standards/no_disclaimer_slop.py \
+            --root _site --mode "$NO_DISCLAIMER_SLOP_MODE" --format github
       - name: Serve site locally
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
