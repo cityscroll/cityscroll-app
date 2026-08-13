@@ -16,6 +16,9 @@ import {
 export const LOCAL_CONSTELLATION_SCHEMA = "cityscroll.local_constellation.v1";
 export const LOCAL_CONSTELLATION_MAX_NODES = 8;
 
+const LOCAL_PLACE_EMPTY_COPY = "Nearby place records connect this district to civic areas you can open — such as its community board and the City Council districts that overlap it.";
+const LOCAL_EMPTY_COPY = "Nearby records connect this item to civic records you can open.";
+
 const KINDS = Object.freeze([
   "official",
   "committee",
@@ -244,6 +247,20 @@ function mapMarkup(view, headingId) {
   </svg>`;
 }
 
+function emptyCopy(view) {
+  return view.kind === "place" ? LOCAL_PLACE_EMPTY_COPY : LOCAL_EMPTY_COPY;
+}
+
+function previewMarkup(view) {
+  if (view.kind !== "place" || view.status !== "empty") return "";
+  return `<aside class="local-constellation-preview" data-local-constellation-preview="true" data-local-constellation-preview-live="false" aria-label="Example connection preview">
+    <p class="local-constellation-preview-label">Example connection · preview</p>
+    <p class="local-constellation-preview-name"><span aria-hidden="true">◇</span>Manhattan Community Board 3</p>
+    <p class="local-constellation-preview-relation">Covers this community district.</p>
+    <p class="local-constellation-preview-note">Illustrative example; a real connection opens from its published card.</p>
+  </aside>`;
+}
+
 export function ensureLocalConstellationStylesheet() {
   if (typeof document === "undefined" || document.querySelector("link[data-local-constellation-styles]")) return;
   const link = document.createElement("link");
@@ -260,15 +277,18 @@ export function renderLocalConstellationHTML(view, {
 } = {}) {
   if (!view || view.schema !== LOCAL_CONSTELLATION_SCHEMA) return "";
   const title = heading || view.label || "Local connections";
-  const countText = view.status === "matched"
+  const countText = view.status === "empty"
+    ? emptyCopy(view)
+    : view.status === "matched"
     ? `${view.nodes.length} connected ${view.nodes.length === 1 ? "record" : "records"}.`
     : edgeSummaryStateCopy({ state: view.status, count: view.status === "empty" ? 0 : null });
+  const summarySuffix = view.status === "empty" ? "" : " The map is limited to published neighbors.";
   const list = view.nodes.length
     ? `<ol class="local-constellation-list" aria-label="Equivalent list of connected records">${view.nodes.map(nodeMarkup).join("")}</ol>`
-    : `<p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="${esc(view.status)}">${esc(countText)}</p>`;
+    : `<div class="local-constellation-empty-wrap"><p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="${esc(view.status)}">${esc(countText)}</p>${previewMarkup(view)}</div>`;
   const availability = view.availability_state || view.status;
   return `<section class="local-constellation ${esc(className)}" data-local-constellation="1" data-local-constellation-kind="${esc(view.kind)}" data-local-constellation-status="${esc(view.status)}" data-edge-state="${esc(availability)}" data-local-constellation-count="${view.node_count}" aria-labelledby="${esc(id)}">
-    <div class="local-constellation-heading"><div><p class="local-constellation-kicker">Local connections</p><h2 id="${esc(id)}">${esc(title)}</h2><p class="local-constellation-summary">${esc(countText)} The map is limited to published neighbors.</p></div></div>
+    <div class="local-constellation-heading"><div><p class="local-constellation-kicker">Local connections</p><h2 id="${esc(id)}">${esc(title)}</h2><p class="local-constellation-summary">${esc(countText)}${summarySuffix}</p></div></div>
     <div class="local-constellation-body">${mapMarkup(view, id)}<div class="local-constellation-list-wrap">${list}</div></div>
   </section>`;
 }
