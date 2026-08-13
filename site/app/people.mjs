@@ -1151,16 +1151,20 @@ function parsePersonnel(desc){
   };
 }
 
-// Bare #people teaches by example with the live highest-headcount title.
+// Bare #people teaches by example with a committed title snapshot. The default is a
+// product affordance, not a live-data freshness check; keyword searches remain live below.
 let peopleDefaulted = false;
+let peopleDefaultExamplesPromise = null;
 async function defaultRoleTitle(){
   try{
-    const rows = await api(PAY, {"$select":"title_description, count(1) as n",
-      "$where":`fiscal_year=${PAYFY} AND base_salary > 0 AND title_description IS NOT NULL`,
-      "$group":"title_description","$order":"n DESC","$limit":"5"});
-    if(!rows || !rows.length) return null;
-    rows.sort((a,b)=>(+b.n||0)-(+a.n||0));
-    return rows[0].title_description || null;
+    if(!peopleDefaultExamplesPromise){
+      peopleDefaultExamplesPromise=fetch("data/people_examples.json")
+        .then(response=>response.ok?response.json():[])
+        .catch(()=>[]);
+    }
+    const examples=await peopleDefaultExamplesPromise;
+    const first=Array.isArray(examples)?examples.find(example=>example?.keyword||example?.official_title):null;
+    return first?.keyword || first?.official_title || null;
   }catch(e){ return null; }
 }
 async function applyPeopleDefault(){
