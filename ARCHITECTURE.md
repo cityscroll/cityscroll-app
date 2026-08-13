@@ -60,6 +60,26 @@ The repository is a modular monolith with separate browser, edge, and host-data 
 - **Shared pure seams.** Browser and Worker implementations share small pure adapters for scopes, geography, process stages, relation policy, and read-model shapes. Tests protect parity at those seams instead of relying on one large runtime module.
 - **Architecture as code.** This page is the human narrative. The detailed map, ADRs, source contracts, builder checks, and future generated facts should remain the machine-near records. When the generated architecture-facts artifact exists, it should link back here rather than duplicate this prose.
 
+## Proposed invariant: resident-surface rendering standard
+
+**Status: PROPOSED — rationale-to-confirm by the site owner.** This standard protects plain-language
+and cognitive accessibility for residents. It describes the intended public rendering boundary;
+the implementation and its machine check are present, while the broader rationale remains open for
+confirmation.
+
+Resident-facing surfaces must not expose implementation-facing snake_case schema, column, or method
+vocabulary, `Unavailable` debug rows, or reconciliation disclaimers in their default content.
+Evidence and provenance may remain available through an explicit, user-invoked details affordance,
+but internal field names and debug placeholders are not resident copy. The shared reader-label
+adapter is [`site/reader_surface_labels.mjs`](site/reader_surface_labels.mjs), and shared edge
+renderers consume it before producing visible labels.
+
+The architectural fitness function is the fully enforced full-surface
+[rendered schema-vocabulary census](test/standards/rendered_schema_vocabulary.py). It enumerates
+the built documents plus route, tab, facet, scope, and detail states, and fails on any residual
+vocabulary or default debug copy across that set—not only on pages changed by a patch. Changes to
+resident renderers must keep this invariant and its full built-site sweep green.
+
 ## Important decisions
 
 ## Proposed rationale: home cold-load wire budget

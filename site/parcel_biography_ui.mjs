@@ -4,6 +4,7 @@ import { officialSourceLink } from "./affordance_grammar.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
 import { PARCEL_PROCESS_SECTION_ORDER, parcelItemOfficialSource } from "./parcel_scope.mjs";
+import { readerLabel } from "./reader_surface_labels.mjs";
 
 export const PARCEL_EDGE_FAMILIES = Object.freeze({
   property: Object.freeze({ target_kind: "notice", edge_type: "sits_on_parcel", label: "Property disposition", target_name: "Property" }),
@@ -64,8 +65,8 @@ function safeHelpers(helpers = {}) {
     pivot: typeof helpers.pivot === "function" ? helpers.pivot : (_href, label) => label,
     parcelPivot: typeof helpers.parcelPivot === "function" ? helpers.parcelPivot : (_bbl, label) => label,
     formatDate: typeof helpers.formatDate === "function" ? helpers.formatDate : (value) => String(value || ""),
-    stageLabel: typeof helpers.stageLabel === "function" ? helpers.stageLabel : (value) => String(value || ""),
-    outcomeLabel: typeof helpers.outcomeLabel === "function" ? helpers.outcomeLabel : (value) => String(value || ""),
+    stageLabel: typeof helpers.stageLabel === "function" ? helpers.stageLabel : (value) => readerLabel(value, ""),
+    outcomeLabel: typeof helpers.outcomeLabel === "function" ? helpers.outcomeLabel : (value) => readerLabel(value, ""),
   };
 }
 
@@ -77,7 +78,7 @@ function itemHTML(item, kind, h) {
   let label = h.escape(item.label || item.id || "—");
   if (item.href && String(item.href).startsWith("#")) label = h.pivot(item.href, label);
   if (kind === "tax_lien") {
-    label = `${h.escape(h.stageLabel(item.stage))} · ${h.escape(h.outcomeLabel(item.outcome))}${item.nta_name ? ` · ${h.escape(item.nta_name)}` : ""}`;
+    label = `${h.escape(readerLabel(h.stageLabel(item.stage), ""))} · ${h.escape(readerLabel(h.outcomeLabel(item.outcome), ""))}${item.nta_name ? ` · ${h.escape(item.nta_name)}` : ""}`;
   }
   const relationKey = {
     property: "property_xd_relation_property",

@@ -30,11 +30,13 @@ export function renderCardinalityAdaptiveFacet({
   entityHref = (choice) => choice.href || "#",
   scopeHref = (choice) => choice.href || "#",
   unresolvedLabels = [],
+  searchQuery = "",
   escape = defaultEscape,
   limit = INLINE_FACET_LIMIT,
 } = {}) {
   const safeId = clean(id) || "facet";
   const normalized = choices.filter((choice) => choice?.id && choice?.label);
+  const initialQuery = clean(searchQuery);
   const allActive = !selectedId;
   const all = filterChip({ label: allLabel, pressed: allActive, className: "agency-scope-link", attributes: { "data-agency-scope-link": "all", "data-filter-href": allHref }, escape });
   const unresolved = Array.from(new Set(unresolvedLabels.map(clean).filter(Boolean)))
@@ -57,7 +59,7 @@ export function renderCardinalityAdaptiveFacet({
     </li>`;
   }).join("");
   return `<div class="cardinality-facet cardinality-facet-large" data-cardinality-facet="large">
-    <div class="facet-typeahead-head">${all}<input type="search" class="facet-typeahead-input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${escape(listId)}" aria-label="${escape(`Type to filter ${label.toLocaleLowerCase()}`)}" placeholder="${escape(`Type to filter ${label.toLocaleLowerCase()}`)}"></div>
+    <div class="facet-typeahead-head">${all}<input type="search" class="facet-typeahead-input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${escape(listId)}" aria-label="${escape(`Type to filter ${label.toLocaleLowerCase()}`)}" placeholder="${escape(`Type to filter ${label.toLocaleLowerCase()}`)}"${initialQuery ? ` value="${escape(initialQuery)}"` : ""}></div>
     <ul class="facet-typeahead-list" id="${escape(listId)}" data-facet-results aria-label="${escape(`${label} matches`)}">${rows}</ul>
     <p class="facet-typeahead-empty" data-facet-empty hidden>${staticFact({ label: `No matching ${label.toLocaleLowerCase()}.`, escape })}</p>${unresolved ? `<div class="facet-unresolved-options">${unresolved}</div>` : ""}
   </div>`;
@@ -70,7 +72,7 @@ export function bindCardinalityAdaptiveFacets(root = document) {
     const options = [...facet.querySelectorAll("[data-facet-option]")];
     const empty = facet.querySelector("[data-facet-empty]");
     const filter = () => {
-      const query = clean(input.value).toLocaleLowerCase();
+      const query = clean(input?.value).toLocaleLowerCase();
       let shown = 0;
       for (const [index, option] of options.entries()) {
         const match = option.dataset.facetLabel.includes(query);
@@ -97,6 +99,10 @@ export function bindCardinalityAdaptiveFacets(root = document) {
         }
       }
     });
+    // A lens may replace this facet while an async feed is still hydrating.
+    // Reapply the preserved input value so the new option list cannot briefly
+    // expose the default first five rows or lose the active agency filter.
+    if (input) filter();
     facet.querySelectorAll("[data-filter-href]").forEach((button) => button.addEventListener("click", () => {
       globalThis.location.href = button.dataset.filterHref;
     }));

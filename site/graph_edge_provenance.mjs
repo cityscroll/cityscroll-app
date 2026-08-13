@@ -2,6 +2,7 @@ import {
   CROSS_SPINE_CONFIDENCE,
   normalizeCrossSpineConfidence,
 } from "./cross_spine_confidence.mjs";
+import { READER_LABELS, readerLabel, readerValue } from "./reader_surface_labels.mjs";
 
 /**
  * Evidence-bearing civic graph — edge / claim provenance inspection (first iteration).
@@ -78,24 +79,8 @@ const clean = (value, max = 500) => String(value ?? "")
   .trim()
   .slice(0, max);
 
-const SOURCE_SYSTEM_READER_LABELS = Object.freeze({
-  city_record: "City Record",
-  warehouse: "Warehouse materialization",
-  socrata: "NYC Open Data",
-  legistar: "NYC Council Legistar",
-  passport: "PASSPort Public",
-  checkbook: "Checkbook NYC",
-  enacted_local_law: "Enacted local law",
-});
-
 export function sourceSystemReaderLabel(value) {
-  const key = clean(value, 120);
-  if (!key) return null;
-  if (SOURCE_SYSTEM_READER_LABELS[key]) return SOURCE_SYSTEM_READER_LABELS[key];
-  const lower = key.toLowerCase();
-  if (SOURCE_SYSTEM_READER_LABELS[lower]) return SOURCE_SYSTEM_READER_LABELS[lower];
-  if (key.includes(" ") || /[A-Z]/.test(key)) return key; // already human
-  return key.replace(/_/g, " ");
+  return readerLabel(value);
 }
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -262,9 +247,11 @@ export function parseClaimParam(search) {
 }
 
 function fieldOrMissing(value, max = 240) {
-  const text = clean(value, max);
-  if (!text) return { ...MISSING };
-  return { available: true, value: text };
+  const readable = readerValue(value);
+  if (readable == null) return { ...MISSING };
+  const valueText = clean(readable, max);
+  if (!valueText) return { ...MISSING };
+  return { available: true, value: valueText };
 }
 
 function firstPresent(records, key) {
@@ -312,11 +299,12 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
   });
   if (!claimId) return null;
 
-  const method = clean(
+  const method = clean(readerValue(
     item.method
       || item.provenance?.basis
       || item.provenance?.join_method
       || item.confidence?.basis,
+  ),
     120,
   ) || null;
   const confidence = normalizePublicConfidence(item.confidence) || "not_scored";
@@ -344,39 +332,40 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
     ? provenance.source
     : {};
   const sourceSystem = clean(
-    firstValue(
+    readerValue(firstValue(
       [provenance, evidence],
       "source_system",
       firstValue([provenanceSource], "system", item.source),
-    ),
+    )),
     120,
   ) || null;
   const sourceRecordId = clean(
-    firstValue(
+    readerValue(firstValue(
       [provenance, evidence],
       "source_record_id",
       firstValue([provenanceSource], "id", item.source_record_id),
-    ),
+    )),
     200,
   ) || null;
   const rawSourceFields = firstPresent([provenance, evidence], "source_fields");
-  const sourceFields = Array.isArray(rawSourceFields)
-    ? rawSourceFields.map((field) => clean(field, 80)).filter(Boolean)
+  const readableSourceFields = readerValue(rawSourceFields);
+  const sourceFields = Array.isArray(readableSourceFields)
+    ? readableSourceFields.map((field) => clean(field, 80)).filter(Boolean)
     : null;
   const inputValue = clean(
-    firstValue([provenance, evidence], "input_value", item.input_value),
+    readerValue(firstValue([provenance, evidence], "input_value", item.input_value)),
     240,
   ) || null;
   const basis = clean(
-    firstValue(
+    readerValue(firstValue(
       [provenance, evidence],
       "basis",
       firstValue([provenance, evidence], "join_method", item.basis),
-    ),
+    )),
     120,
   ) || null;
   const observedAt = clean(
-    firstValue(
+    readerValue(firstValue(
       [provenance, evidence],
       "observed_at",
       item.observed_at
@@ -384,11 +373,11 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
         ?? item.retrieved_at
         ?? item.retrieved_on
         ?? item.date,
-    ),
+    )),
     40,
   ) || null;
   const sourceExcerpt = clean(
-    firstValue([provenance, evidence], "source_excerpt", item.source_excerpt),
+    readerValue(firstValue([provenance, evidence], "source_excerpt", item.source_excerpt)),
     500,
   ) || null;
   const crossSpine = crossSpineConfidenceForItem(item, provenance, evidence);
@@ -417,8 +406,8 @@ export function buildEdgeProvenanceClaim(item = {}, context = {}) {
     subject_ref: subjectRef,
     root_ref: clean(context.root_ref || item.root_ref, 120) || null,
     category_id: categoryId || null,
-    relation: clean(item.relation ?? item.type ?? context.relation, 80) || null,
-    label: clean(item.label || subjectRef, 240),
+    relation: readerLabel(clean(item.relation ?? item.type ?? context.relation, 80), null),
+    label: readerLabel(clean(item.label || subjectRef, 240), "Related record"),
     object_href: clean(item.href, 200) || null,
     where: {
       source_system: sourceSystem ? fieldOrMissing(sourceSystem) : { ...MISSING },
@@ -496,7 +485,9 @@ export function summarizeCategoryWarrants(items = []) {
 
 function renderFieldRow(label, field, { showMissing = false } = {}) {
   if (!field || field.available === false || field.value == null || field.value === "") return "";
-  const display = field.value;
+  const display = Array.isArray(field.value)
+    ? field.value.map((entry) => readerLabel(entry, "")).filter(Boolean)
+    : readerLabel(field.value, "");
   const value = Array.isArray(display)
     ? display.map((entry) => esc(entry)).join(", ")
     : esc(display);
@@ -624,16 +615,18 @@ export function edgeProvenanceClientScript() {
       ? claim.cross_spine.confidence
       : "unmatched";
     const where = claim.where || {};
-    const sourceLabel = (s) => {
-      const map = { city_record: "City Record", warehouse: "Warehouse materialization", socrata: "NYC Open Data", enacted_local_law: "Enacted local law" };
+    const readerLabels = ${JSON.stringify(READER_LABELS)};
+    const readerLabel = (s) => {
       const key = String(s || "").trim();
-      return map[key] || key.replace(/_/g, " ");
+      if (!key) return "";
+      const exact = readerLabels[key] || readerLabels[key.toLowerCase()];
+      if (exact) return exact;
+      return key.replace(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/gi, (token) => readerLabels[token] || readerLabels[token.toLowerCase()] || token.replace(/_/g, " "));
     };
     const escText = (s) => String(s ?? "").replace(/[<>&]/g, (c) => ({ "<":"&lt;",">":"&gt;","&":"&amp;" }[c]));
     const field = (label, f, opts = {}) => {
       if (!f || f.available === false || f.value == null || f.value === "") return "";
-      let raw = f.value;
-      if (opts.source && !Array.isArray(raw)) raw = sourceLabel(raw);
+      let raw = Array.isArray(f.value) ? f.value.map(readerLabel) : readerLabel(f.value);
       const val = Array.isArray(raw) ? raw.map((v) => escText(v)).join(", ") : escText(raw);
       return '<div class="edge-prov-row" data-available="true"><dt>' + escText(label) + '</dt><dd>' + val + '</dd></div>';
     };
