@@ -186,9 +186,10 @@ test("inspector panel and why-control render warrant classes without fabricating
   const why = renderWhyBelieveControl(exact);
   assert.doesNotMatch(why, /Why do we believe this\? ·/);
   assert.match(why, /edge-prov-confidence-unmatched/);
-  assert.match(why, />unmatched</);
+  assert.match(why, />Details</);
+  assert.doesNotMatch(why, />unmatched</);
   assert.match(why, /data-warrant-class="exact"/);
-  assert.match(why, /aria-label="Connection confidence: unmatched"/);
+  assert.match(why, /aria-label="View connection details"/);
   assert.match(why, /claim=contracts%3Anotice%3A20030224002/);
 
   const panel = renderEdgeProvenancePanel([exact, reviewed], {

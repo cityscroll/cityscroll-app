@@ -7,9 +7,7 @@
  */
 
 import {
-  edgeSummaryStateCopy,
   normalizeEdgeSummaryRecords,
-  renderEdgeSummaryProvenance,
   resolveEdgeSummaryDestination,
 } from "./edge_summary.mjs";
 
@@ -176,6 +174,7 @@ export function buildLocalConstellation(input = {}, { limit = LOCAL_CONSTELLATIO
     omitted_count: Math.max(0, candidates.length - nodes.length),
     relation_families: registry.relation_families,
     label: registry.label,
+    map: raw.map ? clone(raw.map) : null,
     nodes,
   });
 }
@@ -213,19 +212,56 @@ export function buildOfficialLocalConstellation(officialView, committeeRows, id,
   });
 }
 
-function nodeMarkup(node) {
-  const relation = node.relation_label || node.edge_type || "related record";
+function placeConnectionCopy(node) {
+  if (node.edge_type === "intersects" && node.target_kind === "council-district") {
+    return `This community district overlaps ${node.node_name}.`;
+  }
+  if (node.edge_type === "covers" && node.target_kind === "community-board") {
+    return `This community district is represented by ${node.node_name}.`;
+  }
+  return node.relation_label || node.edge_type || "Related civic record";
+}
+
+function nodeConnectionCopy(view, node) {
+  return view.kind === "place" ? placeConnectionCopy(node) : (node.relation_label || node.edge_type || "Related record");
+}
+
+function nodeMarkup(view, node) {
+  const relation = nodeConnectionCopy(view, node);
   const destination = node.href
     ? `<a class="local-constellation-node-link" href="${esc(node.href)}" data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted" data-pivot-relation-label="${esc(relation)}" data-pivot-target-kind="${esc(node.target_kind || "record")}" data-pivot-target-id="${esc(node.target_id || "")}">${esc(node.node_name)}</a>`
-    : `<span class="local-constellation-node-held" data-pivot-status="held" aria-label="${esc(`${node.node_name}; ${node.hold_reason || "destination held"}`)}">${esc(node.node_name)} <span class="local-constellation-held-label">Held</span></span>`;
+    : `<span class="local-constellation-node-held" data-pivot-status="held" aria-label="${esc(node.node_name)}">${esc(node.node_name)}</span>`;
   return `<li class="local-constellation-list-item" data-local-node-state="${esc(node.state)}" data-edge-type="${esc(node.edge_type || "")}">
     <div class="local-constellation-node-main"><span class="local-constellation-node-dot" aria-hidden="true">◆</span>${destination}</div>
     <span class="local-constellation-relation">${esc(relation)}</span>
-    ${node.href ? renderEdgeSummaryProvenance(node) : ""}
   </li>`;
 }
 
 function mapMarkup(view, headingId) {
+  if (view.kind === "place") {
+    const map = view.map;
+    if (!map?.features?.length || !map.view_box) {
+      const copy = view.subject_ref
+        ? "A district map is not available for this place yet."
+        : "Choose a district to see its local map.";
+      return `<div class="local-constellation-map local-constellation-map-empty" role="img" aria-label="${esc(copy)}"><span>${esc(copy)}</span></div>`;
+    }
+    const descId = `${headingId}-map-desc`;
+    const central = map.central_label || view.subject_name || "the central district";
+    const shapeMarkup = map.features.map((feature) => {
+      const role = feature.role === "central" ? "central" : "adjacent";
+      const detail = role === "central" ? "central district" : "overlapping district";
+      return `<path class="local-district-map-shape local-district-map-${role}" data-district-id="${esc(feature.id)}" data-district-role="${role}" d="${esc(feature.path)}" aria-label="${esc(`${feature.label}, ${detail}`)}"><title>${esc(`${feature.label}: ${detail}`)}</title></path>`;
+    }).join("");
+    const labels = map.features.map((feature) => feature.labelPoint
+      ? `<text class="local-district-map-label local-district-map-label-${feature.role === "central" ? "central" : "adjacent"}" x="${esc(feature.labelPoint.x)}" y="${esc(feature.labelPoint.y)}" text-anchor="middle" dominant-baseline="central" aria-hidden="true">${esc(feature.label.replace(/^City Council District /, "Council ").replace(/ Community District$/, ""))}</text>`
+      : "").join("");
+    return `<svg class="local-constellation-map local-district-map" role="img" aria-labelledby="${esc(headingId)} ${esc(descId)}" viewBox="${esc(map.view_box)}" preserveAspectRatio="xMidYMid meet">
+      <desc id="${esc(descId)}">Map of ${esc(central)} and the council districts that overlap it. The central district is darker; overlapping districts are lighter. Use the equivalent list for links.</desc>
+      <g fill-rule="evenodd">${shapeMarkup}</g>
+      <g class="local-district-map-labels">${labels}</g>
+    </svg>`;
+  }
   if (!view.nodes.length) return `<div class="local-constellation-map local-constellation-map-empty" aria-hidden="true"><span>○</span></div>`;
   const width = 360;
   const height = 190;
@@ -277,14 +313,23 @@ export function renderLocalConstellationHTML(view, {
 } = {}) {
   if (!view || view.schema !== LOCAL_CONSTELLATION_SCHEMA) return "";
   const title = heading || view.label || "Local connections";
+  const placeDistrictCount = view.kind === "place"
+    ? view.nodes.filter((node) => node.target_kind === "council-district").length
+    : 0;
   const countText = view.status === "empty"
     ? emptyCopy(view)
     : view.status === "matched"
-    ? `${view.nodes.length} connected ${view.nodes.length === 1 ? "record" : "records"}.`
-    : edgeSummaryStateCopy({ state: view.status, count: view.status === "empty" ? 0 : null });
-  const summarySuffix = view.status === "empty" ? "" : " The map is limited to published neighbors.";
+    ? view.kind === "place"
+      ? `${placeDistrictCount} council ${placeDistrictCount === 1 ? "district overlaps" : "districts overlap"} this community district.`
+      : `${view.nodes.length} connected ${view.nodes.length === 1 ? "record" : "records"}.`
+    : "Place connections for this district are not published yet.";
+  const summarySuffix = view.status === "empty"
+    ? ""
+    : view.kind === "place" && view.status === "matched"
+      ? " The central district is darker; overlapping districts are lighter."
+      : " The map is limited to published neighbors.";
   const list = view.nodes.length
-    ? `<ol class="local-constellation-list" aria-label="Equivalent list of connected records">${view.nodes.map(nodeMarkup).join("")}</ol>`
+    ? `<ol class="local-constellation-list" aria-label="Equivalent list of connected records">${view.nodes.map((node) => nodeMarkup(view, node)).join("")}</ol>`
     : `<div class="local-constellation-empty-wrap"><p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="${esc(view.status)}">${esc(countText)}</p>${previewMarkup(view)}</div>`;
   const availability = view.availability_state || view.status;
   return `<section class="local-constellation ${esc(className)}" data-local-constellation="1" data-local-constellation-kind="${esc(view.kind)}" data-local-constellation-status="${esc(view.status)}" data-edge-state="${esc(availability)}" data-local-constellation-count="${view.node_count}" aria-labelledby="${esc(id)}">

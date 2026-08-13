@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -10,6 +11,8 @@ import { buildCommitteeLocalConstellation } from "../site/committee_memberships.
 import { buildPlaceLocalConstellation } from "../site/community_board_geography.mjs";
 
 const kinds = ["official", "committee", "vendor", "agency", "place", "record"];
+const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
+const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url)));
 
 test("local constellation registry covers the six Browse object kinds", () => {
   for (const kind of kinds) {
@@ -95,6 +98,21 @@ test("committee and place adapters use only published exact-key neighbors", () =
   }, "community-district:X01");
   assert.equal(held.status, "unknown");
   const heldHtml = renderLocalConstellationHTML(held);
-  assert.match(heldHtml, /Unknown \/ not indexed/);
+  assert.match(heldHtml, /Place connections for this district are not published yet\./);
   assert.doesNotMatch(heldHtml, /data-local-constellation-preview/);
+});
+
+test("published place connections use district polygons and resident-safe copy", () => {
+  const view = buildPlaceLocalConstellation(geography, "community-district:K15", boundaries);
+  assert.equal(view.map.schema, "cityscroll.local_district_map.v1");
+  assert.equal(view.map.features.find((feature) => feature.role === "central")?.id, "K15");
+  assert.equal(view.map.features.at(-1)?.role, "central");
+  assert.ok(view.map.features.some((feature) => feature.id === "43" && feature.role === "adjacent"));
+  assert.ok(view.map.features.every((feature) => feature.path.startsWith("M")));
+
+  const html = renderLocalConstellationHTML(view);
+  assert.match(html, /local-district-map-central/);
+  assert.match(html, /local-district-map-adjacent/);
+  assert.match(html, /This community district overlaps City Council District 43\./);
+  assert.doesNotMatch(html, /Why this connection|unmatched|Unavailable|Source fields|the_geom|coundist|compares claims/);
 });

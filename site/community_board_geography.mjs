@@ -13,6 +13,11 @@ const BOROUGH_PREFIX = Object.freeze({
 });
 
 import { buildLocalConstellation } from "./local_constellation.mjs";
+import {
+  bboxToViewBox,
+  polygonLabelPoint,
+  polygonsToSvgPath,
+} from "./map_exploration.mjs";
 
 export const COMMUNITY_BOARD_GEOGRAPHY_SCHEMA = "cityscroll.community_board_geography.v1";
 export const COMMUNITY_BOARD_GEOGRAPHY_VINTAGE = "2026-05-26";
@@ -152,7 +157,7 @@ function placeHref(node) {
 }
 
 /** Build the small geometry neighborhood for one published place node. */
-export function buildPlaceLocalConstellation(geography = {}, placeId = null) {
+export function buildPlaceLocalConstellation(geography = {}, placeId = null, boundaries = {}) {
   const requested = clean(placeId);
   const nodes = Array.isArray(geography.nodes) ? geography.nodes : [];
   const edges = geography.gate?.publication_allowed && Array.isArray(geography.public_edges)
@@ -162,7 +167,7 @@ export function buildPlaceLocalConstellation(geography = {}, placeId = null) {
   const adjacent = requested
     ? edges.filter((edge) => edge?.from === requested || edge?.to === requested)
     : [];
-  return buildLocalConstellation({
+  const view = buildLocalConstellation({
     kind: "place",
     subject_ref: requested || null,
     subject_id: requested || null,
@@ -185,6 +190,50 @@ export function buildPlaceLocalConstellation(geography = {}, placeId = null) {
       };
     }),
   });
+  const boundaryById = new Map([
+    ...(Array.isArray(boundaries?.community_districts) ? boundaries.community_districts : [])
+      .map((feature) => [`community-district:${clean(feature.id)}`, feature]),
+    ...(Array.isArray(boundaries?.council_districts) ? boundaries.council_districts : [])
+      .map((feature) => [`council-district:${clean(feature.id)}`, feature]),
+  ]);
+  const mapCandidates = [
+    { id: requested, role: "central" },
+    ...view.nodes
+      .filter((neighbor) => ["community-district", "council-district"].includes(neighbor.target_kind))
+      .map((neighbor) => ({ id: neighbor.target_id, role: "adjacent" })),
+  ]
+    .map(({ id, role }) => ({ feature: boundaryById.get(id), role }))
+    .filter(({ feature }) => feature?.polygons?.length);
+  if (mapCandidates.length) {
+    const bbox = mapCandidates.reduce((bounds, { feature }) => {
+      if (!Array.isArray(feature.bbox) || feature.bbox.length !== 4) return bounds;
+      return [
+        Math.min(bounds[0], feature.bbox[0]),
+        Math.min(bounds[1], feature.bbox[1]),
+        Math.max(bounds[2], feature.bbox[2]),
+        Math.max(bounds[3], feature.bbox[3]),
+      ];
+    }, [Infinity, Infinity, -Infinity, -Infinity]);
+    const mapFeatures = [...mapCandidates]
+      .sort((left, right) => (left.role === "central" ? 1 : 0) - (right.role === "central" ? 1 : 0))
+      .map(({ feature, role }) => ({
+      id: clean(feature.id),
+      label: clean(feature.label || feature.id),
+      role,
+      path: polygonsToSvgPath(feature.polygons),
+      labelPoint: polygonLabelPoint(feature.polygons),
+      }));
+    return Object.freeze({
+      ...view,
+      map: Object.freeze({
+      schema: "cityscroll.local_district_map.v1",
+      central_label: mapFeatures.find((feature) => feature.role === "central")?.label || null,
+      view_box: bbox.every(Number.isFinite) ? bboxToViewBox(bbox, 0.06) : null,
+      features: mapFeatures,
+      }),
+    });
+  }
+  return view;
 }
 
 export function buildCommunityBoardGeography({
