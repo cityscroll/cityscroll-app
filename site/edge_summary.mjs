@@ -446,7 +446,7 @@ export function renderEdgeSummaryProvenance(record = {}) {
     return rendered ? `<div class="edge-summary-provenance-row"><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(rendered)}</dd></div>` : "";
   }).join("");
   const asOf = renderAsOfWidget(provenance.observed_at || record.as_of);
-  return `<details class="edge-summary-provenance edge-summary-provenance-${escapeHTML(confidence)}" data-edge-provenance="1" data-cross-spine-confidence="${escapeHTML(confidence)}"><summary>Evidence <span class="edge-summary-confidence">${escapeHTML(confidence)}</span></summary>${asOf}${fields ? `<dl>${fields}</dl>` : ""}</details>`;
+  return `<details class="edge-summary-provenance edge-summary-provenance-${escapeHTML(confidence)}" data-edge-provenance="1" data-cross-spine-confidence="${escapeHTML(confidence)}"><summary>Connection details</summary><p>Connection confidence: <span class="edge-summary-confidence">${escapeHTML(confidence)}</span></p>${asOf}${fields ? `<dl>${fields}</dl>` : ""}</details>`;
 }
 
 function recordLabel(record, targetKind) {
@@ -485,7 +485,6 @@ export function renderEdgeSummaryRail(records, {
       status,
       scopeCopy(record.scope),
     ].filter(Boolean).join(" · ");
-    const asOf = renderAsOfWidget(record.as_of);
     const availability = EDGE_SUMMARY_STATE_MEANINGS[record.state] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
     const destinationRoute = resolveEdgeSummaryDestination(record);
     const pivot = normalizeEntityPivot({
@@ -497,13 +496,11 @@ export function renderEdgeSummaryRail(records, {
     const crossSpineBlocksLink = record.cross_spine_explicit && record.cross_spine_confidence !== "confirmed";
     const heldEdge = record.state === "matched" && (pivot.status !== "accepted" || crossSpineBlocksLink);
     const canLink = record.state === "matched" && pivot.status === "accepted" && !crossSpineBlocksLink;
-    const confidence = normalizeCrossSpineConfidence(record.cross_spine_confidence) || "unmatched";
-    const confidenceBadge = `<span class="edge-summary-confidence edge-summary-confidence-${escapeHTML(confidence)}" data-cross-spine-confidence="${escapeHTML(confidence)}">${escapeHTML(confidence)}</span>`;
     const heldReason = heldEdge ? " · Destination not verified" : "";
     const content = canLink
       ? `<a class="edge-summary-link" href="${escapeHTML(pivot.canonical_href)}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="accepted" data-pivot-relation-label="${escapeHTML(relation)}" data-pivot-target-kind="${escapeHTML(targetKind)}" data-pivot-target-id="${escapeHTML(record.target_id || "")}" data-pivot-source-kind="${escapeHTML(record.source?.kind || record.source_kind || "")}" data-pivot-source-id="${escapeHTML(record.source?.id || record.source_id || "")}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldReason}</span></a>`
       : `<span class="edge-summary-text${heldEdge ? " entity-pivot-held" : ""}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="${heldEdge ? "held" : escapeHTML(record.state)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldReason}</span></span>`;
-    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence || "unmatched")}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}${confidenceBadge}${asOf}${renderEdgeSummaryProvenance(record)}</li>`;
+    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence || "unmatched")}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}${renderEdgeSummaryProvenance(record)}</li>`;
   }).join("");
   const source = normalized.find((record) => record.source?.name)?.source;
   const sourceAffordance = source?.name
@@ -511,7 +508,7 @@ export function renderEdgeSummaryRail(records, {
       ? `<p class="entity-pivot-source"><a href="${escapeHTML(source.canonical_href)}">Back to ${escapeHTML(source.name)}</a></p>`
       : `<p class="entity-pivot-source">Related from ${escapeHTML(source.name)}</p>`)
     : "";
-  return `<section class="edge-summary-rail ${escapeHTML(className)}" data-edge-summary-schema="${EDGE_SUMMARY_SCHEMA}" data-entity-pivot-schema="${ENTITY_PIVOT_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2><p class="edge-summary-boundary">Connections compare evidence; identities stay separate.</p>${sourceAffordance}<ul>${items}</ul></section>`;
+  return `<section class="edge-summary-rail ${escapeHTML(className)}" data-edge-summary-schema="${EDGE_SUMMARY_SCHEMA}" data-entity-pivot-schema="${ENTITY_PIVOT_SCHEMA}" aria-labelledby="${escapeHTML(id)}"><h2 id="${escapeHTML(id)}">${escapeHTML(heading)}</h2>${sourceAffordance}<ul>${items}</ul></section>`;
 }
 
 export function edgeSummaryState(status, count) {

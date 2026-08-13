@@ -346,6 +346,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         : first(scope.place.council_districts)
           ? `council-district:${first(scope.place.council_districts)}`
           : null,
+      boundaries,
     ),
   };
 }
