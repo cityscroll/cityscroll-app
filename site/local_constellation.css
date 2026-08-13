@@ -1,0 +1,22 @@
+.local-constellation{margin:var(--space-5,24px) 0;padding:var(--space-4,20px);border:1px solid var(--color-border,#d9dde3);background:var(--color-surface,#fff)}
+.local-constellation-heading{display:flex;justify-content:space-between;gap:var(--space-4,20px)}
+.local-constellation-kicker{margin:0;color:var(--color-text-soft,#59636f);font:600 .75rem/1.3 var(--font-label,system-ui);letter-spacing:.08em;text-transform:uppercase}
+.local-constellation-heading h2{margin:.25rem 0 .35rem;font-size:1.2rem}
+.local-constellation-summary{margin:0;color:var(--color-text-soft,#59636f)}
+.local-constellation-body{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,1.4fr);gap:var(--space-4,20px);align-items:center;margin-top:var(--space-4,20px)}
+.local-constellation-map{display:block;width:100%;max-width:360px;height:auto;justify-self:center;color:var(--color-action,#1769aa)}
+.local-constellation-lines line{stroke:currentColor;stroke-width:1.5;opacity:.35}
+.local-constellation-center{fill:var(--color-action,#1769aa);stroke:var(--color-surface,#fff);stroke-width:3}
+.local-constellation-dots circle{fill:var(--color-surface,#fff);stroke:currentColor;stroke-width:2}
+.local-constellation-dots circle[data-node-state="held"]{stroke:var(--color-text-soft,#59636f);stroke-dasharray:2 2}
+.local-constellation-map-empty{min-height:90px;display:grid;place-items:center;font-size:2rem;color:var(--color-text-soft,#59636f)}
+.local-constellation-list{display:grid;gap:.5rem;margin:0;padding:0;list-style:none}
+.local-constellation-list-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.25rem .75rem;padding:.55rem .65rem;border-block:1px solid var(--color-border,#d9dde3);min-width:0}
+.local-constellation-node-main{min-width:0;display:flex;gap:.45rem;align-items:baseline}
+.local-constellation-node-link,.local-constellation-node-held{min-width:0;overflow-wrap:anywhere}
+.local-constellation-node-dot{color:var(--color-action,#1769aa);font-size:.7rem}
+.local-constellation-relation{grid-column:1/-1;color:var(--color-text-soft,#59636f);font-size:.9rem}
+.local-constellation-held-label{color:var(--color-text-soft,#59636f);font-size:.8rem}
+.local-constellation-list-item .edge-summary-provenance{grid-column:1/-1}
+.local-constellation-empty{margin:var(--space-4,20px) 0 0;color:var(--color-text-soft,#59636f)}
+@media(max-width:680px){.local-constellation-body{grid-template-columns:1fr}.local-constellation-map{max-width:300px}.local-constellation-list-item{grid-template-columns:1fr}}

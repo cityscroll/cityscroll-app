@@ -12,6 +12,8 @@ const BOROUGH_PREFIX = Object.freeze({
   "Staten Island": "R",
 });
 
+import { buildLocalConstellation } from "./local_constellation.mjs";
+
 export const COMMUNITY_BOARD_GEOGRAPHY_SCHEMA = "cityscroll.community_board_geography.v1";
 export const COMMUNITY_BOARD_GEOGRAPHY_VINTAGE = "2026-05-26";
 export const COMMUNITY_BOARD_OVERLAY_EXPECTED_PAIRS = 237;
@@ -140,6 +142,48 @@ function graphEdge(type, from, to, properties, sourceValue, observedAt, fields) 
     provenance: provenance(sourceValue, observedAt, fields),
     confidence: { status: "strong", basis: "publisher_geometry" },
   };
+}
+
+function placeHref(node) {
+  if (node?.type === "community-board") return "/community-boards/";
+  if (node?.type === "community-district") return `/near-you/?cd=${encodeURIComponent(String(node.id || "").replace(/^community-district:/, ""))}`;
+  if (node?.type === "council-district") return `/near-you/?council=${encodeURIComponent(String(node.id || "").replace(/^council-district:/, ""))}`;
+  return null;
+}
+
+/** Build the small geometry neighborhood for one published place node. */
+export function buildPlaceLocalConstellation(geography = {}, placeId = null) {
+  const requested = clean(placeId);
+  const nodes = Array.isArray(geography.nodes) ? geography.nodes : [];
+  const edges = geography.gate?.publication_allowed && Array.isArray(geography.public_edges)
+    ? geography.public_edges
+    : [];
+  const node = nodes.find((candidate) => candidate?.id === requested) || null;
+  const adjacent = requested
+    ? edges.filter((edge) => edge?.from === requested || edge?.to === requested)
+    : [];
+  return buildLocalConstellation({
+    kind: "place",
+    subject_ref: requested || null,
+    subject_id: requested || null,
+    subject_name: node?.name || requested || "Near you",
+    source: node?.provenance?.source || null,
+    provenance: node?.provenance || null,
+    neighbors: adjacent.map((edge) => {
+      const targetId = edge.from === requested ? edge.to : edge.from;
+      const target = nodes.find((candidate) => candidate?.id === targetId);
+      return {
+        edge_type: edge.type,
+        relation_label: edge.type === "intersects" ? "intersects" : "covers",
+        target_kind: target?.type || "place",
+        target_id: targetId || null,
+        target_name: target?.name || targetId || null,
+        href: placeHref(target),
+        state: target && placeHref(target) ? "matched" : "unknown",
+        provenance: edge.provenance || null,
+      };
+    }),
+  });
 }
 
 export function buildCommunityBoardGeography({

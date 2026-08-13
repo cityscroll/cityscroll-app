@@ -7,6 +7,7 @@ import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mj
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
+import { buildLocalConstellation, renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -201,15 +202,61 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   const browseLink = constellationLink({ href: "/browse/", label: "Browse public records", className: "act primary", escape: esc });
   const followingLink = constellationLink({ href: "/following/", label: "Follow public records", className: "act", escape: esc });
   const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
+  const identity = resolveAgencyIdentity(agency);
+  const vendor = String(row?.vendor_name || "").trim();
+  const noticeLocalConstellation = buildLocalConstellation({
+    kind: "record",
+    subject_ref: `notice:${id}`,
+    subject_id: id,
+    subject_name: title,
+    source: null,
+    provenance: null,
+    neighbors: row ? [
+      identity.matched ? {
+        edge_type: "published_by_agency",
+        relation_label: "published by agency",
+        target_kind: "agency",
+        target_id: identity.canonical_id,
+        target_name: agency,
+        href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
+        state: "matched",
+        provenance: null,
+      } : null,
+      vendor ? {
+        edge_type: "named_vendor",
+        relation_label: "named vendor",
+        target_kind: "vendor",
+        target_id: vendor,
+        target_name: vendor,
+        href: entityHref({ ref: entityRouteRef("vendor", vendor), label: vendor }),
+        state: "matched",
+        provenance: null,
+      } : null,
+      /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(String(row.project_id || row.project || row.ulurp_number || "").trim()) ? {
+        edge_type: "related_land_use_project",
+        relation_label: "related land-use project",
+        target_kind: "project",
+        target_id: String(row.project_id || row.project || row.ulurp_number).trim(),
+        target_name: row.project_name || String(row.project_id || row.project || row.ulurp_number).trim(),
+        href: `#land/${encodeURIComponent(String(row.project_id || row.project || row.ulurp_number).trim())}`,
+        state: "matched",
+        provenance: null,
+      } : null,
+    ].filter(Boolean) : [],
+  });
+  const noticeLocalConstellationHTML = renderLocalConstellationHTML(noticeLocalConstellation, {
+    heading: "Nearby record connections",
+    id: "notice-local-constellation-heading",
+  });
   if (!row) {
     return `<div class="panel route-item" tabindex="-1" data-edge-rendered="notice-unavailable" data-notice-id="${esc(id)}">
       <p class="ftype">${esc(kind)}</p><h2 class="rolename">${esc(title)}</h2>
       <p>Continue with related public records or check the official record.</p>
+      ${noticeLocalConstellationHTML}
       <div class="actions">${browseLink}${followingLink}</div>
       <p>${sourceLink}</p>
     </div>`;
   }
-  const identity = resolveAgencyIdentity(agency);
   const noticeSource = {
     kind: "notice",
     id: id,
@@ -226,7 +273,6 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       source: noticeSource,
     }, { className: "notice-agency-link", escape: esc })
     : esc(agency);
-  const vendor = String(row.vendor_name || "").trim();
   const vendorLink = vendor
     ? renderEntityPivotLink({
       relation_label: "named vendor",
@@ -267,6 +313,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}
+      ${noticeLocalConstellationHTML}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
       <div class="actions">${browseLink}${followingLink}</div>
       <p>${sourceLink}</p>
