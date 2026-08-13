@@ -4,6 +4,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- Committee traversal exposes `public_reverse_edges` from the same accepted
+  `member_of` observation in `site/committee_graph.mjs`; browse renders the
+  exact-ID `has member` pivot, while held/empty/unknown graph states stay
+  non-linking. Keep committee target routes closed until a verified route is
+  materialized. Focused proof: `test/committee_graph.test.mjs`,
+  `test/committee_memberships.test.mjs`, and `test/official_connections_scope.test.mjs`.
+
 - Browse document facets are edge-rendered first and then hydrated by the SPA. Agency
   `entity_refs_all` links must be passed into the live lens agency control before feed
   loading; see `site/agency_scope_route.mjs` and `test/functional/28_agency_scope_links.py`.

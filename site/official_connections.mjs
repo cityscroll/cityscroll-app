@@ -129,6 +129,29 @@ function officialDescriptor(personBag = {}) {
   };
 }
 
+/**
+ * Read the committee edge family from the published graph without deriving a
+ * membership from names or from the separate history lookup.
+ */
+export function buildOfficialCommitteeView(personBag = {}, committeeGraph = null) {
+  const official = officialDescriptor(personBag);
+  if (!official.ref || !committeeGraph || typeof committeeGraph !== "object") {
+    return { state: "unknown", edges: [], reverse_edges: [] };
+  }
+  if (committeeGraph.publication !== "published") {
+    return { state: "unknown", edges: [], reverse_edges: [] };
+  }
+  const edges = (Array.isArray(committeeGraph.public_edges) ? committeeGraph.public_edges : [])
+    .filter((edge) => edge?.type === "member_of" && edge.from === `official:${official.id}`);
+  const reverseEdges = (Array.isArray(committeeGraph.public_reverse_edges) ? committeeGraph.public_reverse_edges : [])
+    .filter((edge) => edge?.type === "has_member" && edge.to === `official:${official.id}`);
+  return {
+    state: edges.length ? "matched" : "empty",
+    edges,
+    reverse_edges: reverseEdges,
+  };
+}
+
 function officialConstraint(personBag, language, providedScopeApi) {
   const { emptyScope, normalizeScope, scopeWithEntity } = scopeApi(providedScopeApi);
   const official = officialDescriptor(personBag);

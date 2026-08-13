@@ -4,8 +4,10 @@ import assert from "node:assert/strict";
 import {
   buildCommitteeGateReceipt,
   buildCommitteeGraph,
+  buildCommitteeReciprocalEdges,
   committeeGateAllowsPublication,
   normalizeOfficeRecord,
+  reciprocalCommitteeEdge,
   sourceRowHash,
 } from "../site/committee_graph.mjs";
 
@@ -49,10 +51,35 @@ test("committee identity uses BodyId and retains repeated appointment observatio
   assert.equal(doc.history.duplicate_person_body_rows_retained, 1);
   assert.equal(doc.edge_observations[0].from, "official:7801");
   assert.equal(doc.edge_observations[0].to, "committee:5261");
+  assert.equal(doc.public_reverse_edges.length, 2);
+  assert.equal(doc.public_reverse_edges[0].type, "has_member");
+  assert.equal(doc.public_reverse_edges[0].from, "committee:5261");
+  assert.equal(doc.public_reverse_edges[0].to, "official:7801");
+  assert.equal(doc.public_reverse_edges[0].relation_label, "has member");
+  assert.equal(doc.public_reverse_edges[0].inverse_of, doc.public_edges[0].id);
+  assert.deepEqual(doc.public_reverse_edges[0].provenance, doc.public_edges[0].provenance);
+  assert.equal(doc.public_graph.edges.length, 4);
   assert.equal(doc.edge_observations[0].is_chair, true);
   assert.equal(doc.edge_observations[1].valid_to, null);
   assert.notEqual(doc.edge_observations[0].source_row_hash, doc.edge_observations[1].source_row_hash);
   assert.equal(doc.rejected.excluded_governance_body, 1);
+});
+
+test("reciprocal edges use exact source ids, preserve null provenance, and never mint a route", () => {
+  const edge = {
+    id: "edge:member_of:official:7801:committee:5261:row",
+    type: "member_of",
+    from: "official:7801",
+    to: "committee:5261",
+    provenance: null,
+  };
+  const inverse = reciprocalCommitteeEdge(edge, people);
+  assert.equal(inverse.to, "official:7801");
+  assert.equal(inverse.target_href, "/officials/7801/");
+  assert.equal(inverse.provenance, null);
+  assert.deepEqual(buildCommitteeReciprocalEdges([edge], people), [inverse]);
+  assert.equal(reciprocalCommitteeEdge({ ...edge, from: "official:unknown" }, people), null);
+  assert.equal(reciprocalCommitteeEdge({ ...edge, from: "official:9999" }, people), null);
 });
 
 test("committee graph never falls back to a name-only official join", () => {

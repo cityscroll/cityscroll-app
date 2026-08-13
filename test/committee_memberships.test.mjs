@@ -2,7 +2,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { buildCommitteeMembershipLookup } from "../site/committee_memberships_build.mjs";
-import { committeeMembershipsForId, renderCommitteeMembershipsHTML } from "../site/committee_memberships.mjs";
+import {
+  committeeMembershipsForId,
+  committeeReverseEdgesForId,
+  renderCommitteeMembershipsHTML,
+} from "../site/committee_memberships.mjs";
 
 const people = JSON.parse(readFileSync(new URL("../site/data/people_domain_observations.json", import.meta.url)));
 
@@ -29,4 +33,22 @@ test("committee membership panel shows populated rows and omits gap and methodol
   assert.match(html, /Land Use/);
   assert.doesNotMatch(html, /coverage|cohort|source|vintage|5358|308|5\.8%/i);
   assert.equal(renderCommitteeMembershipsHTML({ rows: [] }), "");
+});
+
+test("committee reverse coverage is exact-key and visibly unavailable when the graph has no edge", () => {
+  const graph = {
+    publication: "published",
+    public_reverse_edges: [{ type: "has_member", to: "official:7801", from: "committee:5261" }],
+  };
+  assert.equal(committeeReverseEdgesForId(graph, "official:7801").length, 1);
+  assert.equal(committeeReverseEdgesForId(graph, "official:9999").length, 0);
+  assert.equal(committeeReverseEdgesForId({ publication: "held" }, "official:7801").length, 0);
+  const html = renderCommitteeMembershipsHTML({
+    member_id: "7801",
+    person_name: "Christopher Marte",
+    rows: [{ committee_id: "5261", committee: "Land Use", appointment_type: "Member" }],
+    reverse_edges: [],
+  });
+  assert.doesNotMatch(html, /href=/);
+  assert.match(html, /Reverse coverage unavailable/);
 });
