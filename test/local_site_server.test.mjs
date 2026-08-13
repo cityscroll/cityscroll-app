@@ -21,6 +21,10 @@ async function waitForReady(path, child) {
 }
 
 test("full preflight and CI use the route-aware server without touching existing listeners", () => {
+  const server = read("tools/local_site_server.py");
+  assert.match(server, /def _static_document\(/);
+  assert.match(server, /if self\._static_document\(route, query\):/);
+
   const source = read("tools/preflight-required-checks.sh");
   assert.match(source, /tools\/local_site_server\.py/);
   assert.match(source, /CROL_TEST_PORT:-0/);

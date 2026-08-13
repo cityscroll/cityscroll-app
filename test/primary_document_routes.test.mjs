@@ -257,6 +257,10 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(placesHtml, /Bronx Community Board 1/);
   assert.match(placesHtml, /\/near-you\/#map\?level=community_district/);
   assert.match(placesHtml, /\/community-boards\//);
+  const placesDocument = primaryDocumentOutputs().find(([path]) => path.endsWith("/browse/places/index.html"));
+  assert.ok(placesDocument, "the Places document is generated");
+  assert.match(placesDocument[1], /id="tab-browse" class="tabpane active"/);
+  assert.match(placesDocument[1], /class="tabbtn active" href="\/browse\/places\/"/);
 });
 
 test("Browse landing counts are labeled with source dates without coverage caveats", () => {
@@ -519,4 +523,13 @@ test("client island recognizes promoted document routes without converting entit
   assert.match(routing, /\^\\\/browse/);
   assert.match(main, /CrolRouteMigration = await import/);
   assert.doesNotMatch(routing, /pathname.*(?:entity|matter)/);
+});
+
+test("client island preserves static Browse concept documents", () => {
+  const routing = read("../site/app/routing.mjs");
+  const core = read("../site/app/core.mjs");
+  assert.match(routing, /BROWSE_CONCEPTS/);
+  assert.match(routing, /browse-concept\//);
+  assert.match(routing, /if\(raw\.startsWith\("browse-concept\/"\)\) return true/);
+  assert.match(core, /if\(!document\.getElementById\(`tab-\$\{b\.dataset\.tab\}`\)\) return;/);
 });
