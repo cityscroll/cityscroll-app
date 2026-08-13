@@ -1,7 +1,7 @@
 import {
   CROSS_SPINE_CONFIDENCE,
   normalizeCrossSpineConfidence,
-} from "../ontology/cross_spine.mjs";
+} from "./cross_spine_confidence.mjs";
 
 /**
  * Evidence-bearing civic graph — edge / claim provenance inspection (first iteration).

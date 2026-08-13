@@ -1,4 +1,4 @@
-import { normalizeCrossSpineConfidence } from "../ontology/cross_spine.mjs";
+import { normalizeCrossSpineConfidence } from "./cross_spine_confidence.mjs";
 
 /**
  * Shared typed edge-summary contract.
