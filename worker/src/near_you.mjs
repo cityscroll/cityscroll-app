@@ -1,5 +1,6 @@
 import activity from "./data/district_activity.json" with { type: "json" };
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
+import communityGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../../site/near_you_view.mjs";
 
@@ -42,6 +43,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
   const view = buildNearYouViewModel(scope, activity, boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
+    communityGeography,
   });
   const html = renderNearYouDocument(view, {
     canonicalBase: CANONICAL_BASE,

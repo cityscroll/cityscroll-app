@@ -1,11 +1,60 @@
 /** Exact-key City Council committee membership read model. */
 
 import { renderEntityPivotLink } from "./edge_summary.mjs";
+import { buildLocalConstellation, buildOfficialLocalConstellation, ensureLocalConstellationStylesheet, renderLocalConstellationHTML } from "./local_constellation.mjs";
+
+export { buildLocalConstellation, buildOfficialLocalConstellation, ensureLocalConstellationStylesheet, renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const clean = (value, max = 320) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 
 export const COMMITTEE_MEMBERSHIP_SOURCE = "aabe-yfm9";
+
+/** Build one committee's bounded neighborhood from the published exact-key graph. */
+export function buildCommitteeLocalConstellation(graph = {}, committeeId, people = {}) {
+  const id = clean(committeeId).replace(/^committee:/, "");
+  const node = (graph.nodes || []).find((candidate) => candidate?.id === `committee:${id}`);
+  const edges = graph.publication === "published" && Array.isArray(graph.public_edges)
+    ? graph.public_edges.filter((edge) => edge?.type === "member_of" && edge.to === `committee:${id}`)
+    : [];
+  return buildLocalConstellation({
+    kind: "committee",
+    subject_ref: `committee:${id}`,
+    subject_id: id || null,
+    subject_name: node?.name || null,
+    source: node?.provenance?.source || null,
+    provenance: node?.provenance || null,
+    neighbors: edges.map((edge) => {
+      const personId = clean(edge.from).replace(/^official:/, "");
+      const person = people.by_person_id?.[personId] || {};
+      return {
+        edge_type: "member_of",
+        relation_label: edge.is_chair ? "chair membership" : "member of",
+        target_kind: "official",
+        target_id: personId || null,
+        target_name: person.person_name || personId || null,
+        href: personId ? `/officials/${encodeURIComponent(personId)}/` : null,
+        state: personId ? "matched" : "unknown",
+        provenance: edge.provenance || null,
+      };
+    }),
+  });
+}
+
+export function renderCommitteeLocalConstellationHTML(graph, committeeId, people = {}) {
+  return renderLocalConstellationHTML(buildCommitteeLocalConstellation(graph, committeeId, people), {
+    heading: "Committee members",
+    id: `committee-local-constellation-${clean(committeeId).replace(/[^A-Za-z0-9_-]/g, "-")}`,
+  });
+}
+
+export function renderOfficialLocalConstellationHTML(officialView, committeeRows, id, name) {
+  ensureLocalConstellationStylesheet();
+  return renderLocalConstellationHTML(buildOfficialLocalConstellation(officialView, committeeRows, id, name), {
+    heading: "Nearby official records",
+    id: "official-local-constellation-heading",
+  });
+}
 
 export function committeeMembershipsForId(lookup, personId) {
   const id = clean(personId).replace(/^official:/, "");

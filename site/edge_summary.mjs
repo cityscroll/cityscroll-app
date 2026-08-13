@@ -73,12 +73,14 @@ function canonicalHref(href, asOf) {
 
 const VERIFIED_INTERNAL_ROUTES = [
   /^\/(?:notices|agencies|vendors|officials)\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
-  /^\/browse\/(?:contracts|staffing|zoning|property|rules|meetings)\/?(?:\?.*)?$/,
+  /^\/browse\/(?:contracts|staffing|zoning|property|rules|meetings|people|places)\/?(?:\?.*)?(?:#.*)?$/,
   /^\/browse\/?(?:\?.*)?$/,
   /^\/parcels\/\d{10}\/?(?:\?.*)?$/,
   /^\/exams\/\d{4}\/?(?:\?.*)?$/,
   /^\/(?:near-you|following)(?:\/[^?#]*)?\/?(?:\?.*)?$/,
+  /^\/community-boards\/?(?:\?.*)?(?:#.*)?$/,
   /^#parcel-biography-(?:property|land|tax_lien|ll48|cofo)$/,
+  /^#notice\/[A-Za-z0-9_%~-]+$/,
   /^\/#land\/[A-Za-z0-9_%~-]+(?:\?.*)?$/,
   /^#land\/[A-Za-z0-9_%~-]+(?:\?.*)?$/,
 ];

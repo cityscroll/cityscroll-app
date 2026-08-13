@@ -21,6 +21,8 @@ import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
+import { buildPlaceLocalConstellation } from "./community_board_geography.mjs";
+import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -301,6 +303,14 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     shareHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
     canonicalBase,
     siteBase,
+    local_constellation: buildPlaceLocalConstellation(
+      options.communityGeography || {},
+      first(scope.place.community_districts)
+        ? `community-district:${first(scope.place.community_districts)}`
+        : first(scope.place.council_districts)
+          ? `council-district:${first(scope.place.council_districts)}`
+          : null,
+    ),
   };
 }
 
@@ -418,6 +428,7 @@ export function renderNearYouBody(view) {
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
+      ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
     </section>
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
       <p class="near-kicker">${view.hasPlace ? "Place set" : "Start here"}</p>
@@ -495,7 +506,8 @@ export function renderNearYouDocument(view, options = {}) {
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
-<link rel="canonical" href="${esc(view.shareHref)}">${renderCivicDocumentAssets(assetPrefix)}</head>
+<link rel="canonical" href="${esc(view.shareHref)}">${renderCivicDocumentAssets(assetPrefix)}
+<link rel="stylesheet" href="${esc(`${prefix}local_constellation.css`)}"></head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, scope: view.scope, surfaceClass: "near-mast" })}
 ${renderNearYouBody(view)}

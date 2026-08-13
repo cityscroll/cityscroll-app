@@ -1,5 +1,6 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
+import { renderCommitteeLocalConstellationHTML } from "./committee_memberships.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
@@ -119,7 +120,7 @@ function renderCommittees(graph, people) {
         inverse_of: member.edge?.inverse_of ?? null,
       }, { escape: esc })).join(", ")}.`
       : "Reverse coverage unavailable.";
-    return `<li><strong>${esc(committee.name)}.</strong> <span class="browse-concept-meta">${members}</span></li>`;
+    return `<li><strong>${esc(committee.name)}.</strong> <span class="browse-concept-meta">${members}</span>${renderCommitteeLocalConstellationHTML(graph, committee.id, people)}</li>`;
   }).join("")}</ul>`;
 }
 
