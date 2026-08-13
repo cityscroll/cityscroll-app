@@ -151,6 +151,7 @@ export function buildNowDocument(shell, sources, options = {}) {
     primaryContext: "now",
   });
   html = activateTab(html, "now");
+  html = html.replace('id="nowview" hidden', 'id="nowview"');
   html = replaceElementContent(html, "browse-child-nav", "");
   return replaceElementContent(html, "nowview", renderNowBuildView(sources, today));
 }

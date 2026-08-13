@@ -2,21 +2,28 @@ import { buildNowSurface } from "./now_surface.mjs";
 import { nowItemMatchesScope } from "./scope_now_adapter.mjs";
 
 let nowSourcesPromise = null;
+export const NOW_SOURCE_TIMEOUT_MS = 12_000;
 
-function safeJson(promise, shape) {
-  return promise.then((payload) => ({ ...(payload || {}), status: "available" }))
+export function safeJson(load, shape, timeoutMs = NOW_SOURCE_TIMEOUT_MS) {
+  let timer;
+  const request = Promise.resolve().then(load)
+    .then((payload) => ({ ...(payload || {}), status: "available" }))
     .catch((error) => ({ status: "unavailable", reason: error?.name || "request_failed", [shape]: [] }));
+  const timeout = new Promise((resolve) => {
+    timer = setTimeout(() => resolve({ status: "unavailable", reason: "timeout", [shape]: [] }), timeoutMs);
+  });
+  return Promise.race([request, timeout]).finally(() => clearTimeout(timer));
 }
 
 function localJson(path, shape) {
-  return safeJson(fetch(path, { cache: "no-cache" }).then((response) => {
+  return safeJson(() => fetch(path, { cache: "no-cache" }).then((response) => {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   }), shape);
 }
 
 function workerJson(path, shape) {
-  return safeJson(workerFetch(path, {}, 12_000).then((response) => {
+  return safeJson(() => workerFetch(path, {}, NOW_SOURCE_TIMEOUT_MS).then((response) => {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   }), shape);
@@ -130,7 +137,7 @@ function nowLaneHTML(id, titleKey, deckKey, items, emptyKey, extra = "") {
   </section>`;
 }
 
-function renderNowSurface(surface) {
+export function renderNowSurface(surface) {
   const box = $("#nowview");
   if (!box) return;
   const unavailable = surface.coverage.unavailable_sources;
@@ -159,6 +166,7 @@ export async function showNow(options = {}) {
   showTab("now");
   const box = $("#nowview");
   if (!box) return;
+  box.hidden = false;
   box.innerHTML = `<div class="empty"><span class="loading" aria-hidden="true"></span> ${t("now_loading")}</div>`;
   const sources = await loadNowSources();
   if (!box.isConnected || !box.closest(".tabpane.active")) return;

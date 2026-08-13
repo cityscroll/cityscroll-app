@@ -8,7 +8,7 @@ import {
   buildNowSurface,
   countNowSurfaceItems,
 } from "../site/now_surface.mjs";
-import { nowDateLabel } from "../site/now_view.mjs";
+import { NOW_SOURCE_TIMEOUT_MS, nowDateLabel, renderNowSurface, safeJson } from "../site/now_view.mjs";
 import { propertyProjectionScope, projectPropertyRecord } from "../site/property_action_projection.mjs";
 
 const require = createRequire(import.meta.url);
@@ -201,6 +201,58 @@ test("Now compiles two independently ordered lanes from existing action and time
   );
 });
 
+test("Now source loading settles for data-present and data-absent inputs", async () => {
+  const available = await safeJson(() => Promise.resolve({ notices: [{ request_id: "current" }] }), "notices", 25);
+  assert.deepEqual(available, {
+    status: "available",
+    notices: [{ request_id: "current" }],
+  });
+
+  const timedOut = await safeJson(() => new Promise(() => {}), "notices", 10);
+  assert.deepEqual(timedOut, {
+    status: "unavailable",
+    reason: "timeout",
+    notices: [],
+  });
+  assert.equal(NOW_SOURCE_TIMEOUT_MS, 12_000);
+});
+
+test("an empty but available Now snapshot resolves to empty lanes", () => {
+  const emptySources = Object.fromEntries([
+    "money", "staffing", "rules", "property", "meetings", "land",
+  ].map((domain) => [domain, { status: "available" }]));
+  const surface = buildNowSurface(emptySources, { today: TODAY });
+  assert.equal(surface.counts.total, 0);
+  assert.deepEqual(surface.act_by.dated, []);
+  assert.deepEqual(surface.act_by.open_without_date, []);
+  assert.deepEqual(surface.happening_soon.items, []);
+});
+
+test("Now renderer replaces the loading state for populated and empty surfaces", () => {
+  const box = { innerHTML: "" };
+  globalThis.$ = () => box;
+  globalThis.announce = () => {};
+  globalThis.fdt = (value) => String(value);
+  globalThis.EXT_ATTRS = "rel=\"noopener\"";
+  globalThis.extSR = () => "";
+  globalThis.t = (key, values = {}) => key === "results_count" ? `${values.n} results` : key;
+
+  const emptySources = Object.fromEntries([
+    "money", "staffing", "rules", "property", "meetings", "land",
+  ].map((domain) => [domain, { status: "available" }]));
+  renderNowSurface(buildNowSurface(emptySources, { today: TODAY }));
+  assert.doesNotMatch(box.innerHTML, /Loading current deadlines and events/);
+  assert.match(box.innerHTML, /now_empty_act/);
+  assert.match(box.innerHTML, /now_empty_events/);
+
+  renderNowSurface(buildNowSurface(fixtureSources(), {
+    today: TODAY,
+    compileActionRail: CrolActions.compileActionRail,
+  }));
+  assert.doesNotMatch(box.innerHTML, /Loading current deadlines and events/);
+  assert.match(box.innerHTML, /class="now-card"/);
+});
+
 test("closed actions never enter Act by and every item retains route, domain, source, and basis", () => {
   const surface = buildNowSurface(fixtureSources(), {
     today: TODAY,
@@ -328,6 +380,8 @@ test("Now is promoted as a document route while civic objects remain Browse grou
 
   assert.match(html, /href="\/now\/"/);
   assert.match(html, /id="tab-now" class="tabpane"/);
+  assert.match(html, /id="nowview" hidden><\/div>/);
+  assert.doesNotMatch(html, /id="nowview"[^>]*>[\s\S]*now_loading/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="now"/);
   for (const group of ["money", "people", "land", "rules", "meetings"]) {
     assert.match(html, new RegExp(`data-tab="${group}"`));
@@ -347,5 +401,7 @@ test("Now is promoted as a document route while civic objects remain Browse grou
   assert.match(nowView, /workerJson\("\/rules", "rules"\)/);
   assert.match(nowView, /workerJson\("\/property-locations", "properties"\)/);
   assert.match(nowView, /workerJson\("\/hearings", "hearings"\)/);
+  assert.match(nowView, /NOW_SOURCE_TIMEOUT_MS/);
+  assert.match(nowView, /Promise\.race\(\[request, timeout\]\)/);
   assert.doesNotMatch(model, /extractPropertyTimedEvents|extractPropertyReaderActions/);
 });
