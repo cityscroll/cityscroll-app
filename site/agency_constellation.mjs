@@ -43,6 +43,7 @@ import {
 import { constellationLink } from "./affordance_grammar.mjs";
 import { renderEdgeSummaryRail } from "./edge_summary.mjs";
 import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
+import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -151,6 +152,10 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     id: "agency-edge-summary-heading",
     className: "agency-edge-summary",
   });
+  const localConstellation = renderLocalConstellationHTML(displayView.local_constellation, {
+    heading: "Nearby agency records",
+    id: "agency-local-constellation-heading",
+  });
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
@@ -167,6 +172,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
+  <link rel="stylesheet" href="${esc(`${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}local_constellation.css`)}">
   <style>${agencyConstellationSectionStyles()}</style>
 </head>
 <body>
@@ -189,6 +195,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       </p>
     </header>
     ${edgeRail}
+    ${localConstellation}
     ${actions}
     ${sections}
   </main>

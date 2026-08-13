@@ -199,6 +199,6 @@ export function buildBrowseConceptDocument(shell, kind, sources) {
     primaryContext: "browse",
   });
   html = activateTab(html, config.tab);
-  html = addRouteStyles(html, ["browse.css"]);
+  html = addRouteStyles(html, ["browse.css", "local_constellation.css"]);
   return replaceElementContent(html, "browseview", renderBrowseConceptLanding(buildBrowseConceptLanding(kind, sources)));
 }

@@ -301,6 +301,7 @@ async function showOfficial(personId, opts){
       ${eventLine}
       ${recentVotes.length || scopedVotes.length ? officialConnections.renderOfficialCoverageHTML(officialView, { translate:t }) : ""}
       ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
+      ${committeeModule.renderOfficialLocalConstellationHTML(officialView, committeeBag.rows, id, name)}
       ${influenceModule ? influenceModule.renderLobbyInfluenceHTML(lobbyBag, { escapeHtml:escUiHtml, translate:t }) : ""}
       ${influenceModule ? influenceModule.renderCfbInfluenceHTML(cfbBag, { escapeHtml:escUiHtml }) : ""}
       ${body}
