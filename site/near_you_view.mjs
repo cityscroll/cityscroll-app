@@ -23,6 +23,7 @@ import {
 } from "./civic_document_chrome.mjs";
 import { buildPlaceLocalConstellation } from "./community_board_geography.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
+import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -410,6 +411,44 @@ export function renderNearYouBody(view) {
     ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
   const currentBorough = first(view.scope.place.boroughs);
+  const walkQuery = view.scope.topic?.query || first(view.scope.topic?.keywords);
+  const walkFamilies = Object.entries(LENS_LABELS).map(([lens, label]) => {
+    const nextScope = normalizeScope({
+      ...view.scope,
+      facets: { ...view.scope.facets, domains: [lens] },
+    });
+    const current = lens === view.lens;
+    return {
+      id: lens,
+      label,
+      kicker: current ? "Current records" : label,
+      description: current
+        ? "Open these records and follow their links."
+        : "No count for this family here.",
+      status: current ? (view.mapped ? "available" : "unknown") : "unknown",
+      count: current ? view.results.count : null,
+      href: walkEntryHref(nearYouUrlFromScope(nextScope, { base: view.canonicalBase }), {
+        source: "near_you",
+        query: walkQuery,
+        place: view.scope,
+      }),
+    };
+  });
+  const walkHref = view.hasPlace
+    ? walkEntryHref(view.shareHref, { source: "near_you", query: walkQuery, place: view.scope })
+    : "#near-place-fields";
+  const walkEntry = renderWalkEntry({
+    source: "near_you",
+    query: walkQuery,
+    placeLabel: walkEntryPlaceLabel(view.scope),
+    families: walkFamilies,
+    actionHref: walkHref,
+    actionLabel: view.hasPlace ? "Walk this place" : "Choose a place",
+    title: view.hasPlace ? "Walk this place" : "Start with a place",
+    description: view.hasPlace
+      ? "Keep this place as you view related records."
+      : "Choose a place first. A guessed location is not an edge.",
+  });
   return `<main id="main" data-near-you-root data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
     data-message-updating="Updating the map…"
     data-message-updated="Map updated. Map and list counts match."
@@ -428,6 +467,7 @@ export function renderNearYouBody(view) {
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
+      ${walkEntry}
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
     </section>
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
@@ -507,12 +547,14 @@ export function renderNearYouDocument(view, options = {}) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
 <link rel="canonical" href="${esc(view.shareHref)}">${renderCivicDocumentAssets(assetPrefix)}
+<link rel="stylesheet" href="${esc(`${prefix}walk-entry.css`)}">
 <link rel="stylesheet" href="${esc(`${prefix}local_constellation.css`)}"></head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, scope: view.scope, surfaceClass: "near-mast" })}
 ${renderNearYouBody(view)}
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
+<script type="module" src="${esc(prefix)}app/walk-entry.mjs"></script>
 <script type="module" src="${esc(prefix)}app/traversal.mjs"></script><script type="module" src="${esc(prefix)}app/map.mjs"></script></body></html>`;
   return html.replace(/[ \t]+$/gm, "");
 }
