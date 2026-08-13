@@ -1,4 +1,5 @@
 import { normalizeCrossSpineConfidence } from "./cross_spine_confidence.mjs";
+import { readerLabel, readerValue } from "./reader_surface_labels.mjs";
 
 /**
  * Shared typed edge-summary contract.
@@ -157,11 +158,11 @@ function normalizeEdgeProvenance(input = {}) {
     ?? provenance.cross_spine_confidence
     ?? null;
   return Object.freeze({
-    source_system: provenance.source_system ?? null,
-    source_record_id: provenance.source_record_id ?? null,
-    source_fields: Array.isArray(provenance.source_fields) ? [...provenance.source_fields] : null,
-    join_method: provenance.join_method ?? provenance.basis ?? input.join_method ?? null,
-    observed_at: provenance.observed_at ?? input.as_of ?? null,
+    source_system: readerValue(provenance.source_system),
+    source_record_id: readerValue(provenance.source_record_id),
+    source_fields: readerValue(provenance.source_fields),
+    join_method: readerValue(provenance.join_method ?? provenance.basis ?? input.join_method),
+    observed_at: readerValue(provenance.observed_at ?? input.as_of),
     cross_spine_confidence: normalizeCrossSpineConfidence(rawConfidence) || "unmatched",
     cross_spine_explicit: input.cross_spine_explicit ?? rawConfidence != null,
   });
@@ -180,9 +181,12 @@ export function normalizeEntityPivot(input = {}, defaults = {}) {
   const raw = { ...defaults, ...input };
   const targetName = raw.target_name ?? raw.target_label ?? raw.name;
   const targetId = raw.target_id ?? raw.id;
-  const relation = raw.relation_label
-    || (raw.label ? edgeRelationLabel({ edge_type: raw.edge_type || raw.relation, label: raw.label, target_name: targetName }) : null)
-    || edgeRelationLabel(raw.edge_type || raw.relation);
+  const relation = edgeRelationLabel({
+    edge_type: raw.edge_type || raw.relation,
+    relation_label: raw.relation_label,
+    label: raw.label,
+    target_name: targetName,
+  });
   const route = resolveEdgeSummaryDestination(raw);
   const source = normalizeSource(raw);
   const status = raw.status === "held" || raw.pivot_state === "held" || !route.verified ? "held" : "accepted";
@@ -368,33 +372,35 @@ export function rankEdgeSummaryRecords(records, options = {}) {
 export function edgeRelationLabel(recordOrType) {
   const relation = text(typeof recordOrType === "string" ? recordOrType : recordOrType?.edge_type, 120);
   if (typeof recordOrType !== "string") {
-    const supplied = text(recordOrType?.label, 240);
+    const supplied = text(recordOrType?.relation_label || recordOrType?.label, 240);
     const target = text(recordOrType?.target_name, 240);
     if (supplied && target && supplied.toLocaleLowerCase().startsWith(target.toLocaleLowerCase())) {
       const remainder = supplied.slice(target.length).replace(/^\s*[:\-–—]\s*/, "").trim();
-      if (remainder) return remainder;
+      if (remainder) return readerLabel(remainder, "related records");
     }
+    if (supplied) return readerLabel(supplied, "related records");
   }
   if (!relation) return "related records";
-  return ({
+  return readerLabel(({
     published_by_agency: "published by this agency",
     hosts_meeting: "related meetings and hearings",
-    issued_rule: "issued rules",
+    issued_rule: "issued rule",
     statute_duty: "statutory mandates",
-    certified_to_agency: "staffing exams certified to this agency",
+    certified_to_agency: "certified to the agency",
+    votes_on: "voted on",
     top_vendor_by_award_12mo: "top vendors by award value",
     linked_to_vendor: "records linked to this vendor",
     sits_on_parcel: "records connected to this parcel",
     legal_occupancy_on_parcel: "occupancy records for this parcel",
     appeared_on_published_list: "published tax-lien list appearances",
     suitability_record_for_exact_bbl: "suitability records for this parcel",
-  })[relation] || relation.replaceAll("_", " ");
+  })[relation] || relation, "related records");
 }
 
 export function edgeSummaryStateCopy(record) {
   if (record.state === "matched") {
     return record.count == null
-      ? "Available: count unavailable"
+      ? "Available records"
       : `Available: ${record.count.toLocaleString("en-US")} ${record.count === 1 ? "record" : "records"}`;
   }
   if (record.state === "empty") return "Empty in this scoped materialization";
@@ -410,9 +416,9 @@ function scopeCopy(scope) {
   const entries = Object.entries(scope)
     .filter(([, value]) => value != null && value !== "")
     .map(([key, value]) => {
-      const readableKey = key.replaceAll("_", " ");
+      const readableKey = readerLabel(key, "scope");
       const readableValue = (Array.isArray(value) ? value : [value])
-        .map((item) => String(item).replaceAll("_", " "))
+        .map((item) => readerLabel(item, ""))
         .join(", ");
       return `${readableKey}: ${readableValue}`;
     });
@@ -420,8 +426,9 @@ function scopeCopy(scope) {
 }
 
 function provenanceValue(value) {
-  if (Array.isArray(value)) return value.length ? value.join(", ") : "";
-  return value == null || value === "" ? "" : String(value);
+  const readable = readerValue(value);
+  if (Array.isArray(readable)) return readable.map((item) => readerLabel(item, "")).filter(Boolean).join(", ");
+  return readerLabel(readable, "") || "";
 }
 
 function renderAsOfWidget(value) {
@@ -500,7 +507,7 @@ export function renderEdgeSummaryRail(records, {
     const content = canLink
       ? `<a class="edge-summary-link" href="${escapeHTML(pivot.canonical_href)}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="accepted" data-pivot-relation-label="${escapeHTML(relation)}" data-pivot-target-kind="${escapeHTML(targetKind)}" data-pivot-target-id="${escapeHTML(record.target_id || "")}" data-pivot-source-kind="${escapeHTML(record.source?.kind || record.source_kind || "")}" data-pivot-source-id="${escapeHTML(record.source?.id || record.source_id || "")}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldReason}</span></a>`
       : `<span class="edge-summary-text${heldEdge ? " entity-pivot-held" : ""}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="${heldEdge ? "held" : escapeHTML(record.state)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldReason}</span></span>`;
-    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence || "unmatched")}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}${renderEdgeSummaryProvenance(record)}</li>`;
+    return `<li class="edge-summary-item" data-edge-state="${escapeHTML(record.state)}" data-edge-availability="${escapeHTML(availability)}" data-edge-type="${escapeHTML(record.edge_type)}" data-target-kind="${escapeHTML(targetKind)}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence || "unmatched")}"${record.count == null ? "" : ` data-edge-count="${record.count}"`}>${content}${confidenceBadge}${asOf}</li>`;
   }).join("");
   const source = normalized.find((record) => record.source?.name)?.source;
   const sourceAffordance = source?.name
