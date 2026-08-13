@@ -503,6 +503,9 @@ export function renderEdgeSummaryRail(records, {
     const crossSpineBlocksLink = record.cross_spine_explicit && record.cross_spine_confidence !== "confirmed";
     const heldEdge = record.state === "matched" && (pivot.status !== "accepted" || crossSpineBlocksLink);
     const canLink = record.state === "matched" && pivot.status === "accepted" && !crossSpineBlocksLink;
+    const asOf = renderAsOfWidget(record.as_of);
+    const confidence = normalizeCrossSpineConfidence(record.cross_spine_confidence) || "unmatched";
+    const confidenceBadge = `<span class="edge-summary-confidence edge-summary-confidence-${escapeHTML(confidence)}" data-cross-spine-confidence="${escapeHTML(confidence)}">${escapeHTML(confidence)}</span>`;
     const heldReason = heldEdge ? " · Destination not verified" : "";
     const content = canLink
       ? `<a class="edge-summary-link" href="${escapeHTML(pivot.canonical_href)}" aria-label="${escapeHTML(label)}" data-pivot-schema="${ENTITY_PIVOT_SCHEMA}" data-pivot-status="accepted" data-pivot-relation-label="${escapeHTML(relation)}" data-pivot-target-kind="${escapeHTML(targetKind)}" data-pivot-target-id="${escapeHTML(record.target_id || "")}" data-pivot-source-kind="${escapeHTML(record.source?.kind || record.source_kind || "")}" data-pivot-source-id="${escapeHTML(record.source?.id || record.source_id || "")}" data-cross-spine-confidence="${escapeHTML(record.cross_spine_confidence)}"><span class="edge-summary-target">${escapeHTML(destination)}</span><span class="edge-summary-detail">${escapeHTML(metadata)}${heldReason}</span></a>`
