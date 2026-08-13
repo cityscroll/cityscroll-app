@@ -1,4 +1,5 @@
 import { constellationLink } from "./affordance_grammar.mjs";
+import { readerLabel } from "./reader_surface_labels.mjs";
 
 /**
  * Mandates → Rules constellation card (first iteration).
@@ -306,7 +307,7 @@ export function renderMandateRulesBridgeSection(view) {
         const label = item.href
           ? constellationLink({ href: item.href, label: item.label, className: "agency-edge-link", attributes: { "data-subject-ref": item.subject_ref || "" }, escape: esc })
           : esc(item.label);
-        const meta = [item.source, item.date].filter(Boolean).map(esc).join(" · ");
+        const meta = [readerLabel(item.source, ""), item.date].filter(Boolean).map(esc).join(" · ");
         return `<li class="node-record mandate-rules-filing" data-request-id="${esc(item.id || "")}">
           <div class="node-record-main">${label}</div>
           ${meta ? `<span class="muted node-muted">${meta}</span>` : ""}

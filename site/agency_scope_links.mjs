@@ -80,6 +80,7 @@ export function agencyScopeLinksHTML({
   selected = "",
   currentHash = `#${surface}`,
   t = (key) => key,
+  searchQuery = "",
   escape = escapeAgencyScopeHtml,
 } = {}) {
   const selectedIdentity = resolveAgencyIdentity(selected);
@@ -100,6 +101,7 @@ export function agencyScopeLinksHTML({
     entityHref: (choice) => `/agencies/${encodeURIComponent(choice.id)}/`,
     scopeHref: (choice) => agencyScopeHref(surface, choice.label, currentHash),
     unresolvedLabels: unresolved,
+    searchQuery,
     escape,
   });
 }

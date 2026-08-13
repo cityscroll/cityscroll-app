@@ -24,6 +24,7 @@ import { bblReaderLabel } from "./bbl_reader.mjs";
 import { buildParcelBiographyEdgeSummary } from "./parcel_biography_ui.mjs";
 import { asOfFilterCanNarrow, buildLedgerSummary, projectAgencyConstellationAsOf, renderCivicTimeLedgerPanel } from "./civic_time_ledger.mjs";
 import { ENTITY_PIVOT_SCHEMA, renderEdgeSummaryRail } from "./edge_summary.mjs";
+import { readerLabel } from "./reader_surface_labels.mjs";
 
 export const CIVIC_OBJECT_EXPORT_REGISTRY = Object.freeze({
   "monitor-pack": Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
@@ -195,7 +196,7 @@ function subjectLink(ref, hrefOverride = null, source = {}) {
 }
 
 function parcelRecordItem(item, view) {
-  const label = clean(item.label || item.id) || "Record";
+  const label = readerLabel(clean(item.label || item.id), "Record");
   const href = item.href || subjectHref(item.subject_ref);
   // Primary travel is internal (◆ constellation). Source name is omit-by-default;
   // a trailing ↗ opens the official record only when a genuine deep link exists.
