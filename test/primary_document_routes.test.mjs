@@ -240,11 +240,21 @@ test("People and Places landings use populated entity and geography indexes", ()
       public_edges: [{ type: "member_of", from: "official:7801", to: "committee:1" }],
     },
     awards: { rows: [{ vendor_name: "ACME LLC" }] },
+    places: {
+      nodes: [{
+        id: "community-board:bronx-cb-01",
+        type: "community-board",
+        name: "Bronx Community Board 1",
+        properties: { borough: "Bronx", district: 1 },
+      }],
+      public_edges: [],
+    },
   });
   const peopleHtml = renderBrowseConceptLanding(people);
   assert.match(peopleHtml, /href="\/officials\/7801\/"/);
   assert.match(peopleHtml, /href="\/vendors\/ACME\/"/);
   assert.match(peopleHtml, /Committee on Housing/);
+  assert.match(peopleHtml, /Bronx Community Board 1/);
   assert.doesNotMatch(peopleHtml, /href="\/committees\//);
 
   const places = buildBrowseConceptLanding("places", {
