@@ -6,6 +6,7 @@ import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mj
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
+import { meetingOriginLabel } from "../meeting_origin.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -1146,10 +1147,16 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const chainChip=entry.notice_count>1
     ? `<span class="tag asset">${escUiHtml(t("meetings_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
+  const origin=record.meeting_origin||"unknown";
+  const sourceUrl=hearingSafeURL(record.source_url);
+  const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${sourceUrl
+    ? `<a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${escUiHtml(meetingOriginLabel(origin))}${extSR()}</a>`
+    : escUiHtml(meetingOriginLabel(origin))}</span>`;
   const processLine=`<div class="meetings-process-line">
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:""}
+    ${originChip}
   </div>`;
   // Next-action lead: concrete attend / join / testimony when data supports it.
   const actionKey=entry.action_key||"meeting_action_open_notice";

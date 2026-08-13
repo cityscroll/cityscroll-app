@@ -32,7 +32,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729020"
     },
     {
       "request_id": "20260729005",
@@ -52,7 +54,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729005"
     },
     {
       "request_id": "20260729019",
@@ -72,7 +76,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019"
     },
     {
       "request_id": "20260728026",
@@ -92,7 +98,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026"
     },
     {
       "request_id": "20260727031",
@@ -128,7 +136,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727031"
     },
     {
       "request_id": "20260504040",
@@ -148,7 +158,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504040"
     },
     {
       "request_id": "20260723022",
@@ -221,7 +233,9 @@
           "affordable"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723022"
     },
     {
       "request_id": "20260723005",
@@ -293,7 +307,9 @@
           "franklin"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005"
     },
     {
       "request_id": "20260721023",
@@ -329,7 +345,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721023"
     },
     {
       "request_id": "20260504039",
@@ -353,7 +371,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039"
     },
     {
       "request_id": "20260723030",
@@ -441,7 +461,9 @@
           "bsa:2026-09-A",
           "bsa:2026-06-BZ"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030"
     },
     {
       "request_id": "20260710032",
@@ -480,7 +502,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032"
     },
     {
       "request_id": "20260709020",
@@ -537,7 +561,9 @@
           "ulurp:210221PCR",
           "ulurp:C210221PCR"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709020"
     },
     {
       "request_id": "20260716022",
@@ -602,7 +628,9 @@
           "renew"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022"
     },
     {
       "request_id": "20260715041",
@@ -622,7 +650,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"
     },
     {
       "request_id": "20260716025",
@@ -661,7 +691,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025"
     },
     {
       "request_id": "20260716009",
@@ -737,7 +769,9 @@
           "kitchen"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009"
     },
     {
       "request_id": "20260714029",
@@ -757,7 +791,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029"
     },
     {
       "request_id": "20260714001",
@@ -793,7 +829,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001"
     },
     {
       "request_id": "20260504038",
@@ -817,7 +855,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038"
     },
     {
       "request_id": "20260715002",
@@ -853,7 +893,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002"
     },
     {
       "request_id": "20260714002",
@@ -889,7 +931,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714002"
     },
     {
       "request_id": "20260713006",
@@ -909,7 +953,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006"
     },
     {
       "request_id": "20260713032",
@@ -1015,7 +1061,9 @@
           "pdc:30480",
           "pdc:30481"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713032"
     },
     {
       "request_id": "20260624001",
@@ -1051,7 +1099,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001"
     },
     {
       "request_id": "20260707022",
@@ -1087,7 +1137,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022"
     },
     {
       "request_id": "20260709028",
@@ -1144,7 +1196,9 @@
           "operations"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028"
     },
     {
       "request_id": "20260707021",
@@ -1180,7 +1234,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021"
     },
     {
       "request_id": "20260707029",
@@ -1216,7 +1272,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707029"
     },
     {
       "request_id": "20260708002",
@@ -1251,7 +1309,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
     },
     {
       "request_id": "20260708015",
@@ -1287,7 +1347,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015"
     },
     {
       "request_id": "20260707004",
@@ -1323,7 +1385,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004"
     },
     {
       "request_id": "20260504037",
@@ -1347,7 +1411,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037"
     },
     {
       "request_id": "20260706044",
@@ -1383,7 +1449,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044"
     },
     {
       "request_id": "20260626036",
@@ -1403,7 +1471,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036"
     },
     {
       "request_id": "20260706036",
@@ -1441,7 +1511,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036"
     },
     {
       "request_id": "20260106033",
@@ -1486,7 +1558,9 @@
           "system"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033"
     },
     {
       "request_id": "20260630005",
@@ -1522,7 +1596,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005"
     },
     {
       "request_id": "20260629046",
@@ -1558,7 +1634,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629046"
     },
     {
       "request_id": "20260629003",
@@ -1641,7 +1719,9 @@
           "bsa:2026-13-A",
           "bsa:2016-14-A"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003"
     },
     {
       "request_id": "20260504036",
@@ -1665,7 +1745,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036"
     },
     {
       "request_id": "20260626034",
@@ -1685,7 +1767,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034"
     },
     {
       "request_id": "20260617042",
@@ -1754,7 +1838,9 @@
           "parcel"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617042"
     },
     {
       "request_id": "20260617040",
@@ -1823,7 +1909,9 @@
           "issue"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617040"
     },
     {
       "request_id": "20260625040",
@@ -1859,7 +1947,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040"
     },
     {
       "request_id": "20260624005",
@@ -1883,7 +1973,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005"
     },
     {
       "request_id": "20260624036",
@@ -1959,7 +2051,9 @@
           "lexington"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624036"
     },
     {
       "request_id": "20260616058",
@@ -1995,7 +2089,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616058"
     },
     {
       "request_id": "20260625034",
@@ -2031,7 +2127,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034"
     },
     {
       "request_id": "20260623060",
@@ -2067,7 +2165,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060"
     },
     {
       "request_id": "20260624002",
@@ -2103,7 +2203,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624002"
     },
     {
       "request_id": "20260623006",
@@ -2139,7 +2241,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006"
     },
     {
       "request_id": "20260213015",
@@ -2163,7 +2267,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015"
     },
     {
       "request_id": "20260618040",
@@ -2238,7 +2344,9 @@
           "ulurp:240232PQX",
           "ulurp:C240232PQX"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618040"
     },
     {
       "request_id": "20260618050",
@@ -2317,7 +2425,9 @@
           "administrative"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050"
     },
     {
       "request_id": "20260618036",
@@ -2337,7 +2447,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036"
     },
     {
       "request_id": "20260618037",
@@ -2429,7 +2541,9 @@
           "ulurp:260235ZRQ",
           "ulurp:N260235ZRQ"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618037"
     },
     {
       "request_id": "20260617039",
@@ -2465,7 +2579,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039"
     },
     {
       "request_id": "20260617003",
@@ -2528,7 +2644,9 @@
           "borough"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003"
     },
     {
       "request_id": "20260623048",
@@ -2591,7 +2709,9 @@
           "including"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048"
     },
     {
       "request_id": "20260618032",
@@ -2683,7 +2803,9 @@
           "ulurp:260195ZAX",
           "ulurp:260336ZAX"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618032"
     },
     {
       "request_id": "20260213014",
@@ -2707,7 +2829,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014"
     },
     {
       "request_id": "20260612028",
@@ -2782,7 +2906,9 @@
         "matter_ids": [
           "bsa:2026-11-BZ"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028"
     },
     {
       "request_id": "20260605045",
@@ -2818,7 +2944,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605045"
     },
     {
       "request_id": "20260610007",
@@ -2854,7 +2982,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610007"
     },
     {
       "request_id": "20260610067",
@@ -2893,7 +3023,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610067"
     },
     {
       "request_id": "20260612036",
@@ -2998,7 +3130,9 @@
           "pdc:30433",
           "pdc:30434"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612036"
     },
     {
       "request_id": "20260610012",
@@ -3034,7 +3168,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012"
     },
     {
       "request_id": "20260603039",
@@ -3073,7 +3209,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039"
     },
     {
       "request_id": "20260609003",
@@ -3093,7 +3231,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003"
     },
     {
       "request_id": "20260609065",
@@ -3126,7 +3266,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065"
     },
     {
       "request_id": "20260610003",
@@ -3180,7 +3322,9 @@
           "practice"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610003"
     },
     {
       "request_id": "20260213013",
@@ -3204,7 +3348,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013"
     },
     {
       "request_id": "20260605007",
@@ -3280,7 +3426,9 @@
           "term"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605007"
     },
     {
       "request_id": "20260601045",
@@ -3365,7 +3513,9 @@
           "ulurp:000611PXQ",
           "ulurp:N000611PXQ"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601045"
     },
     {
       "request_id": "20260604005",
@@ -3438,7 +3588,9 @@
           "expire"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260604005"
     },
     {
       "request_id": "20260603002",
@@ -3512,7 +3664,9 @@
           "office"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603002"
     },
     {
       "request_id": "20260605006",
@@ -3590,7 +3744,9 @@
           "term"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605006"
     },
     {
       "request_id": "20260603059",
@@ -3663,7 +3819,9 @@
           "least"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603059"
     },
     {
       "request_id": "20260608005",
@@ -3750,7 +3908,9 @@
           "ulurp:N240207ZRX",
           "zap:2023X0149"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608005"
     },
     {
       "request_id": "20260603052",
@@ -3786,7 +3946,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603052"
     },
     {
       "request_id": "20260528032",
@@ -3822,7 +3984,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528032"
     },
     {
       "request_id": "20260602003",
@@ -3842,7 +4006,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602003"
     },
     {
       "request_id": "20260605058",
@@ -3857,7 +4023,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058"
     },
     {
       "request_id": "20260528031",
@@ -3930,7 +4098,9 @@
           "ulurp:260116ZRK",
           "ulurp:D260116ZRK"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528031"
     },
     {
       "request_id": "20260601042",
@@ -3999,7 +4169,9 @@
           "brooklyn"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601042"
     },
     {
       "request_id": "20260603044",
@@ -4082,7 +4254,9 @@
           "ulurp:240207ZRX",
           "ulurp:N240207ZRX"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044"
     },
     {
       "request_id": "20260213012",
@@ -4106,7 +4280,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012"
     },
     {
       "request_id": "20260602006",
@@ -4142,7 +4318,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602006"
     },
     {
       "request_id": "20260602044",
@@ -4210,7 +4388,9 @@
           "queens"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602044"
     },
     {
       "request_id": "20260527036",
@@ -4249,7 +4429,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527036"
     },
     {
       "request_id": "20260528018",
@@ -4338,7 +4520,9 @@
           "ulurp:250330ZRQ",
           "ulurp:N250330ZRQ"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528018"
     },
     {
       "request_id": "20260528021",
@@ -4374,7 +4558,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528021"
     },
     {
       "request_id": "20260527017",
@@ -4413,7 +4599,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527017"
     },
     {
       "request_id": "20260513035",
@@ -4457,7 +4645,9 @@
           "speak"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513035"
     },
     {
       "request_id": "20260106032",
@@ -4502,7 +4692,9 @@
           "system"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106032"
     },
     {
       "request_id": "20260528020",
@@ -4538,7 +4730,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528020"
     },
     {
       "request_id": "20260529027",
@@ -4574,7 +4768,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260529027"
     },
     {
       "request_id": "20260213011",
@@ -4598,7 +4794,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011"
     },
     {
       "request_id": "20260513034",
@@ -4642,7 +4840,9 @@
           "speak"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513034"
     },
     {
       "request_id": "20260512036",
@@ -4719,7 +4919,9 @@
           "adjacent"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512036"
     },
     {
       "request_id": "20260522008",
@@ -4755,7 +4957,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522008"
     },
     {
       "request_id": "20260522007",
@@ -4791,7 +4995,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007"
     },
     {
       "request_id": "20260521020",
@@ -4860,7 +5066,9 @@
           "sponsors"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521020"
     },
     {
       "request_id": "20260512007",
@@ -4913,7 +5121,9 @@
           "through"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512007"
     },
     {
       "request_id": "20260428020",
@@ -4948,7 +5158,9 @@
           "briefings"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428020"
     },
     {
       "request_id": "20260515001",
@@ -4972,7 +5184,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515001"
     },
     {
       "request_id": "20260513033",
@@ -5016,7 +5230,9 @@
           "speak"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513033"
     },
     {
       "request_id": "20260504025",
@@ -5055,7 +5271,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504025"
     },
     {
       "request_id": "20260512004",
@@ -5094,7 +5312,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512004"
     },
     {
       "request_id": "20260521019",
@@ -5131,7 +5351,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521019"
     },
     {
       "request_id": "20260518025",
@@ -5206,7 +5428,9 @@
           "ulurp:C240161ZMX",
           "zap:2021X0247"
         ]
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518025"
     },
     {
       "request_id": "20260429031",
@@ -5245,7 +5469,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260429031"
     },
     {
       "request_id": "20260518003",
@@ -5311,7 +5537,9 @@
           "these"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003"
     },
     {
       "request_id": "20260522019",
@@ -5347,7 +5575,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522019"
     },
     {
       "request_id": "20260519007",
@@ -5383,7 +5613,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519007"
     },
     {
       "request_id": "20260518031",
@@ -5419,7 +5651,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518031"
     },
     {
       "request_id": "20260512014",
@@ -5439,7 +5673,9 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512014"
     },
     {
       "request_id": "20260513032",
@@ -5491,7 +5727,9 @@
           "speak"
         ],
         "matter_ids": []
-      }
+      },
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513032"
     }
   ],
   "location_residual": {
@@ -5501,5 +5739,11 @@
   },
   "place_stamp_note": "affected_area stamps restored from pre-#417 snapshot after ULURP stamp cleanup dropped place densify fields; re-run tools/build_rules_meetings_domain_observations.mjs when live SODA is available to refresh.",
   "meeting_matter_stamp_schema": "cityscroll.meeting_matter_stamp.v1",
-  "matter_subject_stamped_at": "2026-08-09T16:38:12.840Z"
+  "matter_subject_stamped_at": "2026-08-09T16:38:12.840Z",
+  "meeting_origin_vocabulary": [
+    "city_record_notice",
+    "official_community_board_calendar",
+    "official_minutes_joined",
+    "unknown"
+  ]
 }
