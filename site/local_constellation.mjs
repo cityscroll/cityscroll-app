@@ -16,7 +16,7 @@ import {
 export const LOCAL_CONSTELLATION_SCHEMA = "cityscroll.local_constellation.v1";
 export const LOCAL_CONSTELLATION_MAX_NODES = 8;
 
-const LOCAL_PLACE_EMPTY_COPY = "Nearby place records connect this district to civic areas you can open — such as its community board and the City Council districts that overlap it.";
+const LOCAL_PLACE_EMPTY_COPY = "Nearby place records link this district to civic areas. See its community board and the City Council districts that overlap it.";
 const LOCAL_EMPTY_COPY = "Nearby records connect this item to civic records you can open.";
 
 const KINDS = Object.freeze([
@@ -254,10 +254,10 @@ function emptyCopy(view) {
 function previewMarkup(view) {
   if (view.kind !== "place" || view.status !== "empty") return "";
   return `<aside class="local-constellation-preview" data-local-constellation-preview="true" data-local-constellation-preview-live="false" aria-label="Example connection preview">
-    <p class="local-constellation-preview-label">Example connection · preview</p>
+    <p class="local-constellation-preview-label">Example preview</p>
     <p class="local-constellation-preview-name"><span aria-hidden="true">◇</span>Manhattan Community Board 3</p>
-    <p class="local-constellation-preview-relation">Covers this community district.</p>
-    <p class="local-constellation-preview-note">Illustrative example; a real connection opens from its published card.</p>
+    <p class="local-constellation-preview-relation">Covers this district.</p>
+    <p class="local-constellation-preview-note">A place link can look like this.</p>
   </aside>`;
 }
 

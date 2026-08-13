@@ -26,12 +26,13 @@ test("local constellation registry covers the six Browse object kinds", () => {
 test("place empty state explains the connection and shows one non-live example", () => {
   const view = buildLocalConstellation({ kind: "place", subject_ref: "community-district:M03", neighbors: [] });
   const html = renderLocalConstellationHTML(view);
-  assert.match(html, /Nearby place records connect this district to civic areas you can open/);
-  assert.match(html, /such as its community board and the City Council districts that overlap it/);
+  assert.match(html, /Nearby place records link this district to civic areas\./);
+  assert.match(html, /See its community board and the City Council districts that overlap it\./);
   assert.equal((html.match(/data-local-constellation-preview="true"/g) || []).length, 1);
-  assert.match(html, /Example connection · preview/);
+  assert.match(html, /Example preview/);
   assert.match(html, /Manhattan Community Board 3/);
-  assert.match(html, /Covers this community district\./);
+  assert.match(html, /Covers this district\./);
+  assert.match(html, /A place link can look like this\./);
   assert.match(html, /data-local-constellation-preview-live="false"/);
   assert.doesNotMatch(html, /data-local-constellation-preview="true"[^>]*href=/);
   assert.doesNotMatch(html, /data-local-constellation-preview="true"[^>]*data-pivot/);
