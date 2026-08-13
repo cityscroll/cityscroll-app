@@ -1,0 +1,920 @@
+{
+  "version": 1,
+  "statistics": {
+    "quantile": 0.95,
+    "samples": 20,
+    "warmupSamples": 1
+  },
+  "runs": [
+    {
+      "fixture": "home.cold",
+      "viewport": "mobile",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 300,
+        "fcpMs": 1000,
+        "lcpMs": 2500,
+        "cls": 0.1,
+        "wireBytes": 460000,
+        "comment": "PROPOSED ceiling, rationale-to-confirm: current main measures about 447729 cold-home gzip bytes in both viewports; 460000 leaves 12271 bytes of headroom for near-term feature additions without another immediate ratchet. See ARCHITECTURE.md#proposed-rationale-home-cold-load-wire-budget. The deeper optimization toward the old 435000 aspiration remains a tracked follow-on."
+      },
+      "p95": {
+        "ttfbMs": 1.40500009059906,
+        "wireBytes": 447713.0,
+        "lcpMs": 40.0,
+        "cls": 0.0,
+        "fcpMs": 40.0,
+        "eventDurationMs": 0.0
+      },
+      "samples": [
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.1999998092651367,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.1999998092651367,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        }
+      ],
+      "failures": [],
+      "wireFiles": [
+        {
+          "path": "i18n.js",
+          "gzipBytes": 64774
+        },
+        {
+          "path": "index.html",
+          "gzipBytes": 39821
+        },
+        {
+          "path": "app/routing.mjs",
+          "gzipBytes": 23791
+        },
+        {
+          "path": "app/land.mjs",
+          "gzipBytes": 22518
+        },
+        {
+          "path": "action_registry.js",
+          "gzipBytes": 20970
+        },
+        {
+          "path": "app/money-history.mjs",
+          "gzipBytes": 20736
+        },
+        {
+          "path": "app/feed-actions.mjs",
+          "gzipBytes": 20388
+        },
+        {
+          "path": "app/search-share.mjs",
+          "gzipBytes": 19768
+        },
+        {
+          "path": "app/people.mjs",
+          "gzipBytes": 19440
+        },
+        {
+          "path": "app/entities.mjs",
+          "gzipBytes": 17796
+        },
+        {
+          "path": "app/boot.mjs",
+          "gzipBytes": 11814
+        },
+        {
+          "path": "app/workspace.mjs",
+          "gzipBytes": 10690
+        },
+        {
+          "path": "app/money-list.mjs",
+          "gzipBytes": 9983
+        },
+        {
+          "path": "app/core.mjs",
+          "gzipBytes": 9460
+        },
+        {
+          "path": "app/procurement-lifecycle.mjs",
+          "gzipBytes": 9161
+        },
+        {
+          "path": "app/procurement-phase.mjs",
+          "gzipBytes": 8269
+        },
+        {
+          "path": "app/meetings.mjs",
+          "gzipBytes": 7976
+        },
+        {
+          "path": "scope_v0.mjs",
+          "gzipBytes": 7006
+        },
+        {
+          "path": "hearing_location.js",
+          "gzipBytes": 6906
+        },
+        {
+          "path": "qr_share.js",
+          "gzipBytes": 6846
+        },
+        {
+          "path": "app/subsidy.mjs",
+          "gzipBytes": 6649
+        },
+        {
+          "path": "staffing.js",
+          "gzipBytes": 4853
+        },
+        {
+          "path": "agency_identity.mjs",
+          "gzipBytes": 4819
+        },
+        {
+          "path": "entity_pivot.mjs",
+          "gzipBytes": 3684
+        },
+        {
+          "path": "sub_outreach.mjs",
+          "gzipBytes": 3396
+        },
+        {
+          "path": "nl_deeplink.js",
+          "gzipBytes": 3350
+        },
+        {
+          "path": "council_district_lookup.mjs",
+          "gzipBytes": 3335
+        },
+        {
+          "path": "brand.css",
+          "gzipBytes": 3326
+        },
+        {
+          "path": "data/money_default_open.json",
+          "gzipBytes": 3300
+        },
+        {
+          "path": "location_awareness.js",
+          "gzipBytes": 3110
+        },
+        {
+          "path": "external_awards.js",
+          "gzipBytes": 3103
+        },
+        {
+          "path": "app/result-match.mjs",
+          "gzipBytes": 3031
+        },
+        {
+          "path": "task_first.js",
+          "gzipBytes": 3006
+        },
+        {
+          "path": "solicitation_procurement_method.mjs",
+          "gzipBytes": 2883
+        },
+        {
+          "path": "mwbe_goal_surface.mjs",
+          "gzipBytes": 2806
+        },
+        {
+          "path": "route_migration.mjs",
+          "gzipBytes": 2762
+        },
+        {
+          "path": "analytics.js",
+          "gzipBytes": 2271
+        },
+        {
+          "path": "agency_connections.mjs",
+          "gzipBytes": 2063
+        },
+        {
+          "path": "walk_entry.mjs",
+          "gzipBytes": 2056
+        },
+        {
+          "path": "clarity.js",
+          "gzipBytes": 1932
+        },
+        {
+          "path": "borough_scope_links.mjs",
+          "gzipBytes": 1924
+        },
+        {
+          "path": "cardinality_adaptive_facets.mjs",
+          "gzipBytes": 1810
+        },
+        {
+          "path": "text_clean.mjs",
+          "gzipBytes": 1646
+        },
+        {
+          "path": "beta_flags.js",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "data/money_procurement_agencies.json",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "app/main.mjs",
+          "gzipBytes": 1453
+        },
+        {
+          "path": "affordance_grammar.mjs",
+          "gzipBytes": 1434
+        },
+        {
+          "path": "staffing_agency_scope.mjs",
+          "gzipBytes": 1417
+        },
+        {
+          "path": "agency_scope_links.mjs",
+          "gzipBytes": 1333
+        },
+        {
+          "path": "attendance_scope_links.mjs",
+          "gzipBytes": 1315
+        },
+        {
+          "path": "exam_detail_facets.mjs",
+          "gzipBytes": 1305
+        },
+        {
+          "path": "money_scope_links.mjs",
+          "gzipBytes": 1112
+        },
+        {
+          "path": "display_title.mjs",
+          "gzipBytes": 1065
+        },
+        {
+          "path": "franchise_notice.mjs",
+          "gzipBytes": 795
+        },
+        {
+          "path": "agency_scope_route.mjs",
+          "gzipBytes": 636
+        },
+        {
+          "path": "list_entity_pivots.mjs",
+          "gzipBytes": 565
+        },
+        {
+          "path": "bbl_reader.mjs",
+          "gzipBytes": 447
+        },
+        {
+          "path": "legacy_hash_forward.mjs",
+          "gzipBytes": 435
+        },
+        {
+          "path": "action_link_health.js",
+          "gzipBytes": 430
+        },
+        {
+          "path": "notice_permalink.mjs",
+          "gzipBytes": 328
+        },
+        {
+          "path": "action_location_keys.mjs",
+          "gzipBytes": 300
+        },
+        {
+          "path": "city_record_id.mjs",
+          "gzipBytes": 248
+        },
+        {
+          "path": "money_scope_consistency.mjs",
+          "gzipBytes": 228
+        },
+        {
+          "path": "beta-flags.json",
+          "gzipBytes": 227
+        },
+        {
+          "path": "near_you_scope.mjs",
+          "gzipBytes": 226
+        },
+        {
+          "path": "app/now.mjs",
+          "gzipBytes": 180
+        }
+      ]
+    },
+    {
+      "fixture": "home.cold",
+      "viewport": "desktop",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 300,
+        "fcpMs": 1000,
+        "lcpMs": 2500,
+        "cls": 0.1,
+        "wireBytes": 460000,
+        "comment": "PROPOSED ceiling, rationale-to-confirm: current main measures about 447729 cold-home gzip bytes in both viewports; 460000 leaves 12271 bytes of headroom for near-term feature additions without another immediate ratchet. See ARCHITECTURE.md#proposed-rationale-home-cold-load-wire-budget. The deeper optimization toward the old 435000 aspiration remains a tracked follow-on."
+      },
+      "p95": {
+        "ttfbMs": 1.5,
+        "wireBytes": 447713.0,
+        "lcpMs": 48.0,
+        "cls": 0.0,
+        "fcpMs": 48.0,
+        "eventDurationMs": 0.0
+      },
+      "samples": [
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 447713.0
+        }
+      ],
+      "failures": [],
+      "wireFiles": [
+        {
+          "path": "i18n.js",
+          "gzipBytes": 64774
+        },
+        {
+          "path": "index.html",
+          "gzipBytes": 39821
+        },
+        {
+          "path": "app/routing.mjs",
+          "gzipBytes": 23791
+        },
+        {
+          "path": "app/land.mjs",
+          "gzipBytes": 22518
+        },
+        {
+          "path": "action_registry.js",
+          "gzipBytes": 20970
+        },
+        {
+          "path": "app/money-history.mjs",
+          "gzipBytes": 20736
+        },
+        {
+          "path": "app/feed-actions.mjs",
+          "gzipBytes": 20388
+        },
+        {
+          "path": "app/search-share.mjs",
+          "gzipBytes": 19768
+        },
+        {
+          "path": "app/people.mjs",
+          "gzipBytes": 19440
+        },
+        {
+          "path": "app/entities.mjs",
+          "gzipBytes": 17796
+        },
+        {
+          "path": "app/boot.mjs",
+          "gzipBytes": 11814
+        },
+        {
+          "path": "app/workspace.mjs",
+          "gzipBytes": 10690
+        },
+        {
+          "path": "app/money-list.mjs",
+          "gzipBytes": 9983
+        },
+        {
+          "path": "app/core.mjs",
+          "gzipBytes": 9460
+        },
+        {
+          "path": "app/procurement-lifecycle.mjs",
+          "gzipBytes": 9161
+        },
+        {
+          "path": "app/procurement-phase.mjs",
+          "gzipBytes": 8269
+        },
+        {
+          "path": "app/meetings.mjs",
+          "gzipBytes": 7976
+        },
+        {
+          "path": "scope_v0.mjs",
+          "gzipBytes": 7006
+        },
+        {
+          "path": "hearing_location.js",
+          "gzipBytes": 6906
+        },
+        {
+          "path": "qr_share.js",
+          "gzipBytes": 6846
+        },
+        {
+          "path": "app/subsidy.mjs",
+          "gzipBytes": 6649
+        },
+        {
+          "path": "staffing.js",
+          "gzipBytes": 4853
+        },
+        {
+          "path": "agency_identity.mjs",
+          "gzipBytes": 4819
+        },
+        {
+          "path": "entity_pivot.mjs",
+          "gzipBytes": 3684
+        },
+        {
+          "path": "sub_outreach.mjs",
+          "gzipBytes": 3396
+        },
+        {
+          "path": "nl_deeplink.js",
+          "gzipBytes": 3350
+        },
+        {
+          "path": "council_district_lookup.mjs",
+          "gzipBytes": 3335
+        },
+        {
+          "path": "brand.css",
+          "gzipBytes": 3326
+        },
+        {
+          "path": "data/money_default_open.json",
+          "gzipBytes": 3300
+        },
+        {
+          "path": "location_awareness.js",
+          "gzipBytes": 3110
+        },
+        {
+          "path": "external_awards.js",
+          "gzipBytes": 3103
+        },
+        {
+          "path": "app/result-match.mjs",
+          "gzipBytes": 3031
+        },
+        {
+          "path": "task_first.js",
+          "gzipBytes": 3006
+        },
+        {
+          "path": "solicitation_procurement_method.mjs",
+          "gzipBytes": 2883
+        },
+        {
+          "path": "mwbe_goal_surface.mjs",
+          "gzipBytes": 2806
+        },
+        {
+          "path": "route_migration.mjs",
+          "gzipBytes": 2762
+        },
+        {
+          "path": "analytics.js",
+          "gzipBytes": 2271
+        },
+        {
+          "path": "agency_connections.mjs",
+          "gzipBytes": 2063
+        },
+        {
+          "path": "walk_entry.mjs",
+          "gzipBytes": 2056
+        },
+        {
+          "path": "clarity.js",
+          "gzipBytes": 1932
+        },
+        {
+          "path": "borough_scope_links.mjs",
+          "gzipBytes": 1924
+        },
+        {
+          "path": "cardinality_adaptive_facets.mjs",
+          "gzipBytes": 1810
+        },
+        {
+          "path": "text_clean.mjs",
+          "gzipBytes": 1646
+        },
+        {
+          "path": "beta_flags.js",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "data/money_procurement_agencies.json",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "app/main.mjs",
+          "gzipBytes": 1453
+        },
+        {
+          "path": "affordance_grammar.mjs",
+          "gzipBytes": 1434
+        },
+        {
+          "path": "staffing_agency_scope.mjs",
+          "gzipBytes": 1417
+        },
+        {
+          "path": "agency_scope_links.mjs",
+          "gzipBytes": 1333
+        },
+        {
+          "path": "attendance_scope_links.mjs",
+          "gzipBytes": 1315
+        },
+        {
+          "path": "exam_detail_facets.mjs",
+          "gzipBytes": 1305
+        },
+        {
+          "path": "money_scope_links.mjs",
+          "gzipBytes": 1112
+        },
+        {
+          "path": "display_title.mjs",
+          "gzipBytes": 1065
+        },
+        {
+          "path": "franchise_notice.mjs",
+          "gzipBytes": 795
+        },
+        {
+          "path": "agency_scope_route.mjs",
+          "gzipBytes": 636
+        },
+        {
+          "path": "list_entity_pivots.mjs",
+          "gzipBytes": 565
+        },
+        {
+          "path": "bbl_reader.mjs",
+          "gzipBytes": 447
+        },
+        {
+          "path": "legacy_hash_forward.mjs",
+          "gzipBytes": 435
+        },
+        {
+          "path": "action_link_health.js",
+          "gzipBytes": 430
+        },
+        {
+          "path": "notice_permalink.mjs",
+          "gzipBytes": 328
+        },
+        {
+          "path": "action_location_keys.mjs",
+          "gzipBytes": 300
+        },
+        {
+          "path": "city_record_id.mjs",
+          "gzipBytes": 248
+        },
+        {
+          "path": "money_scope_consistency.mjs",
+          "gzipBytes": 228
+        },
+        {
+          "path": "beta-flags.json",
+          "gzipBytes": 227
+        },
+        {
+          "path": "near_you_scope.mjs",
+          "gzipBytes": 226
+        },
+        {
+          "path": "app/now.mjs",
+          "gzipBytes": 180
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "failures": []
+}
