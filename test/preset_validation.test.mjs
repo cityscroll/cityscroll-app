@@ -8,6 +8,8 @@ import {
   fruitfulSuggestionIndices,
 } from "../site/preset_validation.mjs";
 import { canRefreshGeneratedFallback } from "../tools/preset_fallback_ci.mjs";
+import { SUGGESTION_POOL } from "../worker/src/lib/suggestions.mjs";
+import { validateLiveSuggestions } from "../tools/validate_presets.mjs";
 
 const validatorSource = readFileSync(new URL("../tools/validate_presets.mjs", import.meta.url), "utf8");
 const ciSource = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
@@ -53,6 +55,90 @@ test("CI refresh is allowed only for inherited fallback drift", () => {
   assert.equal(
     canRefreshGeneratedFallback({ ...baseSources, "worker/src/lib/suggestions.mjs": null }, baseSources),
     true,
+  );
+});
+
+test("refresh retains an inherited candidate when live resolution is temporarily unavailable", async () => {
+  const retainedKey = "money:0";
+  const candidatesByLens = SUGGESTION_POOL.reduce((byLens, candidate) => {
+    (byLens[candidate.lens] ||= []).push(candidate);
+    return byLens;
+  }, {});
+  const previous = {
+    minResults: 1,
+    byLens: candidatesByLens,
+    candidates: SUGGESTION_POOL.map((candidate) => ({
+      ...candidate,
+      filter: { candidate: `${candidate.lens}:${candidate.idx}` },
+      count: 7,
+    })),
+  };
+  for (const [lens, candidates] of Object.entries(previous.byLens)) {
+    previous.byLens[lens] = candidates.map(({ idx }) => idx);
+  }
+  const warnings = [];
+  const refreshed = await validateLiveSuggestions(previous, {
+    resolve: async (candidate) => {
+      if (`${candidate.lens}:${candidate.idx}` === retainedKey) {
+        throw Object.assign(new Error("resolver returned degraded payload"), {
+          code: "PRESET_SUGGESTION_UNRESOLVED",
+        });
+      }
+      return { candidate: `${candidate.lens}:${candidate.idx}` };
+    },
+    count: async () => 5,
+    warn: (message) => warnings.push(message),
+  });
+  const retained = refreshed.candidates.find((candidate) => `${candidate.lens}:${candidate.idx}` === retainedKey);
+  assert.deepEqual(retained.filter, previous.candidates[0].filter);
+  assert.equal(retained.count, previous.candidates[0].count);
+  assert.deepEqual(refreshed.byLens.money, previous.byLens.money);
+  assert.match(warnings[0], /money:0/);
+});
+
+test("a broad resolver outage retains the inherited fallback wholesale", async () => {
+  const candidatesByLens = SUGGESTION_POOL.reduce((byLens, candidate) => {
+    (byLens[candidate.lens] ||= []).push(candidate);
+    return byLens;
+  }, {});
+  const previous = {
+    minResults: 1,
+    byLens: Object.fromEntries(
+      Object.entries(candidatesByLens).map(([lens, candidates]) => [lens, candidates.map(({ idx }) => idx)]),
+    ),
+    candidates: SUGGESTION_POOL.map((candidate) => ({
+      ...candidate,
+      filter: { candidate: `${candidate.lens}:${candidate.idx}` },
+      count: 7,
+    })),
+  };
+  const warnings = [];
+  const retained = await validateLiveSuggestions(previous, {
+    resolve: async () => {
+      throw Object.assign(new Error("resolver unavailable"), { code: "PRESET_SUGGESTION_UNRESOLVED" });
+    },
+    count: async () => {
+      throw new Error("inherited candidates should not be recounted");
+    },
+    warn: (message) => warnings.push(message),
+  });
+  assert.equal(retained, previous);
+  assert.match(warnings.at(-1), /retaining the inherited fallback wholesale/);
+});
+
+test("a hand-edited fallback remains ineligible for CI refresh", () => {
+  const site = "prefix\nconst NL_SUGGESTIONS_FALLBACK = {\n  money: [1],\n};\nsuffix";
+  const baseSources = {
+    "site/app/search-share.mjs": site,
+    "worker/src/lib/suggestions.mjs": "worker source",
+    "site/data/preset-validation.json": "receipt",
+  };
+  assert.equal(
+    canRefreshGeneratedFallback(baseSources, {
+      ...baseSources,
+      "site/app/search-share.mjs": site.replace("[1]", "[2]"),
+    }),
+    false,
   );
 });
 
