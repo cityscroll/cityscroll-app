@@ -8,6 +8,7 @@ import {
   renderEdgeSummaryProvenance,
   renderEdgeSummaryRail,
 } from "../site/edge_summary.mjs";
+import { renderEdgeProvenanceInspector } from "../site/graph_edge_provenance.mjs";
 import { buildAgencyEdgeSummary } from "../site/agency_constellation_model.mjs";
 import { buildBrowseEdgeSummary, buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
 import { renderVendorFootprintHTML } from "../site/vendor_footprint.mjs";
@@ -91,12 +92,13 @@ test("empty and unknown states render as explicit states, never asserted zeroes"
   assert.match(html, /data-edge-state="empty"/);
   assert.match(html, /No rules linked yet/);
   assert.match(html, /data-edge-state="unknown"/);
-  assert.match(html, /Unknown \/ not indexed/);
+  assert.match(html, /Availability is not known yet/);
   assert.match(html, /data-edge-availability="empty-in-scope"/);
   assert.match(html, /data-edge-availability="unknown-unindexed"/);
-  assert.match(html, /aria-label="issued rules; target kind: rule; count: No rules linked yet; scope: not specified"/);
+  assert.match(html, /aria-label="issued rules; No rules linked yet"/);
   assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
-  assert.match(html, /aria-label="related meetings; target kind: meeting; count: Unknown \/ not indexed; scope: not specified"/);
+  assert.match(html, /aria-label="related meetings; Availability is not known yet"/);
+  assert.doesNotMatch(html, /scope:|universe:|entity ref:/);
   assert.doesNotMatch(html, /<a class="edge-summary-link"/);
 });
 
@@ -132,7 +134,9 @@ test("matched edges link with typed accessible metadata while names never mint r
   ]);
 
   assert.match(html, /<a class="edge-summary-link" href="\/notices\/20260805001\?as_of=2026-08-11"/);
-  assert.match(html, /aria-label="related meetings and hearings; target kind: meeting; count: Available: 1 record; scope: facet: meetings, entity ref: agency:id:parks-and-recreation; as of: 2026-08-11"/);
+  assert.match(html, /aria-label="related meetings and hearings; Available: 1 record"/);
+  assert.match(html, /as of 2026-08-11/);
+  assert.doesNotMatch(html, /scope:|universe:|entity ref:/);
   assert.doesNotMatch(html, /href="[^"]*5261/);
   assert.match(html, /data-edge-state="matched"/);
 });
@@ -252,7 +256,7 @@ test("edge summaries disclose cross-spine review without linking or filling null
   assert.doesNotMatch(html, /<a class="edge-summary-link"/);
   assert.doesNotMatch(html, /data-edge-provenance="1"/);
   assert.match(html, /data-cross-spine-confidence="review"/);
-  assert.match(html, /edge-summary-confidence-review"[^>]*>review</);
+  assert.match(html, /edge-summary-confidence-review"[^>]*>Needs review</);
   assert.doesNotMatch(html, /Unavailable|compare evidence|does not choose a winner or merge identities/);
   assert.match(renderEdgeSummaryProvenance(record), /<dt>Source<\/dt><dd>NYC Council Legistar<\/dd>/);
   assert.doesNotMatch(renderEdgeSummaryProvenance(record), /Source record|Source fields/);
@@ -283,4 +287,33 @@ test("shared reader labels humanize raw relations and omit debug provenance by d
   assert.doesNotMatch(html, /Unavailable|boro_cd|coundist|edge-summary-provenance|compare evidence/);
   assert.match(renderEdgeSummaryProvenance(record), /borough and community district/);
   assert.match(renderEdgeSummaryProvenance(record), /Council District/);
+  assert.match(renderEdgeSummaryProvenance(record), /Technical details/);
+});
+
+test("connection evidence is readable, finite, and keeps raw provenance opt-in", () => {
+  const html = renderEdgeProvenanceInspector({
+    claim_id: "staffing:exam:7002",
+    label: "Administrative Housing Development Specialist",
+    relation: "certified_to_agency",
+    object_href: "/exams/7002/",
+    how: {
+      method: { available: true, value: "publisher_certification_record_v1" },
+      warrant_class: "exact",
+    },
+    where: {
+      source_system: { available: true, value: "socrata" },
+      source_record_id: { available: true, value: "a9md-ynri:exam:7002:agency:816" },
+      source_fields: { available: true, value: ["exam_no", "list_agency_code"] },
+      observed_at: { available: true, value: "2026-08-06" },
+    },
+    cross_spine: { confidence: "unmatched", explicit: false },
+    share_href: "/agencies/health-and-mental-hygiene/?claim=staffing%3Aexam%3A7002",
+  }, { open: true });
+
+  assert.doesNotMatch(html, /NaN|Exact match|Evidence details|Join method|Share this claim|>unmatched</);
+  assert.match(html, /Matched by a published record/);
+  assert.match(html, /Matched using the agency code in the published staffing record/);
+  assert.match(html, /NYC Open Data/);
+  assert.match(html, /Technical details/);
+  assert.match(html, /a9md-ynri:exam:7002:agency:816/);
 });
