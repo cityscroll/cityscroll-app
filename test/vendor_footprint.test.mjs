@@ -203,7 +203,8 @@ test("an empty footprint paints every supported family honestly", () => {
   });
   assert.match(html, /data-footprint-section="awards"/);
   assert.match(html, /data-footprint-section="franchise"/);
-  assert.match(html, /Empty in this scoped materialization/);
+  assert.match(html, /No meetings or hearings linked yet/);
+  assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
 });
 
 test("promotion removes qualifier labels but never admits tentative rows", () => {

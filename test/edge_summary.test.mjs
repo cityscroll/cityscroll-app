@@ -89,12 +89,13 @@ test("empty and unknown states render as explicit states, never asserted zeroes"
   ]);
 
   assert.match(html, /data-edge-state="empty"/);
-  assert.match(html, /Empty in this scoped materialization/);
+  assert.match(html, /No rules linked yet/);
   assert.match(html, /data-edge-state="unknown"/);
   assert.match(html, /Unknown \/ not indexed/);
   assert.match(html, /data-edge-availability="empty-in-scope"/);
   assert.match(html, /data-edge-availability="unknown-unindexed"/);
-  assert.match(html, /aria-label="issued rules; target kind: rule; count: Empty in this scoped materialization; scope: not specified"/);
+  assert.match(html, /aria-label="issued rules; target kind: rule; count: No rules linked yet; scope: not specified"/);
+  assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
   assert.match(html, /aria-label="related meetings; target kind: meeting; count: Unknown \/ not indexed; scope: not specified"/);
   assert.doesNotMatch(html, /<a class="edge-summary-link"/);
 });

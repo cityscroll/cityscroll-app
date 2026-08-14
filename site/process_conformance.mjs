@@ -1060,7 +1060,7 @@ export function renderMandatesConformanceSection(view) {
         <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}${neighbors}</span>
       </li>`;
     }).join("")}</ul>`
-    : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency in the current materialization.")}</p>`;
+    : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency yet.")}</p>`;
 
   const neighborChrome = renderMandateSectionNeighborActions({
     graph_neighbors: graphNeighbors,
