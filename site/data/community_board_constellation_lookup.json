@@ -10,7 +10,7 @@
       "path": "/community-boards/bronx-cb-01/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -147,11 +147,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-01",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-01"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-01",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-01",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -193,7 +236,7 @@
       "path": "/community-boards/bronx-cb-02/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -330,11 +373,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-02",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-02"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-02",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-02",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -376,7 +462,7 @@
       "path": "/community-boards/bronx-cb-03/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -513,11 +599,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-03",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-03"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-03",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-03",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -559,7 +688,7 @@
       "path": "/community-boards/bronx-cb-04/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -696,11 +825,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-04",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-04"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-04",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-04",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -742,7 +914,7 @@
       "path": "/community-boards/bronx-cb-05/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -879,11 +1051,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-05",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-05"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-05",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-05",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -925,7 +1140,7 @@
       "path": "/community-boards/bronx-cb-06/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -1062,11 +1277,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-06",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-06",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-06",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -1108,7 +1366,7 @@
       "path": "/community-boards/bronx-cb-07/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -1245,11 +1503,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-07",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-07"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-07",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-07",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -1291,7 +1592,7 @@
       "path": "/community-boards/bronx-cb-08/",
       "summary": {
         "matched_categories": 1,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -1428,11 +1729,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-08",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-08"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-08",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-08",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -1474,7 +1818,7 @@
       "path": "/community-boards/bronx-cb-09/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -1611,11 +1955,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-09",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-09"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-09",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-09",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -1657,7 +2044,7 @@
       "path": "/community-boards/bronx-cb-10/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -1794,11 +2181,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-10",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-10"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-10",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-10",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -1840,7 +2270,7 @@
       "path": "/community-boards/bronx-cb-11/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -1977,11 +2407,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-11",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-11"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-11",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-11",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -2023,7 +2496,7 @@
       "path": "/community-boards/bronx-cb-12/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -2160,11 +2633,54 @@
           "source_kind": "community-board",
           "source_id": "bronx-cb-12",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "bronx-cb-12"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "bronx-cb-12",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "bronx-cb-12",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -2206,7 +2722,7 @@
       "path": "/community-boards/brooklyn-cb-01/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -2343,11 +2859,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-01",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-01"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-01",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-01",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -2389,7 +2948,7 @@
       "path": "/community-boards/brooklyn-cb-02/",
       "summary": {
         "matched_categories": 1,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -2526,11 +3085,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-02",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-02"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-02",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-02",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -2572,7 +3174,7 @@
       "path": "/community-boards/brooklyn-cb-03/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -2709,11 +3311,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-03",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-03"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-03",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-03",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -2755,7 +3400,7 @@
       "path": "/community-boards/brooklyn-cb-04/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -2892,11 +3537,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-04",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-04"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-04",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-04",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -2938,7 +3626,7 @@
       "path": "/community-boards/brooklyn-cb-05/",
       "summary": {
         "matched_categories": 1,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -3075,11 +3763,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-05",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-05"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-05",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-05",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -3121,7 +3852,7 @@
       "path": "/community-boards/brooklyn-cb-06/",
       "summary": {
         "matched_categories": 1,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -3258,11 +3989,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-06",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-06",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-06",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -3304,7 +4078,7 @@
       "path": "/community-boards/brooklyn-cb-07/",
       "summary": {
         "matched_categories": 1,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -3441,11 +4215,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-07",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-07"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-07",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-07",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -3487,7 +4304,7 @@
       "path": "/community-boards/brooklyn-cb-08/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -3624,11 +4441,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-08",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-08"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-08",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-08",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -3670,7 +4530,7 @@
       "path": "/community-boards/brooklyn-cb-09/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -3807,11 +4667,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-09",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-09"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-09",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-09",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -3853,7 +4756,7 @@
       "path": "/community-boards/brooklyn-cb-10/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -3990,11 +4893,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-10",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-10"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-10",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-10",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -4036,7 +4982,7 @@
       "path": "/community-boards/brooklyn-cb-11/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -4173,11 +5119,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-11",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-11"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-11",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-11",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -4219,7 +5208,7 @@
       "path": "/community-boards/brooklyn-cb-12/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -4356,11 +5345,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-12",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-12"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-12",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-12",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -4402,7 +5434,7 @@
       "path": "/community-boards/brooklyn-cb-13/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -4539,11 +5571,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-13",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-13"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-13",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-13",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -4585,7 +5660,7 @@
       "path": "/community-boards/brooklyn-cb-14/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -4722,11 +5797,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-14",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-14"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-14",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-14",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -4768,7 +5886,7 @@
       "path": "/community-boards/brooklyn-cb-15/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -4905,11 +6023,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-15",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-15"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-15",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-15",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -4951,7 +6112,7 @@
       "path": "/community-boards/brooklyn-cb-16/",
       "summary": {
         "matched_categories": 1,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -5088,11 +6249,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-16",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-16"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-16",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-16",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -5134,7 +6338,7 @@
       "path": "/community-boards/brooklyn-cb-17/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -5271,11 +6475,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-17",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-17"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-17",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-17",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -5317,7 +6564,7 @@
       "path": "/community-boards/brooklyn-cb-18/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -5454,11 +6701,54 @@
           "source_kind": "community-board",
           "source_id": "brooklyn-cb-18",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "brooklyn-cb-18"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "brooklyn-cb-18",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "brooklyn-cb-18",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -5500,7 +6790,7 @@
       "path": "/community-boards/manhattan-cb-01/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -5637,11 +6927,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-01",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-01"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-01",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-01",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -5683,7 +7016,7 @@
       "path": "/community-boards/manhattan-cb-02/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -5820,11 +7153,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-02",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-02"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-02",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-02",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -5866,7 +7242,7 @@
       "path": "/community-boards/manhattan-cb-03/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -6003,11 +7379,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-03",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-03"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-03",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-03",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -6049,7 +7468,7 @@
       "path": "/community-boards/manhattan-cb-04/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -6186,11 +7605,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-04",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-04"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-04",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-04",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -6232,7 +7694,7 @@
       "path": "/community-boards/manhattan-cb-05/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -6369,11 +7831,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-05",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-05"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-05",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-05",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -6415,7 +7920,7 @@
       "path": "/community-boards/manhattan-cb-06/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -6552,11 +8057,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-06",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-06",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-06",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -6598,7 +8146,7 @@
       "path": "/community-boards/manhattan-cb-07/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -6735,11 +8283,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-07",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-07"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-07",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-07",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -6781,7 +8372,7 @@
       "path": "/community-boards/manhattan-cb-08/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -6918,11 +8509,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-08",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-08"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-08",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-08",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -6964,7 +8598,7 @@
       "path": "/community-boards/manhattan-cb-09/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -7101,11 +8735,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-09",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-09"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-09",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-09",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -7147,7 +8824,7 @@
       "path": "/community-boards/manhattan-cb-10/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -7284,11 +8961,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-10",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-10"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-10",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-10",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -7330,7 +9050,7 @@
       "path": "/community-boards/manhattan-cb-11/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -7467,11 +9187,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-11",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-11"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-11",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-11",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -7513,7 +9276,7 @@
       "path": "/community-boards/manhattan-cb-12/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -7650,11 +9413,54 @@
           "source_kind": "community-board",
           "source_id": "manhattan-cb-12",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-12"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "manhattan-cb-12",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-12",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -7696,7 +9502,7 @@
       "path": "/community-boards/queens-cb-01/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -7833,11 +9639,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-01",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-01"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-01",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-01",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -7879,7 +9728,7 @@
       "path": "/community-boards/queens-cb-02/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -8016,11 +9865,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-02",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-02"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-02",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-02",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -8062,7 +9954,7 @@
       "path": "/community-boards/queens-cb-03/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -8199,11 +10091,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-03",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-03"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-03",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-03",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -8245,7 +10180,7 @@
       "path": "/community-boards/queens-cb-04/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -8382,11 +10317,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-04",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-04"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-04",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-04",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -8428,7 +10406,7 @@
       "path": "/community-boards/queens-cb-05/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -8565,11 +10543,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-05",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-05"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-05",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-05",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -8611,7 +10632,7 @@
       "path": "/community-boards/queens-cb-06/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -8748,11 +10769,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-06",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-06",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-06",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -8794,7 +10858,7 @@
       "path": "/community-boards/queens-cb-07/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -8931,11 +10995,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-07",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-07"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-07",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-07",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -8977,7 +11084,7 @@
       "path": "/community-boards/queens-cb-08/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -9114,11 +11221,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-08",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-08"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-08",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-08",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -9160,7 +11310,7 @@
       "path": "/community-boards/queens-cb-09/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -9297,11 +11447,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-09",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-09"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-09",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-09",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -9343,7 +11536,7 @@
       "path": "/community-boards/queens-cb-10/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -9480,11 +11673,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-10",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-10"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-10",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-10",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -9526,7 +11762,7 @@
       "path": "/community-boards/queens-cb-11/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -9663,11 +11899,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-11",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-11"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-11",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-11",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -9709,7 +11988,7 @@
       "path": "/community-boards/queens-cb-12/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -9846,11 +12125,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-12",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-12"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-12",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-12",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -9892,7 +12214,7 @@
       "path": "/community-boards/queens-cb-13/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -10029,11 +12351,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-13",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-13"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-13",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-13",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -10075,7 +12440,7 @@
       "path": "/community-boards/queens-cb-14/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -10212,11 +12577,54 @@
           "source_kind": "community-board",
           "source_id": "queens-cb-14",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-14"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "queens-cb-14",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/queens-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-14",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -10258,7 +12666,7 @@
       "path": "/community-boards/staten-island-cb-01/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -10395,11 +12803,54 @@
           "source_kind": "community-board",
           "source_id": "staten-island-cb-01",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "staten-island-cb-01"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "staten-island-cb-01",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "staten-island-cb-01",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -10441,7 +12892,7 @@
       "path": "/community-boards/staten-island-cb-02/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -10578,11 +13029,54 @@
           "source_kind": "community-board",
           "source_id": "staten-island-cb-02",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "staten-island-cb-02"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "staten-island-cb-02",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "staten-island-cb-02",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
@@ -10624,7 +13118,7 @@
       "path": "/community-boards/staten-island-cb-03/",
       "summary": {
         "matched_categories": 2,
-        "category_count": 4,
+        "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
@@ -10761,11 +13255,54 @@
           "source_kind": "community-board",
           "source_id": "staten-island-cb-03",
           "edge_type": "has_member",
-          "relation_label": "Board institution",
+          "relation_label": "Board members",
           "label": null,
-          "target_kind": "organization",
+          "target_kind": "official",
           "target_id": null,
-          "target_name": "Board institution",
+          "target_name": "Board members",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "staten-island-cb-03"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community board source registry",
+            "id": "staten-island-cb-03",
+            "name": "Community board source registry",
+            "canonical_href": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": [
+              "body_id",
+              "borough",
+              "district",
+              "name",
+              "directory_url",
+              "observed_on"
+            ],
+            "join_method": null,
+            "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "staten-island-cb-03",
+          "edge_type": "issues_recommendation",
+          "relation_label": "Board recommendations",
+          "label": null,
+          "target_kind": "recommendation",
+          "target_id": null,
+          "target_name": "Board recommendations",
           "count": null,
           "state": "unknown",
           "href": null,
