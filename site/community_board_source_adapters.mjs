@@ -105,7 +105,17 @@ function explicitUrl(source) {
 
 function adapterId(source) {
   const requested = clean(source?.adapter || source?.adapter_id || source?.adapter_kind, 80);
-  return ADAPTER_ALIASES[requested] || requested || null;
+  if (requested) return ADAPTER_ALIASES[requested] || requested;
+  const format = clean(source?.format, 200).toLowerCase();
+  if (/airtable/.test(format)) return "airtable_v1";
+  if (/ical|i-calendar|google calendar/.test(format)) return "google_calendar_v1";
+  if (/video|archive link/.test(format)) return "video_record_v1";
+  if (/html|pdf|docx?|calendar|agenda|minutes|archive/.test(format)) return "html_pdf_v1";
+  return null;
+}
+
+export function communityBoardSourceAdapterId(source = {}) {
+  return adapterId(source);
 }
 
 export function sourceAdapterContract(source = {}) {
@@ -203,14 +213,19 @@ function htmlRecords(html, source, receipt = {}) {
     const title = decode(match[3]);
     const format = (url.pathname.match(/\.([a-z0-9]+)$/i)?.[1] || clean(attribute(tag, "data-format"), 20) || "html").toLowerCase();
     if (!["html", "pdf", "doc", "docx"].includes(format)) continue;
-    const recordId = attribute(tag, "data-record-id") || attribute(tag, "data-document-id") || attribute(tag, "data-event-id");
+    const explicitRecordId = attribute(tag, "data-record-id") || attribute(tag, "data-document-id") || attribute(tag, "data-event-id");
     const bodyId = attribute(tag, "data-board-id") || attribute(tag, "data-body-id");
     const date = dateFromText(attribute(tag, "data-date") || attribute(tag, "datetime") || `${title} ${url.pathname}`);
     if (!date) continue;
     const role = clean(attribute(tag, "data-category") || attribute(tag, "data-role") || source.role, 120) || null;
+    const recordKind = role === "upcoming_meetings" || role === "calendar" ? "event" : "document";
+    // A linked document URL is an explicit publisher document identity. It is
+    // safe for minutes/documents, but never becomes an event identity.
+    const recordId = explicitRecordId || (recordKind === "document" ? url.href : null);
     found.push(record(source, {
-      record_kind: role === "upcoming_meetings" || role === "calendar" ? "event" : "document",
+      record_kind: recordKind,
       record_id: recordId,
+      publisher_identifier: explicitRecordId ? null : (recordKind === "document" ? url.href : null),
       board_id: bodyId || source.board_id || source.body_id,
       body_evidence: bodyId ? { board_id: bodyId, basis: "publisher_record" } : bodyEvidence(source),
       date,
@@ -271,7 +286,7 @@ export function parseHtmlPdfSource(html, source = {}, options = {}) {
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "html_pdf_v1", observed_at: options.observedAt });
   const records = [...jsonLdEvents(html, descriptor, receipt), ...htmlRecords(html, descriptor, receipt)];
   const seen = new Set();
-  return records.filter((row) => {
+  return records.filter((row) => row.record_id && row.date).filter((row) => {
     const key = `${row.record_kind}:${row.record_id}:${row.date}`;
     if (seen.has(key)) return false;
     seen.add(key);

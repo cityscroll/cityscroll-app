@@ -4,7 +4,10 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   fetchCommunityBoardSource,
+  normalizeObservedReceipt,
   COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA,
+  sourceAdapterContract,
+  communityBoardSourceAdapterId,
 } from "../site/community_board_source_adapters.mjs";
 import { normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
 
@@ -15,6 +18,16 @@ const OUTPUT = join(ROOT, "site/data/community_board_meeting_index.json");
 const INDEX_SCHEMA = "cityscroll.community_board_meeting_index.v1";
 const JOIN_SCHEMA = "cityscroll.community_board_source_join.v1";
 const JOIN_METHOD = "exact_board_date_publisher_identifier";
+const SOURCE_STATES = Object.freeze([
+  "indexed",
+  "checked-empty",
+  "unsupported-format",
+  "unavailable",
+  "stale",
+  "not-yet-checked",
+]);
+const SOURCE_ROLES = ["upcoming_meetings", "minutes"];
+export const COMMUNITY_BOARD_SOURCE_STATES = SOURCE_STATES;
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
@@ -24,17 +37,80 @@ function sourceDescriptors(inventory, registry) {
     .filter((row) => row.body_type === "community_board")
     .map((row) => [row.body_id, row.name]));
   return (inventory.boards || []).flatMap((board) => {
-    const source = board.upcoming;
-    if (!source?.url) return [];
-    return [{
-      ...source,
-      adapter: "html_pdf_v1",
-      role: "upcoming_meetings",
-      board_id: board.id,
-      body_id: board.id,
-      body_name: boardNames.get(board.id) || board.name,
-    }];
+    return SOURCE_ROLES.map((role) => {
+      const source = role === "upcoming_meetings" ? board.upcoming : board.minutes;
+      return {
+        ...(source || {}),
+        role,
+        source_role: role,
+        board_id: board.id,
+        body_id: board.id,
+        body_name: boardNames.get(board.id) || board.name,
+      };
+    });
   });
+}
+
+function sourceReceipt(descriptor, observedAt, result = null) {
+  if (result?.receipt) return result.receipt;
+  return normalizeObservedReceipt({
+    observed_at: observedAt,
+    status: "unknown",
+    fetch_status: descriptor.verification?.fetchability === "browser_required" ? "browser-required" : null,
+    reason: descriptor.url ? "source_not_checked" : "no_explicit_source_observed",
+    parser: communityBoardSourceAdapterId(descriptor),
+  }, descriptor);
+}
+
+function sourceState(descriptor, result, records, observedAt) {
+  if (!descriptor.url) return "not-yet-checked";
+  if (!sourceAdapterContract(descriptor)) return "unsupported-format";
+  if (descriptor.status === "stale" || descriptor.verification?.status === "stale") return "stale";
+  if (descriptor.verification?.fetchability === "browser_required") return "unavailable";
+  const receipt = result?.receipt || {};
+  if (receipt.reason === "source_stale") return "stale";
+  if (receipt.status !== "ok") return "unavailable";
+  const expectedKind = descriptor.source_role === "minutes" ? "document" : "event";
+  const materialized = records.filter((record) => record.record_kind === expectedKind && record.record_id && record.date);
+  return materialized.length ? "indexed" : "checked-empty";
+}
+
+export { sourceState as classifyCommunityBoardSourceRole };
+
+function sourceRoleReceipt(descriptor, result, records, observedAt) {
+  const receipt = sourceReceipt(descriptor, observedAt, result);
+  const state = sourceState(descriptor, result, records, observedAt);
+  const materialized = records.filter((record) => (
+    (descriptor.source_role === "minutes" ? record.record_kind === "document" : record.record_kind === "event")
+      && record.record_id && record.date
+  ));
+  return {
+    board_id: descriptor.board_id,
+    role: descriptor.source_role,
+    source_url: descriptor.url || null,
+    adapter: communityBoardSourceAdapterId(descriptor),
+    state,
+    state_reason: receipt.reason || (state === "checked-empty" ? "no_explicit_records" : null),
+    observed_receipt: receipt,
+    inventory_receipt: descriptor.verification || null,
+    record_count: records.length,
+    materialized_record_count: materialized.length,
+  };
+}
+
+function assertNoDuplicatePublisherIdentifiers(records) {
+  const seen = new Map();
+  for (const record of records) {
+    const identifier = record.publisher_identifier || record.source_record_id || record.record_id;
+    if (!identifier) continue;
+    const key = `${record.board_id || record.body_id}:${record.source_role || "unknown"}:${identifier}`;
+    const previous = seen.get(key);
+    if (previous) {
+      if (previous.record_url && previous.record_url === record.record_url) continue;
+      throw new Error(`duplicate publisher identifier within board: ${key} (${previous.source_url} and ${record.source_url})`);
+    }
+    seen.set(key, record);
+  }
 }
 
 function indexedRow(record, board, observedAt) {
@@ -72,6 +148,7 @@ function indexedRow(record, board, observedAt) {
     format: record.format,
     publisher_identifier: record.publisher_identifier,
     publisher_identifiers: record.publisher_identifiers,
+    source_role: record.source_role || "upcoming_meetings",
     observed_receipt: record.observed_receipt,
     source_record_id: sourceRecordId,
     board_id: board.id,
@@ -115,23 +192,39 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry);
   const byBoard = {};
+  const sourceRecordsByBoard = {};
   const receipts = [];
   let fetched = 0;
+  const allRecords = [];
   for (const descriptor of descriptors) {
-    const result = await fetchCommunityBoardSource(descriptor, { fetchImpl, observedAt });
-    fetched += 1;
-    receipts.push({
-      board_id: descriptor.board_id,
-      source_url: descriptor.url,
-      observed_receipt: result.receipt,
-      record_count: result.records.length,
-    });
+    const contract = sourceAdapterContract(descriptor);
+    const shouldFetch = Boolean(descriptor.url)
+      && Boolean(contract)
+      && descriptor.verification?.fetchability !== "browser_required";
+    const result = shouldFetch
+      ? await fetchCommunityBoardSource(descriptor, { fetchImpl, observedAt })
+      : { records: [], receipt: sourceReceipt(descriptor, observedAt) };
+    if (shouldFetch) fetched += 1;
+    const records = result.records.map((record) => ({
+      ...record,
+      source_role: descriptor.source_role,
+      source_url: record.source_url || descriptor.url || null,
+    }));
+    allRecords.push(...records);
+    const roleReceipt = sourceRoleReceipt(descriptor, result, records, observedAt);
+    receipts.push(roleReceipt);
+    if (records.length) {
+      if (!sourceRecordsByBoard[descriptor.board_id]) sourceRecordsByBoard[descriptor.board_id] = [];
+      sourceRecordsByBoard[descriptor.board_id].push(...records);
+    }
     const board = boardById.get(descriptor.board_id);
-    const records = result.records
+    const meetingRows = records
+      .filter((record) => descriptor.source_role === "upcoming_meetings")
       .filter((record) => record.record_kind === "event" && record.record_id && record.date)
       .map((record) => indexedRow(record, board, observedAt));
-    if (records.length) byBoard[descriptor.board_id] = records;
+    if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
+  assertNoDuplicatePublisherIdentifiers(allRecords);
   const rows = Object.values(byBoard).flat().sort((left, right) => (
     String(left.event_date).localeCompare(String(right.event_date))
     || String(left.board_id).localeCompare(String(right.board_id))
@@ -149,6 +242,8 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       no_title_or_date_inference: true,
       unjoined_records_are_not_official: true,
       exact_join_method: JOIN_METHOD,
+      source_role_states: SOURCE_STATES,
+      event_and_minutes_roles_are_distinct: true,
     },
     coverage: {
       source_urls_checked: fetched,
@@ -156,9 +251,17 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       records_indexed: rows.length,
       institution_edges_materialized: institutionEdges.filter((edge) => edge?.status === "promoted" || edge?.status === "official").length,
       boards_in_inventory: inventory.boards.length,
+      source_roles_total: receipts.length,
+      source_roles_indexed: receipts.filter((row) => row.state === "indexed").length,
+      source_roles_checked_empty: receipts.filter((row) => row.state === "checked-empty").length,
+      source_roles_unsupported_format: receipts.filter((row) => row.state === "unsupported-format").length,
+      source_roles_unavailable: receipts.filter((row) => row.state === "unavailable").length,
+      source_roles_stale: receipts.filter((row) => row.state === "stale").length,
+      source_roles_not_yet_checked: receipts.filter((row) => row.state === "not-yet-checked").length,
     },
     institution_edges: institutionEdges,
     receipts,
+    source_records_by_board: sourceRecordsByBoard,
     by_board: byBoard,
     rows,
   };
