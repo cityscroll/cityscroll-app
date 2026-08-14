@@ -135,7 +135,7 @@ function minutesFreshness(documents = [], source = {}, asOf = null) {
     };
   }
   if (["unavailable", "unsupported-format"].includes(source.state)) {
-    return { state: "unavailable", latest_date: null, label: "Minutes source unavailable", age_days: null };
+    return { state: "unavailable", latest_date: null, label: "Minutes archive could not be checked", age_days: null };
   }
   if (source.state === "checked-empty") {
     return { state: "available", latest_date: null, label: "No dated minutes found in the checked source", age_days: null };
