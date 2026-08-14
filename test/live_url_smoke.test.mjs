@@ -119,14 +119,20 @@ test("classifyProbe rejects empty body, non-200, and marker-less error shells", 
   );
 });
 
-test("meeting deploy markers require a real title, marker, and exact id", () => {
-  const meetingId = CANONICAL_MEETING_TARGETS[0].meetingId;
-  const marker = meetingDocumentMarker(meetingId);
-  const document = `<title>DCWP hearing · CityScroll</title><main data-civic-object-kind="meeting" data-meeting-id="${meetingId}"></main>`;
+test("meeting deploy markers cover both source types and require the exact id", () => {
   const shell = '<title>CityScroll · track RFPs, rezonings, meetings</title><main data-civic-object-kind="meeting" data-meeting-id="meeting:city_record:other"></main>';
-  assert.equal(marker.test(document), true);
-  assert.equal(marker.test(shell), false);
-  assert.equal(marker.test(document.replace(meetingId, `${meetingId}-other`)), false);
+  assert.equal(CANONICAL_MEETING_TARGETS.length, 2);
+  assert.deepEqual(
+    CANONICAL_MEETING_TARGETS.map(({ meetingId }) => meetingId.split(":")[1]),
+    ["city_record", "community_board"],
+  );
+  for (const { meetingId } of CANONICAL_MEETING_TARGETS) {
+    const marker = meetingDocumentMarker(meetingId);
+    const document = `<title>Meeting record · CityScroll</title><main data-civic-object-kind="meeting" data-meeting-id="${meetingId}"></main>`;
+    assert.equal(marker.test(document), true, meetingId);
+    assert.equal(marker.test(shell), false, meetingId);
+    assert.equal(marker.test(document.replace(meetingId, `${meetingId}-other`)), false, meetingId);
+  }
 });
 
 test("field case: live smoke fails on unsubstituted __I18N_ASSET_VERSION__ (and any __TOKEN__)", () => {

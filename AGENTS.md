@@ -87,9 +87,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   substitutions out of new meeting rows. Focused proof: `test/meeting_object_contract.test.mjs`.
 - **Shared meeting read model:** `site/shared_meeting_read_model.mjs` combines the two
   source-qualified producers with one freshness envelope. `tools/build_primary_documents.mjs`
-  materializes `site/data/shared_meeting_read_model.json` and canonical meeting documents;
-  Worker `/hearings` consumes the same bounded board snapshot, while the SPA falls back to the
-  shared artifact rather than appending a second board fetch. Verify with
+  materializes `site/data/shared_meeting_read_model.json`; Pages edge resolves
+  `/meetings/<canonical-id>` by exact ID and renders the matched row from that safe data path.
+  Do not restore per-ID static files: encoded community-board URLs contain reserved path
+  characters that static hosting normalizes before filesystem lookup. Worker `/hearings` consumes
+  the same bounded board snapshot, while the SPA falls back to the shared artifact rather than
+  appending a second board fetch. Verify with
   `test/shared_meeting_read_model.test.mjs` and the focused meeting contract tests.
 
 ## PR and CI preflight

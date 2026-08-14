@@ -12,7 +12,6 @@ import {
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
-import { renderMeetingDocument } from "../site/meeting_document.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -121,18 +120,10 @@ function buildSharedMeetingArtifacts() {
 
 export function sharedMeetingOutputs() {
   const { sharedMeetings } = buildSharedMeetingArtifacts();
-  const outputs = [[
+  return [[
     join(SITE, "data/shared_meeting_read_model.json"),
     `${JSON.stringify(sharedMeetings, null, 2)}\n`,
   ]];
-  for (const row of sharedMeetings.rows) {
-    if (!row.meeting_id) continue;
-    outputs.push([
-      join(SITE, "meetings", encodeURIComponent(row.meeting_id), "index.html"),
-      renderMeetingDocument(row),
-    ]);
-  }
-  return outputs;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
