@@ -4,18 +4,50 @@ import { readFileSync } from "node:fs";
 
 import {
   buildCommunityBoardGeography,
+  COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES,
   communityDistrictIdForBoard,
   polygonsIntersect,
 } from "../site/community_board_geography.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url)));
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url)));
+const agencyCrosswalk = JSON.parse(readFileSync(new URL("../worker/src/data/agency_crosswalk.json", import.meta.url)));
 
 test("board registry maps all 59 boards to regular community districts", () => {
   const boards = registry.sources.filter((row) => row.body_type === "community_board");
   assert.equal(boards.length, 59);
   assert.equal(new Set(boards.map(communityDistrictIdForBoard)).size, 59);
   assert.equal(boards.some((row) => communityDistrictIdForBoard(row) === null), false);
+});
+
+test("each board body shares one stable identity across place and organization projections", () => {
+  const doc = buildCommunityBoardGeography({
+    sourceRegistry: registry,
+    boundaries,
+    observedAt: "2026-08-12T00:00:00.000Z",
+  });
+  const boardNodes = doc.nodes.filter((node) => node.type === "community-board");
+  assert.equal(boardNodes.length, 59);
+  assert.ok(boardNodes.every((node) => {
+    const identity = node.properties?.identity;
+    return identity?.body_id
+      && identity.boundary === node.id
+      && identity.projections.place.key === node.id
+      && identity.projections.organization.key === node.id
+      && identity.projections.place.family === "er:location"
+      && identity.projections.place.relation_families.includes("covers")
+      && JSON.stringify(identity.projections.organization.relation_families)
+        === JSON.stringify(COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES);
+  }));
+  assert.deepEqual(
+    doc.edge_observations.filter((edge) => edge.from.startsWith("community-board:")).map((edge) => edge.type),
+    Array(59).fill("covers"),
+  );
+  assert.equal(doc.edge_observations.some((edge) => [
+    "has_member", "member_of", "hosts_meeting", "issues_recommendation",
+  ].includes(edge.type)), false);
+  assert.equal(agencyCrosswalk.entries?.["community-boards"]?.canonical_name, "Community Boards");
+  assert.equal(boardNodes.some((node) => node.id === "agency:community-boards"), false);
 });
 
 test("overlay reproduces the 237-pair many-to-many census and rejects centroid semantics", () => {

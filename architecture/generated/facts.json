@@ -4,8 +4,8 @@
     "name": "tools/build_architecture_facts.mjs",
     "version": "1.0.0"
   },
-  "generated_at": "2026-08-12T22:07:22Z",
-  "commit": "79c2c19a9a52939e62c190ca0f5b4a1968b67fbd",
+  "generated_at": "2026-08-13T19:23:56-04:00",
+  "commit": "37e026da59877d1588044f7c192d40c82d26e97e",
   "source_paths": [
     "entity_resolution",
     "ontology/live_inventory.mjs",
@@ -2315,7 +2315,7 @@
     ],
     "collection_counts": {
       "object_types": 32,
-      "link_types": 31,
+      "link_types": 34,
       "event_kinds": 37,
       "assertion_classifications": 2,
       "assertion_facts": 10

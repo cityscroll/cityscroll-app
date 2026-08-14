@@ -23,6 +23,16 @@ export const COMMUNITY_BOARD_GEOGRAPHY_SCHEMA = "cityscroll.community_board_geog
 export const COMMUNITY_BOARD_GEOGRAPHY_VINTAGE = "2026-05-26";
 export const COMMUNITY_BOARD_OVERLAY_EXPECTED_PAIRS = 237;
 
+// One board body has two reader projections. Keep the governance vocabulary
+// declared here, beside the publisher-keyed board identity, without creating
+// edges before the source inventory earns them.
+export const COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES = Object.freeze([
+  Object.freeze({ type: "has_member", label: "Has member", state: "unknown" }),
+  Object.freeze({ type: "member_of", label: "Member of", state: "unknown" }),
+  Object.freeze({ type: "hosts_meeting", label: "Hosts meeting", state: "unknown" }),
+  Object.freeze({ type: "issues_recommendation", label: "Issues recommendation", state: "unknown" }),
+]);
+
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 export function communityDistrictIdForBoard(row = {}) {
@@ -149,6 +159,28 @@ function graphEdge(type, from, to, properties, sourceValue, observedAt, fields) 
   };
 }
 
+function boardIdentity(bodyId) {
+  const cleanBodyId = clean(bodyId);
+  const key = `community-board:${cleanBodyId}`;
+  return {
+    body_id: cleanBodyId,
+    boundary: key,
+    projections: {
+      place: {
+        key,
+        role: "place",
+        family: "er:location",
+        relation_families: ["covers"],
+      },
+      organization: {
+        key,
+        role: "organization",
+        relation_families: COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES,
+      },
+    },
+  };
+}
+
 function placeHref(node) {
   if (node?.type === "community-board") return "/community-boards/";
   if (node?.type === "community-district") return `/near-you/?cd=${encodeURIComponent(String(node.id || "").replace(/^community-district:/, ""))}`;
@@ -262,22 +294,26 @@ export function buildCommunityBoardGeography({
   const pairsByCommunity = Object.fromEntries(regular.map((community) => [
     clean(community.id), pairRows.filter((row) => row.community === community).map((row) => clean(row.council.id)),
   ]));
-  const boardNodes = boards.map((board) => node(
-    `community-board:${clean(board.body_id)}`,
-    "community-board",
-    clean(board.name),
-    {
-      body_id: clean(board.body_id),
-      borough: clean(board.borough),
-      district: Number(board.district),
-      directory_url: board.directory_url ?? null,
-      source_url: board.source_url ?? null,
-      observed_on: board.observed_on ?? null,
-    },
-    source("community_board_source_registry", clean(board.body_id), board.directory_url),
-    observedAt,
-    ["body_id", "borough", "district", "name", "directory_url", "observed_on"],
-  ));
+  const boardNodes = boards.map((board) => {
+    const identity = boardIdentity(board.body_id);
+    return node(
+      identity.boundary,
+      "community-board",
+      clean(board.name),
+      {
+        body_id: identity.body_id,
+        identity,
+        borough: clean(board.borough),
+        district: Number(board.district),
+        directory_url: board.directory_url ?? null,
+        source_url: board.source_url ?? null,
+        observed_on: board.observed_on ?? null,
+      },
+      source("community_board_source_registry", identity.body_id, board.directory_url),
+      observedAt,
+      ["body_id", "borough", "district", "name", "directory_url", "observed_on"],
+    );
+  });
   const communityNodes = regular.map((feature) => node(
     `community-district:${clean(feature.id)}`,
     "community-district",
