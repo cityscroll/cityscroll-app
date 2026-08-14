@@ -247,7 +247,7 @@ test("People and Places landings use populated entity and geography indexes", ()
         name: "Bronx Community Board 1",
         properties: { borough: "Bronx", district: 1 },
       }],
-      public_edges: [],
+      public_edges: [{ type: "covers", from: "community-board:bronx-cb-01", to: "community-district:X01" }],
     },
   });
   const peopleHtml = renderBrowseConceptLanding(people);
@@ -255,6 +255,11 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(peopleHtml, /href="\/vendors\/ACME\/"/);
   assert.match(peopleHtml, /Committee on Housing/);
   assert.match(peopleHtml, /Bronx Community Board 1/);
+  assert.match(peopleHtml, /href="\/browse\/people\/\?board=bronx-cb-01#community-boards"/);
+  assert.match(peopleHtml, /data-body-id="bronx-cb-01"/);
+  assert.match(peopleHtml, /District coverage · Published/);
+  assert.match(peopleHtml, /Members · Unknown/);
+  assert.match(peopleHtml, /Hosted meetings · Unknown/);
   assert.doesNotMatch(peopleHtml, /href="\/committees\//);
 
   const places = buildBrowseConceptLanding("places", {
@@ -264,8 +269,9 @@ test("People and Places landings use populated entity and geography indexes", ()
     },
   });
   const placesHtml = renderBrowseConceptLanding(places);
-  assert.match(placesHtml, /Bronx Community Board 1/);
-  assert.match(placesHtml, /\/near-you\/#map\?level=community_district/);
+  assert.doesNotMatch(placesHtml, /Bronx Community Board 1/);
+  assert.match(placesHtml, /Open Near you for place discovery/);
+  assert.doesNotMatch(placesHtml, /59/);
   assert.match(placesHtml, /\/community-boards\//);
   const placesDocument = primaryDocumentOutputs().find(([path]) => path.endsWith("/browse/places/index.html"));
   assert.ok(placesDocument, "the Places document is generated");

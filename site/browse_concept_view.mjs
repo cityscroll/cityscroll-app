@@ -15,13 +15,25 @@ export const BROWSE_CONCEPTS = Object.freeze({
     tab: "places",
     label: "Places",
     title: "Places",
-    description: "Community boards, districts, and public records tied to a place.",
+    description: "Districts and public records tied to a place.",
   },
 });
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
+
+const ORGANIZATION_RELATION_LABELS = Object.freeze({
+  has_member: "Members",
+  member_of: "Board roles",
+  hosts_meeting: "Hosted meetings",
+  issues_recommendation: "Recommendations",
+});
+const DEFAULT_ORGANIZATION_RELATIONS = Object.freeze(Object.keys(ORGANIZATION_RELATION_LABELS).map((type) => ({
+  type,
+  label: ORGANIZATION_RELATION_LABELS[type],
+  state: "unknown",
+})));
 
 function link(href, label, className = "browse-concept-link") {
   return `<a class="${className}" href="${esc(href)}">${esc(label)}</a>`;
@@ -127,7 +139,23 @@ function renderCommittees(graph, people) {
 function renderBoardOrganizations(geography) {
   const boards = boardItems(geography);
   if (!boards.length) return `<p class="empty">No community boards are in the current organization index.</p>`;
-  return `<ul class="browse-concept-list">${boards.map((board) => `<li><strong>${esc(board.name)}</strong>. <span class="browse-concept-meta">Public body serving ${esc(board.borough)} District ${esc(board.district)}.</span></li>`).join("")}</ul>`;
+  return `<ul class="browse-concept-list browse-board-organization-list">${boards.map((board) => {
+    const relationStatus = board.organizationRelations
+      .map((relation) => `<span>${esc(ORGANIZATION_RELATION_LABELS[relation.type] || relation.label || "Board records")} · Unknown</span>`)
+      .join("");
+    const coverage = board.communityDistrict
+      ? `Covers ${board.borough} Community District ${board.communityDistrict}.`
+      : "District coverage · Unknown.";
+    return `<li class="browse-board-organization" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">
+      <h3>${link(board.institutionHref, board.name)}</h3>
+      <p class="browse-concept-meta">${esc(coverage)}</p>
+      <div class="browse-concept-status-rail" aria-label="Board record status">
+        <span>Board identity · Published</span>
+        <span>District coverage · ${board.communityDistrict ? "Published" : "Unknown"}</span>
+        ${relationStatus}
+      </div>
+    </li>`;
+  }).join("")}</ul>`;
 }
 
 function boardItems(geography = {}) {
@@ -137,23 +165,22 @@ function boardItems(geography = {}) {
   return (geography.nodes || [])
     .filter((node) => node?.type === "community-board" && node?.name)
     .map((node) => ({
+      bodyId: node.properties?.body_id || String(node.id || "").replace(/^community-board:/, ""),
       name: node.name,
       borough: node.properties?.borough || "",
       district: node.properties?.district,
       communityDistrict: districtByBoard.get(node.id) || null,
+      institutionHref: `/browse/people/?board=${encodeURIComponent(node.properties?.body_id || String(node.id || "").replace(/^community-board:/, ""))}#community-boards`,
+      organizationRelations: node.properties?.identity?.projections?.organization?.relation_families || DEFAULT_ORGANIZATION_RELATIONS,
     }))
     .sort((left, right) => left.borough.localeCompare(right.borough) || Number(left.district) - Number(right.district));
 }
 
-function renderBoards(geography) {
-  const boards = boardItems(geography);
-  if (!boards.length) return `<p class="empty">No community boards are in the current geography index.</p>`;
-  return `<ul class="browse-concept-list">${boards.map((board) => {
-    const href = board.communityDistrict
-      ? `/near-you/#map?level=community_district&parent=${encodeURIComponent(board.borough)}&id=${encodeURIComponent(board.communityDistrict)}&lens=meetings`
-      : "/near-you/";
-    return `<li>${link(href, board.name)}. <span class="browse-concept-meta">${esc(board.borough)} · District ${esc(board.district)}.</span></li>`;
-  }).join("")}</ul>`;
+function renderPlaceDiscovery() {
+  return `<div class="browse-concept-place-handoff">
+    <p>Near you is the place view for community boards and the districts they cover.</p>
+    <p class="browse-concept-actions">${link("/near-you/", "Open Near you for place discovery")}</p>
+  </div>`;
 }
 
 export function buildBrowseConceptLanding(kind, sources = {}) {
@@ -175,8 +202,8 @@ export function buildBrowseConceptLanding(kind, sources = {}) {
       conceptSection("community-boards", "Community boards", "Public bodies serving New York City districts.", renderBoardOrganizations(geography), boards.length),
     ]
     : [
-      conceptSection("community-boards", "Community boards", "The geography index lists each board and opens its mapped community district.", renderBoards(geography), boards.length),
-      conceptSection("place-links", "Place pages", "Use these pages for board minutes and nearby public records.", `<p class="browse-concept-actions">${link("/community-boards/", "Open community board minutes")} ${link("/near-you/", "Open Near you")}</p>`),
+      conceptSection("community-boards", "Community boards", "Find a community board as a place in Near you.", renderPlaceDiscovery()),
+      conceptSection("place-links", "Community board records", "Open the separate source directory for published board calendars and minutes.", `<p class="browse-concept-actions">${link("/community-boards/", "Open community board records")}</p>`),
     ];
   return { ...config, sections };
 }

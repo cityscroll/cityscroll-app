@@ -182,7 +182,11 @@ function boardIdentity(bodyId) {
 }
 
 function placeHref(node) {
-  if (node?.type === "community-board") return "/community-boards/";
+  if (node?.type === "community-board") {
+    const communityDistrict = clean(node.properties?.community_district_id);
+    if (!communityDistrict) return "/near-you/";
+    return `/near-you/#map?level=community_district&parent=${encodeURIComponent(clean(node.properties?.borough))}&id=${encodeURIComponent(communityDistrict)}&lens=meetings`;
+  }
   if (node?.type === "community-district") return `/near-you/?cd=${encodeURIComponent(String(node.id || "").replace(/^community-district:/, ""))}`;
   if (node?.type === "council-district") return `/near-you/?council=${encodeURIComponent(String(node.id || "").replace(/^council-district:/, ""))}`;
   return null;
@@ -285,6 +289,7 @@ export function buildCommunityBoardGeography({
     feature: regularById.get(communityDistrictIdForBoard(board)),
   }));
   const validMappings = boardMappings.filter((mapping) => mapping.feature);
+  const communityDistrictByBodyId = new Map(validMappings.map(({ board, communityDistrictId }) => [clean(board.body_id), communityDistrictId]));
   const pairRows = [];
   for (const community of regular) {
     for (const council of councils) {
@@ -305,6 +310,7 @@ export function buildCommunityBoardGeography({
         identity,
         borough: clean(board.borough),
         district: Number(board.district),
+        community_district_id: communityDistrictByBodyId.get(identity.body_id) || null,
         directory_url: board.directory_url ?? null,
         source_url: board.source_url ?? null,
         observed_on: board.observed_on ?? null,
