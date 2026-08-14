@@ -1,0 +1,54 @@
+name: Refresh live preset fallback
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-preset-fallback-main
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh generated preset fallback on main
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Regenerate the live-derived fallback
+        run: node tools/validate_presets.mjs --write
+      - name: Commit a changed fallback
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo "Preset fallback is already current."
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/app/search-share.mjs|worker/src/lib/suggestions.mjs|site/data/preset-validation.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/app/search-share.mjs worker/src/lib/suggestions.mjs site/data/preset-validation.json
+          git commit -m "Refresh live-derived preset fallback"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
