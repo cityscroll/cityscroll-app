@@ -178,6 +178,19 @@ function renderRulesAgencyScopeLinks(){
   const host=$("#rules-agency-rail");
   if(!host) return;
   const searchQuery=host.querySelector(".facet-typeahead-input")?.value||"";
+  // Agency choices and the rules feed hydrate independently. Both completions
+  // can ask for the same rail paint; replacing the live input for that duplicate
+  // paint creates a small window in which Playwright/user input can land on an
+  // unbound control. Keep the existing DOM when the render inputs are unchanged.
+  const renderKey=JSON.stringify({
+    agencies:rulesAgencyChoices.map(row=>row?.agency_name||""),
+    selected:rulesAgency,
+    hash:location.hash,
+  });
+  if(host.dataset.rulesAgencyRenderKey===renderKey && host.querySelector("[data-cardinality-facet]")){
+    bindCardinalityAdaptiveFacets(host);
+    return;
+  }
   host.innerHTML=agencyScopeLinksHTML({
     surface:"rules",
     agencies:rulesAgencyChoices,
@@ -187,6 +200,7 @@ function renderRulesAgencyScopeLinks(){
     searchQuery,
     escape:escUiHtml,
   });
+  host.dataset.rulesAgencyRenderKey=renderKey;
   bindCardinalityAdaptiveFacets(host);
 }
 
