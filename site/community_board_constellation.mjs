@@ -96,7 +96,7 @@ function sourceRows(scorecardRow, inventoryRow) {
       role,
       label: SOURCE_ROLE_LABELS[role],
       url: source.source_url || source.url || null,
-      state: source.collection_state || (source.url ? "observed" : "absent_in_pass"),
+      state: source.governance_state || source.collection_state || (source.url ? "observed" : "absent_in_pass"),
       publisher: source.publisher || null,
       observed_on: source.observed_on || source.seen_on || null,
       origin_label: source.origin_label || source.publisher || null,

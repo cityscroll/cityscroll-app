@@ -99,13 +99,15 @@ function fallbackInventorySource(registryRow, role) {
  * Join the explicit board inventory to the registry's authoritative identities.
  * The inventory may add a source URL, but never derives one from a board name.
  */
-export function buildBoardSourceInventory({ registry, inventory = null, joinedLookup = null } = {}) {
+export function buildBoardSourceInventory({ registry, inventory = null, joinedLookup = null, meetingIndex = null } = {}) {
   const rows = Array.isArray(inventory?.boards) ? inventory.boards : [];
   if (inventory && inventory.schema !== SOURCE_INVENTORY_SCHEMA) return [];
   const byId = new Map(rows.map((row) => [row.id || row.body_id, row]));
   const joinedBodyIds = new Set(Object.values(joinedLookup?.notices || {})
     .map((row) => row.body_id)
     .filter(Boolean));
+  const meetingReceipts = new Map((meetingIndex?.receipts || [])
+    .map((row) => [`${row.board_id}:${row.role}`, row]));
   return (registry?.sources || [])
     .filter((row) => row.body_type === "community_board")
     .map((registryRow) => {
@@ -124,6 +126,7 @@ export function buildBoardSourceInventory({ registry, inventory = null, joinedLo
           throw new Error(`minutes source mismatch for ${registryRow.body_id}`);
         }
         const state = sourceState({ ...authoritative, url }, role, registryRow, joinedBodyIds);
+        const coverage = meetingReceipts.get(`${registryRow.body_id}:${role}`);
         const origin = url ? sourceOrigin({ ...authoritative, url }) : null;
         return [role, {
           source_type: role,
@@ -136,7 +139,9 @@ export function buildBoardSourceInventory({ registry, inventory = null, joinedLo
           archive_depth: authoritative.archive_depth || { status: "unknown", earliest_year: null, latest_year: null },
           stable_key: authoritative.stable_key || null,
           verification: authoritative.verification || null,
-          collection_state: state,
+          collection_state: coverage?.state || state,
+          governance_state: state,
+          coverage_receipt: coverage || null,
           origin: origin?.key || null,
           origin_label: origin?.label || "Source not listed",
           observed_on: authoritative.seen_on || inventorySource.seen_on || inventoryRow.observed || inventory?.observed_on || registryRow.observed_on || null,
@@ -161,6 +166,12 @@ function stateLabel(state) {
     not_yet_ingested: "Source available",
     joined: "Joined to a published notice",
     absent_in_pass: "Source not listed",
+    indexed: "Meetings found",
+    "checked-empty": "No published records found",
+    "unsupported-format": "Format not supported for this source",
+    unavailable: "Source could not be checked",
+    stale: "Source check is out of date",
+    "not-yet-checked": "Source not checked yet",
   }[state] || "Source status not measured";
 }
 
@@ -183,11 +194,11 @@ function sourceCard(source, role) {
   return `<div class="scorecard-source" data-source-type="${esc(role)}" data-collection-state="${esc(source.collection_state)}"><strong>${esc(sourceRoleLabel(role))}</strong>${link}<span class="scorecard-source-state">${esc(stateLabel(source.collection_state))}</span><span class="scorecard-source-meta">Observed ${esc(formatObservedOn(source.observed_on))} · ${esc(source.origin_label)}</span>${access}</div>`;
 }
 
-export function buildScorecard({ registry, detector = null, observedOn = null, sourceInventory = null, joinedLookup = null } = {}) {
+export function buildScorecard({ registry, detector = null, observedOn = null, sourceInventory = null, joinedLookup = null, meetingIndex = null } = {}) {
   const asOf = detector?.as_of || observedOn || sourceInventory?.observed_on || registry?.observed_on;
   const detectorRows = new Map((detector?.rows || []).map((row) => [row.body_id, row]));
   const boards = (registry?.sources || []).filter((row) => row.body_type === "community_board");
-  const inventoryRows = new Map(buildBoardSourceInventory({ registry, inventory: sourceInventory, joinedLookup })
+  const inventoryRows = new Map(buildBoardSourceInventory({ registry, inventory: sourceInventory, joinedLookup, meetingIndex })
     .map((row) => [row.body_id, row]));
   const baseRows = boards.map((source) => {
     const detected = detectorRows.get(source.body_id) || {};

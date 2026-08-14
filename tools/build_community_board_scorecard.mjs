@@ -9,14 +9,17 @@ const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_regist
 const SOURCE_INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const OUTCOME_LOOKUP = join(ROOT, "site/data/non_council_outcome_lookup.json");
 const DETECTOR = join(ROOT, "site/data/community_board_minutes_gap.json");
+const MEETING_INDEX = join(ROOT, "site/data/community_board_meeting_index.json");
 const JSON_OUT = join(ROOT, "site/data/community_board_minutes_scorecard.json");
 const HTML_OUT = join(ROOT, "site/community-boards/index.html");
 const check = process.argv.includes("--check");
 const detector = existsSync(DETECTOR) ? JSON.parse(readFileSync(DETECTOR, "utf8")) : null;
+const meetingIndex = existsSync(MEETING_INDEX) ? JSON.parse(readFileSync(MEETING_INDEX, "utf8")) : null;
 const scorecard = buildScorecard({
   registry: JSON.parse(readFileSync(REGISTRY, "utf8")),
   detector,
   sourceInventory: JSON.parse(readFileSync(SOURCE_INVENTORY, "utf8")),
+  meetingIndex,
   joinedLookup: JSON.parse(readFileSync(OUTCOME_LOOKUP, "utf8")),
 });
 const json = `${JSON.stringify(scorecard, null, 2)}\n`;
