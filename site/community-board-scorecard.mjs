@@ -49,13 +49,19 @@ function stableRank(rows) {
 }
 
 function sourceOrigin(source = {}) {
-  if (source.provenance_kind === "third_party_storage" || /airtable|vimeo|youtube/i.test(source.url || "")) {
+  if (source.publisher_kind === "city_record" || /cityrecord\.nyc\.gov|a856-cityrecord\.nyc.gov/i.test(source.url || "")) {
+    return { key: "city_record", label: "City Record notice source" };
+  }
+  if (source.publisher_kind === "third_party_storage" || /airtable|vimeo|youtube/i.test(source.url || "")) {
     return { key: "third_party_storage", label: "Board-linked third-party storage" };
   }
-  if (/nyc\.gov|cityofnewyork\.us/i.test(source.url || "")) {
+  if (source.publisher_kind === "nyc_official" || /nyc\.gov/i.test(source.url || "")) {
     return { key: "official_nyc", label: "NYC-hosted official source" };
   }
-  return { key: "board_owned", label: "Board-owned official source" };
+  if (source.publisher_kind === "board_owned_official" || /cityofnewyork\.us/i.test(source.url || "")) {
+    return { key: "board_owned", label: "Board-owned official source" };
+  }
+  return { key: null, label: "Source not listed" };
 }
 
 function sourceState(source, role, registryRow, joinedBodyIds) {
@@ -76,6 +82,7 @@ function safeSourceUrl(value) {
 }
 
 function fallbackInventorySource(registryRow, role) {
+  if (registryRow.source_roles?.[role]) return registryRow.source_roles[role];
   if (role === "minutes" && registryRow.source_url) {
     return {
       url: registryRow.source_url,
@@ -103,25 +110,35 @@ export function buildBoardSourceInventory({ registry, inventory = null, joinedLo
     .map((registryRow) => {
       const inventoryRow = byId.get(registryRow.body_id) || {};
       const sources = Object.fromEntries(SOURCE_ROLES.map((role) => {
-        const raw = inventoryRow[role]
+        const inventorySource = inventoryRow[role]
           || inventoryRow[role === "upcoming_meetings" ? "upcoming" : "minutes"]
           || fallbackInventorySource(registryRow, role);
-        const url = safeSourceUrl(raw.url);
+        const authoritative = fallbackInventorySource(registryRow, role);
+        const inventoryUrl = safeSourceUrl(inventorySource.url);
+        const url = safeSourceUrl(authoritative.url);
+        if (inventoryUrl && inventoryUrl !== url) {
+          throw new Error(`${role} source mismatch for ${registryRow.body_id}`);
+        }
         if (registryRow.source_url && role === "minutes" && url && url !== registryRow.source_url) {
           throw new Error(`minutes source mismatch for ${registryRow.body_id}`);
         }
-        const state = sourceState({ ...raw, url }, role, registryRow, joinedBodyIds);
-        const origin = url ? sourceOrigin({ ...raw, url }) : null;
+        const state = sourceState({ ...authoritative, url }, role, registryRow, joinedBodyIds);
+        const origin = url ? sourceOrigin({ ...authoritative, url }) : null;
         return [role, {
           source_type: role,
           source_url: url,
-          source_format: raw.format || null,
-          fetch_mode: raw.fetch_mode || null,
-          access_constraint: raw.access_constraint || null,
+          publisher: authoritative.publisher || null,
+          publisher_kind: authoritative.publisher_kind || origin?.key || null,
+          source_format: authoritative.format || null,
+          fetch_mode: authoritative.fetch_mode || null,
+          access_constraint: authoritative.access_constraint || null,
+          archive_depth: authoritative.archive_depth || { status: "unknown", earliest_year: null, latest_year: null },
+          stable_key: authoritative.stable_key || null,
+          verification: authoritative.verification || null,
           collection_state: state,
           origin: origin?.key || null,
           origin_label: origin?.label || "Source not listed",
-          observed_on: inventoryRow.observed || inventory?.observed_on || registryRow.observed_on || null,
+          observed_on: authoritative.seen_on || inventorySource.seen_on || inventoryRow.observed || inventory?.observed_on || registryRow.observed_on || null,
         }];
       }));
       return {
@@ -156,8 +173,9 @@ function sourceRoleLabel(role) {
 }
 
 function sourceCard(source, role) {
+  const isThirdParty = source.origin === "third_party_storage";
   const link = source.source_url
-    ? officialSourceLink({ href: source.source_url, label: role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
+    ? officialSourceLink({ href: source.source_url, label: isThirdParty ? "Open linked archive" : role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
     : `<span class="scorecard-muted">Source not listed</span>`;
   const access = source.access_constraint === "browser_required"
     ? `<span class="scorecard-source-note">Browser access may be required.</span>`

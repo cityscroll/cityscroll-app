@@ -2445,6 +2445,13 @@ the registry by `site/community-board-scorecard.mjs`; rebuild/check with
 `node tools/build_community_board_scorecard.mjs --check`. Source roles and
 collection states are rendered with human labels, while unresolved inventory
 rows stay `absent_in_pass` internally and never become an absence claim.
+The calendar/minutes role contract is rebuilt with
+`node tools/build_community_board_source_inventory.mjs` and checked against the
+registry with `node tools/build_non_council_source_registry.mjs --check`. The
+registry's `source_roles.upcoming_meetings` and `source_roles.minutes` URLs are
+authoritative; each observed role has a dated receipt, publisher origin,
+fetchability/access note, archive-depth value, and role-specific stable-key
+strategy in `site/data/non_council_outcome_sources/verification_receipts/`.
 
 ## Franchise/concession MOCS plan bridge
 
