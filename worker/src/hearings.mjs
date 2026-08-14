@@ -11,6 +11,7 @@ import sharedMeetingSnapshot from "../../site/data/shared_meeting_read_model.jso
 import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
+export const HEARINGS_SOURCE_EXTRACTION_VERSION = 2;
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
@@ -58,7 +59,7 @@ async function enrichRuleSource(fetchImpl, row) {
     const url = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(row.request_id || "")}`;
     const response = await fetchImpl(url, { headers: { Accept: "text/html" } });
     if (!response.ok) return row;
-    const signals = sourceSignalsFromHtml(await response.text());
+    const signals = sourceSignalsFromHtml(await response.text(), url);
     return { ...row, source_body: signals.body || null, source_links: signals.sourceLinks };
   } catch {
     return row;
@@ -122,6 +123,7 @@ export async function buildHearingView(fetchImpl = fetch, now = new Date(), opti
     ...readModel,
     read_model: readModel,
     schema_version: 1,
+    source_extraction_version: HEARINGS_SOURCE_EXTRACTION_VERSION,
     generated_at: readModel.generated_at || now.toISOString(),
     source: {
       name: "City Record Online",
@@ -186,7 +188,7 @@ export async function handleHearings(request, env, ctx) {
       || hearing?.request_id === requestedId
       || hearing?.source_keys?.some((key) => key?.value === requestedId)
   ));
-  if (!parsed || age > MAX_AGE_MS || requestedMissing) {
+  if (!parsed || age > MAX_AGE_MS || requestedMissing || parsed.source_extraction_version !== HEARINGS_SOURCE_EXTRACTION_VERSION) {
     try {
       const view = await buildHearingView(fetch, new Date(), {
         communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,

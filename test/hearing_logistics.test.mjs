@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import {
   HEARING_LOGISTICS_RULE,
   inferHearingLogistics,
+  officialCityRecordAttachmentUrl,
+  sourceSignalsFromHtml,
 } from "../site/hearing_logistics.mjs";
 
 // Dated spot checks retain the source signal shape, not a guessed mode. The
@@ -58,4 +61,21 @@ test("hearing logistics rule is explicit and conservative", () => {
       sample.request_id + " — " + sample.source,
     );
   }
+});
+
+test("City Record extraction keeps notice content and validated attachments only", async () => {
+  const html = await readFile(new URL("../worker/test/fixtures/city-record-hearing/20260713006.html", import.meta.url), "utf8");
+  const sourceUrl = "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006";
+  const signals = sourceSignalsFromHtml(html, sourceUrl);
+
+  assert.match(signals.body, /DCWP NOH Rules Relating to Waitlist/);
+  assert.match(signals.body, /public hearing will consider rules/);
+  assert.doesNotMatch(signals.body, /The City Record Online \(CROL\)|UNSUPPORTED|Sections|User's Guide|Contact Us/);
+  assert.deepEqual(signals.sourceLinks, [
+    "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260713006&requestStatus=Archived&documentId=44259",
+  ]);
+  assert.equal(
+    officialCityRecordAttachmentUrl("/Search/GetFile?requestId=other&documentId=44259", sourceUrl),
+    null,
+  );
 });
