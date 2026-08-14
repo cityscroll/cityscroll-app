@@ -117,6 +117,12 @@ test("Meeting search cards use the shared bounded match-evidence renderer", () =
   assert.match(render, /entries\.map\(entry=>meetingsExplorerCardHTML\(entry,terms\)\)/);
 });
 
+test("Meetings keeps the community-board institution pivot visible after hydration", () => {
+  const render = extractFunction(feedSource, "renderHearingExplorer");
+  assert.match(render, /hearingCommunityBoardPivotHTML\(\)/);
+  assert.match(feedSource, /meetings_board_institution_pivot/);
+});
+
 test("Meeting cards render the agency constellation pivot exactly once", () => {
   const card = extractFunction(feedSource, "meetingsExplorerCardHTML");
   const agencyPivots = card.match(/pivotA\(agencyHref\(agency\),\s*agency\)/g) || [];

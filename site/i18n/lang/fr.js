@@ -160,6 +160,9 @@
     sugg_property_4: "audiences de disposition de biens",
     sugg_rules_4: "règles ouvertes aux commentaires",
     sugg_meetings_4: "audiences de cette semaine",
+    meetings_board_disambiguation_heading: "Which community board {number}?",
+    meetings_board_disambiguation_copy: "Every borough has a Community Board {number}. Choose the board institution to continue.",
+    meetings_board_institution_pivot: "Browse community boards as institutions",
     sugg_meetings_5: "sur quoi puis-je commenter cette semaine",
     all_agencies_loading: "Toutes les agences — chargement…",
     // Tab labels

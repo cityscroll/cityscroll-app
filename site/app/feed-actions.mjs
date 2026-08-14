@@ -281,6 +281,29 @@ function hearingWideningHTML(selection, filter){
     none:hearingWidenedNone(selection),
   })}</span><button type="button" class="mini" data-remove-widening>${t("show_exact_search")}</button></div>`;
 }
+function hearingCommunityBoardDisambiguationHTML(filter){
+  const query=typeof hearingCommunityBoardQuery==="function"
+    ? hearingCommunityBoardQuery(filter.keyword)
+    : null;
+  if(!query?.ambiguous) return "";
+  const boards=[
+    ["Bronx","bronx"],["Brooklyn","brooklyn"],["Manhattan","manhattan"],
+    ["Queens","queens"],["Staten Island","staten-island"],
+  ];
+  const links=boards.map(([borough,slug])=>{
+    const id=slug+"-cb-"+String(query.number).padStart(2,"0");
+    const label=escUiHtml(borough+" Community Board "+query.number);
+    return "<li><a href=\"/browse/people/?board="+encodeURIComponent(id)+"#community-boards\">"+label+"</a></li>";
+  }).join("");
+  return "<div class=\"note meetings-board-disambiguation\" role=\"status\" data-community-board-disambiguation>"
+    +"<p><strong>"+escUiHtml(t("meetings_board_disambiguation_heading",{number:query.number}))+
+    "</strong> "+escUiHtml(t("meetings_board_disambiguation_copy",{number:query.number}))+
+    "</p><ul>"+links+"</ul></div>";
+}
+function hearingCommunityBoardPivotHTML(){
+  return "<p class=\"meetings-board-institution-pivot\"><a href=\"/browse/people/#community-boards\">"+
+    escUiHtml(t("meetings_board_institution_pivot"))+"</a></p>";
+}
 async function loadPastHearings(filter){
   const cacheKey=JSON.stringify([filter.agency,filter.keyword]);
   if(hearingPastCache.has(cacheKey)) return hearingPastCache.get(cacheKey);
@@ -1283,7 +1306,7 @@ async function renderHearingExplorer(){
   const rows=selection.rows;
   const terms=filter.keyword?[filter.keyword]:[];
   const widening=$("#meetingswidening");
-  widening.innerHTML=hearingWideningHTML(selection,filter);
+  widening.innerHTML=hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
   const remove=widening.querySelector("[data-remove-widening]");
   if(remove) remove.addEventListener("click",()=>{
     hearingWideningDismissed=key;
