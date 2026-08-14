@@ -25,7 +25,7 @@ export const READER_LABELS = Object.freeze({
   source_fields: "source fields",
   join_method: "matching method",
   source_system: "source",
-  warehouse: "Warehouse materialization",
+  warehouse: "Warehouse records",
   socrata: "NYC Open Data",
   legistar: "NYC Council Legistar",
   passport: "PASSPort Public",
