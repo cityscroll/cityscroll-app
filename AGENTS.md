@@ -62,6 +62,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `cityscroll.community_board_source_join.v1` contract (`exact_board_date_publisher_identifier`);
   the older exact body/date/matter gate remains separate for decision details. Unjoined notices
   stay on their City Record/unknown surface.
+- **Community-board meeting index:** `site/data/community_board_meeting_index.json` is the
+  bounded source-native event read model, refreshed by
+  `node tools/build_community_board_meeting_index.mjs`. It currently contains only explicit
+  Schema.org Event records (55 events across 9 of 59 boards); every row carries a source receipt
+  and an unjoined `cityscroll.community_board_source_join.v1` result. Static Browse builds merge
+  the rows in `tools/build_primary_documents.mjs`; the Meetings client appends the same artifact
+  in `site/app/feed-actions.mjs`. Expand coverage only with an adapter that preserves explicit
+  publisher identity/date evidence. Minutes are a separate typed source role from meetings;
+  Manhattan CB6's image-linked Airtable archive is recorded as `airtable_v1` and browser-required,
+  so the source link is public while records remain un-ingested until an explicit fetch is available.
 
 ## PR and CI preflight
 

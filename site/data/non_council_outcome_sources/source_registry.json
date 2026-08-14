@@ -2802,11 +2802,12 @@
         },
         "minutes": {
           "source_type": "minutes",
-          "publisher": null,
-          "publisher_kind": null,
-          "url": null,
-          "format": null,
-          "fetch_mode": null,
+          "adapter": "airtable_v1",
+          "publisher": "Manhattan Community Board 6",
+          "publisher_kind": "third_party_storage",
+          "url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
+          "format": "airtable",
+          "fetch_mode": "browser-required",
           "access_constraint": null,
           "seen_on": "2026-08-13",
           "archive_depth": {
@@ -2814,17 +2815,17 @@
             "earliest_year": null,
             "latest_year": null
           },
-          "stable_key": null,
+          "stable_key": "publisher_document_id|document_url",
           "stable_event_key": null,
-          "stable_document_key": null,
-          "status": "absent_in_pass",
+          "stable_document_key": "publisher_document_id|document_url",
+          "status": "verified",
           "verification": {
-            "status": "not_observed",
+            "status": "observed",
             "seen_on": "2026-08-13",
-            "fetchability": "unknown",
+            "fetchability": "browser_required",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
-            "reason": "not_observed_in_pass"
+            "reason": null
           }
         }
       }

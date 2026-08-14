@@ -1,5 +1,6 @@
 import { entityHref, parseEntityRef } from "./entity_pivot.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { meetingOriginLabel } from "./meeting_origin.mjs";
 import { constellationLink, staticFact } from "./affordance_grammar.mjs";
 import { scopeFromRouteHash, emptyScope } from "./scope_v0.mjs";
 import {
@@ -615,6 +616,9 @@ function rowHref(facet, row) {
   const id = rowId(facet, row);
   if (!id) return null;
   if (facet === "zoning") return `/#land/${encodeURIComponent(id)}`;
+  if (facet === "meetings" && row.source_system === "community_board") {
+    return row.source_url || row.record_url || null;
+  }
   return `/notices/${encodeURIComponent(id)}`;
 }
 
@@ -1060,6 +1064,9 @@ export function renderBrowseView(view) {
       ? `<p class="browse-record-action"><span class="browse-record-action-label">${esc(actionTime.label)}</span> ${renderedDate(actionTime.date)}</p>`
       : "";
     const place = rowPlace(view.facet, row);
+    const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board"
+      ? staticFact({ label: meetingOriginLabel(row.meeting_origin), className: "browse-source-fact", escape: esc })
+      : "";
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity
       ? renderEntityPivotLink({
@@ -1076,10 +1083,10 @@ export function renderBrowseView(view) {
         },
       }, { className: "browse-agency-link", escape: esc })
       : "";
-    return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}">
+    return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
       ${actionMarkup}
       <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
-      <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc })].filter(Boolean).join(" · ")}</p>
+      <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
     </article>`;
   }).join("");
   const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}" data-as-of="${esc(view.asOf || "")}" data-requested-as-of="${esc(view.requestedAsOf || "")}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;

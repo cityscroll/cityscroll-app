@@ -5744,6 +5744,7 @@
     "city_record_notice",
     "official_community_board_calendar",
     "official_minutes_joined",
+    "community_board_source_observed",
     "unknown"
   ]
 }

@@ -17,6 +17,7 @@ const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council
 const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
 const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url)));
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
+const meetingIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
@@ -25,6 +26,15 @@ test("board routes preserve the separate place, governance, and output projectio
   assert.equal(communityBoardPlaceHref({ borough: "Bronx", community_district_id: "X02" }), "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings");
   assert.equal(communityBoardInstitutionHref("bronx-cb-02"), "/community-boards/bronx-cb-02/");
   assert.equal(communityBoardOutputHref("bronx-cb-02"), "/community-boards/#board-bronx-cb-02");
+});
+test("board source inventory surfaces the image-linked CB6 Airtable minutes archive", () => {
+  const view = buildCommunityBoardConstellationView("manhattan-cb-06", sources);
+  const sourceCategory = view.categories.find((category) => category.id === "sources");
+  const minutes = sourceCategory.items.find((item) => item.role === "minutes");
+  assert.equal(minutes.url, "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw");
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.match(html, /Open minutes or records/);
+  assert.match(html, /appgK5bKw7rWMRJEh\/shrBzfHDWat4YMTHL\/tblpioBcj0BVp5hBw/);
 });
 test("board constellation uses typed summaries and holds unjoined governance edges", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-02", sources);
@@ -68,7 +78,7 @@ test("board profile renders receipt-backed records while leaving unjoined record
     }],
   });
   assert.equal(view.source_records[0].state, "observed");
-  assert.equal(view.categories.find((category) => category.id === "meetings").status, "unknown");
+  assert.equal(view.categories.find((category) => category.id === "meetings").status, "matched");
   assert.equal(view.categories.find((category) => category.id === "members").status, "unknown");
   const html = renderCommunityBoardConstellationDocument(view);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
@@ -76,4 +86,22 @@ test("board profile renders receipt-backed records while leaving unjoined record
   assert.match(visible, /Full board minutes/);
   assert.match(visible, /Source observed/);
   assert.doesNotMatch(visible, /record_kind|source_record_id|observed_receipt|Source: Unavailable|Join method: Unavailable/);
+});
+
+test("indexed board events replace the unknown meetings state without becoming official joins", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-06", {
+    ...sources,
+    sourceRecords: meetingIndex.by_board,
+  });
+  const meetings = view.categories.find((category) => category.id === "meetings");
+  assert.equal(meetings.status, "matched");
+  assert.equal(meetings.count, 12);
+  assert.ok(meetings.items.every((item) => item.state === "observed"));
+  assert.ok(meetings.items.every((item) => item.join?.matched !== true));
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.doesNotMatch(html, /Meetings and hearings \(Unknown \/ not indexed\)/);
+  assert.match(html, /Source observed/);
+  const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(visible, /upcoming_meetings/);
+  assert.match(visible, /Upcoming meetings/);
 });

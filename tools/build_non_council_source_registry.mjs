@@ -278,6 +278,12 @@ const KNOWN_SOURCES = {
     format: "html_pdf", update_cadence: "monthly", full_board_votes: "unknown",
     archive_depth: { status: "observed_page_year_span", earliest_year: 2002, latest_year: 2026 },
   },
+  "manhattan-cb-06": {
+    // Airtable is an explicit minutes role in the board source inventory, but it
+    // is browser-required and must not enter the host-side HTML/PDF collect set.
+    format: "unknown", update_cadence: "unknown", full_board_votes: "unknown",
+    archive_depth: { status: "unknown", earliest_year: null, latest_year: null },
+  },
   "queens-cb-03": {
     source_url: "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
     format: "html", update_cadence: "monthly", full_board_votes: "unknown",
@@ -329,7 +335,7 @@ function sourceRows() {
         archive_depth: known.archive_depth || unknownArchiveDepth(),
         full_board_votes: known.full_board_votes || "unknown",
         status: known.source_url ? "collect" : "inventory_only",
-        adapter: known.source_url ? "html_document_index_v1" : null,
+        adapter: known.adapter || (known.source_url ? "html_document_index_v1" : null),
         observed_on: OBSERVED_ON,
       });
     }

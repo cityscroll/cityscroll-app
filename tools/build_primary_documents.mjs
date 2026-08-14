@@ -26,6 +26,14 @@ function output(path, content) {
 export function primaryDocumentOutputs() {
   const shell = readFileSync(join(SITE, "index.html"), "utf8");
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  const communityBoardMeetings = json("/data/community_board_meeting_index.json");
+  payloads.meetings = {
+    ...payloads.meetings,
+    rows: [...(payloads.meetings.rows || []), ...(communityBoardMeetings.rows || [])]
+      .sort((left, right) => String(right.event_date || right.start_date || "").localeCompare(String(left.event_date || left.start_date || ""))),
+    row_count: (payloads.meetings.rows || []).length + (communityBoardMeetings.rows || []).length,
+    retrieved_at: communityBoardMeetings.generated_at || payloads.meetings.retrieved_at,
+  };
   const nowSources = {
     money: { ...payloads.contracts, status: "available" },
     staffing: { ...json("/data/staffing_exams.json"), status: "available" },

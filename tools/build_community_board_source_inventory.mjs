@@ -51,6 +51,7 @@ function roleRecord(board, role, raw, registryRole) {
     || unknownArchiveDepth();
   return {
     source_type: role,
+    ...(source.adapter ? { adapter: source.adapter } : {}),
     publisher: publisherFor(board, origin),
     publisher_kind: origin,
     url: isUrl(url) ? url : null,

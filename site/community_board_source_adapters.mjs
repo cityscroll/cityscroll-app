@@ -223,8 +223,60 @@ function htmlRecords(html, source, receipt = {}) {
   return found;
 }
 
+function jsonLdEvents(html, source, receipt = {}) {
+  const found = [];
+  const scripts = /<script\b[^>]*type\s*=\s*(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi;
+  for (const match of String(html || "").matchAll(scripts)) {
+    let payload;
+    try { payload = JSON.parse(match[2].trim()); } catch { continue; }
+    const entries = Array.isArray(payload) ? payload : [payload];
+    for (const entry of entries) {
+      if (!entry || typeof entry !== "object") continue;
+      const types = Array.isArray(entry["@type"]) ? entry["@type"] : [entry["@type"]];
+      if (!types.some((type) => String(type || "").toLowerCase() === "event")) continue;
+      const recordUrl = explicitUrl({ url: entry.url || entry["@id"] });
+      const publisherIdentifier = clean(
+        typeof entry.identifier === "object" ? entry.identifier.value || entry.identifier.name : entry.identifier,
+        240,
+      ) || recordUrl;
+      const location = entry.location && typeof entry.location === "object" ? entry.location : {};
+      const address = location.address && typeof location.address === "object"
+        ? [location.address.streetAddress, location.address.addressLocality, location.address.addressRegion, location.address.postalCode]
+          .filter(Boolean).join(", ")
+        : location.address;
+      const date = dateFromText(entry.startDate || entry.start_date || "");
+      if (!recordUrl || !publisherIdentifier || !date) continue;
+      found.push(record(source, {
+        record_kind: "event",
+        record_id: publisherIdentifier,
+        event_id: publisherIdentifier,
+        board_id: source.board_id || source.body_id,
+        body_evidence: bodyEvidence(source),
+        date,
+        start_at: entry.startDate,
+        category: source.role || "upcoming_meetings",
+        title: decode(entry.name || entry.headline),
+        address: decode(address),
+        format: "html",
+        publisher_identifier: publisherIdentifier,
+        record_url: recordUrl,
+      }, receipt));
+    }
+  }
+  return found;
+}
+
 export function parseHtmlPdfSource(html, source = {}, options = {}) {
-  return htmlRecords(html, { ...source, adapter: adapterId(source) || "html_pdf_v1" }, normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, source, { parser: "html_pdf_v1", observed_at: options.observedAt }));
+  const descriptor = { ...source, adapter: adapterId(source) || "html_pdf_v1" };
+  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "html_pdf_v1", observed_at: options.observedAt });
+  const records = [...jsonLdEvents(html, descriptor, receipt), ...htmlRecords(html, descriptor, receipt)];
+  const seen = new Set();
+  return records.filter((row) => {
+    const key = `${row.record_kind}:${row.record_id}:${row.date}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function unfoldIcs(value) {
