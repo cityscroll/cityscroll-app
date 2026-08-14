@@ -73,12 +73,13 @@ def wait_for_url(
     page: Page,
     url: str,
     *,
+    wait_until: str | None = None,
     timeout: int = DEFAULT_WAIT_TIMEOUT_MS,
     attempts: int = DEFAULT_WAIT_ATTEMPTS,
     label: str = "navigation",
 ) -> None:
     _retry(
-        lambda: page.wait_for_url(url, timeout=timeout),
+        lambda: page.wait_for_url(url, wait_until=wait_until, timeout=timeout),
         label=label,
         attempts=attempts,
     )
