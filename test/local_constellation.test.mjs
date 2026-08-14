@@ -13,6 +13,7 @@ import { buildPlaceLocalConstellation } from "../site/community_board_geography.
 const kinds = ["official", "committee", "vendor", "agency", "community-board", "place", "record"];
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url)));
+const constellationStyles = readFileSync(new URL("../site/local_constellation.css", import.meta.url), "utf8");
 
 test("local constellation registry covers the Browse object kinds", () => {
   for (const kind of kinds) {
@@ -115,4 +116,15 @@ test("published place connections use district polygons and resident-safe copy",
   assert.match(html, /local-district-map-adjacent/);
   assert.match(html, /This community district overlaps City Council District 43\./);
   assert.doesNotMatch(html, /Why this connection|unmatched|Unavailable|Source fields|the_geom|coundist|compares claims/);
+});
+
+test("local district labels use contrast-aware edge treatments", () => {
+  assert.match(
+    constellationStyles,
+    /\.local-district-map-label-central\{[^}]*fill:var\(--color-surface,[^}]*stroke:var\(--color-text,/,
+  );
+  assert.match(
+    constellationStyles,
+    /\.local-district-map-label-adjacent\{[^}]*fill:var\(--color-text,[^}]*\}/,
+  );
 });

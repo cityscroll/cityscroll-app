@@ -10,6 +10,11 @@ import {
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLink } from "./edge_summary.mjs";
 import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
 import { renderWalkEntry } from "./walk_entry.mjs";
+import {
+  communityBoardDisambiguation,
+  parseCommunityBoardQuery,
+  rowMatchesCommunityBoardQuery,
+} from "./community_board_search.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -817,6 +822,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   if (!config) return null;
   const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
   const query = String(search.get("q") || "").trim().toLocaleLowerCase();
+  const communityBoardQuery = parseCommunityBoardQuery(query);
   const agency = String(search.get("agency") || "").trim().toLocaleLowerCase();
   const borough = String(search.get("boro") || "").trim();
   const status = String(search.get("status") || "").trim();
@@ -831,7 +837,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const applicability = scopeApplicability(facet, rows, scopeState);
   const matchedBase = rows.filter((row) => {
     const text = corpus(row);
-    if (query && !text.includes(query)) return false;
+    if (communityBoardQuery ? !rowMatchesCommunityBoardQuery(row, communityBoardQuery) : query && !text.includes(query)) return false;
     if (agency && !rowAgencyFilterMatches(row, facet, agency)) return false;
     if (borough && !rowMatchesBorough(facet, row, borough)) return false;
     if (status && !rowMatchesStatus(row, status)) return false;
@@ -870,7 +876,12 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     emptyReason,
     preFilterTotal: matchedBase.length,
   };
-  const edgeInventory = scopeState.hasScopeFacet && !applicability.canApplyScope
+  // Meetings have a large unscoped notice set and no source edge to intersect.
+  // Building an inventory anyway turns every notice into a related-record rail
+  // item and bloats first paint; scoped views and other lenses keep their
+  // existing exact-intersection behavior.
+  const edgeInventory = (facet === "meetings" && !scopeState.hasScopeFacet)
+    || (scopeState.hasScopeFacet && !applicability.canApplyScope)
     ? { edgeInventory: [], edgePairs: [] }
     : browseEdgeInventory(facet, matchedBase, scopeState.refs.map((item) => item.ref));
   const contextualSuggestions = buildContextualSuggestions({
@@ -895,6 +906,8 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     liveOnlyFilters: liveOnlyFilters(search),
     hasQuery: [...search].some(([key]) => !DOCUMENT_FILTERS.has(key)),
     contextualSuggestions,
+    communityBoardQuery,
+    communityBoardDisambiguation: communityBoardDisambiguation(communityBoardQuery),
     edgeInventory: edgeInventory.edgeInventory,
     edgePairs: edgeInventory.edgePairs,
   };
@@ -1026,6 +1039,19 @@ export function renderBrowseView(view) {
     id: "browse-edge-summary-heading",
     className: "browse-edge-summary",
   });
+  const boardSearch = view.communityBoardQuery;
+  const boardChoices = (view.communityBoardDisambiguation || []).map((board) =>
+    `<li><a href="${esc(board.institutionHref)}">${esc(board.label)}</a></li>`).join("");
+  const boardDisambiguation = boardSearch?.ambiguous
+    ? `<section class="browse-board-disambiguation" data-community-board-disambiguation aria-labelledby="browse-board-disambiguation-heading">
+        <h2 id="browse-board-disambiguation-heading">Which community board ${esc(boardSearch.number)}?</h2>
+        <p>Every borough has a Community Board ${esc(boardSearch.number)}. Choose the board institution to continue.</p>
+        <ul>${boardChoices}</ul>
+      </section>`
+    : "";
+  const boardInstitutionPivot = view.facet === "meetings"
+    ? `<p class="browse-meetings-board-pivot"><a href="/browse/people/#community-boards">Browse community boards as institutions</a></p>`
+    : "";
   const browseRoute = `${view.config.route}${view.scopeSearch ? `?${view.scopeSearch}` : ""}`;
   const traversal = renderTraversalPath(traversalFromHref(browseRoute), { currentHref: browseRoute });
   const cards = view.rows.map((row) => {
@@ -1067,7 +1093,7 @@ export function renderBrowseView(view) {
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${edgeRail}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${cards || (boardDisambiguation ? "" : `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`)}</div>`;
 }
 
 export function browseAssetPath(facet) {

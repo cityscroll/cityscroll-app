@@ -24,6 +24,13 @@ test("the source registry enumerates the official 59-board roster", () => {
   assert.equal(inventory.policy.source_registry_is_url_authority, true);
 });
 
+test("known dead or unsafe board homepages stay out of the public inventory", () => {
+  const byId = new Map(inventory.boards.map((row) => [row.id, row.home]));
+  assert.equal(byId.get("brooklyn-cb-05"), "https://www.nyc.gov/site/brooklyncb5/index.page");
+  assert.equal(byId.get("brooklyn-cb-17"), "https://cbbrooklyn.cityofnewyork.us/cb17/");
+  assert.equal([...byId.values()].some((url) => /brooklyncb5\.org/i.test(url)), false);
+});
+
 test("calendar and minutes are separate receipt-backed source roles", () => {
   const registryById = new Map(registry.sources.map((row) => [row.body_id, row]));
   const receiptByKey = new Map(receipt.sources.map((row) => [`${row.board_id}:${row.role}`, row]));

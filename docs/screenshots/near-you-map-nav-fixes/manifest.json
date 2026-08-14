@@ -1,0 +1,9 @@
+{
+  "feature": "near-you-map-label-contrast",
+  "route": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X01&level=community_district&id=X01&parent=Bronx",
+  "viewports": [390, 1440],
+  "before": ["before-map-390.png", "before-map-1440.png"],
+  "after": ["after-map-390.png", "after-map-1440.png"],
+  "before_note": "Headless capture with the pre-change white central label keyline.",
+  "after_note": "Headless capture with a dark keyline around light central text; adjacent labels retain dark ink and light keylines."
+}

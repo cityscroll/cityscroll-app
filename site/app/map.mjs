@@ -37,7 +37,7 @@ function setLinked(id, on) {
   for (const node of linkedPair(id)) node.classList.toggle("is-linked", on);
 }
 
-async function adoptDocument(href) {
+async function adoptDocument(href, { replaceHistory = false } = {}) {
   const response = await fetch(href, { headers: { Accept: "text/html" } });
   if (!response.ok) throw new Error(`near-you-response-${response.status}`);
   const next = new DOMParser().parseFromString(await response.text(), "text/html");
@@ -66,7 +66,8 @@ async function adoptDocument(href) {
   root.dataset.level = incoming.dataset.level || root.dataset.level;
   const title = next.querySelector("title")?.textContent;
   if (title) document.title = title;
-  history.pushState({ nearYou: true }, "", href);
+  const updateHistory = replaceHistory ? history.replaceState : history.pushState;
+  updateHistory.call(history, { nearYou: true }, "", href);
   const placeContext = await import("./place-context.mjs");
   placeContext.sync();
   wireIsland();
@@ -84,7 +85,7 @@ async function adoptMapHashRoute() {
     return;
   }
   try {
-    await adoptDocument(target.toString());
+    await adoptDocument(target.toString(), { replaceHistory: true });
   } catch {
     location.assign(target.toString());
   }

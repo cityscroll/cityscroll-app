@@ -26,6 +26,7 @@ import {
   communityBoardRelationAvailability,
   promotedCommunityBoardRelationEdges,
 } from "./community_board_relations.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -59,8 +60,7 @@ function bodyId(value) {
 }
 
 export function communityBoardPath(value) {
-  const id = bodyId(value);
-  return id ? `/community-boards/${encodeURIComponent(id)}/` : "/community-boards/";
+  return communityBoardPageHref(value);
 }
 
 export function communityBoardPlaceHref(board = {}) {
@@ -70,8 +70,7 @@ export function communityBoardPlaceHref(board = {}) {
 }
 
 export function communityBoardInstitutionHref(value) {
-  const id = bodyId(value);
-  return id ? `/browse/people/?board=${encodeURIComponent(id)}#community-boards` : "/browse/people/#community-boards";
+  return communityBoardPageHref(value);
 }
 
 export function communityBoardOutputHref(value) {

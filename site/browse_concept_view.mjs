@@ -1,6 +1,7 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
 import { renderCommitteeLocalConstellationHTML } from "./committee_memberships.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
@@ -170,7 +171,7 @@ function boardItems(geography = {}) {
       borough: node.properties?.borough || "",
       district: node.properties?.district,
       communityDistrict: districtByBoard.get(node.id) || null,
-      institutionHref: `/browse/people/?board=${encodeURIComponent(node.properties?.body_id || String(node.id || "").replace(/^community-board:/, ""))}#community-boards`,
+      institutionHref: communityBoardPageHref(node.properties?.body_id || String(node.id || "").replace(/^community-board:/, "")),
       organizationRelations: node.properties?.identity?.projections?.organization?.relation_families || DEFAULT_ORGANIZATION_RELATIONS,
     }))
     .sort((left, right) => left.borough.localeCompare(right.borough) || Number(left.district) - Number(right.district));

@@ -28,6 +28,7 @@
 
 import { extractUlurpKeys } from "./ulurp_recommendations_join.mjs";
 import { extractZapHearingLogistics } from "./zap_hearing_logistics.mjs";
+import { communityBoardIdFromEvidence } from "../../../site/community_board_links.mjs";
 
 export const ZAP_API_BASE = "https://zap-api-production.herokuapp.com";
 export const ZAP_PORTAL_PROJECT = "https://zap.planning.nyc.gov/projects";
@@ -177,6 +178,7 @@ function dispositionGroupKey(disposition) {
     disposition.hearing_date,
     disposition.hearing_location,
     disposition.community_board,
+    disposition.board_id,
     disposition.borough_president,
     disposition.borough_board,
     disposition.votes_for,
@@ -294,6 +296,10 @@ export function parseZapApiProject(payload) {
         hearing_location: clean(a["dcp-publichearinglocation"]),
         vote_location: clean(a["dcp-votelocation"]),
         community_board: clean(a["dcp-communityboardrecommendation"]),
+        board_id: communityBoardIdFromEvidence(
+          [a["dcp-name"], a["dcp-consideration"], a["dcp-docketdescription"]],
+          { borough: clean(attrs["dcp-borough"]) },
+        ),
         borough_president: clean(a["dcp-boroughpresidentrecommendation"]),
         borough_board: clean(a["dcp-boroughboardrecommendation"]),
         votes_for: a["dcp-votinginfavorrecommendation"] ?? null,
