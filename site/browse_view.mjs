@@ -1082,8 +1082,11 @@ export function renderBrowseView(view) {
     const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board"
       ? staticFact({ label: meetingOriginLabel(row.meeting_origin), className: "browse-source-fact", escape: esc })
       : "";
-    const meetingSourceDetails = view.facet === "meetings" && row.source_url
-      ? `<details class="meeting-source-details"><summary>Source details</summary><a href="${esc(row.source_url)}">Official source</a></details>`
+    const meetingSourceAttrs = row.source_record_id || row.source_receipt?.observed_at
+      ? ` data-source-record-id="${esc(row.source_record_id || "")}" data-source-receipt-at="${esc(row.source_receipt?.observed_at || "")}"`
+      : "";
+    const meetingSourceDetails = view.facet === "meetings" && (row.source_url || row.source_record || row.source_receipt)
+      ? `<details class="meeting-source-details"${meetingSourceAttrs}><summary>Source details</summary>${row.source_url ? `<a href="${esc(row.source_url)}">Official source</a>` : ""}</details>`
       : "";
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity

@@ -816,6 +816,7 @@
     no_zap: "Brak zmian stref w Portalu Wniosków o Zmianę Stref (ZAP)",
     nothing_found_feed: "Nic nie znaleziono. Spróbuj szerszego wyszukiwania.",
     could_not_reach: "Nie udało się połączyć z NYC Open Data. Spróbuj ponownie.",
+    shared_meeting_read_model_unavailable: "Migawka spotkań jest niedostępna. Spróbuj ponownie.",
     open_notice_btn: "Otwórz ogłoszenie",
     city_record_link: "Rejestr Miejski",
     copy_link_btn: "Kopiuj link",

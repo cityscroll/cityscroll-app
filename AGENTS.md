@@ -85,6 +85,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   and preserve publisher keys; `/meetings/{meeting_id}` is canonical while City Record notice
   URLs remain compatibility links. Keep title/date-only identity and board-name-as-agency
   substitutions out of new meeting rows. Focused proof: `test/meeting_object_contract.test.mjs`.
+- **Shared meeting read model:** `site/shared_meeting_read_model.mjs` combines the two
+  source-qualified producers with one freshness envelope. `tools/build_primary_documents.mjs`
+  materializes `site/data/shared_meeting_read_model.json` and canonical meeting documents;
+  Worker `/hearings` consumes the same bounded board snapshot, while the SPA falls back to the
+  shared artifact rather than appending a second board fetch. Verify with
+  `test/shared_meeting_read_model.test.mjs` and the focused meeting contract tests.
 
 ## PR and CI preflight
 

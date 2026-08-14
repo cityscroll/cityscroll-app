@@ -178,7 +178,6 @@ async function loadSection(key){
 
 let hearingAll=null;
 const hearingPastCache=new Map();
-let communityBoardMeetingsPromise=null;
 let communityBoardEdgeToolsPromise=null;
 let communityBoardEdgeTools=null;
 function communityBoardEdgeToolsLoad(){
@@ -188,14 +187,6 @@ function communityBoardEdgeToolsLoad(){
       .catch(()=>null);
   }
   return communityBoardEdgeToolsPromise;
-}
-function loadCommunityBoardMeetings(){
-  if(communityBoardMeetingsPromise) return communityBoardMeetingsPromise;
-  communityBoardMeetingsPromise=fetch("/data/community_board_meeting_index.json",{credentials:"omit"})
-    .then(response=>response.ok?response.json():null)
-    .then(index=>(Array.isArray(index?.rows)?index.rows:[]).map(normalizeHearingRow))
-    .catch(()=>[]);
-  return communityBoardMeetingsPromise;
 }
 let hearingRenderSeq=0;
 let hearingWideningDismissed="";
@@ -1477,8 +1468,16 @@ async function renderHearingExplorer(){
     // Default: single chronological list (near-me / borough filters own place navigation).
     el.innerHTML=entries.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("");
   }
-  el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>copyText(noticeLink(button.dataset.link),button)));
-  el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>downloadEventICS(feedRows.meetings[button.dataset.ev.split(":")[1]])));
+  el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>{
+    const record=feedRows.meetings[button.dataset.link] || null;
+    copyText(record?.meeting_id
+      ? `${location.origin}/meetings/${encodeURIComponent(record.meeting_id)}`
+      : noticeLink(button.dataset.link),button);
+  }));
+  el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>{
+    const key=button.dataset.ev.replace(/^meetings:/,"");
+    downloadEventICS(feedRows.meetings[key]);
+  }));
   el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
   announce(t("meetings_entries_announce",{n:uniqueRows.length}));
 }
@@ -1493,14 +1492,11 @@ async function loadHearings(){
       if(response.ok){ const payload=await response.json(); if(Array.isArray(payload.hearings)) records=payload.hearings; }
     }catch(e){}
     if(!records){
-      const rows=await soda({
-        "$select":FEED_SELECT,
-        "$where":`(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND event_date >= '${todayISO()}'`,
-        "$order":"event_date ASC","$limit":"500"
-      });
-      records=rows.map(normalizeHearingRow);
+      const response=await fetch("/data/shared_meeting_read_model.json",{credentials:"omit"});
+      if(!response.ok) throw new Error(t("shared_meeting_read_model_unavailable"));
+      const payload=await response.json();
+      records=Array.isArray(payload?.rows)?payload.rows.map(normalizeHearingRow):[];
     }
-    records=records.concat(await loadCommunityBoardMeetings());
     if(stale()) return;
     hearingAll=records;
     renderMeetingsAgencyScope(hearingAll);
