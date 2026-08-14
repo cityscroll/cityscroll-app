@@ -296,6 +296,40 @@ test("meetings field regression: agency and borough scopes keep affected-area ma
   );
 });
 
+test("community-board search disambiguates a bare number and keeps board 3 results non-empty", () => {
+  const payload = {
+    rows: [
+      {
+        request_id: "bronx-cb-03",
+        short_title: "Bronx Community Board 3 public hearing",
+        event_date: "2026-08-20",
+        affected_area: { scope: "local", boroughs: ["Bronx"], community_boards: ["Community Board 3, Bronx"] },
+      },
+      {
+        request_id: "brooklyn-cb-03",
+        short_title: "Brooklyn Community Board 3 public hearing",
+        event_date: "2026-08-21",
+        affected_area: { scope: "local", boroughs: ["Brooklyn"], community_boards: ["Community Board 3, Brooklyn"] },
+      },
+    ],
+  };
+  const view = buildBrowseView("meetings", payload, new URLSearchParams("q=community+board+3&when=upcoming"));
+  assert.equal(view.total, 2);
+  assert.equal(view.communityBoardDisambiguation.length, 5);
+  const html = renderBrowseView(view);
+  assert.match(html, /Which community board 3\?/);
+  assert.match(html, /\/browse\/people\/\?board=bronx-cb-03#community-boards/);
+  assert.match(html, /Browse community boards as institutions/);
+});
+
+test("unscoped meetings omit the per-notice related-record rail", () => {
+  const meetings = readPayload("meetings");
+  const view = buildBrowseView("meetings", meetings);
+  const html = renderBrowseView(view);
+  assert.doesNotMatch(html, /class="browse-edge-summary"/);
+  assert.ok(html.length < 60_000, "unscoped meetings first paint remains bounded: " + html.length + " bytes");
+});
+
 test("captain six scope URLs with DCWP exhibit explicit scope/empty state by lens", () => {
   const target = "consumer-and-worker-protection";
   const targetName = resolveAgencyIdentity(target).canonical_name;
