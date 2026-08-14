@@ -298,7 +298,37 @@ jobs:
         run: node --test test/*.test.mjs
       - name: Preset shortcuts and rotating suggestions resolve to live results
         if: needs.changes.outputs.unit_full == 'true'
-        run: node tools/validate_presets.mjs --check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PRESET_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "pull_request" ] || [ "$EVENT_NAME" = "merge_group" ]; then
+            if ! git fetch --no-tags --depth=1 origin "$PRESET_BASE_SHA"; then
+              echo "Base commit is unavailable in the shallow checkout; treating the fallback as inherited."
+            fi
+            mode="$(node tools/preset_fallback_ci.mjs --base "$PRESET_BASE_SHA")"
+            if [ "$mode" = "refresh" ]; then
+              echo "Only live data moved; refreshing the inherited preset fallback in this runner."
+              node tools/validate_presets.mjs --write
+              changed="$(git diff --name-only)"
+              if [ -z "$changed" ]; then
+                echo "The live result already matches the inherited fallback."
+                exit 0
+              fi
+              while IFS= read -r path; do
+                case "$path" in
+                  site/app/search-share.mjs|worker/src/lib/suggestions.mjs|site/data/preset-validation.json) ;;
+                  *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+                esac
+              done <<< "$changed"
+              git diff --check
+            else
+              node tools/validate_presets.mjs --check
+            fi
+          else
+            node tools/validate_presets.mjs --check
+          fi
       - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
         if: needs.changes.outputs.unit_full == 'true'
         # test/contract/*.test.mjs imports worker/src/lib/*.mjs modules directly (all
