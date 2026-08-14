@@ -25,6 +25,30 @@
     "inventory_only_is_not_absent_publication": true,
     "join_bridge_enabled": false,
     "join_method": "exact_body_date_publisher_ulurp",
+    "relation_contracts": {
+      "has_member": {
+        "source_contract": "cityscroll.community_board_member_source_contract.v1",
+        "edge_schema": "cityscroll.community_board_member_edge.v1",
+        "required_evidence": [
+          "exact_board_publisher_identity",
+          "exact_member_publisher_identity",
+          "exact_relation_date",
+          "retained_source_document"
+        ],
+        "status": "unknown_until_sourced"
+      },
+      "issues_recommendation": {
+        "source_contract": "cityscroll.community_board_recommendation_source_contract.v1",
+        "edge_schema": "cityscroll.community_board_recommendation_edge.v1",
+        "required_evidence": [
+          "exact_board_publisher_identity",
+          "exact_recommendation_publisher_identity",
+          "exact_relation_date",
+          "retained_source_document"
+        ],
+        "status": "unknown_until_sourced"
+      }
+    },
     "matter_key_policy": "publisher_ulurp_identifiers_only",
     "usefulness_threshold": 0.3,
     "precision_promotion_bar": 1,

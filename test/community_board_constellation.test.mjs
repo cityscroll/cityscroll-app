@@ -20,20 +20,22 @@ const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
-test("board routes preserve the separate place, institution, and output projections", () => {
+test("board routes preserve the separate place, governance, and output projections", () => {
   assert.equal(communityBoardPath("bronx-cb-02"), "/community-boards/bronx-cb-02/");
   assert.equal(communityBoardPlaceHref({ borough: "Bronx", community_district_id: "X02" }), "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings");
   assert.equal(communityBoardInstitutionHref("bronx-cb-02"), "/browse/people/?board=bronx-cb-02#community-boards");
   assert.equal(communityBoardOutputHref("bronx-cb-02"), "/community-boards/#board-bronx-cb-02");
 });
-test("board constellation uses typed summaries and holds unjoined institutional edges", () => {
+test("board constellation uses typed summaries and holds unjoined governance edges", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-02", sources);
   assert.equal(view.kind, "community-board-constellation");
   assert.equal(view.summary.matched_categories, 2);
-  assert.deepEqual(view.categories.map((category) => category.status), ["matched", "matched", "unknown", "unknown"]);
+  assert.deepEqual(view.categories.map((category) => category.status), ["matched", "matched", "unknown", "unknown", "unknown"]);
   const matched = buildCommunityBoardEdgeSummary(view).filter((edge) => edge.state === "matched");
   assert.ok(matched.every((edge) => edge.source && edge.source.name && entityPivotRouteStatus(edge.href).verified));
   assert.equal(view.edge_summary.find((edge) => edge.edge_type === "hosts_meeting")?.href, null);
+  assert.equal(view.edge_summary.find((edge) => edge.edge_type === "has_member")?.href, null);
+  assert.equal(view.edge_summary.find((edge) => edge.edge_type === "issues_recommendation")?.href, null);
   assert.equal(view.local_constellation.kind, "community-board");
 });
 
@@ -43,7 +45,8 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.match(html, /District coverage/);
   assert.match(html, /Official source inventory/);
   assert.match(html, /Meetings and hearings \(Unknown \/ not indexed\)/);
-  assert.match(html, /Board institution \(Unknown \/ not indexed\)/);
+  assert.match(html, /Board members \(Not yet shown — official board records are still being collected\)/);
+  assert.match(html, /Board recommendations \(Not yet shown — official board records are still being collected\)/);
   assert.match(html, /Open official calendar/);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
   assert.doesNotMatch(html, /No meetings exist/);
@@ -66,6 +69,7 @@ test("board profile renders receipt-backed records while leaving unjoined record
   });
   assert.equal(view.source_records[0].state, "observed");
   assert.equal(view.categories.find((category) => category.id === "meetings").status, "unknown");
+  assert.equal(view.categories.find((category) => category.id === "members").status, "unknown");
   const html = renderCommunityBoardConstellationDocument(view);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
   assert.match(visible, /Board records from official sources/);
