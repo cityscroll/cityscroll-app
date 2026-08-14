@@ -142,6 +142,44 @@ function hearingCommunityBoardSignals(text) {
   });
   return { boards: hearingUnique(boards), boroughs: hearingUnique(boroughs) };
 }
+function hearingCommunityBoardQuery(value) {
+  var query = hearingPlainText(value);
+  var match = /\bcommunity\s+board\s*(?:no\.?\s*|#\s*)?(\d{1,2})\b/i.exec(query);
+  if (!match) return null;
+  var number = Number(match[1]);
+  if (!isFinite(number) || number < 1 || number > 18) return null;
+  var boroughs = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"];
+  var borough = boroughs.find(function (candidate) {
+    return new RegExp("\\b" + candidate.replace(" ", "\\s+") + "\\b", "i").test(query);
+  }) || null;
+  return { number: number, borough: borough, ambiguous: !borough, query: query };
+}
+function hearingCommunityBoardIds(record) {
+  var values = [];
+  var area = record && record.affected_area;
+  if (area && Array.isArray(area.community_boards)) values = values.concat(area.community_boards);
+  if (record && Array.isArray(record.community_boards)) values = values.concat(record.community_boards);
+  return hearingUnique(values.map(function (value) {
+    var match = /\bcommunity\s+board\s+(\d{1,2})\s*,\s*([^,]+)$/i.exec(hearingPlainText(value));
+    if (!match) return null;
+    var borough = hearingCanonicalBorough(match[2]);
+    var slug = borough.toLowerCase().replace(/\s+/g, "-");
+    return slug + "-cb-" + String(Number(match[1])).padStart(2, "0");
+  }).filter(Boolean));
+}
+function hearingMatchesCommunityBoard(record, query) {
+  if (!query) return false;
+  var ids = hearingCommunityBoardIds(record);
+  var suffix = "-cb-" + String(query.number).padStart(2, "0");
+  var target = query.borough
+    ? query.borough.toLowerCase().replace(/\s+/g, "-") + suffix
+    : null;
+  if (ids.length) return target ? ids.indexOf(target) >= 0 : ids.some(function (id) { return id.endsWith(suffix); });
+  var haystack = JSON.stringify(record || "");
+  var numberPattern = new RegExp("\\bcommunity\\s+board\\s*(?:no\\.?\\s*|#\\s*)?0?" + query.number + "\\b", "i");
+  if (!numberPattern.test(haystack)) return false;
+  return !query.borough || new RegExp("\\b" + query.borough.replace(" ", "\\s+") + "\\b", "i").test(haystack);
+}
 function hearingStreetRanges(text) {
   var ranges = Array.from(text.matchAll(/\b([A-Z0-9][A-Za-z0-9.'’ -]{1,80}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway))\s+between\s+([A-Z0-9][A-Za-z0-9.'’ -]{1,80}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway))\s+and\s+([A-Z0-9][A-Za-z0-9.'’ -]{1,80}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway))/gi))
     .map(function (match) { return hearingAddress(match[0]); });
@@ -348,6 +386,8 @@ function hearingRowsInScope(records, filter, scope, today) {
     if (agency && record.agency !== agency) return false;
     if (!hearingMatchesArea(record, filter)) return false;
     if (keyword) {
+      var boardQuery = hearingCommunityBoardQuery(keyword);
+      if (boardQuery) return hearingMatchesCommunityBoard(record, boardQuery);
       var haystack = [
         record.title, record.decides, record.description,
         (record.affects || []).join(" "),
@@ -386,6 +426,9 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     hearingPlainText: hearingPlainText,
     hearingRowsInScope: hearingRowsInScope,
     hearingScopeLadder: hearingScopeLadder,
+    hearingCommunityBoardQuery: hearingCommunityBoardQuery,
+    hearingCommunityBoardIds: hearingCommunityBoardIds,
+    hearingMatchesCommunityBoard: hearingMatchesCommunityBoard,
     hearingVenue: hearingVenue,
     normalizeHearingRow: normalizeHearingRow,
   };
