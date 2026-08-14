@@ -808,6 +808,7 @@
     no_zap: "分区申请门户 (ZAP) 中没有重新分区记录",
     nothing_found_feed: "未找到结果。请尝试更宽泛的搜索。",
     could_not_reach: "无法连接到 NYC Open Data。请重试。",
+    shared_meeting_read_model_unavailable: "会议快照暂时不可用。请重试。",
     open_notice_btn: "打开通告",
     city_record_link: "市政公报 / The City Record",
     copy_link_btn: "复制链接",

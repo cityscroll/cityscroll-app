@@ -11,6 +11,8 @@ import {
   buildBrowseConceptDocument,
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
+import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
+import { renderMeetingDocument } from "../site/meeting_document.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -27,12 +29,17 @@ export function primaryDocumentOutputs() {
   const shell = readFileSync(join(SITE, "index.html"), "utf8");
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
+  const sharedMeetings = buildSharedMeetingReadModel({
+    cityRecordRows: payloads.meetings.rows,
+    communityBoardIndex: communityBoardMeetings,
+    generatedAt: payloads.meetings.retrieved_at,
+    now: communityBoardMeetings.generated_at || payloads.meetings.retrieved_at,
+  });
   payloads.meetings = {
     ...payloads.meetings,
-    rows: [...(payloads.meetings.rows || []), ...(communityBoardMeetings.rows || [])]
-      .sort((left, right) => String(right.event_date || right.start_date || "").localeCompare(String(left.event_date || left.start_date || ""))),
-    row_count: (payloads.meetings.rows || []).length + (communityBoardMeetings.rows || []).length,
-    retrieved_at: communityBoardMeetings.generated_at || payloads.meetings.retrieved_at,
+    ...sharedMeetings,
+    row_count: sharedMeetings.rows.length,
+    retrieved_at: sharedMeetings.generated_at || payloads.meetings.retrieved_at,
   };
   const nowSources = {
     money: { ...payloads.contracts, status: "available" },
@@ -100,10 +107,38 @@ export function primaryDocumentOutputs() {
   return outputs;
 }
 
+function buildSharedMeetingArtifacts() {
+  const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  const communityBoardMeetings = json("/data/community_board_meeting_index.json");
+  const sharedMeetings = buildSharedMeetingReadModel({
+    cityRecordRows: payloads.meetings.rows,
+    communityBoardIndex: communityBoardMeetings,
+    generatedAt: payloads.meetings.retrieved_at,
+    now: communityBoardMeetings.generated_at || payloads.meetings.retrieved_at,
+  });
+  return { sharedMeetings };
+}
+
+export function sharedMeetingOutputs() {
+  const { sharedMeetings } = buildSharedMeetingArtifacts();
+  const outputs = [[
+    join(SITE, "data/shared_meeting_read_model.json"),
+    `${JSON.stringify(sharedMeetings, null, 2)}\n`,
+  ]];
+  for (const row of sharedMeetings.rows) {
+    if (!row.meeting_id) continue;
+    outputs.push([
+      join(SITE, "meetings", encodeURIComponent(row.meeting_id), "index.html"),
+      renderMeetingDocument(row),
+    ]);
+  }
+  return outputs;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const check = process.argv.includes("--check");
   let stale = 0;
-  for (const [path, content] of primaryDocumentOutputs()) {
+  for (const [path, content] of [...primaryDocumentOutputs(), ...sharedMeetingOutputs()]) {
     if (!existsSync(path)) {
       if (!check) {
         mkdirSync(dirname(path), { recursive: true });
