@@ -100,6 +100,7 @@ test("Timbale Terrace demo frame has docs, approvals, and filled outcome", () =>
   assert.ok(record.n_documents >= 1);
   assert.ok(record.n_approved_actions >= 1);
   assert.ok(record.dispositions.some((d) => d.vote_date || d.community_board));
+  assert.equal(record.dispositions.find((d) => d.community_board)?.board_id, "manhattan-cb-11");
   assert.ok(outcomeIsFilled(record));
   for (const doc of record.documents.slice(0, 5)) {
     if (doc.url) {

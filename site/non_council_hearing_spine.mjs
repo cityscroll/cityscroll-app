@@ -17,6 +17,8 @@
  * a fake multi-source join against HTML minutes pages.
  */
 
+import { communityBoardPageHref } from "./community_board_links.mjs";
+
 export const NON_COUNCIL_HEARING_SPINE_SCHEMA_VERSION = 1;
 
 /** Ordered process stages for one non-Council hearing. */
@@ -102,13 +104,16 @@ export function isNonCouncilHearingEligible(row) {
 export function nonCouncilBodyLinks(notice) {
   const agency = clean(notice?.agency_name);
   const links = [];
+  const boardHref = communityBoardPageHref(notice?.body_id || notice?.community_board_id);
   for (const row of BP_LINKS) {
     if (row.re.test(agency)) {
       links.push({ url: row.url, label: row.label });
       break;
     }
   }
-  links.push({ url: CB_URL, label: "NYC community boards" });
+  links.push(boardHref
+    ? { url: boardHref, label: "Community board institution" }
+    : { url: CB_URL, label: "NYC community boards" });
   // When no borough BP mapped, include one verified BP home so "borough president
   // websites" is not a text-only claim with zero outbound.
   if (links.length === 1) {
