@@ -255,7 +255,7 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(peopleHtml, /href="\/vendors\/ACME\/"/);
   assert.match(peopleHtml, /Committee on Housing/);
   assert.match(peopleHtml, /Bronx Community Board 1/);
-  assert.match(peopleHtml, /href="\/browse\/people\/\?board=bronx-cb-01#community-boards"/);
+  assert.match(peopleHtml, /href="\/community-boards\/bronx-cb-01\/"/);
   assert.match(peopleHtml, /data-body-id="bronx-cb-01"/);
   assert.match(peopleHtml, /District coverage · Published/);
   assert.match(peopleHtml, /Members · Unknown/);

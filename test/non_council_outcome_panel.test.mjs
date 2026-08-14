@@ -81,6 +81,7 @@ test("receipt-passed exact join surfaces decision, published vote, and official 
   const view = buildNonCouncilOutcomePanelView(receiptPassedLookup, "20260102003");
   assert.equal(view.show, true);
   assert.equal(view.body_name, "Queens Community Board 8");
+  assert.equal(view.board_id, "queens-cb-08");
   assert.equal(view.meeting_label, "Official CB8 meeting");
   assert.equal(view.action, "approved");
   assert.deepEqual(view.tally, { yes: 34, no: 2, abstain: 1 });
@@ -100,6 +101,7 @@ test("receipt-passed exact join surfaces decision, published vote, and official 
   const html = nonCouncilOutcomePanelHTML(receiptPassedLookup, "20260102003");
   assert.match(html, /data-non-council-outcome-panel="1"/);
   assert.match(html, /Queens Community Board 8/);
+  assert.match(html, /href="\/community-boards\/queens-cb-08\/"/);
   assert.match(html, /Approved/);
   assert.match(html, /34 yes · 2 no · 1 abstain/);
   assert.match(html, /Official minutes/);

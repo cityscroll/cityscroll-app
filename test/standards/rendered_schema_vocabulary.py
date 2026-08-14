@@ -81,9 +81,6 @@ DOCUMENT_ROUTES = (
     # Minutes are currently not yet ingested; this route proves member and
     # recommendation activity stays pending/unknown rather than empty.
     "community-boards/bronx-cb-02/",
-    # Board institution projection: the query carries the publisher body_id and
-    # the anchor returns to the board section on the People + organizations page.
-    "browse/people/?board=bronx-cb-01#community-boards",
 )
 
 # Source: the finite hash grammar in applyHash() and the scope controls declared by

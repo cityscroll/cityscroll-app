@@ -37,7 +37,7 @@ test("People + organizations exposes a board institution projection", () => {
   const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", { places: geography }));
   assert.match(html, /data-board-projection="organization"/);
   assert.match(html, /data-body-id="bronx-cb-01"/);
-  assert.match(html, /href="\/browse\/people\/\?board=bronx-cb-01#community-boards"/);
+  assert.match(html, /href="\/community-boards\/bronx-cb-01\/"/);
   assert.match(html, /Covers Bronx Community District X01\./);
   assert.match(html, /Board identity · Published/);
   assert.match(html, /District coverage · Published/);
