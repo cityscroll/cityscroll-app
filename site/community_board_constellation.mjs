@@ -22,6 +22,10 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { buildLocalConstellation, renderLocalConstellationHTML } from "./local_constellation.mjs";
+import {
+  communityBoardRelationAvailability,
+  promotedCommunityBoardRelationEdges,
+} from "./community_board_relations.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -30,7 +34,8 @@ export const COMMUNITY_BOARD_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({ id: "place", label: "District coverage", relation: "covers", target_kind: "community-district" }),
   Object.freeze({ id: "sources", label: "Official source inventory", relation: "published_board_source", target_kind: "source" }),
   Object.freeze({ id: "meetings", label: "Meetings and hearings", relation: "hosts_meeting", target_kind: "meeting" }),
-  Object.freeze({ id: "institution", label: "Board institution", relation: "has_member", target_kind: "organization" }),
+  Object.freeze({ id: "members", label: "Board members", relation: "has_member", target_kind: "official" }),
+  Object.freeze({ id: "recommendations", label: "Board recommendations", relation: "issues_recommendation", target_kind: "recommendation" }),
 ]);
 
 const SOURCE_ROLE_LABELS = Object.freeze({
@@ -124,7 +129,20 @@ function sourceRecordRows(records = []) {
   }));
 }
 
-function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, sourceRecordRowsForBoard) {
+function relationItem(edge, kind) {
+  return {
+    ...edge,
+    href: kind === "member" && /^official:\d+$/.test(edge.to || "")
+      ? `/officials/${encodeURIComponent(edge.target_id)}/`
+      : null,
+    date: edge.relation_date,
+    source_document: edge.source_document,
+    label: edge.target_name || edge.target_id,
+    state: "official",
+  };
+}
+
+function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, sourceRecordRowsForBoard, relationEdges) {
   const sourceHref = registrySource(board);
   if (spec.id === "place") {
     const districtId = clean(districtEdge?.to || "").replace(/^community-district:/, "");
@@ -165,6 +183,23 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, so
       source: sourceHref,
       provenance: joined[0]?.provenance || source?.provenance || null,
       items: joined,
+    };
+  }
+  if (spec.id === "members" || spec.id === "recommendations") {
+    const kind = spec.id === "members" ? "member" : "recommendation";
+    const edges = relationEdges?.[spec.id] || [];
+    const availability = communityBoardRelationAvailability(sourceRowsForBoard, kind);
+    return {
+      ...spec,
+      status: edges.length ? "matched" : "unknown",
+      source_state: edges.length ? "observed" : availability.state,
+      count: edges.length || null,
+      target_name: spec.label,
+      view_all_href: null,
+      source: sourceHref,
+      provenance: edges[0]?.provenance || source?.provenance || null,
+      pending_reason: edges.length ? null : availability.reason,
+      items: edges.map((edge) => relationItem(edge, kind)),
     };
   }
   return {
@@ -230,6 +265,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
       || (Array.isArray(sources.sourceRecords) ? sources.sourceRecords : sources.sourceRecords?.records)
       || [],
   );
+  const relationInput = sources.boardRelations?.[requested]
+    || sources.relations?.[requested]
+    || {};
+  const relationEdges = promotedCommunityBoardRelationEdges(relationInput);
   const categories = COMMUNITY_BOARD_CONSTELLATION_CATEGORIES.map((spec) => buildCategory(
     spec,
     normalizedBoard,
@@ -237,6 +276,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     districtEdge,
     boardSources,
     boardSourceRecords,
+    relationEdges,
   ));
   const edgeSummary = buildCommunityBoardEdgeSummary({ body_id: requested, categories });
   const localConstellation = buildLocalConstellation({
@@ -279,7 +319,21 @@ function sourceMarkup(row) {
 }
 
 function categoryStatus(category) {
+  if (category.source_state === "not_yet_ingested") return "Not yet shown — official board records are still being collected";
   return edgeSummaryStateCopy({ state: category.status, count: category.count });
+}
+
+function relationRecordMarkup(row, kind) {
+  const document = row.source_document || {};
+  const link = document.url
+    ? officialSourceLink({ href: document.url, label: "Open the source document", className: "board-source-link", escape: esc })
+    : "";
+  const date = row.date ? `Dated ${esc(row.date)}` : "Dated source record";
+  const subject = kind === "member" ? "Board member" : "Board recommendation";
+  const evidence = kind === "member"
+    ? "The board identity, member identity, date, and source document matched exactly."
+    : "The board identity, recommendation identity, date, and source document matched exactly.";
+  return `<li class="node-record" data-board-relation="${esc(row.relation)}"><div class="node-record-main"><strong>${row.href ? `<a href="${esc(row.href)}">${esc(row.label)}</a>` : esc(row.label)}</strong></div><span class="muted node-muted">${esc(subject)} · ${date}</span><details class="inline-disclose board-relation-details"><summary>How confirmed</summary><div class="inline-disclose-body"><p>${esc(evidence)}</p><p>${link}</p></div></details></li>`;
 }
 
 function renderCategory(category) {
@@ -288,6 +342,10 @@ function renderCategory(category) {
     ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>`
     : category.id === "meetings" && category.items?.length
       ? `<ul class="node-record-list">${category.items.map(sourceRecordMarkup).join("")}</ul>`
+      : ["members", "recommendations"].includes(category.id) && category.items?.length
+        ? `<ul class="node-record-list">${category.items.map((row) => relationRecordMarkup(row, category.id === "members" ? "member" : "recommendation")).join("")}</ul>`
+        : ["members", "recommendations"].includes(category.id) && category.source_state === "not_yet_ingested"
+          ? `<p class="node-muted" data-edge-state="unknown" data-edge-availability="pending">${esc(category.pending_reason)}</p>`
     : `<p class="node-muted" data-edge-state="${esc(category.status)}" data-edge-availability="${esc(availability)}">${esc(categoryStatus(category))}</p>`;
   return renderNodeSection({
     heading: `${category.label} (${categoryStatus(category)})`,

@@ -356,6 +356,25 @@
       "grounding": "gap"
     },
     {
+      "id": "recommendation",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Community-board recommendations are not yet retained as publisher-keyed source documents; the relation contract remains declared but no recommendation edge is materialized.",
+      "primary_key_pattern": "recommendation:{publisher_recommendation_id}",
+      "families": [],
+      "backing": [
+        "community_board_source_registry",
+        "community_board_recommendation_source_contract"
+      ],
+      "properties_ref": [
+        "title",
+        "date",
+        "source_document_id",
+        "source_document_url"
+      ],
+      "grounding": "gap"
+    },
+    {
       "id": "meeting",
       "status": "unregistered",
       "layer": "semantic",
@@ -447,6 +466,30 @@
             "issues_recommendation"
           ],
           "publication": "unknown until sourced"
+        }
+      },
+      "relation_contracts": {
+        "has_member": {
+          "source_contract": "cityscroll.community_board_member_source_contract.v1",
+          "edge_schema": "cityscroll.community_board_member_edge.v1",
+          "required_evidence": [
+            "exact_board_publisher_identity",
+            "exact_member_publisher_identity",
+            "exact_relation_date",
+            "retained_source_document"
+          ],
+          "semantics": "descriptive temporal service on a community board; no influence, support, control, or vote implication"
+        },
+        "issues_recommendation": {
+          "source_contract": "cityscroll.community_board_recommendation_source_contract.v1",
+          "edge_schema": "cityscroll.community_board_recommendation_edge.v1",
+          "required_evidence": [
+            "exact_board_publisher_identity",
+            "exact_recommendation_publisher_identity",
+            "exact_relation_date",
+            "retained_source_document"
+          ],
+          "semantics": "a recommendation explicitly issued by the board; no adoption or implementation implication"
         }
       },
       "backing": [
@@ -702,7 +745,8 @@
       "status": "unregistered",
       "from": "community-board|committee",
       "to": "official",
-      "reason": "Organization-facing inverse membership family is declared for board and committee bodies; community-board member edges remain unknown until sourced and no board edges are materialized here.",
+      "reason": "Organization-facing inverse membership family is declared for board and committee bodies. Community-board edges require the exact publisher identity, date, and retained source-document contract; no board edges are materialized here.",
+      "contract_ref": "cityscroll.community_board_member_source_contract.v1",
       "backing": [
         "public_graph.edge",
         "community_board_source_registry",
@@ -729,7 +773,8 @@
       "status": "unregistered",
       "from": "community-board",
       "to": "recommendation",
-      "reason": "Organization-facing recommendation family is declared, but board decisions are outputs and remain unknown until the source inventory supplies a verified publisher join.",
+      "reason": "Organization-facing recommendation family is declared, but board outputs remain unknown until a publisher-keyed recommendation, date, and retained source document pass the distinct recommendation contract.",
+      "contract_ref": "cityscroll.community_board_recommendation_source_contract.v1",
       "backing": [
         "community_board_source_registry",
         "meeting-community-board-votes"

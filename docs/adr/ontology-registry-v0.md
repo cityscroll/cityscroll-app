@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Updated | 2026-08-11 (grounding states + design-matrix link catalog) |
+| Updated | 2026-08-14 (grounding states + design-matrix link catalog + community-board recommendation target) |
 | Scope | Catalog + pure evaluation flywheel — no production graph store, no public route |
 | Product name | **Civic Graph** (object–link–action registry + evaluation harness) |
 | Supersedes | — |
@@ -43,6 +43,17 @@ Every object type, link type, event kind, and kinetic action also carries
 **`grounding`**: `built` | `partial` | `gap` — measured product depth from the existence
 matrix (not the same axis as catalog `status`). Unregistered entries must not claim
 `built`. Pure helpers: `ontology/grounding.mjs`.
+
+### 1a. Community-board recommendation target
+
+The registry includes a distinct `recommendation` object type for the community-board
+`issues_recommendation` relation. This is an intentional catalog addition, not a claim that
+recommendations are currently materialized: the object remains `status: "unregistered"` and
+`grounding: "gap"` until a publisher-keyed recommendation is retained with its exact date and
+source document. A separate target is necessary because a board recommendation has different
+semantics and provenance from a meeting, matter, or member; using one of those existing objects
+would blur the relation contract and make an output look more certain than its source supports.
+The source contract therefore promotes no edge from names, titles, venues, or inference alone.
 
 ### 2. Zero production risk for v0
 
