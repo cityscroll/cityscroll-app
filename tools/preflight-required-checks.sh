@@ -354,6 +354,13 @@ if [[ "$RUN_FULL" == "1" ]]; then
     echo "preflight: expected site/agencies/parks-and-recreation/index.html after constellation build" >&2
     exit 1
   fi
+  run_banner "Accessibility + language gate (axe on every PR)" "Build community board constellation HTML artifacts" \
+    "node tools/build_community_board_constellation_documents.mjs"
+  run_and_fail node tools/build_community_board_constellation_documents.mjs
+  if [[ ! -f site/community-boards/bronx-cb-01/index.html ]]; then
+    echo "preflight: expected site/community-boards/bronx-cb-01/index.html after constellation build" >&2
+    exit 1
+  fi
   # Bind atomically to an available port so concurrent local checks cannot replace
   # one another's server. CROL_TEST_PORT remains an explicit debugging override.
   SERVER_READY_FILE="$(mktemp "${TMPDIR:-/tmp}/crol-preflight-site.XXXXXX")"

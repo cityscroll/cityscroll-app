@@ -11,6 +11,10 @@ docs/data-source-graph.html
 # Keep site/agencies/index.html (directory listing) tracked.
 site/agencies/*/index.html
 
+# Community-board constellation HTML is a build/deploy artifact; the aggregate
+# source directory and lookup remain tracked.
+site/community-boards/*/index.html
+
 # Local notes and planning dirs (not part of the product tree)
 # Internal-only planning locations. Gitignore prevents future adds, but CI is
 # the enforcement layer for tracked-path introductions in PRs.
