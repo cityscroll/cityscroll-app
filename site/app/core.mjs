@@ -310,6 +310,12 @@ function showTab(name, push){
     return;
   }
   pendingRouteModuleTab=null;
+  // The untouched root is a neutral topic entry. Once a resident explicitly
+  // chooses a lens, reveal that lens's controls and rows instead of leaving
+  // the home-only presentation rules in place.
+  if(document.body?.dataset.primaryContext === "home"){
+    document.body.dataset.primaryContext="browse";
+  }
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));

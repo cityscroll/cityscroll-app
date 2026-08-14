@@ -46,6 +46,9 @@ test("primary navigation is four real document links on every promoted shell", (
   assert.match(root, /name="q"[^>]+maxlength="240"/);
   assert.match(root, /What are you looking for\?/);
   assert.doesNotMatch(root, /<section id="tab-money" class="tabpane active"/);
+  const core = read("../site/app/core.mjs");
+  assert.match(core, /if\(document\.body\?\.dataset\.primaryContext === "home"\)\{\s*document\.body\.dataset\.primaryContext="browse";/,
+    "an explicit lens choice exits the neutral home presentation");
   const routes = {
     money: "/browse/contracts/",
     land: "/browse/zoning/",
