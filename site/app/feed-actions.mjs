@@ -179,6 +179,16 @@ async function loadSection(key){
 let hearingAll=null;
 const hearingPastCache=new Map();
 let communityBoardMeetingsPromise=null;
+let communityBoardEdgeToolsPromise=null;
+let communityBoardEdgeTools=null;
+function communityBoardEdgeToolsLoad(){
+  if(!communityBoardEdgeToolsPromise){
+    communityBoardEdgeToolsPromise=import("../community_board_institution_edges.mjs")
+      .then(tools=>{ communityBoardEdgeTools=tools; return tools; })
+      .catch(()=>null);
+  }
+  return communityBoardEdgeToolsPromise;
+}
 function loadCommunityBoardMeetings(){
   if(communityBoardMeetingsPromise) return communityBoardMeetingsPromise;
   communityBoardMeetingsPromise=fetch("/data/community_board_meeting_index.json",{credentials:"omit"})
@@ -1209,6 +1219,13 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ? `<span class="tag asset">${escUiHtml(t("meetings_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
   const origin=record.meeting_origin||"unknown";
+  const boardEdge=communityBoardEdgeTools?.communityBoardMeetingEdgeFromRow(record);
+  const boardId=boardEdge?.from?.replace(/^community-board:/,"")
+    || record.institution_refs?.board_ref?.replace(/^community-board:/,"")
+    || record.board_id;
+  const boardHref=boardEdge?.board_href||communityBoardPageHref(boardId);
+  const boardName=record.board_name||boardEdge?.board_name
+    || (boardId?`Community Board ${boardId.replace(/^[a-z-]+-cb-/i,"")}`:"");
   const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${sourceUrl
     ? `<a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${escUiHtml(meetingOriginLabel(origin))}${extSR()}</a>`
     : escUiHtml(meetingOriginLabel(origin))}</span>`;
@@ -1216,6 +1233,8 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:""}
+    ${boardEdge&&communityBoardEdgeTools?.communityBoardMeetingEdgeAccepted(boardEdge)&&boardHref
+      ? `<a class="tag place community-board-meeting-pivot" href="${escUiHtml(boardHref)}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</a>` : ""}
     ${originChip}
   </div>`;
   // Next-action lead: concrete attend / join / testimony when data supports it.
@@ -1339,6 +1358,8 @@ async function renderHearingExplorer(){
       selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
+  if(seq!==hearingRenderSeq) return;
+  await communityBoardEdgeToolsLoad();
   if(seq!==hearingRenderSeq) return;
   const rows=selection.rows;
   const terms=filter.keyword?[filter.keyword]:[];
