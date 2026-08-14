@@ -88,21 +88,59 @@ function registrySource(board) {
   };
 }
 
-function sourceRows(scorecardRow, inventoryRow) {
+function sourceRows(scorecardRow, inventoryRow, receipts = []) {
   const scored = scorecardRow?.sources || {};
   const inventory = inventoryRow?.source_roles || {};
   return Object.keys(SOURCE_ROLE_LABELS).map((role) => {
     const source = scored[role] || inventory[role] || {};
+    const receipt = (Array.isArray(receipts) ? receipts : []).find((row) => row?.role === role);
     return {
       role,
       label: SOURCE_ROLE_LABELS[role],
       url: source.source_url || source.url || null,
-      state: source.governance_state || source.collection_state || (source.url ? "observed" : "absent_in_pass"),
+      state: receipt?.state || source.governance_state || source.collection_state || (source.url ? "observed" : "absent_in_pass"),
       publisher: source.publisher || null,
       observed_on: source.observed_on || source.seen_on || null,
       origin_label: source.origin_label || source.publisher || null,
+      observed_receipt: receipt?.observed_receipt || source.coverage_receipt?.observed_receipt || null,
+      receipt_state: receipt?.state || null,
     };
   });
+}
+
+function residentDate(value) {
+  const monthOnly = /^\d{4}-\d{2}$/.test(String(value));
+  const parsed = new Date(`${value}${monthOnly ? "-01" : ""}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return new Intl.DateTimeFormat("en", { month: "long", ...(monthOnly ? {} : { day: "numeric" }), year: "numeric", timeZone: "UTC" }).format(parsed);
+}
+
+function minutesFreshness(documents = [], source = {}, asOf = null) {
+  const dates = (Array.isArray(documents) ? documents : [])
+    .map((document) => document.meeting_date || document.publication_date || document.date)
+    .filter(Boolean)
+    .sort();
+  const latest = dates.at(-1) || null;
+  const reference = new Date(`${String(asOf || new Date().toISOString()).slice(0, 10)}T00:00:00Z`);
+  const latestDate = latest ? new Date(`${latest}${/^\d{4}-\d{2}$/.test(latest) ? "-01" : ""}T00:00:00Z`) : null;
+  const ageDays = latestDate && !Number.isNaN(latestDate.getTime()) && !Number.isNaN(reference.getTime())
+    ? Math.max(0, Math.floor((reference - latestDate) / 86400000)) : null;
+  if (latest) {
+    const stale = ageDays != null && ageDays > 365;
+    return {
+      state: stale ? "stale" : "available",
+      latest_date: latest,
+      label: stale ? `Minutes last published ${residentDate(latest)}` : `Latest minutes ${residentDate(latest)}`,
+      age_days: ageDays,
+    };
+  }
+  if (["unavailable", "unsupported-format"].includes(source.state)) {
+    return { state: "unavailable", latest_date: null, label: "Minutes archive could not be checked", age_days: null };
+  }
+  if (source.state === "checked-empty") {
+    return { state: "available", latest_date: null, label: "No dated minutes found in the checked source", age_days: null };
+  }
+  return { state: "unknown", latest_date: null, label: "Minutes freshness is not yet known", age_days: null };
 }
 
 function boardNode(geography, id) {
@@ -115,17 +153,20 @@ function sourceRecordRows(records = []) {
   const rows = Array.isArray(records) ? records : records?.records || [];
   return rows.filter((record) => record && (record.record_id || record.source_record_id)).map((record) => ({
     ...record,
-    label: record.record_kind === "video"
+    label: record.role === "minutes"
+      ? "Minutes"
+      : record.record_kind === "video"
       ? "Meeting video"
       : record.record_kind === "event"
         ? (SOURCE_ROLE_LABELS[record.category] || "Board meeting")
         : "Minutes and records",
-    state: record.status === "official" || record.join?.matched === true
+    state: record.status === "official" || record.join?.matched === true || record.attachment_status === "attached"
       ? "official"
-      : record.observed_receipt?.status === "ok" || record.source_provenance?.observed_receipt?.status === "ok"
+      : record.observed_receipt?.status === "ok" || record.source_provenance?.observed_receipt?.status === "ok" || record.source_receipt?.status === "ok"
         ? "observed"
         : "unknown",
-    href: record.record_url || record.source_url || null,
+    href: record.document_url || record.record_url || record.source_url || null,
+    meeting_document: record.object_type === "meeting_document" || record.role === "minutes",
   }));
 }
 
@@ -273,14 +314,24 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
   if (!requested || !board) return null;
   const districtEdge = (sources.geography?.public_edges || []).find((edge) => edge?.type === "covers" && edge.from === `community-board:${requested}`);
   const districtId = clean(districtEdge?.to || "").replace(/^community-district:/, "");
-  const normalizedBoard = { ...board, community_district_id: districtId || board.community_district_id || null };
+  const normalizedBoard = {
+    ...board,
+    community_district_id: districtId || board.community_district_id || null,
+    as_of: sources.generated_at || sources.scorecard?.as_of || null,
+  };
   const scorecardRow = (sources.scorecard?.rows || []).find((row) => row?.body_id === requested);
   const inventoryRow = (sources.sourceInventory?.boards || []).find((row) => row?.id === requested || row?.body_id === requested);
-  const boardSources = sourceRows(scorecardRow, inventoryRow || board);
+  const boardReceipts = (sources.sourceReceipts || []).filter((row) => row?.board_id === requested);
+  const boardSources = sourceRows(scorecardRow, inventoryRow || board, boardReceipts);
   const boardSourceRecords = sourceRecordRows(
-    sources.sourceRecords?.[requested]
+    [
+      ...(sources.sourceRecords?.[requested]
       || (Array.isArray(sources.sourceRecords) ? sources.sourceRecords : sources.sourceRecords?.records)
-      || [],
+      || []),
+      ...(Array.isArray(sources.meetingDocuments)
+        ? sources.meetingDocuments.filter((row) => row?.board_id === requested)
+        : sources.meetingDocuments?.[requested] || []),
+    ],
   );
   const suppliedInstitutionEdges = sources.institutionEdges?.[requested]
     || sources.boardInstitutionEdges?.[requested]
@@ -324,6 +375,11 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
+    minutes_freshness: minutesFreshness(
+      boardSourceRecords.filter((row) => row.meeting_document || row.source_role === "minutes"),
+      boardSources.find((row) => row.role === "minutes") || {},
+      normalizedBoard.as_of,
+    ),
     summary: {
       matched_categories: categories.filter((category) => category.status === "matched").length,
       category_count: categories.length,
@@ -404,6 +460,22 @@ function renderSourceRecordSection(records = []) {
   });
 }
 
+function renderMinutesFreshnessSection(view) {
+  const freshness = view?.minutes_freshness;
+  if (!freshness) return "";
+  const source = view.categories.find((category) => category.id === "sources")?.items
+    ?.find((row) => row.role === "minutes");
+  const sourceLink = source?.url
+    ? officialSourceLink({ href: source.url, label: "Open minutes or records", className: "board-source-link", escape: esc })
+    : "";
+  return renderNodeSection({
+    heading: "Minutes and records",
+    extraClass: "node-card civic-object-section",
+    attrs: { "data-community-board-minutes": "1", "data-minutes-freshness": freshness.state },
+    body: `<p>${esc(freshness.label)}</p>${sourceLink ? `<p>${sourceLink}</p>` : ""}`,
+  });
+}
+
 export function renderCommunityBoardConstellationDocument(view, options = {}) {
   if (!view || view.kind !== "community-board-constellation") throw new Error("Unknown community board constellation view");
   const title = view.display_name;
@@ -440,7 +512,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board constellation</p><h1>${esc(title)}</h1><p class="node-lede">Public source records and the district this board covers, with institutional records shown when they are joined.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-${edgeRail}${local}${actions}${renderSourceRecordSection(view.source_records)}${view.categories.map(renderCategory).join("")}
+${edgeRail}${local}${actions}${renderMinutesFreshnessSection(view)}${renderSourceRecordSection(view.source_records)}${view.categories.map(renderCategory).join("")}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;

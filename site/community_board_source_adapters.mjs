@@ -71,7 +71,18 @@ const monthDate = (value) => {
 };
 
 function dateFromText(value) {
-  return iso(value) || monthDate(value);
+  return iso(value) || monthDate(value) || yearMonth(value);
+}
+
+function yearMonth(value) {
+  const text = clean(value, 300);
+  const named = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(20\d{2})\b/i);
+  if (named) {
+    const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(named[1].toLowerCase()) + 1;
+    return `${named[2]}-${String(month).padStart(2, "0")}`;
+  }
+  const numeric = text.match(/\b(20\d{2})[-/.](\d{1,2})(?:\b|[^\d])/);
+  return numeric ? `${numeric[1]}-${String(numeric[2]).padStart(2, "0")}` : null;
 }
 
 function decode(value) {
@@ -126,7 +137,7 @@ export function sourceAdapterContract(source = {}) {
 export function normalizeObservedReceipt(receipt = {}, source = {}, fallback = {}) {
   const observedAt = clean(receipt.observed_at || receipt.observedOn || fallback.observed_at || fallback.observedAt, 80) || null;
   const status = clean(receipt.status || receipt.fetchability || fallback.status, 40).toLowerCase() || "unknown";
-  return {
+  const normalized = {
     schema: COMMUNITY_BOARD_SOURCE_RECEIPT_SCHEMA,
     source_url: explicitUrl(source),
     observed_at: observedAt,
@@ -139,6 +150,7 @@ export function normalizeObservedReceipt(receipt = {}, source = {}, fallback = {
     parser: clean(receipt.parser || fallback.parser || adapterId(source), 80) || null,
     reason: clean(receipt.reason || fallback.reason, 240) || null,
   };
+  return normalized;
 }
 
 function bodyEvidence(source, value = null) {
@@ -171,7 +183,7 @@ function record(source, fields = {}, receipt = {}) {
   ].map((value) => clean(value, 240)).filter(Boolean))];
   const ids = publisherIds({ ...fields, record_id: recordId, publisher_matter_ids: publisherMatterIds });
   const normalizedReceipt = normalizeObservedReceipt(receipt, source, { parser: adapterId(source) });
-  return {
+  const normalized = {
     schema: COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA,
     source_url: sourceUrl,
     board_id: bodyId,
@@ -198,6 +210,11 @@ function record(source, fields = {}, receipt = {}) {
     record_url: clean(fields.record_url || fields.document_url || fields.video_url || fields.url, 2_000) || null,
     observed_receipt: normalizedReceipt,
   };
+  const publisherEventId = clean(fields.publisher_event_id || fields.event_id, 240) || null;
+  const meetingKey = clean(fields.meeting_key || fields.meeting_id || fields.canonical_meeting_id, 2_000) || null;
+  if (publisherEventId) normalized.publisher_event_id = publisherEventId;
+  if (meetingKey) normalized.meeting_key = meetingKey;
+  return normalized;
 }
 
 function htmlRecords(html, source, receipt = {}) {
@@ -214,6 +231,7 @@ function htmlRecords(html, source, receipt = {}) {
     const format = (url.pathname.match(/\.([a-z0-9]+)$/i)?.[1] || clean(attribute(tag, "data-format"), 20) || "html").toLowerCase();
     if (!["html", "pdf", "doc", "docx"].includes(format)) continue;
     const explicitRecordId = attribute(tag, "data-record-id") || attribute(tag, "data-document-id") || attribute(tag, "data-event-id");
+    const meetingKey = attribute(tag, "data-meeting-id") || attribute(tag, "data-meeting-key");
     const bodyId = attribute(tag, "data-board-id") || attribute(tag, "data-body-id");
     const date = dateFromText(attribute(tag, "data-date") || attribute(tag, "datetime") || `${title} ${url.pathname}`);
     if (!date) continue;
@@ -226,6 +244,7 @@ function htmlRecords(html, source, receipt = {}) {
       record_kind: recordKind,
       record_id: recordId,
       publisher_identifier: explicitRecordId ? null : (recordKind === "document" ? url.href : null),
+      meeting_key: meetingKey,
       board_id: bodyId || source.board_id || source.body_id,
       body_evidence: bodyId ? { board_id: bodyId, basis: "publisher_record" } : bodyEvidence(source),
       date,
@@ -274,6 +293,7 @@ function jsonLdEvents(html, source, receipt = {}) {
         address: decode(address),
         format: "html",
         publisher_identifier: publisherIdentifier,
+        meeting_key: entry.meetingId || entry.meeting_id || entry.meetingKey || entry.meeting_key,
         record_url: recordUrl,
       }, receipt));
     }
@@ -369,6 +389,7 @@ export function parseAirtableSource(payload, source = {}, options = {}) {
       address: fieldValue(fields, map, "address"),
       publisher_identifier: fieldValue(fields, map, "publisher_identifier"),
       publisher_event_id: fieldValue(fields, map, "publisher_event_id"),
+      meeting_key: fieldValue(fields, map, "meeting_id") || fieldValue(fields, map, "meeting_key"),
       publisher_matter_ids: Array.isArray(fieldValue(fields, map, "publisher_matter_ids")) ? fieldValue(fields, map, "publisher_matter_ids") : [],
       format: "airtable",
       record_url: fieldValue(fields, map, "record_url") || source.url || source.source_url,

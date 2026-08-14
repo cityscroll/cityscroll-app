@@ -62,6 +62,19 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.doesNotMatch(html, /No meetings exist/);
 });
 
+test("minutes freshness keeps an unchecked source in resident language", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-02", sources);
+  view.minutes_freshness = {
+    state: "unavailable",
+    latest_date: null,
+    label: "Minutes archive could not be checked",
+    age_days: null,
+  };
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.match(html, /Minutes archive could not be checked/);
+  assert.doesNotMatch(html, /Minutes source unavailable/);
+});
+
 test("board profile renders receipt-backed records while leaving unjoined records non-official", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-02", {
     ...sources,
