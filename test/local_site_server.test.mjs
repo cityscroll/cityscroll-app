@@ -48,6 +48,9 @@ test("full preflight and CI use the route-aware server without touching existing
 
 test("performance interaction waits for the canonical Contracts document URL", () => {
   const source = read("test/performance/verify.py");
+  assert.match(source, /data-home-topic-entry/);
+  assert.match(source, /topic\.getClientRects\(\)\.length > 0/);
+  assert.doesNotMatch(source, /const listReady =/);
   assert.match(source, /location\.pathname === "\/browse\/contracts\/"/);
   assert.match(source, /new URLSearchParams\(location\.search\)\.get\("q"\) === "housing"/);
   assert.doesNotMatch(source, /location\.hash\.split\("\?"\).*get\("q"\)/);
