@@ -1,4 +1,8 @@
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import {
+  COMMUNITY_BOARD_SOURCE_JOIN_METHOD,
+  COMMUNITY_BOARD_SOURCE_JOIN_SCHEMA,
+} from "./community_board_source_join.mjs";
 
 // Receipt-backed community-board decision panel for non-Council meeting notices.
 // The committed lookup may remain empty. Rendering requires the artifact-level
@@ -40,17 +44,27 @@ export function buildNonCouncilOutcomePanelView(payload, requestId) {
     || clean(row.request_id) !== id
   ) return emptyView();
 
-  const join = row.join || {};
+  const rowJoin = row.join || {};
+  const sourceJoin = row.source_join
+    || row.board_source_join
+    || (rowJoin.schema === COMMUNITY_BOARD_SOURCE_JOIN_SCHEMA ? rowJoin : null);
+  const legacyJoinRequired = Boolean(rowJoin.method) && sourceJoin !== rowJoin;
+  const join = sourceJoin === rowJoin ? row.outcome_join || {} : rowJoin;
   const outcome = row.outcome || {};
   const meetingDate = isoDate(row.meeting_date);
-  const minutesUrl = safeHttpsUrl(row.provenance?.document_url);
+  const sourceJoinView = buildOfficialBoardMeetingJoin({ ...row, source_join: sourceJoin }, meetingDate);
+  const minutesUrl = sourceJoinView?.source_url;
   if (
-    join.method !== "exact_body_date_matter_tokens"
-    || clean(join.body_id) !== clean(row.body_id)
+    (legacyJoinRequired && (
+      join.method !== "exact_body_date_matter_tokens"
+      || clean(join.body_id) !== clean(row.body_id)
+      || !meetingDate
+      || isoDate(join.event_date) !== meetingDate
+      || !clean(join.matter_token)
+    ))
     || !meetingDate
-    || isoDate(join.event_date) !== meetingDate
-    || !clean(join.matter_token)
     || row.provenance?.text_status !== "ok"
+    || !sourceJoinView
     || outcome.explicit !== true
     || !["approved", "rejected", "held"].includes(clean(outcome.action))
     || !minutesUrl
@@ -61,10 +75,53 @@ export function buildNonCouncilOutcomePanelView(payload, requestId) {
     show: true,
     request_id: id,
     body_name: bodyName(row),
+    meeting_label: sourceJoinView.label,
     meeting_date: meetingDate,
     action: clean(outcome.action),
     tally: validTally(outcome.tally),
     minutes_url: minutesUrl,
+  };
+}
+
+/**
+ * Promote a City Record notice to an official board meeting only from the
+ * receipt-backed source join contract. The older outcome join above remains a separate
+ * gate for decision details; it is not evidence for this label.
+ */
+export function buildOfficialBoardMeetingJoin(row = {}, meetingDate = isoDate(row.meeting_date)) {
+  const sourceJoin = row.source_join || row.board_source_join;
+  const join = sourceJoin?.join || {};
+  const boardId = clean(row.body_id);
+  const sourceBoardId = clean(sourceJoin?.board_id);
+  const eventDate = isoDate(join.event_date || sourceJoin?.meeting_date);
+  const receipt = sourceJoin?.provenance?.observed_receipt;
+  const evidence = Array.isArray(join.evidence) ? join.evidence : [];
+  if (
+    sourceJoin?.schema !== COMMUNITY_BOARD_SOURCE_JOIN_SCHEMA
+    || sourceJoin.status !== "official"
+    || sourceJoin.official !== true
+    || sourceJoin.reason != null
+    || join.matched !== true
+    || join.method !== COMMUNITY_BOARD_SOURCE_JOIN_METHOD
+    || !boardId
+    || sourceBoardId !== boardId
+    || clean(join.board_id) !== boardId
+    || !meetingDate
+    || eventDate !== meetingDate
+    || isoDate(sourceJoin.meeting_date) !== meetingDate
+    || !clean(join.publisher_identifier)
+    || !evidence.includes("exact_board_identity")
+    || !evidence.includes("exact_date")
+    || !evidence.includes("publisher_identifier")
+    || receipt?.status !== "ok"
+    || !clean(receipt.observed_at)
+  ) return null;
+
+  const sourceUrl = safeHttpsUrl(sourceJoin.source_url || sourceJoin.provenance?.source_url);
+  if (!sourceUrl) return null;
+  return {
+    label: officialBoardMeetingLabel(boardId),
+    source_url: sourceUrl,
   };
 }
 
@@ -98,14 +155,21 @@ export function nonCouncilOutcomePanelHTML(payloadOrView, requestId, opts = {}) 
           <div class="stage-name">${esc(t("non_council_outcome_decision_lbl"))}</div>
           <div>${esc(action)}</div>
         </div>
+        <div class="notice-fact-row" data-field="meeting-source">
+          <div class="stage-name">${esc(t("non_council_outcome_source_lbl"))}</div>
+          <div>${esc(view.meeting_label)}</div>
+        </div>
         <div class="notice-fact-row" data-field="meeting-date">
           <div class="stage-name">${esc(t("non_council_outcome_date_lbl"))}</div>
-          <time datetime="${esc(view.meeting_date)}">${esc(date(view.meeting_date))}</time>
+          <div><time datetime="${esc(view.meeting_date)}">${esc(date(view.meeting_date))}</time> · ${officialSourceLink({ href: view.minutes_url, label: t("non_council_outcome_minutes_link"), className: "view meeting-source-link", escape: esc })}</div>
         </div>
         ${tally}
-        ${officialSourceLink({ href: view.minutes_url, label: t("non_council_outcome_minutes_link"), className: "view meeting-source-link", escape: esc })}
       </article>
     </div>
+    <details class="inline-disclose lc-how">
+      <summary>${esc(t("non_council_outcome_source_details_summary"))}</summary>
+      <div class="inline-disclose-body">${esc(t("non_council_outcome_source_details_body"))}</div>
+    </details>
   </section>`;
 }
 
@@ -120,6 +184,11 @@ function bodyName(row) {
   const borough = clean(row.borough);
   if (borough && district) return `${borough} Community Board ${Number(district)}`;
   return "Community Board";
+}
+
+function officialBoardMeetingLabel(boardId) {
+  const district = clean(boardId).match(/-cb-(\d{1,2})$/)?.[1];
+  return district ? `Official CB${Number(district)} meeting` : "Official community board meeting";
 }
 
 function validTally(value) {
@@ -172,6 +241,7 @@ const STRINGS = {
   en: {
     non_council_outcome_heading: "Community board decision",
     non_council_outcome_decision_lbl: "Decision",
+    non_council_outcome_source_lbl: "Meeting source",
     non_council_outcome_date_lbl: "Board meeting",
     non_council_outcome_vote_lbl: "Published vote",
     non_council_outcome_vote_tally: "{yes} yes · {no} no · {abstain} abstain",
@@ -179,38 +249,38 @@ const STRINGS = {
     non_council_outcome_action_rejected: "Rejected",
     non_council_outcome_action_held: "Held",
     non_council_outcome_minutes_link: "Official minutes",
-    non_council_outcome_how_summary: "Where this decision comes from",
-    non_council_outcome_provenance: "Published community board minutes joined to this City Record meeting by the exact board, meeting date, and matter identifier.",
+    non_council_outcome_source_details_summary: "Where this meeting source comes from",
+    non_council_outcome_source_details_body: "Published community board source records are joined to this City Record meeting only when the board, meeting date, and publisher event or matter identifier match exactly.",
   },
   es: {
-    non_council_outcome_heading: "Decisión de la junta comunitaria", non_council_outcome_decision_lbl: "Decisión", non_council_outcome_date_lbl: "Reunión de la junta", non_council_outcome_vote_lbl: "Votación publicada", non_council_outcome_vote_tally: "{yes} a favor · {no} en contra · {abstain} abstenciones", non_council_outcome_action_approved: "Aprobado", non_council_outcome_action_rejected: "Rechazado", non_council_outcome_action_held: "Aplazado", non_council_outcome_minutes_link: "Acta oficial", non_council_outcome_how_summary: "De dónde proviene esta decisión", non_council_outcome_provenance: "Actas publicadas de la junta comunitaria vinculadas a esta reunión del City Record por la junta, la fecha de reunión y el identificador del asunto exactos.",
+    non_council_outcome_heading: "Decisión de la junta comunitaria", non_council_outcome_decision_lbl: "Decisión", non_council_outcome_source_lbl: "Fuente de la reunión", non_council_outcome_date_lbl: "Reunión de la junta", non_council_outcome_vote_lbl: "Votación publicada", non_council_outcome_vote_tally: "{yes} a favor · {no} en contra · {abstain} abstenciones", non_council_outcome_action_approved: "Aprobado", non_council_outcome_action_rejected: "Rechazado", non_council_outcome_action_held: "Aplazado", non_council_outcome_minutes_link: "Acta oficial", non_council_outcome_source_details_summary: "De dónde proviene la fuente de esta reunión", non_council_outcome_source_details_body: "Actas publicadas de la junta comunitaria vinculadas a esta reunión del City Record por la junta, la fecha de reunión y el identificador del asunto exactos.",
   },
   "zh-Hans": {
-    non_council_outcome_heading: "社区委员会决定", non_council_outcome_decision_lbl: "决定", non_council_outcome_date_lbl: "委员会会议", non_council_outcome_vote_lbl: "已公布表决", non_council_outcome_vote_tally: "{yes} 票赞成 · {no} 票反对 · {abstain} 票弃权", non_council_outcome_action_approved: "已批准", non_council_outcome_action_rejected: "已否决", non_council_outcome_action_held: "暂缓", non_council_outcome_minutes_link: "官方会议记录", non_council_outcome_how_summary: "此决定的来源", non_council_outcome_provenance: "已公布的社区委员会会议记录按完全一致的委员会、会议日期和事项标识符与本 City Record 会议关联。",
+    non_council_outcome_heading: "社区委员会决定", non_council_outcome_decision_lbl: "决定", non_council_outcome_source_lbl: "会议来源", non_council_outcome_date_lbl: "委员会会议", non_council_outcome_vote_lbl: "已公布表决", non_council_outcome_vote_tally: "{yes} 票赞成 · {no} 票反对 · {abstain} 票弃权", non_council_outcome_action_approved: "已批准", non_council_outcome_action_rejected: "已否决", non_council_outcome_action_held: "暂缓", non_council_outcome_minutes_link: "官方会议记录", non_council_outcome_source_details_summary: "此会议来源", non_council_outcome_source_details_body: "已公布的社区委员会会议记录按完全一致的委员会、会议日期和事项标识符与本 City Record 会议关联。",
   },
   ru: {
-    non_council_outcome_heading: "Решение общественного совета", non_council_outcome_decision_lbl: "Решение", non_council_outcome_date_lbl: "Заседание совета", non_council_outcome_vote_lbl: "Опубликованное голосование", non_council_outcome_vote_tally: "{yes} за · {no} против · {abstain} воздержались", non_council_outcome_action_approved: "Одобрено", non_council_outcome_action_rejected: "Отклонено", non_council_outcome_action_held: "Отложено", non_council_outcome_minutes_link: "Официальный протокол", non_council_outcome_how_summary: "Источник этого решения", non_council_outcome_provenance: "Опубликованный протокол общественного совета связан с этим заседанием City Record по точному совпадению совета, даты заседания и идентификатора вопроса.",
+    non_council_outcome_heading: "Решение общественного совета", non_council_outcome_decision_lbl: "Решение", non_council_outcome_source_lbl: "Источник встречи", non_council_outcome_date_lbl: "Заседание совета", non_council_outcome_vote_lbl: "Опубликованное голосование", non_council_outcome_vote_tally: "{yes} за · {no} против · {abstain} воздержались", non_council_outcome_action_approved: "Одобрено", non_council_outcome_action_rejected: "Отклонено", non_council_outcome_action_held: "Отложено", non_council_outcome_minutes_link: "Официальный протокол", non_council_outcome_source_details_summary: "Источник этой встречи", non_council_outcome_source_details_body: "Опубликованный протокол общественного совета связан с этим заседанием City Record по точному совпадению совета, даты заседания и идентификатора вопроса.",
   },
   bn: {
-    non_council_outcome_heading: "কমিউনিটি বোর্ডের সিদ্ধান্ত", non_council_outcome_decision_lbl: "সিদ্ধান্ত", non_council_outcome_date_lbl: "বোর্ড সভা", non_council_outcome_vote_lbl: "প্রকাশিত ভোট", non_council_outcome_vote_tally: "{yes} পক্ষে · {no} বিপক্ষে · {abstain} বিরত", non_council_outcome_action_approved: "অনুমোদিত", non_council_outcome_action_rejected: "প্রত্যাখ্যাত", non_council_outcome_action_held: "স্থগিত", non_council_outcome_minutes_link: "সরকারি কার্যবিবরণী", non_council_outcome_how_summary: "এই সিদ্ধান্তের উৎস", non_council_outcome_provenance: "প্রকাশিত কমিউনিটি বোর্ডের কার্যবিবরণী সঠিক বোর্ড, সভার তারিখ ও বিষয় শনাক্তকারী দিয়ে এই City Record সভার সঙ্গে যুক্ত করা হয়েছে।",
+    non_council_outcome_heading: "কমিউনিটি বোর্ডের সিদ্ধান্ত", non_council_outcome_decision_lbl: "সিদ্ধান্ত", non_council_outcome_source_lbl: "সভার উৎস", non_council_outcome_date_lbl: "বোর্ড সভা", non_council_outcome_vote_lbl: "প্রকাশিত ভোট", non_council_outcome_vote_tally: "{yes} পক্ষে · {no} বিপক্ষে · {abstain} বিরত", non_council_outcome_action_approved: "অনুমোদিত", non_council_outcome_action_rejected: "প্রত্যাখ্যাত", non_council_outcome_action_held: "স্থগিত", non_council_outcome_minutes_link: "সরকারি কার্যবিবরণী", non_council_outcome_source_details_summary: "এই সভার উৎস", non_council_outcome_source_details_body: "প্রকাশিত কমিউনিটি বোর্ডের কার্যবিবরণী সঠিক বোর্ড, সভার তারিখ ও বিষয় শনাক্তকারী দিয়ে এই City Record সভার সঙ্গে যুক্ত করা হয়েছে।",
   },
   ht: {
-    non_council_outcome_heading: "Desizyon konsèy kominotè a", non_council_outcome_decision_lbl: "Desizyon", non_council_outcome_date_lbl: "Reyinyon konsèy la", non_council_outcome_vote_lbl: "Vòt ki pibliye", non_council_outcome_vote_tally: "{yes} wi · {no} non · {abstain} abstansyon", non_council_outcome_action_approved: "Apwouve", non_council_outcome_action_rejected: "Rejte", non_council_outcome_action_held: "Ranvwaye", non_council_outcome_minutes_link: "Pwosè vèbal ofisyèl", non_council_outcome_how_summary: "Sous desizyon sa a", non_council_outcome_provenance: "Pwosè vèbal konsèy kominotè ki pibliye a konekte ak reyinyon City Record sa a grasa menm konsèy la, menm dat reyinyon an ak menm idantifyan dosye a.",
+    non_council_outcome_heading: "Desizyon konsèy kominotè a", non_council_outcome_decision_lbl: "Desizyon", non_council_outcome_source_lbl: "Sous reyinyon an", non_council_outcome_date_lbl: "Reyinyon konsèy la", non_council_outcome_vote_lbl: "Vòt ki pibliye", non_council_outcome_vote_tally: "{yes} wi · {no} non · {abstain} abstansyon", non_council_outcome_action_approved: "Apwouve", non_council_outcome_action_rejected: "Rejte", non_council_outcome_action_held: "Ranvwaye", non_council_outcome_minutes_link: "Pwosè vèbal ofisyèl", non_council_outcome_source_details_summary: "Sous reyinyon sa a", non_council_outcome_source_details_body: "Pwosè vèbal konsèy kominotè ki pibliye a konekte ak reyinyon City Record sa a grasa menm konsèy la, menm dat reyinyon an ak menm idantifyan dosye a.",
   },
   ko: {
-    non_council_outcome_heading: "커뮤니티 보드 결정", non_council_outcome_decision_lbl: "결정", non_council_outcome_date_lbl: "보드 회의", non_council_outcome_vote_lbl: "공개된 표결", non_council_outcome_vote_tally: "찬성 {yes} · 반대 {no} · 기권 {abstain}", non_council_outcome_action_approved: "승인됨", non_council_outcome_action_rejected: "부결됨", non_council_outcome_action_held: "보류됨", non_council_outcome_minutes_link: "공식 회의록", non_council_outcome_how_summary: "이 결정의 출처", non_council_outcome_provenance: "공개된 커뮤니티 보드 회의록을 보드, 회의 날짜 및 안건 식별자의 정확한 일치로 이 City Record 회의와 연결했습니다.",
+    non_council_outcome_heading: "커뮤니티 보드 결정", non_council_outcome_decision_lbl: "결정", non_council_outcome_source_lbl: "회의 출처", non_council_outcome_date_lbl: "보드 회의", non_council_outcome_vote_lbl: "공개된 표결", non_council_outcome_vote_tally: "찬성 {yes} · 반대 {no} · 기권 {abstain}", non_council_outcome_action_approved: "승인됨", non_council_outcome_action_rejected: "부결됨", non_council_outcome_action_held: "보류됨", non_council_outcome_minutes_link: "공식 회의록", non_council_outcome_source_details_summary: "이 회의의 출처", non_council_outcome_source_details_body: "공개된 커뮤니티 보드 회의록을 보드, 회의 날짜 및 안건 식별자의 정확한 일치로 이 City Record 회의와 연결했습니다.",
   },
   fr: {
-    non_council_outcome_heading: "Décision du conseil communautaire", non_council_outcome_decision_lbl: "Décision", non_council_outcome_date_lbl: "Réunion du conseil", non_council_outcome_vote_lbl: "Vote publié", non_council_outcome_vote_tally: "{yes} pour · {no} contre · {abstain} abstentions", non_council_outcome_action_approved: "Approuvé", non_council_outcome_action_rejected: "Rejeté", non_council_outcome_action_held: "Reporté", non_council_outcome_minutes_link: "Procès-verbal officiel", non_council_outcome_how_summary: "Source de cette décision", non_council_outcome_provenance: "Le procès-verbal publié du conseil communautaire est relié à cette réunion du City Record par la correspondance exacte du conseil, de la date de réunion et de l’identifiant du dossier.",
+    non_council_outcome_heading: "Décision du conseil communautaire", non_council_outcome_decision_lbl: "Décision", non_council_outcome_source_lbl: "Source de la réunion", non_council_outcome_date_lbl: "Réunion du conseil", non_council_outcome_vote_lbl: "Vote publié", non_council_outcome_vote_tally: "{yes} pour · {no} contre · {abstain} abstentions", non_council_outcome_action_approved: "Approuvé", non_council_outcome_action_rejected: "Rejeté", non_council_outcome_action_held: "Reporté", non_council_outcome_minutes_link: "Procès-verbal officiel", non_council_outcome_source_details_summary: "Source de cette réunion", non_council_outcome_source_details_body: "Le procès-verbal publié du conseil communautaire est relié à cette réunion du City Record par la correspondance exacte du conseil, de la date de réunion et de l’identifiant du dossier.",
   },
   pl: {
-    non_council_outcome_heading: "Decyzja rady społeczności", non_council_outcome_decision_lbl: "Decyzja", non_council_outcome_date_lbl: "Posiedzenie rady", non_council_outcome_vote_lbl: "Opublikowane głosowanie", non_council_outcome_vote_tally: "{yes} za · {no} przeciw · {abstain} wstrzymujących się", non_council_outcome_action_approved: "Zatwierdzono", non_council_outcome_action_rejected: "Odrzucono", non_council_outcome_action_held: "Odroczono", non_council_outcome_minutes_link: "Oficjalny protokół", non_council_outcome_how_summary: "Źródło tej decyzji", non_council_outcome_provenance: "Opublikowany protokół rady społeczności połączono z tym posiedzeniem City Record na podstawie dokładnej zgodności rady, daty posiedzenia i identyfikatora sprawy.",
+    non_council_outcome_heading: "Decyzja rady społeczności", non_council_outcome_decision_lbl: "Decyzja", non_council_outcome_source_lbl: "Źródło posiedzenia", non_council_outcome_date_lbl: "Posiedzenie rady", non_council_outcome_vote_lbl: "Opublikowane głosowanie", non_council_outcome_vote_tally: "{yes} za · {no} przeciw · {abstain} wstrzymujących się", non_council_outcome_action_approved: "Zatwierdzono", non_council_outcome_action_rejected: "Odrzucono", non_council_outcome_action_held: "Odroczono", non_council_outcome_minutes_link: "Oficjalny protokół", non_council_outcome_source_details_summary: "Źródło tego posiedzenia", non_council_outcome_source_details_body: "Opublikowany protokół rady społeczności połączono z tym posiedzeniem City Record na podstawie dokładnej zgodności rady, daty posiedzenia i identyfikatora sprawy.",
   },
   ar: {
-    non_council_outcome_heading: "قرار مجلس المجتمع المحلي", non_council_outcome_decision_lbl: "القرار", non_council_outcome_date_lbl: "اجتماع المجلس", non_council_outcome_vote_lbl: "التصويت المنشور", non_council_outcome_vote_tally: "{yes} نعم · {no} لا · {abstain} امتناع", non_council_outcome_action_approved: "تمت الموافقة", non_council_outcome_action_rejected: "تم الرفض", non_council_outcome_action_held: "تم التأجيل", non_council_outcome_minutes_link: "المحضر الرسمي", non_council_outcome_how_summary: "مصدر هذا القرار", non_council_outcome_provenance: "رُبط محضر مجلس المجتمع المحلي المنشور باجتماع City Record هذا من خلال التطابق الدقيق للمجلس وتاريخ الاجتماع ومعرّف المسألة.",
+    non_council_outcome_heading: "قرار مجلس المجتمع المحلي", non_council_outcome_decision_lbl: "القرار", non_council_outcome_source_lbl: "مصدر الاجتماع", non_council_outcome_date_lbl: "اجتماع المجلس", non_council_outcome_vote_lbl: "التصويت المنشور", non_council_outcome_vote_tally: "{yes} نعم · {no} لا · {abstain} امتناع", non_council_outcome_action_approved: "تمت الموافقة", non_council_outcome_action_rejected: "تم الرفض", non_council_outcome_action_held: "تم التأجيل", non_council_outcome_minutes_link: "المحضر الرسمي", non_council_outcome_source_details_summary: "مصدر هذا الاجتماع", non_council_outcome_source_details_body: "رُبط محضر مجلس المجتمع المحلي المنشور باجتماع City Record هذا من خلال التطابق الدقيق للمجلس وتاريخ الاجتماع ومعرّف المسألة.",
   },
   ur: {
-    non_council_outcome_heading: "کمیونٹی بورڈ کا فیصلہ", non_council_outcome_decision_lbl: "فیصلہ", non_council_outcome_date_lbl: "بورڈ اجلاس", non_council_outcome_vote_lbl: "شائع شدہ ووٹ", non_council_outcome_vote_tally: "{yes} حق میں · {no} مخالفت میں · {abstain} رائے سے گریز", non_council_outcome_action_approved: "منظور", non_council_outcome_action_rejected: "مسترد", non_council_outcome_action_held: "ملتوی", non_council_outcome_minutes_link: "سرکاری کارروائی", non_council_outcome_how_summary: "اس فیصلے کا ماخذ", non_council_outcome_provenance: "شائع شدہ کمیونٹی بورڈ کی کارروائی کو عین بورڈ، اجلاس کی تاریخ اور معاملے کے شناخت کنندہ کے ذریعے اس City Record اجلاس سے جوڑا گیا ہے۔",
+    non_council_outcome_heading: "کمیونٹی بورڈ کا فیصلہ", non_council_outcome_decision_lbl: "فیصلہ", non_council_outcome_source_lbl: "اجلاس کا ماخذ", non_council_outcome_date_lbl: "بورڈ اجلاس", non_council_outcome_vote_lbl: "شائع شدہ ووٹ", non_council_outcome_vote_tally: "{yes} حق میں · {no} مخالفت میں · {abstain} رائے سے گریز", non_council_outcome_action_approved: "منظور", non_council_outcome_action_rejected: "مسترد", non_council_outcome_action_held: "ملتوی", non_council_outcome_minutes_link: "سرکاری کارروائی", non_council_outcome_source_details_summary: "اس اجلاس کا ماخذ", non_council_outcome_source_details_body: "شائع شدہ کمیونٹی بورڈ کی کارروائی کو عین بورڈ، اجلاس کی تاریخ اور معاملے کے شناخت کنندہ کے ذریعے اس City Record اجلاس سے جوڑا گیا ہے۔",
   },
 };
 

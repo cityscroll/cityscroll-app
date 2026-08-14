@@ -69,6 +69,9 @@ DOCUMENT_ROUTES = (
     "browse/rules/",
     "browse/meetings/",
     "notices/20260701099",
+    # Conditional board-outcome panels are mounted on notice documents; this
+    # unmatched sample also proves that failed joins do not expose debug fields.
+    "notices/20260527036",
     "agencies/housing-preservation-and-development/?tab=forecast",
     "vendors/CAMBA/",
     "officials/7801/",
