@@ -22,6 +22,7 @@ const KINDS = Object.freeze([
   "committee",
   "vendor",
   "agency",
+  "community-board",
   "place",
   "record",
 ]);
@@ -42,6 +43,10 @@ const REGISTRY = Object.freeze({
   agency: Object.freeze({
     label: "Agency connections",
     relation_families: Object.freeze(["published_by_agency", "top_vendor_by_award_12mo", "hosts_meeting", "issued_rule", "statute_duty", "certified_to_agency"]),
+  }),
+  "community-board": Object.freeze({
+    label: "Community board connections",
+    relation_families: Object.freeze(["covers", "published_board_source", "hosts_meeting", "has_member", "member_of", "issues_recommendation"]),
   }),
   place: Object.freeze({
     label: "Place connections",

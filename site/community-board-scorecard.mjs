@@ -258,7 +258,7 @@ export function renderScorecardPage(scorecard) {
       row.notice_completeness == null ? "Notice: not measured" : `Notice: ${row.notice_completeness}% observed`,
       row.media_completeness == null ? "Media: not measured" : `Media: ${row.media_completeness}% observed`,
     ].join(" · ");
-    return `<tr><th scope="row"><a href="${esc(row.homepage_url)}">${esc(row.name)}</a><span>${esc(row.borough)} · District ${row.district}</span></th><td>${esc(freshness)}${row.rank ? `<small>Rank ${row.rank} of ${measured}</small>` : ""}</td><td><div class="scorecard-sources">${sources}</div><span class="scorecard-muted">${esc(completeness)}</span></td></tr>`;
+    return `<tr id="board-${esc(row.body_id)}"><th scope="row"><a href="/community-boards/${encodeURIComponent(row.body_id)}/">${esc(row.name)}</a><span>${esc(row.borough)} · District ${row.district}</span><a class="scorecard-homepage-link" href="${esc(row.homepage_url)}" target="_blank" rel="noopener noreferrer">Official homepage<span aria-hidden="true">↗</span></a></th><td>${esc(freshness)}${row.rank ? `<small>Rank ${row.rank} of ${measured}</small>` : ""}</td><td><div class="scorecard-sources">${sources}</div><span class="scorecard-muted">${esc(completeness)}</span></td></tr>`;
   }).join("");
   const legalText = "The City Comptroller ";
   const legalLink = `<a href="${esc(scorecard.legal_basis.citation_url)}">has recommended</a>`;
