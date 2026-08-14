@@ -223,6 +223,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Now, Near you, Following, and Browse are the primary navigation documents. Contracts,
   Staffing, Zoning, Property, Rules, and Meetings remain complete source views under
   `/browse/<facet>/`; the existing application modules enhance their build-rendered HTML.
+- The neutral topic entry is the root home surface; `tools/build_primary_documents.mjs` generates
+  the static `/search/` shell from `buildSearchDocument`, while the root route guard in
+  `site/app/routing.mjs` leaves an untouched `/` neutral and still lets clean lens paths win.
 - Browse concept landings at `/browse/people/` and `/browse/places/` are static documents in
   the `tab-browse` pane, not SPA lenses. Their `.tabbtn` links must delegate to native
   navigation, and client boot must recognize their routes without falling back to Contracts.

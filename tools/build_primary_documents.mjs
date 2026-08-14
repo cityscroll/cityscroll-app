@@ -10,6 +10,7 @@ import {
   buildBrowseLandingDocument,
   buildBrowseConceptDocument,
   buildNowDocument,
+  buildSearchDocument,
 } from "../site/primary_document_view.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
@@ -50,6 +51,7 @@ export function primaryDocumentOutputs() {
     meetings: { status: "unavailable", reason: "edge_refresh", hearings: [] },
   };
   const outputs = [output("now", buildNowDocument(shell, nowSources))];
+  outputs.push(output("search", buildSearchDocument(shell)));
   const staffingExams = json("/data/staffing_exams.json");
   const awards = json("/data/ocp_awards_warehouse_lookup.json");
   const landProjects = json("/data/zap_projects_warehouse_lookup.json");

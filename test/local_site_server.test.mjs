@@ -91,11 +91,16 @@ test("local site server publishes an OS-assigned origin and serves the requested
   assert.equal(notice.status, 200);
   assert.match(await notice.text(), /id="noticeview"/);
 
-  for (const route of ["now/", "browse/", "browse/rules/?q=air"]) {
+  for (const route of ["now/", "browse/", "browse/rules/?q=air", "search/?q=mosquitos"]) {
     const clean = await fetch(new URL(route, base));
     assert.equal(clean.status, 200, route);
     assert.match(await clean.text(), /id="main"/, route);
   }
+  const search = await fetch(new URL("search/?q=mosquitos", base));
+  const searchBody = await search.text();
+  assert.match(searchBody, /data-primary-context="search"/);
+  assert.match(searchBody, /name="q"/);
+  assert.match(searchBody, /data-search-lane="obligations"/);
 
   const agencyProfile = await fetch(new URL(
     "agencies/citywide-administrative-services/?tab=forecast",
