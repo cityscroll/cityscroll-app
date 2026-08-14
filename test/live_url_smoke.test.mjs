@@ -9,7 +9,9 @@ import { test } from "node:test";
 import {
   API_HEALTH_MARKER,
   CONTENT_MARKER,
+  CANONICAL_MEETING_TARGETS,
   DEFAULT_TARGETS,
+  meetingDocumentMarker,
   PAGES_DEV_TARGETS,
   POST_FLIP_TARGETS,
   TARGET_SETS,
@@ -115,6 +117,16 @@ test("classifyProbe rejects empty body, non-200, and marker-less error shells", 
     }).ok,
     true,
   );
+});
+
+test("meeting deploy markers require a real title, marker, and exact id", () => {
+  const meetingId = CANONICAL_MEETING_TARGETS[0].meetingId;
+  const marker = meetingDocumentMarker(meetingId);
+  const document = `<title>DCWP hearing · CityScroll</title><main data-civic-object-kind="meeting" data-meeting-id="${meetingId}"></main>`;
+  const shell = '<title>CityScroll · track RFPs, rezonings, meetings</title><main data-civic-object-kind="meeting" data-meeting-id="meeting:city_record:other"></main>';
+  assert.equal(marker.test(document), true);
+  assert.equal(marker.test(shell), false);
+  assert.equal(marker.test(document.replace(meetingId, `${meetingId}-other`)), false);
 });
 
 test("field case: live smoke fails on unsubstituted __I18N_ASSET_VERSION__ (and any __TOKEN__)", () => {
@@ -238,7 +250,11 @@ test("targetsFromCli selects named sets; --url and --base-url still take precede
   const fromBase = targetsFromCli({ baseUrl: "https://cityscroll.pages.dev", targetSet: "post-flip" });
   assert.deepEqual(
     fromBase.map((t) => t.url),
-    ["https://cityscroll.pages.dev/", "https://cityscroll.pages.dev/about.html"],
+    [
+      "https://cityscroll.pages.dev/",
+      "https://cityscroll.pages.dev/about.html",
+      ...CANONICAL_MEETING_TARGETS.map(({ meetingId }) => `https://cityscroll.pages.dev/meetings/${encodeURIComponent(meetingId)}/`),
+    ],
   );
 
   const fromUrls = targetsFromCli({

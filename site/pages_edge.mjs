@@ -121,8 +121,14 @@ async function handleMeeting(request, env, meetingId) {
   try { decoded = decodeURIComponent(meetingId); } catch (_error) {
     return new Response("Invalid meeting link", { status: 400 });
   }
-  const asset = await staticAsset(env, request, `/meetings/${encodeURIComponent(decoded)}/`);
-  if (asset.ok) return asset;
+  const pathname = `/meetings/${encodeURIComponent(decoded)}/`;
+  const assetRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const asset = await staticAsset(env, assetRequest, pathname);
+  if (asset.ok && isMeetingDocumentHtml(await asset.clone().text(), decoded)) {
+    return request.method === "HEAD"
+      ? new Response(null, { status: asset.status, headers: asset.headers })
+      : asset;
+  }
   return new Response(
     `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
     { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" } },
@@ -130,6 +136,23 @@ async function handleMeeting(request, env, meetingId) {
 }
 
 const DOCUMENT_LANGS = new Set(["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]);
+
+function decodeHtmlAttribute(value) {
+  return String(value)
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#39;", "'")
+    .replaceAll("&apos;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&amp;", "&");
+}
+
+/** True when HTML is a built meeting document for this exact canonical id. */
+export function isMeetingDocumentHtml(html, meetingId) {
+  if (typeof html !== "string" || !html.match(/\bdata-civic-object-kind\s*=\s*(["'])meeting\1/i)) return false;
+  const idMatch = html.match(/\bdata-meeting-id\s*=\s*(["'])(.*?)\1/i);
+  return Boolean(idMatch && decodeHtmlAttribute(idMatch[2]) === String(meetingId));
+}
 
 /** True when HTML is a built exam document, not the SPA shell or another surface. */
 export function isExamDocumentHtml(html) {
