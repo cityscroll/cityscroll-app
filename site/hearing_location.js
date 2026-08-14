@@ -261,13 +261,16 @@ function normalizeHearingRow(row) {
       object_type: "meeting", schema: "cityscroll.meeting_object.v1", meeting_id: boardMeetingId,
       source_keys: boardPublisherId ? [{ source_system: "community_board", key_type: "publisher_event_id", value: boardPublisherId }] : [],
       publisher_identifier: boardPublisherId || null, request_id: null,
+      source_system: "community_board", source_record_id: row.source_record_id || row.record_id || boardPublisherId || null,
       source_section: row.section_name || "Community Board Meetings",
       agency: null, notice_type: row.type_of_notice_description || "Board meeting",
       title: hearingPlainText(row.short_title) || "Community board meeting", event_date: row.event_date || null,
       published_at: row.start_date || null, decides: hearingPlainText(row.short_title) || "Community board meeting",
       affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
       participation: { links: [], remote_join_url: null, emails: [], phones: [], source_url: boardSource },
-      source_url: boardSource, description: "", meeting_origin: row.meeting_origin || "unknown",
+      source_url: boardSource, description: hearingPlainText(row.description || ""), board_id: row.board_id || null,
+      board_name: hearingPlainText(row.board_name || ""), entity_refs_all: row.entity_refs_all || [],
+      institution_edges: row.institution_edges || [], meeting_origin: row.meeting_origin || "unknown",
       source_provenance: row.source_provenance || null, source_receipt: row.source_receipt || row.observed_receipt || null,
       join_status: row.join_status || row.meeting_join?.status || "unknown",
       institution_refs: { agency_ref: null, board_ref: row.board_id ? "community-board:" + row.board_id : null },
@@ -286,6 +289,7 @@ function normalizeHearingRow(row) {
   var cityRecordId = String(row.request_id || "");
   return {
     object_type: "meeting", schema: "cityscroll.meeting_object.v1",
+    source_system: "city_record",
     meeting_id: cityRecordId ? "meeting:city_record:" + cityRecordId : null,
     source_keys: cityRecordId ? [{ source_system: "city_record", key_type: "request_id", value: cityRecordId }] : [],
     publisher_identifier: cityRecordId || null,
@@ -305,7 +309,7 @@ function normalizeHearingRow(row) {
       legacy_fragment_href: cityRecordId ? "#notice/" + encodeURIComponent(cityRecordId) : null,
       publisher_href: source,
     },
-    description: body.slice(0, 1200),
+    description: body.slice(0, 1200), entity_refs_all: row.entity_refs_all || [],
   };
 }
 // Hand-synced with worker/src/lib/hearings.mjs participationFromRow: strip trailing
@@ -421,12 +425,13 @@ function hearingRowsInScope(records, filter, scope, today) {
       return false;
     }
     if (agency && record.agency !== agency) return false;
+    if (filter.communityBoard && !hearingMatchesCommunityBoardScope(record, filter.communityBoard)) return false;
     if (!hearingMatchesArea(record, filter)) return false;
     if (keyword) {
       var boardQuery = hearingCommunityBoardQuery(keyword);
       if (boardQuery) return hearingMatchesCommunityBoard(record, boardQuery);
       var haystack = [
-        record.title, record.decides, record.description,
+        record.title, record.decides, record.description, record.board_name, record.board_id,
         (record.affects || []).join(" "),
       ].filter(Boolean).join(" ").toLowerCase();
       if (!haystack.includes(keyword)) return false;
@@ -436,7 +441,22 @@ function hearingRowsInScope(records, filter, scope, today) {
     var av = String(a.event_date || ""), bv = String(b.event_date || "");
     if (scope === "all" && !av) return 1;
     if (scope === "all" && !bv) return -1;
-    return scope === "past" ? bv.localeCompare(av) : av.localeCompare(bv);
+    return (scope === "past" ? bv.localeCompare(av) : av.localeCompare(bv))
+      || String(a.meeting_id || a.request_id || "").localeCompare(String(b.meeting_id || b.request_id || ""));
+  });
+}
+
+function hearingMatchesCommunityBoardScope(record, value) {
+  var target = String(value || "").trim().toLowerCase().replace(/^community-board:/, "");
+  if (!target) return true;
+  var area = record && record.affected_area || {};
+  var refs = []
+    .concat(Array.isArray(record && record.entity_refs_all) ? record.entity_refs_all : [])
+    .concat(Array.isArray(area.community_boards) ? area.community_boards : [])
+    .concat(record && record.institution_refs && record.institution_refs.board_ref)
+    .concat(record && record.board_id);
+  return refs.some(function (ref) {
+    return String(ref || "").trim().toLowerCase().replace(/^community-board:/, "") === target;
   });
 }
 function chooseHearingScope(records, filter, today, allowWidening) {
@@ -466,6 +486,7 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     hearingCommunityBoardQuery: hearingCommunityBoardQuery,
     hearingCommunityBoardIds: hearingCommunityBoardIds,
     hearingMatchesCommunityBoard: hearingMatchesCommunityBoard,
+    hearingMatchesCommunityBoardScope: hearingMatchesCommunityBoardScope,
     hearingVenue: hearingVenue,
     normalizeHearingRow: normalizeHearingRow,
   };

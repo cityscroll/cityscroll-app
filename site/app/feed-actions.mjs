@@ -188,6 +188,16 @@ function communityBoardEdgeToolsLoad(){
   }
   return communityBoardEdgeToolsPromise;
 }
+let communityBoardScopeToolsPromise=null;
+let communityBoardScopeTools=null;
+function communityBoardScopeToolsLoad(){
+  if(!communityBoardScopeToolsPromise){
+    communityBoardScopeToolsPromise=import("../community_board_scope_links.mjs")
+      .then(tools=>{ communityBoardScopeTools=tools; return tools; })
+      .catch(()=>null);
+  }
+  return communityBoardScopeToolsPromise;
+}
 let hearingRenderSeq=0;
 let hearingWideningDismissed="";
 let meetingsProcessSel="all";
@@ -226,6 +236,9 @@ function hearingFilter(){
 }
 function hearingEventRow(record){
   return {
+    meeting_id:record.meeting_id||null,
+    source_system:record.source_system||null,
+    meeting_origin:record.meeting_origin||null,
     request_id:record.request_id,
     start_date:record.published_at,
     event_date:record.event_date,
@@ -238,15 +251,46 @@ function hearingEventRow(record){
     venue:record.venue||null,
     participation:record.participation||null,
     source_url:record.source_url||null,
+    board_id:record.board_id||null,
+    board_name:record.board_name||null,
   };
+}
+function communityBoardIdFromRef(value){
+  const match=String(value||"").trim().match(/^community-board:([a-z]+(?:-[a-z]+)*-cb-\d{2})$/i);
+  return match ? match[1].toLowerCase() : "";
+}
+function activeCommunityBoardRef(){
+  const refs=globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES?.entity_refs_all;
+  if(!Array.isArray(refs)) return "";
+  const ref=refs.find((value)=>communityBoardIdFromRef(value));
+  return ref ? `community-board:${communityBoardIdFromRef(ref)}` : "";
 }
 function hearingViewFilter(){
   return {
     when:$("#meetingswhen").value,
     agency:$("#meetingsagency").value,
     keyword:$("#meetingskw").value.trim(),
+    communityBoard:activeCommunityBoardRef(),
     ...hearingFilter(),
   };
+}
+async function renderMeetingsBoardScope(records, seq=hearingRenderSeq){
+  const rail=$("#meetings-board-scope");
+  if(!rail) return;
+  const tools=communityBoardScopeTools||await communityBoardScopeToolsLoad();
+  if(!tools || seq!==hearingRenderSeq || !rail.isConnected) return;
+  const searchQuery=rail.querySelector(".facet-typeahead-input")?.value||"";
+  const current=location.hash.startsWith("#meetings")
+    ? location.hash : (globalThis.serializeState?.()||"#meetings");
+  rail.innerHTML=tools.communityBoardScopeLinksHTML({
+    surface:"meetings",
+    rows:records||[],
+    selected:activeCommunityBoardRef(),
+    currentHash:current,
+    searchQuery,
+    escape:escUiHtml,
+  });
+  bindCardinalityAdaptiveFacets(rail);
 }
 function renderMeetingsAgencyScope(records){
   const rail=$("#meetings-agency-scope");
@@ -270,7 +314,7 @@ function renderMeetingsAgencyScope(records){
 }
 function hearingFilterKey(filter){
   return JSON.stringify([
-    filter.when, filter.agency, filter.keyword, filter.borough,
+    filter.when, filter.agency, filter.communityBoard, filter.keyword, filter.borough,
     filter.locationScope, filter.neighborhood,
   ]);
 }
@@ -1220,12 +1264,16 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${sourceUrl
     ? `<a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${escUiHtml(meetingOriginLabel(origin))}${extSR()}</a>`
     : escUiHtml(meetingOriginLabel(origin))}</span>`;
+  const boardPivot=boardId
+    ? (boardEdge&&communityBoardEdgeTools?.communityBoardMeetingEdgeAccepted(boardEdge)&&boardHref
+      ? `<a class="tag place community-board-meeting-pivot" href="${escUiHtml(boardHref)}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</a>`
+      : `<span class="tag place community-board-meeting-pivot" data-community-board-state="${escUiHtml(boardEdge?.status||"unknown")}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</span>`)
+    : "";
   const processLine=`<div class="meetings-process-line">
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:""}
-    ${boardEdge&&communityBoardEdgeTools?.communityBoardMeetingEdgeAccepted(boardEdge)&&boardHref
-      ? `<a class="tag place community-board-meeting-pivot" href="${escUiHtml(boardHref)}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</a>` : ""}
+    ${boardPivot}
     ${originChip}
   </div>`;
   // Next-action lead: concrete attend / join / testimony when data supports it.
@@ -1323,6 +1371,7 @@ function updateMeetingsMoreFiltersState(){
     +Number(!!meetingsCouncilDistrict)
     +Number(!!$("#meetingsneighborhood")?.value.trim())
     +Number(!!$("#meetingsagency")?.value)
+    +Number(!!activeCommunityBoardRef())
     +Number(meetingsPlaceGroupSel==="place");
   badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
   badge.hidden=active===0;
@@ -1331,12 +1380,14 @@ function setMeetingsResultCount(count){
   const element=$("#meetings-count");
   if(element) element.textContent=t("results_count",{n:fmtNumber(countWithScopeReceipt(count))});
 }
-async function renderHearingExplorer(){
+async function renderHearingExplorer(options){
+  const hydrateEdges=options?.hydrateEdges!==false;
   const seq=++hearingRenderSeq;
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
   let records=await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
   renderMeetingsAgencyScope(hearingAll||[]);
+  renderMeetingsBoardScope(hearingAll||[],seq);
   let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
   // when=all (map drill) and past / empty-widen need the past SODA slice.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
@@ -1346,11 +1397,10 @@ async function renderHearingExplorer(){
       if(seq!==hearingRenderSeq) return;
       records=await filterFeedRowsToDistrictBag("meetings",records.concat(past));
       renderMeetingsAgencyScope(hearingAll||[]);
+      renderMeetingsBoardScope(hearingAll||[],seq);
       selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
-  if(seq!==hearingRenderSeq) return;
-  await communityBoardEdgeToolsLoad();
   if(seq!==hearingRenderSeq) return;
   const rows=selection.rows;
   const terms=filter.keyword?[filter.keyword]:[];
@@ -1480,6 +1530,13 @@ async function renderHearingExplorer(){
   }));
   el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
   announce(t("meetings_entries_announce",{n:uniqueRows.length}));
+  // Edge policy is optional hydration. Paint the bounded meeting list first so
+  // a slow edge module cannot hold navigation or the first accessible result.
+  if(hydrateEdges){
+    communityBoardEdgeToolsLoad().then(()=>{
+      if(seq===hearingRenderSeq && communityBoardEdgeTools) renderHearingExplorer({ hydrateEdges:false });
+    });
+  }
 }
 async function loadHearings(){
   if(hearingAll){ await renderHearingExplorer(); return; }
