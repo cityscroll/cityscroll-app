@@ -84,7 +84,12 @@ export const AGENCY_GROUPS = Object.freeze({
   "Tax Commission": ["TAX COMMISSION"],
   "Taxi and Limousine Commission": ["TAXI & LIMOUSINE COMMISSION"],
   "Teachers' Retirement System": ["TEACHERS RETIREMENT SYSTEM"],
-  "Transportation": ["DEPARTMENT OF TRANSPORTATION"],
+  "Transportation": [
+    "DEPARTMENT OF TRANSPORTATION",
+    "NYC DOT Department of Transportation",
+    "NYC Department of Transportation",
+    "New York City Department of Transportation",
+  ],
   "Youth and Community Development": ["DEPT OF YOUTH & COMM DEV SRVS"],
 });
 
