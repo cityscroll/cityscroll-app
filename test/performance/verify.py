@@ -366,7 +366,11 @@ def measure_contracts(
     page = context.new_page()
     install_routes(page, fixture, unexpected)
     install_observers(page)
-    page.goto(base_url, wait_until="domcontentloaded")
+    # The root is intentionally a neutral topic entry. Contracts measurement is
+    # an explicit lens fixture, so enter the retained canonical document route
+    # before waiting for its result count.
+    contracts_entry = base_url + "browse/contracts/"
+    page.goto(contracts_entry, wait_until="domcontentloaded")
     page.locator("#rescount").wait_for(state="attached")
     page.wait_for_function("() => document.querySelector('#rescount').textContent.trim() !== ''")
     page.reload(wait_until="domcontentloaded")
@@ -474,19 +478,11 @@ def measure_land_outcomes(
     page.wait_for_selector('.tabbtn[data-tab="land"]')
     # Start from an interaction-ready page. The tab markup is static, but the
     # route-lazy handlers arrive with the application module graph.
+    wait_for_home(page)
     wait_for_land_outcome(
         page,
         "() => typeof window.showTab === 'function' && typeof window.landSearch === 'function'",
         "land module readiness",
-    )
-    wait_for_land_outcome(
-        page,
-        """() => {
-          const count = document.querySelector('#rescount')?.textContent?.trim();
-          const list = document.querySelector('#list');
-          return !!count && !!list && !list.querySelector('.loading');
-        }""",
-        "land source list readiness",
     )
     started_at = page.evaluate(
         """() => {

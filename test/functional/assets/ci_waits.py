@@ -8,7 +8,7 @@ from typing import Any
 from playwright.sync_api import Locator, Page, TimeoutError as PlaywrightTimeoutError
 
 
-DEFAULT_WAIT_TIMEOUT_MS = 45_000
+DEFAULT_WAIT_TIMEOUT_MS = 30_000
 DEFAULT_WAIT_ATTEMPTS = 2
 
 

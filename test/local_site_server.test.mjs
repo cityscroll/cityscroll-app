@@ -50,6 +50,7 @@ test("performance interaction waits for the canonical Contracts document URL", (
   const source = read("test/performance/verify.py");
   assert.match(source, /data-home-topic-entry/);
   assert.match(source, /topic\.getClientRects\(\)\.length > 0/);
+  assert.match(source, /contracts_entry = base_url \+ "browse\/contracts\/"/);
   assert.doesNotMatch(source, /const listReady =/);
   assert.match(source, /location\.pathname === "\/browse\/contracts\/"/);
   assert.match(source, /new URLSearchParams\(location\.search\)\.get\("q"\) === "housing"/);
