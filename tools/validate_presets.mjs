@@ -42,10 +42,10 @@ const FETCH_ATTEMPTS = Number(process.env.PRESET_FETCH_ATTEMPTS) || (process.env
 const FETCH_CONCURRENCY = Number(process.env.PRESET_FETCH_CONCURRENCY) || (process.env.CI ? 1 : 4);
 /** Base delay for exponential backoff between live SODA retries (ms). */
 const FETCH_BACKOFF_MS = Number(process.env.PRESET_FETCH_BACKOFF_MS) || (process.env.CI ? 2_000 : 500);
-
-if (!WRITE && !CHECK) {
-  throw new Error("usage: node tools/validate_presets.mjs --write|--check");
-}
+// A broad resolver outage is an infrastructure signal. Keep the inherited complete
+// fallback set rather than ejecting every PR, but keep the threshold high enough that
+// ordinary per-candidate gaps still refresh the rest of the live data.
+const REFRESH_UNRESOLVED_FRACTION = 0.5;
 
 function addDays(iso, days) {
   const date = new Date(`${iso}T00:00:00Z`);
@@ -282,8 +282,17 @@ async function resolveSuggestion(candidate) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ lens: candidate.lens, text: candidate.text }),
   });
-  if (!payload?.filter) throw new Error(`could not resolve ${candidate.lens}:${candidate.idx} ${candidate.text}`);
+  if (!payload?.filter) {
+    throw Object.assign(
+      new Error(`could not resolve ${candidate.lens}:${candidate.idx} ${candidate.text}`),
+      { code: "PRESET_SUGGESTION_UNRESOLVED" },
+    );
+  }
   return payload.filter;
+}
+
+function isUnresolvedSuggestionError(error) {
+  return error?.code === "PRESET_SUGGESTION_UNRESOLVED" || isTransientFetchError(error);
 }
 
 async function countSuggestion(candidate, filter) {
@@ -305,19 +314,55 @@ async function mapLimit(items, limit, fn) {
   return results;
 }
 
-async function validateLiveSuggestions(previous) {
+export async function validateLiveSuggestions(previous, {
+  check = CHECK,
+  resolve = resolveSuggestion,
+  count = countSuggestion,
+  warn = console.warn,
+} = {}) {
   const previousByKey = new Map(
     (previous?.candidates || []).map((candidate) => [`${candidate.lens}:${candidate.idx}`, candidate]),
   );
-  const candidates = await mapLimit(SUGGESTION_POOL, FETCH_CONCURRENCY, async (candidate) => {
+  const rows = await mapLimit(SUGGESTION_POOL, FETCH_CONCURRENCY, async (candidate) => {
     const prior = previousByKey.get(`${candidate.lens}:${candidate.idx}`);
-    if (CHECK && (!prior || prior.text !== candidate.text)) {
+    if (check && (!prior || prior.text !== candidate.text)) {
       throw new Error(`suggestion receipt is missing or stale for ${candidate.lens}:${candidate.idx}`);
     }
-    const filter = CHECK ? prior.filter : await resolveSuggestion(candidate);
-    const count = await countSuggestion(candidate, filter);
-    return { ...candidate, filter, count };
+    if (check) return { candidate: { ...candidate, filter: prior.filter, count: await count(candidate, prior.filter) } };
+
+    try {
+      const filter = await resolve(candidate);
+      return { candidate: { ...candidate, filter, count: await count(candidate, filter) } };
+    } catch (error) {
+      if (!isUnresolvedSuggestionError(error)) throw error;
+      if (!prior?.filter || !Number.isFinite(Number(prior.count))) {
+        throw new Error(
+          `cannot retain unresolved ${candidate.lens}:${candidate.idx}; ` +
+            "the inherited suggestion receipt is missing its filter or count",
+          { cause: error },
+        );
+      }
+      return {
+        candidate: { ...candidate, filter: prior.filter, count: prior.count },
+        retained: `${candidate.lens}:${candidate.idx}`,
+      };
+    }
   });
+  const candidates = rows.map(({ candidate }) => candidate);
+  const retained = rows.flatMap(({ retained: key }) => (key ? [key] : []));
+  if (retained.length) {
+    warn(`TRANSIENT preset suggestion resolution gap; retaining inherited candidates: ${retained.join(", ")}`);
+  }
+  if (retained.length / SUGGESTION_POOL.length >= REFRESH_UNRESOLVED_FRACTION) {
+    if (!validSuggestionSnapshot(previous)) {
+      throw new Error("cannot retain inherited suggestions after a broad resolver outage; receipt is invalid");
+    }
+    warn(
+      `TRANSIENT preset suggestion outage; retaining the inherited fallback wholesale ` +
+        `(${retained.length}/${SUGGESTION_POOL.length} candidates unresolved)`,
+    );
+    return previous;
+  }
   const byLens = fruitfulSuggestionIndices(candidates, PRESET_MIN_RESULTS);
   for (const lens of ["money", "people", "land", "property", "rules", "meetings", "alerts"]) {
     if ((byLens[lens] || []).length < 1) throw new Error(`no fruitful rotating suggestion remains for ${lens}`);
@@ -419,55 +464,65 @@ function fallbackFromSiteSource(source) {
   return byLens;
 }
 
-const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => null);
-// Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
-// upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
-// fail-closed gate into a flaky one.
-const scenarios = await validateScenarios(previous);
-const suggestions = await validateSuggestions(previous?.suggestions, previous?.dataDate);
-let html = await readFile(INDEX, "utf8");
-let siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
-let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
+async function main() {
+  const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => null);
+  // Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
+  // upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
+  // fail-closed gate into a flaky one.
+  const scenarios = await validateScenarios(previous);
+  const suggestions = await validateSuggestions(previous?.suggestions, previous?.dataDate);
+  let html = await readFile(INDEX, "utf8");
+  let siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
+  let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
 
-if (CHECK) {
-  // When homepage still has scenario-route anchors, they must match the live-validated
-  // receipt. When they are absent (current product surface), only receipt + fallbacks gate.
-  for (const [id, selected] of Object.entries(scenarios)) {
-    const actual = routeFromHTML(html, id);
-    if (!actual) continue;
-    if (actual.href !== selected.href || actual.labelKey !== selected.labelKey) {
-      throw new Error(`${id} is stale: expected ${selected.href} (${selected.labelKey})`);
+  if (CHECK) {
+    // When homepage still has scenario-route anchors, they must match the live-validated
+    // receipt. When they are absent (current product surface), only receipt + fallbacks gate.
+    for (const [id, selected] of Object.entries(scenarios)) {
+      const actual = routeFromHTML(html, id);
+      if (!actual) continue;
+      if (actual.href !== selected.href || actual.labelKey !== selected.labelKey) {
+        throw new Error(`${id} is stale: expected ${selected.href} (${selected.labelKey})`);
+      }
     }
+    const actualFallback = fallbackFromSiteSource(siteSuggestions);
+    if (JSON.stringify(actualFallback) !== JSON.stringify(suggestions.byLens)) {
+      throw new Error("rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
+    }
+    if (JSON.stringify(FALLBACK_INDICES) !== JSON.stringify(suggestions.byLens)) {
+      throw new Error("worker rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
+    }
+    console.log(
+      `preset validation green for ${Object.keys(scenarios).length} shortcuts and ` +
+        `${suggestions.candidates.length} suggestions (${TODAY})`,
+    );
+  } else {
+    for (const [id, selected] of Object.entries(scenarios)) html = replaceRoute(html, id, selected);
+    siteSuggestions = replaceSiteFallback(siteSuggestions, suggestions.byLens);
+    workerSource = replaceWorkerFallback(workerSource, suggestions.byLens);
+    await writeFile(INDEX, html);
+    await writeFile(SITE_SUGGESTIONS, siteSuggestions);
+    await writeFile(WORKER_SUGGESTIONS, workerSource);
+    const receipt = {
+      schemaVersion: 1,
+      generatedAt: new Date().toISOString(),
+      dataDate: TODAY,
+      scenarios,
+      suggestions,
+    };
+    // Keep --write idempotent when the live result is unchanged. This lets the scheduled
+    // refresh run without creating a commit solely because generatedAt moved.
+    const receiptToWrite =
+      previous &&
+      JSON.stringify({ ...receipt, generatedAt: previous.generatedAt }) === JSON.stringify(previous)
+        ? previous
+        : receipt;
+    await writeFile(RECEIPT, `${JSON.stringify(receiptToWrite, null, 2)}\n`);
+    console.log(`wrote ${RECEIPT.slice(ROOT.length + 1)} and refreshed ${Object.keys(scenarios).length} shortcuts`);
   }
-  const actualFallback = fallbackFromSiteSource(siteSuggestions);
-  if (JSON.stringify(actualFallback) !== JSON.stringify(suggestions.byLens)) {
-    throw new Error("rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
-  }
-  if (JSON.stringify(FALLBACK_INDICES) !== JSON.stringify(suggestions.byLens)) {
-    throw new Error("worker rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
-  }
-  console.log(`preset validation green for ${Object.keys(scenarios).length} shortcuts and ${suggestions.candidates.length} suggestions (${TODAY})`);
-} else {
-  for (const [id, selected] of Object.entries(scenarios)) html = replaceRoute(html, id, selected);
-  siteSuggestions = replaceSiteFallback(siteSuggestions, suggestions.byLens);
-  workerSource = replaceWorkerFallback(workerSource, suggestions.byLens);
-  await writeFile(INDEX, html);
-  await writeFile(SITE_SUGGESTIONS, siteSuggestions);
-  await writeFile(WORKER_SUGGESTIONS, workerSource);
-  const receipt = {
-    schemaVersion: 1,
-    generatedAt: new Date().toISOString(),
-    dataDate: TODAY,
-    scenarios,
-    suggestions,
-  };
-  // Keep --write idempotent when the live result is unchanged. This lets the scheduled
-  // refresh run without creating a commit solely because generatedAt moved.
-  const receiptToWrite =
-    previous &&
-    JSON.stringify({ ...receipt, generatedAt: previous.generatedAt }) === JSON.stringify(previous)
-      ? previous
-      : receipt;
-  await writeFile(RECEIPT, `${JSON.stringify(receiptToWrite, null, 2)}\n`);
-  console.log(`wrote ${RECEIPT.slice(ROOT.length + 1)} and refreshed ${Object.keys(scenarios).length} shortcuts`);
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  if (!WRITE && !CHECK) throw new Error("usage: node tools/validate_presets.mjs --write|--check");
+  await main();
 }
