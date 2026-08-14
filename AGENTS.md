@@ -2565,6 +2565,19 @@ both the live and restored databases.
   and is registered in `site/agency_constellation_section_registry.mjs`; keep
   `site/agency_constellation.mjs` limited to the shared document frame.
 
+## Community-board constellation (v1)
+
+- Pure model and renderer: `site/community_board_constellation.mjs`; materialize the
+  59 board documents and committed lookup with
+  `node tools/build_community_board_constellation_documents.mjs` (+ `--check`).
+- Board pages under `site/community-boards/<body_id>/` are build/deploy artifacts;
+  `/community-boards/` remains the aggregate source directory. The model reuses
+  `edge_summary.mjs`, `local_constellation.mjs`, and civic document chrome. Keep
+  meetings and institution edges `unknown` until publisher-keyed joins exist.
+- Route closure and resident vocabulary are covered by
+  `test/community_board_constellation.test.mjs` and the built-site
+  `test/standards/rendered_schema_vocabulary.py` census.
+
 ## Agency statutory mandates (v1 free-watch)
 
 - User-facing term and public lens is **mandates**; legacy `obligations`
