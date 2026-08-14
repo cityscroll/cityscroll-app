@@ -78,6 +78,10 @@ DOCUMENT_ROUTES = (
     # Community board constellation document: board-level place, source, and
     # governance projections use the same resident vocabulary census.
     "community-boards/bronx-cb-01/",
+    # Agency constellation and parcel edge-summary empties are explicit census
+    # surfaces so internal state wording cannot regress outside board pages.
+    "agencies/office-of-the-mayor/",
+    "parcels/1000730008/",
     # Minutes are currently not yet ingested; this route proves member and
     # recommendation activity stays pending/unknown rather than empty.
     "community-boards/bronx-cb-02/",

@@ -71,7 +71,7 @@ export const AGENCY_GROUPS = Object.freeze({
   "Office of Labor Relations": ["OFFICE OF LABOR RELATIONS"],
   "Office of Special Narcotics Prosecutor": ["DISTRICT ATTORNEY-SPECIAL NARC", "Office of Special Narcotics Prose", "Office of the Special Narcotics Prosecutor"],
   "Office of The Actuary": ["OFFICE OF THE ACTUARY"],
-  "Office of the Mayor": ["OFFICE OF THE MAYOR"],
+  "Office of the Mayor": ["OFFICE OF THE MAYOR", "Mayor's Office"],
   "Payroll Administration": ["OFF OF PAYROLL ADMINISTRATION"],
   "Parks and Recreation": ["DEPT OF PARKS & RECREATION", "Department of Parks and Recreation", "DPR - Department of Parks & Recreation NYC", "DPR - Department of Parks and Recreation NYC"],
   "Police Department": ["POLICE DEPARTMENT"],

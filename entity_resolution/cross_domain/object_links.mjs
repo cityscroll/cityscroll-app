@@ -2934,7 +2934,7 @@ export function lookupEntityIntelligence(doc, query) {
       link_count: 0,
       coverage_rate: 0,
     },
-    note: "No cross-domain links in the current materialization for this entity.",
+    note: "No cross-domain links found for this entity yet.",
   };
 }
 

@@ -93,7 +93,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "contracts",
     surface: "money",
     relation: "published_by_agency",
-    empty_note: "No contract or award notices are linked to this agency in the current materialization.",
+    empty_note: "No contract or award records linked yet.",
   }),
   Object.freeze({
     id: "vendors",
@@ -102,7 +102,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "contracts",
     surface: "money",
     relation: "top_vendor_by_award_12mo",
-    empty_note: "No named vendors with positive awards are in the current 12-month materialization.",
+    empty_note: "No named vendors with positive awards linked yet.",
   }),
   Object.freeze({
     id: "meetings",
@@ -111,7 +111,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "meetings",
     surface: "meetings",
     relation: "hosts_meeting",
-    empty_note: "No meeting or hearing notices are linked to this agency in the current materialization.",
+    empty_note: "No meetings or hearings are linked to this agency yet.",
   }),
   Object.freeze({
     id: "rules",
@@ -120,7 +120,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "rules",
     surface: "rules",
     relation: "issued_rule",
-    empty_note: "No Agency Rules notices are linked to this agency in the current materialization.",
+    empty_note: "No Agency Rules notices are linked to this agency yet.",
   }),
   Object.freeze({
     id: "obligations",
@@ -129,7 +129,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "rules",
     surface: "rules",
     relation: "statute_duty",
-    empty_note: "No statutory mandates are linked to this agency in the current materialization.",
+    empty_note: "No statutory mandates are linked to this agency yet.",
   }),
   Object.freeze({
     id: "staffing",
@@ -138,7 +138,7 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "staffing",
     surface: "people",
     relation: "certified_to_agency",
-    empty_note: "No civil-service certification edges name this agency in the current materialization.",
+    empty_note: "No civil-service certification records name this agency yet.",
   }),
 ]);
 
