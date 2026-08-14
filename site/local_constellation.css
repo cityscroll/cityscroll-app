@@ -10,7 +10,10 @@
 .local-district-map-adjacent{fill:var(--color-action-soft,#a9cbe2);opacity:.82}
 .local-district-map-central{fill:var(--color-action,#1769aa);opacity:.92;stroke:var(--color-text,#17212b);stroke-width:2;paint-order:stroke;vector-effect:non-scaling-stroke}
 .local-district-map-label{font:600 11px/1 var(--font-label,system-ui);paint-order:stroke;stroke:var(--color-surface,#fff);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
-.local-district-map-label-central{fill:var(--color-surface,#fff)}
+/* Pair each label with the opposite edge treatment of its map fill: the
+   highlighted action-blue district gets a light label with a dark keyline,
+   while lighter adjacent districts keep dark ink with a light keyline. */
+.local-district-map-label-central{fill:var(--color-surface,#fff);stroke:var(--color-text,#17212b)}
 .local-district-map-label-adjacent{fill:var(--color-text,#17212b)}
 .local-constellation-lines line{stroke:currentColor;stroke-width:1.5;opacity:.35}
 .local-constellation-center{fill:var(--color-action,#1769aa);stroke:var(--color-surface,#fff);stroke-width:3}
