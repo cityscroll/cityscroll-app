@@ -6,6 +6,7 @@
  */
 
 import { bblReaderLabel } from "./bbl_reader.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 
 export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "applicant", relation: "applicant_agency", surface: "land" },
@@ -244,6 +245,8 @@ export function buildProjectConnectionEvidence({
   decisions.items = dispositions.map((item) => ({
     label: clean(item.representing || item.name) || "Published disposition",
     outcome: clean(item.community_board || item.borough_president || item.borough_board || item.status) || null,
+    board_id: clean(item.board_id, 80) || null,
+    href: communityBoardPageHref(item.board_id),
     when: clean(item.vote_date || item.hearing_date, 40) || null,
     relation: "project_disposition",
     confidence: "strong",

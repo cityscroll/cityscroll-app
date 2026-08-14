@@ -94,6 +94,7 @@ function evidence(overrides = {}) {
       dispositions: [{
         representing: "Community Board",
         community_board: "Conditional Favorable",
+        board_id: "manhattan-cb-11",
         vote_date: "2023-10-24",
       }],
       documents: [{ name: "Community Board recommendation", url: "https://example.test/doc" }],
@@ -134,6 +135,7 @@ test("Timbale Terrace composes five reader-verb groups with confidence and cover
   assert.equal(meetings.coverage.gap, "eligible_denominator_not_measured");
 
   const decisions = result.groups.find((group) => group.id === "decisions");
+  assert.equal(decisions.items[0].href, "/community-boards/manhattan-cb-11/");
   assert.equal(decisions.coverage.scope, "fixed_completed_project_sample");
   assert.equal(decisions.coverage.rate, 0.9);
   assert.equal(decisions.documents.length, 1);

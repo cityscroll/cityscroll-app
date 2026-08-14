@@ -3,6 +3,7 @@ import {
   COMMUNITY_BOARD_SOURCE_JOIN_METHOD,
   COMMUNITY_BOARD_SOURCE_JOIN_SCHEMA,
 } from "./community_board_source_join.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 
 // Receipt-backed community-board decision panel for non-Council meeting notices.
 // The committed lookup may remain empty. Rendering requires the artifact-level
@@ -74,6 +75,7 @@ export function buildNonCouncilOutcomePanelView(payload, requestId) {
     schema: NON_COUNCIL_OUTCOME_PANEL_SCHEMA,
     show: true,
     request_id: id,
+    board_id: clean(row.body_id) || null,
     body_name: bodyName(row),
     meeting_label: sourceJoinView.label,
     meeting_date: meetingDate,
@@ -135,6 +137,10 @@ export function nonCouncilOutcomePanelHTML(payloadOrView, requestId, opts = {}) 
   const esc = typeof opts.esc === "function" ? opts.esc : defaultEsc;
   const date = typeof opts.date === "function" ? opts.date : defaultDate;
   const action = t(`non_council_outcome_action_${view.action}`);
+  const boardHref = communityBoardPageHref(view.board_id);
+  const bodyHeading = boardHref
+    ? `<a href="${esc(boardHref)}">${esc(view.body_name)}</a>`
+    : esc(view.body_name);
   const tally = view.tally
     ? `<div class="notice-fact-row" data-field="published-vote">
         <div class="stage-name">${esc(t("non_council_outcome_vote_lbl"))}</div>
@@ -150,7 +156,7 @@ export function nonCouncilOutcomePanelHTML(payloadOrView, requestId, opts = {}) 
     <div class="chain-h">${esc(t("non_council_outcome_heading"))}</div>
     <div class="notice-fact-list">
       <article class="notice-fact-item">
-        <h3 lang="en" dir="ltr">${esc(view.body_name)}</h3>
+        <h3 lang="en" dir="ltr">${bodyHeading}</h3>
         <div class="notice-fact-row" data-field="decision">
           <div class="stage-name">${esc(t("non_council_outcome_decision_lbl"))}</div>
           <div>${esc(action)}</div>
