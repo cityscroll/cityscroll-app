@@ -2,6 +2,7 @@
   "version": 1,
   "include": [
     "/notices/*",
+    "/meetings/*",
     "/agencies/*",
     "/vendors/*",
     "/officials/*",

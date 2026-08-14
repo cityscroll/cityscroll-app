@@ -10,6 +10,7 @@ import {
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLink } from "./edge_summary.mjs";
 import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
 import { renderWalkEntry } from "./walk_entry.mjs";
+import { meetingCanonicalHref } from "./meeting_object_contract.mjs";
 import {
   communityBoardDisambiguation,
   parseCommunityBoardQuery,
@@ -178,7 +179,7 @@ const BROWSE_SCOPE_POLICY = Object.freeze({
   zoning: { agencyField: "primary_applicant", entityRefFields: ["project_id"] },
   property: { agencyField: "agency_name", entityRefFields: ["disposition_subject_ref", "disposition_join_keys"] },
   rules: { agencyField: "agency_name", entityRefFields: ["request_id"] },
-  meetings: { agencyField: "agency_name", entityRefFields: ["request_id", "zap_project_ids"] },
+  meetings: { agencyField: "agency_name", entityRefFields: ["meeting_id", "request_id", "zap_project_ids"] },
 });
 
 const KNOWN_SCOPE_FILTER_KEYS = new Set(["facet"]);
@@ -411,6 +412,7 @@ function isoDay(value) {
 
 function rowId(facet, row) {
   if (facet === "zoning") return row.project_id || null;
+  if (facet === "meetings") return row.meeting_id || row.request_id || null;
   return row.request_id || null;
 }
 
@@ -616,9 +618,7 @@ function rowHref(facet, row) {
   const id = rowId(facet, row);
   if (!id) return null;
   if (facet === "zoning") return `/#land/${encodeURIComponent(id)}`;
-  if (facet === "meetings" && row.source_system === "community_board") {
-    return row.source_url || row.record_url || null;
-  }
+  if (facet === "meetings") return meetingCanonicalHref(row.meeting_id || id);
   return `/notices/${encodeURIComponent(id)}`;
 }
 
@@ -1067,6 +1067,9 @@ export function renderBrowseView(view) {
     const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board"
       ? staticFact({ label: meetingOriginLabel(row.meeting_origin), className: "browse-source-fact", escape: esc })
       : "";
+    const meetingSourceDetails = view.facet === "meetings" && row.source_url
+      ? `<details class="meeting-source-details"><summary>Source details</summary><a href="${esc(row.source_url)}">Official source</a></details>`
+      : "";
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity
       ? renderEntityPivotLink({
@@ -1087,6 +1090,7 @@ export function renderBrowseView(view) {
       ${actionMarkup}
       <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
       <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
+      ${meetingSourceDetails}
     </article>`;
   }).join("");
   const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}" data-as-of="${esc(view.asOf || "")}" data-requested-as-of="${esc(view.requestedAsOf || "")}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;

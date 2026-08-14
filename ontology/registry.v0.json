@@ -376,13 +376,40 @@
     },
     {
       "id": "meeting",
-      "status": "unregistered",
+      "status": "registered",
       "layer": "semantic",
-      "reason": "Council events materialize to KV view without source_records dual-write.",
-      "primary_key_pattern": "meeting:{event_id}",
-      "families": [],
-      "backing": [],
-      "properties_ref": [],
+      "reason": "City Record and community-board publishers share a source-qualified meeting object; exact source keys remain available for later joins.",
+      "primary_key_pattern": "meeting:{source_system}:{source_key}",
+      "families": [
+        "civic:meeting"
+      ],
+      "backing": [
+        "city_record",
+        "community_board_source_registry",
+        "source_records"
+      ],
+      "properties_ref": [
+        "title",
+        "event_date",
+        "venue",
+        "participation",
+        "source_url",
+        "source_system",
+        "publisher_identifier",
+        "meeting_origin",
+        "source_receipt",
+        "join_status",
+        "institution_refs"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.meeting_object.v1",
+        "source_qualified": true,
+        "source_keys": [
+          "city_record:request_id",
+          "community_board:publisher_event_id"
+        ],
+        "title_date_identity_forbidden": true
+      },
       "grounding": "partial"
     },
     {

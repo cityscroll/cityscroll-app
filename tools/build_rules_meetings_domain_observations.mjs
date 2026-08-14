@@ -49,6 +49,7 @@ import {
   MEETING_ORIGINS,
   normalizeMeetingOrigin,
 } from "../site/meeting_origin.mjs";
+import { normalizeCityRecordMeeting } from "../site/meeting_object_contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
@@ -313,6 +314,7 @@ function cleanRule(row) {
     hearingArea: hearingArea.scope === "local" ? hearingArea : null,
   });
   const out = {
+    ...normalizeCityRecordMeeting(fullRow),
     request_id: fullRow.request_id,
     agency_name: fullRow.agency_name,
     short_title: shortTitle,
