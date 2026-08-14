@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import {
@@ -11,6 +12,10 @@ import {
 import { normalizeHearing } from "../src/lib/hearings.mjs";
 
 const TEST_NOW = new Date();
+const CITY_RECORD_20260713006_HTML = await readFile(
+  new URL("./fixtures/city-record-hearing/20260713006.html", import.meta.url),
+  "utf8",
+);
 
 function fixtureDate(offsetDays) {
   const date = new Date(TEST_NOW.getTime() + (offsetDays * 24 * 60 * 60 * 1000));
@@ -89,6 +94,7 @@ test("refresh writes one materialized view and the read route serves it", async 
   assert.equal(response.headers.get("access-control-allow-origin"), "*");
   const body = await response.json();
   assert.equal(body.hearings[0].request_id, "fixture-hearing-view");
+  assert.equal(body.source_extraction_version, 2);
 });
 
 test("meeting ICS is built from the materialized hearing record", async () => {
@@ -168,8 +174,9 @@ test("ICS refreshes a fresh cache miss for the dated rule hearing", async () => 
     }
     if (target.includes("a856-cityrecord.nyc.gov/RequestDetail/20260803009")) {
       return new Response(
-        '<p>To participate in the public hearing, enter to register at this Zoom meeting.</p>'
-          + '<a href="https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1">Join</a>',
+        '<div class="container page-body"><p>To participate in the public hearing, enter to register at this Zoom meeting.</p>'
+          + '<a href="https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1">Join</a>'
+          + '</div>',
         { status: 200, headers: { "content-type": "text/html" } },
       );
     }
@@ -206,4 +213,53 @@ test("City Record hearing source text supplies online mode and the join URL", ()
   });
   assert.equal(record.meeting_access.mode, "remote");
   assert.equal(record.meeting_access.remote_join_url, "https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1");
+});
+
+test("City Record rule hearing strips page chrome and keeps only its GetFile attachment", async () => {
+  const row = {
+    request_id: "20260713006",
+    start_date: "2026-07-20T00:00:00.000",
+    event_date: "2026-08-19T11:00:00.000",
+    agency_name: "Consumer and Worker Protection (DCWP)",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Agency Rules",
+    short_title: "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+  };
+  const calls = [];
+  const fetchRule = async (url) => {
+    calls.push(String(url));
+    if (String(url).startsWith("https://data.cityofnewyork.us/")) {
+      return new Response(JSON.stringify([row]), { status: 200 });
+    }
+    if (String(url).includes("a856-cityrecord.nyc.gov/RequestDetail/20260713006")) {
+      return new Response(CITY_RECORD_20260713006_HTML, { status: 200, headers: { "content-type": "text/html" } });
+    }
+    return new Response(JSON.stringify({ features: [] }), { status: 200 });
+  };
+
+  const view = await buildHearingView(fetchRule, new Date("2026-08-12T12:00:00.000Z"));
+  const record = view.hearings.find((hearing) => hearing.request_id === row.request_id);
+  assert.ok(record);
+  assert.doesNotMatch(record.description, /The City Record Online \(CROL\)|UNSUPPORTED|Sections|User's Guide/);
+  assert.deepEqual(record.participation.links, [{
+    label: "Participation link",
+    url: "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260713006&requestStatus=Archived&documentId=44259",
+  }]);
+  assert.ok(!record.participation.links.some((link) => /fonts\.googleapis\.com/i.test(link.url)));
+  assert.ok(calls.some((url) => url.includes("RequestDetail/20260713006")));
+});
+
+test("participation does not guess from generic assets or stylesheet links", () => {
+  const record = normalizeHearing({
+    request_id: "20260713007",
+    section_name: "Agency Rules",
+    event_date: "2026-08-20T11:00:00.000",
+    source_body: "Notice details without a meeting link.",
+    source_links: [
+      "https://fonts.googleapis.com/css?family=Open+Sans",
+      "https://a856-cityrecord.nyc.gov/Content/site.css",
+      "https://a856-cityrecord.nyc.gov/Search/GetFile?requestId=other&documentId=44259",
+    ],
+  });
+  assert.deepEqual(record.participation.links, []);
 });
