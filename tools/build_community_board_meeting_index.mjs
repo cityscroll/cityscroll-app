@@ -10,6 +10,10 @@ import {
   communityBoardSourceAdapterId,
 } from "../site/community_board_source_adapters.mjs";
 import { normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
+import {
+  attachMeetingDocuments,
+  MEETING_DOCUMENT_SCHEMA,
+} from "../site/meeting_document.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
@@ -230,11 +234,15 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     || String(left.board_id).localeCompare(String(right.board_id))
     || String(left.source_record_id).localeCompare(String(right.source_record_id))
   ));
-  const institutionEdges = rows.flatMap((row) => row.institution_edges || []);
+  const rawMinutes = allRecords.filter((record) => record.source_role === "minutes");
+  const documentJoin = attachMeetingDocuments(rows, rawMinutes, { asOf: observedAt });
+  const materializedRows = documentJoin.meetings;
+  const institutionEdges = materializedRows.flatMap((row) => row.institution_edges || []);
   return {
     schema: INDEX_SCHEMA,
     generated_at: observedAt,
     source_record_schema: COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA,
+    meeting_document_schema: MEETING_DOCUMENT_SCHEMA,
     policy: {
       source_inventory: "site/data/non_council_outcome_sources/board_source_inventory.json",
       source_urls_are_explicit: true,
@@ -249,6 +257,10 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       source_urls_checked: fetched,
       boards_indexed: Object.keys(byBoard).length,
       records_indexed: rows.length,
+      minutes_documents_indexed: documentJoin.documents.length,
+      minutes_documents_attached: documentJoin.attached_documents.length,
+      minutes_documents_unlinked: documentJoin.orphan_documents.length,
+      minutes_documents_ambiguous: documentJoin.ambiguous_documents.length,
       institution_edges_materialized: institutionEdges.filter((edge) => edge?.status === "promoted" || edge?.status === "official").length,
       boards_in_inventory: inventory.boards.length,
       source_roles_total: receipts.length,
@@ -262,8 +274,12 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     institution_edges: institutionEdges,
     receipts,
     source_records_by_board: sourceRecordsByBoard,
-    by_board: byBoard,
-    rows,
+    meeting_documents: documentJoin.documents,
+    by_board: Object.fromEntries(Object.keys(byBoard).map((boardId) => [
+      boardId,
+      materializedRows.filter((row) => row.board_id === boardId),
+    ])),
+    rows: materializedRows,
   };
 }
 
