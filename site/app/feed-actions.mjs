@@ -8,10 +8,6 @@ import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mj
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
-import {
-  communityBoardIdFromRef,
-  communityBoardScopeLinksHTML,
-} from "../community_board_scope_links.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -192,6 +188,16 @@ function communityBoardEdgeToolsLoad(){
   }
   return communityBoardEdgeToolsPromise;
 }
+let communityBoardScopeToolsPromise=null;
+let communityBoardScopeTools=null;
+function communityBoardScopeToolsLoad(){
+  if(!communityBoardScopeToolsPromise){
+    communityBoardScopeToolsPromise=import("../community_board_scope_links.mjs")
+      .then(tools=>{ communityBoardScopeTools=tools; return tools; })
+      .catch(()=>null);
+  }
+  return communityBoardScopeToolsPromise;
+}
 let hearingRenderSeq=0;
 let hearingWideningDismissed="";
 let meetingsProcessSel="all";
@@ -249,6 +255,10 @@ function hearingEventRow(record){
     board_name:record.board_name||null,
   };
 }
+function communityBoardIdFromRef(value){
+  const match=String(value||"").trim().match(/^community-board:([a-z]+(?:-[a-z]+)*-cb-\d{2})$/i);
+  return match ? match[1].toLowerCase() : "";
+}
 function activeCommunityBoardRef(){
   const refs=globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES?.entity_refs_all;
   if(!Array.isArray(refs)) return "";
@@ -264,13 +274,15 @@ function hearingViewFilter(){
     ...hearingFilter(),
   };
 }
-function renderMeetingsBoardScope(records){
+async function renderMeetingsBoardScope(records, seq=hearingRenderSeq){
   const rail=$("#meetings-board-scope");
   if(!rail) return;
+  const tools=communityBoardScopeTools||await communityBoardScopeToolsLoad();
+  if(!tools || seq!==hearingRenderSeq || !rail.isConnected) return;
   const searchQuery=rail.querySelector(".facet-typeahead-input")?.value||"";
   const current=location.hash.startsWith("#meetings")
     ? location.hash : (globalThis.serializeState?.()||"#meetings");
-  rail.innerHTML=communityBoardScopeLinksHTML({
+  rail.innerHTML=tools.communityBoardScopeLinksHTML({
     surface:"meetings",
     rows:records||[],
     selected:activeCommunityBoardRef(),
@@ -1375,7 +1387,7 @@ async function renderHearingExplorer(options){
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
   let records=await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
   renderMeetingsAgencyScope(hearingAll||[]);
-  renderMeetingsBoardScope(hearingAll||[]);
+  renderMeetingsBoardScope(hearingAll||[],seq);
   let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
   // when=all (map drill) and past / empty-widen need the past SODA slice.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
@@ -1385,6 +1397,7 @@ async function renderHearingExplorer(options){
       if(seq!==hearingRenderSeq) return;
       records=await filterFeedRowsToDistrictBag("meetings",records.concat(past));
       renderMeetingsAgencyScope(hearingAll||[]);
+      renderMeetingsBoardScope(hearingAll||[],seq);
       selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
