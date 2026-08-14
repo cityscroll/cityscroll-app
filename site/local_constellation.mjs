@@ -10,6 +10,7 @@ import {
   normalizeEdgeSummaryRecords,
   resolveEdgeSummaryDestination,
 } from "./edge_summary.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 
 export const LOCAL_CONSTELLATION_SCHEMA = "cityscroll.local_constellation.v1";
 export const LOCAL_CONSTELLATION_MAX_NODES = 8;
@@ -294,9 +295,10 @@ function emptyCopy(view) {
 
 function previewMarkup(view) {
   if (view.kind !== "place" || view.status !== "empty") return "";
+  const boardHref = communityBoardPageHref("manhattan-cb-03");
   return `<aside class="local-constellation-preview" data-local-constellation-preview="true" data-local-constellation-preview-live="false" aria-label="Example connection preview">
     <p class="local-constellation-preview-label">Example preview</p>
-    <p class="local-constellation-preview-name"><span aria-hidden="true">◇</span>Manhattan Community Board 3</p>
+    <p class="local-constellation-preview-name"><span aria-hidden="true">◇</span><a href="${esc(boardHref)}">Manhattan Community Board 3</a></p>
     <p class="local-constellation-preview-relation">Covers this district.</p>
     <p class="local-constellation-preview-note">A place link can look like this.</p>
   </aside>`;

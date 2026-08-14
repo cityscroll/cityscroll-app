@@ -3,6 +3,7 @@ import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_l
 import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
 import { installFilterChipNavigation, officialSourceLink } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
+import { communityBoardPageHref } from "../community_board_links.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -1111,6 +1112,11 @@ function landOutcomesHTML(record, phaseTools){
   if(withOutcome.length){
     dispHTML = withOutcome.slice(0, 6).map(d => {
       const rec = d.community_board || d.borough_president || d.borough_board || "—";
+      const recLabel = d.community_board ? `${d.representing || "Community Board"} ${d.community_board}` : rec;
+      const boardHref = d.community_board ? communityBoardPageHref(d.board_id) : null;
+      const recHTML = boardHref
+        ? `<a class="community-board-reference" href="${escUiHtml(boardHref)}">${escUiHtml(recLabel)}</a>`
+        : escUiHtml(recLabel);
       const vote = d.vote_date ? fdate(d.vote_date) : "—";
       const tally = (d.votes_for != null || d.votes_against != null)
         ? t("land_outcomes_vote_tally_html", {
@@ -1123,7 +1129,7 @@ function landOutcomesHTML(record, phaseTools){
         <div class="when">${escUiHtml(vote)}</div>
         ${Array.isArray(d.action_codes) && d.action_codes.length ? `<div>${d.action_codes.map(code => `<span class="zap-action-chip">${escUiHtml(code)}</span>`).join("")}</div>` : ""}
         <div class="lc-pct" lang="en" dir="ltr">${escUiHtml(d.representing || d.name || "—")}</div>
-        <div class="lc-pct">${t("land_outcomes_recommendation_html",{ rec: escUiHtml(rec) })}${tally?` · ${tally}`:""}</div>
+        <div class="lc-pct">${t("land_outcomes_recommendation_html",{ rec: recHTML })}${tally?` · ${tally}`:""}</div>
       </div></div>`;
     }).join("");
   }
@@ -1210,6 +1216,7 @@ function projectConnectionItemHTML(item, projectScope){
     },{scope:projectScope,surface:item.ref.startsWith("bbl:")?"property":"land"})||escUiHtml(item.label||"");
   }
   if(item.href&&String(item.href).startsWith("#")) return pivotA(item.href,cleanText(item.label)||item.href);
+  if(item.href&&String(item.href).startsWith("/")) return `<a href="${escUiHtml(item.href)}">${escUiHtml(item.label||item.href)}</a>`;
   return escUiHtml(item.label||"");
 }
 function projectConnectionsHTML(evidence, tools){

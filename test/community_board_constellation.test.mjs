@@ -23,7 +23,7 @@ const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 test("board routes preserve the separate place, governance, and output projections", () => {
   assert.equal(communityBoardPath("bronx-cb-02"), "/community-boards/bronx-cb-02/");
   assert.equal(communityBoardPlaceHref({ borough: "Bronx", community_district_id: "X02" }), "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings");
-  assert.equal(communityBoardInstitutionHref("bronx-cb-02"), "/browse/people/?board=bronx-cb-02#community-boards");
+  assert.equal(communityBoardInstitutionHref("bronx-cb-02"), "/community-boards/bronx-cb-02/");
   assert.equal(communityBoardOutputHref("bronx-cb-02"), "/community-boards/#board-bronx-cb-02");
 });
 test("board constellation uses typed summaries and holds unjoined governance edges", () => {

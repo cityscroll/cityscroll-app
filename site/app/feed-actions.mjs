@@ -7,6 +7,7 @@ import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
+import { communityBoardPageHref } from "../community_board_links.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -1098,6 +1099,27 @@ function hearingAreaText(record){
   ].filter(Boolean);
   return [...new Set(values)].join(" · ");
 }
+function hearingAreaHTML(record){
+  const area=record.affected_area||{};
+  if(area.scope==="citywide") return escUiHtml(t("citywide"));
+  if(area.scope==="unlocated") return "";
+  const values=[
+    ...(area.neighborhoods||[]),
+    ...(area.boroughs||[]),
+    ...(area.community_districts||[]).map(cd=>t("community_district_short",{n:cd})),
+    ...(area.community_boards||[]),
+    ...(area.addresses||[]).map(address=>address.label),
+    ...(area.street_ranges||[]).map(range=>range.label),
+    ...(area.tax_lots||[]).map(lot=>lot.label),
+    ...(area.project_names||[]),
+  ].filter(Boolean);
+  return [...new Set(values)].map(value=>{
+    const href=communityBoardPageHref(value);
+    return href
+      ? `<a class="community-board-reference" href="${escUiHtml(href)}">${escUiHtml(value)}</a>`
+      : escUiHtml(value);
+  }).join(" · ");
+}
 function hearingVenueText(record){
   const venue=record.venue||{}, labels={
     "virtual":"venue_virtual","in-person":"venue_in_person","hybrid":"venue_hybrid"
@@ -1214,9 +1236,10 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const title=noticeDisplayTitle({title:entry.title||record.decides||record.title,request_id:record.request_id},t("now_event_meeting"));
   const ev=resultMatchEvidence(title, matchText(record), terms);
   const areaText=hearingAreaText(record);
+  const areaHTML=hearingAreaHTML(record);
   const venueText=hearingVenueText(record);
   const areaFact=areaText
-    ? `<div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(areaText)}</span></div>`
+    ? `<div class="hfact"><b>${t("affected_area_label")}</b><span>${areaHTML}</span></div>`
     : "";
   const venueFact=venueText
     ? `<div class="hfact"><b>${t("venue_label")}</b><span>${escUiHtml(venueText)}</span></div>`
