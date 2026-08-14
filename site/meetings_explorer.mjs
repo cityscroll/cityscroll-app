@@ -226,6 +226,7 @@ export function meetingProcessActionKey(stage, record = null) {
  * @param {object} record
  */
 export function meetingEventSubjectKey(record) {
+  if (record?.meeting_id) return `meeting-object:${record.meeting_id}`;
   const agency = normalizeKey(record?.agency || record?.agency_name);
   const day = isoDate(record?.event_date);
   if (!agency || !day) return null;
@@ -239,6 +240,7 @@ export function meetingEventSubjectKey(record) {
  * @param {object} record
  */
 export function meetingMatterSubjectKey(record) {
+  if (record?.meeting_id) return null;
   const decides = clean(record?.decides);
   const agency = normalizeKey(record?.agency || record?.agency_name);
   if (!agency || !decides || decides.length < 24) return null;

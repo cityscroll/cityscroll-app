@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   fetchCommunityBoardSource,
   COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA,
 } from "../site/community_board_source_adapters.mjs";
+import { normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
@@ -19,8 +19,6 @@ const JOIN_METHOD = "exact_board_date_publisher_identifier";
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
 function clean(value, max = 500) { return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max); }
-function hash(value) { return createHash("sha256").update(String(value)).digest("hex").slice(0, 16); }
-
 function sourceDescriptors(inventory, registry) {
   const boardNames = new Map((registry.sources || [])
     .filter((row) => row.body_type === "community_board")
@@ -41,7 +39,6 @@ function sourceDescriptors(inventory, registry) {
 
 function indexedRow(record, board, observedAt) {
   const sourceRecordId = record.source_record_id || record.record_id;
-  const requestId = `community-board:${board.id}:${hash(sourceRecordId)}`;
   const sourceUrl = record.record_url || record.source_url;
   const provenance = {
     schema: "cityscroll.community_board_meeting_provenance.v1",
@@ -51,8 +48,20 @@ function indexedRow(record, board, observedAt) {
     observed_receipt: record.observed_receipt || null,
     adapter: record.observed_receipt?.parser || "html_pdf_v1",
   };
+  const meeting = normalizeCommunityBoardMeeting({
+    source_record_id: sourceRecordId,
+    record_id: record.record_id,
+    publisher_identifier: record.publisher_identifier || sourceRecordId,
+    title: record.title,
+    event_date: record.date,
+    source_url: sourceUrl,
+    source_receipt: record.observed_receipt,
+    meeting_origin: "community_board_source_observed",
+    board_id: board.id,
+    venue: record.address ? { address: record.address, mode: "in-person" } : null,
+  });
   return {
-    request_id: requestId,
+    ...meeting,
     record_kind: record.record_kind,
     record_id: record.record_id,
     record_url: record.record_url,
@@ -63,17 +72,12 @@ function indexedRow(record, board, observedAt) {
     publisher_identifier: record.publisher_identifier,
     publisher_identifiers: record.publisher_identifiers,
     observed_receipt: record.observed_receipt,
-    source_system: "community_board",
     source_record_id: sourceRecordId,
     board_id: board.id,
-    agency_name: board.name,
-    short_title: record.title || "Community board meeting",
+    short_title: meeting.title,
     start_date: observedAt,
-    event_date: record.date,
     type_of_notice_description: record.category || "Board meeting",
     section_name: "Community Board Meetings",
-    source_url: sourceUrl,
-    meeting_origin: "community_board_source_observed",
     meeting_join: {
       schema: JOIN_SCHEMA,
       status: "unknown",
@@ -95,7 +99,6 @@ function indexedRow(record, board, observedAt) {
       neighborhoods: [],
       addresses: [],
     },
-    venue: record.address ? { address: record.address, mode: "in-person" } : null,
   };
 }
 

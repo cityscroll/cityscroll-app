@@ -20,6 +20,7 @@ import {
   meetingSourceUrl,
   normalizeMeetingOrigin,
 } from "../../../site/meeting_origin.mjs";
+import { normalizeCityRecordMeeting } from "../../../site/meeting_object_contract.mjs";
 
 export { plainText };
 
@@ -357,7 +358,19 @@ export function normalizeHearing(row) {
   const audience = AUDIENCES.find(([pattern]) => pattern.test(`${row.short_title || ""} ${body}`));
   const venue = venueFromRow(row);
   const participation = participationFromRow(row, body, sourceUrl);
+  const meeting = normalizeCityRecordMeeting({
+    ...row,
+    title: noticeDisplayTitle(row, "Hearing"),
+    venue,
+    participation,
+    source_url: sourceUrl,
+    meeting_origin: normalizeMeetingOrigin({
+      ...row,
+      source_system: row.source_system || "city_record",
+    }),
+  });
   return {
+    ...meeting,
     request_id: String(row.request_id || ""),
     source_section: row.section_name || null,
     agency: row.agency_name || null,
