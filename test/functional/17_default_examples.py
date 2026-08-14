@@ -11,6 +11,7 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
+from ci_waits import wait_for_locator, wait_for_url  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -30,7 +31,7 @@ def land_opens_on_a_populated_example(pw):
 
     page.goto(f"{BASE}#land", timeout=30000)
     page.wait_for_load_state("load")
-    page.locator("#ldetail").wait_for(state="visible", timeout=45000)
+    wait_for_locator(page.locator("#ldetail"), label="bare Land example")
     detail = page.locator("#ldetail")
     text = detail.inner_text().strip()
     if "Pick a rezoning" in text or not text:
@@ -53,7 +54,7 @@ def people_opens_on_a_populated_example(pw):
 
     page.goto(f"{BASE}#people", timeout=30000)
     page.wait_for_load_state("load")
-    page.locator("#career-results .career-card").first.wait_for(state="visible", timeout=45000)
+    wait_for_locator(page.locator("#career-results .career-card").first, label="bare Staffing example")
     first = page.locator("#career-results .career-card").first
     first_text = first.inner_text().strip()
     if "APPLY BY" not in first_text.upper():
@@ -83,14 +84,15 @@ def people_opens_on_a_populated_example(pw):
         ("rules", ""),
         ("meetings", ""),
     ):
+        expected_path = f"/browse/{ {'money':'contracts','people':'staffing','land':'zoning'}.get(tab, tab) }/"
         if tab == "property":
             page.goto(f"{BASE}browse/property/", timeout=30000)
             page.wait_for_load_state("load")
         else:
             page.click(f'.tabbtn[data-tab="{tab}"]')
+            wait_for_url(page, f"**{expected_path}", label=f"{tab} document route")
         page.wait_for_timeout(100)
         route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
-        expected_path = f"/browse/{ {'money':'contracts','people':'staffing','land':'zoning'}.get(tab, tab) }/"
         if route != {"pathname": expected_path, "search": "", "hash": ""}:
             failures.append(f"{tab} tab did not mint its clean document route — got: {route!r}")
         actual_focus = page.evaluate("document.activeElement?.id")
