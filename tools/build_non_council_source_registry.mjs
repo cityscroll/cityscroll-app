@@ -279,8 +279,9 @@ const KNOWN_SOURCES = {
     archive_depth: { status: "observed_page_year_span", earliest_year: 2002, latest_year: 2026 },
   },
   "manhattan-cb-06": {
-    source_url: "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
-    format: "airtable", update_cadence: "unknown", full_board_votes: "unknown", adapter: "airtable_v1",
+    // Airtable is an explicit minutes role in the board source inventory, but it
+    // is browser-required and must not enter the host-side HTML/PDF collect set.
+    format: "unknown", update_cadence: "unknown", full_board_votes: "unknown",
     archive_depth: { status: "unknown", earliest_year: null, latest_year: null },
   },
   "queens-cb-03": {

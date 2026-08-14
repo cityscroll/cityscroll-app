@@ -6,7 +6,7 @@
     "community_boards": {
       "inventoried": 59,
       "total": 59,
-      "collectable_sources": 18
+      "collectable_sources": 17
     },
     "borough_presidents": {
       "inventoried": 5,
@@ -2760,8 +2760,8 @@
       "name": "Manhattan Community Board 6",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
       "homepage_url": "https://cbsix.org/",
-      "source_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
-      "format": "airtable",
+      "source_url": null,
+      "format": "unknown",
       "update_cadence": "unknown",
       "archive_depth": {
         "status": "unknown",
@@ -2769,8 +2769,8 @@
         "latest_year": null
       },
       "full_board_votes": "unknown",
-      "status": "collect",
-      "adapter": "airtable_v1",
+      "status": "inventory_only",
+      "adapter": null,
       "observed_on": "2026-08-11",
       "source_roles": {
         "upcoming_meetings": {

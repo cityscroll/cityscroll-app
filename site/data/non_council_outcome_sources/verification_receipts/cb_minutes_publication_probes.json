@@ -1580,13 +1580,13 @@
     },
     {
       "body_id": "manhattan-cb-06",
-      "url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
+      "url": null,
       "fetched_at": null,
       "http_status": null,
       "content_sha256": null,
       "observations": [],
       "status": "empty",
-      "reason": "browser_required_source_not_probed"
+      "reason": "no_known_url"
     },
     {
       "body_id": "manhattan-cb-07",
