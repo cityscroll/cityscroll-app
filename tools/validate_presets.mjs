@@ -461,6 +461,13 @@ if (CHECK) {
     scenarios,
     suggestions,
   };
-  await writeFile(RECEIPT, `${JSON.stringify(receipt, null, 2)}\n`);
+  // Keep --write idempotent when the live result is unchanged. This lets the scheduled
+  // refresh run without creating a commit solely because generatedAt moved.
+  const receiptToWrite =
+    previous &&
+    JSON.stringify({ ...receipt, generatedAt: previous.generatedAt }) === JSON.stringify(previous)
+      ? previous
+      : receipt;
+  await writeFile(RECEIPT, `${JSON.stringify(receiptToWrite, null, 2)}\n`);
   console.log(`wrote ${RECEIPT.slice(ROOT.length + 1)} and refreshed ${Object.keys(scenarios).length} shortcuts`);
 }
