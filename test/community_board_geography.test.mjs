@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 
 import {
   buildCommunityBoardGeography,
+  buildPlaceLocalConstellation,
   COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES,
   communityDistrictIdForBoard,
   polygonsIntersect,
@@ -66,6 +67,20 @@ test("overlay reproduces the 237-pair many-to-many census and rejects centroid s
   assert.ok(doc.public_edges.every((edge) => edge.boundary_vintage === "2026-05-26"));
   assert.ok(doc.public_edges.filter((edge) => edge.type === "intersects")
     .every((edge) => edge.intersection_method === "polygon_segment_crossing_or_containment"));
+});
+
+test("community-board place neighbors route through the scoped Near you view", () => {
+  const doc = buildCommunityBoardGeography({
+    sourceRegistry: registry,
+    boundaries,
+    observedAt: "2026-08-12T00:00:00.000Z",
+  });
+  const place = buildPlaceLocalConstellation(doc, "community-district:X01");
+  const board = place.nodes.find((node) => node.target_id === "community-board:bronx-cb-01");
+  assert.equal(
+    board?.href,
+    "/near-you/#map?level=community_district&parent=Bronx&id=X01&lens=meetings",
+  );
 });
 
 test("polygon overlay detects containment and boundary crossing without a centroid", () => {

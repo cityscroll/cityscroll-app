@@ -137,6 +137,7 @@
         },
         "borough": "Bronx",
         "district": 1,
+        "community_district_id": "X01",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
         "observed_on": "2026-08-11"
@@ -210,6 +211,7 @@
         },
         "borough": "Bronx",
         "district": 2,
+        "community_district_id": "X02",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
         "observed_on": "2026-08-11"
@@ -283,6 +285,7 @@
         },
         "borough": "Bronx",
         "district": 3,
+        "community_district_id": "X03",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
         "observed_on": "2026-08-11"
@@ -356,6 +359,7 @@
         },
         "borough": "Bronx",
         "district": 4,
+        "community_district_id": "X04",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
         "observed_on": "2026-08-11"
@@ -429,6 +433,7 @@
         },
         "borough": "Bronx",
         "district": 5,
+        "community_district_id": "X05",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
         "observed_on": "2026-08-11"
@@ -502,6 +507,7 @@
         },
         "borough": "Bronx",
         "district": 6,
+        "community_district_id": "X06",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
         "observed_on": "2026-08-11"
@@ -575,6 +581,7 @@
         },
         "borough": "Bronx",
         "district": 7,
+        "community_district_id": "X07",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -648,6 +655,7 @@
         },
         "borough": "Bronx",
         "district": 8,
+        "community_district_id": "X08",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -721,6 +729,7 @@
         },
         "borough": "Bronx",
         "district": 9,
+        "community_district_id": "X09",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -794,6 +803,7 @@
         },
         "borough": "Bronx",
         "district": 10,
+        "community_district_id": "X10",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -867,6 +877,7 @@
         },
         "borough": "Bronx",
         "district": 11,
+        "community_district_id": "X11",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -940,6 +951,7 @@
         },
         "borough": "Bronx",
         "district": 12,
+        "community_district_id": "X12",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
         "source_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
         "observed_on": "2026-08-11"
@@ -1013,6 +1025,7 @@
         },
         "borough": "Brooklyn",
         "district": 1,
+        "community_district_id": "K01",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1086,6 +1099,7 @@
         },
         "borough": "Brooklyn",
         "district": 2,
+        "community_district_id": "K02",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1159,6 +1173,7 @@
         },
         "borough": "Brooklyn",
         "district": 3,
+        "community_district_id": "K03",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1232,6 +1247,7 @@
         },
         "borough": "Brooklyn",
         "district": 4,
+        "community_district_id": "K04",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1305,6 +1321,7 @@
         },
         "borough": "Brooklyn",
         "district": 5,
+        "community_district_id": "K05",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1378,6 +1395,7 @@
         },
         "borough": "Brooklyn",
         "district": 6,
+        "community_district_id": "K06",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1451,6 +1469,7 @@
         },
         "borough": "Brooklyn",
         "district": 7,
+        "community_district_id": "K07",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1524,6 +1543,7 @@
         },
         "borough": "Brooklyn",
         "district": 8,
+        "community_district_id": "K08",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": "https://www.brooklyncb8.org/downloads/minutes/",
         "observed_on": "2026-08-11"
@@ -1597,6 +1617,7 @@
         },
         "borough": "Brooklyn",
         "district": 9,
+        "community_district_id": "K09",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1670,6 +1691,7 @@
         },
         "borough": "Brooklyn",
         "district": 10,
+        "community_district_id": "K10",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1743,6 +1765,7 @@
         },
         "borough": "Brooklyn",
         "district": 11,
+        "community_district_id": "K11",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": "https://www.brooklyncb11.org/minutes/",
         "observed_on": "2026-08-11"
@@ -1816,6 +1839,7 @@
         },
         "borough": "Brooklyn",
         "district": 12,
+        "community_district_id": "K12",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -1889,6 +1913,7 @@
         },
         "borough": "Brooklyn",
         "district": 13,
+        "community_district_id": "K13",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
         "observed_on": "2026-08-11"
@@ -1962,6 +1987,7 @@
         },
         "borough": "Brooklyn",
         "district": 14,
+        "community_district_id": "K14",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
         "observed_on": "2026-08-11"
@@ -2035,6 +2061,7 @@
         },
         "borough": "Brooklyn",
         "district": 15,
+        "community_district_id": "K15",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2108,6 +2135,7 @@
         },
         "borough": "Brooklyn",
         "district": 16,
+        "community_district_id": "K16",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2181,6 +2209,7 @@
         },
         "borough": "Brooklyn",
         "district": 17,
+        "community_district_id": "K17",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2254,6 +2283,7 @@
         },
         "borough": "Brooklyn",
         "district": 18,
+        "community_district_id": "K18",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2327,6 +2357,7 @@
         },
         "borough": "Manhattan",
         "district": 1,
+        "community_district_id": "M01",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2400,6 +2431,7 @@
         },
         "borough": "Manhattan",
         "district": 2,
+        "community_district_id": "M02",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
         "observed_on": "2026-08-11"
@@ -2473,6 +2505,7 @@
         },
         "borough": "Manhattan",
         "district": 3,
+        "community_district_id": "M03",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
         "observed_on": "2026-08-11"
@@ -2546,6 +2579,7 @@
         },
         "borough": "Manhattan",
         "district": 4,
+        "community_district_id": "M04",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
         "observed_on": "2026-08-11"
@@ -2619,6 +2653,7 @@
         },
         "borough": "Manhattan",
         "district": 5,
+        "community_district_id": "M05",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2692,6 +2727,7 @@
         },
         "borough": "Manhattan",
         "district": 6,
+        "community_district_id": "M06",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2765,6 +2801,7 @@
         },
         "borough": "Manhattan",
         "district": 7,
+        "community_district_id": "M07",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2838,6 +2875,7 @@
         },
         "borough": "Manhattan",
         "district": 8,
+        "community_district_id": "M08",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2911,6 +2949,7 @@
         },
         "borough": "Manhattan",
         "district": 9,
+        "community_district_id": "M09",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -2984,6 +3023,7 @@
         },
         "borough": "Manhattan",
         "district": 10,
+        "community_district_id": "M10",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3057,6 +3097,7 @@
         },
         "borough": "Manhattan",
         "district": 11,
+        "community_district_id": "M11",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3130,6 +3171,7 @@
         },
         "borough": "Manhattan",
         "district": 12,
+        "community_district_id": "M12",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3203,6 +3245,7 @@
         },
         "borough": "Queens",
         "district": 1,
+        "community_district_id": "Q01",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3276,6 +3319,7 @@
         },
         "borough": "Queens",
         "district": 2,
+        "community_district_id": "Q02",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3349,6 +3393,7 @@
         },
         "borough": "Queens",
         "district": 3,
+        "community_district_id": "Q03",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
         "observed_on": "2026-08-11"
@@ -3422,6 +3467,7 @@
         },
         "borough": "Queens",
         "district": 4,
+        "community_district_id": "Q04",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3495,6 +3541,7 @@
         },
         "borough": "Queens",
         "district": 5,
+        "community_district_id": "Q05",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3568,6 +3615,7 @@
         },
         "borough": "Queens",
         "district": 6,
+        "community_district_id": "Q06",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3641,6 +3689,7 @@
         },
         "borough": "Queens",
         "district": 7,
+        "community_district_id": "Q07",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3714,6 +3763,7 @@
         },
         "borough": "Queens",
         "district": 8,
+        "community_district_id": "Q08",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
         "observed_on": "2026-08-11"
@@ -3787,6 +3837,7 @@
         },
         "borough": "Queens",
         "district": 9,
+        "community_district_id": "Q09",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3860,6 +3911,7 @@
         },
         "borough": "Queens",
         "district": 10,
+        "community_district_id": "Q10",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -3933,6 +3985,7 @@
         },
         "borough": "Queens",
         "district": 11,
+        "community_district_id": "Q11",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -4006,6 +4059,7 @@
         },
         "borough": "Queens",
         "district": 12,
+        "community_district_id": "Q12",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -4079,6 +4133,7 @@
         },
         "borough": "Queens",
         "district": 13,
+        "community_district_id": "Q13",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -4152,6 +4207,7 @@
         },
         "borough": "Queens",
         "district": 14,
+        "community_district_id": "Q14",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -4225,6 +4281,7 @@
         },
         "borough": "Staten Island",
         "district": 1,
+        "community_district_id": "R01",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -4298,6 +4355,7 @@
         },
         "borough": "Staten Island",
         "district": 2,
+        "community_district_id": "R02",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
         "source_url": null,
         "observed_on": "2026-08-11"
@@ -4371,6 +4429,7 @@
         },
         "borough": "Staten Island",
         "district": 3,
+        "community_district_id": "R03",
         "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
         "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
         "observed_on": "2026-08-11"
@@ -24548,6 +24607,7 @@
           },
           "borough": "Bronx",
           "district": 1,
+          "community_district_id": "X01",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
           "observed_on": "2026-08-11"
@@ -24621,6 +24681,7 @@
           },
           "borough": "Bronx",
           "district": 2,
+          "community_district_id": "X02",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://www.nyc.gov/site/bronxcb2/meetings/minutes.page",
           "observed_on": "2026-08-11"
@@ -24694,6 +24755,7 @@
           },
           "borough": "Bronx",
           "district": 3,
+          "community_district_id": "X03",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://www.nyc.gov/site/bronxcb3/minutes/board-meeting-minutes.page",
           "observed_on": "2026-08-11"
@@ -24767,6 +24829,7 @@
           },
           "borough": "Bronx",
           "district": 4,
+          "community_district_id": "X04",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://www.nyc.gov/site/bronxcb4/meetings/board-meeting-minutes.page",
           "observed_on": "2026-08-11"
@@ -24840,6 +24903,7 @@
           },
           "borough": "Bronx",
           "district": 5,
+          "community_district_id": "X05",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://www.nyc.gov/site/bronxcb5/minutes/general-board-meeting-minutes.page",
           "observed_on": "2026-08-11"
@@ -24913,6 +24977,7 @@
           },
           "borough": "Bronx",
           "district": 6,
+          "community_district_id": "X06",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
           "observed_on": "2026-08-11"
@@ -24986,6 +25051,7 @@
           },
           "borough": "Bronx",
           "district": 7,
+          "community_district_id": "X07",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25059,6 +25125,7 @@
           },
           "borough": "Bronx",
           "district": 8,
+          "community_district_id": "X08",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25132,6 +25199,7 @@
           },
           "borough": "Bronx",
           "district": 9,
+          "community_district_id": "X09",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25205,6 +25273,7 @@
           },
           "borough": "Bronx",
           "district": 10,
+          "community_district_id": "X10",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25278,6 +25347,7 @@
           },
           "borough": "Bronx",
           "district": 11,
+          "community_district_id": "X11",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25351,6 +25421,7 @@
           },
           "borough": "Bronx",
           "district": 12,
+          "community_district_id": "X12",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
           "source_url": "https://www.nyc.gov/site/bronxcb12/minutes/minutes.page",
           "observed_on": "2026-08-11"
@@ -25424,6 +25495,7 @@
           },
           "borough": "Brooklyn",
           "district": 1,
+          "community_district_id": "K01",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25497,6 +25569,7 @@
           },
           "borough": "Brooklyn",
           "district": 2,
+          "community_district_id": "K02",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25570,6 +25643,7 @@
           },
           "borough": "Brooklyn",
           "district": 3,
+          "community_district_id": "K03",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25643,6 +25717,7 @@
           },
           "borough": "Brooklyn",
           "district": 4,
+          "community_district_id": "K04",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25716,6 +25791,7 @@
           },
           "borough": "Brooklyn",
           "district": 5,
+          "community_district_id": "K05",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25789,6 +25865,7 @@
           },
           "borough": "Brooklyn",
           "district": 6,
+          "community_district_id": "K06",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25862,6 +25939,7 @@
           },
           "borough": "Brooklyn",
           "district": 7,
+          "community_district_id": "K07",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -25935,6 +26013,7 @@
           },
           "borough": "Brooklyn",
           "district": 8,
+          "community_district_id": "K08",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": "https://www.brooklyncb8.org/downloads/minutes/",
           "observed_on": "2026-08-11"
@@ -26008,6 +26087,7 @@
           },
           "borough": "Brooklyn",
           "district": 9,
+          "community_district_id": "K09",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26081,6 +26161,7 @@
           },
           "borough": "Brooklyn",
           "district": 10,
+          "community_district_id": "K10",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26154,6 +26235,7 @@
           },
           "borough": "Brooklyn",
           "district": 11,
+          "community_district_id": "K11",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": "https://www.brooklyncb11.org/minutes/",
           "observed_on": "2026-08-11"
@@ -26227,6 +26309,7 @@
           },
           "borough": "Brooklyn",
           "district": 12,
+          "community_district_id": "K12",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26300,6 +26383,7 @@
           },
           "borough": "Brooklyn",
           "district": 13,
+          "community_district_id": "K13",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": "https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page",
           "observed_on": "2026-08-11"
@@ -26373,6 +26457,7 @@
           },
           "borough": "Brooklyn",
           "district": 14,
+          "community_district_id": "K14",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
           "observed_on": "2026-08-11"
@@ -26446,6 +26531,7 @@
           },
           "borough": "Brooklyn",
           "district": 15,
+          "community_district_id": "K15",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26519,6 +26605,7 @@
           },
           "borough": "Brooklyn",
           "district": 16,
+          "community_district_id": "K16",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26592,6 +26679,7 @@
           },
           "borough": "Brooklyn",
           "district": 17,
+          "community_district_id": "K17",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26665,6 +26753,7 @@
           },
           "borough": "Brooklyn",
           "district": 18,
+          "community_district_id": "K18",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26738,6 +26827,7 @@
           },
           "borough": "Manhattan",
           "district": 1,
+          "community_district_id": "M01",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -26811,6 +26901,7 @@
           },
           "borough": "Manhattan",
           "district": 2,
+          "community_district_id": "M02",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/minutes/",
           "observed_on": "2026-08-11"
@@ -26884,6 +26975,7 @@
           },
           "borough": "Manhattan",
           "district": 3,
+          "community_district_id": "M03",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
           "observed_on": "2026-08-11"
@@ -26957,6 +27049,7 @@
           },
           "borough": "Manhattan",
           "district": 4,
+          "community_district_id": "M04",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
           "observed_on": "2026-08-11"
@@ -27030,6 +27123,7 @@
           },
           "borough": "Manhattan",
           "district": 5,
+          "community_district_id": "M05",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27103,6 +27197,7 @@
           },
           "borough": "Manhattan",
           "district": 6,
+          "community_district_id": "M06",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27176,6 +27271,7 @@
           },
           "borough": "Manhattan",
           "district": 7,
+          "community_district_id": "M07",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27249,6 +27345,7 @@
           },
           "borough": "Manhattan",
           "district": 8,
+          "community_district_id": "M08",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27322,6 +27419,7 @@
           },
           "borough": "Manhattan",
           "district": 9,
+          "community_district_id": "M09",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27395,6 +27493,7 @@
           },
           "borough": "Manhattan",
           "district": 10,
+          "community_district_id": "M10",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27468,6 +27567,7 @@
           },
           "borough": "Manhattan",
           "district": 11,
+          "community_district_id": "M11",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27541,6 +27641,7 @@
           },
           "borough": "Manhattan",
           "district": 12,
+          "community_district_id": "M12",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27614,6 +27715,7 @@
           },
           "borough": "Queens",
           "district": 1,
+          "community_district_id": "Q01",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27687,6 +27789,7 @@
           },
           "borough": "Queens",
           "district": 2,
+          "community_district_id": "Q02",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27760,6 +27863,7 @@
           },
           "borough": "Queens",
           "district": 3,
+          "community_district_id": "Q03",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
           "observed_on": "2026-08-11"
@@ -27833,6 +27937,7 @@
           },
           "borough": "Queens",
           "district": 4,
+          "community_district_id": "Q04",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27906,6 +28011,7 @@
           },
           "borough": "Queens",
           "district": 5,
+          "community_district_id": "Q05",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -27979,6 +28085,7 @@
           },
           "borough": "Queens",
           "district": 6,
+          "community_district_id": "Q06",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28052,6 +28159,7 @@
           },
           "borough": "Queens",
           "district": 7,
+          "community_district_id": "Q07",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28125,6 +28233,7 @@
           },
           "borough": "Queens",
           "district": 8,
+          "community_district_id": "Q08",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
           "observed_on": "2026-08-11"
@@ -28198,6 +28307,7 @@
           },
           "borough": "Queens",
           "district": 9,
+          "community_district_id": "Q09",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28271,6 +28381,7 @@
           },
           "borough": "Queens",
           "district": 10,
+          "community_district_id": "Q10",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28344,6 +28455,7 @@
           },
           "borough": "Queens",
           "district": 11,
+          "community_district_id": "Q11",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28417,6 +28529,7 @@
           },
           "borough": "Queens",
           "district": 12,
+          "community_district_id": "Q12",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28490,6 +28603,7 @@
           },
           "borough": "Queens",
           "district": 13,
+          "community_district_id": "Q13",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28563,6 +28677,7 @@
           },
           "borough": "Queens",
           "district": 14,
+          "community_district_id": "Q14",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28636,6 +28751,7 @@
           },
           "borough": "Staten Island",
           "district": 1,
+          "community_district_id": "R01",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28709,6 +28825,7 @@
           },
           "borough": "Staten Island",
           "district": 2,
+          "community_district_id": "R02",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
           "source_url": null,
           "observed_on": "2026-08-11"
@@ -28782,6 +28899,7 @@
           },
           "borough": "Staten Island",
           "district": 3,
+          "community_district_id": "R03",
           "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
           "source_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
           "observed_on": "2026-08-11"
