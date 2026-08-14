@@ -178,6 +178,15 @@ async function loadSection(key){
 
 let hearingAll=null;
 const hearingPastCache=new Map();
+let communityBoardMeetingsPromise=null;
+function loadCommunityBoardMeetings(){
+  if(communityBoardMeetingsPromise) return communityBoardMeetingsPromise;
+  communityBoardMeetingsPromise=fetch("/data/community_board_meeting_index.json",{credentials:"omit"})
+    .then(response=>response.ok?response.json():null)
+    .then(index=>(Array.isArray(index?.rows)?index.rows:[]).map(normalizeHearingRow))
+    .catch(()=>[]);
+  return communityBoardMeetingsPromise;
+}
 let hearingRenderSeq=0;
 let hearingWideningDismissed="";
 let meetingsProcessSel="all";
@@ -1186,7 +1195,9 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const scope=entry.place_scope||(record.affected_area&&record.affected_area.scope)||"unlocated";
   const sectionKey=record.source_section==="Agency Rules"?"rules_hearing_badge":"public_hearing_badge";
   const past=!!record.event_date&&String(record.event_date).slice(0,10)<todayISO().slice(0,10);
-  const noticeHref=`#notice/${encodeURIComponent(record.request_id)}`;
+  const sourceUrl=hearingSafeURL(record.source_url);
+  const nativeSource=record.source_system==="community_board";
+  const noticeHref=nativeSource&&sourceUrl ? sourceUrl : `#notice/${encodeURIComponent(record.request_id)}`;
   const processStage=entry.process_stage||null;
   const processLabel=meetingStageLabel(processStage);
   const agency=entry.agency||record.agency||null;
@@ -1195,7 +1206,6 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ? `<span class="tag asset">${escUiHtml(t("meetings_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
   const origin=record.meeting_origin||"unknown";
-  const sourceUrl=hearingSafeURL(record.source_url);
   const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${sourceUrl
     ? `<a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${escUiHtml(meetingOriginLabel(origin))}${extSR()}</a>`
     : escUiHtml(meetingOriginLabel(origin))}</span>`;
@@ -1234,7 +1244,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     event_date:record.event_date||null,
     title:entry.title||record.decides||record.title||null,
     notice_text:record.description||"",
-    official_notice_url:REQ_URL(record.request_id),
+    official_notice_url:nativeSource&&sourceUrl ? sourceUrl : REQ_URL(record.request_id),
     agency_name:agency,
     venue,
     participation,
@@ -1463,6 +1473,7 @@ async function loadHearings(){
       });
       records=rows.map(normalizeHearingRow);
     }
+    records=records.concat(await loadCommunityBoardMeetings());
     if(stale()) return;
     hearingAll=records;
     renderMeetingsAgencyScope(hearingAll);

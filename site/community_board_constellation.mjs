@@ -117,11 +117,11 @@ function sourceRecordRows(records = []) {
     label: record.record_kind === "video"
       ? "Meeting video"
       : record.record_kind === "event"
-        ? (record.category || "Board meeting")
+        ? (SOURCE_ROLE_LABELS[record.category] || "Board meeting")
         : "Minutes and records",
     state: record.status === "official" || record.join?.matched === true
       ? "official"
-      : record.observed_receipt?.status === "ok"
+      : record.observed_receipt?.status === "ok" || record.source_provenance?.observed_receipt?.status === "ok"
         ? "observed"
         : "unknown",
     href: record.record_url || record.source_url || null,
@@ -172,7 +172,7 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, so
     };
   }
   if (spec.id === "meetings") {
-    const joined = sourceRecordRowsForBoard.filter((row) => row.state === "official");
+    const joined = sourceRecordRowsForBoard.filter((row) => ["official", "observed"].includes(row.state));
     return {
       ...spec,
       status: joined.length ? "matched" : "unknown",

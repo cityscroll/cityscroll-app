@@ -1139,7 +1139,7 @@
       "display_name": "Bronx Community Board 6",
       "path": "/community-boards/bronx-cb-06/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -1239,8 +1239,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 12,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -4981,7 +4981,7 @@
       "display_name": "Brooklyn Community Board 11",
       "path": "/community-boards/brooklyn-cb-11/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -5081,8 +5081,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 1,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -5659,7 +5659,7 @@
       "display_name": "Brooklyn Community Board 14",
       "path": "/community-boards/brooklyn-cb-14/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -5759,8 +5759,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 1,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -6337,7 +6337,7 @@
       "display_name": "Brooklyn Community Board 17",
       "path": "/community-boards/brooklyn-cb-17/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -6437,8 +6437,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 1,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -6789,7 +6789,7 @@
       "display_name": "Manhattan Community Board 1",
       "path": "/community-boards/manhattan-cb-01/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -6889,8 +6889,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 5,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -7015,7 +7015,7 @@
       "display_name": "Manhattan Community Board 2",
       "path": "/community-boards/manhattan-cb-02/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -7115,8 +7115,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 10,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -7467,7 +7467,7 @@
       "display_name": "Manhattan Community Board 4",
       "path": "/community-boards/manhattan-cb-04/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -7567,8 +7567,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 3,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -7976,7 +7976,7 @@
           "target_kind": "source",
           "target_id": null,
           "target_name": "Official source inventory",
-          "count": 1,
+          "count": 2,
           "state": "matched",
           "href": "/community-boards/#board-manhattan-cb-06",
           "canonical_href": "/community-boards/#board-manhattan-cb-06",
@@ -8823,7 +8823,7 @@
       "display_name": "Manhattan Community Board 10",
       "path": "/community-boards/manhattan-cb-10/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -8923,8 +8923,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 19,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -9275,7 +9275,7 @@
       "display_name": "Manhattan Community Board 12",
       "path": "/community-boards/manhattan-cb-12/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
         "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
@@ -9375,8 +9375,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
+          "count": 3,
+          "state": "matched",
           "href": null,
           "canonical_href": null,
           "scope": {

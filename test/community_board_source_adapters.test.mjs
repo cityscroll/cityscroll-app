@@ -74,6 +74,23 @@ test("HTML/PDF adapter keeps explicit source and publisher fields", () => {
   });
 });
 
+test("HTML adapter accepts explicit Schema.org Event records without guessing dates", () => {
+  const records = parseHtmlPdfSource(`
+    <script type="application/ld+json">[{"@type":"Event","name":"General Board Meeting &#8211; September","url":"https://board.example/event/1","startDate":"2026-09-10T18:00:00-04:00"},{"@type":"Thing","name":"not an event"}]</script>
+  `, {
+    adapter: "html_pdf_v1",
+    role: "upcoming_meetings",
+    board_id: "bronx-cb-06",
+    url: "https://board.example/calendar",
+  }, { receipt });
+  assert.equal(records.length, 1);
+  assert.equal(records[0].record_kind, "event");
+  assert.equal(records[0].record_id, "https://board.example/event/1");
+  assert.equal(records[0].date, "2026-09-10");
+  assert.equal(records[0].title, "General Board Meeting – September");
+  assert.equal(records[0].body_evidence.basis, "explicit_source_descriptor");
+});
+
 test("Google Calendar, Airtable, and video adapters use native record IDs", () => {
   const calendar = parseGoogleCalendarSource(`BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:event-1\nDTSTART;VALUE=DATE:20260820\nSUMMARY:Full board meeting\nX-BOARD-ID:bronx-cb-01\nEND:VEVENT\nEND:VCALENDAR`, {
     adapter: "google_calendar_v1", board_id: "bronx-cb-01", url: "https://calendar.example/board.ics",
