@@ -101,4 +101,7 @@ test("indexed board events replace the unknown meetings state without becoming o
   const html = renderCommunityBoardConstellationDocument(view);
   assert.doesNotMatch(html, /Meetings and hearings \(Unknown \/ not indexed\)/);
   assert.match(html, /Source observed/);
+  const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(visible, /upcoming_meetings/);
+  assert.match(visible, /Upcoming meetings/);
 });

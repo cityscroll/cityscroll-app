@@ -117,7 +117,7 @@ function sourceRecordRows(records = []) {
     label: record.record_kind === "video"
       ? "Meeting video"
       : record.record_kind === "event"
-        ? (record.category || "Board meeting")
+        ? (SOURCE_ROLE_LABELS[record.category] || "Board meeting")
         : "Minutes and records",
     state: record.status === "official" || record.join?.matched === true
       ? "official"
