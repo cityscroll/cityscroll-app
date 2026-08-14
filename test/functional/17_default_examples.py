@@ -11,7 +11,7 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from ci_waits import click_and_wait_for_route, wait_for_function, wait_for_locator  # noqa: E402
+from ci_waits import click_and_wait_for_route, wait_for_locator, wait_for_route_module  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -29,24 +29,7 @@ def click_tab_and_wait_for_route(page, tab, expected_path):
     focus state.
     """
     selector = f'.tabbtn[data-tab="{tab}"]'
-    page.evaluate(
-        """tab => {
-            const modules = globalThis.CrolRouteModules;
-            if (modules?.ensure) modules.ensure(tab);
-        }""",
-        tab,
-    )
-    wait_for_function(
-        page,
-        """tab => {
-            const modules = globalThis.CrolRouteModules;
-            return !modules || modules.isReady(tab);
-        }""",
-        arg=tab,
-        timeout=CI_WAIT_TIMEOUT_MS,
-        attempts=1,
-        label=f"{tab} route module readiness",
-    )
+    wait_for_route_module(page, tab)
     click_and_wait_for_route(
         page,
         selector,
