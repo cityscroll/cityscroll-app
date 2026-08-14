@@ -96,3 +96,34 @@ def click_and_wait_for_url(
     """Pair a click with its navigation event so the event cannot be missed."""
     with page.expect_navigation(url=url, wait_until=wait_until, timeout=timeout):
         page.click(selector, timeout=timeout)
+
+
+def click_and_wait_for_route(
+    page: Page,
+    selector: str,
+    expected_path: str,
+    *,
+    tab: str,
+    timeout: int = DEFAULT_WAIT_TIMEOUT_MS,
+) -> None:
+    """Click an SPA tab and wait for its same-document route to be ready.
+
+    A history.pushState route has no navigation commit to observe. The click is
+    synchronous from Playwright's perspective, so observe the resulting URL and
+    active pane after it instead of waiting for a document navigation event.
+    """
+    page.click(selector, timeout=timeout)
+    wait_for_function(
+        page,
+        """({expectedPath, tab}) => {
+            const pane = document.querySelector(`#tab-${tab}.tabpane.active`);
+            return location.pathname === expectedPath
+                && location.search === ""
+                && location.hash === ""
+                && pane?.querySelector(".lens-entry-heading") != null;
+        }""",
+        arg={"expectedPath": expected_path, "tab": tab},
+        timeout=timeout,
+        attempts=1,
+        label=f"{tab} same-document route",
+    )

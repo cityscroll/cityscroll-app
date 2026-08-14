@@ -11,9 +11,8 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from ci_waits import click_and_wait_for_url, wait_for_function, wait_for_locator  # noqa: E402
+from ci_waits import click_and_wait_for_route, wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
 BASE = os.environ.get("CROL_BASE", "")
@@ -21,13 +20,13 @@ CI_WAIT_TIMEOUT_MS = 60_000
 
 
 def click_tab_and_wait_for_route(page, tab, expected_path):
-    """Retry a tab click when CI misses a document navigation event.
+    """Wait for a tab's same-document route after its module is ready.
 
     Rules and Meetings are route-module-backed tabs. Start their module load and wait
     for readiness before clicking so the click cannot be consumed while ``showTab``
-    is still deferring the transition. Pair the click with its navigation event so a
-    fast commit cannot race a post-click URL observer; the assertions below still
-    verify the resulting document and focus state.
+    is still deferring the transition. The route is then observed through its URL and
+    active-pane state; the assertions below still verify the resulting document and
+    focus state.
     """
     selector = f'.tabbtn[data-tab="{tab}"]'
     page.evaluate(
@@ -48,25 +47,13 @@ def click_tab_and_wait_for_route(page, tab, expected_path):
         attempts=1,
         label=f"{tab} route module readiness",
     )
-    for attempt in range(2):
-        try:
-            click_and_wait_for_url(
-                page,
-                selector,
-                f"**{expected_path}",
-                wait_until="commit",
-                timeout=CI_WAIT_TIMEOUT_MS,
-            )
-            return
-        except PlaywrightTimeoutError:
-            if attempt == 1:
-                raise
-            print(
-                f"TRANSIENT route timeout for {tab} document route; retrying click (attempt 2/2)",
-                flush=True,
-            )
-            page.goto(BASE, timeout=30_000)
-            page.wait_for_load_state("load")
+    click_and_wait_for_route(
+        page,
+        selector,
+        expected_path,
+        tab=tab,
+        timeout=CI_WAIT_TIMEOUT_MS,
+    )
 
 
 def step(tag, name, detail=""):
