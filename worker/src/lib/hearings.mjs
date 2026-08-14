@@ -15,7 +15,11 @@ import {
 } from "../../../site/location_extract.mjs";
 import { placeFromDerivations } from "../../../site/location_derivation.mjs";
 import { noticeDisplayTitle } from "../../../site/display_title.mjs";
-import { inferHearingLogistics } from "../../../site/hearing_logistics.mjs";
+import {
+  inferHearingLogistics,
+  officialCityRecordAttachmentUrl,
+  recognizedMeetingUrl,
+} from "../../../site/hearing_logistics.mjs";
 import {
   meetingSourceUrl,
   normalizeMeetingOrigin,
@@ -281,6 +285,13 @@ function participationLabel(url) {
   return "Participation link";
 }
 
+function participationUrl(url, sourceUrl) {
+  const normalized = normalizeParticipationUrl(url);
+  if (!normalized) return null;
+  if (officialCityRecordAttachmentUrl(normalized, sourceUrl)) return normalized;
+  return recognizedMeetingUrl(normalized);
+}
+
 function meetingAccessFromParts(venue, participation, body = "", sourceLinks = []) {
   const inferred = inferHearingLogistics({
     body,
@@ -316,7 +327,7 @@ function participationFromRow(row, body, sourceUrl) {
   const cleaned = [
     ...(body.match(URL_RE) || []),
     ...(Array.isArray(row.source_links) ? row.source_links : []),
-  ].map(normalizeParticipationUrl).filter(Boolean);
+  ].map((url) => participationUrl(url, sourceUrl)).filter(Boolean);
   const byKey = new Map();
   for (const url of cleaned) {
     const key = participationUrlKey(url);

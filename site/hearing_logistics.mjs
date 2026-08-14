@@ -4,6 +4,8 @@
 
 const URL_RE = /https?:\/\/[^\s<>"')]+/gi;
 const ONLINE_HOST_RE = /(?:zoom(?:gov)?\.com|zoom\.us|teams\.microsoft\.com|webex\.com|meet\.google\.com)\b/i;
+const CITY_RECORD_HOST = "a856-cityrecord.nyc.gov";
+const CITY_RECORD_REQUEST_RE = /\/RequestDetail\/([^/?#]+)/i;
 const ONLINE_LANGUAGE_RE = /\b(?:online|virtual|remote|remotely|via\s+(?:zoom|teams|webex)|video[- ]conference|conference\s+call)\b/i;
 const JOIN_LANGUAGE_RE = /\b(?:join|register|registration|enter\s+to\s+register|participate|connect)\b[^.\n]{0,120}\b(?:meeting|hearing|zoom|teams|webex|online|virtual)\b/i;
 const ADDRESS_RE = /\b\d{1,5}(?:-\d{1,5})?\s+[A-Z0-9][A-Z0-9.'’ -]{1,70}\b(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway)\b/i;
@@ -28,9 +30,99 @@ function normalizeUrl(value) {
   }
 }
 
+function hasClass(tag, className) {
+  const classes = /\bclass\s*=\s*["']([^"']*)["']/i.exec(tag)?.[1] || "";
+  return new RegExp(`(?:^|\\s)${className.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\s|$)`).test(classes);
+}
+
+function divElementByClass(html, className, from = 0) {
+  const opening = /<div\b[^>]*>/gi;
+  opening.lastIndex = from;
+  let match;
+  while ((match = opening.exec(html))) {
+    if (!hasClass(match[0], className)) continue;
+    const tag = /<\/?div\b[^>]*>/gi;
+    tag.lastIndex = opening.lastIndex;
+    let depth = 1;
+    let nested;
+    while ((nested = tag.exec(html))) {
+      if (/^<\//.test(nested[0])) depth -= 1;
+      else if (!/\/\s*>$/.test(nested[0])) depth += 1;
+      if (depth === 0) {
+        return {
+          html: html.slice(opening.lastIndex, nested.index),
+          end: tag.lastIndex,
+        };
+      }
+    }
+    return null;
+  }
+  return null;
+}
+
+function divElementByClassWithText(html, className, textPattern) {
+  let from = 0;
+  while (from < html.length) {
+    const element = divElementByClass(html, className, from);
+    if (!element) return null;
+    if (textPattern.test(element.html)) return element;
+    from = element.end;
+  }
+  return null;
+}
+
+function textFromHtml(html) {
+  return String(html || "")
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Validate and resolve a City Record attachment URL. The request and document
+ * identifiers are required so a generic GetFile route cannot become a link.
+ */
+export function officialCityRecordAttachmentUrl(value, sourceUrl = null) {
+  const raw = String(value || "").replace(/&amp;/gi, "&").trim();
+  let url;
+  try { url = new URL(raw, sourceUrl || undefined); } catch { return null; }
+  if (url.protocol !== "https:" || url.hostname !== CITY_RECORD_HOST || !/^\/Search\/GetFile$/i.test(url.pathname)) return null;
+  const requestId = url.searchParams.get("requestId") || url.searchParams.get("RequestID");
+  const documentId = url.searchParams.get("documentId") || url.searchParams.get("DocumentID");
+  if (!requestId || !documentId) return null;
+  const sourceRequestId = sourceUrl?.match(CITY_RECORD_REQUEST_RE)?.[1];
+  if (sourceRequestId && decodeURIComponent(requestId) !== decodeURIComponent(sourceRequestId)) return null;
+  return url.toString();
+}
+
+export function recognizedMeetingUrl(value) {
+  const normalized = normalizeUrl(value);
+  if (!normalized) return null;
+  const url = new URL(normalized);
+  if (ONLINE_HOST_RE.test(url.hostname)) return url.toString();
+  if (/\/(?:zoom|webex|teams)\/(?:j|join|meeting|register)(?:[/?#]|$)/i.test(url.pathname)) return url.toString();
+  if (/nycida-board-meetings-public-hearings/i.test(url.href) || /edc\.nyc\/nycida(?:[/?#]|$)/i.test(url.href)) return url.toString();
+  return null;
+}
+
+function publishedMeetingUrl(value, sourceUrl = null) {
+  let resolved;
+  try { resolved = new URL(String(value || "").replace(/&amp;/gi, "&"), sourceUrl || undefined).toString(); } catch { return null; }
+  return recognizedMeetingUrl(resolved);
+}
+
 function onlineUrl(value) {
-  const url = normalizeUrl(value);
-  return url && ONLINE_HOST_RE.test(url) ? url : null;
+  return recognizedMeetingUrl(value);
 }
 
 function bodyUrls(body, sourceLinks = []) {
@@ -89,20 +181,16 @@ export function inferHearingLogistics({ body = "", sourceLinks = [], physicalLoc
   };
 }
 
-export function sourceSignalsFromHtml(html) {
+export function sourceSignalsFromHtml(html, sourceUrl = null) {
   const raw = String(html || "");
-  const sourceLinks = [...raw.matchAll(/\b(?:href|src)\s*=\s*["']([^"']+)["']/gi)]
-    .map((match) => match[1].replace(/&amp;/gi, "&"))
-    .map(normalizeUrl)
+  const notice = divElementByClass(raw, "page-body");
+  const body = textFromHtml(notice?.html || "");
+  const noticeLinks = [...(notice?.html || "").matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/gi)]
+    .map((match) => publishedMeetingUrl(match[1], sourceUrl))
     .filter(Boolean);
-  const body = raw
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
-    .replace(/<br\s*\/?>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/\s+/g, " ")
-    .trim();
-  return { body, sourceLinks: [...new Set(sourceLinks)] };
+  const attachmentSection = divElementByClassWithText(notice?.html || "", "portlet light", /\bAttachments\b/i);
+  const attachmentLinks = [...(attachmentSection?.html || "").matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/gi)]
+    .map((match) => officialCityRecordAttachmentUrl(match[1], sourceUrl))
+    .filter(Boolean);
+  return { body, sourceLinks: [...new Set([...noticeLinks, ...attachmentLinks])] };
 }
