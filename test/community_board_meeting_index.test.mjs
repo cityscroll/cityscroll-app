@@ -5,14 +5,20 @@ import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
 
 const index = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url), "utf8"));
 
-test("community board meeting index is a bounded receipt-backed slice", () => {
+test("community board meeting index reports receipt-backed coverage for every board role", () => {
   assert.equal(index.schema, "cityscroll.community_board_meeting_index.v1");
   assert.equal(index.coverage.boards_in_inventory, 59);
-  assert.equal(index.coverage.boards_indexed, 9);
+  assert.equal(index.coverage.source_roles_total, 118);
+  assert.equal(index.receipts.length, 118);
+  assert.equal(new Set(index.receipts.map((row) => row.board_id)).size, 59);
+  assert.ok(index.coverage.boards_indexed >= 1);
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.length >= 1);
   assert.equal(index.policy.no_title_or_date_inference, true);
   assert.equal(index.policy.unjoined_records_are_not_official, true);
+  assert.deepEqual(index.policy.source_role_states, [
+    "indexed", "checked-empty", "unsupported-format", "unavailable", "stale", "not-yet-checked",
+  ]);
 });
 
 test("every indexed event carries source provenance and remains unjoined", () => {
