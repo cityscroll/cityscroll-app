@@ -9,6 +9,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY_PATH = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
+const BOARD_INVENTORY_PATH = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const RECEIPT_PATH = join(
   ROOT,
   "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-11.json",
@@ -356,7 +357,20 @@ function sourceRows() {
 }
 
 function buildArtifacts() {
-  const sources = sourceRows();
+  const inventory = JSON.parse(readFileSync(BOARD_INVENTORY_PATH, "utf8"));
+  const inventoryById = new Map((inventory.boards || []).map((row) => [row.id, row]));
+  const sources = sourceRows().map((row) => {
+    if (row.body_type !== "community_board") return row;
+    const board = inventoryById.get(row.body_id);
+    if (!board) throw new Error(`board source inventory missing ${row.body_id}`);
+    return {
+      ...row,
+      source_roles: {
+        upcoming_meetings: { ...(board.upcoming || {}), source_type: "upcoming_meetings" },
+        minutes: { ...(board.minutes || {}), source_type: "minutes" },
+      },
+    };
+  });
   const collectCount = sources.filter((row) => row.status === "collect").length;
   const registry = {
     schema: "cityscroll.non_council_outcome_source_registry.v1",
@@ -370,6 +384,8 @@ function buildArtifacts() {
     },
     policy: {
       source_urls_are_explicit: true,
+      source_role_urls_are_explicit: true,
+      source_role_inventory: "source_roles.upcoming_meetings and source_roles.minutes",
       no_url_inference: true,
       unmatched_rows_remain_unmatched: true,
       inventory_only_is_not_absent_publication: true,
