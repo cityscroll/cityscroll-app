@@ -21,6 +21,9 @@ export function fallbackBlockFromSiteSource(source) {
 }
 
 export function canRefreshGeneratedFallback(baseSources, currentSources) {
+  // A shallow checkout may not have the base tree even after the caller attempted a fetch.
+  // Treat that as inherited drift; the live writer still regenerates the complete fallback.
+  if (Object.values(baseSources).some((source) => source == null)) return true;
   const baseSite = fallbackBlockFromSiteSource(baseSources[SITE_SUGGESTIONS]);
   const currentSite = fallbackBlockFromSiteSource(currentSources[SITE_SUGGESTIONS]);
   if (!baseSite || !currentSite || baseSite !== currentSite) return false;
@@ -28,7 +31,15 @@ export function canRefreshGeneratedFallback(baseSources, currentSources) {
 }
 
 function gitShow(base, path) {
-  return execFileSync("git", ["show", `${base}:${path}`], { cwd: ROOT, encoding: "utf8" });
+  try {
+    return execFileSync("git", ["show", `${base}:${path}`], {
+      cwd: ROOT,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+  } catch {
+    return null;
+  }
 }
 
 function currentSource(path) {

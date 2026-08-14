@@ -10,6 +10,7 @@ import {
 import { canRefreshGeneratedFallback } from "../tools/preset_fallback_ci.mjs";
 
 const validatorSource = readFileSync(new URL("../tools/validate_presets.mjs", import.meta.url), "utf8");
+const ciSource = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
 
 test("preset validation reads and rewrites the modular site suggestion source", () => {
   assert.match(validatorSource, /site[^\n]+app[^\n]+search-share\.mjs/);
@@ -49,6 +50,14 @@ test("CI refresh is allowed only for inherited fallback drift", () => {
     }),
     false,
   );
+  assert.equal(
+    canRefreshGeneratedFallback({ ...baseSources, "worker/src/lib/suggestions.mjs": null }, baseSources),
+    true,
+  );
+});
+
+test("CI fetches the PR base before comparing a shallow checkout", () => {
+  assert.match(ciSource, /git fetch --no-tags --depth=1 origin \"\$PRESET_BASE_SHA\"/);
 });
 
 test("live SODA fetch retries with exponential backoff on transient timeouts", () => {
