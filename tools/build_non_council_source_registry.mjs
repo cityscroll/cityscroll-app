@@ -278,6 +278,11 @@ const KNOWN_SOURCES = {
     format: "html_pdf", update_cadence: "monthly", full_board_votes: "unknown",
     archive_depth: { status: "observed_page_year_span", earliest_year: 2002, latest_year: 2026 },
   },
+  "manhattan-cb-06": {
+    source_url: "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
+    format: "airtable", update_cadence: "unknown", full_board_votes: "unknown", adapter: "airtable_v1",
+    archive_depth: { status: "unknown", earliest_year: null, latest_year: null },
+  },
   "queens-cb-03": {
     source_url: "https://queenscb3.cityofnewyork.us/board-meeting-minutes/",
     format: "html", update_cadence: "monthly", full_board_votes: "unknown",
@@ -329,7 +334,7 @@ function sourceRows() {
         archive_depth: known.archive_depth || unknownArchiveDepth(),
         full_board_votes: known.full_board_votes || "unknown",
         status: known.source_url ? "collect" : "inventory_only",
-        adapter: known.source_url ? "html_document_index_v1" : null,
+        adapter: known.adapter || (known.source_url ? "html_document_index_v1" : null),
         observed_on: OBSERVED_ON,
       });
     }
@@ -391,6 +396,30 @@ function buildArtifacts() {
       inventory_only_is_not_absent_publication: true,
       join_bridge_enabled: false,
       join_method: "exact_body_date_publisher_ulurp",
+      relation_contracts: {
+        has_member: {
+          source_contract: "cityscroll.community_board_member_source_contract.v1",
+          edge_schema: "cityscroll.community_board_member_edge.v1",
+          required_evidence: [
+            "exact_board_publisher_identity",
+            "exact_member_publisher_identity",
+            "exact_relation_date",
+            "retained_source_document",
+          ],
+          status: "unknown_until_sourced",
+        },
+        issues_recommendation: {
+          source_contract: "cityscroll.community_board_recommendation_source_contract.v1",
+          edge_schema: "cityscroll.community_board_recommendation_edge.v1",
+          required_evidence: [
+            "exact_board_publisher_identity",
+            "exact_recommendation_publisher_identity",
+            "exact_relation_date",
+            "retained_source_document",
+          ],
+          status: "unknown_until_sourced",
+        },
+      },
       matter_key_policy: "publisher_ulurp_identifiers_only",
       usefulness_threshold: 0.3,
       precision_promotion_bar: 1.0,

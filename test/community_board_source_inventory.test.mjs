@@ -64,6 +64,12 @@ test("calendar and minutes are separate receipt-backed source roles", () => {
     }
   }
 
+  const cb6 = inventory.boards.find((board) => board.id === "manhattan-cb-06");
+  assert.equal(cb6.minutes.url, "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw");
+  assert.equal(cb6.minutes.adapter, "airtable_v1");
+  assert.equal(cb6.minutes.publisher_kind, "third_party_storage");
+  assert.equal(cb6.minutes.verification.fetchability, "browser_required");
+
   const roleKinds = new Set(inventory.boards.flatMap((board) => roles.map((role) => board[role === "upcoming_meetings" ? "upcoming" : "minutes"].publisher_kind)).filter(Boolean));
   assert.ok(roleKinds.has("nyc_official"));
   assert.ok(roleKinds.has("board_owned_official"));

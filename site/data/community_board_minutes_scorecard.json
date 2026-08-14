@@ -2760,7 +2760,7 @@
       "district": 6,
       "homepage_url": "https://cbsix.org/",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
-      "minutes_url": null,
+      "minutes_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
       "last_minutes_date": null,
       "days_since_last_minutes": null,
       "notice_completeness": null,
@@ -2796,29 +2796,29 @@
         },
         "minutes": {
           "source_type": "minutes",
-          "source_url": null,
-          "publisher": null,
-          "publisher_kind": null,
-          "source_format": null,
-          "fetch_mode": null,
+          "source_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
+          "publisher": "Manhattan Community Board 6",
+          "publisher_kind": "third_party_storage",
+          "source_format": "airtable",
+          "fetch_mode": "browser-required",
           "access_constraint": null,
           "archive_depth": {
             "status": "unknown",
             "earliest_year": null,
             "latest_year": null
           },
-          "stable_key": null,
+          "stable_key": "publisher_document_id|document_url",
           "verification": {
-            "status": "not_observed",
+            "status": "observed",
             "seen_on": "2026-08-13",
-            "fetchability": "unknown",
+            "fetchability": "browser_required",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
-            "reason": "not_observed_in_pass"
+            "reason": null
           },
-          "collection_state": "absent_in_pass",
-          "origin": null,
-          "origin_label": "Source not listed",
+          "collection_state": "not_yet_ingested",
+          "origin": "third_party_storage",
+          "origin_label": "Board-linked third-party storage",
           "observed_on": "2026-08-13"
         }
       },

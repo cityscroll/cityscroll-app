@@ -173,9 +173,8 @@ function sourceRoleLabel(role) {
 }
 
 function sourceCard(source, role) {
-  const isThirdParty = source.origin === "third_party_storage";
   const link = source.source_url
-    ? officialSourceLink({ href: source.source_url, label: isThirdParty ? "Open linked archive" : role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
+    ? officialSourceLink({ href: source.source_url, label: role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
     : `<span class="scorecard-muted">Source not listed</span>`;
   const access = source.access_constraint === "browser_required"
     ? `<span class="scorecard-source-note">Browser access may be required.</span>`

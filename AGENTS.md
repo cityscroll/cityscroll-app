@@ -69,7 +69,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   and an unjoined `cityscroll.community_board_source_join.v1` result. Static Browse builds merge
   the rows in `tools/build_primary_documents.mjs`; the Meetings client appends the same artifact
   in `site/app/feed-actions.mjs`. Expand coverage only with an adapter that preserves explicit
-  publisher identity/date evidence.
+  publisher identity/date evidence. Minutes are a separate typed source role from meetings;
+  Manhattan CB6's image-linked Airtable archive is recorded as `airtable_v1` and browser-required,
+  so the source link is public while records remain un-ingested until an explicit fetch is available.
 
 ## PR and CI preflight
 

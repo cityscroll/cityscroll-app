@@ -614,12 +614,12 @@
       "body_id": "manhattan-cb-06",
       "name": "Manhattan Community Board 6",
       "borough": "Manhattan",
-      "source_url": null,
+      "source_url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
       "expected_deliverable": "minutes",
       "expected_window_start": "2025-08-11",
       "expected_window_months": 12,
-      "gap_class": "b",
-      "taxonomy_class": "not_published",
+      "gap_class": "a",
+      "taxonomy_class": "not_yet_ingested",
       "severity": "unknown",
       "last_minutes_observed_at": null,
       "last_seen": null,
@@ -1023,7 +1023,7 @@
     "boards": 59,
     "covered": 7,
     "gaps": 52,
-    "class_a": 17,
-    "class_b": 42
+    "class_a": 18,
+    "class_b": 41
   }
 }

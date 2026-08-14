@@ -27,6 +27,15 @@ test("board routes preserve the separate place, governance, and output projectio
   assert.equal(communityBoardInstitutionHref("bronx-cb-02"), "/browse/people/?board=bronx-cb-02#community-boards");
   assert.equal(communityBoardOutputHref("bronx-cb-02"), "/community-boards/#board-bronx-cb-02");
 });
+test("board source inventory surfaces the image-linked CB6 Airtable minutes archive", () => {
+  const view = buildCommunityBoardConstellationView("manhattan-cb-06", sources);
+  const sourceCategory = view.categories.find((category) => category.id === "sources");
+  const minutes = sourceCategory.items.find((item) => item.role === "minutes");
+  assert.equal(minutes.url, "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw");
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.match(html, /Open minutes or records/);
+  assert.match(html, /appgK5bKw7rWMRJEh\/shrBzfHDWat4YMTHL\/tblpioBcj0BVp5hBw/);
+});
 test("board constellation uses typed summaries and holds unjoined governance edges", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-02", sources);
   assert.equal(view.kind, "community-board-constellation");
