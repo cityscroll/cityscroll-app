@@ -54,7 +54,7 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.match(html, /Connected board records/);
   assert.match(html, /District coverage/);
   assert.match(html, /Official source inventory/);
-  assert.match(html, /Meetings and hearings \(Unknown \/ not indexed\)/);
+  assert.match(html, /Meetings and hearings \(Availability is not known yet\)/);
   assert.match(html, /Board members \(Not yet shown — official board records are still being collected\)/);
   assert.match(html, /Board recommendations \(Not yet shown — official board records are still being collected\)/);
   assert.match(html, /Open official calendar/);
@@ -112,7 +112,7 @@ test("indexed board events replace the unknown meetings state without becoming o
   assert.ok(meetings.items.every((item) => item.state === "observed"));
   assert.ok(meetings.items.every((item) => item.join?.matched !== true));
   const html = renderCommunityBoardConstellationDocument(view);
-  assert.doesNotMatch(html, /Meetings and hearings \(Unknown \/ not indexed\)/);
+  assert.doesNotMatch(html, /Meetings and hearings \(Availability is not known yet\)/);
   assert.match(html, /Source observed/);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
   assert.doesNotMatch(visible, /upcoming_meetings/);

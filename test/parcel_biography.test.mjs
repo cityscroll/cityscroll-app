@@ -71,7 +71,7 @@ test("parcel biography summarizes every supported family and preserves typed det
   assert.match(html, /Available: 1 record/);
   assert.match(html, /No land-use records linked yet/);
   assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
-  assert.match(html, /Unknown \/ not indexed/);
+  assert.match(html, /Availability is not known yet/);
   for (const kind of ["property", "land", "tax_lien", "ll48", "cofo"]) {
     assert.match(html, new RegExp(`id="parcel-biography-${kind}"`));
   }

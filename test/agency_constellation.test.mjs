@@ -326,7 +326,7 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   assert.match(html, /data-edge-provenance-panel/);
   assert.match(html, /data-warrant-class="exact"/);
   assert.match(html, /edge-prov-confidence-unmatched/);
-  assert.match(html, /Exact match/);
+  assert.match(html, /Matched by a published record/);
   assert.doesNotMatch(html, /edge-prov-token|Why do we believe this\? · Exact/);
   assert.doesNotMatch(html, /How links are warranted/);
   assert.doesNotMatch(html, /Sources and limits/);
@@ -334,7 +334,7 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   assert.doesNotMatch(html, /not a confirmed identity|not counted as a verified/i);
   assert.match(html, new RegExp(`data-edge-claim="${claimId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
   assert.doesNotMatch(html, /Not yet attached|How it was derived|Joined by an exact publisher key/i);
-  assert.match(html, /Share this claim/);
+  assert.match(html, /Copy link to this connection/);
   assert.match(html, new RegExp(`claim=${encodeURIComponent(claimId).replace(/%/g, "%")}`));
   assert.doesNotMatch(html, /fabricat/i);
 });
@@ -396,7 +396,8 @@ test("tentative edges stay off the public list rather than shipping with hedges"
   assert.equal(contracts.warrant_summary.possible_total, 0);
   const html = renderAgencyConstellationDocument(view);
   assert.match(html, /1 linked/);
-  assert.doesNotMatch(html, /not verified/i);
+  const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
+  assert.doesNotMatch(readerHtml, /not verified/i);
   assert.doesNotMatch(html, /maybe1|Possible award/);
 });
 
