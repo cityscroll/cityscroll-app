@@ -50,8 +50,21 @@ def check_lang(pw, lang):
     page.wait_for_load_state("load")
     page.wait_for_timeout(1000)
 
+    # The root document is now a neutral topic entry, so it intentionally has no
+    # result tags or English record titles. Verify that its own static-first
+    # readiness contract settles before entering the explicit lens used by the
+    # direction and bidi checks below.
+    page.wait_for_function(
+        """() => document.body?.dataset.primaryContext === 'home' &&
+          document.querySelector('[data-home-topic-entry] input[name=\"q\"]')?.getClientRects().length > 0"""
+    )
+
     # Baseline (English) physical resolution, BEFORE switching -- what "mirrored" is relative to.
     skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
+    page.goto(BASE + "browse/contracts/", timeout=30000)
+    page.wait_for_load_state("load")
+    page.locator(".tag").first.wait_for(state="visible", timeout=30000)
+    page.locator(".rtitle span[lang='en']").first.wait_for(state="visible", timeout=30000)
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
@@ -89,7 +102,7 @@ def check_lang(pw, lang):
             "-- expected the non-zero side to swap from right to left")
 
     # 3. Bidi isolation of an English data island (enTitle()-wrapped notice title on the
-    #    default money-tab/open-RFP view, no extra navigation needed).
+    #    explicit Contracts lens; the neutral home above deliberately has no record rows).
     rtitle = page.locator(".rtitle span[lang='en']").first
     if rtitle.count():
         bidi = rtitle.evaluate("el => [getComputedStyle(el).unicodeBidi, getComputedStyle(el).direction]")
