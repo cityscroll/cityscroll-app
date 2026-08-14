@@ -214,6 +214,19 @@ function hearingDecision(row, body) {
   return matter ? hearingPlainText(matter[1]) : title || "The notice does not give a short plain-language summary.";
 }
 function normalizeHearingRow(row) {
+  if (row && row.source_system === "community_board") {
+    var boardSource = row.source_url || row.record_url || null;
+    return {
+      request_id: String(row.request_id || ""), source_section: row.section_name || "Community Board Meetings",
+      agency: row.agency_name || null, notice_type: row.type_of_notice_description || "Board meeting",
+      title: hearingPlainText(row.short_title) || "Community board meeting", event_date: row.event_date || null,
+      published_at: row.start_date || null, decides: hearingPlainText(row.short_title) || "Community board meeting",
+      affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
+      participation: { links: [], remote_join_url: null, emails: [], phones: [], source_url: boardSource },
+      source_url: boardSource, description: "", meeting_origin: row.meeting_origin || "unknown",
+      source_provenance: row.source_provenance || null, meeting_join: row.meeting_join || null,
+    };
+  }
   var body = hearingPlainText([
     row.additional_description_1, row.additional_description_2, row.additional_description_3,
     row.other_info_1, row.other_info_2, row.other_info_3, row.printout_1, row.printout_2, row.printout_3,

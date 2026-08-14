@@ -22,9 +22,10 @@ function readJson(relative) {
 function sourceRows() {
   const sourceRegistry = readJson("site/data/non_council_outcome_sources/source_registry.json");
   const sourceInventory = readJson("site/data/non_council_outcome_sources/board_source_inventory.json");
+  const meetingIndex = readJson("site/data/community_board_meeting_index.json");
   const scorecard = readJson("site/data/community_board_minutes_scorecard.json");
   const geography = readJson("site/data/community_board_geography_lookup.json");
-  return { sourceRegistry, sourceInventory, scorecard, geography };
+  return { sourceRegistry, sourceInventory, scorecard, geography, sourceRecords: meetingIndex.by_board };
 }
 
 export function buildCommunityBoardConstellationMaterialization(sources = sourceRows()) {

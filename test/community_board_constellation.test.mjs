@@ -17,6 +17,7 @@ const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council
 const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
 const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url)));
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
+const meetingIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
@@ -68,7 +69,7 @@ test("board profile renders receipt-backed records while leaving unjoined record
     }],
   });
   assert.equal(view.source_records[0].state, "observed");
-  assert.equal(view.categories.find((category) => category.id === "meetings").status, "unknown");
+  assert.equal(view.categories.find((category) => category.id === "meetings").status, "matched");
   assert.equal(view.categories.find((category) => category.id === "members").status, "unknown");
   const html = renderCommunityBoardConstellationDocument(view);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
@@ -76,4 +77,19 @@ test("board profile renders receipt-backed records while leaving unjoined record
   assert.match(visible, /Full board minutes/);
   assert.match(visible, /Source observed/);
   assert.doesNotMatch(visible, /record_kind|source_record_id|observed_receipt|Source: Unavailable|Join method: Unavailable/);
+});
+
+test("indexed board events replace the unknown meetings state without becoming official joins", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-06", {
+    ...sources,
+    sourceRecords: meetingIndex.by_board,
+  });
+  const meetings = view.categories.find((category) => category.id === "meetings");
+  assert.equal(meetings.status, "matched");
+  assert.equal(meetings.count, 12);
+  assert.ok(meetings.items.every((item) => item.state === "observed"));
+  assert.ok(meetings.items.every((item) => item.join?.matched !== true));
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.doesNotMatch(html, /Meetings and hearings \(Unknown \/ not indexed\)/);
+  assert.match(html, /Source observed/);
 });
