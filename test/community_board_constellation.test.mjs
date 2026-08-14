@@ -48,3 +48,28 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
   assert.doesNotMatch(html, /No meetings exist/);
 });
+
+test("board profile renders receipt-backed records while leaving unjoined records non-official", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-02", {
+    ...sources,
+    sourceRecords: [{
+      record_kind: "document",
+      record_id: "minutes-1",
+      source_record_id: "minutes-1",
+      source_url: "https://board.example/minutes",
+      record_url: "https://board.example/minutes/2026-08-12.pdf",
+      title: "Full board minutes",
+      date: "2026-08-12",
+      category: "minutes",
+      observed_receipt: { status: "ok", observed_at: "2026-08-14T12:00:00Z" },
+    }],
+  });
+  assert.equal(view.source_records[0].state, "observed");
+  assert.equal(view.categories.find((category) => category.id === "meetings").status, "unknown");
+  const html = renderCommunityBoardConstellationDocument(view);
+  const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
+  assert.match(visible, /Board records from official sources/);
+  assert.match(visible, /Full board minutes/);
+  assert.match(visible, /Source observed/);
+  assert.doesNotMatch(visible, /record_kind|source_record_id|observed_receipt|Source: Unavailable|Join method: Unavailable/);
+});
