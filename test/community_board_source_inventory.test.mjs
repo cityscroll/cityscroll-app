@@ -6,6 +6,7 @@ import { buildBoardSourceInventory, buildScorecard, renderScorecardPage } from "
 const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url), "utf8"));
 const inventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url), "utf8"));
 const receipt = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json", import.meta.url), "utf8"));
+const meetingIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url), "utf8"));
 const roles = ["upcoming_meetings", "minutes"];
 
 test("the source registry enumerates the official 59-board roster", () => {
@@ -116,4 +117,12 @@ test("City Record remains a distinct source origin", () => {
   const row = buildBoardSourceInventory({ registry: syntheticRegistry, inventory: syntheticInventory })[0];
   assert.equal(row.sources.minutes.origin, "city_record");
   assert.equal(row.sources.minutes.origin_label, "City Record notice source");
+});
+
+test("meeting coverage states render as plain-English source status", () => {
+  const scorecard = buildScorecard({ registry, sourceInventory: inventory, meetingIndex });
+  const html = renderScorecardPage(scorecard);
+  assert.match(html, /Meetings found|No published records found|Source could not be checked/);
+  const readerCopy = html.replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(readerCopy, /checked-empty|not-yet-checked|unsupported-format/);
 });
