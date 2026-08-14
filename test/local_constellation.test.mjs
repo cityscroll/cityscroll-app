@@ -10,11 +10,11 @@ import {
 import { buildCommitteeLocalConstellation } from "../site/committee_memberships.mjs";
 import { buildPlaceLocalConstellation } from "../site/community_board_geography.mjs";
 
-const kinds = ["official", "committee", "vendor", "agency", "place", "record"];
+const kinds = ["official", "committee", "vendor", "agency", "community-board", "place", "record"];
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url)));
 
-test("local constellation registry covers the six Browse object kinds", () => {
+test("local constellation registry covers the Browse object kinds", () => {
   for (const kind of kinds) {
     const view = buildLocalConstellation({ kind, subject_ref: `${kind}:1`, source: null, neighbors: [] });
     assert.equal(view.kind, kind);

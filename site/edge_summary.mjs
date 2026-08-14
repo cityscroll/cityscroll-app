@@ -83,6 +83,7 @@ const VERIFIED_INTERNAL_ROUTES = [
   /^\/exams\/\d{4}\/?(?:\?.*)?$/,
   /^\/(?:near-you|following)(?:\/[^?#]*)?\/?(?:\?.*)?(?:#.*)?$/,
   /^\/community-boards\/?(?:\?.*)?(?:#.*)?$/,
+  /^\/community-boards\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?(?:#.*)?$/,
   /^#parcel-biography-(?:property|land|tax_lien|ll48|cofo)$/,
   /^#notice\/[A-Za-z0-9_%~-]+$/,
   /^\/#land\/[A-Za-z0-9_%~-]+(?:\?.*)?$/,
@@ -383,6 +384,8 @@ export function edgeRelationLabel(recordOrType) {
   if (!relation) return "related records";
   return readerLabel(({
     published_by_agency: "published by this agency",
+    covers: "covers this district",
+    published_board_source: "published board sources",
     hosts_meeting: "related meetings and hearings",
     issued_rule: "issued rule",
     statute_duty: "statutory mandates",
