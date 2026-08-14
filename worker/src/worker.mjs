@@ -278,7 +278,7 @@ export default {
     // public events. A daily refresh keeps location extraction and GeoSearch work off the
     // browser path; a stale view remains usable if either upstream is briefly unavailable.
     try {
-      const r = await refreshHearings(env);
+      const r = await refreshHearings(env, undefined, undefined, { includeCommunityBoard: true });
       console.log("hearings:", JSON.stringify(r));
     } catch (e) {
       console.error("hearing refresh failed (digest continues):", String(e?.message || e));

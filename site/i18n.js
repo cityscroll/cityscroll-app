@@ -1260,6 +1260,7 @@ const STRINGS = {
     no_zap:            "No Zoning Application Portal (ZAP) rezonings",
     nothing_found_feed: "Nothing found. Try a broader search.",
     could_not_reach:   "Could not reach NYC Open Data. Retry.",
+    shared_meeting_read_model_unavailable: "The meetings snapshot is unavailable. Retry.",
 
     // Feed card actions
     open_notice_btn:        "Open notice",

@@ -808,6 +808,7 @@
     no_zap: "В портале заявок на зонирование (ZAP) нет изменений зонирования",
     nothing_found_feed: "Ничего не найдено. Попробуйте более широкий запрос.",
     could_not_reach: "Не удалось подключиться к NYC Open Data. Повторите попытку.",
+    shared_meeting_read_model_unavailable: "Снимок встреч недоступен. Повторите попытку.",
     open_notice_btn: "Открыть уведомление",
     city_record_link: "Городской вестник / The City Record",
     copy_link_btn: "Копировать ссылку",
