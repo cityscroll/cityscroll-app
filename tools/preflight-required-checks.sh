@@ -261,9 +261,26 @@ run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
 run_and_fail node --test test/*.test.mjs
+preset_gate() {
+  # Local prepush must not make developers race a rotating upstream from a shared IP.
+  # CI owns the refresh; retain the live check whenever the generated fallback changed.
+  local branch_delta=""
+  if [[ "${CI:-}" != "true" && -n "$(git rev-parse --verify origin/main 2>/dev/null || true)" ]]; then
+    branch_delta="$(git diff --name-only origin/main...HEAD; git diff --name-only)"
+  fi
+  if [[ -n "$branch_delta" ]]; then
+    local mode
+    mode="$(node tools/preset_fallback_ci.mjs --base origin/main)"
+    if [[ "$mode" == "refresh" ]]; then
+      echo "Inherited preset fallback drift will be refreshed by the CI runner."
+      return 0
+    fi
+  fi
+  node tools/validate_presets.mjs --check
+}
 run_banner "Unit tests (site + worker)" "Preset shortcuts and rotating suggestions resolve to live results" \
-  "node tools/validate_presets.mjs --check"
-run_and_fail node tools/validate_presets.mjs --check
+  "preset_gate (CI live check; inherited drift refreshes in CI)"
+run_and_fail preset_gate
 run_and_fail node --test test/contract/*.test.mjs
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \

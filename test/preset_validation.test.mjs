@@ -7,6 +7,7 @@ import {
   firstNonEmptyVariant,
   fruitfulSuggestionIndices,
 } from "../site/preset_validation.mjs";
+import { canRefreshGeneratedFallback } from "../tools/preset_fallback_ci.mjs";
 
 const validatorSource = readFileSync(new URL("../tools/validate_presets.mjs", import.meta.url), "utf8");
 
@@ -15,6 +16,39 @@ test("preset validation reads and rewrites the modular site suggestion source", 
   assert.match(validatorSource, /fallbackFromSiteSource\(siteSuggestions\)/);
   assert.match(validatorSource, /writeFile\(SITE_SUGGESTIONS, siteSuggestions\)/);
   assert.doesNotMatch(validatorSource, /fallbackFromHTML\(html\)/);
+});
+
+test("CI refresh is allowed only for inherited fallback drift", () => {
+  const site = "prefix\nconst NL_SUGGESTIONS_FALLBACK = {\n  money: [1],\n};\nsuffix";
+  const changedOutsideFallback = `${site}\nother UI code`;
+  const baseSources = {
+    "site/app/search-share.mjs": site,
+    "worker/src/lib/suggestions.mjs": "worker source",
+    "site/data/preset-validation.json": "receipt",
+    "tools/validate_presets.mjs": "validator",
+    "site/preset_validation.mjs": "helpers",
+  };
+  assert.equal(
+    canRefreshGeneratedFallback(baseSources, {
+      ...baseSources,
+      "site/app/search-share.mjs": changedOutsideFallback,
+    }),
+    true,
+  );
+  assert.equal(
+    canRefreshGeneratedFallback(baseSources, {
+      ...baseSources,
+      "site/app/search-share.mjs": site.replace("[1]", "[2]"),
+    }),
+    false,
+  );
+  assert.equal(
+    canRefreshGeneratedFallback(baseSources, {
+      ...baseSources,
+      "worker/src/lib/suggestions.mjs": "hand-edited worker source",
+    }),
+    false,
+  );
 });
 
 test("live SODA fetch retries with exponential backoff on transient timeouts", () => {
