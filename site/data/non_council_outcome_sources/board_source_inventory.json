@@ -1020,7 +1020,7 @@
       "name": "Brooklyn Community Board 5",
       "borough": "Brooklyn",
       "district": 5,
-      "home": "https://www.brooklyncb5.org/",
+      "home": "https://www.nyc.gov/site/brooklyncb5/index.page",
       "observed": "2026-08-13",
       "upcoming": {
         "source_type": "upcoming_meetings",
@@ -1764,7 +1764,7 @@
       "name": "Brooklyn Community Board 17",
       "borough": "Brooklyn",
       "district": 17,
-      "home": "https://www.nyc.gov/site/brooklyncb17/index.page",
+      "home": "https://cbbrooklyn.cityofnewyork.us/cb17/",
       "observed": "2026-08-13",
       "upcoming": {
         "source_type": "upcoming_meetings",
