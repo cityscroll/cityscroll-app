@@ -92,7 +92,7 @@ test("missing enrichment fields are omitted, not invented", () => {
   const html = renderEdgeProvenanceInspector(claim, { open: true });
   assert.doesNotMatch(html, /Not yet attached/);
   assert.doesNotMatch(html, /Link record|Resolution run|Source excerpt/);
-  assert.match(html, /edge-prov-confidence-unmatched/);
+  assert.doesNotMatch(html, />unmatched</);
   assert.doesNotMatch(html, /Confidence is not identity/i);
   assert.doesNotMatch(html, /entity_link:[a-z0-9-]+/i);
   assert.doesNotMatch(html, /Source detail still to attach/);
@@ -195,7 +195,7 @@ test("inspector panel and why-control render warrant classes without fabricating
   const panel = renderEdgeProvenancePanel([exact, reviewed], {
     activeClaimId: exact.claim_id,
   });
-  assert.match(panel, /Exact match/);
+  assert.match(panel, /Matched by a published record/);
   assert.match(panel, /Connection evidence/);
   assert.doesNotMatch(panel, /How links are warranted/);
   assert.match(panel, /data-warrant-class="exact"/);
