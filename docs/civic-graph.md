@@ -102,9 +102,14 @@ Legistar token was unavailable in the build environment, so the committee node
 design is registered but public membership edges remain held:
 [`committee_sample_2026-08-12.json`](../site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json).
 
-Community boards use the committed source registry's `body_id` as the private
-stable product key. The published geography read model maps each board to its
-regular community district and exposes a many-to-many
+Community boards use the committed source registry's `body_id` as the stable
+identity boundary for both projections of one civic body: a place projection
+under location and an organization projection under People + organizations.
+The organization declares membership, meeting, and recommendation relation
+families, but keeps each family unknown until a verified board source earns the
+edge. The 59-board agency crosswalk entry remains an index and directory, not a
+replacement for board-level identities. The published geography read model maps
+each board to its regular community district and exposes a many-to-many
 `community-district → intersects → council-district` overlay. The overlay uses
 polygon segment crossing or containment with boundary-touch semantics; it does
 not use a centroid shortcut. The 2026-05-26 boundary vintage is stamped on every

@@ -426,11 +426,29 @@
       "id": "community-board",
       "status": "registered",
       "layer": "semantic",
-      "reason": "The committed source registry inventories 59 community boards with stable product body_id keys; source collection is intentionally bounded and not citywide-complete.",
+      "reason": "Each committed board record is one publisher-keyed civic body with a place projection and an organization projection. The source registry inventories 59 boards; governance edges remain unknown until their source inventory clears its publication bar.",
       "primary_key_pattern": "community-board:{borough-cb-NN}",
       "families": [
         "er:location"
       ],
+      "projections": {
+        "place": {
+          "family": "er:location",
+          "link_types": [
+            "covers"
+          ]
+        },
+        "organization": {
+          "role": "public body",
+          "link_types": [
+            "has_member",
+            "member_of",
+            "hosts_meeting",
+            "issues_recommendation"
+          ],
+          "publication": "unknown until sourced"
+        }
+      },
       "backing": [
         "public_graph.node",
         "community_board_source_registry",
@@ -669,8 +687,8 @@
       "id": "member_of",
       "status": "registered",
       "from": "official",
-      "to": "committee",
-      "reason": "Descriptive temporal role edge from exact OfficeRecordPersonId + OfficeRecordBodyId. It does not imply influence, support, control, or a vote; no matter referral edge is included.",
+      "to": "committee|community-board",
+      "reason": "Descriptive temporal role edge from exact publisher person and body keys. Committee observations are sourced from Legistar; community-board observations remain unknown until the board source inventory clears its publication bar.",
       "backing": [
         "public_graph.edge",
         "nyc_legistar_office_records",
@@ -678,6 +696,46 @@
       ],
       "label": "Member of",
       "grounding": "partial"
+    },
+    {
+      "id": "has_member",
+      "status": "unregistered",
+      "from": "community-board|committee",
+      "to": "official",
+      "reason": "Organization-facing inverse membership family is declared for board and committee bodies; community-board member edges remain unknown until sourced and no board edges are materialized here.",
+      "backing": [
+        "public_graph.edge",
+        "community_board_source_registry",
+        "committee_graph_lookup"
+      ],
+      "label": "Has member",
+      "grounding": "gap"
+    },
+    {
+      "id": "hosts_meeting",
+      "status": "unregistered",
+      "from": "community-board",
+      "to": "meeting",
+      "reason": "Organization-facing meeting family is declared, but board calendars and minutes have not yet earned a publisher-keyed edge.",
+      "backing": [
+        "community_board_source_registry",
+        "meeting-community-board-votes"
+      ],
+      "label": "Hosts meeting",
+      "grounding": "gap"
+    },
+    {
+      "id": "issues_recommendation",
+      "status": "unregistered",
+      "from": "community-board",
+      "to": "recommendation",
+      "reason": "Organization-facing recommendation family is declared, but board decisions are outputs and remain unknown until the source inventory supplies a verified publisher join.",
+      "backing": [
+        "community_board_source_registry",
+        "meeting-community-board-votes"
+      ],
+      "label": "Issues recommendation",
+      "grounding": "gap"
     },
     {
       "id": "covers",
