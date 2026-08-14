@@ -12,6 +12,8 @@ const require = createRequire(import.meta.url);
 const {
   filterMeetingRowsByAffectedArea,
   hearingMatchesArea,
+  hearingCommunityBoardQuery,
+  hearingMatchesCommunityBoard,
   normalizeHearingRow,
 } = require("../../site/hearing_location.js");
 const fixtures = JSON.parse(await readFile(new URL("./fixtures/hearings.json", import.meta.url), "utf8"));
@@ -97,6 +99,16 @@ test("field regression: an agency borough filter keeps single- and multi-borough
     filterMeetingRowsByAffectedArea(unfiltered, { borough: "Brooklyn" }).map((record) => record.request_id),
     ["parks-brooklyn", "parks-manhattan-brooklyn"],
   );
+});
+
+test("community-board search treats a bare number as a cross-borough query", () => {
+  const row = {
+    affected_area: { community_boards: ["Community Board 3, Bronx"] },
+  };
+  assert.equal(hearingCommunityBoardQuery("community board 3").ambiguous, true);
+  assert.equal(hearingCommunityBoardQuery("Bronx community board 3").borough, "Bronx");
+  assert.equal(hearingMatchesCommunityBoard(row, hearingCommunityBoardQuery("community board 3")), true);
+  assert.equal(hearingMatchesCommunityBoard(row, hearingCommunityBoardQuery("Brooklyn community board 3")), false);
 });
 
 test("participation and audience clues are extracted only when the notice supplies them", () => {
