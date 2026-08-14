@@ -60,6 +60,26 @@ test("Property stays behind route activation while routing state remains eager",
   );
 });
 
+test("Meetings stays off the Rules route activation path", () => {
+  const routeMap = loader.slice(
+    loader.indexOf("function routeModuleForHash"),
+    loader.indexOf("function ensureRouteModule(name)"),
+  );
+  assert.ok(routeMap.includes('raw.replace(/\\?.*$/,"")==="rules"'));
+  assert.ok(routeMap.includes('path==="/browse/rules/"'));
+  assert.doesNotMatch(routeMap, /meetings|\/browse\/meetings\//);
+
+  const meetingsImport = loader.indexOf('await import("./meetings.mjs")');
+  const routeGate = loader.indexOf("await ensureRouteModulesForHash(location.hash)");
+  assert.ok(routeGate < meetingsImport, "route activation remains before the eager Meetings module");
+
+  const meetingsSource = moduleSource("feed-actions.mjs");
+  const listPaint = meetingsSource.indexOf('announce(t("meetings_entries_announce"');
+  const deferredEdges = meetingsSource.indexOf("communityBoardEdgeToolsLoad().then");
+  assert.ok(listPaint >= 0, "Meetings list paint marker is present");
+  assert.ok(deferredEdges > listPaint, "community-board edge hydration remains after list paint");
+});
+
 test("every application module stays below the short-context working bar", () => {
   for (const name of [...SITE_MODULES, ...ROUTE_ISLAND_MODULES]) {
     const bytes = Buffer.byteLength(moduleSource(name));
