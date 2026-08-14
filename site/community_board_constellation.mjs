@@ -106,7 +106,25 @@ function boardNode(geography, id) {
     || null;
 }
 
-function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard) {
+function sourceRecordRows(records = []) {
+  const rows = Array.isArray(records) ? records : records?.records || [];
+  return rows.filter((record) => record && (record.record_id || record.source_record_id)).map((record) => ({
+    ...record,
+    label: record.record_kind === "video"
+      ? "Meeting video"
+      : record.record_kind === "event"
+        ? (record.category || "Board meeting")
+        : "Minutes and records",
+    state: record.status === "official" || record.join?.matched === true
+      ? "official"
+      : record.observed_receipt?.status === "ok"
+        ? "observed"
+        : "unknown",
+    href: record.record_url || record.source_url || null,
+  }));
+}
+
+function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, sourceRecordRowsForBoard) {
   const sourceHref = registrySource(board);
   if (spec.id === "place") {
     const districtId = clean(districtEdge?.to || "").replace(/^community-district:/, "");
@@ -134,6 +152,19 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard) {
       source: { ...sourceHref, name: "Official source inventory", canonical_href: communityBoardOutputHref(board.body_id) },
       provenance: source?.provenance || null,
       items: sourceRowsForBoard,
+    };
+  }
+  if (spec.id === "meetings") {
+    const joined = sourceRecordRowsForBoard.filter((row) => row.state === "official");
+    return {
+      ...spec,
+      status: joined.length ? "matched" : "unknown",
+      count: joined.length || null,
+      target_name: "Meetings and hearings",
+      view_all_href: joined.length ? joined[0].href : null,
+      source: sourceHref,
+      provenance: joined[0]?.provenance || source?.provenance || null,
+      items: joined,
     };
   }
   return {
@@ -194,12 +225,18 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
   const scorecardRow = (sources.scorecard?.rows || []).find((row) => row?.body_id === requested);
   const inventoryRow = (sources.sourceInventory?.boards || []).find((row) => row?.id === requested || row?.body_id === requested);
   const boardSources = sourceRows(scorecardRow, inventoryRow || board);
+  const boardSourceRecords = sourceRecordRows(
+    sources.sourceRecords?.[requested]
+      || (Array.isArray(sources.sourceRecords) ? sources.sourceRecords : sources.sourceRecords?.records)
+      || [],
+  );
   const categories = COMMUNITY_BOARD_CONSTELLATION_CATEGORIES.map((spec) => buildCategory(
     spec,
     normalizedBoard,
     node,
     districtEdge,
     boardSources,
+    boardSourceRecords,
   ));
   const edgeSummary = buildCommunityBoardEdgeSummary({ body_id: requested, categories });
   const localConstellation = buildLocalConstellation({
@@ -220,6 +257,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     subject_ref: `community-board:${requested}`,
     display_name: normalizedBoard.name,
     board: normalizedBoard,
+    source_records: boardSourceRecords,
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
@@ -248,6 +286,8 @@ function renderCategory(category) {
   const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
   const body = category.id === "sources"
     ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>`
+    : category.id === "meetings" && category.items?.length
+      ? `<ul class="node-record-list">${category.items.map(sourceRecordMarkup).join("")}</ul>`
     : `<p class="node-muted" data-edge-state="${esc(category.status)}" data-edge-availability="${esc(availability)}">${esc(categoryStatus(category))}</p>`;
   return renderNodeSection({
     heading: `${category.label} (${categoryStatus(category)})`,
@@ -258,6 +298,25 @@ function renderCategory(category) {
       "data-edge-availability": availability,
     },
     body,
+  });
+}
+
+function sourceRecordMarkup(row) {
+  const label = row.href
+    ? officialSourceLink({ href: row.href, label: row.title || row.label, className: "board-source-link", escape: esc })
+    : `<span>${esc(row.title || row.label)}</span>`;
+  const date = row.date ? ` · ${esc(row.date)}` : "";
+  const state = row.state === "official" ? "Official board record" : row.state === "observed" ? "Source observed" : "Source status unknown";
+  return `<li class="node-record" data-source-record-kind="${esc(row.record_kind || "record")}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">${esc(row.label)}${date} · ${esc(state)}</span></li>`;
+}
+
+function renderSourceRecordSection(records = []) {
+  if (!records.length) return "";
+  return renderNodeSection({
+    heading: "Board records from official sources",
+    extraClass: "node-card civic-object-section",
+    attrs: { "data-community-board-source-records": "1" },
+    body: `<ul class="node-record-list">${records.map(sourceRecordMarkup).join("")}</ul>`,
   });
 }
 
@@ -297,7 +356,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board constellation</p><h1>${esc(title)}</h1><p class="node-lede">Public source records and the district this board covers, with institutional records shown when they are joined.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-${edgeRail}${local}${actions}${view.categories.map(renderCategory).join("")}
+${edgeRail}${local}${actions}${renderSourceRecordSection(view.source_records)}${view.categories.map(renderCategory).join("")}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;
