@@ -12,6 +12,10 @@ import {
   normalizeCityRecordMeeting,
   normalizeCommunityBoardMeeting,
 } from "./meeting_object_contract.mjs";
+import {
+  attachMeetingDocuments,
+  normalizeMeetingDocument,
+} from "./meeting_document.mjs";
 
 export const SHARED_MEETING_READ_MODEL_SCHEMA = "cityscroll.shared_meeting_read_model.v1";
 export const MEETING_READ_MODEL_SCHEMA = SHARED_MEETING_READ_MODEL_SCHEMA;
@@ -99,6 +103,8 @@ function normalizeRecord(row, source, observedAt) {
       || (source === "city_record" ? normalized.request_id : normalized.publisher_identifier),
     source_record: sourceRecord({ ...row, ...normalized }, source, receipt),
   };
+  record.meeting_documents = (Array.isArray(row.meeting_documents) ? row.meeting_documents : [])
+    .map((document) => normalizeMeetingDocument(document));
   if (source === "community_board") {
     record.source_record = {
       ...record.source_record,
@@ -159,7 +165,11 @@ export function buildSharedMeetingReadModel({
     rows: cityRows,
     index: null,
   });
-  const rows = [...cityRows, ...boardRows].sort(dateSort);
+  const suppliedDocuments = Array.isArray(communityBoardIndex?.meeting_documents)
+    ? communityBoardIndex.meeting_documents
+    : boardRows.flatMap((row) => row.meeting_documents || []);
+  const documentJoin = attachMeetingDocuments([...cityRows, ...boardRows], suppliedDocuments, { asOf: now });
+  const rows = documentJoin.meetings.sort(dateSort);
   const generated = generatedAt || boardGeneratedAt || null;
   return {
     schema: SHARED_MEETING_READ_MODEL_SCHEMA,
@@ -181,6 +191,8 @@ export function buildSharedMeetingReadModel({
       total: rows.length,
       city_record: cityRows.length,
       community_board: boardRows.length,
+      meeting_documents: documentJoin.documents.length,
+      attached_meeting_documents: documentJoin.attached_documents.length,
     },
     rows,
     // `hearings` keeps the existing Worker/feed payload vocabulary while the

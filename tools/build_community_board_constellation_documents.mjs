@@ -37,7 +37,17 @@ function sourceRows() {
     if (!boardId) continue;
     institutionEdges[boardId] = [...(institutionEdges[boardId] || []), edge];
   }
-  return { sourceRegistry, sourceInventory, scorecard, geography, sourceRecords: meetingIndex.by_board, institutionEdges };
+  return {
+    sourceRegistry,
+    sourceInventory,
+    scorecard,
+    geography,
+    sourceRecords: meetingIndex.by_board,
+    meetingDocuments: meetingIndex.meeting_documents,
+    sourceReceipts: meetingIndex.receipts,
+    generated_at: meetingIndex.generated_at,
+    institutionEdges,
+  };
 }
 
 export function buildCommunityBoardConstellationMaterialization(sources = sourceRows()) {
