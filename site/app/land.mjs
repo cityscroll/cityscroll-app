@@ -17,7 +17,30 @@ let landAttendance="";
 let landClosingWeek=false;
 let landCommunityDistrict="";
 let landCouncilDistrict="";
+let landRecordLinksPromise=null;
 const mihOn = v => v===true || v==="true";
+
+function hydrateLandRecordLinks(record, selection){
+  const detail=$("#ldetail");
+  if(!detail) return;
+  landRecordLinksPromise ||= import("../land_record_links.mjs").catch(()=>null);
+  landRecordLinksPromise.then(async tools=>{
+    if(!tools || selection!==landSelectionSeq || !detail.isConnected) return;
+    const applicant=detail.querySelector("[data-land-record-applicant]");
+    if(applicant) applicant.innerHTML=tools.landRecordApplicantHTML(record.primary_applicant||"—",{escape:escUiHtml});
+    const placeOptions={
+      borough:record.borough,
+      labelForCouncilDistrict:value=>t("council_district_short",{n:value}),
+      escape:escUiHtml,
+    };
+    const placeRegistry=await tools.loadLandRecordPlaceRegistry();
+    const placeOptionsWithRegistry={...placeOptions,knownCommunityDistricts:placeRegistry.community,knownCouncilDistricts:placeRegistry.council};
+    for(const [kind,value] of [["borough",record.borough],["community",record.community_district],["council",record.cc_district]]){
+      const host=detail.querySelector(`[data-land-record-place='${kind}']`);
+      if(host) host.innerHTML=tools.landRecordPlaceHTML(kind,value,placeOptionsWithRegistry);
+    }
+  });
+}
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
 const ZAP_SELECT="project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,cc_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers";
@@ -495,8 +518,8 @@ async function landSelect(i, el){
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
     </div>
     <div class="agencybar">
-      <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">${t("applicant_lbl")}</div></div>
-      <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}</div><div class="lbl">${t("where_lbl")}</div></div>
+      <div><div class="big" style="font-size:17px" data-land-record-applicant>${escUiHtml(r.primary_applicant||"—")}</div><div class="lbl">${t("applicant_lbl")}</div></div>
+      <div><div class="big" style="font-size:17px" data-land-record-place-group><span data-land-record-place="borough">${escUiHtml(r.borough||"")}</span>${r.community_district?` · <span data-land-record-place="community">${escUiHtml("CD "+r.community_district)}</span>`:""}${r.cc_district?` · <span data-land-record-place="council">${escUiHtml(t("council_district_short",{n:r.cc_district}))}</span>`:""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
@@ -522,6 +545,7 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
+  hydrateLandRecordLinks(r, selection);
   // List snapshots omit project_brief; hydrate once from Open Data when detail opens.
   if(!r.project_brief && r.project_id){
     api(ZAP,{"$select":ZAP_SELECT,"$where":`project_id='${String(r.project_id).replace(/'/g,"''")}'`,"$limit":"1"})
