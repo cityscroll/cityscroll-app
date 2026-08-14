@@ -930,15 +930,15 @@
     {
       "board_id": "manhattan-cb-06",
       "role": "minutes",
-      "publisher": null,
-      "publisher_kind": null,
-      "url": null,
+      "publisher": "Manhattan Community Board 6",
+      "publisher_kind": "third_party_storage",
+      "url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
       "seen_on": "2026-08-13",
-      "format": null,
-      "fetchability": "unknown",
+      "format": "airtable",
+      "fetchability": "browser_required",
       "access_note": null,
-      "status": "not_observed",
-      "reason": "not_observed_in_pass"
+      "status": "observed",
+      "reason": null
     },
     {
       "board_id": "manhattan-cb-07",

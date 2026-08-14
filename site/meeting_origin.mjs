@@ -9,6 +9,7 @@ export const MEETING_ORIGINS = Object.freeze([
   "city_record_notice",
   "official_community_board_calendar",
   "official_minutes_joined",
+  "community_board_source_observed",
   "unknown",
 ]);
 
@@ -16,6 +17,7 @@ export const MEETING_ORIGIN_LABELS = Object.freeze({
   city_record_notice: "City Record notice",
   official_community_board_calendar: "Official community board calendar",
   official_minutes_joined: "Official minutes joined",
+  community_board_source_observed: "Community board source observed",
   unknown: "Meeting source unknown",
 });
 
@@ -51,4 +53,3 @@ export function meetingSourceUrl(row = {}, origin = normalizeMeetingOrigin(row))
   }
   return null;
 }
-
