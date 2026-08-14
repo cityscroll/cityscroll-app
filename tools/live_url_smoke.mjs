@@ -15,6 +15,44 @@ import { pathToFileURL } from "node:url";
 /** Stable markers that real CityScroll HTML carries; error shells must not. */
 export const CONTENT_MARKER = /CityScroll/;
 
+const CITY_RECORD_MEETING_ID = "meeting:city_record:20260713006";
+const COMMUNITY_BOARD_MEETING_ID = "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/";
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+/** Require a route-specific title, meeting marker, and exact HTML-encoded ID. */
+export function meetingDocumentMarker(meetingId) {
+  const encodedId = escapeRegExp(escapeHtmlAttribute(meetingId));
+  return new RegExp(
+    `(?=[\\s\\S]*<title>(?!CityScroll · track RFPs, rezonings, meetings<\\/title>)[^<]+ · CityScroll<\\/title>)`
+      + `(?=[\\s\\S]*data-civic-object-kind="meeting")`
+      + `(?=[\\s\\S]*data-meeting-id="${encodedId}")`,
+  );
+}
+
+export const CANONICAL_MEETING_TARGETS = Object.freeze([
+  { id: "meeting-city-record", meetingId: CITY_RECORD_MEETING_ID },
+  { id: "meeting-community-board", meetingId: COMMUNITY_BOARD_MEETING_ID },
+]);
+
+function meetingTargetsForBase(base) {
+  return CANONICAL_MEETING_TARGETS.map(({ id, meetingId }) => ({
+    id,
+    url: `${base}/meetings/${encodeURIComponent(meetingId)}/`,
+    marker: meetingDocumentMarker(meetingId),
+  }));
+}
+
 /** API Worker health body marker (not HTML). */
 export const API_HEALTH_MARKER = /crol-worker ok/;
 
@@ -69,6 +107,7 @@ export const DEFAULT_TARGETS = Object.freeze([
     url: "https://cityscroll.org/about.html",
     marker: CONTENT_MARKER,
   },
+  ...meetingTargetsForBase("https://cityscroll.org"),
 ]);
 
 /**
@@ -589,6 +628,7 @@ export function targetsFromCli(opts) {
     return [
       { id: "base-apex", url: `${base}/`, marker: CONTENT_MARKER },
       { id: "base-about", url: `${base}/about.html`, marker: CONTENT_MARKER },
+      ...meetingTargetsForBase(base),
     ];
   }
   return resolveTargetSet(opts.targetSet || "default");
