@@ -3,6 +3,7 @@ import { BROWSE_CONCEPTS } from "./browse_concept_view.mjs";
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
+import { renderMeetingDocument } from "./meeting_document.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
@@ -121,13 +122,30 @@ async function handleMeeting(request, env, meetingId) {
   try { decoded = decodeURIComponent(meetingId); } catch (_error) {
     return new Response("Invalid meeting link", { status: 400 });
   }
-  const pathname = `/meetings/${encodeURIComponent(decoded)}/`;
-  const assetRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
-  const asset = await staticAsset(env, assetRequest, pathname);
-  if (asset.ok && isMeetingDocumentHtml(await asset.clone().text(), decoded)) {
-    return request.method === "HEAD"
-      ? new Response(null, { status: asset.status, headers: asset.headers })
-      : asset;
+  const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const snapshot = await staticAsset(env, snapshotRequest, "/data/shared_meeting_read_model.json");
+  let record = null;
+  if (snapshot.ok) {
+    try {
+      const payload = await snapshot.json();
+      const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
+      record = rows.find((row) => row?.meeting_id === decoded) || null;
+    } catch (_error) {
+      record = null;
+    }
+  }
+  if (record) {
+    const html = renderMeetingDocument(record);
+    if (isMeetingDocumentHtml(html, decoded)) {
+      const headers = new Headers({
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=3600",
+        "X-Content-Type-Options": "nosniff",
+      });
+      return request.method === "HEAD"
+        ? new Response(null, { status: 200, headers })
+        : new Response(html, { status: 200, headers });
+    }
   }
   return new Response(
     `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
