@@ -45,6 +45,11 @@ function safeId(pathname) {
   return match ? match[1] : null;
 }
 
+function safeMeeting(pathname) {
+  const match = pathname.match(/^\/meetings\/([^/?#]{1,320})\/?$/);
+  return match ? match[1] : null;
+}
+
 function safeExamNumber(pathname) {
   const match = pathname.match(/^\/exams\/(\d{4})\/?$/);
   return match ? match[1] : null;
@@ -96,6 +101,7 @@ function entityDocument(pathname) {
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (safeId(url.pathname)) return "notice";
+  if (safeMeeting(url.pathname)) return "meeting";
   if (safeExamNumber(url.pathname)) return "exam";
   if (safeMonitorPack(url.pathname)) return "monitor-pack";
   if (safeDistrictDigest(url.pathname)) return "district-digest";
@@ -103,6 +109,19 @@ export function edgeRequestKind(urlValue) {
   if (browseFacet(url.pathname) || browseConcept(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   return "asset";
+}
+
+async function handleMeeting(request, env, meetingId) {
+  let decoded;
+  try { decoded = decodeURIComponent(meetingId); } catch (_error) {
+    return new Response("Invalid meeting link", { status: 400 });
+  }
+  const asset = await staticAsset(env, request, `/meetings/${encodeURIComponent(decoded)}/`);
+  if (asset.ok) return asset;
+  return new Response(
+    `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
+    { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" } },
+  );
 }
 
 const DOCUMENT_LANGS = new Set(["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]);
@@ -543,6 +562,8 @@ export default {
     const url = new URL(request.url);
     const id = safeId(url.pathname);
     if (id) return handleNotice(request, env, id);
+    const meetingId = safeMeeting(url.pathname);
+    if (meetingId) return handleMeeting(request, env, meetingId);
     const examNumber = safeExamNumber(url.pathname);
     if (examNumber) return handleExam(request, env, examNumber);
     const pack = safeMonitorPack(url.pathname);

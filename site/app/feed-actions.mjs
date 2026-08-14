@@ -1197,7 +1197,10 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const past=!!record.event_date&&String(record.event_date).slice(0,10)<todayISO().slice(0,10);
   const sourceUrl=hearingSafeURL(record.source_url);
   const nativeSource=record.source_system==="community_board";
-  const noticeHref=nativeSource&&sourceUrl ? sourceUrl : `#notice/${encodeURIComponent(record.request_id)}`;
+  const meetingHref=record.meeting_id
+    ? `/meetings/${encodeURIComponent(record.meeting_id)}`
+    : (record.request_id ? `#notice/${encodeURIComponent(record.request_id)}` : sourceUrl);
+  const noticeHref=meetingHref;
   const processStage=entry.process_stage||null;
   const processLabel=meetingStageLabel(processStage);
   const agency=entry.agency||record.agency||null;
@@ -1222,8 +1225,8 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     actionLeadText=t("meeting_action_attend_dated",{date:fdt(record.event_date)});
   }
   const actionLead=`<div class="meetings-action-lead">${escUiHtml(actionLeadText)}</div>`;
-  // Primary kinetic destination: notice detail (outcomes + action rail live there);
-  // participation join/materials stay as secondary classified EXT links.
+  // Primary kinetic destination: the shared meeting document; source and
+  // participation links stay as secondary classified links.
   const participation=entry.participation||record.participation||{};
   const primaryAction=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   const secondaryActions=[];
@@ -1233,8 +1236,9 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   (participation.emails||[]).slice(0,1).forEach(email=>{
     secondaryActions.push(`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`);
   });
-  secondaryActions.push(`<button class="act" type="button" data-link="${record.request_id}">${t("copy_link_btn")}</button>`);
-  if(record.event_date) secondaryActions.push(`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("calendar_ics")}</button>`);
+  const meetingKey=record.meeting_id||record.request_id||"";
+  secondaryActions.push(`<button class="act" type="button" data-link="${meetingKey}">${t("copy_link_btn")}</button>`);
+  if(record.event_date) secondaryActions.push(`<button class="act" type="button" data-ev="meetings:${meetingKey}">${t("calendar_ics")}</button>`);
   const venue=record.venue||{};
   if(venue.address) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`);
   const cardMatter={
@@ -1244,7 +1248,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     event_date:record.event_date||null,
     title:entry.title||record.decides||record.title||null,
     notice_text:record.description||"",
-    official_notice_url:nativeSource&&sourceUrl ? sourceUrl : REQ_URL(record.request_id),
+    official_notice_url:nativeSource&&sourceUrl ? sourceUrl : (record.compatibility?.legacy_notice_href || (record.request_id ? REQ_URL(record.request_id) : sourceUrl)),
     agency_name:agency,
     venue,
     participation,
@@ -1411,17 +1415,19 @@ async function renderHearingExplorer(){
   feedRows.meetings={};
   for(const e of entries){
     for(const m of e.members||[e.primary]){
-      if(m?.request_id){
+      const meetingKey=m?.meeting_id||m?.request_id;
+      if(meetingKey){
         visibleRows.push(m);
-        feedRows.meetings[m.request_id]=hearingEventRow(m);
+        feedRows.meetings[meetingKey]=hearingEventRow(m);
       }
     }
   }
-  // Dedupe for export summary counts by request_id.
+  // Dedupe for export summary counts by the shared meeting identity.
   const seenRid=new Set();
   const uniqueRows=visibleRows.filter(r=>{
-    if(!r.request_id||seenRid.has(r.request_id)) return false;
-    seenRid.add(r.request_id);
+    const meetingKey=r.meeting_id||r.request_id;
+    if(!meetingKey||seenRid.has(meetingKey)) return false;
+    seenRid.add(meetingKey);
     return true;
   });
   feedVisible.meetings=uniqueRows.map(hearingEventRow);

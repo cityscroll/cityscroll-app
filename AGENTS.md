@@ -72,6 +72,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   publisher identity/date evidence. Minutes are a separate typed source role from meetings;
   Manhattan CB6's image-linked Airtable archive is recorded as `airtable_v1` and browser-required,
   so the source link is public while records remain un-ingested until an explicit fetch is available.
+- **Shared meeting object:** `site/meeting_object_contract.mjs` is the narrow waist for City
+  Record and community-board meeting producers. IDs are source-qualified (`meeting:<system>:<key>`)
+  and preserve publisher keys; `/meetings/{meeting_id}` is canonical while City Record notice
+  URLs remain compatibility links. Keep title/date-only identity and board-name-as-agency
+  substitutions out of new meeting rows. Focused proof: `test/meeting_object_contract.test.mjs`.
 
 ## PR and CI preflight
 

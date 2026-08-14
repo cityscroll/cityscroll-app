@@ -34,7 +34,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729020"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729020",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260729020",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260729020"
+        }
+      ],
+      "publisher_identifier": "20260729020",
+      "title": "Public Hearing \u001a Office of The Comptroller [015] \u001a NYS Civil Service Commission Proposal",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260729020",
+        "legacy_fragment_href": "#notice/20260729020",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729020"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260729005",
@@ -56,7 +83,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729005"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729005",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260729005",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260729005"
+        }
+      ],
+      "publisher_identifier": "20260729005",
+      "title": "NYPD IT Infrastructure Engineer Public Hearing.",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260729005",
+        "legacy_fragment_href": "#notice/20260729005",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729005"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260729019",
@@ -78,7 +132,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260729019",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260729019"
+        }
+      ],
+      "publisher_identifier": "20260729019",
+      "title": "Public Hearing \u001a Office of Technology & Innovation [858] \u001a NYS Civil Service Commission Proposal",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260729019",
+        "legacy_fragment_href": "#notice/20260729019",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260728026",
@@ -100,7 +181,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260728026",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260728026"
+        }
+      ],
+      "publisher_identifier": "20260728026",
+      "title": "Proposed Rule - Rule relating to Incomplete Inspections",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260728026",
+        "legacy_fragment_href": "#notice/20260728026",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260727031",
@@ -138,7 +246,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727031"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727031",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260727031",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260727031"
+        }
+      ],
+      "publisher_identifier": "20260727031",
+      "title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260727031",
+        "legacy_fragment_href": "#notice/20260727031",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727031"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260504040",
@@ -160,7 +295,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504040"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504040",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260504040",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260504040"
+        }
+      ],
+      "publisher_identifier": "20260504040",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260504040",
+        "legacy_fragment_href": "#notice/20260504040",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504040"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260723022",
@@ -235,7 +397,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723022"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723022",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260723022",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260723022"
+        }
+      ],
+      "publisher_identifier": "20260723022",
+      "title": "511 West 171",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260723022",
+        "legacy_fragment_href": "#notice/20260723022",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723022"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260723005",
@@ -309,7 +498,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260723005",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260723005"
+        }
+      ],
+      "publisher_identifier": "20260723005",
+      "title": "Dining Out NYC Public Hearings",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260723005",
+        "legacy_fragment_href": "#notice/20260723005",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260721023",
@@ -347,7 +563,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721023"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721023",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260721023",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260721023"
+        }
+      ],
+      "publisher_identifier": "20260721023",
+      "title": "City Planning Commission Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260721023",
+        "legacy_fragment_href": "#notice/20260721023",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721023"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260504039",
@@ -373,7 +616,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260504039",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260504039"
+        }
+      ],
+      "publisher_identifier": "20260504039",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260504039",
+        "legacy_fragment_href": "#notice/20260504039",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260723030",
@@ -463,7 +733,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260723030",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260723030"
+        }
+      ],
+      "publisher_identifier": "20260723030",
+      "title": "Board of Standards and Appeals Public Hearing Notice",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260723030",
+        "legacy_fragment_href": "#notice/20260723030",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260710032",
@@ -504,7 +801,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260710032",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260710032"
+        }
+      ],
+      "publisher_identifier": "20260710032",
+      "title": "FCRC AUGUST PUBLIC MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260710032",
+        "legacy_fragment_href": "#notice/20260710032",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260709020",
@@ -563,7 +887,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709020"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709020",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260709020",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260709020"
+        }
+      ],
+      "publisher_identifier": "20260709020",
+      "title": "FOR ACQUISTION - Block 5308 Lot 50",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260709020",
+        "legacy_fragment_href": "#notice/20260709020",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709020"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260716022",
@@ -630,7 +981,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260716022",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260716022"
+        }
+      ],
+      "publisher_identifier": "20260716022",
+      "title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260716022",
+        "legacy_fragment_href": "#notice/20260716022",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260715041",
@@ -652,7 +1030,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260715041",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260715041"
+        }
+      ],
+      "publisher_identifier": "20260715041",
+      "title": "Amendments to Rules Relating to the Energy Conservation Code",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260715041",
+        "legacy_fragment_href": "#notice/20260715041",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260716025",
@@ -693,7 +1098,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260716025",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260716025"
+        }
+      ],
+      "publisher_identifier": "20260716025",
+      "title": "New York City Environmental Control Board Meeting August 6, 2026",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260716025",
+        "legacy_fragment_href": "#notice/20260716025",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260716009",
@@ -771,7 +1203,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260716009",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260716009"
+        }
+      ],
+      "publisher_identifier": "20260716009",
+      "title": "Dining Out NYC Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260716009",
+        "legacy_fragment_href": "#notice/20260716009",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260714029",
@@ -793,7 +1252,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260714029",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260714029"
+        }
+      ],
+      "publisher_identifier": "20260714029",
+      "title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260714029",
+        "legacy_fragment_href": "#notice/20260714029",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260714001",
@@ -831,7 +1317,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260714001",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260714001"
+        }
+      ],
+      "publisher_identifier": "20260714001",
+      "title": "August 4, 2026, Public Hearing Agenda CR",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260714001",
+        "legacy_fragment_href": "#notice/20260714001",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260504038",
@@ -857,7 +1370,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260504038",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260504038"
+        }
+      ],
+      "publisher_identifier": "20260504038",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260504038",
+        "legacy_fragment_href": "#notice/20260504038",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260715002",
@@ -895,7 +1435,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260715002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260715002"
+        }
+      ],
+      "publisher_identifier": "20260715002",
+      "title": "Final Meeting of the Commission on Government Efficiency",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260715002",
+        "legacy_fragment_href": "#notice/20260715002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260714002",
@@ -933,7 +1500,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714002"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714002",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260714002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260714002"
+        }
+      ],
+      "publisher_identifier": "20260714002",
+      "title": "CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260714002",
+        "legacy_fragment_href": "#notice/20260714002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714002"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260713006",
@@ -955,7 +1549,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260713006",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260713006"
+        }
+      ],
+      "publisher_identifier": "20260713006",
+      "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260713006",
+        "legacy_fragment_href": "#notice/20260713006",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260713032",
@@ -1063,7 +1684,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713032"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713032",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260713032",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260713032"
+        }
+      ],
+      "publisher_identifier": "20260713032",
+      "title": "Design Commission Meeting Agenda, Monday, July 20, 2026",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260713032",
+        "legacy_fragment_href": "#notice/20260713032",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713032"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260624001",
@@ -1101,7 +1749,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260624001",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260624001"
+        }
+      ],
+      "publisher_identifier": "20260624001",
+      "title": "New York City Housing Authority Board Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260624001",
+        "legacy_fragment_href": "#notice/20260624001",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260707022",
@@ -1139,7 +1814,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260707022",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260707022"
+        }
+      ],
+      "publisher_identifier": "20260707022",
+      "title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260707022",
+        "legacy_fragment_href": "#notice/20260707022",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260709028",
@@ -1198,7 +1900,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260709028",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260709028"
+        }
+      ],
+      "publisher_identifier": "20260709028",
+      "title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260709028",
+        "legacy_fragment_href": "#notice/20260709028",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260707021",
@@ -1236,7 +1965,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260707021",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260707021"
+        }
+      ],
+      "publisher_identifier": "20260707021",
+      "title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260707021",
+        "legacy_fragment_href": "#notice/20260707021",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260707029",
@@ -1274,7 +2030,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707029"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707029",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260707029",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260707029"
+        }
+      ],
+      "publisher_identifier": "20260707029",
+      "title": "City Planning Commission Public Hearing Ad",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260707029",
+        "legacy_fragment_href": "#notice/20260707029",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707029"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260708002",
@@ -1311,7 +2094,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260708002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260708002"
+        }
+      ],
+      "publisher_identifier": "20260708002",
+      "title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260708002",
+        "legacy_fragment_href": "#notice/20260708002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260708015",
@@ -1349,7 +2159,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260708015",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260708015"
+        }
+      ],
+      "publisher_identifier": "20260708015",
+      "title": "EEPC COMMISSION MEETING #289",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260708015",
+        "legacy_fragment_href": "#notice/20260708015",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260707004",
@@ -1387,7 +2224,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260707004",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260707004"
+        }
+      ],
+      "publisher_identifier": "20260707004",
+      "title": "July 28, 2026, Public Hearing Agenda",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260707004",
+        "legacy_fragment_href": "#notice/20260707004",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260504037",
@@ -1413,7 +2277,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260504037",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260504037"
+        }
+      ],
+      "publisher_identifier": "20260504037",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260504037",
+        "legacy_fragment_href": "#notice/20260504037",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260706044",
@@ -1451,7 +2342,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260706044",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260706044"
+        }
+      ],
+      "publisher_identifier": "20260706044",
+      "title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260706044",
+        "legacy_fragment_href": "#notice/20260706044",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260626036",
@@ -1473,7 +2391,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260626036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260626036"
+        }
+      ],
+      "publisher_identifier": "20260626036",
+      "title": "DCWP NOH Junk Fees",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260626036",
+        "legacy_fragment_href": "#notice/20260626036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260706036",
@@ -1513,7 +2458,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260706036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260706036"
+        }
+      ],
+      "publisher_identifier": "20260706036",
+      "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260706036",
+        "legacy_fragment_href": "#notice/20260706036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260106033",
@@ -1560,7 +2532,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260106033",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260106033"
+        }
+      ],
+      "publisher_identifier": "20260106033",
+      "title": "Board of Correction Public Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260106033",
+        "legacy_fragment_href": "#notice/20260106033",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260630005",
@@ -1598,7 +2597,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260630005",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260630005"
+        }
+      ],
+      "publisher_identifier": "20260630005",
+      "title": "July 21, 2026, Public Hearing Agenda",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260630005",
+        "legacy_fragment_href": "#notice/20260630005",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260629046",
@@ -1636,7 +2662,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629046"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629046",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260629046",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260629046"
+        }
+      ],
+      "publisher_identifier": "20260629046",
+      "title": "NYC Workforce Development Board Executive Committee Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260629046",
+        "legacy_fragment_href": "#notice/20260629046",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629046"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260629003",
@@ -1721,7 +2774,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260629003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260629003"
+        }
+      ],
+      "publisher_identifier": "20260629003",
+      "title": "Correction: Board of Standards and Appeals Public Hearing Notice",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260629003",
+        "legacy_fragment_href": "#notice/20260629003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260504036",
@@ -1747,7 +2827,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260504036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260504036"
+        }
+      ],
+      "publisher_identifier": "20260504036",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260504036",
+        "legacy_fragment_href": "#notice/20260504036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260626034",
@@ -1769,7 +2876,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260626034",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260626034"
+        }
+      ],
+      "publisher_identifier": "20260626034",
+      "title": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260626034",
+        "legacy_fragment_href": "#notice/20260626034",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260617042",
@@ -1840,7 +2974,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617042"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617042",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260617042",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260617042"
+        }
+      ],
+      "publisher_identifier": "20260617042",
+      "title": "BUILD NYC RESOURCE CORPORATION - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260617042",
+        "legacy_fragment_href": "#notice/20260617042",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617042"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260617040",
@@ -1911,7 +3072,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617040"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617040",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260617040",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260617040"
+        }
+      ],
+      "publisher_identifier": "20260617040",
+      "title": "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260617040",
+        "legacy_fragment_href": "#notice/20260617040",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617040"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260625040",
@@ -1949,7 +3137,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260625040",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260625040"
+        }
+      ],
+      "publisher_identifier": "20260625040",
+      "title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260625040",
+        "legacy_fragment_href": "#notice/20260625040",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260624005",
@@ -1975,7 +3190,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260624005",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260624005"
+        }
+      ],
+      "publisher_identifier": "20260624005",
+      "title": "Notice of Availability of Final Scope of Work, Completion of a Draft Environmental Impact Statement and Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260624005",
+        "legacy_fragment_href": "#notice/20260624005",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260624036",
@@ -2053,7 +3295,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260624036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260624036"
+        }
+      ],
+      "publisher_identifier": "20260624036",
+      "title": "Dining Out NYC Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260624036",
+        "legacy_fragment_href": "#notice/20260624036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260616058",
@@ -2091,7 +3360,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616058"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616058",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260616058",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260616058"
+        }
+      ],
+      "publisher_identifier": "20260616058",
+      "title": "NEW  YORK CITY DEPARTMENT OF TRANSPORTATION",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260616058",
+        "legacy_fragment_href": "#notice/20260616058",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616058"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260625034",
@@ -2129,7 +3425,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260625034",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260625034"
+        }
+      ],
+      "publisher_identifier": "20260625034",
+      "title": "NYCHA Audit and Finance Committee Meeting.",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260625034",
+        "legacy_fragment_href": "#notice/20260625034",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260623060",
@@ -2167,7 +3490,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260623060",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260623060"
+        }
+      ],
+      "publisher_identifier": "20260623060",
+      "title": "NYC Civic Engagement Commission Public Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260623060",
+        "legacy_fragment_href": "#notice/20260623060",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260624002",
@@ -2205,7 +3555,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624002"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624002",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260624002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260624002"
+        }
+      ],
+      "publisher_identifier": "20260624002",
+      "title": "City Planning Commission Public Hearing Ad",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260624002",
+        "legacy_fragment_href": "#notice/20260624002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624002"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260623006",
@@ -2243,7 +3620,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260623006",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260623006"
+        }
+      ],
+      "publisher_identifier": "20260623006",
+      "title": "July 14, 2026, Public Hearing Agenda CR",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260623006",
+        "legacy_fragment_href": "#notice/20260623006",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260213015",
@@ -2269,7 +3673,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260213015",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260213015"
+        }
+      ],
+      "publisher_identifier": "20260213015",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260213015",
+        "legacy_fragment_href": "#notice/20260213015",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260618040",
@@ -2346,7 +3777,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618040"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618040",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260618040",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260618040"
+        }
+      ],
+      "publisher_identifier": "20260618040",
+      "title": "FOR ACQUISITION - portions of  Block 3264, Lot 20; Block 3238, Lots 50, 52, and 126; and Block 3245, Lot 12",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260618040",
+        "legacy_fragment_href": "#notice/20260618040",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618040"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260618050",
@@ -2427,7 +3885,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260618050",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260618050"
+        }
+      ],
+      "publisher_identifier": "20260618050",
+      "title": "Brooklyn Borough President ULURP Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260618050",
+        "legacy_fragment_href": "#notice/20260618050",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260618036",
@@ -2449,7 +3934,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260618036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260618036"
+        }
+      ],
+      "publisher_identifier": "20260618036",
+      "title": "Proposed Amendment to 421-a(16) Workbook Rules",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260618036",
+        "legacy_fragment_href": "#notice/20260618036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260618037",
@@ -2543,7 +4055,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618037"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618037",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260618037",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260618037"
+        }
+      ],
+      "publisher_identifier": "20260618037",
+      "title": "Queens Borough President Land Use Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260618037",
+        "legacy_fragment_href": "#notice/20260618037",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618037"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260617039",
@@ -2581,7 +4120,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260617039",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260617039"
+        }
+      ],
+      "publisher_identifier": "20260617039",
+      "title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260617039",
+        "legacy_fragment_href": "#notice/20260617039",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260617003",
@@ -2646,7 +4212,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260617003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260617003"
+        }
+      ],
+      "publisher_identifier": "20260617003",
+      "title": "Citywide Public Input Sessions",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260617003",
+        "legacy_fragment_href": "#notice/20260617003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260623048",
@@ -2711,7 +4304,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260623048",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260623048"
+        }
+      ],
+      "publisher_identifier": "20260623048",
+      "title": "JUNE 25, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260623048",
+        "legacy_fragment_href": "#notice/20260623048",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260618032",
@@ -2805,7 +4425,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618032"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618032",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260618032",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260618032"
+        }
+      ],
+      "publisher_identifier": "20260618032",
+      "title": "June 25, 2026 Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260618032",
+        "legacy_fragment_href": "#notice/20260618032",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618032"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260213014",
@@ -2831,7 +4478,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260213014",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260213014"
+        }
+      ],
+      "publisher_identifier": "20260213014",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260213014",
+        "legacy_fragment_href": "#notice/20260213014",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260612028",
@@ -2908,7 +4582,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260612028",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260612028"
+        }
+      ],
+      "publisher_identifier": "20260612028",
+      "title": "Board of Standards and Appeals Public Hearing Notice",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260612028",
+        "legacy_fragment_href": "#notice/20260612028",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260605045",
@@ -2946,7 +4647,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605045"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605045",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260605045",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260605045"
+        }
+      ],
+      "publisher_identifier": "20260605045",
+      "title": "JUNE 25, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260605045",
+        "legacy_fragment_href": "#notice/20260605045",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605045"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260610007",
@@ -2984,7 +4712,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610007"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610007",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260610007",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260610007"
+        }
+      ],
+      "publisher_identifier": "20260610007",
+      "title": "JUNE 25, 2026 MEETING OF THE RENT GUIDELINES BOARD",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260610007",
+        "legacy_fragment_href": "#notice/20260610007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610007"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260610067",
@@ -3025,7 +4780,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610067"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610067",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260610067",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260610067"
+        }
+      ],
+      "publisher_identifier": "20260610067",
+      "title": "BERS EXECUTIVE COMMITTEE MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260610067",
+        "legacy_fragment_href": "#notice/20260610067",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610067"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260612036",
@@ -3132,7 +4914,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260612036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260612036"
+        }
+      ],
+      "publisher_identifier": "20260612036",
+      "title": "Design Commission Meeting Agenda, Monday, June 22, 2026",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260612036",
+        "legacy_fragment_href": "#notice/20260612036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260610012",
@@ -3170,7 +4979,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260610012",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260610012"
+        }
+      ],
+      "publisher_identifier": "20260610012",
+      "title": "Correction: City Planning Commission Public Hearing Ad",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260610012",
+        "legacy_fragment_href": "#notice/20260610012",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610012"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260603039",
@@ -3211,7 +5047,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260603039",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260603039"
+        }
+      ],
+      "publisher_identifier": "20260603039",
+      "title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260603039",
+        "legacy_fragment_href": "#notice/20260603039",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260609003",
@@ -3233,7 +5096,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260609003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260609003"
+        }
+      ],
+      "publisher_identifier": "20260609003",
+      "title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260609003",
+        "legacy_fragment_href": "#notice/20260609003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260609065",
@@ -3268,7 +5158,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260609065",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260609065"
+        }
+      ],
+      "publisher_identifier": "20260609065",
+      "title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260609065",
+        "legacy_fragment_href": "#notice/20260609065",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609065"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260610003",
@@ -3324,7 +5241,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610003"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610003",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260610003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260610003"
+        }
+      ],
+      "publisher_identifier": "20260610003",
+      "title": "June 17, 2026 Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260610003",
+        "legacy_fragment_href": "#notice/20260610003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610003"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260213013",
@@ -3350,7 +5294,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260213013",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260213013"
+        }
+      ],
+      "publisher_identifier": "20260213013",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260213013",
+        "legacy_fragment_href": "#notice/20260213013",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260605007",
@@ -3428,7 +5399,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605007"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605007",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260605007",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260605007"
+        }
+      ],
+      "publisher_identifier": "20260605007",
+      "title": "DINING OUT NYC PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260605007",
+        "legacy_fragment_href": "#notice/20260605007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605007"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260601045",
@@ -3515,7 +5513,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601045"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601045",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260601045",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260601045"
+        }
+      ],
+      "publisher_identifier": "20260601045",
+      "title": "FOR LEASES - 197-15 Hillside Avenue",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260601045",
+        "legacy_fragment_href": "#notice/20260601045",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601045"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260604005",
@@ -3590,7 +5615,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260604005"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260604005",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260604005",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260604005"
+        }
+      ],
+      "publisher_identifier": "20260604005",
+      "title": "FOR LEASE - 255 Greenwich Street",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260604005",
+        "legacy_fragment_href": "#notice/20260604005",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260604005"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260603002",
@@ -3666,7 +5718,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603002"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603002",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260603002",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260603002"
+        }
+      ],
+      "publisher_identifier": "20260603002",
+      "title": "FOR LEASE - 260 11th Avenue & 555 West 26th Street",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260603002",
+        "legacy_fragment_href": "#notice/20260603002",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603002"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260605006",
@@ -3746,7 +5825,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605006"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605006",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260605006",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260605006"
+        }
+      ],
+      "publisher_identifier": "20260605006",
+      "title": "DINING OUT NYC PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260605006",
+        "legacy_fragment_href": "#notice/20260605006",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605006"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260603059",
@@ -3821,7 +5927,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603059"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603059",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260603059",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260603059"
+        }
+      ],
+      "publisher_identifier": "20260603059",
+      "title": "Notice of a public hearing in the matter of the sale of real property located in the Borough of Brooklyn.",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260603059",
+        "legacy_fragment_href": "#notice/20260603059",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603059"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260608005",
@@ -3910,7 +6043,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608005"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608005",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260608005",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260608005"
+        }
+      ],
+      "publisher_identifier": "20260608005",
+      "title": "Public Hearing Notice - Sojourner Truth-Mapes Rezoning - Bronx Borough Presidents Office",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260608005",
+        "legacy_fragment_href": "#notice/20260608005",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608005"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260603052",
@@ -3948,7 +6108,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603052"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603052",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260603052",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260603052"
+        }
+      ],
+      "publisher_identifier": "20260603052",
+      "title": "6-17-26 Subcommittee on Zoning and Franchises meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260603052",
+        "legacy_fragment_href": "#notice/20260603052",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603052"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260528032",
@@ -3986,7 +6173,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528032"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528032",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260528032",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260528032"
+        }
+      ],
+      "publisher_identifier": "20260528032",
+      "title": "New York City Housing Authority Board Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260528032",
+        "legacy_fragment_href": "#notice/20260528032",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528032"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260602003",
@@ -4008,7 +6222,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602003"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602003",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260602003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260602003"
+        }
+      ],
+      "publisher_identifier": "20260602003",
+      "title": "DCWP NOH Unclaimed Restitution Fund",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260602003",
+        "legacy_fragment_href": "#notice/20260602003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602003"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260605058",
@@ -4025,7 +6266,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260605058",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260605058"
+        }
+      ],
+      "publisher_identifier": "20260605058",
+      "title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260605058",
+        "legacy_fragment_href": "#notice/20260605058",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260528031",
@@ -4100,7 +6368,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528031"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528031",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260528031",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260528031"
+        }
+      ],
+      "publisher_identifier": "20260528031",
+      "title": "NOTICE IS HEREBY GIVEN that the following matter has been schedule for public hearing by Community Board:",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260528031",
+        "legacy_fragment_href": "#notice/20260528031",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528031"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260601042",
@@ -4171,7 +6466,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601042"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601042",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260601042",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260601042"
+        }
+      ],
+      "publisher_identifier": "20260601042",
+      "title": "Brooklyn Borough President ULURP Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260601042",
+        "legacy_fragment_href": "#notice/20260601042",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601042"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260603044",
@@ -4256,7 +6578,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260603044",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260603044"
+        }
+      ],
+      "publisher_identifier": "20260603044",
+      "title": "JUNE 9, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260603044",
+        "legacy_fragment_href": "#notice/20260603044",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260213012",
@@ -4282,7 +6631,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260213012",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260213012"
+        }
+      ],
+      "publisher_identifier": "20260213012",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260213012",
+        "legacy_fragment_href": "#notice/20260213012",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260602006",
@@ -4320,7 +6696,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602006"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602006",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260602006",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260602006"
+        }
+      ],
+      "publisher_identifier": "20260602006",
+      "title": "June 23, 2026, Public Hearing Agenda CR",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260602006",
+        "legacy_fragment_href": "#notice/20260602006",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602006"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260602044",
@@ -4390,7 +6793,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602044"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602044",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260602044",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260602044"
+        }
+      ],
+      "publisher_identifier": "20260602044",
+      "title": "Commission on Government Efficiency Citywide Public Input Sessions",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260602044",
+        "legacy_fragment_href": "#notice/20260602044",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602044"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260527036",
@@ -4431,7 +6861,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260527036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260527036"
+        }
+      ],
+      "publisher_identifier": "20260527036",
+      "title": "JUNE 10, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260527036",
+        "legacy_fragment_href": "#notice/20260527036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260528018",
@@ -4522,7 +6979,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528018"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528018",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260528018",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260528018"
+        }
+      ],
+      "publisher_identifier": "20260528018",
+      "title": "Queens Borough President Land Use Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260528018",
+        "legacy_fragment_href": "#notice/20260528018",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528018"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260528021",
@@ -4560,7 +7044,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528021"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528021",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260528021",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260528021"
+        }
+      ],
+      "publisher_identifier": "20260528021",
+      "title": "EEPC COMMISSION MEETING #288",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260528021",
+        "legacy_fragment_href": "#notice/20260528021",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528021"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260527017",
@@ -4601,7 +7112,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527017"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527017",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260527017",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260527017"
+        }
+      ],
+      "publisher_identifier": "20260527017",
+      "title": "TEACHERS' RETIREMENT SYSTEM OF THE CITY OF NEW YORK MONTHLY BOARD MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260527017",
+        "legacy_fragment_href": "#notice/20260527017",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527017"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260513035",
@@ -4647,7 +7185,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513035"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513035",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260513035",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260513035"
+        }
+      ],
+      "publisher_identifier": "20260513035",
+      "title": "JUNE 16, PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260513035",
+        "legacy_fragment_href": "#notice/20260513035",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513035"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260106032",
@@ -4694,7 +7259,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106032"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106032",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260106032",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260106032"
+        }
+      ],
+      "publisher_identifier": "20260106032",
+      "title": "Board of Correction Public Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260106032",
+        "legacy_fragment_href": "#notice/20260106032",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106032"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260528020",
@@ -4732,7 +7324,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528020"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528020",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260528020",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260528020"
+        }
+      ],
+      "publisher_identifier": "20260528020",
+      "title": "City Planning Commission Public Hearing Ad",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260528020",
+        "legacy_fragment_href": "#notice/20260528020",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528020"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260529027",
@@ -4770,7 +7389,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260529027"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260529027",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260529027",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260529027"
+        }
+      ],
+      "publisher_identifier": "20260529027",
+      "title": "Initial Public Meeting of the Charter Revision Commission",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260529027",
+        "legacy_fragment_href": "#notice/20260529027",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260529027"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260213011",
@@ -4796,7 +7442,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260213011",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260213011"
+        }
+      ],
+      "publisher_identifier": "20260213011",
+      "title": "BOARD MEETINGS",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260213011",
+        "legacy_fragment_href": "#notice/20260213011",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260513034",
@@ -4842,7 +7515,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513034"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513034",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260513034",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260513034"
+        }
+      ],
+      "publisher_identifier": "20260513034",
+      "title": "JUNE 11, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260513034",
+        "legacy_fragment_href": "#notice/20260513034",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513034"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260512036",
@@ -4921,7 +7621,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512036"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512036",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260512036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260512036"
+        }
+      ],
+      "publisher_identifier": "20260512036",
+      "title": "Dining Out NYC Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260512036",
+        "legacy_fragment_href": "#notice/20260512036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512036"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260522008",
@@ -4959,7 +7686,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522008"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522008",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260522008",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260522008"
+        }
+      ],
+      "publisher_identifier": "20260522008",
+      "title": "Amendment of Rules Relating to Lead Dust",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260522008",
+        "legacy_fragment_href": "#notice/20260522008",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522008"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260522007",
@@ -4997,7 +7751,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260522007",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260522007"
+        }
+      ],
+      "publisher_identifier": "20260522007",
+      "title": "Further Amendment of Rules Relating to Vital Records",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260522007",
+        "legacy_fragment_href": "#notice/20260522007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260521020",
@@ -5068,7 +7849,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521020"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521020",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260521020",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260521020"
+        }
+      ],
+      "publisher_identifier": "20260521020",
+      "title": "351 Powers",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260521020",
+        "legacy_fragment_href": "#notice/20260521020",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521020"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260512007",
@@ -5123,7 +7931,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512007"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512007",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260512007",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260512007"
+        }
+      ],
+      "publisher_identifier": "20260512007",
+      "title": "Annual Human Services Plan (HS Plan) for Fiscal Year 2027",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260512007",
+        "legacy_fragment_href": "#notice/20260512007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512007"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260428020",
@@ -5160,7 +7995,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428020"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428020",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260428020",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260428020"
+        }
+      ],
+      "publisher_identifier": "20260428020",
+      "title": "Quarterly New York City Independent Budget Office Advisory Committee Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260428020",
+        "legacy_fragment_href": "#notice/20260428020",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428020"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260515001",
@@ -5186,7 +8048,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515001"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515001",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260515001",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260515001"
+        }
+      ],
+      "publisher_identifier": "20260515001",
+      "title": "Correction: Department of Cultural Affairs - Executive and Information Technology Titles",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260515001",
+        "legacy_fragment_href": "#notice/20260515001",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515001"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260513033",
@@ -5232,7 +8121,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513033"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513033",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260513033",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260513033"
+        }
+      ],
+      "publisher_identifier": "20260513033",
+      "title": "JUNE 8, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260513033",
+        "legacy_fragment_href": "#notice/20260513033",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513033"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260504025",
@@ -5273,7 +8189,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504025"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504025",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260504025",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260504025"
+        }
+      ],
+      "publisher_identifier": "20260504025",
+      "title": "Board of Education Retirement System Board of Trustees Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260504025",
+        "legacy_fragment_href": "#notice/20260504025",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504025"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260512004",
@@ -5314,7 +8257,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512004"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512004",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260512004",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260512004"
+        }
+      ],
+      "publisher_identifier": "20260512004",
+      "title": "BERS EXECUTIVE COMMITTEE MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260512004",
+        "legacy_fragment_href": "#notice/20260512004",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512004"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260521019",
@@ -5353,7 +8323,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521019"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521019",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260521019",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260521019"
+        }
+      ],
+      "publisher_identifier": "20260521019",
+      "title": "City of New York Deferred Compensation Plan Board meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260521019",
+        "legacy_fragment_href": "#notice/20260521019",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521019"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260518025",
@@ -5430,7 +8427,34 @@
         ]
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518025"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518025",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260518025",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260518025"
+        }
+      ],
+      "publisher_identifier": "20260518025",
+      "title": "Bronx Borough President Public Hearing \u001a C 240161 ZMX \u001a 815 Hutchinson River Parkway Rezoning",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260518025",
+        "legacy_fragment_href": "#notice/20260518025",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518025"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260429031",
@@ -5471,7 +8495,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260429031"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260429031",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260429031",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260429031"
+        }
+      ],
+      "publisher_identifier": "20260429031",
+      "title": "New York City Environmental Control Board Meeting June 11, 2026",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260429031",
+        "legacy_fragment_href": "#notice/20260429031",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260429031"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260518003",
@@ -5539,7 +8590,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260518003",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260518003"
+        }
+      ],
+      "publisher_identifier": "20260518003",
+      "title": "BROOKLYN BOROUGH BOARD PUBLIC HEARING AND MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260518003",
+        "legacy_fragment_href": "#notice/20260518003",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518003"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260522019",
@@ -5577,7 +8655,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522019"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522019",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260522019",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260522019"
+        }
+      ],
+      "publisher_identifier": "20260522019",
+      "title": "MEETING OF MAYORAL CHARTER REVISION COMMISSION AND PRELIMINARY RECOMMENDATIONS IN ADVANCE OF MEETING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260522019",
+        "legacy_fragment_href": "#notice/20260522019",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522019"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260519007",
@@ -5615,7 +8720,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519007"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519007",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260519007",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260519007"
+        }
+      ],
+      "publisher_identifier": "20260519007",
+      "title": "June 9, 2026, Public Hearing Agenda",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260519007",
+        "legacy_fragment_href": "#notice/20260519007",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519007"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260518031",
@@ -5653,7 +8785,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518031"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518031",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260518031",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260518031"
+        }
+      ],
+      "publisher_identifier": "20260518031",
+      "title": "NYC Workforce Development Board Quarterly Meeting",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260518031",
+        "legacy_fragment_href": "#notice/20260518031",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260518031"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260512014",
@@ -5675,7 +8834,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512014"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512014",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260512014",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260512014"
+        }
+      ],
+      "publisher_identifier": "20260512014",
+      "title": "CUNY Public Hearing",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260512014",
+        "legacy_fragment_href": "#notice/20260512014",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512014"
+      },
+      "source_record_id": null,
+      "board_id": null
     },
     {
       "request_id": "20260513032",
@@ -5729,7 +8915,34 @@
         "matter_ids": []
       },
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513032"
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513032",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260513032",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260513032"
+        }
+      ],
+      "publisher_identifier": "20260513032",
+      "title": "JUNE 4, 2026 PUBLIC HEARING",
+      "venue": null,
+      "participation": null,
+      "source_receipt": null,
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260513032",
+        "legacy_fragment_href": "#notice/20260513032",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513032"
+      },
+      "source_record_id": null,
+      "board_id": null
     }
   ],
   "location_residual": {

@@ -254,15 +254,25 @@ function hearingDecision(row, body) {
 function normalizeHearingRow(row) {
   if (row && row.source_system === "community_board") {
     var boardSource = row.source_url || row.record_url || null;
+    var boardPublisherId = String(row.publisher_identifier || row.source_record_id || row.record_id || "").trim();
+    var boardMeetingId = String(row.meeting_id || (boardPublisherId
+      ? "meeting:community_board:" + boardPublisherId : "")).trim() || null;
     return {
-      request_id: String(row.request_id || ""), source_section: row.section_name || "Community Board Meetings",
-      agency: row.agency_name || null, notice_type: row.type_of_notice_description || "Board meeting",
+      object_type: "meeting", schema: "cityscroll.meeting_object.v1", meeting_id: boardMeetingId,
+      source_keys: boardPublisherId ? [{ source_system: "community_board", key_type: "publisher_event_id", value: boardPublisherId }] : [],
+      publisher_identifier: boardPublisherId || null, request_id: null,
+      source_section: row.section_name || "Community Board Meetings",
+      agency: null, notice_type: row.type_of_notice_description || "Board meeting",
       title: hearingPlainText(row.short_title) || "Community board meeting", event_date: row.event_date || null,
       published_at: row.start_date || null, decides: hearingPlainText(row.short_title) || "Community board meeting",
       affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
       participation: { links: [], remote_join_url: null, emails: [], phones: [], source_url: boardSource },
       source_url: boardSource, description: "", meeting_origin: row.meeting_origin || "unknown",
-      source_provenance: row.source_provenance || null, meeting_join: row.meeting_join || null,
+      source_provenance: row.source_provenance || null, source_receipt: row.source_receipt || row.observed_receipt || null,
+      join_status: row.join_status || row.meeting_join?.status || "unknown",
+      institution_refs: { agency_ref: null, board_ref: row.board_id ? "community-board:" + row.board_id : null },
+      compatibility: { legacy_notice_href: null, legacy_fragment_href: null, publisher_href: boardSource },
+      meeting_join: row.meeting_join || null,
     };
   }
   var body = hearingPlainText([
@@ -273,15 +283,29 @@ function normalizeHearingRow(row) {
   var audience = HEARING_AUDIENCES.find(function (entry) { return entry[0].test((row.short_title || "") + " " + body); });
   var venue = row.venue || hearingVenue(row);
   var participation = hearingParticipationFromBody(body, source);
+  var cityRecordId = String(row.request_id || "");
   return {
-    request_id: String(row.request_id || ""), source_section: row.section_name || null,
+    object_type: "meeting", schema: "cityscroll.meeting_object.v1",
+    meeting_id: cityRecordId ? "meeting:city_record:" + cityRecordId : null,
+    source_keys: cityRecordId ? [{ source_system: "city_record", key_type: "request_id", value: cityRecordId }] : [],
+    publisher_identifier: cityRecordId || null,
+    request_id: cityRecordId, source_section: row.section_name || null,
     agency: row.agency_name || null, notice_type: row.type_of_notice_description || null,
     title: hearingPlainText(row.short_title) || "Hearing " + String(row.request_id || "").trim(), event_date: row.event_date || null,
     published_at: row.start_date || null, decides: hearingDecision(row, body),
     affects: audience ? [audience[1]] : [], affected_area: row.affected_area || hearingAffectedArea(row),
     venue: venue,
     participation: participation,
-    source_url: source, description: body.slice(0, 1200),
+    source_url: source, source_receipt: row.source_receipt || null,
+    meeting_origin: row.meeting_origin || "city_record_notice",
+    join_status: "not_applicable",
+    institution_refs: { agency_ref: null, board_ref: null },
+    compatibility: {
+      legacy_notice_href: cityRecordId ? "/notices/" + encodeURIComponent(cityRecordId) : null,
+      legacy_fragment_href: cityRecordId ? "#notice/" + encodeURIComponent(cityRecordId) : null,
+      publisher_href: source,
+    },
+    description: body.slice(0, 1200),
   };
 }
 // Hand-synced with worker/src/lib/hearings.mjs participationFromRow: strip trailing
