@@ -121,6 +121,9 @@ test("Near-you map hashes canonicalize direct loads and hash changes to the same
   const mapSource = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
   assert.match(mapSource, /void adoptMapHashRoute\(\)/);
   assert.match(mapSource, /addEventListener\("hashchange"/);
+  assert.match(mapSource, /async function adoptDocument\(href, \{ replaceHistory = false \} = \{\}\)/);
+  assert.match(mapSource, /const updateHistory = replaceHistory \? history\.replaceState : history\.pushState/);
+  assert.match(mapSource, /await adoptDocument\(target\.toString\(\), \{ replaceHistory: true \}\)/);
 });
 
 test("Now geography socket narrows existing compiled items and empty scope stays inert", () => {
