@@ -7,11 +7,20 @@ import { applyGeocode, normalizeHearing } from "./lib/hearings.mjs";
 import { withDistricts } from "./lib/council_district.mjs";
 import { hearingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
+import sharedMeetingSnapshot from "../../site/data/shared_meeting_read_model.json" with { type: "json" };
+import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
+const COMMUNITY_BOARD_SNAPSHOT = {
+  generated_at: sharedMeetingSnapshot?.sources?.community_board?.generated_at || null,
+  coverage: sharedMeetingSnapshot?.sources?.community_board?.coverage || null,
+  rows: Array.isArray(sharedMeetingSnapshot?.rows)
+    ? sharedMeetingSnapshot.rows.filter((row) => row?.source_system === "community_board")
+    : [],
+};
 const SELECT = [
   "request_id", "start_date", "agency_name", "type_of_notice_description", "section_name",
   "short_title", "event_date", "building_name", "street_address_1", "street_address_2",
@@ -93,7 +102,7 @@ async function geocodeAll(fetchImpl, addresses) {
   return output;
 }
 
-export async function buildHearingView(fetchImpl = fetch, now = new Date()) {
+export async function buildHearingView(fetchImpl = fetch, now = new Date(), options = {}) {
   const rows = await fetchRows(fetchImpl, now);
   const enriched = await Promise.all(rows.map((row) => enrichRuleSource(fetchImpl, row)));
   const normalized = enriched.map(normalizeHearing);
@@ -103,27 +112,39 @@ export async function buildHearingView(fetchImpl = fetch, now = new Date()) {
   ]);
   const geocodes = await geocodeAll(fetchImpl, addresses);
   const hearings = normalized.map((record) => applyGeocode(record, geocodes));
+  const readModel = buildSharedMeetingReadModel({
+    cityRecordRows: hearings,
+    communityBoardIndex: options.communityBoardIndex || null,
+    generatedAt: now.toISOString(),
+    now: now.toISOString(),
+  });
   return {
+    ...readModel,
+    read_model: readModel,
     schema_version: 1,
-    generated_at: now.toISOString(),
+    generated_at: readModel.generated_at || now.toISOString(),
     source: {
       name: "City Record Online",
       dataset: "dg92-zbpx",
       url: "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
     },
     counts: {
-      total: hearings.length,
+      total: hearings.length + readModel.counts.community_board,
       local: hearings.filter((record) => record.affected_area.scope === "local").length,
       citywide: hearings.filter((record) => record.affected_area.scope === "citywide").length,
       unlocated: hearings.filter((record) => record.affected_area.scope === "unlocated").length,
     },
-    hearings,
+    hearings: readModel.rows,
   };
 }
 
-export async function refreshHearings(env, fetchImpl = fetch, now = new Date()) {
+export async function refreshHearings(env, fetchImpl = fetch, now = new Date(), options = {}) {
   if (!env.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
-  const view = await buildHearingView(fetchImpl, now);
+  const view = await buildHearingView(fetchImpl, now, {
+    communityBoardIndex: options.includeCommunityBoard === true || options.communityBoardIndex
+      ? (options.communityBoardIndex || COMMUNITY_BOARD_SNAPSHOT)
+      : null,
+  });
   await env.ALERT_STATE.put(HEARINGS_KV_KEY, JSON.stringify(view), {
     expirationTtl: 3 * 24 * 60 * 60,
   });
@@ -160,10 +181,16 @@ export async function handleHearings(request, env, ctx) {
   const age = parsed?.generated_at ? Date.now() - new Date(parsed.generated_at).getTime() : Infinity;
   const requestedId = new URL(request.url).searchParams.get("id") || null;
 
-  const requestedMissing = requestedId && !parsed?.hearings?.some((hearing) => hearing?.request_id === requestedId);
+  const requestedMissing = requestedId && !parsed?.hearings?.some((hearing) => (
+    hearing?.meeting_id === requestedId
+      || hearing?.request_id === requestedId
+      || hearing?.source_keys?.some((key) => key?.value === requestedId)
+  ));
   if (!parsed || age > MAX_AGE_MS || requestedMissing) {
     try {
-      const view = await buildHearingView(fetch, new Date());
+      const view = await buildHearingView(fetch, new Date(), {
+        communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,
+      });
       raw = JSON.stringify(view);
       const write = env.ALERT_STATE.put(HEARINGS_KV_KEY, raw, { expirationTtl: 3 * 24 * 60 * 60 });
       if (ctx?.waitUntil) ctx.waitUntil(write); else await write;
@@ -188,7 +215,7 @@ export async function handleMeetingICS(request, env) {
   }
   if (!env?.ALERT_STATE) return new Response("not configured", { status: 503 });
   const id = new URL(request.url).searchParams.get("id") || "";
-  if (!/^[A-Za-z0-9_-]{4,40}$/.test(id)) return new Response("invalid meeting id", { status: 400 });
+  if (!id || id.length > 320 || /[\r\n]/.test(id)) return new Response("invalid meeting id", { status: 400 });
 
   let parsed = null;
   try {
@@ -196,16 +223,30 @@ export async function handleMeetingICS(request, env) {
     parsed = raw ? JSON.parse(raw) : null;
   } catch { parsed = null; }
   if (!parsed) {
-    try { parsed = await buildHearingView(fetch, new Date()); } catch { parsed = null; }
+    try {
+      parsed = await buildHearingView(fetch, new Date(), {
+        communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,
+      });
+    } catch { parsed = null; }
   }
-  let record = (parsed?.hearings || []).find((hearing) => hearing?.request_id === id);
+  let record = (parsed?.hearings || []).find((hearing) => (
+    hearing?.meeting_id === id
+      || hearing?.request_id === id
+      || hearing?.source_keys?.some((key) => key?.value === id)
+  ));
   // A daily view can be fresh by age while missing a notice published after its
   // refresh. Rebuild on an id miss so a dated rule hearing does not degrade to
   // the misleading "meeting not found" response.
   if (!record) {
     try {
-      const refreshed = await buildHearingView(fetch, new Date());
-      record = (refreshed?.hearings || []).find((hearing) => hearing?.request_id === id);
+      const refreshed = await buildHearingView(fetch, new Date(), {
+        communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,
+      });
+      record = (refreshed?.hearings || []).find((hearing) => (
+        hearing?.meeting_id === id
+          || hearing?.request_id === id
+          || hearing?.source_keys?.some((key) => key?.value === id)
+      ));
     } catch { /* preserve the honest not-found below */ }
   }
   if (!record) return new Response("meeting not found", { status: 404 });
@@ -220,7 +261,7 @@ export async function handleMeetingICS(request, env) {
     status: 200,
     headers: {
       "Content-Type": "text/calendar; charset=utf-8",
-      "Content-Disposition": `attachment; filename="meeting-${id}.ics"`,
+      "Content-Disposition": `attachment; filename="meeting-${id.replace(/[^A-Za-z0-9_-]+/g, "-")}.ics"`,
       "Cache-Control": "public, max-age=900",
       "Access-Control-Allow-Origin": "*",
     },

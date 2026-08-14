@@ -857,6 +857,7 @@
     no_zap:            "Aucun rezonage sur le Portail des demandes de zonage (ZAP)",
     nothing_found_feed: "Rien trouvé. Essayez une recherche plus large.",
     could_not_reach:   "Impossible de joindre NYC Open Data. Réessayez.",
+    shared_meeting_read_model_unavailable: "L’instantané des réunions est indisponible. Réessayez.",
 
     // Feed card actions
     open_notice_btn:        "Ouvrir l'avis",
