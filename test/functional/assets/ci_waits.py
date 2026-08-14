@@ -83,3 +83,16 @@ def wait_for_url(
         label=label,
         attempts=attempts,
     )
+
+
+def click_and_wait_for_url(
+    page: Page,
+    selector: str,
+    url: str,
+    *,
+    wait_until: str | None = None,
+    timeout: int = DEFAULT_WAIT_TIMEOUT_MS,
+) -> None:
+    """Pair a click with its navigation event so the event cannot be missed."""
+    with page.expect_navigation(url=url, wait_until=wait_until, timeout=timeout):
+        page.click(selector, timeout=timeout)
