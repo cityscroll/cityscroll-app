@@ -227,6 +227,10 @@ export function meetingProcessActionKey(stage, record = null) {
  */
 export function meetingEventSubjectKey(record) {
   if (record?.meeting_id) return `meeting-object:${record.meeting_id}`;
+  // Source-qualified rows without a materialized id are not safe to group by
+  // display fields. The legacy fallback remains only for old compatibility
+  // rows that predate the shared meeting object contract.
+  if (record?.source_system || record?.source_keys?.length) return null;
   const agency = normalizeKey(record?.agency || record?.agency_name);
   const day = isoDate(record?.event_date);
   if (!agency || !day) return null;
@@ -241,6 +245,7 @@ export function meetingEventSubjectKey(record) {
  */
 export function meetingMatterSubjectKey(record) {
   if (record?.meeting_id) return null;
+  if (record?.source_system || record?.source_keys?.length) return null;
   const decides = clean(record?.decides);
   const agency = normalizeKey(record?.agency || record?.agency_name);
   if (!agency || !decides || decides.length < 24) return null;

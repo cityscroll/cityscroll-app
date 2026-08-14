@@ -123,6 +123,12 @@ test("Meetings keeps the community-board institution pivot visible after hydrati
   assert.match(feedSource, /meetings_board_institution_pivot/);
 });
 
+test("Community-board scope controls stay off the initial app module path", () => {
+  assert.doesNotMatch(feedSource, /from "\.\.\/community_board_scope_links\.mjs"/);
+  assert.match(feedSource, /communityBoardScopeToolsPromise=import\("\.\.\/community_board_scope_links\.mjs"\)/);
+  assert.match(feedSource, /renderMeetingsBoardScope\(hearingAll\|\|\[\],seq\)/);
+});
+
 test("Meeting cards render the agency constellation pivot exactly once", () => {
   const card = extractFunction(feedSource, "meetingsExplorerCardHTML");
   const agencyPivots = card.match(/pivotA\(agencyHref\(agency\),\s*agency\)/g) || [];
