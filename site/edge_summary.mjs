@@ -81,7 +81,7 @@ const VERIFIED_INTERNAL_ROUTES = [
   /^\/browse\/?(?:\?.*)?$/,
   /^\/parcels\/\d{10}\/?(?:\?.*)?$/,
   /^\/exams\/\d{4}\/?(?:\?.*)?$/,
-  /^\/(?:near-you|following)(?:\/[^?#]*)?\/?(?:\?.*)?$/,
+  /^\/(?:near-you|following)(?:\/[^?#]*)?\/?(?:\?.*)?(?:#.*)?$/,
   /^\/community-boards\/?(?:\?.*)?(?:#.*)?$/,
   /^#parcel-biography-(?:property|land|tax_lien|ll48|cofo)$/,
   /^#notice\/[A-Za-z0-9_%~-]+$/,
