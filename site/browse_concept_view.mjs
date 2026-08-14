@@ -8,7 +8,7 @@ export const BROWSE_CONCEPTS = Object.freeze({
     tab: "people",
     label: "People + organizations",
     title: "People and organizations",
-    description: "Officials, vendors, and committees with published records.",
+    description: "Officials, vendors, committees, and community boards with published records.",
   },
   places: {
     route: "/browse/places/",
@@ -124,6 +124,12 @@ function renderCommittees(graph, people) {
   }).join("")}</ul>`;
 }
 
+function renderBoardOrganizations(geography) {
+  const boards = boardItems(geography);
+  if (!boards.length) return `<p class="empty">No community boards are in the current organization index.</p>`;
+  return `<ul class="browse-concept-list">${boards.map((board) => `<li><strong>${esc(board.name)}</strong>. <span class="browse-concept-meta">Public body serving ${esc(board.borough)} District ${esc(board.district)}.</span></li>`).join("")}</ul>`;
+}
+
 function boardItems(geography = {}) {
   const districtByBoard = new Map((geography.public_edges || [])
     .filter((edge) => edge?.type === "covers" && String(edge.to || "").startsWith("community-district:"))
@@ -166,6 +172,7 @@ export function buildBrowseConceptLanding(kind, sources = {}) {
       conceptSection("officials", "Officials", "Published official profiles.", renderOfficials(people), officials.length),
       conceptSection("vendors", "Vendors", "Vendor profiles from award records.", renderVendors(awards), vendors.length),
       conceptSection("committees", "Committees", "Published committee records.", renderCommittees(committees, people), committeeRows.length),
+      conceptSection("community-boards", "Community boards", "Public bodies serving New York City districts.", renderBoardOrganizations(geography), boards.length),
     ]
     : [
       conceptSection("community-boards", "Community boards", "The geography index lists each board and opens its mapped community district.", renderBoards(geography), boards.length),
