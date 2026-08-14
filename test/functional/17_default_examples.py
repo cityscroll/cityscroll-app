@@ -11,7 +11,7 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from ci_waits import wait_for_function, wait_for_locator, wait_for_url  # noqa: E402
+from ci_waits import click_and_wait_for_url, wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
@@ -23,23 +23,39 @@ CI_WAIT_TIMEOUT_MS = 60_000
 def click_tab_and_wait_for_route(page, tab, expected_path):
     """Retry a tab click when CI misses a document navigation event.
 
-    URL waits observe both full-document and same-document navigation. A page-side
-    predicate can remain attached to the old execution context while a clicked tab
-    replaces the document, so it is the wrong signal for this boundary. ``commit``
-    makes the route assertion independent of slow subresources; the assertions below
-    still verify the resulting document and focus state.
+    Rules and Meetings are route-module-backed tabs. Start their module load and wait
+    for readiness before clicking so the click cannot be consumed while ``showTab``
+    is still deferring the transition. Pair the click with its navigation event so a
+    fast commit cannot race a post-click URL observer; the assertions below still
+    verify the resulting document and focus state.
     """
     selector = f'.tabbtn[data-tab="{tab}"]'
+    page.evaluate(
+        """tab => {
+            const modules = globalThis.CrolRouteModules;
+            if (modules?.ensure) modules.ensure(tab);
+        }""",
+        tab,
+    )
+    wait_for_function(
+        page,
+        """tab => {
+            const modules = globalThis.CrolRouteModules;
+            return !modules || modules.isReady(tab);
+        }""",
+        arg=tab,
+        timeout=CI_WAIT_TIMEOUT_MS,
+        attempts=1,
+        label=f"{tab} route module readiness",
+    )
     for attempt in range(2):
-        page.click(selector, timeout=CI_WAIT_TIMEOUT_MS)
         try:
-            wait_for_url(
+            click_and_wait_for_url(
                 page,
+                selector,
                 f"**{expected_path}",
                 wait_until="commit",
                 timeout=CI_WAIT_TIMEOUT_MS,
-                attempts=1,
-                label=f"{tab} document route",
             )
             return
         except PlaywrightTimeoutError:
