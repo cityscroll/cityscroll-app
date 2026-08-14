@@ -255,6 +255,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree;
   elder reservation thresholds for that seater are `elder_slot` / `tools/elder_merge_slot.mjs`.
+- Preset fallback refreshes run `node tools/validate_presets.mjs --write` only when CI detects
+  inherited fallback drift; transiently unresolved live suggestions retain their inherited
+  filter/count, while `--check` still compares generated fallbacks against live counts.
 
 ## Cross-domain entity intelligence
 
