@@ -82,8 +82,8 @@ DOCUMENT_ROUTES = (
     # surfaces so internal state wording cannot regress outside board pages.
     "agencies/office-of-the-mayor/",
     "parcels/1000730008/",
-    # Minutes are currently not yet ingested; this route proves member and
-    # recommendation activity stays pending/unknown rather than empty.
+    # Board minutes remain publisher-keyed source records; this route also proves
+    # their dated freshness signal stays in resident language.
     "community-boards/bronx-cb-02/",
 )
 
