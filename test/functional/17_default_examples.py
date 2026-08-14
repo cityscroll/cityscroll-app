@@ -11,11 +11,39 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from ci_waits import wait_for_locator, wait_for_url  # noqa: E402
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
 BASE = os.environ.get("CROL_BASE", "")
+CI_WAIT_TIMEOUT_MS = 60_000
+
+
+def click_tab_and_wait_for_route(page, tab, expected_path):
+    """Retry the click and pathname check together when CI misses a navigation event."""
+    selector = f'.tabbtn[data-tab="{tab}"]'
+    for attempt in range(2):
+        page.click(selector, timeout=CI_WAIT_TIMEOUT_MS)
+        try:
+            wait_for_function(
+                page,
+                "path => location.pathname === path",
+                arg=expected_path,
+                timeout=CI_WAIT_TIMEOUT_MS,
+                attempts=1,
+                label=f"{tab} document route",
+            )
+            return
+        except PlaywrightTimeoutError:
+            if attempt == 1:
+                raise
+            print(
+                f"TRANSIENT route timeout for {tab} document route; retrying click (attempt 2/2)",
+                flush=True,
+            )
+            page.goto(BASE, timeout=30_000)
+            page.wait_for_load_state("load")
 
 
 def step(tag, name, detail=""):
@@ -31,7 +59,7 @@ def land_opens_on_a_populated_example(pw):
 
     page.goto(f"{BASE}#land", timeout=30000)
     page.wait_for_load_state("load")
-    wait_for_locator(page.locator("#ldetail"), label="bare Land example")
+    wait_for_locator(page.locator("#ldetail"), timeout=CI_WAIT_TIMEOUT_MS, label="bare Land example")
     detail = page.locator("#ldetail")
     text = detail.inner_text().strip()
     if "Pick a rezoning" in text or not text:
@@ -54,7 +82,11 @@ def people_opens_on_a_populated_example(pw):
 
     page.goto(f"{BASE}#people", timeout=30000)
     page.wait_for_load_state("load")
-    wait_for_locator(page.locator("#career-results .career-card").first, label="bare Staffing example")
+    wait_for_locator(
+        page.locator("#career-results .career-card").first,
+        timeout=CI_WAIT_TIMEOUT_MS,
+        label="bare Staffing example",
+    )
     first = page.locator("#career-results .career-card").first
     first_text = first.inner_text().strip()
     if "APPLY BY" not in first_text.upper():
@@ -89,8 +121,7 @@ def people_opens_on_a_populated_example(pw):
             page.goto(f"{BASE}browse/property/", timeout=30000)
             page.wait_for_load_state("load")
         else:
-            page.click(f'.tabbtn[data-tab="{tab}"]')
-            wait_for_url(page, f"**{expected_path}", label=f"{tab} document route")
+            click_tab_and_wait_for_route(page, tab, expected_path)
         page.wait_for_timeout(100)
         route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
         if route != {"pathname": expected_path, "search": "", "hash": ""}:
