@@ -57,6 +57,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `worker/src/lib/subject_registry.mjs`. `site/mandate_land_use_bridge.mjs` composes
   mandate → procedure ← project only when both evaluated edges are public; the direct
   `mandate_land_use` identity-and-phase gate remains separate and must not be weakened.
+- **Community-board meeting labels:** `site/non_council_outcome_panel.mjs` promotes a notice
+  to an official board label only from the receipt-backed
+  `cityscroll.community_board_source_join.v1` contract (`exact_board_date_publisher_identifier`);
+  the older exact body/date/matter gate remains separate for decision details. Unjoined notices
+  stay on their City Record/unknown surface.
 
 ## PR and CI preflight
 
