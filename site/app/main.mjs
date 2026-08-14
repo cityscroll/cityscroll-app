@@ -37,7 +37,6 @@ function routeModuleForHash(hash){
   const raw=String(hash||"").replace(/^#/,"").toLowerCase();
   const path=String(location.pathname||"").toLowerCase();
   if(raw.replace(/\?.*$/,"")==="rules" || path==="/browse/rules/") return "rules";
-  if(raw.replace(/\?.*$/,"")==="meetings" || path==="/browse/meetings/") return "rules";
   return raw.replace(/\?.*$/,"")==="property" || raw.startsWith("notice/") ||
     path.startsWith("/notices/") || path==="/browse/property/"
     ? "property"
