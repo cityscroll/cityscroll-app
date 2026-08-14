@@ -8,6 +8,11 @@ import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
 import { buildLocalConstellation, renderLocalConstellationHTML } from "./local_constellation.mjs";
+import {
+  communityBoardMeetingEdgeAccepted,
+  communityBoardMeetingEdgeFromRow,
+} from "./community_board_institution_edges.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -322,12 +327,30 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       source: noticeSource,
     }, { className: "notice-project-link", escape: esc })}</p>`
     : "";
+  const boardEdge = communityBoardMeetingEdgeFromRow(row);
+  const boardId = boardEdge?.from?.replace(/^community-board:/, "")
+    || row.institution_refs?.board_ref?.replace(/^community-board:/, "")
+    || row.board_id;
+  const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
+  const boardName = row.board_name || boardEdge?.board_name
+    || (boardId ? `Community Board ${boardId.replace(/^[a-z-]+-cb-/, "")}` : null);
+  const boardPivot = boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref
+    ? `<p class="notice-entity-pivot">${renderEntityPivotLink({
+      relation_label: "hosted by community board",
+      target_kind: "community-board",
+      target_id: boardId,
+      target_name: boardName,
+      canonical_href: boardHref,
+      source: { kind: "meeting", id: row.meeting_id || `meeting:city_record:${id}`, name: title, canonical_href: `/notices/${encodeURIComponent(id)}` },
+    }, { className: "notice-community-board-link", escape: esc })}</p>`
+    : "";
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
     <article class="panel route-item" tabindex="-1">
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       ${projectPivot}
+      ${boardPivot}
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}

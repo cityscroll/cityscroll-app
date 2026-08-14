@@ -507,6 +507,19 @@
           ],
           "semantics": "descriptive temporal service on a community board; no influence, support, control, or vote implication"
         },
+        "hosts_meeting": {
+          "source_contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "required_evidence": [
+            "exact_board_identity",
+            "exact_publisher_identifier",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "verified_source_join"
+          ],
+          "semantics": "descriptive publisher-backed relation from a community board institution to a meeting; no agency, influence, control, or vote implication"
+        },
         "issues_recommendation": {
           "source_contract": "cityscroll.community_board_recommendation_source_contract.v1",
           "edge_schema": "cityscroll.community_board_recommendation_edge.v1",
@@ -784,16 +797,27 @@
     },
     {
       "id": "hosts_meeting",
-      "status": "unregistered",
+      "status": "registered",
       "from": "community-board",
       "to": "meeting",
-      "reason": "Organization-facing meeting family is declared, but board calendars and minutes have not yet earned a publisher-keyed edge.",
+      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins with a retained source receipt.",
+      "contract_ref": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+      "required_evidence": [
+        "exact_board_identity",
+        "exact_publisher_identifier",
+        "exact_meeting_date",
+        "retained_source_url",
+        "observed_receipt",
+        "verified_source_join"
+      ],
       "backing": [
         "community_board_source_registry",
-        "meeting-community-board-votes"
+        "meeting_object",
+        "public_graph.edge"
       ],
       "label": "Hosts meeting",
-      "grounding": "gap"
+      "grounding": "partial"
     },
     {
       "id": "issues_recommendation",

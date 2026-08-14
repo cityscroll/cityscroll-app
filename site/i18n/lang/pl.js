@@ -1463,6 +1463,7 @@
     meetings_entries_announce: "{n} meetings",
     meetings_siblings_label: "Same meeting",
     meetings_action_agency_profile: "Open agency profile",
+    meetings_hosted_by_board: "Hosted by {board}",
     meeting_stage_scheduled: "Scheduled",
     meeting_stage_agenda: "Agenda",
     meeting_stage_held: "Held",
