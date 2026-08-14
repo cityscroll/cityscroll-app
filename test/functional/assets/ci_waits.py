@@ -54,6 +54,17 @@ def wait_for_function(
     )
 
 
+def wait_for_route_module(page: Page, tab: str) -> None:
+    """Await the app's route-module promise before clicking its tab."""
+    page.evaluate(
+        """async tab => {
+            const ensure = globalThis.CrolRouteModules?.ensure;
+            if (ensure) await ensure(tab);
+        }""",
+        tab,
+    )
+
+
 def wait_for_locator(
     locator: Locator,
     *,
@@ -113,17 +124,17 @@ def click_and_wait_for_route(
     active pane after it instead of waiting for a document navigation event.
     """
     page.click(selector, timeout=timeout)
-    wait_for_function(
+    wait_for_url(
         page,
-        """({expectedPath, tab}) => {
-            const pane = document.querySelector(`#tab-${tab}.tabpane.active`);
-            return location.pathname === expectedPath
-                && location.search === ""
-                && location.hash === ""
-                && pane?.querySelector(".lens-entry-heading") != null;
-        }""",
-        arg={"expectedPath": expected_path, "tab": tab},
+        f"**{expected_path}",
         timeout=timeout,
         attempts=1,
-        label=f"{tab} same-document route",
+        label=f"{tab} route path",
+    )
+    wait_for_locator(
+        page.locator(f"#tab-{tab}.tabpane.active .lens-entry-heading"),
+        state="attached",
+        timeout=timeout,
+        attempts=1,
+        label=f"{tab} active entry heading",
     )
