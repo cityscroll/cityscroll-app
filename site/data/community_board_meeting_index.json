@@ -14,7 +14,8 @@
     "source_urls_checked": 52,
     "boards_indexed": 9,
     "records_indexed": 55,
-    "boards_in_inventory": 59
+    "boards_in_inventory": 59,
+    "institution_edges_materialized": 0
   },
   "receipts": [
     {
@@ -8334,7 +8335,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 1",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-01",
+        "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -8465,7 +8472,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 1",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-01",
+        "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -8599,7 +8612,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -8733,7 +8752,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -8867,7 +8892,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9001,7 +9032,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9132,7 +9169,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 12",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-12",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9266,7 +9309,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9400,7 +9449,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9534,7 +9589,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9668,7 +9729,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9802,7 +9869,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -9933,7 +10006,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 12",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-12",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10067,7 +10146,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10201,7 +10286,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10335,7 +10426,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10469,7 +10566,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 4",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-04",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10603,7 +10706,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10737,7 +10846,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -10871,7 +10986,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11005,7 +11126,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11139,7 +11266,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11273,7 +11406,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Brooklyn Community Board 17",
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-17",
+        "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11407,7 +11546,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11541,7 +11686,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11675,7 +11826,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11809,7 +11966,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -11943,7 +12106,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 2",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-02",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12077,7 +12246,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 4",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-04",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12211,7 +12386,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12342,7 +12523,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://manhattancb1.cityofnewyork.us/event/executive-committee-12/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 1",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-01",
+        "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/executive-committee-12/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12476,7 +12663,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12610,7 +12803,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12744,7 +12943,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -12878,7 +13083,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://www.brooklyncb11.org/event/transportation-committee-6/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Brooklyn Community Board 11",
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-11",
+        "meeting:community_board:https://www.brooklyncb11.org/event/transportation-committee-6/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13012,7 +13223,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13143,7 +13360,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13274,7 +13497,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 12",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-12",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13408,7 +13637,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13539,7 +13774,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 1",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-01",
+        "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13673,7 +13914,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 4",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-04",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13807,7 +14054,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -13941,7 +14194,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 10",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-10",
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14072,7 +14331,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Manhattan Community Board 1",
+      "entity_refs_all": [
+        "community-board:manhattan-cb-01",
+        "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14206,7 +14471,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14340,7 +14611,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14474,7 +14751,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14608,7 +14891,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Brooklyn Community Board 14",
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-14",
+        "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14739,7 +15028,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -14870,7 +15165,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -15001,7 +15302,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -15135,7 +15442,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -15269,7 +15582,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -15403,7 +15722,13 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/"
+      ],
+      "institution_edges": []
     },
     {
       "record_kind": "event",
@@ -15537,7 +15862,14 @@
         "legacy_fragment_href": null,
         "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
       },
-      "request_id": null
+      "request_id": null,
+      "board_name": "Bronx Community Board 6",
+      "entity_refs_all": [
+        "community-board:bronx-cb-06",
+        "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+      ],
+      "institution_edges": []
     }
-  ]
+  ],
+  "institution_edges": []
 }

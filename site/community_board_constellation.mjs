@@ -27,6 +27,7 @@ import {
   promotedCommunityBoardRelationEdges,
 } from "./community_board_relations.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { communityBoardMeetingEdgeAccepted } from "./community_board_institution_edges.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -133,15 +134,17 @@ function relationItem(edge, kind) {
     ...edge,
     href: kind === "member" && /^official:\d+$/.test(edge.to || "")
       ? `/officials/${encodeURIComponent(edge.target_id)}/`
-      : null,
+      : kind === "meeting" && communityBoardMeetingEdgeAccepted(edge)
+        ? edge.href || edge.canonical_href || null
+        : null,
     date: edge.relation_date,
     source_document: edge.source_document,
     label: edge.target_name || edge.target_id,
-    state: "official",
+    state: communityBoardMeetingEdgeAccepted(edge) || kind !== "meeting" ? "official" : "held",
   };
 }
 
-function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, sourceRecordRowsForBoard, relationEdges) {
+function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, sourceRecordRowsForBoard, relationEdges, institutionEdges) {
   const sourceHref = registrySource(board);
   if (spec.id === "place") {
     const districtId = clean(districtEdge?.to || "").replace(/^community-district:/, "");
@@ -172,6 +175,21 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, so
     };
   }
   if (spec.id === "meetings") {
+    if (Array.isArray(institutionEdges)) {
+      const accepted = institutionEdges.filter(communityBoardMeetingEdgeAccepted);
+      const items = institutionEdges.map((edge) => relationItem(edge, "meeting"));
+      return {
+        ...spec,
+        status: accepted.length ? "matched" : "unknown",
+        count: accepted.length || null,
+        target_name: "Meetings and hearings",
+        view_all_href: accepted[0]?.href || null,
+        source: sourceHref,
+        provenance: accepted[0]?.provenance || institutionEdges[0]?.provenance || source?.provenance || null,
+        items,
+        institution_edges: institutionEdges,
+      };
+    }
     const joined = sourceRecordRowsForBoard.filter((row) => ["official", "observed"].includes(row.state));
     return {
       ...spec,
@@ -181,8 +199,8 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, so
       view_all_href: joined.length ? joined[0].href : null,
       source: sourceHref,
       provenance: joined[0]?.provenance || source?.provenance || null,
-      items: joined,
-    };
+    items: joined,
+  };
   }
   if (spec.id === "members" || spec.id === "recommendations") {
     const kind = spec.id === "members" ? "member" : "recommendation";
@@ -226,7 +244,7 @@ export function buildCommunityBoardEdgeSummary(viewOrCategories) {
         ? "Official source inventory"
         : category.label,
     target_kind: category.target_kind,
-    target_id: category.id === "place" ? category.items?.[0]?.target_id || null : null,
+    target_id: ["place", "meetings"].includes(category.id) ? category.items?.[0]?.target_id || null : null,
     target_name: category.target_name,
     count: category.count,
     state: category.status,
@@ -264,6 +282,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
       || (Array.isArray(sources.sourceRecords) ? sources.sourceRecords : sources.sourceRecords?.records)
       || [],
   );
+  const suppliedInstitutionEdges = sources.institutionEdges?.[requested]
+    || sources.boardInstitutionEdges?.[requested]
+    || sources.meetingEdges?.[requested];
+  const institutionEdges = Array.isArray(suppliedInstitutionEdges) ? suppliedInstitutionEdges : null;
   const relationInput = sources.boardRelations?.[requested]
     || sources.relations?.[requested]
     || {};
@@ -276,6 +298,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     boardSources,
     boardSourceRecords,
     relationEdges,
+    institutionEdges,
   ));
   const edgeSummary = buildCommunityBoardEdgeSummary({ body_id: requested, categories });
   const localConstellation = buildLocalConstellation({
@@ -297,6 +320,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     display_name: normalizedBoard.name,
     board: normalizedBoard,
     source_records: boardSourceRecords,
+    institution_edges: institutionEdges || [],
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
@@ -359,11 +383,14 @@ function renderCategory(category) {
 }
 
 function sourceRecordMarkup(row) {
+  const institutionEdge = row.edge_type === "hosts_meeting";
   const label = row.href
     ? officialSourceLink({ href: row.href, label: row.title || row.label, className: "board-source-link", escape: esc })
     : `<span>${esc(row.title || row.label)}</span>`;
   const date = row.date ? ` · ${esc(row.date)}` : "";
-  const state = row.state === "official" ? "Official board record" : row.state === "observed" ? "Source observed" : "Source status unknown";
+  const state = institutionEdge
+    ? (row.state === "official" ? "Hosted meeting" : "Connection not published")
+    : row.state === "official" ? "Official board record" : row.state === "observed" ? "Source observed" : "Source status unknown";
   return `<li class="node-record" data-source-record-kind="${esc(row.record_kind || "record")}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">${esc(row.label)}${date} · ${esc(state)}</span></li>`;
 }
 

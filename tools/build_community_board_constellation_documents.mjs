@@ -25,7 +25,19 @@ function sourceRows() {
   const meetingIndex = readJson("site/data/community_board_meeting_index.json");
   const scorecard = readJson("site/data/community_board_minutes_scorecard.json");
   const geography = readJson("site/data/community_board_geography_lookup.json");
-  return { sourceRegistry, sourceInventory, scorecard, geography, sourceRecords: meetingIndex.by_board };
+  const institutionEdges = Object.fromEntries(Object.entries(meetingIndex.by_board || {}).map(([boardId, rows]) => [
+    boardId,
+    (Array.isArray(rows) ? rows : []).flatMap((row) => [
+      ...(Array.isArray(row.institution_edges) ? row.institution_edges : []),
+      ...(row.institution_edge ? [row.institution_edge] : []),
+    ]),
+  ]).filter(([, edges]) => edges.length));
+  for (const edge of Array.isArray(meetingIndex.institution_edges) ? meetingIndex.institution_edges : []) {
+    const boardId = String(edge?.from || "").replace(/^community-board:/, "");
+    if (!boardId) continue;
+    institutionEdges[boardId] = [...(institutionEdges[boardId] || []), edge];
+  }
+  return { sourceRegistry, sourceInventory, scorecard, geography, sourceRecords: meetingIndex.by_board, institutionEdges };
 }
 
 export function buildCommunityBoardConstellationMaterialization(sources = sourceRows()) {

@@ -8,6 +8,10 @@ import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mj
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
+import {
+  communityBoardMeetingEdgeAccepted,
+  communityBoardMeetingEdgeFromRow,
+} from "../community_board_institution_edges.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -1209,6 +1213,13 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ? `<span class="tag asset">${escUiHtml(t("meetings_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
   const origin=record.meeting_origin||"unknown";
+  const boardEdge=communityBoardMeetingEdgeFromRow(record);
+  const boardId=boardEdge?.from?.replace(/^community-board:/,"")
+    || record.institution_refs?.board_ref?.replace(/^community-board:/,"")
+    || record.board_id;
+  const boardHref=boardEdge?.board_href||communityBoardPageHref(boardId);
+  const boardName=record.board_name||boardEdge?.board_name
+    || (boardId?`Community Board ${boardId.replace(/^[a-z-]+-cb-/i,"")}`:"");
   const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${sourceUrl
     ? `<a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${escUiHtml(meetingOriginLabel(origin))}${extSR()}</a>`
     : escUiHtml(meetingOriginLabel(origin))}</span>`;
@@ -1216,6 +1227,8 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:""}
+    ${boardEdge&&communityBoardMeetingEdgeAccepted(boardEdge)&&boardHref
+      ? `<a class="tag place community-board-meeting-pivot" href="${escUiHtml(boardHref)}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</a>` : ""}
     ${originChip}
   </div>`;
   // Next-action lead: concrete attend / join / testimony when data supports it.

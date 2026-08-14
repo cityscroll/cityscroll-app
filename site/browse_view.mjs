@@ -12,6 +12,11 @@ import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
 import { renderWalkEntry } from "./walk_entry.mjs";
 import { meetingCanonicalHref } from "./meeting_object_contract.mjs";
 import {
+  communityBoardMeetingEdgeAccepted,
+  communityBoardMeetingEdgeFromRow,
+} from "./community_board_institution_edges.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
+import {
   communityBoardDisambiguation,
   parseCommunityBoardQuery,
   rowMatchesCommunityBoardQuery,
@@ -179,7 +184,7 @@ const BROWSE_SCOPE_POLICY = Object.freeze({
   zoning: { agencyField: "primary_applicant", entityRefFields: ["project_id"] },
   property: { agencyField: "agency_name", entityRefFields: ["disposition_subject_ref", "disposition_join_keys"] },
   rules: { agencyField: "agency_name", entityRefFields: ["request_id"] },
-  meetings: { agencyField: "agency_name", entityRefFields: ["meeting_id", "request_id", "zap_project_ids"] },
+  meetings: { agencyField: "agency_name", entityRefFields: ["entity_refs_all", "meeting_id", "request_id", "zap_project_ids"] },
 });
 
 const KNOWN_SCOPE_FILTER_KEYS = new Set(["facet"]);
@@ -225,6 +230,10 @@ export function parseBrowseRef(value) {
   if (!ref || /\s/.test(ref)) return null;
   const notice = ref.match(/^notice:([A-Za-z0-9][A-Za-z0-9_-]{3,39})$/);
   if (notice) return { kind: "notice", id: notice[1], ref };
+  const meeting = ref.match(/^meeting:[^\s:]+:[^\s]+$/);
+  if (meeting) return { kind: "meeting", id: ref.slice("meeting:".length), ref };
+  const board = ref.match(/^community-board:[a-z]+(?:-[a-z]+)*-cb-\d{2}$/i);
+  if (board) return { kind: "community-board", id: ref.slice("community-board:".length).toLowerCase(), ref };
   const pin = ref.match(/^pin:([A-Za-z0-9][A-Za-z0-9_-]{3,39})$/);
   if (pin) return { kind: "pin", id: pin[1], ref };
   return null;
@@ -266,6 +275,8 @@ function scopeLabelFromRef(item) {
   }
   if (item.kind === "notice") return `notice ${item.id}`;
   if (item.kind === "pin") return `PIN ${item.id}`;
+  if (item.kind === "meeting") return "this meeting";
+  if (item.kind === "community-board") return `Community Board ${item.id.replace(/^[a-z-]+-cb-/, "")}`;
   return `${item.kind}:${item.id}`;
 }
 
@@ -331,6 +342,10 @@ function readRowEntityRefs(row, facet) {
   const fields = policy?.entityRefFields || [];
   const refs = [];
   for (const field of fields) {
+    if (field === "entity_refs_all") {
+      refs.push(...collectEntityRefsFromCell(row?.[field]));
+      continue;
+    }
     if (field === "request_id") {
       const ref = exactBrowseRef("notice", row?.[field]);
       if (ref) refs.push(ref);
@@ -1086,10 +1101,27 @@ export function renderBrowseView(view) {
         },
       }, { className: "browse-agency-link", escape: esc })
       : "";
+    const boardEdge = view.facet === "meetings" ? communityBoardMeetingEdgeFromRow(row) : null;
+    const boardId = boardEdge?.from?.replace(/^community-board:/, "")
+      || row.institution_refs?.board_ref?.replace(/^community-board:/, "")
+      || row.board_id;
+    const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
+    const boardName = row.board_name || boardEdge?.board_name
+      || (boardId ? `Community Board ${boardId.replace(/^[a-z-]+-cb-/, "")}` : null);
+    const boardMarkup = boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref
+      ? renderEntityPivotLink({
+        relation_label: "hosted by community board",
+        target_kind: "community-board",
+        target_id: boardId,
+        target_name: boardName,
+        canonical_href: boardHref,
+        source: { kind: "meeting", id: row.meeting_id || rowId(view.facet, row), name: title, canonical_href: href || null },
+      }, { className: "browse-community-board-link", escape: esc })
+      : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
       ${actionMarkup}
       <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
-      <p class="browse-static-meta">${[agencyMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
+      <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${meetingSourceDetails}
     </article>`;
   }).join("");

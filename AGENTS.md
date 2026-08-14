@@ -11,6 +11,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   materialized. Focused proof: `test/committee_graph.test.mjs`,
   `test/committee_memberships.test.mjs`, and `test/official_connections_scope.test.mjs`.
 
+- Community-board `hosts_meeting` edges live beside the exact source join in
+  `site/community_board_source_join.mjs` (re-exported by
+  `site/community_board_institution_edges.mjs`). They target
+  `meeting:{source}:{key}` only after exact board/date/publisher evidence plus a
+  retained receipt and URL; held edges retain typed identity but never an
+  `href`. Board, Browse, and meeting-document pivots consume that same edge
+  payload. Focused proof: `test/community_board_institution_edges.test.mjs`.
+
 - Browse document facets are edge-rendered first and then hydrated by the SPA. Agency
   `entity_refs_all` links must be passed into the live lens agency control before feed
   loading; see `site/agency_scope_route.mjs` and `test/functional/28_agency_scope_links.py`.
