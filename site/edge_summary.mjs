@@ -407,7 +407,21 @@ export function edgeSummaryStateCopy(record) {
       ? "Available records"
       : `Available: ${record.count.toLocaleString("en-US")} ${record.count === 1 ? "record" : "records"}`;
   }
-  if (record.state === "empty") return "Empty in this scoped materialization";
+  if (record.state === "empty") {
+    return ({
+      contract: "No contract or award records linked yet",
+      vendor: "No vendors linked yet",
+      meeting: "No meetings or hearings linked yet",
+      meetings: "No meetings or hearings linked yet",
+      rule: "No rules linked yet",
+      mandate: "No mandates linked yet",
+      exam: "No staffing exam records linked yet",
+      project: "No land-use records linked yet",
+      "tax-lien": "No tax-lien records linked yet",
+      suitability: "No suitability records linked yet",
+      "certificate-of-occupancy": "No occupancy records linked yet",
+    }[record.target_kind] || "No related records linked yet");
+  }
   return "Unknown / not indexed";
 }
 

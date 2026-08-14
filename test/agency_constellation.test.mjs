@@ -17,7 +17,7 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
-import { reconcileAgencyIdentity } from "../site/agency_identity.mjs";
+import { reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_identity.mjs";
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
 import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -85,6 +85,20 @@ test("publisher reconciliation retains every exact source spelling and fails clo
   assert.ok(collisions.some((row) => row.comparison_key === "EQUAL EMPLOYMENT PRACTICES COMMISSION"));
   const ambiguous = reconcileAgencyIdentity("Equal Employment Practices Commission", publisherRows);
   assert.equal(ambiguous.matched, false);
+});
+
+test("Office of the Mayor meeting-name variants resolve to one canonical agency", () => {
+  for (const variant of ["Mayor's Office", "Office of the Mayor", "OFFICE OF THE MAYOR"]) {
+    const identity = resolveAgencyIdentity(variant);
+    assert.equal(identity.canonical_id, "office-of-the-mayor");
+    assert.equal(identity.canonical_name, "Office of the Mayor");
+  }
+  const crosswalk = publisherRows.find((row) => row.canonical_id === "office-of-the-mayor");
+  assert.ok(crosswalk, "Office of the Mayor must remain in the publisher crosswalk");
+  assert.deepEqual(
+    ["Mayor's Office", "Office of the Mayor", "OFFICE OF THE MAYOR"].map((variant) => crosswalk.variants.includes(variant)),
+    [true, true, true],
+  );
 });
 
 test("all reviewed constellation-only routes have an explicit non-fuzzy disposition", () => {
@@ -244,7 +258,8 @@ test("empty categories stay honest and never invent items", () => {
   // Every supported family stays visible with an explicit measured zero.
   assert.equal((html.match(/data-agency-constellation-category=/g) || []).length, view.categories.length);
   assert.match(html, /data-edge-state="empty"/);
-  assert.match(html, /Empty in this scoped materialization/);
+  assert.match(html, /No meetings or hearings linked yet/);
+  assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
   assert.doesNotMatch(html, /not yet shown/i);
   assert.doesNotMatch(html, /fabricat/i);
   assert.deepEqual(detectNodePageCruft(html), []);

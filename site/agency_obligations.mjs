@@ -478,7 +478,7 @@ export function buildAgencyObligationsView(agencyIdOrName, lookup, { limit = 12,
     honesty: lookup?.honesty || null,
     note: obligations.length
       ? null
-      : "No statutory mandates are linked to this agency in the current materialization.",
+      : "No statutory mandates are linked to this agency yet.",
   };
 }
 
@@ -653,7 +653,7 @@ export function renderAgencyObligationsSection(view) {
   if (!view) return "";
   const status = view.status === "matched"
     ? `${view.count} mandates`
-    : "none in this materialization";
+    : "No mandates linked yet";
   const list = view.items?.length
     ? `<ul class="node-record-list">${view.items.map((item) => {
       const duty = esc(item.duty_text);
@@ -671,7 +671,7 @@ export function renderAgencyObligationsSection(view) {
         <span class="muted node-muted">${meta}${citation} · ${source}</span>
       </li>`;
     }).join("")}</ul>`
-    : `<p class="node-muted">${esc(view.note || "No statutory mandates are linked to this agency in the current materialization.")}</p>`;
+    : `<p class="node-muted">${esc(view.note || "No statutory mandates are linked to this agency yet.")}</p>`;
 
   const actions = [
     view.follow_href
