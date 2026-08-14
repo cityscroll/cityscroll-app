@@ -11,6 +11,7 @@ import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLi
 import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
 import { renderWalkEntry } from "./walk_entry.mjs";
 import { meetingCanonicalHref } from "./meeting_object_contract.mjs";
+import { meetingProcessStage } from "./meetings_explorer.mjs";
 import {
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromRow,
@@ -204,6 +205,7 @@ const EDGE_FILTERS = new Set([
   "community_district",
   "council",
   "as_of",
+  "process",
 ]);
 const DOCUMENT_FILTERS = new Set(["lang", "legacy"]);
 
@@ -656,6 +658,20 @@ function matchesClosing(row, value, asOf) {
   return true;
 }
 
+function meetingDateMatchesWindow(row, value, asOf) {
+  if (!value || value === "all") return true;
+  const date = isoDay(row?.event_date);
+  const start = isoDay(asOf);
+  if (!date || !start) return !start;
+  if (value === "past") return date < start;
+  if (date < start) return false;
+  if (value !== "week" && value !== "month" && value !== "upcoming") return true;
+  const end = new Date(`${start}T00:00:00Z`);
+  if (value === "week") end.setUTCDate(end.getUTCDate() + 7);
+  else if (value === "month") end.setUTCDate(end.getUTCDate() + 30);
+  return date <= end.toISOString().slice(0, 10);
+}
+
 function liveOnlyFilters(params) {
   const liveOnly = [];
   for (const [key] of params) {
@@ -845,6 +861,8 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const councilDistrict = String(search.get("council") || "").trim();
   const asOf = payload.open_as_of || payload.generated_at || payload.retrieved_at || null;
   const requestedAsOf = isoDay(search.get("as_of"));
+  const meetingWhen = facet === "meetings" ? String(search.get("when") || "") : "";
+  const meetingProcess = facet === "meetings" ? String(search.get("process") || "") : "";
   const rows = Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
   const limit = Number.isFinite(options.limit) ? Math.max(1, Math.floor(options.limit)) : 40;
   const scopeState = scopeFromFacetParams(facet, search);
@@ -859,6 +877,9 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     if (communityDistrict && !rowMatchesCommunityDistrict(row, communityDistrict)) return false;
     if (councilDistrict && !rowMatchesCouncilDistrict(row, councilDistrict)) return false;
     if (facet === "contracts" && !matchesClosing(row, search.get("closing"), asOf)) return false;
+    if (facet === "meetings" && !meetingDateMatchesWindow(row, meetingWhen, asOf)) return false;
+    if (facet === "meetings" && meetingProcess
+      && meetingProcessStage(row, { now: isoDay(asOf) }) !== meetingProcess) return false;
     if (!rowMatchesConnectionRelation(facet, connectionRelation)) return false;
     return true;
   });
@@ -1111,7 +1132,7 @@ export function renderBrowseView(view) {
     const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
     const boardName = row.board_name || boardEdge?.board_name
       || (boardId ? `Community Board ${boardId.replace(/^[a-z-]+-cb-/, "")}` : null);
-    const boardMarkup = boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref
+    const boardMarkup = boardId && boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref
       ? renderEntityPivotLink({
         relation_label: "hosted by community board",
         target_kind: "community-board",
@@ -1120,7 +1141,9 @@ export function renderBrowseView(view) {
         canonical_href: boardHref,
         source: { kind: "meeting", id: row.meeting_id || rowId(view.facet, row), name: title, canonical_href: href || null },
       }, { className: "browse-community-board-link", escape: esc })
-      : "";
+      : boardId
+        ? `<span class="browse-community-board-reference" data-community-board-state="${esc(boardEdge?.status || "unknown")}">Hosted by ${esc(boardName || "community board")}</span>`
+        : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
       ${actionMarkup}
       <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
