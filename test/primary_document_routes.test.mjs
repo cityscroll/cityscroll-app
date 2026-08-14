@@ -14,7 +14,7 @@ import {
 } from "../site/browse_view.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "../site/browse_concept_view.mjs";
 import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
-import edgeWorker, { edgeRequestKind, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
+import edgeWorker, { edgeRequestKind, isMeetingDocumentHtml, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
@@ -87,6 +87,49 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
   assert.deepEqual(browseRoute("/browse/"), { kind: "landing", facet: null });
   assert.deepEqual(browseRoute("/browse/people/"), { kind: "concept", concept: "people" });
   assert.deepEqual(browseRoute("/browse/places/"), { kind: "concept", concept: "places" });
+});
+
+test("canonical meeting routes reject SPA shells and require the exact meeting document id", async () => {
+  const meetingId = "meeting:city_record:20260713006";
+  const spaShell = `<!doctype html><html><head><title>CityScroll · track RFPs, rezonings, meetings</title></head><body><main id="app">Contracts</main></body></html>`;
+  const meetingDocument = `<!doctype html><html><head><title>DCWP hearing · CityScroll</title></head><body><main data-civic-object-kind="meeting" data-meeting-id="${meetingId}"><h1>DCWP hearing</h1></main></body></html>`;
+  let body = spaShell;
+  const env = {
+    ASSETS: {
+      fetch: async () => new Response(body, { status: 200, headers: { "Content-Type": "text/html" } }),
+    },
+  };
+
+  assert.equal(edgeRequestKind("https://cityscroll.org/meetings/meeting%3Acity_record%3A20260713006/"), "meeting");
+  assert.equal(isMeetingDocumentHtml(spaShell, meetingId), false);
+  assert.equal(isMeetingDocumentHtml(meetingDocument, meetingId), true);
+  assert.equal(
+    isMeetingDocumentHtml(
+      '<main data-civic-object-kind="meeting" data-meeting-id="meeting:community_board:https://example.test/a&amp;b">Meeting</main>',
+      "meeting:community_board:https://example.test/a&b",
+    ),
+    true,
+  );
+
+  const missing = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`), env);
+  assert.equal(missing.status, 404);
+  assert.doesNotMatch(await missing.text(), /track RFPs, rezonings, meetings|Contracts/);
+
+  body = meetingDocument;
+  const present = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`), env);
+  assert.equal(present.status, 200);
+  const presentBody = await present.text();
+  assert.match(presentBody, /data-civic-object-kind="meeting"/);
+  assert.match(presentBody, /data-meeting-id="meeting:city_record:20260713006"/);
+
+  body = meetingDocument.replace(meetingId, "meeting:city_record:other");
+  const wrongId = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`), env);
+  assert.equal(wrongId.status, 404);
+
+  body = meetingDocument;
+  const head = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`, { method: "HEAD" }), env);
+  assert.equal(head.status, 200);
+  assert.equal(await head.text(), "");
 });
 
 test("entity routes serve agency constellation documents when present, else the SPA shell", async () => {

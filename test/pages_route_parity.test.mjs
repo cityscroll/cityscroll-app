@@ -115,7 +115,12 @@ test("live_url_smoke CLI can target the direct Pages hostname", () => {
   const fromBase = targetsFromCli({ baseUrl: "https://cityscroll.pages.dev" });
   assert.deepEqual(
     fromBase.map((t) => t.url),
-    ["https://cityscroll.pages.dev/", "https://cityscroll.pages.dev/about.html"],
+    [
+      "https://cityscroll.pages.dev/",
+      "https://cityscroll.pages.dev/about.html",
+      "https://cityscroll.pages.dev/meetings/meeting%3Acity_record%3A20260713006/",
+      "https://cityscroll.pages.dev/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Ftransportation-health-committees-2%2F/",
+    ],
   );
   const fromUrls = targetsFromCli({
     urls: ["https://cityscroll.pages.dev/data.html"],
