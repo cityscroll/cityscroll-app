@@ -11,7 +11,14 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from ci_waits import click_and_wait_for_route, wait_for_locator, wait_for_route_module  # noqa: E402
+from ci_waits import (  # noqa: E402
+    click_and_wait_for_route,
+    goto_and_wait_for_app,
+    wait_for_function,
+    wait_for_locator,
+    wait_for_route_module,
+    wait_for_route_state,
+)
 from i18n_fixtures import install_routes  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -50,8 +57,7 @@ def land_opens_on_a_populated_example(pw):
     page = browser.new_context().new_page()
     install_routes(page)
 
-    page.goto(f"{BASE}#land", timeout=30000)
-    page.wait_for_load_state("load")
+    goto_and_wait_for_app(page, f"{BASE}#land", timeout=30000)
     wait_for_locator(page.locator("#ldetail"), timeout=CI_WAIT_TIMEOUT_MS, label="bare Land example")
     detail = page.locator("#ldetail")
     text = detail.inner_text().strip()
@@ -73,8 +79,7 @@ def people_opens_on_a_populated_example(pw):
     page = browser.new_context().new_page()
     install_routes(page)
 
-    page.goto(f"{BASE}#people", timeout=30000)
-    page.wait_for_load_state("load")
+    goto_and_wait_for_app(page, f"{BASE}#people", timeout=30000)
     wait_for_locator(
         page.locator("#career-results .career-card").first,
         timeout=CI_WAIT_TIMEOUT_MS,
@@ -111,11 +116,15 @@ def people_opens_on_a_populated_example(pw):
     ):
         expected_path = f"/browse/{ {'money':'contracts','people':'staffing','land':'zoning'}.get(tab, tab) }/"
         if tab == "property":
-            page.goto(f"{BASE}browse/property/", timeout=30000)
-            page.wait_for_load_state("load")
+            goto_and_wait_for_app(page, f"{BASE}browse/property/", timeout=30000)
+            wait_for_route_state(
+                page,
+                expected_path,
+                timeout=CI_WAIT_TIMEOUT_MS,
+                label="property document route",
+            )
         else:
             click_tab_and_wait_for_route(page, tab, expected_path)
-        page.wait_for_timeout(100)
         route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
         if route != {"pathname": expected_path, "search": "", "hash": ""}:
             failures.append(f"{tab} tab did not mint its clean document route — got: {route!r}")
@@ -123,8 +132,7 @@ def people_opens_on_a_populated_example(pw):
         if tab == "property":
             # Property is reached through the Land + property group's existing
             # child route. Its static document does not own SPA tab focus.
-            page.goto(BASE, timeout=30000)
-            page.wait_for_load_state("load")
+            goto_and_wait_for_app(page, BASE, timeout=30000)
         elif tab == "people":
             if actual_focus != heading:
                 failures.append(f"{tab} entry focus landed on {actual_focus!r}, not {heading!r}")
@@ -142,9 +150,20 @@ def deep_link_still_overrides_the_default(pw):
     page = browser.new_context().new_page()
     install_routes(page)
 
-    page.goto(f"{BASE}#people?q=RODRIGUEZ", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    goto_and_wait_for_app(page, f"{BASE}#people?q=RODRIGUEZ", timeout=30000)
+    wait_for_function(
+        page,
+        """() => {
+            const query = document.querySelector("#staffing-query")?.value;
+            const rows = [...document.querySelectorAll("#staffing-notice-list .staffing-hire-row")];
+            return query === "RODRIGUEZ"
+                && rows.length === 1
+                && rows[0].textContent.includes("RODRIGUEZ,LUIS A.");
+        }""",
+        timeout=CI_WAIT_TIMEOUT_MS,
+        attempts=1,
+        label="staffing deep-link readiness",
+    )
     query = page.locator("#staffing-query").input_value()
     if query != "RODRIGUEZ":
         failures.append(f"#people?q=RODRIGUEZ did not populate the list search — got: {query!r}")
