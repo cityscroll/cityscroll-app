@@ -136,6 +136,7 @@ function indexedRow(record, board, observedAt) {
     board_id: board.id,
     venue: record.address ? { address: record.address, mode: "in-person" } : null,
   });
+  const institutionEdge = record.institution_edge || record.community_board_edge || null;
   return {
     ...meeting,
     record_kind: record.record_kind,
@@ -151,6 +152,7 @@ function indexedRow(record, board, observedAt) {
     observed_receipt: record.observed_receipt,
     source_record_id: sourceRecordId,
     board_id: board.id,
+    board_name: board.name || board.body_name || board.id,
     short_title: meeting.title,
     start_date: observedAt,
     type_of_notice_description: record.category || "Board meeting",
@@ -176,6 +178,11 @@ function indexedRow(record, board, observedAt) {
       neighborhoods: [],
       addresses: [],
     },
+    // Exact typed subjects are the shared scope identity. They do not assert
+    // that the board-to-meeting edge is published; that still requires the
+    // receipt-backed join above.
+    entity_refs_all: [meeting.institution_refs.board_ref, meeting.meeting_id].filter(Boolean),
+    institution_edges: institutionEdge ? [institutionEdge] : [],
   };
 }
 
@@ -223,6 +230,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     || String(left.board_id).localeCompare(String(right.board_id))
     || String(left.source_record_id).localeCompare(String(right.source_record_id))
   ));
+  const institutionEdges = rows.flatMap((row) => row.institution_edges || []);
   return {
     schema: INDEX_SCHEMA,
     generated_at: observedAt,
@@ -241,6 +249,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       source_urls_checked: fetched,
       boards_indexed: Object.keys(byBoard).length,
       records_indexed: rows.length,
+      institution_edges_materialized: institutionEdges.filter((edge) => edge?.status === "promoted" || edge?.status === "official").length,
       boards_in_inventory: inventory.boards.length,
       source_roles_total: receipts.length,
       source_roles_indexed: receipts.filter((row) => row.state === "indexed").length,
@@ -250,6 +259,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       source_roles_stale: receipts.filter((row) => row.state === "stale").length,
       source_roles_not_yet_checked: receipts.filter((row) => row.state === "not-yet-checked").length,
     },
+    institution_edges: institutionEdges,
     receipts,
     source_records_by_board: sourceRecordsByBoard,
     by_board: byBoard,
@@ -263,6 +273,11 @@ if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
     if (!existsSync(OUTPUT)) throw new Error("community board meeting index is missing");
     const index = readJson(OUTPUT);
     if (index.schema !== INDEX_SCHEMA || !index.coverage?.records_indexed) throw new Error("community board meeting index is invalid");
+    if ((index.rows || []).some((row) => !Array.isArray(row.entity_refs_all)
+      || !row.entity_refs_all.includes(row.meeting_id)
+      || !row.entity_refs_all.includes(`community-board:${row.board_id}`))) {
+      throw new Error("community board meeting rows are missing typed identity references");
+    }
     console.log(`checked ${index.coverage.records_indexed} indexed meetings across ${index.coverage.boards_indexed} boards`);
   } else {
     const index = await buildCommunityBoardMeetingIndex();
