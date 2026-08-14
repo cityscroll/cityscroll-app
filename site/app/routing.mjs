@@ -837,6 +837,18 @@ async function showTaskFirst(task, id){
 
 function applyHash(){
   setNoticeCompactCta(false);
+  // The root document is a neutral topic entry. An untouched visit must not
+  // activate a lens just because the historical SPA default was Contracts.
+  const rootPath = (location.pathname || "/").replace(/\/+$/, "") || "/";
+  if(rootPath !== "/" && document.body?.dataset.primaryContext === "home"){
+    document.body.dataset.primaryContext="browse";
+  }
+  if(!location.hash && rootPath === "/" && document.body?.dataset.primaryContext === "home"){
+    activeRouteFacetValues={};
+    globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES={};
+    globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=null;
+    return true;
+  }
   const incoming = location.hash.slice(1)||documentRouteRaw();
   const slashPos = incoming.indexOf("/");
   let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
