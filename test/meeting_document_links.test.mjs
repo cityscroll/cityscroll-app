@@ -1,8 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { meetingDocumentLinks, renderMeetingDocument } from "../site/meeting_document.mjs";
 import { meetingCalendarICS } from "../site/hearing_attend_pack.mjs";
+import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
+
+const cityRecordParity = JSON.parse(readFileSync(new URL("./fixtures/city_record_meeting_parity.json", import.meta.url)));
 
 test("meeting documents render as official record links on the canonical meeting page", () => {
   const record = {
@@ -249,37 +253,19 @@ test("meeting participation stays generic for an unknown platform and empty for 
 });
 
 test("city record meeting renders materialized notice fields without fetching", () => {
-  const html = renderMeetingDocument({
-    meeting_id: "meeting:city_record:20260820001",
-    source_system: "city_record",
-    title: "Public hearing on a proposed rule",
-    event_date: "2026-08-20T14:00:00Z",
-    type_of_notice_description: "Public Hearings",
-    section_name: "Public Hearings and Meetings",
-    additional_description_1: "The first substantive notice paragraph.",
-    additional_description_2: "A second notice paragraph.",
-    other_info_1: "Additional public information.",
-    other_info_2: "Further public information.",
-    street_address_1: "250 Broadway",
-    street_address_2: "Room 915",
-    building_name: "Municipal Building",
-    city: "New York",
-    state: "NY",
-    zip_code: "10007",
-    contact_name: "Public Hearings Unit",
-    contact_phone: "212-555-0100",
-    email: "hearings@example.gov",
-    compatibility: { legacy_notice_href: "/notices/20260820001" },
-  });
+  const html = renderMeetingDocument(normalizeHearing(cityRecordParity));
   assert.match(html, /Public Hearings/);
   assert.match(html, /Public Hearings and Meetings/);
-  assert.match(html, /The first substantive notice paragraph/);
-  assert.match(html, /Further public information/);
+  assert.match(html, /Accessibility accommodations are available on request/);
+  assert.match(html, /A recording will be posted after the hearing/);
   assert.match(html, /250 Broadway/);
   assert.match(html, /Municipal Building/);
   assert.match(html, /Public Hearings Unit/);
   assert.match(html, /212-555-0100/);
-  assert.match(html, /mailto:hearings@example\.gov/);
+  assert.match(html, /mailto:hearings@buildings\.nyc\.gov/);
+  assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20260820001"/);
+  assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/Search\/GetFile\?sectionId=1&amp;requestId=20260820001&amp;requestStatus=Current&amp;documentId=44501"/);
+  assert.match(html, /href="\/notices\/20260820001"/);
 });
 
 test("malformed event dates do not offer a broken calendar download", () => {
