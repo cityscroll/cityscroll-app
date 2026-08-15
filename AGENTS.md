@@ -4,6 +4,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- **Mandate category conformance:** `site/mandate_category_conformance.mjs` is the
+  adapter from the meeting, contract, and land-use bridge read models into the
+  shared `site/process_conformance.mjs` surface. Relation-specific bridges still
+  own evidence and publication gates; the adapter owns the cross-category
+  `appeared` / `not_yet_observed` / `data_incomplete` projection and one
+  data-as-of. `tools/build_process_conformance.mjs` materializes accepted edge
+  claims in `edge_observations`; keep claim-inspector links attached to every
+  appeared edge. Focused proof: `test/process_conformance.test.mjs` plus the
+  three mandate bridge tests.
+
 - Committee traversal exposes `public_reverse_edges` from the same accepted
   `member_of` observation in `site/committee_graph.mjs`; browse renders the
   exact-ID `has member` pivot, while held/empty/unknown graph states stay

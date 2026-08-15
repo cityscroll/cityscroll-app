@@ -45,6 +45,10 @@ import {
   buildMandateLandUseView,
 } from "./mandate_land_use_bridge.mjs";
 import {
+  mandateBridgeConformanceGroups,
+  mergeMandateCategoryConformance,
+} from "./mandate_category_conformance.mjs";
+import {
   MANDATE_REPORTS_RECEIPT_METHOD,
   agencyMandateReportsPath,
   buildMandateReportsReceiptView,
@@ -1067,6 +1071,35 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     contractsFollowHref: contractsCategory?.follow_href,
     limit: 16,
   });
+
+  // Project every accepted mandate bridge into the same expected-vs-observed
+  // surface. Relation-specific modules still own evidence and publication;
+  // this adapter only aligns category, observation state, and data-as-of.
+  if (conformanceView) {
+    const conformanceAsOf = conformanceView.as_of
+      || String(sources.generated_at || sources.process_conformance?.generated_at || "").match(/\d{4}-\d{2}-\d{2}/)?.[0]
+      || null;
+    const groups = mandateBridgeConformanceGroups({
+      obligationsLookup: obligations,
+      agencyId: identity.canonical_id,
+      meetingsView: mandatesMeetings,
+      contractsView: mandatesContracts,
+      landUseView: mandatesLandUse,
+      meetingsSourceAvailable: sources.meetings_domain != null,
+      contractsSourceAvailable: intelligence != null
+        && (sources.procurement_awards != null || sources.procurementAwards != null),
+      zoningSourceAvailable: sources.land_projects != null && sources.intelligence != null,
+      asOf: conformanceAsOf,
+    });
+    conformanceView = mergeMandateCategoryConformance(conformanceView, groups, {
+      asOf: conformanceAsOf,
+    });
+    const obligationsCategory = categories.find((category) => category.id === "obligations");
+    if (obligationsCategory) {
+      obligationsCategory.conformance = conformanceView;
+      obligationsCategory.conformance_counts = conformanceView.counts;
+    }
+  }
 
   const allClaims = [
     ...claims,
