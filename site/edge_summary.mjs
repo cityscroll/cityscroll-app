@@ -330,6 +330,11 @@ export function normalizeEdgeSummaryRecord(input = {}, defaults = {}) {
     as_of: raw.as_of == null ? null : text(raw.as_of, 40),
     source: pivot.source,
     provenance: normalizeEdgeProvenance(raw),
+    // Derived graph facts are machine-readable metadata; readers see the
+    // plain state copy below, while inspectors may opt into this payload.
+    derived_feature_rollup: raw.derived_feature_rollup && typeof raw.derived_feature_rollup === "object"
+      ? cloneScope(raw.derived_feature_rollup)
+      : null,
     ...crossSpinePivotFields(raw),
   });
 }
