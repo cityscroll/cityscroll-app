@@ -94,7 +94,7 @@ export const BROWSE_FACETS = Object.freeze({
   },
 });
 
-export const BROWSE_STUBS = Object.freeze({
+export const BROWSE_OBJECTS = Object.freeze({
   exams: {
     route: "/browse/exams/",
     tab: "exams",
