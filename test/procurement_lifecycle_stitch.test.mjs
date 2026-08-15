@@ -622,7 +622,7 @@ test("detail templates host lifecycle, subsidy, meeting, and prior-award slots",
   assert.match(src, /id="nprior"/);
   assert.match(src, /loadSubsidyLifecycle/);
   assert.match(src, /loadMeetingOutcomes/);
-  assert.match(src, /loadLifecycle\(r, \$\("#dlifecycle"\), \$\("#ddollars"\), \$\("#dactions"\), \$\("#dsuboutreach"\)\)/);
+  assert.match(src, /loadLifecycle\(r, \$\("#dlifecycle"\), \$\("#ddollars"\), actionRailContextReady \? \$\("#dactions"\) : null, \$\("#dsuboutreach"\)\)/);
   assert.match(src, /loadLifecycle\(r, \$\("#nlifecycle"\), \$\("#ndollars"\), \$\("#nactions"\), \$\("#nsuboutreach"\)\)/);
 });
 

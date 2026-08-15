@@ -4,6 +4,7 @@ import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consiste
 import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_links.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
 import {
   filterMoneySnapshot,
   moneyLineageRows,
@@ -381,6 +382,7 @@ function moneyListPrimaryAction(r, today=todayISO()){
   try{
     const matter=globalThis.noticeActionMatter(r);
     if(!matter || (matter.kind!=="solicitation"&&matter.kind!=="award")) return null;
+    if(matter.kind==="solicitation" && !solicitationResponseContextReady(r)) return null;
     const action=(CrolActions.compileActionRail(matter,{today})||[])[0]||null;
     if(!action || action.delivery==="unavailable") return null;
     if(matter.kind==="solicitation" && action.type!=="official_application" && action.type!=="bid_checklist") return null;
