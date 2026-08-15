@@ -148,6 +148,70 @@ test("canonical meeting routes resolve exact read-model rows and reject unknown 
   assert.deepEqual(requestedPaths.filter((path) => path.startsWith("/meetings/")), [], "edge resolution must not fetch an encoded per-id asset");
 });
 
+test("the built Meetings listing is covered by the shared read model", () => {
+  const outputs = new Map(primaryDocumentOutputs());
+  const listing = outputs.get([...outputs.keys()].find((path) => path.endsWith("site/browse/meetings/index.html")));
+  const readModel = JSON.parse(sharedMeetingOutputs().find(([path]) => path.endsWith("site/data/shared_meeting_read_model.json"))[1]);
+  const listedIds = [...listing.matchAll(/data-record-id="([^"]+)"/g)].map((match) => match[1]);
+  const readableIds = new Set(readModel.rows.map((row) => row.meeting_id));
+  const missing = listedIds.filter((id) => !readableIds.has(id));
+  assert.ok(listedIds.length > 0, "the built Meetings listing must contain records");
+  assert.deepEqual(missing, [], "every listed meeting must be present in the resolver catalog");
+});
+
+test("a newer City Record meeting in the Meetings lens resolves before the static catalog rebuilds", async () => {
+  const meetingId = "meeting:city_record:20260810053";
+  const readModel = JSON.parse(sharedMeetingOutputs().find(([path]) => path.endsWith("shared_meeting_read_model.json"))[1]);
+  const freshRecord = {
+    meeting_id: meetingId,
+    source_system: "city_record",
+    source_record_id: "20260810053",
+    request_id: "20260810053",
+    title: "Design Commission Meeting Agenda, Monday, August 17, 2026",
+    event_date: "2026-08-17T09:10:00.000",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260810053",
+    source_receipt: { status: "ok", observed_at: "2026-08-14T20:45:00.588Z" },
+    compatibility: { legacy_notice_href: "/notices/20260810053" },
+  };
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (request) => {
+    const url = new URL(String(request.url || request));
+    calls.push(url);
+    const rows = url.searchParams.get("id") === meetingId ? [freshRecord] : [];
+    return new Response(JSON.stringify({ hearings: rows }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+  try {
+    const env = {
+      ASSETS: {
+        fetch: async (request) => {
+          const path = new URL(request.url).pathname;
+          if (path === "/data/shared_meeting_read_model.json") {
+            return new Response(JSON.stringify(readModel), { status: 200 });
+          }
+          return new Response("shell", { status: 200 });
+        },
+      },
+    };
+    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`), env);
+    assert.equal(response.status, 200);
+    assert.equal(isMeetingDocumentHtml(await response.text(), meetingId), true);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].pathname, "/hearings");
+    assert.equal(calls[0].searchParams.get("id"), meetingId);
+
+    const unknownId = "meeting:city_record:20990101001";
+    const unknown = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(unknownId)}/`), env);
+    assert.equal(unknown.status, 404);
+    assert.equal(calls.length, 2);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("entity routes serve agency constellation documents when present, else the SPA shell", async () => {
   const home = "<title>CityScroll · track RFPs, rezonings, meetings</title><div id=\"entityview\">Agency profile</div>";
   const constellation = '<main data-civic-object-kind="agency-constellation" data-subject-ref="agency:id:housing-preservation-and-development"><h1>Housing Preservation and Development</h1><h2>Records by category</h2></main>';
