@@ -83,7 +83,7 @@ def reachable_from_notice_detail(pw):
     browser = pw.chromium.launch()
     page = browser.new_context().new_page()
     install_routes(page)
-    page.goto(BASE, timeout=30000)
+    page.goto(f"{BASE}browse/contracts/#money", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1800)  # search() auto-selects the first result -> renderDetail()
     dteaser = page.locator("#dforecast")

@@ -99,16 +99,27 @@ test("local site server publishes an OS-assigned origin and serves the requested
 
   const readiness = await fetch(new URL("index.html", base));
   assert.equal(readiness.status, 200);
+  const home = await fetch(new URL("", base));
+  const homeBody = await home.text();
+  assert.equal(home.status, 200);
+  assert.match(homeBody, /data-primary-context="home" data-home-ready="true"/);
+  assert.match(homeBody, /data-home-topic-entry/);
+  assert.doesNotMatch(homeBody, /<section id="tab-money" class="tabpane active"/);
 
   const notice = await fetch(new URL("notices/20260701099", base));
   assert.equal(notice.status, 200);
   assert.match(await notice.text(), /id="noticeview"/);
 
-  for (const route of ["now/", "browse/", "browse/rules/?q=air"]) {
+  for (const route of ["now/", "browse/", "browse/rules/?q=air", "search/?q=mosquitos"]) {
     const clean = await fetch(new URL(route, base));
     assert.equal(clean.status, 200, route);
     assert.match(await clean.text(), /id="main"/, route);
   }
+  const search = await fetch(new URL("search/?q=mosquitos", base));
+  const searchBody = await search.text();
+  assert.match(searchBody, /data-primary-context="search"/);
+  assert.match(searchBody, /name="q"/);
+  assert.match(searchBody, /data-search-lane="obligations"/);
 
   const agencyProfile = await fetch(new URL(
     "agencies/citywide-administrative-services/?tab=forecast",

@@ -91,6 +91,14 @@ test("People + organizations gives every row a unique typed h3 heading", () => {
   assert.ok(headings.some((heading) => heading.includes("Exact-person appointment · appointment:7801:office-1:2024-01-01")));
 });
 
+test("People + organizations keeps concept and unified-list headings unique", () => {
+  const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", { places: geography }));
+  const headings = [...html.matchAll(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/g)]
+    .map((match) => match[1].replace(/<[^>]+>/g, "").trim());
+  assert.equal(new Set(headings).size, headings.length);
+  assert.equal(headings.filter((heading) => heading === "People and organizations").length, 1);
+});
+
 test("Places delegates board place discovery to Near you without a duplicate board list", () => {
   const html = renderBrowseConceptLanding(buildBrowseConceptLanding("places", { places: geography }));
   assert.match(html, /Open Near you for place discovery/);
