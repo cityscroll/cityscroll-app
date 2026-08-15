@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -24,6 +24,8 @@ test("full preflight and CI use the route-aware server without touching existing
   const server = read("tools/local_site_server.py");
   assert.match(server, /def _static_document\(/);
   assert.match(server, /if self\._static_document\(route, query\):/);
+  assert.match(server, /def publish_ready\(/);
+  assert.match(server, /probe_base\(base\)/);
 
   const source = read("tools/preflight-required-checks.sh");
   assert.match(source, /tools\/local_site_server\.py/);
@@ -42,7 +44,9 @@ test("full preflight and CI use the route-aware server without touching existing
   const serve = ci.indexOf("tools/local_site_server.py --directory _site --port 0");
   assert.ok(build >= 0 && build < serve, "CI must build the deploy artifact before serving it");
   assert.match(ci, /tools\/local_site_server\.py --directory _site --port 0 --ready-file/);
-  assert.match(ci, /curl --fail --silent --show-error \"\$local_base\"/);
+  assert.match(ci, /readiness_url=\"\$\{local_base\}index\.html\"/);
+  assert.match(ci, /curl --fail --silent --show-error[^\n]*\"\$readiness_url\"/);
+  assert.match(ci, /HTTP 404/);
   assert.doesNotMatch(ci, /tools\/local_site_server\.py --directory _site --port 8000/);
   assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory _site/);
 });
@@ -88,6 +92,9 @@ test("local site server publishes an OS-assigned origin and serves the requested
   assert.equal(response.status, 200);
   assert.match(await response.text(), /data-near-you-root/);
 
+  const readiness = await fetch(new URL("index.html", base));
+  assert.equal(readiness.status, 200);
+
   const notice = await fetch(new URL("notices/20260701099", base));
   assert.equal(notice.status, 200);
   assert.match(await notice.text(), /id="noticeview"/);
@@ -104,4 +111,22 @@ test("local site server publishes an OS-assigned origin and serves the requested
   ));
   assert.equal(agencyProfile.status, 200);
   assert.match(await agencyProfile.text(), /id="entityview"/);
+});
+
+test("local site server does not publish readiness for an artifact without index.html", async (t) => {
+  const temp = mkdtempSync(join(tmpdir(), "crol-local-site-empty-"));
+  const ready = join(temp, "ready");
+  const emptySite = join(temp, "site");
+  mkdirSync(emptySite);
+  const child = spawn("python3", [
+    "tools/local_site_server.py",
+    "--directory", emptySite,
+    "--port", "0",
+    "--ready-file", ready,
+  ], { cwd: ROOT, stdio: "ignore" });
+  t.after(() => rmSync(temp, { recursive: true, force: true }));
+
+  const exitCode = await new Promise((resolve) => child.once("close", resolve));
+  assert.notEqual(exitCode, 0);
+  assert.equal(existsSync(ready), false);
 });
