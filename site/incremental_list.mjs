@@ -22,6 +22,7 @@ export function createIncrementalList({
   renderMore = (remaining) => `Show more (${remaining})`,
   moreId = "",
   moreClass = "incremental-list-more",
+  moreElement = "div",
   onMore = () => {},
 } = {}) {
   const firstPageSize = positiveInteger(initialPageSize, 16);
@@ -42,7 +43,7 @@ export function createIncrementalList({
       moreId ? `id="${moreId}"` : "",
     ].filter(Boolean).join(" ");
     const more = remaining
-      ? `<div class="${moreClass}"><button ${moreAttributes}>${renderMore(remaining)}</button></div>`
+      ? `<${moreElement} class="${moreClass}"><button ${moreAttributes}>${renderMore(remaining)}</button></${moreElement}>`
       : "";
     container.innerHTML = shown.length
       ? `${renderItems(shown)}${more}`

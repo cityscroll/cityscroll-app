@@ -47,3 +47,16 @@ test("incremental list uses the caller's empty renderer", () => {
   list.render({ items: [] });
   assert.equal(container.innerHTML, "empty");
 });
+
+test("incremental list lets list owners keep growth controls in the list grammar", () => {
+  const container = fakeContainer();
+  const list = createIncrementalList({
+    container,
+    initialPageSize: 1,
+    moreElement: "li",
+    renderItems: (items) => items.map((item) => `<li>${item}</li>`).join(""),
+  });
+  list.render({ items: ["first", "second"] });
+  assert.match(container.innerHTML, /^<li>first<\/li><li class="incremental-list-more">/);
+  assert.doesNotMatch(container.innerHTML, /<div class="incremental-list-more">/);
+});

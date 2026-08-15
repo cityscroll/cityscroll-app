@@ -66,6 +66,7 @@ if (root && input && type && summary && empty && list) {
     renderMore: (remaining) => `Show more (${remaining.toLocaleString("en-US")})`,
     moreId: "people-organizations-more",
     moreClass: "people-org-more",
+    moreElement: "li",
     onMore: ({ shown }) => updateSummary({ shownCount: shown.length }),
   });
 
