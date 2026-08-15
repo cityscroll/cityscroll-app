@@ -20,13 +20,22 @@ The seams are deliberately independent:
   by re-reading the fetched statute, never by preferring either extractor.
 - `smoke.mjs` runs five deterministic fixture laws and prints quote receipts.
 
+### Optional upstream comparison corpus
+
+The comparator accepts Tal Roded's `obligations.json` envelope as a private
+upstream compilation source. That filename and its `obligations` key remain
+supported input vocabulary; CityScroll's entity name, URLs, facets, and reader
+copy use **Mandates**. Comparison differences are resolved against the linked
+[NYC Council Legistar record](https://nyc.legistar.com/Legislation.aspx), not by
+treating either compilation as authoritative.
+
 Example commands:
 
 ```sh
 node tools/law_mandates/smoke.mjs
 node tools/law_mandates/compare_mandates.mjs \
   --our tools/law_mandates/output/our.json \
-  --reference /private/path/reference.json \
+  --reference "$REFERENCE_CORPUS" \
   --out tools/law_mandates/output/review_queue.json \
   --repo-root .
 ```
