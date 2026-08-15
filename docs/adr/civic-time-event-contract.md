@@ -29,6 +29,52 @@ envelopes to D1 when explicitly enabled (see **Flag-gated production writer** be
 Adopt a **pure civic-time event envelope** plus a **bounded event-kind registry** and a
 **deterministic semantic-diff CLI** over fixtures.
 
+### Theory basis and source status
+
+Richard T. Snodgrass defines valid time as when a fact was true in the modeled reality
+and transaction time as when it was stored in the database (*Developing Time-Oriented
+Database Applications in SQL*, p. 4). The axes are orthogonal and together form a
+bitemporal table (pp. 20–21). His worked examples reconstruct a prior database state at
+an as-of date (pp. 224–226), preserve corrections by appending a new transaction state
+rather than rewriting prior stored states (p. 249), and express valid, transaction, and
+bitemporal time-slice queries as one or two interval-containment predicates
+(pp. 309–312).
+
+The Snodgrass edition is held and read as Cangshu #1183. The author’s
+[publication catalog](https://www2.cs.arizona.edu/~rts/publications.html) is the canonical
+public source. Cangshu #1182 contains a partial Warwick course-note reference for C. J.
+Date, Hugh Darwen, and Nikos Lorentzos; page-cited synthesis from the named books remains
+debt. The publisher pages for
+[*Temporal Data & the Relational Model*](https://shop.elsevier.com/books/temporal-data-and-the-relational-model/date/978-1-55860-855-9)
+and [*Time and Relational Theory*](https://shop.elsevier.com/books/time-and-relational-theory/date/978-0-12-800631-3)
+identify the outstanding canon without claiming it has been synthesized.
+
+### Four clocks mapped to two axes
+
+The four-clock contract is richer than the bitemporal model, so the mapping assigns one
+owner to each bitemporal axis and keeps the two evidence clocks separate:
+
+| Civic-time clock | Envelope fields | Bitemporal role | As-of behavior |
+| --- | --- | --- | --- |
+| **Civic / event** | `valid_at`, `valid_from`, `valid_to` | **Valid time** | Primary public as-of day. |
+| **Publication** | `published_at` | Evidence clock, not a second axis owner | Labeled fallback for a public record that has no civic/event day. |
+| **Observation** | `observed_at` | **System time** when it marks first retention | Library-only system projection; unknown stays unknown. |
+| **Processing** | `processed_at` | Operational provenance, not a bitemporal axis | Never drives an as-of axis; the notice card may use it as a provenance-labeled recorded-time fallback. |
+
+When the append ledger supplies `written_at`, that database-write timestamp is the exact
+transaction-time boundary for notice history. A bitemporal as-of query therefore asks:
+“Which civic facts were valid on day V, among the assertions retained by system time S?”
+The current public `as_of` query supplies V only. It filters by the civic clock, falls back
+to a labeled publication day when necessary, and does not imply a system-time answer.
+
+The PASSPort revision fixture is the worked correction case. Its first retained assertion
+says notice `20260707026` is due on 2026-08-18; the next source revision says 2026-08-25
+and points back with `supersedes_event_id`. The current valid-time projection uses the
+corrected due day without deleting the earlier envelope. A future two-axis reader can use
+the ledger write boundary to recover either what was retained before the correction or
+what was retained after it. The public one-axis projection cannot answer that historical
+knowledge question and does not claim to.
+
 ### Clocks (never invent)
 
 | Clock | Meaning | Rules for mappers |
@@ -126,13 +172,15 @@ The public notice document may read the exact `notice:<request_id>` rows from th
 ledger when the writer is enabled. Its history card keeps two axes separate:
 
 - **VALID** uses `valid_at` or its explicit range, describing when the civic fact held.
-- **SYSTEM** uses the ledger `written_at` transaction clock, falling back to the
-  envelope's explicit `processed_at` clock when no write clock is available.
+- **SYSTEM** prefers the ledger `written_at` transaction clock. When that clock is absent,
+  the existing notice card may display `processed_at` as recorded time with
+  `system_basis: processing_fallback`; that weaker fallback does not power a system-axis
+  as-of query.
 
 Publication and observation remain separate evidence, and missing clocks remain
-null in the read model and render as “Not recorded.” The notice read path filters
-by exact subject reference and never fills a missing clock from another axis or
-from the current request time.
+null in the read model and render as an empty value. The notice read path filters by exact
+subject reference and never fills a missing clock from another axis or from the current
+request time.
 
 ### Selective rematerialization pilot
 
