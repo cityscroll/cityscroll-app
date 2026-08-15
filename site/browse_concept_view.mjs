@@ -12,7 +12,7 @@ export const BROWSE_CONCEPTS = Object.freeze({
     route: "/browse/people/",
     tab: "people",
     label: "People + organizations",
-    title: "People and organizations",
+    title: "People + organizations",
     description: "Officials, vendors, committees, and community boards with published records.",
   },
   places: {
