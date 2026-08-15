@@ -1216,7 +1216,7 @@
             "selector": "#mandates-rules [data-bridge-side='rules']"
           },
           {
-            "selector": "#mandates-rules",
+            "selector": "nav[aria-label='Explore this agency']",
             "text": "Browse agency Rules"
           }
         ],

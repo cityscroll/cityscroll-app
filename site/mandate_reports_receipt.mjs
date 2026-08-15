@@ -20,7 +20,6 @@ import {
   mandateReportsStatusParts,
   normalizeMandateGraphNeighbors,
   renderMandateRowGraphActions,
-  renderMandateSectionNeighborActions,
 } from "./mandate_graph_neighbors.mjs";
 import { OBSERVATION_LABELS, OBSERVATION_STATUS } from "./process_conformance.mjs";
 
@@ -248,12 +247,7 @@ export function renderMandateReportsReceiptSection(view) {
     }</ul>`
     : "";
 
-  const neighborChrome = renderMandateSectionNeighborActions({
-    graph_neighbors: graphNeighbors,
-    escape: esc,
-  });
   const actions = [
-    neighborChrome,
     view.report_mandates_follow_href
       ? `<a class="node-action civic-object-action" href="${esc(view.report_mandates_follow_href)}">Watch report mandates</a>`
       : "",

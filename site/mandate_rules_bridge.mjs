@@ -23,7 +23,6 @@ import {
   mandateRulesStatusParts,
   normalizeMandateGraphNeighbors,
   renderMandateRowGraphActions,
-  renderMandateSectionNeighborActions,
 } from "./mandate_graph_neighbors.mjs";
 import { noticeDocumentPath } from "./notice_permalink.mjs";
 import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
@@ -324,17 +323,7 @@ export function renderMandateRulesBridgeSection(view) {
     parts.push(`<h3 class="node-subhead">Rules-lens activity</h3>${rulesList}`);
   }
 
-  // Section chrome: Rules (home lens) plus co-located Meetings/Contracts scopes.
-  const neighborChrome = renderMandateSectionNeighborActions({
-    graph_neighbors: {
-      rules_browse_href: view.rules_browse_href || graphNeighbors?.rules_browse_href,
-      meetings_browse_href: graphNeighbors?.meetings_browse_href,
-      contracts_browse_href: graphNeighbors?.contracts_browse_href,
-    },
-    escape: esc,
-  });
   const actions = [
-    neighborChrome,
     view.rulemaking_mandates_follow_href
       ? `<a class="node-action civic-object-action" href="${esc(view.rulemaking_mandates_follow_href)}">Watch rulemaking mandates</a>`
       : "",
