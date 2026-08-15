@@ -205,6 +205,9 @@ async function loadExternalAward(params){
   }catch(e){ return null; }
 }
 
+import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
+import { noticeDisplayTitle } from "../display_title.mjs";
+
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
 // affordance. Link shapes below were verified live against the real destinations (contract
@@ -1016,9 +1019,24 @@ function noticeAgencyBar(stats, agencyName, barClass){
     <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
   </div>`;
 }
+function solicitationContextHeadingHTML(r){
+  if(!solicitationResponseContextReady(r)) return "";
+  const section = tSection(r.section_name || "Procurement");
+  const context = [
+    r.type_of_notice_description,
+    section,
+    r.agency_name ? pivotA(agencyHref(r.agency_name), r.agency_name) : "",
+  ].filter(Boolean).join(" · ");
+  return `<header class="notice-context-heading" data-solicitation-context-ready="true">
+    <div class="ftype" style="margin-bottom:6px">${context}</div>
+    <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(noticeDisplayTitle(r))}</h2>
+  </header>`;
+}
 function renderDetail(r, chain, stats, loadContext = true){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
-  const initialActionsForGlance = window.CrolActions
+  const responseContextReady = solicitationResponseContextReady(r);
+  const actionRailContextReady = r.type_of_notice_description !== "Solicitation" || responseContextReady;
+  const initialActionsForGlance = window.CrolActions && actionRailContextReady
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
   let html = `<div class="actions" style="margin:0 0 12px">
@@ -1028,10 +1046,11 @@ function renderDetail(r, chain, stats, loadContext = true){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
   </div>`;
+  html += solicitationContextHeadingHTML(r);
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;
   // Lead with the response path for solicitations (deadline / contact) before lifecycle
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
-  if(r.type_of_notice_description === "Solicitation") html += `<div data-export-class="actions">${buildApply(r,false)}</div>`;
+  if(responseContextReady) html += `<div data-export-class="actions">${buildApply(r,false)}</div>`;
   else html += `<div data-export-class="notice_context">${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}</div>`;
   // M/WBE solicitation chips + prime sub-outreach (award_prime_goal) mount points.
   html += `<div id="dmwbe" data-export-class="mwbe_context"></div><div id="drules" data-export-class="rule_lifecycle"></div><div id="dlifecycle" data-export-class="procurement_lifecycle"></div><div id="dsuboutreach" data-export-class="sub_outreach"></div><div id="ddollars" data-export-class="dollars"></div><div id="dsubsidy" data-export-class="subsidy"></div><div id="dmeet" data-export-class="meeting_outcomes"></div>`;
@@ -1065,10 +1084,10 @@ function renderDetail(r, chain, stats, loadContext = true){
       if (typeof externalAwardForNotice === "function") externalAwardForNotice(r, $("#dexternal"));
     }).catch(() => {});
   }
-  mountNoticeActionRail($("#dactions"),r);
+  if(actionRailContextReady) mountNoticeActionRail($("#dactions"),r);
   if(typeof loadSolicitationMwbe === "function") loadSolicitationMwbe(r, $("#dmwbe"));
   if(typeof globalThis.loadRuleLifecycle === "function") loadRuleLifecycle(r, $("#drules"));
-  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"), $("#dsuboutreach"));
+  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), actionRailContextReady ? $("#dactions") : null, $("#dsuboutreach"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));
   priorCycleAwards(r, $("#dprior"));
