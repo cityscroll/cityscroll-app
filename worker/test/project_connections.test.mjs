@@ -47,6 +47,21 @@ test("unknown project titles do not borrow exact-key parcel evidence", () => {
   );
 });
 
+test("a SODA fallback applicant survives serve-time connection decoration", () => {
+  const record = attachProjectConnections({
+    project_id: "2024Q0135",
+    project_name: "Willets Point Phase II Mapping Actions",
+    open_data: {
+      project_id: "2024Q0135",
+      project_name: "Willets Point Phase II Mapping Actions",
+      primary_applicant: "EDC - Economic Development Corporation for NYC",
+    },
+  });
+  const applicant = record.project_connections.groups.find((group) => group.id === "applicant");
+  assert.equal(applicant.status, "matched");
+  assert.equal(applicant.items[0].ref, "agency:id:edc-economic-development-corporation-for-nyc");
+});
+
 test("cached outcome responses receive current project connections at serve time", async () => {
   const cached = {
     project_id: "2022M0258",
