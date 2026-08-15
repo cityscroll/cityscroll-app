@@ -127,10 +127,11 @@ def forecast_strings_translate_in_a_sampled_language(pw, lang="es"):
     # Interactive SPA profile keeps Forecast controls; default agency document is constellation.
     page.goto(BASE + "agencies/housing-preservation-and-development/?tab=forecast", timeout=30000)
     btn = page.locator("#btn-forecast")
-    if btn.count() == 0:
+    try:
+        wait_for_locator(btn, label="Spanish Forecast subtab")
+    except PlaywrightTimeoutError:
         failures.append("es agency profile: no Forecast subtab rendered")
     else:
-        wait_for_locator(btn, label="Spanish Forecast subtab")
         # .subtab is styled text-transform:uppercase — compare case-insensitively, that's
         # rendering, not a translation gap.
         subtab_label = btn.inner_text().lower()
