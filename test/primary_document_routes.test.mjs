@@ -18,7 +18,8 @@ import edgeWorker, { edgeRequestKind, isMeetingDocumentHtml, renderEdgeNotice, b
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { encodeTraversalPath } from "../site/traversal_path.mjs";
 import { primaryDocumentOutputs, sharedMeetingOutputs } from "../tools/build_primary_documents.mjs";
-import { renderBrowseExams } from "../site/primary_document_view.mjs";
+import { buildBrowseAliasDocument } from "../site/primary_document_view.mjs";
+import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 
@@ -354,13 +355,15 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(landing, /228 civil-service exams/);
   assert.match(landing, /Pick a civic object\. Follow the edges between people, places, agencies, contracts, and decisions\./);
   const exams = output("/site/browse/exams/index.html");
-  assert.match(exams, /data-build-rendered="browse-exams"/);
-  assert.match(exams, /data-browse-object-family="exams"/);
-  assert.match(exams, /228 exam records/);
-  assert.match(exams, /href="\/exams\/6311\/"/);
+  assert.match(exams, /data-browse-route-alias="exams"/);
+  assert.match(exams, /id="tab-people" class="tabpane active"/);
+  assert.match(exams, /id="career-guide"/);
+  assert.match(exams, /id="career-results"/);
+  assert.match(exams, /id="staffing-ledger" hidden/);
+  assert.doesNotMatch(exams, /data-build-rendered="browse-exams"/);
+  assert.doesNotMatch(exams, /data-browse-object-family="exams"/);
+  assert.doesNotMatch(exams, /id="tab-exams"/);
   assert.doesNotMatch(exams, /Coming soon|data-browse-stub/);
-  assert.match(exams, /data-edge-kind="eligible-list"/);
-  assert.match(exams, /data-edge-kind="appointments"/);
   assert.match(landing, /<details class="browse-source-disclosure"><summary>Official data from…<\/summary>/);
   assert.doesNotMatch(landing, /every source|source view|source lenses/i);
   assert.deepEqual(detectNodePageCruft(landing), []);
@@ -429,33 +432,40 @@ test("People and Places landings use populated entity and geography indexes", ()
 
   const examsDocument = primaryDocumentOutputs().find(([path]) => path.endsWith("/browse/exams/index.html"));
   assert.ok(examsDocument, "the Exams document is generated");
-  assert.match(examsDocument[1], /id="tab-exams" class="tabpane active"/);
-  assert.match(examsDocument[1], /data-build-rendered="browse-exams"/);
+  assert.match(examsDocument[1], /<title>Exams · Browse · CityScroll<\/title>/);
+  assert.match(examsDocument[1], /rel="canonical" href="https:\/\/cityscroll\.org\/browse\/exams\/"/);
+  assert.match(examsDocument[1], /data-browse-route-alias="exams"/);
+  assert.match(examsDocument[1], /id="tab-people" class="tabpane active"/);
+  assert.match(examsDocument[1], /id="career-guide"/);
+  assert.match(examsDocument[1], /id="staffing-ledger" hidden/);
+  assert.doesNotMatch(examsDocument[1], /data-build-rendered="browse-exams"/);
+  assert.doesNotMatch(examsDocument[1], /id="tab-exams" class="tabpane active"/);
 });
 
-test("Exams landing keeps related links source-keyed", () => {
-  const html = renderBrowseExams({
-    data_current_as_of: "2026-08-14",
-    exams: [{
-      exam_number: "9001",
-      title: "Example Open Competitive Exam",
-      application_start: "2026-08-01",
-      application_end: "2026-08-31",
-      official_application_url: "https://example.gov/apply",
-      notice_url: "https://example.gov/notice.pdf",
-      eligible_list_url: "https://example.gov/eligible-list",
-      appointment_url: "https://example.gov/appointments",
-    }, {
-      exam_number: "9002",
-      title: "Example Without Related URLs",
-    }],
+test("Exams is one data-only alias to the Staffing guide", () => {
+  assert.deepEqual(Object.keys(BROWSE_ROUTE_ALIASES), ["exams"]);
+  const alias = BROWSE_ROUTE_ALIASES.exams;
+  assert.deepEqual({
+    route: alias.route,
+    targetRoute: alias.targetRoute,
+    targetFacet: alias.targetFacet,
+    targetTab: alias.targetTab,
+    defaultView: alias.defaultView,
+    corpus: alias.corpus,
+  }, {
+    route: "/browse/exams/",
+    targetRoute: "/browse/staffing/",
+    targetFacet: "staffing",
+    targetTab: "people",
+    defaultView: "guide",
+    corpus: "exams",
   });
-  assert.match(html, /href="https:\/\/example\.gov\/eligible-list"/);
-  assert.match(html, /href="https:\/\/example\.gov\/appointments"/);
-  const secondCard = html.slice(html.indexOf('data-exam-number="9002"'));
-  assert.doesNotMatch(secondCard, /href="https:\/\/example\.gov\/(eligible-list|appointments)"/);
-  assert.match(secondCard, /data-edge-kind="eligible-list" data-edge-state="unknown"/);
-  assert.match(secondCard, /data-edge-kind="appointments" data-edge-state="unknown"/);
+  const shell = read("../site/index.html");
+  const html = buildBrowseAliasDocument(shell, "exams", { notices: [] });
+  assert.match(html, /id="career-guide"/);
+  assert.match(html, /data-browse-route-alias="exams"/);
+  assert.match(html, /id="staffing-ledger" hidden/);
+  assert.doesNotMatch(html, /data-browse-object-family="exams"/);
 });
 
 test("Browse landing counts are labeled with source dates without coverage caveats", () => {

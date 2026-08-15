@@ -28,6 +28,7 @@ export const ROUTE_INVENTORY = Object.freeze([
   { path: "/browse/", id: "browse", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/contracts/", id: "browse-contracts", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/staffing/", id: "browse-staffing", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/exams/", id: "browse-exams", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/zoning/", id: "browse-zoning", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/property/", id: "browse-property", kind: "html", marker: CONTENT_MARKER },
   { path: "/browse/rules/", id: "browse-rules", kind: "html", marker: CONTENT_MARKER },
