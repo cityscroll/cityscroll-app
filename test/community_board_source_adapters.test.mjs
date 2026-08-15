@@ -10,6 +10,7 @@ import {
   parseVideoRecordSource,
   sourceRecordStatus,
 } from "../site/community_board_source_adapters.mjs";
+import { meetingSourceFieldNames } from "../site/meeting_source_completeness.mjs";
 
 const receipt = { status: "ok", observed_at: "2026-08-14T12:00:00Z" };
 
@@ -107,6 +108,8 @@ test("event-detail materialization keeps publisher description, participation, a
   assert.equal(event.venue_name, "CB 2 Conference Room");
   assert.equal(event.address, "3 Washington Square Village #1A, New York, NY, 10012");
   assert.equal(event.end_at, "2026-09-10T21:00:00-04:00");
+  const reviewed = new Set(meetingSourceFieldNames("community_board"));
+  assert.deepEqual(Object.keys(event).filter((field) => !reviewed.has(field) && field !== "schema"), []);
   assert.equal(document.meeting_key, meetingKey);
   assert.equal(document.record_url, "https://board.example/documents/agenda-2026-09-10.pdf");
   assert.equal(records.filter((row) => row.record_kind === "document").length, 1);

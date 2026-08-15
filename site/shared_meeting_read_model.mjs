@@ -126,9 +126,14 @@ function dedupeRows(rows) {
 }
 
 function dateSort(left, right) {
+  // Keep the established source-key order for board events on the same day.
+  // Their newly retained wall times belong to readers and calendar output;
+  // Meetings explorer projections own time-of-day ordering.
   const leftDate = String(left.event_date || "");
   const rightDate = String(right.event_date || "");
-  return rightDate.localeCompare(leftDate)
+  const leftKey = left.source_system === "community_board" ? leftDate.slice(0, 10) : leftDate;
+  const rightKey = right.source_system === "community_board" ? rightDate.slice(0, 10) : rightDate;
+  return rightKey.localeCompare(leftKey)
     || String(left.meeting_id || "").localeCompare(String(right.meeting_id || ""));
 }
 

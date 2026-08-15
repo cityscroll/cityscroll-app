@@ -383,11 +383,11 @@ function locationDetails(record) {
   const area = record.affected_area || {};
   const borough = venue.borough || area.boroughs?.[0] || null;
   const rows = [];
-  if (venue.name) rows.push(`<span>${esc(venue.name)}</span>`);
+  const venueName = venue.name || venue.building || record.building_name || null;
+  if (venueName) rows.push(`<span>${esc(venueName)}</span>`);
   if (venue.address) rows.push(`<span>${esc(venue.address)}</span>`);
   if (!venue.address) {
     const address = [
-      record.building_name,
       record.street_address_1,
       record.street_address_2,
       [record.city, record.state, record.zip_code].filter(Boolean).join(", "),
@@ -509,6 +509,10 @@ export function renderMeetingDocument(record = {}) {
   const noticeDetailsSection = noticeMeta.length || noticeBody.length
     ? `<section class="node-section civic-object-section meeting-section meeting-notice-details"><h2>Notice details</h2>${noticeMeta.length ? `<dl>${noticeMeta.map(([label, value]) => `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`).join("")}</dl>` : ""}${noticeBody.map(([label, value]) => `<div class="meeting-notice-block"><h3>${esc(label)}</h3><p>${esc(value)}</p></div>`).join("")}</section>`
     : "";
+  const description = clean(record.description, 6_000);
+  const descriptionSection = description && !noticeBody.length && description !== clean(title, 6_000)
+    ? `<section class="node-section civic-object-section meeting-section meeting-description"><h2>About this meeting</h2><p>${esc(description)}</p></section>`
+    : "";
   const contactRows = [
     record.contact_name ? `<span>${esc(record.contact_name)}</span>` : "",
     record.contact_phone ? `<a href="tel:${esc(String(record.contact_phone).replace(/[^0-9+]/g, ""))}">${esc(record.contact_phone)}</a>` : "",
@@ -540,10 +544,11 @@ export function renderMeetingDocument(record = {}) {
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
 <main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
-  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}</section>
+  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(record.event_end)}</time></p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${institutionSection}
   ${locationSection}
+  ${descriptionSection}
   ${noticeDetailsSection}
   ${contactSection}
   ${relatedLinksSection}

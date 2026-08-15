@@ -265,6 +265,7 @@ function normalizeHearingRow(row) {
       source_section: row.section_name || "Community Board Meetings",
       agency: null, notice_type: row.type_of_notice_description || "Board meeting",
       title: hearingPlainText(row.short_title) || "Community board meeting", event_date: row.event_date || null,
+      event_end: row.event_end || row.end_at || null,
       published_at: row.start_date || null, decides: hearingPlainText(row.short_title) || "Community board meeting",
       affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
       participation: row.participation || { links: [], remote_join_url: null, emails: [], phones: [], source_url: boardSource },
