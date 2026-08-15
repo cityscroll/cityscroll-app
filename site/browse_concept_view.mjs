@@ -2,6 +2,10 @@ import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
 import { renderCommitteeLocalConstellationHTML } from "./committee_memberships.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import {
+  buildPeopleOrganizationsReadModel,
+  relationStateLabel,
+} from "./people_organizations_read_model.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
@@ -184,6 +188,92 @@ function renderPlaceDiscovery() {
   </div>`;
 }
 
+const ROW_KIND_LABELS = Object.freeze({
+  official: "Official",
+  "exact-person-appointment": "Exact-person appointment",
+  "notice-only-hire": "Notice-only hire",
+  agency: "Agency",
+  vendor: "Vendor",
+  committee: "Committee",
+  "community-board": "Community board institution",
+});
+
+function rowKindLabel(kind) {
+  return ROW_KIND_LABELS[kind] || kind;
+}
+
+function rowKindCountLabel(kind, count) {
+  const labels = {
+    agency: "agencies",
+    vendor: "vendors",
+    committee: "committees",
+    "community-board": "community board institutions",
+  };
+  return `${Number(count).toLocaleString("en-US")} ${labels[kind] || `${rowKindLabel(kind).toLowerCase()}${count === 1 ? "" : "s"}`}`;
+}
+
+function renderPersonRowLink(row) {
+  if (!row.href) return esc(row.label);
+  return link(row.href, row.label, "people-org-row-link");
+}
+
+function renderCommitteeMembers(row) {
+  if (!row.members?.length) return "";
+  return `<p class="people-org-row-related"><span>Exact-person members:</span> ${row.members.map((member) => {
+    const label = member.href
+      ? link(member.href, member.person_name, "people-org-person-link")
+      : esc(member.person_name);
+    return `<span data-person-id="${esc(member.person_id)}">${label}</span>`;
+  }).join(", ")}</p>`;
+}
+
+function renderBoardRelations(row) {
+  if (!row.organization_relations?.length) return "";
+  return `<div class="people-org-row-relations" aria-label="Community board relation status">${row.organization_relations.map((relation) =>
+    `<span>${esc(relation.label)} · ${esc(relationStateLabel(relation.state))}</span>`).join("")}</div>`;
+}
+
+function renderPeopleOrganizationRow(row) {
+  const place = row.kind === "community-board" && row.place_href
+    ? `<a class="people-org-place-link" href="${esc(row.place_href)}">Discover this place in Near you</a>`
+    : "";
+  const notice = row.kind === "notice-only-hire" && row.source_record_id
+    ? `<span class="people-org-row-source">Notice ${esc(row.source_record_id)}</span>`
+    : "";
+  const boardStatus = row.kind === "community-board"
+    ? `<div class="people-org-row-status-rail" aria-label="Board record status"><span>Board identity · Published</span><span>District coverage · ${esc(row.district ? "Published" : "Unknown")}</span></div>`
+    : "";
+  const boardAttributes = row.kind === "community-board"
+    ? ` data-board-projection="organization" data-body-id="${esc(row.body_id)}"`
+    : "";
+  return `<li class="people-org-row" id="people-row-${esc(row.id.replace(/[^A-Za-z0-9_-]/g, "-"))}"${boardAttributes} data-people-organization-row data-row-kind="${esc(row.kind)}" data-relation-state="${esc(row.relation_state)}" data-search-text="${esc(row.search_text)}">
+    <div class="people-org-row-top"><span class="people-org-kind">${esc(rowKindLabel(row.kind))}</span><span class="people-org-state people-org-state-${esc(row.relation_state)}">${esc(relationStateLabel(row.relation_state))}</span></div>
+    <h3>${renderPersonRowLink(row)}</h3>
+    <p class="people-org-row-detail">${esc(row.detail)}${row.agency ? ` · ${esc(row.agency)}` : ""}${row.date ? ` · ${esc(row.date)}` : ""}</p>
+    ${notice}${boardStatus}${row.kind === "committee" ? renderCommitteeMembers(row) : ""}${row.kind === "community-board" ? renderBoardRelations(row) : ""}${place}
+  </li>`;
+}
+
+function renderPeopleOrganizationsList(model) {
+  const rows = Array.isArray(model?.rows) ? model.rows : [];
+  const countSummary = Object.entries(model?.counts || {})
+    .filter(([, count]) => Number(count) > 0)
+    .map(([kind, count]) => rowKindCountLabel(kind, count))
+    .join(" · ");
+  return `<section class="browse-concept-section people-organizations-unified" id="people-organizations-list" aria-labelledby="people-organizations-list-heading" data-people-organizations>
+    <p class="browse-concept-count">${esc(rows.length.toLocaleString("en-US"))} typed rows</p>
+    <h2 id="people-organizations-list-heading">People and organizations</h2>
+    <p class="browse-concept-description">Search one materialized list. Every row names its record type; person links use exact identifiers, while notice-only hires remain visibly unjoined.</p>
+    <form class="people-org-search" role="search" data-people-organizations-search-form>
+      <label for="people-organizations-search">Search people and organizations</label>
+      <input id="people-organizations-search" type="search" autocomplete="off" placeholder="Search a name, agency, board, committee, or notice" data-people-organizations-search>
+      <p class="people-org-search-summary" data-people-organizations-search-summary>${esc(countSummary)}</p>
+    </form>
+    <ul class="people-org-row-list" data-people-organizations-list>${rows.map(renderPeopleOrganizationRow).join("")}</ul>
+    <p class="empty people-org-no-results" data-people-organizations-no-results hidden>No matching people or organizations in this published snapshot.</p>
+  </section>`;
+}
+
 export function buildBrowseConceptLanding(kind, sources = {}) {
   const config = BROWSE_CONCEPTS[kind];
   if (!config) return null;
@@ -191,12 +281,20 @@ export function buildBrowseConceptLanding(kind, sources = {}) {
   const committees = sources.committees || {};
   const awards = sources.awards || {};
   const geography = sources.places || {};
+  const hires = sources.hires || {};
   const officials = officialItems(people);
   const vendors = vendorItems(awards);
   const committeeRows = committeeItems(committees, people);
   const boards = boardItems(geography);
+  const peopleOrganizations = kind === "people"
+    ? buildPeopleOrganizationsReadModel({ people, committees, agencies: sources.agencies || {}, awards, places: geography, hires })
+    : null;
   const sections = kind === "people"
     ? [
+      // Keep the bounded concept sections as the established navigation and
+      // evidence surfaces. The typed list is an additive search layer above
+      // them, not a replacement for their existing renderers and pivots.
+      renderPeopleOrganizationsList(peopleOrganizations),
       conceptSection("officials", "Officials", "Published official profiles.", renderOfficials(people), officials.length),
       conceptSection("vendors", "Vendors", "Vendor profiles from award records.", renderVendors(awards), vendors.length),
       conceptSection("committees", "Committees", "Published committee records.", renderCommittees(committees, people), committeeRows.length),
@@ -206,7 +304,7 @@ export function buildBrowseConceptLanding(kind, sources = {}) {
       conceptSection("community-boards", "Community boards", "Find a community board as a place in Near you.", renderPlaceDiscovery()),
       conceptSection("place-links", "Community board records", "Open the separate source directory for published board calendars and minutes.", `<p class="browse-concept-actions">${link("/community-boards/", "Open community board records")}</p>`),
     ];
-  return { ...config, sections };
+  return { ...config, sections, peopleOrganizations };
 }
 
 export function renderBrowseConceptLanding(landing) {

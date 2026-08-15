@@ -235,5 +235,8 @@ export function buildBrowseConceptDocument(shell, kind, sources) {
   html = activateTab(html, "browse");
   html = html.replace(`class="tabbtn" href="${config.route}"`, `class="tabbtn active" href="${config.route}"`);
   html = addRouteStyles(html, ["browse.css", "local_constellation.css"]);
-  return replaceElementContent(html, "browseview", renderBrowseConceptLanding(buildBrowseConceptLanding(kind, sources)));
+  const rendered = replaceElementContent(html, "browseview", renderBrowseConceptLanding(buildBrowseConceptLanding(kind, sources)));
+  return kind === "people"
+    ? rendered.replace("</body>", '<script type="module" src="/people_organizations.mjs"></script>\n</body>')
+    : rendered;
 }
