@@ -46,13 +46,9 @@ test("People + organizations exposes a board institution projection", () => {
   assert.match(html, /Hosted meetings · Unknown/);
   assert.match(html, /Recommendations · Unknown/);
   assert.match(html, /id="people-organizations-list"/);
-  assert.match(html, /id="officials"/);
-  assert.match(html, /id="vendors"/);
-  assert.match(html, /id="committees"/);
+  assert.doesNotMatch(html, /id="officials"|id="vendors"|id="committees"/);
   assert.match(html, /id="community-boards"/);
-  assert.match(html, /Published official profiles\./);
-  assert.match(html, /Vendor profiles from award records\./);
-  assert.match(html, /Published committee records\./);
+  assert.doesNotMatch(html, /Published official profiles\.|Vendor profiles from award records\.|Published committee records\./);
   assert.match(html, /Public bodies serving New York City districts\./);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
 });

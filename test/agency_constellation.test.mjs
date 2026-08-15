@@ -252,13 +252,12 @@ test("empty categories stay honest and never invent items", () => {
   for (const category of view.categories) {
     assert.equal(category.status, "empty");
     assert.equal(category.items.length, 0);
-    assert.ok(category.note);
+    assert.equal(category.note, null);
   }
   const html = renderAgencyConstellationDocument(view);
-  // Every supported family stays visible with an explicit measured zero.
-  assert.equal((html.match(/data-agency-constellation-category=/g) || []).length, view.categories.length);
-  assert.match(html, /data-edge-state="empty"/);
-  assert.match(html, /No meetings or hearings linked yet/);
+  // Empty families stay in the model for logic, but do not occupy the reader surface.
+  assert.equal((html.match(/data-agency-constellation-category=/g) || []).length, 0);
+  assert.doesNotMatch(html, /data-edge-state="empty"|No meetings or hearings linked yet/);
   assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
   assert.doesNotMatch(html, /not yet shown/i);
   assert.doesNotMatch(html, /fabricat/i);

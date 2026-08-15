@@ -1364,7 +1364,7 @@
     official_recent_lead_html: "{n} named Council roll-call votes shown here from published Legistar records.",
     official_event_group_heading: "Council event {id} · {date}",
     official_coverage_heading: "Coverage gate",
-    official_coverage_bounded_label: "Published roll calls in this corpus",
+    official_coverage_bounded_label: "Published votes linked to this official",
     official_coverage_promoted_label: "Official decision constellation",
     official_coverage_events: "Event breadth: {observed} of {required} distinct events required for promotion.",
     official_coverage_events_progress: "Distinct-event promotion progress",

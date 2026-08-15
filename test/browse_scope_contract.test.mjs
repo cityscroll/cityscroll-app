@@ -103,7 +103,7 @@ test("browse scope conformance: every registered lens filters when given fixture
       const label = resolveAgencyIdentity(agencyId).canonical_name;
       assert.match(html, new RegExp(`Filtered to ${escapeRegExp(label)}`));
     } else {
-      assert.match(html, /No records in this lens match/);
+      assert.doesNotMatch(html, /No records in this lens match|class="empty"/);
     }
   }
 });
@@ -350,7 +350,8 @@ test("captain six scope URLs with DCWP exhibit explicit scope/empty state by len
     } else {
       assert.equal(view.scope.mode, "empty", `${facet} explicitly shows empty scope state`);
       assert.equal(view.total, 0, `${facet} DCWP scope has no matching rows`);
-      assert.match(html, new RegExp(`No records in this lens match ${targetName}\.`));
+      assert.doesNotMatch(html, /No records in this lens match/);
+      assert.doesNotMatch(html, /class="empty"/);
     }
 
     const match = scopeChip(html);

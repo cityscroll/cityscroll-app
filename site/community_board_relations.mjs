@@ -222,5 +222,5 @@ export function communityBoardRelationAvailability(sourceRows = [], relation = "
   if (minutes?.state === "observed") {
     return { state: "unknown", reason: `The official records do not yet identify ${relation === "member" ? "board members" : "board recommendations"} with exact publisher keys.` };
   }
-  return { state: "unknown", reason: "The official board source is not indexed for this relation." };
+  return { state: "unknown", reason: "" };
 }
