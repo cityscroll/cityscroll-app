@@ -216,11 +216,24 @@ test("notice bitemporal history keeps VALID and SYSTEM clocks independent", () =
 
   const html = renderNoticeBitemporalHistory({ notice: { request_id: "20240723114" }, events: history.events });
   assert.match(html, /Bitemporal history/);
-  assert.match(html, /VALID is when the civic fact was true/);
+  assert.match(html, /Valid time/);
+  assert.match(html, /Recorded time/);
   assert.match(html, /Notice published/);
   assert.match(html, /Responses due/);
-  assert.match(html, /Not recorded/);
+  assert.doesNotMatch(html, /VALID is when|SYSTEM is when|Not recorded/);
+  assert.match(html, /data-civic-time-valid=""/);
   assert.doesNotMatch(html, /2024-07-23.*SYSTEM/);
+});
+
+test("notice bitemporal history hides an empty retained event set", () => {
+  assert.equal(
+    renderNoticeBitemporalHistory({ notice: { request_id: "20240723114" }, events: [], state: "ok" }),
+    "",
+  );
+  assert.equal(
+    renderNoticeBitemporalHistory({ notice: { request_id: "20240723114" }, events: [], state: "unavailable" }),
+    "",
+  );
 });
 
 test("agency document embeds compact ledger when useful; asOf pre-filters", () => {

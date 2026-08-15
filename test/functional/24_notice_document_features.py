@@ -184,10 +184,10 @@ def assert_document_feature_parity(page: Page) -> None:
     assert history.locator("[data-civic-time-event]").count() == 2
     history_text = history.inner_text()
     assert "bitemporal history" in history_text.lower()
-    assert "VALID" in history_text and "SYSTEM" in history_text
+    assert "Valid time" in history_text and "Recorded time" in history_text
     assert history.locator("[data-civic-time-valid='']").count() == 1
     assert history.locator("[data-civic-time-system='']").count() == 1
-    assert history_text.count("Not recorded") >= 2
+    assert "Not recorded" not in history_text
     watch = page.locator('#nactions a[href*="/following"]').first
     assert watch.is_visible(), "document route lost the notice watch control"
 
