@@ -25,14 +25,16 @@ function loadPersonVotesLookup(){
   }
   return personVotesLookupPromise;
 }
-let committeeMembershipLookupPromise = null;
-function loadCommitteeMembershipLookup(){
-  if(!committeeMembershipLookupPromise){
-    committeeMembershipLookupPromise = fetch("data/official_committee_memberships_lookup.json", { cache: "force-cache", credentials: "omit" })
+let committeeGraphLookupPromise = null;
+// The legacy official_committee_memberships_lookup.json remains a migration/evidence artifact;
+// published official-profile edges come only from committee_graph_lookup.json below.
+function loadCommitteeGraphLookup(){
+  if(!committeeGraphLookupPromise){
+    committeeGraphLookupPromise = fetch("data/committee_graph_lookup.json", { cache: "force-cache", credentials: "omit" })
       .then(r => (r && r.ok ? r.json() : null))
       .catch(() => null);
   }
-  return committeeMembershipLookupPromise;
+  return committeeGraphLookupPromise;
 }
 let personHubLookupPromise = null;
 function loadPersonHubLookup(){
@@ -243,13 +245,19 @@ async function showOfficial(personId, opts){
     { currentHash:"#meetings", scope:globalThis.CrolScope },
   ) || null;
   const committeeModule = await import("../committee_memberships.mjs");
-  const committeeLookup = await loadCommitteeMembershipLookup();
-  const committeeBag = committeeLookup?.by_member_id?.[id] ? {
-    ...committeeLookup.by_member_id[id],
-    coverage: { eligible_rows: committeeLookup.eligible_row_count, linked_rows: committeeLookup.linked_row_count, row_rate: committeeLookup.row_rate },
-    vintage: committeeLookup.vintage,
-    reverse_edges: [],
-  } : { rows: [], coverage: {}, vintage: committeeLookup?.vintage };
+  const committeeGraph = await loadCommitteeGraphLookup();
+  const committeeView = officialConnections.buildOfficialCommitteeView(
+    lookupBag || { person_id:id, person_name:name },
+    committeeGraph,
+  );
+  const committeeBag = {
+    member_id: id,
+    person_name: name,
+    rows: committeeModule.committeeRowsFromGraph(committeeGraph, committeeView),
+    graph_state: committeeView.state,
+    vintage: committeeGraph?.generated_at || null,
+    reverse_edges: committeeModule.committeeReverseEdgesForId(committeeGraph, id),
+  };
   const event = (record && record.council_event) || {};
   const resolvedEventId = eventId || event.event_id || (scopedVotes[0] && scopedVotes[0].event_id) || "";
   const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#meetings";
@@ -301,7 +309,7 @@ async function showOfficial(personId, opts){
       ${eventLine}
       ${recentVotes.length || scopedVotes.length ? officialConnections.renderOfficialCoverageHTML(officialView, { translate:t }) : ""}
       ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
-      ${committeeModule.renderOfficialLocalConstellationHTML(officialView, committeeBag.rows, id, name)}
+      ${committeeModule.renderOfficialLocalConstellationHTML(officialView, committeeBag, id, name)}
       ${influenceModule ? influenceModule.renderLobbyInfluenceHTML(lobbyBag, { escapeHtml:escUiHtml, translate:t }) : ""}
       ${influenceModule ? influenceModule.renderCfbInfluenceHTML(cfbBag, { escapeHtml:escUiHtml }) : ""}
       ${body}
