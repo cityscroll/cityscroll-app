@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_BUDGETS = ROOT / "performance-budgets.json"
 DEFAULT_FIXTURES = ROOT / "test" / "performance" / "fixtures"
 DEFAULT_OUTPUT = ROOT / "test" / "performance" / "artifacts" / "results.json"
+DEFAULT_SITE_ROOT = ROOT / "site"
 METRIC_KEYS = {
     "ttfbMs",
     "fcpMs",
@@ -94,7 +95,7 @@ def parse_args() -> argparse.Namespace:
         choices=sorted(METRIC_KEYS),
         help="Check only one metric (fixture invariants are always checked)",
     )
-    parser.add_argument("--site-root", type=Path, default=ROOT)
+    parser.add_argument("--site-root", type=Path, default=DEFAULT_SITE_ROOT)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     return parser.parse_args()
 
@@ -313,13 +314,15 @@ def nav_metrics(page: Page) -> dict[str, float]:
 
 
 def wait_for_home(page: Page) -> None:
-    # Homepage: masthead CTA + default Contracts list (edition strip removed).
+    # Homepage: static neutral topic entry. No source-backed list is part of home
+    # readiness; those lookups belong to an explicit document route.
     page.wait_for_function(
         """() => {
           const cta = document.getElementById('homeCta');
-          const listReady = document.querySelectorAll('#list .row').length > 0
-            || document.querySelector('#list .empty');
-          return !!cta && !!listReady;
+          const topic = document.querySelector('[data-home-topic-entry] input[name="q"]');
+          return document.body?.dataset.primaryContext === 'home'
+            && document.body?.dataset.homeReady === 'true'
+            && !!cta && !!topic && topic.getClientRects().length > 0;
         }"""
     )
     page.wait_for_timeout(120)
@@ -366,7 +369,10 @@ def measure_contracts(
     page = context.new_page()
     install_routes(page, fixture, unexpected)
     install_observers(page)
-    page.goto(base_url, wait_until="domcontentloaded")
+    # Contracts measurement is an explicit lens fixture. Enter its canonical
+    # document route so home never pays for the Contracts source lookup.
+    contracts_entry = base_url + "browse/contracts/"
+    page.goto(contracts_entry, wait_until="domcontentloaded")
     page.locator("#rescount").wait_for(state="attached")
     page.wait_for_function("() => document.querySelector('#rescount').textContent.trim() !== ''")
     page.reload(wait_until="domcontentloaded")
@@ -470,23 +476,16 @@ def measure_land_outcomes(
         "https://geosearch.planninglabs.nyc/**",
         lambda route: fulfill_json(route, {"features": []}),
     )
-    page.goto(base_url, wait_until="domcontentloaded")
+    # Land measurement is likewise an explicit route fixture; the neutral home
+    # does not load the application module graph or source-backed Land handlers.
+    page.goto(base_url + "browse/zoning/", wait_until="domcontentloaded")
     page.wait_for_selector('.tabbtn[data-tab="land"]')
-    # Start from an interaction-ready page. The tab markup is static, but the
-    # route-lazy handlers arrive with the application module graph.
+    # Start from an interaction-ready page. The route-lazy handlers arrive with
+    # the application module graph on this explicit document route.
     wait_for_land_outcome(
         page,
         "() => typeof window.showTab === 'function' && typeof window.landSearch === 'function'",
         "land module readiness",
-    )
-    wait_for_land_outcome(
-        page,
-        """() => {
-          const count = document.querySelector('#rescount')?.textContent?.trim();
-          const list = document.querySelector('#list');
-          return !!count && !!list && !list.querySelector('.loading');
-        }""",
-        "land source list readiness",
     )
     started_at = page.evaluate(
         """() => {

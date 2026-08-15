@@ -243,3 +243,47 @@ export function buildBrowseConceptDocument(shell, kind, sources) {
     ? rendered.replace("</body>", '<script type="module" src="/people_organizations.mjs"></script>\n</body>')
     : rendered;
 }
+
+function searchLane(id, title, description) {
+  return `<section class="topic-search-lane" data-search-lane="${esc(id)}" aria-labelledby="search-lane-${esc(id)}">
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-${esc(id)}">${esc(title)}</h3><p>${esc(description)}</p></div><span class="topic-search-lane-status">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status">Keyword matches will appear here after this page loads.</div>
+  </section>`;
+}
+
+export function renderSearchDocument() {
+  return `<div class="topic-search-document" data-search-document>
+    <p class="topic-search-kicker">Topic search</p>
+    <header class="topic-search-head"><h2 id="search-heading">What are you looking for?</h2><p>Search NYC records by topic before choosing a type of record.</p></header>
+    <form class="topic-search-form" method="get" action="/search/" data-search-form>
+      <label for="search-query">What are you looking for?</label>
+      <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency"><button type="submit">Search records</button></div>
+      <p class="topic-search-note">You can compare Contracts, Rules, Meetings, and Obligations without choosing a type first.</p>
+    </form>
+    <div class="topic-search-context" data-search-place hidden></div>
+    <div class="topic-search-method" aria-label="Search method"><span>Match method</span><strong>Keyword search</strong></div>
+    <div class="topic-search-lanes" aria-label="Search result types">
+      ${searchLane("contracts", "Contracts", "Public contract opportunities and awards.")}
+      ${searchLane("rules", "Rules", "Published rules and mandates.")}
+      ${searchLane("meetings", "Meetings", "Public meetings and decisions.")}
+      ${searchLane("obligations", "Obligations", "Published duties and requirements.")}
+    </div>
+  </div>`;
+}
+
+export function buildSearchDocument(shell) {
+  let html = pageMetadata(shell, {
+    title: "Search NYC records · CityScroll",
+    description: "Search NYC public records by topic before choosing a record type.",
+    canonical: canonicalRoute("/search/"),
+    primaryHref: "/browse/",
+    primaryContext: "search",
+  });
+  html = activateTab(html, "browse");
+  html = addRouteStyles(html, ["search.css"]);
+  html = replaceElementContent(html, "browse-child-nav", "");
+  html = replaceElementContent(html, "browseview", renderSearchDocument());
+  return html
+    .replace(' data-i18n-title="index_title"', "")
+    .replace('<script type="module" src="app/main.mjs"></script>', '<script type="module" src="search_document.mjs"></script>');
+}

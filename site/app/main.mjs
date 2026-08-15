@@ -1,3 +1,10 @@
+// The root URL is a static-first topic entry. Keep the complete application graph
+// behind an explicit route so no source lookup or lens module can delay home paint.
+const rootPath = (location.pathname || "/").replace(/\/+$/, "") || "/";
+const isNeutralHome = rootPath === "/" && !location.hash;
+if (!isNeutralHome) document.body?.setAttribute("data-app-route", "true");
+
+async function loadApplication() {
 await import("./core.mjs");
 globalThis.CrolScope = await import("../scope_v0.mjs");
 globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
@@ -84,3 +91,11 @@ await import("./boot.mjs");
 // privacy instrumentation ran. Module loading is deferred, so re-apply the same form mask after
 // boot to preserve that ordering guarantee.
 globalThis.CROLClarity?.applyInputMasking(document);
+}
+
+if (isNeutralHome) {
+  await import("../home_entry.mjs");
+  globalThis.CROLLoadApplication = loadApplication;
+} else {
+  await loadApplication();
+}
