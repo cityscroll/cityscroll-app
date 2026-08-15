@@ -590,7 +590,7 @@ function categoryFromDomain(
   }
 
   if (spec.id === "obligations") {
-    const { total, items: preview, all_items, view, conformance } = obligationItems(obligationsLookup, identity, 12, conformanceView);
+    const { items: preview, all_items, view, conformance } = obligationItems(obligationsLookup, identity, 12, conformanceView);
     const claimAll = (all_items || preview).map((item) => attachClaim(item, {
       categoryId: spec.id,
       relation: spec.relation,
@@ -601,9 +601,10 @@ function categoryFromDomain(
     const items = standable.slice(0, 8);
     const warrant_summary = summarizeCategoryWarrants(standable);
     const shown = standable.length || 0;
-    // Reader count is the materialization total (obligations / conformance corpus);
-    // the list preview is standable-only so candidates are not hedged in public HTML.
-    const readerCount = total || shown;
+    // Reader count is the standable public link inventory. The source corpus
+    // can retain quote-miss candidates, but they are neither listed nor counted
+    // as verified constellation edges.
+    const readerCount = shown;
     return {
       id: spec.id,
       label: spec.label,
