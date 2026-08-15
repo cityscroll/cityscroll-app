@@ -181,30 +181,14 @@ test("the built Meetings listing is covered by the shared read model", () => {
   assert.deepEqual(missing, [], "every listed meeting must be present in the resolver catalog");
 });
 
-test("a newer City Record meeting in the Meetings lens resolves before the static catalog rebuilds", async () => {
-  const meetingId = "meeting:city_record:20260810053";
+test("materialized City Record meetings resolve with notice richness and no request-time source fetch", async () => {
   const readModel = JSON.parse(sharedMeetingOutputs().find(([path]) => path.endsWith("shared_meeting_read_model.json"))[1]);
-  const freshRecord = {
-    meeting_id: meetingId,
-    source_system: "city_record",
-    source_record_id: "20260810053",
-    request_id: "20260810053",
-    title: "Design Commission Meeting Agenda, Monday, August 17, 2026",
-    event_date: "2026-08-17T09:10:00.000",
-    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260810053",
-    source_receipt: { status: "ok", observed_at: "2026-08-14T20:45:00.588Z" },
-    compatibility: { legacy_notice_href: "/notices/20260810053" },
-  };
   const originalFetch = globalThis.fetch;
   const calls = [];
   globalThis.fetch = async (request) => {
     const url = new URL(String(request.url || request));
     calls.push(url);
-    const rows = url.searchParams.get("id") === meetingId ? [freshRecord] : [];
-    return new Response(JSON.stringify({ hearings: rows }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    throw new Error(`unexpected request-time meeting source fetch: ${url}`);
   };
   try {
     const env = {
@@ -218,17 +202,27 @@ test("a newer City Record meeting in the Meetings lens resolves before the stati
         },
       },
     };
-    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`), env);
-    assert.equal(response.status, 200);
-    assert.equal(isMeetingDocumentHtml(await response.text(), meetingId), true);
-    assert.equal(calls.length, 1);
-    assert.equal(calls[0].pathname, "/hearings");
-    assert.equal(calls[0].searchParams.get("id"), meetingId);
+    for (const [requestId, expected] of [
+      ["20260810053", /Design Commission Meeting Agenda/],
+      ["20260713006", /DCWP NOH Rules Relating to Waitlist/],
+    ]) {
+      const meetingId = `meeting:city_record:${requestId}`;
+      const row = readModel.rows.find((candidate) => candidate.meeting_id === meetingId);
+      assert.ok(row, `${requestId} should be materialized`);
+      assert.match(row.additional_description_1 || "", /./, `${requestId} should retain notice description`);
+      assert.ok(row.street_address_1 || row.document_links?.length || row.source_links?.length, `${requestId} should retain a source-rich field`);
+      const response = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}/`), env);
+      assert.equal(response.status, 200, requestId);
+      const body = await response.text();
+      assert.equal(isMeetingDocumentHtml(body, meetingId), true, requestId);
+      assert.match(body, expected, requestId);
+      assert.match(body, /Notice details/);
+    }
 
     const unknownId = "meeting:city_record:20990101001";
     const unknown = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(unknownId)}/`), env);
     assert.equal(unknown.status, 404);
-    assert.equal(calls.length, 2);
+    assert.equal(calls.length, 0, "meeting routes must not fetch the live hearings source");
   } finally {
     globalThis.fetch = originalFetch;
   }
