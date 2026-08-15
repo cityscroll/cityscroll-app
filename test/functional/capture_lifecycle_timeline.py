@@ -11,6 +11,7 @@ Output: docs/screenshots/lifecycle-timeline/{before,after}-{390,1440}[-annotated
 
 from __future__ import annotations
 
+import argparse
 import json
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -165,7 +166,9 @@ def annotate(page: Page, selector: str, label: str) -> None:
     )
 
 
-def capture_state(playwright, base_url: str, state: str, lifecycle_data: dict) -> None:
+def capture_state(
+    playwright, base_url: str, state: str, lifecycle_data: dict, output: Path
+) -> None:
     for width, height in VIEWPORTS:
         browser = playwright.chromium.launch(headless=True)
         ctx = browser.new_context(viewport={"width": width, "height": height})
@@ -188,27 +191,42 @@ def capture_state(playwright, base_url: str, state: str, lifecycle_data: dict) -
         page.evaluate("document.querySelector('#nlifecycle')?.scrollIntoView({block:'center'})")
         page.wait_for_timeout(300)
 
-        raw_path = OUTPUT / f"{state}-{width}.png"
+        raw_path = output / f"{state}-{width}.png"
         page.screenshot(path=str(raw_path), animations="disabled")
         label = "Contract lifecycle timeline" if state == "after" else "Before lifecycle timeline"
         annotate(page, "#nlifecycle", label)
-        ann_path = OUTPUT / f"{state}-{width}-annotated.png"
+        ann_path = output / f"{state}-{width}-annotated.png"
         page.screenshot(path=str(ann_path), animations="disabled")
 
         browser.close()
         print(f"  {raw_path.name}")
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Capture before/after contract lifecycle timeline screenshots."
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=OUTPUT,
+        help=f"Screenshot directory (default: {OUTPUT.relative_to(ROOT)})",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
-    OUTPUT.mkdir(parents=True, exist_ok=True)
+    args = parse_args()
+    output = args.output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
     with LocalServer(str(ROOT)) as server:
         base_url = server.url
         with sync_playwright() as playwright:
             print("Capturing before (no lifecycle)...")
-            capture_state(playwright, base_url, "before", LIFECYCLE_EMPTY)
+            capture_state(playwright, base_url, "before", LIFECYCLE_EMPTY, output)
             print("Capturing after (lifecycle timeline)...")
-            capture_state(playwright, base_url, "after", LIFECYCLE_FULL)
-    print(f"\nScreenshots saved to {OUTPUT}/")
+            capture_state(playwright, base_url, "after", LIFECYCLE_FULL, output)
+    print(f"\nScreenshots saved to {output}/")
 
 
 if __name__ == "__main__":
