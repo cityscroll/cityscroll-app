@@ -22,6 +22,11 @@ import {
   scoreTopicMatch,
 } from "../site/process_conformance.mjs";
 import {
+  OBSERVATION_STATE,
+  buildMandateCategoryConformance,
+  mergeMandateCategoryConformance,
+} from "../site/mandate_category_conformance.mjs";
+import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
@@ -325,6 +330,115 @@ test("shareable path anchors mandates conformance", () => {
   );
 });
 
+test("one conformance run aligns rules, reports, meetings, contracts, and zoning", () => {
+  const asOf = "2026-08-15";
+  const base = {
+    schema: PROCESS_CONFORMANCE_SCHEMA,
+    method: PROCESS_CONFORMANCE_METHOD,
+    agency_id: PARKS,
+    agency_name: "Parks and Recreation",
+    status: "matched",
+    as_of: asOf,
+    counts: { total: 2, observed: 2, detectable: 2 },
+    candidate_corpus: { size: 2, sources: ["rules", "reports"], sample: [] },
+    items: [
+      {
+        mandate_id: "parks-rule",
+        duty_text: "Adopt rules for park permits",
+        deliverable_type: "rulemaking",
+        source_href: "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=1",
+        observation: {
+          status: OBSERVATION_STATUS.OBSERVED,
+          expected_event: { kind: "rule_filing", label: "Rule filing" },
+          observed_record: { label: "Park permit rule", href: "/notices/20260815001" },
+        },
+      },
+      {
+        mandate_id: "parks-report",
+        duty_text: "Publish a park safety report",
+        deliverable_type: "report",
+        source_href: "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=2",
+        observation: {
+          status: OBSERVATION_STATUS.OBSERVED,
+          expected_event: { kind: "report_or_study", label: "Report publication" },
+          observed_record: { label: "Park safety report", href: "/notices/20260815002" },
+        },
+      },
+    ],
+  };
+  const categories = [
+    ["meetings", "requires_public_hearing", "Public meeting or hearing", "meeting:city-record:20260815003"],
+    ["contracts", "implemented_by_contract", "Contract award or registration", "contract:CT1-846-20261234567"],
+    ["zoning", "requires_land_use_action", "Land-use or zoning action", "project:2026M0001"],
+  ].map(([category, edgeType, label, target], index) => buildMandateCategoryConformance({
+    category,
+    edgeType,
+    expectedKind: category === "meetings" ? "public_hearing" : category === "contracts" ? "procurement_contract" : "land_use_action",
+    expectedLabel: label,
+    asOf,
+    sourceAvailable: true,
+    mandates: [{
+      obligation_id: `parks-${category}`,
+      duty_text: `Parks expected ${category} event`,
+      deadline: { computed_date: `2026-0${index + 6}-30` },
+      source: { legistar_url: `https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=${index + 3}` },
+    }],
+    edges: [{
+      mandate_id: `parks-${category}`,
+      target: { subject_ref: target, label: `${label} record`, href: `/agencies/${PARKS}/?claim=edge-${category}`, when: asOf },
+      claim: { claim_id: `edge-${category}`, inspect_href: `/agencies/${PARKS}/?claim=edge-${category}` },
+    }],
+  }));
+
+  const view = mergeMandateCategoryConformance(base, categories, { asOf });
+  assert.deepEqual(view.categories, ["contracts", "meetings", "reports", "rules", "zoning"]);
+  assert.equal(view.as_of, asOf);
+  assert.equal(view.items.length, 5);
+  assert.ok(view.items.every((item) => item.data_as_of === asOf));
+  assert.ok(view.items.every((item) => item.observation.observation_state === OBSERVATION_STATE.APPEARED));
+  for (const category of ["meetings", "contracts", "zoning"]) {
+    const item = view.items.find((row) => row.category === category);
+    assert.equal(item.observation.edge.type, categories.find((group) => group.category === category).edge_type);
+    assert.match(item.observation.edge.claim_inspect_href, new RegExp(`claim=edge-${category}`));
+    assert.match(item.observation.observed_record.href, /^\/agencies\/parks-and-recreation\/\?claim=/);
+  }
+
+  const html = renderMandatesConformanceSection(view);
+  assert.match(html, /data-conformance-category="meetings"/);
+  assert.match(html, /data-conformance-category="contracts"/);
+  assert.match(html, /data-conformance-category="zoning"/);
+  assert.match(html, /Data as of 2026-08-15/);
+  assert.match(html, /View connection details/);
+  assert.doesNotMatch(html, /not a compliance|not a verdict|disclaimer|pipeline|detector/i);
+});
+
+test("category conformance distinguishes not-yet-observed from incomplete data", () => {
+  const mandate = { obligation_id: "m-1", duty_text: "Hold a public hearing" };
+  const known = buildMandateCategoryConformance({
+    category: "meetings",
+    edgeType: "requires_public_hearing",
+    expectedKind: "public_hearing",
+    expectedLabel: "Public meeting or hearing",
+    asOf: "2026-08-15",
+    sourceAvailable: true,
+    mandates: [mandate],
+    edges: [],
+  });
+  const unknown = buildMandateCategoryConformance({
+    category: "meetings",
+    edgeType: "requires_public_hearing",
+    expectedKind: "public_hearing",
+    expectedLabel: "Public meeting or hearing",
+    asOf: "2026-08-15",
+    sourceAvailable: false,
+    mandates: [mandate],
+    edges: [],
+  });
+  assert.equal(known.items[0].observation.observation_state, OBSERVATION_STATE.NOT_YET_OBSERVED);
+  assert.equal(unknown.items[0].observation.observation_state, OBSERVATION_STATE.DATA_INCOMPLETE);
+  assert.equal(known.items[0].data_as_of, unknown.items[0].data_as_of);
+});
+
 test("mandates conformance omits zero-observed views and absence rows", () => {
   const html = renderMandatesConformanceSection({
     status: "matched",
@@ -365,7 +479,7 @@ test("mandates conformance renders matched rows without absence placeholders", (
   });
   assert.match(html, /Publish the matched report/);
   assert.match(html, /Evidence found/);
-  assert.match(html, /1 filing found/);
+  assert.match(html, /1 record appeared/);
   assert.match(html, /class="mandates-conformance-scroll"[^>]*role="region"[^>]*tabindex="0"/);
   assert.match(html, /Scroll to view all mandates/);
   assert.match(html, /Open all mandates/);
@@ -471,6 +585,34 @@ test("committed process_conformance lookup covers Parks", () => {
   assert.ok(lookup.by_agency[PARKS].counts.total >= 20);
   assert.equal(lookup.copy?.lead || lookup.honesty?.lead, CONFORMANCE_HONESTY.lead);
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
+});
+
+test("committed conformance lookup carries meetings, contracts, and zoning edges", () => {
+  const lookup = JSON.parse(readFileSync(LOOKUP, "utf8"));
+  assert.deepEqual(lookup.summary.conformance_categories, [
+    "contracts", "meetings", "reports", "rules", "zoning",
+  ]);
+  assert.deepEqual(lookup.summary.observation_states, [
+    OBSERVATION_STATE.APPEARED,
+    OBSERVATION_STATE.NOT_YET_OBSERVED,
+    OBSERVATION_STATE.DATA_INCOMPLETE,
+  ]);
+  const fieldCases = [
+    ["transportation", "meetings", "requires_public_hearing"],
+    ["homeless-services", "contracts", "implemented_by_contract"],
+    ["landmarks-preservation-commission", "zoning", "requires_land_use_action"],
+  ];
+  for (const [agency, category, edgeType] of fieldCases) {
+    const bucket = lookup.by_agency[agency];
+    const row = bucket.edge_observations.find((item) => (
+      item.category === category && item.observation_state === OBSERVATION_STATE.APPEARED
+    ));
+    assert.ok(row, `${agency} should have an appeared ${category} edge`);
+    assert.equal(row.edge_type, edgeType);
+    assert.equal(row.data_as_of, lookup.as_of);
+    assert.match(row.edge.claim_inspect_href, new RegExp(`^/agencies/${agency}/\\?claim=`));
+    assert.match(row.observed_record.href, /^(?:\/|https:\/\/)/);
+  }
 });
 
 test("constellation surfaces only public Sanitation CWZ rule edges after attachment densify", () => {
