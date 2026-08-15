@@ -197,7 +197,7 @@ export function buildBrowseStubDocument(shell, kind) {
   html = activateTab(html, config.tab);
   html = html.replace(`class="tabbtn" href="${config.route}"`, `class="tabbtn active" href="${config.route}"`);
   html = addRouteStyles(html, ["browse.css"]);
-  return replaceElementContent(html, "browseview", renderBrowseStub(config));
+  return replaceElementContent(html, "examsview", renderBrowseStub(config));
 }
 
 export function buildBrowseDocument(shell, facet, payload, params = new URLSearchParams(), options = {}) {

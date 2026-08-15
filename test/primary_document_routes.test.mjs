@@ -54,6 +54,7 @@ test("primary navigation is four real document links on every promoted shell", (
   for (const [label, route, tab] of routes) {
     assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${tab}"`), `${label} keeps a canonical Browse destination`);
   }
+  assert.match(root, /<section id="tab-exams" class="tabpane">[\s\S]*<div id="examsview">[\s\S]*data-browse-stub="exams"/);
   assert.match(root, /Land/);
   assert.doesNotMatch(root, /href="\/browse\/places\//);
   assert.deepEqual(BROWSE_GROUPS.map((group) => group.label), [
@@ -341,6 +342,11 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(placesDocument[1], /id="tab-browse" class="tabpane active"/);
   assert.match(placesDocument[1], /data-browse-concept="places"/);
   assert.doesNotMatch(placesDocument[1], />Places<\/a>/);
+
+  const examsDocument = primaryDocumentOutputs().find(([path]) => path.endsWith("/browse/exams/index.html"));
+  assert.ok(examsDocument, "the Exams stub document is generated");
+  assert.match(examsDocument[1], /id="tab-exams" class="tabpane active"/);
+  assert.match(examsDocument[1], /data-browse-stub="exams"/);
 });
 
 test("Browse landing counts are labeled with source dates without coverage caveats", () => {
