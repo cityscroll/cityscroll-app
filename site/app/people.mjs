@@ -12,6 +12,7 @@ import {
 } from "../staffing_agency_scope.mjs";
 import { filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
+import { createIncrementalList } from "../incremental_list.mjs";
 
 /* ===================== PEOPLE ===================== */
 let SameConsolidation=null;
@@ -20,7 +21,8 @@ function loadSameConsolidation(){
   return sameConsolidationPromise||(sameConsolidationPromise=import("../same_consolidation.mjs").then(module=>SameConsolidation=module.createStaffingConsolidationUI({t,escUiHtml,fmtNumber,money,fdt,fdate,REQ_URL,EXT_ATTRS,extSR,listEntityMentionHTML})));
 }
 let pRows = [], pMode = "role", competitiveSet = new Set();
-let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
+let careerData = null, careerLoadPromise = null, careerSelected = null;
+let careerIncrementalList = null, careerRenderItems = [];
 let careerFacetState = {interest:"all",window:"actionable",format:"all",salary_band:"all",fee_level:"all",no_experience:"all"};
 const CAREER_DATA_URL = "data/staffing_exams.json";
 const CAREER_DATA_SCHEMA_VERSION = 4;
@@ -365,7 +367,7 @@ function careerFacetControlsHTML(){
     if(facet==="eligibility"){
       box.querySelectorAll("[data-career-eligibility]").forEach(button=>button.addEventListener("click",()=>{
         $("#career-eligibility").value=button.dataset.careerEligibility;
-        careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide(); updateHash();
+        careerSelected=null; careerIncrementalList?.reset(); syncStaffingModeUI(); renderCareerGuide(); updateHash();
       }));
     }
   }
@@ -911,10 +913,32 @@ function updateStaffingMoreFiltersState(){
       no_experience:"all",
     };
     careerSelected=null;
-    careerLimit=16;
+    careerIncrementalList?.reset();
     renderCareerGuide();
     updateHash();
   });
+}
+function bindCareerCopyButtons(){
+  $("#career-results").querySelectorAll("[data-career-copy]").forEach(button=>button.addEventListener("click",()=>{
+    const link=CrolStaffing.examUrl(button.dataset.careerCopy,location.origin+location.pathname);
+    copyText(link,button);
+  }));
+}
+function ensureCareerIncrementalList(){
+  if(careerIncrementalList) return careerIncrementalList;
+  careerIncrementalList=createIncrementalList({
+    container: $("#career-results"),
+    initialPageSize: 16,
+    pageSize: 24,
+    getItems:()=>careerRenderItems,
+    renderItems:shown=>careerSelected?shown.map(careerCardHTML).join(""):careerResultsHTML(shown),
+    renderEmpty:()=>`<div class="career-empty">${careerSelected?t("career_exam_not_found"):t("career_no_results")}</div>`,
+    renderMore:remaining=>t("career_show_more",{n:fmtNumber(remaining)}),
+    moreId:"career-more",
+    moreClass:"career-more",
+    onMore:()=>bindCareerCopyButtons(),
+  });
+  return careerIncrementalList;
 }
 function careerExamsForActiveScope(baseExams){
   const exams=Array.isArray(baseExams)?baseExams:[];
@@ -964,15 +988,9 @@ function renderCareerGuide(){
   updateStaffingMoreFiltersState();
   const countEl=$("#career-result-count");
   if(countEl) countEl.textContent=exams.length?t("results_count",{n:fmtNumber(exams.length)}):"";
-  const shown=exams.slice(0,careerLimit);
-  $("#career-results").innerHTML=shown.length
-    ? (careerSelected?shown.map(careerCardHTML).join(""):careerResultsHTML(shown))+(exams.length>shown.length?`<div class="career-more"><button type="button" id="career-more">${t("career_show_more",{n:fmtNumber(exams.length-shown.length)})}</button></div>`:"")
-    : `<div class="career-empty">${careerSelected?t("career_exam_not_found"):t("career_no_results")}</div>`;
-  $("#career-results").querySelectorAll("[data-career-copy]").forEach(button=>button.addEventListener("click",()=>{
-    const link=CrolStaffing.examUrl(button.dataset.careerCopy,location.origin+location.pathname);
-    copyText(link,button);
-  }));
-  $("#career-more")?.addEventListener("click",()=>{ careerLimit+=24; renderCareerGuide(); });
+  careerRenderItems=exams;
+  ensureCareerIncrementalList().render({items:exams});
+  bindCareerCopyButtons();
 }
 function applyCareerRouteFilters(){
   if(!careerRouteFilters) return;
@@ -1121,7 +1139,7 @@ function paintExamDetailShell(examNumber){
 }
 function showExam(examNumber){
   const id=String(examNumber||"").trim();
-  careerSelected=id; careerLimit=16;
+  careerSelected=id; careerIncrementalList?.reset();
   staffingFilters.query=""; staffingFilters.role=""; staffingFilters.agency="";
   showTab("people");
   // Mount detail before fetching so a cold deep link never looks list-only.
@@ -1455,7 +1473,7 @@ globalThis.syncStaffingModeUI = syncStaffingModeUI;
 Object.defineProperty(globalThis, "careerData", { configurable: true, get: () => careerData, set: value => { careerData = value; } });
 Object.defineProperty(globalThis, "careerFacetState", { configurable: true, get: () => careerFacetState, set: value => { careerFacetState = value; } });
 Object.defineProperty(globalThis, "careerHowPrepared", { configurable: true, get: () => careerHowPrepared, set: value => { careerHowPrepared = value; } });
-Object.defineProperty(globalThis, "careerLimit", { configurable: true, get: () => careerLimit, set: value => { careerLimit = value; } });
+Object.defineProperty(globalThis, "careerLimit", { configurable: true, get: () => careerIncrementalList?.limit ?? 16, set: value => { if(Number(value) === 16) careerIncrementalList?.reset(); } });
 Object.defineProperty(globalThis, "careerLoadPromise", { configurable: true, get: () => careerLoadPromise, set: value => { careerLoadPromise = value; } });
 Object.defineProperty(globalThis, "careerRouteFilters", { configurable: true, get: () => careerRouteFilters, set: value => { careerRouteFilters = value; } });
 Object.defineProperty(globalThis, "careerSelected", { configurable: true, get: () => careerSelected, set: value => { careerSelected = value; } });
