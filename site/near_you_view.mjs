@@ -397,7 +397,11 @@ function recordCard(record) {
     ? `${record.basis} · ${placementMethods} placement`
     : record.basis;
   return `<li class="near-record" data-record-id="${esc(record.id)}">
-    <a class="near-record-title" href="${esc(record.route)}">${esc(record.title)}</a>
+    <a class="near-record-title" href="${esc(record.route)}"
+      data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
+      data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
+      data-pivot-target-id="${esc(record.id)}" data-pivot-source-kind="place"
+      data-pivot-source-id="near-you">${esc(record.title)}</a>
     <div class="near-record-meta">
       ${record.agency ? `<span>${esc(record.agency)}</span>` : ""}
       ${record.type ? `<span>${esc(record.type)}</span>` : ""}
