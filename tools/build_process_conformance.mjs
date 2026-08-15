@@ -11,8 +11,16 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   PROCESS_CONFORMANCE_SCHEMA,
+  buildAgencyConformanceView,
   buildProcessConformanceLookup,
 } from "../site/process_conformance.mjs";
+import { buildMandateMeetingsView } from "../site/mandate_meetings_bridge.mjs";
+import { buildMandateContractsBridgeView } from "../site/mandate_contracts_bridge.mjs";
+import { buildMandateLandUseView } from "../site/mandate_land_use_bridge.mjs";
+import {
+  mandateBridgeConformanceGroups,
+  mergeMandateCategoryConformance,
+} from "../site/mandate_category_conformance.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -37,6 +45,9 @@ function loadSources() {
     meetingsDomain: optional("data/meetings_domain_observations.json"),
     reportsDomain: optional("data/reports_domain_observations.json"),
     entityIntelligence: optional("data/entity_intelligence_lookup.json"),
+    procurementAwards: optional("data/ocp_awards_warehouse_lookup.json"),
+    landProjects: optional("data/zap_projects_warehouse_lookup.json"),
+    crossSpineGate: optional("data/cross_spine_edge_gate.json"),
   };
 }
 
@@ -49,11 +60,59 @@ export function writeProcessConformanceArtifacts({ check = false } = {}) {
     sources.meetingsDomain?.generated_at,
     sources.reportsDomain?.retrieved_at || sources.reportsDomain?.generated_at,
     sources.entityIntelligence?.generated_at,
+    sources.procurementAwards?.generated_at || sources.procurementAwards?.materialized_at,
+    sources.landProjects?.generated_at || sources.landProjects?.materialized_at,
+    sources.crossSpineGate?.generated_at || sources.crossSpineGate?.observed_on,
   ].filter(Boolean).sort().join("|") || "unknown";
   const generatedDates = generatedAt.match(/\d{4}-\d{2}-\d{2}/g) || [];
+  const asOf = generatedDates.sort().at(-1) || sources.obligationsLookup?.as_of || null;
+  const agencyConformanceViews = Object.create(null);
+  for (const agencyId of Object.keys(sources.obligationsLookup?.by_agency || {})) {
+    const base = buildAgencyConformanceView(agencyId, {
+      ...sources,
+      asOf,
+      limit: 500,
+    });
+    if (!base) continue;
+    const dossier = sources.entityIntelligence?.by_ref?.[`agency:id:${agencyId}`]
+      || sources.entityIntelligence?.by_subject_ref?.[`agency:id:${agencyId}`]
+      || null;
+    const meetingsView = buildMandateMeetingsView(agencyId, {
+      obligationsLookup: sources.obligationsLookup,
+      meetingsDomain: sources.meetingsDomain,
+      crossSpineGate: sources.crossSpineGate,
+      generatedAt,
+    });
+    const contractsView = buildMandateContractsBridgeView(agencyId, {
+      obligationsLookup: sources.obligationsLookup,
+      intelligenceDossier: dossier,
+      procurementAwards: sources.procurementAwards,
+      crossSpineGate: sources.crossSpineGate,
+    });
+    const landUseView = buildMandateLandUseView(agencyId, {
+      obligationsLookup: sources.obligationsLookup,
+      entityIntelligence: sources.entityIntelligence,
+      landProjects: sources.landProjects,
+      crossSpineGate: sources.crossSpineGate,
+      generatedAt,
+    });
+    const groups = mandateBridgeConformanceGroups({
+      obligationsLookup: sources.obligationsLookup,
+      agencyId,
+      meetingsView,
+      contractsView,
+      landUseView,
+      meetingsSourceAvailable: sources.meetingsDomain != null,
+      contractsSourceAvailable: dossier != null && sources.procurementAwards != null,
+      zoningSourceAvailable: sources.entityIntelligence != null && sources.landProjects != null,
+      asOf,
+    });
+    agencyConformanceViews[agencyId] = mergeMandateCategoryConformance(base, groups, { asOf });
+  }
   const lookup = buildProcessConformanceLookup({
     ...sources,
-    asOf: generatedDates.sort().at(-1) || sources.obligationsLookup?.as_of || null,
+    asOf,
+    agencyConformanceViews,
     generatedAt,
   });
   if (lookup.schema !== PROCESS_CONFORMANCE_SCHEMA) {

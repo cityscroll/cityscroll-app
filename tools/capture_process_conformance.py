@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Headless screenshots for mandates expected-vs-observed (process conformance).
 
-Captures Parks & Recreation agency constellation #mandates-conformance at 390 and 1440.
+Captures a deterministic Parks five-category fixture at 390 and 1440.
 
   python3 tools/capture_process_conformance.py
 """
@@ -9,7 +9,9 @@ Captures Parks & Recreation agency constellation #mandates-conformance at 390 an
 from __future__ import annotations
 
 import http.server
+import shutil
 import socketserver
+import subprocess
 import threading
 from pathlib import Path
 
@@ -19,7 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 OUT = ROOT / "docs" / "screenshots" / "process-conformance"
 VIEWPORTS = ((390, 844), (1440, 900))
-DEMO_PATH = "/agencies/parks-and-recreation/#mandates-conformance"
+FIXTURE_DIR = SITE / "agencies" / "mandate-conformance-fixture"
+DEMO_PATH = "/agencies/mandate-conformance-fixture/#mandates-conformance"
 
 
 class _Handler(http.server.SimpleHTTPRequestHandler):
@@ -41,6 +44,15 @@ def serve(site: Path) -> tuple[socketserver.TCPServer, str]:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            "node",
+            str(ROOT / "tools" / "render_process_conformance_fixture.mjs"),
+            str(FIXTURE_DIR / "index.html"),
+        ],
+        cwd=ROOT,
+        check=True,
+    )
     httpd, base = serve(SITE)
     try:
         with sync_playwright() as p:
@@ -52,17 +64,18 @@ def main() -> None:
                 # Scroll the conformance section into view for the full-page crop.
                 page.locator("#mandates-conformance").scroll_into_view_if_needed()
                 page.wait_for_timeout(200)
-                out = OUT / f"parks-mandates-conformance-{width}.png"
+                out = OUT / f"multi-category-fixture-{width}.png"
                 page.screenshot(path=str(out), full_page=True)
                 print(f"wrote {out.relative_to(ROOT)}")
                 # Section crop for wake-up demo.
-                section = OUT / f"parks-mandates-conformance-section-{width}.png"
+                section = OUT / f"multi-category-fixture-section-{width}.png"
                 page.locator("#mandates-conformance").screenshot(path=str(section))
                 print(f"wrote {section.relative_to(ROOT)}")
                 page.close()
             browser.close()
     finally:
         httpd.shutdown()
+        shutil.rmtree(FIXTURE_DIR, ignore_errors=True)
 
 
 if __name__ == "__main__":
