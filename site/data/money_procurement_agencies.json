@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-08-03T20:08:29.261Z",
+  "generated_at": "2026-08-15T19:35:39.293Z",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -13,7 +13,7 @@
     "$group": "agency_name",
     "$order": "agency_name",
     "$limit": "600",
-    "note": "Procurement agency dropdown on Money tab. Hybrid-refresh live SODA after first paint."
+    "note": "Procurement agency dropdown materialized for resident reads."
   },
   "count": 105,
   "agencies": [

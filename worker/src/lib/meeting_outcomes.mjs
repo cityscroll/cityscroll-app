@@ -852,9 +852,7 @@ export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new D
   const view = await buildMeetingOutcomesView({ token, fetchImpl, now, env });
   // dual_write is operator telemetry only — strip before KV so public clients never see it.
   const { dual_write: dualWrite, ...publicView } = view;
-  await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(publicView), {
-    expirationTtl: 3 * 24 * 60 * 60,
-  });
+  await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(publicView));
   return {
     status: token ? "success" : "no-token",
     enrichment: token ? "authenticated" : "unavailable",

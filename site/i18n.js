@@ -511,7 +511,7 @@ const STRINGS = {
 
     // Status / error messages
     loading_data:           "Loading…",
-    retry_open_data:        "Could not reach NYC Open Data. Retry in a moment.",
+    retry_open_data:        "The latest CityScroll snapshot is unavailable. Retry in a moment.",
     nothing_found:          "Nothing found. Try a broader keyword or \"All RFPs\".",
     check_inbox:            "Check your inbox to confirm.",
     sent_confirm_to:        "Sent to {email}.",
@@ -1259,7 +1259,7 @@ const STRINGS = {
     no_personnel:      "No personnel notices match that name. Try a last name.",
     no_zap:            "No Zoning Application Portal (ZAP) rezonings",
     nothing_found_feed: "Nothing found. Try a broader search.",
-    could_not_reach:   "Could not reach NYC Open Data. Retry.",
+    could_not_reach:   "The latest CityScroll snapshot is unavailable. Retry.",
     shared_meeting_read_model_unavailable: "The meetings snapshot is unavailable. Retry.",
 
     // Feed card actions
@@ -2247,7 +2247,7 @@ const STRINGS = {
     people_fy_lbl: "people · FY{fy}",
     career_ladder_top: "Career ladder — top titles by average pay",
     career_ladder_matching: "Career ladder — matching titles by average pay",
-    refreshing_payroll: "refreshing from live payroll…",
+    refreshing_payroll: "searching the retained staffing snapshot…",
     exam_title_tag: "exam title",
     no_exam_title_tag: "no-exam title",
     salary_note_html: "Salary band from <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener noreferrer\">Citywide Payroll FY{fy}<span class=\"sr-only\"> (opens in new tab)</span></a>. Exam status comes from the <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\" target=\"_blank\" rel=\"noopener noreferrer\">Civil Service List<span class=\"sr-only\"> (opens in new tab)</span></a>, which lists competitive (exam) titles only — a title absent there is treated as no-exam.",

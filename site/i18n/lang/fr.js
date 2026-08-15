@@ -356,7 +356,7 @@
 
     // Status / error messages
     loading_data:           "Chargement…",
-    retry_open_data:        "Impossible de joindre NYC Open Data. Réessayez dans un instant.",
+    retry_open_data:        "Le dernier instantané CityScroll est indisponible. Réessayez dans un instant.",
     nothing_found:          "Rien trouvé. Essayez un mot-clé plus large ou « Toutes les RFP ».",
     check_inbox:            "Consultez votre boîte de réception pour confirmer.",
     sent_confirm_to:        "Envoyé à {email}.",
@@ -856,7 +856,7 @@
     no_personnel:      "Aucun avis de personnel ne correspond à ce nom. Essayez un nom de famille.",
     no_zap:            "Aucun rezonage sur le Portail des demandes de zonage (ZAP)",
     nothing_found_feed: "Rien trouvé. Essayez une recherche plus large.",
-    could_not_reach:   "Impossible de joindre NYC Open Data. Réessayez.",
+    could_not_reach:   "Le dernier instantané CityScroll est indisponible. Réessayez.",
     shared_meeting_read_model_unavailable: "L’instantané des réunions est indisponible. Réessayez.",
 
     // Feed card actions
@@ -1828,7 +1828,7 @@
     people_fy_lbl: "personnes · EF{fy}",
     career_ladder_top: "Échelle de carrière — principaux titres par salaire moyen",
     career_ladder_matching: "Échelle de carrière — titres correspondants par salaire moyen",
-    refreshing_payroll: "actualisation depuis la paie en direct…",
+    refreshing_payroll: "recherche dans l’instantané de dotation conservé…",
     exam_title_tag: "titre avec examen",
     no_exam_title_tag: "titre sans examen",
     salary_note_html: "Fourchette salariale tirée de la <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener noreferrer\">paie municipale EF{fy}<span class=\"sr-only\"> (s'ouvre dans un nouvel onglet)</span></a> ; le statut d'examen provient de la <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\" target=\"_blank\" rel=\"noopener noreferrer\">liste de la fonction publique (Civil Service List)<span class=\"sr-only\"> (s'ouvre dans un nouvel onglet)</span></a>, qui ne répertorie que les titres compétitifs (avec examen) — un titre absent y est traité comme sans examen.",

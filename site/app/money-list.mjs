@@ -4,10 +4,17 @@ import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consiste
 import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_links.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import {
+  filterMoneySnapshot,
+  moneyLineageRows,
+  moneyMethodFacet,
+  moneySnapshotRows,
+} from "../resident_snapshot_queries.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
-let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyActionLocationToolsPromise=null;
+const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
+let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null;
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
   return moneyActionLocationToolsPromise||=import("../money_action_location_ui.mjs").then(module=>(globalThis.MoneyActionLocations=module)).catch(()=>null);
@@ -89,6 +96,16 @@ function loadMoneyAgenciesSnapshot(){
   }
   return moneyAgenciesSnapshotPromise;
 }
+function loadMoneyResidentSnapshot(){
+  if(!moneyResidentSnapshotPromise){
+    moneyResidentSnapshotPromise=fetch(MONEY_RESIDENT_SNAPSHOT_URL)
+      .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
+  }
+  return moneyResidentSnapshotPromise;
+}
+async function residentMoneyRows(){
+  return moneySnapshotRows(await loadMoneyResidentSnapshot());
+}
 function isDefaultMoneySearchState({mode, agency, kw, methodSel, closingWeek, minAmount, sort, nlResolved}={}){
   const nl=nlResolved&&typeof nlResolved==="object"?nlResolved:{};
   const hasNl=Boolean(nl.category)||nl.maxAmount!=null||nl.months!=null||Boolean(nl.excludeSpecial);
@@ -115,21 +132,12 @@ function paintMoneyAgencyOptions(names){
   if(cur) forceSelect("#agency", cur);
 }
 async function loadAgencies(){
-  let paintedFromSnapshot=false;
   try{
     const snap=await loadMoneyAgenciesSnapshot();
     const names=snap&&Array.isArray(snap.agencies)?snap.agencies:[];
-    if(names.length){
-      paintMoneyAgencyOptions(names);
-      paintedFromSnapshot=true;
-    }
-  }catch(e){}
-  try{
-    const rows = await soda({"$select":"agency_name","$where":"section_name='Procurement' AND agency_name IS NOT NULL",
-      "$group":"agency_name","$order":"agency_name","$limit":"600"});
-    paintMoneyAgencyOptions(rows.map(r=>r.agency_name));
+    paintMoneyAgencyOptions(names);
   }catch(e){
-    if(!paintedFromSnapshot) $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>`;
+    $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>`;
   }
 }
 
@@ -268,33 +276,9 @@ async function search(){
     return;
   }
 
-  let where = mode === "award"
-    ? "type_of_notice_description='Award'"
-    : mode === "archive"
-      ? "type_of_notice_description=" + "'Award'" + " OR type_of_notice_description=" + "'Solicitation'"
-      : "type_of_notice_description='Solicitation'";
-  if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
-  if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
-  if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
-  if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < ${MONEY_HONESTY_CAP}`;
   const {category=null, maxAmount=null, months=null, excludeSpecial=false} = moneyNlResolved;
-  if(category) where += ` AND category_description='${category.replace(/'/g,"''")}'`;
-  if(mode === "award" && maxAmount) where += ` AND contract_amount <= ${maxAmount}`;
-  if(mode === "open" && months) where += ` AND due_date <= '${addMonthsISO(todayISO(), months)}'`;
-  if(excludeSpecial) where += ` AND selection_method_description NOT LIKE '%Special%'`;
-  const facetWhere = where;
-  if(methodSel) where += ` AND selection_method_description='${methodSel.replace(/'/g,"''")}'`;
-
-  let order;
-  if(sort === "amount") order = "contract_amount DESC";
-  else if(sort === "newest") order = "start_date DESC";
-  else order = mode === "award" || mode === "archive"
-    ? "start_date DESC"
-    : mode === "allrfp" ? "due_date DESC" : "due_date ASC";
-
   updateHash();
   syncProcurementFacetRails();
-  loadMethodFacet(facetWhere, kw);
   const heads = {
     open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award"), archive:t("head_archive"),
   };
@@ -302,43 +286,27 @@ async function search(){
   $("#rescount").textContent = "";
   busyList("#list");
   const stale = staleGuard("money");
-  const useDefaultSnapshot=isDefaultMoneySearchState({
-    mode, agency, kw, methodSel, closingWeek, minAmount:minamt, sort, nlResolved:moneyNlResolved,
-  });
-  let paintedFromSnapshot=false;
-  if(useDefaultSnapshot){
-    try{
-      const snap=await loadMoneyDefaultSnapshot();
-      if(stale()) return;
-      const notices=filterStillOpenMoneyNotices(snap&&Array.isArray(snap.notices)?snap.notices:[], todayISO());
-      if(notices.length){
-        paintMoneyRows(notices, {autoSelect:true, narrowed:false});
-        paintedFromSnapshot=true;
-      }
-    }catch(e){}
-  }
-  const p = {"$select":SELECT,"$where":where,"$order":order,"$limit":"40"};
-  if(kw) p["$q"] = kw;
-  let narrowed = false, rows;
   try{
-    try{
-      rows = await soda(p, forceFullHistory ? SLOW_MS * 3 : SLOW_MS);
-    }catch(err){
-      if(err.name !== "AbortError") throw err;
-      narrowed = true;
-      rows = await soda({...p, "$where": where + " AND start_date > '" + recentCut() + "'"}, SLOW_MS + 4000);
-    }
+    const snapshotRows=await residentMoneyRows();
+    const common={
+      mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
+      excludeSpecial,sort,today:todayISO(),weekEnd:weekOutISO(),
+      monthEnd:months?addMonthsISO(todayISO(),months):null,
+    };
+    const facetRows=filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});
+    loadMethodFacet(facetRows);
+    const rows=methodSel
+      ? filterMoneySnapshot(snapshotRows,{...common,method:methodSel,limit:40})
+      : facetRows.slice(0,40);
+    if(stale()) return;
+    paintMoneyRows(rows,{autoSelect:true,narrowed:false});
   }catch(e){
     if(stale()) return;
-    if(!paintedFromSnapshot){
-      unbusy("#list");
-      $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>';
-      $("#detail").innerHTML = "";
-    }
+    unbusy("#list");
+    $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>';
+    $("#detail").innerHTML = "";
     return;
   }
-  if(stale()) return;
-  paintMoneyRows(rows, {autoSelect:!paintedFromSnapshot, narrowed});
 }
 function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   currentRows = rows;
@@ -362,22 +330,18 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   }
 }
 
-async function loadMethodFacet(where, kw){
+function loadMethodFacet(rows){
   const el = $("#methodfacet");
   const primary = $("#money-method-primary");
   try{
-    const p = {"$select":"selection_method_description, count(1) as n",
-      "$where": where + " AND selection_method_description IS NOT NULL",
-      "$group":"selection_method_description","$order":"n DESC","$limit":"7"};
-    if(kw) p["$q"] = kw;
-    const rows = (await soda(p)).filter(r=>r.selection_method_description && r.selection_method_description.trim());
-    if(rows.length < 2 && !methodSel){
+    const facets=moneyMethodFacet(rows);
+    if(facets.length < 2 && !methodSel){
       el.innerHTML="";
       primary.hidden=true;
       return;
     }
     primary.hidden=false;
-    el.innerHTML = rows.map(r=>{
+    el.innerHTML = facets.map(r=>{
       const m = r.selection_method_description;
       return `<button type="button" class="chip ${methodSel===m?'on':''}" data-m="${m.replace(/"/g,"&quot;")}">${m}<span class="ct">${(+r.n).toLocaleString()}</span></button>`;
     }).join("");
@@ -649,10 +613,10 @@ async function loadLineageBadges(){
     keys.push(k);
   });
   if(!keys.length) return;
-  const where = `(${lineageBatchClauses(keys).join(" OR ")}) AND (type_of_notice_description='Award' OR type_of_notice_description='Intent to Award')`;
   let batchRows;
   try{
-    batchRows = await soda({"$select":"pin,agency_name,type_of_notice_description","$where":where,"$limit":"2000"});
+    const snapshotRows=await residentMoneyRows();
+    batchRows=snapshotRows.filter(row=>row.type_of_notice_description==="Award"||row.type_of_notice_description==="Intent to Award");
   }catch(e){ return; }
   if(currentRows !== rows) return;
   const counts = computeLineageBadgeCounts(rows, batchRows);
@@ -694,7 +658,7 @@ async function select(i, el, planningDetailRequested=false){
 
 async function hydrateMoneyActionLocationRow(r){
   if(!r?._action_location_match) return r;
-  return globalThis.MoneyActionLocations?.hydrateMoneyActionLocationRow?.(r,{soda,select:SELECT})||r;
+  return globalThis.MoneyActionLocations?.hydrateMoneyActionLocationRow?.(r)||r;
 }
 
 const RENEWAL_SUFFIX_RE = /R0\d+$/;
@@ -706,13 +670,7 @@ function pinBase(pin){
 async function loadChain(r){
   if(!usablePin(r.pin)) return [r];
   try{
-    const base = pinBase(r.pin);
-    const where = base
-      ? `pin LIKE '${base.replace(/'/g,"''")}%' AND agency_name='${r.agency_name.replace(/'/g,"''")}'`
-      : `pin='${r.pin.replace(/'/g,"''")}' AND agency_name='${r.agency_name.replace(/'/g,"''")}'`;
-    const rows = await soda({"$select":SELECT,
-      "$where":where,
-      "$order":"start_date ASC","$limit":"60"});
+    const rows=moneyLineageRows(await residentMoneyRows(),r);
     rows.sort((a,b)=> (a.start_date||"").localeCompare(b.start_date||"") ||
       (STAGE_RANK[a.type_of_notice_description]??9) - (STAGE_RANK[b.type_of_notice_description]??9));
     return rows.length ? rows : [r];
@@ -732,6 +690,8 @@ globalThis.loadLineageBadges = loadLineageBadges;
 globalThis.loadMethodFacet = loadMethodFacet;
 globalThis.loadMoneyDefaultSnapshot = loadMoneyDefaultSnapshot;
 globalThis.loadMoneyAgenciesSnapshot = loadMoneyAgenciesSnapshot;
+globalThis.loadMoneyResidentSnapshot = loadMoneyResidentSnapshot;
+globalThis.residentMoneyRows = residentMoneyRows;
 globalThis.initializeMoneyLocationFilters = initializeMoneyLocationFilters;
 globalThis.isDefaultMoneySearchState = isDefaultMoneySearchState;
 globalThis.filterStillOpenMoneyNotices = filterStillOpenMoneyNotices;

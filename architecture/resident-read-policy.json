@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "invariant": "Resident and required-CI reads use CityScroll-owned materializations and never fetch publisher data at request time.",
+  "external_data_origins": [
+    "data.cityofnewyork.us",
+    "data.ny.gov",
+    "geosearch.planninglabs.nyc",
+    "services5.arcgis.com",
+    "rules.cityofnewyork.us",
+    "legistar.council.nyc.gov",
+    "webapi.legistar.com",
+    "www.checkbooknyc.com",
+    "a856-cityrecord.nyc.gov"
+  ],
+  "browser_entrypoints": [
+    "site/app/main.mjs",
+    "site/pages_edge.mjs",
+    "site/notice-read.mjs",
+    "site/index.html",
+    "site/api.html",
+    "site/data.html",
+    "site/about.html"
+  ],
+  "first_party_routes": {
+    "snapshot_only": [
+      "/agency",
+      "/attachment-metadata",
+      "/contract-lifecycle",
+      "/entity-intelligence",
+      "/franchise-concessions",
+      "/hearings",
+      "/inv",
+      "/meeting-outcomes",
+      "/pins",
+      "/property-locations",
+      "/rules",
+      "/suggestions",
+      "/vendor-profile",
+      "/zap-outcomes"
+    ],
+    "explicit_transaction": [
+      "/feedback",
+      "/nl",
+      "/session",
+      "/session/logout",
+      "/subscribe"
+    ],
+    "temporary_debt": [
+      "/agencies",
+      "/batch",
+      "/externalaward",
+      "/notice",
+      "/priorcycle",
+      "/subsidy-lifecycle",
+      "/translate"
+    ]
+  },
+  "temporary_debt_max_days": 30
+}
