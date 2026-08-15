@@ -1,5 +1,7 @@
-import { communityBoardCommitteePageHref, communityBoardPageHref } from "./community_board_links.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { entityHref } from "./entity_pivot.mjs";
+import { renderEntityPivotLink } from "./edge_summary.mjs";
 import {
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromRow,
@@ -283,11 +285,52 @@ function participationLink(link) {
 
 function agencyHref(record) {
   const ref = String(record?.institution_refs?.agency_ref || "").trim();
-  if (/^agency:id:[a-z0-9-]+$/i.test(ref)) return `/agencies/${encodeURIComponent(ref.slice("agency:id:".length))}/`;
+  if (/^agency:id:[a-z0-9-]+$/i.test(ref)) {
+    return entityHref({ ref, label: record?.agency || record?.agency_name || "Agency" });
+  }
   const identity = resolveAgencyIdentity(record?.agency || record?.agency_name || "");
   return identity?.matched && identity.canonical_id
-    ? `/agencies/${encodeURIComponent(identity.canonical_id)}/`
+    ? entityHref({ ref: `agency:id:${identity.canonical_id}`, label: identity.canonical_name || record?.agency || record?.agency_name })
     : null;
+}
+
+function meetingSource(record, id, title, canonical) {
+  return {
+    kind: "meeting",
+    id,
+    name: title,
+    canonical_href: canonical,
+  };
+}
+
+function boardPivot(record, board, edge, source) {
+  if (!board || (record.source_system !== "community_board" && !edge)) return "";
+  const href = communityBoardPageHref(board);
+  if (!href) return "";
+  return renderEntityPivotLink({
+    relation_label: "hosted by community board",
+    target_kind: "community-board",
+    target_id: board,
+    target_name: record.board_name || "Community Board",
+    canonical_href: href,
+    status: edge && !communityBoardMeetingEdgeAccepted(edge) ? "held" : "accepted",
+    source,
+  }, { className: "meeting-entity-pivot", escape: esc });
+}
+
+function agencyPivot(record, agency, source) {
+  const href = agencyHref(record);
+  if (!agency || !href) return agency ? esc(agency) : "";
+  const id = String(record?.institution_refs?.agency_ref || "").replace(/^agency:id:/, "")
+    || resolveAgencyIdentity(agency)?.canonical_id;
+  return renderEntityPivotLink({
+    relation_label: "organized by agency",
+    target_kind: "agency",
+    target_id: id,
+    target_name: agency,
+    canonical_href: href,
+    source,
+  }, { className: "meeting-entity-pivot", escape: esc });
 }
 
 function nearYouHref(kind, value, borough = null) {
@@ -385,18 +428,18 @@ export function renderMeetingDocument(record = {}) {
   const source = record.source_url || record.compatibility?.publisher_href || null;
   const edge = communityBoardMeetingEdgeFromRow(record);
   const board = boardId(record);
+  const sourceEntity = meetingSource(record, id, title, canonical);
   const boardLink = board && (record.source_system === "community_board" || (edge && communityBoardMeetingEdgeAccepted(edge)))
-    ? `<a href="${esc(communityBoardPageHref(board))}">${esc(record.board_name || "Community Board")}</a>`
+    ? boardPivot(record, board, edge, sourceEntity)
     : "";
   const committeeName = record.committee?.name || null;
-  const committeeHref = safeHref(record.committee?.href)
-    || (committeeName && board ? communityBoardCommitteePageHref(board, committeeName) : null);
+  const committeeHref = safeHref(record.committee?.href);
   const committeeLink = committeeName
     ? (committeeHref ? `<a href="${esc(committeeHref)}">${esc(committeeName)}</a>` : esc(committeeName))
     : "";
   const agency = record.agency || record.agency_name || null;
   const agencyLink = agency
-    ? (agencyHref(record) ? `<a href="${esc(agencyHref(record))}">${esc(agency)}</a>` : esc(agency))
+    ? agencyPivot(record, agency, sourceEntity)
     : "";
   const legacy = safeHref(record.compatibility?.legacy_notice_href);
   const checked = record.source_receipt?.observed_at;
@@ -449,7 +492,7 @@ export function renderMeetingDocument(record = {}) {
     : "";
   const relatedLinksSection = relatedLinksDetails(record);
   const institutionSection = boardLink || agencyLink || committeeLink
-    ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
+    ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : ""}${agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
     : "";
   const actions = [
     id && record.event_date ? `<a class="node-action civic-object-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>` : "",

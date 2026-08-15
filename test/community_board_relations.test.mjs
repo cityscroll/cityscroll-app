@@ -93,7 +93,12 @@ test("board profile renders promoted relation records with provenance behind an 
   const html = renderCommunityBoardConstellationDocument(view);
   const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
   assert.match(readerHtml, /Published Member/);
+  assert.match(readerHtml, /href="\/officials\/7801\/"/);
+  assert.match(readerHtml, /data-pivot-schema="cityscroll\.edge_summary\.v1"/);
+  assert.match(readerHtml, /data-pivot-target-kind="official"/);
   assert.match(readerHtml, /Support the neighborhood plan/);
+  assert.match(readerHtml, /data-pivot-status="held"/);
+  assert.doesNotMatch(readerHtml, /href="[^"]*REC-1/);
   assert.match(readerHtml, /How confirmed/);
   assert.match(readerHtml, /Open the source document/);
   assert.doesNotMatch(readerHtml, /source_document_id|publisher_document_id|join_method|Source: Unavailable|Join method: Unavailable/);

@@ -71,6 +71,9 @@ test("meeting detail renders the materialized civic object projection", () => {
   });
   assert.match(html, /Manhattan Community Board 2/);
   assert.match(html, /\/community-boards\/manhattan-cb-02\//);
+  assert.match(html, /data-pivot-schema="cityscroll\.edge_summary\.v1"/);
+  assert.match(html, /data-pivot-target-kind="community-board"/);
+  assert.match(html, /data-pivot-relation-label="hosted by community board"/);
   assert.match(html, /Landmarks 2/);
   assert.match(html, /\/near-you\//);
   assert.match(html, /Agenda/);
@@ -95,6 +98,22 @@ test("meeting affordances are progressive and shared across source systems", () 
   assert.match(html, /An agency/);
   assert.doesNotMatch(html, /meeting-location|meeting-participation|meeting-documents|meeting-minutes/);
   assert.doesNotMatch(html, /Not published|Status unknown|Agenda and materials/);
+});
+
+test("meeting agency identity uses a typed pivot and unresolved committee names do not mint routes", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:city_record:20260814002",
+    source_system: "city_record",
+    title: "A transportation hearing",
+    event_date: "2026-08-14T10:00:00-04:00",
+    agency: "Department of Transportation",
+    institution_refs: { agency_ref: "agency:id:transportation" },
+    committee: { name: "A committee without a published route" },
+  });
+  assert.match(html, /href="\/agencies\/transportation\/"/);
+  assert.match(html, /data-pivot-target-kind="agency"/);
+  assert.match(html, /data-pivot-relation-label="organized by agency"/);
+  assert.doesNotMatch(html, /committee-without-a-published-route/);
 });
 
 test("meeting participation keeps real join methods once and labels their platforms", () => {

@@ -11,6 +11,7 @@ import {
   EDGE_SUMMARY_STATE_MEANINGS,
   edgeSummaryStateCopy,
   renderEdgeSummaryRail,
+  renderEntityPivotLink,
   normalizeEdgeSummaryRecords,
 } from "./edge_summary.mjs";
 import {
@@ -402,7 +403,7 @@ function categoryStatus(category) {
   return edgeSummaryStateCopy({ state: category.status, count: category.count });
 }
 
-function relationRecordMarkup(row, kind) {
+function relationRecordMarkup(row, kind, source) {
   const document = row.source_document || {};
   const link = document.url
     ? officialSourceLink({ href: document.url, label: "Open the source document", className: "board-source-link", escape: esc })
@@ -412,17 +413,31 @@ function relationRecordMarkup(row, kind) {
   const evidence = kind === "member"
     ? "The board identity, member identity, date, and source document matched exactly."
     : "The board identity, recommendation identity, date, and source document matched exactly.";
-  return `<li class="node-record" data-board-relation="${esc(row.relation)}"><div class="node-record-main"><strong>${row.href ? `<a href="${esc(row.href)}">${esc(row.label)}</a>` : esc(row.label)}</strong></div><span class="muted node-muted">${esc(subject)} · ${date}</span><details class="inline-disclose board-relation-details"><summary>How confirmed</summary><div class="inline-disclose-body"><p>${esc(evidence)}</p><p>${link}</p></div></details></li>`;
+  const target = renderEntityPivotLink({
+    relation_label: kind === "member" ? "board member" : "board recommendation",
+    target_kind: row.target_kind || (kind === "member" ? "official" : "recommendation"),
+    target_id: row.target_id || row.to?.split(":").slice(1).join(":") || null,
+    target_name: row.label,
+    canonical_href: row.href,
+    status: row.status === "held" || !row.href ? "held" : "accepted",
+    source,
+  }, { className: "board-relation-pivot", escape: esc });
+  return `<li class="node-record" data-board-relation="${esc(row.relation)}"><div class="node-record-main"><strong>${target}</strong></div><span class="muted node-muted">${esc(subject)} · ${date}</span><details class="inline-disclose board-relation-details"><summary>How confirmed</summary><div class="inline-disclose-body"><p>${esc(evidence)}</p><p>${link}</p></div></details></li>`;
 }
 
-function renderCategory(category) {
+function renderCategory(category, view) {
   const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
   const body = category.id === "sources"
     ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>`
     : category.id === "meetings" && category.items?.length
       ? `<ul class="node-record-list">${category.items.map(sourceRecordMarkup).join("")}</ul>`
       : ["members", "recommendations"].includes(category.id) && category.items?.length
-        ? `<ul class="node-record-list">${category.items.map((row) => relationRecordMarkup(row, category.id === "members" ? "member" : "recommendation")).join("")}</ul>`
+        ? `<ul class="node-record-list">${category.items.map((row) => relationRecordMarkup(row, category.id === "members" ? "member" : "recommendation", {
+          kind: "community-board",
+          id: view.body_id,
+          name: view.display_name,
+          canonical_href: view.path,
+        })).join("")}</ul>`
         : ["members", "recommendations"].includes(category.id) && category.source_state === "not_yet_ingested"
           ? `<p class="node-muted" data-edge-state="unknown" data-edge-availability="pending">${esc(category.pending_reason)}</p>`
     : `<p class="node-muted" data-edge-state="${esc(category.status)}" data-edge-availability="${esc(availability)}">${esc(categoryStatus(category))}</p>`;
@@ -512,7 +527,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board constellation</p><h1>${esc(title)}</h1><p class="node-lede">Public source records and the district this board covers, with institutional records shown when they are joined.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-${edgeRail}${local}${actions}${renderMinutesFreshnessSection(view)}${renderSourceRecordSection(view.source_records)}${view.categories.map(renderCategory).join("")}
+  ${edgeRail}${local}${actions}${renderMinutesFreshnessSection(view)}${renderSourceRecordSection(view.source_records)}${view.categories.map((category) => renderCategory(category, view)).join("")}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;
