@@ -6,10 +6,14 @@ import test from "node:test";
 
 import {
   AS_OF_QUERY_KEY,
+  CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA,
+  CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA,
   TIME_AXES,
   asOfFilterCanNarrow,
   asOfHref,
   buildLedgerSummary,
+  buildCivicTimeAffectedObjectRegistry,
+  buildCivicTimeDerivedRows,
   buildNoticeBitemporalHistory,
   buildNoticeTemporalFacts,
   classifyItemTemporal,
@@ -18,9 +22,11 @@ import {
   noticeVisibleAsOf,
   parseAsOfFromSearch,
   projectAgencyConstellationAsOf,
+  rematerializeCivicTimeLedger,
   renderCivicTimeLedgerPanel,
   renderNoticeBitemporalHistory,
 } from "../site/civic_time_ledger.mjs";
+import { buildCivicTimeSourceChange } from "../worker/src/lib/civic_time_writer.mjs";
 import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
@@ -276,4 +282,120 @@ test("ledger panel HTML is compact and free of system-time disclaimers", () => {
   assert.match(panel, /value="2024-06-01"/);
   assert.match(panel, /4.*10.*dated records|4<\/strong> of/s);
   assert.match(panel, /ctl-how/);
+});
+
+test("PASSPort revision rematerializes only registered civic-time derived rows", () => {
+  const previous = {
+    event_id: "passport-due-v1",
+    subject_ref: "notice:20260707026",
+    event_kind: "procurement.solicitation_due",
+    source_record_ref: "passport-rfx:81026B0003",
+    source_revision: "rfx:81026B0003:due:2026-08-18",
+    payload_hash: "hash-v1",
+    materializer_name: "money-lifecycle",
+    materializer_version: "3",
+    valid_at: "2026-08-18",
+    published_at: null,
+    observed_at: "2026-07-29T12:00:00.000Z",
+    processed_at: "2026-08-11T12:00:00.000Z",
+  };
+  const revised = {
+    ...previous,
+    event_id: "passport-due-v2",
+    source_revision: "rfx:81026B0003:due:2026-08-25",
+    payload_hash: "hash-v2",
+    materializer_version: "4",
+    valid_at: "2026-08-25",
+    observed_at: "2026-08-12T09:00:00.000Z",
+    processed_at: "2026-08-12T12:00:00.000Z",
+    supersedes_event_id: previous.event_id,
+  };
+  const unrelated = {
+    event_id: "city-record-other",
+    subject_ref: "notice:20260801001",
+    event_kind: "procurement.notice_published",
+    source_record_ref: "city-record:20260801001",
+    source_revision: "cr:20260801001:start_date:2026-08-01",
+    payload_hash: "other-hash",
+    materializer_name: "money-lifecycle",
+    materializer_version: "3",
+    valid_at: null,
+    published_at: "2026-08-01",
+    observed_at: "2026-08-02T09:00:00.000Z",
+    processed_at: "2026-08-11T12:00:00.000Z",
+  };
+  const events = [previous, unrelated];
+  const registry = buildCivicTimeAffectedObjectRegistry(events);
+  const before = buildCivicTimeDerivedRows(events, { referenceDay: "2026-08-12" });
+  const change = buildCivicTimeSourceChange(previous, revised);
+
+  assert.equal(registry.schema, CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA);
+  assert.equal(registry.state, "matched");
+  assert.equal(registry.dependencies.length, 1);
+  assert.equal(registry.dependencies[0].canonical_href, "/notices/20260707026");
+
+  const result = rematerializeCivicTimeLedger({
+    events,
+    materializations: before,
+    registry,
+    change,
+    changedEvent: revised,
+    referenceDay: "2026-08-12",
+    rematerializedAt: "2026-08-12T12:01:00.000Z",
+  });
+
+  const affectedRef = "civic-time-ledger:notice:20260707026";
+  const unrelatedRef = "civic-time-ledger:notice:20260801001";
+  assert.notStrictEqual(result.materializations[affectedRef], before[affectedRef]);
+  assert.strictEqual(result.materializations[unrelatedRef], before[unrelatedRef]);
+  assert.equal(result.materializations[affectedRef].history.count, 2);
+  assert.equal(result.materializations[affectedRef].derived_feature_rollup.counts.materialized, 1);
+  assert.deepEqual(
+    result.materializations[affectedRef].derived_feature_rollup.spans.valid,
+    { start: "2026-08-25", end: "2026-08-25" },
+  );
+
+  const receipt = result.receipt;
+  assert.equal(receipt.schema, CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA);
+  assert.equal(receipt.state, "rematerialized");
+  assert.deepEqual(receipt.scope.affected_derived_rows, [affectedRef]);
+  assert.deepEqual(receipt.scope.untouched_derived_rows, [unrelatedRef]);
+  assert.equal(receipt.scope.canonical_href, "/notices/20260707026");
+  assert.equal(receipt.versions.source.previous_revision, previous.source_revision);
+  assert.equal(receipt.versions.source.current_revision, revised.source_revision);
+  assert.equal(receipt.versions.materializer.previous, "money-lifecycle@3");
+  assert.equal(receipt.versions.materializer.current, "money-lifecycle@4");
+  assert.equal(receipt.clocks.source.published_at, null);
+  assert.equal(receipt.clocks.source.observed_at, "2026-08-12T09:00:00.000Z");
+  assert.equal(receipt.clocks.processing.source_processed_at, "2026-08-12T12:00:00.000Z");
+  assert.equal(receipt.clocks.processing.rematerialized_at, "2026-08-12T12:01:00.000Z");
+  assert.deepEqual(receipt.invalidation, {
+    state: "resolved",
+    reason: "source_revision_changed",
+    invalidated_derived_rows: [affectedRef],
+  });
+  assert.deepEqual(receipt.recomputed[0].features, ["notice_bitemporal_history", "derived_feature_rollup"]);
+});
+
+test("unregistered changes stay unknown and an empty registry stays empty", () => {
+  const empty = buildCivicTimeAffectedObjectRegistry([]);
+  assert.equal(empty.state, "empty");
+  assert.deepEqual(empty.dependencies, []);
+
+  const materializations = { "civic-time-ledger:notice:keep": Object.freeze({ marker: "untouched" }) };
+  const result = rematerializeCivicTimeLedger({
+    events: [],
+    materializations,
+    registry: empty,
+    change: {
+      change_class: "passport_rfx_revision",
+      scope: { source_record_ref: "passport-rfx:unknown", subject_ref: "notice:unknown" },
+    },
+    changedEvent: null,
+    rematerializedAt: "2026-08-12T12:01:00.000Z",
+  });
+  assert.strictEqual(result.materializations, materializations);
+  assert.equal(result.receipt.state, "unknown");
+  assert.equal(result.receipt.invalidation.state, "unknown");
+  assert.deepEqual(result.receipt.recomputed, []);
 });

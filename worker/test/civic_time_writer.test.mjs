@@ -15,11 +15,13 @@ import {
   attachMoneyCivicEvents,
 } from "../src/lib/civic_time.mjs";
 import {
+  CIVIC_TIME_SOURCE_CHANGE_SCHEMA,
   CIVIC_TIME_EVENT_COLUMNS,
   CIVIC_TIME_EVENT_WRITE_DEFAULT,
   CIVIC_TIME_EVENT_WRITE_FLAG,
   assertWriterClockHonesty,
   bindCivicTimeEventRow,
+  buildCivicTimeSourceChange,
   civicTimeEventWriteEnabled,
   clockOrNull,
   ensureCivicTimeEventSchema,
@@ -396,5 +398,75 @@ test("mapMoneyLifecycleToCivic + writer: flag on stores adapter output", async (
       assert.notEqual(row.valid_at, row.observed_at);
     }
   }
+  db.close();
+});
+
+test("PASSPort RFx revisions produce one bounded source-change trigger", async () => {
+  const previous = sampleEnvelope({
+    subject_ref: "notice:20260707026",
+    event_kind: "procurement.solicitation_due",
+    source_record_ref: "passport-rfx:81026B0003",
+    source_revision: "rfx:81026B0003:due:2026-08-18",
+    valid_at: "2026-08-18",
+    published_at: null,
+    observed_at: "2026-07-29T12:00:00.000Z",
+    processed_at: "2026-08-11T12:00:00.000Z",
+    materializer_name: "money-lifecycle",
+    materializer_version: "3",
+  });
+  const revised = sampleEnvelope({
+    subject_ref: "notice:20260707026",
+    event_kind: "procurement.solicitation_due",
+    source_record_ref: "passport-rfx:81026B0003",
+    source_revision: "rfx:81026B0003:due:2026-08-25",
+    valid_at: "2026-08-25",
+    published_at: null,
+    observed_at: "2026-08-12T09:00:00.000Z",
+    processed_at: "2026-08-12T12:00:00.000Z",
+    materializer_name: "money-lifecycle",
+    materializer_version: "4",
+    supersedes_event_id: previous.event_id,
+  });
+
+  const change = buildCivicTimeSourceChange(previous, revised);
+  assert.equal(change.schema, CIVIC_TIME_SOURCE_CHANGE_SCHEMA);
+  assert.equal(change.change_class, "passport_rfx_revision");
+  assert.deepEqual(change.scope, {
+    source_record_ref: "passport-rfx:81026B0003",
+    subject_ref: "notice:20260707026",
+    event_kind: "procurement.solicitation_due",
+  });
+  assert.equal(change.versions.previous.source_revision, previous.source_revision);
+  assert.equal(change.versions.current.source_revision, revised.source_revision);
+  assert.equal(change.versions.previous.materializer_version, "3");
+  assert.equal(change.versions.current.materializer_version, "4");
+  assert.equal(change.clocks.source.valid_at, "2026-08-25");
+  assert.equal(change.clocks.source.published_at, null);
+  assert.equal(change.clocks.source.observed_at, "2026-08-12T09:00:00.000Z");
+  assert.equal(change.clocks.processing.source_processed_at, "2026-08-12T12:00:00.000Z");
+
+  // Disconfirming cases: unchanged revisions and other source classes do not
+  // masquerade as PASSPort invalidation triggers.
+  assert.equal(buildCivicTimeSourceChange(previous, previous), null);
+  assert.equal(
+    buildCivicTimeSourceChange(
+      previous,
+      sampleEnvelope({
+        subject_ref: previous.subject_ref,
+        event_kind: previous.event_kind,
+        source_record_ref: "city-record:20260707026",
+        source_revision: "city-record:20260707026:2",
+      }),
+    ),
+    null,
+  );
+
+  const db = new DatabaseSync(":memory:");
+  const env = { DB: d1FromSqlite(db), [CIVIC_TIME_EVENT_WRITE_FLAG]: "true" };
+  const first = await writeCivicTimeEvents(env, [previous]);
+  const second = await writeCivicTimeEvents(env, [revised]);
+  assert.deepEqual(first.changes, []);
+  assert.equal(second.changes.length, 1);
+  assert.equal(second.changes[0].versions.current.source_revision, revised.source_revision);
   db.close();
 });

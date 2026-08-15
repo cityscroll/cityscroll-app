@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle; optional flag-gated D1 writer; notice bitemporal read view |
+| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle; optional flag-gated D1 writer; notice bitemporal read view; selective PASSPort RFx rematerialization pilot |
 | Supersedes | — |
 | Blocks | Optional later writers for Rules/Land/Meetings under this envelope (adapters remain library-only until they opt in) |
 
@@ -134,6 +134,26 @@ null in the read model and render as “Not recorded.” The notice read path fi
 by exact subject reference and never fills a missing clock from another axis or
 from the current request time.
 
+### Selective rematerialization pilot
+
+The writer classifies one closed change class, `passport_rfx_revision`, when the
+same PASSPort RFx source record, subject, and event kind arrives with a new source
+revision. Its returned source-change payload retains the previous/current source
+and materializer versions plus the source and processing clocks; unrelated source
+families remain unclassified.
+
+`site/civic_time_ledger.mjs` projects an affected-object registry from retained
+PASSPort RFx envelopes. Each exact base observation points to its existing
+civic-time ledger row and derived-feature rollup. Applying a classified revision
+appends the envelope history and recomputes only the registered row. The receipt
+lists affected and untouched row references, version transitions, independent
+clocks, recomputed features, and the canonical notice URL. Missing dependency
+evidence returns `unknown`; an empty registry remains explicitly `empty`.
+
+This is incremental view maintenance over the existing civic-time event and
+derived-feature freshness contracts. It adds no database, scheduler, cache, or
+parallel materialization service.
+
 ### Non-goals
 
 - No always-on event bus or graph store (the D1 table is an opt-in append log only)
@@ -155,6 +175,7 @@ from the current request time.
 ```bash
 node --test worker/test/civic_time_contract.test.mjs
 node --test worker/test/civic_time_writer.test.mjs
+node --test test/civic_time_ledger.test.mjs
 node --test worker/test/temporal_completeness.test.mjs
 node --test worker/test/checkbook_lifecycle.test.mjs
 node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check
