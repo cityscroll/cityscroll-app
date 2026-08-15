@@ -94,23 +94,45 @@ export const BROWSE_FACETS = Object.freeze({
   },
 });
 
+export const BROWSE_STUBS = Object.freeze({
+  exams: {
+    route: "/browse/exams/",
+    tab: "exams",
+    label: "Exams",
+    title: "Exams",
+    description: "Civil-service exam records and application details.",
+  },
+});
+
 // Civic-object navigation is a presentation taxonomy. The facet ids and routes
 // above remain the content and URL contract for every existing Browse view.
 export const BROWSE_GROUPS = Object.freeze([
   {
     id: "money",
-    label: "Money",
+    label: "Contracts",
     primaryFacet: "contracts",
     description: "Solicitations, awards, payment trails, and the vendors and agencies connected to them.",
     sources: "Award census · open solicitation snapshot",
     children: [
-      { id: "contracts", facet: "contracts", label: "Contracts", linkLabel: "Browse money" },
+      { id: "contracts", facet: "contracts", label: "Contracts", linkLabel: "Browse contracts" },
       { id: "vendors", label: "Vendors" },
     ],
   },
   {
+    id: "people-organizations",
+    label: "People + organizations",
+    primaryFacet: "staffing",
+    description: "Officials, agencies, vendors, committees, and the relationships joining them.",
+    sources: "Person hub · committee graph · agency constellation",
+    children: [
+      { id: "jobs-exams", facet: "staffing", label: "Staffing" },
+      { id: "vendors", label: "Vendors" },
+      { id: "committees", label: "Committees" },
+    ],
+  },
+  {
     id: "land-property",
-    label: "Land + property",
+    label: "Land",
     primaryFacet: "zoning",
     description: "Land-use projects, parcels, dispositions, sales, and exact BBL connections.",
     sources: "ZAP · property observations · parcel joins",
@@ -121,7 +143,7 @@ export const BROWSE_GROUPS = Object.freeze([
   },
   {
     id: "rules-mandates",
-    label: "Rules + mandates",
+    label: "Rules",
     primaryFacet: "rules",
     description: "Rules, obligations, deadlines, and the records that implement them.",
     sources: "Agency Rules · agency obligation registry",
@@ -132,7 +154,7 @@ export const BROWSE_GROUPS = Object.freeze([
   },
   {
     id: "meetings-decisions",
-    label: "Meetings + decisions",
+    label: "Meetings",
     primaryFacet: "meetings",
     description: "Agendas, hearings, testimony, outcomes, and published roll calls.",
     sources: "Meeting snapshot · outcome snapshot · roll-call view",
@@ -142,26 +164,13 @@ export const BROWSE_GROUPS = Object.freeze([
     ],
   },
   {
-    id: "people-organizations",
-    label: "People + organizations",
-    primaryFacet: "staffing",
-    description: "Officials, agencies, vendors, committees, and the relationships joining them.",
-    sources: "Person hub · committee graph · agency constellation",
-    children: [
-      { id: "jobs-exams", facet: "staffing", label: "Jobs + exams" },
-      { id: "vendors", label: "Vendors" },
-      { id: "committees", label: "Committees" },
-    ],
-  },
-  {
-    id: "places",
-    label: "Places",
+    id: "exams",
+    label: "Exams",
     primaryFacet: null,
-    description: "Community boards, council districts, boroughs, and what is happening near each place.",
-    sources: "Community-board geography",
+    description: "Civil-service exam schedules, applications, eligible lists, and outcomes.",
+    sources: "DCAS exam schedules · published exam records",
     children: [
-      { id: "near-you", label: "Near you", route: "/near-you/", linkLabel: "Near you" },
-      { id: "community-boards", label: "Community boards" },
+      { id: "exams", label: "Exams", route: "/browse/exams/", linkLabel: "Browse exams" },
     ],
   },
 ]);
@@ -967,11 +976,12 @@ export function buildBrowseLanding(payloads = {}, options = {}) {
     });
     const primary = children.find((child) => child.facet === group.primaryFacet) || null;
     const metric = metrics[group.id] && typeof metrics[group.id] === "object" ? metrics[group.id] : {};
+    const metricCount = typeof metric.count === "number" && Number.isFinite(metric.count) ? metric.count : null;
     return {
       ...group,
       facet: primary?.facet || group.id,
-      count: primary?.count ?? null,
-      countLabel: primary?.facet ? BROWSE_FACETS[primary.facet].countLabel : null,
+      count: primary?.count ?? metricCount,
+      countLabel: primary?.facet ? BROWSE_FACETS[primary.facet].countLabel : metric.countLabel || null,
       asOf: primary?.asOf || null,
       facts: Array.isArray(metric.facts) ? metric.facts : null,
       children,
@@ -1049,7 +1059,7 @@ export function renderBrowseLanding(landing) {
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
-      <p>Pick a civic object. Follow the edges between people, places, agencies, money, and decisions.</p>
+      <p>Pick a civic object. Follow the edges between people, places, agencies, contracts, and decisions.</p>
     </header>
     ${walkEntry}
     ${cardGrid}

@@ -155,7 +155,7 @@ test("the built /now/ and /browse/* pages do not ship the literal i18n asset pla
     const routePages = primaryDocumentOutputs()
       .map(([sourcePath]) => path.relative(SITE_ROOT, sourcePath))
       .filter((relative) => relative === "now/index.html" || relative.startsWith("browse/"));
-    assert.equal(routePages.length, 10);
+    assert.equal(routePages.length, 11);
     for (const relative of routePages) {
       assert.match(
         fs.readFileSync(path.join(site, relative), "utf8"),

@@ -41,30 +41,31 @@ test("primary navigation is four real document links on every promoted shell", (
     }
   }
   const root = read("../site/index.html");
-  const routes = {
-    money: "/browse/contracts/",
-    land: "/browse/zoning/",
-    rules: "/browse/rules/",
-    meetings: "/browse/meetings/",
-    people: "/browse/people/",
-  };
+  const routes = [
+    ["contracts", "/browse/contracts/", "money"],
+    ["people", "/browse/people/", "people"],
+    ["land", "/browse/zoning/", "land"],
+    ["rules", "/browse/rules/", "rules"],
+    ["meetings", "/browse/meetings/", "meetings"],
+    ["exams", "/browse/exams/", "exams"],
+  ];
   assert.match(root, /class="browse-child-nav"/);
   assert.match(root, /Civic objects/);
-  for (const [group, route] of Object.entries(routes)) {
-    assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${group}"`), `${group} keeps a canonical Browse destination`);
+  for (const [label, route, tab] of routes) {
+    assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${tab}"`), `${label} keeps a canonical Browse destination`);
   }
-  assert.match(root, /Land \+ property/);
-  assert.match(root, /href="\/browse\/places\//);
+  assert.match(root, /Land/);
+  assert.doesNotMatch(root, /href="\/browse\/places\//);
   assert.deepEqual(BROWSE_GROUPS.map((group) => group.label), [
-    "Money",
-    "Land + property",
-    "Rules + mandates",
-    "Meetings + decisions",
+    "Contracts",
     "People + organizations",
-    "Places",
+    "Land",
+    "Rules",
+    "Meetings",
+    "Exams",
   ]);
   const peopleGroup = BROWSE_GROUPS.find((group) => group.id === "people-organizations");
-  assert.equal(peopleGroup.children.find((child) => child.facet === "staffing").label, "Jobs + exams");
+  assert.equal(peopleGroup.children.find((child) => child.facet === "staffing").label, "Staffing");
   assert.deepEqual(peopleGroup.children.filter((child) => ["vendors", "committees"].includes(child.id)).map((child) => child.label), ["Vendors", "Committees"]);
   for (const [facet, config] of Object.entries(BROWSE_FACETS)) {
     const child = BROWSE_GROUPS.flatMap((group) => group.children).find((candidate) => candidate.facet === facet);
@@ -87,6 +88,7 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
   assert.deepEqual(browseRoute("/browse/"), { kind: "landing", facet: null });
   assert.deepEqual(browseRoute("/browse/people/"), { kind: "concept", concept: "people" });
   assert.deepEqual(browseRoute("/browse/places/"), { kind: "concept", concept: "places" });
+  assert.deepEqual(browseRoute("/browse/exams/"), { kind: "stub", stub: "exams" });
 });
 
 test("canonical meeting routes resolve exact read-model rows and reject unknown ids", async () => {
@@ -250,7 +252,7 @@ test("generated agency pivots round-trip to content-bearing entity routes", asyn
 
 test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {
   const outputs = primaryDocumentOutputs();
-  assert.equal(outputs.length, 10);
+  assert.equal(outputs.length, 11);
   for (const [path, generated] of outputs) {
     if (existsSync(path)) assert.equal(readFileSync(path, "utf8"), generated, `${path} is stale`);
     assert.match(generated, /<base href="\/">/);
@@ -271,7 +273,9 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(landing, /href="\/browse\/contracts\/"/);
   assert.match(landing, /40 open opportunities/);
   assert.match(landing, /228 civil-service exams/);
-  assert.match(landing, /Pick a civic object\. Follow the edges between people, places, agencies, money, and decisions\./);
+  assert.match(landing, /Pick a civic object\. Follow the edges between people, places, agencies, contracts, and decisions\./);
+  assert.match(output("/site/browse/exams/index.html"), /Coming soon/);
+  assert.match(output("/site/browse/exams/index.html"), /href="\/browse\/staffing\/"/);
   assert.match(landing, /<details class="browse-source-disclosure"><summary>Official data from…<\/summary>/);
   assert.doesNotMatch(landing, /every source|source view|source lenses/i);
   assert.deepEqual(detectNodePageCruft(landing), []);
@@ -335,7 +339,8 @@ test("People and Places landings use populated entity and geography indexes", ()
   const placesDocument = primaryDocumentOutputs().find(([path]) => path.endsWith("/browse/places/index.html"));
   assert.ok(placesDocument, "the Places document is generated");
   assert.match(placesDocument[1], /id="tab-browse" class="tabpane active"/);
-  assert.match(placesDocument[1], /class="tabbtn active" href="\/browse\/places\/"/);
+  assert.match(placesDocument[1], /data-browse-concept="places"/);
+  assert.doesNotMatch(placesDocument[1], />Places<\/a>/);
 });
 
 test("Browse landing counts are labeled with source dates without coverage caveats", () => {
