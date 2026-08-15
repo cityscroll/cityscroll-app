@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { meetingDocumentLinks, renderMeetingDocument } from "../site/meeting_document.mjs";
+import { meetingCalendarICS } from "../site/hearing_attend_pack.mjs";
 
 test("meeting documents render as official record links on the canonical meeting page", () => {
   const record = {
@@ -53,9 +54,11 @@ test("meeting detail renders the materialized civic object projection", () => {
     source_record_id: "event-rich",
     title: "LANDMARKS 2",
     event_date: "2026-08-17T18:30:00-04:00",
+    event_end: "2026-08-17T20:30:00-04:00",
     board_id: "manhattan-cb-02",
     board_name: "Manhattan Community Board 2",
     committee: { name: "Landmarks 2" },
+    description: "Agenda: 63-65 Charles Street and two preservation applications.",
     venue: { name: "CB 2 Conference Room", address: "3 Washington Square Village #1A", mode: "hybrid" },
     affected_area: { boroughs: ["Manhattan"], community_districts: ["M02"], council_districts: ["02"] },
     participation: {
@@ -75,6 +78,8 @@ test("meeting detail renders the materialized civic object projection", () => {
   assert.match(html, /data-pivot-target-kind="community-board"/);
   assert.match(html, /data-pivot-relation-label="hosted by community board"/);
   assert.match(html, /Landmarks 2/);
+  assert.match(html, /63-65 Charles Street and two preservation applications/);
+  assert.match(html, /2026-08-17T20:30:00-04:00/);
   assert.match(html, /\/near-you\//);
   assert.match(html, /Agenda/);
   assert.match(html, /agenda\.pdf/);
@@ -271,7 +276,29 @@ test("city record meeting renders materialized notice fields without fetching", 
   assert.match(html, /The first substantive notice paragraph/);
   assert.match(html, /Further public information/);
   assert.match(html, /250 Broadway/);
+  assert.match(html, /Municipal Building/);
   assert.match(html, /Public Hearings Unit/);
   assert.match(html, /212-555-0100/);
   assert.match(html, /mailto:hearings@example\.gov/);
+});
+
+test("malformed event dates do not offer a broken calendar download", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:community_board:event-bad-date",
+    source_system: "community_board",
+    title: "Board meeting",
+    event_date: "date to be announced",
+  });
+  assert.doesNotMatch(html, /meeting\.ics|Add to calendar/);
+});
+
+test("calendar output uses a materialized publisher end time", () => {
+  const ics = meetingCalendarICS({
+    meeting_id: "meeting:community_board:event-timed",
+    title: "Landmarks committee",
+    event_date: "2026-08-17T18:30:00-04:00",
+    event_end: "2026-08-17T20:30:00-04:00",
+  }, { now: "2026-08-14T12:00:00Z" });
+  assert.match(ics, /DTSTART;TZID=America\/New_York:20260817T183000/);
+  assert.match(ics, /DTEND;TZID=America\/New_York:20260817T203000/);
 });

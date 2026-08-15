@@ -6,6 +6,7 @@ import {
   buildSharedMeetingReadModel,
   meetingReadModelSourceStatus,
 } from "../site/shared_meeting_read_model.mjs";
+import { materializeCommunityBoardMeetingRow } from "../tools/build_community_board_meeting_index.mjs";
 
 const meetings = JSON.parse(readFileSync(new URL("../site/data/meetings_domain_observations.json", import.meta.url)));
 const boardIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
@@ -82,6 +83,42 @@ test("materializes searchable context and minutes freshness once for every sourc
   assert.match(row.search_text, /250 Broadway/);
   assert.deepEqual(row.minutes_freshness, { status: "published", latest_date: "2026-08-10", checked_at: "2026-08-14T12:00:00Z" });
   assert.equal(row.participation.remote_join_url, "https://example.test/join");
+});
+
+test("community-board publisher times survive indexing and shared materialization", () => {
+  const observedAt = "2026-08-14T12:00:00Z";
+  const indexed = materializeCommunityBoardMeetingRow({
+    record_kind: "event",
+    record_id: "event-rich",
+    source_record_id: "event-rich",
+    publisher_identifier: "event-rich",
+    record_url: "https://www.nyc.gov/site/manhattancb2/calendar/event-rich.page",
+    source_url: "https://www.nyc.gov/site/manhattancb2/calendar/calendar.page",
+    date: "2026-08-17",
+    start_at: "2026-08-17T18:30:00-04:00",
+    end_at: "2026-08-17T20:30:00-04:00",
+    title: "Landmarks 2",
+    description: "Agenda: 63-65 Charles Street.",
+    venue_name: "CB 2 Conference Room",
+    address: "3 Washington Square Village #1A, New York, NY 10012",
+    mode: "hybrid",
+    observed_receipt: { status: "ok", observed_at: observedAt },
+  }, {
+    id: "manhattan-cb-02",
+    name: "Manhattan Community Board 2",
+    borough: "Manhattan",
+  }, observedAt);
+  const model = buildSharedMeetingReadModel({
+    cityRecordRows: [],
+    communityBoardIndex: { generated_at: observedAt, rows: [indexed] },
+    generatedAt: observedAt,
+    now: observedAt,
+  });
+  const row = model.rows[0];
+  assert.equal(row.event_date, "2026-08-17T18:30:00-04:00");
+  assert.equal(row.event_end, "2026-08-17T20:30:00-04:00");
+  assert.equal(row.description, "Agenda: 63-65 Charles Street.");
+  assert.match(row.search_text, /63-65 Charles Street/);
 });
 
 test("retains City Record notice parity fields in the shared read model", () => {

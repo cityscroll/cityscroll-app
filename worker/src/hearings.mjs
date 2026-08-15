@@ -22,7 +22,7 @@ const COMMUNITY_BOARD_SNAPSHOT = {
     ? sharedMeetingSnapshot.rows.filter((row) => row?.source_system === "community_board")
     : [],
 };
-const SELECT = [
+export const CITY_RECORD_MEETING_SOURCE_FIELDS = Object.freeze([
   "request_id", "start_date", "agency_name", "type_of_notice_description", "section_name",
   "short_title", "event_date", "building_name", "street_address_1", "street_address_2",
   "city", "state", "zip_code", "additional_description_1", "additional_description_2",
@@ -30,7 +30,8 @@ const SELECT = [
   "printout_1", "printout_2", "printout_3",
   "contact_name", "contact_phone", "email", "address_to_request", "category_description",
   "selection_method_description",
-].join(",");
+]);
+const SELECT = CITY_RECORD_MEETING_SOURCE_FIELDS.join(",");
 
 function materializedRows(payload) {
   if (Array.isArray(payload?.rows)) return payload.rows;

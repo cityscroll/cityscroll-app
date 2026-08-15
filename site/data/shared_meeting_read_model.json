@@ -76,7 +76,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
       "title": "Transportation & Health Committees",
-      "event_date": "2026-10-15",
+      "event_date": "2026-10-15T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -222,6 +222,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-15T20:00:00-04:00",
+      "start_at": "2026-10-15T18:30:00-04:00",
+      "end_at": "2026-10-15T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
@@ -259,7 +262,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/",
       "title": "Economic Development, Environment & Parks, Sanitation Committees",
-      "event_date": "2026-10-14",
+      "event_date": "2026-10-14T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -405,6 +408,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-14T20:00:00-04:00",
+      "start_at": "2026-10-14T18:30:00-04:00",
+      "end_at": "2026-10-14T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/",
@@ -442,7 +448,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/",
       "title": "Housing & Land Use, Youth & Education Committees",
-      "event_date": "2026-10-13",
+      "event_date": "2026-10-13T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -588,6 +594,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-13T20:00:00-04:00",
+      "start_at": "2026-10-13T18:30:00-04:00",
+      "end_at": "2026-10-13T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/",
@@ -625,7 +634,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/",
       "title": "Executive Committee (TBD)",
-      "event_date": "2026-10-07",
+      "event_date": "2026-10-07T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -771,6 +780,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-07T20:00:00-04:00",
+      "start_at": "2026-10-07T18:30:00-04:00",
+      "end_at": "2026-10-07T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/",
@@ -808,7 +820,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/",
       "title": "Disciplinary Committee",
-      "event_date": "2026-10-06",
+      "event_date": "2026-10-06T12:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -950,6 +962,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-06T13:00:00-04:00",
+      "start_at": "2026-10-06T12:00:00-04:00",
+      "end_at": "2026-10-06T13:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/",
@@ -987,7 +1002,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/",
       "title": "General Board Meeting",
-      "event_date": "2026-09-23",
+      "event_date": "2026-09-23T18:30:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -1129,6 +1144,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-23T20:00:00-04:00",
+      "start_at": "2026-09-23T18:30:00-04:00",
+      "end_at": "2026-09-23T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/",
@@ -1181,6 +1199,7 @@
       ],
       "publisher_identifier": "20260806002",
       "title": "Rules Regarding Restricted Substances in Personal Care Products",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -1245,7 +1264,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/",
       "title": "Public Safety & Licensing Committee",
-      "event_date": "2026-09-16",
+      "event_date": "2026-09-16T18:30:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -1387,6 +1406,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-16T20:00:00-04:00",
+      "start_at": "2026-09-16T18:30:00-04:00",
+      "end_at": "2026-09-16T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/",
@@ -1438,6 +1460,7 @@
       ],
       "publisher_identifier": "20260803026",
       "title": "Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -1516,6 +1539,7 @@
       ],
       "publisher_identifier": "20260803009",
       "title": "New Rules Relating to Rat Inspections",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -1580,7 +1604,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/",
       "title": "Transportation & Health Committees",
-      "event_date": "2026-09-10",
+      "event_date": "2026-09-10T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -1726,6 +1750,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-10T20:00:00-04:00",
+      "start_at": "2026-09-10T18:30:00-04:00",
+      "end_at": "2026-09-10T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/",
@@ -1777,6 +1804,7 @@
       ],
       "publisher_identifier": "20260728026",
       "title": "Proposed Rule - Rule relating to Incomplete Inspections",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -1849,6 +1877,7 @@
       ],
       "publisher_identifier": "20260709020",
       "title": "FOR ACQUISTION - Block 5308 Lot 50",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -1932,6 +1961,7 @@
       ],
       "publisher_identifier": "20260714002",
       "title": "CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -2004,6 +2034,7 @@
       ],
       "publisher_identifier": "20260723022",
       "title": "511 West 171",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -2068,7 +2099,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/",
       "title": "Economic Development, Environment & Parks, Sanitation Committees",
-      "event_date": "2026-09-09",
+      "event_date": "2026-09-09T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -2214,6 +2245,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-09T20:00:00-04:00",
+      "start_at": "2026-09-09T18:30:00-04:00",
+      "end_at": "2026-09-09T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/",
@@ -2251,7 +2285,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/",
       "title": "Housing & Land Use, Youth & Education Committees",
-      "event_date": "2026-09-08",
+      "event_date": "2026-09-08T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -2397,6 +2431,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-08T20:00:00-04:00",
+      "start_at": "2026-09-08T18:30:00-04:00",
+      "end_at": "2026-09-08T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/",
@@ -2442,6 +2479,7 @@
       ],
       "publisher_identifier": "20260805006",
       "title": "Dining Out NYC Hearing",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -2506,7 +2544,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/",
       "title": "Battery Park City Committee",
-      "event_date": "2026-09-03",
+      "event_date": "2026-09-03T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -2660,6 +2698,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-03T21:00:00-04:00",
+      "start_at": "2026-09-03T18:00:00-04:00",
+      "end_at": "2026-09-03T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/",
@@ -2697,7 +2738,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/",
       "title": "Executive Committee (TBD)",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -2843,6 +2884,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T20:00:00-04:00",
+      "start_at": "2026-09-02T18:30:00-04:00",
+      "end_at": "2026-09-02T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/",
@@ -2880,7 +2924,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/",
       "title": "General Board Meeting",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:00:00-04:00",
       "venue": {
         "name": "State Office Building",
         "address": "163 W. 125th St, 2nd Floor, New York, 10027",
@@ -3069,6 +3113,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T20:30:00-04:00",
+      "start_at": "2026-09-02T18:00:00-04:00",
+      "end_at": "2026-09-02T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/",
@@ -3106,7 +3153,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/",
       "title": "General Board Meeting",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:00:00-04:00",
       "venue": {
         "name": "National Urban League",
         "address": "117 W. 125th St, New York, NY, 10027",
@@ -3295,6 +3342,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T20:30:00-04:00",
+      "start_at": "2026-09-02T18:00:00-04:00",
+      "end_at": "2026-09-02T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/",
@@ -3332,7 +3382,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
       "title": "Full Board",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:30:00-04:00",
       "venue": {
         "name": "Hotel Trades Council",
         "address": "305 West 44th Street, New York, NY, 10036",
@@ -3490,6 +3540,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T21:30:00-04:00",
+      "start_at": "2026-09-02T18:30:00-04:00",
+      "end_at": "2026-09-02T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
@@ -3527,7 +3580,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/",
       "title": "Transportation & Street Activity Permits Committee",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -3681,6 +3734,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T21:00:00-04:00",
+      "start_at": "2026-09-02T18:00:00-04:00",
+      "end_at": "2026-09-02T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/",
@@ -3732,6 +3788,7 @@
       ],
       "publisher_identifier": "20260714029",
       "title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -3796,7 +3853,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
       "title": "Disciplinary Committee",
-      "event_date": "2026-09-01",
+      "event_date": "2026-09-01T12:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -3938,6 +3995,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-01T13:00:00-04:00",
+      "start_at": "2026-09-01T12:00:00-04:00",
+      "end_at": "2026-09-01T13:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
@@ -3975,7 +4035,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/",
       "title": "Business Development Committee",
-      "event_date": "2026-09-01",
+      "event_date": "2026-09-01T19:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -4131,6 +4191,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-01T21:00:00-04:00",
+      "start_at": "2026-09-01T19:00:00-04:00",
+      "end_at": "2026-09-01T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/",
@@ -4182,6 +4245,7 @@
       ],
       "publisher_identifier": "20260715041",
       "title": "Amendments to Rules Relating to the Energy Conservation Code",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -4254,6 +4318,7 @@
       ],
       "publisher_identifier": "20260728028",
       "title": "Dining Out NYC Public Hearings",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -4337,6 +4402,7 @@
       ],
       "publisher_identifier": "20260730025",
       "title": "August 26, 2026 PUBLIC HEARING",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -4420,6 +4486,7 @@
       ],
       "publisher_identifier": "20260805038",
       "title": "City Planning Commission Public Hearing",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -4484,7 +4551,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/",
       "title": "Committee Meeting – Executive",
-      "event_date": "2026-08-26",
+      "event_date": "2026-08-26T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -4683,6 +4750,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-26T20:30:00-04:00",
+      "start_at": "2026-08-26T18:30:00-04:00",
+      "end_at": "2026-08-26T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/",
@@ -4720,7 +4790,7 @@
       ],
       "publisher_identifier": "https://www.brooklyncb11.org/event/transportation-committee-6/",
       "title": "Transportation Committee",
-      "event_date": "2026-08-26",
+      "event_date": "2026-08-26T18:30:00-04:00",
       "venue": {
         "name": "Marks JCH of Bensonhurst",
         "address": "7802 Bay Parkway, Brooklyn, NY",
@@ -4866,6 +4936,9 @@
         "meeting:community_board:https://www.brooklyncb11.org/event/transportation-committee-6/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-26T18:30:00-04:00",
+      "start_at": "2026-08-26T18:30:00-04:00",
+      "end_at": "2026-08-26T18:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://www.brooklyncb11.org/event/transportation-committee-6/",
@@ -4917,6 +4990,7 @@
       ],
       "publisher_identifier": "20260708002",
       "title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -4981,7 +5055,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -5172,6 +5246,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T20:30:00-04:00",
+      "start_at": "2026-08-25T18:30:00-04:00",
+      "end_at": "2026-08-25T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/",
@@ -5209,7 +5286,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -5400,6 +5477,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T20:30:00-04:00",
+      "start_at": "2026-08-25T18:30:00-04:00",
+      "end_at": "2026-08-25T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/",
@@ -5437,7 +5517,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -5589,6 +5669,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T20:30:00-04:00",
+      "start_at": "2026-08-25T18:30:00-04:00",
+      "end_at": "2026-08-25T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/",
@@ -5626,7 +5709,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/executive-committee-12/",
       "title": "Executive Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -5780,6 +5863,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/executive-committee-12/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T21:00:00-04:00",
+      "start_at": "2026-08-25T18:00:00-04:00",
+      "end_at": "2026-08-25T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/executive-committee-12/",
@@ -5817,7 +5903,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/",
       "title": "Committee Meeting: Land Use & Housing",
-      "event_date": "2026-08-20",
+      "event_date": "2026-08-20T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -6008,6 +6094,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-20T20:30:00-04:00",
+      "start_at": "2026-08-20T18:30:00-04:00",
+      "end_at": "2026-08-20T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/",
@@ -6045,7 +6134,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/",
       "title": "EXECUTIVE – Valerie De La Rosa, Chair",
-      "event_date": "2026-08-20",
+      "event_date": "2026-08-20T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -6204,6 +6293,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-20T21:30:00-04:00",
+      "start_at": "2026-08-20T18:30:00-04:00",
+      "end_at": "2026-08-20T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/",
@@ -6241,7 +6333,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/",
       "title": "Economic Development & Public Safety Committee (EDPS)",
-      "event_date": "2026-08-20",
+      "event_date": "2026-08-20T18:30:00-04:00",
       "venue": {
         "name": "MCB4 OFFICE",
         "address": "424 W. 33rd Street, Ste. 580, New York, NY, 10001",
@@ -6399,6 +6491,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-20T21:00:00-04:00",
+      "start_at": "2026-08-20T18:30:00-04:00",
+      "end_at": "2026-08-20T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/",
@@ -6450,6 +6545,7 @@
       ],
       "publisher_identifier": "20260729019",
       "title": "Public Hearing \u001a Office of Technology & Innovation [858] \u001a NYS Civil Service Commission Proposal",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -6528,6 +6624,7 @@
       ],
       "publisher_identifier": "20260713006",
       "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -6606,6 +6703,7 @@
       ],
       "publisher_identifier": "20260729005",
       "title": "NYPD IT Infrastructure Engineer Public Hearing.",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -6684,6 +6782,7 @@
       ],
       "publisher_identifier": "20260729020",
       "title": "Public Hearing \u001a Office of The Comptroller [015] \u001a NYS Civil Service Commission Proposal",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -6748,7 +6847,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/",
       "title": "Committee Meeting – Public Safety",
-      "event_date": "2026-08-19",
+      "event_date": "2026-08-19T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -6939,6 +7038,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-19T20:30:00-04:00",
+      "start_at": "2026-08-19T18:30:00-04:00",
+      "end_at": "2026-08-19T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/",
@@ -6995,6 +7097,7 @@
       ],
       "publisher_identifier": "20260727031",
       "title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -7059,7 +7162,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/",
       "title": "Education, Youth, and Libraries",
-      "event_date": "2026-08-18",
+      "event_date": "2026-08-18T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -7250,6 +7353,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-18T20:30:00-04:00",
+      "start_at": "2026-08-18T18:30:00-04:00",
+      "end_at": "2026-08-18T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/",
@@ -7300,6 +7406,7 @@
       ],
       "publisher_identifier": "20260810053",
       "title": "Design Commission Meeting Agenda, Monday, August 17, 2026",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -7364,7 +7471,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/",
       "title": "Committee Meeting: Health and Human Services",
-      "event_date": "2026-08-17",
+      "event_date": "2026-08-17T06:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -7555,6 +7662,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-17T20:30:00-04:00",
+      "start_at": "2026-08-17T06:30:00-04:00",
+      "end_at": "2026-08-17T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/",
@@ -7592,7 +7702,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/",
       "title": "LANDMARKS 2 – Chenault Spence, Chair; Susan Gammie, Vice Chair",
-      "event_date": "2026-08-17",
+      "event_date": "2026-08-17T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -7828,6 +7938,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-17T21:30:00-04:00",
+      "start_at": "2026-08-17T18:30:00-04:00",
+      "end_at": "2026-08-17T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/",
@@ -7865,7 +7978,7 @@
       ],
       "publisher_identifier": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
       "title": "POSTPONED: CB17 Parks & Beautification Committee | Health & Wellness at Paerdegat Park",
-      "event_date": "2026-08-15",
+      "event_date": "2026-08-15T10:00:00-04:00",
       "venue": {
         "name": "Paerdegat Park",
         "address": "Albany Avenue between Farragut Rd & Foster Ave, Brooklyn, NY, 11210",
@@ -8011,6 +8124,9 @@
         "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-15T16:00:00-04:00",
+      "start_at": "2026-08-15T10:00:00-04:00",
+      "end_at": "2026-08-15T16:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
@@ -8142,6 +8258,7 @@
       },
       "source_record_id": "20260723005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -8238,6 +8355,7 @@
       },
       "source_record_id": "20260706044",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Taxi and Limousine Commission",
       "board_name": null,
@@ -8276,7 +8394,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/",
       "title": "Committee Meeting: Economic Development Technologies and Communications",
-      "event_date": "2026-08-13",
+      "event_date": "2026-08-13T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -8467,6 +8585,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-13T20:30:00-04:00",
+      "start_at": "2026-08-13T18:30:00-04:00",
+      "end_at": "2026-08-13T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/",
@@ -8504,7 +8625,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/",
       "title": "LANDMARKS 1 – Chenault Spence, Chair; Susan Gammie, Vice Chair",
-      "event_date": "2026-08-13",
+      "event_date": "2026-08-13T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -8892,6 +9013,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-13T21:30:00-04:00",
+      "start_at": "2026-08-13T18:30:00-04:00",
+      "end_at": "2026-08-13T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/",
@@ -8990,6 +9114,7 @@
       },
       "source_record_id": "20260710032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Franchise and Concession Review Committee",
       "board_name": null,
@@ -9125,6 +9250,7 @@
       },
       "source_record_id": "20260618040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -9221,6 +9347,7 @@
       },
       "source_record_id": "20260721023",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -9259,7 +9386,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/",
       "title": "Parks & Recreation Committee",
-      "event_date": "2026-08-12",
+      "event_date": "2026-08-12T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -9450,6 +9577,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-12T20:30:00-04:00",
+      "start_at": "2026-08-12T18:30:00-04:00",
+      "end_at": "2026-08-12T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/",
@@ -9487,7 +9617,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/",
       "title": "PARKS & WATERFRONT – Rich Caccappolo, Chair; Susanna Aaron, Vice Chair",
-      "event_date": "2026-08-12",
+      "event_date": "2026-08-12T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -9646,6 +9776,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-12T21:30:00-04:00",
+      "start_at": "2026-08-12T18:30:00-04:00",
+      "end_at": "2026-08-12T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/",
@@ -9683,7 +9816,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/",
       "title": "Committee Meeting: Transportation Landmarks and Historic Preservation",
-      "event_date": "2026-08-11",
+      "event_date": "2026-08-11T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -9835,6 +9968,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-11T21:00:00-04:00",
+      "start_at": "2026-08-11T18:30:00-04:00",
+      "end_at": "2026-08-11T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/",
@@ -9872,7 +10008,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/",
       "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
-      "event_date": "2026-08-11",
+      "event_date": "2026-08-11T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -10184,6 +10320,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-11T21:30:00-04:00",
+      "start_at": "2026-08-11T18:30:00-04:00",
+      "end_at": "2026-08-11T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/",
@@ -10221,7 +10360,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
       "title": "Business License & Permits Committee (BLP)",
-      "event_date": "2026-08-11",
+      "event_date": "2026-08-11T18:30:00-04:00",
       "venue": {
         "name": "MCB4 Office – 630 9th Avenue, Suite 208",
         "address": "630 9th Avenue, Ste. 208, New York, 10036",
@@ -10379,6 +10518,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-11T21:30:00-04:00",
+      "start_at": "2026-08-11T18:30:00-04:00",
+      "end_at": "2026-08-11T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
@@ -10495,6 +10637,7 @@
       },
       "source_record_id": "20260709028",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Police Department",
       "board_name": null,
@@ -10620,6 +10763,7 @@
       },
       "source_record_id": "20260716022",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Parks and Recreation",
       "board_name": null,
@@ -10768,6 +10912,7 @@
       },
       "source_record_id": "20260723030",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
@@ -10806,7 +10951,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/",
       "title": "Committee Meeting: Arts and Culture",
-      "event_date": "2026-08-10",
+      "event_date": "2026-08-10T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -10997,6 +11142,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-10T20:30:00-04:00",
+      "start_at": "2026-08-10T18:30:00-04:00",
+      "end_at": "2026-08-10T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/",
@@ -11034,7 +11182,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/",
       "title": "[MEETING CANCELLED] – CANABIS LICENSING – Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair – IN PERSON ONLY",
-      "event_date": "2026-08-10",
+      "event_date": "2026-08-10T18:30:00-04:00",
       "venue": {
         "name": "CB2 Conference Room",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -11183,6 +11331,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-10T21:00:00-04:00",
+      "start_at": "2026-08-10T18:30:00-04:00",
+      "end_at": "2026-08-10T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/",
@@ -11220,7 +11371,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/",
       "title": "PSP NY INC Block Party",
-      "event_date": "2026-08-08",
+      "event_date": "2026-08-08T13:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -11374,6 +11525,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-08T20:00:00-04:00",
+      "start_at": "2026-08-08T13:00:00-04:00",
+      "end_at": "2026-08-08T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/",
@@ -11453,6 +11607,7 @@
       },
       "source_record_id": "20260626036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -11589,6 +11744,7 @@
       },
       "source_record_id": "20260716009",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -11688,6 +11844,7 @@
       },
       "source_record_id": "20260716025",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Environmental Control Board",
       "board_name": null,
@@ -11726,7 +11883,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/",
       "title": "SLA LICENSING-2 — Donna Raftery, Chair — IN PERSON ONLY",
-      "event_date": "2026-08-06",
+      "event_date": "2026-08-06T18:30:00-04:00",
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
@@ -12063,6 +12220,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-06T23:30:00-04:00",
+      "start_at": "2026-08-06T18:30:00-04:00",
+      "end_at": "2026-08-06T23:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/",
@@ -12142,6 +12302,7 @@
       },
       "source_record_id": "20260626034",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -12180,7 +12341,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/",
       "title": "General Board Meeting",
-      "event_date": "2026-08-05",
+      "event_date": "2026-08-05T18:00:00-04:00",
       "venue": {
         "name": "State Office Building",
         "address": "163 W. 125th St, 2nd Floor, New York, 10027",
@@ -12369,6 +12530,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-05T20:30:00-04:00",
+      "start_at": "2026-08-05T18:00:00-04:00",
+      "end_at": "2026-08-05T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/",
@@ -12406,7 +12570,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/",
       "title": "General Board Meeting",
-      "event_date": "2026-08-05",
+      "event_date": "2026-08-05T18:00:00-04:00",
       "venue": {
         "name": "National Urban League",
         "address": "117 W. 125th St, New York, NY, 10027",
@@ -12595,6 +12759,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-05T20:30:00-04:00",
+      "start_at": "2026-08-05T18:00:00-04:00",
+      "end_at": "2026-08-05T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/",
@@ -12632,7 +12799,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/",
       "title": "SLA LICENSING-1 – Donna Raftery, Chair – IN PERSON ONLY",
-      "event_date": "2026-08-05",
+      "event_date": "2026-08-05T18:30:00-04:00",
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
@@ -13238,6 +13405,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-05T23:30:00-04:00",
+      "start_at": "2026-08-05T18:30:00-04:00",
+      "end_at": "2026-08-05T23:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/",
@@ -13317,6 +13487,7 @@
       },
       "source_record_id": "20260618036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
       "board_name": null,
@@ -13413,6 +13584,7 @@
       },
       "source_record_id": "20260714001",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -13451,7 +13623,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/",
       "title": "STREET ACTIVITIES & RESILIENCY – Will Benesh, Chair; Erika Olson, Vice Chair",
-      "event_date": "2026-08-03",
+      "event_date": "2026-08-03T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -15397,6 +15569,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-03T21:30:00-04:00",
+      "start_at": "2026-08-03T18:30:00-04:00",
+      "end_at": "2026-08-03T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/",
@@ -15492,6 +15667,7 @@
       },
       "source_record_id": "20260708015",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Equal Employment Practices Commission",
       "board_name": null,
@@ -15588,6 +15764,7 @@
       },
       "source_record_id": "20260624001",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Authority",
       "board_name": null,
@@ -15684,6 +15861,7 @@
       },
       "source_record_id": "20260707029",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -15768,6 +15946,7 @@
       },
       "source_record_id": "20260624005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Sanitation",
       "board_name": null,
@@ -15864,6 +16043,7 @@
       },
       "source_record_id": "20260707004",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -15902,7 +16082,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -16093,6 +16273,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T20:30:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
@@ -16130,7 +16313,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -16321,6 +16504,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T20:30:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/",
@@ -16358,7 +16544,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -16510,6 +16696,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T20:30:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/",
@@ -16547,7 +16736,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
       "title": "Committee of the Whole",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -16740,6 +16929,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T21:00:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
@@ -16777,7 +16969,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
       "title": "MEETING CANCELED – TRAFFIC AND TRANSPORTATION Jeannine Kiely, Chair; Janet Liff, Vice Chair",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -16928,6 +17120,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T21:00:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
@@ -16965,7 +17160,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/",
       "title": "July 2026 CB 1’s Monthly Board Meeting",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -17115,6 +17310,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T21:00:00-04:00",
+      "start_at": "2026-07-28T18:00:00-04:00",
+      "end_at": "2026-07-28T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/",
@@ -17257,6 +17455,7 @@
       },
       "source_record_id": "20260629003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
@@ -17295,7 +17494,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
       "title": "Battery Park City Committee",
-      "event_date": "2026-07-27",
+      "event_date": "2026-07-27T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -17449,6 +17648,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-27T21:00:00-04:00",
+      "start_at": "2026-07-27T18:00:00-04:00",
+      "end_at": "2026-07-27T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
@@ -17544,6 +17746,7 @@
       },
       "source_record_id": "20260616058",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -17640,6 +17843,7 @@
       },
       "source_record_id": "20260707022",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -17736,6 +17940,7 @@
       },
       "source_record_id": "20260623060",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Civic Engagement Commission",
       "board_name": null,
@@ -17832,6 +18037,7 @@
       },
       "source_record_id": "20260707021",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -17928,6 +18134,7 @@
       },
       "source_record_id": "20260630005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -18094,6 +18301,7 @@
       },
       "source_record_id": "20260713032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Public Design Commission",
       "board_name": null,
@@ -18174,6 +18382,7 @@
       },
       "source_record_id": "20260609003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -18310,6 +18519,7 @@
       },
       "source_record_id": "20260624036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -18439,6 +18649,7 @@
       },
       "source_record_id": "20260617040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Industrial Development Agency",
       "board_name": null,
@@ -18568,6 +18779,7 @@
       },
       "source_record_id": "20260617042",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Build NYC Resource Corporation",
       "board_name": null,
@@ -18664,6 +18876,7 @@
       },
       "source_record_id": "20260625034",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Authority",
       "board_name": null,
@@ -18760,6 +18973,7 @@
       },
       "source_record_id": "20260624002",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -18865,6 +19079,7 @@
       },
       "source_record_id": "20260106033",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Correction",
       "board_name": null,
@@ -18963,6 +19178,7 @@
       },
       "source_record_id": "20260706036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -19059,6 +19275,7 @@
       },
       "source_record_id": "20260623006",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -19194,6 +19411,7 @@
       },
       "source_record_id": "20260612028",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
@@ -19274,6 +19492,7 @@
       },
       "source_record_id": "20260602003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -19349,6 +19568,7 @@
       },
       "source_record_id": "20260605058",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Finance",
       "board_name": null,
@@ -19446,6 +19666,7 @@
       },
       "source_record_id": "20260625040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -19585,6 +19806,7 @@
       },
       "source_record_id": "20260618050",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Brooklyn",
       "board_name": null,
@@ -19681,6 +19903,7 @@
       },
       "source_record_id": "20260629046",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "NYC Workforce Development Board",
       "board_name": null,
@@ -19817,6 +20040,7 @@
       },
       "source_record_id": "20260605007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -19913,6 +20137,7 @@
       },
       "source_record_id": "20260522007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
       "board_name": null,
@@ -20065,6 +20290,7 @@
       },
       "source_record_id": "20260618037",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Queens",
       "board_name": null,
@@ -20161,6 +20387,7 @@
       },
       "source_record_id": "20260617039",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -20257,6 +20484,7 @@
       },
       "source_record_id": "20260522008",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
       "board_name": null,
@@ -20350,6 +20578,7 @@
       },
       "source_record_id": "20260609065",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning",
       "board_name": null,
@@ -20446,6 +20675,7 @@
       },
       "source_record_id": "20260610012",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -20542,6 +20772,7 @@
       },
       "source_record_id": "20260610007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -20638,6 +20869,7 @@
       },
       "source_record_id": "20260605045",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -20761,6 +20993,7 @@
       },
       "source_record_id": "20260623048",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -20913,6 +21146,7 @@
       },
       "source_record_id": "20260618032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -21051,6 +21285,7 @@
       },
       "source_record_id": "20260605006",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -21150,6 +21385,7 @@
       },
       "source_record_id": "20260610067",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Education Retirement System",
       "board_name": null,
@@ -21279,6 +21515,7 @@
       },
       "source_record_id": "20260521020",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
       "board_name": null,
@@ -21375,6 +21612,7 @@
       },
       "source_record_id": "20260528032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Authority",
       "board_name": null,
@@ -21520,6 +21758,7 @@
       },
       "source_record_id": "20260601045",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -21654,6 +21893,7 @@
       },
       "source_record_id": "20260603002",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -21787,6 +22027,7 @@
       },
       "source_record_id": "20260604005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -21886,6 +22127,7 @@
       },
       "source_record_id": "20260603039",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Comptroller",
       "board_name": null,
@@ -21982,6 +22224,7 @@
       },
       "source_record_id": "20260602006",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -22147,6 +22390,7 @@
       },
       "source_record_id": "20260612036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Public Design Commission",
       "board_name": null,
@@ -22246,6 +22490,7 @@
       },
       "source_record_id": "20260527017",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Teachers' Retirement System",
       "board_name": null,
@@ -22383,6 +22628,7 @@
       },
       "source_record_id": "20260512036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -22497,6 +22743,7 @@
       },
       "source_record_id": "20260610003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -22593,6 +22840,7 @@
       },
       "source_record_id": "20260603052",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -22689,6 +22937,7 @@
       },
       "source_record_id": "20260528020",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -22793,6 +23042,7 @@
       },
       "source_record_id": "20260513035",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -22926,6 +23176,7 @@
       },
       "source_record_id": "20260528031",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -23073,6 +23324,7 @@
       },
       "source_record_id": "20260608005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Bronx",
       "board_name": null,
@@ -23177,6 +23429,7 @@
       },
       "source_record_id": "20260513034",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -23273,6 +23526,7 @@
       },
       "source_record_id": "20260528021",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Equal Employment Practices Commission",
       "board_name": null,
@@ -23386,6 +23640,7 @@
       },
       "source_record_id": "20260512007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Mayor's Office of Contract Services",
       "board_name": null,
@@ -23485,6 +23740,7 @@
       },
       "source_record_id": "20260429031",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Environmental Control Board",
       "board_name": null,
@@ -23634,6 +23890,7 @@
       },
       "source_record_id": "20260528018",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Queens",
       "board_name": null,
@@ -23733,6 +23990,7 @@
       },
       "source_record_id": "20260527036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -23862,6 +24120,7 @@
       },
       "source_record_id": "20260601042",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Brooklyn",
       "board_name": null,
@@ -23957,6 +24216,7 @@
       },
       "source_record_id": "20260428020",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Independent Budget Office",
       "board_name": null,
@@ -24100,6 +24360,7 @@
       },
       "source_record_id": "20260603044",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -24205,6 +24466,7 @@
       },
       "source_record_id": "20260106032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Correction",
       "board_name": null,
@@ -24301,6 +24563,7 @@
       },
       "source_record_id": "20260519007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -24405,6 +24668,7 @@
       },
       "source_record_id": "20260513033",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -24517,6 +24781,7 @@
       },
       "source_record_id": "20260513032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -24613,6 +24878,7 @@
       },
       "source_record_id": "20260529027",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -24712,6 +24978,7 @@
       },
       "source_record_id": "20260504025",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Education Retirement System",
       "board_name": null,
@@ -24811,6 +25078,7 @@
       },
       "source_record_id": "20260512004",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Education Retirement System",
       "board_name": null,
@@ -24907,6 +25175,7 @@
       },
       "source_record_id": "20260518031",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "NYC Workforce Development Board",
       "board_name": null,
@@ -24991,6 +25260,7 @@
       },
       "source_record_id": "20260515001",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -25088,6 +25358,7 @@
       },
       "source_record_id": "20260521019",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Office of Labor Relations",
       "board_name": null,
@@ -25168,6 +25439,7 @@
       },
       "source_record_id": "20260512014",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City University",
       "board_name": null,
@@ -25294,6 +25566,7 @@
       },
       "source_record_id": "20260518003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Brooklyn",
       "board_name": null,
@@ -25429,6 +25702,7 @@
       },
       "source_record_id": "20260518025",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Bronx",
       "board_name": null,
@@ -25525,6 +25799,7 @@
       },
       "source_record_id": "20260522019",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -25609,6 +25884,7 @@
       },
       "source_record_id": "20260213011",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -25693,6 +25969,7 @@
       },
       "source_record_id": "20260213012",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -25777,6 +26054,7 @@
       },
       "source_record_id": "20260213013",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -25861,6 +26139,7 @@
       },
       "source_record_id": "20260213014",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -25945,6 +26224,7 @@
       },
       "source_record_id": "20260213015",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -26029,6 +26309,7 @@
       },
       "source_record_id": "20260504036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -26113,6 +26394,7 @@
       },
       "source_record_id": "20260504037",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -26197,6 +26479,7 @@
       },
       "source_record_id": "20260504038",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -26281,6 +26564,7 @@
       },
       "source_record_id": "20260504039",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -26361,6 +26645,7 @@
       },
       "source_record_id": "20260504040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -26489,6 +26774,7 @@
       },
       "source_record_id": "20260602044",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -26622,6 +26908,7 @@
       },
       "source_record_id": "20260603059",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -26745,6 +27032,7 @@
       },
       "source_record_id": "20260617003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -26841,6 +27129,7 @@
       },
       "source_record_id": "20260715002",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -26881,7 +27170,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
       "title": "Transportation & Health Committees",
-      "event_date": "2026-10-15",
+      "event_date": "2026-10-15T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -27027,6 +27316,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-15T20:00:00-04:00",
+      "start_at": "2026-10-15T18:30:00-04:00",
+      "end_at": "2026-10-15T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
@@ -27064,7 +27356,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/",
       "title": "Economic Development, Environment & Parks, Sanitation Committees",
-      "event_date": "2026-10-14",
+      "event_date": "2026-10-14T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -27210,6 +27502,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-14T20:00:00-04:00",
+      "start_at": "2026-10-14T18:30:00-04:00",
+      "end_at": "2026-10-14T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/",
@@ -27247,7 +27542,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/",
       "title": "Housing & Land Use, Youth & Education Committees",
-      "event_date": "2026-10-13",
+      "event_date": "2026-10-13T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -27393,6 +27688,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-13T20:00:00-04:00",
+      "start_at": "2026-10-13T18:30:00-04:00",
+      "end_at": "2026-10-13T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/",
@@ -27430,7 +27728,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/",
       "title": "Executive Committee (TBD)",
-      "event_date": "2026-10-07",
+      "event_date": "2026-10-07T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -27576,6 +27874,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-07T20:00:00-04:00",
+      "start_at": "2026-10-07T18:30:00-04:00",
+      "end_at": "2026-10-07T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/",
@@ -27613,7 +27914,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/",
       "title": "Disciplinary Committee",
-      "event_date": "2026-10-06",
+      "event_date": "2026-10-06T12:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -27755,6 +28056,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/"
       ],
       "institution_edges": [],
+      "event_end": "2026-10-06T13:00:00-04:00",
+      "start_at": "2026-10-06T12:00:00-04:00",
+      "end_at": "2026-10-06T13:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/",
@@ -27792,7 +28096,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/",
       "title": "General Board Meeting",
-      "event_date": "2026-09-23",
+      "event_date": "2026-09-23T18:30:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -27934,6 +28238,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-23T20:00:00-04:00",
+      "start_at": "2026-09-23T18:30:00-04:00",
+      "end_at": "2026-09-23T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/",
@@ -27986,6 +28293,7 @@
       ],
       "publisher_identifier": "20260806002",
       "title": "Rules Regarding Restricted Substances in Personal Care Products",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28050,7 +28358,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/",
       "title": "Public Safety & Licensing Committee",
-      "event_date": "2026-09-16",
+      "event_date": "2026-09-16T18:30:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -28192,6 +28500,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-16T20:00:00-04:00",
+      "start_at": "2026-09-16T18:30:00-04:00",
+      "end_at": "2026-09-16T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/",
@@ -28243,6 +28554,7 @@
       ],
       "publisher_identifier": "20260803026",
       "title": "Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28321,6 +28633,7 @@
       ],
       "publisher_identifier": "20260803009",
       "title": "New Rules Relating to Rat Inspections",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28385,7 +28698,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/",
       "title": "Transportation & Health Committees",
-      "event_date": "2026-09-10",
+      "event_date": "2026-09-10T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -28531,6 +28844,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-10T20:00:00-04:00",
+      "start_at": "2026-09-10T18:30:00-04:00",
+      "end_at": "2026-09-10T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/",
@@ -28582,6 +28898,7 @@
       ],
       "publisher_identifier": "20260728026",
       "title": "Proposed Rule - Rule relating to Incomplete Inspections",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28654,6 +28971,7 @@
       ],
       "publisher_identifier": "20260709020",
       "title": "FOR ACQUISTION - Block 5308 Lot 50",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28737,6 +29055,7 @@
       ],
       "publisher_identifier": "20260714002",
       "title": "CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28809,6 +29128,7 @@
       ],
       "publisher_identifier": "20260723022",
       "title": "511 West 171",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -28873,7 +29193,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/",
       "title": "Economic Development, Environment & Parks, Sanitation Committees",
-      "event_date": "2026-09-09",
+      "event_date": "2026-09-09T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -29019,6 +29339,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-09T20:00:00-04:00",
+      "start_at": "2026-09-09T18:30:00-04:00",
+      "end_at": "2026-09-09T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/",
@@ -29056,7 +29379,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/",
       "title": "Housing & Land Use, Youth & Education Committees",
-      "event_date": "2026-09-08",
+      "event_date": "2026-09-08T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -29202,6 +29525,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-08T20:00:00-04:00",
+      "start_at": "2026-09-08T18:30:00-04:00",
+      "end_at": "2026-09-08T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/",
@@ -29247,6 +29573,7 @@
       ],
       "publisher_identifier": "20260805006",
       "title": "Dining Out NYC Hearing",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -29311,7 +29638,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/",
       "title": "Battery Park City Committee",
-      "event_date": "2026-09-03",
+      "event_date": "2026-09-03T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -29465,6 +29792,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-03T21:00:00-04:00",
+      "start_at": "2026-09-03T18:00:00-04:00",
+      "end_at": "2026-09-03T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/",
@@ -29502,7 +29832,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/",
       "title": "Executive Committee (TBD)",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:30:00-04:00",
       "venue": {
         "name": "Board District Office",
         "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
@@ -29648,6 +29978,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T20:00:00-04:00",
+      "start_at": "2026-09-02T18:30:00-04:00",
+      "end_at": "2026-09-02T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/",
@@ -29685,7 +30018,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/",
       "title": "General Board Meeting",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:00:00-04:00",
       "venue": {
         "name": "State Office Building",
         "address": "163 W. 125th St, 2nd Floor, New York, 10027",
@@ -29874,6 +30207,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T20:30:00-04:00",
+      "start_at": "2026-09-02T18:00:00-04:00",
+      "end_at": "2026-09-02T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/",
@@ -29911,7 +30247,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/",
       "title": "General Board Meeting",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:00:00-04:00",
       "venue": {
         "name": "National Urban League",
         "address": "117 W. 125th St, New York, NY, 10027",
@@ -30100,6 +30436,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T20:30:00-04:00",
+      "start_at": "2026-09-02T18:00:00-04:00",
+      "end_at": "2026-09-02T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/",
@@ -30137,7 +30476,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
       "title": "Full Board",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:30:00-04:00",
       "venue": {
         "name": "Hotel Trades Council",
         "address": "305 West 44th Street, New York, NY, 10036",
@@ -30295,6 +30634,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T21:30:00-04:00",
+      "start_at": "2026-09-02T18:30:00-04:00",
+      "end_at": "2026-09-02T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
@@ -30332,7 +30674,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/",
       "title": "Transportation & Street Activity Permits Committee",
-      "event_date": "2026-09-02",
+      "event_date": "2026-09-02T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -30486,6 +30828,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-02T21:00:00-04:00",
+      "start_at": "2026-09-02T18:00:00-04:00",
+      "end_at": "2026-09-02T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/",
@@ -30537,6 +30882,7 @@
       ],
       "publisher_identifier": "20260714029",
       "title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -30601,7 +30947,7 @@
       ],
       "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
       "title": "Disciplinary Committee",
-      "event_date": "2026-09-01",
+      "event_date": "2026-09-01T12:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -30743,6 +31089,9 @@
         "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-01T13:00:00-04:00",
+      "start_at": "2026-09-01T12:00:00-04:00",
+      "end_at": "2026-09-01T13:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
@@ -30780,7 +31129,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/",
       "title": "Business Development Committee",
-      "event_date": "2026-09-01",
+      "event_date": "2026-09-01T19:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -30936,6 +31285,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/"
       ],
       "institution_edges": [],
+      "event_end": "2026-09-01T21:00:00-04:00",
+      "start_at": "2026-09-01T19:00:00-04:00",
+      "end_at": "2026-09-01T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/",
@@ -30987,6 +31339,7 @@
       ],
       "publisher_identifier": "20260715041",
       "title": "Amendments to Rules Relating to the Energy Conservation Code",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -31059,6 +31412,7 @@
       ],
       "publisher_identifier": "20260728028",
       "title": "Dining Out NYC Public Hearings",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -31142,6 +31496,7 @@
       ],
       "publisher_identifier": "20260730025",
       "title": "August 26, 2026 PUBLIC HEARING",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -31225,6 +31580,7 @@
       ],
       "publisher_identifier": "20260805038",
       "title": "City Planning Commission Public Hearing",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -31289,7 +31645,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/",
       "title": "Committee Meeting – Executive",
-      "event_date": "2026-08-26",
+      "event_date": "2026-08-26T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -31488,6 +31844,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-26T20:30:00-04:00",
+      "start_at": "2026-08-26T18:30:00-04:00",
+      "end_at": "2026-08-26T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-08-26/",
@@ -31525,7 +31884,7 @@
       ],
       "publisher_identifier": "https://www.brooklyncb11.org/event/transportation-committee-6/",
       "title": "Transportation Committee",
-      "event_date": "2026-08-26",
+      "event_date": "2026-08-26T18:30:00-04:00",
       "venue": {
         "name": "Marks JCH of Bensonhurst",
         "address": "7802 Bay Parkway, Brooklyn, NY",
@@ -31671,6 +32030,9 @@
         "meeting:community_board:https://www.brooklyncb11.org/event/transportation-committee-6/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-26T18:30:00-04:00",
+      "start_at": "2026-08-26T18:30:00-04:00",
+      "end_at": "2026-08-26T18:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://www.brooklyncb11.org/event/transportation-committee-6/",
@@ -31722,6 +32084,7 @@
       ],
       "publisher_identifier": "20260708002",
       "title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -31786,7 +32149,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -31977,6 +32340,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T20:30:00-04:00",
+      "start_at": "2026-08-25T18:30:00-04:00",
+      "end_at": "2026-08-25T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-08-25/",
@@ -32014,7 +32380,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -32205,6 +32571,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T20:30:00-04:00",
+      "start_at": "2026-08-25T18:30:00-04:00",
+      "end_at": "2026-08-25T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-08-25/",
@@ -32242,7 +32611,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -32394,6 +32763,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T20:30:00-04:00",
+      "start_at": "2026-08-25T18:30:00-04:00",
+      "end_at": "2026-08-25T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-08-25/",
@@ -32431,7 +32803,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/executive-committee-12/",
       "title": "Executive Committee",
-      "event_date": "2026-08-25",
+      "event_date": "2026-08-25T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -32585,6 +32957,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/executive-committee-12/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-25T21:00:00-04:00",
+      "start_at": "2026-08-25T18:00:00-04:00",
+      "end_at": "2026-08-25T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/executive-committee-12/",
@@ -32622,7 +32997,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/",
       "title": "Committee Meeting: Land Use & Housing",
-      "event_date": "2026-08-20",
+      "event_date": "2026-08-20T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -32813,6 +33188,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-20T20:30:00-04:00",
+      "start_at": "2026-08-20T18:30:00-04:00",
+      "end_at": "2026-08-20T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-08-20/",
@@ -32850,7 +33228,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/",
       "title": "EXECUTIVE – Valerie De La Rosa, Chair",
-      "event_date": "2026-08-20",
+      "event_date": "2026-08-20T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -33009,6 +33387,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-20T21:30:00-04:00",
+      "start_at": "2026-08-20T18:30:00-04:00",
+      "end_at": "2026-08-20T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-15/",
@@ -33046,7 +33427,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/",
       "title": "Economic Development & Public Safety Committee (EDPS)",
-      "event_date": "2026-08-20",
+      "event_date": "2026-08-20T18:30:00-04:00",
       "venue": {
         "name": "MCB4 OFFICE",
         "address": "424 W. 33rd Street, Ste. 580, New York, NY, 10001",
@@ -33204,6 +33585,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-20T21:00:00-04:00",
+      "start_at": "2026-08-20T18:30:00-04:00",
+      "end_at": "2026-08-20T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-7/",
@@ -33255,6 +33639,7 @@
       ],
       "publisher_identifier": "20260729019",
       "title": "Public Hearing \u001a Office of Technology & Innovation [858] \u001a NYS Civil Service Commission Proposal",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -33333,6 +33718,7 @@
       ],
       "publisher_identifier": "20260713006",
       "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -33411,6 +33797,7 @@
       ],
       "publisher_identifier": "20260729005",
       "title": "NYPD IT Infrastructure Engineer Public Hearing.",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -33489,6 +33876,7 @@
       ],
       "publisher_identifier": "20260729020",
       "title": "Public Hearing \u001a Office of The Comptroller [015] \u001a NYS Civil Service Commission Proposal",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -33553,7 +33941,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/",
       "title": "Committee Meeting – Public Safety",
-      "event_date": "2026-08-19",
+      "event_date": "2026-08-19T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -33744,6 +34132,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-19T20:30:00-04:00",
+      "start_at": "2026-08-19T18:30:00-04:00",
+      "end_at": "2026-08-19T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-08-19/",
@@ -33800,6 +34191,7 @@
       ],
       "publisher_identifier": "20260727031",
       "title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -33864,7 +34256,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/",
       "title": "Education, Youth, and Libraries",
-      "event_date": "2026-08-18",
+      "event_date": "2026-08-18T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -34055,6 +34447,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-18T20:30:00-04:00",
+      "start_at": "2026-08-18T18:30:00-04:00",
+      "end_at": "2026-08-18T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-08-18/",
@@ -34105,6 +34500,7 @@
       ],
       "publisher_identifier": "20260810053",
       "title": "Design Commission Meeting Agenda, Monday, August 17, 2026",
+      "event_end": null,
       "venue": null,
       "participation": null,
       "committee": null,
@@ -34169,7 +34565,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/",
       "title": "Committee Meeting: Health and Human Services",
-      "event_date": "2026-08-17",
+      "event_date": "2026-08-17T06:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -34360,6 +34756,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-17T20:30:00-04:00",
+      "start_at": "2026-08-17T06:30:00-04:00",
+      "end_at": "2026-08-17T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-08-17/",
@@ -34397,7 +34796,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/",
       "title": "LANDMARKS 2 – Chenault Spence, Chair; Susan Gammie, Vice Chair",
-      "event_date": "2026-08-17",
+      "event_date": "2026-08-17T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -34633,6 +35032,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-17T21:30:00-04:00",
+      "start_at": "2026-08-17T18:30:00-04:00",
+      "end_at": "2026-08-17T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-2-chenault-spence-chair-susan-gammie-vice-chair-7/",
@@ -34670,7 +35072,7 @@
       ],
       "publisher_identifier": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
       "title": "POSTPONED: CB17 Parks & Beautification Committee | Health & Wellness at Paerdegat Park",
-      "event_date": "2026-08-15",
+      "event_date": "2026-08-15T10:00:00-04:00",
       "venue": {
         "name": "Paerdegat Park",
         "address": "Albany Avenue between Farragut Rd & Foster Ave, Brooklyn, NY, 11210",
@@ -34816,6 +35218,9 @@
         "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-15T16:00:00-04:00",
+      "start_at": "2026-08-15T10:00:00-04:00",
+      "end_at": "2026-08-15T16:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
@@ -34947,6 +35352,7 @@
       },
       "source_record_id": "20260723005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -35043,6 +35449,7 @@
       },
       "source_record_id": "20260706044",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Taxi and Limousine Commission",
       "board_name": null,
@@ -35081,7 +35488,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/",
       "title": "Committee Meeting: Economic Development Technologies and Communications",
-      "event_date": "2026-08-13",
+      "event_date": "2026-08-13T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -35272,6 +35679,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-13T20:30:00-04:00",
+      "start_at": "2026-08-13T18:30:00-04:00",
+      "end_at": "2026-08-13T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-08-13/",
@@ -35309,7 +35719,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/",
       "title": "LANDMARKS 1 – Chenault Spence, Chair; Susan Gammie, Vice Chair",
-      "event_date": "2026-08-13",
+      "event_date": "2026-08-13T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -35697,6 +36107,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-13T21:30:00-04:00",
+      "start_at": "2026-08-13T18:30:00-04:00",
+      "end_at": "2026-08-13T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-29/",
@@ -35795,6 +36208,7 @@
       },
       "source_record_id": "20260710032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Franchise and Concession Review Committee",
       "board_name": null,
@@ -35930,6 +36344,7 @@
       },
       "source_record_id": "20260618040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -36026,6 +36441,7 @@
       },
       "source_record_id": "20260721023",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -36064,7 +36480,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/",
       "title": "Parks & Recreation Committee",
-      "event_date": "2026-08-12",
+      "event_date": "2026-08-12T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -36255,6 +36671,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-12T20:30:00-04:00",
+      "start_at": "2026-08-12T18:30:00-04:00",
+      "end_at": "2026-08-12T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-08-12/",
@@ -36292,7 +36711,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/",
       "title": "PARKS & WATERFRONT – Rich Caccappolo, Chair; Susanna Aaron, Vice Chair",
-      "event_date": "2026-08-12",
+      "event_date": "2026-08-12T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -36451,6 +36870,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-12T21:30:00-04:00",
+      "start_at": "2026-08-12T18:30:00-04:00",
+      "end_at": "2026-08-12T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-21/",
@@ -36488,7 +36910,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/",
       "title": "Committee Meeting: Transportation Landmarks and Historic Preservation",
-      "event_date": "2026-08-11",
+      "event_date": "2026-08-11T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -36640,6 +37062,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-11T21:00:00-04:00",
+      "start_at": "2026-08-11T18:30:00-04:00",
+      "end_at": "2026-08-11T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-08-11/",
@@ -36677,7 +37102,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/",
       "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
-      "event_date": "2026-08-11",
+      "event_date": "2026-08-11T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -36989,6 +37414,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-11T21:30:00-04:00",
+      "start_at": "2026-08-11T18:30:00-04:00",
+      "end_at": "2026-08-11T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-28/",
@@ -37026,7 +37454,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
       "title": "Business License & Permits Committee (BLP)",
-      "event_date": "2026-08-11",
+      "event_date": "2026-08-11T18:30:00-04:00",
       "venue": {
         "name": "MCB4 Office – 630 9th Avenue, Suite 208",
         "address": "630 9th Avenue, Ste. 208, New York, 10036",
@@ -37184,6 +37612,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-11T21:30:00-04:00",
+      "start_at": "2026-08-11T18:30:00-04:00",
+      "end_at": "2026-08-11T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
@@ -37300,6 +37731,7 @@
       },
       "source_record_id": "20260709028",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Police Department",
       "board_name": null,
@@ -37425,6 +37857,7 @@
       },
       "source_record_id": "20260716022",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Parks and Recreation",
       "board_name": null,
@@ -37573,6 +38006,7 @@
       },
       "source_record_id": "20260723030",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
@@ -37611,7 +38045,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/",
       "title": "Committee Meeting: Arts and Culture",
-      "event_date": "2026-08-10",
+      "event_date": "2026-08-10T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -37802,6 +38236,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-10T20:30:00-04:00",
+      "start_at": "2026-08-10T18:30:00-04:00",
+      "end_at": "2026-08-10T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-08-10/",
@@ -37839,7 +38276,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/",
       "title": "[MEETING CANCELLED] – CANABIS LICENSING – Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair – IN PERSON ONLY",
-      "event_date": "2026-08-10",
+      "event_date": "2026-08-10T18:30:00-04:00",
       "venue": {
         "name": "CB2 Conference Room",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -37988,6 +38425,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-10T21:00:00-04:00",
+      "start_at": "2026-08-10T18:30:00-04:00",
+      "end_at": "2026-08-10T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/canabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only/",
@@ -38025,7 +38465,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/",
       "title": "PSP NY INC Block Party",
-      "event_date": "2026-08-08",
+      "event_date": "2026-08-08T13:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -38179,6 +38619,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-08T20:00:00-04:00",
+      "start_at": "2026-08-08T13:00:00-04:00",
+      "end_at": "2026-08-08T20:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/psp-ny-inc-block-party/",
@@ -38258,6 +38701,7 @@
       },
       "source_record_id": "20260626036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -38394,6 +38838,7 @@
       },
       "source_record_id": "20260716009",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -38493,6 +38938,7 @@
       },
       "source_record_id": "20260716025",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Environmental Control Board",
       "board_name": null,
@@ -38531,7 +38977,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/",
       "title": "SLA LICENSING-2 — Donna Raftery, Chair — IN PERSON ONLY",
-      "event_date": "2026-08-06",
+      "event_date": "2026-08-06T18:30:00-04:00",
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
@@ -38868,6 +39314,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-06T23:30:00-04:00",
+      "start_at": "2026-08-06T18:30:00-04:00",
+      "end_at": "2026-08-06T23:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-20/",
@@ -38947,6 +39396,7 @@
       },
       "source_record_id": "20260626034",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -38985,7 +39435,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/",
       "title": "General Board Meeting",
-      "event_date": "2026-08-05",
+      "event_date": "2026-08-05T18:00:00-04:00",
       "venue": {
         "name": "State Office Building",
         "address": "163 W. 125th St, 2nd Floor, New York, 10027",
@@ -39174,6 +39624,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-05T20:30:00-04:00",
+      "start_at": "2026-08-05T18:00:00-04:00",
+      "end_at": "2026-08-05T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-08-05/",
@@ -39211,7 +39664,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/",
       "title": "General Board Meeting",
-      "event_date": "2026-08-05",
+      "event_date": "2026-08-05T18:00:00-04:00",
       "venue": {
         "name": "National Urban League",
         "address": "117 W. 125th St, New York, NY, 10027",
@@ -39400,6 +39853,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-05T20:30:00-04:00",
+      "start_at": "2026-08-05T18:00:00-04:00",
+      "end_at": "2026-08-05T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-08-05/",
@@ -39437,7 +39893,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/",
       "title": "SLA LICENSING-1 – Donna Raftery, Chair – IN PERSON ONLY",
-      "event_date": "2026-08-05",
+      "event_date": "2026-08-05T18:30:00-04:00",
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
@@ -40043,6 +40499,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-05T23:30:00-04:00",
+      "start_at": "2026-08-05T18:30:00-04:00",
+      "end_at": "2026-08-05T23:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-donna-raftery-chair-in-person-only/",
@@ -40122,6 +40581,7 @@
       },
       "source_record_id": "20260618036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
       "board_name": null,
@@ -40218,6 +40678,7 @@
       },
       "source_record_id": "20260714001",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -40256,7 +40717,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/",
       "title": "STREET ACTIVITIES & RESILIENCY – Will Benesh, Chair; Erika Olson, Vice Chair",
-      "event_date": "2026-08-03",
+      "event_date": "2026-08-03T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -42202,6 +42663,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/"
       ],
       "institution_edges": [],
+      "event_end": "2026-08-03T21:30:00-04:00",
+      "start_at": "2026-08-03T18:30:00-04:00",
+      "end_at": "2026-08-03T21:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-18/",
@@ -42297,6 +42761,7 @@
       },
       "source_record_id": "20260708015",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Equal Employment Practices Commission",
       "board_name": null,
@@ -42393,6 +42858,7 @@
       },
       "source_record_id": "20260624001",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Authority",
       "board_name": null,
@@ -42489,6 +42955,7 @@
       },
       "source_record_id": "20260707029",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -42573,6 +43040,7 @@
       },
       "source_record_id": "20260624005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Sanitation",
       "board_name": null,
@@ -42669,6 +43137,7 @@
       },
       "source_record_id": "20260707004",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -42707,7 +43176,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -42898,6 +43367,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T20:30:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
@@ -42935,7 +43407,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -43126,6 +43598,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T20:30:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-4/2026-07-28/",
@@ -43163,7 +43638,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/",
       "title": "Committee Meeting – Government & Budget Committee",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
@@ -43315,6 +43790,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T20:30:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T20:30:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3/2026-07-28/",
@@ -43352,7 +43830,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
       "title": "Committee of the Whole",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -43545,6 +44023,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T21:00:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
@@ -43582,7 +44063,7 @@
       ],
       "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
       "title": "MEETING CANCELED – TRAFFIC AND TRANSPORTATION Jeannine Kiely, Chair; Janet Liff, Vice Chair",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:30:00-04:00",
       "venue": {
         "name": "CB 2 Conference Room (and via Video Conference)",
         "address": "3 Washington Square Village #1A, New York, NY, 10012",
@@ -43733,6 +44214,9 @@
         "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T21:00:00-04:00",
+      "start_at": "2026-07-28T18:30:00-04:00",
+      "end_at": "2026-07-28T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
@@ -43770,7 +44254,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/",
       "title": "July 2026 CB 1’s Monthly Board Meeting",
-      "event_date": "2026-07-28",
+      "event_date": "2026-07-28T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -43920,6 +44404,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-28T21:00:00-04:00",
+      "start_at": "2026-07-28T18:00:00-04:00",
+      "end_at": "2026-07-28T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/july-2026-cb-1s-monthly-board-meeting/",
@@ -44062,6 +44549,7 @@
       },
       "source_record_id": "20260629003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
@@ -44100,7 +44588,7 @@
       ],
       "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
       "title": "Battery Park City Committee",
-      "event_date": "2026-07-27",
+      "event_date": "2026-07-27T18:00:00-04:00",
       "venue": null,
       "participation": {
         "links": [
@@ -44254,6 +44742,9 @@
         "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/"
       ],
       "institution_edges": [],
+      "event_end": "2026-07-27T21:00:00-04:00",
+      "start_at": "2026-07-27T18:00:00-04:00",
+      "end_at": "2026-07-27T21:00:00-04:00",
       "source_record": {
         "source_system": "community_board",
         "identifier": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
@@ -44349,6 +44840,7 @@
       },
       "source_record_id": "20260616058",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -44445,6 +44937,7 @@
       },
       "source_record_id": "20260707022",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -44541,6 +45034,7 @@
       },
       "source_record_id": "20260623060",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Civic Engagement Commission",
       "board_name": null,
@@ -44637,6 +45131,7 @@
       },
       "source_record_id": "20260707021",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -44733,6 +45228,7 @@
       },
       "source_record_id": "20260630005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -44899,6 +45395,7 @@
       },
       "source_record_id": "20260713032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Public Design Commission",
       "board_name": null,
@@ -44979,6 +45476,7 @@
       },
       "source_record_id": "20260609003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -45115,6 +45613,7 @@
       },
       "source_record_id": "20260624036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -45244,6 +45743,7 @@
       },
       "source_record_id": "20260617040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Industrial Development Agency",
       "board_name": null,
@@ -45373,6 +45873,7 @@
       },
       "source_record_id": "20260617042",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Build NYC Resource Corporation",
       "board_name": null,
@@ -45469,6 +45970,7 @@
       },
       "source_record_id": "20260625034",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Authority",
       "board_name": null,
@@ -45565,6 +46067,7 @@
       },
       "source_record_id": "20260624002",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -45670,6 +46173,7 @@
       },
       "source_record_id": "20260106033",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Correction",
       "board_name": null,
@@ -45768,6 +46272,7 @@
       },
       "source_record_id": "20260706036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -45864,6 +46369,7 @@
       },
       "source_record_id": "20260623006",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -45999,6 +46505,7 @@
       },
       "source_record_id": "20260612028",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
@@ -46079,6 +46586,7 @@
       },
       "source_record_id": "20260602003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Consumer and Worker Protection",
       "board_name": null,
@@ -46154,6 +46662,7 @@
       },
       "source_record_id": "20260605058",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Finance",
       "board_name": null,
@@ -46251,6 +46760,7 @@
       },
       "source_record_id": "20260625040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -46390,6 +46900,7 @@
       },
       "source_record_id": "20260618050",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Brooklyn",
       "board_name": null,
@@ -46486,6 +46997,7 @@
       },
       "source_record_id": "20260629046",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "NYC Workforce Development Board",
       "board_name": null,
@@ -46622,6 +47134,7 @@
       },
       "source_record_id": "20260605007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -46718,6 +47231,7 @@
       },
       "source_record_id": "20260522007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
       "board_name": null,
@@ -46870,6 +47384,7 @@
       },
       "source_record_id": "20260618037",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Queens",
       "board_name": null,
@@ -46966,6 +47481,7 @@
       },
       "source_record_id": "20260617039",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -47062,6 +47578,7 @@
       },
       "source_record_id": "20260522008",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Health and Mental Hygiene",
       "board_name": null,
@@ -47155,6 +47672,7 @@
       },
       "source_record_id": "20260609065",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning",
       "board_name": null,
@@ -47251,6 +47769,7 @@
       },
       "source_record_id": "20260610012",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -47347,6 +47866,7 @@
       },
       "source_record_id": "20260610007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -47443,6 +47963,7 @@
       },
       "source_record_id": "20260605045",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -47566,6 +48087,7 @@
       },
       "source_record_id": "20260623048",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -47718,6 +48240,7 @@
       },
       "source_record_id": "20260618032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -47856,6 +48379,7 @@
       },
       "source_record_id": "20260605006",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -47955,6 +48479,7 @@
       },
       "source_record_id": "20260610067",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Education Retirement System",
       "board_name": null,
@@ -48084,6 +48609,7 @@
       },
       "source_record_id": "20260521020",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Preservation and Development",
       "board_name": null,
@@ -48180,6 +48706,7 @@
       },
       "source_record_id": "20260528032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Housing Authority",
       "board_name": null,
@@ -48325,6 +48852,7 @@
       },
       "source_record_id": "20260601045",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -48459,6 +48987,7 @@
       },
       "source_record_id": "20260603002",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -48592,6 +49121,7 @@
       },
       "source_record_id": "20260604005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -48691,6 +49221,7 @@
       },
       "source_record_id": "20260603039",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Comptroller",
       "board_name": null,
@@ -48787,6 +49318,7 @@
       },
       "source_record_id": "20260602006",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -48952,6 +49484,7 @@
       },
       "source_record_id": "20260612036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Public Design Commission",
       "board_name": null,
@@ -49051,6 +49584,7 @@
       },
       "source_record_id": "20260527017",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Teachers' Retirement System",
       "board_name": null,
@@ -49188,6 +49722,7 @@
       },
       "source_record_id": "20260512036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
@@ -49302,6 +49837,7 @@
       },
       "source_record_id": "20260610003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -49398,6 +49934,7 @@
       },
       "source_record_id": "20260603052",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Council",
       "board_name": null,
@@ -49494,6 +50031,7 @@
       },
       "source_record_id": "20260528020",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City Planning Commission",
       "board_name": null,
@@ -49598,6 +50136,7 @@
       },
       "source_record_id": "20260513035",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -49731,6 +50270,7 @@
       },
       "source_record_id": "20260528031",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -49878,6 +50418,7 @@
       },
       "source_record_id": "20260608005",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Bronx",
       "board_name": null,
@@ -49982,6 +50523,7 @@
       },
       "source_record_id": "20260513034",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -50078,6 +50620,7 @@
       },
       "source_record_id": "20260528021",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Equal Employment Practices Commission",
       "board_name": null,
@@ -50191,6 +50734,7 @@
       },
       "source_record_id": "20260512007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Mayor's Office of Contract Services",
       "board_name": null,
@@ -50290,6 +50834,7 @@
       },
       "source_record_id": "20260429031",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Environmental Control Board",
       "board_name": null,
@@ -50439,6 +50984,7 @@
       },
       "source_record_id": "20260528018",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Queens",
       "board_name": null,
@@ -50538,6 +51084,7 @@
       },
       "source_record_id": "20260527036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -50667,6 +51214,7 @@
       },
       "source_record_id": "20260601042",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Brooklyn",
       "board_name": null,
@@ -50762,6 +51310,7 @@
       },
       "source_record_id": "20260428020",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Independent Budget Office",
       "board_name": null,
@@ -50905,6 +51454,7 @@
       },
       "source_record_id": "20260603044",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Community Boards",
       "board_name": null,
@@ -51010,6 +51560,7 @@
       },
       "source_record_id": "20260106032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Correction",
       "board_name": null,
@@ -51106,6 +51657,7 @@
       },
       "source_record_id": "20260519007",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
@@ -51210,6 +51762,7 @@
       },
       "source_record_id": "20260513033",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -51322,6 +51875,7 @@
       },
       "source_record_id": "20260513032",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Rent Guidelines Board",
       "board_name": null,
@@ -51418,6 +51972,7 @@
       },
       "source_record_id": "20260529027",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -51517,6 +52072,7 @@
       },
       "source_record_id": "20260504025",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Education Retirement System",
       "board_name": null,
@@ -51616,6 +52172,7 @@
       },
       "source_record_id": "20260512004",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board of Education Retirement System",
       "board_name": null,
@@ -51712,6 +52269,7 @@
       },
       "source_record_id": "20260518031",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "NYC Workforce Development Board",
       "board_name": null,
@@ -51796,6 +52354,7 @@
       },
       "source_record_id": "20260515001",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -51893,6 +52452,7 @@
       },
       "source_record_id": "20260521019",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Office of Labor Relations",
       "board_name": null,
@@ -51973,6 +52533,7 @@
       },
       "source_record_id": "20260512014",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "City University",
       "board_name": null,
@@ -52099,6 +52660,7 @@
       },
       "source_record_id": "20260518003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Brooklyn",
       "board_name": null,
@@ -52234,6 +52796,7 @@
       },
       "source_record_id": "20260518025",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Borough President - Bronx",
       "board_name": null,
@@ -52330,6 +52893,7 @@
       },
       "source_record_id": "20260522019",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -52414,6 +52978,7 @@
       },
       "source_record_id": "20260213011",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -52498,6 +53063,7 @@
       },
       "source_record_id": "20260213012",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -52582,6 +53148,7 @@
       },
       "source_record_id": "20260213013",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -52666,6 +53233,7 @@
       },
       "source_record_id": "20260213014",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -52750,6 +53318,7 @@
       },
       "source_record_id": "20260213015",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -52834,6 +53403,7 @@
       },
       "source_record_id": "20260504036",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -52918,6 +53488,7 @@
       },
       "source_record_id": "20260504037",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -53002,6 +53573,7 @@
       },
       "source_record_id": "20260504038",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -53086,6 +53658,7 @@
       },
       "source_record_id": "20260504039",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -53166,6 +53739,7 @@
       },
       "source_record_id": "20260504040",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Board Meetings",
       "board_name": null,
@@ -53294,6 +53868,7 @@
       },
       "source_record_id": "20260602044",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -53427,6 +54002,7 @@
       },
       "source_record_id": "20260603059",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Citywide Administrative Services",
       "board_name": null,
@@ -53550,6 +54126,7 @@
       },
       "source_record_id": "20260617003",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,
@@ -53646,6 +54223,7 @@
       },
       "source_record_id": "20260715002",
       "board_id": null,
+      "event_end": null,
       "committee": null,
       "agency": "Charter Revision Commission",
       "board_name": null,

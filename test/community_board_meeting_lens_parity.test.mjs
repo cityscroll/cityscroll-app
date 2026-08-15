@@ -70,7 +70,8 @@ test("live scope search and sort honor an exact community-board reference", () =
       board_id: "brooklyn-cb-14",
       board_name: "Brooklyn Community Board 14",
       short_title: "Harbor access committee",
-      event_date: "2026-08-25",
+      event_date: "2026-08-25T18:30:00-04:00",
+      event_end: "2026-08-25T20:30:00-04:00",
       affected_area: { scope: "local", boroughs: ["Brooklyn"], community_boards: ["brooklyn-cb-14"] },
     }),
     normalizeHearingRow({
@@ -91,6 +92,7 @@ test("live scope search and sort honor an exact community-board reference", () =
   }, "2026-08-01", false);
   assert.deepEqual(result.rows.map((row) => row.meeting_id), ["meeting:community_board:cb14-late"]);
   assert.equal(result.rows[0].board_id, "brooklyn-cb-14");
+  assert.equal(result.rows[0].event_end, "2026-08-25T20:30:00-04:00");
 });
 
 test("static Browse carries board peers, canonical links, origin, and exact board scope", () => {

@@ -11,6 +11,37 @@ import {
   normalizeCommunityBoardMeeting,
   resolveMeetingRoute,
 } from "../site/meeting_object_contract.mjs";
+import {
+  auditMeetingSourceCompleteness,
+  MEETING_SOURCE_COMPLETENESS,
+} from "../site/meeting_source_completeness.mjs";
+import { CITY_RECORD_MEETING_SOURCE_FIELDS } from "../worker/src/hearings.mjs";
+
+test("meeting source completeness inventory covers every producer and surface disposition", () => {
+  assert.deepEqual(Object.keys(MEETING_SOURCE_COMPLETENESS.producers).sort(), [
+    "city_record",
+    "community_board",
+    "legistar",
+  ]);
+  const audit = auditMeetingSourceCompleteness();
+  assert.deepEqual(audit.errors, []);
+  assert.equal(audit.ok, true);
+  for (const [producer, entry] of Object.entries(MEETING_SOURCE_COMPLETENESS.producers)) {
+    assert.ok(entry.fields.length > 0, producer);
+    for (const field of entry.fields) {
+      assert.ok(field.source_field, `${producer}: source field`);
+      assert.ok(field.source_seam, `${producer}.${field.source_field}: source seam`);
+      assert.ok(field.materialized_as, `${producer}.${field.source_field}: read model`);
+      assert.ok(field.document_use, `${producer}.${field.source_field}: document`);
+      assert.ok(field.search_use, `${producer}.${field.source_field}: search`);
+      assert.ok(field.alert_use, `${producer}.${field.source_field}: alert`);
+      assert.ok(field.disposition, `${producer}.${field.source_field}: disposition`);
+    }
+  }
+  const cityFields = new Set(MEETING_SOURCE_COMPLETENESS.producers.city_record.fields
+    .map((field) => field.source_field));
+  assert.deepEqual(CITY_RECORD_MEETING_SOURCE_FIELDS.filter((field) => !cityFields.has(field)), []);
+});
 
 test("meeting is a registered source-qualified semantic object", () => {
   const registry = JSON.parse(readFileSync(new URL("../ontology/registry.v0.json", import.meta.url), "utf8"));
