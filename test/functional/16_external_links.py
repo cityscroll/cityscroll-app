@@ -36,6 +36,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from ci_waits import wait_for_function, wait_for_locator, wait_for_url  # noqa: E402
 from i18n_fixtures import install_routes, NOTICE_PERMALINK_ROW  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
@@ -68,15 +69,13 @@ with sync_playwright() as pw:
     page = ctx.new_page()
     install_routes(page)
     page.goto(f"{BASE}#notice/{NOTICE_ID}", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    wait_for_locator(page.locator("#noticeview .panel"), label="notice detail")
 
     # Reader-facing ABO links must land on the human-readable dataset page, not a raw JSON
     # endpoint. Keep this check on the rendered agency surface so new source links cannot
     # quietly regress while the unit tests continue to exercise the pure render helpers.
     page.goto(f"{BASE}#agency/School%20Construction%20Authority", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    wait_for_locator(page.locator('#external-awards-content a[href*="data.ny.gov"]').first, label="ABO source link")
     abo_link = page.locator('#external-awards-content a[href*="data.ny.gov"]').first
     if abo_link.count() != 1:
         failures.append("Awards published elsewhere: expected one ABO source link on the agency surface")
@@ -93,8 +92,7 @@ with sync_playwright() as pw:
             step("OK", "ABO source link lands on a human-readable page", href)
 
     page.goto(f"{BASE}#notice/{NOTICE_ID}", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    wait_for_locator(page.locator("#noticeview .panel"), label="notice detail restored")
 
     # --- Reported link 1: "View in City Record" -------------------------------------------
     info = link_info(page, '#noticeview a.ui-official-source-link[href*="a856-cityrecord.nyc.gov"]')
@@ -121,12 +119,16 @@ with sync_playwright() as pw:
         step("OK", '"Find this RFx in PASSPort" opens in a new tab', f"rel={info['rel']!r}")
 
     # --- Staffing feed source record -------------------------------------------------------
-    page.goto(f"{BASE}#people", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    page.goto(f"{BASE}browse/staffing/", wait_until="domcontentloaded", timeout=30000)
+    wait_for_url(page, f"{BASE}browse/staffing/", label="staffing document route")
     staffing_link = page.locator(
-        '#staffing-notice-list .staffing-hire-row a[href*="a856-cityrecord.nyc.gov"]'
+        '#staffing-notice-list a[href*="a856-cityrecord.nyc.gov"]'
     ).first
+    wait_for_function(
+        page,
+        "() => document.querySelectorAll('#staffing-notice-list a[href*=\"a856-cityrecord.nyc.gov\"]').length > 0",
+        label="staffing source link",
+    )
     if staffing_link.count() != 1:
         failures.append("Staffing feed: expected a City Record link on the newest appointment")
     else:
@@ -161,9 +163,10 @@ with sync_playwright() as pw:
     # AFTER, every external destination gets the same treatment as City Record/PASSPort. -----
     browser = pw.chromium.launch()
     page2 = browser.new_context().new_page()
-    page2.goto(f"{BASE}about.html", timeout=30000)
-    page2.wait_for_load_state("load")
-    info = page2.locator('a[href*="open-contracting.org"]').first.evaluate("""el => ({
+    page2.goto(f"{BASE}about.html", wait_until="domcontentloaded", timeout=30000)
+    about_link = page2.locator('a[href*="open-contracting.org"]').first
+    wait_for_locator(about_link, label="About Open Contracting link")
+    info = about_link.evaluate("""el => ({
         target: el.getAttribute("target"),
         rel: el.getAttribute("rel"),
         srText: (el.querySelector(".sr-only") || {}).textContent || null,
@@ -192,9 +195,10 @@ with sync_playwright() as pw:
     # (crol-extlinks2-y8: own resources are the only exemption from the blanket new-tab rule)
     browser = pw.chromium.launch()
     page3 = browser.new_context().new_page()
-    page3.goto(f"{BASE}stats.html", timeout=30000)
-    page3.wait_for_load_state("load")
-    api_target = page3.locator('a[href*="api.cityscroll.org/stats"]').first.get_attribute("target")
+    page3.goto(f"{BASE}stats.html", wait_until="domcontentloaded", timeout=30000)
+    api_link = page3.locator('a[href*="api.cityscroll.org/stats"]').first
+    wait_for_locator(api_link, label="Stats API link")
+    api_target = api_link.get_attribute("target")
     if api_target is not None:
         failures.append(f"stats.html's api.cityscroll.org link acquired target={api_target!r} "
                          "— CityScroll's own resources stay same-tab even under the broadened rule")
