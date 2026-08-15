@@ -5,6 +5,7 @@ import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
+import { aliasHash, browseRouteAlias } from "../browse_route_aliases.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -43,6 +44,13 @@ function documentRouteRaw(){
     const facet=browse[1];
     if(!facet) return "browse";
     if(DOCUMENT_CONCEPT_ROUTES.has(facet)) return `browse-concept/${facet}`;
+    const alias=browseRouteAlias(path);
+    if(alias){
+      const params=new URLSearchParams(location.search);
+      const canonical = globalThis.CrolRouteMigration?.canonicalizeBrowseUrl?.(`${path}${params.size?`?${params}`:""}`) || `${path}${params.size?`?${params}`:""}`;
+      const canonicalUrl = new URL(canonical, location.origin);
+      return aliasHash(alias, canonicalUrl.searchParams);
+    }
     const route=DOCUMENT_FACET_HASHES[facet];
     if(!route) return "";
     const params=new URLSearchParams(location.search); params.delete("lang"); params.delete("legacy");
@@ -60,7 +68,18 @@ function documentUrlForHash(hash){
   const mapped=CrolRouteMigration.migrateLegacyUrl(input);
   return mapped.migrated?mapped.target:null;
 }
-function routeUrlForHash(hash){ return documentUrlForHash(hash)||hash; }
+function aliasRouteUrlForHash(hash){
+  const alias=browseRouteAlias(location.pathname);
+  if(!alias) return null;
+  const raw=String(hash||"").replace(/^#/,""), [route, query=""] = raw.split("?",2);
+  if(route!==alias.targetTab) return null;
+  const params=new URLSearchParams(query);
+  if(params.get("view")!==alias.defaultView) return null;
+  const language=new URLSearchParams(location.search).get("lang");
+  if(language) params.set("lang", language);
+  return `${alias.route}?${params}`;
+}
+function routeUrlForHash(hash){ return aliasRouteUrlForHash(hash)||documentUrlForHash(hash)||hash; }
 function routeFocusKey(){
   return location.hash
     ? routeUrlForHash(location.hash)
@@ -178,8 +197,14 @@ function serializeState(){
       if(moneyLocationFilter.councilDistrict) q.set("council",moneyLocationFilter.councilDistrict);
     }
   } else if(tab === "people"){
-    if($("#staffing-query").value.trim()) q.set("q", $("#staffing-query").value.trim());
-    if(staffingFilters.role) q.set("role", staffingFilters.role);
+    const alias=browseRouteAlias(location.pathname);
+    if(alias){
+      q.set("view", alias.defaultView);
+      if($("#career-query").value.trim()) q.set("q", $("#career-query").value.trim());
+    }else{
+      if($("#staffing-query").value.trim()) q.set("q", $("#staffing-query").value.trim());
+      if(staffingFilters.role) q.set("role", staffingFilters.role);
+    }
     if(staffingFilters.agency) q.set("agency", staffingFilters.agency);
     // Declarative interest routing only: structured attributes the visitor chose, never a profile.
     // The exam browser is the default Staffing entry and is always mounted. Only
@@ -187,7 +212,8 @@ function serializeState(){
     // route; otherwise a tab switch must mint the clean Staffing document URL.
     const guideRouteMarker = ["view", "guide"].join("=");
     const explicitGuideRoute = location.hash.includes(guideRouteMarker)
-      || (location.pathname === "/browse/staffing/" && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1]);
+      || (location.pathname === "/browse/staffing/" && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1])
+      || Boolean(browseRouteAlias(location.pathname));
     if(explicitGuideRoute){
       const facetState=globalThis.careerFacetState || {};
       const interest=facetState.interest;
@@ -976,17 +1002,19 @@ function applyHash(){
       if(hasActionLocation) $("#mode").value="allrfp";
       showTab("money"); search();
     } else if(tab === "people"){
+      const examsAlias=browseRouteAlias(location.pathname);
       const legacyExamRoute=q.get("type")==="exam";
       // The old exam/appointment toggle now resolves to the action-first exam browser.
       // The secondary ledger remains a hires-only historical view.
-      staffingFilters.query=q.get("q")||"";
-      staffingFilters.role=q.get("role")||"";
+      staffingFilters.query=examsAlias ? "" : q.get("q")||"";
+      staffingFilters.role=examsAlias ? "" : q.get("role")||"";
       // Typed agency:id:* facets (document Browse URLs) must hydrate the same
       // agency control as legacy ?agency= — otherwise offered scopes are lies.
       const scopedAgency=q.get("agency")||agencyFromRouteFacet(activeRouteFacetValues)||"";
       const agencyScopeChanged=staffingFilters.agency!==scopedAgency;
       staffingFilters.agency=scopedAgency;
       $("#staffing-query").value=staffingFilters.query;
+      $("#career-query").value=examsAlias ? q.get("q")||"" : "";
       // A guide route is not an exam detail route — clear any prior #exam/ selection.
       careerSelected=null;
       // Declared structured attributes only (interest/eligibility/window/format facets).

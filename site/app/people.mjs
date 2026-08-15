@@ -46,6 +46,7 @@ let staffingLoadedScopeKey = "";
 let staffingAgencyExamNumbers = null;
 let staffingExamScopePromise = null;
 const staffingFilters = {query:"", role:"", agency:""};
+function examsRouteAliasActive(){ return document.body?.dataset.browseRouteAlias === "exams"; }
 const CAREER_AREA_KEYS = {
   "public-safety": "career_area_public_safety",
   "health-care": "career_area_health_care",
@@ -96,6 +97,14 @@ function syncStaffingModeUI(){
   const ledger=$("#staffing-ledger");
   const heading=$("#staffing-feed-meta-heading");
   const presentation=staffingAgencyScopePresentation(staffingFilters.agency, staffingAgencyExamNumbers);
+  if(examsRouteAliasActive()){
+    if(ledger) ledger.hidden=true;
+    if(feed) feed.hidden=true;
+    const kicker=document.querySelector('[data-i18n="staffing_pathways_kicker"]');
+    if(kicker) kicker.textContent="Exams";
+    const heading=document.querySelector('[data-i18n="career_browser_heading"]');
+    if(heading) heading.textContent="Civil-service exams";
+  }
   if(feed) feed.hidden=examDetail;
   if(heading) heading.textContent=t("staffing_appointments_heading");
   if(presentation.leadWithAppointments && ledger) ledger.open=true;
@@ -104,6 +113,10 @@ function syncStaffingModeUI(){
     // exams the publisher certified to that agency once those edges load.
     guide.hidden=examDetail ? false : !presentation.showExamGuide;
     if(examDetail || presentation.showExamGuide) prepareCareerHow();
+  }
+  if(examsRouteAliasActive()){
+    if(ledger) ledger.hidden=true;
+    if(feed) feed.hidden=true;
   }
 }
 function renderStaffingFeed(){

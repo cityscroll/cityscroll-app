@@ -17,6 +17,7 @@ import {
   communityBoardMeetingEdgeFromRow,
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
 import {
   communityBoardDisambiguation,
   parseCommunityBoardQuery,
@@ -94,15 +95,10 @@ export const BROWSE_FACETS = Object.freeze({
   },
 });
 
-export const BROWSE_OBJECTS = Object.freeze({
-  exams: {
-    route: "/browse/exams/",
-    tab: "exams",
-    label: "Exams",
-    title: "Exams",
-    description: "Civil-service exam records and application details.",
-  },
-});
+// Object-family routes can be aliases to an existing, QA'd runtime. Keep this
+// export for route inventories and callers that already use the object-family
+// vocabulary; the alias record itself lives in one configuration object.
+export const BROWSE_OBJECTS = BROWSE_ROUTE_ALIASES;
 
 // Civic-object navigation is a presentation taxonomy. The facet ids and routes
 // above remain the content and URL contract for every existing Browse view.

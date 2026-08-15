@@ -8,7 +8,7 @@ import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import {
   buildBrowseDocument,
   buildBrowseLandingDocument,
-  buildBrowseExamsDocument,
+  buildBrowseAliasDocument,
   buildBrowseConceptDocument,
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
@@ -133,7 +133,7 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
-  outputs.push(output("browse/exams", buildBrowseExamsDocument(shell, staffingExams)));
+  outputs.push(output("browse/exams", buildBrowseAliasDocument(shell, "exams", payloads.staffing)));
   const conceptSources = {
     people,
     committees,
