@@ -6,6 +6,7 @@ import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
 import { aliasHash, browseRouteAlias } from "../browse_route_aliases.mjs";
+import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -1355,6 +1356,7 @@ async function showNotice(id, watch){
       ${r.type_of_notice_description==="Solicitation"?`<div data-export-class="actions">${buildApply(r,false)}</div>`:""}
       <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div>
       <div data-export-class="notice_context">${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}</div>
+      ${renderNoticeBitemporalHistory({ notice: r, events: r.civic_time?.events || [], state: r.civic_time?.state || "ok" })}
       <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>

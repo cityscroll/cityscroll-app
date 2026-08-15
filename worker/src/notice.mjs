@@ -10,6 +10,7 @@ const NOTICE_ID_RE = /^[A-Za-z0-9_-]{1,80}$/;
 const MATERIALIZED_MAX_AGE_MS = 2 * 86400_000;
 const EDGE_MAX_AGE = 86400;
 const EDGE_STALE = 7 * 86400;
+const CIVIC_TIME_HISTORY_SCHEMA = "cityscroll.civic_time_notice_history.v1";
 
 function corsHeaders() {
   return {
@@ -69,6 +70,37 @@ function rowFromD1(record) {
   };
 }
 
+async function readCivicTimeHistory(env, requestId) {
+  if (!env?.DB) return { schema: CIVIC_TIME_HISTORY_SCHEMA, subject_ref: `notice:${requestId}`, state: "unavailable", events: [] };
+  try {
+    const response = await env.DB.prepare(
+      `SELECT event_id, subject_ref, event_kind, valid_at, valid_from, valid_to,
+              published_at, observed_at, processed_at, written_at, status
+         FROM civic_time_events
+        WHERE subject_ref = ?
+        ORDER BY COALESCE(written_at, processed_at, valid_at, published_at, event_id), event_id
+        LIMIT 200`,
+    ).bind(`notice:${requestId}`).all();
+    const events = (response?.results || []).map((event) => ({
+      event_id: event.event_id || null,
+      subject_ref: event.subject_ref || null,
+      event_kind: event.event_kind || null,
+      valid_at: event.valid_at ?? null,
+      valid_from: event.valid_from ?? null,
+      valid_to: event.valid_to ?? null,
+      published_at: event.published_at ?? null,
+      observed_at: event.observed_at ?? null,
+      processed_at: event.processed_at ?? null,
+      written_at: event.written_at ?? null,
+      status: event.status ?? null,
+    }));
+    return { schema: CIVIC_TIME_HISTORY_SCHEMA, subject_ref: `notice:${requestId}`, state: "ok", events };
+  } catch (_error) {
+    // A missing or not-yet-migrated ledger must not break the notice document.
+    return { schema: CIVIC_TIME_HISTORY_SCHEMA, subject_ref: `notice:${requestId}`, state: "unavailable", events: [] };
+  }
+}
+
 async function readMaterialized(env, id, nowMs = Date.now()) {
   if (!env?.DB) return null;
   const record = await env.DB.prepare(
@@ -79,6 +111,7 @@ async function readMaterialized(env, id, nowMs = Date.now()) {
   const age = ingestedAt ? nowMs - new Date(ingestedAt).getTime() : Infinity;
   return {
     row: rowFromD1(record),
+    civic_time: await readCivicTimeHistory(env, id),
     generated_at: ingestedAt,
     stale: !ingestedAt || !Number.isFinite(age) || age > MATERIALIZED_MAX_AGE_MS,
   };
@@ -123,8 +156,9 @@ export async function handleNotice(request, env, { skipCache = false, nowMs = Da
     const materialized = await readMaterialized(env, id, nowMs);
     if (materialized?.row) {
       const response = json({
-        ok: true,
-        row: materialized.row,
+      ok: true,
+      row: materialized.row,
+      civic_time: materialized.civic_time,
         source: "materialized",
         generated_at: materialized.generated_at,
         stale: materialized.stale,

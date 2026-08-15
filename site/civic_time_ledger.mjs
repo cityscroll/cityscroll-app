@@ -28,13 +28,7 @@ export const TIME_AXES = Object.freeze({
 
 const DAY_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-const clean = (value, max = 240) => String(value ?? "")
-  .replace(/[\u0000-\u001f\u007f]/g, " ")
-  .replace(/\s+/g, " ")
-  .trim()
-  .slice(0, max);
-
-const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
+const escCivicTime = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
@@ -401,7 +395,7 @@ export function renderCivicTimeLedgerPanel({
   subjectLabel = "this agency’s linked records",
 } = {}) {
   const day = normalizeAsOfDay(asOfDay);
-  const action = esc(path || "/");
+  const action = escCivicTime(path || "/");
   const nowCount = summary?.now?.item_count;
   const asOfCount = summary?.as_of_counts?.item_count;
   const arrived = summary?.as_of_counts?.excluded_after_as_of
@@ -410,10 +404,10 @@ export function renderCivicTimeLedgerPanel({
 
   const comparison = day && summary
     ? `<p class="ctl-comparison" data-ctl-comparison>
-        <strong>${esc(String(asOfCount ?? 0))}</strong> of
-        <strong>${esc(String(nowCount ?? 0))}</strong> dated records on or before
-        <strong>${esc(day)}</strong>${arrived != null && arrived > 0
-          ? ` · ${esc(String(arrived))} later` : ""}
+        <strong>${escCivicTime(String(asOfCount ?? 0))}</strong> of
+        <strong>${escCivicTime(String(nowCount ?? 0))}</strong> dated records on or before
+        <strong>${escCivicTime(day)}</strong>${arrived != null && arrived > 0
+          ? ` · ${escCivicTime(String(arrived))} later` : ""}
       </p>`
     : `<p class="ctl-comparison muted node-muted" data-ctl-comparison data-ctl-idle>
         Pick a day to keep only records published or dated on or before that day.
@@ -421,13 +415,13 @@ export function renderCivicTimeLedgerPanel({
 
   const arrivedList = day && Array.isArray(summary?.arrived_after) && summary.arrived_after.length
     ? `<details class="ctl-arrived">
-        <summary>Later records (${esc(String(summary.arrived_after.length))}${summary.arrived_after.length >= 40 ? "+" : ""})</summary>
+        <summary>Later records (${escCivicTime(String(summary.arrived_after.length))}${summary.arrived_after.length >= 40 ? "+" : ""})</summary>
         <ul class="node-record-list ctl-arrived-list">${summary.arrived_after.map((row) =>
-          `<li class="node-record"><div class="node-record-main">${esc(row.label || row.id)}</div><span class="muted node-muted">${esc(row.category_id || "")}${row.date ? ` · ${esc(row.date)}` : ""}</span></li>`).join("")}</ul>
+          `<li class="node-record"><div class="node-record-main">${escCivicTime(row.label || row.id)}</div><span class="muted node-muted">${escCivicTime(row.category_id || "")}${row.date ? ` · ${escCivicTime(row.date)}` : ""}</span></li>`).join("")}</ul>
       </details>`
     : "";
 
-  return `<section class="node-section node-card civic-object-section ctl-panel" data-civic-time-ledger="1" data-as-of="${esc(day || "")}" data-export-class="object_provenance" aria-labelledby="ctl-heading">
+  return `<section class="node-section node-card civic-object-section ctl-panel" data-civic-time-ledger="1" data-as-of="${escCivicTime(day || "")}" data-export-class="object_provenance" aria-labelledby="ctl-heading">
     <div class="ctl-head">
       <h2 id="ctl-heading">As of day</h2>
       <details class="ctl-how">
@@ -435,11 +429,11 @@ export function renderCivicTimeLedgerPanel({
         <p>Shows only linked records whose publisher or event date is on or before the day you pick. Share the URL to reopen the same day.</p>
       </details>
     </div>
-    <p class="ctl-lede">Filter ${esc(subjectLabel)} by date.</p>
+    <p class="ctl-lede">Filter ${escCivicTime(subjectLabel)} by date.</p>
     <form class="ctl-form" method="get" action="${action}" data-ctl-form>
       <label class="ctl-label" for="ctl-as-of">As of</label>
       <div class="ctl-form-row">
-        <input class="ctl-input" id="ctl-as-of" name="${esc(AS_OF_QUERY_KEY)}" type="date" value="${esc(day || "")}" data-ctl-as-of>
+        <input class="ctl-input" id="ctl-as-of" name="${escCivicTime(AS_OF_QUERY_KEY)}" type="date" value="${escCivicTime(day || "")}" data-ctl-as-of>
         <button class="node-action civic-object-action primary ctl-submit" type="submit">Apply</button>
         <a class="node-action civic-object-action ctl-clear" href="${action}" data-ctl-clear${day ? "" : " hidden"}>Clear</a>
       </div>
@@ -511,4 +505,110 @@ export function noticeVisibleAsOf(facts, asOfDay, { axis = "valid" } = {}) {
     };
   }
   return { known: false, included: null, basis: "undated" };
+}
+
+export const CIVIC_TIME_NOTICE_HISTORY_SCHEMA = "cityscroll.civic_time_notice_history.v1";
+
+const NOTICE_EVENT_LABELS = Object.freeze({
+  "procurement.notice_published": "Notice published",
+  "procurement.solicitation_opened": "Solicitation opened",
+  "procurement.solicitation_addenda": "Solicitation revised",
+  "procurement.solicitation_due": "Responses due",
+  "procurement.award_registered": "Award registered",
+  "procurement.payment": "Payment recorded",
+  "rules.proposal_published": "Rule proposed",
+  "rules.public_hearing": "Public hearing",
+  "rules.comment_close": "Comment period closed",
+  "rules.adoption": "Rule adopted",
+  "rules.effective": "Rule effective",
+  "land.city_record_notice": "Land-use notice published",
+  "land.city_record_hearing": "Land-use hearing",
+  "meetings.non_council_notice": "Hearing notice published",
+  "meetings.non_council_hearing": "Public hearing",
+});
+
+function noticeEventLabel(kind) {
+  return NOTICE_EVENT_LABELS[String(kind || "")] || "Civic record update";
+}
+
+function noticeEventValidText(event) {
+  const at = event?.valid_at ?? null;
+  const from = event?.valid_from ?? null;
+  const to = event?.valid_to ?? null;
+  if (at != null) return String(at);
+  if (from != null && to != null) return `${from} – ${to}`;
+  if (from != null) return `from ${from}`;
+  if (to != null) return `through ${to}`;
+  return null;
+}
+
+/**
+ * Project retained civic-time envelopes for one notice into the reader model.
+ * The system axis prefers the ledger write clock and falls back to the contract's
+ * processed_at clock; it is never filled from valid, publication, observation, or
+ * the current request time.
+ */
+export function buildNoticeBitemporalHistory(notice = {}, events = []) {
+  const subject_ref = notice.request_id
+    ? `notice:${notice.request_id}`
+    : (notice.subject_ref || null);
+  const retained = (Array.isArray(events) ? events : [])
+    .filter((event) => !subject_ref || event?.subject_ref === subject_ref)
+    .map((event) => {
+      const clocks = {
+        valid_at: event?.valid_at ?? event?.clocks?.valid_at ?? null,
+        valid_from: event?.valid_from ?? event?.clocks?.valid_from ?? null,
+        valid_to: event?.valid_to ?? event?.clocks?.valid_to ?? null,
+        published_at: event?.published_at ?? event?.clocks?.published_at ?? null,
+        observed_at: event?.observed_at ?? event?.clocks?.observed_at ?? null,
+        system_at: event?.written_at ?? event?.processed_at ?? event?.clocks?.system_at ?? null,
+      };
+      return {
+        event_id: event?.event_id || null,
+        subject_ref: event?.subject_ref || subject_ref,
+        event_kind: event?.event_kind || null,
+        label: noticeEventLabel(event?.event_kind),
+        clocks,
+        valid_text: noticeEventValidText(clocks),
+        status: event?.status ?? null,
+      };
+    })
+    .sort((left, right) => {
+      const a = left.clocks.system_at || left.clocks.valid_at || left.clocks.published_at || "";
+      const b = right.clocks.system_at || right.clocks.valid_at || right.clocks.published_at || "";
+      return a.localeCompare(b) || String(left.event_id || "").localeCompare(String(right.event_id || ""));
+    });
+  return {
+    schema: CIVIC_TIME_NOTICE_HISTORY_SCHEMA,
+    subject_ref,
+    events: retained,
+    count: retained.length,
+  };
+}
+
+function noticeClockText(value) {
+  return value == null ? "Not recorded" : String(value);
+}
+
+/** Render one notice's retained history with VALID and SYSTEM clocks side by side. */
+export function renderNoticeBitemporalHistory({ notice = {}, events = [], state = "ok" } = {}) {
+  const history = buildNoticeBitemporalHistory(notice, events);
+  const unavailable = state === "unavailable";
+  const entries = history.events.map((event) => `<li class="civic-time-event" data-civic-time-event="${escCivicTime(event.event_id || "")}">
+    <div class="civic-time-event-title"><strong>${escCivicTime(event.label)}</strong>${event.status ? ` <span class="civic-time-status">${escCivicTime(event.status)}</span>` : ""}</div>
+    <dl class="civic-time-clocks">
+      <div><dt>VALID</dt><dd data-civic-time-valid="${escCivicTime(event.valid_text || "")}">${escCivicTime(noticeClockText(event.valid_text))}</dd></div>
+      <div><dt>SYSTEM</dt><dd data-civic-time-system="${escCivicTime(event.clocks.system_at || "")}">${escCivicTime(noticeClockText(event.clocks.system_at))}</dd></div>
+    </dl>
+  </li>`).join("");
+  const message = unavailable
+    ? "History is not available right now."
+    : history.events.length
+      ? ""
+      : "No retained ledger events for this notice.";
+  return `<section class="civic-object-section node-card civic-time-history" data-civic-time-history="1" data-history-state="${escCivicTime(unavailable ? "unavailable" : history.events.length ? "ok" : "empty")}" aria-labelledby="civic-time-history-heading">
+    <h2 id="civic-time-history-heading">Bitemporal history</h2>
+    <p class="civic-time-history-lede">VALID is when the civic fact was true. SYSTEM is when the event was recorded in the ledger. A missing clock is shown as Not recorded.</p>
+    ${message ? `<p class="civic-time-history-empty" data-civic-time-empty="1">${escCivicTime(message)}</p>` : `<ol class="civic-time-event-list">${entries}</ol>`}
+  </section>`;
 }

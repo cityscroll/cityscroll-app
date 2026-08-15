@@ -17,6 +17,7 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
+import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -407,6 +408,11 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     ["Responses due", row.due_date], ["PIN", row.pin], ["Category", row.category_description],
     ["Selection method", row.selection_method_description], ["Address", row.street_address_1],
   ].filter(([, value]) => value);
+  const civicTimeHistoryHTML = renderNoticeBitemporalHistory({
+    notice: row,
+    events: options.civicTime?.events || [],
+    state: options.civicTime?.state || "ok",
+  });
   // Public mandate backlinks only — empty lookup / unmatched notice → no section.
   const mandateBacklinksHTML = renderNoticeMandateBacklinksForId(mandateBacklinksLookup, id, { esc });
   const projectId = String(row.project_id || row.project || row.ulurp_number || "").trim();
@@ -445,6 +451,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       ${projectPivot}
       ${boardPivot}
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      ${civicTimeHistoryHTML}
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}
@@ -491,7 +498,7 @@ async function noticeRow(id) {
     });
     if (response.ok) {
       const payload = await response.json();
-      return payload?.row || null;
+      return { row: payload?.row || null, civic_time: payload?.civic_time || null };
     }
     if (response.status === 404) return null;
   } catch (_error) {
@@ -504,7 +511,7 @@ async function noticeRow(id) {
   const response = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300, cacheEverything: true } });
   if (!response.ok) throw new Error(`City Record HTTP ${response.status}`);
   const rows = await response.json();
-  return Array.isArray(rows) ? rows[0] || null : null;
+  return Array.isArray(rows) ? { row: rows[0] || null, civic_time: null } : { row: null, civic_time: null };
 }
 
 async function handleNotice(request, env, id) {
@@ -529,9 +536,12 @@ async function handleNotice(request, env, id) {
     mandateBacklinksLookup = null;
   }
   let row = null;
+  let civicTime = null;
   let upstreamFailed = false;
   try {
-    row = await noticeRow(id);
+    const result = await noticeRow(id);
+    row = result?.row || null;
+    civicTime = result?.civic_time || null;
   } catch (_error) {
     upstreamFailed = true;
   }
@@ -553,7 +563,7 @@ async function handleNotice(request, env, id) {
     .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
     .on("#noticeview", { element(element) {
       element.setInnerContent(
-        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup, { currentHref: request.url }),
+        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup, { currentHref: request.url, civicTime }),
         { html: true },
       );
     } })
