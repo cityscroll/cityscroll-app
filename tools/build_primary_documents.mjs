@@ -15,6 +15,7 @@ import {
 } from "../site/primary_document_view.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
+import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -29,10 +30,14 @@ function output(path, content) {
 
 function cityRecordMeetingRows() {
   const materialization = json("/data/meeting_notice_materialization.json");
-  const rows = eligibleCityRecordMeetings(materialization.rows);
-  if (!rows.length || rows.length !== materialization.row_count) {
+  const sourceRows = eligibleCityRecordMeetings(materialization.rows);
+  if (!sourceRows.length || sourceRows.length !== materialization.row_count) {
     throw new Error("City Record meeting notice materialization is empty or predicate coverage drifted");
   }
+  // Match the daily Worker producer: the shared read model receives the
+  // hearing adapter's normalized venue, participation, origin, and affected
+  // area alongside the retained City Record notice fields.
+  const rows = sourceRows.map((row) => ({ ...row, ...normalizeHearing(row) }));
   return { materialization, rows };
 }
 
