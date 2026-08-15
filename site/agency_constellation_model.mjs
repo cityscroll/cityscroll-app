@@ -79,6 +79,7 @@ import {
   normalizeEdgeSummaryRecords,
 } from "./edge_summary.mjs";
 import { buildLocalConstellation } from "./local_constellation.mjs";
+import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -816,8 +817,41 @@ export function buildAgencyEdgeSummary(viewOrCategories, options = {}) {
       provenance: category.provenance || null,
       cross_spine: category.cross_spine || null,
       as_of: category.as_of || null,
+      derived_feature_rollup: category.derived_feature_rollup || null,
     };
   }), { source_kind: sourceKind, source_id: sourceId });
+}
+
+function categoryDerivedFeatureRollup(category) {
+  const totalCount = Object.prototype.hasOwnProperty.call(category || {}, "count")
+    ? category.count
+    : (Array.isArray(category?.items) ? category.items.length : 0);
+  return buildDerivedFeatureRollup(category?.items || [], {
+    totalCount,
+    state: category?.status || null,
+    relation: category?.relation || null,
+    asOf: category?.as_of || null,
+    referenceDay: category?.as_of || null,
+  });
+}
+
+function constellationDerivedFeatureRollup(categories) {
+  const rows = (Array.isArray(categories) ? categories : []).flatMap((category) =>
+    (category.items || []).map((item) => ({
+      ...item,
+      state: item.state || category.status || null,
+      relation: item.relation || category.relation || null,
+      as_of: item.as_of || category.as_of || null,
+    })));
+  const knownCounts = (Array.isArray(categories) ? categories : [])
+    .map((category) => category.count)
+    .filter((count) => Number.isInteger(Number(count)) && Number(count) >= 0)
+    .map(Number);
+  const hasUnknownCount = (Array.isArray(categories) ? categories : [])
+    .some((category) => category.count == null);
+  return buildDerivedFeatureRollup(rows, {
+    totalCount: hasUnknownCount ? null : knownCounts.reduce((sum, count) => sum + count, 0),
+  });
 }
 
 /**
@@ -920,6 +954,9 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         meetings_domain: sources.meetings_domain,
       },
     ));
+  for (const category of categories) {
+    category.derived_feature_rollup = categoryDerivedFeatureRollup(category);
+  }
   const edgeSummary = buildAgencyEdgeSummary({
     categories,
     canonical_id: identity.canonical_id,
@@ -1050,6 +1087,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
+    derived_feature_rollup: constellationDerivedFeatureRollup(categories),
     claims: allClaims,
     mandates_conformance: conformanceView,
     mandates_rules: mandatesRules,

@@ -12,10 +12,16 @@ import {
   agencyConstellationFollowHref,
   agencyPath,
   agencySubjectRef,
+  buildAgencyEdgeSummary,
   buildAgencyConstellationView,
   constellationObjectHref,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
+import {
+  addDerivedFeatureObservation,
+  createDerivedFeatureRollup,
+  finalizeDerivedFeatureRollup,
+} from "../site/derived_feature_rollup.mjs";
 import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_section_registry.mjs";
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_identity.mjs";
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
@@ -151,6 +157,53 @@ test("Parks constellation spans contracts, meetings, rules, obligations, and sta
   assert.equal(view.summary.matched_categories, 5);
   assert.equal(view.summary.er_match_basis, AGENCY_CONSTELLATION_ER_BASIS);
   assert.equal(view.summary.iteration, "v1");
+});
+
+test("derived feature rollups accumulate counts, spans, lifecycle, and freshness incrementally", () => {
+  const accumulator = createDerivedFeatureRollup({
+    totalCount: 3,
+    referenceDay: "2026-08-15",
+    maxAgeDays: 2,
+  });
+  addDerivedFeatureObservation(accumulator, {
+    id: "one",
+    date: "2026-08-10",
+    observed_at: "2026-08-11",
+    status: "open",
+    relation: "hosts_meeting",
+  }, { state: "matched" });
+  addDerivedFeatureObservation(accumulator, {
+    id: "two",
+    date: "2026-08-14",
+    observed_at: "2026-08-14",
+    status: "closed",
+    relation: "hosts_meeting",
+  }, { state: "matched" });
+  // A repeated graph delivery must not inflate the incremental result.
+  addDerivedFeatureObservation(accumulator, {
+    id: "two",
+    date: "2026-08-14",
+    status: "closed",
+  });
+
+  const rollup = finalizeDerivedFeatureRollup(accumulator);
+  assert.equal(rollup.counts.total, 3);
+  assert.equal(rollup.counts.materialized, 2);
+  assert.equal(rollup.counts.dated, 2);
+  assert.equal(rollup.lifecycle.by_bucket.current, 1);
+  assert.equal(rollup.lifecycle.by_bucket.historical, 1);
+  assert.equal(rollup.lifecycle.complete, false);
+  assert.deepEqual(rollup.spans.valid, { start: "2026-08-10", end: "2026-08-14" });
+  assert.deepEqual(rollup.spans.observed, { start: "2026-08-11", end: "2026-08-14" });
+  assert.equal(rollup.freshness.latest_day, "2026-08-14");
+  assert.equal(rollup.freshness.age_days, 1);
+  assert.equal(rollup.freshness.status, "fresh");
+
+  const view = buildAgencyConstellationView(PARKS, { intelligence, certification });
+  assert.equal(view.derived_feature_rollup.schema, "cityscroll.derived_feature_rollup.v1");
+  assert.ok(view.categories.every((category) => category.derived_feature_rollup));
+  const edges = buildAgencyEdgeSummary(view);
+  assert.ok(edges.every((edge) => edge.derived_feature_rollup));
 });
 
 test("agency previews and Browse destinations share open/linked totals and snapshot dates", () => {
