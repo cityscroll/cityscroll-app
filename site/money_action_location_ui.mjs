@@ -80,11 +80,8 @@ export function moneyActionLocationChipHTML(row, { t, esc }) {
   return `<div class="mwbe-chiprow money-location-basis" data-money-location-basis="${esc(location.basis || "")}"><span class="tag place">${esc(location.basis_label || t("money_location_basis_response"))}</span><span class="tag">${esc(place)}</span></div>`;
 }
 
-export async function hydrateMoneyActionLocationRow(row, { soda, select }) {
-  try {
-    const rows = await soda({ "$select": select, "$where": `request_id='${String(row.request_id || "").replace(/'/g, "''")}'`, "$limit": "1" });
-    return rows[0] ? { ...rows[0], _action_location_match: row._action_location_match } : row;
-  } catch (_error) {
-    return row;
-  }
+export async function hydrateMoneyActionLocationRow(row) {
+  // The location projection already carries the list/detail fields available to
+  // resident readers. Publisher-body enrichment belongs to scheduled acquisition.
+  return row;
 }

@@ -173,10 +173,12 @@ function wireNearMatchReveal(el, near){
 async function loadAgencyStats(agency, variants){
   try{
     const names = Array.isArray(variants) && variants.length ? variants : [agency];
-    const quoted = names.map(name=>`'${String(name).replace(/'/g,"''")}'`).join(",");
-    const rows = await soda({"$select":"count(1) as n, sum(contract_amount) as total",
-      "$where":`agency_name in(${quoted}) AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP}`});
-    return rows[0] || null;
+    const accepted=new Set(names.map(String));
+    const rows=(await globalThis.residentMoneyRows?.()||[]).filter(row=>
+      accepted.has(String(row.agency_name||"")) && row.type_of_notice_description==="Award" &&
+      Number(row.contract_amount)>0 && Number(row.contract_amount)<MONEY_HONESTY_CAP
+    );
+    return {n:rows.length,total:rows.reduce((sum,row)=>sum+Number(row.contract_amount||0),0)};
   }catch(e){ return null; }
 }
 

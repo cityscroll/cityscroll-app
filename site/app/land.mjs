@@ -4,6 +4,12 @@ import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendan
 import { installFilterChipNavigation, officialSourceLink } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
+import {
+  bblsForProject,
+  filterLandSnapshot,
+  mergeLandProjects,
+  projectIdsForBlock,
+} from "../resident_snapshot_queries.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -70,11 +76,16 @@ function zapCouncilWhere(councilDistrict){
   return ` AND (cc_district='${id}' OR cc_district LIKE '%${padded}%')`;
 }
 
-// Commit-time default Active ULURP list (wave-2 batch precompute). Filter/keyword/geo stay live SODA.
+// Retained Land projections. Search and details filter these artifacts in-browser.
 const LAND_DEFAULT_SNAPSHOT_URL="data/land_default_ulurp.json";
 const LAND_UPCOMING_HEARINGS_URL="data/land_upcoming_hearings.json";
+const LAND_PROJECTS_SNAPSHOT_URL="data/zap_projects_warehouse_lookup.json";
+const LAND_BBLS_SNAPSHOT_URL="data/zap_bbl_warehouse_lookup.json";
+const LAND_MEETINGS_SNAPSHOT_URL="data/shared_meeting_read_model.json";
+const LAND_PROPERTY_SNAPSHOT_URL="data/property_domain_observations.json";
 let landDefaultSnapshotPromise=null;
 let landUpcomingHearingsPromise=null;
+let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
     landDefaultSnapshotPromise=fetch(LAND_DEFAULT_SNAPSHOT_URL)
@@ -86,6 +97,36 @@ function loadLandDefaultSnapshot(){
       .catch(()=>null);
   }
   return landDefaultSnapshotPromise;
+}
+function loadLandProjectsSnapshot(){
+  if(!landProjectsSnapshotPromise){
+    landProjectsSnapshotPromise=Promise.all([
+      loadLandDefaultSnapshot(),
+      fetch(LAND_PROJECTS_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable"))),
+    ]).then(([defaults,warehouse])=>mergeLandProjects(warehouse,defaults));
+  }
+  return landProjectsSnapshotPromise;
+}
+function loadLandBblSnapshot(){
+  if(!landBblSnapshotPromise){
+    landBblSnapshotPromise=fetch(LAND_BBLS_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"})
+      .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
+  }
+  return landBblSnapshotPromise;
+}
+function loadLandMeetingsSnapshot(){
+  if(!landMeetingsSnapshotPromise){
+    landMeetingsSnapshotPromise=fetch(LAND_MEETINGS_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"})
+      .then(r=>r.ok?r.json():null).catch(()=>null);
+  }
+  return landMeetingsSnapshotPromise;
+}
+function loadLandPropertySnapshot(){
+  if(!landPropertySnapshotPromise){
+    landPropertySnapshotPromise=fetch(LAND_PROPERTY_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"})
+      .then(r=>r.ok?r.json():null).catch(()=>null);
+  }
+  return landPropertySnapshotPromise;
 }
 function seedLandOutcomeSnapshot(snapshot){
   const byProject=snapshot?.outcomes?.by_project||{};
@@ -329,7 +370,7 @@ async function landSearchHearings(stale){
 }
 function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   if(stale()) return;
-  // Preserve selection across hybrid refresh (snapshot → live) when the project is still present.
+  // Preserve selection while the merged retained snapshots repaint.
   const selectedId=(!autoSelect && Array.isArray(lRows))
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
@@ -400,42 +441,28 @@ async function landSearch(){
   $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   let geo=located?landResolvedArea:null, block=located?landResolvedArea.block:null;
   if(kw){ geo=await geocode(kw); if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6); }
-  // Default Land tab: paint prebuilt Active ULURP snapshot first (no SODA wait), then hybrid-refresh.
-  const useDefaultSnapshot=isDefaultLandSearchState(status, boro, kw, located) && !block;
-  let paintedFromSnapshot=false;
-  if(useDefaultSnapshot){
-    try{
-      const snap=await loadLandDefaultSnapshot();
-      const projects=snap&&Array.isArray(snap.projects)?snap.projects:[];
-      if(projects.length){
-        paintLandRows(projects, "", kw, false, boro, stale, true);
-        paintedFromSnapshot=true;
-      }
-    }catch(e){}
-  }
   try{
-    let rows, banner="";
+    const projects=await loadLandProjectsSnapshot();
+    let projectIds=null,banner="";
     if(block){
-      const lo=block+"0000", hi=block+"9999";
-      const onLot=await api(ZAPBBL,{"$select":"project_id","$where":`bbl between ${lo} and ${hi}`,"$group":"project_id","$limit":"60"});
-      const ids=[...new Set(onLot.map(b=>b.project_id))].filter(Boolean).slice(0,30);
+      const bblSnapshot=await loadLandBblSnapshot();
+      const ids=projectIdsForBlock(bblSnapshot?.rows,block).slice(0,30);
       if(ids.length){
-        const inList=ids.map(i=>`'${i.replace(/'/g,"''")}'`).join(",");
-        rows=await api(ZAP,{"$select":ZAP_SELECT,"$where":`${zapWhere(status)} AND project_id in(${inList})`,"$order":"current_milestone_date DESC","$limit":"40"});
+        projectIds=ids;
         banner=t("banner_on_block",{label:geo.label});
-        if(!rows.length){ rows=await landNearby(geo,status); banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough}); }
-      } else { rows=await landNearby(geo,status); banner=t("banner_none_lot",{label:geo.label, area:geo.neighbourhood||geo.borough}); }
-    } else {
-      let w=zapWhere(status); if(boro) w+=` AND borough='${boro.replace(/'/g,"''")}'`;
-      w+=zapDistrictWhere(landCommunityDistrict);
-      w+=zapCouncilWhere(landCouncilDistrict);
-      const p={"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"}; if(kw) p["$q"]=kw;
-      rows=await api(ZAP,p);
+      }else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
     }
-    // If snapshot already painted the default list, refresh rows without re-clicking the first item.
-    paintLandRows(rows, banner, kw, !!block, boro, stale, paintedFromSnapshot ? false : true);
+    let rows=filterLandSnapshot(projects,{
+      status,borough:boro,keyword:kw,communityDistrict:landCommunityDistrict,
+      councilDistrict:landCouncilDistrict,projectIds,limit:40,
+    });
+    if(block&&!rows.length){
+      rows=await landNearby(geo,status,projects);
+      if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
+    }
+    paintLandRows(rows,banner,kw,!!block,boro,stale,true);
   }catch(e){
-    if(!stale() && !paintedFromSnapshot){
+    if(!stale()){
       unbusy("#llist");
       $("#llist").innerHTML="";
       setLandResultCount(0);
@@ -444,11 +471,12 @@ async function landSearch(){
   }
 }
 
-async function landNearby(geo,status){
-  let w=zapWhere(status); if(geo&&geo.borough) w+=` AND borough='${geo.borough.replace(/'/g,"''")}'`;
-  w+=zapDistrictWhere(geo&&geo.communityDistrict);
-  w+=zapCouncilWhere(geo&&geo.councilDistrict);
-  return api(ZAP,{"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"});
+async function landNearby(geo,status,projects=null){
+  const rows=projects||await loadLandProjectsSnapshot();
+  return filterLandSnapshot(rows,{
+    status,borough:geo?.borough||"",communityDistrict:geo?.communityDistrict||"",
+    councilDistrict:geo?.councilDistrict||"",limit:40,
+  });
 }
 
 // landRowHTML: one rezoning result row. project_name/project_brief are ZAP's own field names
@@ -490,6 +518,9 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
 }
 
 async function geocode(q){
+  // TODO(precompute-no-live-api/geocoder-scope): keep this request-time lookup
+  // unchanged until the site owner chooses a bounded gazetteer or a complete
+  // precomputed citywide address index.
   try{
     const r=await fetch(`${GEO}?size=1&text=${encodeURIComponent(q)}`);
     const j=await r.json(); const f=j.features&&j.features[0];
@@ -546,23 +577,6 @@ async function landSelect(i, el){
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
   hydrateLandRecordLinks(r, selection);
-  // List snapshots omit project_brief; hydrate once from Open Data when detail opens.
-  if(!r.project_brief && r.project_id){
-    api(ZAP,{"$select":ZAP_SELECT,"$where":`project_id='${String(r.project_id).replace(/'/g,"''")}'`,"$limit":"1"})
-      .then(rows=>{
-        if(selection!==landSelectionSeq) return;
-        const full=rows&&rows[0];
-        if(!full||!full.project_brief) return;
-        r.project_brief=full.project_brief;
-        if(full.actions!=null) r.actions=full.actions;
-        const brief=$("#land-brief");
-        if(brief){
-          brief.hidden=false;
-          brief.innerHTML=`<span class="lbl">${t("in_plain_english")}</span>${excerptHtml(full.project_brief,900)}`;
-        }
-      })
-      .catch(()=>{});
-  }
   // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.
   paintLandActionRail($("#land-actions"), r, null, null);
   loadZapOutcomes(r, $("#land-outcomes"), selection);
@@ -572,15 +586,18 @@ async function landSelect(i, el){
   bindQRShare($("#landqr"), landURL);
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
   const crterm=cleanText(r.project_name||"").replace(/\b(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice)\b/ig," ").replace(/\s+/g," ").trim();
-  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ if(selection!==landSelectionSeq) return; const cr=$("#land-city-record-source"); if(cr&&rows&&rows[0]){ cr.outerHTML=officialSourceLink({ href:REQ_URL(rows[0].request_id), label:t("rezoning_notice_link"), className:"land-city-record-source", escape:escUiHtml }); } }).catch(()=>{}); }
+  if(crterm.length>3){ loadLandMeetingsSnapshot().then(payload=>{ const query=crterm.toLowerCase(); const row=(payload?.rows||[]).find(item=>(item.zap_project_ids||[]).includes(r.project_id)||matchText(item).toLowerCase().includes(query)); if(selection!==landSelectionSeq) return; const cr=$("#land-city-record-source"); if(cr&&row?.request_id){ cr.outerHTML=officialSourceLink({ href:REQ_URL(row.request_id), label:t("rezoning_notice_link"), className:"land-city-record-source", escape:escUiHtml }); } }).catch(()=>{}); }
   let drew=false;
   try{
-    const bblRows=await api(ZAPBBL,{"$select":"bbl","$where":`project_id='${(r.project_id||"").replace(/'/g,"''")}'`,"$limit":"40"});
-    const bbls=[...new Set(bblRows.map(b=>b.bbl).filter(Boolean))].slice(0,25);
+    const bblPayload=await loadLandBblSnapshot();
+    const bbls=bblsForProject(bblPayload?.rows,r.project_id).slice(0,25);
     if(bbls.length){
-      const gj=await fetch(`https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0/query?where=BBL%20IN%20(${bbls.join(",")})&returnGeometry=true&outSR=4326&outFields=BBL&f=geojson`).then(x=>x.json()).catch(()=>null);
+      const propertyPayload=await loadLandPropertySnapshot();
+      const bblSet=new Set(bbls);
+      const address=(propertyPayload?.property_rows||[]).flatMap(item=>item?.property_location?.addresses||[])
+        .find(item=>bblSet.has(String(item?.bbl||""))&&Number.isFinite(Number(item?.latitude))&&Number.isFinite(Number(item?.longitude)));
       if(selection!==landSelectionSeq) return;
-      if(gj&&gj.features&&gj.features.length){ landShowLots(gj, gj.features.length, selection); drew=true; }
+      if(address){ landShowMap(Number(address.latitude),Number(address.longitude),address.label||r.project_name,selection); drew=true; }
     }
   }catch(e){}
   if(selection!==landSelectionSeq) return;
@@ -631,7 +648,7 @@ async function showLandEntry(id){
   $("#ldetail").innerHTML=listSkeleton(1);
   let rows;
   try{
-    rows=await api(ZAP,{"$select":ZAP_SELECT,"$where":`project_id='${String(id).replace(/'/g,"''")}'`,"$limit":"1"});
+    rows=(await loadLandProjectsSnapshot()).filter(row=>String(row.project_id)===String(id)).slice(0,1);
   }catch(e){
     if(!stale()){
       unbusy("#llist");
@@ -1536,6 +1553,7 @@ globalThis.landStatutoryDeadlineHTML = landStatutoryDeadlineHTML;
 globalThis.landToAlert = landToAlert;
 globalThis.landZoningStatisticsHTML = landZoningStatisticsHTML;
 globalThis.loadLandDefaultSnapshot = loadLandDefaultSnapshot;
+globalThis.loadLandProjectsSnapshot = loadLandProjectsSnapshot;
 globalThis.loadLeaflet = loadLeaflet;
 globalThis.loadNoticeLandSpine = loadNoticeLandSpine;
 globalThis.loadZapOutcomes = loadZapOutcomes;

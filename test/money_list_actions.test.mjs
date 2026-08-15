@@ -5,11 +5,11 @@ import actionRegistry from "../site/action_registry.js";
 import { noticeDisplayTitle } from "../site/display_title.mjs";
 
 const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
-const openSnapshot = JSON.parse(readFileSync(new URL("../site/data/money_default_open.json", import.meta.url), "utf8"));
+const openSnapshot = JSON.parse(readFileSync(new URL("./fixtures/money_action_field_cases.json", import.meta.url), "utf8"));
 const awardSnapshot = JSON.parse(readFileSync(new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
-const OPEN_SOLICITATION = openSnapshot.notices.find((row) => row.request_id === "20260624023");
-const EXPIRED_SOLICITATION = openSnapshot.notices.find((row) => row.request_id === "20260624038");
-const GUIDE_ONLY_SOLICITATION = openSnapshot.notices.find((row) => row.request_id === "20260603042");
+const OPEN_SOLICITATION = openSnapshot.rows.find((row) => row.request_id === "20260624023");
+const EXPIRED_SOLICITATION = openSnapshot.rows.find((row) => row.request_id === "20260624038");
+const GUIDE_ONLY_SOLICITATION = openSnapshot.rows.find((row) => row.request_id === "20260603042");
 const SOURCE_BACKED_AWARD = awardSnapshot.rows.find((row) => row.request_id === "20260723031");
 
 function extractFunction(name) {

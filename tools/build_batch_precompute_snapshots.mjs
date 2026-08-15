@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-// Build BATCHABLE first-paint snapshots for wave-2 perceived speed.
+// Build bounded daily snapshots for resident surfaces.
 //
 // Usage:
 //   node tools/build_batch_precompute_snapshots.mjs            # write all
 //   node tools/build_batch_precompute_snapshots.mjs --check     # fail if stale (CI)
 //   node tools/build_batch_precompute_snapshots.mjs --fixture   # use offline fixtures
 //
-// Snapshots are commit-time artifacts (inline-at-build). Clients paint from them
-// immediately and may hybrid-refresh live SODA when freshness matters.
+// Snapshots are commit-time artifacts (inline-at-build). Browser readers filter
+// them locally; only this acquisition command contacts publisher sources.
 
 import assert from "node:assert/strict";
 import { readFile, writeFile, mkdir } from "node:fs/promises";

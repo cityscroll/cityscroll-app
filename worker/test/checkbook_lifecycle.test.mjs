@@ -211,6 +211,17 @@ function withMockedFetch(routes, fn) {
 
 const req = (qs, method = "GET") => new Request("https://w/contract-lifecycle" + qs, { method });
 
+// Acquisition characterization uses the scheduled compute path directly. Public GET
+// tests below exercise the separate cache-only resident handler.
+async function acquisitionResponse(request, env) {
+  const id = new URL(request.url).searchParams.get("id");
+  const { lifecycle, ok } = await getOrCompute(env, id);
+  return new Response(JSON.stringify(lifecycle ? { id, ...lifecycle } : { id, ok: false }), {
+    status: ok && lifecycle ? 200 : 503,
+    headers: { "Content-Type": "application/json", "Cache-Control": lifecycle?.ok ? "public, max-age=300" : "no-store" },
+  });
+}
+
 // ===========================================================================
 // 1. FULL LIFECYCLE: solicitation → award → pending → registered → payment
 // ===========================================================================
@@ -240,7 +251,7 @@ test("FULL lifecycle: solicitation → pending → registered → payment with s
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110001"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110001"), { DB: db });
   const body = await res.json();
 
   assert.equal(body.ok, true);
@@ -323,7 +334,7 @@ test("Spending lookup uses contract_id, never pin (Checkbook code 1101)", withMo
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20260623008"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20260623008"), { DB: db });
   const body = await res.json();
   assert.equal(body.ok, true);
   const spendCalls = calls.filter((c) => c.url.includes("checkbooknyc") && String(c.body).includes("Spending"));
@@ -370,7 +381,7 @@ test("LEGACY PIN: exact renewal-suffixed PIN finds nothing, base PIN matches", w
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110002"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110002"), { DB: db });
   const body = await res.json();
 
   assert.equal(body.ok, true);
@@ -406,7 +417,7 @@ test("AMENDMENTS: current_amount ≠ original_amount produces an amendment event
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110003"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110003"), { DB: db });
   const body = await res.json();
 
   assert.equal(body.amendments.length, 1, "one amendment detected");
@@ -437,7 +448,7 @@ test("NO MATCH: usable PIN, no Checkbook records → unmatched stages (not blank
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110004"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110004"), { DB: db });
   const body = await res.json();
 
   assert.equal(body.ok, true);
@@ -483,7 +494,7 @@ test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkboo
         },
       },
     });
-    const res = await handleContractLifecycle(req("?id=20250110005"), { DB: db });
+    const res = await acquisitionResponse(req("?id=20250110005"), { DB: db });
     const body = await res.json();
 
     // No PIN is not a transient failure — stages are not_applicable; ok is true so the
@@ -565,7 +576,7 @@ test("CURSOR/CAP: Checkbook pagination capped at MAX_PAGES × PAGE_SIZE", async 
         },
       },
     });
-    const res = await handleContractLifecycle(req("?id=20250110006"), { DB: db });
+    const res = await acquisitionResponse(req("?id=20250110006"), { DB: db });
     const body = await res.json();
 
     const payment = body.timeline.find((t) => t.stage === "payment");
@@ -601,7 +612,7 @@ test("FAILURE: Checkbook error → lifecycle ok:true but stages unknown, not cac
         },
       },
     });
-    const res = await handleContractLifecycle(req("?id=20250110007"), { DB: db });
+    const res = await acquisitionResponse(req("?id=20250110007"), { DB: db });
     const body = await res.json();
 
     // lifecycle.ok is false because all Checkbook lookups failed
@@ -855,7 +866,7 @@ test("AMBIGUOUS: multiple pending contracts for same PIN → ambiguous status", 
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110010"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110010"), { DB: db });
   const body = await res.json();
 
   const pending = body.timeline.find((t) => t.stage === "pending");
@@ -1190,7 +1201,7 @@ test("OCP side-car: matched by request_id with amount/date agreement", withMocke
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20260723031"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20260723031"), { DB: db });
   const body = await res.json();
   assert.equal(body.ok, true);
   assert.ok(body.ocp_award, "ocp_award side-car present");
@@ -1228,7 +1239,7 @@ test("OCP side-car: City Record / OCP amount disagreement keeps both values", wi
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20260723031"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20260723031"), { DB: db });
   const body = await res.json();
   assert.equal(body.ocp_award.status, "matched");
   assert.equal(body.ocp_award.corroboration.agree, false);
@@ -1255,7 +1266,7 @@ test("OCP side-car: unmatched uses not-yet-ingested gap (empty OCP lookup)", wit
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110001"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110001"), { DB: db });
   const body = await res.json();
   assert.equal(body.ocp_award.status, "unmatched");
 }));
@@ -1275,7 +1286,7 @@ test("OCP side-car: reach failure marks unknown (not unmatched gap)", withMocked
       },
     },
   });
-  const res = await handleContractLifecycle(req("?id=20250110001"), { DB: db });
+  const res = await acquisitionResponse(req("?id=20250110001"), { DB: db });
   const body = await res.json();
   assert.equal(body.ocp_award.status, "unknown");
 }));
@@ -1295,4 +1306,3 @@ test("projectPaymentRows: newest-first, capped, preserves source-null", () => {
   assert.equal(projectPaymentRows(null).length, 0);
   assert.ok(PAYMENT_ROWS_DETAIL_CAP >= 1);
 });
-

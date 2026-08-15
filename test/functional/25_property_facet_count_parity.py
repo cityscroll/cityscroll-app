@@ -137,7 +137,11 @@ def main() -> None:
         page.on("pageerror", capture_pageerror)
 
         def route(request):
-            if "/property-locations" in request.request.url or "property:location" in request.request.url:
+            if (
+                "/property-locations" in request.request.url
+                or "property:location" in request.request.url
+                or request.request.url.endswith("/data/property_resident_snapshot.json")
+            ):
                 request.fulfill(status=200, content_type="application/json", body=body)
                 return
             if "dg92-zbpx" in request.request.url:

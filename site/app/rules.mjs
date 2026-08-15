@@ -864,10 +864,12 @@ async function loadSectionAgencies(key){
   if(key==="rules"&&!host) return;
   if(key!=="rules"&&!sel) return;
   try{
-    const sectionWhere=key==="meetings"
-      ? "(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL))"
-      : `section_name='${SECTIONS[key].section}'`;
-    const rows=await soda({"$select":"agency_name","$where":`${sectionWhere} AND agency_name IS NOT NULL`,"$group":"agency_name","$order":"agency_name","$limit":"200"});
+    let sourceRows=[];
+    if(key==="rules") sourceRows=(await globalThis.loadRulesDomainSnapshot?.())?.rules||[];
+    else if(key==="meetings") sourceRows=hearingAll||[];
+    else sourceRows=Object.values(feedRows[key]||{});
+    const rows=[...new Set(sourceRows.map(row=>row?.agency_name).filter(Boolean))]
+      .sort((left,right)=>left.localeCompare(right)).map(agency_name=>({agency_name}));
     if(key==="rules"){
       rulesAgencyChoices=rows;
       renderRulesAgencyScopeLinks();
@@ -935,6 +937,9 @@ function renderFeed(key, rows){
 }
 
 async function checkDemolition(r, btn){
+  // TODO(precompute-no-live-api/geocoder-scope): this address-to-BBL/DOB flow
+  // remains unchanged until the site owner chooses a bounded gazetteer or a
+  // complete precomputed citywide address index.
   const address=r?._location?.addresses?.[0]?.label||r?.street_address_1;
   if(!r||!address) return;
   btn.textContent=t("checking_dob"); btn.disabled=true;

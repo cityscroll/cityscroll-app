@@ -52,6 +52,10 @@ const refresh = Boolean(args["refresh-decision-outcomes"]);
 const reviewChannel = args["review-channel"] || "";
 const commitSha = args["commit-sha"] || "";
 
+// Architecture fitness runs before any generated artifact. A production build
+// must never be the first place a resident live-data dependency is discovered.
+runNode(sourceDir, "no_live_external_reads.mjs", ["--check"]);
+
 if (refresh) {
   runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--land-only"]);
   runNode(sourceDir, "build_meeting_outcomes_snapshot.mjs");
@@ -72,6 +76,8 @@ if (existsSync(graphTool)) {
 }
 
 const optionalBuilds = [
+  ["build_money_resident_snapshot.mjs", []],
+  ["build_property_resident_snapshot.mjs", []],
   ["build_district_activity.mjs", []],
   ["build_near_you_pages.mjs", []],
   ["build_following_page.mjs", []],

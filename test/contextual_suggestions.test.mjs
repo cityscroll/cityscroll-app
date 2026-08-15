@@ -33,7 +33,7 @@ test("Browse suggestions are bounded, data-derived, and their destination count 
 });
 
 test("a constrained scope advertises following without adding a request to the hot path", () => {
-  const params = new URLSearchParams({ q: "pest" });
+  const params = new URLSearchParams({ agency: payload.notices[0].agency_name });
   const view = buildBrowseView("contracts", payload, params, { limit: 1000 });
   const follow = view.contextualSuggestions.find((suggestion) => suggestion.kind === "follow");
   assert.ok(follow);

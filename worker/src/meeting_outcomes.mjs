@@ -1,6 +1,5 @@
 import {
   applyApiLimits,
-  buildMeetingOutcomesView,
   MAX_AGE_MS,
   MEETING_OUTCOMES_KV_KEY,
   MEETING_OUTCOMES_VIEW_VERSION,
@@ -57,7 +56,7 @@ function response(body, status = 200) {
   });
 }
 
-export async function handleMeetingOutcomes(request, env, ctx) {
+export async function handleMeetingOutcomes(request, env, _ctx) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return response(JSON.stringify({ ok: false, reason: "method" }), 405);
   if (!env?.ALERT_STATE) return response(JSON.stringify({ ok: false, reason: "not-configured" }), 503);
@@ -71,24 +70,8 @@ export async function handleMeetingOutcomes(request, env, ctx) {
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
 
-  if (meetingOutcomesViewNeedsRefresh(parsed)) {
-    try {
-      const token = env?.LEGISTAR_API_TOKEN || null;
-      const view = await buildMeetingOutcomesView({ token, fetchImpl: fetch, now: new Date(), env });
-      // dual_write is operator telemetry only — never cache it on the public read path.
-      const { dual_write: _dualWrite, ...publicView } = view;
-      raw = JSON.stringify(publicView);
-      const write = env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, raw, {
-        expirationTtl: 3 * 24 * 60 * 60,
-      });
-      if (ctx?.waitUntil) ctx.waitUntil(write); else await write;
-      parsed = publicView;
-    } catch (error) {
-      if (!parsed) {
-        return response(JSON.stringify({ ok: false, reason: "upstream", detail: String(error?.message || error) }), 502);
-      }
-    }
-  }
+  if (!parsed) return response(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
+  parsed = { ...parsed, stale: meetingOutcomesViewNeedsRefresh(parsed) };
 
   // Per-notice detail path: return one joined record (or an explicit unmatched gap)
   // so the notice view never needs the full list and never invents a blank.

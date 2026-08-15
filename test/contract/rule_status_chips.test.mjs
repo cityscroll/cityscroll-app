@@ -1,7 +1,7 @@
 import { SITE_SOURCE } from "../helpers/site_source.mjs";
 // Contract test for the rule-lifecycle status chips on the Rules lens (rules-status-chips).
-// Asserts the wiring that links the precomputed /rules read model to the live City Record
-// rows and renders a stage chip + comment CTA — a drift guard in the shape of
+// Asserts the wiring that links the precomputed /rules read model to the retained City Record
+// snapshot and renders a stage chip + comment CTA — a drift guard in the shape of
 // rule_location_display.test.mjs. node --test test/contract/*.test.mjs
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -9,13 +9,14 @@ import { test } from "node:test";
 
 const html = SITE_SOURCE;
 
-test("Rules lens consumes the /rules read model and joins it by request_id (precompute-first)", () => {
-  // The lifecycle enrichment comes from the materialized read model, not a live upstream
-  // NYC Rules fetch from the client.
+test("Rules lens consumes retained rule snapshots and joins lifecycle detail by request_id", () => {
+  // List classification comes from the source-native static snapshot; the separate
+  // cache-only lifecycle projection enriches detail readers by request_id.
+  assert.match(html, /loadRulesDomainSnapshot\(\)/);
+  assert.match(html, /rulesViewCache=\{rules:rows\}/);
   assert.match(html, /loadRulesView\(\)/);
   assert.match(html, /buildRulesStageMap\(/);
-  assert.match(html, /stageMap\.get\(row\.request_id\)/);
-  assert.match(html, /row\._ruleStage=rec/);
+  assert.match(html, /stageMap\.get\(r\.request_id\)/);
 });
 
 test("feedCardHTML renders a rule status chip and leads with the comment CTA", () => {

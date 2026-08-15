@@ -11,7 +11,7 @@
   "replaces_live_fetch": {
     "worker": "worker/src/zap_outcomes.mjs#fetchBbls",
     "soda_dataset": "2iga-a6mk",
-    "description": "ZAP BBL tax lots on /zap-outcomes DOB side-car — warehouse materialization first, live SODA on miss"
+    "description": "ZAP BBL tax lots retained for resident Land and /zap-outcomes reads"
   },
   "rows": [
     {

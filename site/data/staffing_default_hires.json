@@ -12,7 +12,7 @@
     "$where": "section_name='Changes in Personnel' AND short_title='APPOINTED'",
     "$order": "start_date DESC, request_id DESC",
     "$limit": "80",
-    "note": "Default Staffing appointments feed. Keyword search and payroll stay live."
+    "note": "Staffing appointments materialized for resident keyword and agency filtering."
   },
   "count": 80,
   "notices": [

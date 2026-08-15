@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-03|2026-08-03T20:19:13.639Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-12T16:01:38.473Z",
+  "generated_at": "2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -87,7 +87,7 @@
             "mode": "open",
             "entity_ref": "agency:id:administration-for-childrens-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "administration-for-childrens-services",
@@ -99,7 +99,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -727,7 +727,7 @@
             "mode": "open",
             "entity_ref": "agency:id:administrative-trials-and-hearings"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "administrative-trials-and-hearings",
@@ -739,7 +739,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -1367,7 +1367,7 @@
             "mode": "open",
             "entity_ref": "agency:id:aging"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "aging",
@@ -1379,7 +1379,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2013,7 +2013,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-meetings"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "board-meetings",
@@ -2025,7 +2025,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2552,7 +2552,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-of-correction"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "board-of-correction",
@@ -2564,7 +2564,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3109,7 +3109,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-of-elections"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "board-of-elections",
@@ -3121,7 +3121,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3648,7 +3648,7 @@
             "mode": "open",
             "entity_ref": "agency:id:board-of-standards-and-appeals"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "board-of-standards-and-appeals",
@@ -3660,7 +3660,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -4193,7 +4193,7 @@
             "mode": "open",
             "entity_ref": "agency:id:borough-president-bronx"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "borough-president-bronx",
@@ -4205,7 +4205,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -4738,7 +4738,7 @@
             "mode": "open",
             "entity_ref": "agency:id:borough-president-brooklyn"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "borough-president-brooklyn",
@@ -4750,7 +4750,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -5277,7 +5277,7 @@
             "mode": "open",
             "entity_ref": "agency:id:borough-president-queens"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "borough-president-queens",
@@ -5289,7 +5289,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -5768,11 +5768,11 @@
       "subject_ref": "agency:id:buildings",
       "display_name": "Department of Buildings",
       "path": "/agencies/buildings/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -5812,17 +5812,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:buildings"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "buildings",
@@ -5834,7 +5834,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -6474,7 +6474,7 @@
             "mode": "open",
             "entity_ref": "agency:id:business-integrity-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "business-integrity-commission",
@@ -6486,7 +6486,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7043,7 +7043,7 @@
             "mode": "open",
             "entity_ref": "agency:id:campaign-finance-board"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "campaign-finance-board",
@@ -7055,7 +7055,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7588,7 +7588,7 @@
             "mode": "open",
             "entity_ref": "agency:id:charter-revision-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "charter-revision-commission",
@@ -7600,7 +7600,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -8127,7 +8127,7 @@
             "mode": "open",
             "entity_ref": "agency:id:chief-medical-examiner"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "chief-medical-examiner",
@@ -8139,7 +8139,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -8755,7 +8755,7 @@
             "mode": "open",
             "entity_ref": "agency:id:city-clerk"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "city-clerk",
@@ -8767,7 +8767,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -9246,11 +9246,11 @@
       "subject_ref": "agency:id:city-council",
       "display_name": "New York City Council",
       "path": "/agencies/city-council/",
-      "matched_categories": 2,
+      "matched_categories": 3,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -9290,17 +9290,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:city-council"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "city-council",
@@ -9312,7 +9312,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -9845,7 +9845,7 @@
             "mode": "open",
             "entity_ref": "agency:id:city-planning"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "city-planning",
@@ -9857,7 +9857,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -10464,7 +10464,7 @@
             "mode": "open",
             "entity_ref": "agency:id:city-planning-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "city-planning-commission",
@@ -10476,7 +10476,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -11009,7 +11009,7 @@
             "mode": "open",
             "entity_ref": "agency:id:city-university"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "city-university",
@@ -11021,7 +11021,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -11498,7 +11498,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 5,
+          "count": 4,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -11538,17 +11538,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 5,
+          "count": 4,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:citywide-administrative-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "citywide-administrative-services",
@@ -11560,7 +11560,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -12200,7 +12200,7 @@
             "mode": "open",
             "entity_ref": "agency:id:civilian-complaint-review-board"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "civilian-complaint-review-board",
@@ -12212,7 +12212,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -12769,7 +12769,7 @@
             "mode": "open",
             "entity_ref": "agency:id:commission-on-human-rights"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "commission-on-human-rights",
@@ -12781,7 +12781,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13338,7 +13338,7 @@
             "mode": "open",
             "entity_ref": "agency:id:commission-on-racial-equity"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "commission-on-racial-equity",
@@ -13350,7 +13350,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13877,7 +13877,7 @@
             "mode": "open",
             "entity_ref": "agency:id:community-boards"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "community-boards",
@@ -13889,7 +13889,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -14416,7 +14416,7 @@
             "mode": "open",
             "entity_ref": "agency:id:comptroller"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "comptroller",
@@ -14428,7 +14428,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -15068,7 +15068,7 @@
             "mode": "open",
             "entity_ref": "agency:id:consumer-and-worker-protection"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "consumer-and-worker-protection",
@@ -15080,7 +15080,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -15720,7 +15720,7 @@
             "mode": "open",
             "entity_ref": "agency:id:correction"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "correction",
@@ -15732,7 +15732,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16360,7 +16360,7 @@
             "mode": "open",
             "entity_ref": "agency:id:criminal-justice-coordinator"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "criminal-justice-coordinator",
@@ -16372,7 +16372,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16899,7 +16899,7 @@
             "mode": "open",
             "entity_ref": "agency:id:cultural-affairs"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "cultural-affairs",
@@ -16911,7 +16911,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -17483,7 +17483,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 3,
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -17523,17 +17523,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 3,
+          "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:design-and-construction"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "design-and-construction",
@@ -17545,7 +17545,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -18173,7 +18173,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-bronx-county"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "district-attorney-bronx-county",
@@ -18185,7 +18185,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -18712,7 +18712,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-kings-county"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "district-attorney-kings-county",
@@ -18724,7 +18724,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19251,7 +19251,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-new-york-county"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "district-attorney-new-york-county",
@@ -19263,7 +19263,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19885,7 +19885,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-queens-county"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "district-attorney-queens-county",
@@ -19897,7 +19897,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -20424,7 +20424,7 @@
             "mode": "open",
             "entity_ref": "agency:id:district-attorney-richmond-county"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "district-attorney-richmond-county",
@@ -20436,7 +20436,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -20955,15 +20955,15 @@
           "target_name": "Contracts",
           "count": 3,
           "state": "matched",
-          "href": "/browse/contracts/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:economic-development-corporation"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "economic-development-corporation",
@@ -20975,7 +20975,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -21452,7 +21452,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 1,
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -21492,17 +21492,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 1,
+          "count": 3,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:education"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "education",
@@ -21514,7 +21514,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -22148,7 +22148,7 @@
             "mode": "open",
             "entity_ref": "agency:id:emergency-management"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "emergency-management",
@@ -22160,7 +22160,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -22782,7 +22782,7 @@
             "mode": "open",
             "entity_ref": "agency:id:employees-retirement-system"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "employees-retirement-system",
@@ -22794,7 +22794,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -23408,15 +23408,15 @@
           "target_name": "Contracts",
           "count": 3,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:environmental-protection"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "environmental-protection",
@@ -23428,7 +23428,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -24068,7 +24068,7 @@
             "mode": "open",
             "entity_ref": "agency:id:equal-employment-practices-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "equal-employment-practices-commission",
@@ -24080,7 +24080,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -24559,11 +24559,11 @@
       "subject_ref": "agency:id:finance",
       "display_name": "Department of Finance",
       "path": "/agencies/finance/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -24603,17 +24603,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:finance"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "finance",
@@ -24625,7 +24625,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -25265,7 +25265,7 @@
             "mode": "open",
             "entity_ref": "agency:id:financial-information-services-agency"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "financial-information-services-agency",
@@ -25277,7 +25277,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -25823,11 +25823,11 @@
       "subject_ref": "agency:id:fire-department",
       "display_name": "Fire Department of the City of New York",
       "path": "/agencies/fire-department/",
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -25867,17 +25867,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 1,
-          "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:fire-department"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "fire-department",
@@ -25889,7 +25889,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -26529,7 +26529,7 @@
             "mode": "open",
             "entity_ref": "agency:id:health-and-mental-hygiene"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "health-and-mental-hygiene",
@@ -26541,7 +26541,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -27173,15 +27173,15 @@
           "target_name": "Contracts",
           "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:homeless-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "homeless-services",
@@ -27193,7 +27193,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -27777,7 +27777,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 12,
+          "count": 8,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -27817,17 +27817,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 12,
+          "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:housing-authority"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "housing-authority",
@@ -27839,7 +27839,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -28324,11 +28324,11 @@
       "subject_ref": "agency:id:housing-preservation-and-development",
       "display_name": "Department of Housing Preservation and Development",
       "path": "/agencies/housing-preservation-and-development/",
-      "matched_categories": 6,
+      "matched_categories": 5,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -28368,17 +28368,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 2,
-          "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:housing-preservation-and-development"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "housing-preservation-and-development",
@@ -28390,7 +28390,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -29036,7 +29036,7 @@
             "mode": "open",
             "entity_ref": "agency:id:human-resources-administration"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "human-resources-administration",
@@ -29048,7 +29048,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -29676,7 +29676,7 @@
             "mode": "open",
             "entity_ref": "agency:id:independent-budget-office"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "independent-budget-office",
@@ -29688,7 +29688,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -30167,11 +30167,11 @@
       "subject_ref": "agency:id:information-technology-and-telecommunications",
       "display_name": "Office of Technology and Innovation",
       "path": "/agencies/information-technology-and-telecommunications/",
-      "matched_categories": 5,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -30211,17 +30211,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 1,
-          "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:information-technology-and-telecommunications"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "information-technology-and-telecommunications",
@@ -30233,7 +30233,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -30873,7 +30873,7 @@
             "mode": "open",
             "entity_ref": "agency:id:investigation"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "investigation",
@@ -30885,7 +30885,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -31447,7 +31447,7 @@
             "mode": "open",
             "entity_ref": "agency:id:landmarks-preservation-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "landmarks-preservation-commission",
@@ -31459,7 +31459,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -32022,7 +32022,7 @@
             "mode": "open",
             "entity_ref": "agency:id:law-department"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "law-department",
@@ -32034,7 +32034,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -32629,7 +32629,7 @@
             "mode": "open",
             "entity_ref": "agency:id:management-and-budget"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "management-and-budget",
@@ -32641,7 +32641,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -33219,7 +33219,7 @@
             "mode": "open",
             "entity_ref": "agency:id:mayors-office-of-contract-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "mayors-office-of-contract-services",
@@ -33231,7 +33231,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -33816,7 +33816,7 @@
             "mode": "open",
             "entity_ref": "agency:id:mayors-office-of-criminal-justice"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "mayors-office-of-criminal-justice",
@@ -33828,7 +33828,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34444,7 +34444,7 @@
             "mode": "open",
             "entity_ref": "agency:id:n-y-c-transit-authority"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "n-y-c-transit-authority",
@@ -34456,7 +34456,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34983,7 +34983,7 @@
             "mode": "open",
             "entity_ref": "agency:id:new-york-city-police-pension-fund"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "new-york-city-police-pension-fund",
@@ -34995,7 +34995,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -35522,7 +35522,7 @@
             "mode": "open",
             "entity_ref": "agency:id:nyc-department-of-veterans-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "nyc-department-of-veterans-services",
@@ -35534,7 +35534,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -36088,15 +36088,15 @@
           "target_name": "Contracts",
           "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:nyc-health-hospitals"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "nyc-health-hospitals",
@@ -36108,7 +36108,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -36641,7 +36641,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-collective-bargaining"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "office-of-collective-bargaining",
@@ -36653,7 +36653,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -37180,7 +37180,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-labor-relations"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "office-of-labor-relations",
@@ -37192,7 +37192,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -37754,7 +37754,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-special-narcotics-prosecutor"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "office-of-special-narcotics-prosecutor",
@@ -37766,7 +37766,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38311,7 +38311,7 @@
             "mode": "open",
             "entity_ref": "agency:id:office-of-the-mayor"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "office-of-the-mayor",
@@ -38323,7 +38323,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38897,11 +38897,11 @@
       "subject_ref": "agency:id:parks-and-recreation",
       "display_name": "Department of Parks and Recreation",
       "path": "/agencies/parks-and-recreation/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -38941,17 +38941,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 2,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:parks-and-recreation"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "parks-and-recreation",
@@ -38963,7 +38963,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -39603,7 +39603,7 @@
             "mode": "open",
             "entity_ref": "agency:id:payroll-administration"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "payroll-administration",
@@ -39615,7 +39615,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -40092,7 +40092,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 1,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -40132,17 +40132,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 1,
+          "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-03",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:police-department"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "police-department",
@@ -40154,7 +40154,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -40794,7 +40794,7 @@
             "mode": "open",
             "entity_ref": "agency:id:probation"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "probation",
@@ -40806,7 +40806,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -41434,7 +41434,7 @@
             "mode": "open",
             "entity_ref": "agency:id:public-advocate"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "public-advocate",
@@ -41446,7 +41446,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -41973,7 +41973,7 @@
             "mode": "open",
             "entity_ref": "agency:id:public-design-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "public-design-commission",
@@ -41985,7 +41985,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -42512,7 +42512,7 @@
             "mode": "open",
             "entity_ref": "agency:id:records-and-information-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "records-and-information-services",
@@ -42524,7 +42524,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -43075,7 +43075,7 @@
             "mode": "open",
             "entity_ref": "agency:id:rent-guidelines-board"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "rent-guidelines-board",
@@ -43087,7 +43087,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -43566,11 +43566,11 @@
       "subject_ref": "agency:id:sanitation",
       "display_name": "New York City Department of Sanitation",
       "path": "/agencies/sanitation/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -43610,17 +43610,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:sanitation"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "sanitation",
@@ -43632,7 +43632,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -44272,7 +44272,7 @@
             "mode": "open",
             "entity_ref": "agency:id:small-business-services"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "small-business-services",
@@ -44284,7 +44284,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -44918,7 +44918,7 @@
             "mode": "open",
             "entity_ref": "agency:id:tax-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "tax-commission",
@@ -44930,7 +44930,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -45463,7 +45463,7 @@
             "mode": "open",
             "entity_ref": "agency:id:taxi-and-limousine-commission"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "taxi-and-limousine-commission",
@@ -45475,7 +45475,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -46115,7 +46115,7 @@
             "mode": "open",
             "entity_ref": "agency:id:teachers-retirement-system"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "teachers-retirement-system",
@@ -46127,7 +46127,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -46606,11 +46606,11 @@
       "subject_ref": "agency:id:transportation",
       "display_name": "New York City Department of Transportation",
       "path": "/agencies/transportation/",
-      "matched_categories": 5,
+      "matched_categories": 6,
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -46650,17 +46650,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:transportation"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "transportation",
@@ -46672,7 +46672,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -47312,7 +47312,7 @@
             "mode": "open",
             "entity_ref": "agency:id:triborough-bridge-and-tunnel-authority"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "triborough-bridge-and-tunnel-authority",
@@ -47324,7 +47324,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -47851,7 +47851,7 @@
             "mode": "open",
             "entity_ref": "agency:id:youth-and-community-development"
           },
-          "as_of": "2026-08-03",
+          "as_of": "2026-08-15",
           "source": {
             "kind": "agency",
             "id": "youth-and-community-development",
@@ -47863,7 +47863,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-03",
+            "observed_at": "2026-08-15",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },

@@ -30,6 +30,7 @@ const RECEIPT = join(ROOT, "site", "data", "preset-validation.json");
 const WORKER_SUGGESTIONS = join(ROOT, "worker", "src", "lib", "suggestions.mjs");
 const WRITE = process.argv.includes("--write");
 const CHECK = process.argv.includes("--check");
+const OFFLINE = process.argv.includes("--offline");
 const NL_BASE = (process.env.CROL_WORKER_URL || "https://api.cityscroll.org").replace(/\/+$/, "");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -469,8 +470,17 @@ async function main() {
   // Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
   // upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
   // fail-closed gate into a flaky one.
-  const scenarios = await validateScenarios(previous);
-  const suggestions = await validateSuggestions(previous?.suggestions, previous?.dataDate);
+  if (OFFLINE && !CHECK) throw new Error("--offline requires --check");
+  if (OFFLINE && !validScenarioSnapshot(previous?.scenarios)) {
+    throw new Error("committed preset scenario receipt is missing or malformed");
+  }
+  if (OFFLINE && !validSuggestionSnapshot(previous?.suggestions)) {
+    throw new Error("committed preset suggestion receipt is missing or malformed");
+  }
+  const scenarios = OFFLINE ? previous.scenarios : await validateScenarios(previous);
+  const suggestions = OFFLINE
+    ? previous.suggestions
+    : await validateSuggestions(previous?.suggestions, previous?.dataDate);
   let html = await readFile(INDEX, "utf8");
   let siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
   let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
@@ -494,7 +504,7 @@ async function main() {
     }
     console.log(
       `preset validation green for ${Object.keys(scenarios).length} shortcuts and ` +
-        `${suggestions.candidates.length} suggestions (${TODAY})`,
+        `${suggestions.candidates.length} suggestions (${OFFLINE ? `snapshot ${previous.dataDate}` : TODAY})`,
     );
   } else {
     for (const [id, selected] of Object.entries(scenarios)) html = replaceRoute(html, id, selected);
@@ -523,6 +533,6 @@ async function main() {
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  if (!WRITE && !CHECK) throw new Error("usage: node tools/validate_presets.mjs --write|--check");
+  if (!WRITE && !CHECK) throw new Error("usage: node tools/validate_presets.mjs --write|--check [--offline]");
   await main();
 }
