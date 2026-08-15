@@ -176,6 +176,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   category, including honest empty/unknown rows; gated place/committee neighborhoods use
   `unknown`, not `empty`, when publication is withheld. The agency lookup is regenerated with
   `node tools/build_agency_constellation_documents.mjs --check`.
+- **Incremental derived facts:** `site/derived_feature_rollup.mjs` is the presentation-neutral
+  accumulator for category/edge counts, valid/observed date spans, explicit lifecycle buckets,
+  and freshness. It keeps corpus totals separate from bounded preview rows, deduplicates repeated
+  graph deliveries, and is attached to agency categories, edge summaries, and civic-time
+  projections without adding technical detail to resident copy. Focused proof lives in
+  `test/agency_constellation.test.mjs`.
 
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.
   `site/index.html` owns markup/CSS, `site/app/main.mjs` owns ordered loading, and application

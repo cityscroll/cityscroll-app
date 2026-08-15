@@ -1,3 +1,5 @@
+import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
+
 /**
  * Civic Time Ledger — as-of filter for agency constellation pages.
  *
@@ -293,6 +295,13 @@ export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
     if (!kept.length && category.status === "matched") {
       next.gap_class = "empty_as_of";
     }
+    next.derived_feature_rollup = buildDerivedFeatureRollup(kept, {
+      totalCount: kept.length,
+      state: next.status,
+      relation: category.relation || null,
+      asOf: category.as_of || null,
+      referenceDay: asOf,
+    });
     return next;
   });
 
@@ -307,6 +316,18 @@ export function projectAgencyConstellationAsOf(view, asOfDay, opts = {}) {
     ...view,
     path: asOfHref(view.path, asOf),
     categories,
+    derived_feature_rollup: buildDerivedFeatureRollup(
+      categories.flatMap((category) => (category.items || []).map((item) => ({
+        ...item,
+        state: category.status,
+        relation: category.relation || null,
+        as_of: category.as_of || null,
+      }))),
+      {
+        totalCount: categories.reduce((total, category) => total + (Number(category.count) || 0), 0),
+        referenceDay: asOf,
+      },
+    ),
     as_of: {
       schema: CIVIC_TIME_LEDGER_SCHEMA,
       method: CIVIC_TIME_LEDGER_METHOD,
