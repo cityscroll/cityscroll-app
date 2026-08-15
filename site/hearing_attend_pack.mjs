@@ -4,9 +4,14 @@ function esc(value) {
 
 function localParts(value) {
   const raw = String(value || "").trim();
-  const match = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2}))?)?/.exec(raw);
+  const match = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.exec(raw);
   if (!match) return null;
   const dateOnly = !match[4];
+  const parts = {year: +match[1], month: +match[2], day: +match[3], hour: +(match[4] || 0), minute: +(match[5] || 0), second: +(match[6] || 0), dateOnly};
+  const daysInMonth = new Date(Date.UTC(parts.year, parts.month, 0)).getUTCDate();
+  if (parts.year < 1000 || parts.month < 1 || parts.month > 12
+    || parts.day < 1 || parts.day > daysInMonth
+    || parts.hour > 23 || parts.minute > 59 || parts.second > 59) return null;
   // Unsuffixed City Record timestamps are New York wall time; explicitly zoned
   // timestamps are instants and must be converted to that same wall-time zone.
   if (!dateOnly && /(?:Z|[+-]\d{2}:?\d{2})$/i.test(raw)) {
@@ -18,7 +23,13 @@ function localParts(value) {
     }).formatToParts(instant).filter(part => part.type !== "literal").map(part => [part.type, part.value]));
     return {year: +parts.year, month: +parts.month, day: +parts.day, hour: +parts.hour, minute: +parts.minute, second: +parts.second, dateOnly: false};
   }
-  return {year: +match[1], month: +match[2], day: +match[3], hour: +(match[4] || 0), minute: +(match[5] || 0), second: +(match[6] || 0), dateOnly};
+  return parts;
+}
+
+/** Whether the calendar contract has a concrete clock time for this event. */
+export function meetingCalendarHasEventTime(record = {}) {
+  const start = localParts(record?.event_date || record?.deadline);
+  return Boolean(start && !start.dateOnly);
 }
 
 function stamp(parts) {

@@ -100,6 +100,30 @@ test("meeting affordances are progressive and shared across source systems", () 
   assert.doesNotMatch(html, /Not published|Status unknown|Agenda and materials/);
 });
 
+test("meeting calendar action requires a valid materialized event time", () => {
+  const base = {
+    meeting_id: "meeting:city_record:20260814001",
+    source_system: "city_record",
+    title: "A city meeting",
+  };
+  for (const event_date of [undefined, null, "not-a-date", "2026-99-99T18:30:00", "2026-02-30T18:30:00-05:00", "2026-08-14"]) {
+    const html = renderMeetingDocument({ ...base, event_date });
+    assert.doesNotMatch(html, /Add to calendar/);
+    assert.doesNotMatch(html, /href="\/meeting\.ics\?/);
+  }
+});
+
+test("timed meeting calendar action uses the canonical meeting id", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:community_board:https://example.test/events/land-use/",
+    source_system: "community_board",
+    title: "Land use committee",
+    event_date: "2026-08-14T18:30:00-04:00",
+  });
+  assert.match(html, />Add to calendar<\/a>/);
+  assert.match(html, /href="\/meeting\.ics\?id=meeting%3Acommunity_board%3Ahttps%3A%2F%2Fexample\.test%2Fevents%2Fland-use%2F"/);
+});
+
 test("meeting agency identity uses a typed pivot and unresolved committee names do not mint routes", () => {
   const html = renderMeetingDocument({
     meeting_id: "meeting:city_record:20260814002",
