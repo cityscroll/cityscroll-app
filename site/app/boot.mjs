@@ -69,6 +69,7 @@ $("#career-eligibility").addEventListener("change",()=>{
 });
 $("#career-query").addEventListener("input",debounce(()=>{
   careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide();
+  if(document.body?.dataset.browseRouteAlias === "exams") updateHash();
 },200));
 
 $("#awatch").addEventListener("change", ()=>{

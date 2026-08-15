@@ -27,7 +27,7 @@ const COMMON_FILTERS = [
  */
 export function canonicalizeBrowseUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
   const url = safeUrl(value, origin);
-  const match = url.pathname.match(/^\/browse\/(contracts|staffing|zoning|property|rules|meetings)\/?$/);
+  const match = url.pathname.match(/^\/browse\/(contracts|staffing|zoning|property|rules|meetings|exams)\/?$/);
   if (!match) return `${url.pathname}${url.search}`;
   const agency = String(url.searchParams.get("agency") || "").trim();
   if (!agency) return `${url.pathname}${url.search}`;
