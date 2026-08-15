@@ -1,0 +1,37 @@
+{
+  "main_tip": {
+    "committed_at": "2026-08-15T12:00:00.000Z"
+  },
+  "pulls": [
+    {
+      "number": 101,
+      "state": "open",
+      "draft": false,
+      "base": { "ref": "main" },
+      "head": { "sha": "behind-sha", "repo": { "full_name": "cityscroll/cityscroll-app" } },
+      "mergeable": true,
+      "mergeable_state": "behind",
+      "created_at": "2026-08-15T12:20:00.000Z"
+    },
+    {
+      "number": 102,
+      "state": "open",
+      "draft": false,
+      "base": { "ref": "main" },
+      "head": { "sha": "conflicting-sha", "repo": { "full_name": "cityscroll/cityscroll-app" } },
+      "mergeable": false,
+      "merge_state_status": "conflicting",
+      "created_at": "2026-08-15T12:20:00.000Z"
+    },
+    {
+      "number": 103,
+      "state": "open",
+      "draft": false,
+      "base": { "ref": "main" },
+      "head": { "sha": "stalled-sha", "repo": { "full_name": "cityscroll/cityscroll-app" } },
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "created_at": "2026-08-15T11:00:00.000Z"
+    }
+  ]
+}
