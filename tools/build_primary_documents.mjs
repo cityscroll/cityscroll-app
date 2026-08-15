@@ -61,6 +61,7 @@ export function primaryDocumentOutputs() {
   const committees = json("/data/committee_graph_lookup.json");
   const agencies = json("/data/agency_constellation_lookup.json");
   const places = json("/data/community_board_geography_lookup.json");
+  const hires = json("/data/staffing_default_hires.json");
   outputs.push(output("browse", buildBrowseLandingDocument(shell, payloads, {
     staffingExamCount: Array.isArray(staffingExams.exams) ? staffingExams.exams.length : 0,
     staffingExamAsOf: staffingExams.data_current_as_of,
@@ -101,8 +102,10 @@ export function primaryDocumentOutputs() {
   const conceptSources = {
     people,
     committees,
+    agencies,
     awards,
     places,
+    hires,
   };
   for (const kind of Object.keys(BROWSE_CONCEPTS)) {
     outputs.push(output(`browse/${kind}`, buildBrowseConceptDocument(shell, kind, conceptSources)));
