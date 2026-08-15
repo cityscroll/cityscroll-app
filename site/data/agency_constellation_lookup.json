@@ -57,7 +57,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 68,
+          "count": 65,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -233,7 +233,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 68,
+          "count": 65,
           "state": "matched",
           "href": "/agencies/administration-for-childrens-services/#mandates-conformance",
           "canonical_href": "/agencies/administration-for-childrens-services/#mandates-conformance",
@@ -785,7 +785,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 29,
+          "count": 25,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -961,7 +961,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 29,
+          "count": 25,
           "state": "matched",
           "href": "/agencies/aging/#mandates-conformance",
           "canonical_href": "/agencies/aging/#mandates-conformance",
@@ -1699,7 +1699,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 58,
+          "count": 57,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -1875,7 +1875,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 58,
+          "count": 57,
           "state": "matched",
           "href": "/agencies/board-of-elections/#mandates-conformance",
           "canonical_href": "/agencies/board-of-elections/#mandates-conformance",
@@ -3074,7 +3074,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 234,
+          "count": 221,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -3250,7 +3250,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 234,
+          "count": 221,
           "state": "matched",
           "href": "/agencies/buildings/#mandates-conformance",
           "canonical_href": "/agencies/buildings/#mandates-conformance",
@@ -3438,7 +3438,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
+          "count": 7,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -3614,7 +3614,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 8,
+          "count": 7,
           "state": "matched",
           "href": "/agencies/business-integrity-commission/#mandates-conformance",
           "canonical_href": "/agencies/business-integrity-commission/#mandates-conformance",
@@ -3725,7 +3725,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 73,
+          "count": 62,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -3901,7 +3901,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 73,
+          "count": 62,
           "state": "matched",
           "href": "/agencies/campaign-finance-board/#mandates-conformance",
           "canonical_href": "/agencies/campaign-finance-board/#mandates-conformance",
@@ -4914,7 +4914,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 24,
+          "count": 23,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -5090,7 +5090,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 24,
+          "count": 23,
           "state": "matched",
           "href": "/agencies/city-council/#mandates-conformance",
           "canonical_href": "/agencies/city-council/#mandates-conformance",
@@ -5189,7 +5189,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 9,
+          "count": 8,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -5365,7 +5365,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 9,
+          "count": 8,
           "state": "matched",
           "href": "/agencies/city-planning/#mandates-conformance",
           "canonical_href": "/agencies/city-planning/#mandates-conformance",
@@ -6070,7 +6070,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 72,
+          "count": 64,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -6246,7 +6246,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 72,
+          "count": 64,
           "state": "matched",
           "href": "/agencies/citywide-administrative-services/#mandates-conformance",
           "canonical_href": "/agencies/citywide-administrative-services/#mandates-conformance",
@@ -6721,7 +6721,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 45,
+          "count": 36,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -6897,7 +6897,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 45,
+          "count": 36,
           "state": "matched",
           "href": "/agencies/commission-on-human-rights/#mandates-conformance",
           "canonical_href": "/agencies/commission-on-human-rights/#mandates-conformance",
@@ -7558,7 +7558,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 37,
+          "count": 32,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -7734,7 +7734,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 37,
+          "count": 32,
           "state": "matched",
           "href": "/agencies/comptroller/#mandates-conformance",
           "canonical_href": "/agencies/comptroller/#mandates-conformance",
@@ -7922,7 +7922,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 160,
+          "count": 149,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -8098,7 +8098,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 160,
+          "count": 149,
           "state": "matched",
           "href": "/agencies/consumer-and-worker-protection/#mandates-conformance",
           "canonical_href": "/agencies/consumer-and-worker-protection/#mandates-conformance",
@@ -8286,7 +8286,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 205,
+          "count": 196,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -8462,7 +8462,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 205,
+          "count": 196,
           "state": "matched",
           "href": "/agencies/correction/#mandates-conformance",
           "canonical_href": "/agencies/correction/#mandates-conformance",
@@ -8650,7 +8650,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 14,
+          "count": 7,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -8826,7 +8826,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 14,
+          "count": 7,
           "state": "matched",
           "href": "/agencies/criminal-justice-coordinator/#mandates-conformance",
           "canonical_href": "/agencies/criminal-justice-coordinator/#mandates-conformance",
@@ -11392,7 +11392,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 123,
+          "count": 107,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -11568,7 +11568,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 123,
+          "count": 107,
           "state": "matched",
           "href": "/agencies/education/#mandates-conformance",
           "canonical_href": "/agencies/education/#mandates-conformance",
@@ -12484,7 +12484,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 128,
+          "count": 112,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -12660,7 +12660,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 128,
+          "count": 112,
           "state": "matched",
           "href": "/agencies/environmental-protection/#mandates-conformance",
           "canonical_href": "/agencies/environmental-protection/#mandates-conformance",
@@ -13123,7 +13123,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 147,
+          "count": 131,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -13299,7 +13299,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 147,
+          "count": 131,
           "state": "matched",
           "href": "/agencies/finance/#mandates-conformance",
           "canonical_href": "/agencies/finance/#mandates-conformance",
@@ -13829,7 +13829,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 58,
+          "count": 50,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -14005,7 +14005,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 58,
+          "count": 50,
           "state": "matched",
           "href": "/agencies/fire-department/#mandates-conformance",
           "canonical_href": "/agencies/fire-department/#mandates-conformance",
@@ -14193,7 +14193,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 259,
+          "count": 232,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -14369,7 +14369,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 259,
+          "count": 232,
           "state": "matched",
           "href": "/agencies/health-and-mental-hygiene/#mandates-conformance",
           "canonical_href": "/agencies/health-and-mental-hygiene/#mandates-conformance",
@@ -14557,7 +14557,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 46,
+          "count": 42,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -14733,7 +14733,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 46,
+          "count": 42,
           "state": "matched",
           "href": "/agencies/homeless-services/#mandates-conformance",
           "canonical_href": "/agencies/homeless-services/#mandates-conformance",
@@ -15196,7 +15196,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 145,
+          "count": 132,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -15372,7 +15372,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 145,
+          "count": 132,
           "state": "matched",
           "href": "/agencies/housing-preservation-and-development/#mandates-conformance",
           "canonical_href": "/agencies/housing-preservation-and-development/#mandates-conformance",
@@ -15560,7 +15560,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 102,
+          "count": 94,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -15736,7 +15736,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 102,
+          "count": 94,
           "state": "matched",
           "href": "/agencies/human-resources-administration/#mandates-conformance",
           "canonical_href": "/agencies/human-resources-administration/#mandates-conformance",
@@ -15924,7 +15924,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 5,
+          "count": 4,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -16100,7 +16100,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 5,
+          "count": 4,
           "state": "matched",
           "href": "/agencies/independent-budget-office/#mandates-conformance",
           "canonical_href": "/agencies/independent-budget-office/#mandates-conformance",
@@ -16199,7 +16199,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 29,
+          "count": 24,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -16375,7 +16375,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 29,
+          "count": 24,
           "state": "matched",
           "href": "/agencies/information-technology-and-telecommunications/#mandates-conformance",
           "canonical_href": "/agencies/information-technology-and-telecommunications/#mandates-conformance",
@@ -16563,7 +16563,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 21,
+          "count": 19,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -16739,7 +16739,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 21,
+          "count": 19,
           "state": "matched",
           "href": "/agencies/investigation/#mandates-conformance",
           "canonical_href": "/agencies/investigation/#mandates-conformance",
@@ -17148,7 +17148,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 27,
+          "count": 20,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -17324,7 +17324,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 27,
+          "count": 20,
           "state": "matched",
           "href": "/agencies/law-department/#mandates-conformance",
           "canonical_href": "/agencies/law-department/#mandates-conformance",
@@ -17479,7 +17479,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -17655,7 +17655,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 3,
+          "count": 2,
           "state": "matched",
           "href": "/agencies/management-and-budget/#mandates-conformance",
           "canonical_href": "/agencies/management-and-budget/#mandates-conformance",
@@ -17799,7 +17799,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 8,
+          "count": 6,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -17975,7 +17975,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 8,
+          "count": 6,
           "state": "matched",
           "href": "/agencies/mayors-office-of-contract-services/#mandates-conformance",
           "canonical_href": "/agencies/mayors-office-of-contract-services/#mandates-conformance",
@@ -20455,7 +20455,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 197,
+          "count": 174,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -20631,7 +20631,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 197,
+          "count": 174,
           "state": "matched",
           "href": "/agencies/office-of-the-mayor/#mandates-conformance",
           "canonical_href": "/agencies/office-of-the-mayor/#mandates-conformance",
@@ -20819,7 +20819,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 59,
+          "count": 53,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -20995,7 +20995,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 59,
+          "count": 53,
           "state": "matched",
           "href": "/agencies/parks-and-recreation/#mandates-conformance",
           "canonical_href": "/agencies/parks-and-recreation/#mandates-conformance",
@@ -21458,7 +21458,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 133,
+          "count": 124,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -21634,7 +21634,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 133,
+          "count": 124,
           "state": "matched",
           "href": "/agencies/police-department/#mandates-conformance",
           "canonical_href": "/agencies/police-department/#mandates-conformance",
@@ -21822,7 +21822,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 15,
+          "count": 13,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -21998,7 +21998,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 15,
+          "count": 13,
           "state": "matched",
           "href": "/agencies/probation/#mandates-conformance",
           "canonical_href": "/agencies/probation/#mandates-conformance",
@@ -22186,7 +22186,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 7,
+          "count": 5,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -22362,7 +22362,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 7,
+          "count": 5,
           "state": "matched",
           "href": "/agencies/public-advocate/#mandates-conformance",
           "canonical_href": "/agencies/public-advocate/#mandates-conformance",
@@ -23298,7 +23298,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 51,
+          "count": 46,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -23474,7 +23474,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 51,
+          "count": 46,
           "state": "matched",
           "href": "/agencies/sanitation/#mandates-conformance",
           "canonical_href": "/agencies/sanitation/#mandates-conformance",
@@ -23662,7 +23662,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 58,
+          "count": 54,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -23838,7 +23838,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 58,
+          "count": 54,
           "state": "matched",
           "href": "/agencies/small-business-services/#mandates-conformance",
           "canonical_href": "/agencies/small-business-services/#mandates-conformance",
@@ -24301,7 +24301,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 65,
+          "count": 61,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -24477,7 +24477,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 65,
+          "count": 61,
           "state": "matched",
           "href": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
           "canonical_href": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
@@ -24940,7 +24940,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 124,
+          "count": 116,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -25116,7 +25116,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 124,
+          "count": 116,
           "state": "matched",
           "href": "/agencies/transportation/#mandates-conformance",
           "canonical_href": "/agencies/transportation/#mandates-conformance",
@@ -25579,7 +25579,7 @@
         },
         "obligations": {
           "status": "matched",
-          "count": 11,
+          "count": 10,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -25755,7 +25755,7 @@
           "target_kind": "mandate",
           "target_id": null,
           "target_name": "Mandates",
-          "count": 11,
+          "count": 10,
           "state": "matched",
           "href": "/agencies/youth-and-community-development/#mandates-conformance",
           "canonical_href": "/agencies/youth-and-community-development/#mandates-conformance",

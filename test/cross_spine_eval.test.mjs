@@ -14,6 +14,7 @@ import {
   loadCrossSpineGold,
   wilsonInterval,
 } from "../tools/cross_spine_eval.mjs";
+import { buildConstellationErAccuracyReceipt } from "../tools/build_constellation_er_accuracy_receipt.mjs";
 import { LAND_USE_PROCEDURE_KINDS } from "../worker/src/lib/subject_registry.mjs";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
@@ -23,6 +24,7 @@ const V1_GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v1.j
 const HARNESS_PATH = resolve(ROOT, "tools/cross_spine_eval.mjs");
 const BUILD_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v3.mjs");
 const BUILD_V2_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v2.mjs");
+const ACCURACY_RECEIPT_PATH = resolve(ROOT, "docs/evidence/ebcg-er-accuracy/receipt.json");
 
 function fixtureRow(id, relation, label, leftGroup, rightGroup, features) {
   return {
@@ -54,6 +56,13 @@ test("versioned cross-spine gold loads and evaluates every relation", () => {
   assert.equal(gold.meta.additions.length, 1);
   const report = evaluateCrossSpineGold({ gold, groupSplit: true });
   assert.equal(report.schema, "cityscroll.cross_spine_edge_eval.v3");
+  assert.equal(report.matcher_version, "cross_spine_edge_policy_v2");
+  assert.deepEqual(report.target_cohort, {
+    name: "constellation_cross_spine_inferred_edges",
+    gold_slice: "cross_spine_gold_v3:held_out",
+    relation_count: 6,
+    case_count: 90,
+  });
   assert.equal(report.split.group_leakage, false);
   assert.equal(report.split.held_out_rows, 90);
   assert.deepEqual(Object.keys(report.gate).sort(), [
@@ -75,6 +84,11 @@ test("versioned cross-spine gold loads and evaluates every relation", () => {
     assert.equal(gate.precision_interval_95.confidence, 0.95);
     assert.ok(gate.precision_interval_95.lower < gate.precision);
   }
+  for (const metric of Object.values(report.held_out)) {
+    assert.equal(metric.recall, metric.coverage);
+    assert.equal(metric.false_merge, 0);
+    assert.equal(metric.false_split, 0);
+  }
   assert.equal(report.ok, true);
   assert.equal(report.topic_normalization.registry_version, "topic_normalization_v1");
   for (const relation of ["mandate_meeting", "mandate_rule"]) {
@@ -84,6 +98,22 @@ test("versioned cross-spine gold loads and evaluates every relation", () => {
     assert.ok(metric.abstention_rate > 0);
     assert.equal(report.topic_normalization.gate[relation].status, "pass");
   }
+});
+
+test("constellation accuracy receipt records improvements and provisional cohorts", () => {
+  const gold = loadCrossSpineGold(readFileSync(GOLD_PATH, "utf8"));
+  const receipt = buildConstellationErAccuracyReceipt({
+    gold,
+    shadowCensus: JSON.parse(readFileSync(resolve(ROOT, "site/data/cross_spine_shadow_census.json"), "utf8")),
+    mandates: JSON.parse(readFileSync(resolve(ROOT, "site/data/agency_obligations_lookup.json"), "utf8")),
+  });
+  assert.deepEqual(receipt, JSON.parse(readFileSync(ACCURACY_RECEIPT_PATH, "utf8")));
+  assert.equal(receipt.matcher.version, "cross_spine_edge_policy_v2");
+  assert.equal(receipt.held_out_metrics.relation_coverage, 1);
+  assert.equal(receipt.held_out_metrics.false_merge, 0);
+  assert.equal(receipt.held_out_metrics.false_split, 0);
+  assert.ok(receipt.public_total_contract.agency_mandates.provisional_rows_excluded > 0);
+  assert.ok(receipt.publication_gate.provisional_cross_spine_candidates.evidence_only > 0);
 });
 
 test("topic normalization review reports precision, coverage, and adversarial abstention", () => {
