@@ -111,7 +111,7 @@ function categorySectionHtml(category) {
     ? `<p class="node-muted muted">${esc(category.honesty)}</p>`
     : "";
   const followLabel = category.id === "obligations"
-    ? "Watch obligations and deadlines"
+    ? "Watch mandates and deadlines"
     : `Follow ${category.label.toLowerCase()}`;
   const actions = [
     category.view_all_href
