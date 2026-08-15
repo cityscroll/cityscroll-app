@@ -154,7 +154,7 @@ test("committed live corpus links Homeless Services shelter mandates through awa
   assert.ok(view.edges.some((row) => row.procurement_record.request_id === "20210820102"));
   assert.ok(view.edges.every((row) => /renewal/i.test(row.procurement_record.label)));
   assert.ok(view.edges.every((row) => row.contract.subject_ref.startsWith("contract:")));
-  assert.ok(view.edges.every((row) => row.procurement_record.href.startsWith("#notice/")));
+  assert.ok(view.edges.every((row) => row.procurement_record.href.startsWith("/notices/")));
   assert.ok(view.edges.every((row) => row.evidence.authority_key));
   assert.equal(
     new Set(view.edges.map((row) => row.claim.claim_id)).size,
@@ -167,8 +167,12 @@ test("committed live corpus links Homeless Services shelter mandates through awa
   const html = renderMandateContractsBridgeSection(view);
   assert.match(html, /id="mandates-contracts"/);
   assert.match(html, /Mandates · Contracts and procurement/);
-  assert.match(html, /Contract CT1-071-/);
-  assert.match(html, /Open procurement record/);
+  // The contract is the linked civic object; its City Record notice remains separately labeled evidence.
+  assert.match(html, /Contract · CT1-071-/);
+  assert.match(html, /data-target-kind="procurement"/);
+  assert.match(html, /Notice evidence/);
+  assert.match(html, /data-target-kind="notice"/);
+  assert.doesNotMatch(html, /href="\/notices\/[^"]+"[^>]*>Contract/);
   assert.doesNotMatch(html, /not yet|no matching|methodology|disclaimer|fabricat/i);
 });
 

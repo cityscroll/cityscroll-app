@@ -16,8 +16,9 @@
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
-import { officialSourceLink } from "./affordance_grammar.mjs";
+import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { canonicalMandateId } from "./mandate_subject_ref.mjs";
+import { mandateObjectTarget } from "./notice_object_links.mjs";
 
 export const AGENCY_OBLIGATIONS_SCHEMA = "cityscroll.agency_obligations.v1";
 export const AGENCY_OBLIGATIONS_METHOD = "enacted_law_mandate_extract_v1";
@@ -521,10 +522,15 @@ function publicObligationItem(row, today) {
   return {
     id: row.obligation_id,
     obligation_id: row.obligation_id,
+    mandate_id: row.obligation_id,
+    matter_id: row.matter_id,
+    agency_id: row.agency_id,
+    agency_name: row.agency_name,
     duty_text: row.duty_text,
     deliverable_type: row.deliverable_type,
     deadline_date: deadlineDate,
     deadline_text: row.deadline?.text || null,
+    deadline: row.deadline || null,
     deadline_band: deadlineBand,
     recurrence: row.recurrence,
     citation: row.citation,
@@ -532,6 +538,7 @@ function publicObligationItem(row, today) {
     quote_verified: row.certification?.quote_verified === true,
     observation_status: row.observation?.status || "not_adjudicated",
     source: row.source,
+    source_href: row.source?.legistar_url || row.source?.law_text_url || null,
     href: row.source?.legistar_url || null,
     alert_id: row.alert_id,
   };
@@ -679,7 +686,16 @@ export function renderAgencyObligationsSection(view) {
     : "Records not shown";
   const list = view.items?.length
     ? `<ul class="node-record-list">${view.items.map((item) => {
-      const duty = esc(item.duty_text);
+      const mandateTarget = mandateObjectTarget(item);
+      const duty = mandateTarget
+        ? constellationLink({
+          href: mandateTarget.href,
+          label: mandateTarget.label,
+          className: "agency-edge-link",
+          attributes: { "data-target-kind": "mandate" },
+          escape: esc,
+        })
+        : esc(item.duty_text);
       const meta = [
         item.deliverable_type,
         item.deadline_date ? `deadline ${item.deadline_date}` : (item.deadline_text ? `deadline: ${item.deadline_text}` : "no computed deadline"),

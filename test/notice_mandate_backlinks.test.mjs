@@ -39,6 +39,8 @@ const PUBLIC_EDGE = {
     duty_text: "Issue a request for proposals for elevator inspection services.",
     citation: "Local Law demo §1",
     source_href: "https://example.test/law",
+    deadline: { kind: "days_after_effective", text: "Within 30 days" },
+    recurrence: "one-time",
   },
   procurement_record: {
     subject_ref: "notice:20260000001",
@@ -155,6 +157,8 @@ test("lookup and render are empty-safe and omit absence copy", () => {
         agency_name: "Department of Buildings",
         agency_href: "/agencies/buildings/",
         mandate_id: CROSS_BRIDGE_OBLIGATION_ID,
+        deadline: { kind: "days_after_effective", text: "Within 30 days" },
+        recurrence: "one-time",
         publication_tier: "public_inferred",
       }],
       "20260000099": [{
@@ -178,6 +182,8 @@ test("lookup and render are empty-safe and omit absence copy", () => {
   assert.match(html, /href="\/agencies\/buildings\/"/);
   assert.match(html, /Procurement record for this duty/);
   assert.match(html, /Watch this mandate/);
+  assert.match(html, new RegExp(`href="/mandates/${CROSS_BRIDGE_OBLIGATION_ID}"`));
+  assert.match(html, /data-target-kind="mandate"/);
   assert.match(html, /data-mandate-watch="1"/);
   assert.match(html, new RegExp(`data-mandate-id="${CROSS_BRIDGE_OBLIGATION_ID}"`));
   assert.match(html, /lens=mandates/);
