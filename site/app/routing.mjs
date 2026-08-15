@@ -170,7 +170,7 @@ function carryWalk(hash, source=location.hash){
 }
 
 function serializeState(){
-  const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
+  const tab = globalThis.activeViewTab?.();
   if(!tab) return location.hash || "#money"; // notice view keeps its own hash
   // Preserve #exam/<id> while a deep-linked exam detail is selected. Rewriting to
   // #people?view=guide would re-enter applyHash and clear careerSelected (list-only race).
@@ -305,7 +305,7 @@ function nearYouHref(scope){
   return CrolScope.nearYouUrlFromScope(normalized,{base:"https://cityscroll.org/near-you"});
 }
 function syncNearYouLinks(currentHash){
-  const active=document.querySelector(".tabbtn.active")?.dataset.tab||"meetings";
+  const active=globalThis.activeViewTab?.()||"meetings";
   const activeHash=currentHash||serializeState();
   document.querySelectorAll("[data-near-you-link]").forEach(link=>{
     const requested=link.dataset.lens==="current"?active:(link.dataset.lens||active);

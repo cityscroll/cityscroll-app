@@ -47,16 +47,21 @@ export function replaceElementContent(html, id, content) {
   return `${html.slice(0, range.contentStart)}${content}${html.slice(range.contentEnd)}`;
 }
 
-function activateTab(html, tab) {
-  let out = html
-    .replaceAll('class="tabbtn active"', 'class="tabbtn"')
-    .replaceAll('class="tabpane active"', 'class="tabpane"');
+function activateTabButton(html, tab) {
+  let out = html.replaceAll('class="tabbtn active"', 'class="tabbtn"');
   const groupPattern = new RegExp(`class="tabbtn"([^>]*\\bdata-route-facets="[^\"]*\\b${tab}\\b[^\"]*")`);
   const tabPattern = new RegExp(`class="tabbtn"([^>]*\\bdata-tab="${tab}")`);
   const grouped = out.replace(groupPattern, 'class="tabbtn active"$1');
-  out = grouped.includes('class="tabbtn active"')
+  return grouped.includes('class="tabbtn active"')
     ? grouped
     : out.replace(tabPattern, 'class="tabbtn active"$1');
+}
+
+function activateTab(html, tab) {
+  let out = activateTabButton(
+    html.replaceAll('class="tabpane active"', 'class="tabpane"'),
+    tab,
+  );
   out = out.replace(`id="tab-${tab}" class="tabpane"`, `id="tab-${tab}" class="tabpane active"`);
   return out;
 }
@@ -189,6 +194,7 @@ export function buildBrowseAliasDocument(shell, aliasId, targetPayload) {
     '<body data-primary-context="browse"',
     `<body data-primary-context="browse" data-browse-route-alias="${esc(aliasId)}" data-browse-route-alias-label="${esc(alias.label)}"`,
   );
+  html = activateTabButton(html, alias.navigationTab);
   const examsPane = findElementRange(html, "tab-exams");
   html = `${html.slice(0, examsPane.openingStart)}${html.slice(examsPane.closingEnd)}`;
   html = html.replace('<details class="staffing-ledger" id="staffing-ledger">', '<details class="staffing-ledger" id="staffing-ledger" hidden>');

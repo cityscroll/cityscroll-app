@@ -20,6 +20,14 @@ def wait_for_guide(page):
     wait_for_locator(page.locator("#career-results .career-card").first, timeout=45_000, label="Exams guide cards")
 
 
+def assert_active_civic_object(page, href):
+    active = page.locator(".browse-child-tabs .tabbtn.active")
+    assert active.count() == 1
+    assert active.get_attribute("href") == href
+    assert active.get_attribute("aria-controls") == "tab-people"
+    assert page.locator("#tab-people").get_attribute("aria-labelledby") == active.get_attribute("id")
+
+
 def run(page):
     install_routes(page)
 
@@ -28,10 +36,13 @@ def run(page):
     # navigation instead of exposing the retired inline #tab-exams splash.
     page.goto(f"{BASE}browse/contracts/", wait_until="domcontentloaded", timeout=30_000)
     page.wait_for_function("typeof window.showTab === 'function'")
+    # Regression: the Exams nav item must keep its own route and highlight;
+    # resolving the shared view through Staffing crossed the two lens states.
     page.locator(".browse-child-tabs [href='/browse/exams/']").click()
     page.wait_for_url(f"{BASE}browse/exams/", timeout=30_000)
     wait_for_guide(page)
     assert page.url.rstrip("/").endswith("/browse/exams")
+    assert_active_civic_object(page, "/browse/exams/")
     expect(page.locator("#tab-exams")).to_be_hidden()
     assert page.locator("#tab-people.active").count() == 1
     assert page.locator("#career-guide").is_visible()
@@ -98,10 +109,13 @@ def run(page):
     assert page.locator("#staffing-more-filters").get_attribute("open") == ""
     page.keyboard.press("Escape")
 
-    # The source Staffing route remains its original mixed guide + ledger frame.
-    page.goto(f"{BASE}browse/staffing/", wait_until="domcontentloaded", timeout=30_000)
+    # Leaving the alias through its shared parent opens Staffing rather than
+    # trapping the click on the Exams URL.
+    page.locator(".browse-child-tabs [href='/browse/people/']").click()
+    page.wait_for_url(f"{BASE}browse/staffing/", timeout=30_000)
     wait_for_guide(page)
     assert page.locator("body").get_attribute("data-browse-route-alias") is None
+    assert_active_civic_object(page, "/browse/people/")
     assert page.locator("#staffing-ledger").get_attribute("hidden") is None
     assert page.locator("#career-browser-heading").inner_text() == "Find an exam you can act on"
 

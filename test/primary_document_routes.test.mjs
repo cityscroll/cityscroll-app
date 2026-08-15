@@ -376,6 +376,8 @@ test("Browse landing and every bounded child are exact build outputs with useful
   const exams = output("/site/browse/exams/index.html");
   assert.match(exams, /data-browse-route-alias="exams"/);
   assert.match(exams, /id="tab-people" class="tabpane active"/);
+  assert.match(exams, /class="tabbtn active" href="\/browse\/exams\/" data-tab="exams"/);
+  assert.doesNotMatch(exams, /class="tabbtn active" href="\/browse\/people\/" data-tab="people"/);
   assert.match(exams, /id="career-guide"/);
   assert.match(exams, /id="career-results"/);
   assert.match(exams, /id="staffing-ledger" hidden/);
@@ -469,6 +471,7 @@ test("Exams is one data-only alias to the Staffing guide", () => {
     targetRoute: alias.targetRoute,
     targetFacet: alias.targetFacet,
     targetTab: alias.targetTab,
+    navigationTab: alias.navigationTab,
     defaultView: alias.defaultView,
     corpus: alias.corpus,
   }, {
@@ -476,6 +479,7 @@ test("Exams is one data-only alias to the Staffing guide", () => {
     targetRoute: "/browse/staffing/",
     targetFacet: "staffing",
     targetTab: "people",
+    navigationTab: "exams",
     defaultView: "guide",
     corpus: "exams",
   });
