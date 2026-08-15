@@ -212,11 +212,8 @@ test("Parks rules rows keep Source law and drop hollow agency Open-in chips", ()
   const matterIds = [...rowBlock.matchAll(/data-matter-id="(\d+)"/g)].map((m) => m[1]);
   assert.ok(new Set(matterIds).size >= Math.min(2, rows.length) || rows.length === 1);
 
-  // Section chrome still exposes honest agency-wide scopes once.
-  assert.match(html, /data-mandate-graph-neighbor="rules"[^>]*data-scope="agency"/);
-  assert.match(html, /data-mandate-graph-neighbor="meetings"[^>]*data-scope="agency"/);
-  assert.match(html, /data-mandate-graph-neighbor="contracts"[^>]*data-scope="agency"/);
-  assert.match(html, /Browse agency Rules/);
+  // Agency-wide browse scopes move to the page-level Explore group.
+  assert.doesNotMatch(html, /data-mandate-graph-neighbor=/);
   assert.match(html, /Gateway\.aspx\?M=L&amp;ID=/);
 });
 
@@ -242,9 +239,9 @@ test("Parks reports rows keep Source law without repeating agency-wide chips", (
   );
   assert.ok(rowBlockMatch);
   assert.doesNotMatch(rowBlockMatch[1], /data-mandate-graph-neighbor/);
-  // Section chrome is agency-wide and labeled as such.
-  assert.match(html, /Browse agency Rules|Browse agency Meetings|Browse agency Contracts/);
-  assert.match(html, /data-scope="agency"/);
+  // Agency-wide browse scopes are page-level, not section-level.
+  assert.doesNotMatch(html, /Browse agency Rules|Browse agency Meetings|Browse agency Contracts/);
+  assert.doesNotMatch(html, /data-scope="agency"/);
 });
 
 test("EPA and Parks mandate cards no longer share identical agency-wide Open-in chips", () => {
@@ -296,9 +293,31 @@ test("Parks constellation document wires honest section-level agency neighbors",
   assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
   assert.match(html, /Report mandates/);
   assert.match(html, /Rulemaking mandates/);
-  // Agency-wide browse lives in section chrome with honest labels.
-  assert.match(html, /data-mandate-graph-neighbor="rules"[^>]*data-scope="agency"/);
-  assert.match(html, /Browse agency Rules/);
+  // Agency-wide browse lives once in the page-level Explore group.
+  assert.match(html, /aria-label="Explore this agency"/);
+  for (const label of ["Browse agency Rules", "Browse agency Meetings", "Browse agency Contracts"]) {
+    assert.equal((html.match(new RegExp(label, "g")) || []).length, 1);
+  }
   assert.match(html, /data-mandate-edge="source_law"/);
   assert.deepEqual(detectNodePageCruft(html), []);
+});
+
+test("EPA page keeps one Explore group and distinct mandate section actions", () => {
+  assert.ok(obligations, "agency_obligations_lookup.json required");
+  const view = buildAgencyConstellationView(EPA, {
+    intelligence,
+    certification,
+    obligations,
+    process_conformance: processConformance,
+  });
+  const html = renderAgencyConstellationDocument(view);
+  assert.equal((html.match(/aria-label="Explore this agency"/g) || []).length, 1);
+  for (const label of ["Browse agency Rules", "Browse agency Meetings", "Browse agency Contracts"]) {
+    assert.equal((html.match(new RegExp(label, "g")) || []).length, 1);
+  }
+  assert.match(html, /Share this view/);
+  assert.match(html, /Watch expected mandate events|Watch report mandates|Watch rulemaking mandates|Follow Rules activity/);
+  if (html.includes('id="mandates-conformance"')) {
+    assert.match(html, /class="mandates-conformance-scroll"[^>]*role="region"[^>]*tabindex="0"/);
+  }
 });

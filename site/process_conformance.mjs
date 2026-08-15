@@ -24,7 +24,6 @@ import {
   mandateMatterEdgeFromRow,
   normalizeMandateGraphNeighbors,
   renderMandateRowGraphActions,
-  renderMandateSectionNeighborActions,
 } from "./mandate_graph_neighbors.mjs";
 import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
 import {
@@ -1062,14 +1061,10 @@ export function renderMandatesConformanceSection(view) {
     }).join("")}</ul>`
     : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency yet.")}</p>`;
 
-  const neighborChrome = renderMandateSectionNeighborActions({
-    graph_neighbors: graphNeighbors,
-    escape: esc,
-  });
   const share = view.share_path
     ? `<a class="node-action civic-object-action" href="${esc(view.share_path)}">Open all mandates</a>`
     : "";
-  const actions = [neighborChrome, share].filter(Boolean).join("");
+  const actions = [share].filter(Boolean).join("");
 
   const copy = view.copy || view.honesty || CONFORMANCE_COPY;
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
