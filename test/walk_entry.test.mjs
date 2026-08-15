@@ -47,8 +47,8 @@ test("walk entry renders an origin chip and measured family states", () => {
   assert.match(html, /START.*Search/);
   assert.match(html, /data-walk-family-state="available"/);
   assert.match(html, /12 records in this family/);
-  assert.match(html, /Coverage is unavailable for this view/);
-  assert.match(html, /No records in this snapshot/);
+  assert.match(html, /Records not shown/);
+  assert.doesNotMatch(html, /No records in this snapshot/);
 });
 
 test("Browse landing exposes all measured entry families, including Places", () => {

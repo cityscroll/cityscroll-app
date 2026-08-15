@@ -177,7 +177,7 @@ function stateLabel(state) {
 
 function formatObservedOn(value) {
   const date = asDate(value);
-  return date ? `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}` : "Date not recorded";
+  return date ? `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}` : "";
 }
 
 function sourceRoleLabel(role) {
@@ -191,7 +191,9 @@ function sourceCard(source, role) {
   const access = source.access_constraint === "browser_required"
     ? `<span class="scorecard-source-note">Browser access may be required.</span>`
     : "";
-  return `<div class="scorecard-source" data-source-type="${esc(role)}" data-collection-state="${esc(source.collection_state)}"><strong>${esc(sourceRoleLabel(role))}</strong>${link}<span class="scorecard-source-state">${esc(stateLabel(source.collection_state))}</span><span class="scorecard-source-meta">Observed ${esc(formatObservedOn(source.observed_on))} · ${esc(source.origin_label)}</span>${access}</div>`;
+  const observed = formatObservedOn(source.observed_on);
+  const meta = [observed ? `Observed ${observed}` : "", source.origin_label || ""].filter(Boolean).join(" · ");
+  return `<div class="scorecard-source" data-source-type="${esc(role)}" data-collection-state="${esc(source.collection_state)}"><strong>${esc(sourceRoleLabel(role))}</strong>${link}<span class="scorecard-source-state">${esc(stateLabel(source.collection_state))}</span>${meta ? `<span class="scorecard-source-meta">${esc(meta)}</span>` : ""}${access}</div>`;
 }
 
 export function buildScorecard({ registry, detector = null, observedOn = null, sourceInventory = null, joinedLookup = null, meetingIndex = null } = {}) {

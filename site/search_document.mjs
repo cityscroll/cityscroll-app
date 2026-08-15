@@ -124,10 +124,7 @@ function renderResults(root, results) {
     elements.status.textContent = items.length ? `${items.length} result${items.length === 1 ? "" : "s"}` : "No matches";
     elements.body.className = "topic-search-lane-body";
     elements.body.replaceChildren();
-    if (!items.length) {
-      elements.body.textContent = `No matching ${LANE_LABELS[lane].toLowerCase()} records were found.`;
-      continue;
-    }
+    if (!items.length) continue;
     const list = document.createElement("div");
     list.className = "topic-search-results";
     for (const record of items) list.append(renderResult(record));

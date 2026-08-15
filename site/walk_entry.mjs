@@ -80,9 +80,9 @@ function familyState(family) {
 
 function familyStateLabel(state, count) {
   if (state === "available") return `${Number(count).toLocaleString("en-US")} records in this family`;
-  if (state === "empty") return "No records in this snapshot";
-  if (state === "unsupported") return "Not available from this entry";
-  return "Coverage is unavailable for this view.";
+  if (state === "empty") return "";
+  if (state === "unsupported") return "";
+  return "Records not shown";
 }
 
 export function renderWalkEntry({
@@ -114,7 +114,7 @@ export function renderWalkEntry({
       <p class="walk-entry-lane-kicker">${esc(family?.kicker || label)}</p>
       <h3>${target}</h3>
       <p>${esc(family?.description || "Open the supported public records for this family.")}</p>
-      <p class="walk-entry-coverage" data-walk-coverage="${esc(state)}">${esc(familyStateLabel(state, family?.count))}</p>
+      ${familyStateLabel(state, family?.count) ? `<p class="walk-entry-coverage" data-walk-coverage="${esc(state)}">${esc(familyStateLabel(state, family?.count))}</p>` : ""}
     </article>`;
   }).join("");
   return `<section class="walk-entry" data-walk-entry data-walk-source="${esc(safeSource)}" aria-labelledby="walk-entry-heading">

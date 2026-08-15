@@ -500,9 +500,7 @@ export function buildAgencyObligationsView(agencyIdOrName, lookup, { limit = 12,
     er_match_basis: AGENCY_OBLIGATIONS_ER_BASIS,
     follow_href: agencyObligationsFollowHref(identity.canonical_id),
     honesty: lookup?.honesty || null,
-    note: obligations.length
-      ? null
-      : "No statutory mandates are linked to this agency yet.",
+    note: null,
   };
 }
 
@@ -675,9 +673,10 @@ export function mandateFollowHref(mandateId, agencyIdOrName, {
 /** Compact HTML list fragment for constellation embedding. */
 export function renderAgencyObligationsSection(view) {
   if (!view) return "";
+  if (view.status === "empty" && !view.items?.length) return "";
   const status = view.status === "matched"
     ? `${view.count} mandates`
-    : "No mandates linked yet";
+    : "Records not shown";
   const list = view.items?.length
     ? `<ul class="node-record-list">${view.items.map((item) => {
       const duty = esc(item.duty_text);

@@ -54,6 +54,7 @@ function entityLink(kind, id, label) {
 }
 
 function conceptSection(id, title, description, body, count = null) {
+  if (!body || count === 0) return "";
   const countLabel = count == null ? "" : `<p class="browse-concept-count">${esc(count.toLocaleString("en-US"))}</p>`;
   return `<section class="browse-concept-section" id="${esc(id)}" aria-labelledby="${esc(id)}-heading">
     ${countLabel}<h2 id="${esc(id)}-heading">${esc(title)}</h2><p class="browse-concept-description">${esc(description)}</p>${body}
@@ -113,21 +114,21 @@ function committeeItems(graph = {}, people = {}) {
 
 function renderOfficials(people) {
   const items = officialItems(people);
-  if (!items.length) return `<p class="empty">No officials are in the current published index.</p>`;
+  if (!items.length) return "";
   const shown = items.slice(0, 10);
   return `<ul class="browse-concept-list">${shown.map((person) => `<li>${entityLink("official", person.person_id, person.person_name)} <span class="browse-concept-meta">Official profile.</span></li>`).join("")}</ul><p class="browse-concept-meta">Showing ${shown.length} official${shown.length === 1 ? "" : "s"}.</p>`;
 }
 
 function renderVendors(awards) {
   const items = vendorItems(awards);
-  if (!items.length) return `<p class="empty">No vendors are in the current published index.</p>`;
+  if (!items.length) return "";
   const shown = items.slice(0, 10);
   return `<ul class="browse-concept-list">${shown.map((vendor) => `<li>${entityLink("vendor", vendor.name, vendor.name)} <span class="browse-concept-meta">${vendor.count.toLocaleString("en-US")} award${vendor.count === 1 ? "" : "s"}.</span></li>`).join("")}</ul><p class="browse-concept-meta">Showing ${shown.length} vendor${shown.length === 1 ? "" : "s"}.</p>`;
 }
 
 function renderCommittees(graph, people) {
   const items = committeeItems(graph, people);
-  if (!items.length) return `<p class="empty">No published committee records are in the current index.</p>`;
+  if (!items.length) return "";
   return `<ul class="browse-concept-list browse-committee-list">${items.slice(0, 5).map((committee) => {
     const members = committee.members.length
       ? `Members: ${committee.members.map((member) => renderEntityPivotLink({
@@ -140,21 +141,21 @@ function renderCommittees(graph, people) {
         provenance: member.edge?.provenance ?? null,
         inverse_of: member.edge?.inverse_of ?? null,
       }, { escape: esc })).join(", ")}.`
-      : "Reverse coverage unavailable.";
-    return `<li><strong>${esc(committee.name)}.</strong> <span class="browse-concept-meta">${members}</span>${renderCommitteeLocalConstellationHTML(graph, committee.id, people)}</li>`;
+      : "";
+    return `<li><strong>${esc(committee.name)}.</strong>${members ? ` <span class="browse-concept-meta">${members}</span>` : ""}${renderCommitteeLocalConstellationHTML(graph, committee.id, people)}</li>`;
   }).join("")}</ul>`;
 }
 
 function renderBoardOrganizations(geography) {
   const boards = boardItems(geography);
-  if (!boards.length) return `<p class="empty">No community boards are in the current organization index.</p>`;
+  if (!boards.length) return "";
   return `<ul class="browse-concept-list browse-board-organization-list">${boards.map((board) => {
     const relationStatus = board.organizationRelations
       .map((relation) => `<span>${esc(ORGANIZATION_RELATION_LABELS[relation.type] || relation.label || "Board records")} · Unknown</span>`)
       .join("");
     const coverage = board.communityDistrict
       ? `Covers ${board.borough} Community District ${board.communityDistrict}.`
-      : "District coverage · Unknown.";
+      : "District coverage not listed.";
     return `<li class="browse-board-organization" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">
       <h3>${link(board.institutionHref, board.name)}</h3>
       <p class="browse-concept-meta">${esc(coverage)}</p>
@@ -264,6 +265,7 @@ export function renderPeopleOrganizationRow(row) {
 
 function renderPeopleOrganizationsList(model) {
   const rows = Array.isArray(model?.rows) ? model.rows : [];
+  if (!rows.length) return "";
   const config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG;
   const state = browseListState(model, new URLSearchParams(), config);
   const initialRows = rows.slice(0, config.initialPageSize);
@@ -284,8 +286,8 @@ function renderPeopleOrganizationsList(model) {
   return `<section class="browse-concept-section people-organizations-unified" id="people-organizations-list" aria-labelledby="people-organizations-list-heading" data-people-organizations>
     <p class="browse-concept-count">${esc(rows.length.toLocaleString("en-US"))} typed rows</p>
     <h2 id="people-organizations-list-heading">People and organizations</h2>
-    <p class="browse-concept-description">Search one materialized list. Every row names its record type; person links use exact identifiers, while notice-only hires remain visibly unjoined.</p>
-    <p class="people-org-freshness" data-people-organizations-freshness>${state.generatedAt ? `Updated ${esc(state.generatedAt)}` : "Update date unavailable"}</p>
+    <p class="browse-concept-description">Search the current list. Every row names its record type; person links use exact identifiers, while notice-only hires remain separate.</p>
+    ${state.generatedAt ? `<p class="people-org-freshness" data-people-organizations-freshness>Updated ${esc(state.generatedAt)}</p>` : ""}
     <form class="people-org-search" role="search" data-people-organizations-search-form>
       <label for="people-organizations-search">Search people and organizations</label>
       <input id="people-organizations-search" type="search" autocomplete="off" placeholder="Search a name, agency, board, committee, or notice" data-people-organizations-search>
