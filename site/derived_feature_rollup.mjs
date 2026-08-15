@@ -9,7 +9,7 @@
 export const DERIVED_FEATURE_ROLLUP_SCHEMA = "cityscroll.derived_feature_rollup.v1";
 export const DERIVED_FEATURE_ROLLUP_METHOD = "derived_feature_rollup_incremental_v1";
 
-const DAY_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const FEATURE_DAY_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 const DAY_MS = 86_400_000;
 const SEEN = Symbol("derived-feature-rollup-seen");
 
@@ -29,7 +29,7 @@ export function featureDayStamp(value) {
   if (value == null || value === "") return null;
   const raw = String(value).trim();
   const match = raw.match(/\d{4}-\d{2}-\d{2}/);
-  if (!match || !DAY_RE.test(match[0])) return null;
+  if (!match || !FEATURE_DAY_RE.test(match[0])) return null;
   const [year, month, day] = match[0].split("-").map(Number);
   const probe = new Date(Date.UTC(year, month - 1, day));
   if (
