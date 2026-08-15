@@ -86,7 +86,7 @@ export function committeeRowsFromGraph(graph, committeeView = {}) {
       appointment_type: edge?.is_chair ? "Chair" : (clean(edge?.title) || "Membership"),
       start_date: clean(edge?.valid_from) || null,
       end_date: clean(edge?.valid_to) || null,
-      href: "/browse/people/#committees",
+      href: null,
       edge_type: "member_of",
       relation_label: clean(edge?.relation_label) || "member of",
       provenance: edge?.provenance || null,

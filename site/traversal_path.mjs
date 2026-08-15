@@ -254,6 +254,11 @@ export function traversalBackHref(state, fallbackHref = "") {
     : routeWithoutWalk(destination.href);
 }
 
+/** Resolve a visible back control from the walk carried by the current route. */
+export function resolveTraversalBackHref(currentHref, fallbackHref = "") {
+  return traversalBackHref(traversalFromHref(currentHref), fallbackHref);
+}
+
 export function traversalRestartHref(state, fallbackHref = "") {
   const normalized = normalizeTraversalPath(state);
   const origin = normalized.hops[0]?.source?.href || normalized.origin?.href || normalized.current?.href || fallbackHref;

@@ -29,6 +29,7 @@ function classNames(...parts) {
 
 import { officialSourceLink } from "./affordance_grammar.mjs";
 import { appendPlaceContextToHref, placeContextFromScope } from "./place_context.mjs";
+import { resolveTraversalBackHref, traversalFromHref } from "./traversal_path.mjs";
 
 export function renderCivicDocumentAssets(assetPrefix = "/") {
   const prefix = prefixFor(assetPrefix);
@@ -67,9 +68,13 @@ export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass =
 }
 
 /** Shared back-link row above a node-document hero. */
-export function renderNodeBack({ href, label, extraClass = "" } = {}) {
+export function renderNodeBack({ href, label, extraClass = "", currentHref = "" } = {}) {
   if (!href || !label) return "";
-  return `<p class="${esc(classNames("node-back", extraClass))}"><a href="${esc(href)}">${esc(label)}</a></p>`;
+  const carriedHref = currentHref || globalThis.location?.href || "";
+  const traversal = traversalFromHref(carriedHref);
+  const resolvedHref = resolveTraversalBackHref(carriedHref, href);
+  const backState = traversal.hops.length ? "traversal" : "fallback";
+  return `<p class="${esc(classNames("node-back", extraClass))}"><a href="${esc(resolvedHref)}" data-route-back="${backState}" data-traversal-back-fallback="${esc(href)}">${esc(label)}</a></p>`;
 }
 
 /**
