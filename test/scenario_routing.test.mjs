@@ -14,11 +14,11 @@ test("homepage scenario grid is gone; civic objects stay while Following is prom
   assert.doesNotMatch(html, /scenario-nav/);
   assert.doesNotMatch(html, /class="scenario-route"/);
   assert.doesNotMatch(html, /data-i18n="scenario_heading"/);
-  for (const group of ["money", "people", "land", "rules", "meetings"]) {
+  for (const group of ["money", "people", "land", "rules", "meetings", "exams"]) {
     assert.match(html, new RegExp(`data-tab="${group}"`));
   }
   assert.match(html, /Civic objects/);
-  assert.match(html, /href="\/browse\/places\/"[^>]*data-tab="places">Places/);
+  assert.doesNotMatch(html, /href="\/browse\/places\/"[^>]*data-tab="places">Places/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
 });

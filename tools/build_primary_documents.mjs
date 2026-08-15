@@ -3,11 +3,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { BROWSE_FACETS } from "../site/browse_view.mjs";
+import { BROWSE_FACETS, BROWSE_STUBS } from "../site/browse_view.mjs";
 import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import {
   buildBrowseDocument,
   buildBrowseLandingDocument,
+  buildBrowseStubDocument,
   buildBrowseConceptDocument,
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
@@ -68,6 +69,11 @@ export function primaryDocumentOutputs() {
         { value: awards.row_count, label: "awards" },
         { value: payloads.contracts?.notices?.length ?? null, label: "open opportunities" },
       ] },
+      exams: {
+        count: staffingExams.exams?.length ?? null,
+        countLabel: "civil-service exams",
+        facts: [{ value: staffingExams.exams?.length ?? null, label: "civil-service exams" }],
+      },
       "land-property": { facts: [
         { value: landProjects.row_count, label: "land projects" },
         { value: property.property_count, label: "property records" },
@@ -91,6 +97,9 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
+  for (const kind of Object.keys(BROWSE_STUBS)) {
+    outputs.push(output(`browse/${kind}`, buildBrowseStubDocument(shell, kind)));
+  }
   const conceptSources = {
     people,
     committees,
