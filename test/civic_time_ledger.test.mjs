@@ -6,6 +6,8 @@ import test from "node:test";
 
 import {
   AS_OF_QUERY_KEY,
+  CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP,
+  CIVIC_TIME_THEORY_SOURCES,
   CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA,
   CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA,
   TIME_AXES,
@@ -71,6 +73,43 @@ test("asOfHref is shareable and strips empty as-of", () => {
 test("TIME_AXES names remain available for library callers", () => {
   assert.equal(TIME_AXES.valid.id, "valid");
   assert.equal(TIME_AXES.system.id, "system");
+});
+
+test("Snodgrass theory sources are page-cited and source status stays honest", () => {
+  const snodgrass = CIVIC_TIME_THEORY_SOURCES.snodgrass;
+  assert.equal(snodgrass.status, "held_read");
+  assert.equal(snodgrass.cangshu_id, 1183);
+  assert.match(snodgrass.canonical_href, /^https:\/\/www2\.cs\.arizona\.edu\//);
+  assert.deepEqual(
+    snodgrass.citations.map((citation) => citation.pages),
+    ["4", "20–21", "224–226", "249", "309–312"],
+  );
+
+  const dateDarwenLorentzos = CIVIC_TIME_THEORY_SOURCES.date_darwen_lorentzos;
+  assert.equal(dateDarwenLorentzos.status, "partial_reference_held");
+  assert.equal(dateDarwenLorentzos.cangshu_id, 1182);
+  assert.equal(dateDarwenLorentzos.synthesis_status, "remaining_debt");
+  assert.match(dateDarwenLorentzos.canonical_href, /^https:\/\/shop\.elsevier\.com\//);
+});
+
+test("four civic clocks map onto bitemporal axes once without collapsing evidence clocks", () => {
+  assert.deepEqual(Object.keys(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP), [
+    "civic",
+    "publication",
+    "observation",
+    "processing",
+  ]);
+  assert.equal(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP.civic.bitemporal_axis, "valid");
+  assert.equal(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP.publication.bitemporal_axis, null);
+  assert.equal(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP.publication.public_as_of_role, "valid_fallback");
+  assert.equal(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP.observation.bitemporal_axis, "system");
+  assert.equal(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP.processing.bitemporal_axis, null);
+  assert.equal(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP.processing.notice_recorded_role, "fallback_display");
+
+  const axisOwners = Object.entries(CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP)
+    .filter(([, clock]) => clock.bitemporal_axis)
+    .map(([clock, definition]) => [definition.bitemporal_axis, clock]);
+  assert.deepEqual(axisOwners, [["valid", "civic"], ["system", "observation"]]);
 });
 
 test("classifyItemTemporal never invents system time from materialisation vintage", () => {
@@ -189,7 +228,7 @@ test("notice temporal facts prefer valid/publication clocks", () => {
   assert.equal(system.basis, "system_time_not_retained");
 });
 
-test("notice bitemporal history keeps VALID and SYSTEM clocks independent", () => {
+test("notice bitemporal history keeps valid, system, and processing clocks independent", () => {
   const history = buildNoticeBitemporalHistory(
     { request_id: "20240723114" },
     [
@@ -199,6 +238,7 @@ test("notice bitemporal history keeps VALID and SYSTEM clocks independent", () =
         event_kind: "procurement.notice_published",
         valid_at: null,
         published_at: "2024-07-23T00:00:00.000Z",
+        written_at: "2026-08-01T12:01:00.000Z",
         processed_at: "2026-08-01T12:00:00.000Z",
       },
       {
@@ -216,9 +256,25 @@ test("notice bitemporal history keeps VALID and SYSTEM clocks independent", () =
   const published = history.events.find((event) => event.event_id === "cte-published");
   const due = history.events.find((event) => event.event_id === "cte-due");
   assert.equal(published.clocks.valid_at, null);
-  assert.equal(published.clocks.system_at, "2026-08-01T12:00:00.000Z");
+  assert.equal(published.clocks.system_at, "2026-08-01T12:01:00.000Z");
+  assert.equal(published.clocks.system_basis, "ledger_write");
+  assert.equal(published.clocks.processed_at, "2026-08-01T12:00:00.000Z");
   assert.equal(due.clocks.valid_at, "2024-08-20");
   assert.equal(due.clocks.system_at, null);
+  assert.equal(due.clocks.system_basis, "unknown");
+  assert.equal(due.clocks.processed_at, null);
+
+  const processingFallback = buildNoticeBitemporalHistory(
+    { request_id: "20240723114" },
+    [{
+      event_id: "cte-processing-only",
+      subject_ref: "notice:20240723114",
+      event_kind: "procurement.notice_published",
+      processed_at: "2026-08-01T12:00:00.000Z",
+    }],
+  ).events[0];
+  assert.equal(processingFallback.clocks.system_at, "2026-08-01T12:00:00.000Z");
+  assert.equal(processingFallback.clocks.system_basis, "processing_fallback");
 
   const html = renderNoticeBitemporalHistory({ notice: { request_id: "20240723114" }, events: history.events });
   assert.match(html, /Bitemporal history/);

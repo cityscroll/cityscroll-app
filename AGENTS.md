@@ -196,7 +196,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   closed `passport_rfx_revision` change class for same-record revisions. The exact dependency
   registry and ledger/derived-rollup recomputation live in `site/civic_time_ledger.mjs`; receipts
   preserve affected/untouched row scope, source/materializer versions, independent clocks, and
-  canonical notice routes. Unregistered dependencies stay `unknown`. Focused proof:
+  canonical notice routes. The same module owns the page-cited theory source ledger and the
+  single four-clock-to-bitemporal map: civic → valid, observation → system, while publication is
+  a labeled public fallback and processing stays provenance. The notice history's legacy
+  processed-time display fallback remains explicitly stamped `processing_fallback` and never
+  drives system-axis as-of. Unregistered dependencies stay `unknown`. Theory and correction/as-of semantics live in
+  `docs/adr/civic-time-event-contract.md`. Focused proof:
   `worker/test/civic_time_writer.test.mjs` and `test/civic_time_ledger.test.mjs`.
 
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.
