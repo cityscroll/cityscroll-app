@@ -3,7 +3,6 @@ globalThis.CrolScope = await import("../scope_v0.mjs");
 globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
 globalThis.CrolAgencyConnections = await import("../agency_connections.mjs");
 globalThis.CrolRouteMigration = await import("../route_migration.mjs");
-await import("./traversal.mjs");
 await import("./money-list.mjs");
 let moneyHistoryPromise;
 globalThis.ensureMoneyHistory = () => moneyHistoryPromise ||= import("./money-history.mjs");
@@ -23,6 +22,7 @@ globalThis.ensureNoticeContext = () => noticeContextPromise ||= import("./notice
 const routeModuleLoaders = Object.freeze({
   property: () => import("./property.mjs"),
   rules: () => import("./rules.mjs"),
+  traversal: () => import("./traversal.mjs"),
 });
 const routeModulePromises = new Map();
 const loadedRouteModules = new Set();
@@ -43,6 +43,14 @@ function routeModuleForHash(hash){
     ? "property"
     : null;
 }
+function traversalRouteForHash(hash){
+  const raw=String(hash||"").replace(/^#/,'').toLowerCase();
+  const path=String(location.pathname||"").toLowerCase();
+  return raw.startsWith("notice/") || raw.startsWith("official/") ||
+    path.startsWith("/notices/") || path.startsWith("/officials/")
+    ? "traversal"
+    : null;
+}
 function ensureRouteModule(name){
   const loader=routeModuleLoaders[name];
   if(!loader) return Promise.resolve();
@@ -56,8 +64,8 @@ function ensureRouteModule(name){
   return routeModulePromises.get(name);
 }
 function ensureRouteModulesForHash(hash){
-  const name=routeModuleForHash(hash);
-  return name ? ensureRouteModule(name) : Promise.resolve();
+  const names=[routeModuleForHash(hash),traversalRouteForHash(hash)].filter(Boolean);
+  return Promise.all([...new Set(names)].map(ensureRouteModule));
 }
 globalThis.CrolRouteModules=Object.freeze({
   ensure:ensureRouteModule,
