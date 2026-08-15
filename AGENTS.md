@@ -273,6 +273,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   identity. Verify with `node --test worker/test/digest_shadow_hold.test.mjs
   worker/test/digest_shadow.test.mjs worker/test/digest_catchup.test.mjs
   worker/test/digest_rollup.test.mjs`.
+- Ontology inventory additions enter only the private digest rehearsal through
+  `worker/src/lib/ontology_delta_alert.mjs`. Stable `absent-to-present` transition keys reconcile
+  through `ontology_delta_shadow_events`; only the winning insert is exposed as a candidate, while
+  later rehearsals retain digest-compatible `deduplicated` receipts. The default inventory pair is
+  the committed entity-intelligence Worker artifact against `site/data/ontology_inventory_baseline.json`.
+  Verify with `node --test worker/test/ontology_delta_alert.test.mjs worker/test/digest_shadow.test.mjs`.
 
 ## CI path fast paths and merge queue
 
