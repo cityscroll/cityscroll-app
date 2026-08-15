@@ -21,11 +21,13 @@ import { constellationLink } from "./affordance_grammar.mjs";
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import {
+  mandateDeliverableLabel,
+  mandateRecurrenceLabel,
+} from "./agency_obligations.mjs";
+import {
   mandateMatterEdgeFromRow,
-  normalizeMandateGraphNeighbors,
   renderMandateRowGraphActions,
 } from "./mandate_graph_neighbors.mjs";
-import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail } from "./edge_summary.mjs";
 import {
   RULE_LIFECYCLE_STATUSES,
   compactCitationLawKeys,
@@ -127,7 +129,7 @@ export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
 /** Reader-facing intro for the mandates conformance section (useful framing only). */
 export const CONFORMANCE_COPY = Object.freeze({
   lead:
-    "Statutory mandates with expected public-record events — rule filings, reports — and matching evidence from current sources when it appears.",
+    "Mandates set by law, alongside public records that show a related filing when one is found.",
 });
 
 /** @deprecated use CONFORMANCE_COPY — kept as alias for older call sites. */
@@ -142,6 +144,40 @@ const clean = (value, max = 500) => String(value ?? "")
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
+
+const RULE_LIFECYCLE_LABELS = Object.freeze({
+  proposal: "Proposed",
+  hearing: "Public hearing",
+  adopted: "Adopted",
+  emergency: "Emergency rule",
+  withdrawn: "Withdrawn",
+  repealed: "Repealed",
+  rescinded: "Rescinded",
+  superseded: "Superseded",
+  cancelled: "Cancelled",
+  rejected: "Rejected",
+  not_adopted: "Not adopted",
+  notice: "Notice",
+});
+
+function lifecycleLabel(status) {
+  return RULE_LIFECYCLE_LABELS[clean(status, 40).toLowerCase()] || null;
+}
+
+function publicRecordHref(value, requestId = null) {
+  const href = clean(value, 400);
+  if (href) {
+    try {
+      const parsed = new URL(href, "https://cityscroll.org");
+      const allowed = parsed.protocol === "https:" || parsed.protocol === "http:";
+      const local = href.startsWith("/") || href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://");
+      if (allowed && local) return href;
+    } catch {
+      // Fall through to the known notice route when a source value is malformed.
+    }
+  }
+  return requestId ? `/notices/${encodeURIComponent(requestId)}` : null;
+}
 
 function validDate(value) {
   const date = clean(value, 20);
@@ -242,8 +278,7 @@ export function normalizeObservationCandidate(raw = {}) {
     signal_kind: signalKind,
     domain: domain
       || (isRules ? "rules" : isHearing ? "meetings" : isReportShaped ? "reports" : "city_record"),
-    href: clean(raw.href, 240)
-      || (requestId ? `#notice/${encodeURIComponent(requestId)}` : null),
+    href: publicRecordHref(raw.href, requestId),
     source_system: clean(raw.source_system || raw.provenance?.source_system || "city_record", 80),
     body,
     citation,
@@ -661,6 +696,10 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
         href: best.candidate.href,
         source_system: best.candidate.source_system,
         signal_kind: best.candidate.signal_kind,
+        lifecycle_status: best.candidate.lifecycle_status,
+        lifecycle_label: lifecycleLabel(best.candidate.lifecycle_status),
+        effective_date: best.candidate.effective_date,
+        adoption_date: best.candidate.adoption_date,
       },
       match: {
         method: best.match.method,
@@ -878,6 +917,10 @@ export function buildProcessConformanceLookup({
             when: item.observation.observed_record.when || null,
             href: item.observation.observed_record.href || null,
             signal_kind: item.observation.observed_record.signal_kind || null,
+            lifecycle_status: item.observation.observed_record.lifecycle_status || null,
+            lifecycle_label: item.observation.observed_record.lifecycle_label || null,
+            effective_date: item.observation.observed_record.effective_date || null,
+            adoption_date: item.observation.observed_record.adoption_date || null,
           }
           : null,
         ...(item.observation?.shadow_candidate ? {
@@ -955,71 +998,14 @@ export function renderMandatesConformanceSection(view) {
   ));
   if (!publicItems.length) return "";
   const statusLine = [
-    counts.observed > 0 ? `${counts.observed} with evidence` : null,
-    counts.on_track > 0 ? `${counts.on_track} on track` : null,
+    counts.observed > 0 ? `${counts.observed} filing${counts.observed === 1 ? "" : "s"} found` : null,
+    counts.on_track > 0 ? `${counts.on_track} deadline${counts.on_track === 1 ? "" : "s"} ahead` : null,
   ].filter(Boolean).join(" · ") || "linked";
 
-  // The preview is bounded by the scroll container below, not by dropping
-  // records. Counts, evidence labels, source-law links, and graph neighbors
-  // therefore remain complete in the accessible DOM.
+  // The full public match set remains in the scroll container below. Evidence
+  // labels, source-law links, and observed filing links stay complete in the
+  // accessible DOM.
   const items = publicItems;
-  const graphNeighbors = normalizeMandateGraphNeighbors(view.graph_neighbors || {
-    rules_browse_href: view.rules_browse_href,
-    meetings_browse_href: view.meetings_browse_href,
-    contracts_browse_href: view.contracts_browse_href,
-  });
-  const edgeSummary = normalizeEdgeSummaryRecords([
-    {
-      source_kind: "agency",
-      source_id: view.agency_id || null,
-      edge_type: "mandate_observation",
-      label: "Mandates with published evidence",
-      target_kind: "mandate",
-      target_name: "Mandates with published evidence",
-      count: counts.observed == null
-        ? null
-        : (Number.isInteger(Number(counts.observed)) ? Number(counts.observed) : null),
-      href: view.share_path || null,
-      scope: { agency_id: view.agency_id || null, as_of: view.as_of || null },
-      as_of: view.as_of || null,
-    },
-    {
-      source_kind: "agency",
-      source_id: view.agency_id || null,
-      edge_type: "mandate_related_rules",
-      label: "Rules related to these mandates",
-      target_kind: "rule",
-      target_name: "Rules",
-      count: null,
-      state: "unknown",
-      href: graphNeighbors?.rules_browse_href || null,
-      scope: { agency_id: view.agency_id || null },
-    },
-    {
-      source_kind: "agency",
-      source_id: view.agency_id || null,
-      edge_type: "mandate_related_meetings",
-      label: "Meetings related to these mandates",
-      target_kind: "meeting",
-      target_name: "Meetings and hearings",
-      count: null,
-      state: "unknown",
-      href: graphNeighbors?.meetings_browse_href || null,
-      scope: { agency_id: view.agency_id || null },
-    },
-    {
-      source_kind: "agency",
-      source_id: view.agency_id || null,
-      edge_type: "mandate_related_contracts",
-      label: "Contracts related to these mandates",
-      target_kind: "contract",
-      target_name: "Contracts",
-      count: null,
-      state: "unknown",
-      href: graphNeighbors?.contracts_browse_href || null,
-      scope: { agency_id: view.agency_id || null },
-    },
-  ]);
   const list = items.length
     ? `<ul class="node-record-list mandates-conformance-list">${items.map((item) => {
       const obs = item.observation || {};
@@ -1027,13 +1013,20 @@ export function renderMandatesConformanceSection(view) {
       const statusLabel = obs.label || OBSERVATION_LABELS[status] || status;
       const expected = obs.expected_event || {};
       const deadline = expected.deadline_date
-        ? `deadline ${expected.deadline_date}`
-        : (expected.deadline_text ? `deadline: ${expected.deadline_text}` : null);
+        ? `due ${expected.deadline_date}`
+        : (expected.deadline_text ? `due: ${expected.deadline_text}` : null);
       // Evidence link uses the filing title only (↗ from constellationLink).
       // Source-system provenance is optional and omit-by-default — never a
       // primary "City Record" button label on mandate status rows.
-      const observedLink = obs.observed_record?.href
-        ? ` · ${constellationLink({ href: obs.observed_record.href, label: obs.observed_record.label || obs.observed_record.request_id, className: "agency-edge-link", escape: esc })}`
+      const observedHref = publicRecordHref(obs.observed_record?.href, obs.observed_record?.request_id);
+      const observedMeta = [
+        obs.observed_record?.lifecycle_label
+          || (item.deliverable_type === "report" ? "Published" : null),
+        obs.observed_record?.when ? `on ${obs.observed_record.when}` : null,
+        obs.observed_record?.effective_date ? `in effect ${obs.observed_record.effective_date}` : null,
+      ].filter(Boolean).join(" · ");
+      const observedLink = observedHref
+        ? ` · ${constellationLink({ href: observedHref, label: obs.observed_record.label || obs.observed_record.request_id, className: "agency-edge-link", escape: esc })}`
         : "";
       const matter = mandateMatterEdgeFromRow(item);
       // Per-row: Source law only. Matched evidence is linked above when present.
@@ -1045,10 +1038,10 @@ export function renderMandatesConformanceSection(view) {
         escape: esc,
       });
       const meta = [
-        item.deliverable_type,
-        expected.label || null,
+        mandateDeliverableLabel(item.deliverable_type),
+        observedMeta || null,
         deadline,
-        item.recurrence,
+        mandateRecurrenceLabel(item.recurrence),
       ].filter(Boolean).map(esc).join(" · ");
       const matterId = item.matter_id || matter?.matter_id || "";
       return `<li class="node-record mandate-conformance-item" data-mandate-id="${esc(item.mandate_id)}" data-observation-status="${esc(status)}" data-compliance-verdict="not_adjudicated"${matterId ? ` data-matter-id="${esc(matterId)}"` : ""}>
@@ -1068,9 +1061,8 @@ export function renderMandatesConformanceSection(view) {
 
   const copy = view.copy || view.honesty || CONFORMANCE_COPY;
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
-    <h2 id="mandates-conformance-heading">Mandates · expected vs evidence <span class="muted node-muted">(${esc(statusLine)})</span></h2>
+    <h2 id="mandates-conformance-heading">What the law calls for · what records show <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
-    ${renderEdgeSummaryRail(edgeSummary, { heading: "Mandate connections", id: "mandate-edge-summary-heading", className: "mandate-edge-summary" })}
     <p class="mandates-scroll-affordance" id="mandates-scroll-help">Scroll to view all mandates</p>
     <div class="mandates-conformance-scroll" role="region" tabindex="0" aria-labelledby="mandates-conformance-heading" aria-describedby="mandates-scroll-help">${list}</div>
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
