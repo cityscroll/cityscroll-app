@@ -227,12 +227,14 @@ measured and are not inferred here.
 - [Measured costs](../../warehouse/experiments/semantic-layer-trial/receipts/costs.json)
 - [Decision hook](../../warehouse/experiments/semantic-layer-trial/receipts/decision.json)
 - [Fixed source manifest](../../warehouse/experiments/semantic-layer-trial/source_manifest.json)
+- [Stable source-passage map](../../warehouse/experiments/semantic-layer-trial/source_passage_map.json)
 - [Fixed query judgments](../../warehouse/experiments/semantic-layer-trial/queries.json)
 
 The committed checks do not need model dependencies or network access:
 
 ```bash
 node warehouse/experiments/semantic-layer-trial/build_corpus.mjs --check
+node tools/build_source_passage_map.mjs --check
 python3 warehouse/experiments/semantic-layer-trial/trial.py --check
 node --test test/semantic_layer_trial.test.mjs
 ```

@@ -14,6 +14,7 @@ import {
   relatedForNotice,
 } from "../warehouse/lib/attachment_embeddings.mjs";
 import { attachmentRelatedHTML } from "../site/attachment_related.mjs";
+import { resolveSourcePassageCandidate } from "../warehouse/lib/source_passage_map.mjs";
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const corpus = JSON.parse(
@@ -26,6 +27,9 @@ const adr = readFileSync(new URL("../docs/adr/attachment-text-embeddings.md", im
 const demo = JSON.parse(readFileSync(new URL("../site/demo/demo-links.json", import.meta.url), "utf8"));
 const receipt = JSON.parse(
   readFileSync(new URL("../warehouse/receipts/proof/att_t3_attachment_embeddings_latest.json", import.meta.url), "utf8"),
+);
+const passageMap = JSON.parse(
+  readFileSync(new URL("../warehouse/experiments/semantic-layer-trial/source_passage_map.json", import.meta.url), "utf8"),
 );
 
 test("T3 decision record chooses precomputed edges over query-time index", () => {
@@ -136,4 +140,20 @@ test("T3 artifact builder stamps edge rate metric", () => {
   const built = buildRelatedArtifact(nn, { sourceCount: 1, targetCount: corpus.documents.length });
   assert.equal(built.notices_with_edges, 1);
   assert.equal(built.attachment_related_edge_rate, 1);
+});
+
+test("attachment passage lookup preserves source evidence without creating a related edge", () => {
+  const candidateId = Object.keys(passageMap.by_candidate_id)
+    .find((id) => id.startsWith("attachment_text:20240515016%23attachment-37470:"));
+  assert.ok(candidateId);
+
+  const resolved = resolveSourcePassageCandidate(passageMap, candidateId);
+  assert.equal(resolved.source.source_family, "attachment_text");
+  assert.equal(resolved.source.source_native_id, "20240515016#attachment-37470");
+  assert.equal(resolved.passage.text_state, "retained");
+  assert.match(resolved.source.source_url, /^https:\/\//);
+  assert.equal("related" in resolved, false);
+  assert.equal("edge" in resolved, false);
+  assert.equal("entity" in resolved, false);
+  assert.equal("mandate" in resolved, false);
 });

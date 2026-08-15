@@ -9,6 +9,12 @@ import {
   publicationValidationFinding,
   redactForPublication,
 } from "../warehouse/experiments/semantic-layer-trial/build_corpus.mjs";
+import {
+  SOURCE_PASSAGE_MAP_SCHEMA,
+  buildSourcePassageMap,
+  resolveSourcePassageCandidate,
+  validateSourcePassageMap,
+} from "../warehouse/lib/source_passage_map.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TRIAL = join(ROOT, "warehouse/experiments/semantic-layer-trial");
@@ -42,6 +48,84 @@ test("semantic trial corpus and receipts retain the fixed evaluation boundary", 
         assert.equal(result.honest_label, "retrieval_candidate");
       }
     }
+  }
+});
+
+test("source-passage candidates serialize to one typed source and exact retained boundary", () => {
+  const corpus = readJson(join(TRIAL, "corpus.json"));
+  const serialized = readFileSync(join(TRIAL, "source_passage_map.json"), "utf8");
+  const passageMap = JSON.parse(serialized);
+
+  assert.equal(passageMap.schema, SOURCE_PASSAGE_MAP_SCHEMA);
+  assert.equal(passageMap.source_count, corpus.document_count);
+  assert.equal(passageMap.passage_count, 238);
+  assert.equal(passageMap.unknown_passage_count, 0);
+  assert.equal(validateSourcePassageMap(passageMap), passageMap);
+
+  const candidateIds = Object.keys(passageMap.by_candidate_id);
+  assert.equal(candidateIds.length, passageMap.passage_count);
+  assert.equal(new Set(candidateIds).size, candidateIds.length);
+
+  for (const candidateId of candidateIds) {
+    const resolved = resolveSourcePassageCandidate(passageMap, candidateId);
+    assert.equal(resolved.candidate_id, candidateId);
+    assert.equal(resolved.source.source_record_id, resolved.passage.source_record_id);
+    assert.equal(resolved.source.source_family, resolved.passage.source_family);
+    assert.match(resolved.source.source_url, /^https:\/\//);
+    assert.equal(resolved.source.coverage.state, "partial");
+    assert.equal(resolved.source.freshness.state, "observed");
+
+    const corpusRow = corpus.documents.find((row) => (
+      row.id === resolved.source.source_native_id
+      && row.kind === resolved.source.source_family
+    ));
+    assert.ok(corpusRow, `missing corpus source for ${candidateId}`);
+    const { start, end, unit } = resolved.passage.boundary;
+    assert.equal(unit, "utf16_code_unit");
+    assert.equal(resolved.passage.text_state, "retained");
+    assert.equal(resolved.passage.text, corpusRow.text.slice(start, end));
+  }
+
+  const roundTrip = JSON.parse(JSON.stringify(passageMap));
+  const example = resolveSourcePassageCandidate(roundTrip, candidateIds.at(-1));
+  assert.equal(example.source.source_url, passageMap.sources.at(-1).source_url);
+  assert.deepEqual(example.source.freshness, passageMap.sources.at(-1).freshness);
+  assert.deepEqual(example.source.coverage, passageMap.sources.at(-1).coverage);
+});
+
+test("missing source text stays unknown and cannot manufacture graph identities", () => {
+  const passageMap = buildSourcePassageMap({
+    schema: "cityscroll.semantic_layer_trial.corpus.v1",
+    observed_on: "2026-08-04",
+    selection: {},
+    documents: [{
+      id: "missing-text",
+      kind: "city_record_notice",
+      title: "Source record without retained text",
+      published_at: null,
+      source: {
+        system: "NYC City Record",
+        url: "https://a856-cityrecord.nyc.gov/RequestDetail/missing-text",
+      },
+    }],
+  });
+  const candidateId = Object.keys(passageMap.by_candidate_id)[0];
+  const resolved = resolveSourcePassageCandidate(passageMap, candidateId);
+
+  assert.equal(resolved.passage.text_state, "unknown");
+  assert.equal(resolved.passage.text, null);
+  assert.deepEqual(resolved.passage.boundary, {
+    unit: "utf16_code_unit",
+    start: null,
+    end: null,
+  });
+  assert.equal(resolved.source.coverage.state, "unknown");
+  assert.equal(resolved.source.freshness.state, "unknown");
+  assert.equal(resolveSourcePassageCandidate(passageMap, "missing"), null);
+
+  const serialized = JSON.stringify(passageMap);
+  for (const forbidden of ["entity_id", "mandate_id", "subject_ref", "graph_edge", "cross_spine_edge"]) {
+    assert.equal(serialized.includes(`\"${forbidden}\"`), false);
   }
 });
 
@@ -108,4 +192,11 @@ test("offline checks validate without model dependencies or network access", () 
     { cwd: ROOT, encoding: "utf8" },
   );
   assert.equal(receiptCheck.status, 0, receiptCheck.stderr);
+
+  const passageMapCheck = spawnSync(
+    process.execPath,
+    [join(ROOT, "tools/build_source_passage_map.mjs"), "--check"],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(passageMapCheck.status, 0, passageMapCheck.stderr);
 });
