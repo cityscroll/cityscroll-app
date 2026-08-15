@@ -12,6 +12,7 @@
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
+import { mandateObjectTarget } from "./notice_object_links.mjs";
 
 export const NOTICE_MANDATE_BACKLINKS_SCHEMA = "cityscroll.notice_mandate_backlinks.v1";
 export const NOTICE_MANDATE_BACKLINKS_METHOD = "notice_mandate_backlinks_v1";
@@ -155,6 +156,19 @@ export function compactMandateBacklink(input = {}) {
     agency_href,
     publication_tier: isPublicBacklinkTier(tier) ? tier : "public_inferred",
   };
+  const deadlineInput = input.deadline && typeof input.deadline === "object"
+    ? input.deadline
+    : {};
+  const deadline = {
+    kind: clean(deadlineInput.kind || input.deadline_kind, 80) || null,
+    computed_date: clean(deadlineInput.computed_date || input.deadline_date, 80) || null,
+    text: clean(deadlineInput.text || input.deadline_text, 300) || null,
+  };
+  if (deadline.kind || deadline.computed_date || deadline.text) out.deadline = deadline;
+  const trigger = clean(input.trigger || input.trigger_text, 300) || null;
+  const recurrence = clean(input.recurrence, 80) || null;
+  if (trigger) out.trigger = trigger;
+  if (recurrence) out.recurrence = recurrence;
   if (mandate_id) out.mandate_id = mandate_id;
   if (watch_href) out.watch_href = watch_href;
   return out;
@@ -184,6 +198,7 @@ export function renderNoticeMandateBacklinksHTML(rows, { esc = escDefault } = {}
   if (!list.length) return "";
 
   const cards = list.map((row) => {
+    const mandateTarget = mandateObjectTarget(row);
     const source = row.source_href
       ? ` · ${officialSourceLink({
         href: row.source_href,
@@ -223,8 +238,17 @@ export function renderNoticeMandateBacklinksHTML(rows, { esc = escDefault } = {}
     const mandateAttr = row.mandate_id
       ? ` data-mandate-id="${esc(row.mandate_id)}"`
       : "";
+    const duty = mandateTarget
+      ? constellationLink({
+        href: mandateTarget.href,
+        label: mandateTarget.label,
+        className: "notice-mandate-target",
+        escape: esc,
+        attributes: { "data-target-kind": "mandate" },
+      })
+      : esc(row.duty_text);
     return `<article class="notice-mandate-card" data-relation="${esc(row.relation || "")}"${mandateAttr}>
-      <p class="notice-mandate-duty" lang="en" dir="ltr">${esc(row.duty_text)}</p>
+      <p class="notice-mandate-duty" lang="en" dir="ltr">${duty}</p>
       <p class="muted notice-mandate-meta">${metaParts.join(" · ")}${source}${agency}${watch}</p>
     </article>`;
   }).join("");

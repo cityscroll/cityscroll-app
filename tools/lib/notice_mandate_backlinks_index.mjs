@@ -67,6 +67,16 @@ function agencyFields(view) {
   };
 }
 
+function temporalFields(mandate = {}) {
+  return {
+    deadline: mandate.deadline || null,
+    deadline_date: mandate.deadline_date || null,
+    deadline_text: mandate.deadline_text || null,
+    trigger: mandate.trigger || mandate.trigger_text || null,
+    recurrence: mandate.recurrence || null,
+  };
+}
+
 /** Collect public contract → notice backlinks. */
 export function collectFromContractView(view, byNotice = new Map()) {
   if (!view || !Array.isArray(view.edges)) return byNotice;
@@ -79,6 +89,7 @@ export function collectFromContractView(view, byNotice = new Map()) {
     pushBacklink(byNotice, noticeId, {
       ...agency,
       mandate_id: mandateIdFromEdge(edge),
+      ...temporalFields(edge?.mandate),
       duty_text: edge?.mandate?.duty_text,
       citation: edge?.mandate?.citation,
       source_href: edge?.mandate?.source_href,
@@ -101,6 +112,7 @@ export function collectFromMeetingsView(view, byNotice = new Map()) {
     pushBacklink(byNotice, noticeId, {
       ...agency,
       mandate_id: mandateIdFromEdge(edge),
+      ...temporalFields(edge?.mandate),
       duty_text: edge?.mandate?.duty_text,
       citation: edge?.mandate?.citation,
       source_href: edge?.mandate?.source_href,
@@ -131,6 +143,7 @@ export function collectFromRulesView(view, byNotice = new Map()) {
     pushBacklink(byNotice, noticeId, {
       ...agency,
       mandate_id: mandate.mandate_id || mandate.obligation_id || mandate.subject_ref,
+      ...temporalFields(mandate),
       duty_text: mandate.duty_text,
       citation: mandate.citation,
       source_href: mandate.source_href,
@@ -159,6 +172,7 @@ export function collectFromReportsView(view, byNotice = new Map()) {
     pushBacklink(byNotice, noticeId, {
       ...agency,
       mandate_id: mandate.mandate_id || mandate.obligation_id || mandate.subject_ref,
+      ...temporalFields(mandate),
       duty_text: mandate.duty_text,
       citation: mandate.citation,
       source_href: mandate.source_href,
@@ -195,6 +209,7 @@ export function collectFromLandUseView(view, byNotice = new Map()) {
     pushBacklink(byNotice, noticeId, {
       ...agency,
       mandate_id: mandateIdFromEdge(edge),
+      ...temporalFields(edge?.mandate),
       duty_text: edge?.mandate?.duty_text,
       citation: edge?.mandate?.citation,
       source_href: edge?.mandate?.source_href,

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.notice_mandate_backlinks.v1",
   "method": "notice_mandate_backlinks_v1",
-  "generated_at": "2026-08-12T16:01:38.782Z",
+  "generated_at": "2026-08-15T21:43:43.070Z",
   "counts": {
     "notices": 8,
     "edges": 9,
@@ -24,6 +24,12 @@
         "agency_name": "Homeless Services",
         "agency_href": "/agencies/homeless-services/",
         "publication_tier": "public_inferred",
+        "deadline": {
+          "kind": "days_after_effective",
+          "computed_date": "2021-12-07",
+          "text": "No later than 30 days after the effective date; termination if new terms are not accepted within 90 days of receiving notice"
+        },
+        "recurrence": "one-time",
         "mandate_id": "66056-006"
       }
     ],
@@ -38,6 +44,12 @@
         "agency_name": "Homeless Services",
         "agency_href": "/agencies/homeless-services/",
         "publication_tier": "public_inferred",
+        "deadline": {
+          "kind": "days_after_effective",
+          "computed_date": "2021-12-07",
+          "text": "No later than 30 days after the effective date; termination if new terms are not accepted within 90 days of receiving notice"
+        },
+        "recurrence": "one-time",
         "mandate_id": "66056-006"
       }
     ],
@@ -52,6 +64,12 @@
         "agency_name": "Homeless Services",
         "agency_href": "/agencies/homeless-services/",
         "publication_tier": "public_inferred",
+        "deadline": {
+          "kind": "days_after_effective",
+          "computed_date": "2021-12-07",
+          "text": "No later than 30 days after the effective date; termination if new terms are not accepted within 90 days of receiving notice"
+        },
+        "recurrence": "one-time",
         "mandate_id": "66056-006"
       }
     ],
@@ -66,6 +84,12 @@
         "agency_name": "Commission on Human Rights",
         "agency_href": "/agencies/commission-on-human-rights/",
         "publication_tier": "public_inferred",
+        "deadline": {
+          "kind": "fixed_date",
+          "computed_date": null,
+          "text": "by March 1"
+        },
+        "recurrence": "annual",
         "mandate_id": "53107-001"
       },
       {
@@ -78,6 +102,12 @@
         "agency_name": "Commission on Human Rights",
         "agency_href": "/agencies/commission-on-human-rights/",
         "publication_tier": "public_inferred",
+        "deadline": {
+          "kind": "none",
+          "computed_date": null,
+          "text": "annual report; as provided in section 8-3003 of the administrative code"
+        },
+        "recurrence": "annual",
         "mandate_id": "55348-004"
       }
     ],
@@ -120,6 +150,12 @@
         "agency_name": "Sanitation",
         "agency_href": "/agencies/sanitation/",
         "publication_tier": "public_inferred",
+        "deadline": {
+          "kind": "none",
+          "computed_date": null,
+          "text": null
+        },
+        "recurrence": "ongoing",
         "mandate_id": "64116-001"
       }
     ],

@@ -19,6 +19,11 @@ import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { buildEdgeProvenanceClaim } from "./graph_edge_provenance.mjs";
 import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
+import {
+  mandateObjectTarget,
+  noticeEvidenceTarget,
+  procurementObjectTarget,
+} from "./notice_object_links.mjs";
 
 export const MANDATE_CONTRACTS_SCHEMA = "cityscroll.mandate_contracts_bridge.v1";
 export const MANDATE_CONTRACTS_METHOD = "mandate_agency_scope_authority_exact_v1";
@@ -384,18 +389,24 @@ export function buildMandateContractsBridgeView(agencyIdOrName, sources = {}) {
             duty_text: clean(mandate.duty_text, 700),
             citation: clean(mandate.citation, 240) || null,
             source_href: clean(mandate.source?.legistar_url || mandate.href, 500) || null,
+            mandate_id: mandateId,
+            agency_id: identity.canonical_id,
+            agency_name: identity.canonical_name,
+            matter_id: clean(mandate.matter_id || mandate.source?.matter_id, 80) || null,
+            deadline: mandate.deadline || null,
+            recurrence: clean(mandate.recurrence, 80) || null,
           },
           procurement_record: {
             subject_ref: notice.subject_ref,
             request_id: clean(notice.request_id, 80) || notice.subject_ref.replace(/^notice:/, ""),
             label: clean(notice.label, 300),
             when: clean(notice.when, 40) || null,
-            href: clean(notice.href, 400)
-              || `#notice/${encodeURIComponent(notice.subject_ref.replace(/^notice:/, ""))}`,
+            href: `/notices/${encodeURIComponent(clean(notice.request_id, 80) || notice.subject_ref.replace(/^notice:/, ""))}`,
           },
           contract: {
             subject_ref: contractLink.to,
             contract_id: contractId,
+            target: procurementObjectTarget(contractId, { label: `Contract · ${contractId}` }),
           },
           evidence,
           edge,
@@ -452,20 +463,24 @@ export function renderMandateContractsBridgeSection(view) {
   }
   const mandates = [...grouped.values()].map((rows) => {
     const mandate = rows[0].mandate;
+    const mandateTarget = mandateObjectTarget(mandate);
     const source = mandate.source_href
       ? ` · ${officialSourceLink({ href: mandate.source_href, label: "Source law", className: "agency-source-link", escape: esc })}`
       : "";
     const records = rows.map((row) => {
+      const contractTarget = row.contract.target
+        || procurementObjectTarget(row.contract.contract_id, { label: `Contract · ${row.contract.contract_id}` });
+      const noticeEvidence = noticeEvidenceTarget(row.procurement_record.request_id);
       const claim = row.claim?.inspect_href
         ? ` · <a href="${esc(row.claim.inspect_href)}" data-edge-claim="${esc(row.claim.claim_id)}">Why this link?</a>`
         : "";
       return `<li class="node-record mandate-contract-record" data-contract-ref="${esc(row.contract.subject_ref)}" data-edge-type="${esc(MANDATE_CONTRACT_EDGE_TYPE)}">
-        <div class="node-record-main">${constellationLink({ href: row.procurement_record.href, label: row.procurement_record.label, className: "agency-edge-link", escape: esc })}</div>
-        <span class="muted node-muted">Contract ${esc(row.contract.contract_id)} · ${esc(row.procurement_record.when || "City Record")} · ${constellationLink({ href: row.procurement_record.href, label: "Open procurement record", className: "agency-edge-link", escape: esc })}${claim}</span>
+        <div class="node-record-main">${constellationLink({ href: contractTarget.href, label: contractTarget.label, className: "agency-edge-link", escape: esc, attributes: { "data-target-kind": contractTarget.kind } })}</div>
+        <span class="muted node-muted">${esc(row.procurement_record.label)} · ${esc(row.procurement_record.when || "City Record")} · ${constellationLink({ href: noticeEvidence.href, label: noticeEvidence.label, className: "agency-edge-link", escape: esc, attributes: { "data-target-kind": "notice" } })}${claim}</span>
       </li>`;
     }).join("");
     return `<article class="mandate-contract-group" data-mandate-id="${esc(rows[0].mandate_id)}">
-      <h3 class="node-subhead">${esc(mandate.duty_text)}</h3>
+      <h3 class="node-subhead">${mandateTarget ? constellationLink({ href: mandateTarget.href, label: mandateTarget.label, className: "agency-edge-link", escape: esc, attributes: { "data-target-kind": "mandate" } }) : esc(mandate.duty_text)}</h3>
       ${mandate.citation || source ? `<p class="muted node-muted">${esc(mandate.citation || "Mandate")}${source}</p>` : ""}
       <ul class="node-record-list" data-bridge-side="contracts">${records}</ul>
     </article>`;

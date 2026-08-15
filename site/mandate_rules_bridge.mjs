@@ -25,6 +25,7 @@ import {
   renderMandateRowGraphActions,
 } from "./mandate_graph_neighbors.mjs";
 import { noticeDocumentPath } from "./notice_permalink.mjs";
+import { mandateObjectTarget } from "./notice_object_links.mjs";
 import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import {
   MANDATE_RULE_PUBLICATION_TIER,
@@ -148,12 +149,15 @@ export function buildMandateRulesBridgeView(agencyIdOrName, sources = {}) {
     const matter = mandateMatterEdgeFromRow(row);
     return {
       mandate_id: row.obligation_id,
+      agency_id: identity.canonical_id,
+      agency_name: identity.canonical_name,
       subject_ref: mandateSubjectRef(row.obligation_id),
       duty_text: clean(row.duty_text, 500),
       deliverable_type: "rulemaking",
       citation: clean(row.citation, 200) || null,
       deadline_date: clean(row.deadline?.computed_date, 20) || null,
       deadline_text: clean(row.deadline?.text || row.deadline_text, 240) || null,
+      deadline: row.deadline || null,
       recurrence: clean(row.recurrence, 40) || null,
       matter_id: matter?.matter_id || null,
       source_href: matter?.href || null,
@@ -268,6 +272,7 @@ export function renderMandateRulesBridgeSection(view) {
   const mandateList = (view.mandates || []).length
     ? `<ul class="node-record-list mandate-rules-mandates" data-bridge-side="mandates">${
       view.mandates.map((item) => {
+        const mandateTarget = mandateObjectTarget(item);
         const meta = [
           "rulemaking",
           item.deadline_date
@@ -276,10 +281,10 @@ export function renderMandateRulesBridgeSection(view) {
           item.recurrence,
           item.citation,
         ].filter(Boolean).map(esc).join(" · ");
-        // Evidence link uses the filing title only (↗). Source-system provenance
-        // is optional / omit-by-default — never a primary "City Record" button.
+        // The filing stays a separately labeled notice-evidence link. Source-
+        // system provenance is optional and never becomes the mandate target.
         const observed = item.observed_record?.href
-          ? ` · ${constellationLink({ href: item.observed_record.href, label: item.observed_record.label || item.observed_record.request_id, className: "agency-edge-link", escape: esc })}`
+          ? ` · ${constellationLink({ href: item.observed_record.href, label: `Rules notice evidence · ${item.observed_record.label || item.observed_record.request_id}`, className: "agency-edge-link", attributes: { "data-target-kind": "notice", "data-link-role": "evidence" }, escape: esc })}`
           : "";
         // Per-row: Source law only. Matched evidence is linked above when present.
         // Agency-wide browse chips stay in section chrome — never on every card.
@@ -293,7 +298,7 @@ export function renderMandateRulesBridgeSection(view) {
           ? `<span class="mandate-obs-chip mandate-obs-observed" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}">${esc(item.observation_label || OBSERVATION_LABELS[OBSERVATION_STATUS.OBSERVED] || "Evidence found")}</span>`
           : "";
         return `<li class="node-record mandate-rules-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="rulemaking"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${item.observation_status ? ` data-observation-status="${esc(item.observation_status)}"` : ""}>
-          <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
+          <div class="node-record-main">${chip}${mandateTarget ? constellationLink({ href: mandateTarget.href, label: mandateTarget.label, className: "agency-edge-link", attributes: { "data-target-kind": "mandate" }, escape: esc }) : esc(item.duty_text)}</div>
           <span class="muted node-muted">${meta}${observed}${neighbors}</span>
         </li>`;
       }).join("")

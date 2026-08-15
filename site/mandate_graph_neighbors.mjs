@@ -83,13 +83,27 @@ export function normalizeMandateScopedLinks(raw = []) {
     seen.add(href);
     const key = clean(item.key || item.lens || item.category, 40) || null;
     const relation = clean(item.relation || item.signal_kind || key, 60) || null;
+    const targetKind = clean(item.target_kind, 40)
+      || (/^\/notices\//.test(href) || /^#notice\//.test(href) ? "notice"
+        : /^\/mandates\//.test(href) ? "mandate"
+          : /^\/meetings\//.test(href) ? "meeting"
+            : /^\/browse\/contracts\//.test(href) ? "procurement"
+              : null);
+    const linkRole = clean(item.link_role, 40)
+      || (targetKind === "notice" ? "evidence" : "object");
     const label = clean(item.label, 80)
-      || (key === "rules" ? "Linked Rules filing"
-        : key === "meetings" ? "Linked meeting"
-          : key === "contracts" ? "Linked contract"
-            : key === "report" || key === "reports" ? "Filing receipt"
-              : "Linked record");
-    out.push({ key, href, label, relation });
+      || (targetKind === "notice"
+        ? (key === "rules" ? "Rules notice evidence"
+          : key === "meetings" ? "Meeting notice evidence"
+            : key === "contracts" ? "Contract notice evidence"
+              : key === "report" || key === "reports" ? "Report notice evidence"
+                : "Notice evidence")
+        : key === "rules" ? "Linked Rules filing"
+          : key === "meetings" ? "Linked meeting"
+            : key === "contracts" ? "Linked contract"
+              : key === "report" || key === "reports" ? "Filing receipt"
+                : "Linked record");
+    out.push({ key, href, label, relation, target_kind: targetKind, link_role: linkRole });
   }
   return out;
 }
@@ -255,6 +269,8 @@ export function renderMandateRowGraphActions(opts = {}) {
         "data-mandate-scoped": "1",
         ...(link.relation ? { "data-mandate-edge": link.relation } : {}),
         ...(link.key ? { "data-mandate-graph-neighbor": link.key } : {}),
+        ...(link.target_kind ? { "data-target-kind": link.target_kind } : {}),
+        ...(link.link_role ? { "data-link-role": link.link_role } : {}),
       },
       escape,
     }));
