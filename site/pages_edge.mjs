@@ -17,6 +17,7 @@ import { communityBoardPageHref } from "./community_board_links.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
+const HEARINGS_READ_MODEL = "https://api.cityscroll.org/hearings";
 const NOTICE_FIELDS = [
   "request_id", "start_date", "event_date", "due_date", "agency_name",
   "type_of_notice_description", "section_name", "short_title", "pin",
@@ -132,6 +133,30 @@ async function handleMeeting(request, env, meetingId) {
       record = rows.find((row) => row?.meeting_id === decoded) || null;
     } catch (_error) {
       record = null;
+    }
+  }
+  // The static catalog is the normal resolver source, but the Meetings lens can
+  // contain a newer City Record row from the Worker materialization between
+  // Pages builds. Resolve that exact canonical id against the same fresh
+  // catalog the lens reads before declaring it genuinely unknown.
+  if (!record && /^meeting:city_record:\d+$/.test(decoded)) {
+    try {
+      const url = new URL(HEARINGS_READ_MODEL);
+      url.searchParams.set("id", decoded);
+      const response = await fetch(url, {
+        headers: { Accept: "application/json" },
+        cf: { cacheTtl: 300, cacheEverything: true },
+      });
+      if (response.ok) {
+        const payload = await response.json();
+        const rows = Array.isArray(payload?.rows)
+          ? payload.rows
+          : Array.isArray(payload?.hearings) ? payload.hearings : [];
+        record = rows.find((row) => row?.meeting_id === decoded) || null;
+      }
+    } catch (_error) {
+      // Preserve the fail-closed not-found response when the fresh catalog is
+      // unavailable or malformed.
     }
   }
   if (record) {
