@@ -142,8 +142,9 @@ test("a hand-edited fallback remains ineligible for CI refresh", () => {
   );
 });
 
-test("CI fetches the PR base before comparing a shallow checkout", () => {
-  assert.match(ciSource, /git fetch --no-tags --depth=1 origin \"\$PRESET_BASE_SHA\"/);
+test("required CI validates the committed preset receipt without publisher access", () => {
+  assert.match(ciSource, /node tools\/validate_presets\.mjs --check --offline/);
+  assert.doesNotMatch(ciSource, /PRESET_BASE_SHA|validate_presets\.mjs --write/);
 });
 
 test("live SODA fetch retries with exponential backoff on transient timeouts", () => {

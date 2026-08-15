@@ -77,7 +77,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `doing-business-entities` | landed | organization_name, vendor_name | medium | 70.4% (modern_awards_stem_notices) |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mandatory-inclusionary-housing` | landed | project_id | — | 97.8% (exact_project_id) |
-| `mappluto` | live-only | BBL | — | — |
+| `mappluto` | landed | BBL | — | — |
 | `mocs-ll1-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
 | `mocs-ll63-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
 | `nyc-council-legistar` | landed | body_id, matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title, OfficeRecordPersonId, council_member_id, OfficeRecordBodyId, OfficeRecordBodyName, OfficeRecordTitle, OfficeRecordStartDate, OfficeRecordEndDate | medium | 100% (modern_notices_strict) |

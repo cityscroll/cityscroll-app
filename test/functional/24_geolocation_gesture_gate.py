@@ -88,9 +88,19 @@ def main() -> None:
             page = context.new_page()
             install_routes(page)
             page.route(
-                "https://data.cityofnewyork.us/resource/hgx4-8ukb.json*",
+                "**/data/land_default_ulurp.json",
                 lambda route: route.fulfill(
-                    status=200, content_type="application/json", body=json.dumps([]),
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps({"schema_version": 1, "projects": [], "outcomes": []}),
+                ),
+            )
+            page.route(
+                "**/data/zap_projects_warehouse_lookup.json",
+                lambda route: route.fulfill(
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps({"schema_version": 1, "rows": []}),
                 ),
             )
             page.goto(base + "browse/zoning/?boro=Queens", wait_until="domcontentloaded")

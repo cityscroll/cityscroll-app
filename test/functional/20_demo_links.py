@@ -69,7 +69,10 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from i18n_fixtures import (  # noqa: E402
     CHAIN_ROWS,
     LAND_PIPELINE_ZAP_OUTCOMES,
+    MEETINGS_ROWS,
+    MWBE_SOLICITATION_ROW,
     NOTICE_LAND_ZAP_OUTCOMES,
+    NOTICE_LAND_ZAP_SPINE_NOTICE,
     PARKS_ARCHIVE_AWARD,
     ZAP_ROWS,
     install_routes,
@@ -280,6 +283,33 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 
 def install_demo_routes(page) -> None:
+    money_snapshot = json.loads((ROOT / "site" / "data" / "money_resident_snapshot.json").read_text())
+    money_rows = {
+        str(row.get("request_id", "")): row
+        for row in money_snapshot.get("rows", [])
+        if row.get("request_id")
+    }
+    money_rows[str(MWBE_SOLICITATION_ROW["request_id"])] = MWBE_SOLICITATION_ROW
+    money_rows[str(HNTB_AWARD_NOTICE["request_id"])] = HNTB_AWARD_NOTICE
+    money_rows[str(PARKS_ARCHIVE_AWARD["request_id"])] = PARKS_ARCHIVE_AWARD
+    for pin in MATTER_PINS:
+        for index, row in enumerate(CHAIN_ROWS, start=1):
+            resident_row = {**row, "pin": pin, "request_id": f"demo-{index}-{pin}"}
+            money_rows[str(resident_row["request_id"])] = resident_row
+    money_snapshot["rows"] = list(money_rows.values())
+    money_snapshot["count"] = len(money_snapshot["rows"])
+
+    meetings_snapshot = {
+        "schema": "cityscroll.shared-meeting-read-model.v1",
+        "generated_at": iso_date(0),
+        "rows": [*MEETINGS_ROWS, UPCOMING_HEARING, PAST_IDA_HEARING, NOTICE_LAND_ZAP_SPINE_NOTICE],
+    }
+
+    def fixed(body):
+        return lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps(body),
+        )
+
     def worker(route) -> None:
         path = urlparse(route.request.url).path
         query = parse_qs(urlparse(route.request.url).query)
@@ -380,6 +410,10 @@ def install_demo_routes(page) -> None:
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", city_data)
     # Newest route wins over install_routes' unfiltered ZAP_ROWS fixture.
     page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", zap_projects)
+    # Resident demos exercise the same static snapshots as production rather than
+    # relying on the retired City Record/ZAP query stubs above.
+    page.route("**/data/money_resident_snapshot.json", fixed(money_snapshot))
+    page.route("**/data/shared_meeting_read_model.json", fixed(meetings_snapshot))
 
 
 def visible_locator(page, expected: dict):

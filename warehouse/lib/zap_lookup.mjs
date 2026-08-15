@@ -264,7 +264,7 @@ export function buildMaterializationDoc(rows, opts = {}) {
       worker: "worker/src/zap_outcomes.mjs#fetchOpenDataRow",
       soda_dataset: "hgx4-8ukb",
       description:
-        "ZAP Open Data project row on /zap-outcomes — warehouse materialization first, live SODA on miss",
+        "ZAP Open Data project rows retained for resident Land and /zap-outcomes reads",
     },
     rows: list,
   };

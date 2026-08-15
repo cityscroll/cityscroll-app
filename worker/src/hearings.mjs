@@ -164,9 +164,7 @@ export async function refreshHearings(env, fetchImpl = fetch, now = new Date(), 
       ? (options.communityBoardIndex || COMMUNITY_BOARD_SNAPSHOT)
       : null,
   });
-  await env.ALERT_STATE.put(HEARINGS_KV_KEY, JSON.stringify(view), {
-    expirationTtl: 3 * 24 * 60 * 60,
-  });
+  await env.ALERT_STATE.put(HEARINGS_KV_KEY, JSON.stringify(view));
   return { status: "success", ...view.counts };
 }
 
@@ -189,7 +187,7 @@ function response(body, status = 200) {
   });
 }
 
-export async function handleHearings(request, env, ctx) {
+export async function handleHearings(request, env, _ctx) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return response(JSON.stringify({ ok: false, reason: "method" }), 405);
   if (!env.ALERT_STATE) return response(JSON.stringify({ ok: false, reason: "not-configured" }), 503);
@@ -205,22 +203,12 @@ export async function handleHearings(request, env, ctx) {
       || hearing?.request_id === requestedId
       || hearing?.source_keys?.some((key) => key?.value === requestedId)
   ));
-  if (!parsed || age > MAX_AGE_MS || requestedMissing || parsed.source_extraction_version !== HEARINGS_SOURCE_EXTRACTION_VERSION) {
-    try {
-      const view = await buildHearingView(fetch, new Date(), {
-        communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,
-      });
-      raw = JSON.stringify(view);
-      const write = env.ALERT_STATE.put(HEARINGS_KV_KEY, raw, { expirationTtl: 3 * 24 * 60 * 60 });
-      if (ctx?.waitUntil) ctx.waitUntil(write); else await write;
-    } catch (error) {
-      if (!parsed) {
-        return response(JSON.stringify({ ok: false, reason: "upstream", detail: String(error?.message || error) }), 502);
-      }
-      raw = JSON.stringify(parsed);
-    }
-  }
-  return response(raw);
+  if (!parsed) return response(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
+  if (requestedMissing) return response(JSON.stringify({ ok: false, reason: "not-materialized" }), 404);
+  return response(JSON.stringify({
+    ...parsed,
+    stale: age > MAX_AGE_MS || parsed.source_extraction_version !== HEARINGS_SOURCE_EXTRACTION_VERSION,
+  }));
 }
 
 /**

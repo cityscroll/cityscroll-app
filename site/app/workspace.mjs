@@ -557,7 +557,8 @@ async function showMatter(pin){
   const phaseToolsP = ensureMatterPhaseSpineTools();
   let rows = [];
   try{
-    rows = await soda({"$select":SELECT,"$where":`pin='${String(pin).replace(/'/g,"''")}'`,"$order":"start_date ASC","$limit":"60"}, 15000);
+    const snapshotRows=await globalThis.residentMoneyRows?.()||[];
+    rows=snapshotRows.filter(row=>String(row?.pin||"")===String(pin)).slice(0,60);
   }catch(e){}
   if(!isCurrentRender()) return;
   // Whichever renewal-suffixed PIN a link used to reach this page, widen to the same base+agency
@@ -566,14 +567,12 @@ async function showMatter(pin){
   const matterBase = pinBase(pin);
   if(matterBase && rows.length){
     const matterAgency = rows[0].agency_name;
-    try{
-      const more = await soda({"$select":SELECT,
-        "$where":`pin LIKE '${matterBase.replace(/'/g,"''")}%' AND agency_name='${matterAgency.replace(/'/g,"''")}'`,
-        "$order":"start_date ASC","$limit":"60"}, 15000);
-      const seen = new Set(rows.map(x=>x.request_id));
-      more.forEach(x=>{ if(!seen.has(x.request_id)){ rows.push(x); seen.add(x.request_id); } });
-      if(!isCurrentRender()) return;
-    }catch(e){}
+    const snapshotRows=await globalThis.residentMoneyRows?.()||[];
+    const more=snapshotRows.filter(row=>String(row?.pin||"").startsWith(matterBase)
+      && String(row?.agency_name||"")===String(matterAgency)).slice(0,60);
+    const seen = new Set(rows.map(x=>x.request_id));
+    more.forEach(x=>{ if(!seen.has(x.request_id)){ rows.push(x); seen.add(x.request_id); } });
+    if(!isCurrentRender()) return;
   }
   if(!rows.length){
     box.innerHTML = `<div class="empty">${t("matter_empty",{pin:safe})} ${routeBackHTML("#money")}</div>`;

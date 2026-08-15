@@ -55,7 +55,8 @@ const CITY_RECORD_SELECT = [
 
 // Sell-facing land universe for daily write-ahead prewarm. Order is priority:
 // public-review first (what the default Land list shows), then noticed/active/filed.
-// Full corpus (~33k) is never prewarmed — compute-on-miss remains the fallback.
+// The bounded resident corpus is prewarmed; missing rows remain unavailable until
+// scheduled acquisition materializes them.
 export const ZAP_PREWARM_STATUSES = Object.freeze([
   "In Public Review",
   "Noticed",
@@ -68,9 +69,8 @@ export const ZAP_PREWARM_DEMO_IDS = Object.freeze(["2022M0258"]);
 export const ZAP_PREWARM_MAX = 200;
 /** Concurrent builds per wave (ZAP API + SODA fan-out is the cost). */
 export const ZAP_PREWARM_CONCURRENCY = 4;
-/** Refresh before 24h expiry so the warm window does not gap between daily crons. */
+/** Refresh before the public freshness objective while retaining older rows. */
 export const ZAP_PREWARM_REFRESH_AGE_MS = Math.floor(ZAP_OUTCOMES_MAX_AGE_MS * 0.75);
-export const ZAP_OUTCOMES_KV_TTL_SEC = 2 * 24 * 60 * 60;
 
 function corsHeaders() {
   return {
@@ -123,9 +123,7 @@ async function kvGetRecord(env, projectId) {
 
 async function kvPutRecord(env, record) {
   if (!env?.ALERT_STATE || !record?.project_id) return;
-  await env.ALERT_STATE.put(kvKey(record.project_id), JSON.stringify(record), {
-    expirationTtl: ZAP_OUTCOMES_KV_TTL_SEC,
-  });
+  await env.ALERT_STATE.put(kvKey(record.project_id), JSON.stringify(record));
 }
 
 /**
@@ -600,7 +598,7 @@ export function slimCityRecordNoticesForActionRail(notices, limit = 12) {
   }));
 }
 
-export async function handleZapOutcomes(request, env, ctx) {
+export async function handleZapOutcomes(request, env, _ctx) {
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders() });
   }
@@ -633,36 +631,12 @@ export async function handleZapOutcomes(request, env, ctx) {
     }));
   };
 
-  if (outcomeCacheIsFresh(cached)) {
+  if (cached) {
     return successResponse(cached, {
       cached: true,
+      stale: !outcomeCacheIsFresh(cached),
       generated_at: cached.generated_at,
     });
   }
-
-  try {
-    const record = await buildZapOutcomeRecord(projectId);
-    if (env?.ALERT_STATE) {
-      const write = kvPutRecord(env, record);
-      if (ctx?.waitUntil) ctx.waitUntil(write);
-      else await write;
-    }
-    return successResponse(record, {
-      cached: false,
-      generated_at: record.generated_at,
-    });
-  } catch (error) {
-    if (cached) {
-      return successResponse(cached, {
-        cached: true,
-        stale: true,
-        generated_at: cached.generated_at,
-      });
-    }
-    return response(JSON.stringify({
-      ok: false,
-      reason: "upstream",
-      detail: String(error?.message || error),
-    }), 502);
-  }
+  return response(JSON.stringify({ ok: false, reason: "not-materialized" }), 404);
 }

@@ -1126,6 +1126,8 @@ function parcelLinksHTML(links, provenanceKey, displayBbl = links.bbl){
     <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;
 }
 async function fillAddressLinks(r, el){
+  // TODO(precompute-no-live-api/geocoder-scope): preserve this address lookup
+  // until the site owner chooses a bounded gazetteer or full address index.
   if(!el || !r) return;
   let geo = null;
   if(goodAddr(r.street_address_1)){

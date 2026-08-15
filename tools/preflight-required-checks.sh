@@ -249,10 +249,13 @@ run_and_fail node tools/check_beta_review_contract.mjs
 
 run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + joins" \
   "node tools/generate_source_docs.mjs --check"
+run_and_fail node tools/no_live_external_reads.mjs --check
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/data_source_graph.mjs
 run_and_fail node tools/data_source_graph.mjs --check
 run_and_fail node tools/build_url_migration_map.mjs --check
+run_and_fail node tools/build_money_resident_snapshot.mjs --check
+run_and_fail node tools/build_property_resident_snapshot.mjs --check
 run_and_fail node tools/build_primary_documents.mjs --check
 run_and_fail node tools/build_exam_documents.mjs --check
 run_and_fail node tools/build_near_you_pages.mjs --check
@@ -261,26 +264,9 @@ run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
 run_and_fail node --test test/*.test.mjs
-preset_gate() {
-  # Local prepush must not make developers race a rotating upstream from a shared IP.
-  # CI owns the refresh; retain the live check whenever the generated fallback changed.
-  local branch_delta=""
-  if [[ "${CI:-}" != "true" && -n "$(git rev-parse --verify origin/main 2>/dev/null || true)" ]]; then
-    branch_delta="$(git diff --name-only origin/main...HEAD; git diff --name-only)"
-  fi
-  if [[ -n "$branch_delta" ]]; then
-    local mode
-    mode="$(node tools/preset_fallback_ci.mjs --base origin/main)"
-    if [[ "$mode" == "refresh" ]]; then
-      echo "Inherited preset fallback drift will be refreshed by the CI runner."
-      return 0
-    fi
-  fi
-  node tools/validate_presets.mjs --check
-}
-run_banner "Unit tests (site + worker)" "Preset shortcuts and rotating suggestions resolve to live results" \
-  "preset_gate (CI live check; inherited drift refreshes in CI)"
-run_and_fail preset_gate
+run_banner "Unit tests (site + worker)" "Preset snapshot receipt is internally consistent" \
+  "node tools/validate_presets.mjs --check --offline"
+run_and_fail node tools/validate_presets.mjs --check --offline
 run_and_fail node --test test/contract/*.test.mjs
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
@@ -414,6 +400,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/25_property_facet_count_parity.py
   run_and_fail python3 test/functional/26_vendor_footprint_scope_count.py
   run_and_fail python3 test/functional/28_agency_scope_links.py
+  run_and_fail python3 test/functional/29_snapshot_only_resident_reads.py
 else
   echo
   echo "Skipping full browser gates by default."

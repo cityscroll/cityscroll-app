@@ -1,5 +1,5 @@
-// Pure builders for wave-2 batch-precompute snapshots (BATCHABLE / hybrid defaults).
-// Live fetches stay live for parameterized search; these cover stable default/first-paint surfaces.
+// Pure builders for daily resident snapshots. Publisher requests belong to the
+// acquisition commands; browser filters read the resulting artifacts locally.
 
 export const DATA_PAGE_DATASET = "dg92-zbpx";
 export const LAND_DEFAULT_DATASET = "hgx4-8ukb";
@@ -8,8 +8,7 @@ export const SODA_BASE = "https://data.cityofnewyork.us/resource";
 export const ZAP_OUTCOMES_ENDPOINT = "https://api.cityscroll.org/zap-outcomes";
 
 // List-card fields only for the committed snapshot. project_brief stays off the
-// static artifact (publisher text is large and not required to paint the default list);
-// landSelect hydrates the brief from live SODA when missing.
+// static artifact (publisher text is large and not required to paint the resident list).
 export const LAND_DEFAULT_LIST_FIELDS = Object.freeze([
   "project_id",
   "project_name",
@@ -26,7 +25,7 @@ export const LAND_DEFAULT_LIST_FIELDS = Object.freeze([
 ]);
 
 export const LAND_DEFAULT_SELECT = LAND_DEFAULT_LIST_FIELDS.join(",");
-/** Full detail select (list fields + brief) for live SODA paths. */
+/** Full detail select for acquisition-time materialization. */
 export const LAND_DEFAULT_DETAIL_SELECT = [...LAND_DEFAULT_LIST_FIELDS, "project_brief"].join(",");
 
 export const LAND_DEFAULT_WHERE = "ulurp_non='ULURP' AND project_status='Active'";
@@ -34,7 +33,7 @@ export const LAND_DEFAULT_LIMIT = 40;
 
 // Money default open RFP strip — list-card fields only on the committed snapshot so the
 // public PR surface does not republish publisher contact emails/phones from City Record.
-// Full SELECT (site/app/core.mjs) still loads on hybrid SODA refresh / detail select.
+// Full detail fields are acquired only by precompute jobs that need them.
 export const MONEY_DEFAULT_LIST_FIELDS = Object.freeze([
   "request_id",
   "start_date",
@@ -49,7 +48,7 @@ export const MONEY_DEFAULT_LIST_FIELDS = Object.freeze([
   "selection_method_description",
 ]);
 export const MONEY_DEFAULT_SELECT = MONEY_DEFAULT_LIST_FIELDS.join(",");
-/** Full detail select for live SODA paths (matches site/app/core.mjs SELECT). */
+/** Full detail select for acquisition-time materialization (matches core SELECT). */
 export const MONEY_DEFAULT_DETAIL_SELECT = [
   ...MONEY_DEFAULT_LIST_FIELDS,
   "address_to_request",
@@ -219,7 +218,7 @@ export function staffingHiresQuery() {
 
 /**
  * Default Money tab: open solicitations, no agency/keyword/method/closing-week/NL filters,
- * default due_date sort. Arbitrary filters stay live SODA.
+ * default due_date sort. Resident filters execute over the bounded artifact.
  */
 export function isDefaultMoneySearch({
   mode,
@@ -284,7 +283,7 @@ export function buildMoneyDefaultOpenSnapshot(rows, { now = new Date() } = {}) {
     },
     query: {
       ...moneyDefaultOpenQuery(now),
-      note: "Default Money tab: open solicitations, all agencies, no keyword/method. List fields only; contact and body hydrate on live refresh.",
+      note: "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot.",
     },
     count: list.length,
     notices: list,
@@ -309,7 +308,7 @@ export function buildMoneyAgenciesSnapshot(rows, { now = new Date() } = {}) {
     },
     query: {
       ...moneyAgenciesQuery(),
-      note: "Procurement agency dropdown on Money tab. Hybrid-refresh live SODA after first paint.",
+      note: "Procurement agency dropdown materialized for resident reads.",
     },
     count: unique.length,
     agencies: unique,
@@ -336,7 +335,7 @@ export function buildStaffingHiresSnapshot(rows, { now = new Date() } = {}) {
     },
     query: {
       ...staffingHiresQuery(),
-      note: "Default Staffing appointments feed. Keyword search and payroll stay live.",
+      note: "Staffing appointments materialized for resident keyword and agency filtering.",
     },
     count: notices.length,
     notices,
@@ -460,8 +459,8 @@ export async function fetchDataPageCharts(fetchImpl = fetch, now = new Date()) {
 }
 
 /**
- * Prefer warehouse zap-projects (WH-05) when DuckDB has the table; otherwise live SODA.
- * Parameterized land search stays live — this is the default Active ULURP strip only.
+ * Prefer warehouse zap-projects (WH-05) when DuckDB has the table; otherwise acquire
+ * from SODA. Resident parameterized search runs over this and the warehouse artifact.
  */
 export async function fetchLandDefaultProjects(fetchImpl = fetch, opts = {}) {
   const preferWarehouse = opts.preferWarehouse !== false;

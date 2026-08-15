@@ -5,13 +5,19 @@ const SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetin
 const BM_CACHE={};
 const yearCut=()=>new Date(Date.now()-365*86400000).toISOString().slice(0,10)+"T00:00:00";
 function ordinal(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+async function residentMoneyContextRows(){try{return await globalThis.residentMoneyRows?.()||[];}catch(_e){return [];}}
 function agencyNorms(agency){
   if(BM_CACHE[agency]) return BM_CACHE[agency];
-  const q=agency.replace(/'/g,"''");
   BM_CACHE[agency]=(async()=>{
     const out={adMedian:null,adN:0,awardTotal:0,awardCount:0};
-    try{const sol=await soda({"$select":"start_date,due_date","$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date IS NOT NULL`,"$order":"start_date DESC","$limit":"200"},8000);const ws=sol.map(r=>Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000)).filter(d=>d>0&&d<400).sort((a,b)=>a-b);if(ws.length>=8){out.adMedian=ws[Math.floor(ws.length/2)];out.adN=ws.length;}}catch(e){}
-    try{const[a]=await soda({"$select":"count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND start_date > '${yearCut()}'`},8000);if(a){out.awardCount=+a.n||0;out.awardTotal=+a.t||0;}}catch(e){}
+    const rows=await residentMoneyContextRows();
+    const agencyRows=rows.filter(row=>String(row?.agency_name||"")===String(agency));
+    const sol=agencyRows.filter(row=>row?.type_of_notice_description==="Solicitation"&&row?.due_date).slice(0,200);
+    const ws=sol.map(r=>Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000)).filter(d=>d>0&&d<400).sort((a,b)=>a-b);
+    if(ws.length>=8){out.adMedian=ws[Math.floor(ws.length/2)];out.adN=ws.length;}
+    const awards=agencyRows.filter(row=>row?.type_of_notice_description==="Award"&&+row?.contract_amount>0&&+row?.contract_amount<MONEY_HONESTY_CAP&&String(row?.start_date||"")>yearCut());
+    out.awardCount=awards.length;
+    out.awardTotal=awards.reduce((sum,row)=>sum+(+row.contract_amount||0),0);
     return out;
   })();
   return BM_CACHE[agency];
@@ -21,17 +27,19 @@ async function noticeFlags(r){
   const flags=[];if(!r||!r.agency_name)return flags;
   if(NONCOMP_RE.test(r.selection_method_description||"")) flags.push({lvl:"soon",t:`⚑ non-competitive method: ${escUiHtml(cleanText(r.selection_method_description))}`});
   if(r.type_of_notice_description==="Solicitation"&&r.due_date&&r.start_date){const w=Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000);if(w>0&&w<=10){const n=await agencyNorms(r.agency_name);if(n.adMedian&&w<n.adMedian/2)flags.push({lvl:"hot",t:`⚑ short ad window: ${w} day${w===1?"":"s"} (agency median ${n.adMedian})`});}}
-  if(r.type_of_notice_description==="Award"&&r.vendor_name){try{const cut90=new Date(Date.now()-90*86400000).toISOString().slice(0,10)+"T00:00:00";const[c]=await soda({"$select":"count(1) as n","$where":`agency_name='${r.agency_name.replace(/'/g,"''")}' AND vendor_name='${cleanText(r.vendor_name).replace(/'/g,"''")}' AND type_of_notice_description='Award' AND start_date > '${cut90}'`},8000);if(c&&+c.n>=3)flags.push({lvl:"soon",t:`⚑ ${ordinal(+c.n)} award to this vendor at this agency in 90 days`});}catch(e){}}
+  if(r.type_of_notice_description==="Award"&&r.vendor_name){const cut90=new Date(Date.now()-90*86400000).toISOString().slice(0,10)+"T00:00:00";const rows=await residentMoneyContextRows();const n=rows.filter(row=>row?.type_of_notice_description==="Award"&&String(row?.agency_name||"")===String(r.agency_name)&&cleanText(row?.vendor_name)===cleanText(r.vendor_name)&&String(row?.start_date||"")>cut90).length;if(n>=3)flags.push({lvl:"soon",t:`⚑ ${ordinal(n)} award to this vendor at this agency in 90 days`});}
   return flags;
 }
 async function awardContext(r){
-  if(!r||r.type_of_notice_description!=="Award"||!r.agency_name)return "";const X=+r.contract_amount;if(!X||X<=0||X>=MONEY_HONESTY_CAP)return "";const q=r.agency_name.replace(/'/g,"''");const base=`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND start_date > '${yearCut()}'`;const bits=[];
-  try{const[[le],[tot]]=await Promise.all([soda({"$select":"count(1) as n","$where":base+` AND contract_amount <= ${X}`},8000),soda({"$select":"count(1) as n","$where":base},8000)]);if(tot&&+tot.n>=20)bits.push(`larger than <b>${Math.round((+le.n/+tot.n)*100)}%</b> of this agency's awards (last 12 mo, n=${(+tot.n).toLocaleString()})`);}catch(e){}
-  if(r.vendor_name){try{const n=await agencyNorms(r.agency_name);if(n.awardTotal>0){const[v]=await soda({"$select":"sum(contract_amount) as t","$where":base+` AND vendor_name='${cleanText(r.vendor_name).replace(/'/g,"''")}'`},8000);if(v&&+v.t>0){const share=Math.round((+v.t/n.awardTotal)*100);if(share>=1)bits.push(`this vendor holds <b>${share}%</b> of the agency's award $ (12 mo)`);}}}catch(e){}}
+  if(!r||r.type_of_notice_description!=="Award"||!r.agency_name)return "";const X=+r.contract_amount;if(!X||X<=0||X>=MONEY_HONESTY_CAP)return "";const bits=[];
+  const rows=await residentMoneyContextRows();const awards=rows.filter(row=>String(row?.agency_name||"")===String(r.agency_name)&&row?.type_of_notice_description==="Award"&&+row?.contract_amount>0&&+row?.contract_amount<MONEY_HONESTY_CAP&&String(row?.start_date||"")>yearCut());const le=awards.filter(row=>+row.contract_amount<=X).length;if(awards.length>=20)bits.push(`larger than <b>${Math.round((le/awards.length)*100)}%</b> of this agency's awards (last 12 mo, n=${awards.length.toLocaleString()})`);
+  if(r.vendor_name){const n=await agencyNorms(r.agency_name);if(n.awardTotal>0){const vendorTotal=awards.filter(row=>cleanText(row?.vendor_name)===cleanText(r.vendor_name)).reduce((sum,row)=>sum+(+row.contract_amount||0),0);if(vendorTotal>0){const share=Math.round((vendorTotal/n.awardTotal)*100);if(share>=1)bits.push(`this vendor holds <b>${share}%</b> of the agency's award $ (12 mo)`);}}}
   if(!bits.length)return "";return `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>${t("context_strip_lbl")}</b><span>${bits.join(" · ")}</span></div></div>`;
 }
 function parcelLinksHTML(links,provenanceKey,displayBbl=links.bbl){if(!links)return "";return `<div class="rmeta2 property-parcel-links" style="margin:8px 0">${t("parcel_elsewhere_label")} <a href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("parcel_link_zola")}${extSR()}</a> · <a href="${escUiHtml(links.acris_url)}" ${EXT_ATTRS}>${t("parcel_link_acris")}${extSR()}</a> · <a href="${escUiHtml(links.who_owns_what_url)}" ${EXT_ATTRS}>${t("parcel_link_wow")}${extSR()}</a> <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;}
 async function fillAddressLinks(r,el){
+  // TODO(precompute-no-live-api/geocoder-scope): preserve this user-entered/address
+  // lookup until the site owner chooses a bounded gazetteer or full address index.
   if(!el||!r)return;let geo=null;if(goodAddr(r.street_address_1)){const addr=cleanText(r.street_address_1);try{geo=await geocode(addr+" New York NY");}catch(e){}}
   if(!document.contains(el))return;if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)){const tools=await propertyLocationTools();if(!document.contains(el))return;const links=tools.parcelLinksFromBbl(geo.bbl);if(links){el.innerHTML=parcelLinksHTML(links,"parcel_via_geosearch",tools.bblReaderLabel(geo.bbl));return;}}
   if(r.section_name!=="Property Disposition")return;const tools=await propertyLocationTools();if(!document.contains(el))return;const location=tools.propertyLocationFromRow(r),bbl=tools.primaryPropertyBbl(location),links=tools.parcelLinksFromBbl(bbl);if(!links||location.scope!=="local")return;el.innerHTML=`${propertyPlaceChips(location)}${parcelLinksHTML(links,"parcel_via_notice_tax_lot",tools.bblReaderLabel(bbl))}`;
