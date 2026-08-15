@@ -1,5 +1,5 @@
 import {
-  BROWSE_STUBS,
+  BROWSE_OBJECTS,
   BROWSE_FACETS,
   buildBrowseLanding,
   buildBrowseView,
@@ -171,22 +171,103 @@ export function buildBrowseLandingDocument(shell, payloads, options = {}) {
   return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
 }
 
-export function renderBrowseStub(config) {
-  if (!config) return "";
-  return `<div class="browse-concept-landing" data-build-rendered="browse-stub" data-browse-stub="${esc(config.tab)}">
-    <p class="now-kicker"><a href="/browse/">Browse</a> · ${esc(config.label)}</p>
-    <header class="browse-landing-head"><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p></header>
-    <section class="browse-concept-section" aria-labelledby="browse-stub-heading">
-      <h2 id="browse-stub-heading">Coming soon</h2>
-      <p>CityScroll is preparing a dedicated Exams view with application windows, eligible lists, and published outcomes.</p>
-      <p class="browse-concept-actions"><a class="browse-concept-link" href="/browse/staffing/">Browse staffing records</a></p>
+function examStatus(exam, today) {
+  if (exam?.schedule_status === "canceled") return "Canceled";
+  if (exam?.schedule_status === "postponed") return "Postponed";
+  if (!exam?.application_start || !exam?.application_end) return "Unscheduled";
+  if (today < exam.application_start) return "Upcoming";
+  if (today <= exam.application_end) return "Open";
+  return "Closed";
+}
+
+function examDate(value) {
+  const day = String(value || "").slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : "";
+}
+
+function examExternalHref(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(String(value));
+    return url.protocol === "https:" ? url.href : "";
+  } catch (_error) {
+    return "";
+  }
+}
+
+function examEdgeState(exam, kind) {
+  const href = kind === "eligible-list"
+    ? examExternalHref(exam?.eligible_list_url)
+    : examExternalHref(exam?.appointment_url);
+  if (href) return { state: "published", href };
+  if (kind === "eligible-list") {
+    const rawCount = exam?.list_aggregate?.list_count;
+    const count = Number(rawCount);
+    if (rawCount != null && Number.isFinite(count)) return { state: count > 0 ? "published" : "empty", count };
+    if (exam?.eligible_list_utilization?.status === "linked") {
+      const rawRowCount = exam.eligible_list_utilization.row_count;
+      const rowCount = Number(rawRowCount);
+      if (rawRowCount != null && Number.isFinite(rowCount)) {
+        return { state: rowCount > 0 ? "published" : "empty", count: rowCount };
+      }
+    }
+  } else if (exam?.outcome && typeof exam.outcome === "object") {
+    const count = Number(exam.outcome.appointment_count);
+    return { state: Number.isFinite(count) && count > 0 ? "published" : "empty", count: Number.isFinite(count) ? count : null };
+  }
+  return { state: "unknown", count: null };
+}
+
+function examEdgeMarkup(exam, kind, label) {
+  const edge = examEdgeState(exam, kind);
+  const stateLabel = edge.state[0].toUpperCase() + edge.state.slice(1);
+  const count = edge.count == null ? "" : ` · ${edge.count.toLocaleString("en-US")}`;
+  const body = edge.href
+    ? `<a href="${esc(edge.href)}" rel="noopener noreferrer">${esc(label)}</a>`
+    : `<span>${esc(label)} · ${stateLabel}${count}</span>`;
+  return `<li data-edge-kind="${esc(kind)}" data-edge-state="${esc(edge.state)}">${body}</li>`;
+}
+
+function renderExamCard(exam, today) {
+  const id = String(exam?.exam_number || "").trim();
+  if (!/^\d{4}$/.test(id)) return "";
+  const title = String(exam.title || `Exam ${id}`);
+  const status = examStatus(exam, today);
+  const start = examDate(exam.application_start);
+  const end = examDate(exam.application_end);
+  const application = examExternalHref(exam.official_application_url);
+  const notice = examExternalHref(exam.notice_url);
+  const actions = [
+    `<a href="/exams/${esc(id)}/">Exam details</a>`,
+    application ? `<a href="${esc(application)}" rel="noopener noreferrer">Apply</a>` : "",
+    notice ? `<a href="${esc(notice)}" rel="noopener noreferrer">Official notice</a>` : "",
+  ].filter(Boolean).join("");
+  return `<article class="exam-directory-card" data-exam-number="${esc(id)}" data-exam-status="${esc(status.toLowerCase())}">
+    <div class="exam-directory-card-head"><span class="exam-directory-status">${esc(status)}</span><span class="exam-directory-number">Exam ${esc(id)}</span></div>
+    <h2><a href="/exams/${esc(id)}/" lang="en" dir="ltr">${esc(title)}</a></h2>
+    <p class="exam-directory-meta">${esc(exam.eligibility === "promotion" ? "Promotion" : "Open competitive")}${start && end ? ` · ${esc(start)}–${esc(end)}` : ""}</p>
+    <ul class="exam-directory-edges">${examEdgeMarkup(exam, "eligible-list", "Eligible list")}${examEdgeMarkup(exam, "appointments", "Appointments")}</ul>
+    <p class="exam-directory-actions">${actions}</p>
+  </article>`;
+}
+
+export function renderBrowseExams(artifact = {}) {
+  const exams = Array.isArray(artifact.exams) ? artifact.exams : [];
+  const today = examDate(artifact.data_current_as_of || artifact.generated_at) || "9999-12-31";
+  const cards = exams.map((exam) => renderExamCard(exam, today)).filter(Boolean).join("");
+  const asOf = examDate(artifact.data_current_as_of || artifact.generated_at);
+  return `<div class="browse-concept-landing exams-directory" data-build-rendered="browse-exams" data-browse-object-family="exams">
+    <p class="now-kicker"><a href="/browse/">Browse</a> · Exams</p>
+    <header class="browse-landing-head"><h1>Exams</h1><p>Civil-service exam schedules, applications, eligible lists, and published outcomes.</p><p class="exam-directory-asof">${exams.length.toLocaleString("en-US")} exam records${asOf ? ` · snapshot updated ${esc(asOf)}` : ""}</p></header>
+    <section class="browse-concept-section exam-directory-section" aria-labelledby="exam-directory-heading">
+      <div class="exam-directory-section-head"><div><h2 id="exam-directory-heading">Civil-service exams</h2><p>Open an exam for its application window, official notice, process context, and public outcomes.</p></div><a class="browse-concept-link" href="/browse/staffing/">Browse staffing records</a></div>
+      <div class="exam-directory-grid">${cards}</div>
     </section>
   </div>`;
 }
 
-export function buildBrowseStubDocument(shell, kind) {
-  const config = BROWSE_STUBS[kind];
-  if (!config) throw new Error(`Unknown Browse stub: ${kind}`);
+export function buildBrowseExamsDocument(shell, artifact) {
+  const config = BROWSE_OBJECTS.exams;
   let html = pageMetadata(shell, {
     title: `${config.title} · Browse · CityScroll`,
     description: config.description,
@@ -197,7 +278,7 @@ export function buildBrowseStubDocument(shell, kind) {
   html = activateTab(html, config.tab);
   html = html.replace(`class="tabbtn" href="${config.route}"`, `class="tabbtn active" href="${config.route}"`);
   html = addRouteStyles(html, ["browse.css"]);
-  return replaceElementContent(html, "examsview", renderBrowseStub(config));
+  return replaceElementContent(html, "examsview", renderBrowseExams(artifact));
 }
 
 export function buildBrowseDocument(shell, facet, payload, params = new URLSearchParams(), options = {}) {
