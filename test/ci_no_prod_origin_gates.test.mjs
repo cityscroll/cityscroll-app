@@ -27,7 +27,15 @@ function extractJob(workflow, jobId) {
 }
 
 /** Jobs that participate in PR / merge-group required checks (or feed them). */
-const PR_GATE_JOBS = ["unit", "a11y-pr", "reading-level", "performance", "functional"];
+const PR_GATE_JOBS = [
+  "unit",
+  "a11y-pr",
+  "a11y-pr-site",
+  "a11y-pr-shard",
+  "reading-level",
+  "performance",
+  "functional",
+];
 
 test("ci.yml PR-gate jobs never set CROL_BASE (or equivalent) to a production origin", () => {
   const ci = read(".github/workflows/ci.yml");
@@ -62,16 +70,16 @@ test("ci.yml PR-gate jobs never set CROL_BASE (or equivalent) to a production or
   }
 });
 
-test("a11y-pr demo-link contract uses the local site server and remains required", () => {
+test("a11y-pr shard demo-link contract uses the local site server and remains required", () => {
   const ci = read(".github/workflows/ci.yml");
-  const a11y = extractJob(ci, "a11y-pr");
-  assert.ok(a11y, "expected a11y-pr job");
-  assert.match(a11y, /CROL_BASE:\s*http:\/\/127\.0\.0\.1:8000\//);
+  const a11y = extractJob(ci, "a11y-pr-shard");
+  assert.ok(a11y, "expected a11y-pr-shard job");
+  assert.match(a11y, /export CROL_BASE="\$local_base"/);
   assert.match(a11y, /python3 test\/functional\/20_demo_links\.py/);
-  // Exactly one demo-links.py invocation in a11y-pr (local only).
+  // Exactly one demo-links.py invocation in the shard matrix (local only).
   const runs = a11y.match(/python3 test\/functional\/20_demo_links\.py/g) || [];
-  assert.equal(runs.length, 1, "a11y-pr should run demo-links once against local origin");
-  const demoStep = a11y.slice(a11y.indexOf("- name: Public demo-link regression contract"));
+  assert.equal(runs.length, 1, "a11y-pr-shard should run demo-links once against local origin");
+  const demoStep = a11y.slice(a11y.indexOf("- name: Run isolated accessibility shard"));
   assert.doesNotMatch(
     demoStep,
     /continue-on-error:/,
