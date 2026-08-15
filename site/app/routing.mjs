@@ -4,6 +4,7 @@ import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
+import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -21,7 +22,7 @@ function documentRouteRaw(){
   if(notice){
     const params=new URLSearchParams(location.search);
     const bounded=new URLSearchParams();
-    for(const key of ["w","focus"]) if(params.has(key)) bounded.set(key,params.get(key));
+    for(const key of ["w","focus","walk"]) if(params.has(key)) bounded.set(key,params.get(key));
     return `notice/${notice[1]}${bounded.size?`?${bounded}`:""}`;
   }
   const entity=path.match(/^\/(agencies|vendors|officials)\/([^/]+)$/);
@@ -590,11 +591,15 @@ function routeBackLabel(context, fallbackLabel){
 function routeBackHTML(fallbackHash,fallbackLabel,className){
   const context=routeReturnContext(history.state);
   const fallback=safeHistoryHash(fallbackHash)||"#money";
-  const href=context?context.hash:routeUrlForHash(fallback);
+  const fallbackHref=routeUrlForHash(fallback);
+  const traversal=traversalFromHref(location.href);
+  const href=traversal.hops.length
+    ? resolveTraversalBackHref(location.href, fallbackHref)
+    : context ? context.hash : fallbackHref;
   const label=routeBackLabel(context, fallbackLabel);
   const classAttr=className?' class="'+escUiHtml(className)+'"':"";
   const styleAttr=className?"":' style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none"';
-  return '<a'+classAttr+styleAttr+' href="'+escUiHtml(href)+'" data-route-back="'+(context?"history":"fallback")+'">'+label+'</a>';
+  return '<a'+classAttr+styleAttr+' href="'+escUiHtml(href)+'" data-route-back="'+(traversal.hops.length?"traversal":context?"history":"fallback")+'">'+label+'</a>';
 }
 
 let pendingItemRouteContext=null;
@@ -1311,7 +1316,7 @@ async function showNotice(id, watch){
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
   const initialActionRail = window.CrolActions ? actionRailHTML(initialActionsForGlance) : "";
-  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto" data-notice-id="${escUiHtml(r.request_id)}">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>

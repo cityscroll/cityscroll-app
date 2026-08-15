@@ -36,6 +36,7 @@ test("official profiles render exact graph member_of edges when the legacy looku
   const panel = renderCommitteeMembershipsHTML(bag, { escapeHtml: String });
   assert.match(panel, /data-membership-status="linked"/);
   assert.match(panel, /data-pivot-relation-label="member of"/);
+  assert.doesNotMatch(panel, /href="\/browse\/people\/#committees"/);
   assert.doesNotMatch(panel, /Reverse coverage unavailable/);
 
   const local = renderOfficialLocalConstellationHTML(
@@ -46,7 +47,8 @@ test("official profiles render exact graph member_of edges when the legacy looku
   );
   assert.match(local, /data-local-constellation-status="matched"/);
   assert.match(local, /data-edge-type="member_of"/);
-  assert.match(local, /data-pivot-relation-label="member of"/);
+  assert.doesNotMatch(local, /href="\/browse\/people\/#committees"/);
+  assert.match(local, /data-pivot-status="held"/);
 });
 
 test("official profile committee composition preserves honest graph states", () => {

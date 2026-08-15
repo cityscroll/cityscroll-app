@@ -16,6 +16,7 @@ import {
   communityBoardMeetingEdgeFromRow,
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { renderNodeBack } from "./civic_document_chrome.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -335,7 +336,7 @@ async function handleComposedObject(request, env, pathname, canonicalPath) {
   return transformed;
 }
 
-export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklinksLookup = null) {
+export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklinksLookup = null, options = {}) {
   const kind = row?.type_of_notice_description || row?.section_name || "Public record";
   const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
   const agency = row?.agency_name || "Agency not listed";
@@ -462,7 +463,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     }, { className: "notice-community-board-link", escape: esc })}</p>`
     : "";
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
-    <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
+    ${renderNodeBack({ href: "/browse/", label: "Back to Browse", currentHref: options.currentHref, extraClass: "edge-notice-back" })}
     <article class="panel route-item" tabindex="-1">
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
@@ -577,7 +578,7 @@ async function handleNotice(request, env, id) {
     .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
     .on("#noticeview", { element(element) {
       element.setInnerContent(
-        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup),
+        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup, { currentHref: request.url }),
         { html: true },
       );
     } })
