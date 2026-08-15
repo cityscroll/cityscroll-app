@@ -4,7 +4,6 @@ import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
-import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -592,9 +591,9 @@ function routeBackHTML(fallbackHash,fallbackLabel,className){
   const context=routeReturnContext(history.state);
   const fallback=safeHistoryHash(fallbackHash)||"#money";
   const fallbackHref=routeUrlForHash(fallback);
-  const traversal=traversalFromHref(location.href);
+  const traversal=globalThis.CrolTraversal?.stateFromHref?.(location.href) || { hops: [] };
   const href=traversal.hops.length
-    ? resolveTraversalBackHref(location.href, fallbackHref)
+    ? globalThis.CrolTraversal.resolveBackHref(location.href, fallbackHref)
     : context ? context.hash : fallbackHref;
   const label=routeBackLabel(context, fallbackLabel);
   const classAttr=className?' class="'+escUiHtml(className)+'"':"";

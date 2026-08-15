@@ -130,5 +130,9 @@ function install() {
   render();
 }
 
-globalThis.CrolTraversal = Object.freeze({ render });
+globalThis.CrolTraversal = Object.freeze({
+  render,
+  resolveBackHref: resolveTraversalBackHref,
+  stateFromHref: traversalFromHref,
+});
 if (document.body) { ensureStyles(); install(); }

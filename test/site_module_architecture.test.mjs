@@ -60,6 +60,13 @@ test("Property stays behind route activation while routing state remains eager",
   );
 });
 
+test("Traversal stays off home cold loading and activates for notice and official routes", () => {
+  assert.match(loader, /traversal:\s*\(\)\s*=>\s*import\("\.\/traversal\.mjs"\)/);
+  assert.match(loader, /raw\.startsWith\("notice\/"\)\s*\|\|\s*raw\.startsWith\("official\/"\)/);
+  assert.match(loader, /path\.startsWith\("\/notices\/"\)\s*\|\|\s*path\.startsWith\("\/officials\/"\)/);
+  assert.doesNotMatch(loader.slice(0, loader.indexOf("const routeModuleLoaders")), /traversal\.mjs/);
+});
+
 test("Meetings stays off the Rules route activation path", () => {
   const routeMap = loader.slice(
     loader.indexOf("function routeModuleForHash"),
