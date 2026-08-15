@@ -23,7 +23,6 @@ import {
   mandateMatterEdgeFromRow,
   normalizeMandateGraphNeighbors,
   renderMandateRowGraphActions,
-  renderMandateSectionNeighborActions,
 } from "./mandate_graph_neighbors.mjs";
 import { canonicalMandateId } from "./mandate_subject_ref.mjs";
 import {
@@ -674,12 +673,7 @@ export function renderMandatePredictionsSection(view) {
     }</ul>`
     : "";
 
-  const neighborChrome = renderMandateSectionNeighborActions({
-    graph_neighbors: graphNeighbors,
-    escape: esc,
-  });
   const actions = [
-    neighborChrome,
     view.follow_href
       ? `<a class="node-action civic-object-action" href="${esc(view.follow_href)}">Watch expected mandate events</a>`
       : "",
