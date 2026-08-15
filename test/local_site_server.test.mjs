@@ -26,6 +26,9 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(server, /if self\._static_document\(route, query\):/);
   assert.match(server, /def publish_ready\(/);
   assert.match(server, /probe_base\(base\)/);
+  assert.match(server, /urllib\.error\.URLError/);
+  assert.match(server, /READINESS_TIMEOUT_SECONDS/);
+  assert.match(server, /connection refused/);
 
   const source = read("tools/preflight-required-checks.sh");
   assert.match(source, /tools\/local_site_server\.py/);
@@ -45,8 +48,10 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.ok(build >= 0 && build < serve, "CI must build the deploy artifact before serving it");
   assert.match(ci, /tools\/local_site_server\.py --directory _site --port 0 --ready-file/);
   assert.match(ci, /readiness_url=\"\$\{local_base\}index\.html\"/);
-  assert.match(ci, /curl --fail --silent --show-error[^\n]*\"\$readiness_url\"/);
+  assert.match(ci, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*\"\$readiness_url\"/);
   assert.match(ci, /HTTP 404/);
+  assert.match(ci, /server_log=/);
+  assert.match(ci, /for _ in \{1\.\.120\}/);
   assert.doesNotMatch(ci, /tools\/local_site_server\.py --directory _site --port 8000/);
   assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory _site/);
 });
