@@ -26,11 +26,100 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { DEFAULT_CROSS_SPINE_EDGE_POLICY } from "../entity_resolution/cross_domain/edge_policy.mjs";
+import {
+  PROCUREMENT_DEVIATION_CLASS,
+  PROCUREMENT_EVENT_LOG_SCHEMA,
+  PROCUREMENT_EXPECTED_PROCESS,
+  buildProcurementEventLogEnvelope,
+} from "../site/procurement_event_log.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
 const LOOKUP = join(ROOT, "site/data/process_conformance_lookup.json");
 const OBLIGATIONS = join(ROOT, "site/data/agency_obligations_lookup.json");
+const PROCUREMENT_EVENT_LOG_FIXTURE = join(
+  ROOT,
+  "worker/test/fixtures/lifecycle-coherence/procurement_event_log_cases.json",
+);
+
+test("procurement fixture emits bounded case-keyed event-log envelopes", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const envelopes = fixture.cases.map((row) => buildProcurementEventLogEnvelope(row));
+  const expectedTrace = [
+    "solicitation",
+    "bid_deadline",
+    "award",
+    "registration",
+    "payment",
+  ];
+
+  assert.deepEqual(PROCUREMENT_EXPECTED_PROCESS.map((stage) => stage.id), expectedTrace);
+  assert.ok(envelopes.some((row) => row.fixture_kind === "synthetic"));
+  assert.ok(envelopes.some((row) => row.fixture_kind === "real_shaped"));
+
+  for (const [index, envelope] of envelopes.entries()) {
+    const fixtureCase = fixture.cases[index];
+    assert.equal(envelope.schema, PROCUREMENT_EVENT_LOG_SCHEMA);
+    assert.ok(envelope.case_id);
+    assert.equal(envelope.data_as_of, fixtureCase.data_as_of);
+    assert.deepEqual(envelope.expected_process.trace, expectedTrace);
+    assert.deepEqual(envelope.observed_trace, fixtureCase.expected_observed_trace);
+    assert.equal(envelope.deviation.class, fixtureCase.expected_deviation_class);
+    assert.deepEqual(
+      envelope.event_log.map((event) => event.occurred_at),
+      envelope.event_log.map((event) => event.occurred_at).toSorted(),
+    );
+    for (const event of envelope.event_log) {
+      assert.equal(event.case_id, envelope.case_id);
+      assert.ok(event.activity_label);
+      assert.ok(event.clock);
+      assert.match(event.source.href, /^https:\/\//);
+      assert.doesNotMatch(event.source.href, /example\.|127\.0\.0\.1/);
+    }
+  }
+
+  const fullCases = envelopes.filter((row) => (
+    row.fixture_kind === "synthetic" || row.fixture_kind === "real_shaped"
+  ));
+  assert.equal(fullCases.length, 2);
+  for (const envelope of fullCases) {
+    assert.deepEqual(envelope.observed_trace, expectedTrace);
+    assert.equal(envelope.deviation.class, PROCUREMENT_DEVIATION_CLASS.CONFORMING);
+  }
+});
+
+test("missing procurement observations stay evidence-relative and carry data-as-of", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const missing = buildProcurementEventLogEnvelope(
+    fixture.cases.find((row) => row.expected_deviation_class === "missing_open_data"),
+  );
+
+  assert.equal(missing.deviation.class, PROCUREMENT_DEVIATION_CLASS.MISSING_OPEN_DATA);
+  assert.deepEqual(missing.deviation.missing_activities, ["bid_deadline"]);
+  assert.equal(missing.deviation.data_as_of, missing.data_as_of);
+  assert.equal(missing.deviation.is_legal_noncompliance, false);
+  assert.equal(missing.deviation.adjudication, "not_adjudicated");
+  assert.doesNotMatch(missing.deviation.class, /legal|violation|noncompliance/i);
+});
+
+test("procurement deviation classification follows the time-ordered observed trace", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const input = structuredClone(fixture.cases[0]);
+  input.case_id = "fixture:procurement:out-of-order-001";
+  input.events.find((event) => event.activity === "award").occurred_at = "2025-04-10";
+  input.events.find((event) => event.activity === "registration").occurred_at = "2025-03-20";
+
+  const envelope = buildProcurementEventLogEnvelope(input);
+  assert.deepEqual(envelope.observed_trace, [
+    "solicitation",
+    "bid_deadline",
+    "registration",
+    "award",
+    "payment",
+  ]);
+  assert.equal(envelope.deviation.class, PROCUREMENT_DEVIATION_CLASS.OUT_OF_ORDER_TRACE);
+  assert.equal(envelope.deviation.is_legal_noncompliance, false);
+});
 
 test("content tokens drop stopwords and keep topic words", () => {
   const tokens = contentTokens(
