@@ -5,6 +5,7 @@ import {
   communityBoardMeetingEdgeFromRow,
 } from "./community_board_institution_edges.mjs";
 import { joinCommunityBoardSourceRecord } from "./community_board_source_join.mjs";
+import { recognizedMeetingUrl } from "./hearing_logistics.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -242,6 +243,44 @@ function safeHref(value) {
   return null;
 }
 
+function meetingPlatform(href) {
+  let hostname = "";
+  try { hostname = new URL(href).hostname.toLowerCase(); } catch { return null; }
+  if (hostname.includes("zoom")) return "Zoom";
+  if (hostname.includes("teams.microsoft.com") || hostname.includes("teams.live.com")) return "Teams";
+  if (hostname.includes("webex")) return "Webex";
+  if (hostname === "meet.google.com") return "Google Meet";
+  return null;
+}
+
+function isRegistrationUrl(href) {
+  try {
+    const url = new URL(href);
+    return /\/(?:register|registration|rsvp)(?:\/|$)/i.test(url.pathname);
+  } catch {
+    return false;
+  }
+}
+
+function participationLink(link) {
+  const href = safeHref(link?.url || link?.href);
+  if (!href) return null;
+  const recognized = recognizedMeetingUrl(href);
+  const registration = isRegistrationUrl(href);
+  // Keep the accepted meeting URL family plus explicit publisher registration
+  // paths. Calendar/product URLs are intentionally rejected by both checks.
+  if (!recognized && !registration) return null;
+  const platform = meetingPlatform(href);
+  const label = registration
+    ? "Register to attend"
+    : platform
+      ? `Join online (${platform})`
+      : /nycida-board-meetings-public-hearings|edc\.nyc\/nycida/i.test(href)
+        ? "IDA meetings page"
+        : String(link?.label || "Participation information");
+  return { href, label };
+}
+
 function agencyHref(record) {
   const ref = String(record?.institution_refs?.agency_ref || "").trim();
   if (/^agency:id:[a-z0-9-]+$/i.test(ref)) return `/agencies/${encodeURIComponent(ref.slice("agency:id:".length))}/`;
@@ -272,6 +311,15 @@ function locationDetails(record) {
   const rows = [];
   if (venue.name) rows.push(`<span>${esc(venue.name)}</span>`);
   if (venue.address) rows.push(`<span>${esc(venue.address)}</span>`);
+  if (!venue.address) {
+    const address = [
+      record.building_name,
+      record.street_address_1,
+      record.street_address_2,
+      [record.city, record.state, record.zip_code].filter(Boolean).join(", "),
+    ].filter(Boolean).join(", ");
+    if (address) rows.push(`<span>${esc(address)}</span>`);
+  }
   if (borough) rows.push(`<a href="${esc(nearYouHref("borough", borough))}">${esc(borough)}</a>`);
   for (const value of area.community_districts || []) {
     rows.push(`<a href="${esc(nearYouHref("community_district", value, borough))}">Community District ${esc(value)}</a>`);
@@ -284,20 +332,49 @@ function locationDetails(record) {
 
 function participationDetails(record) {
   const participation = record.participation || {};
-  const links = (participation.links || [])
-    .map((link) => ({ ...link, href: safeHref(link?.url) }))
-    .filter((link) => link.href);
-  const items = links.map((link) => `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label || "Participation information")}</a></li>`);
-  const remoteJoin = safeHref(participation.remote_join_url);
-  if (remoteJoin && !links.some((link) => link.href === remoteJoin)) {
-    items.push(`<li><a href="${esc(remoteJoin)}" rel="noopener noreferrer">Join online</a></li>`);
+  const links = [];
+  const seen = new Set();
+  for (const candidate of participation.links || []) {
+    const link = participationLink(candidate);
+    if (!link) continue;
+    const key = `${link.label}\u0000${link.href}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    links.push(link);
   }
+  const remote = participationLink({ url: participation.remote_join_url, label: "Join online" });
+  if (remote && !links.some((link) => link.href === remote.href)) {
+    const key = `${remote.label}\u0000${remote.href}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      links.push(remote);
+    }
+  }
+  const items = links.map((link) => `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label)}</a></li>`);
   for (const email of participation.emails || []) items.push(`<li><a href="mailto:${esc(email)}">${esc(email)}</a></li>`);
   for (const phone of participation.phones || []) {
     const tel = String(phone).replace(/[^0-9+]/g, "");
     if (tel) items.push(`<li><a href="tel:${esc(tel)}">${esc(phone)}</a></li>`);
   }
   return items;
+}
+
+function relatedLinksDetails(record) {
+  const values = [
+    ...(Array.isArray(record.related_links) ? record.related_links : []),
+    ...(Array.isArray(record.source_links) ? record.source_links : []),
+    ...(Array.isArray(record.document_links) ? record.document_links : []),
+  ];
+  const seen = new Set();
+  const links = values.map((link) => {
+    const href = safeHref(typeof link === "string" ? link : link?.url || link?.href);
+    if (!href || seen.has(href)) return null;
+    seen.add(href);
+    return { href, label: typeof link === "string" ? "Related source" : link?.label || link?.title || "Related source" };
+  }).filter(Boolean);
+  return links.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-related-links"><h2>Related links</h2><ul>${links.map((link) => `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label)}</a></li>`).join("")}</ul></section>`
+    : "";
 }
 
 /** Render the source-qualified canonical meeting document used by every meeting card. */
@@ -347,6 +424,30 @@ export function renderMeetingDocument(record = {}) {
   const participationSection = participationRows.length || meetingMode
     ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
     : "";
+  const noticeMeta = [
+    ["Type", record.type_of_notice_description],
+    ["Section", record.section_name],
+  ].filter(([, value]) => clean(value, 240));
+  const noticeBody = [
+    ["Description", record.additional_description_1],
+    ["Additional description", record.additional_description_2],
+    ["Additional description", record.additional_description_3],
+    ["Other information", record.other_info_1],
+    ["Other information", record.other_info_2],
+    ["Other information", record.other_info_3],
+  ].filter(([, value]) => clean(value, 6_000));
+  const noticeDetailsSection = noticeMeta.length || noticeBody.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-notice-details"><h2>Notice details</h2>${noticeMeta.length ? `<dl>${noticeMeta.map(([label, value]) => `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`).join("")}</dl>` : ""}${noticeBody.map(([label, value]) => `<div class="meeting-notice-block"><h3>${esc(label)}</h3><p>${esc(value)}</p></div>`).join("")}</section>`
+    : "";
+  const contactRows = [
+    record.contact_name ? `<span>${esc(record.contact_name)}</span>` : "",
+    record.contact_phone ? `<a href="tel:${esc(String(record.contact_phone).replace(/[^0-9+]/g, ""))}">${esc(record.contact_phone)}</a>` : "",
+    record.email ? `<a href="mailto:${esc(record.email)}">${esc(record.email)}</a>` : "",
+  ].filter(Boolean);
+  const contactSection = contactRows.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-contact"><h2>Contact</h2><ul>${contactRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
+    : "";
+  const relatedLinksSection = relatedLinksDetails(record);
   const institutionSection = boardLink || agencyLink || committeeLink
     ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
     : "";
@@ -373,6 +474,9 @@ export function renderMeetingDocument(record = {}) {
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${institutionSection}
   ${locationSection}
+  ${noticeDetailsSection}
+  ${contactSection}
+  ${relatedLinksSection}
   ${participationSection}
   ${documents}
   ${minutesSection}

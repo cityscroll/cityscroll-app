@@ -83,3 +83,42 @@ test("materializes searchable context and minutes freshness once for every sourc
   assert.deepEqual(row.minutes_freshness, { status: "published", latest_date: "2026-08-10", checked_at: "2026-08-14T12:00:00Z" });
   assert.equal(row.participation.remote_join_url, "https://example.test/join");
 });
+
+test("retains City Record notice parity fields in the shared read model", () => {
+  const model = buildSharedMeetingReadModel({
+    cityRecordRows: [{
+      request_id: "20260820001",
+      agency_name: "Buildings",
+      short_title: "Public hearing on a proposed rule",
+      start_date: "2026-08-14T00:00:00Z",
+      event_date: "2026-08-20T14:00:00Z",
+      type_of_notice_description: "Public Hearings",
+      section_name: "Public Hearings and Meetings",
+      additional_description_1: "The first substantive notice paragraph.",
+      additional_description_2: "A second notice paragraph.",
+      other_info_1: "Additional public information.",
+      other_info_2: "Further public information.",
+      street_address_1: "250 Broadway",
+      street_address_2: "Room 915",
+      building_name: "Municipal Building",
+      city: "New York",
+      state: "NY",
+      zip_code: "10007",
+      contact_name: "Public Hearings Unit",
+      contact_phone: "212-555-0100",
+      email: "hearings@example.gov",
+    }],
+    communityBoardIndex: { generated_at: "2026-08-14T12:00:00Z", rows: [] },
+    generatedAt: "2026-08-14T12:00:00Z",
+    now: "2026-08-14T12:00:00Z",
+  });
+  const row = model.rows[0];
+  for (const field of [
+    "type_of_notice_description", "section_name", "additional_description_1",
+    "additional_description_2", "other_info_1", "other_info_2", "street_address_1",
+    "street_address_2", "building_name", "city", "state", "zip_code", "contact_name",
+    "contact_phone", "email",
+  ]) assert.ok(Object.hasOwn(row, field), `read model should retain ${field}`);
+  assert.equal(row.additional_description_1, "The first substantive notice paragraph.");
+  assert.match(row.search_text, /Further public information/);
+});
