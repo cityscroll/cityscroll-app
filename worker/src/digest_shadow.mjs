@@ -3,6 +3,11 @@
 
 import { runAlerts } from "./alerts.mjs";
 import { recordDigestShadowHoldState } from "./digest_shadow_hold.mjs";
+import {
+  ONTOLOGY_DELTA_SHADOW_CONTRACT,
+  buildDefaultOntologyDeltaCandidates,
+  reconcileOntologyDeltaCandidates,
+} from "./lib/ontology_delta_alert.mjs";
 
 export const DIGEST_SHADOW_CONTRACT = "digest-shadow.v1";
 export const DIGEST_SHADOW_READY = "READY";
@@ -109,7 +114,12 @@ function redline(code, digestId, reason, evidence, watchId = null) {
 }
 
 /** Pure detector + contract builder. */
-export function buildDigestShadowSummary({ run, history = [], now = new Date() } = {}) {
+export function buildDigestShadowSummary({
+  run,
+  history = [],
+  now = new Date(),
+  ontologyDelta = null,
+} = {}) {
   const ranAt = new Date(now).toISOString();
   const day = ranAt.slice(0, 10);
   const results = Array.isArray(run?.results) ? run.results : [];
@@ -246,6 +256,21 @@ export function buildDigestShadowSummary({ run, history = [], now = new Date() }
       rerun_method: "POST /admin/digest-shadow",
       rerun_scope: "full_build_path",
     },
+    ontology_delta: ontologyDelta ? {
+      contract: ontologyDelta.contract,
+      observed_at: ontologyDelta.observed_at,
+      candidate_count: ontologyDelta.candidate_count,
+      emitted_count: ontologyDelta.emitted_count,
+      events: ontologyDelta.emitted,
+      receipts: ontologyDelta.receipts,
+    } : {
+      contract: ONTOLOGY_DELTA_SHADOW_CONTRACT,
+      observed_at: ranAt,
+      candidate_count: 0,
+      emitted_count: 0,
+      events: [],
+      receipts: [],
+    },
     previews: metadata,
     _rendered_previews: previews,
   };
@@ -308,7 +333,11 @@ export async function persistDigestShadow(db, summary) {
 }
 
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
-export async function runDigestShadow(env, { now = new Date(), runAlertsFn = runAlerts } = {}) {
+export async function runDigestShadow(env, {
+  now = new Date(),
+  runAlertsFn = runAlerts,
+  ontologyDeltaCandidates = null,
+} = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
   const at = new Date(now);
   const shadowEnv = { ...env, ALERTS_LIVE: "false", QUEUE_DIGESTS: "false" };
@@ -323,7 +352,13 @@ export async function runDigestShadow(env, { now = new Date(), runAlertsFn = run
     simulateDryRunCounters: true,
   });
   const history = await readHistory(env, at.toISOString().slice(0, 10));
-  const summary = buildDigestShadowSummary({ run, history, now: at });
+  const candidates = ontologyDeltaCandidates == null
+    ? buildDefaultOntologyDeltaCandidates()
+    : ontologyDeltaCandidates;
+  const ontologyDelta = await reconcileOntologyDeltaCandidates(env.DB, candidates, {
+    observedAt: at,
+  });
+  const summary = buildDigestShadowSummary({ run, history, now: at, ontologyDelta });
   await persistDigestShadow(env.DB, summary);
   summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at, receiptStore: env.ALERT_STATE });
   await persistDigestShadow(env.DB, summary);
