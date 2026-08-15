@@ -3,7 +3,7 @@
 // recognizable video-conference join URL. Generic URLs do not imply online attendance.
 
 const URL_RE = /https?:\/\/[^\s<>"')]+/gi;
-const ONLINE_HOST_RE = /(?:zoom(?:gov)?\.com|zoom\.us|teams\.microsoft\.com|webex\.com|meet\.google\.com)\b/i;
+const ONLINE_HOST_RE = /(?:^|\.)(?:zoom(?:gov)?\.com|zoom\.us|teams\.microsoft\.com|teams\.live\.com|webex\.com|meet\.google\.com)$/i;
 const CITY_RECORD_HOST = "a856-cityrecord.nyc.gov";
 const CITY_RECORD_REQUEST_RE = /\/RequestDetail\/([^/?#]+)/i;
 const ONLINE_LANGUAGE_RE = /\b(?:online|virtual|remote|remotely|via\s+(?:zoom|teams|webex)|video[- ]conference|conference\s+call)\b/i;

@@ -137,13 +137,86 @@ test("meeting participation keeps real join methods once and labels their platfo
     },
   });
   assert.equal((html.match(/Join online \(Zoom\)/g) || []).length, 1);
-  assert.equal((html.match(/Join online \(Teams\)/g) || []).length, 1);
+  assert.equal((html.match(/Join online \(Microsoft Teams\)/g) || []).length, 1);
   assert.equal((html.match(/Join online \(Webex\)/g) || []).length, 1);
   assert.equal((html.match(/Join online \(Google Meet\)/g) || []).length, 1);
   assert.equal((html.match(/Register to attend/g) || []).length, 2);
   assert.doesNotMatch(html, /workspace\.google\.com\/products/);
   assert.doesNotMatch(html, /outlook\.office\.com\/owa/);
   assert.match(html, /https:\/\/example\.gov\/register\/meeting/);
+});
+
+test("meeting participation canonicalizes equivalent join URLs before deduplication", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:legistar:1234",
+    source_system: "legistar",
+    title: "City Council committee meeting",
+    event_date: "2026-08-20",
+    participation: {
+      links: [
+        { label: "Join online", url: "https://EXAMPLE.webex.com:443/meet/council/" },
+        { label: "Join online", url: "https://example.webex.com/meet/council" },
+      ],
+      remote_join_url: "https://example.webex.com/meet/council/",
+    },
+  });
+
+  assert.equal((html.match(/Join online \(Webex\)/g) || []).length, 1);
+  assert.equal((html.match(/https:\/\/example\.webex\.com\/meet\/council/g) || []).length, 1);
+  assert.doesNotMatch(html, /EXAMPLE\.webex\.com|:443|meet\/council\//);
+});
+
+test("meeting participation excludes platform management and calendar-product links", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:city_record:20260820002",
+    source_system: "city_record",
+    title: "Public hearing",
+    event_date: "2026-08-20",
+    participation: {
+      links: [
+        { label: "Join online", url: "https://zoom.us/meeting/schedule" },
+        { label: "Join online", url: "https://example.webex.com/webappng/sites/example/dashboard" },
+        { label: "Join online", url: "https://calendar.google.com/calendar/render?action=TEMPLATE" },
+        { label: "Add to calendar", url: "https://outlook.office.com/calendar/action/compose" },
+        { label: "Join online", url: "https://zoom.us.evil.example/j/123456789" },
+        { label: "Join online", url: "https://teams.microsoft.com/l/meetup-join/19%3ameeting_example" },
+      ],
+    },
+  });
+
+  assert.equal((html.match(/Join online \(Microsoft Teams\)/g) || []).length, 1);
+  assert.doesNotMatch(html, /zoom\.us\/meeting\/schedule|webappng|calendar\.google|outlook\.office|evil\.example/);
+});
+
+test("meeting participation stays generic for an unknown platform and empty for unknown data", () => {
+  const communityBoard = renderMeetingDocument({
+    meeting_id: "meeting:community_board:event-unknown-platform",
+    source_system: "community_board",
+    title: "Community board meeting",
+    event_date: "2026-08-20",
+    participation: {
+      links: [{ label: "Join online", url: "https://meetings.nyc.gov/teams/join/community-board-1" }],
+      remote_join_url: null,
+    },
+  });
+  assert.match(communityBoard, />Join online<\/a>/);
+  assert.doesNotMatch(communityBoard, /Join online \(/);
+  assert.match(communityBoard, /href="https:\/\/meetings\.nyc\.gov\/teams\/join\/community-board-1"/);
+
+  const unknown = renderMeetingDocument({
+    meeting_id: "meeting:legistar:unknown-participation",
+    source_system: "legistar",
+    title: "Meeting with no published participation method",
+    event_date: "2026-08-20",
+    participation: {
+      links: [
+        { label: "Join online", url: "javascript:alert(1)" },
+        { label: "Join online", url: "https://www.nyc.gov/" },
+      ],
+      remote_join_url: null,
+    },
+  });
+  assert.doesNotMatch(unknown, /meeting-participation|Join online|Participation information/);
 });
 
 test("city record meeting renders materialized notice fields without fetching", () => {

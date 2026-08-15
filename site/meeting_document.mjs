@@ -245,14 +245,44 @@ function safeHref(value) {
   return null;
 }
 
+function hostMatches(hostname, domain) {
+  return hostname === domain || hostname.endsWith(`.${domain}`);
+}
+
 function meetingPlatform(href) {
   let hostname = "";
   try { hostname = new URL(href).hostname.toLowerCase(); } catch { return null; }
-  if (hostname.includes("zoom")) return "Zoom";
-  if (hostname.includes("teams.microsoft.com") || hostname.includes("teams.live.com")) return "Teams";
-  if (hostname.includes("webex")) return "Webex";
+  if (hostMatches(hostname, "zoom.us") || hostMatches(hostname, "zoom.com") || hostMatches(hostname, "zoomgov.com")) return "Zoom";
+  if (hostMatches(hostname, "teams.microsoft.com") || hostMatches(hostname, "teams.live.com")) return "Microsoft Teams";
+  if (hostMatches(hostname, "webex.com")) return "Webex";
   if (hostname === "meet.google.com") return "Google Meet";
   return null;
+}
+
+function canonicalParticipationHref(value) {
+  let url;
+  try { url = new URL(String(value || "").trim()); } catch { return null; }
+  if (url.protocol !== "https:" || url.username || url.password) return null;
+  if (url.pathname.length > 1) url.pathname = url.pathname.replace(/\/+$/, "");
+  return url.toString();
+}
+
+function isCalendarOrProductUrl(href) {
+  let url;
+  try { url = new URL(href); } catch { return true; }
+  const hostname = url.hostname.toLowerCase();
+  const pathname = url.pathname.toLowerCase().replace(/\/+$/, "") || "/";
+  const calendarProduct = hostname === "calendar.google.com"
+    || (hostMatches(hostname, "workspace.google.com") && pathname.startsWith("/products/calendar"))
+    || (hostMatches(hostname, "outlook.office.com") && pathname.includes("/calendar/action/compose"))
+    || String(url.searchParams.get("action") || "").toLowerCase() === "template"
+    || String(url.searchParams.get("rrv") || "").toLowerCase() === "addevent";
+  if (calendarProduct) return true;
+
+  const platform = meetingPlatform(href);
+  if (!platform) return false;
+  if (pathname === "/") return true;
+  return /\/(?:account|admin|dashboard|download(?:s|-app)?|login|manage|pricing|profile|schedule|settings|signin)(?:\/|$)/i.test(pathname);
 }
 
 function isRegistrationUrl(href) {
@@ -265,8 +295,8 @@ function isRegistrationUrl(href) {
 }
 
 function participationLink(link) {
-  const href = safeHref(link?.url || link?.href);
-  if (!href) return null;
+  const href = canonicalParticipationHref(link?.url || link?.href);
+  if (!href || isCalendarOrProductUrl(href)) return null;
   const recognized = recognizedMeetingUrl(href);
   const registration = isRegistrationUrl(href);
   // Keep the accepted meeting URL family plus explicit publisher registration
@@ -380,18 +410,14 @@ function participationDetails(record) {
   for (const candidate of participation.links || []) {
     const link = participationLink(candidate);
     if (!link) continue;
-    const key = `${link.label}\u0000${link.href}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
+    if (seen.has(link.href)) continue;
+    seen.add(link.href);
     links.push(link);
   }
   const remote = participationLink({ url: participation.remote_join_url, label: "Join online" });
-  if (remote && !links.some((link) => link.href === remote.href)) {
-    const key = `${remote.label}\u0000${remote.href}`;
-    if (!seen.has(key)) {
-      seen.add(key);
-      links.push(remote);
-    }
+  if (remote && !seen.has(remote.href)) {
+    seen.add(remote.href);
+    links.push(remote);
   }
   const items = links.map((link) => `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label)}</a></li>`);
   for (const email of participation.emails || []) items.push(`<li><a href="mailto:${esc(email)}">${esc(email)}</a></li>`);
