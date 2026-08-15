@@ -22,17 +22,15 @@ test("local constellation registry covers the Browse object kinds", () => {
     assert.equal(view.status, "empty");
     assert.equal(view.source, null);
     const html = renderLocalConstellationHTML(view);
-    assert.match(html, /data-local-constellation-status="empty"/);
+    assert.equal(html, "");
     assert.doesNotMatch(html, /materialization|published neighbors/);
   }
 });
 
-test("place empty state explains the connection without a fabricated example", () => {
+test("place empty state stays off the reader surface", () => {
   const view = buildLocalConstellation({ kind: "place", subject_ref: "community-district:M03", neighbors: [] });
   const html = renderLocalConstellationHTML(view);
-  assert.match(html, /Nearby place records link this district to civic areas\./);
-  assert.match(html, /See its community board and the City Council districts that overlap it\./);
-  assert.doesNotMatch(html, /local-constellation-preview|Example preview|A place link can look like this\./);
+  assert.equal(html, "");
 });
 
 test("local constellation is bounded, list-equivalent, and never invents a destination", () => {

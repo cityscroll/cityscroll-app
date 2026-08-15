@@ -76,7 +76,7 @@ test("the optional prompt has bounded choices, no free text, and an explicit pri
     outcome_prompt_heading: "Did you take part?",
     outcome_prompt_lead_handoff: "When you return, you can share what happened.",
     outcome_prompt_lead_passed: "If you took part before this closed, you can share what happened.",
-    outcome_prompt_self_report: "This is your optional self-report, not an official result.",
+    outcome_prompt_self_report: "Share what happened if you choose. Your answer joins an aggregate count.",
     outcome_prompt_privacy: "CityScroll keeps only a 90-day aggregate count — no notice ID, account, or free text.",
     outcome_prompt_submitted: "I submitted",
     outcome_prompt_attended: "I attended",
@@ -92,7 +92,7 @@ test("the optional prompt has bounded choices, no free text, and an explicit pri
   assert.match(html, /data-action-outcome-prompt="official_handoff"/);
   assert.equal((html.match(/data-outcome-choice=/g) || []).length, OUTCOME_ENUM.length);
   assert.match(html, /90-day aggregate count/);
-  assert.match(html, /not an official result/);
+  assert.match(html, /Your answer joins an aggregate count/);
   assert.doesNotMatch(html, /<(?:input|textarea|select)\b/i);
 });
 

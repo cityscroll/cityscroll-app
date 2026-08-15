@@ -93,7 +93,6 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "contracts",
     surface: "money",
     relation: "published_by_agency",
-    empty_note: "No contract or award records linked yet.",
   }),
   Object.freeze({
     id: "vendors",
@@ -102,7 +101,6 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "contracts",
     surface: "money",
     relation: "top_vendor_by_award_12mo",
-    empty_note: "No named vendors with positive awards linked yet.",
   }),
   Object.freeze({
     id: "meetings",
@@ -111,7 +109,6 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "meetings",
     surface: "meetings",
     relation: "hosts_meeting",
-    empty_note: "No meetings or hearings are linked to this agency yet.",
   }),
   Object.freeze({
     id: "rules",
@@ -120,7 +117,6 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "rules",
     surface: "rules",
     relation: "issued_rule",
-    empty_note: "No Agency Rules notices are linked to this agency yet.",
   }),
   Object.freeze({
     id: "obligations",
@@ -129,7 +125,6 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "rules",
     surface: "rules",
     relation: "statute_duty",
-    empty_note: "No statutory mandates are linked to this agency yet.",
   }),
   Object.freeze({
     id: "staffing",
@@ -138,7 +133,6 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     browse_facet: "staffing",
     surface: "people",
     relation: "certified_to_agency",
-    empty_note: "No civil-service certification records name this agency yet.",
   }),
 ]);
 
@@ -583,7 +577,7 @@ function categoryFromDomain(
       relation: spec.relation,
       status: items.length ? "matched" : "empty",
       gap_class: items.length ? null : "empty_in_corpus",
-      note: items.length ? null : spec.empty_note,
+      note: null,
       count: items.length,
       items,
       award_total: items.reduce((sum, item) => sum + item.award_total, 0),
@@ -616,7 +610,7 @@ function categoryFromDomain(
       relation: spec.relation,
       status: readerCount ? "matched" : "empty",
       gap_class: readerCount ? null : "empty_in_corpus",
-      note: readerCount ? null : (view?.note || spec.empty_note),
+      note: readerCount ? null : (view?.note || null),
       count: readerCount,
       items,
       warrant_summary,
@@ -661,7 +655,7 @@ function categoryFromDomain(
       relation: spec.relation,
       status: items.length || total ? "matched" : "empty",
       gap_class: items.length || total ? null : "empty_in_corpus",
-      note: items.length || total ? null : spec.empty_note,
+      note: null,
       count: total,
       items,
       warrant_summary,
@@ -710,7 +704,7 @@ function categoryFromDomain(
       relation: spec.relation,
       status: matched ? "matched" : "empty",
       gap_class: matched ? null : "empty_in_corpus",
-      note: matched ? null : spec.empty_note,
+      note: null,
       count: total,
       total_count: total,
       items,
@@ -743,7 +737,7 @@ function categoryFromDomain(
     relation: spec.relation,
     status: matched ? "matched" : (block.status === "not_yet_ingested" ? "unknown" : "empty"),
     gap_class: matched ? null : (block.gap_class || "empty_in_corpus"),
-    note: matched ? null : (block.note || spec.empty_note),
+    note: matched ? null : (block.note || null),
     count: matched || block.status !== "not_yet_ingested"
       ? (items.length || Number(block.count) || 0)
       : null,

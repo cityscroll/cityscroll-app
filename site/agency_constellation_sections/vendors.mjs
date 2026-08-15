@@ -22,6 +22,8 @@ const money = (value) => Number.isFinite(Number(value))
 
 export function renderAgencyTopVendorsSection(category, source = {}) {
   if (!category) return "";
+  const items = Array.isArray(category.items) ? category.items : [];
+  if (category.status === "empty" && !items.length) return "";
   const edgeSummary = normalizeEdgeSummaryRecords([{
     source_kind: "agency",
     source_id: category.agency_id || null,
@@ -41,7 +43,6 @@ export function renderAgencyTopVendorsSection(category, source = {}) {
     scope: { relation_family: "top_vendors", as_of: category.as_of || null },
     as_of: category.as_of || null,
   }]);
-  const items = Array.isArray(category.items) ? category.items : [];
   const list = items.length ? `<ul class="node-record-list agency-top-vendors-list">${items.map((item) => {
     const vendor = entityChipHTML({
       ref: item.subject_ref,
