@@ -117,7 +117,7 @@ export function primaryDocumentOutputs() {
         { value: property.property_count, label: "property records" },
       ] },
       "rules-mandates": { facts: [
-        { value: obligations.summary?.obligation_count ?? null, label: "obligations" },
+        { value: obligations.summary?.obligation_count ?? null, label: "mandates" },
         { value: obligations.summary?.with_deadline_signal_count ?? null, label: "deadline signals" },
       ] },
       "meetings-decisions": { facts: [
