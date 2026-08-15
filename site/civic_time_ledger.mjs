@@ -19,19 +19,85 @@ export const CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA = "cityscroll.civic_time_depe
 export const CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA = "cityscroll.civic_time_rematerialization_receipt.v1";
 export const CIVIC_TIME_REMATERIALIZATION_METHOD = "civic_time_selective_rematerialization_v1";
 
-/** Library axes (projection helpers). Public UI uses valid only. */
+/**
+ * Theory source ledger for the temporal contract. Page references use the
+ * printed page numbers in the cited editions, not PDF sheet numbers.
+ */
+export const CIVIC_TIME_THEORY_SOURCES = Object.freeze({
+  snodgrass: Object.freeze({
+    status: "held_read",
+    cangshu_id: 1183,
+    author: "Richard T. Snodgrass",
+    title: "Developing Time-Oriented Database Applications in SQL",
+    edition: "Morgan Kaufmann, 1999",
+    canonical_href: "https://www2.cs.arizona.edu/~rts/publications.html",
+    citations: Object.freeze([
+      Object.freeze({ pages: "4", supports: "valid_and_transaction_time_definitions" }),
+      Object.freeze({ pages: "20–21", supports: "orthogonal_bitemporal_axes" }),
+      Object.freeze({ pages: "224–226", supports: "transaction_time_as_of_reconstruction" }),
+      Object.freeze({ pages: "249", supports: "correction_and_append_only_transaction_history" }),
+      Object.freeze({ pages: "309–312", supports: "valid_transaction_and_bitemporal_time_slices" }),
+    ]),
+  }),
+  date_darwen_lorentzos: Object.freeze({
+    status: "partial_reference_held",
+    cangshu_id: 1182,
+    held_title: "Temporal Data and The Relational Model (University of Warwick CS319 notes)",
+    canonical_titles: Object.freeze([
+      "Temporal Data & the Relational Model",
+      "Time and Relational Theory",
+    ]),
+    canonical_href: "https://shop.elsevier.com/books/temporal-data-and-the-relational-model/date/978-1-55860-855-9",
+    synthesis_status: "remaining_debt",
+  }),
+});
+
+/**
+ * One reconciliation table for the four source clocks and two bitemporal axes.
+ * Publication remains a labeled public-as-of fallback; processing remains
+ * operational provenance. Neither is promoted to a second owner of an axis.
+ */
+export const CIVIC_TIME_FOUR_CLOCK_BITEMPORAL_MAP = Object.freeze({
+  civic: Object.freeze({
+    fields: Object.freeze(["valid_at", "valid_from", "valid_to"]),
+    meaning: "When the civic fact held or the civic event occurred.",
+    bitemporal_axis: "valid",
+    public_as_of_role: "primary",
+  }),
+  publication: Object.freeze({
+    fields: Object.freeze(["published_at"]),
+    meaning: "When the publisher issued the assertion.",
+    bitemporal_axis: null,
+    public_as_of_role: "valid_fallback",
+  }),
+  observation: Object.freeze({
+    fields: Object.freeze(["observed_at"]),
+    meaning: "When CityScroll first observed or retained the assertion.",
+    bitemporal_axis: "system",
+    public_as_of_role: null,
+  }),
+  processing: Object.freeze({
+    fields: Object.freeze(["processed_at"]),
+    meaning: "When a pipeline run processed the assertion.",
+    bitemporal_axis: null,
+    public_as_of_role: null,
+    notice_recorded_role: "fallback_display",
+  }),
+});
+
+/** Library axes (projection helpers). Public UI uses valid/publication only. */
 export const TIME_AXES = Object.freeze({
   valid: Object.freeze({
     id: "valid",
     label: "Valid time",
     short: "Valid",
-    meaning: "When the civic fact held or was published.",
+    meaning: "When the civic fact held; publication is a labeled fallback when no civic date exists.",
   }),
   system: Object.freeze({
     id: "system",
     label: "System time",
     short: "System",
-    meaning: "When CityScroll materialised the assertion (not retained for public as-of).",
+    meaning: "When CityScroll first retained the assertion (not retained for public as-of).",
   }),
 });
 
@@ -572,9 +638,10 @@ function noticeEventValidText(event) {
 
 /**
  * Project retained civic-time envelopes for one notice into the reader model.
- * The system axis prefers the ledger write clock and falls back to the contract's
- * processed_at clock; it is never filled from valid, publication, observation, or
- * the current request time.
+ * The system axis prefers the ledger write clock (or an already-reconciled
+ * system clock). The existing notice card falls back to processed_at for its
+ * recorded-time display, with system_basis preserving that weaker provenance;
+ * the fallback is not used by system-axis as-of projection.
  */
 export function buildNoticeBitemporalHistory(notice = {}, events = []) {
   const subject_ref = notice.request_id
@@ -589,8 +656,15 @@ export function buildNoticeBitemporalHistory(notice = {}, events = []) {
         valid_to: event?.valid_to ?? event?.clocks?.valid_to ?? null,
         published_at: event?.published_at ?? event?.clocks?.published_at ?? null,
         observed_at: event?.observed_at ?? event?.clocks?.observed_at ?? null,
-        system_at: event?.written_at ?? event?.processed_at ?? event?.clocks?.system_at ?? null,
+        processed_at: event?.processed_at ?? event?.clocks?.processed_at ?? null,
       };
+      const retainedSystemAt = event?.written_at ?? event?.clocks?.system_at ?? null;
+      clocks.system_at = retainedSystemAt ?? clocks.processed_at;
+      clocks.system_basis = retainedSystemAt
+        ? "ledger_write"
+        : clocks.processed_at
+          ? "processing_fallback"
+          : "unknown";
       return {
         event_id: event?.event_id || null,
         subject_ref: event?.subject_ref || subject_ref,
