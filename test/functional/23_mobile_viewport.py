@@ -21,7 +21,7 @@ from playwright.sync_api import Page, sync_playwright
 ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
-from ci_waits import wait_for_locator  # noqa: E402
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from tools.local_site_server import QuietHandler  # noqa: E402
 
@@ -138,7 +138,11 @@ def run(base: str) -> None:
                 timeout=45_000,
                 label=f"{name} mobile surface",
             )
-            page.wait_for_timeout(250)
+            wait_for_function(
+                page,
+                "() => document.readyState !== 'loading'",
+                label=f"{name} mobile document settled",
+            )
             assert_mobile_surface(page, name)
 
             if name == "near you":

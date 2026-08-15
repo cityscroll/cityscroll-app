@@ -29,6 +29,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
@@ -47,12 +48,16 @@ def check_lang(pw, lang):
     page = ctx.new_page()
     install_routes(page)
     page.goto(BASE, timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1000)
+    wait_for_function(
+        page,
+        "() => document.body?.dataset.primaryContext === 'home' && document.body?.dataset.homeReady === 'true'",
+        label="neutral home readiness",
+    )
 
     # The root document is a static neutral topic entry. Its readiness contract
     # must settle without waiting for any source-backed list or app module.
-    page.wait_for_function(
+    wait_for_function(
+        page,
         """() => document.body?.dataset.primaryContext === 'home'
           && document.body?.dataset.homeReady === 'true'
           && document.querySelector('[data-home-topic-entry] input[name=\"q\"]')?.getClientRects().length > 0"""
@@ -60,14 +65,13 @@ def check_lang(pw, lang):
     # The readiness contract includes the same visible method tag used by the
     # explicit lenses. Keep this assertion on the neutral home so RTL cannot
     # hide a stalled or locale-specific render behind a later navigation.
-    page.locator("[data-home-topic-entry] .tag").first.wait_for(state="visible", timeout=30000)
+    wait_for_locator(page.locator("[data-home-topic-entry] .tag").first, label="neutral home method tag")
 
     # Baseline (English) physical resolution, BEFORE switching -- what "mirrored" is relative to.
     skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
     page.goto(BASE + "browse/contracts/", timeout=30000)
-    page.wait_for_load_state("load")
-    page.locator(".tag").first.wait_for(state="visible", timeout=30000)
-    page.locator(".rtitle span[lang='en']").first.wait_for(state="visible", timeout=30000)
+    wait_for_locator(page.locator(".tag").first, label="contracts method tag")
+    wait_for_locator(page.locator(".rtitle span[lang='en']").first, label="English notice title")
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
@@ -76,7 +80,12 @@ def check_lang(pw, lang):
         browser.close()
         return failures
     page.select_option("#langSelect", lang)
-    page.wait_for_timeout(1200)
+    wait_for_function(
+        page,
+        "expected => document.documentElement.dir === 'rtl' && document.documentElement.lang === expected",
+        arg=lang,
+        label=f"{lang} RTL language applied",
+    )
 
     # 1. dir/lang propagation.
     html_dir = page.evaluate("document.documentElement.getAttribute('dir')")
@@ -121,7 +130,12 @@ def check_lang(pw, lang):
     # physical property (an element still anchored off one edge overflows the other under RTL).
     for w, h in ((375, 800), (1280, 900)):
         page.set_viewport_size({"width": w, "height": h})
-        page.wait_for_timeout(150)
+        wait_for_function(
+            page,
+            "width => window.innerWidth === width && document.documentElement.clientWidth > 0",
+            arg=w,
+            label=f"RTL layout settled at {w}px",
+        )
         overflow = page.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
         if overflow > 1:  # 1px slop for scrollbar rounding
             failures.append(f"{lang}: horizontal overflow of {overflow}px at {w}x{h}")

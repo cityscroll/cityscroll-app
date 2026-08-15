@@ -291,6 +291,9 @@ jobs:
         # Local preflight already runs this; promote into CI so a skipped preflight
         # cannot land a date-boundary flake class that only fails at UTC midnight.
         run: node tools/audit-test-clocks.mjs
+      - name: Accessibility gate regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 test/functional/a11y_gate_test.py
 
       - name: Site unit tests
         if: matrix.family == 'site-node'
@@ -746,33 +749,35 @@ jobs:
             exit 1
           fi
           export CROL_BASE="$local_base"
+          export A11Y_LOG_DIR="$artifact_dir/functional-checks"
           echo "local site ready at $CROL_BASE"
 
           case "${{ matrix.shard }}" in
             browser-a11y)
-              python3 test/functional/capture_qr_share.py --verify-only
-              python3 test/functional/23_mobile_viewport.py
-              python3 test/functional/24_geolocation_gesture_gate.py
+              tools/run_a11y_functional_check.sh qr-share python3 test/functional/capture_qr_share.py --verify-only
+              tools/run_a11y_functional_check.sh mobile-viewport python3 test/functional/23_mobile_viewport.py
+              tools/run_a11y_functional_check.sh geolocation-gesture python3 test/functional/24_geolocation_gesture_gate.py
+              # Keep axe and its final assertion outside the functional retry wrapper.
               python3 test/functional/11_accessibility.py
               ;;
             routes-focus)
-              python3 test/functional/19_hash_route_focus.py
+              tools/run_a11y_functional_check.sh hash-route-focus python3 test/functional/19_hash_route_focus.py
               # Inline-to-module rendered DOM equivalence gate
-              python3 test/functional/21_module_dom_equivalence.py
-              python3 test/functional/24_notice_document_features.py
-              python3 test/functional/14_focus_visible.py
-              python3 test/functional/20_demo_links.py
-              python3 test/functional/22_same_consolidation.py
-              python3 test/functional/25_property_facet_count_parity.py
-              python3 test/functional/26_vendor_footprint_scope_count.py
-              python3 test/functional/28_agency_scope_links.py
-              python3 test/functional/16_external_links.py
-              python3 test/functional/17_default_examples.py
+              tools/run_a11y_functional_check.sh module-dom-equivalence python3 test/functional/21_module_dom_equivalence.py
+              tools/run_a11y_functional_check.sh notice-document-features python3 test/functional/24_notice_document_features.py
+              tools/run_a11y_functional_check.sh focus-visible python3 test/functional/14_focus_visible.py
+              tools/run_a11y_functional_check.sh demo-links python3 test/functional/20_demo_links.py
+              tools/run_a11y_functional_check.sh staffing-consolidation python3 test/functional/22_same_consolidation.py
+              tools/run_a11y_functional_check.sh property-facet-parity python3 test/functional/25_property_facet_count_parity.py
+              tools/run_a11y_functional_check.sh vendor-footprint-scope python3 test/functional/26_vendor_footprint_scope_count.py
+              tools/run_a11y_functional_check.sh agency-scope-links python3 test/functional/28_agency_scope_links.py
+              tools/run_a11y_functional_check.sh external-links python3 test/functional/16_external_links.py
+              tools/run_a11y_functional_check.sh default-examples python3 test/functional/17_default_examples.py
               ;;
             language-layout)
-              python3 test/functional/12_language.py
-              python3 test/functional/15_rtl.py
-              python3 test/functional/16_forecast_discoverability.py
+              tools/run_a11y_functional_check.sh language python3 test/functional/12_language.py
+              tools/run_a11y_functional_check.sh rtl python3 test/functional/15_rtl.py
+              tools/run_a11y_functional_check.sh forecast-discoverability python3 test/functional/16_forecast_discoverability.py
               ;;
             rendered-census)
               python3 test/standards/no_disclaimer_slop.py \
