@@ -1,0 +1,48 @@
+name: Merge pipeline stall guard
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report behind, conflicting, and stalled PRs without updating branches or comments"
+        required: false
+        default: "false"
+        type: boolean
+
+# The token can read repository state, update a pull-request branch through
+# GitHub's guarded update endpoint, and create or update one diagnostic comment.
+permissions:
+  contents: read
+  checks: read
+  statuses: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: merge-pipeline-guard
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    name: Detect merge-pipeline stalls
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Inspect ready pull requests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_API_URL: ${{ github.api_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+          STALL_MINUTES: "30"
+          CANARY_MINUTES: "30"
+        run: node tools/merge_pipeline_guard.mjs
