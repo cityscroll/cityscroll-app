@@ -7,6 +7,7 @@ import {
   communityBoardMeetingEdgeFromRow,
 } from "./community_board_institution_edges.mjs";
 import { joinCommunityBoardSourceRecord } from "./community_board_source_join.mjs";
+import { meetingCalendarHasEventTime } from "./hearing_attend_pack.mjs";
 import { recognizedMeetingUrl } from "./hearing_logistics.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
@@ -521,7 +522,7 @@ export function renderMeetingDocument(record = {}) {
     ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : ""}${agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
     : "";
   const actions = [
-    id && record.event_date ? `<a class="node-action civic-object-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>` : "",
+    id && meetingCalendarHasEventTime(record) ? `<a class="node-action civic-object-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>` : "",
     legacy ? `<a class="node-action civic-object-action" href="${esc(legacy)}">Open the City Record notice</a>` : "",
   ].filter(Boolean).join("");
   return `<!doctype html>
