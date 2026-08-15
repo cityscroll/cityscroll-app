@@ -7,12 +7,15 @@ import {
   examNumbersForAgency,
   filterExamsByAgencyScope,
   hireMatchesAgencyScope,
-  sodaAgencyNameClause,
   staffingAgencyScopePresentation,
 } from "../staffing_agency_scope.mjs";
 import { filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { createIncrementalList } from "../incremental_list.mjs";
+import {
+  staffingPeopleFromAppointments,
+  staffingRolesFromExamples,
+} from "../resident_snapshot_queries.mjs";
 
 /* ===================== PEOPLE ===================== */
 let SameConsolidation=null;
@@ -138,7 +141,7 @@ function renderStaffingFeed(){
        : SameConsolidation.rowHTML(entry.item)).join("")
     : `<div class="career-empty">${t("staffing_no_results")}</div>`;
 }
-// Commit-time default APPOINTED strip (wave-2 batch precompute). Keyword search / payroll stay live.
+// Daily APPOINTED projection. Agency and keyword scopes filter this retained reader model.
 const STAFFING_HIRES_SNAPSHOT_URL="data/staffing_default_hires.json";
 let staffingHiresSnapshotPromise=null;
 function loadStaffingHiresSnapshot(){
@@ -190,73 +193,29 @@ async function loadStaffingFeed(){
   }
   if(staffingLoadPromise && staffingLoadPromise.scopeKey===scopeKey) return staffingLoadPromise.promise;
   const promise=(async()=>{
-    let paintedFromSnapshot=false;
     await loadSameConsolidation();
-    // Agency scope: query City Record for that agency's appointments. The
-    // citywide 80-row snapshot is not a substitute for a scoped personnel list.
-    if(scopeKey){
-      try{
-        const agencyClause=sodaAgencyNameClause(scopeKey);
-        const where=agencyClause
-          ? `section_name='Changes in Personnel' AND short_title='APPOINTED' AND ${agencyClause}`
-          : "section_name='Changes in Personnel' AND short_title='APPOINTED'";
-        const [rows, crosswalk]=await Promise.all([
-          soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
-            "$where":where,
-            "$order":"start_date DESC, request_id DESC","$limit":"80"}),
-          fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
-          loadStaffingExamAgencyScope(scopeKey),
-        ]);
-        if(staffingScopeKey()!==scopeKey) return staffingNotices;
-        staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
-        staffingLoaded=true;
-        staffingLoadedScopeKey=scopeKey;
-        renderStaffingFeed();
-        if(careerData) renderCareerGuide();
-        return staffingNotices;
-      }catch(e){
-        if(staffingScopeKey()!==scopeKey) return staffingNotices;
-        $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
-        staffingLoaded=true;
-        staffingLoadedScopeKey=scopeKey;
-        return [];
-      }
-    }
     try{
       const [snap, crosswalk]=await Promise.all([
         loadStaffingHiresSnapshot(),
         fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
+        scopeKey?loadStaffingExamAgencyScope(scopeKey):Promise.resolve(null),
       ]);
+      if(staffingScopeKey()!==scopeKey) return staffingNotices;
       const notices=snap&&Array.isArray(snap.notices)?snap.notices:[];
-      if(notices.length){
-        staffingNotices=CrolStaffing.hireNotices(notices,crosswalk);
-        staffingLoaded=true;
-        staffingLoadedScopeKey="";
-        staffingAgencyExamNumbers=null;
-        renderStaffingFeed();
-        paintedFromSnapshot=true;
-      }
-    }catch(e){}
-    try{
-      const [rows, crosswalk]=await Promise.all([
-        soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
-          "$where":"section_name='Changes in Personnel' AND short_title='APPOINTED'",
-          "$order":"start_date DESC, request_id DESC","$limit":"80"}),
-        fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
-      ]);
-      if(staffingScopeKey()) return staffingNotices;
-      staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
+      const scoped=scopeKey?notices.filter(row=>hireMatchesAgencyScope(row.agency_name,scopeKey)):notices;
+      staffingNotices=CrolStaffing.hireNotices(scoped,crosswalk);
       staffingLoaded=true;
-      staffingLoadedScopeKey="";
-      staffingAgencyExamNumbers=null;
+      staffingLoadedScopeKey=scopeKey;
+      if(!scopeKey) staffingAgencyExamNumbers=null;
       renderStaffingFeed();
+      if(careerData) renderCareerGuide();
       return staffingNotices;
     }catch(e){
-      if(!paintedFromSnapshot){
-        $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
-        return [];
-      }
-      return staffingNotices;
+      if(staffingScopeKey()!==scopeKey) return staffingNotices;
+      $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
+      staffingLoaded=true;
+      staffingLoadedScopeKey=scopeKey;
+      return [];
     }
   })();
   staffingLoadPromise={scopeKey, promise};
@@ -1182,8 +1141,7 @@ function parsePersonnel(desc){
   };
 }
 
-// Bare #people teaches by example with a committed title snapshot. The default is a
-// product affordance, not a live-data freshness check; keyword searches remain live below.
+// Bare #people and keyword searches use the same committed title projection.
 let peopleDefaulted = false;
 let peopleDefaultExamplesPromise = null;
 async function defaultRoleTitle(){
@@ -1208,7 +1166,7 @@ async function applyPeopleDefault(){
   try{ await pSearch(); } finally { hashLock = false; }
 }
 
-// Committed examples paint before the live search replaces them.
+// Committed examples are the role-search read model.
 let peopleSeeded = false, pExamples = [];
 async function seedPeople(){
   if(peopleSeeded) return; peopleSeeded = true;
@@ -1282,16 +1240,11 @@ function roleRowHTML(r, i, terms, comp2, exam){
   </article>`;
 }
 async function pSearchRoles(kw, stale){
-  const up = kw.toUpperCase().replace(/'/g,"''");
-  const [pay, comp] = await Promise.all([
-    api(PAY, {"$select":"title_description, count(1) as n, min(base_salary) as mn, max(base_salary) as mx, avg(base_salary) as avg",
-      "$where":`fiscal_year=${PAYFY} AND upper(title_description) like '%${up}%' AND base_salary > 0`,
-      "$group":"title_description","$order":"avg DESC","$limit":"40"}),
-    api(CSL, {"$select":"list_title_desc","$where":`upper(list_title_desc) like '%${up}%'`,"$group":"list_title_desc","$limit":"300"})
-  ]);
+  if(!pExamples.length) await seedPeople();
+  const pay=staffingRolesFromExamples(pExamples,kw);
   await loadCareerGuide();
   if(stale && stale()) return;
-  competitiveSet = new Set(comp.map(c=>(c.list_title_desc||"").toUpperCase().trim()));
+  competitiveSet = new Set(pay.filter(row=>row.competitive).map(row=>(row.title_description||"").toUpperCase().trim()));
   pRows = pay;
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
   announce(t("matching_roles_announce",{n: pay.length===40 ? "40+" : pay.length}));
@@ -1353,19 +1306,17 @@ function personRowHTML(p, i, terms){
     </div>`;
 }
 async function pSearchPeople(kw, stale){
-  const rows = await soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1,other_info_1",
-    "$where":"section_name='Changes in Personnel'","$q":kw,"$order":"start_date DESC","$limit":"100"});
+  const snap=await loadStaffingHiresSnapshot();
+  const rows=snap&&Array.isArray(snap.notices)?snap.notices:[];
   if(stale && stale()) return;
-  const people = new Map();
-  rows.forEach(r=>{
-    const p = parsePersonnel(r.additional_description_1);
-    if(!p.name) return;
-    const key = p.name.toUpperCase() + "|" + r.agency_name;
-    if(!people.has(key)) people.set(key, {name:p.name, agency:r.agency_name, actions:[]});
-    // Keep notice text per action so grouped-person evidence stays attributable.
-    people.get(key).actions.push({date:r.start_date, reason:p.reason||cleanText(r.short_title), salary:p.salary, code:p.code, req:r.request_id, text:cleanText(r.short_title)+" "+matchText(r)});
-  });
-  pRows = [...people.values()].sort((a,b)=>b.actions.length-a.actions.length);
+  pRows=staffingPeopleFromAppointments(rows,kw).map(group=>({
+    name:group.name,
+    agency:group.agency,
+    actions:group.rows.map(r=>{
+      const p=parsePersonnel(r.additional_description_1);
+      return {date:r.start_date,reason:p.reason||cleanText(r.short_title),salary:p.salary,code:p.code,req:r.request_id,text:cleanText(r.short_title)+" "+matchText(r)};
+    }),
+  }));
   $("#prescount").textContent = pRows.length;
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   const terms = [kw];
@@ -1378,28 +1329,8 @@ async function pSelectPerson(i, el){
   document.querySelectorAll("#plist .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const p = pRows[i];
-  $("#pdetail").innerHTML = '<div class="empty"><span class="loading"></span> ' + t("pulling_payroll") + '</div>';
-  const parts = p.name.split(",");
-  const last = (parts[0]||"").trim().toUpperCase();
-  const first = (parts[1]||"").trim().split(/\s+/)[0].toUpperCase();
-  let pay = [];
-  try{
-    if(last && first) pay = await api(PAY, {
-      "$select":"fiscal_year,title_description,base_salary,regular_gross_paid,total_ot_paid,agency_name,leave_status_as_of_june_30",
-      "$where":`upper(last_name)='${last.replace(/'/g,"''")}' AND upper(first_name) like '${first.replace(/'/g,"''")}%'`,
-      "$order":"fiscal_year DESC","$limit":"4"});
-  }catch(e){}
-  const cur = pay[0];
   let html = `<h2 class="rolename" lang="en" dir="ltr">${p.name}</h2><div class="badges"><span class="tag">${p.agency}</span></div>`;
-  if(cur){
-    html += `<div class="agencybar">
-      <div><div class="big">${money(cur.base_salary)||"—"}</div><div class="lbl">${t("base_salary_fy_lbl",{fy:cur.fiscal_year})}</div></div>
-      <div><div class="big">${money(cur.regular_gross_paid)||"—"}</div><div class="lbl">${t("gross_paid_lbl")}</div></div>
-      <div><div class="big">${money(cur.total_ot_paid)||"$0"}</div><div class="lbl">${t("overtime_lbl")}</div></div>
-    </div><div class="rmeta2">${t("payroll_title_lbl")} <b>${cur.title_description}</b>${cur.leave_status_as_of_june_30? " · "+cur.leave_status_as_of_june_30 : ""}</div>`;
-  } else {
-    html += `<div class="note">${t("no_payroll_match_note")}</div>`;
-  }
+  html += `<div class="note">${t("no_payroll_match_note")}</div>`;
   const acts = p.actions.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   html += `<div class="chain-h">${t("city_record_history")}</div><div class="timeline">`;
   acts.forEach(a=>{

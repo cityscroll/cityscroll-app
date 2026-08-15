@@ -268,9 +268,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
 export async function refreshRules(env, fetchImpl = fetch, now = new Date()) {
   if (!env.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const view = await buildRuleView(fetchImpl, now);
-  await env.ALERT_STATE.put(RULES_KV_KEY, JSON.stringify(view), {
-    expirationTtl: 3 * 24 * 60 * 60,
-  });
+  await env.ALERT_STATE.put(RULES_KV_KEY, JSON.stringify(view));
   return { status: "success", ...view.counts };
 }
 
@@ -310,7 +308,7 @@ export function rulesViewNeedsRefresh(parsed, nowMs = Date.now()) {
   return false;
 }
 
-export async function handleRules(request, env, ctx) {
+export async function handleRules(request, env, _ctx) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return jsonResponse(JSON.stringify({ ok: false, reason: "method" }), 405);
   if (!env.ALERT_STATE) return jsonResponse(JSON.stringify({ ok: false, reason: "not-configured" }), 503);
@@ -319,18 +317,9 @@ export async function handleRules(request, env, ctx) {
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
 
-  if (rulesViewNeedsRefresh(parsed)) {
-    try {
-      const view = await buildRuleView(fetch, new Date());
-      raw = JSON.stringify(view);
-      const write = env.ALERT_STATE.put(RULES_KV_KEY, raw, { expirationTtl: 3 * 24 * 60 * 60 });
-      if (ctx?.waitUntil) ctx.waitUntil(write); else await write;
-    } catch (error) {
-      if (!parsed) {
-        return jsonResponse(JSON.stringify({ ok: false, reason: "upstream", detail: String(error?.message || error) }), 502);
-      }
-      raw = JSON.stringify(parsed);
-    }
-  }
-  return jsonResponse(raw);
+  if (!parsed) return jsonResponse(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
+  return jsonResponse(JSON.stringify({
+    ...parsed,
+    stale: rulesViewNeedsRefresh(parsed),
+  }));
 }

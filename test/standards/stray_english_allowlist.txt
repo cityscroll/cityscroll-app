@@ -49,10 +49,7 @@ Services (other than human services)
 ,event_date,street_address_1,section_name,additional_description_2,additional_description_3,other_info_2,other_info_3,printout_1,printout_2,printout_3,building_name,city,state,zip_code
 agency_name, count(1) as n, sum(contract_amount) as t
 count(1) as n, sum(contract_amount) as t
-count(1) as n, sum(contract_amount) as total
-selection_method_description, count(1) as n
 sum(contract_amount) as t
-title_description, count(1) as n, min(base_salary) as mn, max(base_salary) as mx, avg(base_salary) as avg
 vendor_name, count(1) as n, sum(contract_amount) as t
 vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last
 
@@ -97,9 +94,6 @@ open RFPs
 # ── Entity / matter / investigation / shared views + digest mock shell (queued: language wave)
 %</b> of the agency's award $ (12 mo)
 %</b> of this agency's awards (last 12 mo, n=
-project_id='
-type_of_notice_description='Award'
-type_of_notice_description='Solicitation'
 ">Search notices mentioning them →</a></div>
 (agency median
 (see notice)
@@ -120,7 +114,6 @@ Due:
 award to this vendor at this agency in 90 days
 block/lot
 city-owned property
-fiscal_year=
 forest management
 in the custody
 look up lookup someone somebody person people named name find search for a an the of about mr ms mrs role title
@@ -150,6 +143,3 @@ view=tax-lien
 # Route-scoped stylesheet selectors and asset names; these are DOM plumbing, not chrome.
 link[data-route-style="
 property.css
-type_of_notice_description=
-OR type_of_notice_description=
-'Award'

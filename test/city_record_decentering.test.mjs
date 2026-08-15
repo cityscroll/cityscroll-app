@@ -23,7 +23,7 @@ test("retained City Record handoffs use the source-link grammar", () => {
 
   assert.match(feedActions, /cityRecordNotice[\s\S]*officialSourceLink\(\{ href:action\.destination, label:t\("city_record_link"\)/);
   assert.match(land, /id="land-city-record-source"/);
-  assert.match(land, /cr\.outerHTML=officialSourceLink\(\{ href:REQ_URL\(rows\[0\]\.request_id\)/);
+  assert.match(land, /cr\.outerHTML=officialSourceLink\(\{ href:REQ_URL\(row\.request_id\)/);
   assert.match(workspace, /officialSourceLink\(\{ href:REQ_URL\(latestNoticeId\)/);
   assert.match(routing, /officialSourceLink\(\{ href:sourceHref, label:t\("city_record_link"\)/);
 });

@@ -30,7 +30,14 @@ document.addEventListener("click",e=>{
 });
 let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
-soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r[0]){ editionRange=r[0]; paintEditionSpan(); } }).catch(()=>{});
+fetch("data/money_resident_snapshot.json",{cache:"force-cache",credentials:"omit"})
+  .then(r=>r.ok?r.json():null)
+  .then(snapshot=>{
+    const rows=Array.isArray(snapshot?.rows)?snapshot.rows:[];
+    const dates=rows.map(row=>row?.start_date).filter(Boolean).sort();
+    if(dates.length){ editionRange={a:dates[0],b:dates[dates.length-1]}; paintEditionSpan(); }
+  })
+  .catch(()=>{});
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt","#moneyboro","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", search));
@@ -269,25 +276,55 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
   }
 }
 
-/** Load a City Record notice (or ZAP project) and store as noticeWatchSeed for aPreview. */
+async function residentNoticeById(noticeId){
+  const id=String(noticeId||"");
+  const inMemory=[
+    ...(Array.isArray(globalThis.currentRows)?globalThis.currentRows:[]),
+    ...(Array.isArray(globalThis.staffingNotices)?globalThis.staffingNotices:[]),
+    ...Object.values(globalThis.feedRows||{}).flatMap(rows=>Array.isArray(rows)?rows:[]),
+  ].find(row=>String(row?.request_id||"")===id);
+  if(inMemory) return inMemory;
+  try{
+    const payloads=await Promise.all([
+      fetch("data/money_resident_snapshot.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
+      fetch("data/rules_domain_observations.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
+      fetch("data/property_domain_observations.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
+      fetch("data/shared_meeting_read_model.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
+      fetch("data/staffing_default_hires.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
+    ]);
+    const [moneySnapshot,rulesSnapshot,propertySnapshot,meetingSnapshot,staffingSnapshot]=payloads;
+    const rows=[
+      ...(moneySnapshot?.rows||[]),
+      ...(rulesSnapshot?.rows||[]),
+      ...(propertySnapshot?.property_rows||propertySnapshot?.rows||[]),
+      ...(meetingSnapshot?.rows||meetingSnapshot?.meetings||[]),
+      ...(staffingSnapshot?.notices||staffingSnapshot?.rows||[]),
+    ];
+    return rows.find(row=>String(row?.request_id||"")===id)||null;
+  }catch(_e){ return null; }
+}
+
+async function residentProjectById(projectId){
+  try{
+    const rows=typeof globalThis.loadLandProjectsSnapshot==="function"
+      ? await globalThis.loadLandProjectsSnapshot()
+      : [];
+    return rows.find(row=>String(row?.project_id||"")===String(projectId||""))||null;
+  }catch(_e){ return null; }
+}
+
+/** Load a materialized City Record notice (or ZAP project) as the alert preview seed. */
 async function applyNoticeWatchSeed({ noticeId, projectId, lens, filter }){
   const carry = await ensureAlertsContextCarry();
   let row = null;
   let digKind = "notice";
   if(noticeId){
-    // Prefer the in-memory notice just viewed (avoids a second SODA round-trip).
+    // Prefer the in-memory notice just viewed, then the committed resident snapshots.
     if(lastNoticeContext && lastNoticeContext.row
       && String(lastNoticeContext.row.request_id) === String(noticeId)){
       row = lastNoticeContext.row;
     } else {
-      try{
-        const rows = await soda({
-          "$select": typeof NOTICE_SELECT !== "undefined" ? NOTICE_SELECT : SELECT,
-          "$where": `request_id='${String(noticeId).replace(/'/g,"''")}'`,
-          "$limit": "1",
-        });
-        row = rows && rows[0] || null;
-      }catch(_e){ row = null; }
+      row = await residentNoticeById(noticeId);
     }
     if(row){
       digKind = carry && typeof carry.digKindForNotice === "function"
@@ -300,14 +337,7 @@ async function applyNoticeWatchSeed({ noticeId, projectId, lens, filter }){
       }
     }
   } else if(projectId){
-    try{
-      const rows = await api(ZAP, {
-        "$select": "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date",
-        "$where": `project_id='${String(projectId).replace(/'/g,"''")}'`,
-        "$limit": "1",
-      });
-      row = rows && rows[0] || null;
-    }catch(_e){ row = null; }
+    row = await residentProjectById(projectId);
     digKind = "rezone";
   }
   if(!row) return;

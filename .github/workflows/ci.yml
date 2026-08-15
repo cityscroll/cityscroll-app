@@ -300,40 +300,12 @@ jobs:
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
         run: node --test test/*.test.mjs
-      - name: Preset shortcuts and rotating suggestions resolve to live results
+      - name: Resident-read zero-egress architecture gate
         if: matrix.family == 'site-node'
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          PRESET_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
-        run: |
-          set -euo pipefail
-          validation_mode=check
-          if [ "$EVENT_NAME" = "pull_request" ] || [ "$EVENT_NAME" = "merge_group" ]; then
-            if ! git fetch --no-tags --depth=1 origin "$PRESET_BASE_SHA"; then
-              echo "Base commit is unavailable in the shallow checkout; treating the fallback as inherited."
-            fi
-            mode="$(node tools/preset_fallback_ci.mjs --base "$PRESET_BASE_SHA")"
-            if [ "$mode" = "refresh" ]; then
-              echo "Only live data moved; refreshing the inherited preset fallback in this runner."
-              node tools/validate_presets.mjs --write
-              validation_mode=refresh
-              changed="$(git diff --name-only)"
-              if [ -z "$changed" ]; then
-                echo "The live result already matches the inherited fallback."
-                exit 0
-              fi
-              while IFS= read -r path; do
-                case "$path" in
-                  site/app/search-share.mjs|worker/src/lib/suggestions.mjs|site/data/preset-validation.json) ;;
-                  *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
-                esac
-              done <<< "$changed"
-              git diff --check
-            fi
-          fi
-          if [ "$validation_mode" = "check" ]; then
-            node tools/validate_presets.mjs --check
-          fi
+        run: node tools/no_live_external_reads.mjs --check
+      - name: Preset snapshot receipt is internally consistent
+        if: matrix.family == 'site-node'
+        run: node tools/validate_presets.mjs --check --offline
 
       - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
         if: matrix.family == 'contract'
@@ -775,6 +747,7 @@ jobs:
               tools/run_a11y_functional_check.sh property-facet-parity python3 test/functional/25_property_facet_count_parity.py
               tools/run_a11y_functional_check.sh vendor-footprint-scope python3 test/functional/26_vendor_footprint_scope_count.py
               tools/run_a11y_functional_check.sh agency-scope-links python3 test/functional/28_agency_scope_links.py
+              tools/run_a11y_functional_check.sh snapshot-only-resident-reads python3 test/functional/29_snapshot_only_resident_reads.py
               tools/run_a11y_functional_check.sh external-links python3 test/functional/16_external_links.py
               tools/run_a11y_functional_check.sh default-examples python3 test/functional/17_default_examples.py
               ;;

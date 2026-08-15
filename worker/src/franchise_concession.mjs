@@ -85,9 +85,7 @@ export async function buildFranchiseConcessionView(fetchImpl = fetch, now = new 
 export async function refreshFranchiseConcessions(env, fetchImpl = fetch, now = new Date()) {
   if (!env.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const view = await buildFranchiseConcessionView(fetchImpl, now);
-  await env.ALERT_STATE.put(FRANCHISE_CONCESSION_KV_KEY, JSON.stringify(view), {
-    expirationTtl: 3 * 24 * 60 * 60,
-  });
+  await env.ALERT_STATE.put(FRANCHISE_CONCESSION_KV_KEY, JSON.stringify(view));
   return {
     status: "success",
     total: view.counts?.total ?? 0,
@@ -114,7 +112,7 @@ function response(body, status = 200) {
   });
 }
 
-export async function handleFranchiseConcessions(request, env, ctx) {
+export async function handleFranchiseConcessions(request, env, _ctx) {
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders() });
   }
@@ -136,30 +134,6 @@ export async function handleFranchiseConcessions(request, env, ctx) {
     ? Date.now() - new Date(parsed.generated_at).getTime()
     : Infinity;
 
-  if (!parsed || age > MAX_AGE_MS) {
-    try {
-      const view = await buildFranchiseConcessionView(fetch, new Date());
-      raw = JSON.stringify(view);
-      parsed = view;
-      const write = env.ALERT_STATE.put(FRANCHISE_CONCESSION_KV_KEY, raw, {
-        expirationTtl: 3 * 24 * 60 * 60,
-      });
-      if (ctx?.waitUntil) ctx.waitUntil(write);
-      else await write;
-    } catch (error) {
-      if (!parsed) {
-        return response(
-          JSON.stringify({
-            ok: false,
-            reason: "upstream",
-            detail: String(error?.message || error),
-          }),
-          502,
-        );
-      }
-      raw = JSON.stringify(parsed);
-    }
-  }
-
-  return response(typeof raw === "string" ? raw : JSON.stringify(parsed));
+  if (!parsed) return response(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
+  return response(JSON.stringify({ ...parsed, stale: age > MAX_AGE_MS }));
 }

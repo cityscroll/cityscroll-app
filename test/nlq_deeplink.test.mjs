@@ -62,10 +62,10 @@ test("the Money UI wires resolved links, complete replay filters, and local pres
   assert.match(indexSource, /<script src="nl_deeplink\.js"><\/script>/);
   assert.match(indexSource, /const deepLink=buildMoneyDeepLink\(p\)/);
   assert.match(indexSource, /bindNLQResolvedActions\(text, deepLink\)/);
-  assert.match(indexSource, /category_description='\$\{category\.replace/);
-  assert.match(indexSource, /contract_amount <= \$\{maxAmount\}/);
-  assert.match(indexSource, /due_date <= '\$\{addMonthsISO\(todayISO\(\), months\)\}'/);
-  assert.match(indexSource, /selection_method_description NOT LIKE '%Special%'/);
+  assert.match(indexSource, /filterMoneySnapshot\(snapshotRows/);
+  assert.match(indexSource, /maxAmount,category,months/);
+  assert.match(indexSource, /excludeSpecial,sort,today:todayISO\(\)/);
+  assert.match(indexSource, /monthEnd:months\?addMonthsISO\(todayISO\(\),months\):null/);
   assert.match(indexSource, /const NLQ_PRESET_KEY = "crd_nlq_presets_v1"/);
   assert.match(indexSource, /renderNLQPresets\(\)/);
 });

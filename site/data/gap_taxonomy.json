@@ -765,13 +765,13 @@
       "id": "mappluto",
       "name": "MapPLUTO",
       "source_contract_id": "mappluto",
-      "status": "live-only",
+      "status": "landed",
       "join_keys": [
         "BBL"
       ],
       "join_coverage": {},
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
-      "delivery_tier": "live-only"
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "mocs-ll1-plans",
@@ -3528,7 +3528,7 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-12",
+    "observed_on": "2026-08-15",
     "source_contracts_fingerprint": "7f0f68e10c50571c908d5fc4d5ea817878cf19676bd21766c6c1a943a82ffea8",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 84,

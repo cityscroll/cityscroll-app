@@ -1020,6 +1020,52 @@ def install_routes(page):
         return lambda route: route.fulfill(status=200, content_type="application/json",
                                            body=json.dumps(body))
 
+    # Keep resident procurement routes hermetic on the same static artifact production reads.
+    # The fixture rows replace same-ID committed rows so date-relative assertions stay stable.
+    money_snapshot = json.loads((_ROOT / "site" / "data" / "money_resident_snapshot.json").read_text())
+    money_rows = {
+        str(row.get("request_id", "")): row
+        for row in money_snapshot.get("rows", [])
+        if row.get("request_id")
+    }
+    for row in (
+        RFP_OPEN,
+        RFP_OPEN_2,
+        AWARD_ROW,
+        PARKS_ARCHIVE_AWARD,
+        NOTICE_PERMALINK_ROW,
+        MWBE_SOLICITATION_ROW,
+        MWBE_AWARD_ROW,
+        *CHAIN_ROWS,
+    ):
+        money_rows[str(row["request_id"])] = row
+    money_snapshot["rows"] = list(money_rows.values())
+    money_snapshot["count"] = len(money_snapshot["rows"])
+    property_snapshot = {
+        "schema_version": 1,
+        "delivery_tier": "resident-snapshot",
+        "generated_at": _iso(0),
+        "properties": PROPERTY_ROWS,
+        "disposition_spines": [],
+    }
+    rules_snapshot = {
+        "schema_version": 1,
+        "retrieved_at": _iso(0),
+        "rows": RULES_ROWS,
+    }
+    meetings_snapshot = {
+        "schema": "cityscroll.shared-meeting-read-model.v1",
+        "generated_at": _iso(0),
+        "rows": MEETINGS_ROWS,
+    }
+    staffing_snapshot = {
+        "schema_version": 1,
+        "delivery_tier": "resident-snapshot",
+        "generated_at": _iso(0),
+        "count": len(PERSONNEL_ROWS),
+        "notices": PERSONNEL_ROWS,
+    }
+
     # NOTE: Playwright matches routes newest-first — register catch-alls BEFORE specifics.
     page.route("https://data.cityofnewyork.us/**", fixed([]))
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", soda)
@@ -1077,6 +1123,11 @@ def install_routes(page):
     # The bare Staffing example is a committed product seed, so the guard never depends on
     # the live payroll aggregation merely to open the page.
     page.route("**/data/people_examples.json", fixed(PEOPLE_EXAMPLES))
+    page.route("**/data/money_resident_snapshot.json", fixed(money_snapshot))
+    page.route("**/data/property_resident_snapshot.json", fixed(property_snapshot))
+    page.route("**/data/rules_domain_observations.json", fixed(rules_snapshot))
+    page.route("**/data/shared_meeting_read_model.json", fixed(meetings_snapshot))
+    page.route("**/data/staffing_default_hires.json", fixed(staffing_snapshot))
     page.route("**/data/title_crosswalk.json", fixed(TITLE_CROSSWALK))
     # Wave-2 batch-precompute first paint: align land default snapshot with ZAP_ROWS so
     # #land auto-select still yields "Example Street Rezoning" in hermetic demo/a11y gates.

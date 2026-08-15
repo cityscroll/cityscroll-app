@@ -977,7 +977,7 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic project updates",
-      "product_freshness": "The warehouse snapshot is served first for ZAP outcome project rows; live SODA remains the miss fallback, and browser search still queries live with a five-minute cache.",
+      "product_freshness": "The warehouse snapshot is the resident source for ZAP project search and outcome reads; scheduled acquisition refreshes it.",
       "used_for": "Rezoning search, status, milestones, applicants, and comments handoff.",
       "code_references": [
         {
@@ -1012,7 +1012,7 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic project updates",
-      "product_freshness": "The 2026-08-05 warehouse snapshot is served first for ZAP outcome tax lots; live SODA remains the miss fallback.",
+      "product_freshness": "The 2026-08-05 warehouse snapshot is the resident source for ZAP outcome tax lots; scheduled acquisition refreshes it.",
       "used_for": "Tax-lot joins from ZAP projects to MapPLUTO.",
       "code_references": [
         {
@@ -1089,7 +1089,7 @@
       "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
       "owner": "NYC Department of City Planning",
       "status": "live",
-      "scope": "runtime",
+      "scope": "scheduled-acquisition",
       "kind": "html",
       "landing_page": "https://zap.planning.nyc.gov/",
       "endpoint": "https://zap-api-production.herokuapp.com/projects/{project_id}",
@@ -1101,7 +1101,7 @@
         "documents"
       ],
       "publisher_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
-      "product_freshness": "The daily site build copies the bounded active-project outcome view from GET /zap-outcomes into land_default_ulurp.json for first paint. A browser request may refresh snapshots older than six hours; it never calls the ZAP API directly.",
+      "product_freshness": "Scheduled acquisition copies the bounded active-project outcome view into retained KV and land_default_ulurp.json; resident reads never call the ZAP API.",
       "used_for": "Land detail decision documents, action approvals, disposition votes/recommendations, and DOB NOW tax-lot filing side-car beyond Open Data status chips.",
       "join_keys": [
         "project_id",
@@ -1186,7 +1186,7 @@
       "name": "MapPLUTO",
       "owner": "NYC Department of City Planning",
       "status": "live",
-      "scope": "runtime",
+      "scope": "source-attribution",
       "kind": "arcgis",
       "endpoint": "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
@@ -1195,15 +1195,15 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic PLUTO releases",
-      "product_freshness": "Queried live for matched ZAP tax lots.",
-      "used_for": "Tax-lot boundary geometry.",
+      "product_freshness": "Official source attribution only; resident Land maps use retained location evidence.",
+      "used_for": "Official attribution for tax-lot map context.",
       "code_references": [
         {
           "path": "site/app/land.mjs",
-          "contains": "rest/services/MAPPLUTO/FeatureServer/0"
+          "contains": "NYC MapPLUTO"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "nyc-geosearch",

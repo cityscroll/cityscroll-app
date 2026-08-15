@@ -244,7 +244,7 @@ export default {
     // Contract lifecycle (PROC-001): pre-warm the procurement timeline for freshly-ingested
     // Award notices. Joins each notice's PIN to Checkbook NYC pending, registered, and spending
     // domains, then enriches unmatched pending/registered stages from PASSPort when EPIN joins.
-    // Bounded (≤40/run); compute-on-miss otherwise. Fail-soft like the other cron jobs.
+    // Bounded (≤40/run); missing resident reads stay unavailable until the next acquisition.
     try {
       const awardIds = ingestResult?.awardRequestIds || [];
       if (awardIds.length) {

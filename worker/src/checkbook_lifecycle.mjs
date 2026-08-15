@@ -5,9 +5,9 @@
 // unmatched/ambiguous states. The lifecycle is computed once per notice, cached in D1
 // (contract_lifecycle), and served by GET /contract-lifecycle?id=<request_id>.
 //
-// Architecture (mirrors prior_cycle.mjs and external_award.mjs):
-//   - compute-on-miss: first request computes the lifecycle from Checkbook, caches it
-//   - bounded daily prewarm: cron pre-warms freshly-ingested Award notices (≤40/run)
+// Architecture (mirrors the other resident materializations):
+//   - bounded daily prewarm: cron computes freshly-ingested Award notices (≤40/run)
+//   - read-only request path: GET serves D1 and never repairs a miss from publishers
 //   - edge cache: 5-minute Cache-Control on successful responses
 //   - fail-soft: a Checkbook/proxy error → ok:false, no-store, not cached
 //
@@ -767,11 +767,11 @@ export async function handleContractLifecycle(req, env, ctx) {
     if (hit) return withCors(hit, cors);
   }
 
-  const { lifecycle, ok } = await getOrCompute(env, rawId);
+  const lifecycle = await cacheGet(env, rawId);
 
-  if (!ok || !lifecycle) {
-    return new Response(JSON.stringify({ id: rawId, ok: false }), {
-      status: 200,
+  if (!lifecycle) {
+    return new Response(JSON.stringify({ id: rawId, ok: false, reason: "snapshot-unavailable" }), {
+      status: 503,
       headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "no-store" },
     });
   }

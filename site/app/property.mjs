@@ -108,60 +108,24 @@ async function loadFranchiseConcessionSpine(r, el){
     return;
   }
   let spine = null;
-  let francRow = null;
   try{
-    const response = await workerFetch("/franchise-concessions", {}, 12000);
-    if(response && response.ok){
-      const payload = await response.json();
-      const spines = Array.isArray(payload.franchise_spines) ? payload.franchise_spines : [];
-      const id = String(r.request_id || "");
-      spine = spines.find(s =>
-        (Array.isArray(s.events) && s.events.some(e => e && e.request_id === id))
-        || (Array.isArray(s.stages) && s.stages.some(st => Array.isArray(st.request_ids) && st.request_ids.includes(id)))
-      ) || null;
-      if(Array.isArray(payload.notices)){
-        francRow = payload.notices.find(p => p && p.request_id === id) || null;
-        if(francRow){
-          r.franchise_stage = francRow.franchise_stage || r.franchise_stage || null;
-          r.franchise_join_keys = francRow.franchise_join_keys || null;
-          r.franchise_subject_ref = francRow.franchise_subject_ref || null;
-        }
-      }
-      // Fallback: singleton from this notice if the cached view is stale/missing.
-      if(!spine && francRow){
-        const stageOrder = ["solicitation","public_hearing","committee_meeting","award"];
-        const subject = francRow.franchise_subject_ref || id;
-        spine = {
-          schema_version: 1,
-          subject_ref: subject,
-          join: {
-            matched: Array.isArray(francRow.franchise_join_keys) && francRow.franchise_join_keys.length > 0,
-            method: (francRow.franchise_join_keys && francRow.franchise_join_keys.length) ? "exact_party" : "single_notice",
-            keys: francRow.franchise_join_keys || [],
-            notice_count: 1
-          },
-          stages: stageOrder.map(kind => {
-            const matched = francRow.franchise_stage === kind;
-            const whenRaw = francRow.event_date || francRow.start_date || "";
-            return {
-              kind,
-              matched,
-              notice_count: matched ? 1 : 0,
-              request_ids: matched ? [id] : [],
-              events: matched ? [{
-                request_id: id,
-                title: cleanText(francRow.short_title) || id,
-                time: { value: String(whenRaw).slice(0,10) || null }
-              }] : []
-            };
-          }),
-          events: [],
-          gaps: []
-        };
+    const response=await workerFetch("/franchise-concessions",{},12000);
+    if(response?.ok){
+      const payload=await response.json();
+      const id=String(r.request_id||"");
+      const spines=Array.isArray(payload?.franchise_spines)?payload.franchise_spines:[];
+      spine=spines.find(item=>(item?.events||[]).some(event=>event?.request_id===id)
+        ||(item?.stages||[]).some(stage=>(stage?.request_ids||[]).includes(id)))||null;
+      const row=(payload?.notices||[]).find(item=>item?.request_id===id)||null;
+      if(row){
+        r.franchise_stage=row.franchise_stage||r.franchise_stage||null;
+        r.franchise_join_keys=row.franchise_join_keys||r.franchise_join_keys||null;
+        r.franchise_subject_ref=row.franchise_subject_ref||r.franchise_subject_ref||null;
       }
     }
-  }catch(e){}
-  // Client-side singleton when the endpoint is unreachable: still phase-group this notice.
+  }catch(_error){}
+  // If the retained Worker snapshot is unavailable, this notice still renders
+  // an honest singleton without querying a publisher.
   if(!spine){
     const stage = inferFranchiseStageFromNotice(r);
     if(stage){
@@ -417,24 +381,21 @@ async function loadPropertyDispositionSpine(r, el){
   let spine = null;
   let propRow = null;
   try{
-    const response = await workerFetch("/property-locations", {}, 12000);
-    if(response && response.ok){
-      const payload = await response.json();
-      const spines = Array.isArray(payload.disposition_spines) ? payload.disposition_spines : [];
-      const id = String(r.request_id || "");
-      spine = spines.find(s =>
-        (Array.isArray(s.events) && s.events.some(e => e && e.request_id === id))
-        || (Array.isArray(s.stages) && s.stages.some(st => Array.isArray(st.request_ids) && st.request_ids.includes(id)))
-      ) || null;
-      if(Array.isArray(payload.properties)){
-        propRow = payload.properties.find(p => p && p.request_id === id) || null;
-        if(propRow){
-          r.disposition_stage = propRow.disposition_stage || r.disposition_stage || null;
-          r.disposition_join_keys = propRow.disposition_join_keys || null;
-          r.disposition_subject_ref = propRow.disposition_subject_ref || null;
-          if(propRow.commercial) r.commercial = propRow.commercial;
-        }
-      }
+    const payload=await globalThis.loadPropertyResidentView?.();
+    const id=String(r.request_id||"");
+    const spines=Array.isArray(payload?.disposition_spines)?payload.disposition_spines:[];
+    spine=spines.find(item=>(item?.events||[]).some(event=>event?.request_id===id)
+      ||(item?.stages||[]).some(stage=>(stage?.request_ids||[]).includes(id)))||null;
+    propRow=Array.isArray(payload?.properties)
+      ?payload.properties.find(item=>item&&item.request_id===id)||null
+      :null;
+    if(propRow){
+      r.disposition_stage=propRow.disposition_stage||r.disposition_stage||null;
+      r.disposition_join_keys=propRow.disposition_join_keys||null;
+      r.disposition_subject_ref=propRow.disposition_subject_ref||null;
+      r.property_location=propRow.property_location||r.property_location||null;
+      if(propRow.commercial) r.commercial=propRow.commercial;
+    }
       // Fallback: build a singleton from this notice if the cached view is stale/missing.
       if(!spine && propRow){
         const stageOrder = ["hearing","auction_or_rfp","award_or_conveyance"];
@@ -467,7 +428,6 @@ async function loadPropertyDispositionSpine(r, el){
           gaps: []
         };
       }
-    }
   }catch(e){}
   if(!document.contains(el)) return;
   if(!spine){
@@ -723,14 +683,8 @@ function dcasFleetTools(){
 }
 function loadDcasFleetInventory(){
   if(!dcasFleetInventoryPromise){
-    const staticSnapshot=()=>fetch("data/dcas_vehicle_auctions.json",{cache:"no-cache"})
+    dcasFleetInventoryPromise=fetch("data/dcas_vehicle_auctions.json",{cache:"no-cache"})
       .then(response=>response.ok?response.json():null).catch(()=>null);
-    // The daily Worker sidecar wins when reachable; keep this small so the
-    // committed snapshot remains a quick first-paint fallback on static previews.
-    dcasFleetInventoryPromise=workerFetch("/property-locations",{},3000)
-      .then(response=>response.ok?response.json():null)
-      .then(payload=>payload?.dcas_vehicle_auctions||staticSnapshot())
-      .catch(()=>staticSnapshot());
   }
   return dcasFleetInventoryPromise;
 }

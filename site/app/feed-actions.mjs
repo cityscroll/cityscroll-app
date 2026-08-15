@@ -8,6 +8,7 @@ import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mj
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
+import { domainRows } from "../resident_snapshot_queries.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -70,15 +71,44 @@ async function filterFeedRowsToDistrictBag(key,rows){
   const materialized=await tools.materializeDistrictBagRowsFromFiles(key,rows,filter);
   return key==="meetings"?materialized.map(normalizeHearingRow):materialized;
 }
-// Precompute-first rule-lifecycle enrichment: the /rules read model (KV key
-// rules:materialized:v2) joins City Record notices to NYC Rules official comment/adoption
-// pages and classifies a lifecycle stage. We consume it here — no live upstream NYC Rules
-// fetch from the client — and join to the live City Record rows by request_id.
-let rulesViewPromise=null;
+const RULES_SNAPSHOT_URL="/data/rules_domain_observations.json";
+const PROPERTY_SNAPSHOT_URL="/data/property_resident_snapshot.json";
+const MEETINGS_SNAPSHOT_URL="/data/shared_meeting_read_model.json";
+let rulesDomainPromise=null,rulesViewPromise=null,propertyViewPromise=null,meetingViewPromise=null;
+function loadRulesDomainSnapshot(){
+  if(rulesDomainPromise) return rulesDomainPromise;
+  rulesDomainPromise=fetch(RULES_SNAPSHOT_URL,{credentials:"omit"})
+    .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")))
+    .then(payload=>({
+      schema_version:payload.schema_version,
+      generated_at:payload.retrieved_at,
+      rules:domainRows(payload),
+    }));
+  return rulesDomainPromise;
+}
+// Rule lifecycle joins are a distinct daily projection from the source-native domain rows.
+// The Worker GET is cache-only; it never rebuilds from NYC Rules or City Record on demand.
 function loadRulesView(){
-  if(rulesViewPromise) return rulesViewPromise;
-  rulesViewPromise=workerFetch("/rules",{},12000).then(r=>r.ok?r.json():null).catch(()=>null);
+  if(!rulesViewPromise){
+    rulesViewPromise=workerFetch("/rules",{},12000)
+      .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")))
+      .catch(()=>null);
+  }
   return rulesViewPromise;
+}
+function loadPropertyView(){
+  if(!propertyViewPromise){
+    propertyViewPromise=fetch(PROPERTY_SNAPSHOT_URL,{credentials:"omit"})
+      .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
+  }
+  return propertyViewPromise;
+}
+function loadMeetingView(){
+  if(!meetingViewPromise){
+    meetingViewPromise=fetch(MEETINGS_SNAPSHOT_URL,{credentials:"omit"})
+      .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
+  }
+  return meetingViewPromise;
 }
 // Map request_id -> lifecycle record (stage + nyc_rules links/dates). Covers matched
 // notices (classified stage) and unmatched City Record notices (stage "proposed"); the
@@ -112,34 +142,15 @@ async function loadSection(key){
   renderSearchComponents(key);
   if(key==="meetings") return loadHearings();
   const whenSel=$("#"+key+"when");
-  let where=`section_name='${cfg.section}'`, order="start_date DESC";
   const ag=key==="rules" ? (globalThis.rulesAgency || "") : ($("#"+key+"agency")?$("#"+key+"agency").value:"");
-  if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
-  if(cfg.upcoming && (!whenSel || whenSel.value==="upcoming")){ where+=` AND event_date > '${todayISO()}'`; order="event_date ASC"; }
-  // Property is a small section (~250 rows) whose value is the derived taxonomy — fetch wide, classify client-side.
-  // Rules: wider window so multi-notice rulemaking collapse has siblings in-window.
-  const p={"$select":FEED_SELECT,"$where":where,"$order":order,"$limit":key==="property"?"300":key==="rules"?"200":"40"};
-  if(kw) p["$q"]=kw;
   busyList("#"+key+"feed", 3);
   const stale = staleGuard("feed:"+key);
   try{
-    let rows=null;
-    if(key==="property"){
-      try{
-        const response=await workerFetch("/property-locations",{},12000);
-        if(response.ok){
-          const payload=await response.json();
-          if(Array.isArray(payload.disposition_spines)){
-            propSpines=payload.disposition_spines;
-          }
-          if(Array.isArray(payload.properties)){
-            rows=payload.properties.filter(row=>(!ag||row.agency_name===ag)
-              && (!kw||matchText(row).toLowerCase().includes(kw.toLowerCase())));
-          }
-        }
-      }catch(e){}
-    }
-    if(!rows) rows=await soda(p);
+    const payload=key==="property"?await loadPropertyView():await loadRulesDomainSnapshot();
+    let rows=key==="property"?domainRows(payload,"properties"):domainRows(payload,"rules");
+    rows=rows.filter(row=>(!ag||row.agency_name===ag)
+      && (!kw||[row.short_title,row.title,row.agency_name,matchText(row)]
+        .filter(Boolean).join(" ").toLowerCase().includes(kw.toLowerCase())));
     if(stale()) return;
     unbusy("#"+key+"feed");
     if(key==="rules"){
@@ -149,17 +160,9 @@ async function loadSection(key){
           ? normalizeHearingRow(row).affected_area : null;
         row._ruleLocation=tools.ruleLocationFromRow(row,{hearingArea});
       });
-      // Attach precomputed lifecycle stage from the /rules read model (best-effort: a
-      // stale/unreachable read model just leaves _ruleStage unset and no chip renders —
-      // the row still shows as a City Record notice). Cache the full view for explorer
-      // multi-notice stitch.
-      try{
-        const rulesView=await loadRulesView();
-        rulesViewCache=rulesView;
-        const stageMap=buildRulesStageMap(rulesView);
-        rows.forEach(row=>{ const rec=stageMap.get(row.request_id); if(rec) row._ruleStage=rec; });
-      }catch(e){ rulesViewCache=null; }
-      if(stale()) return;
+      // Source-native rows classify locally for immediate list paint. The separate
+      // lifecycle projection is loaded only by notice/action detail readers.
+      rulesViewCache={rules:rows};
     }
     feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
     if(key==="property"){
@@ -362,12 +365,12 @@ function hearingCommunityBoardPivotHTML(){
 async function loadPastHearings(filter){
   const cacheKey=JSON.stringify([filter.agency,filter.keyword]);
   if(hearingPastCache.has(cacheKey)) return hearingPastCache.get(cacheKey);
-  let where=`(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND event_date < '${todayISO()}'`;
-  if(filter.agency) where+=` AND agency_name='${filter.agency.replace(/'/g,"''")}'`;
-  const params={"$select":FEED_SELECT,"$where":where,"$order":"event_date DESC","$limit":"500"};
-  if(filter.keyword) params["$q"]=filter.keyword;
-  const rows=await soda(params);
-  const records=rows.map(normalizeHearingRow);
+  const query=String(filter.keyword||"").toLowerCase();
+  const records=(hearingAll||[]).filter(row=>
+    String(row.event_date||"").slice(0,10)<todayISO()
+    && (!filter.agency||row.agency_name===filter.agency)
+    && (!query||matchText(row).toLowerCase().includes(query))
+  ).map(normalizeHearingRow);
   hearingPastCache.set(cacheKey,records);
   return records;
 }
@@ -1389,7 +1392,7 @@ async function renderHearingExplorer(options){
   renderMeetingsAgencyScope(hearingAll||[]);
   renderMeetingsBoardScope(hearingAll||[],seq);
   let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
-  // when=all (map drill) and past / empty-widen need the past SODA slice.
+  // The retained shared read model contains the supported past and current windows.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
   if(needsPast){
     try{
@@ -1543,17 +1546,8 @@ async function loadHearings(){
   busyList("#meetingsfeed",3);
   const key="meetings", stale=staleGuard("feed:"+key);
   try{
-    let records=null;
-    try{
-      const response=await workerFetch("/hearings",{},12000);
-      if(response.ok){ const payload=await response.json(); if(Array.isArray(payload.hearings)) records=payload.hearings; }
-    }catch(e){}
-    if(!records){
-      const response=await fetch("/data/shared_meeting_read_model.json",{credentials:"omit"});
-      if(!response.ok) throw new Error(t("shared_meeting_read_model_unavailable"));
-      const payload=await response.json();
-      records=Array.isArray(payload?.rows)?payload.rows.map(normalizeHearingRow):[];
-    }
+    const payload=await loadMeetingView();
+    const records=Array.isArray(payload?.rows)?payload.rows.map(normalizeHearingRow):[];
     if(stale()) return;
     hearingAll=records;
     renderMeetingsAgencyScope(hearingAll);
@@ -1568,6 +1562,8 @@ globalThis.FEED_SELECT = FEED_SELECT;
 globalThis.MEETING_PHASE_IDS = MEETING_PHASE_IDS;
 globalThis.MEETING_PHASE_LABEL_KEYS = MEETING_PHASE_LABEL_KEYS;
 globalThis.SECTIONS = SECTIONS;
+globalThis.loadPropertyResidentView = loadPropertyView;
+globalThis.loadRulesDomainSnapshot = loadRulesDomainSnapshot;
 globalThis.actionRailGuideHTML = actionRailGuideHTML;
 globalThis.actionRailHTML = actionRailHTML;
 globalThis.actionRailLabel = actionRailLabel;
