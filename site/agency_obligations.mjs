@@ -25,6 +25,30 @@ export const AGENCY_OBLIGATIONS_CERTIFICATION = "auto_certified_quote_verify_v1"
 export const AGENCY_OBLIGATIONS_ER_BASIS = "agency_canonical_v1+statute_actor_alias_v1";
 export const AGENCY_OBLIGATIONS_TEMPORAL_ANCHOR_METHOD = "law_envelope_strict_iso_v1";
 
+/** Short labels for the resident-facing mandate surfaces. */
+export const MANDATE_DELIVERABLE_LABELS = Object.freeze({
+  rulemaking: "Rule filing",
+  report: "Report",
+  program: "Program action",
+  "data publication": "Public data",
+  hearing: "Public hearing",
+  other: "Civic duty",
+});
+
+export function mandateDeliverableLabel(value) {
+  const key = clean(value, 80).toLowerCase();
+  return MANDATE_DELIVERABLE_LABELS[key] || "Civic duty";
+}
+
+export function mandateRecurrenceLabel(value) {
+  const key = clean(value, 80).toLowerCase();
+  if (!key || key === "one-time" || key === "one time") return key ? "One time" : null;
+  if (key === "annual" || key === "annual cycle" || key === "yearly") return "Every year";
+  if (key === "monthly") return "Every month";
+  if (key === "quarterly") return "Every three months";
+  return clean(value, 80) || null;
+}
+
 /** Light statute-actor aliases that are not already City Record spellings. */
 export const STATUTE_ACTOR_ALIASES = Object.freeze({
   HPD: "Housing Preservation and Development",

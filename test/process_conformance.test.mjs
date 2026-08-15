@@ -365,13 +365,63 @@ test("mandates conformance renders matched rows without absence placeholders", (
   });
   assert.match(html, /Publish the matched report/);
   assert.match(html, /Evidence found/);
-  assert.match(html, /1 with evidence/);
+  assert.match(html, /1 filing found/);
   assert.match(html, /class="mandates-conformance-scroll"[^>]*role="region"[^>]*tabindex="0"/);
   assert.match(html, /Scroll to view all mandates/);
   assert.match(html, /Open all mandates/);
   assert.match(MANDATE_CONFORMANCE_STYLE, /\.mandates-conformance-scroll\s*\{[\s\S]*block-size: 28rem/);
   assert.doesNotMatch(html, /City Record:/);
   assert.doesNotMatch(html, /Publish the unmatched report|Expected, not yet in City Record|Expected; no matching evidence in current sources/);
+});
+
+test("conformance renders lifecycle facts with only known public destinations", () => {
+  const candidate = normalizeObservationCandidate({
+    request_id: "20260605008",
+    short_title: "Final rule for commercial waste zones",
+    href: "javascript:alert(1)",
+    domain: "rules",
+    rule_evidence: {
+      lifecycle_status: "adopted",
+      adoption_date: "2026-06-11",
+      effective_date: "2026-07-01",
+    },
+  });
+  assert.equal(candidate.href, "/notices/20260605008");
+  assert.equal(candidate.lifecycle_status, "adopted");
+  assert.equal(candidate.adoption_date, "2026-06-11");
+  assert.equal(candidate.effective_date, "2026-07-01");
+
+  const html = renderMandatesConformanceSection({
+    status: "matched",
+    counts: { observed: 1, expected_not_yet_observed: 3, on_track: 0 },
+    graph_neighbors: {
+      rules_browse_href: "/browse/rules/",
+      meetings_browse_href: "/browse/meetings/",
+      contracts_browse_href: "/browse/contracts/",
+    },
+    items: [{
+      mandate_id: "dsny-001",
+      duty_text: "Adopt rules for commercial waste zones",
+      deliverable_type: "rulemaking",
+      recurrence: "annual",
+      observation: {
+        status: OBSERVATION_STATUS.OBSERVED,
+        label: "Evidence found",
+        expected_event: { deadline_date: "2026-06-01" },
+        observed_record: {
+          request_id: candidate.request_id,
+          label: candidate.label,
+          href: candidate.href,
+          when: "2026-06-11",
+          lifecycle_label: "Adopted",
+          effective_date: "2026-07-01",
+        },
+      },
+    }],
+  });
+  assert.match(html, /Rule filing · Adopted · on 2026-06-11 · in effect 2026-07-01 · due/);
+  assert.match(html, /href="\/notices\/20260605008"/);
+  assert.doesNotMatch(html, /javascript:|rulemaking|report_or_study|Availability is not known yet|Mandate connections/);
 });
 
 test("Parks conformance view labels real mandates without compliance verdicts", () => {
@@ -400,7 +450,7 @@ test("Parks conformance view labels real mandates without compliance verdicts", 
     assert.equal(item.observation.is_compliance_verdict, false);
     assert.equal(item.observation.adjudication, "not_adjudicated");
   }
-  assert.match(view.copy?.lead || view.honesty?.lead || "", /mandate|evidence|public-record/i);
+  assert.match(view.copy?.lead || view.honesty?.lead || "", /mandate|evidence|public record/i);
   assert.match(view.share_path, /#mandates-conformance/);
   assert.doesNotMatch(JSON.stringify(view), /agency broke the law|out of compliance|missed its mandate/i);
   for (const item of view.items) {
@@ -446,7 +496,7 @@ test("constellation surfaces only public Sanitation CWZ rule edges after attachm
   // Densified public CWZ observation mounts expected-vs-observed + rules bridge.
   assert.match(html, /id="mandates-conformance"/);
   assert.match(html, /id="mandates-rules"/);
-  assert.match(html, /Mandates · expected vs evidence|expected vs evidence/i);
+  assert.match(html, /What the law calls for · what records show/i);
   assert.match(html, /Evidence found/);
   // Honest rules title: "Rules activity" only when observed_links exist (graph-01).
   if ((view.mandates_rules?.counts?.observed_links || 0) === 0) {
