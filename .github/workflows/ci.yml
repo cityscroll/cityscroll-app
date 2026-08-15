@@ -501,6 +501,9 @@ jobs:
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         with:
           playwright-version: "1.58.0"
+      - name: Build static performance documents
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+        run: node tools/build_primary_documents.mjs
       - name: Run deterministic performance contract
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         run: |

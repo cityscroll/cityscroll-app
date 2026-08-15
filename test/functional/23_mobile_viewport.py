@@ -28,7 +28,9 @@ from tools.local_site_server import QuietHandler  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "")
 VIEWPORT = {"width": 360, "height": 800}  # Source: mobile contract acceptance width.
 SURFACES = (
-    ("contracts", "#money", "#list .row"),
+    # The root is a neutral topic entry; Contracts is covered on its canonical
+    # document route so this fixture waits for the intended source-backed list.
+    ("contracts", "browse/contracts/#money", "#list .row"),
     ("staffing", "#people?view=guide", "#career-results .career-card, #staffing-notice-list .staffing-hire-row"),
     ("property", "#property", "#propertyfeed .fcard"),
     ("rules", "#rules", "#rulesfeed .fcard"),

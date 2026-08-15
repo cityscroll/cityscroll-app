@@ -187,6 +187,10 @@ def capture(browser: Browser, tree: Path, state: str, width: int, height: int) -
         page.locator("#tab-money .nlbox").wait_for(state="visible")
 
         if state == "after":
+            # The root is now a neutral topic entry. Exercise the same explicit
+            # Contracts document route a user reaches after choosing that lens.
+            page.goto(base_url + "browse/contracts/", wait_until="domcontentloaded")
+            page.locator("#tab-money .nlbox").wait_for(state="visible")
             open_landing_actions(page)
             # Review captures show the real public destination, never the local test server.
             page.evaluate(
@@ -276,6 +280,8 @@ def verify_interactions(browser: Browser) -> None:
         install_routes(page)
         seed_presets(page)
         page.goto(base_url, wait_until="domcontentloaded")
+        contracts_url = base_url + "browse/contracts/"
+        page.goto(contracts_url, wait_until="domcontentloaded")
         open_landing_actions(page)
 
         copied = assert_copy_matches_qr(
@@ -283,7 +289,7 @@ def verify_interactions(browser: Browser) -> None:
             "#landing-share-actions [data-landing-copy]",
             "#landing-share-actions [data-qr-share]",
         )
-        assert copied == base_url
+        assert copied == contracts_url
 
         trigger = page.locator("#landing-share-actions [data-qr-share]")
         trigger.focus()

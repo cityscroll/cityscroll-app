@@ -43,8 +43,9 @@ export function buildCommitteeLocalConstellation(graph = {}, committeeId, people
 }
 
 export function renderCommitteeLocalConstellationHTML(graph, committeeId, people = {}) {
-  return renderLocalConstellationHTML(buildCommitteeLocalConstellation(graph, committeeId, people), {
-    heading: "Committee members",
+  const constellation = buildCommitteeLocalConstellation(graph, committeeId, people);
+  return renderLocalConstellationHTML(constellation, {
+    heading: constellation.subject_name ? `Committee members · ${constellation.subject_name}` : "Committee members",
     id: `committee-local-constellation-${clean(committeeId).replace(/[^A-Za-z0-9_-]/g, "-")}`,
   });
 }
