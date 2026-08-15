@@ -284,18 +284,20 @@ function locationDetails(record) {
 
 function participationDetails(record) {
   const participation = record.participation || {};
-  const links = (participation.links || []).filter((link) => safeHref(link?.url));
-  const items = links.map((link) => `<li><a href="${esc(safeHref(link.url))}" rel="noopener noreferrer">${esc(link.label || "Participation information")}</a></li>`);
-  if (participation.remote_join_url && !links.some((link) => link.url === participation.remote_join_url)) {
-    items.push(`<li><a href="${esc(safeHref(participation.remote_join_url))}" rel="noopener noreferrer">Join online</a></li>`);
+  const links = (participation.links || [])
+    .map((link) => ({ ...link, href: safeHref(link?.url) }))
+    .filter((link) => link.href);
+  const items = links.map((link) => `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label || "Participation information")}</a></li>`);
+  const remoteJoin = safeHref(participation.remote_join_url);
+  if (remoteJoin && !links.some((link) => link.href === remoteJoin)) {
+    items.push(`<li><a href="${esc(remoteJoin)}" rel="noopener noreferrer">Join online</a></li>`);
   }
   for (const email of participation.emails || []) items.push(`<li><a href="mailto:${esc(email)}">${esc(email)}</a></li>`);
-  for (const phone of participation.phones || []) items.push(`<li><a href="tel:${esc(String(phone).replace(/[^0-9+]/g, ""))}">${esc(phone)}</a></li>`);
+  for (const phone of participation.phones || []) {
+    const tel = String(phone).replace(/[^0-9+]/g, "");
+    if (tel) items.push(`<li><a href="tel:${esc(tel)}">${esc(phone)}</a></li>`);
+  }
   return items;
-}
-
-function emptyDetail(label) {
-  return `<p class="meeting-empty"><span class="meeting-detail-label">${esc(label)}:</span> Not published.</p>`;
 }
 
 /** Render the source-qualified canonical meeting document used by every meeting card. */
@@ -319,7 +321,7 @@ export function renderMeetingDocument(record = {}) {
   const agencyLink = agency
     ? (agencyHref(record) ? `<a href="${esc(agencyHref(record))}">${esc(agency)}</a>` : esc(agency))
     : "";
-  const legacy = record.compatibility?.legacy_notice_href;
+  const legacy = safeHref(record.compatibility?.legacy_notice_href);
   const checked = record.source_receipt?.observed_at;
   const documentLinks = meetingDocumentLinks(record);
   const sourceDetails = [
@@ -327,18 +329,31 @@ export function renderMeetingDocument(record = {}) {
     record.source_record_id ? `<span>Publisher record: <bdi>${esc(record.source_record_id)}</bdi></span>` : "",
     checked ? `<time datetime="${esc(checked)}">Source checked ${esc(checked)}</time>` : "",
   ].filter(Boolean).join(" · ");
-  const documents = documentLinks.length
-    ? `<section class="meeting-documents" data-meeting-documents="1"><h2>Agenda and materials <span class="sr-only">Minutes and records</span></h2><ul>${documentLinks.filter((document) => ["Agenda", "Materials", "Recording", "Source record"].includes(document.label)).map((document) => `<li><a href="${esc(document.href)}" rel="noopener noreferrer">${esc(document.label)}</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("") || `<li>Not published.</li>`}</ul></section>`
-    : `<section class="meeting-documents"><h2>Agenda and materials</h2>${emptyDetail("Agenda and materials")}</section>`;
-  const minutes = documentLinks.filter((document) => document.label === "Minutes");
-  const minutesStatus = record.minutes_freshness?.status === "published" || (!record.minutes_freshness && minutes.length)
-    ? `Published${record.minutes_freshness?.latest_date ? ` through ${esc(record.minutes_freshness.latest_date)}` : ""}`
-    : record.minutes_freshness?.status === "unknown" ? "Status unknown." : "Not published.";
-  const minutesSection = `<section class="meeting-minutes" data-meeting-minutes="1"><h2>Minutes</h2>${minutes.length ? `<ul>${minutes.map((document) => `<li><a href="${esc(document.href)}" rel="noopener noreferrer">Minutes</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul>` : ""}<p>Minutes status: ${minutesStatus}</p></section>`;
+  const agendaDocuments = documentLinks.filter((document) => ["Agenda", "Materials", "Recording"].includes(document.label) && safeHref(document.href));
+  const documents = agendaDocuments.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-documents" data-meeting-documents="1"><h2>Agenda and materials</h2><ul>${agendaDocuments.map((document) => `<li><a href="${esc(safeHref(document.href))}" rel="noopener noreferrer">${esc(document.label)}</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul></section>`
+    : "";
+  const minutes = documentLinks.filter((document) => document.label === "Minutes" && safeHref(document.href));
+  const minutesPublished = record.minutes_freshness?.status === "published" || (!record.minutes_freshness && minutes.length);
+  const minutesSection = minutesPublished
+    ? `<section class="node-section civic-object-section meeting-section meeting-minutes" data-meeting-minutes="1"><h2>Minutes</h2>${minutes.length ? `<ul>${minutes.map((document) => `<li><a href="${esc(safeHref(document.href))}" rel="noopener noreferrer">Minutes</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul>` : ""}<p class="meeting-freshness">Minutes published${record.minutes_freshness?.latest_date ? ` through <time datetime="${esc(record.minutes_freshness.latest_date)}">${esc(record.minutes_freshness.latest_date)}</time>` : ""}.</p></section>`
+    : "";
   const locationRows = locationDetails(record);
-  const locationSection = `<section class="meeting-location"><h2>Where</h2>${locationRows.length ? `<ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul>` : emptyDetail("Where")}</section>`;
+  const locationSection = locationRows.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
+    : "";
   const participationRows = participationDetails(record);
-  const participationSection = `<section class="meeting-participation"><h2>How to participate</h2>${record.event_date ? `<p>Scheduled for <time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time>${record.venue?.mode ? ` · ${esc(record.venue.mode)}` : ""}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : emptyDetail("Participation")}</section>`;
+  const meetingMode = clean(record.venue?.mode, 80);
+  const participationSection = participationRows.length || meetingMode
+    ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
+    : "";
+  const institutionSection = boardLink || agencyLink || committeeLink
+    ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
+    : "";
+  const actions = [
+    id && record.event_date ? `<a class="node-action civic-object-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>` : "",
+    legacy ? `<a class="node-action civic-object-action" href="${esc(legacy)}">Open the City Record notice</a>` : "",
+  ].filter(Boolean).join("");
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -352,18 +367,16 @@ export function renderMeetingDocument(record = {}) {
 </head>
 <body>
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
-<main id="main" class="civic-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}">
+<main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
-  <p class="node-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p>
-  <h1>${esc(title)}</h1>
-  ${record.event_date ? `<p><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}
-  <section class="meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : agencyLink ? `<p>${agencyLink}</p>` : emptyDetail("Institution")}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>
+  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}</section>
+  ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
+  ${institutionSection}
   ${locationSection}
   ${participationSection}
   ${documents}
   ${minutesSection}
-  <p><a class="node-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>${legacy ? ` · <a href="${esc(legacy)}">Open the City Record notice</a>` : ""}</p>
-  ${sourceDetails ? `<details class="meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}
+  ${sourceDetails ? `<details class="node-section meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}
 </main>
 </body>
 </html>`;

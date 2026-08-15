@@ -26,9 +26,9 @@ test("meeting documents render as official record links on the canonical meeting
     source_status: "available",
   }]);
   const html = renderMeetingDocument(record);
-  assert.match(html, /Minutes and records/);
+  assert.match(html, /data-meeting-minutes/);
   assert.match(html, /https:\/\/board\.example\/minutes-1\.pdf/);
-  assert.match(html, /data-meeting-documents/);
+  assert.doesNotMatch(html, /data-meeting-documents/);
   assert.doesNotMatch(html, /meeting_document|attachment_status|source_status/);
 });
 
@@ -75,8 +75,24 @@ test("meeting detail renders the materialized civic object projection", () => {
   assert.match(html, /\/near-you\//);
   assert.match(html, /Agenda/);
   assert.match(html, /agenda\.pdf/);
-  assert.match(html, /Minutes status: Published through 2026-08-10/);
+  assert.match(html, /Minutes published through/);
+  assert.match(html, /2026-08-10/);
   assert.match(html, /Register to attend/);
   assert.match(html, /Join online/);
   assert.doesNotMatch(html, /search_text|minutes_freshness|meeting_documents/);
+});
+
+test("meeting affordances are progressive and shared across source systems", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:city_record:20260814001",
+    source_system: "city_record",
+    title: "A city meeting",
+    event_date: "2026-08-14T10:00:00-04:00",
+    agency: "An agency",
+  });
+  assert.match(html, /class="node-hero civic-object-hero meeting-hero"/);
+  assert.match(html, /class="node-actions civic-object-actions meeting-actions"/);
+  assert.match(html, /An agency/);
+  assert.doesNotMatch(html, /meeting-location|meeting-participation|meeting-documents|meeting-minutes/);
+  assert.doesNotMatch(html, /Not published|Status unknown|Agenda and materials/);
 });

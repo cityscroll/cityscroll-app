@@ -45,18 +45,18 @@ function httpsUrl(value) {
   catch (_error) { return null; }
 }
 
-/** Importable hearing event with an explicit New York wall-time contract. */
-export function hearingCalendarICS(record, options = {}) {
+/** Importable meeting event with an explicit New York wall-time contract. */
+export function meetingCalendarICS(record, options = {}) {
   const r = record || {};
   const start = localParts(r.event_date || r.deadline);
   if (!start) return null;
-  const id = String(r.request_id || r.id || stamp(start)).trim();
+  const id = String(r.meeting_id || r.request_id || r.id || stamp(start)).trim();
   const title = String(r.short_title || r.title || "Public hearing").trim();
   const agency = String(r.agency_name || r.agency || "").trim();
   const venue = r.venue || {};
   const access = r.meeting_access || {};
   const location = access.in_person_location
-    || [venue.building || r.building_name, venue.address || [r.street_address_1, r.street_address_2, r.city, r.state, r.zip_code].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
+    || [venue.name || venue.building || r.building_name, venue.address || [r.street_address_1, r.street_address_2, r.city, r.state, r.zip_code].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
   const joinUrl = access.remote_join_url
     || r.remote_join_url
     || r.participation?.remote_join_url
@@ -93,3 +93,6 @@ export function hearingCalendarICS(record, options = {}) {
     "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Hearing tomorrow", "END:VALARM", "END:VEVENT", "END:VCALENDAR", "");
   return lines.map(fold).join("\r\n");
 }
+
+// Compatibility name for the hearing action rail and existing callers.
+export const hearingCalendarICS = meetingCalendarICS;
