@@ -80,6 +80,17 @@ test("People + organizations builds one typed list and never joins a notice name
   assert.match(board.place_href, /^\/near-you\//);
 });
 
+test("People + organizations gives every row a unique typed h3 heading", () => {
+  const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", {
+    people: { by_person_id: { "7801": { person_id: "7801", person_name: "Christopher Marte", terms: [{ office_id: "office-1", term_start: "2024-01-01" }] } } },
+    hires: { notices: [{ request_id: "984089", agency_name: "Parks", additional_description_1: "Employee Name: MARTE, CHRISTOPHER" }] },
+  }));
+  const headings = [...html.matchAll(/<h3>(.*?)<\/h3>/g)].map((match) => match[1].replace(/<[^>]+>/g, ""));
+  assert.equal(new Set(headings).size, headings.length);
+  assert.ok(headings.some((heading) => heading.includes("Official · official:7801")));
+  assert.ok(headings.some((heading) => heading.includes("Exact-person appointment · appointment:7801:office-1:2024-01-01")));
+});
+
 test("Places delegates board place discovery to Near you without a duplicate board list", () => {
   const html = renderBrowseConceptLanding(buildBrowseConceptLanding("places", { places: geography }));
   assert.match(html, /Open Near you for place discovery/);
