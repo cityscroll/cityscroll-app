@@ -32,6 +32,7 @@ export const ROUTE_ISLAND_MODULES = ["alerts.mjs", "following.mjs", "map.mjs", "
 // Legacy alert behavior tests still extract the retired hash-builder source directly.
 // It is intentionally outside SITE_MODULES so this test seam never becomes a wire claim.
 export const SOURCE_ONLY_MODULES = ["alerts.mjs"];
+export const SHARED_RENDER_MODULES = ["staffing_exam_card.mjs"];
 
 export function readSiteSource() {
   const html = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
@@ -41,8 +42,11 @@ export function readSiteSource() {
   const sourceOnly = SOURCE_ONLY_MODULES.map((name) =>
     readFileSync(new URL(`../../site/app/${name}`, import.meta.url), "utf8"),
   );
+  const sharedRenderers = SHARED_RENDER_MODULES.map((name) =>
+    readFileSync(new URL(`../../site/${name}`, import.meta.url), "utf8"),
+  );
   const listPivots = readFileSync(new URL("../../site/list_entity_pivots.mjs", import.meta.url), "utf8");
-  return [html, ...modules, ...sourceOnly, listPivots].join("\n");
+  return [html, ...modules, ...sourceOnly, ...sharedRenderers, listPivots].join("\n");
 }
 
 export const SITE_SOURCE = readSiteSource();

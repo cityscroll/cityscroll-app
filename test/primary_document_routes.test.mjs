@@ -457,7 +457,7 @@ test("Exams landing keeps related links source-keyed", () => {
   });
   assert.match(html, /href="https:\/\/example\.gov\/eligible-list"/);
   assert.match(html, /href="https:\/\/example\.gov\/appointments"/);
-  const secondCard = html.slice(html.indexOf('data-exam-number="9002"'));
+  const secondCard = html.slice(html.indexOf('id="career-exam-9002"'));
   assert.doesNotMatch(secondCard, /href="https:\/\/example\.gov\/(eligible-list|appointments)"/);
   assert.match(secondCard, /data-edge-kind="eligible-list" data-edge-state="unknown"/);
   assert.match(secondCard, /data-edge-kind="appointments" data-edge-state="unknown"/);
