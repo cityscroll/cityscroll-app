@@ -217,7 +217,7 @@ export function buildOfficialLocalConstellation(officialView, committeeInput, id
         target_kind: "committee",
         target_id: row.committee_id || row.id || null,
         target_name: row.committee || null,
-        href: "/browse/people/#committees",
+        href: null,
         state: row.committee_id ? "matched" : "unknown",
         provenance: row.provenance || null,
       })),

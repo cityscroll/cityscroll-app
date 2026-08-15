@@ -9,6 +9,7 @@ import {
 import { buildNowSurface } from "./now_surface.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
+import { renderNodeBack } from "./civic_document_chrome.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -135,7 +136,7 @@ export function renderNowBuildView(sources, today) {
   const actions = [...surface.act_by.dated, ...surface.act_by.open_without_date];
   const unavailable = surface.coverage.unavailable_sources;
   return `<div class="now-surface" data-build-rendered="now" data-generated-for="${esc(surface.generated_for)}">
-    <p class="now-back"><a href="/browse/">Browse city topics</a></p>
+    ${renderNodeBack({ href: "/browse/", label: "Browse city topics", extraClass: "now-back" })}
     <header class="now-head"><p class="now-kicker">Time + action</p><h2>Now</h2><p>Deadlines that require action and public events happening soon.</p><p class="now-bounded-note">Build-rendered from bounded public snapshots; live sources refresh when JavaScript is available.</p></header>
     ${unavailable.length ? `<div class="note warn" role="status">Live refresh adds: ${esc(unavailable.join(", "))}.</div>` : ""}
     <div class="now-lanes">${nowLane("act-by", "Act by", "Applications, responses, comments, and objections with a published date.", actions)}${nowLane("happening-soon", "Happening soon", "Hearings, meetings, auctions, effective dates, and decisions.", surface.happening_soon.items)}</div>

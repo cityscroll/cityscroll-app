@@ -1,6 +1,7 @@
 import {
   appendTraversalHop,
   renderTraversalPath,
+  resolveTraversalBackHref,
   scopeFromTraversalHref,
   stripTraversalPath,
   traversalFromHref,
@@ -35,6 +36,13 @@ function currentNode() {
       href: currentHref(),
     };
   }
+  const notice = document.querySelector("[data-notice-id]");
+  if (notice) return {
+    kind: "notice",
+    id: notice.dataset.noticeId || null,
+    name: notice.querySelector(".rolename")?.textContent || "Notice",
+    href: currentHref(),
+  };
   const official = document.querySelector("[data-official-id]");
   if (official) return { kind: "official", id: official.dataset.officialId, name: official.querySelector(".rolename")?.textContent, href: currentHref() };
   const agency = document.querySelector("[data-agency-id]");
@@ -61,23 +69,38 @@ function destinationFromLink(link) {
 function render() {
   const state = traversalFromHref(location.href);
   const markup = renderTraversalPath(state, { currentHref: currentHref() });
-  if (!markup) return;
+  updateBackControls();
+  if (!markup) {
+    document.querySelector(".traversal-path")?.remove();
+    return;
+  }
   const existing = document.querySelector(".traversal-path");
   if (existing) {
     if (existing.outerHTML !== markup) existing.outerHTML = markup;
     return;
   }
+  const activePane = document.querySelector(".tabpane.active");
   const host = document.querySelector(["[data-near-you-root]", ".near-head"].join(" "))
-    || document.querySelector(["#entityview", ">", "div"].join(" "))
-    || document.querySelector("#browseview")
+    || activePane?.querySelector("#noticeview")
+    || activePane?.querySelector(["#entityview", ">", "div"].join(" "))
+    || activePane?.querySelector("#browseview")
     || document.querySelector("main");
   if (!host) return;
   host.insertAdjacentHTML(host.matches("main") ? "afterbegin" : "afterbegin", markup);
 }
 
+function updateBackControls() {
+  const state = traversalFromHref(location.href);
+  document.querySelectorAll("[data-traversal-back-fallback]").forEach((link) => {
+    const fallback = link.dataset.traversalBackFallback || link.getAttribute("href") || "";
+    link.setAttribute("href", resolveTraversalBackHref(location.href, fallback));
+    link.dataset.routeBack = state.hops.length ? "traversal" : "fallback";
+  });
+}
+
 function install() {
   document.addEventListener("click", (event) => {
-    const link = event.target.closest?.(["a", "[data-pivot-schema]"].join("")) || event.target.closest?.(["a", ".edge-summary-link"].join(""));
+    const link = event.target.closest?.("a[data-pivot-schema]");
     if (!link || link.dataset.pivotStatus === "held" || event.defaultPrevented
       || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
       || link.target === "_blank") return;
@@ -99,8 +122,10 @@ function install() {
   addEventListener("hashchange", render);
   addEventListener("popstate", render);
   if (typeof MutationObserver === "function") {
-    const target = document.querySelector("#entityview");
-    if (target) new MutationObserver(render).observe(target, { childList: true });
+    for (const selector of ["#entityview", "#noticeview", "#browseview"]) {
+      const target = document.querySelector(selector);
+      if (target) new MutationObserver(render).observe(target, { childList: true, subtree: true });
+    }
   }
   render();
 }

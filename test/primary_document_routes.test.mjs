@@ -16,6 +16,7 @@ import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding 
 import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
 import edgeWorker, { edgeRequestKind, isMeetingDocumentHtml, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
+import { encodeTraversalPath } from "../site/traversal_path.mjs";
 import { primaryDocumentOutputs, sharedMeetingOutputs } from "../tools/build_primary_documents.mjs";
 import { renderBrowseExams } from "../site/primary_document_view.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
@@ -588,6 +589,25 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
   assert.match(html, /class="ui-official-source-link"[^>]*>Official record<span aria-hidden="true">↗<\/span>/);
   assert.doesNotMatch(html, /ui-official-source-link act primary|class="act primary"[^>]+a856-cityrecord/);
   assert.doesNotMatch(html, /class="loading"/);
+});
+
+test("notice back control consumes a carried walk path", () => {
+  const walk = encodeTraversalPath({ hops: [{
+    source: { kind: "agency", id: "parks-and-recreation", name: "Parks and Recreation", href: "/agencies/parks-and-recreation/" },
+    relation: "hosted meeting",
+    destination: { kind: "notice", id: "20240515016", name: "Forest management", href: "/notices/20240515016" },
+  }] });
+  const html = renderEdgeNotice({
+    request_id: "20240515016",
+    short_title: "Forest management",
+    agency_name: "Parks & Recreation",
+    type_of_notice_description: "Solicitation",
+  }, "20240515016", null, null, {
+    currentHref: `https://cityscroll.org/notices/20240515016?walk=${walk}`,
+  });
+  assert.match(html, /data-route-back="traversal"/);
+  assert.match(html, /href="\/agencies\/parks-and-recreation\/"/);
+  assert.doesNotMatch(html, /href="\/browse\/"[^>]*data-route-back/);
 });
 
 test("notice response renderer preserves an attachment-only notice affordance", () => {

@@ -210,6 +210,7 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(html, /data-near-you-root/);
   assert.match(html, /data-results-count="1"/);
   assert.match(html, /data-record-id="m-queens"/);
+  assert.match(html, /data-pivot-schema="cityscroll\.edge_summary\.v1"[^>]+data-pivot-target-kind="notice"/);
   assert.match(html, /Queens curb redesign hearing/);
   assert.match(html, /Affected area/);
   assert.equal((html.match(/data-why-here-path="1"/g) || []).length, 1);

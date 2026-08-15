@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { renderNodeBack } from "../site/civic_document_chrome.mjs";
 
 import {
   appendTraversalHop,
@@ -7,6 +8,7 @@ import {
   encodeTraversalPath,
   emptyTraversalPath,
   renderTraversalPath,
+  resolveTraversalBackHref,
   scopeFromTraversalHref,
   traversalBackHref,
   traversalFromHref,
@@ -74,4 +76,26 @@ test("unsupported hops remain visible as a held state with restart", () => {
   assert.match(html, /Committee on Land Use/);
   assert.match(html, /aria-label="Restart at origin"/);
   assert.doesNotMatch(html, /not a new fact|Navigation path|Where you came from/);
+});
+
+test("carried back resolution consumes the first hop and shortens later hops", () => {
+  const first = appendTraversalHop("/notices/100", {
+    source: { kind: "agency", id: "parks", name: "Parks", href: "/agencies/parks/" },
+    relation: "hosted meeting",
+    destination: { kind: "notice", id: "100", name: "Notice 100", href: "/notices/100" },
+  });
+  assert.equal(resolveTraversalBackHref(first.href, "/browse/contracts/"), "/agencies/parks/");
+
+  const second = appendTraversalHop("/officials/7801/", {
+    source: first.state.hops[0].destination,
+    relation: "named official",
+    destination: { kind: "official", id: "7801", name: "Official One", href: "/officials/7801/" },
+  }, traversalFromHref(first.href));
+  const back = resolveTraversalBackHref(second.href, "/browse/contracts/");
+  assert.match(back, /\/notices\/100\?/);
+  assert.ok(new URL(back, "https://cityscroll.org").searchParams.has("walk"));
+  assert.equal(traversalFromHref(back).hops.length, 1);
+  const staticBack = renderNodeBack({ href: "/browse/contracts/", label: "Back to Browse", currentHref: first.href });
+  assert.match(staticBack, /data-route-back="traversal"/);
+  assert.match(staticBack, /href="\/agencies\/parks\/"/);
 });

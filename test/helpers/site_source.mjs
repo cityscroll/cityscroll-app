@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 
 export const SITE_MODULES = [
   "core.mjs",
+  "traversal.mjs",
   "money-list.mjs",
   "money-history.mjs",
   "search-share.mjs",
@@ -27,7 +28,7 @@ export const SITE_MODULES = [
 // Route-owned islands are registered here instead of the home loader. Tests read
 // them directly when their surface is in scope, keeping unrelated-route source
 // extraction aligned with the browser's wire graph.
-export const ROUTE_ISLAND_MODULES = ["alerts.mjs", "following.mjs", "map.mjs", "place-context.mjs", "traversal.mjs", "walk-entry.mjs"];
+export const ROUTE_ISLAND_MODULES = ["alerts.mjs", "following.mjs", "map.mjs", "place-context.mjs", "walk-entry.mjs"];
 
 // Legacy alert behavior tests still extract the retired hash-builder source directly.
 // It is intentionally outside SITE_MODULES so this test seam never becomes a wire claim.
