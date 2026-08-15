@@ -1,4 +1,5 @@
 import {
+  BROWSE_STUBS,
   BROWSE_FACETS,
   buildBrowseLanding,
   buildBrowseView,
@@ -159,7 +160,7 @@ export function buildNowDocument(shell, sources, options = {}) {
 export function buildBrowseLandingDocument(shell, payloads, options = {}) {
   let html = pageMetadata(shell, {
     title: "Browse NYC’s public record · CityScroll",
-    description: "Browse NYC contracts, staffing, zoning, property, rules, and meetings from linked public sources.",
+    description: "Browse NYC contracts, people and organizations, land, rules, meetings, and exams from linked public sources.",
     canonical: canonicalRoute("/browse/"),
     primaryHref: "/browse/",
     primaryContext: "browse",
@@ -168,6 +169,35 @@ export function buildBrowseLandingDocument(shell, payloads, options = {}) {
   html = addRouteStyles(html, ["browse.css", "walk-entry.css"]);
   const landing = buildBrowseLanding(payloads, options);
   return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
+}
+
+export function renderBrowseStub(config) {
+  if (!config) return "";
+  return `<div class="browse-concept-landing" data-build-rendered="browse-stub" data-browse-stub="${esc(config.tab)}">
+    <p class="now-kicker"><a href="/browse/">Browse</a> · ${esc(config.label)}</p>
+    <header class="browse-landing-head"><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p></header>
+    <section class="browse-concept-section" aria-labelledby="browse-stub-heading">
+      <h2 id="browse-stub-heading">Coming soon</h2>
+      <p>CityScroll is preparing a dedicated Exams view with application windows, eligible lists, and published outcomes.</p>
+      <p class="browse-concept-actions"><a class="browse-concept-link" href="/browse/staffing/">Browse staffing records</a></p>
+    </section>
+  </div>`;
+}
+
+export function buildBrowseStubDocument(shell, kind) {
+  const config = BROWSE_STUBS[kind];
+  if (!config) throw new Error(`Unknown Browse stub: ${kind}`);
+  let html = pageMetadata(shell, {
+    title: `${config.title} · Browse · CityScroll`,
+    description: config.description,
+    canonical: canonicalRoute(config.route),
+    primaryHref: "/browse/",
+    primaryContext: "browse",
+  });
+  html = activateTab(html, config.tab);
+  html = html.replace(`class="tabbtn" href="${config.route}"`, `class="tabbtn active" href="${config.route}"`);
+  html = addRouteStyles(html, ["browse.css"]);
+  return replaceElementContent(html, "examsview", renderBrowseStub(config));
 }
 
 export function buildBrowseDocument(shell, facet, payload, params = new URLSearchParams(), options = {}) {

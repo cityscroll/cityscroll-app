@@ -1,4 +1,4 @@
-"""The Places civic-object link preserves its document route and content on click."""
+"""The compatibility Places document route remains directly reachable."""
 
 from __future__ import annotations
 
@@ -13,8 +13,7 @@ BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch()
     page = browser.new_page()
-    page.goto(f"{BASE}/browse/", wait_until="domcontentloaded")
-    page.locator('a[href="/browse/places/"]').first.click()
+    page.goto(f"{BASE}/browse/places/", wait_until="domcontentloaded")
     page.wait_for_function("location.pathname === '/browse/places/'")
     page.wait_for_selector('[data-browse-concept="places"] #community-boards')
 
