@@ -11,9 +11,14 @@ does not own. Block that third-party script for a hermetic walk, and also skip a
 matched as a captcha widget if one slips through.
 """
 import os
+import pathlib
+import sys
 from playwright.sync_api import sync_playwright
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+ROOT = pathlib.Path(__file__).parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from ci_waits import wait_for_locator  # noqa: E402
 N_STOPS = 15
 MIN_OUTLINE_WIDTH = 2.0
 
@@ -59,8 +64,7 @@ with sync_playwright() as pw:
     page.route("**/*challenges.cloudflare.com/**", block_third_party)
     page.route("**/*turnstile*", block_third_party)
     page.goto(BASE, timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(500)
+    wait_for_locator(page.locator("a.skip"), label="skip link")
 
     # Skip link must be first-focusable and its target must exist.
     page.keyboard.press("Tab")

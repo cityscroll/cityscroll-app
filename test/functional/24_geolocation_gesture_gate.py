@@ -16,6 +16,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
+from ci_waits import wait_for_function  # noqa: E402
 
 
 class RouteAwareHandler(SimpleHTTPRequestHandler):
@@ -65,7 +66,11 @@ def main() -> None:
                 page = context.new_page()
                 install_routes(page)
                 page.goto(base + route, wait_until="domcontentloaded")
-                page.wait_for_timeout(300)
+                wait_for_function(
+                    page,
+                    "() => document.readyState !== 'loading'",
+                    label=f"{route or 'home'} document settled",
+                )
                 assert page.evaluate("window.__geoCalls") == 0, route
                 context.close()
 

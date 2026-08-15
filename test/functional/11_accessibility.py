@@ -49,6 +49,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from a11y_gate import failing_violations  # noqa: E402
+from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
@@ -58,14 +60,12 @@ AXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "axe.mi
 # client-side location.replace to About/API; axe on those races mid-navigation
 # ("Execution context was destroyed") and the destinations are already covered.
 PAGES = ["about.html", "stats.html", "api.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
-FAIL_IMPACTS = {"critical", "serious"}
 # w9-01: landmark-one-main/region were standing moderate findings (no <main>, no <footer>
 # landmark) on every page. Now that every page has both, ratchet these specific rule ids
 # into the failing set regardless of impact, so the fix stays guarded even though the rule
 # itself is only ever "moderate" impact in axe-core.
 # w10-04: heading-order (NYC Web Content Style Guide — heading levels "should not be
 # skipped") is also axe 'moderate', so without a ratchet entry it's invisible to the gate.
-RATCHET_RULES = {"landmark-one-main", "region", "heading-order"}
 # Property is a child of the Land group; Places is a compatibility document, not a top-level tab.
 TABS = ["people", "land", "rules", "meetings", "exams"]  # money is active on load
 LANGS = ["en", "es"]
@@ -108,6 +108,51 @@ def _ensure_axe(page):
         page.add_script_tag(path=AXE)
 
 
+def _wait_for_document(page):
+    wait_for_function(
+        page,
+        "() => document.readyState !== 'loading'",
+        label="document ready",
+    )
+
+
+def _wait_for_home(page):
+    _wait_for_document(page)
+    wait_for_locator(page.locator("#langSelect"), label="language selector")
+
+
+def _restore_ready_page(page, url=None, hash_value=None):
+    if url:
+        page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        _wait_for_document(page)
+        if url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
+            wait_for_app_ready(page)
+    elif hash_value is None:
+        page.reload(timeout=30000, wait_until="domcontentloaded")
+        _wait_for_document(page)
+        if page.url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
+            wait_for_app_ready(page)
+    if hash_value is not None:
+        page.evaluate("(hash) => { location.hash = hash; }", hash_value)
+        wait_for_function(
+            page,
+            "hash => location.hash === hash && document.readyState !== 'loading'",
+            arg=hash_value,
+            label=f"restore hash {hash_value}",
+        )
+        wait_for_app_ready(page)
+
+
+def _wait_for_browse_route(page, tab):
+    wait_for_function(
+        page,
+        "() => location.pathname.startsWith('/browse/') && location.hash === ''"
+        " && document.readyState !== 'loading'",
+        label=f"{tab} document route",
+    )
+    wait_for_locator(page.locator("section.tabpane.active"), label=f"{tab} browse document")
+
+
 def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, retry=True):
     """Run axe on the current page state.
 
@@ -126,21 +171,7 @@ def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, 
             step("warn", f"{state_name}: context destroyed during axe — re-goto and retry once",
                  str(err).split("\n")[0][:160])
             try:
-                if restore_url:
-                    page.goto(restore_url, timeout=30000)
-                    page.wait_for_load_state("load", timeout=20000)
-                    page.wait_for_timeout(800)
-                    if restore_hash is not None:
-                        page.evaluate("(hash) => { location.hash = hash; }", restore_hash)
-                        page.wait_for_timeout(600)
-                elif restore_hash is not None:
-                    page.evaluate("(hash) => { location.hash = hash; }", restore_hash)
-                    page.wait_for_timeout(800)
-                else:
-                    # Best-effort: reload current URL.
-                    page.reload(timeout=30000)
-                    page.wait_for_load_state("load", timeout=20000)
-                    page.wait_for_timeout(800)
+                _restore_ready_page(page, restore_url, restore_hash)
                 _ensure_axe(page)
             except Exception as restore_err:
                 step("FAIL", f"{state_name}: axe retry restore failed", str(restore_err).split("\n")[0][:160])
@@ -155,12 +186,7 @@ def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, 
         failures.append((state_name, "wcag22aa-ruleset-missing"))
         step("FAIL", f"{state_name}: wcag22aa ruleset missing",
              "vendored axe no longer exposes target-size under the WCAG 2.2 AA tag")
-    gate = [
-        v for v in result["violations"]
-        if v.get("impact") in FAIL_IMPACTS
-        or v["id"] in RATCHET_RULES
-        or v["id"] in wcag22_rules
-    ]
+    gate = failing_violations(result["violations"], wcag22_rules)
     info = [v for v in result["violations"] if v not in gate]
     for v in gate:
         nodes = "; ".join(n["target"][0] for n in v["nodes"][:3])
@@ -231,9 +257,7 @@ def run_focus_exposure(page, state_name, failures, *, retry=True):
             step("warn", f"{state_name}: context destroyed during focus probe — reload and retry once",
                  str(err).split("\n")[0][:160])
             try:
-                page.reload(timeout=30000)
-                page.wait_for_load_state("load", timeout=20000)
-                page.wait_for_timeout(800)
+                _restore_ready_page(page)
                 _ensure_axe(page)
             except Exception as restore_err:
                 step("FAIL", f"{state_name}: focus-probe restore failed", str(restore_err).split("\n")[0][:160])
@@ -258,14 +282,18 @@ def run_index_states(pw, lang, viewport, failures):
         f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(workspace_seed())}))")
     page = ctx.new_page()
     install_routes(page)
-    page.goto(BASE, timeout=30000)
-    page.wait_for_load_state("load", timeout=20000)
-    page.wait_for_timeout(1200)
+    page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
+    _wait_for_home(page)
     page.add_script_tag(path=AXE)
 
     if lang != "en":
         page.select_option("#langSelect", lang)
-        page.wait_for_timeout(800)
+        wait_for_function(
+            page,
+            "expected => document.documentElement.lang === expected",
+            arg=lang,
+            label=f"{lang} language applied",
+        )
 
     state = f"index.html [{lang}] [{viewport_name}] [load:money]"
     run_axe(page, state, failures, restore_url=BASE)
@@ -273,7 +301,7 @@ def run_index_states(pw, lang, viewport, failures):
 
     for tab in TABS:
         page.click(f'.tabbtn[data-tab="{tab}"]')
-        page.wait_for_timeout(900 if tab == "land" else 400)
+        _wait_for_browse_route(page, tab)
         # The fixture deliberately blocks the Leaflet CDN. Expose the app-owned directional
         # controls anyway so axe measures their 32px targets at both responsive widths.
         if tab == "land" and page.locator("#landpan").count():
@@ -285,9 +313,10 @@ def run_index_states(pw, lang, viewport, failures):
     # notice detail: money tab, click the first fixture row (renderList also auto-clicks
     # it on load, but an explicit click keeps this state independent of that behavior)
     page.click('.tabbtn[data-tab="money"]')
-    page.wait_for_timeout(400)
+    _wait_for_browse_route(page, "money")
+    wait_for_locator(page.locator("#list .row").first, label="money notice row")
     page.click("#list .row")
-    page.wait_for_timeout(600)
+    wait_for_locator(page.locator("#noticeview, #detail").first, label="money notice detail")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures,
         restore_url=BASE,
@@ -322,10 +351,20 @@ def run_index_states(pw, lang, viewport, failures):
         ),
     )
     project_hash = "#land/2022M0258"
-    page.goto(BASE + project_hash, timeout=30000)
-    page.wait_for_load_state("load", timeout=20000)
-    page.wait_for_selector("#project-connections", state="attached", timeout=15000)
-    page.wait_for_timeout(800)
+    with page.expect_response(
+        lambda response: "/zap-outcomes" in response.url
+        and "2022M0258" in response.url
+        and response.status == 200,
+        timeout=15000,
+    ):
+        page.goto(BASE + project_hash, wait_until="domcontentloaded", timeout=30000)
+    _wait_for_home(page)
+    wait_for_locator(page.locator("#project-connections"), state="attached", label="project connections host")
+    wait_for_function(
+        page,
+        "() => Boolean(globalThis.zapOutcomesMemGet?.('2022M0258'))",
+        label="project connections unavailable state",
+    )
     assert page.locator("#project-connections").inner_html().strip() == ""
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [land:project-connections-omitted]", failures,
@@ -356,8 +395,8 @@ def run_index_states(pw, lang, viewport, failures):
         restore_url=BASE, restore_hash="#money",
     )
     # Ensure we are back on the SPA home document before investigation.
-    page.goto(BASE, timeout=30000)
-    page.wait_for_load_state("load", timeout=20000)
+    page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
+    _wait_for_home(page)
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
     page.evaluate("location.hash = '#investigation'")
@@ -368,7 +407,12 @@ def run_index_states(pw, lang, viewport, failures):
         restore_url=BASE, restore_hash="#investigation",
     )
     page.click("#invshare")
-    page.wait_for_timeout(1200)
+    wait_for_function(
+        page,
+        "() => Boolean(document.querySelector('#invmsg')?.textContent.trim())"
+        " && !document.querySelector('#invmsg .loading')",
+        label="investigation share response",
+    )
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [investigation:share-error]", failures,
         restore_url=BASE, restore_hash="#investigation",
@@ -380,8 +424,13 @@ def run_index_states(pw, lang, viewport, failures):
         ("#task/what-will-change", "task:what-will-change"),
     ):
         page.evaluate("(hash) => { location.hash = hash; }", task_hash)
-        page.wait_for_selector(".task-first .task-card", timeout=15000)
-        page.wait_for_timeout(400)
+        wait_for_function(
+            page,
+            "hash => location.hash === hash && Boolean(document.querySelector('.task-first .task-card'))",
+            arg=task_hash,
+            timeout=15000,
+            label=f"{task_state} route",
+        )
         run_axe(
             page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures,
             restore_url=BASE, restore_hash=task_hash,
@@ -391,8 +440,7 @@ def run_index_states(pw, lang, viewport, failures):
     # Additive time-and-action entry surface. Worker fixtures intentionally leave some
     # sources unavailable so this also covers its honest partial-coverage state.
     page.evaluate("location.hash = '#now'")
-    page.wait_for_selector(".now-surface", timeout=15000)
-    page.wait_for_timeout(400)
+    wait_for_locator(page.locator(".now-surface"), timeout=15000, label="now route")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [now]", failures,
         restore_url=BASE, restore_hash="#now",
@@ -409,15 +457,8 @@ def run_subpage(pw, path, viewport, failures):
     page = browser.new_context(viewport={"width": width, "height": height}).new_page()
     install_routes(page)
     target = BASE + path
-    page.goto(target, timeout=30000)
-    page.wait_for_load_state("load", timeout=20000)
-    # Retired handoff pages use location.replace after parse.
-    # Give the redirect a beat, then axe the settled document.
-    page.wait_for_timeout(1200)
-    try:
-        page.wait_for_load_state("domcontentloaded", timeout=10000)
-    except Exception:
-        pass
+    page.goto(target, wait_until="domcontentloaded", timeout=30000)
+    _wait_for_document(page)
     page.add_script_tag(path=AXE)
     state = f"{path} [{viewport_name}] [load]"
     run_axe(page, state, failures, restore_url=target)
