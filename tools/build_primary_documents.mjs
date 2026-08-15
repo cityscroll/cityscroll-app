@@ -3,12 +3,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { BROWSE_FACETS, BROWSE_STUBS } from "../site/browse_view.mjs";
+import { BROWSE_FACETS } from "../site/browse_view.mjs";
 import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import {
   buildBrowseDocument,
   buildBrowseLandingDocument,
-  buildBrowseStubDocument,
+  buildBrowseExamsDocument,
   buildBrowseConceptDocument,
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
@@ -97,9 +97,7 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
-  for (const kind of Object.keys(BROWSE_STUBS)) {
-    outputs.push(output(`browse/${kind}`, buildBrowseStubDocument(shell, kind)));
-  }
+  outputs.push(output("browse/exams", buildBrowseExamsDocument(shell, staffingExams)));
   const conceptSources = {
     people,
     committees,
