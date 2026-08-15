@@ -28,6 +28,7 @@ import {
   mandateMatterEdgeFromRow,
   renderMandateRowGraphActions,
 } from "./mandate_graph_neighbors.mjs";
+import { renderWhyBelieveControl } from "./graph_edge_provenance.mjs";
 import {
   RULE_LIFECYCLE_STATUSES,
   compactCitationLawKeys,
@@ -870,6 +871,7 @@ export function buildProcessConformanceLookup({
   entityIntelligence = null,
   asOf = null,
   agencyIds = null,
+  agencyConformanceViews = null,
   generatedAt = null,
 } = {}) {
   const today = validDate(asOf) || new Date().toISOString().slice(0, 10);
@@ -880,9 +882,10 @@ export function buildProcessConformanceLookup({
   let mandateTotal = 0;
   let observedTotal = 0;
   let detectableTotal = 0;
+  const conformanceCategories = new Set();
 
   for (const id of ids) {
-    const view = buildAgencyConformanceView(id, {
+    const view = agencyConformanceViews?.[id] || buildAgencyConformanceView(id, {
       obligationsLookup,
       rulesDomain,
       meetingsDomain,
@@ -895,12 +898,16 @@ export function buildProcessConformanceLookup({
     });
     if (!view || view.status === "empty") continue;
     const observations = Object.create(null);
+    const edgeObservations = [];
     for (const item of view.items || []) {
       const mid = item.mandate_id || item.obligation_id;
       if (!mid) continue;
       const expected = item.observation?.expected_event || null;
-      observations[mid] = {
+      const compact = {
         status: item.observation?.status || null,
+        observation_state: item.observation?.observation_state || null,
+        category: item.category || null,
+        data_as_of: item.data_as_of || view.as_of || today,
         label: item.observation?.label || null,
         expected_event: expected
           ? {
@@ -945,6 +952,19 @@ export function buildProcessConformanceLookup({
         adjudication: "not_adjudicated",
         method: item.observation?.method || PROCESS_CONFORMANCE_METHOD,
       };
+      if (!item.conformance_id && !item.observation?.edge
+        && (!observations[mid] || compact.status === OBSERVATION_STATUS.OBSERVED)) {
+        observations[mid] = compact;
+      }
+      if (item.conformance_id || item.observation?.edge) {
+        edgeObservations.push({
+          conformance_id: item.conformance_id || `${mid}:${item.category || "other"}`,
+          mandate_id: mid,
+          edge_type: item.edge_type || item.observation?.edge?.type || null,
+          edge: item.observation?.edge || null,
+          ...compact,
+        });
+      }
     }
     byAgency[id] = {
       agency_id: view.agency_id,
@@ -952,14 +972,18 @@ export function buildProcessConformanceLookup({
       subject_ref: view.subject_ref,
       as_of: view.as_of,
       counts: view.counts,
+      categories: view.categories || [],
+      category_counts: view.category_counts || {},
       share_path: view.share_path,
       candidate_corpus_size: view.candidate_corpus.size,
       // Compact map: mandate_id → observation only (join duty text from obligations).
       observations,
+      edge_observations: edgeObservations,
     };
     mandateTotal += view.counts.total;
     observedTotal += view.counts.observed;
     detectableTotal += view.counts.detectable;
+    for (const category of view.categories || []) conformanceCategories.add(category);
   }
 
   return {
@@ -976,6 +1000,8 @@ export function buildProcessConformanceLookup({
       detectable_mandate_count: detectableTotal,
       observed_count: observedTotal,
       detectable_deliverables: [...DETECTABLE_DELIVERABLES],
+      conformance_categories: [...conformanceCategories].sort(),
+      observation_states: ["appeared", "not_yet_observed", "data_incomplete"],
     },
     by_agency: byAgency,
     seams: {
@@ -998,9 +1024,10 @@ export function renderMandatesConformanceSection(view) {
   ));
   if (!publicItems.length) return "";
   const statusLine = [
-    counts.observed > 0 ? `${counts.observed} filing${counts.observed === 1 ? "" : "s"} found` : null,
+    counts.observed > 0 ? `${counts.observed} record${counts.observed === 1 ? "" : "s"} appeared` : null,
     counts.on_track > 0 ? `${counts.on_track} deadline${counts.on_track === 1 ? "" : "s"} ahead` : null,
   ].filter(Boolean).join(" · ") || "linked";
+  const dataAsOf = validDate(view.data_as_of || view.as_of);
 
   // The full public match set remains in the scroll container below. Evidence
   // labels, source-law links, and observed filing links stay complete in the
@@ -1010,6 +1037,12 @@ export function renderMandatesConformanceSection(view) {
     ? `<ul class="node-record-list mandates-conformance-list">${items.map((item) => {
       const obs = item.observation || {};
       const status = obs.status || OBSERVATION_STATUS.ENRICHMENT_PENDING;
+      const observationState = obs.observation_state
+        || (status === OBSERVATION_STATUS.OBSERVED
+          ? "appeared"
+          : ([OBSERVATION_STATUS.ON_TRACK, OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED].includes(status)
+            ? "not_yet_observed"
+            : "data_incomplete"));
       const statusLabel = obs.label || OBSERVATION_LABELS[status] || status;
       const expected = obs.expected_event || {};
       const deadline = expected.deadline_date
@@ -1028,6 +1061,13 @@ export function renderMandatesConformanceSection(view) {
       const observedLink = observedHref
         ? ` · ${constellationLink({ href: observedHref, label: obs.observed_record.label || obs.observed_record.request_id, className: "agency-edge-link", escape: esc })}`
         : "";
+      const edgeDetails = obs.edge?.claim_id && obs.edge?.claim_inspect_href
+        ? ` · ${renderWhyBelieveControl({
+          claim_id: obs.edge.claim_id,
+          inspect_href: obs.edge.claim_inspect_href,
+          how: { warrant_class: obs.edge.warrant_class || "not_yet_classified" },
+        })}`
+        : "";
       const matter = mandateMatterEdgeFromRow(item);
       // Per-row: Source law only. Matched evidence is linked above when present.
       // Agency-wide browse chips stay in section chrome — never on every card.
@@ -1038,18 +1078,19 @@ export function renderMandatesConformanceSection(view) {
         escape: esc,
       });
       const meta = [
+        item.category && !["rules", "reports"].includes(item.category) ? expected.label : null,
         mandateDeliverableLabel(item.deliverable_type),
         observedMeta || null,
         deadline,
         mandateRecurrenceLabel(item.recurrence),
       ].filter(Boolean).map(esc).join(" · ");
       const matterId = item.matter_id || matter?.matter_id || "";
-      return `<li class="node-record mandate-conformance-item" data-mandate-id="${esc(item.mandate_id)}" data-observation-status="${esc(status)}" data-compliance-verdict="not_adjudicated"${matterId ? ` data-matter-id="${esc(matterId)}"` : ""}>
+      return `<li class="node-record mandate-conformance-item" data-mandate-id="${esc(item.mandate_id)}" data-conformance-category="${esc(item.category || "other")}" data-observation-status="${esc(status)}" data-observation-state="${esc(observationState)}"${item.edge_type || obs.edge?.type ? ` data-edge-type="${esc(item.edge_type || obs.edge?.type)}"` : ""} data-compliance-verdict="not_adjudicated"${matterId ? ` data-matter-id="${esc(matterId)}"` : ""}>
         <div class="node-record-main">
           <span class="mandate-obs-chip mandate-obs-${esc(status)}" data-observation-label="${esc(status)}">${esc(statusLabel)}</span>
           ${esc(item.duty_text)}
         </div>
-        <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}${neighbors}</span>
+        <span class="muted node-muted">${meta}${item.citation ? ` · ${esc(item.citation)}` : ""}${observedLink}${edgeDetails}${neighbors}</span>
       </li>`;
     }).join("")}</ul>`
     : `<p class="node-muted">${esc(view.note || "No mandates are linked to this agency yet.")}</p>`;
@@ -1063,6 +1104,7 @@ export function renderMandatesConformanceSection(view) {
   return `<section id="mandates-conformance" class="node-section node-card civic-object-section mandates-conformance" data-agency-constellation-category="obligations" data-process-conformance="v1" data-status="${esc(view.status)}" data-export-class="object_members" data-method="${esc(view.method || PROCESS_CONFORMANCE_METHOD)}" data-certification-basis="auto_certified_quote_verify_v1">
     <h2 id="mandates-conformance-heading">What the law calls for · what records show <span class="muted node-muted">(${esc(statusLine)})</span></h2>
     <p class="node-muted muted">${esc(copy.lead || CONFORMANCE_COPY.lead)}</p>
+    ${dataAsOf ? `<p class="node-muted muted mandates-conformance-as-of">Data as of ${esc(dataAsOf)}</p>` : ""}
     <p class="mandates-scroll-affordance" id="mandates-scroll-help">Scroll to view all mandates</p>
     <div class="mandates-conformance-scroll" role="region" tabindex="0" aria-labelledby="mandates-conformance-heading" aria-describedby="mandates-scroll-help">${list}</div>
     ${actions ? `<p class="node-inline-actions civic-object-inline-actions">${actions}</p>` : ""}
