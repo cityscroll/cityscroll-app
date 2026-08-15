@@ -13,8 +13,9 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const CI_PATH = join(ROOT, ".github", "workflows", "ci.yml");
 const PREFLIGHT_PATH = join(ROOT, "tools", "preflight-required-checks.sh");
-// Source: the three required status jobs declared in .github/workflows/ci.yml.
-const REQUIRED_JOBS = ["unit", "a11y-pr-shard", "reading-level"]; // a11y-pr is the required aggregate; shards own the hosted commands
+// Source: the required validation graph declared in .github/workflows/ci.yml. The Unit
+// aggregate owns the required status context; its matrix owns the hosted Unit commands.
+const REQUIRED_JOBS = ["unit-family", "a11y-pr-shard", "reading-level"];
 
 function jobBlock(source, job) {
   const start = source.search(new RegExp(`^  ${job}:\\s*$`, "m"));
@@ -73,7 +74,18 @@ function isValidationCommand(command) {
   if (/^(?:if|then|else|fi|set|echo|sleep|gh|git)\b/.test(command)) return false;
   if (/^(?:python3|python)\s+-m\s+(?:pip|playwright)\b/.test(command)) return false;
   if (/^python3\s+tools\/local_site_server\.py\b/.test(command)) return false;
+  if (/^node tools\/validate_presets\.mjs --write\b/.test(command)) return false;
   return /^(?:python3\s+test\/|node\s+(?:--test|tools\/)|npm\s+ci\b)/.test(command);
+}
+
+function parityKey(command) {
+  // The local preflight checks the same no-disclaimer corpus without the hosted
+  // runner's root/format flags. Keep that intentional invocation difference out
+  // of the command-identity comparison.
+  if (/^python3 test\/standards\/no_disclaimer_slop\.py\b/.test(command)) {
+    return "python3 test/standards/no_disclaimer_slop.py";
+  }
+  return command;
 }
 
 function hostedCommands(source) {
@@ -99,6 +111,10 @@ function localCommands(source) {
       command = `${command.slice(0, -1).trim()} ${lines[++index].trim()}`;
     }
     command = normalize(command.replace(/[)]+$/, ""));
+    if (command === "preset_gate") {
+      commands.push("node tools/validate_presets.mjs --check");
+      continue;
+    }
     if (isValidationCommand(command)) commands.push(command);
   }
   return commands;
@@ -106,8 +122,8 @@ function localCommands(source) {
 
 export function compareRequiredCheckParity({ ciSource, preflightSource }) {
   const hosted = hostedCommands(ciSource);
-  const local = new Set(localCommands(preflightSource));
-  const missing = hosted.filter(({ command }) => !local.has(command));
+  const local = new Set(localCommands(preflightSource).map(parityKey));
+  const missing = hosted.filter(({ command }) => !local.has(parityKey(command)));
   const duplicateHosted = hosted
     .map(({ command }) => command)
     .filter((command, index, all) => all.indexOf(command) !== index);
