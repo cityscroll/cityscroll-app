@@ -182,6 +182,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   graph deliveries, and is attached to agency categories, edge summaries, and civic-time
   projections without adding technical detail to resident copy. Focused proof lives in
   `test/agency_constellation.test.mjs`.
+- **Selective civic-time rematerialization:** `worker/src/lib/civic_time_writer.mjs` emits the
+  closed `passport_rfx_revision` change class for same-record revisions. The exact dependency
+  registry and ledger/derived-rollup recomputation live in `site/civic_time_ledger.mjs`; receipts
+  preserve affected/untouched row scope, source/materializer versions, independent clocks, and
+  canonical notice routes. Unregistered dependencies stay `unknown`. Focused proof:
+  `worker/test/civic_time_writer.test.mjs` and `test/civic_time_ledger.test.mjs`.
 
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.
   `site/index.html` owns markup/CSS, `site/app/main.mjs` owns ordered loading, and application

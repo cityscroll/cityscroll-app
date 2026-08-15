@@ -1,4 +1,8 @@
-import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
+import {
+  DERIVED_FEATURE_ROLLUP_METHOD,
+  DERIVED_FEATURE_ROLLUP_SCHEMA,
+  buildDerivedFeatureRollup,
+} from "./derived_feature_rollup.mjs";
 
 /**
  * Civic Time Ledger — as-of filter for agency constellation pages.
@@ -11,6 +15,9 @@ import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
 export const CIVIC_TIME_LEDGER_SCHEMA = "cityscroll.civic_time_ledger.v1";
 export const CIVIC_TIME_LEDGER_METHOD = "civic_time_ledger_as_of_v1";
 export const AS_OF_QUERY_KEY = "as_of";
+export const CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA = "cityscroll.civic_time_dependency_registry.v1";
+export const CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA = "cityscroll.civic_time_rematerialization_receipt.v1";
+export const CIVIC_TIME_REMATERIALIZATION_METHOD = "civic_time_selective_rematerialization_v1";
 
 /** Library axes (projection helpers). Public UI uses valid only. */
 export const TIME_AXES = Object.freeze({
@@ -604,6 +611,264 @@ export function buildNoticeBitemporalHistory(notice = {}, events = []) {
     subject_ref,
     events: retained,
     count: retained.length,
+  };
+}
+
+function civicTimeDerivedRowRef(subjectRef) {
+  return subjectRef ? `civic-time-ledger:${subjectRef}` : null;
+}
+
+/** Canonical document target when the subject has a public exact-ID route. */
+export function civicTimeSubjectHref(subjectRef) {
+  const match = /^notice:([A-Za-z0-9_-]{1,80})$/.exec(String(subjectRef || ""));
+  return match ? `/notices/${encodeURIComponent(match[1])}` : null;
+}
+
+function currentCivicTimeEvents(events) {
+  const current = new Map();
+  (Array.isArray(events) ? events : []).forEach((event, index) => {
+    if (!event?.subject_ref || !event?.source_record_ref || !event?.event_kind) return;
+    const key = `${event.subject_ref}\u0000${event.source_record_ref}\u0000${event.event_kind}`;
+    const order = event.written_at
+      || event.processed_at
+      || event.observed_at
+      || event.valid_at
+      || event.published_at
+      || String(index).padStart(12, "0");
+    const found = current.get(key);
+    if (!found || String(order) >= found.order) current.set(key, { event, order: String(order) });
+  });
+  return [...current.values()].map((entry) => entry.event);
+}
+
+function buildCivicTimeDerivedRow(subjectRef, events, { referenceDay = null } = {}) {
+  const historyEvents = (Array.isArray(events) ? events : [])
+    .filter((event) => event?.subject_ref === subjectRef);
+  const currentEvents = currentCivicTimeEvents(historyEvents);
+  const history = buildNoticeBitemporalHistory({ subject_ref: subjectRef }, historyEvents);
+  return Object.freeze({
+    schema: CIVIC_TIME_LEDGER_SCHEMA,
+    method: CIVIC_TIME_REMATERIALIZATION_METHOD,
+    derived_row_ref: civicTimeDerivedRowRef(subjectRef),
+    subject_ref: subjectRef,
+    canonical_href: civicTimeSubjectHref(subjectRef),
+    state: currentEvents.length ? "matched" : "empty",
+    history,
+    derived_feature_rollup: buildDerivedFeatureRollup(
+      currentEvents.map((event) => ({
+        ...event,
+        state: "matched",
+        relation: event.event_kind || "unknown",
+      })),
+      {
+        totalCount: currentEvents.length,
+        referenceDay,
+      },
+    ),
+  });
+}
+
+/**
+ * Build current ledger/rollup rows from the existing civic-time envelopes.
+ * This is a projection over the existing event/freshness contracts, not a new
+ * store or scheduler.
+ */
+export function buildCivicTimeDerivedRows(events = [], options = {}) {
+  const subjects = [...new Set((Array.isArray(events) ? events : [])
+    .map((event) => event?.subject_ref)
+    .filter(Boolean))].sort();
+  return Object.freeze(Object.fromEntries(subjects.map((subjectRef) => {
+    const ref = civicTimeDerivedRowRef(subjectRef);
+    return [ref, buildCivicTimeDerivedRow(subjectRef, events, options)];
+  })));
+}
+
+/**
+ * Register exact PASSPort RFx observation → civic-time derived-row edges.
+ * This is deliberately one closed change class; other source families remain
+ * unregistered until their dependency evidence is explicit.
+ */
+export function buildCivicTimeAffectedObjectRegistry(events = []) {
+  const seen = new Set();
+  const dependencies = [];
+  for (const event of Array.isArray(events) ? events : []) {
+    const sourceRecordRef = String(event?.source_record_ref || "");
+    const subjectRef = String(event?.subject_ref || "");
+    if (!sourceRecordRef.startsWith("passport-rfx:") || !subjectRef) continue;
+    const key = `${sourceRecordRef}\u0000${subjectRef}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    dependencies.push(Object.freeze({
+      change_class: "passport_rfx_revision",
+      source_record_ref: sourceRecordRef,
+      subject_ref: subjectRef,
+      derived_row_ref: civicTimeDerivedRowRef(subjectRef),
+      features: Object.freeze(["notice_bitemporal_history", "derived_feature_rollup"]),
+      canonical_href: civicTimeSubjectHref(subjectRef),
+    }));
+  }
+  dependencies.sort((left, right) => left.source_record_ref.localeCompare(right.source_record_ref)
+    || left.subject_ref.localeCompare(right.subject_ref));
+  return Object.freeze({
+    schema: CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA,
+    version: 1,
+    state: dependencies.length ? "matched" : "empty",
+    change_classes: Object.freeze(["passport_rfx_revision"]),
+    dependencies: Object.freeze(dependencies),
+  });
+}
+
+function materializerStamp(version = {}) {
+  const name = version.materializer_name == null ? null : String(version.materializer_name);
+  const number = version.materializer_version == null ? null : String(version.materializer_version);
+  if (!name && !number) return null;
+  if (!name) return number;
+  return number ? `${name}@${number}` : name;
+}
+
+function unknownRematerializationReceipt({ registry, change, materializations, rematerializedAt }) {
+  return Object.freeze({
+    schema: CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA,
+    method: CIVIC_TIME_REMATERIALIZATION_METHOD,
+    state: "unknown",
+    change_class: change?.change_class || null,
+    scope: Object.freeze({
+      source_record_ref: change?.scope?.source_record_ref || null,
+      subject_ref: change?.scope?.subject_ref || null,
+      canonical_href: civicTimeSubjectHref(change?.scope?.subject_ref),
+      affected_derived_rows: Object.freeze([]),
+      untouched_derived_rows: Object.freeze(Object.keys(materializations || {}).sort()),
+    }),
+    versions: Object.freeze({
+      dependency_registry: registry?.schema || null,
+      civic_time_ledger: CIVIC_TIME_LEDGER_SCHEMA,
+      derived_feature_rollup: DERIVED_FEATURE_ROLLUP_SCHEMA,
+      source: Object.freeze({ previous_revision: null, current_revision: null }),
+      materializer: Object.freeze({ previous: null, current: null }),
+    }),
+    clocks: Object.freeze({
+      source: Object.freeze({ valid_at: null, valid_from: null, valid_to: null, published_at: null, observed_at: null }),
+      processing: Object.freeze({ source_processed_at: null, rematerialized_at: rematerializedAt || null }),
+    }),
+    invalidation: Object.freeze({
+      state: "unknown",
+      reason: "dependency_not_registered",
+      invalidated_derived_rows: Object.freeze([]),
+    }),
+    recomputed: Object.freeze([]),
+  });
+}
+
+/**
+ * Append one revised envelope and rebuild only its registered ledger row. The
+ * return value preserves unrelated row objects and carries an inspectable
+ * dependency receipt with source, processing, and materializer versions.
+ */
+export function rematerializeCivicTimeLedger({
+  events = [],
+  materializations = {},
+  registry = null,
+  change = null,
+  changedEvent = null,
+  referenceDay = null,
+  rematerializedAt = null,
+} = {}) {
+  const scope = change?.scope || {};
+  const eventMatchesChange = changedEvent
+    && changedEvent.source_record_ref === scope.source_record_ref
+    && changedEvent.subject_ref === scope.subject_ref
+    && changedEvent.event_kind === scope.event_kind
+    && changedEvent.source_revision === change?.versions?.current?.source_revision;
+  const dependencies = (registry?.dependencies || []).filter((dependency) =>
+    dependency.change_class === change?.change_class
+      && dependency.source_record_ref === scope.source_record_ref
+      && dependency.subject_ref === scope.subject_ref);
+  if (!eventMatchesChange || dependencies.length === 0) {
+    return {
+      events,
+      materializations,
+      receipt: unknownRematerializationReceipt({ registry, change, materializations, rematerializedAt }),
+    };
+  }
+
+  const nextEvents = [...(Array.isArray(events) ? events : [])];
+  const existingIndex = nextEvents.findIndex((event) => event?.event_id === changedEvent.event_id);
+  if (existingIndex >= 0) nextEvents[existingIndex] = changedEvent;
+  else nextEvents.push(changedEvent);
+
+  const affectedRefs = [...new Set(dependencies.map((dependency) => dependency.derived_row_ref))].sort();
+  const nextMaterializations = { ...materializations };
+  const recomputed = [];
+  for (const derivedRowRef of affectedRefs) {
+    const dependency = dependencies.find((entry) => entry.derived_row_ref === derivedRowRef);
+    const previous = materializations?.[derivedRowRef] || null;
+    const current = buildCivicTimeDerivedRow(dependency.subject_ref, nextEvents, { referenceDay });
+    nextMaterializations[derivedRowRef] = current;
+    recomputed.push(Object.freeze({
+      derived_row_ref: derivedRowRef,
+      subject_ref: dependency.subject_ref,
+      canonical_href: dependency.canonical_href,
+      features: dependency.features,
+      previous_event_count: previous?.history?.count ?? null,
+      current_event_count: current.history.count,
+    }));
+  }
+
+  const untouchedRefs = Object.keys(materializations || {})
+    .filter((ref) => !affectedRefs.includes(ref))
+    .sort();
+  const sourceClocks = change.clocks?.source || {};
+  const processingClocks = change.clocks?.processing || {};
+  const receipt = Object.freeze({
+    schema: CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA,
+    method: CIVIC_TIME_REMATERIALIZATION_METHOD,
+    state: "rematerialized",
+    change_class: change.change_class,
+    scope: Object.freeze({
+      source_record_ref: scope.source_record_ref,
+      subject_ref: scope.subject_ref,
+      canonical_href: civicTimeSubjectHref(scope.subject_ref),
+      affected_derived_rows: Object.freeze(affectedRefs),
+      untouched_derived_rows: Object.freeze(untouchedRefs),
+    }),
+    versions: Object.freeze({
+      dependency_registry: registry.schema,
+      civic_time_ledger: CIVIC_TIME_LEDGER_SCHEMA,
+      derived_feature_rollup: `${DERIVED_FEATURE_ROLLUP_SCHEMA}:${DERIVED_FEATURE_ROLLUP_METHOD}`,
+      source: Object.freeze({
+        previous_revision: change.versions.previous.source_revision,
+        current_revision: change.versions.current.source_revision,
+      }),
+      materializer: Object.freeze({
+        previous: materializerStamp(change.versions.previous),
+        current: materializerStamp(change.versions.current),
+      }),
+    }),
+    clocks: Object.freeze({
+      source: Object.freeze({
+        valid_at: sourceClocks.valid_at ?? null,
+        valid_from: sourceClocks.valid_from ?? null,
+        valid_to: sourceClocks.valid_to ?? null,
+        published_at: sourceClocks.published_at ?? null,
+        observed_at: sourceClocks.observed_at ?? null,
+      }),
+      processing: Object.freeze({
+        source_processed_at: processingClocks.source_processed_at ?? null,
+        rematerialized_at: rematerializedAt || null,
+      }),
+    }),
+    invalidation: Object.freeze({
+      state: "resolved",
+      reason: "source_revision_changed",
+      invalidated_derived_rows: Object.freeze(affectedRefs),
+    }),
+    recomputed: Object.freeze(recomputed),
+  });
+
+  return {
+    events: Object.freeze(nextEvents),
+    materializations: Object.freeze(nextMaterializations),
+    receipt,
   };
 }
 

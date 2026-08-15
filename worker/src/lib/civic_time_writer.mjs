@@ -28,6 +28,10 @@ export const CIVIC_TIME_EVENT_WRITE_FLAG = "CIVIC_TIME_EVENT_WRITE";
 /** Default for docs / wrangler: off unless explicitly set to "true". */
 export const CIVIC_TIME_EVENT_WRITE_DEFAULT = "false";
 
+/** Narrow change-set seam consumed by civic-time selective rematerialization. */
+export const CIVIC_TIME_SOURCE_CHANGE_SCHEMA = "cityscroll.civic_time_source_change.v1";
+export const PASSPORT_RFX_REVISION_CHANGE_CLASS = "passport_rfx_revision";
+
 /** Required columns on civic_time_events (migration 0019 contract). */
 export const CIVIC_TIME_EVENT_COLUMNS = Object.freeze([
   "event_id",
@@ -91,6 +95,92 @@ export function clockOrNull(value) {
   if (value == null) return null;
   const s = String(value).trim();
   return s === "" ? null : s;
+}
+
+function valueOrNull(value) {
+  if (value == null) return null;
+  const text = String(value).trim();
+  return text || null;
+}
+
+function materializerVersion(event) {
+  const name = valueOrNull(event?.materializer_name);
+  const version = valueOrNull(event?.materializer_version);
+  return {
+    materializer_name: name,
+    materializer_version: version,
+  };
+}
+
+/**
+ * Describe the one supported invalidation trigger: a revised PASSPort RFx
+ * observation for the same subject and event kind. Other source families stay
+ * unclassified instead of being routed through an inferred dependency.
+ */
+export function buildCivicTimeSourceChange(previousEvent, currentEvent) {
+  if (!previousEvent || !currentEvent) return null;
+  const sourceRecordRef = valueOrNull(currentEvent.source_record_ref);
+  if (!sourceRecordRef?.startsWith("passport-rfx:")) return null;
+  if (valueOrNull(previousEvent.source_record_ref) !== sourceRecordRef) return null;
+
+  const subjectRef = valueOrNull(currentEvent.subject_ref);
+  const eventKind = valueOrNull(currentEvent.event_kind);
+  if (!subjectRef || !eventKind) return null;
+  if (valueOrNull(previousEvent.subject_ref) !== subjectRef) return null;
+  if (valueOrNull(previousEvent.event_kind) !== eventKind) return null;
+
+  const previousRevision = valueOrNull(previousEvent.source_revision);
+  const currentRevision = valueOrNull(currentEvent.source_revision);
+  if (!previousRevision || !currentRevision || previousRevision === currentRevision) return null;
+
+  return Object.freeze({
+    schema: CIVIC_TIME_SOURCE_CHANGE_SCHEMA,
+    change_class: PASSPORT_RFX_REVISION_CHANGE_CLASS,
+    scope: Object.freeze({
+      source_record_ref: sourceRecordRef,
+      subject_ref: subjectRef,
+      event_kind: eventKind,
+    }),
+    versions: Object.freeze({
+      previous: Object.freeze({
+        source_revision: previousRevision,
+        payload_hash: valueOrNull(previousEvent.payload_hash),
+        ...materializerVersion(previousEvent),
+      }),
+      current: Object.freeze({
+        source_revision: currentRevision,
+        payload_hash: valueOrNull(currentEvent.payload_hash),
+        ...materializerVersion(currentEvent),
+      }),
+    }),
+    clocks: Object.freeze({
+      source: Object.freeze({
+        valid_at: clockOrNull(currentEvent.valid_at),
+        valid_from: clockOrNull(currentEvent.valid_from),
+        valid_to: clockOrNull(currentEvent.valid_to),
+        published_at: clockOrNull(currentEvent.published_at),
+        observed_at: clockOrNull(currentEvent.observed_at),
+      }),
+      processing: Object.freeze({
+        previous_processed_at: clockOrNull(previousEvent.processed_at),
+        source_processed_at: clockOrNull(currentEvent.processed_at),
+      }),
+    }),
+  });
+}
+
+async function readPriorCivicTimeEvent(env, event) {
+  if (!String(event?.source_record_ref || "").startsWith("passport-rfx:")) return null;
+  return env.DB.prepare(
+    `SELECT event_id, subject_ref, event_kind, valid_at, valid_from, valid_to,
+            published_at, observed_at, processed_at, source_record_ref,
+            source_revision, payload_hash, materializer_name, materializer_version
+       FROM civic_time_events
+      WHERE source_record_ref = ? AND subject_ref = ? AND event_kind = ?
+      ORDER BY COALESCE(written_at, processed_at, observed_at, valid_at, published_at) DESC,
+               event_id DESC
+      LIMIT 1`,
+  ).bind(event.source_record_ref, event.subject_ref, event.event_kind).first();
 }
 
 /**
@@ -275,14 +365,14 @@ export async function ensureCivicTimeEventSchema(env) {
  * @param {object} env - Worker env (DB + optional CIVIC_TIME_EVENT_WRITE)
  * @param {object[]} events - envelopes from map*ToCivic / attachMoneyCivicEvents
  * @param {{ written_at?: string, now?: string }} [opts]
- * @returns {Promise<{ written: number, considered: number, skipped?: string, errors?: number }>}
+ * @returns {Promise<{ written: number, considered: number, skipped?: string, errors?: number, changes: object[] }>}
  */
 export async function writeCivicTimeEvents(env, events, opts = {}) {
   if (!civicTimeEventWriteEnabled(env)) {
-    return { written: 0, considered: 0, skipped: "flag-off" };
+    return { written: 0, considered: 0, skipped: "flag-off", changes: [] };
   }
   if (!env?.DB) {
-    return { written: 0, considered: 0, skipped: "no-db" };
+    return { written: 0, considered: 0, skipped: "no-db", changes: [] };
   }
 
   const list = Array.isArray(events) ? events : [];
@@ -290,11 +380,12 @@ export async function writeCivicTimeEvents(env, events, opts = {}) {
   let considered = 0;
   let written = 0;
   let errors = 0;
+  const changes = [];
 
   try {
     await ensureCivicTimeEventSchema(env);
   } catch {
-    return { written: 0, considered: list.length, skipped: "schema-error", errors: 1 };
+    return { written: 0, considered: list.length, skipped: "schema-error", errors: 1, changes };
   }
 
   for (const event of list) {
@@ -308,14 +399,23 @@ export async function writeCivicTimeEvents(env, events, opts = {}) {
     }
     if (!prepared) continue;
     try {
+      let previous = null;
+      try {
+        previous = await readPriorCivicTimeEvent(env, event);
+      } catch {
+        // Change detection is additive; a failed lookup must not suppress the
+        // established append-only civic-time write.
+      }
       await env.DB.prepare(CIVIC_TIME_EVENT_INSERT_SQL).bind(...prepared.binds).run();
       written += 1;
+      const change = buildCivicTimeSourceChange(previous, event);
+      if (change) changes.push(change);
     } catch {
       errors += 1;
     }
   }
 
-  return { written, considered, errors };
+  return { written, considered, errors, changes };
 }
 
 /**
