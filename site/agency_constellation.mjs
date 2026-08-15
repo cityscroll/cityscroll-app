@@ -115,7 +115,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const actions = renderNodeActions([
     { kind: "link", label: "Get updates about this agency's public records", href: view.follow_href, primary: true, className: "civic-object-action" },
     mandatesHref
-      ? { kind: "link", label: "Mandates expected vs evidence", href: mandatesHref, className: "civic-object-action" }
+      ? { kind: "link", label: "Legal duties and public records", href: mandatesHref, className: "civic-object-action" }
       : null,
     showMandatesPredictionsNav
       ? { kind: "link", label: "Expected mandate events", href: mandatesPredictionsHref, className: "civic-object-action" }
@@ -213,7 +213,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       <p class="node-lede">${esc(lead)}</p>
       <p class="node-pivot civic-object-pivot">
         ${constellationLink({ href: view.scope_href, label: "Open this agency in Contracts", className: "agency-pivot-link", attributes: { "data-subject-ref": view.subject_ref }, escape: esc })}
-        · ${constellationLink({ href: mandatesHref, label: "Mandates expected vs evidence", className: "agency-pivot-link", escape: esc })}
+        · ${constellationLink({ href: mandatesHref, label: "Legal duties and public records", className: "agency-pivot-link", escape: esc })}
         ${showMandatesPredictionsNav ? `· ${constellationLink({ href: mandatesPredictionsHref, label: "Expected mandate events", className: "agency-pivot-link", escape: esc })}` : ""}
         ${showMandatesReportsNav ? `· ${constellationLink({ href: mandatesReportsHref, label: reportsNavLabel, className: "agency-pivot-link", escape: esc })}` : ""}
         ${showMandatesRulesNav ? `· ${constellationLink({ href: mandatesRulesHref, label: rulesNavLabel, className: "agency-pivot-link", escape: esc })}` : ""}

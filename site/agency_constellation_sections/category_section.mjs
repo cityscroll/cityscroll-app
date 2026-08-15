@@ -64,16 +64,16 @@ export function renderAgencyCategorySection(category, source = {}) {
     const refine = category.mandate_follow_hrefs
       ? [
         category.mandate_follow_hrefs.report
-          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report mandates</a>`
+          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report duties</a>`
           : "",
         category.mandate_follow_hrefs.rulemaking
-          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rulemaking mandates</a>`
+          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rule duties</a>`
           : "",
         category.mandate_follow_hrefs.window_90
-          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch deadlines in 90 days</a>`
+          ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch upcoming deadlines</a>`
           : "",
         category.follow_href
-          ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">Watch mandates and deadlines</a>`
+          ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">Watch this agency's legal duties</a>`
           : "",
       ].filter(Boolean).join("")
       : "";
@@ -126,13 +126,13 @@ export function renderAgencyCategorySection(category, source = {}) {
   const refine = category.id === "obligations" && category.mandate_follow_hrefs
     ? [
       category.mandate_follow_hrefs.report
-        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report mandates</a>`
+        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report duties</a>`
         : "",
       category.mandate_follow_hrefs.rulemaking
-        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rulemaking mandates</a>`
+        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rule duties</a>`
         : "",
       category.mandate_follow_hrefs.window_90
-        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch deadlines in 90 days</a>`
+        ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch upcoming deadlines</a>`
         : "",
     ].filter(Boolean).join("")
     : "";
