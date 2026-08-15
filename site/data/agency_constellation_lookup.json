@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-03|2026-08-03T20:19:13.639Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+  "generated_at": "2026-08-03|2026-08-03T20:19:13.639Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-12T16:01:38.473Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -25920,7 +25920,7 @@
     "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-09T15:17:29.522Z|2026-08-11T21:12:40.677Z",
+    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
     "vendor_rollup_as_of": "2026-08-05",
     "vendor_rollup_window_start": "2025-08-05",
     "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
