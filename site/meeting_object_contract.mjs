@@ -87,6 +87,53 @@ function sourceUrl(row) {
   return optionalText(row.source_url || row.record_url || row.source?.url);
 }
 
+function safeHttps(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeCommittee(value) {
+  if (typeof value === "string") return optionalText(value) ? { name: optionalText(value), href: null } : null;
+  if (!value || typeof value !== "object") return null;
+  const name = optionalText(value.name || value.title || value.label);
+  if (!name) return null;
+  return { name, href: safeHttps(value.href || value.url) };
+}
+
+function normalizeParticipation(value) {
+  if (!value || typeof value !== "object") return null;
+  const links = (Array.isArray(value.links) ? value.links : [])
+    .map((link) => ({
+      label: optionalText(link?.label) || "Participation link",
+      url: safeHttps(link?.url || link?.href),
+    }))
+    .filter((link) => link.url)
+    .slice(0, 4);
+  return {
+    links,
+    remote_join_url: safeHttps(value.remote_join_url || value.join_url),
+    emails: [...new Set((Array.isArray(value.emails) ? value.emails : []).map(optionalText).filter(Boolean))].slice(0, 4),
+    phones: [...new Set((Array.isArray(value.phones) ? value.phones : []).map(optionalText).filter(Boolean))].slice(0, 4),
+    source_url: safeHttps(value.source_url),
+  };
+}
+
+function searchableText(row, fields = {}) {
+  return optionalText(row.search_text || [
+    fields.title,
+    fields.committee?.name || fields.committee,
+    fields.description,
+    fields.address,
+    fields.venue_name,
+    row.board_name,
+    row.agency_name || row.agency,
+  ].filter(Boolean).join(" "))?.slice(0, 6_000) || null;
+}
+
 /**
  * Return the stable id for one publisher's source key.
  *
@@ -111,6 +158,14 @@ export function normalizeMeetingObject(row = {}) {
   const sourceHref = sourceUrl(row);
   const requestId = source === "city_record" ? key?.value || null : null;
   const boardId = optionalText(row.board_id);
+  const venue = row.venue && typeof row.venue === "object" ? row.venue : null;
+  const fields = {
+    title: row.title || row.short_title,
+    committee: row.committee,
+    description: row.description || row.source_body,
+    address: venue?.address || row.address,
+    venue_name: venue?.name || row.venue_name,
+  };
 
   return {
     object_type: "meeting",
@@ -120,8 +175,15 @@ export function normalizeMeetingObject(row = {}) {
     publisher_identifier: key?.value || null,
     title: optionalText(row.title || row.short_title) || "Meeting",
     event_date: optionalText(row.event_date || row.date),
-    venue: row.venue || null,
-    participation: row.participation || null,
+    venue,
+    participation: normalizeParticipation(row.participation),
+    committee: normalizeCommittee(row.committee),
+    agency: optionalText(row.agency_name || row.agency),
+    board_name: optionalText(row.board_name),
+    description: optionalText(row.description || row.source_body),
+    search_text: searchableText(row, fields),
+    affected_area: row.affected_area || null,
+    meeting_documents: Array.isArray(row.meeting_documents) ? row.meeting_documents : [],
     source_url: sourceHref,
     source_system: source,
     meeting_origin: optionalText(row.meeting_origin) || "unknown",

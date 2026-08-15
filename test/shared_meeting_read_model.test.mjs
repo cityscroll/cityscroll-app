@@ -59,3 +59,27 @@ test("missing or old board snapshots are explicit and never become an unbounded 
   assert.equal(stale.counts.community_board, 1);
   assert.equal(stale.freshness.sources.community_board, "stale");
 });
+
+test("materializes searchable context and minutes freshness once for every source", () => {
+  const model = buildSharedMeetingReadModel({
+    cityRecordRows: [{
+      request_id: "20260814001",
+      agency_name: "Buildings",
+      short_title: "Public hearing on facade safety",
+      event_date: "2026-08-20T10:00:00.000",
+      source_system: "city_record",
+      venue: { name: "250 Broadway", address: "250 Broadway, New York, NY", mode: "in-person" },
+      participation: { links: [{ label: "Join online", url: "https://example.test/join" }], remote_join_url: "https://example.test/join" },
+      description: "Facade safety hearing",
+      meeting_documents: [{ role: "minutes", document_url: "https://example.test/minutes.pdf", meeting_date: "2026-08-10", meeting_key: "meeting:city_record:20260814001", source_receipt: { status: "ok", observed_at: "2026-08-14T12:00:00Z" }, attachment_status: "attached" }],
+    }],
+    communityBoardIndex: { generated_at: "2026-08-14T12:00:00Z", rows: [] },
+    generatedAt: "2026-08-14T12:00:00Z",
+    now: "2026-08-14T12:00:00Z",
+  });
+  const row = model.rows[0];
+  assert.match(row.search_text, /Facade safety hearing/);
+  assert.match(row.search_text, /250 Broadway/);
+  assert.deepEqual(row.minutes_freshness, { status: "published", latest_date: "2026-08-10", checked_at: "2026-08-14T12:00:00Z" });
+  assert.equal(row.participation.remote_join_url, "https://example.test/join");
+});
