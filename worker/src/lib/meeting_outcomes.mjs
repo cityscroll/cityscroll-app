@@ -95,6 +95,25 @@ function toLocaleDate(value) {
   return iso ? iso.slice(0, 10) : null;
 }
 
+function legistarEventStart(raw = {}) {
+  const dateValue = readFirst(raw, ["EventDate", "StartDate", "Date"]);
+  const timeValue = readFirst(raw, ["EventTime"]);
+  const day = toLocaleDate(dateValue);
+  if (day && timeValue) {
+    const clock = String(timeValue).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+    if (clock) {
+      let hour = Number(clock[1]);
+      const suffix = String(clock[4] || "").toUpperCase();
+      if (suffix === "AM" && hour === 12) hour = 0;
+      if (suffix === "PM" && hour < 12) hour += 12;
+      if (hour <= 23) {
+        return `${day}T${String(hour).padStart(2, "0")}:${clock[2]}:${clock[3] || "00"}`;
+      }
+    }
+  }
+  return toDateIso(dateValue || timeValue);
+}
+
 function normalizeText(value) {
   if (value == null) return "";
   return String(value).replace(/\s+/g, " ").trim();
@@ -153,7 +172,7 @@ function normalizeCouncilEvent(raw = {}) {
     title: bodyName || normalizeText(readFirst(raw, ["EventTitle", "Title", "Name"])),
     body_name: bodyName,
     event_url: readFirst(raw, ["EventInSiteURL", "EventUrl", "EventURL", "url", "link"]) || null,
-    start_time: toDateIso(readFirst(raw, ["EventDate", "StartDate", "EventTime"])),
+    start_time: legistarEventStart(raw),
     event_date: toLocaleDate(readFirst(raw, ["EventDate", "StartDate", "Date"])),
     agenda_file: readFirst(raw, ["EventAgendaFile"]) || null,
     minutes_file: readFirst(raw, ["EventMinutesFile"]) || null,

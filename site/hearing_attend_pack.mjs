@@ -37,6 +37,11 @@ function stamp(parts) {
   return `${parts.year}${pad(parts.month)}${pad(parts.day)}T${pad(parts.hour)}${pad(parts.minute)}${pad(parts.second)}`;
 }
 
+function wallTimeValue(parts) {
+  if (!parts || parts.dateOnly) return null;
+  return Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+}
+
 function fold(line) {
   const encoder = new TextEncoder();
   const chunks = [];
@@ -94,8 +99,10 @@ export function meetingCalendarICS(record, options = {}) {
     const end = new Date(Date.UTC(start.year, start.month - 1, start.day + 1));
     lines.push(`DTEND;VALUE=DATE:${end.getUTCFullYear()}${pad(end.getUTCMonth() + 1)}${pad(end.getUTCDate())}`);
   } else {
+    const suppliedEnd = localParts(r.event_end || r.end_at);
     const value = new Date(Date.UTC(start.year, start.month - 1, start.day, start.hour + 1, start.minute, start.second));
-    const end = {year: value.getUTCFullYear(), month: value.getUTCMonth() + 1, day: value.getUTCDate(), hour: value.getUTCHours(), minute: value.getUTCMinutes(), second: value.getUTCSeconds()};
+    const fallbackEnd = {year: value.getUTCFullYear(), month: value.getUTCMonth() + 1, day: value.getUTCDate(), hour: value.getUTCHours(), minute: value.getUTCMinutes(), second: value.getUTCSeconds()};
+    const end = wallTimeValue(suppliedEnd) > wallTimeValue(start) ? suppliedEnd : fallbackEnd;
     lines.push(`DTSTART;TZID=America/New_York:${stamp(start)}`, `DTEND;TZID=America/New_York:${stamp(end)}`);
   }
   lines.push(`SUMMARY:${esc(title)}`, ...(calendarLocation ? [`LOCATION:${esc(calendarLocation)}`] : []),
