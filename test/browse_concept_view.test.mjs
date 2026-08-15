@@ -99,6 +99,18 @@ test("People + organizations keeps concept and unified-list headings unique", ()
   assert.equal(headings.filter((heading) => heading === "People and organizations").length, 1);
 });
 
+test("People + organizations keeps the full typed model searchable behind a first page", () => {
+  const people = { retrieved_at: "2026-08-11T19:21:19.284Z", by_person_id: Object.fromEntries(
+    Array.from({ length: 20 }, (_, index) => [String(index), { person_id: String(index), person_name: `Person ${index}` }]),
+  ) };
+  const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", { people }));
+  assert.equal((html.match(/data-people-organization-row/g) || []).length, 16);
+  assert.match(html, /data-people-organizations-type/);
+  assert.match(html, /data-people-organizations-model/);
+  assert.match(html, /Updated 2026-08-11T19:21:19\.284Z/);
+  assert.match(html, /Person 19/);
+});
+
 test("Places delegates board place discovery to Near you without a duplicate board list", () => {
   const html = renderBrowseConceptLanding(buildBrowseConceptLanding("places", { places: geography }));
   assert.match(html, /Open Near you for place discovery/);
