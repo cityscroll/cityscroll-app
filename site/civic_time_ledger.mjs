@@ -587,28 +587,22 @@ export function buildNoticeBitemporalHistory(notice = {}, events = []) {
 }
 
 function noticeClockText(value) {
-  return value == null ? "Not recorded" : String(value);
+  return value == null ? "" : String(value);
 }
 
-/** Render one notice's retained history with VALID and SYSTEM clocks side by side. */
+/** Render one notice's retained history with valid and recorded clocks side by side. */
 export function renderNoticeBitemporalHistory({ notice = {}, events = [], state = "ok" } = {}) {
   const history = buildNoticeBitemporalHistory(notice, events);
-  const unavailable = state === "unavailable";
+  if (!history.events.length) return "";
   const entries = history.events.map((event) => `<li class="civic-time-event" data-civic-time-event="${escCivicTime(event.event_id || "")}">
     <div class="civic-time-event-title"><strong>${escCivicTime(event.label)}</strong>${event.status ? ` <span class="civic-time-status">${escCivicTime(event.status)}</span>` : ""}</div>
     <dl class="civic-time-clocks">
-      <div><dt>VALID</dt><dd data-civic-time-valid="${escCivicTime(event.valid_text || "")}">${escCivicTime(noticeClockText(event.valid_text))}</dd></div>
-      <div><dt>SYSTEM</dt><dd data-civic-time-system="${escCivicTime(event.clocks.system_at || "")}">${escCivicTime(noticeClockText(event.clocks.system_at))}</dd></div>
+      <div><dt>Valid time</dt><dd data-civic-time-valid="${escCivicTime(event.valid_text || "")}">${escCivicTime(noticeClockText(event.valid_text))}</dd></div>
+      <div><dt>Recorded time</dt><dd data-civic-time-system="${escCivicTime(event.clocks.system_at || "")}">${escCivicTime(noticeClockText(event.clocks.system_at))}</dd></div>
     </dl>
   </li>`).join("");
-  const message = unavailable
-    ? "History is not available right now."
-    : history.events.length
-      ? ""
-      : "No retained ledger events for this notice.";
-  return `<section class="civic-object-section node-card civic-time-history" data-civic-time-history="1" data-history-state="${escCivicTime(unavailable ? "unavailable" : history.events.length ? "ok" : "empty")}" aria-labelledby="civic-time-history-heading">
+  return `<section class="civic-object-section node-card civic-time-history" data-civic-time-history="1" data-history-state="ok" aria-labelledby="civic-time-history-heading">
     <h2 id="civic-time-history-heading">Bitemporal history</h2>
-    <p class="civic-time-history-lede">VALID is when the civic fact was true. SYSTEM is when the event was recorded in the ledger. A missing clock is shown as Not recorded.</p>
-    ${message ? `<p class="civic-time-history-empty" data-civic-time-empty="1">${escCivicTime(message)}</p>` : `<ol class="civic-time-event-list">${entries}</ol>`}
+    <ol class="civic-time-event-list">${entries}</ol>
   </section>`;
 }
