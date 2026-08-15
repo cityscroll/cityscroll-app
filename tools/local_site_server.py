@@ -4,13 +4,19 @@
 from __future__ import annotations
 
 import argparse
+import errno
 import functools
 import os
 import threading
+import time
 import urllib.error
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+
+
+READINESS_TIMEOUT_SECONDS = 30.0
+READINESS_RETRY_SECONDS = 0.1
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -105,19 +111,52 @@ def publish_ready(path: Path, base: str) -> None:
     temporary.replace(path)
 
 
-def probe_base(base: str) -> None:
-    """Verify that the built artifact's index is being served over HTTP."""
+def probe_base(
+    base: str,
+    timeout_seconds: float = READINESS_TIMEOUT_SECONDS,
+) -> None:
+    """Verify that the built artifact's index is being served over HTTP.
+
+    Binding the listener and entering ``serve_forever`` happen on a background
+    thread, so the first request can legitimately see ``ECONNREFUSED``. Keep
+    probing until the listener is serving or the bounded startup window ends.
+    A 404 is different: the listener is serving, but the artifact is invalid.
+    """
     readiness_url = f"{base}index.html"
-    try:
-        with urllib.request.urlopen(readiness_url, timeout=5) as response:
-            if response.status != 200:
+    deadline = time.monotonic() + timeout_seconds
+    last_error = "no response"
+    while True:
+        try:
+            with urllib.request.urlopen(readiness_url, timeout=5) as response:
+                if 200 <= response.status < 300:
+                    response.read()
+                    return
                 raise RuntimeError(
                     f"local site readiness probe returned HTTP {response.status}: {readiness_url}"
                 )
-    except urllib.error.HTTPError as error:
-        raise RuntimeError(
-            f"local site readiness probe returned HTTP {error.code}: {readiness_url}"
-        ) from error
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                raise RuntimeError(
+                    "local site readiness probe returned HTTP 404 "
+                    f"(server is serving, but the artifact path is missing): {readiness_url}"
+                ) from error
+            last_error = f"HTTP {error.code} from {readiness_url}"
+        except urllib.error.URLError as error:
+            reason = error.reason
+            if getattr(reason, "errno", None) == errno.ECONNREFUSED:
+                last_error = f"connection refused while starting server: {readiness_url}"
+            else:
+                last_error = f"connection error for {readiness_url}: {reason}"
+        except TimeoutError:
+            last_error = f"connection timed out while probing: {readiness_url}"
+
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise RuntimeError(
+                f"local site readiness probe timed out after {timeout_seconds:.1f}s: "
+                f"{readiness_url}; last error: {last_error}"
+            )
+        time.sleep(min(READINESS_RETRY_SECONDS, remaining))
 
 
 def main() -> int:
