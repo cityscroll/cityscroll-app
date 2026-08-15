@@ -217,6 +217,10 @@ function renderPersonRowLink(row) {
   return link(row.href, row.label, "people-org-row-link");
 }
 
+function peopleOrganizationRowHeading(row) {
+  return `${row.label} · ${rowKindLabel(row.kind)} · ${row.id}`;
+}
+
 function renderCommitteeMembers(row) {
   if (!row.members?.length) return "";
   return `<p class="people-org-row-related"><span>Exact-person members:</span> ${row.members.map((member) => {
@@ -248,7 +252,7 @@ function renderPeopleOrganizationRow(row) {
     : "";
   return `<li class="people-org-row" id="people-row-${esc(row.id.replace(/[^A-Za-z0-9_-]/g, "-"))}"${boardAttributes} data-people-organization-row data-row-kind="${esc(row.kind)}" data-relation-state="${esc(row.relation_state)}" data-search-text="${esc(row.search_text)}">
     <div class="people-org-row-top"><span class="people-org-kind">${esc(rowKindLabel(row.kind))}</span><span class="people-org-state people-org-state-${esc(row.relation_state)}">${esc(relationStateLabel(row.relation_state))}</span></div>
-    <h3>${renderPersonRowLink(row)}</h3>
+    <h3>${renderPersonRowLink({ ...row, label: peopleOrganizationRowHeading(row) })}</h3>
     <p class="people-org-row-detail">${esc(row.detail)}${row.agency ? ` · ${esc(row.agency)}` : ""}${row.date ? ` · ${esc(row.date)}` : ""}</p>
     ${notice}${boardStatus}${row.kind === "committee" ? renderCommitteeMembers(row) : ""}${row.kind === "community-board" ? renderBoardRelations(row) : ""}${place}
   </li>`;
