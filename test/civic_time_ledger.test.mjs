@@ -10,6 +10,7 @@ import {
   asOfFilterCanNarrow,
   asOfHref,
   buildLedgerSummary,
+  buildNoticeBitemporalHistory,
   buildNoticeTemporalFacts,
   classifyItemTemporal,
   dayStamp,
@@ -18,6 +19,7 @@ import {
   parseAsOfFromSearch,
   projectAgencyConstellationAsOf,
   renderCivicTimeLedgerPanel,
+  renderNoticeBitemporalHistory,
 } from "../site/civic_time_ledger.mjs";
 import {
   buildAgencyConstellationView,
@@ -179,6 +181,46 @@ test("notice temporal facts prefer valid/publication clocks", () => {
   const system = noticeVisibleAsOf(facts, "2026-12-01", { axis: "system" });
   assert.equal(system.known, false);
   assert.equal(system.basis, "system_time_not_retained");
+});
+
+test("notice bitemporal history keeps VALID and SYSTEM clocks independent", () => {
+  const history = buildNoticeBitemporalHistory(
+    { request_id: "20240723114" },
+    [
+      {
+        event_id: "cte-published",
+        subject_ref: "notice:20240723114",
+        event_kind: "procurement.notice_published",
+        valid_at: null,
+        published_at: "2024-07-23T00:00:00.000Z",
+        processed_at: "2026-08-01T12:00:00.000Z",
+      },
+      {
+        event_id: "cte-due",
+        subject_ref: "notice:20240723114",
+        event_kind: "procurement.solicitation_due",
+        valid_at: "2024-08-20",
+        published_at: null,
+        processed_at: null,
+      },
+      { event_id: "other", subject_ref: "notice:other", valid_at: "2024-01-01" },
+    ],
+  );
+  assert.equal(history.count, 2);
+  const published = history.events.find((event) => event.event_id === "cte-published");
+  const due = history.events.find((event) => event.event_id === "cte-due");
+  assert.equal(published.clocks.valid_at, null);
+  assert.equal(published.clocks.system_at, "2026-08-01T12:00:00.000Z");
+  assert.equal(due.clocks.valid_at, "2024-08-20");
+  assert.equal(due.clocks.system_at, null);
+
+  const html = renderNoticeBitemporalHistory({ notice: { request_id: "20240723114" }, events: history.events });
+  assert.match(html, /Bitemporal history/);
+  assert.match(html, /VALID is when the civic fact was true/);
+  assert.match(html, /Notice published/);
+  assert.match(html, /Responses due/);
+  assert.match(html, /Not recorded/);
+  assert.doesNotMatch(html, /2024-07-23.*SYSTEM/);
 });
 
 test("agency document embeds compact ledger when useful; asOf pre-filters", () => {

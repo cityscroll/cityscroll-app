@@ -93,6 +93,49 @@ def install_notice_routes(
         lambda route: fulfill_json(route, [notice]),
     )
     page.route(
+        "https://api.cityscroll.org/notice*",
+        lambda route: fulfill_json(
+            route,
+            {
+                "ok": True,
+                "row": notice,
+                "civic_time": {
+                    "schema": "cityscroll.civic_time_notice_history.v1",
+                    "subject_ref": f"notice:{notice['request_id']}",
+                    "state": "ok",
+                    "events": [
+                        {
+                            "event_id": "fixture-published",
+                            "subject_ref": f"notice:{notice['request_id']}",
+                            "event_kind": "procurement.notice_published",
+                            "valid_at": None,
+                            "valid_from": None,
+                            "valid_to": None,
+                            "published_at": notice.get("start_date"),
+                            "observed_at": None,
+                            "processed_at": "2026-08-10T12:00:00.000Z",
+                            "written_at": None,
+                            "status": "occurred",
+                        },
+                        {
+                            "event_id": "fixture-due",
+                            "subject_ref": f"notice:{notice['request_id']}",
+                            "event_kind": "procurement.solicitation_due",
+                            "valid_at": notice.get("due_date"),
+                            "valid_from": None,
+                            "valid_to": None,
+                            "published_at": None,
+                            "observed_at": None,
+                            "processed_at": None,
+                            "written_at": None,
+                            "status": "occurred",
+                        },
+                    ],
+                },
+            },
+        ),
+    )
+    page.route(
         "**/attachment-metadata*",
         lambda route: fulfill_json(route, {"request_id": NOTICE_ID, "attachments": []}),
     )
@@ -136,6 +179,15 @@ def context_with_clipboard(browser: Browser, *, saved_language: str | None = Non
 
 def assert_document_feature_parity(page: Page) -> None:
     page.locator("#nactions .next-action-rail").wait_for(state="visible")
+    history = page.locator("#noticeview [data-civic-time-history='1']")
+    history.wait_for(state="visible", timeout=10000)
+    assert history.locator("[data-civic-time-event]").count() == 2
+    history_text = history.inner_text()
+    assert "bitemporal history" in history_text.lower()
+    assert "VALID" in history_text and "SYSTEM" in history_text
+    assert history.locator("[data-civic-time-valid='']").count() == 1
+    assert history.locator("[data-civic-time-system='']").count() == 1
+    assert history_text.count("Not recorded") >= 2
     watch = page.locator('#nactions a[href*="/following"]').first
     assert watch.is_visible(), "document route lost the notice watch control"
 
@@ -315,6 +367,8 @@ def main() -> None:
 
         assert_document_feature_parity(direct)
         assert_connected_mandate_card(direct)
+        if os.environ.get("CROL_AFTER_SCREENSHOT"):
+            direct.screenshot(path=os.environ["CROL_AFTER_SCREENSHOT"], full_page=True)
         direct.locator("#ncopy").click()
         copied = direct.evaluate("window.__copiedNoticeUrl")
         copied_url = urlsplit(copied)
