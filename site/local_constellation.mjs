@@ -185,7 +185,13 @@ export function buildLocalConstellation(input = {}, { limit = LOCAL_CONSTELLATIO
   });
 }
 
-export function buildOfficialLocalConstellation(officialView, committeeRows, id, name) {
+export function buildOfficialLocalConstellation(officialView, committeeInput, id, name) {
+  const committeeRows = Array.isArray(committeeInput)
+    ? committeeInput
+    : (Array.isArray(committeeInput?.rows) ? committeeInput.rows : []);
+  const committeeState = Array.isArray(committeeInput)
+    ? null
+    : committeeInput?.graph_state || null;
   return buildLocalConstellation({
     kind: "official",
     subject_ref: officialView?.official?.ref || `entity:official:${id}`,
@@ -193,6 +199,7 @@ export function buildOfficialLocalConstellation(officialView, committeeRows, id,
     subject_name: name,
     source: null,
     provenance: { method: "official_connections_v1" },
+    availability_state: committeeState,
     neighbors: [
       ...(officialView?.events || []).map((event) => ({
         edge_type: "votes_on",
@@ -205,8 +212,8 @@ export function buildOfficialLocalConstellation(officialView, committeeRows, id,
         provenance: null,
       })),
       ...(Array.isArray(committeeRows) ? committeeRows : []).map((row) => ({
-        edge_type: "committee_membership",
-        relation_label: "committee membership",
+        edge_type: row.edge_type || "committee_membership",
+        relation_label: row.relation_label || (row.edge_type === "member_of" ? "member of" : "committee membership"),
         target_kind: "committee",
         target_id: row.committee_id || row.id || null,
         target_name: row.committee || null,
