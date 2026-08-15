@@ -70,6 +70,30 @@ export function committeeReverseEdgesForId(graph, personId) {
     .filter((edge) => edge?.type === "has_member" && edge.to === `official:${id}`);
 }
 
+/** Turn only the canonical graph's exact forward edges into profile rows. */
+export function committeeRowsFromGraph(graph, committeeView = {}) {
+  if (committeeView?.state !== "matched") return [];
+  const nodes = new Map((Array.isArray(graph?.nodes) ? graph.nodes : [])
+    .filter((node) => node?.id)
+    .map((node) => [node.id, node]));
+  return (Array.isArray(committeeView.edges) ? committeeView.edges : []).map((edge) => {
+    const committeeId = clean(edge?.to).replace(/^committee:/, "");
+    const node = nodes.get(`committee:${committeeId}`);
+    return {
+      member_id: clean(edge?.from).replace(/^official:/, ""),
+      committee_id: committeeId || null,
+      committee: clean(node?.name) || committeeId || null,
+      appointment_type: edge?.is_chair ? "Chair" : (clean(edge?.title) || "Membership"),
+      start_date: clean(edge?.valid_from) || null,
+      end_date: clean(edge?.valid_to) || null,
+      href: "/browse/people/#committees",
+      edge_type: "member_of",
+      relation_label: clean(edge?.relation_label) || "member of",
+      provenance: edge?.provenance || null,
+    };
+  });
+}
+
 export function renderCommitteeMembershipsHTML(bag, { escapeHtml, translate } = {}) {
   const esc = typeof escapeHtml === "function" ? escapeHtml : (v) => String(v ?? "");
   const rows = Array.isArray(bag?.rows) ? bag.rows : [];
@@ -87,7 +111,7 @@ export function renderCommitteeMembershipsHTML(bag, { escapeHtml, translate } = 
         ? `<span class="committee-membership-reverse-unavailable">Reverse coverage unavailable.</span>`
         : "";
       return `<li><strong>${renderEntityPivotLink({
-      relation_label: "committee membership",
+      relation_label: row.relation_label || "committee membership",
       target_kind: "committee",
       target_id: row.committee_id || row.id || null,
       target_name: row.committee,
