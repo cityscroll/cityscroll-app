@@ -6,6 +6,10 @@ import {
   buildPeopleOrganizationsReadModel,
   relationStateLabel,
 } from "./people_organizations_read_model.mjs";
+import {
+  browseListState,
+  PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
+} from "./browse_list_contract.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
@@ -237,7 +241,7 @@ function renderBoardRelations(row) {
     `<span>${esc(relation.label)} · ${esc(relationStateLabel(relation.state))}</span>`).join("")}</div>`;
 }
 
-function renderPeopleOrganizationRow(row) {
+export function renderPeopleOrganizationRow(row) {
   const place = row.kind === "community-board" && row.place_href
     ? `<a class="people-org-place-link" href="${esc(row.place_href)}">Discover this place in Near you</a>`
     : "";
@@ -260,21 +264,41 @@ function renderPeopleOrganizationRow(row) {
 
 function renderPeopleOrganizationsList(model) {
   const rows = Array.isArray(model?.rows) ? model.rows : [];
+  const config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG;
+  const state = browseListState(model, new URLSearchParams(), config);
+  const initialRows = rows.slice(0, config.initialPageSize);
   const countSummary = Object.entries(model?.counts || {})
     .filter(([, count]) => Number(count) > 0)
     .map(([kind, count]) => rowKindCountLabel(kind, count))
     .join(" · ");
+  const facetLabels = {
+    official: "Officials",
+    "exact-person-appointment": "Exact-person appointments",
+    "notice-only-hire": "Notice-only hires",
+    agency: "Agencies",
+    vendor: "Vendors",
+    committee: "Committees",
+    "community-board": "Community boards",
+  };
+  const modelJson = JSON.stringify(model).replaceAll("<", "\\u003c");
   return `<section class="browse-concept-section people-organizations-unified" id="people-organizations-list" aria-labelledby="people-organizations-list-heading" data-people-organizations>
     <p class="browse-concept-count">${esc(rows.length.toLocaleString("en-US"))} typed rows</p>
     <h2 id="people-organizations-list-heading">People and organizations</h2>
     <p class="browse-concept-description">Search one materialized list. Every row names its record type; person links use exact identifiers, while notice-only hires remain visibly unjoined.</p>
+    <p class="people-org-freshness" data-people-organizations-freshness>${state.generatedAt ? `Updated ${esc(state.generatedAt)}` : "Update date unavailable"}</p>
     <form class="people-org-search" role="search" data-people-organizations-search-form>
       <label for="people-organizations-search">Search people and organizations</label>
       <input id="people-organizations-search" type="search" autocomplete="off" placeholder="Search a name, agency, board, committee, or notice" data-people-organizations-search>
-      <p class="people-org-search-summary" data-people-organizations-search-summary>${esc(countSummary)}</p>
+      <label for="people-organizations-type">Record type</label>
+      <select id="people-organizations-type" data-people-organizations-type>
+        <option value="">All record types</option>
+        ${config.facetValues.map((kind) => `<option value="${esc(kind)}">${esc(facetLabels[kind] || kind)}</option>`).join("")}
+      </select>
+      <p class="people-org-search-summary" aria-live="polite" data-people-organizations-search-summary>${esc(countSummary)}</p>
     </form>
-    <ul class="people-org-row-list" data-people-organizations-list>${rows.map(renderPeopleOrganizationRow).join("")}</ul>
+    <ul class="people-org-row-list" aria-live="polite" data-people-organizations-list data-browse-list-status="${esc(state.status)}">${initialRows.map(renderPeopleOrganizationRow).join("")}</ul>
     <p class="empty people-org-no-results" data-people-organizations-no-results hidden>No matching people or organizations in this published snapshot.</p>
+    <script type="application/json" data-people-organizations-model>${modelJson}</script>
   </section>`;
 }
 
