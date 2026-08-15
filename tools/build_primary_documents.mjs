@@ -13,6 +13,7 @@ import {
   buildNowDocument,
 } from "../site/primary_document_view.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
+import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -25,21 +26,55 @@ function output(path, content) {
   return [join(SITE, path, "index.html"), content];
 }
 
+function cityRecordMeetingRows() {
+  const materialization = json("/data/meeting_notice_materialization.json");
+  const rows = eligibleCityRecordMeetings(materialization.rows);
+  if (!rows.length || rows.length !== materialization.row_count) {
+    throw new Error("City Record meeting notice materialization is empty or predicate coverage drifted");
+  }
+  return { materialization, rows };
+}
+
+function assertMeetingCoverage(readModel, cityRows) {
+  const expectedIds = new Set(cityRows.map((row) => `meeting:city_record:${row.request_id}`).filter((id) => !id.endsWith(":undefined")));
+  if (readModel.counts.city_record !== expectedIds.size) {
+    throw new Error(`shared meeting model materialized ${readModel.counts.city_record}/${expectedIds.size} eligible City Record meetings`);
+  }
+  for (const requestId of ["20260810053", "20260713006"]) {
+    const row = readModel.rows.find((candidate) => candidate.meeting_id === `meeting:city_record:${requestId}`);
+    if (!row) throw new Error(`required City Record meeting ${requestId} is missing from the shared read model`);
+    const hasNoticeBody = [row.additional_description_1, row.additional_description_2, row.other_info_1, row.other_info_2, row.other_info_3]
+      .some((value) => String(value || "").trim());
+    const hasRichSignal = [row.street_address_1, row.building_name, row.contact_name, row.contact_phone, row.email, row.document_links, row.source_links]
+      .some((value) => Array.isArray(value) ? value.length > 0 : String(value || "").trim());
+    if (!hasNoticeBody || !hasRichSignal) {
+      throw new Error(`required City Record meeting ${requestId} lacks materialized notice richness`);
+    }
+  }
+}
+
 export function primaryDocumentOutputs() {
   const shell = readFileSync(join(SITE, "index.html"), "utf8");
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
+  // Keep previously published meeting identities while the current, rich
+  // notice materialization supplies the complete eligible window. The rich
+  // rows come first so an exact id is upgraded rather than duplicated.
+  const cityRecordRows = [...cityRecordMeetings, ...(payloads.meetings.rows || [])];
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
   const sharedMeetings = buildSharedMeetingReadModel({
-    cityRecordRows: payloads.meetings.rows,
+    cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
-    generatedAt: payloads.meetings.retrieved_at,
-    now: communityBoardMeetings.generated_at || payloads.meetings.retrieved_at,
+    generatedAt: materialization.generated_at,
+    now: communityBoardMeetings.generated_at || materialization.generated_at,
   });
+  assertMeetingCoverage(sharedMeetings, cityRecordRows);
   payloads.meetings = {
     ...payloads.meetings,
     ...sharedMeetings,
+    rows: sharedMeetings.rows,
     row_count: sharedMeetings.rows.length,
-    retrieved_at: sharedMeetings.generated_at || payloads.meetings.retrieved_at,
+    retrieved_at: sharedMeetings.generated_at || materialization.generated_at,
   };
   const nowSources = {
     money: { ...payloads.contracts, status: "available" },
@@ -55,7 +90,7 @@ export function primaryDocumentOutputs() {
   const landProjects = json("/data/zap_projects_warehouse_lookup.json");
   const property = json("/data/property_domain_observations.json");
   const obligations = json("/data/agency_obligations_lookup.json");
-  const meetings = json("/data/meetings_domain_observations.json");
+  const meetings = payloads.meetings;
   const outcomes = json("/data/meeting_outcomes_snapshot.json");
   const people = json("/data/person_hub_lookup.json");
   const committees = json("/data/committee_graph_lookup.json");
@@ -118,13 +153,16 @@ export function primaryDocumentOutputs() {
 
 function buildSharedMeetingArtifacts() {
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
+  const cityRecordRows = [...cityRecordMeetings, ...(payloads.meetings.rows || [])];
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
   const sharedMeetings = buildSharedMeetingReadModel({
-    cityRecordRows: payloads.meetings.rows,
+    cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
-    generatedAt: payloads.meetings.retrieved_at,
-    now: communityBoardMeetings.generated_at || payloads.meetings.retrieved_at,
+    generatedAt: materialization.generated_at,
+    now: communityBoardMeetings.generated_at || materialization.generated_at,
   });
+  assertMeetingCoverage(sharedMeetings, cityRecordRows);
   return { sharedMeetings };
 }
 

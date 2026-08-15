@@ -94,6 +94,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   the same bounded board snapshot, while the SPA falls back to the shared artifact rather than
   appending a second board fetch. Verify with
   `test/shared_meeting_read_model.test.mjs` and the focused meeting contract tests.
+- **City Record meeting notice materialization:** `site/data/meeting_notice_materialization.json`
+  is the build-time rich notice input for current dated meetings. Its explicit predicate lives in
+  `site/city_record_meeting.mjs`, and `tools/build_meeting_notice_materialization.mjs` refreshes it
+  from the City Record snapshot plus validated RequestDetail source links. The meeting route must
+  resolve exact IDs from the shared artifact only; missing IDs remain honest 404s.
 
 ## PR and CI preflight
 
