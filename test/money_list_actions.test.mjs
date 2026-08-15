@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import actionRegistry from "../site/action_registry.js";
 import { noticeDisplayTitle } from "../site/display_title.mjs";
+import { solicitationResponseContextReady } from "../site/solicitation_response_context.mjs";
 
 const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
 const openSnapshot = JSON.parse(readFileSync(new URL("./fixtures/money_action_field_cases.json", import.meta.url), "utf8"));
@@ -25,7 +26,7 @@ function extractFunction(name) {
 }
 
 const { moneyListPrimaryAction, moneyListPrimaryActionHTML } = new Function(
-  "t", "todayISO", "cleanText", "escUiHtml", "EXT_ATTRS", "extSR", "noticeDisplayTitle",
+  "t", "todayISO", "cleanText", "escUiHtml", "EXT_ATTRS", "extSR", "noticeDisplayTitle", "solicitationResponseContextReady",
   `${extractFunction("moneyListPrimaryAction")}
    ${extractFunction("moneyListPrimaryActionHTML")}
    return { moneyListPrimaryAction, moneyListPrimaryActionHTML };`,
@@ -37,6 +38,7 @@ const { moneyListPrimaryAction, moneyListPrimaryActionHTML } = new Function(
   'target="_blank" rel="noopener noreferrer"',
   () => '<span class="sr-only"> (opens in new tab)</span>',
   noticeDisplayTitle,
+  solicitationResponseContextReady,
 );
 
 const priorActions = globalThis.CrolActions;
@@ -85,6 +87,14 @@ test("expired solicitation omits the row action instead of presenting a dead res
   assert.ok(EXPIRED_SOLICITATION, "committed open-money snapshot must retain the field case");
   assert.equal(moneyListPrimaryAction(EXPIRED_SOLICITATION, "2026-08-04"), null);
   assert.equal(moneyListPrimaryActionHTML(EXPIRED_SOLICITATION, "2026-08-04"), "");
+});
+
+test("solicitation without named, actionable response context omits the row action", () => {
+  assert.equal(moneyListPrimaryAction({
+    request_id: "20260815001",
+    type_of_notice_description: "Solicitation",
+    selection_method_description: "Request for Proposals",
+  }, "2026-08-04"), null);
 });
 
 test("source-backed award fields reuse award guidance and Checkbook classification", () => {
