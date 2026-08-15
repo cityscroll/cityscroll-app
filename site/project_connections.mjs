@@ -7,6 +7,7 @@
 
 import { bblReaderLabel } from "./bbl_reader.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
 
 export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "applicant", relation: "applicant_agency", surface: "land" },
@@ -85,6 +86,18 @@ const publicConfidence = (value) => {
   const confidence = clean(value, 24).toLowerCase();
   return confidence === "strong" || confidence === "tentative" ? confidence : null;
 };
+
+// A source applicant can be agency-shaped without resolving to a reviewed
+// agency route. Keep that distinction visible: the unresolved ref lets the
+// shared entity chip say "organization" while entityHref still fails closed.
+const AGENCY_SHAPED_APPLICANT = /^(?:HPD|DPR|DCP|DOT|DEP|DCAS|SBS|HRA|ACS|NYCHA|EDC|SCA)\b|\b(?:department|dept|commission|authority|office of|borough president|district attorney|board of|city planning|housing preservation|parks and recreation|transportation|sanitation|education|police|fire department)\b/i;
+
+function unresolvedApplicantAgencyRef(label) {
+  if (!AGENCY_SHAPED_APPLICANT.test(label)) return null;
+  const identity = resolveAgencyIdentity(label);
+  if (!identity?.canonical_id || identity.matched) return null;
+  return `agency:id:${identity.canonical_id}`;
+}
 
 const exactBbl = (value) => {
   const bbl = clean(value, 16).replace(/\.0$/, "").padStart(10, "0");
@@ -166,6 +179,7 @@ export function buildProjectConnectionEvidence({
   if (!project) return result;
 
   const applicantLabel = clean(project.primary_applicant);
+  const unresolvedApplicantRef = unresolvedApplicantAgencyRef(applicantLabel);
   const applicantLinks = (Array.isArray(entityLinks) ? entityLinks : [])
     .map((link) => ({
       ref: clean(link?.entity_ref),
@@ -177,7 +191,7 @@ export function buildProjectConnectionEvidence({
     .filter((link) => link.ref && link.confidence && link.relation.startsWith("applicant_"));
   const applicant = groups.find((group) => group.id === "applicant");
   applicant.items = applicantLinks.length ? applicantLinks : (applicantLabel ? [{
-    ref: null,
+    ref: unresolvedApplicantRef,
     label: applicantLabel,
     relation: null,
     confidence: null,

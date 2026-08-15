@@ -360,7 +360,7 @@ export async function fetchOpenDataRow(projectId) {
   const where = `project_id='${id.replace(/'/g, "''")}'`;
   const url =
     `${SODA}/hgx4-8ukb.json?$select=project_id,project_name,public_status,project_status,`
-    + `approval_date,completed_date,ulurp_numbers,borough,community_district,actions,current_milestone,current_milestone_date`
+    + `approval_date,completed_date,ulurp_numbers,primary_applicant,borough,community_district,actions,current_milestone,current_milestone_date`
     + `&$where=${encodeURIComponent(where)}&$limit=1`;
   try {
     const rows = await fetchJson(url);

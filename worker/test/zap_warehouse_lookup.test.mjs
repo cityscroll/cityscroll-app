@@ -69,6 +69,7 @@ test("fetchOpenDataRow falls back to live SODA on materialization miss", async (
           {
             project_id: "1999Z0000",
             project_name: "SODA Fallback Project",
+            primary_applicant: "EDC - Economic Development Corporation for NYC",
             public_status: "Active",
             project_status: "Active",
             borough: "Queens",
@@ -88,6 +89,7 @@ test("fetchOpenDataRow falls back to live SODA on materialization miss", async (
     assert.equal(row.lookup_path, "soda");
     assert.equal(sawZap, true);
     assert.equal(row.project_name, "SODA Fallback Project");
+    assert.equal(row.primary_applicant, "EDC - Economic Development Corporation for NYC");
   } finally {
     globalThis.fetch = orig;
   }
