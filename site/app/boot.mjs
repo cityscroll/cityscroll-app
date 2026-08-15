@@ -443,7 +443,7 @@ async function currentAlertsEntryHref(){
     }
   }
   // Active lens tab with filters.
-  const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
+  const tab = globalThis.activeViewTab?.();
   if(tab && ["money","land","property","rules","meetings"].includes(tab)){
     const state = currentLensFilterState(tab);
     // Do not load the context-carry helper for the untouched home defaults. The helper is
@@ -656,8 +656,7 @@ function rerenderForLang(){
   // dispatches back to whichever show*(id) built the currently-active pane (2026-07-13 hotfix 3).
   const activePane = document.querySelector(".tabpane.active");
   if(activePane && (activePane.id === "tab-notice" || activePane.id === "tab-entity" || activePane.id === "tab-task")){ applyHash(); return; }
-  const active = document.querySelector(".tabbtn.active");
-  const tab = active ? active.dataset.tab : null;
+  const tab = globalThis.activeViewTab?.();
   // Loaded-but-inactive lenses re-fetch on their next visit instead of re-rendering now.
   Object.keys(feedLoaded).forEach(k=>{ if(k!==tab && feedLoaded[k]) feedLoaded[k]=false; });
   if(tab!=="money") moneyLoaded=false;
