@@ -315,7 +315,7 @@ export function renderBrowseConceptLanding(landing) {
   if (!landing) return "";
   return `<div class="browse-concept-landing" data-build-rendered="browse-concept" data-browse-concept="${esc(landing.tab)}">
     <p class="now-kicker"><a href="/browse/">Browse</a> · ${esc(landing.label)}</p>
-    <header class="browse-landing-head"><h1>${esc(landing.title)}</h1><p>${esc(landing.description)}</p></header>
+    <header class="browse-landing-head"><h2>${esc(landing.title)}</h2><p>${esc(landing.description)}</p></header>
     <div class="browse-concept-grid">${landing.sections.join("")}</div>
   </div>`;
 }

@@ -50,8 +50,24 @@ def check_lang(pw, lang):
     page.wait_for_load_state("load")
     page.wait_for_timeout(1000)
 
+    # The root document is a static neutral topic entry. Its readiness contract
+    # must settle without waiting for any source-backed list or app module.
+    page.wait_for_function(
+        """() => document.body?.dataset.primaryContext === 'home'
+          && document.body?.dataset.homeReady === 'true'
+          && document.querySelector('[data-home-topic-entry] input[name=\"q\"]')?.getClientRects().length > 0"""
+    )
+    # The readiness contract includes the same visible method tag used by the
+    # explicit lenses. Keep this assertion on the neutral home so RTL cannot
+    # hide a stalled or locale-specific render behind a later navigation.
+    page.locator("[data-home-topic-entry] .tag").first.wait_for(state="visible", timeout=30000)
+
     # Baseline (English) physical resolution, BEFORE switching -- what "mirrored" is relative to.
     skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
+    page.goto(BASE + "browse/contracts/", timeout=30000)
+    page.wait_for_load_state("load")
+    page.locator(".tag").first.wait_for(state="visible", timeout=30000)
+    page.locator(".rtitle span[lang='en']").first.wait_for(state="visible", timeout=30000)
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
@@ -89,7 +105,7 @@ def check_lang(pw, lang):
             "-- expected the non-zero side to swap from right to left")
 
     # 3. Bidi isolation of an English data island (enTitle()-wrapped notice title on the
-    #    default money-tab/open-RFP view, no extra navigation needed).
+    #    explicit Contracts lens; the neutral home deliberately has no record rows).
     rtitle = page.locator(".rtitle span[lang='en']").first
     if rtitle.count():
         bidi = rtitle.evaluate("el => [getComputedStyle(el).unicodeBidi, getComputedStyle(el).direction]")

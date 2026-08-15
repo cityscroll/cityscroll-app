@@ -132,7 +132,7 @@ def people_opens_on_a_populated_example(pw):
         if tab == "property":
             # Property is reached through the Land + property group's existing
             # child route. Its static document does not own SPA tab focus.
-            goto_and_wait_for_app(page, BASE, timeout=30000)
+            goto_and_wait_for_app(page, f"{BASE}#money", timeout=30000)
         elif tab == "people":
             if actual_focus != heading:
                 failures.append(f"{tab} entry focus landed on {actual_focus!r}, not {heading!r}")

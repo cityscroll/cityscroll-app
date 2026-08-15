@@ -43,6 +43,14 @@ test("primary navigation is four real document links on every promoted shell", (
     }
   }
   const root = read("../site/index.html");
+  assert.match(root, /<body data-primary-context="home" data-home-ready="true">/);
+  assert.match(root, /<form class="home-topic-form" method="get" action="\/search\/">/);
+  assert.match(root, /name="q"[^>]+maxlength="240"/);
+  assert.match(root, /What are you looking for\?/);
+  assert.doesNotMatch(root, /<section id="tab-money" class="tabpane active"/);
+  const loader = read("../site/app/main.mjs");
+  assert.match(loader, /isNeutralHome/);
+  assert.match(loader, /import\("\.\.\/home_entry\.mjs"\)/);
   const routes = [
     ["contracts", "/browse/contracts/", "money"],
     ["people", "/browse/people/", "people"],
@@ -331,7 +339,7 @@ test("generated agency pivots round-trip to content-bearing entity routes", asyn
 
 test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {
   const outputs = primaryDocumentOutputs();
-  assert.equal(outputs.length, 11);
+  assert.equal(outputs.length, 12);
   for (const [path, generated] of outputs) {
     if (existsSync(path)) assert.equal(readFileSync(path, "utf8"), generated, `${path} is stale`);
     assert.match(generated, /<base href="\/">/);
@@ -339,6 +347,17 @@ test("Browse landing and every bounded child are exact build outputs with useful
     assert.doesNotMatch(generated, /<link rel="canonical" href="https:\/\/cityscroll\.org\/">/);
   }
   const output = (suffix) => outputs.find(([path]) => path.endsWith(suffix))?.[1] || "";
+  const search = output("/site/search/index.html");
+  assert.match(search, /data-primary-context="search"/);
+  assert.match(search, /href="search\.css"/);
+  assert.match(search, /<form class="topic-search-form" method="get" action="\/search\/"/);
+  assert.match(search, /<strong>Keyword search<\/strong>/);
+  for (const lane of ["Contracts", "Rules", "Meetings", "Obligations"]) {
+    assert.match(search, new RegExp(`<h3[^>]*>${lane}<\\/h3>`));
+  }
+  assert.match(search, /name="q"[^>]+maxlength="240"/);
+  assert.doesNotMatch(search, /app\/main\.mjs/);
+  assert.match(search, /search_document\.mjs/);
   const now = output("/site/now/index.html");
   assert.match(now, /data-build-rendered="now"/);
   assert.match(now, /data-now-item=/);
