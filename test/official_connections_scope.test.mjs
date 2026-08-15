@@ -122,11 +122,11 @@ test("official reader label omits promotion thresholds and audit methodology", (
   const view = buildOfficialConnectionView(bag, lookup.coverage, { scope: CrolScope });
   const html = renderOfficialCoverageHTML(view, {
     translate: (key) => ({
-      official_coverage_bounded_label: "Published roll calls in this corpus",
+      official_coverage_bounded_label: "Published votes linked to this official",
       official_coverage_promoted_label: "Official decision constellation",
     })[key] || key,
   });
-  assert.match(html, /Published roll calls in this corpus|Official decision constellation/);
+  assert.match(html, /Published votes linked to this official|Official decision constellation/);
   assert.doesNotMatch(html, /Coverage gate|promotion|retention|committed cohort|<progress/i);
 });
 

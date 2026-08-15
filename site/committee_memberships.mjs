@@ -108,9 +108,7 @@ export function renderCommitteeMembershipsHTML(bag, { escapeHtml, translate } = 
     <div class="chain-h">Committee memberships</div>
     <ul>${rows.map((row) => {
       const reverseEdge = reverseForRow(row);
-      const reverseUnavailable = reverseEdges && !reverseEdge
-        ? `<span class="committee-membership-reverse-unavailable">Reverse coverage unavailable.</span>`
-        : "";
+      const reverseUnavailable = "";
       return `<li><strong>${renderEntityPivotLink({
       relation_label: row.relation_label || "committee membership",
       target_kind: "committee",

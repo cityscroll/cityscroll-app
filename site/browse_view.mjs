@@ -388,7 +388,7 @@ function renderScopeChip(scopeState, config, scopeSearch) {
   const details = status === "unsupported"
     ? `This lens does not support this scope filter; showing all matched records for this view.`
     : status === "empty"
-      ? `No records in this lens match ${label}.`
+      ? ""
       : `Filtered to ${label}.`;
   const chips = scopeState.refs.map((item) => {
     const removeParams = new URLSearchParams(raw);
@@ -900,8 +900,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
         : "applied";
   let emptyReason = "";
   if (mode === "empty") {
-    const scopeLabel = scopeState.labels.length ? scopeState.labels.join(", ") : "this scope";
-    emptyReason = `No records in this lens match ${scopeLabel}.`;
+    emptyReason = "";
   } else if (mode === "unsupported") {
     emptyReason = `This lens does not support this scope filter; showing all matched records for this view.`;
   }
@@ -1161,7 +1160,7 @@ export function renderBrowseView(view) {
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${cards || (boardDisambiguation ? "" : `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`)}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {

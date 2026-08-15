@@ -60,6 +60,9 @@ function statusLabel(category) {
 export function renderAgencyCategorySection(category, source = {}) {
   if (!category) return "";
 
+  const items = Array.isArray(category.items) ? category.items : [];
+  if (category.status === "empty" && !items.length && !category.conformance?.items?.length) return "";
+
   if (category.id === "obligations" && category.conformance?.items?.length) {
     const refine = category.mandate_follow_hrefs
       ? [
@@ -93,7 +96,6 @@ export function renderAgencyCategorySection(category, source = {}) {
   const sourceItems = category.id === "obligations"
     ? category.items.filter((item) => item.href).map((item) => ({ href: item.href, label: item.label || "Source law" }))
     : [];
-  const items = Array.isArray(category.items) ? category.items : [];
   const list = items.length ? `<ul class="node-record-list">${items.map((item) => {
     const warrant = item.claim?.how?.warrant_class || "";
     const why = item.claim ? renderWhyBelieveControl(item.claim) : "";

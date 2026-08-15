@@ -14,7 +14,7 @@ export const EDGE_SUMMARY_STATES = Object.freeze(["matched", "empty", "unknown"]
 export const EDGE_SUMMARY_STATE_MEANINGS = Object.freeze({
   matched: "available",
   empty: "empty-in-scope",
-  unknown: "unknown-unindexed",
+  unknown: "unknown",
 });
 export const ENTITY_PIVOT_SCHEMA = EDGE_SUMMARY_SCHEMA;
 
@@ -425,7 +425,7 @@ export function edgeSummaryStateCopy(record) {
       meeting: "No meetings or hearings linked yet",
       meetings: "No meetings or hearings linked yet",
       rule: "No rules linked yet",
-      mandate: "No mandates linked yet",
+      mandate: "Records not shown",
       exam: "No staffing exam records linked yet",
       project: "No land-use records linked yet",
       "tax-lien": "No tax-lien records linked yet",
@@ -433,7 +433,7 @@ export function edgeSummaryStateCopy(record) {
       "certificate-of-occupancy": "No occupancy records linked yet",
     }[record.target_kind] || "No related records linked yet");
   }
-  return "Availability is not known yet";
+  return "Records not shown";
 }
 
 function targetCopy(record) {

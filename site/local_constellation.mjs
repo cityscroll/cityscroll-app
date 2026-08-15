@@ -290,6 +290,7 @@ export function renderLocalConstellationHTML(view, {
   className = "",
 } = {}) {
   if (!view || view.schema !== LOCAL_CONSTELLATION_SCHEMA) return "";
+  if (view.status === "empty" && !view.nodes?.length) return "";
   const title = heading || view.label || "Local connections";
   const placeDistrictCount = view.kind === "place"
     ? view.nodes.filter((node) => node.target_kind === "council-district").length

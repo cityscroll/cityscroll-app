@@ -35,7 +35,7 @@ test("committee membership panel shows populated rows and omits gap and methodol
   assert.equal(renderCommitteeMembershipsHTML({ rows: [] }), "");
 });
 
-test("committee reverse coverage is exact-key and visibly unavailable when the graph has no edge", () => {
+test("committee reverse coverage is exact-key and stays quiet when the graph has no edge", () => {
   const graph = {
     publication: "published",
     public_reverse_edges: [{ type: "has_member", to: "official:7801", from: "committee:5261" }],
@@ -50,5 +50,5 @@ test("committee reverse coverage is exact-key and visibly unavailable when the g
     reverse_edges: [],
   });
   assert.doesNotMatch(html, /href=/);
-  assert.match(html, /Reverse coverage unavailable/);
+  assert.doesNotMatch(html, /Reverse coverage unavailable/);
 });

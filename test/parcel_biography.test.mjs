@@ -67,11 +67,11 @@ test("parcel biography summarizes every supported family and preserves typed det
   assert.equal((html.match(/class="edge-summary-item"/g) || []).length, 5);
   assert.match(html, /data-edge-state="matched"[^>]*data-edge-availability="available"/);
   assert.match(html, /data-edge-state="empty"[^>]*data-edge-availability="empty-in-scope"/);
-  assert.match(html, /data-edge-state="unknown"[^>]*data-edge-availability="unknown-unindexed"/);
+  assert.match(html, /data-edge-state="unknown"[^>]*data-edge-availability="unknown"/);
   assert.match(html, /Available: 1 record/);
   assert.match(html, /No land-use records linked yet/);
   assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
-  assert.match(html, /Availability is not known yet/);
+  assert.match(html, /Records not shown/);
   for (const kind of ["property", "land", "tax_lien", "ll48", "cofo"]) {
     assert.match(html, new RegExp(`id="parcel-biography-${kind}"`));
   }

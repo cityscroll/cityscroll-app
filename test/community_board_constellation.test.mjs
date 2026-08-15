@@ -54,7 +54,7 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.match(html, /Connected board records/);
   assert.match(html, /District coverage/);
   assert.match(html, /Official source inventory/);
-  assert.match(html, /Meetings and hearings \(Availability is not known yet\)/);
+  assert.match(html, /Meetings and hearings \(Records not shown\)/);
   assert.match(html, /Board members \(Not yet shown — official board records are still being collected\)/);
   assert.match(html, /Board recommendations \(Not yet shown — official board records are still being collected\)/);
   assert.match(html, /Open official calendar/);

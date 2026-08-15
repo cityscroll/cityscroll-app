@@ -396,7 +396,7 @@ with sync_playwright() as pw:
         relation:s.facets.values.connection_relation};
     })()""")
     step(
-        "OK" if "Published roll calls in this corpus" in coverage["text"]
+        "OK" if "Published votes linked to this official" in coverage["text"]
         and coverage["events"] >= 1 and coverage["confidence"]
         and coverage["href"].startswith("#meetings?")
         and scoped == {"domains":["meetings"], "refs":["entity:official:7801"],
