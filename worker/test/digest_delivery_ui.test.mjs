@@ -144,6 +144,31 @@ test("subDigestHtml places match evidence under title and before actions", () =>
   assert.doesNotMatch(titleHtml, /data-match-evidence="1"/);
 });
 
+test("meeting digests render materialized meeting identity and searchable context", () => {
+  const html = subDigestHtml(
+    "Landmarks meetings",
+    "meetings",
+    [{
+      meeting_id: "meeting:community_board:event-rich",
+      request_id: "meeting:community_board:event-rich",
+      title: "LANDMARKS 2",
+      event_date: "2026-08-17T18:30:00-04:00",
+      board_name: "Manhattan Community Board 2",
+      committee: { name: "Landmarks 2" },
+      venue: { address: "3 Washington Square Village #1A" },
+      source_url: "https://board.example/event-rich",
+      meeting_documents: [{ attachment_status: "attached", title: "Agenda PDF" }],
+    }],
+    "https://example.test/unsubscribe",
+    "2026-08-14",
+  );
+  assert.match(html, /LANDMARKS 2/);
+  assert.match(html, /Manhattan Community Board 2/);
+  assert.match(html, /Landmarks 2/);
+  assert.match(html, /Agenda PDF/);
+  assert.match(html, /\/meetings\/meeting%3Acommunity_board%3Aevent-rich\//);
+});
+
 test("preview awareness ≡ email awareness for phase + next-step strings", () => {
   const emailAwareness = itemAwarenessHtml(solicitation, esc, "en", { kind: "rfp", today: TODAY });
   const model = digestItemAwareness(solicitation, { kind: "rfp", today: TODAY });

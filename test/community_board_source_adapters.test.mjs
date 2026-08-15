@@ -91,6 +91,48 @@ test("HTML adapter accepts explicit Schema.org Event records without guessing da
   assert.equal(records[0].body_evidence.basis, "explicit_source_descriptor");
 });
 
+test("event-detail materialization keeps publisher description, participation, and exact child documents", () => {
+  const meetingKey = "https://board.example/event/1";
+  const records = parseHtmlPdfSource(`
+    <script type="application/ld+json">[{"@type":"Event","name":"LANDMARKS 2 – Chair","url":"${meetingKey}","startDate":"2026-09-10T18:00:00-04:00","endDate":"2026-09-10T21:00:00-04:00","description":"Agenda: 63-65 Charles Street. Register to join online.","location":{"@type":"Place","name":"CB 2 Conference Room","address":{"streetAddress":"3 Washington Square Village #1A","addressLocality":"New York","addressRegion":"NY","postalCode":"10012"},"telephone":"212-979-2272"}}]</script>
+    <a href="/documents/agenda-2026-09-10.pdf">Agenda PDF</a>
+    <a href="/images/logo.png">Board logo</a>
+  `, {
+    adapter: "html_pdf_v1", event_detail: true, meeting_key: meetingKey, meeting_date: "2026-09-10",
+    board_id: "manhattan-cb-02", url: meetingKey,
+  }, { receipt });
+  const event = records.find((row) => row.record_kind === "event");
+  const document = records.find((row) => row.record_kind === "document");
+  assert.equal(event.description, "Agenda: 63-65 Charles Street. Register to join online.");
+  assert.equal(event.venue_name, "CB 2 Conference Room");
+  assert.equal(event.address, "3 Washington Square Village #1A, New York, NY, 10012");
+  assert.equal(event.end_at, "2026-09-10T21:00:00-04:00");
+  assert.equal(document.meeting_key, meetingKey);
+  assert.equal(document.record_url, "https://board.example/documents/agenda-2026-09-10.pdf");
+  assert.equal(records.filter((row) => row.record_kind === "document").length, 1);
+});
+
+test("event-detail materialization extracts resident-facing logistics from the publisher page", () => {
+  const meetingKey = "https://board.example/event/2";
+  const records = parseHtmlPdfSource(`
+    <script type="application/ld+json">[{"@type":"Event","name":"Landmarks 2","url":"${meetingKey}","startDate":"2026-09-10T18:00:00-04:00"}]</script>
+    <div class="tribe-events-single-event-description tribe-events-content"><p>Registration is required. The meeting is held at 3 Washington Square Village.</p></div>
+    <a href="https://events.example/register/2">Register for the meeting</a>
+    <a href="https://zoom.example/join/2">Join by Zoom</a>
+  `, {
+    adapter: "html_pdf_v1", event_detail: true, meeting_key: meetingKey,
+    board_id: "manhattan-cb-02", url: meetingKey,
+  }, { receipt });
+  const event = records.find((row) => row.record_kind === "event");
+  assert.equal(event.description, "Registration is required. The meeting is held at 3 Washington Square Village.");
+  assert.equal(event.participation.remote_join_url, "https://zoom.example/join/2");
+  assert.deepEqual(event.participation.links, [
+    { label: "Register to attend", url: "https://events.example/register/2" },
+    { label: "Join online", url: "https://zoom.example/join/2" },
+    { label: "Meeting information", url: meetingKey },
+  ]);
+});
+
 test("HTML adapter treats linked document URLs as document identities, never event identities", () => {
   const documents = parseHtmlPdfSource(
     `<a data-date="2026-09-12" href="/minutes/2026-09-12.pdf">September 12, 2026 minutes</a>`,

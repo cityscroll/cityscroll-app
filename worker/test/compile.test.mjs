@@ -95,32 +95,26 @@ test("property → Property Disposition section query, newest first", () => {
   assert.equal(q.params["$q"], undefined);
 });
 
-test("meetings → both hearing sections, location post-filter, and date window", () => {
+test("meetings → materialized read rows, keyword, location, and date window", () => {
   const q = compileSub({
     lens: "meetings",
     filter: { keywords: ["community board"], borough: "Queens", dateWindow: "week" },
   }, "2026-06-30");
   assert.equal(q.kind, "meetings");
-  assert.match(q.params["$where"], /section_name='Public Hearings and Meetings'/);
-  assert.match(q.params["$where"], /section_name='Agency Rules'/);
-  assert.match(q.params["$where"], /type_of_notice_description='Public Hearings'/);
-  assert.match(q.params["$where"], /event_date > '2026-06-30'/);
-  assert.match(q.params["$where"], /event_date <= '2026-07-07T23:59:59'/);
-  assert.equal(q.params["$order"], "event_date ASC");
-  assert.equal(q.params["$q"], "community board");
-  assert.equal(typeof q.postFilter, "function");
-  assert.equal(q.postFilter({
-    short_title: "Queens matter",
-    additional_description_1: "In the matter of property in Queens.",
-    street_address_1: "22 Reade Street",
-    city: "New York",
-  }), true);
-  assert.equal(q.postFilter({
-    short_title: "Brooklyn matter",
-    additional_description_1: "In the matter of property in Brooklyn.",
-    street_address_1: "22 Reade Street",
-    city: "New York",
-  }), false);
+  assert.equal(q.url, null);
+  assert.equal(q.idField, "meeting_id");
+  assert.ok(q.readRows().every((row) => row.request_id === row.meeting_id));
+});
+
+test("meeting keywords search the materialized civic context", () => {
+  const q = compileSub({
+    lens: "meetings",
+    filter: { keywords: ["LANDMARKS 2"], borough: "Manhattan" },
+  }, "2026-08-01");
+  const rows = q.readRows();
+  assert.equal(rows.length, 1);
+  assert.match(rows[0].search_text, /LANDMARKS 2/i);
+  assert.match(rows[0].search_text, /Washington Square/i);
 });
 
 test("section-lens agency quotes are SoQL-escaped", () => {
@@ -128,10 +122,14 @@ test("section-lens agency quotes are SoQL-escaped", () => {
   assert.match(q.params["$where"], /agency_name='O''Neill Dept'/);
 });
 
-test("section-lens select carries event_date + street_address_1 for the digest", () => {
+test("meeting subscriptions replay the shared materialized projection", () => {
   const q = compileSub({ lens: "meetings", filter: {} }, "2026-06-30");
-  assert.match(q.params["$select"], /event_date/);
-  assert.match(q.params["$select"], /street_address_1/);
+  assert.equal(q.kind, "meetings");
+  assert.equal(q.idField, "meeting_id");
+  assert.equal(q.url, null);
+  const rows = q.readRows();
+  assert.ok(rows.length > 0);
+  assert.ok(rows.every((row) => row.request_id === row.meeting_id));
 });
 
 test("an un-offered lens compiles to null (cron skips it)", () => {

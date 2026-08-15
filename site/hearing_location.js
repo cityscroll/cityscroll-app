@@ -267,12 +267,14 @@ function normalizeHearingRow(row) {
       title: hearingPlainText(row.short_title) || "Community board meeting", event_date: row.event_date || null,
       published_at: row.start_date || null, decides: hearingPlainText(row.short_title) || "Community board meeting",
       affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
-      participation: { links: [], remote_join_url: null, emails: [], phones: [], source_url: boardSource },
-      source_url: boardSource, description: hearingPlainText(row.description || ""), board_id: row.board_id || null,
+      participation: row.participation || { links: [], remote_join_url: null, emails: [], phones: [], source_url: boardSource },
+      source_url: boardSource, description: hearingPlainText(row.description || row.search_text || ""), board_id: row.board_id || null,
       board_name: hearingPlainText(row.board_name || ""), entity_refs_all: row.entity_refs_all || [],
       institution_edges: row.institution_edges || [], meeting_origin: row.meeting_origin || "unknown",
       source_provenance: row.source_provenance || null, source_receipt: row.source_receipt || row.observed_receipt || null,
       join_status: row.join_status || row.meeting_join?.status || "unknown",
+      committee: row.committee || null, meeting_documents: row.meeting_documents || [],
+      minutes_freshness: row.minutes_freshness || null, search_text: row.search_text || null,
       institution_refs: { agency_ref: null, board_ref: row.board_id ? "community-board:" + row.board_id : null },
       compatibility: { legacy_notice_href: null, legacy_fragment_href: null, publisher_href: boardSource },
       meeting_join: row.meeting_join || null,
@@ -309,7 +311,9 @@ function normalizeHearingRow(row) {
       legacy_fragment_href: cityRecordId ? "#notice/" + encodeURIComponent(cityRecordId) : null,
       publisher_href: source,
     },
-    description: body.slice(0, 1200), entity_refs_all: row.entity_refs_all || [],
+    description: body.slice(0, 1200), search_text: row.search_text || body.slice(0, 6000),
+    committee: row.committee || null, meeting_documents: row.meeting_documents || [],
+    minutes_freshness: row.minutes_freshness || null, entity_refs_all: row.entity_refs_all || [],
   };
 }
 // Hand-synced with worker/src/lib/hearings.mjs participationFromRow: strip trailing

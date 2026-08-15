@@ -1,4 +1,5 @@
-import { communityBoardPageHref } from "./community_board_links.mjs";
+import { communityBoardCommitteePageHref, communityBoardPageHref } from "./community_board_links.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import {
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromRow,
@@ -9,6 +10,7 @@ export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
   "minutes",
   "agenda",
+  "materials",
   "recording",
   "source_record",
 ]);
@@ -55,6 +57,7 @@ function role(row) {
   if (MEETING_DOCUMENT_ROLES.includes(value)) return value;
   if (/minute/.test(value)) return "minutes";
   if (/agenda/.test(value)) return "agenda";
+  if (/material|packet|item/.test(value)) return "materials";
   if (/record|video|audio/.test(value)) return "recording";
   return "source_record";
 }
@@ -203,7 +206,7 @@ export function meetingDocumentLinks(record = {}) {
     .filter((document) => document?.attachment_status === "attached" && document.document_url)
     .map((document) => ({
       role: document.role,
-      label: document.role === "minutes" ? "Minutes" : document.role === "agenda" ? "Agenda" : document.role === "recording" ? "Recording" : "Source record",
+      label: document.role === "minutes" ? "Minutes" : document.role === "agenda" ? "Agenda" : document.role === "materials" ? "Materials" : document.role === "recording" ? "Recording" : "Source record",
       href: document.document_url,
       date: document.meeting_date || document.publication_date || document.date || null,
       source_status: document.source_status,
@@ -233,6 +236,70 @@ function boardId(record) {
     || null;
 }
 
+function safeHref(value) {
+  const text = String(value || "").trim();
+  if (/^https:\/\//i.test(text) || /^\//.test(text)) return text;
+  return null;
+}
+
+function agencyHref(record) {
+  const ref = String(record?.institution_refs?.agency_ref || "").trim();
+  if (/^agency:id:[a-z0-9-]+$/i.test(ref)) return `/agencies/${encodeURIComponent(ref.slice("agency:id:".length))}/`;
+  const identity = resolveAgencyIdentity(record?.agency || record?.agency_name || "");
+  return identity?.matched && identity.canonical_id
+    ? `/agencies/${encodeURIComponent(identity.canonical_id)}/`
+    : null;
+}
+
+function nearYouHref(kind, value, borough = null) {
+  const text = String(value || "").trim();
+  if (!text) return null;
+  const params = new URLSearchParams({ v: "0", lens: "meetings" });
+  if (kind === "borough") params.set("boro", text);
+  if (kind === "community_district") {
+    params.set("level", "community_district");
+    params.set("id", text);
+    if (borough) params.set("parent", borough);
+  }
+  if (kind === "council_district") params.set("council", text);
+  return `/near-you/?${params}`;
+}
+
+function locationDetails(record) {
+  const venue = record.venue || {};
+  const area = record.affected_area || {};
+  const borough = venue.borough || area.boroughs?.[0] || null;
+  const rows = [];
+  if (venue.name) rows.push(`<span>${esc(venue.name)}</span>`);
+  if (venue.address) rows.push(`<span>${esc(venue.address)}</span>`);
+  if (borough) rows.push(`<a href="${esc(nearYouHref("borough", borough))}">${esc(borough)}</a>`);
+  for (const value of area.community_districts || []) {
+    rows.push(`<a href="${esc(nearYouHref("community_district", value, borough))}">Community District ${esc(value)}</a>`);
+  }
+  for (const value of area.council_districts || []) {
+    rows.push(`<a href="${esc(nearYouHref("council_district", value))}">Council District ${esc(value)}</a>`);
+  }
+  return rows;
+}
+
+function participationDetails(record) {
+  const participation = record.participation || {};
+  const links = (participation.links || [])
+    .map((link) => ({ ...link, href: safeHref(link?.url) }))
+    .filter((link) => link.href);
+  const items = links.map((link) => `<li><a href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label || "Participation information")}</a></li>`);
+  const remoteJoin = safeHref(participation.remote_join_url);
+  if (remoteJoin && !links.some((link) => link.href === remoteJoin)) {
+    items.push(`<li><a href="${esc(remoteJoin)}" rel="noopener noreferrer">Join online</a></li>`);
+  }
+  for (const email of participation.emails || []) items.push(`<li><a href="mailto:${esc(email)}">${esc(email)}</a></li>`);
+  for (const phone of participation.phones || []) {
+    const tel = String(phone).replace(/[^0-9+]/g, "");
+    if (tel) items.push(`<li><a href="tel:${esc(tel)}">${esc(phone)}</a></li>`);
+  }
+  return items;
+}
+
 /** Render the source-qualified canonical meeting document used by every meeting card. */
 export function renderMeetingDocument(record = {}) {
   const id = String(record.meeting_id || "").trim();
@@ -241,10 +308,20 @@ export function renderMeetingDocument(record = {}) {
   const source = record.source_url || record.compatibility?.publisher_href || null;
   const edge = communityBoardMeetingEdgeFromRow(record);
   const board = boardId(record);
-  const boardLink = edge && communityBoardMeetingEdgeAccepted(edge) && board
-    ? `<a href="${esc(communityBoardPageHref(board))}">Hosted by Community Board</a>`
+  const boardLink = board && (record.source_system === "community_board" || (edge && communityBoardMeetingEdgeAccepted(edge)))
+    ? `<a href="${esc(communityBoardPageHref(board))}">${esc(record.board_name || "Community Board")}</a>`
     : "";
-  const legacy = record.compatibility?.legacy_notice_href;
+  const committeeName = record.committee?.name || null;
+  const committeeHref = safeHref(record.committee?.href)
+    || (committeeName && board ? communityBoardCommitteePageHref(board, committeeName) : null);
+  const committeeLink = committeeName
+    ? (committeeHref ? `<a href="${esc(committeeHref)}">${esc(committeeName)}</a>` : esc(committeeName))
+    : "";
+  const agency = record.agency || record.agency_name || null;
+  const agencyLink = agency
+    ? (agencyHref(record) ? `<a href="${esc(agencyHref(record))}">${esc(agency)}</a>` : esc(agency))
+    : "";
+  const legacy = safeHref(record.compatibility?.legacy_notice_href);
   const checked = record.source_receipt?.observed_at;
   const documentLinks = meetingDocumentLinks(record);
   const sourceDetails = [
@@ -252,9 +329,31 @@ export function renderMeetingDocument(record = {}) {
     record.source_record_id ? `<span>Publisher record: <bdi>${esc(record.source_record_id)}</bdi></span>` : "",
     checked ? `<time datetime="${esc(checked)}">Source checked ${esc(checked)}</time>` : "",
   ].filter(Boolean).join(" · ");
-  const documents = documentLinks.length
-    ? `<section class="meeting-documents" data-meeting-documents="1"><h2>Minutes and records</h2><ul>${documentLinks.map((document) => `<li><a href="${esc(document.href)}" rel="noopener noreferrer">${esc(document.label)}</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul></section>`
+  const agendaDocuments = documentLinks.filter((document) => ["Agenda", "Materials", "Recording"].includes(document.label) && safeHref(document.href));
+  const documents = agendaDocuments.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-documents" data-meeting-documents="1"><h2>Agenda and materials</h2><ul>${agendaDocuments.map((document) => `<li><a href="${esc(safeHref(document.href))}" rel="noopener noreferrer">${esc(document.label)}</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul></section>`
     : "";
+  const minutes = documentLinks.filter((document) => document.label === "Minutes" && safeHref(document.href));
+  const minutesPublished = record.minutes_freshness?.status === "published" || (!record.minutes_freshness && minutes.length);
+  const minutesSection = minutesPublished
+    ? `<section class="node-section civic-object-section meeting-section meeting-minutes" data-meeting-minutes="1"><h2>Minutes</h2>${minutes.length ? `<ul>${minutes.map((document) => `<li><a href="${esc(safeHref(document.href))}" rel="noopener noreferrer">Minutes</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul>` : ""}<p class="meeting-freshness">Minutes published${record.minutes_freshness?.latest_date ? ` through <time datetime="${esc(record.minutes_freshness.latest_date)}">${esc(record.minutes_freshness.latest_date)}</time>` : ""}.</p></section>`
+    : "";
+  const locationRows = locationDetails(record);
+  const locationSection = locationRows.length
+    ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
+    : "";
+  const participationRows = participationDetails(record);
+  const meetingMode = clean(record.venue?.mode, 80);
+  const participationSection = participationRows.length || meetingMode
+    ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
+    : "";
+  const institutionSection = boardLink || agencyLink || committeeLink
+    ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
+    : "";
+  const actions = [
+    id && record.event_date ? `<a class="node-action civic-object-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>` : "",
+    legacy ? `<a class="node-action civic-object-action" href="${esc(legacy)}">Open the City Record notice</a>` : "",
+  ].filter(Boolean).join("");
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -268,15 +367,16 @@ export function renderMeetingDocument(record = {}) {
 </head>
 <body>
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
-<main id="main" class="civic-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}">
+<main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
-  <p class="node-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p>
-  <h1>${esc(title)}</h1>
-  ${record.event_date ? `<p><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}
-  ${boardLink ? `<p>${boardLink}</p>` : ""}
+  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}</section>
+  ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
+  ${institutionSection}
+  ${locationSection}
+  ${participationSection}
   ${documents}
-  <p><a class="node-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>${legacy ? ` · <a href="${esc(legacy)}">Open the City Record notice</a>` : ""}</p>
-  ${sourceDetails ? `<details class="meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}
+  ${minutesSection}
+  ${sourceDetails ? `<details class="node-section meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}
 </main>
 </body>
 </html>`;

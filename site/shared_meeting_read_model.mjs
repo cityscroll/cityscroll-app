@@ -132,6 +132,47 @@ function dateSort(left, right) {
     || String(left.meeting_id || "").localeCompare(String(right.meeting_id || ""));
 }
 
+function meetingMinutesProjection(row, checkedAt) {
+  const documents = Array.isArray(row.meeting_documents) ? row.meeting_documents : [];
+  const minutes = documents
+    .filter((document) => document?.attachment_status === "attached" && document.role === "minutes")
+    .map((document) => document.meeting_date || document.publication_date || document.date)
+    .filter(Boolean)
+    .sort();
+  return {
+    status: minutes.length ? "published" : "not_published",
+    latest_date: minutes.at(-1) || null,
+    checked_at: checkedAt || row.source_receipt?.observed_at || null,
+  };
+}
+
+function searchableMeetingText(row) {
+  const documents = Array.isArray(row.meeting_documents) ? row.meeting_documents : [];
+  return [...new Set([
+    row.search_text,
+    row.title,
+    row.description,
+    row.committee?.name,
+    row.board_name,
+    row.agency,
+    row.venue?.name,
+    row.venue?.address,
+    row.affected_area?.boroughs?.join(" "),
+    row.affected_area?.community_districts?.join(" "),
+    row.affected_area?.council_districts?.join(" "),
+    ...documents.filter((document) => document?.attachment_status === "attached").map((document) => document.title),
+  ].filter(Boolean).map((value) => String(value).replace(/\s+/g, " ").trim()).filter(Boolean))].join(" ").slice(0, 6_000) || null;
+}
+
+function materializeMeetingDetails(row, checkedAt) {
+  const minutesFreshness = meetingMinutesProjection(row, checkedAt);
+  return {
+    ...row,
+    minutes_freshness: minutesFreshness,
+    search_text: searchableMeetingText(row),
+  };
+}
+
 /**
  * Normalize and combine both meeting producers into one bounded read model.
  * `communityBoardIndex` is deliberately optional: absence becomes an
@@ -165,11 +206,14 @@ export function buildSharedMeetingReadModel({
     rows: cityRows,
     index: null,
   });
-  const suppliedDocuments = Array.isArray(communityBoardIndex?.meeting_documents)
-    ? communityBoardIndex.meeting_documents
-    : boardRows.flatMap((row) => row.meeting_documents || []);
+  const suppliedDocuments = [
+    ...cityRows.flatMap((row) => row.meeting_documents || []),
+    ...(Array.isArray(communityBoardIndex?.meeting_documents)
+      ? communityBoardIndex.meeting_documents
+      : boardRows.flatMap((row) => row.meeting_documents || [])),
+  ];
   const documentJoin = attachMeetingDocuments([...cityRows, ...boardRows], suppliedDocuments, { asOf: now });
-  const rows = documentJoin.meetings.sort(dateSort);
+  const rows = documentJoin.meetings.map((row) => materializeMeetingDetails(row, now)).sort(dateSort);
   const generated = generatedAt || boardGeneratedAt || null;
   return {
     schema: SHARED_MEETING_READ_MODEL_SCHEMA,

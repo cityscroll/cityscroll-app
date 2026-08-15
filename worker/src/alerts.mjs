@@ -898,7 +898,7 @@ export async function processOneSub(env, s, ctx) {
       }
     }
     if (!usedD1) {
-      rows = await fetchRows(q.url, q.params, q.transformRows);
+      rows = await fetchRows(q.url, q.params, q.transformRows, q.readRows);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter); // property needs the full parcel stream for stage transitions
     }
     const seen = await getSeen(env, s.key);
@@ -1354,7 +1354,7 @@ async function evaluateSubSection(env, s, ctx) {
       }
     }
     if (!usedD1) {
-      rows = await fetchRows(q.url, q.params, q.transformRows);
+      rows = await fetchRows(q.url, q.params, q.transformRows, q.readRows);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
     }
     const seen = await getSeen(env, s.key);
@@ -1807,7 +1807,7 @@ async function evaluateCatchUpSub(env, s, ctx) {
     }
     if (!rows) {
       try {
-        rows = await fetchRows(q.url, sourceParams, q.transformRows);
+        rows = await fetchRows(q.url, sourceParams, q.transformRows, q.readRows);
         if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
       } catch (error) {
         return {
@@ -2490,7 +2490,8 @@ async function subWatches(env, { readOnly = false } = {}) {
   return out;
 }
 
-async function fetchRows(url, params, transformRows) {
+async function fetchRows(url, params, transformRows, readRows) {
+  if (typeof readRows === "function") return readRows();
   const r = await fetch(`${url}?${new URLSearchParams(params).toString()}`);
   if (!r.ok) throw new Error(`open-data ${r.status}`);
   const payload = await r.json();
@@ -2563,6 +2564,22 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   const item = (r) => {
     const itemKind = kind === "district" ? r.district_kind : kind;
     const itemClass = kind === "district" ? ' class="district-item"' : "";
+    if (itemKind === "meetings" && r.meeting_id) {
+      const meetingLink = `https://cityscroll.org/meetings/${encodeURIComponent(r.meeting_id)}/`;
+      const institution = r.board_name || r.agency || r.agency_name || "";
+      const committee = r.committee?.name || "";
+      const venue = r.venue?.address || r.venue?.name || "";
+      const materials = (r.meeting_documents || [])
+        .filter((document) => document.attachment_status === "attached")
+        .map((document) => document.title || document.role)
+        .filter(Boolean);
+      const meta = [institution, committee, r.event_date ? `event ${String(r.event_date).slice(0, 10)}` : "", venue]
+        .filter(Boolean).map(esc).join(" · ");
+      const records = materials.length ? `<br><span style="color:#555;font-size:13px">${esc(materials.join(" · "))}</span>` : "";
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${meetingLink}">${esc(r.title || "Meeting")}</a></b><br>
+        <span style="color:#555;font-size:13px">${meta}</span>${records}<br>
+        <span style="font-size:13px"><a href="${meetingLink}">↗ View meeting details</a>${r.source_url ? ` &nbsp; <a href="${esc(r.source_url)}">Official source</a>` : ""}</span></li>`;
+    }
     if (itemKind === "exam") {
       const link = `https://cityscroll.org/exams/${encodeURIComponent(r.exam_number)}/`;
       const dates = r.application_start && r.application_end

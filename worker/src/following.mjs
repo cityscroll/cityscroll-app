@@ -48,10 +48,15 @@ async function previewFor(watch, fetchImpl) {
   const query = compileSub(watch, new Date().toISOString().slice(0, 10));
   if (!query) return { items: [], error: "This scope cannot be previewed yet. You can still manage existing watches below." };
   try {
-    const response = await fetchImpl(`${query.url}?${new URLSearchParams(query.params)}`);
-    if (!response.ok) throw new Error(`open-data ${response.status}`);
-    const payload = await response.json();
-    let rows = query.transformRows ? query.transformRows(payload) : payload;
+    let rows;
+    if (typeof query.readRows === "function") {
+      rows = query.readRows();
+    } else {
+      const response = await fetchImpl(`${query.url}?${new URLSearchParams(query.params)}`);
+      if (!response.ok) throw new Error(`open-data ${response.status}`);
+      const payload = await response.json();
+      rows = query.transformRows ? query.transformRows(payload) : payload;
+    }
     if (!Array.isArray(rows)) rows = [];
     if (query.postFilter) rows = rows.filter(query.postFilter);
     return { items: feedItems(query.kind, rows).slice(0, 5), count: rows.length, error: null };
