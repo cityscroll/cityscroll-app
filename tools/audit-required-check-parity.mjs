@@ -14,7 +14,7 @@ const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const CI_PATH = join(ROOT, ".github", "workflows", "ci.yml");
 const PREFLIGHT_PATH = join(ROOT, "tools", "preflight-required-checks.sh");
 // Source: the three required status jobs declared in .github/workflows/ci.yml.
-const REQUIRED_JOBS = ["unit", "a11y-pr", "reading-level"]; // source: .github/workflows/ci.yml required jobs
+const REQUIRED_JOBS = ["unit", "a11y-pr-shard", "reading-level"]; // a11y-pr is the required aggregate; shards own the hosted commands
 
 function jobBlock(source, job) {
   const start = source.search(new RegExp(`^  ${job}:\\s*$`, "m"));
