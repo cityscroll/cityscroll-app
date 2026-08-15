@@ -1,4 +1,4 @@
-"""Vendor footprint previews and destination lists share one count receipt."""
+"""Vendor footprint reviewed-link totals and destinations share one count receipt."""
 
 import json
 import os
@@ -10,13 +10,14 @@ from playwright.sync_api import sync_playwright
 
 
 BASE = os.environ.get("CROL_BASE", f"http://localhost:{8000}/")  # source: a11y-pr local server in ci.yml
-CAMBA_COUNTS = {
+CAMBA_MENTION_COUNTS = {
     "awards": 273,
     "land": 3,
     "property": 2,
     "rules": 4,
     "meetings": 5,
 }
+CAMBA_CONFIRMED_COUNTS = {section: 1 for section in CAMBA_MENTION_COUNTS}  # source: synthetic reviewed-link parity fixture
 DESTINATIONS = {
     "awards": ("/browse/contracts/", "#rescount"),
     "land": ("/browse/zoning/", "#lrescount"),
@@ -29,11 +30,11 @@ DESTINATIONS = {
 def profile_payload():
     section_counts = {
         section: {
-            "confirmed_count": 0,
+            "confirmed_count": CAMBA_CONFIRMED_COUNTS[section],
             "mention_count": count,
             "scope_count": count,
         }
-        for section, count in CAMBA_COUNTS.items()
+        for section, count in CAMBA_MENTION_COUNTS.items()
     }
     section_counts.update({
         "payments": {"confirmed_count": 0, "mention_count": 0, "scope_count": 0},
@@ -134,7 +135,7 @@ with sync_playwright() as pw:
     assert "mode=award" in urlsplit(intersect_href).query, intersect_href
     assert "vendor%3Astem%3ACAMBA" in intersect_href, intersect_href
 
-    for section, expected in CAMBA_COUNTS.items():
+    for section, expected in CAMBA_CONFIRMED_COUNTS.items():
         page.goto(BASE + "#vendor/CAMBA", wait_until="domcontentloaded", timeout=30_000)
         section_root = page.locator(f"[data-footprint-section='{section}']")
         section_root.wait_for(state="visible", timeout=10_000)

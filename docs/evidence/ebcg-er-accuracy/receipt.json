@@ -1,0 +1,172 @@
+{
+  "schema": "cityscroll.constellation_er_accuracy.v1",
+  "task": "cityscroll-kraken/ebcg-01-er-accuracy-coverage",
+  "target_cohort": {
+    "name": "constellation_cross_spine_inferred_edges",
+    "gold_slice": "cross_spine_gold_v3:held_out",
+    "relation_count": 6,
+    "case_count": 90,
+    "tier": "inferred",
+    "split_strategy": "frozen_field_cases_with_component_isolation",
+    "source_systems": [
+      "city_record",
+      "city_record+passport_public_contracts",
+      "cityscroll_procedure_vocabulary",
+      "nyc_charter",
+      "nyc_legistar",
+      "passport_public_contracts",
+      "zoning_application_portal"
+    ]
+  },
+  "matcher": {
+    "version": "cross_spine_edge_policy_v2",
+    "evaluation_version": "cross_spine_eval_v3",
+    "gold_version": "cross_spine_gold_v3",
+    "gold_content_hash": "724d5db40074bf85"
+  },
+  "held_out_metrics": {
+    "relations_measured": 6,
+    "relations_passing": 6,
+    "relation_coverage": 1,
+    "support": 72,
+    "true_positive": 72,
+    "false_merge": 0,
+    "false_split": 0,
+    "per_relation": {
+      "mandate_contract": {
+        "precision": 1,
+        "recall": 1,
+        "support": 12,
+        "false_merge": 0,
+        "false_split": 0,
+        "gate": "pass",
+        "source_cohorts": [
+          "dhs_family_shelter_awards",
+          "dhs_shelter_renewals",
+          "dhs_transitional_shelters"
+        ]
+      },
+      "mandate_governs_procedure": {
+        "precision": 1,
+        "recall": 1,
+        "support": 12,
+        "false_merge": 0,
+        "false_split": 0,
+        "gate": "pass",
+        "source_cohorts": [
+          "zap_ulurp_city_map_changes",
+          "zap_ulurp_rezonings",
+          "zap_ulurp_site_selections"
+        ]
+      },
+      "mandate_land_use": {
+        "precision": 1,
+        "recall": 1,
+        "support": 12,
+        "false_merge": 0,
+        "false_split": 0,
+        "gate": "pass",
+        "source_cohorts": [
+          "zap_ulurp_city_map_changes",
+          "zap_ulurp_rezonings",
+          "zap_ulurp_site_selections"
+        ]
+      },
+      "mandate_meeting": {
+        "precision": 1,
+        "recall": 1,
+        "support": 12,
+        "false_merge": 0,
+        "false_split": 0,
+        "gate": "pass",
+        "source_cohorts": [
+          "lpc_hearings_august_2026",
+          "lpc_hearings_july_2026",
+          "lpc_hearings_june_2026"
+        ]
+      },
+      "mandate_rule": {
+        "precision": 1,
+        "recall": 1,
+        "support": 12,
+        "false_merge": 0,
+        "false_split": 0,
+        "gate": "pass",
+        "source_cohorts": [
+          "dob_energy_and_inspection_rules",
+          "dohmh_lead_and_cooling_tower_rules",
+          "dsny_commercial_waste_zones"
+        ]
+      },
+      "project_participates_in_procedure": {
+        "precision": 1,
+        "recall": 1,
+        "support": 12,
+        "false_merge": 0,
+        "false_split": 0,
+        "gate": "pass",
+        "source_cohorts": [
+          "zap_ulurp_city_map_changes",
+          "zap_ulurp_rezonings",
+          "zap_ulurp_site_selections"
+        ]
+      }
+    }
+  },
+  "public_total_contract": {
+    "rule": "Only standable or confirmed links contribute to constellation edge totals.",
+    "excluded_from_edge_totals": [
+      "tentative",
+      "probabilistic",
+      "not_yet_classified",
+      "evidence_only",
+      "name_mentions"
+    ],
+    "agency_mandates": {
+      "corpus_rows": 2931,
+      "verified_links": 2657,
+      "provisional_rows_excluded": 274,
+      "source": "site/data/agency_obligations_lookup.json"
+    },
+    "vendor_footprints": {
+      "edge_total_field": "confirmed_count",
+      "browse_result_receipt_field": "confirmed_count",
+      "name_mentions_field": "mention_count",
+      "rule": "Only confirmed links drive edge totals and Browse pivots; name mentions remain separately labeled discovery context."
+    }
+  },
+  "publication_gate": {
+    "opened_relations": [
+      "mandate_contract",
+      "mandate_governs_procedure",
+      "mandate_land_use",
+      "mandate_meeting",
+      "mandate_rule",
+      "project_participates_in_procedure"
+    ],
+    "provisional_cross_spine_candidates": {
+      "public_inferred": 5,
+      "evidence_only": 57,
+      "evidence_only_by_relation": {
+        "mandate_meeting": 48,
+        "mandate_land_use": 9
+      },
+      "source": "site/data/cross_spine_shadow_census.json"
+    }
+  },
+  "improved": [
+    "Held-out metrics now name recall plus false-merge and false-split equivalents with the matcher policy version.",
+    "Agency mandate totals now count verified standable links instead of the wider extraction corpus.",
+    "Vendor footprint totals and Browse pivots now share the confirmed-link denominator while name mentions remain separately labeled."
+  ],
+  "stayed_provisional": [
+    "274 quote-miss mandate extractions remain excluded from public edge totals.",
+    "57 evidence-only cross-spine candidates remain off public inferred-edge totals.",
+    "Vendor name mentions remain discovery scope, not reviewed identity links."
+  ],
+  "verification": [
+    "node --test test/cross_spine_eval.test.mjs test/cross_spine_shadow_census.test.mjs",
+    "node --test test/agency_constellation.test.mjs test/vendor_footprint.test.mjs",
+    "node tools/build_constellation_er_accuracy_receipt.mjs --check"
+  ]
+}

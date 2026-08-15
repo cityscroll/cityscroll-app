@@ -146,16 +146,18 @@ test("vendor footprint renders populated groups and strong objects only", () => 
   };
 
   const model = vendorFootprintModel(response);
-  assert.equal(model.groups.find((group) => group.id === "awards").objects.length, 1);
-  assert.equal(model.groups.find((group) => group.id === "awards").scope_count, 2);
+  const awards = model.groups.find((group) => group.id === "awards");
+  assert.equal(awards.objects.length, 1);
+  assert.equal(awards.scope_count, 2);
+  assert.equal(awards.edge_count, 1);
 
   const html = renderVendorFootprintHTML(response);
-  assert.match(html, /Awards <span class="ct">2<\/span>/);
+  assert.match(html, /Awards <span class="ct">1<\/span>/);
   assert.match(html, /1 link we’ve confirmed/);
   assert.match(html, /2 records mention this name/);
   assert.doesNotMatch(html, /We haven’t measured how complete this section is yet/);
   assert.doesNotMatch(html, /snapshot|source_record_id/i);
-  assert.match(html, /See Acme &amp; Co\.&#39;s awards \(2\)/);
+  assert.match(html, /See Acme &amp; Co\.&#39;s awards \(1\)/);
   assert.match(html, /Strong award/);
   assert.match(html, /class="ui-constellation-link pivot vendor-record-link"/);
   assert.match(html, /class="ui-constellation-link vendor-footprint-scope"/);
@@ -189,10 +191,10 @@ test("zero confirmed links surface populated name-mention counts without methodo
       },
     },
   });
-  assert.match(html, /Awards <span class="ct">273<\/span>/);
+  assert.match(html, /Awards <span class="ct">0<\/span>/);
   assert.match(html, /273 records mention this name/);
   assert.doesNotMatch(html, /identity not yet confirmed|This summary groups/i);
-  assert.match(html, /See Acme&#39;s awards \(273\)/);
+  assert.doesNotMatch(html, /vendor-footprint-scope/);
 });
 
 test("an empty footprint paints every supported family honestly", () => {
