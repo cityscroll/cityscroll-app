@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle; optional flag-gated D1 writer |
+| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle; optional flag-gated D1 writer; notice bitemporal read view |
 | Supersedes | — |
 | Blocks | Optional later writers for Rules/Land/Meetings under this envelope (adapters remain library-only until they opt in) |
 
@@ -114,16 +114,31 @@ Envelopes may optionally be appended to D1 table `civic_time_events` (migration
 | Default | **off** (`"false"` in `worker/wrangler.toml`; unset also means off) |
 | Behavior when off | Pure seam only — adapters attach `civic_events` to responses; no D1 writes |
 | Behavior when on | Fail-soft `INSERT OR IGNORE` by `event_id` after Money lifecycle attach |
-| Public reads | None yet — table is write-only accumulation |
+| Public reads | Bounded exact-subject notice history only |
 
 Clock honesty is enforced at map time and again at write time: source-null
 `published_at` / `valid_*` / `observed_at` stay SQL NULL; processing never fills
 publication; observation never fills valid time.
 
+### Notice bitemporal read view
+
+The public notice document may read the exact `notice:<request_id>` rows from the
+ledger when the writer is enabled. Its history card keeps two axes separate:
+
+- **VALID** uses `valid_at` or its explicit range, describing when the civic fact held.
+- **SYSTEM** uses the ledger `written_at` transaction clock, falling back to the
+  envelope's explicit `processed_at` clock when no write clock is available.
+
+Publication and observation remain separate evidence, and missing clocks remain
+null in the read model and render as “Not recorded.” The notice read path filters
+by exact subject reference and never fills a missing clock from another axis or
+from the current request time.
+
 ### Non-goals
 
 - No always-on event bus or graph store (the D1 table is an opt-in append log only)
-- No public HTTP consumer of `civic_time_events` in this card
+- No general-purpose public query over `civic_time_events`; the only public read is
+  the bounded exact-subject notice view described above
 - No replacement of existing spine renderers (`deriveRuleEvents`, land spine, meeting
   outcomes, Checkbook lifecycle) — adapters project them into the shared envelope
 

@@ -12,10 +12,21 @@ const notice = {
 };
 const FIXTURE_NOW = Date.parse("2026-08-07T12:00:00.000Z");
 
-function dbFor(record) {
+function dbFor(record, events = []) {
   return {
-    prepare() {
-      return { bind() { return { first: async () => record }; } };
+    prepare(sql) {
+      return {
+        bind(...params) {
+          return {
+            first: async () => record,
+            all: async () => ({
+              results: sql.includes("civic_time_events")
+                ? events.filter((event) => event.subject_ref === params[0])
+                : [],
+            }),
+          };
+        },
+      };
     },
   };
 }
@@ -61,6 +72,43 @@ test("the public Worker route dispatches to the notice read model", async () => 
   );
   assert.equal(response.status, 200);
   assert.equal((await response.json()).source, "materialized");
+});
+
+test("notice read model exposes exact civic-time history with source-null clocks", async () => {
+  const response = await handleNotice(
+    new Request("https://api.cityscroll.org/notice?id=20260807001"),
+    {
+      DB: dbFor(d1Record(), [
+        {
+          event_id: "cte-1",
+          subject_ref: "notice:20260807001",
+          event_kind: "procurement.notice_published",
+          valid_at: null,
+          valid_from: null,
+          valid_to: null,
+          published_at: "2026-08-07",
+          observed_at: null,
+          processed_at: "2026-08-08T01:00:00.000Z",
+          written_at: null,
+          status: "occurred",
+        },
+        {
+          event_id: "cte-other",
+          subject_ref: "notice:other",
+          event_kind: "procurement.notice_published",
+          valid_at: "2026-01-01",
+          published_at: null,
+          processed_at: "2026-01-02T00:00:00.000Z",
+        },
+      ]),
+    },
+  );
+  const body = await response.json();
+  assert.equal(body.civic_time.state, "ok");
+  assert.equal(body.civic_time.events.length, 1);
+  assert.equal(body.civic_time.events[0].subject_ref, "notice:20260807001");
+  assert.equal(body.civic_time.events[0].valid_at, null);
+  assert.equal(body.civic_time.events[0].processed_at, "2026-08-08T01:00:00.000Z");
 });
 
 test("an old D1 row remains the last-known-good response", async () => {
