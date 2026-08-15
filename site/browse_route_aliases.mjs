@@ -9,6 +9,7 @@ export const BROWSE_ROUTE_ALIASES = Object.freeze({
     targetRoute: "/browse/staffing/",
     targetFacet: "staffing",
     targetTab: "people",
+    navigationTab: "exams",
     defaultView: "guide",
     corpus: "exams",
     label: "Exams",

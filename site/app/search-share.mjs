@@ -112,7 +112,7 @@ function searchActionsHTML(lens, hash){
   return `<div class="nlqactions"><a class="act walk-entry-link" data-search-walk href="${nlqEscape(searchWalkHref(lens, hash))}">Start a walk</a><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(currentLanguageURL(canonicalSearchURL(location, hash)))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
 function bindSearchActions(root, label, hash){
-  hash=scopeHash(presetLens(hash)||document.querySelector(".tabbtn.active")?.dataset.tab,hash);
+  hash=scopeHash(presetLens(hash)||globalThis.activeViewTab?.(),hash);
   if(!root || !hash) return;
   const url=currentLanguageURL(canonicalSearchURL(location, hash));
   const walk=root.querySelector("[data-search-walk]"); if(walk) walk.href=currentLanguageURL(location.origin + searchWalkHref(presetLens(hash), hash));

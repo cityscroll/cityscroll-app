@@ -289,6 +289,11 @@ function syncTabAria(){
   btns.forEach(b=>{ const on=b.classList.contains("active"); b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; if(on) any=true; });
   if(!any && btns[0]) btns[0].tabIndex = 0; // notice view: no tab selected — keep the tablist reachable
 }
+function activeViewTab(){
+  const pane=document.querySelector(".tabpane.active");
+  return pane?.id?.startsWith("tab-") ? pane.id.slice(4) : null;
+}
+globalThis.activeViewTab=activeViewTab;
 function focusLensHeading(name){
   const pane=document.getElementById("tab-"+name);
   const heading=pane?.querySelector(".lens-entry-heading");
@@ -312,8 +317,10 @@ function showTab(name, push){
   }
   pendingRouteModuleTab=null;
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
+  const routeAlias=browseRouteAlias(location.pathname);
+  const navigationTab=routeAlias?.targetTab===name ? routeAlias.navigationTab : name;
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
-  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === navigationTab));
   syncTabAria();
   focusLensHeading(name);
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
@@ -354,6 +361,12 @@ function showTab(name, push){
 }
 
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
+  const activeAlias=browseRouteAlias(location.pathname);
+  if(activeAlias?.targetTab===b.dataset.tab){
+    e.preventDefault();
+    location.assign(currentLanguageURL(activeAlias.targetRoute));
+    return;
+  }
   // A route alias reuses another pane's runtime, so a same-name compatibility
   // pane must not steal the click. Its canonical document route owns navigation.
   if(browseRouteAlias(new URL(b.href, location.href).pathname)) return;
@@ -368,15 +381,19 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
 /* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */
 (function(){
   const nav=document.querySelector(".tabs"); if(!nav) return;
+  const routeAlias=browseRouteAlias(location.pathname);
   nav.setAttribute("role","tablist"); nav.setAttribute("aria-label", t("tablist_label"));
   document.querySelectorAll(".tabbtn").forEach(b=>{
-    b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+b.dataset.tab);
+    const controlledTab=routeAlias?.navigationTab===b.dataset.tab ? routeAlias.targetTab : b.dataset.tab;
+    b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+controlledTab);
   });
   document.querySelectorAll(".tabpane").forEach(p=>{
     // #tab-notice/#tab-entity have no corresponding .tabbtn (reached only via permalink/pivot,
     // never the tablist) — role=tabpanel with no owning tab is an orphan per WAI-ARIA APG, so
     // they get no tab role at all rather than a false aria-labelledby.
-    const btn=document.getElementById("tabbtn-"+p.id.slice(4));
+    const paneTab=p.id.slice(4);
+    const labelTab=routeAlias?.targetTab===paneTab ? routeAlias.navigationTab : paneTab;
+    const btn=document.getElementById("tabbtn-"+labelTab);
     if(btn){ p.setAttribute("role","tabpanel"); p.setAttribute("aria-labelledby", btn.id); }
   });
   nav.addEventListener("keydown", e=>{
