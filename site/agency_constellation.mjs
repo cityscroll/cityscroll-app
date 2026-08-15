@@ -24,6 +24,7 @@ import {
 import {
   mandateReportsNavLabel,
   mandateRulesNavLabel,
+  normalizeMandateGraphNeighbors,
 } from "./mandate_graph_neighbors.mjs";
 import { agencyMandatesConformancePath } from "./process_conformance.mjs";
 import {
@@ -136,6 +137,30 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     exportClass: "object_actions",
     extraClass: "civic-object-actions",
   });
+  const agencyBrowse = normalizeMandateGraphNeighbors(
+    view.mandates_rules?.graph_neighbors
+      || view.mandates_reports?.graph_neighbors
+      || view.mandates_predictions?.graph_neighbors
+      || view.mandates_conformance?.graph_neighbors
+      || {},
+  );
+  const exploreAgency = agencyBrowse
+    ? renderNodeActions([
+      agencyBrowse.rules_browse_href
+        ? { kind: "link", label: "Browse agency Rules", href: agencyBrowse.rules_browse_href, className: "civic-object-action" }
+        : null,
+      agencyBrowse.meetings_browse_href
+        ? { kind: "link", label: "Browse agency Meetings", href: agencyBrowse.meetings_browse_href, className: "civic-object-action" }
+        : null,
+      agencyBrowse.contracts_browse_href
+        ? { kind: "link", label: "Browse agency Contracts", href: agencyBrowse.contracts_browse_href, className: "civic-object-action" }
+        : null,
+    ].filter(Boolean), {
+      ariaLabel: "Explore this agency",
+      exportClass: "object_explore",
+      extraClass: "civic-object-actions agency-explore-actions",
+    })
+    : "";
   const sectionView = Object.freeze({
     view,
     displayView,
@@ -199,6 +224,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     ${edgeRail}
     ${localConstellation}
     ${actions}
+    ${exploreAgency}
     ${sections}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
