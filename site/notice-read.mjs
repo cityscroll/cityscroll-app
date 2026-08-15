@@ -46,6 +46,10 @@ const enrichHearing = rows => {
 export const read = id => {
   const fallback = () => soda({"$where":`request_id='${String(id).replace(/'/g,"''")}'`,"$limit":"1"},5e3);
   return workerFetch("/notice?id="+encodeURIComponent(id),null,5e3)
-    .then(r => r.json()).then(x => x.row ? enrichHearing([x.row]) : fallback().then(enrichHearing))
+    .then(r => r.json()).then(x => {
+      if (!x.row) return fallback().then(enrichHearing);
+      if (x.civic_time) x.row.civic_time = x.civic_time;
+      return enrichHearing([x.row]);
+    })
     .catch(() => fallback().then(enrichHearing));
 };
