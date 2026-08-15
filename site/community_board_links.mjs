@@ -73,3 +73,9 @@ export function communityBoardPageHref(value, options = {}) {
 export function resolvedCommunityBoardId(value, options = {}) {
   return canonicalId(value) || communityBoardIdFromEvidence(value, options);
 }
+
+export function communityBoardCommitteePageHref(board, committee) {
+  const base = communityBoardPageHref(board);
+  const slug = clean(committee).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return base && slug ? `${base}#committee-${encodeURIComponent(slug)}` : null;
+}

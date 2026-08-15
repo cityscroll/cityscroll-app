@@ -48,16 +48,15 @@ test("the edge Following renderer keeps the create-first empty state on a fresh 
   assert.match(html, /data-personal-watch-list/);
 });
 
-test("the edge Following renderer previews the same saved scope and preserves the source-list count", async () => {
+test("the edge Following renderer previews the shared materialized meeting scope", async () => {
   const filter = encodeURIComponent(JSON.stringify({
-    keywords: ["curb"],
-    agency: "Transportation",
-    borough: "Queens",
+    keywords: ["LANDMARKS 2"],
+    borough: "Manhattan",
     dateWindow: "month",
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=meetings&filter=${filter}&freq=weekly&count=17`,
-  ), {}, {}, { fetchImpl: previewFetch });
+  ));
   const html = await response.text();
 
   assert.equal(response.status, 200);
@@ -68,8 +67,8 @@ test("the edge Following renderer previews the same saved scope and preserves th
   assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/brand\.css"/);
   assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/civic-documents\.css"/);
   assert.match(html, /data-scope-count="17"/);
-  assert.match(html, /data-preview-id="20260805001"/);
-  assert.match(html, /Queens curb redesign hearing/);
+  assert.match(html, /data-preview-id="meeting:community_board:/);
+  assert.match(html, /LANDMARKS 2/);
   assert.match(html, /name="lens"[^>]+value="meetings"/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
 });

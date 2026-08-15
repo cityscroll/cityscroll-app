@@ -27,6 +27,19 @@ export function parseFeedQuery(searchParams) {
 // Normalize compileSub result rows → neutral feed items.
 export function feedItems(kind, rows) {
   return (rows || []).map((r) => {
+    if (kind === "meetings" && r.meeting_id) {
+      return {
+        id: String(r.meeting_id),
+        url: `https://cityscroll.org/meetings/${encodeURIComponent(r.meeting_id)}/`,
+        title: r.title || "Meeting",
+        date: r.start_date || r.event_date || null,
+        summary: [r.board_name || r.agency || r.agency_name, r.committee?.name, r.venue?.address || r.venue?.name]
+          .filter(Boolean).join(" · "),
+        eventDate: r.event_date || null,
+        phase: "Hearing / meeting",
+        nextStep: r.event_date ? `Event ${d10(r.event_date)}` : null,
+      };
+    }
     if (kind === "rezone") {
       return {
         id: String(r.project_id || ""),

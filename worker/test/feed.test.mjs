@@ -69,6 +69,21 @@ test("feedItems: identifier fallbacks replace placeholder titles", () => {
   assert.equal(feedItems("rules", [{ request_id: "20260805001", short_title: "(untitled)" }])[0].title, "Notice 20260805001");
 });
 
+test("feedItems: materialized meetings link to canonical detail pages with civic context", () => {
+  const [item] = feedItems("meetings", [{
+    meeting_id: "meeting:community_board:event-rich",
+    title: "LANDMARKS 2",
+    event_date: "2026-08-17T18:30:00-04:00",
+    board_name: "Manhattan Community Board 2",
+    committee: { name: "Landmarks 2" },
+    venue: { address: "3 Washington Square Village #1A" },
+  }]);
+  assert.match(item.url, /\/meetings\/meeting%3Acommunity_board%3Aevent-rich\//);
+  assert.match(item.summary, /Manhattan Community Board 2/);
+  assert.match(item.summary, /Landmarks 2/);
+  assert.match(item.summary, /3 Washington Square Village/);
+});
+
 test("atomFeed: well-formed, escaped, one entry per item", () => {
   const xml = atomFeed({
     title: 'CityScroll — rules & notices — about "scaffold"',

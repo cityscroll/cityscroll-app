@@ -36,6 +36,19 @@ export const COMMUNITY_BOARD_SOURCE_STATES = SOURCE_STATES;
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
 function clean(value, max = 500) { return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max); }
+function boardCommunityDistrict(board) {
+  const match = clean(board?.id).match(/^([a-z]+)-cb-(\d{2})$/i);
+  if (!match) return null;
+  const prefix = { bronx: "X", brooklyn: "K", manhattan: "M", queens: "Q", "staten-island": "R" }[match[1].toLowerCase()];
+  return prefix ? `${prefix}${match[2]}` : null;
+}
+
+function committeeFromRecord(record) {
+  if (record?.committee?.name) return record.committee;
+  const title = clean(record?.title, 500);
+  const match = title.match(/^(.+?)\s+[–-]\s+.+\b(?:chair|vice chair)\b/i);
+  return match?.[1] ? { name: clean(match[1], 300), href: null } : null;
+}
 function sourceDescriptors(inventory, registry) {
   const boardNames = new Map((registry.sources || [])
     .filter((row) => row.body_type === "community_board")
@@ -138,7 +151,16 @@ function indexedRow(record, board, observedAt) {
     source_receipt: record.observed_receipt,
     meeting_origin: "community_board_source_observed",
     board_id: board.id,
-    venue: record.address ? { address: record.address, mode: "in-person" } : null,
+    venue: record.address || record.venue_name ? {
+      name: record.venue_name || null,
+      address: record.address || null,
+      mode: record.mode || (record.address ? "in-person" : "not-stated"),
+    } : null,
+    participation: record.participation,
+    committee: committeeFromRecord(record),
+    description: record.description,
+    meeting_documents: record.meeting_documents || [],
+    search_text: record.search_text,
   });
   const institutionEdge = record.institution_edge || record.community_board_edge || null;
   return {
@@ -157,6 +179,10 @@ function indexedRow(record, board, observedAt) {
     source_record_id: sourceRecordId,
     board_id: board.id,
     board_name: board.name || board.body_name || board.id,
+    committee: meeting.committee,
+    description: meeting.description,
+    participation: meeting.participation,
+    meeting_documents: meeting.meeting_documents,
     short_title: meeting.title,
     start_date: observedAt,
     type_of_notice_description: record.category || "Board meeting",
@@ -178,7 +204,7 @@ function indexedRow(record, board, observedAt) {
       scope: "local",
       boroughs: [board.borough],
       community_boards: [board.id],
-      community_districts: [],
+      community_districts: [boardCommunityDistrict(board)].filter(Boolean),
       neighborhoods: [],
       addresses: [],
     },
@@ -187,6 +213,43 @@ function indexedRow(record, board, observedAt) {
     // receipt-backed join above.
     entity_refs_all: [meeting.institution_refs.board_ref, meeting.meeting_id].filter(Boolean),
     institution_edges: institutionEdge ? [institutionEdge] : [],
+  };
+}
+
+async function enrichEventRecord(record, descriptor, fetchImpl, observedAt) {
+  const adapter = communityBoardSourceAdapterId(descriptor);
+  if (!record?.record_url || adapter !== "html_pdf_v1") return record;
+  const detail = await fetchCommunityBoardSource({
+    ...descriptor,
+    url: record.record_url,
+    role: "event_detail",
+    source_role: "event_detail",
+    event_detail: true,
+    meeting_key: record.record_id || record.publisher_identifier,
+    meeting_date: record.date,
+  }, { fetchImpl, observedAt });
+  const event = detail.records.find((row) => row.record_kind === "event") || null;
+  const meetingId = `meeting:community_board:${record.publisher_identifier || record.record_id}`;
+  const documents = detail.records
+    // Event pages also expose navigational links to other event pages. They
+    // are source records, not meeting attachments; only publisher documents
+    // with an explicit file identity enter the shared meeting object.
+    .filter((row) => row.record_kind === "document" && /\.(?:pdf|docx?|rtf)(?:$|[?#])/i.test(row.record_url || row.document_id || ""))
+    .map((row) => ({ ...row, meeting_key: meetingId, meeting_id: meetingId }));
+  return {
+    ...record,
+    ...(event ? {
+      title: event.title || record.title,
+      address: event.address || record.address,
+      venue_name: event.venue_name || record.venue_name,
+      start_at: event.start_at || record.start_at,
+      end_at: event.end_at || record.end_at,
+      description: event.description || record.description,
+      participation: event.participation || record.participation,
+      committee: event.committee || record.committee,
+    } : {}),
+    meeting_documents: documents,
+    detail_receipt: detail.receipt || null,
   };
 }
 
@@ -199,6 +262,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
   const sourceRecordsByBoard = {};
   const receipts = [];
   let fetched = 0;
+  let eventDetailsFetched = 0;
   const allRecords = [];
   for (const descriptor of descriptors) {
     const contract = sourceAdapterContract(descriptor);
@@ -209,11 +273,20 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       ? await fetchCommunityBoardSource(descriptor, { fetchImpl, observedAt })
       : { records: [], receipt: sourceReceipt(descriptor, observedAt) };
     if (shouldFetch) fetched += 1;
-    const records = result.records.map((record) => ({
+    let records = result.records.map((record) => ({
       ...record,
       source_role: descriptor.source_role,
       source_url: record.source_url || descriptor.url || null,
     }));
+    if (descriptor.source_role === "upcoming_meetings") {
+      const enriched = [];
+      for (const record of records) {
+        const next = await enrichEventRecord(record, descriptor, fetchImpl, observedAt);
+        if (next !== record) eventDetailsFetched += 1;
+        enriched.push(next);
+      }
+      records = enriched;
+    }
     allRecords.push(...records);
     const roleReceipt = sourceRoleReceipt(descriptor, result, records, observedAt);
     receipts.push(roleReceipt);
@@ -235,8 +308,12 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     || String(left.source_record_id).localeCompare(String(right.source_record_id))
   ));
   const rawMinutes = allRecords.filter((record) => record.source_role === "minutes");
-  const documentJoin = attachMeetingDocuments(rows, rawMinutes, { asOf: observedAt });
+  const eventDocuments = rows.flatMap((row) => row.meeting_documents || []);
+  const documentJoin = attachMeetingDocuments(rows, [...rawMinutes, ...eventDocuments], { asOf: observedAt });
   const materializedRows = documentJoin.meetings;
+  const eventDocumentIds = new Set(eventDocuments.map((document) => document.document_id || document.record_id).filter(Boolean));
+  const attachedEventDocuments = documentJoin.attached_documents.filter((document) => eventDocumentIds.has(document.document_id));
+  const attachedMinutes = documentJoin.attached_documents.filter((document) => !eventDocumentIds.has(document.document_id));
   const institutionEdges = materializedRows.flatMap((row) => row.institution_edges || []);
   return {
     schema: INDEX_SCHEMA,
@@ -255,11 +332,17 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     },
     coverage: {
       source_urls_checked: fetched,
+      event_details_checked: eventDetailsFetched,
       boards_indexed: Object.keys(byBoard).length,
       records_indexed: rows.length,
-      minutes_documents_indexed: documentJoin.documents.length,
-      minutes_documents_attached: documentJoin.attached_documents.length,
-      minutes_documents_unlinked: documentJoin.orphan_documents.length,
+      minutes_documents_indexed: rawMinutes.length,
+      minutes_documents_attached: attachedMinutes.length,
+      minutes_documents_unlinked: rawMinutes.length - attachedMinutes.length,
+      event_documents_indexed: eventDocuments.length,
+      event_documents_attached: attachedEventDocuments.length,
+      meeting_documents_indexed: documentJoin.documents.length,
+      meeting_documents_attached: documentJoin.attached_documents.length,
+      meeting_documents_unlinked: documentJoin.orphan_documents.length,
       minutes_documents_ambiguous: documentJoin.ambiguous_documents.length,
       institution_edges_materialized: institutionEdges.filter((edge) => edge?.status === "promoted" || edge?.status === "official").length,
       boards_in_inventory: inventory.boards.length,
