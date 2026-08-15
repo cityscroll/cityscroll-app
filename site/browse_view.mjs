@@ -141,8 +141,8 @@ export const BROWSE_GROUPS = Object.freeze([
     id: "rules-mandates",
     label: "Rules",
     primaryFacet: "rules",
-    description: "Rules, obligations, deadlines, and the records that implement them.",
-    sources: "Agency Rules · agency obligation registry",
+    description: "Rules, mandates, deadlines, and the records that implement them.",
+    sources: "Agency Rules · agency mandate registry",
     children: [
       { id: "rules", facet: "rules", label: "Rules", linkLabel: "Browse rules" },
       { id: "mandates", label: "Mandates" },

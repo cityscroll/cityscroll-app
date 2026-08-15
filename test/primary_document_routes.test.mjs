@@ -353,7 +353,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(search, /href="search\.css"/);
   assert.match(search, /<form class="topic-search-form" method="get" action="\/search\/"/);
   assert.match(search, /<strong>Keyword search<\/strong>/);
-  for (const lane of ["Contracts", "Rules", "Meetings", "Obligations"]) {
+  for (const lane of ["Contracts", "Rules", "Meetings", "Mandates"]) {
     assert.match(search, new RegExp(`<h3[^>]*>${lane}<\\/h3>`));
   }
   assert.match(search, /name="q"[^>]+maxlength="240"/);
