@@ -1,4 +1,5 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
+import { browseRouteAlias } from "../browse_route_aliases.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
@@ -353,6 +354,9 @@ function showTab(name, push){
 }
 
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
+  // A route alias reuses another pane's runtime, so a same-name compatibility
+  // pane must not steal the click. Its canonical document route owns navigation.
+  if(browseRouteAlias(new URL(b.href, location.href).pathname)) return;
   // Some civic-object links are document routes without an SPA pane (for example
   // the static People and Places concept landings). Let those anchors navigate so
   // the document route and its server-rendered content remain authoritative.

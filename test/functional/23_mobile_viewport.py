@@ -21,7 +21,7 @@ from playwright.sync_api import Page, sync_playwright
 ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
-from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
+from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from tools.local_site_server import QuietHandler  # noqa: E402
 
@@ -189,7 +189,8 @@ def run(base: str) -> None:
                 assert len(set(tops)) == len(tops), f"phase chain still wraps horizontally: {tops}"
 
         page.goto(f"{base}#money", wait_until="domcontentloaded", timeout=30_000)
-        wait_for_locator(page.locator("#detail"), label="attachment detail surface")
+        wait_for_app_ready(page)
+        wait_for_locator(page.locator("#list .row").first, label="attachment fixture source row")
         install_table_fixture(page)
         wait_for_locator(page.locator("table.attachment-table"), label="attachment table")
         assert_mobile_surface(page, "attachment table")

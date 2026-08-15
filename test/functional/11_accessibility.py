@@ -301,7 +301,17 @@ def run_index_states(pw, lang, viewport, failures):
 
     for tab in TABS:
         page.click(f'.tabbtn[data-tab="{tab}"]')
-        _wait_for_browse_route(page, tab)
+        if tab == "exams":
+            # Exams is a native document-route alias. The generic /browse/ wait is
+            # already true on the preceding Meetings document and can audit stale DOM.
+            wait_for_function(
+                page,
+                "() => location.pathname === '/browse/exams/' && location.hash === ''",
+                label="Exams document route",
+            )
+            wait_for_locator(page.locator("#tab-people.active"), label="Exams guide pane")
+        else:
+            _wait_for_browse_route(page, tab)
         # The fixture deliberately blocks the Leaflet CDN. Expose the app-owned directional
         # controls anyway so axe measures their 32px targets at both responsive widths.
         if tab == "land" and page.locator("#landpan").count():
@@ -310,8 +320,12 @@ def run_index_states(pw, lang, viewport, failures):
         run_axe(page, state, failures, restore_url=BASE)
         run_focus_exposure(page, state, failures)
 
-    # notice detail: money tab, click the first fixture row (renderList also auto-clicks
-    # it on load, but an explicit click keeps this state independent of that behavior)
+    # Exams leaves the root shell by design. Return explicitly before exercising
+    # the independent Money notice-detail state.
+    page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
+    _wait_for_home(page)
+    # Notice detail: click the first fixture row (renderList also auto-clicks it on
+    # load, but an explicit click keeps this state independent of that behavior).
     page.click('.tabbtn[data-tab="money"]')
     _wait_for_browse_route(page, "money")
     wait_for_locator(page.locator("#list .row").first, label="money notice row")

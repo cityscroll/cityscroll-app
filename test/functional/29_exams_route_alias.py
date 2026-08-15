@@ -23,9 +23,16 @@ def wait_for_guide(page):
 def run(page):
     install_routes(page)
 
-    page.goto(f"{BASE}browse/exams/", wait_until="domcontentloaded", timeout=30_000)
+    # Exams owns a document route even though its interaction contract is
+    # implemented by the Staffing guide. The Browse nav must perform a native
+    # navigation instead of exposing the retired inline #tab-exams splash.
+    page.goto(f"{BASE}browse/contracts/", wait_until="domcontentloaded", timeout=30_000)
+    page.wait_for_function("typeof window.showTab === 'function'")
+    page.locator(".browse-child-tabs [href='/browse/exams/']").click()
+    page.wait_for_url(f"{BASE}browse/exams/", timeout=30_000)
     wait_for_guide(page)
     assert page.url.rstrip("/").endswith("/browse/exams")
+    expect(page.locator("#tab-exams")).to_be_hidden()
     assert page.locator("#tab-people.active").count() == 1
     assert page.locator("#career-guide").is_visible()
     assert page.locator("#staffing-ledger").get_attribute("hidden") == ""
