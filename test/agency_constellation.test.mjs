@@ -27,6 +27,7 @@ import { reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_i
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
 import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
+import { buildAgencyObligationsLookup } from "../site/agency_obligations.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -72,6 +73,45 @@ test("section registry composes every capability in stable order", () => {
   for (const section of AGENCY_CONSTELLATION_SECTIONS) {
     assert.equal(typeof section.render, "function", `${section.id} exposes render(view)`);
   }
+});
+
+test("resident-facing mandate labels stay canonical across hydrated surfaces", () => {
+  const temporalRuntime = readFileSync(join(ROOT, "site/civic_time_ledger_runtime.mjs"), "utf8");
+  const searchRuntime = readFileSync(join(ROOT, "site/search_document.mjs"), "utf8");
+
+  assert.match(temporalRuntime, /"Watch mandates and deadlines"/);
+  assert.doesNotMatch(temporalRuntime, /"Watch obligations and deadlines"/);
+  assert.match(searchRuntime, /obligations:\s*"Mandates"/);
+  assert.doesNotMatch(searchRuntime, /obligations:\s*"Obligations"/);
+});
+
+test("upstream obligations envelopes remain ingestable without changing product identity", () => {
+  const lookup = buildAgencyObligationsLookup({
+    schema_version: "upstream-obligations-v1",
+    obligations: [{
+      obligation_id: "48909-001",
+      matter_id: "48909",
+      agency: "Department of Parks and Recreation",
+      duty_text: "Publish a quarterly report.",
+      deliverable_type: "report",
+      deadline: { kind: "none", computed_date: null },
+      recurrence: "quarterly",
+      citation: "Administrative Code § 14-150(a)(4)",
+      quote_verified: true,
+    }],
+    receipt: { law_count: 1, mandate_count: 1 },
+  }, { generatedAt: "2026-08-15T00:00:00Z" });
+
+  assert.equal(lookup.source_receipt.schema_version, "upstream-obligations-v1");
+  assert.equal(lookup.by_agency[PARKS].count, 1);
+
+  const html = renderAgencyConstellationDocument(buildAgencyConstellationView(PARKS, {
+    obligations: lookup,
+  }));
+  const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
+  assert.match(readerHtml, />Mandates\b/);
+  assert.doesNotMatch(readerHtml, />Obligations\b/);
+  assert.match(readerHtml, /href="https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&amp;ID=48909"/);
 });
 
 test("agency path and subject ref are stable", () => {
