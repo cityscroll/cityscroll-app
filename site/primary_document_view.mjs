@@ -9,6 +9,7 @@ import {
 import { buildNowSurface } from "./now_surface.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
+import { renderStaffingExamCard, renderStaffingExamResultGroup } from "./staffing_exam_card.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -171,15 +172,6 @@ export function buildBrowseLandingDocument(shell, payloads, options = {}) {
   return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
 }
 
-function examStatus(exam, today) {
-  if (exam?.schedule_status === "canceled") return "Canceled";
-  if (exam?.schedule_status === "postponed") return "Postponed";
-  if (!exam?.application_start || !exam?.application_end) return "Unscheduled";
-  if (today < exam.application_start) return "Upcoming";
-  if (today <= exam.application_end) return "Open";
-  return "Closed";
-}
-
 function examDate(value) {
   const day = String(value || "").slice(0, 10);
   return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : "";
@@ -193,6 +185,45 @@ function examExternalHref(value) {
   } catch (_error) {
     return "";
   }
+}
+
+function examStatus(exam, today) {
+  if (exam?.schedule_status === "canceled") return "canceled";
+  if (exam?.schedule_status === "postponed") return "postponed";
+  if (!exam?.application_start || !exam?.application_end) return "unscheduled";
+  if (today < exam.application_start) return "upcoming";
+  if (today <= exam.application_end) return "open";
+  return "closed";
+}
+
+function examStatusLabel(status) {
+  return {
+    open: "Open",
+    upcoming: "Upcoming",
+    closed: "Closed",
+    canceled: "Canceled",
+    postponed: "Postponed",
+    unscheduled: "Unscheduled",
+  }[status] || "Unscheduled";
+}
+
+function examStatusClass(status) {
+  return status === "open" ? "open" : status === "closed" || status === "canceled" ? "closed" : "soon";
+}
+
+function examWindow(exam, status) {
+  if (status === "open") return `Open through ${examDate(exam.application_end) || "date unavailable"}`;
+  if (status === "upcoming") return `Opens ${examDate(exam.application_start) || "date unavailable"}`;
+  if (status === "closed") return `Closed ${examDate(exam.application_end) || "date unavailable"}`;
+  return examStatusLabel(status);
+}
+
+function examOpenBand(exam, status, today) {
+  const boundary = status === "open" ? exam.application_end : status === "upcoming" ? exam.application_start : null;
+  if (!boundary) return "";
+  const days = Math.round((Date.parse(`${boundary}T12:00:00Z`) - Date.parse(`${today}T12:00:00Z`)) / 86400000);
+  if (!Number.isFinite(days) || days < 0) return "";
+  return days <= 14 ? "imminent" : days <= 90 ? "approaching" : "far";
 }
 
 function examEdgeState(exam, kind) {
@@ -223,46 +254,85 @@ function examEdgeMarkup(exam, kind, label) {
   const stateLabel = edge.state[0].toUpperCase() + edge.state.slice(1);
   const count = edge.count == null ? "" : ` · ${edge.count.toLocaleString("en-US")}`;
   const body = edge.href
-    ? `<a href="${esc(edge.href)}" rel="noopener noreferrer">${esc(label)}</a>`
+    ? `<a class="act" href="${esc(edge.href)}" rel="noopener noreferrer">${esc(label)}</a>`
     : `<span>${esc(label)} · ${stateLabel}${count}</span>`;
   return `<li data-edge-kind="${esc(kind)}" data-edge-state="${esc(edge.state)}">${body}</li>`;
+}
+
+function examEdgesMarkup(exam) {
+  return `<section class="career-outcomes exam-family-edges" data-exam-family-edges="1" aria-label="Exam connections">
+    <h3 class="career-outcomes-heading">Exam connections</h3>
+    <ul class="exam-family-edge-list">${examEdgeMarkup(exam, "eligible-list", "Eligible list")}${examEdgeMarkup(exam, "appointments", "Appointments")}</ul>
+  </section>`;
 }
 
 function renderExamCard(exam, today) {
   const id = String(exam?.exam_number || "").trim();
   if (!/^\d{4}$/.test(id)) return "";
-  const title = String(exam.title || `Exam ${id}`);
   const status = examStatus(exam, today);
-  const start = examDate(exam.application_start);
-  const end = examDate(exam.application_end);
+  const openBand = examOpenBand(exam, status, today);
   const application = examExternalHref(exam.official_application_url);
   const notice = examExternalHref(exam.notice_url);
-  const actions = [
-    `<a href="/exams/${esc(id)}/">Exam details</a>`,
-    application ? `<a href="${esc(application)}" rel="noopener noreferrer">Apply</a>` : "",
-    notice ? `<a href="${esc(notice)}" rel="noopener noreferrer">Official notice</a>` : "",
+  const fee = exam.fee != null ? `$${Number(exam.fee).toLocaleString("en-US")}` : "";
+  const salary = exam.salary_min != null ? `$${Number(exam.salary_min).toLocaleString("en-US")}` : "";
+  const facts = [
+    fee ? `<div class="career-action-fact"><b>${esc(fee)}</b><span>Application fee</span></div>` : "",
+    salary ? `<div class="career-action-fact"><b>${esc(salary)}</b><span>Starting salary</span></div>` : "",
   ].filter(Boolean).join("");
-  return `<article class="exam-directory-card" data-exam-number="${esc(id)}" data-exam-status="${esc(status.toLowerCase())}">
-    <div class="exam-directory-card-head"><span class="exam-directory-status">${esc(status)}</span><span class="exam-directory-number">Exam ${esc(id)}</span></div>
-    <h2><a href="/exams/${esc(id)}/" lang="en" dir="ltr">${esc(title)}</a></h2>
-    <p class="exam-directory-meta">${esc(exam.eligibility === "promotion" ? "Promotion" : "Open competitive")}${start && end ? ` · ${esc(start)}–${esc(end)}` : ""}</p>
-    <ul class="exam-directory-edges">${examEdgeMarkup(exam, "eligible-list", "Eligible list")}${examEdgeMarkup(exam, "appointments", "Appointments")}</ul>
-    <p class="exam-directory-actions">${actions}</p>
-  </article>`;
+  const titleCode = String(exam.title_code || "").trim();
+  const titleFamily = titleCode
+    ? `<p class="career-title-code-family" data-title-code-confidence="publisher" lang="en" dir="ltr"><span>Publisher-issued title code</span>: <code>${esc(titleCode)}</code></p>`
+    : "";
+  const qualifiers = exam.qualifications
+    ? `<p class="career-diff-quals" lang="en" dir="ltr"><b>Qualifications:</b> ${esc(exam.qualifications)}</p>`
+    : "";
+  const actionFacts = `${facts ? `<div class="career-action-facts">${facts}</div>` : ""}${qualifiers}${exam.list_establishment_forecast ? `<div class="note" data-staffing-list-prediction="1">List establishment forecast: cohort median ${esc(exam.list_establishment_forecast.median_months)} months.</div>` : ""}`;
+  const actions = `${status === "open" && application ? `<a class="act primary" href="${esc(application)}" rel="noopener noreferrer">Apply</a>` : ""}${notice ? `<a class="act" href="${esc(notice)}" rel="noopener noreferrer">Official exam notice</a>` : ""}`;
+  return renderStaffingExamCard({
+    examNumber: id,
+    examFormat: esc(exam.exam_format || ""),
+    salaryBand: esc(exam.salary_band || ""),
+    feeLevel: esc(exam.fee_level || ""),
+    status,
+    statusMarkup: `<span class="career-status-fact ${examStatusClass(status)}">${examStatusLabel(status)}</span>`,
+    openBandMarkup: openBand ? `<span class="tag" data-open-window-band="${esc(openBand)}" lang="en" dir="ltr">${esc(openBand)}</span>` : "",
+    noeMarkup: notice ? `<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted</span>` : "",
+    promotionMarkup: exam.eligibility === "promotion" ? `<span class="tag soon">Promotion</span>` : "",
+    deadlineMarkup: esc(examWindow(exam, status)),
+    titleMarkup: `<a href="/exams/${esc(id)}/" lang="en" dir="ltr">${esc(exam.title || `Exam ${id}`)}</a>`,
+    examNumberMarkup: `Exam ${esc(id)}`,
+    titleFamilyMarkup: titleFamily,
+    actionFactsMarkup: actionFacts,
+    outcomesMarkup: examEdgesMarkup(exam),
+    actionsMarkup: actions,
+  });
 }
 
 export function renderBrowseExams(artifact = {}) {
   const exams = Array.isArray(artifact.exams) ? artifact.exams : [];
   const today = examDate(artifact.data_current_as_of || artifact.generated_at) || "9999-12-31";
-  const cards = exams.map((exam) => renderExamCard(exam, today)).filter(Boolean).join("");
   const asOf = examDate(artifact.data_current_as_of || artifact.generated_at);
+  const groups = [
+    ["open", "Open now"],
+    ["upcoming", "Upcoming"],
+    ["closed", "Closed or completed"],
+    ["other", "Other exam records"],
+  ].map(([id, label]) => {
+    const rows = exams.filter((exam) => {
+      const status = examStatus(exam, today);
+      return id === "other" ? !["open", "upcoming", "closed"].includes(status) : status === id;
+    });
+    return renderStaffingExamResultGroup({ id, label, cards: rows.map((exam) => renderExamCard(exam, today)).filter(Boolean).join("") });
+  }).join("");
   return `<div class="browse-concept-landing exams-directory" data-build-rendered="browse-exams" data-browse-object-family="exams">
     <p class="now-kicker"><a href="/browse/">Browse</a> · Exams</p>
-    <header class="browse-landing-head"><h1>Exams</h1><p>Civil-service exam schedules, applications, eligible lists, and published outcomes.</p><p class="exam-directory-asof">${exams.length.toLocaleString("en-US")} exam records${asOf ? ` · snapshot updated ${esc(asOf)}` : ""}</p></header>
-    <section class="browse-concept-section exam-directory-section" aria-labelledby="exam-directory-heading">
-      <div class="exam-directory-section-head"><div><h2 id="exam-directory-heading">Civil-service exams</h2><p>Open an exam for its application window, official notice, process context, and public outcomes.</p></div><a class="browse-concept-link" href="/browse/staffing/">Browse staffing records</a></div>
-      <div class="exam-directory-grid">${cards}</div>
-    </section>
+    <div class="career-guide" data-build-rendered="browse-exams" data-browse-object-family="exams">
+      <section class="career-browser" aria-labelledby="exam-directory-heading">
+        <div class="career-browser-head"><div><p class="career-kicker">Exams</p><h1 id="exam-directory-heading">Civil-service exams</h1></div><p>${exams.length.toLocaleString("en-US")} exam records${asOf ? ` · snapshot updated ${esc(asOf)}` : ""}. Open an exam for its application window, official notice, and public outcomes.</p></div>
+        <div class="career-source" role="status"><span>Build-rendered from the DCAS exam snapshot; related records appear only when the publisher supplies an exact key.</span><a href="/browse/staffing/">Browse Staffing</a></div>
+        <div class="career-results" id="career-results">${groups}</div>
+      </section>
+    </div>
   </div>`;
 }
 

@@ -12,6 +12,7 @@ import {
 } from "../staffing_agency_scope.mjs";
 import { filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
+import { renderStaffingExamCard, renderStaffingExamResultGroup } from "../staffing_exam_card.mjs";
 
 /* ===================== PEOPLE ===================== */
 let SameConsolidation=null;
@@ -762,46 +763,48 @@ function careerCardHTML(exam){
     ${exam.amendment?`<p class="note warn" lang="en" dir="ltr">${escUiHtml(exam.amendment)}</p>`:""}
     <p class="career-english-note">${t("career_official_english_note")}</p>`
     : "";
-  return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" data-exam-format="${escUiHtml(exam.exam_format||"")}" data-salary-band="${escUiHtml(exam.salary_band||"")}" data-fee-level="${escUiHtml(exam.fee_level||"")}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
-    <div class="career-deadline-lead">
-      ${statusHref
-        ? filterChip({
-          label: careerStatusLabel(status),
-          className: `career-status-chip ${careerStatusClass(status)}`,
-          attributes: { "data-scope-edge": ["people", "window", status].join(":"), "data-filter-href": statusHref },
-          escape: escUiHtml,
-        })
-        : staticFact({ label: careerStatusLabel(status), className: `career-status-fact ${careerStatusClass(status)}`, escape: escUiHtml })}
-      ${openBand?`<span class="tag" data-open-window-band="${openBand}" lang="en" dir="ltr">${openBand}</span>`:""}
-      ${exam.notice_url?`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted</span>`:""}
-      ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}
-      <p class="career-deadline-primary">${careerWindowText(exam,status)}</p>
-      ${countdown?`<span class="career-deadline-countdown">${countdown}</span>`:""}
-    </div>
-    <div class="career-card-head">
-      <p class="career-card-title"><a href="${escUiHtml(CrolStaffing.examUrl(exam.exam_number, location.origin))}" lang="en" dir="ltr">${title}</a></p>
-      <span class="career-exam-number">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
-    </div>
-    ${titleFamily?`<p class="career-title-code-family" data-title-code-confidence="${escUiHtml(titleFamily.confidence)}" lang="en" dir="ltr"><span>${escUiHtml(titleFamily.label)}</span>${titleFamily.marker?` <span class="career-confidence-marker" data-confidence-marker="${escUiHtml(titleFamily.marker)}">inferred</span>`:""}: <code>${escUiHtml(titleFamily.code)}</code></p>`:""}
-    ${actionFacts}
-    ${expanded&&exam.summary?`<p class="career-summary" lang="en" dir="ltr">${escUiHtml(exam.summary)}</p>`:""}
-    ${expanded?details:""}
-    ${expanded?(()=>{
-      const tools=window.CrolExamProcessSpine;
-      const spine=tools&&typeof tools.buildExamProcessSpine==="function"
-        ? tools.buildExamProcessSpine(exam)
-        : (exam.process_spine||null);
-      const phaseTools=window.CrolExamPhaseSpine;
-      const phaseView=phaseTools&&typeof phaseTools.buildExamPhaseView==="function"&&spine
-        ? phaseTools.buildExamPhaseView(spine)
-        : null;
-      return examProcessSpineHTML(spine, exam, phaseView)+careerOutcomeHTML(exam,{spineMounted:!!spine})+careerUtilizationHTML(exam);
-    })():""}
-    <div class="actions">${apply}${notice}
-      ${expanded?`<button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>`:""}
-      ${careerSelected===exam.exam_number?routeBackHTML("#people?view=guide",t("career_back_all"),"act"):""}
-    </div>
-  </article>`;
+  const statusMarkup=statusHref
+    ? filterChip({
+      label: careerStatusLabel(status),
+      className: `career-status-chip ${careerStatusClass(status)}`,
+      attributes: { "data-scope-edge": ["people", "window", status].join(":"), "data-filter-href": statusHref },
+      escape: escUiHtml,
+    })
+    : staticFact({ label: careerStatusLabel(status), className: `career-status-fact ${careerStatusClass(status)}`, escape: escUiHtml });
+  const processMarkup=expanded?(()=>{
+    const tools=window.CrolExamProcessSpine;
+    const spine=tools&&typeof tools.buildExamProcessSpine==="function"
+      ? tools.buildExamProcessSpine(exam)
+      : (exam.process_spine||null);
+    const phaseTools=window.CrolExamPhaseSpine;
+    const phaseView=phaseTools&&typeof phaseTools.buildExamPhaseView==="function"&&spine
+      ? phaseTools.buildExamPhaseView(spine)
+      : null;
+    return examProcessSpineHTML(spine, exam, phaseView)+careerOutcomeHTML(exam,{spineMounted:!!spine})+careerUtilizationHTML(exam);
+  })():"";
+  // The shared renderer keeps career-deadline-lead ahead of career-card-title for the Staffing QA contract.
+  return renderStaffingExamCard({
+    examNumber: exam.exam_number,
+    examFormat: escUiHtml(exam.exam_format||""),
+    salaryBand: escUiHtml(exam.salary_band||""),
+    feeLevel: escUiHtml(exam.fee_level||""),
+    status,
+    statusMarkup,
+    openBandMarkup: openBand?`<span class="tag" data-open-window-band="${openBand}" lang="en" dir="ltr">${openBand}</span>`:"",
+    noeMarkup: exam.notice_url?`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted</span>`:"",
+    promotionMarkup: exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:"",
+    deadlineMarkup: careerWindowText(exam,status),
+    countdownMarkup: countdown?`<span class="career-deadline-countdown">${countdown}</span>`:"",
+    titleMarkup: `<a href="${escUiHtml(CrolStaffing.examUrl(exam.exam_number, location.origin))}" lang="en" dir="ltr">${title}</a>`,
+    examNumberMarkup: t("career_exam_number",{number:escUiHtml(exam.exam_number)}),
+    titleFamilyMarkup: titleFamily?`<p class="career-title-code-family" data-title-code-confidence="${escUiHtml(titleFamily.confidence)}" lang="en" dir="ltr"><span>${escUiHtml(titleFamily.label)}</span>${titleFamily.marker?` <span class="career-confidence-marker" data-confidence-marker="${escUiHtml(titleFamily.marker)}">inferred</span>`:""}: <code>${escUiHtml(titleFamily.code)}</code></p>`:"",
+    actionFactsMarkup: actionFacts,
+    summaryMarkup: expanded&&exam.summary?`<p class="career-summary" lang="en" dir="ltr">${escUiHtml(exam.summary)}</p>`:"",
+    detailsMarkup: expanded?details:"",
+    processMarkup,
+    actionsMarkup: `${apply}${notice}${expanded?`<button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>`:""}${careerSelected===exam.exam_number?routeBackHTML("#people?view=guide",t("career_back_all"),"act"):""}`,
+    selected,
+  });
 }
 function careerInterestContextHTML(){
   const index=careerData?.interest_taxonomy;
@@ -842,10 +845,7 @@ function careerResultsHTML(exams){
   return groups.map(([id,labelKey])=>{
     const rows=exams.filter(exam=>careerActionGroup(exam,today)===id);
     if(!rows.length) return "";
-    return `<section class="career-result-group" data-career-group="${id}" aria-labelledby="career-group-${id}">
-      <h3 id="career-group-${id}">${t(labelKey)}</h3>
-      <div class="career-result-grid">${rows.map(careerCardHTML).join("")}</div>
-    </section>`;
+    return renderStaffingExamResultGroup({ id, label:t(labelKey), cards:rows.map(careerCardHTML).join("") });
   }).join("");
 }
 function careerFilters(){
