@@ -191,6 +191,7 @@ export function normalizeMeetingObject(row = {}) {
     publisher_identifier: key?.value || null,
     title: optionalText(row.title || row.short_title) || "Meeting",
     event_date: optionalText(row.event_date || row.date),
+    event_end: optionalText(row.event_end || row.end_at),
     venue,
     participation: normalizeParticipation(row.participation),
     committee: normalizeCommittee(row.committee),

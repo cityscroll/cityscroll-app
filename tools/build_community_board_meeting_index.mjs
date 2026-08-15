@@ -130,7 +130,7 @@ function assertNoDuplicatePublisherIdentifiers(records) {
   }
 }
 
-function indexedRow(record, board, observedAt) {
+export function materializeCommunityBoardMeetingRow(record, board, observedAt) {
   const sourceRecordId = record.source_record_id || record.record_id;
   const sourceUrl = record.record_url || record.source_url;
   const provenance = {
@@ -146,7 +146,8 @@ function indexedRow(record, board, observedAt) {
     record_id: record.record_id,
     publisher_identifier: record.publisher_identifier || sourceRecordId,
     title: record.title,
-    event_date: record.date,
+    event_date: record.start_at || record.date,
+    event_end: record.end_at || null,
     source_url: sourceUrl,
     source_receipt: record.observed_receipt,
     meeting_origin: "community_board_source_observed",
@@ -169,6 +170,8 @@ function indexedRow(record, board, observedAt) {
     record_id: record.record_id,
     record_url: record.record_url,
     date: record.date,
+    start_at: record.start_at || null,
+    end_at: record.end_at || null,
     title: record.title,
     category: record.category,
     format: record.format,
@@ -298,7 +301,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     const meetingRows = records
       .filter((record) => descriptor.source_role === "upcoming_meetings")
       .filter((record) => record.record_kind === "event" && record.record_id && record.date)
-      .map((record) => indexedRow(record, board, observedAt));
+      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt));
     if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
   assertNoDuplicatePublisherIdentifiers(allRecords);

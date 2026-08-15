@@ -17,7 +17,9 @@ import {
   meetingDetailUrl,
   matterDetailUrl,
 } from "../worker/src/lib/legistar_join.mjs";
+import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
 import { loadSourceContracts } from "../tools/source_contracts.mjs";
+import { meetingSourceFieldNames } from "../site/meeting_source_completeness.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const cases = JSON.parse(
@@ -31,6 +33,9 @@ const receipt = JSON.parse(
     ),
     "utf8",
   ),
+);
+const outcomeFixture = JSON.parse(
+  readFileSync(join(ROOT, "test/contract/fixtures/meeting_outcomes.json"), "utf8"),
 );
 
 const meetings = cases.cases
@@ -147,6 +152,28 @@ test("matterDetailUrl builds Gateway M=L for numeric MatterIds only", () => {
   assert.equal(matterDetailUrl("mat-001"), null);
   assert.equal(matterDetailUrl(""), null);
   assert.equal(matterDetailUrl(null), null);
+});
+
+test("Legistar separate EventTime survives the strict join with canonical source links", () => {
+  const model = buildMeetingOutcomes(
+    outcomeFixture.notices,
+    outcomeFixture.events,
+    outcomeFixture.event_items,
+    outcomeFixture.votes,
+    outcomeFixture.attachments,
+  );
+  const record = model.records[0];
+  assert.equal(record.join.matched, true);
+  assert.equal(record.council_event.start_time, "2026-07-28T10:00:00");
+  assert.equal(record.council_event.event_url, "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526");
+  assert.equal(record.council_event.documents[0].url, "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_A_Agenda.pdf");
+});
+
+test("Legistar event fixtures stay inside the reviewed source-field inventory", () => {
+  const eventFields = new Set(meetingSourceFieldNames("legistar", "events"));
+  const itemFields = new Set(meetingSourceFieldNames("legistar", "event_items"));
+  assert.deepEqual(Object.keys(outcomeFixture.events[0]).filter((field) => !eventFields.has(field)), []);
+  assert.deepEqual(Object.keys(outcomeFixture.event_items[0]).filter((field) => !itemFields.has(field)), []);
 });
 
 test("verification receipt records authenticated modern 100% join", () => {
