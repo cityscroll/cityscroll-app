@@ -1,6 +1,7 @@
 {
   "version": 1,
   "include": [
+    "/meeting.ics",
     "/notices/*",
     "/meetings/*",
     "/agencies/*",

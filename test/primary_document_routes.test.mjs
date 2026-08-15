@@ -150,7 +150,17 @@ test("canonical meeting routes resolve exact read-model rows and reject unknown 
   ), env);
   assert.equal(calendar.status, 200);
   assert.match(calendar.headers.get("content-type") || "", /text\/calendar/);
-  assert.match(await calendar.text(), /BEGIN:VCALENDAR/);
+  assert.match(calendar.headers.get("content-disposition") || "", /attachment; filename="meeting-/);
+  const calendarBody = await calendar.text();
+  assert.match(calendarBody, /BEGIN:VCALENDAR/);
+  assert.match(calendarBody, /DTSTART(?:;VALUE=DATE|;TZID=America\/New_York)?:20261015/);
+
+  const cityRecordCalendar = await edgeWorker.fetch(new Request(
+    `https://cityscroll.org/meeting.ics?id=${encodeURIComponent(cityRecordId)}`,
+  ), env);
+  assert.equal(cityRecordCalendar.status, 200);
+  assert.match(cityRecordCalendar.headers.get("content-type") || "", /text\/calendar/);
+  assert.match(await cityRecordCalendar.text(), /BEGIN:VCALENDAR/);
 
   const head = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(communityBoardId)}/`, { method: "HEAD" }), env);
   assert.equal(head.status, 200);
@@ -638,6 +648,9 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.equal(edgeRequestKind("https://api.cityscroll.org/stats"), "asset");
   const routes = JSON.parse(read("../site/_routes.json"));
   assert.deepEqual(routes.exclude, ["/stats.html"]);
+  assert.ok(routes.include.includes("/meeting.ics"));
+  assert.ok(!routes.exclude.includes("/meeting.ics"));
+  assert.ok(routes.include.length <= 100, "Pages Functions route include limit");
   assert.ok(routes.include.includes("/notices/*"));
   assert.ok(routes.include.includes("/agencies/*"));
   assert.ok(routes.include.includes("/vendors/*"));
