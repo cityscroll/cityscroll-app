@@ -5,7 +5,7 @@
 
 import { applyGeocode, normalizeHearing } from "./lib/hearings.mjs";
 import { withDistricts } from "./lib/council_district.mjs";
-import { hearingCalendarICS } from "../../site/hearing_attend_pack.mjs";
+import { meetingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
 import sharedMeetingSnapshot from "../../site/data/shared_meeting_read_model.json" with { type: "json" };
 import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
@@ -29,6 +29,21 @@ const SELECT = [
   "additional_description_3", "other_info_1", "other_info_2", "other_info_3",
   "printout_1", "printout_2", "printout_3",
 ].join(",");
+
+function materializedRows(payload) {
+  if (Array.isArray(payload?.rows)) return payload.rows;
+  if (Array.isArray(payload?.hearings)) return payload.hearings;
+  return [];
+}
+
+function materializedMeetingForId(rows, id) {
+  const candidates = Array.isArray(rows) ? rows : [];
+  return candidates.find((row) => row?.meeting_id === id)
+    || candidates.find((row) => row?.source_system === "city_record" && (
+      row?.request_id === id || row?.source_record_id === id
+    ))
+    || null;
+}
 
 function todayISO(now = new Date()) {
   return now.toISOString().slice(0, 10);
@@ -207,52 +222,27 @@ export async function handleHearings(request, env, ctx) {
 }
 
 /**
- * GET /meeting.ics?id=… — one meeting event from the daily hearing materialization.
- * This is intentionally a read-model route: it never performs a per-notice
- * City Record lookup, and a stale cached view remains usable while refresh is attempted.
+ * GET /meeting.ics?id=… — one meeting event from a materialized shared meeting
+ * read model. This route never performs a source lookup or refresh on demand.
  */
 export async function handleMeetingICS(request, env) {
   if (request.method !== "GET") {
     return new Response("method not allowed", { status: 405, headers: { "Content-Type": "text/plain" } });
   }
-  if (!env?.ALERT_STATE) return new Response("not configured", { status: 503 });
   const id = new URL(request.url).searchParams.get("id") || "";
   if (!id || id.length > 320 || /[\r\n]/.test(id)) return new Response("invalid meeting id", { status: 400 });
 
   let parsed = null;
   try {
-    const raw = await env.ALERT_STATE.get(HEARINGS_KV_KEY);
+    const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
     parsed = raw ? JSON.parse(raw) : null;
   } catch { parsed = null; }
-  if (!parsed) {
-    try {
-      parsed = await buildHearingView(fetch, new Date(), {
-        communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,
-      });
-    } catch { parsed = null; }
-  }
-  let record = (parsed?.hearings || []).find((hearing) => (
-    hearing?.meeting_id === id
-      || hearing?.request_id === id
-      || hearing?.source_keys?.some((key) => key?.value === id)
-  ));
-  // A daily view can be fresh by age while missing a notice published after its
-  // refresh. Rebuild on an id miss so a dated rule hearing does not degrade to
-  // the misleading "meeting not found" response.
-  if (!record) {
-    try {
-      const refreshed = await buildHearingView(fetch, new Date(), {
-        communityBoardIndex: COMMUNITY_BOARD_SNAPSHOT,
-      });
-      record = (refreshed?.hearings || []).find((hearing) => (
-        hearing?.meeting_id === id
-          || hearing?.request_id === id
-          || hearing?.source_keys?.some((key) => key?.value === id)
-      ));
-    } catch { /* preserve the honest not-found below */ }
-  }
+  const record = materializedMeetingForId([
+    ...materializedRows(parsed),
+    ...materializedRows(sharedMeetingSnapshot),
+  ], id);
   if (!record) return new Response("meeting not found", { status: 404 });
-  const ics = hearingCalendarICS({
+  const ics = meetingCalendarICS({
     ...record,
     short_title: record.title,
     agency_name: record.agency,

@@ -15,6 +15,7 @@ import {
   mandatePredictionDigestRowsForAgency,
   mergeObligationDigestWithPredictions,
 } from "../../../site/mandate_prediction_alerts.mjs";
+import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.json" with { type: "json" };
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
@@ -36,6 +37,21 @@ const SECTION_BY_LENS = {
 };
 const ZAP_SELECT = "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date";
 const REZ_ALIAS = { "79 rivington": "Allen Street", "79 rivington street": "Allen Street", "allen street mall": "Allen Street" };
+
+function materializedMeetingRows(filter, todayISO, dateWindow) {
+  const end = dateWindowEnd(todayISO, dateWindow);
+  const keywords = (Array.isArray(filter?.keywords) ? filter.keywords : [])
+    .map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
+  return (Array.isArray(sharedMeetingSnapshot?.rows) ? sharedMeetingSnapshot.rows : [])
+    .filter((row) => row?.meeting_id && row.event_date && String(row.event_date).slice(0, 10) > todayISO)
+    .filter((row) => !end || String(row.event_date).slice(0, 10) <= end)
+    .filter((row) => !filter?.agency || String(row.agency || row.agency_name || "") === String(filter.agency))
+    .filter((row) => !keywords.length || keywords.every((keyword) => String(row.search_text || "").toLowerCase().includes(keyword)))
+    .filter((row) => !filter?.borough && !filter?.neighborhood && !filter?.locationScope
+      ? true
+      : hearingMatchesLocation(row, filter))
+    .map((row) => ({ ...row, request_id: row.meeting_id, start_date: row.source_receipt?.observed_at || row.event_date }));
+}
 
 // N months after an ISO date, as an ISO date — pure function of todayISO (not Date.now()),
 // so compileSub() stays deterministic/testable. Used for the "due within N months" upper
@@ -281,6 +297,13 @@ export function compileSub(sub, todayISO) {
       const end = dateWindowEnd(todayISO, f.dateWindow || f.when);
       if (end) where += ` AND event_date <= '${end}T23:59:59'`;
       order = "event_date ASC";
+      return {
+        url: null,
+        params: {},
+        idField: "meeting_id",
+        kind: "meetings",
+        readRows: () => materializedMeetingRows(f, todayISO, f.dateWindow || f.when),
+      };
     } else if (sub.lens === "property" && f.sort === "closing_soon") {
       // Prefer soonest event when the watch explicitly asks for closing-soon sort.
       order = "event_date ASC";

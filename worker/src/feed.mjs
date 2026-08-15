@@ -47,9 +47,12 @@ export async function handleFeed(request, env, ctx) {
 
   let rows;
   try {
-    const r = await fetch(`${q.url}?${new URLSearchParams(q.params).toString()}`);
-    if (!r.ok) throw new Error(`open-data ${r.status}`);
-    rows = await r.json();
+    if (typeof q.readRows === "function") rows = q.readRows();
+    else {
+      const r = await fetch(`${q.url}?${new URLSearchParams(q.params).toString()}`);
+      if (!r.ok) throw new Error(`open-data ${r.status}`);
+      rows = await r.json();
+    }
     if (q.postFilter) rows = rows.filter(q.postFilter);
   } catch {
     return plain("upstream data source unavailable — retry shortly", 502);

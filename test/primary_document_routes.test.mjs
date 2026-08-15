@@ -142,6 +142,13 @@ test("canonical meeting routes resolve exact read-model rows and reject unknown 
     assert.match(presentBody, new RegExp(`<h1>[^<]+</h1>`), meetingId);
   }
 
+  const calendar = await edgeWorker.fetch(new Request(
+    `https://cityscroll.org/meeting.ics?id=${encodeURIComponent(communityBoardId)}`,
+  ), env);
+  assert.equal(calendar.status, 200);
+  assert.match(calendar.headers.get("content-type") || "", /text\/calendar/);
+  assert.match(await calendar.text(), /BEGIN:VCALENDAR/);
+
   const head = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(communityBoardId)}/`, { method: "HEAD" }), env);
   assert.equal(head.status, 200);
   assert.equal(await head.text(), "");

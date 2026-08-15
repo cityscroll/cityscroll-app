@@ -102,6 +102,8 @@ test("meeting ICS is built from the materialized hearing record", async () => {
   await kv.put(HEARINGS_KV_KEY, JSON.stringify({
     generated_at: TEST_NOW.toISOString(),
     hearings: [{
+      meeting_id: "meeting:city_record:fixture-calendar",
+      source_system: "city_record",
       request_id: "fixture-calendar",
       title: "Hybrid hearing",
       agency: "City Planning Commission",
@@ -117,7 +119,7 @@ test("meeting ICS is built from the materialized hearing record", async () => {
     }],
   }));
   const response = await handleMeetingICS(
-    new Request("https://api.cityscroll.org/meeting.ics?id=fixture-calendar"),
+    new Request("https://api.cityscroll.org/meeting.ics?id=meeting%3Acity_record%3Afixture-calendar"),
     { ALERT_STATE: kv },
   );
   assert.equal(response.status, 200);
@@ -151,50 +153,34 @@ test("rule notices with a hearing date are included even when their notice type 
   assert.doesNotMatch(where, /section_name='Agency Rules'.*type_of_notice_description='Public Hearings'/);
 });
 
-test("ICS refreshes a fresh cache miss for the dated rule hearing", async () => {
+test("community-board ICS resolves a canonical id from the shared read model", async () => {
+  const id = "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/";
+  const response = await handleMeetingICS(
+    new Request(`https://api.cityscroll.org/meeting.ics?id=${encodeURIComponent(id)}`),
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.text();
+  assert.match(body, /SUMMARY:Transportation & Health Committees/);
+  assert.match(body, /LOCATION:Board District Office/);
+});
+
+test("ICS does not live-fetch a missing meeting", async () => {
   const kv = memoryKV();
   await kv.put(HEARINGS_KV_KEY, JSON.stringify({
     generated_at: TEST_NOW.toISOString(),
     hearings: [],
   }));
-  const row = {
-    request_id: "20260803009",
-    start_date: "2026-08-03T00:00:00.000",
-    event_date: "2026-09-14T10:00:00.000",
-    agency_name: "Health and Mental Hygiene",
-    type_of_notice_description: "Notice",
-    section_name: "Agency Rules",
-    short_title: "New Rules Relating to Rat Inspections",
-  };
   const originalFetch = globalThis.fetch;
-  globalThis.fetch = async (url) => {
-    const target = String(url);
-    if (target.startsWith("https://data.cityofnewyork.us/")) {
-      return new Response(JSON.stringify([row]), { status: 200 });
-    }
-    if (target.includes("a856-cityrecord.nyc.gov/RequestDetail/20260803009")) {
-      return new Response(
-        '<div class="container page-body"><p>To participate in the public hearing, enter to register at this Zoom meeting.</p>'
-          + '<a href="https://health-nyc.zoomgov.com/j/1659561163?pwd=VeOYdE9L6mLxAjB9aiajLvQg6dLj9x.1">Join</a>'
-          + '</div>',
-        { status: 200, headers: { "content-type": "text/html" } },
-      );
-    }
-    return new Response(JSON.stringify({ features: [] }), { status: 200 });
-  };
+  let calls = 0;
+  globalThis.fetch = async () => { calls += 1; return new Response("unexpected", { status: 500 }); };
   try {
     const response = await handleMeetingICS(
-      new Request("https://api.cityscroll.org/meeting.ics?id=20260803009"),
+      new Request("https://api.cityscroll.org/meeting.ics?id=meeting%3Acity_record%3Anot-materialized"),
       { ALERT_STATE: kv },
     );
-    assert.equal(response.status, 200);
-    const body = await response.text();
-    assert.match(body, /DTSTART;TZID=America\/New_York:20260914T100000/);
-    assert.match(body, /SUMMARY:New Rules Relating to Rat Inspections/);
-    assert.match(body, /LOCATION:Online/);
-    const unfolded = body.replace(/\r\n[ \t]/g, "");
-    assert.match(unfolded, /Join online: https:\/\/health-nyc\.zoomgov\.com\/j\/1659561163/);
-    assert.match(unfolded, /Mode: Online/);
+    assert.equal(response.status, 404);
+    assert.equal(calls, 0);
   } finally {
     globalThis.fetch = originalFetch;
   }

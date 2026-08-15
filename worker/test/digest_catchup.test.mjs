@@ -123,7 +123,7 @@ test("catch-up evaluates a non-date meetings predicate without a lastsent date f
   const key = "sub:meeting-old:m01";
   seedSub(env, key, {
     lens: "meetings",
-    filter: { keywords: ["hearing"] },
+    filter: { keywords: ["LANDMARKS 2"] },
     lastsent: "2026-08-09",
   });
   await env.ALERT_STATE.put("seen:" + key, JSON.stringify(["MEETING-OLD"]));
@@ -149,10 +149,8 @@ test("catch-up evaluates a non-date meetings predicate without a lastsent date f
     assert.equal(resendCalls, 0, "evaluation never calls the provider");
     assert.equal(await env.ALERT_STATE.get("lastsent:" + key), "2026-08-09", "lastsent is telemetry only");
     assert.equal(await env.ALERT_STATE.get("seen:" + key), JSON.stringify(["MEETING-OLD"]), "legacy seen is untouched");
-    assert.equal(sqlite.prepare("SELECT item_id FROM digest_outbox_items").get().item_id, "notice:MEETING-OLD");
-    const sourceRequest = fetches.find((url) => url.includes("dg92-zbpx"));
-    assert.ok(sourceRequest);
-    assert.ok(!sourceRequest.includes("start_date%20%3E%3D") && !sourceRequest.includes("start_date+%3E%3D"), "source request has no lastsent floor");
+    assert.match(sqlite.prepare("SELECT item_id FROM digest_outbox_items").get().item_id, /^notice:meeting:/);
+    assert.equal(fetches.filter((url) => url.includes("dg92-zbpx")).length, 0, "meeting catch-up replays the shared materialized read model");
   } finally {
     restore();
     sqlite.close();
@@ -214,7 +212,7 @@ test("catch-up surfaces partial_error and failed sections instead of complete", 
   const badKey = "sub:partial-bad:p02";
   const email = "partial@example.com";
   seedSub(env, goodKey, {
-    email, lens: "meetings", filter: { keywords: ["meet"] }, lastsent: "2026-08-09",
+    email, lens: "meetings", filter: { keywords: ["LANDMARKS 2"] }, lastsent: "2026-08-09",
   });
   seedSub(env, badKey, {
     email, lens: "money", filter: { minAmount: 500000, keywords: ["fail"] }, lastsent: "2026-08-09",

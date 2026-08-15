@@ -90,9 +90,50 @@ function decode(value) {
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/gi, " ")
     .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
     .replace(/&quot;/gi, '"')
     .replace(/&#39;|&apos;/gi, "'")
     .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code))));
+}
+
+function safeUrl(value, base = null) {
+  try {
+    const url = new URL(String(value || ""), base || undefined);
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function plain(value, max = 4_000) {
+  return decode(decode(value)).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+function documentRole(label, url) {
+  const text = `${label || ""} ${url || ""}`.toLowerCase();
+  if (/minutes?|memorandum of meeting|meeting record/.test(text)) return "minutes";
+  if (/agenda/.test(text)) return "agenda";
+  if (/recording|video|youtube|zoom/.test(text)) return "recording";
+  if (/\.(?:pdf|docx?|rtf)(?:$|[?#])/.test(text)) return "materials";
+  return null;
+}
+
+function eventPageParticipation(html, baseUrl) {
+  const links = [];
+  const anchor = /<a\b[^>]*\bhref\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/gi;
+  for (const match of String(html || "").matchAll(anchor)) {
+    const url = safeUrl(decode(match[2]), baseUrl);
+    const label = plain(match[3], 160);
+    if (!url || !label) continue;
+    if (!/register|join|attend|participat|zoom|webinar|eventbrite/i.test(`${label} ${url}`)) continue;
+    links.push({ label: /zoom|webinar|join/i.test(`${label} ${url}`) ? "Join online" : "Register to attend", url });
+  }
+  const unique = [...new Map(links.map((link) => [link.url, link])).values()];
+  return {
+    links: unique.slice(0, 4),
+    remote_join_url: unique.find((link) => link.label === "Join online")?.url || null,
+  };
 }
 
 function escapeRegExp(value) {
@@ -210,6 +251,19 @@ function record(source, fields = {}, receipt = {}) {
     record_url: clean(fields.record_url || fields.document_url || fields.video_url || fields.url, 2_000) || null,
     observed_receipt: normalizedReceipt,
   };
+  const endAt = clean(fields.end_at, 80);
+  const venueName = clean(fields.venue_name || fields.location_name, 300);
+  const description = plain(fields.description, 4_000);
+  const committee = fields.committee && typeof fields.committee === "object"
+    ? { name: clean(fields.committee.name, 300) || null, url: safeUrl(fields.committee.url, sourceUrl) }
+    : (clean(fields.committee, 300) ? { name: clean(fields.committee, 300), url: null } : null);
+  if (endAt) normalized.end_at = endAt;
+  if (venueName) normalized.venue_name = venueName;
+  if (clean(fields.mode, 40)) normalized.mode = clean(fields.mode, 40);
+  if (description) normalized.description = description;
+  if (committee?.name) normalized.committee = committee;
+  if (fields.participation && typeof fields.participation === "object") normalized.participation = fields.participation;
+  if (fields.organizer && typeof fields.organizer === "object") normalized.organizer = fields.organizer;
   const publisherEventId = clean(fields.publisher_event_id || fields.event_id, 240) || null;
   const meetingKey = clean(fields.meeting_key || fields.meeting_id || fields.canonical_meeting_id, 2_000) || null;
   if (publisherEventId) normalized.publisher_event_id = publisherEventId;
@@ -257,6 +311,34 @@ function htmlRecords(html, source, receipt = {}) {
   return found;
 }
 
+function htmlDocumentRecords(html, source, receipt = {}) {
+  const sourceUrl = explicitUrl(source);
+  const meetingKey = clean(source.meeting_key || source.meeting_id || source.event_id, 2_000) || null;
+  const meetingDate = dateFromText(source.meeting_date || source.date || "");
+  if (!sourceUrl || !meetingKey) return [];
+  const found = [];
+  const anchor = /<a\b[^>]*\bhref\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/gi;
+  for (const match of String(html || "").matchAll(anchor)) {
+    const url = safeUrl(decode(match[2]), sourceUrl);
+    const label = plain(match[3], 300);
+    const role = documentRole(label, url);
+    if (!url || !role || !/\.(?:pdf|docx?|rtf)(?:$|[?#])/i.test(url)) continue;
+    found.push(record(source, {
+      record_kind: "document",
+      record_id: url,
+      document_id: url,
+      meeting_key: meetingKey,
+      board_id: source.board_id || source.body_id,
+      date: meetingDate,
+      category: role,
+      title: label || role,
+      format: url.match(/\.([a-z0-9]+)(?:$|[?#])/i)?.[1] || "document",
+      record_url: url,
+    }, receipt));
+  }
+  return found;
+}
+
 function jsonLdEvents(html, source, receipt = {}) {
   const found = [];
   const scripts = /<script\b[^>]*type\s*=\s*(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi;
@@ -280,6 +362,16 @@ function jsonLdEvents(html, source, receipt = {}) {
         : location.address;
       const date = dateFromText(entry.startDate || entry.start_date || "");
       if (!recordUrl || !publisherIdentifier || !date) continue;
+      const rawDescription = decode(String(entry.description || ""));
+      const pageDescription = source.event_detail
+        ? String(html || "").match(/<div\b[^>]*\btribe-events-single-event-description\b[^>]*>([\s\S]*?)(?:<\/div>\s*<\/div>|<\/div>)/i)?.[1] || ""
+        : "";
+      const description = plain(pageDescription || rawDescription, 4_000);
+      const describedUrls = [...rawDescription.matchAll(/https:\/\/[^\s<>"]+/gi)].map((match) => match[0].replace(/[),.;]+$/, ""));
+      const participationUrls = [...new Set([recordUrl, ...describedUrls])];
+      const pageParticipation = source.event_detail ? eventPageParticipation(html, recordUrl) : { links: [], remote_join_url: null };
+      const remoteJoinUrl = pageParticipation.remote_join_url
+        || participationUrls.find((url) => /zoom|webex|teams|meet\.google|webinar/i.test(url)) || null;
       found.push(record(source, {
         record_kind: "event",
         record_id: publisherIdentifier,
@@ -288,9 +380,24 @@ function jsonLdEvents(html, source, receipt = {}) {
         body_evidence: bodyEvidence(source),
         date,
         start_at: entry.startDate,
+        end_at: entry.endDate || entry.end_date,
+        mode: /online|video conference|zoom|webex|teams|hybrid/i.test(`${description} ${location.name || ""}`)
+          ? "hybrid" : (address ? "in-person" : "not-stated"),
         category: source.role || "upcoming_meetings",
         title: decode(entry.name || entry.headline),
         address: decode(address),
+        venue_name: decode(location.name),
+        description,
+        organizer: entry.organizer,
+        participation: {
+          links: [...pageParticipation.links, ...participationUrls.slice(0, 4).map((url) => ({ label: /zoom|webex|teams|meet\.google|webinar/i.test(url) ? "Join online" : "Meeting information", url }))]
+            .filter((link, index, all) => all.findIndex((candidate) => candidate.url === link.url) === index)
+            .slice(0, 4),
+          remote_join_url: remoteJoinUrl,
+          emails: [location.email, entry.organizer?.email].filter(Boolean),
+          phones: [location.telephone, entry.organizer?.telephone].filter(Boolean),
+          source_url: recordUrl,
+        },
         format: "html",
         publisher_identifier: publisherIdentifier,
         meeting_key: entry.meetingId || entry.meeting_id || entry.meetingKey || entry.meeting_key,
@@ -304,10 +411,14 @@ function jsonLdEvents(html, source, receipt = {}) {
 export function parseHtmlPdfSource(html, source = {}, options = {}) {
   const descriptor = { ...source, adapter: adapterId(source) || "html_pdf_v1" };
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "html_pdf_v1", observed_at: options.observedAt });
-  const records = [...jsonLdEvents(html, descriptor, receipt), ...htmlRecords(html, descriptor, receipt)];
+  const records = [
+    ...jsonLdEvents(html, descriptor, receipt),
+    ...(descriptor.event_detail ? htmlDocumentRecords(html, descriptor, receipt) : []),
+    ...htmlRecords(html, descriptor, receipt),
+  ];
   const seen = new Set();
   return records.filter((row) => row.record_id && row.date).filter((row) => {
-    const key = `${row.record_kind}:${row.record_id}:${row.date}`;
+    const key = `${row.record_kind}:${row.record_id}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -348,6 +459,14 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
       category: icsField(block, "CATEGORIES"),
       title: icsField(block, "SUMMARY"),
       address: icsField(block, "LOCATION"),
+      description: icsField(block, "DESCRIPTION"),
+      participation: {
+        links: icsField(block, "URL") ? [{ label: "Meeting information", url: icsField(block, "URL") }] : [],
+        remote_join_url: null,
+        emails: [],
+        phones: [],
+        source_url: source.record_url || source.url || source.source_url,
+      },
       format: "ics",
       publisher_identifier: uid,
       record_url: source.record_url || source.url || source.source_url,
@@ -387,6 +506,10 @@ export function parseAirtableSource(payload, source = {}, options = {}) {
       category: fieldValue(fields, map, "category"),
       title: fieldValue(fields, map, "title"),
       address: fieldValue(fields, map, "address"),
+      venue_name: fieldValue(fields, map, "venue_name"),
+      description: fieldValue(fields, map, "description"),
+      end_at: fieldValue(fields, map, "end_at"),
+      committee: fieldValue(fields, map, "committee"),
       publisher_identifier: fieldValue(fields, map, "publisher_identifier"),
       publisher_event_id: fieldValue(fields, map, "publisher_event_id"),
       meeting_key: fieldValue(fields, map, "meeting_id") || fieldValue(fields, map, "meeting_key"),
@@ -415,6 +538,10 @@ export function parseVideoRecordSource(payload, source = {}, options = {}) {
       date,
       category: entry?.category || "Board meeting video",
       title: entry?.title || entry?.name,
+      venue_name: entry?.venue_name || entry?.location_name,
+      description: entry?.description,
+      end_at: entry?.end_at || entry?.end_date,
+      committee: entry?.committee,
       publisher_identifier: entry?.publisher_identifier || entry?.event_id,
       publisher_event_id: entry?.publisher_event_id || entry?.event_id,
       format: "video",

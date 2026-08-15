@@ -4,6 +4,8 @@ import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs"
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
+import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
+import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
@@ -176,6 +178,48 @@ async function handleMeeting(request, env, meetingId) {
     `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
     { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" } },
   );
+}
+
+function meetingRows(payload) {
+  if (Array.isArray(payload?.rows)) return payload.rows;
+  if (Array.isArray(payload?.hearings)) return payload.hearings;
+  return [];
+}
+
+function meetingForCalendar(rows, id) {
+  return meetingRows(rows).find((row) => row?.meeting_id === id)
+    || meetingRows(rows).find((row) => row?.source_system === "city_record" && (
+      row?.request_id === id || row?.source_record_id === id
+    ))
+    || null;
+}
+
+/** Serve a calendar event from the shared materialized meeting projection. */
+async function handleMeetingICS(request, env) {
+  if (request.method !== "GET") {
+    return new Response(null, { status: 405, headers: { Allow: "GET" } });
+  }
+  const id = new URL(request.url).searchParams.get("id") || "";
+  if (!id || id.length > 320 || /[\r\n]/.test(id)) return new Response("invalid meeting id", { status: 400 });
+
+  let snapshot = sharedMeetingSnapshot;
+  const asset = await staticAsset(env, request, "/data/shared_meeting_read_model.json");
+  if (asset.ok) {
+    try { snapshot = await asset.json(); } catch (_error) { /* use the bundled projection */ }
+  }
+  const record = meetingForCalendar(snapshot, id);
+  if (!record) return new Response("meeting not found", { status: 404 });
+  const ics = meetingCalendarICS(record);
+  if (!ics) return new Response("meeting has no event time", { status: 404 });
+  return new Response(ics, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/calendar; charset=utf-8",
+      "Content-Disposition": `attachment; filename="meeting-${id.replace(/[^A-Za-z0-9_-]+/g, "-")}.ics"`,
+      "Cache-Control": "public, max-age=900, s-maxage=3600, stale-while-revalidate=86400",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
 }
 
 const DOCUMENT_LANGS = new Set(["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]);
@@ -651,6 +695,7 @@ export default {
     const url = new URL(request.url);
     const id = safeId(url.pathname);
     if (id) return handleNotice(request, env, id);
+    if (url.pathname === "/meeting.ics") return handleMeetingICS(request, env);
     const meetingId = safeMeeting(url.pathname);
     if (meetingId) return handleMeeting(request, env, meetingId);
     const examNumber = safeExamNumber(url.pathname);
