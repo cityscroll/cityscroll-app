@@ -616,11 +616,14 @@ jobs:
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: a11y-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          # Keep the handoff stable when "rerun failed jobs" advances run_attempt
+          # without rerunning this already-successful producer job.
+          name: a11y-pr-site-${{ github.run_id }}
           path: |
             _site
             _site.sha256
           if-no-files-found: error
+          overwrite: true
           retention-days: 1
 
   # The matrix is deliberately not required by branch protection. Only a11y-pr above is
@@ -645,11 +648,11 @@ jobs:
           echo "The shared verified accessibility site artifact job did not succeed: ${{ needs.a11y-pr-site.result }}"
           exit 1
       - uses: actions/checkout@v4
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
         with:
           persist-credentials: false
       - name: Prepare uniquely named shard evidence directory
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
         run: |
           set -euo pipefail
           artifact_dir="$RUNNER_TEMP/a11y-pr-shard-${{ matrix.shard }}-logs"
@@ -657,18 +660,18 @@ jobs:
           date +%s > "$RUNNER_TEMP/a11y-pr-${{ matrix.shard }}-started_epoch"
           date -u +%Y-%m-%dT%H:%M:%SZ > "$RUNNER_TEMP/a11y-pr-${{ matrix.shard }}-started_iso"
       - name: Download shared verified site artifact
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
         uses: actions/download-artifact@v4
         with:
-          name: a11y-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          name: a11y-pr-site-${{ github.run_id }}
           path: .
       - name: Verify shared site artifact checksums
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
         run: sha256sum --strict -c _site.sha256
       - uses: ./.github/actions/setup-playwright
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
       - name: Run isolated accessibility shard
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
         env:
           NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'warn' }}
         run: |

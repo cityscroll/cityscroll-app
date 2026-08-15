@@ -47,6 +47,16 @@ test("full preflight and CI use the route-aware server without touching existing
   const serve = ci.indexOf("tools/local_site_server.py --directory _site --port 0");
   assert.ok(build >= 0 && build < serve, "CI must build the deploy artifact before serving it");
   assert.match(ci, /tools\/local_site_server\.py --directory _site --port 0 --ready-file/);
+  assert.match(ci, /name: a11y-pr-site-\$\{\{ github\.run_id \}\}/);
+  assert.doesNotMatch(
+    ci,
+    /name: a11y-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/,
+    "failed-job reruns must reuse the verified artifact from the original attempt",
+  );
+  assert.match(ci, /name: a11y-pr-site-\$\{\{ github\.run_id \}\}[\s\S]*?overwrite: true/);
+  assert.match(ci, /- name: Download shared verified site artifact\n\s+if: success\(\)/);
+  assert.match(ci, /- name: Verify shared site artifact checksums\n\s+if: success\(\)/);
+  assert.match(ci, /- name: Run isolated accessibility shard\n\s+if: success\(\)/);
   assert.match(ci, /readiness_url=\"\$\{local_base\}index\.html\"/);
   assert.match(ci, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*\"\$readiness_url\"/);
   assert.match(ci, /HTTP 404/);
