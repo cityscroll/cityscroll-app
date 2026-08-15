@@ -167,6 +167,7 @@ test("committed live corpus links Homeless Services shelter mandates through awa
   const html = renderMandateContractsBridgeSection(view);
   assert.match(html, /id="mandates-contracts"/);
   assert.match(html, /Mandates · Contracts and procurement/);
+  // The contract is the linked civic object; its City Record notice remains separately labeled evidence.
   assert.match(html, /Contract · CT1-071-/);
   assert.match(html, /data-target-kind="procurement"/);
   assert.match(html, /Notice evidence/);
