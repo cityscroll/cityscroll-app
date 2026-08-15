@@ -247,7 +247,7 @@ export function buildBrowseConceptDocument(shell, kind, sources) {
 function searchLane(id, title, description) {
   return `<section class="topic-search-lane" data-search-lane="${esc(id)}" aria-labelledby="search-lane-${esc(id)}">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-${esc(id)}">${esc(title)}</h3><p>${esc(description)}</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Keyword matches will appear here after this page loads.</div>
+    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
   </section>`;
 }
 

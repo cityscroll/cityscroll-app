@@ -4,8 +4,8 @@
     "name": "tools/build_architecture_facts.mjs",
     "version": "1.0.0"
   },
-  "generated_at": "2026-08-14T03:25:54-04:00",
-  "commit": "6e4bb8a8001f180b6e3a07181cda3978c3da2310",
+  "generated_at": "2026-08-15T07:51:21-04:00",
+  "commit": "09c449ddd0ae55ed9e0a16328c7ce80d1ee40160",
   "source_paths": [
     "entity_resolution",
     "ontology/live_inventory.mjs",
@@ -171,7 +171,7 @@
         "handler": "handleNearYou",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 83
+          "line": 84
         }
       },
       {
@@ -180,7 +180,7 @@
         "handler": "handleNearYou",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 83
+          "line": 84
         }
       },
       {
@@ -189,7 +189,7 @@
         "handler": "handleFollowing",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 84
+          "line": 85
         }
       },
       {
@@ -198,7 +198,7 @@
         "handler": "handleFollowing",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 84
+          "line": 85
         }
       },
       {
@@ -207,7 +207,7 @@
         "handler": "handleFollowing",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 84
+          "line": 85
         }
       },
       {
@@ -216,7 +216,7 @@
         "handler": "handlePrefs",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 85
+          "line": 86
         }
       },
       {
@@ -225,7 +225,7 @@
         "handler": "handleNl",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 88
+          "line": 89
         }
       },
       {
@@ -234,7 +234,16 @@
         "handler": "handleMcp",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 89
+          "line": 90
+        }
+      },
+      {
+        "path": "/search",
+        "match": "exact",
+        "handler": "handleSearch",
+        "source": {
+          "path": "worker/src/worker.mjs",
+          "line": 91
         }
       },
       {
@@ -243,7 +252,7 @@
         "handler": "handleNotice",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 90
+          "line": 92
         }
       },
       {
@@ -252,7 +261,7 @@
         "handler": "handleCheckbook",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 91
+          "line": 93
         }
       },
       {
@@ -261,7 +270,7 @@
         "handler": "handleForecast",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 92
+          "line": 94
         }
       },
       {
@@ -270,7 +279,7 @@
         "handler": "handleForecastAccuracy",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 93
+          "line": 95
         }
       },
       {
@@ -279,7 +288,7 @@
         "handler": "handleUsage",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 94
+          "line": 96
         }
       },
       {
@@ -288,7 +297,7 @@
         "handler": "handleSubscribe",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 95
+          "line": 97
         }
       },
       {
@@ -297,7 +306,7 @@
         "handler": "handleConfirm",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 96
+          "line": 98
         }
       },
       {
@@ -306,7 +315,7 @@
         "handler": "handleUnsubscribe",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 97
+          "line": 99
         }
       },
       {
@@ -315,7 +324,7 @@
         "handler": "handleSession",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 99
+          "line": 101
         }
       },
       {
@@ -324,7 +333,7 @@
         "handler": "handleSession",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 99
+          "line": 101
         }
       },
       {
@@ -333,7 +342,7 @@
         "handler": "handlePins",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 100
+          "line": 102
         }
       },
       {
@@ -342,7 +351,7 @@
         "handler": "handleFeedback",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 101
+          "line": 103
         }
       },
       {
@@ -351,7 +360,7 @@
         "handler": "handleFeed",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 102
+          "line": 104
         }
       },
       {
@@ -360,7 +369,7 @@
         "handler": "handleFeed",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 102
+          "line": 104
         }
       },
       {
@@ -369,7 +378,7 @@
         "handler": "handleFeed",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 102
+          "line": 104
         }
       },
       {
@@ -378,7 +387,7 @@
         "handler": "handleBatch",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 103
+          "line": 105
         }
       },
       {
@@ -387,7 +396,7 @@
         "handler": "handleAgencies",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 104
+          "line": 106
         }
       },
       {
@@ -396,7 +405,7 @@
         "handler": "handleEntityDossier",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 108
+          "line": 110
         }
       },
       {
@@ -405,7 +414,7 @@
         "handler": "handlePublicRelationshipGraph",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 109
+          "line": 111
         }
       },
       {
@@ -414,7 +423,7 @@
         "handler": "handleEntityIntelligence",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 110
+          "line": 112
         }
       },
       {
@@ -423,7 +432,7 @@
         "handler": "handleAttachmentMetadata",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 111
+          "line": 113
         }
       },
       {
@@ -432,7 +441,7 @@
         "handler": "handleAttachmentMetadata",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 111
+          "line": 113
         }
       },
       {
@@ -441,7 +450,7 @@
         "handler": "handleExternalAward",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 112
+          "line": 114
         }
       },
       {
@@ -450,7 +459,7 @@
         "handler": "handleAgency",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 113
+          "line": 115
         }
       },
       {
@@ -459,7 +468,7 @@
         "handler": "handleVendorProfile",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 114
+          "line": 116
         }
       },
       {
@@ -468,7 +477,7 @@
         "handler": "handleContractLifecycle",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 115
+          "line": 117
         }
       },
       {
@@ -477,7 +486,7 @@
         "handler": "handleSubsidyLifecycle",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 116
+          "line": 118
         }
       },
       {
@@ -486,7 +495,7 @@
         "handler": "handleHearings",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 117
+          "line": 119
         }
       },
       {
@@ -495,7 +504,7 @@
         "handler": "handleMeetingICS",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 118
+          "line": 120
         }
       },
       {
@@ -504,7 +513,7 @@
         "handler": "handleProperties",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 119
+          "line": 121
         }
       },
       {
@@ -513,7 +522,7 @@
         "handler": "handleFranchiseConcessions",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 120
+          "line": 122
         }
       },
       {
@@ -522,7 +531,7 @@
         "handler": "handleMeetingOutcomes",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 121
+          "line": 123
         }
       },
       {
@@ -531,7 +540,7 @@
         "handler": "handleZapOutcomes",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 122
+          "line": 124
         }
       },
       {
@@ -540,7 +549,7 @@
         "handler": "handleRules",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 123
+          "line": 125
         }
       },
       {
@@ -549,7 +558,7 @@
         "handler": "handleSuggestions",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 125
+          "line": 127
         }
       },
       {
@@ -558,7 +567,7 @@
         "handler": "handleStats",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 128
+          "line": 130
         }
       },
       {
@@ -567,7 +576,7 @@
         "handler": "handleEvent",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 129
+          "line": 131
         }
       },
       {
@@ -576,7 +585,7 @@
         "handler": "handleAdminSubs",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 132
+          "line": 134
         }
       },
       {
@@ -585,7 +594,7 @@
         "handler": "handleAdminWatchLog",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 133
+          "line": 135
         }
       },
       {
@@ -594,7 +603,7 @@
         "handler": "handleAdminWatchLogEnrich",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 134
+          "line": 136
         }
       },
       {
@@ -603,7 +612,7 @@
         "handler": "handleAdminFeedback",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 135
+          "line": 137
         }
       },
       {
@@ -612,7 +621,7 @@
         "handler": "handleAdminPossiblySame",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 136
+          "line": 138
         }
       },
       {
@@ -621,7 +630,7 @@
         "handler": "handleAdminOpsContract",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 137
+          "line": 139
         }
       },
       {
@@ -630,7 +639,7 @@
         "handler": "handleAdminStats",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 138
+          "line": 140
         }
       },
       {
@@ -639,7 +648,7 @@
         "handler": "handleAdminOwedBacklog",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 139
+          "line": 141
         }
       },
       {
@@ -648,7 +657,7 @@
         "handler": "handleAdminNextDigestPreview",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 140
+          "line": 142
         }
       },
       {
@@ -657,7 +666,7 @@
         "handler": "handleAdminDigestBackfill",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 141
+          "line": 143
         }
       },
       {
@@ -666,7 +675,7 @@
         "handler": "handleAdminDigestRollup",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 142
+          "line": 144
         }
       },
       {
@@ -675,7 +684,7 @@
         "handler": "handleAdminDigestShadow",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 143
+          "line": 145
         }
       },
       {
@@ -684,7 +693,7 @@
         "handler": "handleAdminDigestSendTest",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 144
+          "line": 146
         }
       },
       {
@@ -693,7 +702,7 @@
         "handler": "handleAdminSuggestRefresh",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 145
+          "line": 147
         }
       },
       {
@@ -702,7 +711,7 @@
         "handler": "handleAdminMeetingOutcomesRefresh",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 146
+          "line": 148
         }
       },
       {
@@ -711,7 +720,7 @@
         "handler": "handleAdminZapOutcomesRefresh",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 147
+          "line": 149
         }
       },
       {
@@ -720,7 +729,7 @@
         "handler": "handleAdminDigestCatchUp",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 148
+          "line": 150
         }
       },
       {
@@ -729,7 +738,7 @@
         "handler": "handleAdminPassportIngest",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 149
+          "line": 151
         }
       },
       {
@@ -738,7 +747,7 @@
         "handler": "handleAdminAttachmentMetadata",
         "source": {
           "path": "worker/src/worker.mjs",
-          "line": 150
+          "line": 152
         }
       }
     ]
