@@ -7,9 +7,12 @@ import {
   meetingReadModelSourceStatus,
 } from "../site/shared_meeting_read_model.mjs";
 import { materializeCommunityBoardMeetingRow } from "../tools/build_community_board_meeting_index.mjs";
+import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 
 const meetings = JSON.parse(readFileSync(new URL("../site/data/meetings_domain_observations.json", import.meta.url)));
 const boardIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
+const sharedSnapshot = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url)));
+const cityRecordParity = JSON.parse(readFileSync(new URL("./fixtures/city_record_meeting_parity.json", import.meta.url)));
 
 test("one read model preserves source-qualified identities and parity fields", () => {
   const model = buildSharedMeetingReadModel({
@@ -123,28 +126,7 @@ test("community-board publisher times survive indexing and shared materializatio
 
 test("retains City Record notice parity fields in the shared read model", () => {
   const model = buildSharedMeetingReadModel({
-    cityRecordRows: [{
-      request_id: "20260820001",
-      agency_name: "Buildings",
-      short_title: "Public hearing on a proposed rule",
-      start_date: "2026-08-14T00:00:00Z",
-      event_date: "2026-08-20T14:00:00Z",
-      type_of_notice_description: "Public Hearings",
-      section_name: "Public Hearings and Meetings",
-      additional_description_1: "The first substantive notice paragraph.",
-      additional_description_2: "A second notice paragraph.",
-      other_info_1: "Additional public information.",
-      other_info_2: "Further public information.",
-      street_address_1: "250 Broadway",
-      street_address_2: "Room 915",
-      building_name: "Municipal Building",
-      city: "New York",
-      state: "NY",
-      zip_code: "10007",
-      contact_name: "Public Hearings Unit",
-      contact_phone: "212-555-0100",
-      email: "hearings@example.gov",
-    }],
+    cityRecordRows: [normalizeHearing(cityRecordParity)],
     communityBoardIndex: { generated_at: "2026-08-14T12:00:00Z", rows: [] },
     generatedAt: "2026-08-14T12:00:00Z",
     now: "2026-08-14T12:00:00Z",
@@ -152,10 +134,35 @@ test("retains City Record notice parity fields in the shared read model", () => 
   const row = model.rows[0];
   for (const field of [
     "type_of_notice_description", "section_name", "additional_description_1",
-    "additional_description_2", "other_info_1", "other_info_2", "street_address_1",
-    "street_address_2", "building_name", "city", "state", "zip_code", "contact_name",
-    "contact_phone", "email",
-  ]) assert.ok(Object.hasOwn(row, field), `read model should retain ${field}`);
-  assert.equal(row.additional_description_1, "The first substantive notice paragraph.");
-  assert.match(row.search_text, /Further public information/);
+    "additional_description_2", "additional_description_3", "other_info_1",
+    "other_info_2", "other_info_3", "street_address_1", "street_address_2",
+    "building_name", "city", "state", "zip_code", "contact_name", "contact_phone",
+    "email", "source_links", "document_links",
+  ]) assert.deepEqual(row[field], cityRecordParity[field], `read model should retain ${field}`);
+  assert.deepEqual(row.venue, {
+    mode: "hybrid",
+    building: "Municipal Building",
+    address: "250 Broadway, Room 915, New York, NY, 10007",
+    borough: null,
+    neighborhood: null,
+  });
+  assert.equal(row.participation.remote_join_url, "https://zoom.us/j/123456789");
+  assert.equal(row.meeting_origin, "city_record_notice");
+  assert.match(row.description, /Accessibility accommodations/);
+  assert.match(row.search_text, /A recording will be posted/);
+  assert.match(row.search_text, /250 Broadway/);
+});
+
+test("the canonical snapshot carries the hearing adapter projection for the City Record field case", () => {
+  const row = sharedSnapshot.rows.find((candidate) => candidate.meeting_id === "meeting:city_record:20260729019");
+  assert.ok(row, "the named City Record field case should remain in the canonical snapshot");
+  assert.equal(row.meeting_origin, "city_record_notice");
+  assert.equal(row.description, row.additional_description_1);
+  assert.equal(row.venue.mode, "not-stated");
+  assert.equal(row.meeting_access.mode, "unknown");
+  assert.equal(row.source_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019");
+  assert.deepEqual(row.source_links, [
+    "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260729019&requestStatus=Archived&documentId=44341",
+  ]);
+  assert.match(row.search_text, /Office of Technology & Innovation/);
 });

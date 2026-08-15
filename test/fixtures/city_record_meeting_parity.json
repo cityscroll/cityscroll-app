@@ -1,0 +1,32 @@
+{
+  "request_id": "20260820001",
+  "agency_name": "Buildings",
+  "short_title": "Public hearing on a proposed rule",
+  "start_date": "2026-08-14T00:00:00Z",
+  "event_date": "2026-08-20T14:00:00Z",
+  "type_of_notice_description": "Public Hearings",
+  "section_name": "Public Hearings and Meetings",
+  "additional_description_1": "The hearing will be held in person at the address below and online. Join the hearing on Zoom: https://zoom.us/j/123456789.",
+  "additional_description_2": "Written comments are accepted through August 19.",
+  "additional_description_3": "Accessibility accommodations are available on request.",
+  "other_info_1": "The agenda covers facade safety requirements.",
+  "other_info_2": "Interpretation is available in Spanish.",
+  "other_info_3": "A recording will be posted after the hearing.",
+  "building_name": "Municipal Building",
+  "street_address_1": "250 Broadway",
+  "street_address_2": "Room 915",
+  "city": "New York",
+  "state": "NY",
+  "zip_code": "10007",
+  "contact_name": "Public Hearings Unit",
+  "contact_phone": "212-555-0100",
+  "email": "hearings@buildings.nyc.gov",
+  "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260820001",
+  "source_links": [
+    "https://zoom.us/j/123456789",
+    "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260820001&requestStatus=Current&documentId=44501"
+  ],
+  "document_links": [
+    "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260820001&requestStatus=Current&documentId=44501"
+  ]
+}
