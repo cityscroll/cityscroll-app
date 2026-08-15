@@ -6,6 +6,9 @@ from __future__ import annotations
 import argparse
 import functools
 import os
+import threading
+import urllib.error
+import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -95,6 +98,28 @@ def port_number(value: str) -> int:
     return port
 
 
+def publish_ready(path: Path, base: str) -> None:
+    """Publish the origin only after the server has passed its HTTP probe."""
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    temporary.write_text(f"{base}\n", encoding="utf-8")
+    temporary.replace(path)
+
+
+def probe_base(base: str) -> None:
+    """Verify that the built artifact's index is being served over HTTP."""
+    readiness_url = f"{base}index.html"
+    try:
+        with urllib.request.urlopen(readiness_url, timeout=5) as response:
+            if response.status != 200:
+                raise RuntimeError(
+                    f"local site readiness probe returned HTTP {response.status}: {readiness_url}"
+                )
+    except urllib.error.HTTPError as error:
+        raise RuntimeError(
+            f"local site readiness probe returned HTTP {error.code}: {readiness_url}"
+        ) from error
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--directory", default="site")
@@ -112,14 +137,20 @@ def main() -> int:
     server = ThreadingHTTPServer((args.host, args.port), handler)
     server.daemon_threads = True
     base = f"http://{args.host}:{server.server_port}/"
-    if args.ready_file:
-        args.ready_file.write_text(f"{base}\n", encoding="utf-8")
-    print(base, flush=True)
+    server_thread = threading.Thread(target=server.serve_forever, daemon=True)
+    server_thread.start()
     try:
-        server.serve_forever()
+        probe_base(base)
+        if args.ready_file:
+            publish_ready(args.ready_file, base)
+        print(base, flush=True)
+        server_thread.join()
     except KeyboardInterrupt:
         pass
     finally:
+        if server_thread.is_alive():
+            server.shutdown()
+            server_thread.join()
         server.server_close()
     return 0
 
