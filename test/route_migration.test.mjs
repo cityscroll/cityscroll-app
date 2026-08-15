@@ -41,6 +41,12 @@ test("browse agency aliases normalize to one typed facet serialization", () => {
     "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D");
 });
 
+test("Exams aliases retain their public path while normalizing agency scope", () => {
+  const url = canonicalizeBrowseUrl("/browse/exams/?agency=Department+of+Parks+and+Recreation");
+  assert.match(url, /^\/browse\/exams\/\?facet=/);
+  assert.doesNotMatch(url, /agency=/);
+});
+
 test("non-converted routes and public invariants stay outside the rewrite bridge", () => {
   assert.equal(migrateLegacyUrl("/#matter/84124P0003001").target, "/#matter/84124P0003001");
   assert.equal(migrateLegacyUrl("/stats.html").target, "/stats.html");
