@@ -73,6 +73,7 @@ import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attac
 import { runDigestShadow } from "./digest_shadow.mjs";
 import { handleNearYou } from "./near_you.mjs";
 import { handleFollowing } from "./following.mjs";
+import { handleSearch } from "./search.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -87,6 +88,7 @@ export default {
     }
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);
+    if (pathname === "/search") return handleSearch(request, env);
     if (pathname === "/notice") return handleNotice(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
     if (pathname === "/forecast") return handleForecast(request, env);
