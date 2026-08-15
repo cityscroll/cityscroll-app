@@ -133,7 +133,7 @@ test("filing receipt surfaces when process-conformance observes a report filing"
   assert.match(html, /id="mandates-reports"/);
   assert.match(html, /data-agency-constellation-card="mandates-reports"/);
   assert.match(html, new RegExp(FILING_RECEIPT_LABEL));
-  assert.match(html, /#notice\/20251215001/);
+  assert.match(html, /\/notices\/20251215001/);
   assert.match(html, /Annual Building Safety Report/);
   assert.match(html, /data-has-filing-receipt="1"/);
   assert.match(html, /Watch report mandates/);
