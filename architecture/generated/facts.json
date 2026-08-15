@@ -4,8 +4,8 @@
     "name": "tools/build_architecture_facts.mjs",
     "version": "1.0.0"
   },
-  "generated_at": "2026-08-15T07:51:21-04:00",
-  "commit": "09c449ddd0ae55ed9e0a16328c7ce80d1ee40160",
+  "generated_at": "2026-08-15T14:41:32-04:00",
+  "commit": "6bc945e3e53f51bb310ee1b78b756fc41bd618ab",
   "source_paths": [
     "entity_resolution",
     "ontology/live_inventory.mjs",
@@ -1435,6 +1435,14 @@
       "file": "worker/migrations/0019_civic_time_events.sql",
       "source": {
         "path": "worker/migrations/0019_civic_time_events.sql"
+      }
+    },
+    {
+      "id": "0020",
+      "name": "ontology_delta_shadow",
+      "file": "worker/migrations/0020_ontology_delta_shadow.sql",
+      "source": {
+        "path": "worker/migrations/0020_ontology_delta_shadow.sql"
       }
     }
   ],
