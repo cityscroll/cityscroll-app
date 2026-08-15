@@ -22,6 +22,8 @@ import {
   renderMandateRowGraphActions,
 } from "./mandate_graph_neighbors.mjs";
 import { OBSERVATION_LABELS, OBSERVATION_STATUS } from "./process_conformance.mjs";
+import { noticeDocumentPath } from "./notice_permalink.mjs";
+import { mandateObjectTarget } from "./notice_object_links.mjs";
 
 export const MANDATE_REPORTS_RECEIPT_SCHEMA = "cityscroll.mandate_reports_receipt.v1";
 export const MANDATE_REPORTS_RECEIPT_METHOD = "mandate_report_filing_receipt_v1";
@@ -47,6 +49,17 @@ const clean = (value, max = 500) => String(value ?? "")
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
+
+const noticeHref = (href, requestId) => {
+  const value = clean(href, 240);
+  if (value.startsWith("#notice/")) {
+    const fragmentId = value.slice("#notice/".length).split(/[?#]/, 1)[0];
+    try { return noticeDocumentPath(decodeURIComponent(fragmentId) || requestId); } catch {
+      return noticeDocumentPath(fragmentId || requestId);
+    }
+  }
+  return value || noticeDocumentPath(requestId);
+};
 
 export function isReportDeliverable(deliverableType) {
   return REPORT_DELIVERABLES.has(clean(deliverableType, 40).toLowerCase());
@@ -116,21 +129,21 @@ export function buildMandateReportsReceiptView(agencyIdOrName, sources = {}) {
         request_id: clean(obs.observed_record.request_id, 40) || null,
         label: clean(obs.observed_record.label, 240) || null,
         when: clean(obs.observed_record.when, 40) || null,
-        href: clean(obs.observed_record.href, 240)
-          || (obs.observed_record.request_id
-            ? `#notice/${encodeURIComponent(obs.observed_record.request_id)}`
-            : null),
+        href: noticeHref(obs.observed_record.href, obs.observed_record.request_id),
         signal_kind: clean(obs.observed_record.signal_kind, 40) || "report_or_study",
       }
       : null;
     const matter = mandateMatterEdgeFromRow(row);
     return {
       mandate_id: row.obligation_id,
+      agency_id: identity.canonical_id,
+      agency_name: identity.canonical_name,
       duty_text: clean(row.duty_text, 500),
       deliverable_type: "report",
       citation: clean(row.citation, 200) || null,
       deadline_date: clean(row.deadline?.computed_date, 20) || null,
       deadline_text: clean(row.deadline?.text || row.deadline_text, 240) || null,
+      deadline: row.deadline || null,
       recurrence: clean(row.recurrence, 40) || null,
       matter_id: matter?.matter_id || null,
       source_href: matter?.href || null,
@@ -216,6 +229,7 @@ export function renderMandateReportsReceiptSection(view) {
   const mandateList = (view.mandates || []).length
     ? `<ul class="node-record-list mandate-reports-mandates" data-bridge-side="report-mandates">${
       view.mandates.map((item) => {
+        const mandateTarget = mandateObjectTarget(item);
         const meta = [
           "report",
           item.deadline_date
@@ -226,7 +240,7 @@ export function renderMandateReportsReceiptSection(view) {
         ].filter(Boolean).map(esc).join(" · ");
         const receipt = item.filing_receipt || item.observed_record || null;
         const receiptLine = receipt?.href
-          ? ` · ${constellationLink({ href: receipt.href, label: `${FILING_RECEIPT_LABEL}: ${receipt.label || receipt.request_id}`, className: "mandate-filing-receipt-link agency-edge-link", attributes: { "data-filing-receipt": "1" }, escape: esc })}${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
+          ? ` · ${constellationLink({ href: receipt.href, label: `Report notice evidence · ${receipt.label || receipt.request_id}`, className: "mandate-filing-receipt-link agency-edge-link", attributes: { "data-filing-receipt": "1", "data-target-kind": "notice", "data-link-role": "evidence" }, escape: esc })}${receipt.when ? ` <span class="muted">(${esc(receipt.when)})</span>` : ""}`
           : "";
         // Per-row: Source law only. Filing receipt is linked above when present.
         // Agency-wide browse chips stay in section chrome — never on every card.
@@ -240,7 +254,7 @@ export function renderMandateReportsReceiptSection(view) {
           ? `<span class="mandate-obs-chip mandate-obs-observed mandate-filing-receipt-chip" data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-filing-receipt="1">${esc(FILING_RECEIPT_LABEL)}</span>`
           : "";
         return `<li class="node-record mandate-reports-mandate" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="report"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${receipt ? ` data-observation-status="${esc(OBSERVATION_STATUS.OBSERVED)}" data-has-filing-receipt="1"` : ""}>
-          <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
+          <div class="node-record-main">${chip}${mandateTarget ? constellationLink({ href: mandateTarget.href, label: mandateTarget.label, className: "agency-edge-link", attributes: { "data-target-kind": "mandate" }, escape: esc }) : esc(item.duty_text)}</div>
           <span class="muted node-muted">${meta}${receiptLine}${neighbors}</span>
         </li>`;
       }).join("")

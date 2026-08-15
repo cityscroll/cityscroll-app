@@ -7,6 +7,12 @@ import { renderMeetingDocument } from "./meeting_document.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
+import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
+import {
+  findMandateById,
+  noticeEvidenceForMandate,
+  renderMandateDocument,
+} from "./mandate_document.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
@@ -57,6 +63,11 @@ function safeId(pathname) {
 
 function safeMeeting(pathname) {
   const match = pathname.match(/^\/meetings\/([^/?#]{1,320})\/?$/);
+  return match ? match[1] : null;
+}
+
+function safeMandate(pathname) {
+  const match = pathname.match(/^\/mandates\/([A-Za-z0-9][A-Za-z0-9._-]{0,79})\/?$/);
   return match ? match[1] : null;
 }
 
@@ -118,6 +129,7 @@ function entityDocument(pathname) {
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (safeId(url.pathname)) return "notice";
+  if (safeMandate(url.pathname)) return "mandate";
   if (safeMeeting(url.pathname)) return "meeting";
   if (safeExamNumber(url.pathname)) return "exam";
   if (safeMonitorPack(url.pathname)) return "monitor-pack";
@@ -322,6 +334,11 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
   const identity = resolveAgencyIdentity(agency);
   const vendor = String(row?.vendor_name || "").trim();
+  const objectProjection = projectNoticeObjectTarget({ ...row, request_id: id });
+  const projectedTarget = objectProjection.state === "matched"
+    && objectProjection.target?.kind !== "notice"
+    ? objectProjection.target
+    : null;
   const noticeLocalConstellation = buildLocalConstellation({
     kind: "record",
     subject_ref: `notice:${id}`,
@@ -330,6 +347,16 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     source: null,
     provenance: null,
     neighbors: row ? [
+      projectedTarget ? {
+        edge_type: "related_record",
+        relation_label: `identified ${projectedTarget.kind} object`,
+        target_kind: projectedTarget.kind,
+        target_id: projectedTarget.id,
+        target_name: projectedTarget.label,
+        href: projectedTarget.href,
+        state: "matched",
+        provenance: null,
+      } : null,
       identity.matched ? {
         edge_type: "published_by_agency",
         relation_label: "published by agency",
@@ -572,6 +599,42 @@ async function handleNotice(request, env, id) {
   return transformed;
 }
 
+async function handleMandate(request, env, id) {
+  const [lookupResponse, backlinksResponse] = await Promise.all([
+    staticAsset(env, request, "/data/agency_obligations_lookup.json"),
+    staticAsset(env, request, "/data/notice_mandate_backlinks_lookup.json"),
+  ]);
+  let lookup = null;
+  let backlinks = null;
+  try { lookup = lookupResponse.ok ? await lookupResponse.json() : null; } catch (_error) { lookup = null; }
+  try { backlinks = backlinksResponse.ok ? await backlinksResponse.json() : null; } catch (_error) { backlinks = null; }
+  const row = findMandateById(lookup, id);
+  const html = row ? renderMandateDocument(row, {
+    noticeEvidence: noticeEvidenceForMandate(backlinks, id),
+  }) : "";
+  if (!html) {
+    return new Response(
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Mandate not found · CityScroll</title></head><body><main><h1>Mandate not found</h1><p><a href=\"/browse/\">Browse civic records</a></p></main></body></html>",
+      {
+        status: 404,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "public, max-age=60, s-maxage=60",
+          "X-Content-Type-Options": "nosniff",
+        },
+      },
+    );
+  }
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD"
+    ? new Response(null, { status: 200, headers })
+    : new Response(html, { status: 200, headers });
+}
+
 function browseAssetPath(facet, pathname) {
   const requested = String(pathname || "").replace(/\/+$/, "");
   if (facet === "contracts" && requested === "/browse/contracts") return "/browse/contracts/";
@@ -692,6 +755,8 @@ export default {
     const url = new URL(request.url);
     const id = safeId(url.pathname);
     if (id) return handleNotice(request, env, id);
+    const mandateId = safeMandate(url.pathname);
+    if (mandateId) return handleMandate(request, env, mandateId);
     if (url.pathname === "/meeting.ics") return handleMeetingICS(request, env);
     const meetingId = safeMeeting(url.pathname);
     if (meetingId) return handleMeeting(request, env, meetingId);

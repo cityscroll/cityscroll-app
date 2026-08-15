@@ -148,12 +148,16 @@ test("normalizeMandateScopedLinks drops empty hrefs and dedupes", () => {
       href: "/notices/1",
       label: "First",
       relation: "rules",
+      target_kind: "notice",
+      link_role: "evidence",
     },
     {
       key: "contracts",
       href: "/notices/2",
-      label: "Linked contract",
+      label: "Contract notice evidence",
       relation: "contracts",
+      target_kind: "notice",
+      link_role: "evidence",
     },
   ]);
   assert.deepEqual(mandateScopedLinksFromRecord(null), []);
@@ -165,6 +169,8 @@ test("normalizeMandateScopedLinks drops empty hrefs and dedupes", () => {
   assert.equal(fromObs.length, 1);
   assert.equal(fromObs[0].key, "report");
   assert.equal(fromObs[0].href, "/notices/20251001039");
+  assert.equal(fromObs[0].target_kind, "notice");
+  assert.equal(fromObs[0].link_role, "evidence");
 });
 
 test("Parks rules rows keep Source law and drop hollow agency Open-in chips", () => {
