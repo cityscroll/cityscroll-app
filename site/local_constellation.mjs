@@ -3,14 +3,14 @@
  *
  * This is a presentation adapter, not a graph store. Producers pass the
  * edges and destinations they have already materialized; this module keeps a
- * small, keyboard-readable neighborhood beside a compact visual projection.
+ * small, keyboard-readable neighborhood. Place views may also include a
+ * genuine district map when the source provides verified geometry.
  */
 
 import {
   normalizeEdgeSummaryRecords,
   resolveEdgeSummaryDestination,
 } from "./edge_summary.mjs";
-import { communityBoardPageHref } from "./community_board_links.mjs";
 
 export const LOCAL_CONSTELLATION_SCHEMA = "cityscroll.local_constellation.v1";
 export const LOCAL_CONSTELLATION_MAX_NODES = 8;
@@ -242,8 +242,8 @@ function nodeConnectionCopy(view, node) {
 function nodeMarkup(view, node) {
   const relation = nodeConnectionCopy(view, node);
   const destination = node.href
-    ? `<a class="local-constellation-node-link" href="${esc(node.href)}" data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted" data-pivot-relation-label="${esc(relation)}" data-pivot-target-kind="${esc(node.target_kind || "record")}" data-pivot-target-id="${esc(node.target_id || "")}">${esc(node.node_name)}</a>`
-    : `<span class="local-constellation-node-held" data-pivot-status="held" aria-label="${esc(node.node_name)}">${esc(node.node_name)}</span>`;
+    ? `<a class="local-constellation-node-link" href="${esc(node.href)}" aria-label="${esc(`${node.node_name}, ${relation}`)}" data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted" data-pivot-relation-label="${esc(relation)}" data-pivot-target-kind="${esc(node.target_kind || "record")}" data-pivot-target-id="${esc(node.target_id || "")}">${esc(node.node_name)}</a>`
+    : `<span class="local-constellation-node-held" data-pivot-status="held" aria-label="${esc(`${node.node_name}, ${relation}`)}">${esc(node.node_name)}</span>`;
   return `<li class="local-constellation-list-item" data-local-node-state="${esc(node.state)}" data-edge-type="${esc(node.edge_type || "")}">
     <div class="local-constellation-node-main"><span class="local-constellation-node-dot" aria-hidden="true">◆</span>${destination}</div>
     <span class="local-constellation-relation">${esc(relation)}</span>
@@ -251,64 +251,28 @@ function nodeMarkup(view, node) {
 }
 
 function mapMarkup(view, headingId) {
-  if (view.kind === "place") {
-    const map = view.map;
-    if (!map?.features?.length || !map.view_box) {
-      const copy = view.subject_ref
-        ? "A district map is not available for this place yet."
-        : "Choose a district to see its local map.";
-      return `<div class="local-constellation-map local-constellation-map-empty" role="img" aria-label="${esc(copy)}"><span>${esc(copy)}</span></div>`;
-    }
-    const descId = `${headingId}-map-desc`;
-    const central = map.central_label || view.subject_name || "the central district";
-    const shapeMarkup = map.features.map((feature) => {
-      const role = feature.role === "central" ? "central" : "adjacent";
-      const detail = role === "central" ? "central district" : "overlapping district";
-      return `<path class="local-district-map-shape local-district-map-${role}" data-district-id="${esc(feature.id)}" data-district-role="${role}" d="${esc(feature.path)}" aria-label="${esc(`${feature.label}, ${detail}`)}"><title>${esc(`${feature.label}: ${detail}`)}</title></path>`;
-    }).join("");
-    const labels = map.features.map((feature) => feature.labelPoint
-      ? `<text class="local-district-map-label local-district-map-label-${feature.role === "central" ? "central" : "adjacent"}" x="${esc(feature.labelPoint.x)}" y="${esc(feature.labelPoint.y)}" text-anchor="middle" dominant-baseline="central" aria-hidden="true">${esc(feature.label.replace(/^City Council District /, "Council ").replace(/ Community District$/, ""))}</text>`
-      : "").join("");
-    return `<svg class="local-constellation-map local-district-map" role="img" aria-labelledby="${esc(headingId)} ${esc(descId)}" viewBox="${esc(map.view_box)}" preserveAspectRatio="xMidYMid meet">
+  if (view.kind !== "place") return "";
+  const map = view.map;
+  if (!map?.features?.length || !map.view_box) return "";
+  const descId = `${headingId}-map-desc`;
+  const central = map.central_label || view.subject_name || "the central district";
+  const shapeMarkup = map.features.map((feature) => {
+    const role = feature.role === "central" ? "central" : "adjacent";
+    const detail = role === "central" ? "central district" : "overlapping district";
+    return `<path class="local-district-map-shape local-district-map-${role}" data-district-id="${esc(feature.id)}" data-district-role="${role}" d="${esc(feature.path)}" aria-label="${esc(`${feature.label}, ${detail}`)}"><title>${esc(`${feature.label}: ${detail}`)}</title></path>`;
+  }).join("");
+  const labels = map.features.map((feature) => feature.labelPoint
+    ? `<text class="local-district-map-label local-district-map-label-${feature.role === "central" ? "central" : "adjacent"}" x="${esc(feature.labelPoint.x)}" y="${esc(feature.labelPoint.y)}" text-anchor="middle" dominant-baseline="central" aria-hidden="true">${esc(feature.label.replace(/^City Council District /, "Council ").replace(/ Community District$/, ""))}</text>`
+    : "").join("");
+  return `<svg class="local-constellation-map local-district-map" role="img" aria-labelledby="${esc(headingId)} ${esc(descId)}" viewBox="${esc(map.view_box)}" preserveAspectRatio="xMidYMid meet">
       <desc id="${esc(descId)}">Map of ${esc(central)} and the council districts that overlap it. The central district is darker; overlapping districts are lighter. Use the equivalent list for links.</desc>
       <g fill-rule="evenodd">${shapeMarkup}</g>
       <g class="local-district-map-labels">${labels}</g>
-    </svg>`;
-  }
-  if (!view.nodes.length) return `<div class="local-constellation-map local-constellation-map-empty" aria-hidden="true"><span>○</span></div>`;
-  const width = 360;
-  const height = 190;
-  const cx = 180;
-  const cy = 95;
-  const radius = 70;
-  const points = view.nodes.map((node, index) => {
-    const angle = (Math.PI * 2 * index / view.nodes.length) - Math.PI / 2;
-    return { node, x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
-  });
-  const lines = points.map(({ x, y }) => `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(2)}" y2="${y.toFixed(2)}" />`).join("");
-  const dots = points.map(({ node, x, y }) => `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="7" data-node-state="${esc(node.state)}"><title>${esc(`${node.node_name}: ${node.relation_label || node.edge_type || "related record"}`)}</title></circle>`).join("");
-  const descId = `${headingId}-map-desc`;
-  return `<svg class="local-constellation-map" role="img" aria-labelledby="${esc(headingId)} ${esc(descId)}" viewBox="0 0 ${width} ${height}">
-    <desc id="${esc(descId)}">A bounded view of ${esc(view.nodes.length)} connected records. Use the equivalent list for links.</desc>
-    <g class="local-constellation-lines" aria-hidden="true">${lines}</g>
-    <circle class="local-constellation-center" cx="${cx}" cy="${cy}" r="18"><title>${esc(view.subject_name || "Current record")}</title></circle>
-    <g class="local-constellation-dots" aria-hidden="true">${dots}</g>
   </svg>`;
 }
 
 function emptyCopy(view) {
   return view.kind === "place" ? LOCAL_PLACE_EMPTY_COPY : LOCAL_EMPTY_COPY;
-}
-
-function previewMarkup(view) {
-  if (view.kind !== "place" || view.status !== "empty") return "";
-  const boardHref = communityBoardPageHref("manhattan-cb-03");
-  return `<aside class="local-constellation-preview" data-local-constellation-preview="true" data-local-constellation-preview-live="false" aria-label="Example connection preview">
-    <p class="local-constellation-preview-label">Example preview</p>
-    <p class="local-constellation-preview-name"><span aria-hidden="true">◇</span><a href="${esc(boardHref)}">Manhattan Community Board 3</a></p>
-    <p class="local-constellation-preview-relation">Covers this district.</p>
-    <p class="local-constellation-preview-note">A place link can look like this.</p>
-  </aside>`;
 }
 
 export function ensureLocalConstellationStylesheet() {
@@ -337,17 +301,12 @@ export function renderLocalConstellationHTML(view, {
       ? `${placeDistrictCount} council ${placeDistrictCount === 1 ? "district overlaps" : "districts overlap"} this community district.`
       : `${view.nodes.length} connected ${view.nodes.length === 1 ? "record" : "records"}.`
     : "Place connections for this district are not published yet.";
-  const summarySuffix = view.status === "empty"
-    ? ""
-    : view.kind === "place" && view.status === "matched"
-      ? " The central district is darker; overlapping districts are lighter."
-      : " The map is limited to published neighbors.";
   const list = view.nodes.length
     ? `<ol class="local-constellation-list" aria-label="Equivalent list of connected records">${view.nodes.map((node) => nodeMarkup(view, node)).join("")}</ol>`
-    : `<div class="local-constellation-empty-wrap"><p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="${esc(view.status)}">${esc(countText)}</p>${previewMarkup(view)}</div>`;
+    : `<div class="local-constellation-empty-wrap"><p class="local-constellation-empty" data-local-constellation-empty="true" data-edge-state="${esc(view.status)}">${esc(countText)}</p></div>`;
   const availability = view.availability_state || view.status;
   return `<section class="local-constellation ${esc(className)}" data-local-constellation="1" data-local-constellation-kind="${esc(view.kind)}" data-local-constellation-status="${esc(view.status)}" data-edge-state="${esc(availability)}" data-local-constellation-count="${view.node_count}" aria-labelledby="${esc(id)}">
-    <div class="local-constellation-heading"><div><p class="local-constellation-kicker">Local connections</p><h2 id="${esc(id)}">${esc(title)}</h2><p class="local-constellation-summary">${esc(countText)}${summarySuffix}</p></div></div>
+    <div class="local-constellation-heading"><div><p class="local-constellation-kicker">Local connections</p><h2 id="${esc(id)}">${esc(title)}</h2><p class="local-constellation-summary">${esc(countText)}</p></div></div>
     <div class="local-constellation-body">${mapMarkup(view, id)}<div class="local-constellation-list-wrap">${list}</div></div>
   </section>`;
 }

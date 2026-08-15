@@ -27,19 +27,12 @@ test("local constellation registry covers the Browse object kinds", () => {
   }
 });
 
-test("place empty state explains the connection and shows one non-live example", () => {
+test("place empty state explains the connection without a fabricated example", () => {
   const view = buildLocalConstellation({ kind: "place", subject_ref: "community-district:M03", neighbors: [] });
   const html = renderLocalConstellationHTML(view);
   assert.match(html, /Nearby place records link this district to civic areas\./);
   assert.match(html, /See its community board and the City Council districts that overlap it\./);
-  assert.equal((html.match(/data-local-constellation-preview="true"/g) || []).length, 1);
-  assert.match(html, /Example preview/);
-  assert.match(html, /Manhattan Community Board 3/);
-  assert.match(html, /Covers this district\./);
-  assert.match(html, /A place link can look like this\./);
-  assert.match(html, /data-local-constellation-preview-live="false"/);
-  assert.doesNotMatch(html, /data-local-constellation-preview="true"[^>]*href=/);
-  assert.doesNotMatch(html, /data-local-constellation-preview="true"[^>]*data-pivot/);
+  assert.doesNotMatch(html, /local-constellation-preview|Example preview|A place link can look like this\./);
 });
 
 test("local constellation is bounded, list-equivalent, and never invents a destination", () => {
@@ -65,6 +58,8 @@ test("local constellation is bounded, list-equivalent, and never invents a desti
   assert.equal(view.nodes.every((node) => node.href), true);
   const html = renderLocalConstellationHTML(view);
   assert.equal((html.match(/class="local-constellation-list-item"/g) || []).length, view.nodes.length);
+  assert.match(html, /aria-label="Record 0, related record"/);
+  assert.doesNotMatch(html, /local-constellation-lines|local-constellation-center|local-constellation-dots/);
   assert.doesNotMatch(html, /made-up-route/);
 });
 
@@ -127,4 +122,5 @@ test("local district labels use contrast-aware edge treatments", () => {
     constellationStyles,
     /\.local-district-map-label-adjacent\{[^}]*fill:var\(--color-text,[^}]*\}/,
   );
+  assert.doesNotMatch(constellationStyles, /local-constellation-lines|local-constellation-center|local-constellation-dots|local-constellation-preview/);
 });
