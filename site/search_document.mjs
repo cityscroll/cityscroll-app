@@ -7,7 +7,7 @@ const LANE_LABELS = Object.freeze({
   contracts: "Contracts",
   rules: "Rules",
   meetings: "Meetings",
-  obligations: "Obligations",
+  obligations: "Mandates",
 });
 const PLACE_KEYS = Object.freeze([
   ["boro", "Borough"],
