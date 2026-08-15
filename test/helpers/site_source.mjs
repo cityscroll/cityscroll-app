@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 
 export const SITE_MODULES = [
   "core.mjs",
-  "traversal.mjs",
   "money-list.mjs",
   "money-history.mjs",
   "search-share.mjs",
@@ -13,6 +12,7 @@ export const SITE_MODULES = [
   "notice-context.mjs",
   "property.mjs",
   "rules.mjs",
+  "traversal.mjs",
   "procurement-lifecycle.mjs",
   "procurement-phase.mjs",
   "subsidy.mjs",
