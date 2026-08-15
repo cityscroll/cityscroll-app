@@ -195,6 +195,35 @@ test("missing meeting edges and decision documents remain explicit gaps", () => 
   assert.equal(decisions.gap, "decision_documents_not_published");
 });
 
+test("name-only agency-shaped applicants retain an unresolved organization descriptor", () => {
+  const result = buildProjectConnectionEvidence({
+    projectId: "2024Q0135",
+    projectRows: [{
+      project_id: "2024Q0135",
+      project_name: "Willets Point Phase II Mapping Actions",
+      primary_applicant: "EDC - Economic Development Corporation for NYC",
+    }],
+  });
+  const applicant = result.groups.find((group) => group.id === "applicant");
+  assert.deepEqual(applicant.items[0], {
+    ref: "agency:id:edc-economic-development-corporation-for-nyc",
+    label: "EDC - Economic Development Corporation for NYC",
+    relation: null,
+    confidence: null,
+    evidence: "ZAP primary_applicant",
+  });
+
+  const unknown = buildProjectConnectionEvidence({
+    projectId: "2024Q0136",
+    projectRows: [{
+      project_id: "2024Q0136",
+      project_name: "Unknown applicant project",
+      primary_applicant: "Jane Doe",
+    }],
+  });
+  assert.equal(unknown.groups.find((group) => group.id === "applicant").items[0].ref, null);
+});
+
 test("response contract distinguishes complete, declared-unavailable, and incomplete 200s", () => {
   const available = { ok: true, record: { project_id: PROJECT_ID, project_connections: evidence() } };
   assert.equal(projectConnectionsPayloadState(available, PROJECT_ID), "available");
