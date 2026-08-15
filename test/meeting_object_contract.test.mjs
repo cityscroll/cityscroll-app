@@ -66,6 +66,23 @@ test("both producers preserve their exact source key in one shared object shape"
   assert.equal(board.join_status, "unknown");
 });
 
+test("City Record notice fields stay on the normalized materialized meeting", () => {
+  const record = normalizeCityRecordMeeting({
+    request_id: "20260814002",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    additional_description_1: "A published notice body.",
+    street_address_1: "250 Broadway",
+    contact_name: "Public Hearings Unit",
+    email: "hearings@example.gov",
+  });
+  assert.equal(record.type_of_notice_description, "Public Hearings");
+  assert.equal(record.additional_description_1, "A published notice body.");
+  assert.equal(record.street_address_1, "250 Broadway");
+  assert.equal(record.contact_name, "Public Hearings Unit");
+  assert.equal(record.email, "hearings@example.gov");
+});
+
 test("identity never falls back to title/date and missing institutions stay honest", () => {
   assert.throws(() => meetingIdForSource("community_board", ""), /publisher_event_id is required/);
   const missingKey = normalizeCommunityBoardMeeting({ title: "Same title", event_date: "2026-08-20" });

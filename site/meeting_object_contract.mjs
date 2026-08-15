@@ -134,6 +134,21 @@ function searchableText(row, fields = {}) {
   ].filter(Boolean).join(" "))?.slice(0, 6_000) || null;
 }
 
+const CITY_RECORD_NOTICE_FIELDS = Object.freeze([
+  "type_of_notice_description", "section_name",
+  "additional_description_1", "additional_description_2", "additional_description_3",
+  "other_info_1", "other_info_2", "other_info_3",
+  "street_address_1", "street_address_2", "building_name", "city", "state", "zip_code",
+  "contact_name", "contact_phone", "email", "address_to_request",
+  "category_description", "selection_method_description", "source_links", "document_links",
+]);
+
+function retainedNoticeFields(row) {
+  return Object.fromEntries(CITY_RECORD_NOTICE_FIELDS
+    .filter((field) => Object.hasOwn(row, field))
+    .map((field) => [field, row[field]]));
+}
+
 /**
  * Return the stable id for one publisher's source key.
  *
@@ -168,6 +183,7 @@ export function normalizeMeetingObject(row = {}) {
   };
 
   return {
+    ...retainedNoticeFields(row),
     object_type: "meeting",
     schema: MEETING_OBJECT_SCHEMA,
     meeting_id: meetingId,

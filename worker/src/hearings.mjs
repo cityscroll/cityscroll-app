@@ -28,6 +28,8 @@ const SELECT = [
   "city", "state", "zip_code", "additional_description_1", "additional_description_2",
   "additional_description_3", "other_info_1", "other_info_2", "other_info_3",
   "printout_1", "printout_2", "printout_3",
+  "contact_name", "contact_phone", "email", "address_to_request", "category_description",
+  "selection_method_description",
 ].join(",");
 
 function materializedRows(payload) {

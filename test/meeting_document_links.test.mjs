@@ -60,7 +60,7 @@ test("meeting detail renders the materialized civic object projection", () => {
     affected_area: { boroughs: ["Manhattan"], community_districts: ["M02"], council_districts: ["02"] },
     participation: {
       links: [{ label: "Register to attend", url: "https://example.test/register" }],
-      remote_join_url: "https://example.test/zoom",
+      remote_join_url: "https://zoom.us/j/123456789",
       emails: ["board@example.test"], phones: ["212-555-0100"],
     },
     meeting_documents: [
@@ -95,4 +95,67 @@ test("meeting affordances are progressive and shared across source systems", () 
   assert.match(html, /An agency/);
   assert.doesNotMatch(html, /meeting-location|meeting-participation|meeting-documents|meeting-minutes/);
   assert.doesNotMatch(html, /Not published|Status unknown|Agenda and materials/);
+});
+
+test("meeting participation keeps real join methods once and labels their platforms", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:community_board:event-participation",
+    source_system: "community_board",
+    title: "A hybrid board meeting",
+    event_date: "2026-08-20",
+    participation: {
+      links: [
+        { label: "Join online", url: "https://www.zoomgov.com/j/123456789" },
+        { label: "Register to attend", url: "https://www.zoomgov.com/webinar/register/WN_test" },
+        { label: "Join online", url: "https://workspace.google.com/products/calendar/" },
+        { label: "Register to attend", url: "https://outlook.office.com/owa/?path=/calendar/action/compose&rrv=addevent" },
+        { label: "Join online", url: "https://teams.microsoft.com/l/meetup-join/test" },
+        { label: "Join online", url: "https://example.webex.com/meet/test" },
+        { label: "Join online", url: "https://meet.google.com/abc-defg-hij" },
+        { label: "Join online", url: "https://example.gov/register/meeting" },
+      ],
+      remote_join_url: "https://www.zoomgov.com/j/123456789",
+    },
+  });
+  assert.equal((html.match(/Join online \(Zoom\)/g) || []).length, 1);
+  assert.equal((html.match(/Join online \(Teams\)/g) || []).length, 1);
+  assert.equal((html.match(/Join online \(Webex\)/g) || []).length, 1);
+  assert.equal((html.match(/Join online \(Google Meet\)/g) || []).length, 1);
+  assert.equal((html.match(/Register to attend/g) || []).length, 2);
+  assert.doesNotMatch(html, /workspace\.google\.com\/products/);
+  assert.doesNotMatch(html, /outlook\.office\.com\/owa/);
+  assert.match(html, /https:\/\/example\.gov\/register\/meeting/);
+});
+
+test("city record meeting renders materialized notice fields without fetching", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:city_record:20260820001",
+    source_system: "city_record",
+    title: "Public hearing on a proposed rule",
+    event_date: "2026-08-20T14:00:00Z",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    additional_description_1: "The first substantive notice paragraph.",
+    additional_description_2: "A second notice paragraph.",
+    other_info_1: "Additional public information.",
+    other_info_2: "Further public information.",
+    street_address_1: "250 Broadway",
+    street_address_2: "Room 915",
+    building_name: "Municipal Building",
+    city: "New York",
+    state: "NY",
+    zip_code: "10007",
+    contact_name: "Public Hearings Unit",
+    contact_phone: "212-555-0100",
+    email: "hearings@example.gov",
+    compatibility: { legacy_notice_href: "/notices/20260820001" },
+  });
+  assert.match(html, /Public Hearings/);
+  assert.match(html, /Public Hearings and Meetings/);
+  assert.match(html, /The first substantive notice paragraph/);
+  assert.match(html, /Further public information/);
+  assert.match(html, /250 Broadway/);
+  assert.match(html, /Public Hearings Unit/);
+  assert.match(html, /212-555-0100/);
+  assert.match(html, /mailto:hearings@example\.gov/);
 });
