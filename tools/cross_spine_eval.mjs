@@ -14,6 +14,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  CROSS_SPINE_EDGE_POLICY_VERSION,
   CROSS_SPINE_RELATION_POLICIES,
   CROSS_SPINE_MIN_HELD_OUT_PRECISION,
   CROSS_SPINE_MIN_HELD_OUT_SUPPORT,
@@ -348,6 +349,7 @@ function relationMetric(rows, candidates) {
   const positive = inferredRows.filter((row) => row.label === "same").length;
   const truePositive = candidates.filter((row) => row.label === "same").length;
   const falsePositive = candidates.filter((row) => row.label === "different").length;
+  const falseNegative = positive - truePositive;
   const generated = candidates.length;
   return {
     total: rows.length,
@@ -358,9 +360,14 @@ function relationMetric(rows, candidates) {
     candidates: generated,
     true_positive: truePositive,
     false_positive: falsePositive,
+    false_negative: falseNegative,
+    // Relation-classification equivalents of ER merge/split errors.
+    false_merge: falsePositive,
+    false_split: falseNegative,
     precision: ratio(truePositive, generated),
     precision_interval_95: wilsonInterval(truePositive, generated),
     coverage: ratio(truePositive, positive),
+    recall: ratio(truePositive, positive),
     abstentions: rows.length - generated,
     abstention_rate: ratio(rows.length - generated, rows.length),
   };
@@ -426,8 +433,15 @@ export function evaluateCrossSpineGold({
   return {
     schema: CROSS_SPINE_EVAL_SCHEMA,
     eval_version: CROSS_SPINE_EVAL_VERSION,
+    matcher_version: CROSS_SPINE_EDGE_POLICY_VERSION,
     gold_version: gold.meta.gold_version,
     content_hash: gold.contentHash,
+    target_cohort: {
+      name: "constellation_cross_spine_inferred_edges",
+      gold_slice: `${gold.meta.gold_version}:${groupSplit ? "held_out" : "all"}`,
+      relation_count: relations.length,
+      case_count: groupSplit ? split.heldOut.length : cases.length,
+    },
     relation: selectedRelation,
     group_split: groupSplit,
     split: split ? {
@@ -504,6 +518,9 @@ export function buildCrossSpineMonitorReceipt({ gold, prior = null, observedAt =
       precision_interval_95: metric?.precision_interval_95 ?? null,
       true_positive: metric?.true_positive ?? null,
       false_positive: metric?.false_positive ?? null,
+      false_negative: metric?.false_negative ?? null,
+      false_merge: metric?.false_merge ?? null,
+      false_split: metric?.false_split ?? null,
       held_out_rows: metric?.total ?? 0,
       gate: report.gate[relation],
       provenance: {

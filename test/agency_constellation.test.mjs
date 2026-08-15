@@ -400,6 +400,24 @@ test("tentative edges stay off the public list rather than shipping with hedges"
   assert.doesNotMatch(html, /maybe1|Possible award/);
 });
 
+test("public mandate totals count only standable constellation links", () => {
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+  });
+  const mandates = view.categories.find((category) => category.id === "obligations");
+  const source = obligations.by_agency[PARKS];
+  const certified = source.obligations.filter((row) =>
+    row.quote_verified || row.certification?.quote_verified || row.certification?.status === "auto_certified");
+
+  assert.ok(source.count > certified.length, "fixture retains provisional quote-miss rows");
+  assert.equal(mandates.count, certified.length);
+  assert.equal(mandates.warrant_summary.verified_total, certified.length);
+  assert.equal(mandates.items.every((item) => item.claim?.confidence?.standable), true);
+});
+
 test("constellationObjectHref prefers notice documents over SPA hash routes", () => {
   assert.equal(
     constellationObjectHref({
