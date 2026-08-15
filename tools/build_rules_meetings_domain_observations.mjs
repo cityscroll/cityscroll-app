@@ -108,15 +108,16 @@ const PEOPLE_EXTRACT_LIMIT = 600;
 /** Safety cap on list pagination (matched roll-call records are few). */
 const MEETING_OUTCOMES_PAGE_LIMIT = 100;
 const MEETING_OUTCOMES_MAX_OFFSET = 2000;
-// Body fields are fetched only to extract bounded matter-subject stamps plus
-// ULURP / ZAP project keys for reverse land joins. Raw body text is NOT written
-// into the committed snapshot
-// (emails / phones / testimony contacts must not land on the public PR surface).
+// Body fields are fetched to extract bounded matter-subject stamps plus
+// ULURP / ZAP project keys for reverse land joins. Meeting rows retain the
+// publisher fields needed by the canonical meeting document; rule rows retain
+// only their bounded evidence stamp.
 const SELECT =
   "request_id,start_date,agency_name,type_of_notice_description,section_name,short_title,event_date,"
   + "street_address_1,street_address_2,city,state,zip_code,building_name,"
+  + "contact_name,contact_phone,email,address_to_request,category_description,selection_method_description,"
   + "additional_description_1,additional_description_2,additional_description_3,"
-  + "other_info_1,printout_1";
+  + "other_info_1,other_info_2,other_info_3,printout_1,printout_2,printout_3";
 
 function parseArgs(argv) {
   const out = {
@@ -307,7 +308,13 @@ function cleanRule(row) {
     additional_description_2: row.additional_description_2,
     additional_description_3: row.additional_description_3,
     other_info_1: row.other_info_1,
+    other_info_2: row.other_info_2,
+    other_info_3: row.other_info_3,
     printout_1: row.printout_1,
+    printout_2: row.printout_2,
+    printout_3: row.printout_3,
+    source_links: row.source_links,
+    document_links: row.document_links,
   };
   const hearingArea = affectedAreaFromRow(fullRow);
   const ruleLoc = ruleLocationFromRow(fullRow, {
@@ -358,11 +365,23 @@ function cleanHearing(row) {
     state: row.state,
     zip_code: row.zip_code,
     building_name: row.building_name,
+    contact_name: row.contact_name,
+    contact_phone: row.contact_phone,
+    email: row.email,
+    address_to_request: row.address_to_request,
+    category_description: row.category_description,
+    selection_method_description: row.selection_method_description,
     additional_description_1: row.additional_description_1,
     additional_description_2: row.additional_description_2,
     additional_description_3: row.additional_description_3,
     other_info_1: row.other_info_1,
+    other_info_2: row.other_info_2,
+    other_info_3: row.other_info_3,
     printout_1: row.printout_1,
+    printout_2: row.printout_2,
+    printout_3: row.printout_3,
+    source_links: row.source_links,
+    document_links: row.document_links,
   };
   const out = {
     request_id: fullRow.request_id,
@@ -372,6 +391,29 @@ function cleanHearing(row) {
     event_date: fullRow.event_date,
     type_of_notice_description: fullRow.type_of_notice_description,
     section_name: fullRow.section_name,
+    contact_name: fullRow.contact_name,
+    contact_phone: fullRow.contact_phone,
+    email: fullRow.email,
+    address_to_request: fullRow.address_to_request,
+    category_description: fullRow.category_description,
+    selection_method_description: fullRow.selection_method_description,
+    street_address_1: fullRow.street_address_1,
+    street_address_2: fullRow.street_address_2,
+    city: fullRow.city,
+    state: fullRow.state,
+    zip_code: fullRow.zip_code,
+    building_name: fullRow.building_name,
+    additional_description_1: fullRow.additional_description_1,
+    additional_description_2: fullRow.additional_description_2,
+    additional_description_3: fullRow.additional_description_3,
+    other_info_1: fullRow.other_info_1,
+    other_info_2: fullRow.other_info_2,
+    other_info_3: fullRow.other_info_3,
+    printout_1: fullRow.printout_1,
+    printout_2: fullRow.printout_2,
+    printout_3: fullRow.printout_3,
+    source_links: fullRow.source_links,
+    document_links: fullRow.document_links,
     source_system: "city_record",
     meeting_origin: normalizeMeetingOrigin(fullRow),
     source_url: meetingSourceUrl(fullRow),
@@ -756,7 +798,7 @@ async function main() {
     domain: "meetings",
     title: "Meetings domain observations for entity intelligence",
     description:
-      "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Source prose is reduced to bounded matter-subject stamps and discarded. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
+      "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline meeting and entity-intelligence materialization. Meeting notice fields are retained for the canonical read model; bounded person-level votes live in the people domain snapshot (by_person from meeting-outcomes).",
     retrieved_at: retrievedAt,
     window_days: args.windowDays,
     source: {
