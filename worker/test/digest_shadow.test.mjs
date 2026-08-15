@@ -9,6 +9,7 @@ import {
   runDigestShadow,
 } from "../src/digest_shadow.mjs";
 import { handleAdminDigestShadow } from "../src/admin.mjs";
+import { ONTOLOGY_DELTA_EVENT_SCHEMA } from "../src/lib/ontology_delta_alert.mjs";
 
 const NOW = new Date("2026-08-04T10:00:00.000Z");
 const HOLD_NOW = new Date("2026-08-04T13:00:00.000Z");
@@ -124,16 +125,26 @@ test("opaque preview ids keep masked-recipient collisions independently addressa
 function writeOnlyDb() {
   const batches = [];
   const runs = [];
+  const transitionKeys = new Set();
   return {
     batches,
     runs,
+    transitionKeys,
     prepare(sql) {
       return {
         bind: (...args) => ({
           sql,
           args,
           all: async () => ({ results: [] }),
-          run: async () => { runs.push({ sql, args }); return { success: true }; },
+          run: async () => {
+            runs.push({ sql, args });
+            if (sql.includes("INSERT OR IGNORE INTO ontology_delta_shadow_events")) {
+              if (transitionKeys.has(args[0])) return { success: true, meta: { changes: 0 } };
+              transitionKeys.add(args[0]);
+              return { success: true, meta: { changes: 1 } };
+            }
+            return { success: true, meta: { changes: 1 } };
+          },
         }),
       };
     },
@@ -160,6 +171,7 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
       calls.push(args);
       return { results: [result()] };
     },
+    ontologyDeltaCandidates: [],
     notifyFn: async () => { notified = true; },
   });
   assert.equal(out.status, DIGEST_SHADOW_READY);
@@ -199,6 +211,7 @@ test("shadow failures produce no outbound email", async () => {
     }, {
       now: NOW,
       runAlertsFn: async () => ({ results: [{ sub: "sub:er***", previewId: "digest:error", error: "render failed" }] }),
+      ontologyDeltaCandidates: [],
     });
     assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
     assert.equal(out.redlines.length, 1);
@@ -210,6 +223,40 @@ test("shadow failures produce no outbound email", async () => {
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("ontology-delta candidates enter the private shadow receipt once", async () => {
+  const DB = writeOnlyDb();
+  const candidate = {
+    schema: ONTOLOGY_DELTA_EVENT_SCHEMA,
+    event_type: "ontology_delta",
+    dimension: "edge_type",
+    value: "paid_to_vendor",
+    scope: "civic_graph",
+    transition_key: "ontology-delta:civic_graph:edge_type:paid_to_vendor:absent-to-present",
+    old_state: { present: false, as_of: "2026-08-01T00:00:00.000Z" },
+    new_state: { present: true, observed_at: NOW.toISOString() },
+    shadow_only: true,
+    promotion_state: "shadow",
+  };
+  const env = { DB, ALERT_STATE: { get: async () => null } };
+  const options = {
+    now: NOW,
+    runAlertsFn: async () => ({ results: [result()] }),
+    ontologyDeltaCandidates: [candidate],
+  };
+
+  const first = await runDigestShadow(env, options);
+  const second = await runDigestShadow(env, options);
+
+  assert.equal(first.ontology_delta.emitted_count, 1);
+  assert.equal(first.ontology_delta.events[0].transition_key, candidate.transition_key);
+  assert.equal(first.ontology_delta.receipts[0].action, "shadow_candidate");
+  assert.equal(first.ontology_delta.receipts[0].sent, false);
+  assert.equal(second.ontology_delta.emitted_count, 0);
+  assert.equal(second.ontology_delta.events.length, 0);
+  assert.equal(second.ontology_delta.receipts[0].action, "deduplicated");
+  assert.equal(DB.transitionKeys.size, 1);
 });
 
 function readDb(summaryJson, preview = null) {
@@ -404,12 +451,15 @@ test("Worker cron, D1 migration, and independent scheduled wake monitor are wire
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
   const migration = readFileSync(new URL("../migrations/0014_digest_shadow.sql", import.meta.url), "utf8");
   const holdMigration = readFileSync(new URL("../migrations/0015_digest_shadow_hold.sql", import.meta.url), "utf8");
+  const ontologyMigration = readFileSync(new URL("../migrations/0020_ontology_delta_shadow.sql", import.meta.url), "utf8");
   const workflow = readFileSync(new URL("../../.github/workflows/digest-shadow-monitor.yml", import.meta.url), "utf8");
   const runner = readFileSync(new URL("../../tools/external_schedule_runner.mjs", import.meta.url), "utf8");
   assert.match(wrangler, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_states/);
+  assert.match(ontologyMigration, /CREATE TABLE IF NOT EXISTS ontology_delta_shadow_events/);
+  assert.match(ontologyMigration, /transition_key TEXT PRIMARY KEY/);
   const schedules = readFileSync(new URL("../../tools/external_schedule_jobs.json", import.meta.url), "utf8");
   assert.match(schedules, /"id": "digest-shadow-monitor"/);
   assert.match(schedules, /"10 13 \* \* \*"/);
