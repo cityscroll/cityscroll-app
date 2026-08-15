@@ -5,8 +5,14 @@ shows the "notices remain in English" banner, flips document lang, persists via 
 across reload; notice-content containers keep translate="no"; switching back restores English.
 """
 import os
+import pathlib
 import re
+import sys
 from playwright.sync_api import sync_playwright
+
+ROOT = pathlib.Path(__file__).parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
@@ -18,8 +24,7 @@ with sync_playwright() as pw:
     browser = pw.chromium.launch(args=_ARGS)
     page = browser.new_context().new_page()
     page.goto(BASE, timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1000)
+    wait_for_locator(page.locator("#langSelect"), label="language selector")
 
     # Compact language dropdown: native labels, English selected by default.
     sel = page.locator("#langSelect")
@@ -35,7 +40,11 @@ with sync_playwright() as pw:
 
     # Switch to Spanish.
     page.select_option("#langSelect", "es")
-    page.wait_for_timeout(400)
+    wait_for_function(
+        page,
+        "() => document.documentElement.lang === 'es' && document.querySelector('#langNotice')",
+        label="Spanish language applied",
+    )
     assert sel.input_value() == "es", "Español should now be selected"
     money_tab_es = page.locator('[data-i18n="tab_money"]').first.inner_text()
     assert money_tab_es.strip().lower() != "money", "chrome must translate on switch"
@@ -43,6 +52,7 @@ with sync_playwright() as pw:
 
     assert page.evaluate("document.documentElement.lang") == "es", "document lang must follow"
     banner = page.locator("#langNotice")
+    wait_for_locator(banner, label="Spanish language notice")
     assert banner.is_visible(), "the 'notices remain in English' banner must show for es"
     step("OK", "lang attribute + honesty banner", banner.inner_text()[:60])
 
@@ -54,8 +64,11 @@ with sync_playwright() as pw:
     # Persistence across reload.
     assert page.evaluate("localStorage.getItem('crol_lang')") in ("es", '"es"'), "preference must persist"
     page.reload()
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(800)
+    wait_for_function(
+        page,
+        "() => document.documentElement.lang === 'es' && document.querySelector('[data-i18n=tab_money]')?.textContent.trim()",
+        label="Spanish language restored after reload",
+    )
     assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip() == money_tab_es.strip(), "es must survive reload"
     step("OK", "persists across reload")
 
@@ -84,7 +97,12 @@ with sync_playwright() as pw:
 
     for tag in ("es", "en"):
         page.select_option("#langSelect", tag)
-        page.wait_for_timeout(400)
+        wait_for_function(
+            page,
+            "expected => document.documentElement.lang === expected",
+            arg=tag,
+            label=f"{tag} language applied",
+        )
         chrome_text = page.evaluate("""() => {
           const out = [];
           const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -103,7 +121,7 @@ with sync_playwright() as pw:
 
     # And back to English.
     page.select_option("#langSelect", "en")
-    page.wait_for_timeout(400)
+    wait_for_function(page, "() => document.documentElement.lang === 'en'", label="English language restored")
     assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() == "contracts"
     assert page.evaluate("document.documentElement.lang") == "en"
     step("OK", "switches back to English")
@@ -111,7 +129,7 @@ with sync_playwright() as pw:
     # ===== COVERAGE GATE: residual-English sentinel check =====
     # Switch back to Spanish for the coverage check.
     page.select_option("#langSelect", "es")
-    page.wait_for_timeout(500)
+    wait_for_function(page, "() => document.documentElement.lang === 'es'", label="Spanish coverage state")
 
     # Collect visible text OUTSIDE translate="no" containers.
     # We query all text nodes that are visible and NOT inside a translate="no" element.
@@ -220,7 +238,7 @@ with sync_playwright() as pw:
     assert "/notices/20260716022?lang=es" in copied, f"notice copy link lost language: {copied}"
 
     linked.select_option("#langSelect", "fr")
-    linked.wait_for_timeout(300)
+    wait_for_function(linked, "() => document.documentElement.lang === 'fr'", label="French language applied")
     assert linked.evaluate("new URL(location.href).searchParams.get('lang')") == "fr"
     assert linked.evaluate("localStorage.getItem('crol_lang')") == "fr", "picker interaction must persist"
     linked.select_option("#langSelect", "en")

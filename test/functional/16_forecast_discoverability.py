@@ -29,6 +29,7 @@ import sys
 import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
@@ -51,8 +52,11 @@ def reachable_from_notice_detail(pw):
 
     # (a) the #notice/<id> permalink page — showNotice()'s #nforecast slot.
     page.goto(f"{BASE}#notice/{NOTICE_PERMALINK_ID}", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    wait_for_function(
+        page,
+        "() => Boolean(document.querySelector('#nforecast')?.textContent.trim())",
+        label="notice forecast teaser",
+    )
     teaser = page.locator("#nforecast")
     text = teaser.inner_text().strip()
     if not text:
@@ -84,8 +88,11 @@ def reachable_from_notice_detail(pw):
     page = browser.new_context().new_page()
     install_routes(page)
     page.goto(f"{BASE}browse/contracts/#money", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1800)  # search() auto-selects the first result -> renderDetail()
+    wait_for_function(
+        page,
+        "() => Boolean(document.querySelector('#dforecast')?.textContent.trim())",
+        label="money forecast teaser",
+    )
     dteaser = page.locator("#dforecast")
     dtext = dteaser.inner_text().strip()
     if not dtext:
@@ -106,8 +113,11 @@ def forecast_strings_translate_in_a_sampled_language(pw, lang="es"):
     install_routes(page)
 
     page.goto(f"{BASE}#notice/{NOTICE_PERMALINK_ID}", timeout=30000)
-    page.wait_for_load_state("load")
-    page.wait_for_timeout(1500)
+    wait_for_function(
+        page,
+        "() => Boolean(document.querySelector('#nforecast')?.textContent.trim())",
+        label="Spanish notice forecast teaser",
+    )
     teaser_text = page.locator("#nforecast").inner_text()
     if "Ver el pronóstico completo" not in teaser_text:
         failures.append(f"es notice teaser did not translate — got: {teaser_text!r}")
@@ -116,10 +126,10 @@ def forecast_strings_translate_in_a_sampled_language(pw, lang="es"):
 
     # Interactive SPA profile keeps Forecast controls; default agency document is constellation.
     page.goto(BASE + "agencies/housing-preservation-and-development/?tab=forecast", timeout=30000)
-    page.wait_for_load_state("load", timeout=20000)
-    page.wait_for_timeout(1200)
     btn = page.locator("#btn-forecast")
-    if btn.count() == 0:
+    try:
+        wait_for_locator(btn, label="Spanish Forecast subtab")
+    except PlaywrightTimeoutError:
         failures.append("es agency profile: no Forecast subtab rendered")
     else:
         # .subtab is styled text-transform:uppercase — compare case-insensitively, that's
@@ -128,7 +138,12 @@ def forecast_strings_translate_in_a_sampled_language(pw, lang="es"):
         if "pronóstico de adquisiciones" not in subtab_label:
             failures.append(f"es Forecast subtab button did not translate — got: {subtab_label!r}")
         btn.click()
-        page.wait_for_timeout(600)
+        wait_for_function(
+            page,
+            "() => { const pane = document.querySelector('#forecast-content'); "
+            "return pane && getComputedStyle(pane).display !== 'none' && pane.textContent.trim(); }",
+            label="Spanish Forecast pane",
+        )
         pane_text = page.locator("#forecast-content").inner_text().lower()
         for expected in ("vencimientos previstos y calendarios planificados", "renovación estimada", "plan de la agencia", "son estimaciones basadas"):
             if expected not in pane_text:

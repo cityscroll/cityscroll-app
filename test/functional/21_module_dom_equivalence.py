@@ -217,7 +217,6 @@ def capture(page, base: str, route: str, ready: str, root: str, action=None, err
     if action:
         page.locator(action).click()
         page.locator("#apreviewbox .emailmock").wait_for(state="visible", timeout=20_000)
-    page.wait_for_timeout(1_200)
     return normalized_html(page, root)
 
 
