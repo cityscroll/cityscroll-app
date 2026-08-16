@@ -13,7 +13,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } from "node:fs";
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -414,6 +414,25 @@ test("no_disclaimer_slop: warns, blocks on request, and preserves honest copy", 
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("no_disclaimer_slop: CI defaults the rendered census to blocking enforcement", () => {
+  const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
+  const a11yShard = workflow.slice(
+    workflow.indexOf("  a11y-pr-shard:\n"),
+    workflow.indexOf("  a11y-routes-focus-primary:\n"),
+  );
+
+  assert.match(
+    a11yShard,
+    /NO_DISCLAIMER_SLOP_MODE:\s*\$\{\{\s*vars\.NO_DISCLAIMER_SLOP_MODE\s*\|\|\s*'block'\s*\}\}/,
+    "the required rendered-census shard must fail closed when the repository variable is unset",
+  );
+  assert.doesNotMatch(
+    a11yShard,
+    /NO_DISCLAIMER_SLOP_MODE:[^\n]*'warn'/,
+    "warning mode must not return as the CI fallback",
+  );
 });
 
 test("house wrappers: test/standards paths still invoke the package (live site, no verdict drift)", () => {
