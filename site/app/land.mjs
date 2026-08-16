@@ -1,7 +1,14 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
-import { installFilterChipNavigation, officialSourceLink } from "../affordance_grammar.mjs";
+import {
+  externalActionLink,
+  installFilterChipNavigation,
+  objectCardInteractionProjection,
+  officialSourceLink,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+} from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import {
@@ -483,12 +490,25 @@ async function landNearby(geo,status,projects=null){
 // (not short_title/additional_description_1) -- digItemHTML's emailed-digest evidence
 // deliberately skips ZAP rows for that reason, but matchEvidence()/digTitleHTML()/
 // digEvidenceHTML() are generic text-in/HTML-out and work on any title+description pair.
+function landObjectCardProjection(r, title){
+  let href=r?.project_id?landLink(r.project_id):"";
+  try{
+    const target=new URL(href,location.origin);
+    href=`${target.pathname}${target.search}${target.hash}`;
+  }catch(_e){}
+  return objectCardInteractionProjection({
+    target:href?{href,label:title}:null,
+  });
+}
 function landRowHTML(r, i, terms, contextTerms){
   const title = landProjectDisplayTitle(r), ev = resultMatchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
-  const projectMention=listEntityMentionHTML({kind:"project",value:r.project_id,label:title,escape:escUiHtml,relation:"land_project"});
+  const interaction=landObjectCardProjection(r,title);
+  const titleHTML=renderObjectCardTitle(interaction,{
+    escape:value=>value===title?digTitleHTML(title,ev):escUiHtml(value),
+  });
   const applicantMention=listEntityMentionHTML({kind:"agency",value:r.primary_applicant,escape:escUiHtml,relation:"primary_applicant"});
   return `<div class="row" data-i="${i}" tabindex="0" role="group">
-    <p class="rtitle">${projectMention||digTitleHTML(title, ev)}</p>
+    <div class="ui-object-card-primary"><p class="rtitle">${titleHTML||digTitleHTML(title,ev)}</p>${renderObjectCardCopy(interaction,{label:t("copy_link"),escape:escUiHtml})}</div>
     <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}${applicantMention?` · ${applicantMention}`:""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
     ${digEvidenceHTML(ev)}
@@ -510,7 +530,10 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   // own text (common in ZAP data), without ever guessing a fallback "unknown" match for it.
   const contextTerms = boro ? [boro] : [];
   $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
-  document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
+  document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",event=>{
+    if(event.target.closest("[data-object-card-copy]")) return;
+    landSelect(+el.dataset.i, el);
+  }));
   // Warm outcomes for the visible list (edge KV prewarm + session cache) so the first
   // select paints decision docs without the cold multi-second spinner.
   prefetchZapOutcomesForList(lRows);
@@ -529,6 +552,12 @@ async function geocode(q){
   return null;
 }
 
+function landPermalinkActionHTML(r){
+  if(!r?.project_id) return "";
+  const interaction=landObjectCardProjection(r,landProjectDisplayTitle(r));
+  return `${renderObjectCardCopy(interaction,{label:t("copy_link"),escape:escUiHtml})}${qrButtonHTML("landqr","act")}`;
+}
+
 async function landSelect(i, el){
   const selection=++landSelectionSeq;
   const itemCard=$("#land-item-card");
@@ -538,12 +567,13 @@ async function landSelect(i, el){
   el.classList.add("sel");
   const r=lRows[i];
   const displayTitle=landProjectDisplayTitle(r);
+  const interaction=landObjectCardProjection(r,displayTitle);
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
   const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
   let html=(location.hash.startsWith("#land/")
     ? `<p style="margin:4px 0 12px">${routeBackHTML("#land")}</p>`
-    : "")+`<h2 class="rolename" lang="en" dir="ltr">${escUiHtml(displayTitle)}</h2>
+    : "")+`<h2 class="rolename" lang="en" dir="ltr">${renderObjectCardTitle(interaction,{escape:escUiHtml})}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
@@ -560,7 +590,7 @@ async function landSelect(i, el){
   html+=`<div id="land-actions" class="next-action-rail-host"></div>
   <div class="actions" style="margin-top:12px">
     ${landPermalinkActionHTML(r)}
-    <a class="act" href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
+    ${externalActionLink({href:`https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}`,label:t("zap_full_project"),className:"act",escape:escUiHtml,newTabLabel:t("ext_link_new_tab_sr")})}
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <span id="land-city-record-source"></span>
   </div>
@@ -582,7 +612,6 @@ async function landSelect(i, el){
   loadZapOutcomes(r, $("#land-outcomes"), selection);
   import("../ulurp_recommendation_panel.mjs").then(m=>m.loadUlurpRecommendationPanel($("#land-ulurp-rec"), r, {esc:escUiHtml, externalLinkAttributes:EXT_ATTRS})).catch(()=>{});
   const landURL=landLink(r.project_id);
-  const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
   bindQRShare($("#landqr"), landURL);
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
   const crterm=cleanText(r.project_name||"").replace(/\b(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice)\b/ig," ").replace(/\s+/g," ").trim();
@@ -608,12 +637,6 @@ async function landSelect(i, el){
     if(geo) landShowMap(geo.lat,geo.lon,geo.label,selection);
     else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],t("lot_not_geocoded",{boro:r.borough||""}),selection); else { $("#landmap").style.display="none"; $("#landmapnote").textContent=t("location_not_resolved"); } }
   }
-}
-
-function landPermalinkActionHTML(r){
-  return r && r.project_id
-    ? `<button class="act" type="button" id="landcopy">${t("copy_link")}</button>${qrButtonHTML("landqr","act")}`
-    : "";
 }
 
 function renderLandEntryNotFound(id){

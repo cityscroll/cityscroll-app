@@ -922,7 +922,7 @@ function actionRailGuideHTML(actions){
 // aggregate. Flip this one flag to re-enable the existing component and analytics.
 const ACTION_OUTCOME_PROMPT_ENABLED = false;
 
-function actionRailHTML(actions){
+function actionRailHTML(actions,{externalActionRenderer=null}={}){
   let primaryUsed=false;
   const items=actions.map((action,index)=>{
     const label=actionRailLabel(action);
@@ -948,6 +948,17 @@ function actionRailHTML(actions){
       }
       const primary=primaryUsed?"":" primary"; primaryUsed=true;
       const accessible=`${label} — ${action.destination_label}`;
+      if(externalActionRenderer){
+        return externalActionRenderer({
+          href:action.destination,
+          label,
+          primary:!!primary,
+          className:"act",
+          attributes:{"data-action-outcome-index":index},
+          escape:escUiHtml,
+          newTabLabel:t("ext_link_new_tab_sr"),
+        });
+      }
       return `<a class="act${primary}" aria-label="${escUiHtml(accessible)}" title="${escUiHtml(action.destination_label)}" href="${escUiHtml(action.destination)}" data-action-outcome-index="${index}" ${EXT_ATTRS}>${label}${extSR()}</a>`;
     }
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
@@ -1149,7 +1160,7 @@ function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
   if(!el||!window.CrolActions) return;
   const matter=landActionMatter(projectRow, outcomeRecord, phaseTools);
   const actions=CrolActions.compileActionRail(matter,{today:todayISO()});
-  el.innerHTML=actionRailHTML(actions);
+  el.innerHTML=actionRailHTML(actions,{externalActionRenderer:externalActionLink});
   bindActionOutcomePrompt(el,actions,projectRow.project_id||null);
   const calendar=el.querySelector("[data-next-calendar]");
   if(calendar) calendar.addEventListener("click",()=>{

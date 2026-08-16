@@ -26,8 +26,13 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../site/display_title.mjs";
-import { constellationLink } from "../site/affordance_grammar.mjs";
-import { officialSourceLink } from "../site/affordance_grammar.mjs";
+import {
+  constellationLink,
+  objectCardInteractionProjection,
+  officialSourceLink,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+} from "../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -71,7 +76,7 @@ const {
   matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML",
+  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -97,6 +102,7 @@ const {
   extractFn("listEntityMentionHTML") + ";\n" +
   extractFn("moneyRowHTML") +
   extractDecl("mihOn") +
+  extractFn("landObjectCardProjection") +
   extractFn("landRowHTML") +
   extractDecl("SECTIONS") +
   extractFn("goodAddr") +
@@ -117,7 +123,22 @@ const {
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +
   "return { matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML, moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML };"
-)(t, tn, fmtNumber, windowStub, (_row, titleMarkup) => `<p class="rtitle">${titleMarkup}</p>`, landProjectDisplayTitle, noticeDisplayTitle, constellationLink, officialSourceLink);
+)(
+  t,
+  tn,
+  fmtNumber,
+  windowStub,
+  (_row, titleMarkup) => `<p class="rtitle">${titleMarkup}</p>`,
+  landProjectDisplayTitle,
+  noticeDisplayTitle,
+  constellationLink,
+  officialSourceLink,
+  undefined,
+  (id) => `https://cityscroll.org/browse/zoning/#land/${encodeURIComponent(id)}`,
+  objectCardInteractionProjection,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+);
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
 // is genuinely blank on this row -- other_info_1 carries all the real text.
