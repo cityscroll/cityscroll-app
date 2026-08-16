@@ -2958,6 +2958,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Public ER serializers are allowlisted and must not expose these receipt payloads.
   Focused proof: `test/review_action_export.test.mjs` and
   `test/entity_resolution_shadow_monitor.test.mjs`.
+- Live desk decisions enter through `worker/src/lib/curation_review_command.mjs`:
+  one idempotency key binds the exact assertion version and commits the disposition,
+  verdict/effect, and command receipt in one D1 batch (`0022_curation_review_command.sql`).
+  `action_log` is a fail-soft privacy-safe projection after that authoritative commit;
+  never add it as a peer write. Partial-failure/retry proof is in
+  `worker/test/false_split_evidence.test.mjs`.
 
 ## Evidence-bearing provenance read model (EBCG Card 1)
 

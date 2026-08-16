@@ -24,6 +24,7 @@ export const CURATION_PROVISIONAL_STATE = Object.freeze({
 const DECISIONS = new Set(Object.values(CURATION_VERDICT));
 const POLICY_STATUSES = new Set(["satisfied", "unsatisfied", "not_applicable"]);
 const TOKEN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/;
+const ASSERTION_ID = /^assertion:[A-Za-z0-9][A-Za-z0-9._:-]{0,479}:v[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/;
 const KIND = /^[a-z][a-z0-9_-]{0,63}$/;
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -112,6 +113,11 @@ function normalizedTarget(value) {
   const id = cleanToken(value.id);
   if (kind !== "entity_pair" || !id) return null;
   const target = { kind, id };
+  const assertionId = clean(value.assertion_id);
+  if (assertionId) {
+    if (!ASSERTION_ID.test(assertionId)) return null;
+    target.assertion_id = assertionId;
+  }
   const family = cleanKind(value.edge_family);
   if (family) target.edge_family = family;
   const goldCandidate = normalizedGoldCandidate(value.gold_candidate);
