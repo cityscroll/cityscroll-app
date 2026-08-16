@@ -202,6 +202,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   own classification. The City Record adapter is `worker/src/search.mjs`, and the search client
   groups only registered domains from `site/search_document.mjs`. Focused proof:
   `test/search_document_contract.test.mjs` plus `test/universal_search_object_gold.test.mjs`.
+- **Entity SearchDocument producers:** `site/{vendor,committee,board,exam,parcel}_search_producer.mjs`
+  adapt the existing canonical read models into that contract and carry matched/empty/partial/
+  not-indexed coverage. Vendor aliases are reviewed-registry-only; committee publication is gated;
+  board identity is borough-qualified; exams use publisher exam numbers; parcels require exact BBLs
+  (a `no_zap_match` land result does not weaken parcel identity). Focused proof is the five matching
+  `test/universal_search_*_producer.test.mjs` files plus the object gold set.
 - **City Record search producers:** `site/city_record_search_producers.mjs` adapts exact award
   identifiers through `site/notice_object_links.mjs` and admits rules only from the bounded
   `site/data/rules_domain_observations.json` projection. Publisher sections never assign a search
