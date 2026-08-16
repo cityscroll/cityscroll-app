@@ -177,6 +177,52 @@
           }
         }
       ]
+    },
+    {
+      "case_id": "notice:20260710007",
+      "fixture_kind": "real_shaped_missing_event",
+      "agency_id": "transportation",
+      "agency_name": "Transportation",
+      "data_as_of": "2026-08-15",
+      "expected_observed_trace": [
+        "award"
+      ],
+      "expected_deviation_class": "missing_open_data",
+      "events": [
+        {
+          "activity": "award",
+          "occurred_at": "2026-07-16",
+          "clock": "publication",
+          "source": {
+            "system": "City Record Online",
+            "record_id": "20260710007",
+            "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710007"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "notice:20260714006",
+      "fixture_kind": "real_shaped_missing_event",
+      "agency_id": "transportation",
+      "agency_name": "Transportation",
+      "data_as_of": "2026-08-15",
+      "expected_observed_trace": [
+        "award"
+      ],
+      "expected_deviation_class": "missing_open_data",
+      "events": [
+        {
+          "activity": "award",
+          "occurred_at": "2026-07-20",
+          "clock": "publication",
+          "source": {
+            "system": "City Record Online",
+            "record_id": "20260714006",
+            "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714006"
+          }
+        }
+      ]
     }
   ]
 }

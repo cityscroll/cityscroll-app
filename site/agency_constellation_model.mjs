@@ -875,6 +875,11 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   const certification = sources.certification || null;
   const obligations = sources.obligations || null;
   const documentableExamNumbers = documentableExamNumberSet(sources);
+  const lifecycleCandidate = sources.agency_lifecycle_conformance?.by_agency?.[identity.canonical_id] || null;
+  const agencyLifecycleConformance = lifecycleCandidate?.status === "matched"
+    && lifecycleCandidate.agency_id === identity.canonical_id
+    ? lifecycleCandidate
+    : null;
 
   let conformanceView = null;
   const committed = sources.process_conformance?.by_agency?.[identity.canonical_id] || null;
@@ -1123,6 +1128,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     derived_feature_rollup: constellationDerivedFeatureRollup(categories),
     claims: allClaims,
     mandates_conformance: conformanceView,
+    agency_lifecycle_conformance: agencyLifecycleConformance,
     mandates_rules: mandatesRules,
     ...(mandatesMeetings?.status === "matched"
       ? { mandates_meetings: mandatesMeetings }
@@ -1170,6 +1176,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       certification_generated_at: certification?.generated_at || null,
       obligations_generated_at: obligations?.generated_at || null,
       process_conformance_generated_at: sources.process_conformance?.generated_at || null,
+      agency_lifecycle_conformance_generated_at: sources.agency_lifecycle_conformance?.generated_at || null,
       vendor_rollup_as_of: sources.vendor_rollups?.as_of || null,
       methods: [
         "agency_canonical_v1",

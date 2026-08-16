@@ -85,6 +85,7 @@ const optionalBuilds = [
   ["build_exam_documents.mjs", []],
   ["build_agency_documents.mjs", []],
   ["build_process_conformance.mjs", []],
+  ["build_agency_lifecycle_conformance.mjs", []],
   ["build_agency_constellation_documents.mjs", []],
   ["build_community_board_constellation_documents.mjs", []],
 ];
