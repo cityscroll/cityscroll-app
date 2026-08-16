@@ -4,8 +4,8 @@
     "name": "tools/build_architecture_facts.mjs",
     "version": "1.0.0"
   },
-  "generated_at": "2026-08-16T08:03:27Z",
-  "commit": "1060ad453ee9d3bda582047302a7e9e28e8d2db5",
+  "generated_at": "2026-08-16T11:57:03Z",
+  "commit": "5fd07e098a6dc36a86a2ed127628292ecf6be5eb",
   "source_paths": [
     "entity_resolution",
     "ontology/live_inventory.mjs",
@@ -16,6 +16,7 @@
     "site/official_influence.mjs",
     "site/person_hub.mjs",
     "site/process_conformance.mjs",
+    "site/vendor_search_producer.mjs",
     "test/agency_successors.test.mjs",
     "test/authority_key_registry.test.mjs",
     "test/boards_wall.test.mjs",
@@ -1797,6 +1798,16 @@
         ],
         "source": {
           "path": "site/process_conformance.mjs"
+        }
+      },
+      {
+        "file": "site/vendor_search_producer.mjs",
+        "imports": [
+          "entity_resolution/normalizers/vendor_stem.mjs",
+          "entity_resolution/policies/index.mjs"
+        ],
+        "source": {
+          "path": "site/vendor_search_producer.mjs"
         }
       },
       {

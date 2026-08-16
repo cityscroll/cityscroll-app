@@ -18,6 +18,11 @@ import {
   materializePeopleSearchDocument,
   rankPeopleSearchDocuments,
 } from "../site/people_search_producer.mjs";
+import { projectVendorSearchDocument } from "../site/vendor_search_producer.mjs";
+import { projectCommitteeSearchDocument } from "../site/committee_search_producer.mjs";
+import { projectBoardSearchDocument } from "../site/board_search_producer.mjs";
+import { projectExamSearchDocument } from "../site/exam_search_producer.mjs";
+import { projectParcelSearchDocument } from "../site/parcel_search_producer.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { publicSearchResult } from "../worker/src/search.mjs";
 
@@ -42,6 +47,10 @@ const SUBSTANTIVE_TYPES = new Set([
   "person",
   "agency",
   "vendor",
+  "committee",
+  "community_board",
+  "civil_service_exam",
+  "parcel",
 ]);
 
 function goldCase(id) {
@@ -142,7 +151,7 @@ for (const row of GOLD.cases) {
     assert.ok(Object.hasOwn(expected, "domain"), "product domain projection");
     assert.match(
       expected.canonical_href,
-      /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/|officials\/)/,
+      /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/|officials\/|vendors\/|committees\/|community-boards\/|exams\/|parcels\/)/,
     );
     assert.ok(expected.source_observation_refs.length > 0, "source provenance");
     assert.ok(COVERAGE_STATES.has(expected.coverage_state), "registered coverage state");
@@ -293,6 +302,41 @@ test("canonical people retain exact identity, aliases, provenance, and their pro
     rankPeopleSearchDocuments([document], "Chris Marte").map((hit) => hit.object_ref),
     [row.expected.object_ref],
   );
+});
+
+test("remaining entity producers satisfy their gold object contracts", () => {
+  const cases = [
+    ["vendor-entity", (source) => projectVendorSearchDocument(
+      source.ref,
+      source.dossier,
+      { lookup: source.lookup },
+    ).document],
+    ["committee-entity", (source) => projectCommitteeSearchDocument(
+      source.node,
+      { lookup: source.lookup },
+    ).document],
+    ["community-board-entity", (source) => projectBoardSearchDocument(
+      source.board_id,
+      source.row,
+      { lookup: source.lookup },
+    ).document],
+    ["civil-service-exam", (source) => projectExamSearchDocument(
+      source.exam,
+      { artifact: source.artifact },
+    ).document],
+    ["parcel-entity", (source) => projectParcelSearchDocument(
+      source.bbl,
+      source.row,
+      { crossDomain: source.cross_domain, residentSnapshot: source.resident_snapshot },
+    ).document],
+  ];
+
+  for (const [id, project] of cases) {
+    const row = goldCase(id);
+    const document = project(row.source_observation);
+    assert.ok(document, id);
+    assertGoldContract(document, row.expected);
+  }
 });
 
 for (const coverage of GOLD.coverage) {
