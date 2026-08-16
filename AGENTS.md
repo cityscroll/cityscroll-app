@@ -129,6 +129,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## PR and CI preflight
 
+- Shared browser artifacts use `tools/site_artifact_identity.mjs` plus
+  `.github/actions/use-site-artifact`: the run/attempt artifact and exact-input
+  cache are trusted only after `_site.sha256`, commit/tree, lockfile, Node
+  version, and declared build inputs verify. Keep every new `_site` consumer on
+  that action rather than downloading the artifact directly.
 - Plain-language accessibility copy uses `test/standards/no_disclaimer_slop.py`, which scans
   rendered HTML, i18n source, page-template strings, and generated HTML. It is warn-first;
   set `NO_DISCLAIMER_SLOP_MODE=block` locally or the repository variable of the same name in
