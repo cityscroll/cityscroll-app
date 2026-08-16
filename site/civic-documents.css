@@ -1578,6 +1578,11 @@ select {
   border-block-end: 1px solid var(--color-border);
 }
 
+.following-surface-tabs[hidden],
+.following-workspace[hidden] {
+  display: none;
+}
+
 .following-surface-tab {
   min-height: 44px;
   padding: var(--space-2) var(--space-4);
