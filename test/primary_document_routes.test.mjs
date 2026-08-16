@@ -553,7 +553,7 @@ test("Browse edge filtering is semantic and uses a copy-free live-filter loading
   assert.equal(view.total, 1);
   assert.deepEqual(view.liveOnlyFilters, ["mode"]);
   const html = renderBrowseView(view);
-  assert.match(html, /class="ui-constellation-link browse-record-link"[^>]*href="\/notices\/1"/);
+  assert.match(html, /class="ui-constellation-link browse-record-link ui-object-card-title"[^>]*href="\/notices\/1"/);
   assert.match(html, /class="ui-constellation-link browse-agency-link"/);
   assert.match(html, /class="note warn browse-filter-disclosure"[^>]+role="status"/);
   assert.doesNotMatch(html, /need the live Browse controls|bounded default|until the page is enhanced/i);

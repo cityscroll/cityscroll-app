@@ -40,7 +40,7 @@ function affordanceText(value) {
   return String(value ?? "").trim();
 }
 
-function affordanceDestinationKind(href, canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN) {
+export function affordanceDestinationKind(href, canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN) {
   const value = affordanceText(href);
   if (!value) return "missing";
   if (/^(?:mailto|tel):/i.test(value)) return "protocol_handoff";
@@ -162,6 +162,8 @@ export function externalActionLink({
   label,
   primary = false,
   className = "",
+  ariaLabel = null,
+  title = null,
   attributes = {},
   escape = esc,
   canonicalOrigin = AFFORDANCE_CANONICAL_ORIGIN,
@@ -174,9 +176,10 @@ export function externalActionLink({
   const external = kind === "external";
   const handoff = external || kind === "protocol_handoff";
   const tabAttrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+  const accessibleAttrs = `${ariaLabel ? ` aria-label="${escape(ariaLabel)}"` : ""}${title ? ` title="${escape(title)}"` : ""}`;
   const glyph = handoff ? '<span aria-hidden="true">↗</span>' : "";
   const announcement = external ? `<span class="sr-only"> ${escape(newTabLabel)}</span>` : "";
-  return `<a class="${classes}" href="${escape(href)}"${tabAttrs}${dataAttributes(attributes, escape)}>${escape(label)}${glyph}${announcement}</a>`;
+  return `<a class="${classes}" href="${escape(href)}"${accessibleAttrs}${tabAttrs}${dataAttributes(attributes, escape)}>${escape(label)}${glyph}${announcement}</a>`;
 }
 
 export function renderObjectCardTitle(projection, { className = "ui-object-card-title", labelMarkup = null, escape = esc } = {}) {
