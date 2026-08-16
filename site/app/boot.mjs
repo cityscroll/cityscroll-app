@@ -30,14 +30,6 @@ document.addEventListener("click",e=>{
 });
 let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
-fetch("data/money_resident_snapshot.json",{cache:"force-cache",credentials:"omit"})
-  .then(r=>r.ok?r.json():null)
-  .then(snapshot=>{
-    const rows=Array.isArray(snapshot?.rows)?snapshot.rows:[];
-    const dates=rows.map(row=>row?.start_date).filter(Boolean).sort();
-    if(dates.length){ editionRange={a:dates[0],b:dates[dates.length-1]}; paintEditionSpan(); }
-  })
-  .catch(()=>{});
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt","#moneyboro","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", search));

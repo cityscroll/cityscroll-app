@@ -293,7 +293,15 @@ async function search(){
   busyList("#list");
   const stale = staleGuard("money");
   try{
-    const snapshotRows=await residentMoneyRows();
+    const defaultSearch=isDefaultMoneySearchState({
+      mode,agency,kw,methodSel,closingWeek,minAmount:minamt,sort,nlResolved:moneyNlResolved,
+    });
+    const snapshot=defaultSearch
+      ? await loadMoneyDefaultSnapshot()
+      : await loadMoneyResidentSnapshot();
+    const snapshotRows=defaultSearch
+      ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
+      : moneySnapshotRows(snapshot);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,sort,today:todayISO(),weekEnd:weekOutISO(),
@@ -305,7 +313,11 @@ async function search(){
       ? filterMoneySnapshot(snapshotRows,{...common,method:methodSel,limit:40})
       : facetRows.slice(0,40);
     if(stale()) return;
-    paintMoneyRows(rows,{autoSelect:true,narrowed:false});
+    paintMoneyRows(rows,{
+      autoSelect:true,
+      narrowed:false,
+      lineageRows:snapshotRows,
+    });
   }catch(e){
     if(stale()) return;
     unbusy("#list");
@@ -314,7 +326,7 @@ async function search(){
     return;
   }
 }
-function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
+function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null}={}){
   currentRows = rows;
   currentMoneyNarrowed = narrowed;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
@@ -324,7 +336,7 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   const countText=receiptCount===1?t("one_result"):t(!hasReceipt&&currentRows.length===40?"or_more_results":"results_count",{n:receiptCount});
   $("#rescount").textContent = countText;
   announce(countText + ` — ${$("#reshead").textContent}`);
-  renderList(autoSelect);
+  renderList(autoSelect,lineageRows);
   if(scopedHistoryGap(currentRows)){
     const note = scopedHistoryNoteHTML(receiptCount, currentRows.length, narrowed);
     if(currentRows.length) $("#list").insertAdjacentHTML("afterbegin", note);
@@ -534,7 +546,7 @@ async function consolidateMoneyAwardRows(rows){
     },
   });
 }
-function renderList(autoSelect){
+function renderList(autoSelect,lineageRows=null){
   if(!currentRows.length){
     $("#list").innerHTML = scopedHistoryGap(currentRows)
       ? scopedHistoryNoteHTML(countWithScopeReceipt(0), 0, currentMoneyNarrowed)
@@ -585,19 +597,20 @@ function renderList(autoSelect){
   }).catch(()=>{});
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>{
     if(event.target.closest?.("a,button")) return;
-    select(+el.dataset.i, el, event.isTrusted);
+    select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:lineageRows);
   }));
   if(autoSelect===false&&keepId){
     const idx=currentRows.findIndex(r=>r&&r.request_id===keepId);
     if(idx>=0){
       const el=document.querySelector(`#list .row[data-i="${idx}"]`);
       if(el){ el.classList.add("sel"); selectedRFP=currentRows[idx]; }
-      loadLineageBadges();
+      loadLineageBadges(lineageRows);
       return;
     }
   }
   if(autoSelect!==false) document.querySelector("#list .row")?.click();
-  loadLineageBadges();
+  else if(!keepId){ selectedRFP=null; $("#detail").innerHTML=""; }
+  loadLineageBadges(lineageRows);
 }
 
 const LINEAGE_MIN_STAGES = 2;
@@ -638,7 +651,7 @@ function computeLineageBadgeCounts(rows, batchRows){
   });
 }
 
-async function loadLineageBadges(){
+async function loadLineageBadges(precomputedRows=null){
   const rows = currentRows;
   const keys = [], seenKeys = new Set();
   rows.forEach(r=>{
@@ -650,11 +663,15 @@ async function loadLineageBadges(){
     keys.push(k);
   });
   if(!keys.length) return;
-  let batchRows;
-  try{
-    const snapshotRows=await residentMoneyRows();
-    batchRows=snapshotRows.filter(row=>row.type_of_notice_description==="Award"||row.type_of_notice_description==="Intent to Award");
-  }catch(e){ return; }
+  let batchRows=Array.isArray(precomputedRows)
+    ? precomputedRows.filter(row=>row.type_of_notice_description==="Award"||row.type_of_notice_description==="Intent to Award")
+    : null;
+  if(!batchRows){
+    try{
+      const snapshotRows=await residentMoneyRows();
+      batchRows=snapshotRows.filter(row=>row.type_of_notice_description==="Award"||row.type_of_notice_description==="Intent to Award");
+    }catch(e){ return; }
+  }
   if(currentRows !== rows) return;
   const counts = computeLineageBadgeCounts(rows, batchRows);
   document.querySelectorAll("#list .row").forEach(el=>{
@@ -665,7 +682,7 @@ async function loadLineageBadges(){
   });
 }
 
-async function select(i, el, planningDetailRequested=false){
+async function select(i, el, planningDetailRequested=false, precomputedRows=null){
   const historyReady = globalThis.ensureMoneyHistory?.();
   document.querySelectorAll("#list .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
@@ -685,8 +702,8 @@ async function select(i, el, planningDetailRequested=false){
   globalThis.agencyForecastTeaser?.(r, $("#dforecast"));
   const [hydrated, chain, stats] = await Promise.all([
     hydrateMoneyActionLocationRow(r),
-    loadChain(r),
-    loadAgencyStats(r.agency_name),
+    loadChain(r,precomputedRows),
+    loadAgencyStats(r.agency_name,null,precomputedRows),
   ]);
   if(selectedRFP !== r) return;
   selectedRFP=hydrated;
@@ -704,10 +721,11 @@ function pinBase(pin){
   const m = s.match(RENEWAL_SUFFIX_RE);
   return m ? s.slice(0, m.index) : null;
 }
-async function loadChain(r){
+async function loadChain(r,precomputedRows=null){
   if(!usablePin(r.pin)) return [r];
   try{
-    const rows=moneyLineageRows(await residentMoneyRows(),r);
+    const sourceRows=Array.isArray(precomputedRows)?precomputedRows:await residentMoneyRows();
+    const rows=moneyLineageRows(sourceRows,r);
     rows.sort((a,b)=> (a.start_date||"").localeCompare(b.start_date||"") ||
       (STAGE_RANK[a.type_of_notice_description]??9) - (STAGE_RANK[b.type_of_notice_description]??9));
     return rows.length ? rows : [r];
