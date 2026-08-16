@@ -6,6 +6,7 @@ import {
   WARRANT_CLASSES,
   buildEdgeProvenanceClaim,
   claimInspectHref,
+  edgeProvenanceClientScript,
   edgeClaimId,
   identityStanceForEdge,
   isStandablePublicClaim,
@@ -203,6 +204,18 @@ test("inspector panel and why-control render warrant classes without fabricating
   assert.doesNotMatch(panel, /not counted as a verified/i);
   assert.match(panel, /data-edge-provenance-panel/);
   assert.doesNotMatch(panel, /How it was derived|Joined by an exact publisher key|Method:/i);
+  assert.match(panel, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20030224002"/);
+  assert.doesNotMatch(panel, /Source record|Source fields|Matching method|Link record|Resolution run|warehouse:20030224002|agency_name/);
+
+  const payloadText = panel.match(/<script type="application\/json" id="edge-provenance-claims">([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(payloadText, "panel carries the pre-rendered disclosure payload");
+  const payload = JSON.parse(payloadText);
+  const exactPayload = payload.find((entry) => entry.claim_id === exact.claim_id);
+  assert.equal(exactPayload.html, renderEdgeProvenanceInspector(exact, { open: true }));
+
+  const clientScript = edgeProvenanceClientScript();
+  assert.match(clientScript, /entry\.html/);
+  assert.doesNotMatch(clientScript, /Source record|Source fields|Matching method|Link record|Resolution run/);
   assert.equal(normalizePublicConfidence("publisher_record"), "strong");
   assert.equal(WARRANT_CLASSES.exact.id, "exact");
   assert.equal(WARRANT_CLASSES.exact.token, "exact");
@@ -212,6 +225,7 @@ test("inspector panel and why-control render warrant classes without fabricating
   assert.match(inactivePanel, /data-edge-provenance-panel="1"[^>]* hidden/);
   assert.match(inactivePanel, /data-edge-prov-body="1"><\/div>/);
   assert.doesNotMatch(inactivePanel, /Open a warrant chip/);
+  assert.doesNotMatch(inactivePanel, /warehouse:20030224002|city_record:rev1|agency_name|manual_review/);
 });
 
 test("cross-spine confidence stays in the exact set and preserves null evidence", () => {
