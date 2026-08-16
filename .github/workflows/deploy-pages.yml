@@ -84,4 +84,7 @@ jobs:
       - name: Post-deploy project-connections browser smoke
         env:
           CROL_BASE: https://cityscroll.org/
+          # Keep deploy conclusions tied to a committed read-model canary. The
+          # script's default exercises a live fallback in scheduled monitoring.
+          CROL_PROJECT_CONNECTIONS_ID: "2022M0258"
         run: python3 test/functional/27_project_connections_live.py
