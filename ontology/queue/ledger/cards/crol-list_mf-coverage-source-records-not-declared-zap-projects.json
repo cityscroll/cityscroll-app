@@ -1,11 +1,11 @@
 {
   "schema": "cityscroll.multi_flywheel_ledger_card.v0",
   "id": "crol-list/mf-coverage-source-records-not-declared-zap-projects",
-  "status": "proposed",
+  "status": "fixed",
   "dimension": "coverage",
   "title": "Add immutable observation coverage: zap-projects",
   "verify": "node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # zap-projects present",
-  "content_hash": "631763cea1b711d9",
-  "last_seen_at": "1970-01-01T00:00:00.000Z",
+  "fixed_at": "2026-08-16T12:00:00.000Z",
+  "fixed_note": "Host retention + ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE. All 231 real committed hgx4-8ukb project rows retained; 231 existing graph edges anchored at 100% usefulness and 100% provenance-contract precision. Public edge totals unchanged. Receipt zap_projects_source_records_2026-08-16.json.",
   "demo_win": "Source zap-projects retains immutable D1 observations without changing its product-delivery status."
 }

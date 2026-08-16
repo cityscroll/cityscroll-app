@@ -23,6 +23,7 @@ import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictio
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
 import { attachProjectConnectionsSection } from "./project_connections.mjs";
+import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -204,12 +205,18 @@ export async function prewarmOneZapOutcome(env, projectId, {
       return { status: "failed", project_id: id, reason: "empty-record" };
     }
     await kvPutRecord(env, record);
+    const dualWrite = await dualWriteZapProjectObservations(
+      env,
+      record.open_data ? [record.open_data] : [],
+      new Date(nowMs).toISOString(),
+    );
     return {
       status: "computed",
       project_id: id,
       generated_at: record.generated_at,
       filled: !!record.filled,
       matched: !!(record.join && record.join.matched),
+      dual_write: dualWrite,
     };
   } catch (error) {
     return {
@@ -236,6 +243,7 @@ export async function prewarmZapOutcomes(env, projectIds, {
   let computed = 0;
   let skipped = 0;
   let failed = 0;
+  const dualWrite = { written: 0, failed: 0, rejected: 0 };
   const wave = Math.max(1, Math.min(Number(concurrency) || ZAP_PREWARM_CONCURRENCY, 8));
 
   for (let i = 0; i < ids.length; i += wave) {
@@ -247,9 +255,14 @@ export async function prewarmZapOutcomes(env, projectIds, {
       if (r.status === "computed") computed++;
       else if (r.status === "skipped") skipped++;
       else failed++;
+      if (r.dual_write) {
+        dualWrite.written += Number(r.dual_write.written) || 0;
+        dualWrite.failed += r.dual_write.failed ? 1 : 0;
+        dualWrite.rejected += Number(r.dual_write.rejected) || 0;
+      }
     }
   }
-  return { requested: ids.length, computed, skipped, failed };
+  return { requested: ids.length, computed, skipped, failed, dual_write: dualWrite };
 }
 
 /**
