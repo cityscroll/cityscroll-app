@@ -4,8 +4,8 @@
     "name": "tools/build_architecture_facts.mjs",
     "version": "1.0.0"
   },
-  "generated_at": "2026-08-15T14:41:32-04:00",
-  "commit": "6bc945e3e53f51bb310ee1b78b756fc41bd618ab",
+  "generated_at": "2026-08-16T04:27:20Z",
+  "commit": "a7dd891d3472ff14e282917b982ada3ac5f9e14c",
   "source_paths": [
     "entity_resolution",
     "ontology/live_inventory.mjs",
@@ -78,6 +78,7 @@
     "worker/src/entity_dossier.mjs",
     "worker/src/entity_intelligence.mjs",
     "worker/src/lib/abo_awards_join.mjs",
+    "worker/src/lib/curation_verdicts.mjs",
     "worker/src/lib/entity_link.mjs",
     "worker/src/lib/franchise_concession_spine.mjs",
     "worker/src/lib/legistar_client.mjs",
@@ -1444,6 +1445,14 @@
       "source": {
         "path": "worker/migrations/0020_ontology_delta_shadow.sql"
       }
+    },
+    {
+      "id": "0021",
+      "name": "curation_verdicts",
+      "file": "worker/migrations/0021_curation_verdicts.sql",
+      "source": {
+        "path": "worker/migrations/0021_curation_verdicts.sql"
+      }
     }
   ],
   "entity_resolution": {
@@ -1454,7 +1463,7 @@
         "path": "entity_resolution/index.mjs"
       }
     },
-    "module_count": 54,
+    "module_count": 55,
     "modules": [
       "entity_resolution/authority_keys/index.mjs",
       "entity_resolution/candidate_generation/boards_wall.mjs",
@@ -1504,6 +1513,7 @@
       "entity_resolution/referents/index.mjs",
       "entity_resolution/review/active_review.mjs",
       "entity_resolution/review/assertion_evidence.mjs",
+      "entity_resolution/review/curation_verdicts.mjs",
       "entity_resolution/review/index.mjs",
       "entity_resolution/review/investigation_workspace.mjs",
       "entity_resolution/review/llm_alias_proposals.mjs",
@@ -1557,6 +1567,15 @@
         ],
         "source": {
           "path": "worker/src/lib/abo_awards_join.mjs"
+        }
+      },
+      {
+        "file": "worker/src/lib/curation_verdicts.mjs",
+        "imports": [
+          "entity_resolution/review/curation_verdicts.mjs"
+        ],
+        "source": {
+          "path": "worker/src/lib/curation_verdicts.mjs"
         }
       },
       {
@@ -2098,7 +2117,8 @@
       {
         "file": "test/entity_resolution_shadow_monitor.test.mjs",
         "imports": [
-          "entity_resolution/evaluation/shadow_monitoring.mjs"
+          "entity_resolution/evaluation/shadow_monitoring.mjs",
+          "entity_resolution/publication/index.mjs"
         ],
         "source": {
           "path": "test/entity_resolution_shadow_monitor.test.mjs"
@@ -2211,7 +2231,8 @@
       {
         "file": "test/review_action_export.test.mjs",
         "imports": [
-          "entity_resolution/eval/review_action_export.mjs"
+          "entity_resolution/eval/review_action_export.mjs",
+          "entity_resolution/review/curation_verdicts.mjs"
         ],
         "source": {
           "path": "test/review_action_export.test.mjs"

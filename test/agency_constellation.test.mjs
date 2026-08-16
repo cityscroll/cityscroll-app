@@ -82,8 +82,8 @@ test("resident-facing mandate labels stay canonical across hydrated surfaces", (
 
   assert.match(temporalRuntime, /"Watch mandates and deadlines"/);
   assert.doesNotMatch(temporalRuntime, /"Watch obligations and deadlines"/);
-  assert.match(searchRuntime, /obligations:\s*"Mandates"/);
-  assert.doesNotMatch(searchRuntime, /obligations:\s*"Obligations"/);
+  assert.match(searchRuntime, /mandates:\s*"Mandates"/);
+  assert.doesNotMatch(searchRuntime, /mandates:\s*"Obligations"/);
 });
 
 test("upstream obligations envelopes remain ingestable without changing product identity", () => {

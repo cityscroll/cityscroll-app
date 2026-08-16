@@ -191,6 +191,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## Main site module boundaries
 
+- **Universal search contract:** `site/search_document_contract.mjs` is the pure admission
+  boundary for source-independent SearchDocuments. Object types and product domains are separate
+  closed vocabularies; only validated canonical object routes can be `indexed`, while retained
+  notice routes remain `evidence_only`. Ranking receives frozen admitted documents and does not
+  own classification. The City Record adapter is `worker/src/search.mjs`, and the search client
+  groups only registered domains from `site/search_document.mjs`. Focused proof:
+  `test/search_document_contract.test.mjs` plus `test/universal_search_object_gold.test.mjs`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain
