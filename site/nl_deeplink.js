@@ -76,6 +76,129 @@ function compactKeywords(value) {
     .slice(0, 4);
 }
 
+var LENS_QUERY_BOROUGHS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+var LENS_QUERY_DISTRICT_BOROUGHS = { M: "Manhattan", X: "Bronx", K: "Brooklyn", Q: "Queens", R: "Staten Island" };
+
+function canonicalBorough(value) {
+  var text = compactText(value, 40).toLowerCase();
+  return LENS_QUERY_BOROUGHS.find(function (name) { return name.toLowerCase() === text; }) || null;
+}
+
+function boroughInText(value) {
+  var text = " " + compactText(value, 320).toLowerCase() + " ";
+  return LENS_QUERY_BOROUGHS.find(function (name) {
+    return text.indexOf(" " + name.toLowerCase() + " ") >= 0;
+  }) || null;
+}
+
+function stripBoroughFromText(value, borough) {
+  if (!borough) return compactText(value, 320);
+  return compactText(value, 320)
+    .replace(new RegExp("\\b" + borough.replace(/ /g, "\\s+") + "\\b", "ig"), " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// One serializable query object sits between standard controls, Ask proposals, and URLs.
+// Text is the topic clause; facets and place are structured clauses. This keeps proposal
+// merging independent of DOM event order and makes a conflict an explicit state.
+function canonicalLensQueryState(lens, filter) {
+  var f = filter && typeof filter === "object" ? filter : {};
+  var keywords = Array.isArray(f.keywords) ? f.keywords : compactText(f.text, 320) ? [f.text] : [];
+  var text = compactText(keywords.join(" "), 320);
+  var communityDistrict = compactText(f.communityDistrict, 8).toUpperCase();
+  var councilDistrict = compactText(f.councilDistrict, 4);
+  var locationScope = ["citywide-unlocated", "citywide", "virtual", "unlocated"].indexOf(f.locationScope) >= 0
+    ? f.locationScope
+    : null;
+  return {
+    lens: lens,
+    text: text,
+    facets: {
+      agency: compactText(f.agency, 160) || null,
+      when: ["week", "month", "upcoming", "past", "all"].indexOf(f.when) >= 0 ? f.when : null,
+      process: compactText(f.process, 40) && f.process !== "all" ? compactText(f.process, 40) : null,
+    },
+    place: {
+      borough: canonicalBorough(f.borough),
+      communityDistrict: /^(?:M|X|K|Q|R)\d{2}$/.test(communityDistrict) ? communityDistrict : null,
+      councilDistrict: /^(?:[1-9]|[1-4]\d|5[01])$/.test(councilDistrict) ? councilDistrict : null,
+      neighborhood: compactText(f.neighborhood, 80) || null,
+      locationScope: locationScope,
+    },
+  };
+}
+
+function lensQueryStateFilter(state) {
+  var query = state && typeof state === "object" ? state : canonicalLensQueryState("meetings", {});
+  return {
+    keywords: query.text ? [query.text] : [],
+    agency: query.facets && query.facets.agency || null,
+    when: query.facets && query.facets.when || null,
+    process: query.facets && query.facets.process || null,
+    borough: query.place && query.place.borough || null,
+    communityDistrict: query.place && query.place.communityDistrict || null,
+    councilDistrict: query.place && query.place.councilDistrict || null,
+    neighborhood: query.place && query.place.neighborhood || null,
+    locationScope: query.place && query.place.locationScope || null,
+  };
+}
+
+function statePlaceBorough(state) {
+  if (state.place.borough) return state.place.borough;
+  if (state.place.communityDistrict) return LENS_QUERY_DISTRICT_BOROUGHS[state.place.communityDistrict.charAt(0)] || null;
+  return boroughInText(state.text);
+}
+
+function mergeQueryState(current, proposed, preferProposed, placeConflict, directConflicts) {
+  var result = canonicalLensQueryState(current.lens, lensQueryStateFilter(current));
+  result.text = current.text || proposed.text;
+  ["agency", "when", "process"].forEach(function (field) {
+    if (!proposed.facets[field]) return;
+    if (!directConflicts[field] || preferProposed) result.facets[field] = proposed.facets[field];
+  });
+  if (!placeConflict || preferProposed) {
+    if (preferProposed && placeConflict) {
+      result.place = canonicalLensQueryState(current.lens, {}).place;
+      result.text = stripBoroughFromText(result.text, statePlaceBorough(current));
+    }
+    Object.keys(result.place).forEach(function (field) {
+      if (proposed.place[field]) result.place[field] = proposed.place[field];
+    });
+  }
+  return result;
+}
+
+function composeLensQueryState(lens, currentFilter, proposedFilter) {
+  var current = canonicalLensQueryState(lens, currentFilter);
+  var proposed = canonicalLensQueryState(lens, proposedFilter);
+  var conflicts = [];
+  var directConflicts = {};
+  ["agency", "when", "process"].forEach(function (field) {
+    var before = current.facets[field];
+    var after = proposed.facets[field];
+    if (before && after && before !== after) {
+      directConflicts[field] = true;
+      conflicts.push({ field: field, current: before, proposed: after });
+    }
+  });
+  var currentPlace = statePlaceBorough(current);
+  var proposedPlace = statePlaceBorough(proposed);
+  var placeConflict = Boolean(currentPlace && proposedPlace && currentPlace !== proposedPlace);
+  if (placeConflict) conflicts.push({ field: "place", current: currentPlace, proposed: proposedPlace });
+
+  var keepCurrent = mergeQueryState(current, proposed, false, placeConflict, directConflicts);
+  var useProposed = mergeQueryState(current, proposed, true, placeConflict, directConflicts);
+  return {
+    state: conflicts.length ? keepCurrent : useProposed,
+    conflicts: conflicts,
+    choices: {
+      keep_current: keepCurrent,
+      use_proposed: useProposed,
+    },
+  };
+}
+
 // Canonical order mirrors index.html's serializeState(), so an Ask resolution and the
 // equivalent hand-set controls always produce the same URL.
 function buildSearchDeepLink(lens, filter) {
@@ -111,12 +234,16 @@ function buildSearchDeepLink(lens, filter) {
     if (agency) params.set("agency", agency);
     if (keywords.length) params.set("q", keywords.join(" "));
     if (lens === "meetings") {
-      if (["week", "month", "upcoming", "past"].indexOf(f.when) >= 0) params.set("when", f.when);
+      if (["week", "month", "upcoming", "past", "all"].indexOf(f.when) >= 0) params.set("when", f.when);
       var hearingBoros = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
       var hearingBoro = hearingBoros.find(function (name) {
         return name.toLowerCase() === compactText(f.borough, 40).toLowerCase();
       });
       if (hearingBoro) params.set("boro", hearingBoro);
+      var hearingCommunityDistrict = compactText(f.communityDistrict, 8).toUpperCase();
+      if (/^(?:M|X|K|Q|R)\d{2}$/.test(hearingCommunityDistrict)) params.set("cd", hearingCommunityDistrict);
+      var hearingCouncilDistrict = compactText(f.councilDistrict, 4);
+      if (/^(?:[1-9]|[1-4]\d|5[01])$/.test(hearingCouncilDistrict)) params.set("council", hearingCouncilDistrict);
       var neighborhood = compactText(f.neighborhood, 80);
       if (neighborhood) params.set("neighborhood", neighborhood);
       if (
@@ -263,6 +390,9 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
   module.exports = {
     buildSearchDeepLink: buildSearchDeepLink,
     buildMoneyDeepLink: buildMoneyDeepLink,
+    canonicalLensQueryState: canonicalLensQueryState,
+    composeLensQueryState: composeLensQueryState,
+    lensQueryStateFilter: lensQueryStateFilter,
     canonicalSearchURL: canonicalSearchURL,
     moneyActiveFilterItems: moneyActiveFilterItems,
     presetLens: presetLens,
