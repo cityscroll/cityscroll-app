@@ -324,7 +324,7 @@ test("meetings field regression: agency and borough scopes keep affected-area ma
   );
 });
 
-test("community-board search disambiguates a bare number and keeps board 3 results non-empty", () => {
+test("CB3 search disambiguates a bare number and keeps board 3 results non-empty", () => {
   const payload = {
     rows: [
       {
@@ -341,7 +341,7 @@ test("community-board search disambiguates a bare number and keeps board 3 resul
       },
     ],
   };
-  const view = buildBrowseView("meetings", payload, new URLSearchParams("q=community+board+3&when=upcoming"));
+  const view = buildBrowseView("meetings", payload, new URLSearchParams("q=CB3&when=upcoming"));
   assert.equal(view.total, 2);
   assert.equal(view.communityBoardDisambiguation.length, 5);
   const html = renderBrowseView(view);

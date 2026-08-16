@@ -20,6 +20,16 @@ test("bare community-board number stays ambiguous across boroughs", () => {
   assert.equal(communityBoardInstitutionHref("bronx-cb-03"), "/browse/people/?board=bronx-cb-03#community-boards");
 });
 
+test("CB3 shorthand keeps the same borough-aware disambiguation", () => {
+  assert.deepEqual(parseCommunityBoardQuery("CB3"), {
+    number: 3,
+    borough: null,
+    ambiguous: true,
+    query: "CB3",
+  });
+  assert.equal(parseCommunityBoardQuery("Manhattan CB3")?.borough, "Manhattan");
+});
+
 test("borough-qualified community-board search matches the exact board", () => {
   const row = { affected_area: { community_boards: ["Community Board 3, Bronx"] } };
   assert.equal(rowMatchesCommunityBoardQuery(row, parseCommunityBoardQuery("Bronx community board 3")), true);
