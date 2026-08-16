@@ -11,6 +11,7 @@ test("local accessibility setup uses one persistent pinned environment", () => {
   const setup = read("tools/setup_local_a11y_python.sh");
   const runner = read("tools/with_local_a11y_python.sh");
   const preflight = read("tools/preflight-required-checks.sh");
+  const prePushHook = read("tools/git-hooks/pre-push");
   const makefile = read("Makefile");
 
   assert.match(setup, /XDG_DATA_HOME.*\.local\/share/);
@@ -23,6 +24,9 @@ test("local accessibility setup uses one persistent pinned environment", () => {
   assert.match(makefile, /^setup-a11y:/m);
   assert.match(makefile, /^a11y:/m);
   assert.match(makefile, /with_local_a11y_python\.sh .*preflight-required-checks\.sh --full/);
+
+  assert.match(prePushHook, /A11Y_RUNNER=.*with_local_a11y_python\.sh/);
+  assert.match(prePushHook, /preflight_cmd=\("\$A11Y_RUNNER" "\$PREFLIGHT"/);
 
   assert.doesNotMatch(preflight, /pip install playwright/);
   assert.match(preflight, /Run 'make setup-a11y' once, then use 'make a11y'/);
