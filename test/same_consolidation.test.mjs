@@ -145,17 +145,20 @@ test("the People renderer uses the shared grouping utility and keeps exports on 
   assert.deepEqual(auditUnconsolidatedRepeatedRows(), []);
 });
 
-test("appointment archive rows expose six labeled fields and scope the record link to the name", () => {
+test("appointment archive rows expose six labeled fields and separate object navigation from the source", () => {
   const helpers = {
     t(key, values = {}) {
       const labels = {
         person_name_label: "Name",
         agency_label: "Agency",
+        copy_link_btn: "Copy link",
+        ext_link_new_tab_sr: "(opens in new tab)",
         staffing_effective_date: `Effective ${values.date || ""}`,
         staffing_salary: `Salary ${values.amount || ""}`,
         staffing_title_code: `Title code ${values.code || ""}`,
         staffing_appointment_group_posted: `Posted ${values.date || ""}`,
         staffing_unknown_role: `Title code ${values.code || ""}`,
+        staffing_view_notice: "View in City Record",
       };
       return labels[key] || key;
     },
@@ -170,12 +173,14 @@ test("appointment archive rows expose six labeled fields and scope the record li
 
   assert.match(html, /<dl class="staffing-hire-fields"/);
   assert.equal((html.match(/class="staffing-hire-field(?: |")/g) || []).length, 6);
-  assert.match(html, /<dt>Name<\/dt><dd><a [^>]*><span[^>]*>DOE,JANE<\/span>/);
+  assert.match(html, /<dt>Name<\/dt><dd><span[^>]*><a class="ui-constellation-link ui-object-card-title staffing-appointment-title" href="\/notices\/1"><span aria-hidden="true">◆<\/span>DOE,JANE<\/a>/);
   assert.match(html, /<dt>Title code<\/dt><dd>/);
   assert.match(html, /<dt>Agency<\/dt><dd>/);
   assert.match(html, /<dt>Effective<\/dt><dd>/);
   assert.match(html, /<dt>Salary<\/dt><dd>/);
   assert.match(html, /<dt>Posted<\/dt><dd>/);
-  assert.equal((html.match(/<a\b/g) || []).length, 1, "only the person/record name is linked");
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/notices\/1"[^>]*>Copy link<\/button>/);
+  assert.match(html, /class="ui-official-source-link staffing-appointment-source"[^>]*>View in City Record<span aria-hidden="true">↗<\/span>/);
+  assert.equal((html.match(/<a\b/g) || []).length, 2, "the internal record title and official source stay separate");
   assert.doesNotMatch(html, /<article[^>]*>\s*<a\b/);
 });
