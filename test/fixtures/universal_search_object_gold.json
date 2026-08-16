@@ -1,0 +1,191 @@
+{
+  "schema": "cityscroll.universal_search_object_gold.v1",
+  "quality_report": {
+    "retrieval": {
+      "dimensions": ["recall", "ranking"],
+      "attachment_query": "rodenticide",
+      "baseline_ordered_object_refs": [],
+      "enriched_ordered_object_refs": ["procurement:81626S0021001"]
+    },
+    "object_contract": {
+      "dimensions": ["type", "domain", "route", "coverage", "dedup"],
+      "case_ids": [
+        "mosquito-procurement",
+        "unknown-observation",
+        "law-derived-mandate",
+        "city-record-meeting",
+        "community-board-meeting",
+        "attachment-enrichment"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "mosquito-procurement",
+      "source_observation": {
+        "request_id": "20260710020",
+        "short_title": "Pesticides and Mosquito Control Products",
+        "title": "Pesticides and Mosquito Control Products",
+        "section": "Public Comment on Contract Awards",
+        "section_name": "Public Comment on Contract Awards",
+        "type_of_notice_description": "Notice",
+        "agency_name": "Health and Mental Hygiene",
+        "additional_description_1": "This is a notice seeking comments about the proposed contract below. E-PIN: 81626S0021001. Comments must be submitted before July 27, 2026."
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "procurement:81626S0021001",
+        "object_type": "procurement",
+        "domain": "contracts",
+        "canonical_href": "/browse/contracts/?mode=award&q=81626S0021001",
+        "source_observation_refs": ["notice:20260710020"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "unknown-observation",
+      "source_observation": {
+        "request_id": "unknown-001",
+        "title": "Publisher category without a registered object mapping",
+        "section": "Other Public Notices"
+      },
+      "expected": {
+        "outcome": "evidence_only",
+        "object_ref": "notice:unknown-001",
+        "object_type": "unclassified",
+        "domain": null,
+        "canonical_href": "/notices/unknown-001",
+        "source_observation_refs": ["notice:unknown-001"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "law-derived-mandate",
+      "source_observation": {
+        "matter_id": "66056",
+        "mandate_id": "66056-006",
+        "agency_id": "homeless-services",
+        "agency_name": "Homeless Services",
+        "duty_text": "Renegotiate shelter contracts within the statutory period.",
+        "citation": "Administrative Code § 6-109.2(i)",
+        "source_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=66056",
+        "law_text": "The department shall renegotiate shelter contracts within the statutory period.",
+        "verbatim_quote": "The department shall renegotiate shelter contracts within the statutory period.",
+        "quote_verified": true,
+        "deadline": {
+          "kind": "days_after_effective",
+          "computed_date": "2021-12-07",
+          "text": "No later than 30 days after the effective date"
+        },
+        "recurrence": "one-time",
+        "notice_evidence_refs": ["notice:20210820102"]
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "mandate:66056-006",
+        "object_type": "mandate",
+        "domain": "mandates",
+        "canonical_href": "/mandates/66056-006",
+        "source_observation_refs": ["law:66056"],
+        "notice_evidence_refs": ["notice:20210820102"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "city-record-meeting",
+      "source_observation": {
+        "request_id": "20260814001",
+        "title": "Public hearing on a local matter",
+        "event_date": "2026-08-20T10:00:00.000",
+        "meeting_origin": "city_record_notice"
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "meeting:city_record:20260814001",
+        "object_type": "meeting",
+        "domain": "meetings",
+        "canonical_href": "/meetings/meeting%3Acity_record%3A20260814001",
+        "source_observation_refs": ["city_record:20260814001"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "community-board-meeting",
+      "source_observation": {
+        "board_id": "brooklyn-cb-06",
+        "source_record_id": "event-abc-123",
+        "title": "Public hearing on a local matter",
+        "event_date": "2026-08-20T10:00:00.000",
+        "source_url": "https://example.test/meetings/event-abc-123",
+        "source_receipt": {
+          "status": "ok",
+          "observed_at": "2026-08-14T12:00:00Z"
+        },
+        "meeting_origin": "community_board_source_observed"
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "meeting:community_board:event-abc-123",
+        "object_type": "meeting",
+        "domain": "meetings",
+        "canonical_href": "/meetings/meeting%3Acommunity_board%3Aevent-abc-123",
+        "source_observation_refs": ["community_board:event-abc-123"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "attachment-enrichment",
+      "source_observation": {
+        "request_id": "20260710020",
+        "short_title": "Pesticides and Mosquito Control Products",
+        "title": "Pesticides and Mosquito Control Products",
+        "section": "Public Comment on Contract Awards",
+        "section_name": "Public Comment on Contract Awards",
+        "type_of_notice_description": "Notice",
+        "additional_description_1": "E-PIN: 81626S0021001"
+      },
+      "attachment_text": "The award includes rodenticide application guidance.",
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "procurement:81626S0021001",
+        "object_type": "procurement",
+        "domain": "contracts",
+        "canonical_href": "/browse/contracts/?mode=award&q=81626S0021001",
+        "source_observation_refs": ["notice:20260710020"],
+        "coverage_state": "matched"
+      }
+    }
+  ],
+  "coverage": [
+    {
+      "producer": "city_record_procurement",
+      "domain": "contracts",
+      "state": "matched",
+      "reason": "query_matches_canonical_objects"
+    },
+    {
+      "producer": "rules",
+      "domain": "rules",
+      "state": "empty",
+      "reason": "producer_available_no_query_matches"
+    },
+    {
+      "producer": "shared_meetings",
+      "domain": "meetings",
+      "state": "partial",
+      "reason": "one_or_more_registered_sources_incomplete"
+    },
+    {
+      "producer": "law_mandates",
+      "domain": "mandates",
+      "state": "not_indexed",
+      "reason": "producer_not_yet_connected_to_search"
+    },
+    {
+      "producer": "staffing",
+      "domain": "staffing",
+      "state": "provider_unavailable",
+      "reason": "upstream_provider_unavailable"
+    }
+  ]
+}
