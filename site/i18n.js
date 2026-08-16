@@ -2520,7 +2520,7 @@ const STRINGS = {
     pick_topic_first: "← type something, or pick a topic",
 
     // Clipboard
-    copied_check: "✓ Copied",
+    copied_check: "Copied ✓",
     copy_failed: "⚠ Couldn't copy",
 
     // Notice permalink shell (showNotice)

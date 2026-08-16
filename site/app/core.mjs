@@ -1,5 +1,9 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
 import { browseRouteAlias } from "../browse_route_aliases.mjs";
+import {
+  externalActionLink as renderExternalActionLink,
+  installObjectCardCopyLinks,
+} from "../affordance_grammar.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
@@ -56,6 +60,14 @@ const REQ_URL = id => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURI
 // government systems open in a new tab so a bid workflow doesn't lose CityScroll's app state.
 const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
 const extSR = () => `<span class="sr-only"> ${t("ext_link_new_tab_sr")}</span>`;
+const appExternalActionLink = (options = {}) => renderExternalActionLink({
+  ...options,
+  newTabLabel: t("ext_link_new_tab_sr"),
+});
+installObjectCardCopyLinks(document, {
+  successLabel: () => t("copied_check"),
+  failureLabel: () => t("copy_failed"),
+});
 const STAGE_RANK = {"Solicitation":0,"Intent to Negotiate":1,"Vendor List":2,"Intent to Award":3,"Award":4};
 const JUNK_PINS = new Set(["NOPINFOUND","SEE BELOW","LINE 17 BELOW","TBD","N/A","NONE","VARIOUS","SEE ATTACHED","123456"]); // compared UPPERCASED — entries must be uppercase (unit-tested); "123456" is a confirmed placeholder default value, not a real PIN
 // Looser second pass alongside JUNK_PINS above: the exact-match set misses common real-world
@@ -464,6 +476,7 @@ globalThis.enTitle = enTitle;
 globalThis.eventTag = eventTag;
 globalThis.excerptHtml = excerptHtml;
 globalThis.extSR = extSR;
+globalThis.externalActionLink = appExternalActionLink;
 globalThis.fdate = fdate;
 globalThis.fdt = fdt;
 globalThis.isRollingDeadline = isRollingDeadline;
