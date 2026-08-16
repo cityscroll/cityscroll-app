@@ -43,14 +43,39 @@ test("zero results this week widen to this month and preserve the subject filter
   assert.doesNotMatch(i18nSource, /meetings_widened_notice: "No results/);
 });
 
-test("zero results in every upcoming scope show a labeled recent-past result", () => {
+test("an upcoming search separates matching past rows from its primary result group", () => {
   const records = [hearing("ida-past", "2025-03-20", "IDA public hearing")];
   const result = chooseHearingScope(records, { when: "week", keyword: "IDA" }, TODAY);
-  assert.equal(result.scope, "past");
-  assert.equal(result.widened, true);
-  assert.deepEqual(result.rows.map((row) => row.request_id), ["ida-past"]);
+  assert.equal(result.scope, "week");
+  assert.equal(result.widened, false);
+  assert.deepEqual(result.rows, []);
+  assert.deepEqual(result.pastRows.map((row) => row.request_id), ["ida-past"]);
+  assert.match(indexSource, /meetings_no_upcoming_matches/);
+  assert.match(indexSource, /meetings_past_matches_heading/);
   assert.match(indexSource, /class="tag closed">\$\{t\("past_tag"\)\}/);
-  assert.match(indexSource, /selection\.scope==="past"\?"upcoming":selection\.requested/);
+  assert.doesNotMatch(indexSource, /selection\.scope==="past"\?"upcoming":selection\.requested/);
+});
+
+test("an exact board with no future rows keeps its past matches secondary", () => {
+  const records = [
+    {
+      ...hearing("brooklyn-past", "2026-07-20", "Brooklyn Community Board 3"),
+      board_id: "brooklyn-cb-03",
+      affected_area: { scope: "local", boroughs: ["Brooklyn"], community_boards: ["brooklyn-cb-03"] },
+    },
+    {
+      ...hearing("queens-upcoming", "2026-08-20", "Queens Community Board 3"),
+      board_id: "queens-cb-03",
+      affected_area: { scope: "local", boroughs: ["Queens"], community_boards: ["queens-cb-03"] },
+    },
+  ];
+  const result = chooseHearingScope(records, {
+    when: "upcoming",
+    communityBoard: "community-board:brooklyn-cb-03",
+  }, TODAY);
+
+  assert.deepEqual(result.rows, []);
+  assert.deepEqual(result.pastRows.map((row) => row.request_id), ["brooklyn-past"]);
 });
 
 test("true empty states lead with a recovery action instead of the absence", () => {

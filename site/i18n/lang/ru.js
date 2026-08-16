@@ -118,6 +118,8 @@
     meetings_none_upcoming: "предстоящих нет",
     show_exact_search: "Показать точный поиск",
     past_tag: "Прошло",
+    meetings_no_upcoming_matches: "Нет предстоящих совпадений",
+    meetings_past_matches_heading: "Прошедшие совпадения",
     no_hearings_after_widening: "Расширьте поиск. Для этого запроса нет совпадений среди предстоящих или недавних прошедших заседаний.",
     footer_notices: "более 1 млн уведомлений",
     sugg_money_0: "строительные контракты свыше $500 тыс.",

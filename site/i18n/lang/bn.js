@@ -118,6 +118,8 @@
     meetings_none_upcoming: "কোনো আসন্ন সভা নেই",
     show_exact_search: "সঠিক অনুসন্ধান দেখান",
     past_tag: "অতীত",
+    meetings_no_upcoming_matches: "আসন্ন কোনো মিল নেই",
+    meetings_past_matches_heading: "অতীতের মিল",
     no_hearings_after_widening: "অনুসন্ধানের পরিসর বাড়ান। এই অনুসন্ধানে আসন্ন বা সাম্প্রতিক অতীতের কোনো সভা মেলেনি।",
     footer_notices: "১০ লক্ষের বেশি নোটিশ",
     sugg_money_0: "$500k-এর বেশি নির্মাণ চুক্তি",

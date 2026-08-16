@@ -117,6 +117,8 @@
     meetings_none_upcoming: "pa gen okenn k ap vini",
     show_exact_search: "Montre rechèch egzak la",
     past_tag: "Pase",
+    meetings_no_upcoming_matches: "Pa gen reyinyon k ap vini ki koresponn",
+    meetings_past_matches_heading: "Reyinyon pase ki koresponn",
     no_hearings_after_widening: "Elaji rechèch la. Rechèch sa a pa jwenn okenn reyinyon k ap vini oswa ki fèk pase.",
     footer_notices: "plis pase 1 milyon avi",
     sugg_money_0: "kontra konstriksyon plis pase $500k",

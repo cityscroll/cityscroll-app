@@ -120,6 +120,8 @@
     meetings_none_upcoming: "لا اجتماعات قادمة",
     show_exact_search: "عرض البحث الدقيق",
     past_tag: "سابق",
+    meetings_no_upcoming_matches: "لا توجد نتائج قادمة",
+    meetings_past_matches_heading: "النتائج السابقة",
     no_hearings_after_widening: "وسّع نطاق البحث. لا توجد اجتماعات مطابقة قادمة أو سابقة حديثة لهذا البحث.",
     footer_notices: "أكثر من مليون إشعار",
     sugg_money_0: "عقود إنشاءات تفوق 500 ألف دولار",
