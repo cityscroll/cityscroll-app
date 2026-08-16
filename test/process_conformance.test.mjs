@@ -9,6 +9,7 @@ import {
   OBSERVATION_STATUS,
   PROCESS_CONFORMANCE_METHOD,
   PROCESS_CONFORMANCE_SCHEMA,
+  MANDATE_RULE_EDGE_TYPE,
   MANDATE_CONFORMANCE_STYLE,
   agencyMandatesConformancePath,
   buildAgencyConformanceView,
@@ -30,6 +31,7 @@ import {
   buildAgencyConstellationView,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
+import { relatedCivicEdgesForMandate } from "../site/mandate_document.mjs";
 import { DEFAULT_CROSS_SPINE_EDGE_POLICY } from "../entity_resolution/cross_domain/edge_policy.mjs";
 import {
   PROCUREMENT_DEVIATION_CLASS,
@@ -452,6 +454,63 @@ test("does not attach the DOT FHV parking notice to pedestrian-plaza rulemaking,
   assert.equal(genuineObservation.observed_record.request_id, "20260601001");
 });
 
+test("a parsed public rule match materializes a typed provenance-bearing mandate edge", () => {
+  const view = buildAgencyConformanceView("transportation", {
+    obligationsLookup: {
+      by_agency: {
+        transportation: {
+          obligations: [{
+            obligation_id: "55689-007",
+            matter_id: "55689",
+            agency_id: "transportation",
+            agency_name: "Transportation",
+            duty_text: "Promulgate rules relating to pedestrian plaza commercial activity.",
+            deliverable_type: "rulemaking",
+            citation: "Administrative Code § 19-157(c)(2)",
+            source: {
+              matter_id: "55689",
+              legistar_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=55689",
+            },
+          }],
+        },
+      },
+    },
+    rulesDomain: {
+      rows: [{
+        request_id: "20260601001",
+        agency_name: "Transportation",
+        short_title: "Proposed Rules for Pedestrian Plaza Commercial Activity",
+        start_date: "2026-06-10T00:00:00.000",
+        section_name: "Agency Rules",
+        source_system: "city_record",
+        rule_evidence: {
+          topic_keys: ["pedestrian", "plaza", "commercial", "activity"],
+          body_topic_keys: ["pedestrian", "plaza", "commercial", "activity"],
+          citation_keys: ["nyc-admin-code:19-157(c)(2)"],
+          lifecycle_status: "proposal",
+          negative_evidence: [],
+        },
+      }],
+    },
+    asOf: "2026-08-16",
+  });
+
+  const item = view.items.find((row) => row.mandate_id === "55689-007");
+  assert.equal(item.observation.status, OBSERVATION_STATUS.OBSERVED);
+  assert.equal(item.category, "rules");
+  assert.equal(item.edge_type, MANDATE_RULE_EDGE_TYPE);
+  assert.equal(item.observation.edge.type, MANDATE_RULE_EDGE_TYPE);
+  assert.equal(item.observation.edge.from, "mandate:55689-007");
+  assert.equal(item.observation.edge.to, "rulemaking:notice:20260601001");
+  assert.equal(item.observation.edge.publication_tier, "public_inferred");
+  assert.equal(item.observation.edge.provenance.schema, "cityscroll.graph_edge_provenance.v1");
+  assert.equal(item.observation.edge.provenance.where.source_system.value, "city_record");
+  assert.equal(item.observation.edge.provenance.where.source_record_id.value, "city_record:20260601001");
+  assert.equal(item.observation.edge.provenance.where.observed_at.value, "2026-06-10");
+  assert.ok(item.observation.edge.provenance.how.method.value);
+  assert.equal(item.observation.edge.provenance.confidence.counts_as_verified_total, false);
+});
+
 test("rejects a strong subject match when the notice is implausibly late", () => {
   const observation = resolveMandateObservation({
     duty_text: "Promulgate rules for outdoor dining safety",
@@ -862,6 +921,40 @@ test("committed conformance lookup carries meetings, contracts, and zoning edges
     assert.match(row.edge.claim_inspect_href, new RegExp(`^/agencies/${agency}/\\?claim=`));
     assert.match(row.observed_record.href, /^(?:\/|https:\/\/)/);
   }
+});
+
+test("production snapshot exposes only provenance-complete standable mandate contract/rule/meeting edges", () => {
+  const lookup = JSON.parse(readFileSync(LOOKUP, "utf8"));
+  const minimums = [
+    ["66056-006", "procurement", 3],
+    ["64116-001", "rule", 1],
+    ["68103-008", "meeting", 3],
+  ];
+  const all = minimums.flatMap(([mandateId, kind, minimum]) => {
+    const edges = relatedCivicEdgesForMandate(lookup, mandateId);
+    const matching = edges.filter((edge) => edge.kind === kind);
+    assert.ok(
+      matching.length >= minimum,
+      `${mandateId} production ${kind} edge count must not regress below ${minimum}`,
+    );
+    return matching;
+  });
+  assert.ok(all.length >= 7);
+  assert.ok(all.every((edge) => edge.provenance?.schema === "cityscroll.graph_edge_provenance.v1"));
+  assert.ok(all.every((edge) => edge.provenance?.where?.source_system?.available === true));
+  assert.ok(all.every((edge) => edge.provenance?.where?.source_record_id?.available === true));
+  assert.ok(all.every((edge) => edge.provenance?.where?.observed_at?.available === true));
+  assert.ok(all.every((edge) => edge.provenance?.how?.method?.available === true));
+  assert.ok(all.every((edge) => edge.provenance?.confidence?.standable === true));
+  assert.ok(all.filter((edge) => edge.kind === "procurement").every((edge) => edge.verified));
+  assert.ok(all.filter((edge) => edge.kind !== "procurement").every((edge) => !edge.verified));
+
+  const meetings = JSON.parse(readFileSync(
+    join(ROOT, "site/data/shared_meeting_read_model.json"),
+    "utf8",
+  ));
+  const meetingIds = new Set((meetings.rows || []).map((row) => row.meeting_id));
+  assert.ok(all.filter((edge) => edge.kind === "meeting").every((edge) => meetingIds.has(edge.id)));
 });
 
 test("constellation surfaces only public Sanitation CWZ rule edges after attachment densify", () => {

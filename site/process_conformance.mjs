@@ -28,7 +28,11 @@ import {
   mandateMatterEdgeFromRow,
   renderMandateRowGraphActions,
 } from "./mandate_graph_neighbors.mjs";
-import { renderWhyBelieveControl } from "./graph_edge_provenance.mjs";
+import {
+  buildEdgeProvenanceClaim,
+  renderWhyBelieveControl,
+} from "./graph_edge_provenance.mjs";
+import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import {
   RULE_LIFECYCLE_STATUSES,
   compactCitationLawKeys,
@@ -92,6 +96,8 @@ export const MAX_POST_DEADLINE_PLAUSIBILITY_DAYS = 365;
 export const MANDATE_RULE_MIN_PRECISION = CROSS_SPINE_MIN_HELD_OUT_PRECISION;
 export const MANDATE_RULE_PUBLICATION_TIER = "public_inferred";
 export const MANDATE_RULE_EVIDENCE_ONLY_TIER = "evidence_only";
+export const MANDATE_RULE_EDGE_TYPE = "requires_rule_filing";
+export const MANDATE_RULE_EDGE_METHOD = "mandate_rule_citation_topic_token_v1";
 
 /** Expected civic-event kind from mandate deliverable_type. */
 export const EXPECTED_EVENT_BY_DELIVERABLE = Object.freeze({
@@ -270,6 +276,19 @@ export function normalizeObservationCandidate(raw = {}) {
     ? stamp.citation_keys.map((item) => clean(item, 120).toLowerCase()).filter(Boolean).slice(0, 32)
     : [];
   const lifecycleStatus = clean(stamp.lifecycle_status || raw.lifecycle_status, 40).toLowerCase();
+  const sourceSystem = clean(raw.source_system || raw.provenance?.source_system || "city_record", 80);
+  const sourceRecordId = clean(
+    raw.source_record_id || raw.provenance?.source_record_id,
+    200,
+  ) || (requestId ? `${sourceSystem}:${requestId}` : null);
+  const sourceFields = [...new Set([
+    ...(Array.isArray(raw.provenance?.source_fields) ? raw.provenance.source_fields : []),
+    "agency_name",
+    "short_title",
+    ...(stampedBodyTopicKeys.length ? ["rule_evidence.body_topic_keys"] : []),
+    ...(stampedCitationKeys.length ? ["rule_evidence.citation_keys"] : []),
+    ...(when ? ["start_date"] : []),
+  ].map((field) => clean(field, 80)).filter(Boolean))];
   return {
     request_id: requestId || null,
     label: label || requestId,
@@ -280,7 +299,10 @@ export function normalizeObservationCandidate(raw = {}) {
     domain: domain
       || (isRules ? "rules" : isHearing ? "meetings" : isReportShaped ? "reports" : "city_record"),
     href: publicRecordHref(raw.href, requestId),
-    source_system: clean(raw.source_system || raw.provenance?.source_system || "city_record", 80),
+    source_system: sourceSystem,
+    source_record_id: sourceRecordId,
+    source_fields: sourceFields,
+    source_excerpt: label || null,
     body,
     citation,
     citation_keys: expandCitationKeyParents([
@@ -704,10 +726,16 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
       note: "Matched evidence by agency identity and shared topic tokens.",
       observed_record: {
         request_id: best.candidate.request_id,
+        subject_ref: best.candidate.request_id
+          ? `rulemaking:notice:${best.candidate.request_id}`
+          : null,
         label: best.candidate.label,
         when: best.candidate.when,
         href: best.candidate.href,
         source_system: best.candidate.source_system,
+        source_record_id: best.candidate.source_record_id,
+        source_fields: best.candidate.source_fields,
+        source_excerpt: best.candidate.source_excerpt,
         signal_kind: best.candidate.signal_kind,
         lifecycle_status: best.candidate.lifecycle_status,
         lifecycle_label: lifecycleLabel(best.candidate.lifecycle_status),
@@ -749,6 +777,66 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
   };
 }
 
+function materializeRuleEdge(mandate, observation, identity) {
+  if (observation?.status !== OBSERVATION_STATUS.OBSERVED
+    || observation?.match?.publication !== MANDATE_RULE_PUBLICATION_TIER
+    || observation?.match?.evidence?.publication_eligible !== true) {
+    return null;
+  }
+  const mandateId = clean(mandate?.obligation_id || mandate?.mandate_id, 120);
+  const from = mandateSubjectRef(mandateId);
+  const record = observation.observed_record || {};
+  const requestId = clean(record.request_id, 80);
+  const to = requestId ? `rulemaking:notice:${requestId}` : null;
+  const observedAt = validDate(record.when);
+  if (!from || !to || !observedAt) return null;
+  const evidence = observation.match.evidence;
+  const inputValue = (evidence.citation_law_overlap || []).join(", ")
+    || (observation.match.shared_tokens || []).join(", ");
+  const provenance = {
+    source_system: clean(record.source_system, 80) || "city_record",
+    source_record_id: clean(record.source_record_id, 200) || `city_record:${requestId}`,
+    source_fields: Array.isArray(record.source_fields) && record.source_fields.length
+      ? record.source_fields
+      : ["agency_name", "short_title", "rule_evidence.body_topic_keys", "rule_evidence.citation_keys", "start_date"],
+    source_href: clean(record.href, 400) || `/notices/${encodeURIComponent(requestId)}`,
+    source_excerpt: clean(record.source_excerpt || record.label, 500) || null,
+    input_value: clean(inputValue, 240) || null,
+    observed_at: observedAt,
+    basis: MANDATE_RULE_EDGE_METHOD,
+    cross_spine_confidence: "confirmed",
+  };
+  const claim = buildEdgeProvenanceClaim({
+    id: `${mandateId}:${to}`,
+    label: clean(record.label, 320) || `Rule filing ${requestId}`,
+    href: clean(record.href, 400) || `/notices/${encodeURIComponent(requestId)}`,
+    relation: MANDATE_RULE_EDGE_TYPE,
+    confidence: "strong",
+    cross_spine_confidence: "confirmed",
+    decision: "auto_link",
+    method: MANDATE_RULE_EDGE_METHOD,
+    provenance,
+  }, {
+    category_id: "mandate-rules",
+    relation: MANDATE_RULE_EDGE_TYPE,
+    root_ref: from,
+    document_path: `/agencies/${encodeURIComponent(identity.canonical_id)}/`,
+  });
+  return {
+    type: MANDATE_RULE_EDGE_TYPE,
+    from,
+    to,
+    method: MANDATE_RULE_EDGE_METHOD,
+    confidence: "strong",
+    publication_tier: MANDATE_RULE_PUBLICATION_TIER,
+    evidence,
+    provenance: claim,
+    claim_id: claim?.claim_id || null,
+    claim_inspect_href: claim?.inspect_href || null,
+    warrant_class: claim?.how?.warrant_class || null,
+  };
+}
+
 /**
  * Build agency-level process-conformance view over mandates + observation corpus.
  */
@@ -777,6 +865,7 @@ export function buildAgencyConformanceView(agencyIdOrName, {
 
   const items = mandates.map((row) => {
     const observation = resolveMandateObservation(row, candidates, { asOf: today });
+    const ruleEdge = materializeRuleEdge(row, observation, identity);
     return {
       mandate_id: row.obligation_id,
       obligation_id: row.obligation_id, // stable internal id
@@ -789,7 +878,12 @@ export function buildAgencyConformanceView(agencyIdOrName, {
       source: row.source || null,
       source_href: row.source?.legistar_url || null,
       certification_status: row.certification?.status || null,
-      observation,
+      ...(ruleEdge ? {
+        category: "rules",
+        edge_type: MANDATE_RULE_EDGE_TYPE,
+        conformance_id: `${row.obligation_id}:rules:${ruleEdge.to}`,
+      } : {}),
+      observation: ruleEdge ? { ...observation, edge: ruleEdge } : observation,
     };
   });
 
@@ -964,8 +1058,7 @@ export function buildProcessConformanceLookup({
         adjudication: "not_adjudicated",
         method: item.observation?.method || PROCESS_CONFORMANCE_METHOD,
       };
-      if (!item.conformance_id && !item.observation?.edge
-        && (!observations[mid] || compact.status === OBSERVATION_STATUS.OBSERVED)) {
+      if (!observations[mid] || compact.status === OBSERVATION_STATUS.OBSERVED) {
         observations[mid] = compact;
       }
       if (item.conformance_id || item.observation?.edge) {
