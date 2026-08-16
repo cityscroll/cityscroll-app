@@ -68,7 +68,7 @@ test("place groups use positive headings without methodology notes", () => {
   assert.doesNotMatch(SITE_SOURCE, /local_hearings_note|unlocated_hearings_note/);
 });
 
-test("meetingProcessStage classifies upcoming scheduled vs agenda from notice signals", () => {
+test("meetingProcessStage uses explicit agenda observations, not generic meeting signals", () => {
   const bare = hearing({ event_date: "2026-08-15", description: "A hearing will be held." });
   assert.equal(meetingProcessStage(bare, { now: NOW }), "scheduled");
 
@@ -83,7 +83,8 @@ test("meetingProcessStage classifies upcoming scheduled vs agenda from notice si
     notice_type: "Meeting",
     description: "Monthly board meeting.",
   });
-  assert.equal(meetingProcessStage(meetingType, { now: NOW }), "agenda");
+  assert.equal(meetingProcessStage(meetingType, { now: NOW }), "scheduled");
+  assert.equal(hasAgendaSignal(meetingType), false);
 
   const withJoin = hearing({
     event_date: "2026-08-15",
@@ -93,17 +94,23 @@ test("meetingProcessStage classifies upcoming scheduled vs agenda from notice si
       phones: [],
     },
   });
-  assert.equal(meetingProcessStage(withJoin, { now: NOW }), "agenda");
-  assert.equal(hasAgendaSignal(withJoin), true);
+  assert.equal(meetingProcessStage(withJoin, { now: NOW }), "scheduled");
+  assert.equal(hasAgendaSignal(withJoin), false);
 });
 
-test("meetingProcessStage classifies past held vs outcomes without inventing votes", () => {
-  const held = hearing({
+test("meetingProcessStage does not turn a past date into a held observation", () => {
+  const pastScheduled = hearing({
     event_date: "2026-07-20",
     description: "A public hearing was noticed.",
   });
+  assert.equal(meetingProcessStage(pastScheduled, { now: NOW }), "scheduled");
+  assert.equal(hasOutcomesSignal(pastScheduled), false);
+
+  const held = hearing({
+    event_date: "2026-07-20",
+    event_status: "held",
+  });
   assert.equal(meetingProcessStage(held, { now: NOW }), "held");
-  assert.equal(hasOutcomesSignal(held), false);
 
   const minutes = hearing({
     event_date: "2026-07-20",
@@ -119,6 +126,22 @@ test("meetingProcessStage classifies past held vs outcomes without inventing vot
 
   assert.equal(meetingProcessStage({ title: "No date" }, { now: NOW }), null);
   assert.equal(meetingProcessFilterKey({ title: "No date" }, { now: NOW }), "unstaged");
+});
+
+test("explorer entries expose observed state separately from profile expectations", () => {
+  const [entry] = buildMeetingsExplorerEntries([hearing({
+    meeting_family: "agency_rulemaking_hearing",
+    event_status: "held",
+    meeting_outcomes_matched: false,
+  })], { now: NOW });
+
+  assert.equal(entry.meeting_family, "agency_rulemaking_hearing");
+  assert.equal(entry.observed_state.event_state.value, "held");
+  assert.equal(entry.observed_state.publications.outcome.state, "not_observed");
+  assert.equal(entry.process_profile.version, 1);
+  assert.equal(entry.normative_expectations.process_kind, "rulemaking");
+  assert.equal(entry.process_role, "rulemaking_hearing");
+  assert.equal("compliance" in entry, false);
 });
 
 test("meetingProcessActionKey prefers join / testimony / dated attend when published", () => {
@@ -245,6 +268,7 @@ test("filterMeetingsExplorerEntries and counts support exclusive current-stage b
       agency: "Agency C",
       decides: "Whether to designate a landmark at 40 Willow Street in Brooklyn",
       event_date: "2026-07-01",
+      event_status: "held",
       description: "Past hearing.",
     }),
     hearing({
@@ -365,7 +389,7 @@ test("pickPrimaryHearing prefers local scope; meetingsAgencyName cleans agency",
   assert.equal(meetingsAgencyName(local), "City Planning Commission");
   // Furthest along the arc wins (held after agenda in process order).
   assert.equal(entryCurrentProcessStage([
-    hearing({ event_date: "2026-07-01" }),
+    hearing({ event_date: "2026-07-01", event_status: "held" }),
     hearing({ event_date: "2026-08-20", notice_type: "Meeting" }),
   ], { now: NOW }), "held");
 });
