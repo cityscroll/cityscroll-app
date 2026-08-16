@@ -13,10 +13,19 @@ import {
   communityBoardRows,
 } from "../site/community_board_scope_links.mjs";
 import { communityBoardPlaceHref } from "../site/community_board_links.mjs";
+import {
+  communityBoardMeetingEdgeAccepted,
+  communityBoardMeetingEdgeFromSourceRow,
+} from "../site/community_board_institution_edges.mjs";
 import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
+import { buildCommunityBoardConstellationMaterialization } from "../tools/build_community_board_constellation_documents.mjs";
 
 const shared = JSON.parse(fs.readFileSync(new URL(
   "../site/data/shared_meeting_read_model.json",
+  import.meta.url,
+), "utf8"));
+const meetingIndex = JSON.parse(fs.readFileSync(new URL(
+  "../site/data/community_board_meeting_index.json",
   import.meta.url,
 ), "utf8"));
 
@@ -133,6 +142,75 @@ test("community-board cards link their exact host institution with the internal-
   assert.match(html, /href="\/community-boards\/manhattan-cb-10\/"/);
   assert.match(html, /<span aria-hidden="true">◆<\/span>Manhattan Community Board 10/);
   assert.equal((html.match(/Community board source observed/g) || []).length, 1);
+});
+
+test("board institution pages and the Meetings lens publish the same canonical meeting IDs", () => {
+  const { lookup, documents } = buildCommunityBoardConstellationMaterialization();
+  const htmlByBoard = new Map(documents.map(([path, html]) => [
+    path.match(/community-boards\/([^/]+)\/index\.html$/)?.[1],
+    html,
+  ]));
+
+  assert.equal(lookup.board_count, 59);
+  assert.equal(meetingIndex.coverage.boards_in_inventory, 59);
+  assert.equal(new Set(meetingIndex.receipts.map((row) => row.board_id)).size, 59);
+  assert.deepEqual(meetingIndex.policy.source_role_states, [
+    "indexed", "checked-empty", "unsupported-format", "unavailable", "stale", "not-yet-checked",
+  ]);
+
+  const residentHtml = documents.map(([, html]) => html.replace(/<script[\s\S]*?<\/script>/gi, " ")).join("\n");
+  assert.match(residentHtml, /Source details/);
+  assert.match(residentHtml, /Checked; no dated records found/);
+  assert.match(residentHtml, /Source could not be checked/);
+  assert.match(residentHtml, /Source is listed and awaiting a check/);
+  assert.doesNotMatch(residentHtml, /checked-empty|not-yet-checked|unsupported-format|source_stale/);
+
+  const staleEdge = communityBoardMeetingEdgeFromSourceRow(meetingIndex.rows[0], {
+    asOf: meetingIndex.generated_at,
+    sourceRoleState: "stale",
+  });
+  assert.equal(communityBoardMeetingEdgeAccepted(staleEdge), false);
+  assert.equal(staleEdge.href, null);
+  const carriedStaleEdge = communityBoardMeetingEdgeFromSourceRow({
+    ...meetingIndex.rows[0],
+    institution_edge: communityBoardMeetingEdgeFromSourceRow(meetingIndex.rows[0], {
+      asOf: meetingIndex.generated_at,
+      sourceRoleState: "indexed",
+    }),
+  }, {
+    asOf: meetingIndex.generated_at,
+    sourceRoleState: "stale",
+  });
+  assert.equal(communityBoardMeetingEdgeAccepted(carriedStaleEdge), false);
+  assert.equal(carriedStaleEdge.href, null);
+
+  for (const [boardId, rows] of Object.entries(meetingIndex.by_board)) {
+    const expectedIds = rows.map((row) => row.meeting_id).sort();
+    const scopeHref = communityBoardScopeHref("meetings", boardId);
+    const scopeParams = new URLSearchParams(scopeHref.split("?", 2)[1] || "");
+    const boardSummary = lookup.by_id[boardId].edge_summary
+      .find((edge) => edge.edge_type === "hosts_meeting");
+    const boardHtml = htmlByBoard.get(boardId);
+    const scoped = buildBrowseView("meetings", { rows: shared.rows }, scopeParams, { limit: 1000 });
+    const sourceNativeScoped = buildBrowseView("meetings", { rows: meetingIndex.rows }, scopeParams, { limit: 1000 });
+
+    assert.equal(boardSummary.count, expectedIds.length, `${boardId} board count`);
+    assert.deepEqual(sourceNativeScoped.rows.map((row) => row.meeting_id).sort(), expectedIds, `${boardId} source-native Meetings scope`);
+    assert.ok(expectedIds.every((id) => scoped.rows.some((row) => row.meeting_id === id)), `${boardId} shared Meetings scope`);
+    for (const row of rows) {
+      const edge = communityBoardMeetingEdgeFromSourceRow(row, {
+        asOf: meetingIndex.generated_at,
+        sourceRoleState: "indexed",
+      });
+      assert.equal(communityBoardMeetingEdgeAccepted(edge), true, `${row.meeting_id} accepted edge`);
+      assert.equal(edge.href, `/meetings/${encodeURIComponent(row.meeting_id)}`);
+      assert.equal(edge.provenance?.observed_receipt?.status, "ok");
+      assert.deepEqual(edge.join?.evidence, ["exact_board_identity", "exact_date", "publisher_identifier"]);
+    }
+    for (const meetingId of expectedIds) {
+      assert.match(boardHtml, new RegExp(`/meetings/${encodeURIComponent(meetingId)}`), `${boardId} canonical meeting link`);
+    }
+  }
 });
 
 test("an exact community-board affected area resolves to the existing district place route", () => {

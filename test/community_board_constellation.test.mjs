@@ -75,7 +75,7 @@ test("minutes freshness keeps an unchecked source in resident language", () => {
   assert.doesNotMatch(html, /Minutes source unavailable/);
 });
 
-test("board profile renders receipt-backed records while leaving unjoined records non-official", () => {
+test("board profile renders receipt-backed records without counting them as accepted meetings", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-02", {
     ...sources,
     sourceRecords: [{
@@ -91,7 +91,8 @@ test("board profile renders receipt-backed records while leaving unjoined record
     }],
   });
   assert.equal(view.source_records[0].state, "observed");
-  assert.equal(view.categories.find((category) => category.id === "meetings").status, "matched");
+  assert.equal(view.categories.find((category) => category.id === "meetings").status, "unknown");
+  assert.equal(view.categories.find((category) => category.id === "meetings").count, null);
   assert.equal(view.categories.find((category) => category.id === "members").status, "unknown");
   const html = renderCommunityBoardConstellationDocument(view);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
@@ -101,18 +102,17 @@ test("board profile renders receipt-backed records while leaving unjoined record
   assert.doesNotMatch(visible, /record_kind|source_record_id|observed_receipt|Source: Unavailable|Join method: Unavailable/);
 });
 
-test("indexed board events replace the unknown meetings state without becoming official joins", () => {
+test("indexed board events stay source records until accepted institution edges are supplied", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-06", {
     ...sources,
     sourceRecords: meetingIndex.by_board,
   });
   const meetings = view.categories.find((category) => category.id === "meetings");
-  assert.equal(meetings.status, "matched");
-  assert.equal(meetings.count, 12);
-  assert.ok(meetings.items.every((item) => item.state === "observed"));
-  assert.ok(meetings.items.every((item) => item.join?.matched !== true));
+  assert.equal(meetings.status, "unknown");
+  assert.equal(meetings.count, null);
+  assert.deepEqual(meetings.items, []);
   const html = renderCommunityBoardConstellationDocument(view);
-  assert.doesNotMatch(html, /Meetings and hearings \(Availability is not known yet\)/);
+  assert.match(html, /Meetings and hearings \(Records not shown\)/);
   assert.match(html, /Source observed/);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
   assert.doesNotMatch(visible, /upcoming_meetings/);

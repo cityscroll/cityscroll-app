@@ -34,7 +34,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `meeting:{source}:{key}` only after exact board/date/publisher evidence plus a
   retained receipt and URL; held edges retain typed identity but never an
   `href`. Board, Browse, and meeting-document pivots consume that same edge
-  payload. Focused proof: `test/community_board_institution_edges.test.mjs`.
+  payload. `tools/build_community_board_constellation_documents.mjs` recovers
+  missing carried edges from source-native rows through
+  `communityBoardMeetingEdgeFromSourceRow`, using the index generation time as
+  the freshness clock; only accepted edges enter board-page meeting counts.
+  Focused proof: `test/community_board_institution_edges.test.mjs` and
+  `test/community_board_meeting_lens_parity.test.mjs`.
 
 - Browse document facets are edge-rendered first and then hydrated by the SPA. Agency
   `entity_refs_all` links must be passed into the live lens agency control before feed

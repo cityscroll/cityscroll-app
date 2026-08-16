@@ -9,6 +9,7 @@ import {
   COMMUNITY_BOARD_CONSTELLATION_METHOD,
   COMMUNITY_BOARD_CONSTELLATION_SCHEMA,
 } from "../site/community_board_constellation.mjs";
+import { communityBoardMeetingEdgeFromSourceRow } from "../site/community_board_institution_edges.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -25,17 +26,44 @@ function sourceRows() {
   const meetingIndex = readJson("site/data/community_board_meeting_index.json");
   const scorecard = readJson("site/data/community_board_minutes_scorecard.json");
   const geography = readJson("site/data/community_board_geography_lookup.json");
-  const institutionEdges = Object.fromEntries(Object.entries(meetingIndex.by_board || {}).map(([boardId, rows]) => [
-    boardId,
-    (Array.isArray(rows) ? rows : []).flatMap((row) => [
-      ...(Array.isArray(row.institution_edges) ? row.institution_edges : []),
-      ...(row.institution_edge ? [row.institution_edge] : []),
-    ]),
-  ]).filter(([, edges]) => edges.length));
-  for (const edge of Array.isArray(meetingIndex.institution_edges) ? meetingIndex.institution_edges : []) {
+  const institutionEdges = {};
+  const edgeKeys = new Set();
+  const retainEdge = (edge) => {
     const boardId = String(edge?.from || "").replace(/^community-board:/, "");
-    if (!boardId) continue;
+    if (!boardId) return;
+    const key = [edge.from, edge.to, edge.source_record_id, edge.status].join("|");
+    if (edgeKeys.has(key)) return;
+    edgeKeys.add(key);
     institutionEdges[boardId] = [...(institutionEdges[boardId] || []), edge];
+  };
+  for (const rows of Object.values(meetingIndex.by_board || {})) {
+    for (const row of Array.isArray(rows) ? rows : []) {
+      const roleReceipt = (meetingIndex.receipts || []).find((receipt) => (
+        receipt?.board_id === row.board_id && receipt?.role === "upcoming_meetings"
+      ));
+      const edgeOptions = {
+        asOf: meetingIndex.generated_at,
+        sourceRoleState: roleReceipt?.state || "unavailable",
+      };
+      const carried = [
+        ...(Array.isArray(row.institution_edges) ? row.institution_edges : []),
+        ...(row.institution_edge ? [row.institution_edge] : []),
+      ];
+      if (carried.length) carried.forEach((carriedEdge) => {
+        retainEdge(communityBoardMeetingEdgeFromSourceRow({
+          ...row,
+          institution_edge: carriedEdge,
+          institution_edges: [],
+        }, edgeOptions));
+      });
+      else {
+        const edge = communityBoardMeetingEdgeFromSourceRow(row, edgeOptions);
+        if (edge) retainEdge(edge);
+      }
+    }
+  }
+  for (const edge of Array.isArray(meetingIndex.institution_edges) ? meetingIndex.institution_edges : []) {
+    retainEdge(edge);
   }
   return {
     sourceRegistry,

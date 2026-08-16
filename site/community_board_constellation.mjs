@@ -179,14 +179,14 @@ function relationItem(edge, kind) {
       : kind === "meeting" && communityBoardMeetingEdgeAccepted(edge)
         ? edge.href || edge.canonical_href || null
         : null,
-    date: edge.relation_date,
+    date: edge.relation_date || edge.meeting_date,
     source_document: edge.source_document,
     label: edge.target_name || edge.target_id,
     state: communityBoardMeetingEdgeAccepted(edge) || kind !== "meeting" ? "official" : "held",
   };
 }
 
-function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, sourceRecordRowsForBoard, relationEdges, institutionEdges) {
+function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, relationEdges, institutionEdges) {
   const sourceHref = registrySource(board);
   if (spec.id === "place") {
     const districtId = clean(districtEdge?.to || "").replace(/^community-district:/, "");
@@ -217,32 +217,20 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, so
     };
   }
   if (spec.id === "meetings") {
-    if (Array.isArray(institutionEdges)) {
-      const accepted = institutionEdges.filter(communityBoardMeetingEdgeAccepted);
-      const items = institutionEdges.map((edge) => relationItem(edge, "meeting"));
-      return {
-        ...spec,
-        status: accepted.length ? "matched" : "unknown",
-        count: accepted.length || null,
-        target_name: "Meetings and hearings",
-        view_all_href: accepted[0]?.href || null,
-        source: sourceHref,
-        provenance: accepted[0]?.provenance || institutionEdges[0]?.provenance || source?.provenance || null,
-        items,
-        institution_edges: institutionEdges,
-      };
-    }
-    const joined = sourceRecordRowsForBoard.filter((row) => ["official", "observed"].includes(row.state));
+    const edges = Array.isArray(institutionEdges) ? institutionEdges : [];
+    const accepted = edges.filter(communityBoardMeetingEdgeAccepted);
+    const items = edges.map((edge) => relationItem(edge, "meeting"));
     return {
       ...spec,
-      status: joined.length ? "matched" : "unknown",
-      count: joined.length || null,
+      status: accepted.length ? "matched" : "unknown",
+      count: accepted.length || null,
       target_name: "Meetings and hearings",
-      view_all_href: joined.length ? joined[0].href : null,
+      view_all_href: accepted[0]?.href || null,
       source: sourceHref,
-      provenance: joined[0]?.provenance || source?.provenance || null,
-    items: joined,
-  };
+      provenance: accepted[0]?.provenance || edges[0]?.provenance || source?.provenance || null,
+      items,
+      institution_edges: edges,
+    };
   }
   if (spec.id === "members" || spec.id === "recommendations") {
     const kind = spec.id === "members" ? "member" : "recommendation";
@@ -348,7 +336,6 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     node,
     districtEdge,
     boardSources,
-    boardSourceRecords,
     relationEdges,
     institutionEdges,
   ));
@@ -394,7 +381,16 @@ function sourceMarkup(row) {
   const link = row.url
     ? officialSourceLink({ href: row.url, label: row.role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "board-source-link", escape: esc })
     : `<span class="node-muted">Source not listed</span>`;
-  const state = row.state === "not_yet_ingested" ? "Source available" : row.state === "absent_in_pass" ? "Source not listed" : "Source observed";
+  const state = {
+    indexed: "Records found in the checked source",
+    "checked-empty": "Checked; no dated records found",
+    "unsupported-format": "This source format is not yet supported",
+    unavailable: "Source could not be checked",
+    stale: "Source needs a fresh check",
+    "not-yet-checked": "Source is listed and awaiting a check",
+    not_yet_ingested: "Source available",
+    absent_in_pass: "Source not listed",
+  }[row.state] || "Source observed";
   return `<li class="node-record" data-source-type="${esc(row.role)}"><div class="node-record-main"><strong>${esc(row.label)}</strong> ${link}</div><span class="muted node-muted">${esc(state)}${row.origin_label ? ` · ${esc(row.origin_label)}` : ""}</span></li>`;
 }
 
@@ -455,13 +451,35 @@ function renderCategory(category, view) {
 
 function sourceRecordMarkup(row) {
   const institutionEdge = row.edge_type === "hosts_meeting";
+  if (institutionEdge) {
+    const label = row.href
+      ? `<a href="${esc(row.href)}">${esc(row.title || row.label)}</a>`
+      : `<span>${esc(row.title || row.label)}</span>`;
+    const sourceUrl = row.source_url || row.provenance?.source_url || null;
+    const checked = row.source_receipt?.observed_at || row.provenance?.observed_receipt?.observed_at || null;
+    const sourceLink = sourceUrl
+      ? officialSourceLink({ href: sourceUrl, label: "Open official source", className: "board-source-link", escape: esc })
+      : "";
+    const evidence = row.state === "official"
+      ? "The board, meeting date, and publisher record matched the checked official source."
+      : "This record did not pass every publication check, so no meeting link is shown.";
+    const detailParts = [
+      `<p>${esc(evidence)}</p>`,
+      sourceLink ? `<p>${sourceLink}</p>` : "",
+      checked ? `<p>Source checked ${esc(residentDate(String(checked).slice(0, 10)))}</p>` : "",
+    ].filter(Boolean).join("");
+    const details = detailParts
+      ? `<details class="inline-disclose board-meeting-source-details"><summary>Source details</summary><div class="inline-disclose-body">${detailParts}</div></details>`
+      : "";
+    const date = row.date ? ` · ${esc(row.date)}` : "";
+    const state = row.state === "official" ? "Hosted meeting" : "Connection not published";
+    return `<li class="node-record" data-source-record-kind="meeting"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">Board meeting${date} · ${esc(state)}</span>${details}</li>`;
+  }
   const label = row.href
     ? officialSourceLink({ href: row.href, label: row.title || row.label, className: "board-source-link", escape: esc })
     : `<span>${esc(row.title || row.label)}</span>`;
   const date = row.date ? ` · ${esc(row.date)}` : "";
-  const state = institutionEdge
-    ? (row.state === "official" ? "Hosted meeting" : "Connection not published")
-    : row.state === "official" ? "Official board record" : row.state === "observed" ? "Source observed" : "Source status unknown";
+  const state = row.state === "official" ? "Official board record" : row.state === "observed" ? "Source observed" : "Source status unknown";
   return `<li class="node-record" data-source-record-kind="${esc(row.record_kind || "record")}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">${esc(row.label)}${date} · ${esc(state)}</span></li>`;
 }
 

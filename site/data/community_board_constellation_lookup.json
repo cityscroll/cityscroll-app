@@ -9,7 +9,7 @@
       "display_name": "Bronx Community Board 1",
       "path": "/community-boards/bronx-cb-01/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -53,6 +53,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -96,6 +97,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -109,8 +111,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 91,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -139,6 +141,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -182,6 +185,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -225,6 +229,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -235,7 +240,7 @@
       "display_name": "Bronx Community Board 2",
       "path": "/community-boards/bronx-cb-02/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -279,6 +284,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -322,6 +328,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -335,8 +342,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 8,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -365,6 +372,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -408,6 +416,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -451,6 +460,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -461,7 +471,7 @@
       "display_name": "Bronx Community Board 3",
       "path": "/community-boards/bronx-cb-03/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -505,6 +515,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -548,6 +559,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -561,8 +573,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 61,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -591,6 +603,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -634,6 +647,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -677,6 +691,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -687,7 +702,7 @@
       "display_name": "Bronx Community Board 4",
       "path": "/community-boards/bronx-cb-04/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -731,6 +746,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -774,6 +790,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -787,8 +804,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 56,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -817,6 +834,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -860,6 +878,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -903,6 +922,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -913,7 +933,7 @@
       "display_name": "Bronx Community Board 5",
       "path": "/community-boards/bronx-cb-05/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -957,6 +977,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1000,6 +1021,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1013,8 +1035,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 38,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -1043,6 +1065,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1086,6 +1109,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1129,6 +1153,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1183,6 +1208,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1226,6 +1252,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1237,12 +1264,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
           "target_name": "Meetings and hearings",
-          "count": 181,
+          "count": 12,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fdisciplinary-committee-7%2F2026-09-01%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fdisciplinary-committee-7%2F2026-09-01%2F",
           "scope": {
             "board": "bronx-cb-06"
           },
@@ -1255,20 +1282,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1312,6 +1333,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1355,6 +1377,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1409,6 +1432,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1452,6 +1476,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1495,6 +1520,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1538,6 +1564,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1581,6 +1608,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1635,6 +1663,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1678,6 +1707,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1721,6 +1751,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1764,6 +1795,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1807,6 +1839,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -1861,6 +1894,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1904,6 +1938,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1947,6 +1982,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -1990,6 +2026,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2033,6 +2070,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2087,6 +2125,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2130,6 +2169,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2173,6 +2213,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2216,6 +2257,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2259,6 +2301,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2269,7 +2312,7 @@
       "display_name": "Bronx Community Board 11",
       "path": "/community-boards/bronx-cb-11/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -2313,6 +2356,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2356,6 +2400,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2369,8 +2414,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 529,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -2399,6 +2444,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2442,6 +2488,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2485,6 +2532,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2495,7 +2543,7 @@
       "display_name": "Bronx Community Board 12",
       "path": "/community-boards/bronx-cb-12/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -2539,6 +2587,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2582,6 +2631,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2595,8 +2645,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 61,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -2625,6 +2675,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2668,6 +2719,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2711,6 +2763,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2721,7 +2774,7 @@
       "display_name": "Brooklyn Community Board 1",
       "path": "/community-boards/brooklyn-cb-01/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -2765,6 +2818,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2808,6 +2862,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2821,8 +2876,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 108,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -2851,6 +2906,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2894,6 +2950,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -2937,6 +2994,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -2991,6 +3049,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3034,6 +3093,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3077,6 +3137,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3120,6 +3181,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3163,6 +3225,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3173,7 +3236,7 @@
       "display_name": "Brooklyn Community Board 3",
       "path": "/community-boards/brooklyn-cb-03/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -3217,6 +3280,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3260,6 +3324,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3273,8 +3338,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 6,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -3303,6 +3368,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3346,6 +3412,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3389,6 +3456,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3399,7 +3467,7 @@
       "display_name": "Brooklyn Community Board 4",
       "path": "/community-boards/brooklyn-cb-04/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -3443,6 +3511,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3486,6 +3555,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3499,8 +3569,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 158,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -3529,6 +3599,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3572,6 +3643,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3615,6 +3687,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3669,6 +3742,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3712,6 +3786,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3755,6 +3830,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3798,6 +3874,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3841,6 +3918,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -3895,6 +3973,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3938,6 +4017,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -3981,6 +4061,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4024,6 +4105,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4067,6 +4149,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4121,6 +4204,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4164,6 +4248,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4207,6 +4292,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4250,6 +4336,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4293,6 +4380,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4303,7 +4391,7 @@
       "display_name": "Brooklyn Community Board 8",
       "path": "/community-boards/brooklyn-cb-08/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -4347,6 +4435,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4390,6 +4479,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4403,8 +4493,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 78,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -4433,6 +4523,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4476,6 +4567,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4519,6 +4611,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4529,7 +4622,7 @@
       "display_name": "Brooklyn Community Board 9",
       "path": "/community-boards/brooklyn-cb-09/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -4573,6 +4666,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4616,6 +4710,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4629,8 +4724,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 674,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -4659,6 +4754,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4702,6 +4798,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4745,6 +4842,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -4799,6 +4897,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4842,6 +4941,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4885,6 +4985,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4928,6 +5029,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -4971,6 +5073,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5025,6 +5128,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5068,6 +5172,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5079,12 +5184,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://www.brooklyncb11.org/event/transportation-committee-6/",
           "target_name": "Meetings and hearings",
-          "count": 67,
+          "count": 1,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fwww.brooklyncb11.org%2Fevent%2Ftransportation-committee-6%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fwww.brooklyncb11.org%2Fevent%2Ftransportation-committee-6%2F",
           "scope": {
             "board": "brooklyn-cb-11"
           },
@@ -5097,20 +5202,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://www.brooklyncb11.org/event/transportation-committee-6/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5154,6 +5253,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5197,6 +5297,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5251,6 +5352,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5294,6 +5396,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5337,6 +5440,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5380,6 +5484,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5423,6 +5528,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5433,7 +5539,7 @@
       "display_name": "Brooklyn Community Board 13",
       "path": "/community-boards/brooklyn-cb-13/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -5477,6 +5583,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5520,6 +5627,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5533,8 +5641,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 10,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -5563,6 +5671,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5606,6 +5715,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5649,6 +5759,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5703,6 +5814,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5746,6 +5858,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5789,6 +5902,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5832,6 +5946,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5875,6 +5990,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -5885,7 +6001,7 @@
       "display_name": "Brooklyn Community Board 15",
       "path": "/community-boards/brooklyn-cb-15/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -5929,6 +6045,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5972,6 +6089,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -5985,8 +6103,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 67,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -6015,6 +6133,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6058,6 +6177,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6101,6 +6221,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6155,6 +6276,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6198,6 +6320,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6241,6 +6364,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6284,6 +6408,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6327,6 +6452,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6381,6 +6507,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6424,6 +6551,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6435,12 +6563,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
           "target_name": "Meetings and hearings",
           "count": 1,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb17%2Fevent%2Fcb17-parks-beautification-committee-health-wellness-at-paerdagat-park%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb17%2Fevent%2Fcb17-parks-beautification-committee-health-wellness-at-paerdagat-park%2F",
           "scope": {
             "board": "brooklyn-cb-17"
           },
@@ -6453,20 +6581,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6510,6 +6632,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6553,6 +6676,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6563,7 +6687,7 @@
       "display_name": "Brooklyn Community Board 18",
       "path": "/community-boards/brooklyn-cb-18/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -6607,6 +6731,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6650,6 +6775,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6663,8 +6789,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 62,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -6693,6 +6819,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6736,6 +6863,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6779,6 +6907,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -6833,6 +6962,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6876,6 +7006,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6887,12 +7018,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
           "target_name": "Meetings and hearings",
           "count": 5,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fmanhattancb1.cityofnewyork.us%2Fevent%2Fbattery-park-city-committee-11%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fmanhattancb1.cityofnewyork.us%2Fevent%2Fbattery-park-city-committee-11%2F",
           "scope": {
             "board": "manhattan-cb-01"
           },
@@ -6905,20 +7036,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -6962,6 +7087,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7005,6 +7131,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7059,6 +7186,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7102,6 +7230,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7113,12 +7242,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
           "target_name": "Meetings and hearings",
-          "count": 103,
+          "count": 10,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Fmeeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Fmeeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair%2F",
           "scope": {
             "board": "manhattan-cb-02"
           },
@@ -7131,20 +7260,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7188,6 +7311,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7231,6 +7355,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7241,7 +7366,7 @@
       "display_name": "Manhattan Community Board 3",
       "path": "/community-boards/manhattan-cb-03/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -7285,6 +7410,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7328,6 +7454,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7341,8 +7468,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 272,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -7371,6 +7498,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7414,6 +7542,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7457,6 +7586,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7511,6 +7641,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7554,6 +7685,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7565,12 +7697,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
           "target_name": "Meetings and hearings",
           "count": 3,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fbusiness-license-permits-committee-blp-66%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fbusiness-license-permits-committee-blp-66%2F",
           "scope": {
             "board": "manhattan-cb-04"
           },
@@ -7583,20 +7715,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7640,6 +7766,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7683,6 +7810,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7737,6 +7865,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7780,6 +7909,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7823,6 +7953,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7866,6 +7997,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -7909,6 +8041,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -7963,6 +8096,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8006,6 +8140,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8049,6 +8184,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8092,6 +8228,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8135,6 +8272,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8189,6 +8327,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8232,6 +8371,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8275,6 +8415,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8318,6 +8459,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8361,6 +8503,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8415,6 +8558,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8458,6 +8602,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8501,6 +8646,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8544,6 +8690,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8587,6 +8734,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8597,7 +8745,7 @@
       "display_name": "Manhattan Community Board 9",
       "path": "/community-boards/manhattan-cb-09/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -8641,6 +8789,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8684,6 +8833,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8697,8 +8847,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 1,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -8727,6 +8877,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8770,6 +8921,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8813,6 +8965,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -8867,6 +9020,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8910,6 +9064,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8921,12 +9076,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
           "target_name": "Meetings and hearings",
-          "count": 72,
+          "count": 19,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb10%2Fevent%2Fcommittee-meeting-housing-17-6-2-3-3%2F2026-07-28%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb10%2Fevent%2Fcommittee-meeting-housing-17-6-2-3-3%2F2026-07-28%2F",
           "scope": {
             "board": "manhattan-cb-10"
           },
@@ -8939,20 +9094,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -8996,6 +9145,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9039,6 +9189,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9093,6 +9244,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9136,6 +9288,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9179,6 +9332,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9222,6 +9376,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9265,6 +9420,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9319,6 +9475,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9362,6 +9519,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9373,12 +9531,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
           "target_name": "Meetings and hearings",
-          "count": 73,
+          "count": 3,
           "state": "matched",
-          "href": null,
-          "canonical_href": null,
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb12%2Fcalendar%2Fcommittee-of-the-whole-2%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb12%2Fcalendar%2Fcommittee-of-the-whole-2%2F",
           "scope": {
             "board": "manhattan-cb-12"
           },
@@ -9391,20 +9549,14 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9448,6 +9600,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9491,6 +9644,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9501,7 +9655,7 @@
       "display_name": "Queens Community Board 1",
       "path": "/community-boards/queens-cb-01/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -9545,6 +9699,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9588,6 +9743,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9601,8 +9757,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 46,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -9631,6 +9787,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9674,6 +9831,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9717,6 +9875,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9727,7 +9886,7 @@
       "display_name": "Queens Community Board 2",
       "path": "/community-boards/queens-cb-02/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -9771,6 +9930,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9814,6 +9974,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9827,8 +9988,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 167,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -9857,6 +10018,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9900,6 +10062,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -9943,6 +10106,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -9997,6 +10161,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10040,6 +10205,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10083,6 +10249,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10126,6 +10293,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10169,6 +10337,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10179,7 +10348,7 @@
       "display_name": "Queens Community Board 4",
       "path": "/community-boards/queens-cb-04/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -10223,6 +10392,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10266,6 +10436,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10279,8 +10450,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 89,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -10309,6 +10480,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10352,6 +10524,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10395,6 +10568,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10405,7 +10579,7 @@
       "display_name": "Queens Community Board 5",
       "path": "/community-boards/queens-cb-05/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -10449,6 +10623,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10492,6 +10667,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10505,8 +10681,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 127,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -10535,6 +10711,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10578,6 +10755,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10621,6 +10799,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10631,7 +10810,7 @@
       "display_name": "Queens Community Board 6",
       "path": "/community-boards/queens-cb-06/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -10675,6 +10854,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10718,6 +10898,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10731,8 +10912,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 74,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -10761,6 +10942,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10804,6 +10986,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10847,6 +11030,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -10857,7 +11041,7 @@
       "display_name": "Queens Community Board 7",
       "path": "/community-boards/queens-cb-07/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -10901,6 +11085,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10944,6 +11129,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -10957,8 +11143,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 87,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -10987,6 +11173,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11030,6 +11217,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11073,6 +11261,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11083,7 +11272,7 @@
       "display_name": "Queens Community Board 8",
       "path": "/community-boards/queens-cb-08/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -11127,6 +11316,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11170,6 +11360,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11183,8 +11374,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 135,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -11213,6 +11404,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11256,6 +11448,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11299,6 +11492,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11309,7 +11503,7 @@
       "display_name": "Queens Community Board 9",
       "path": "/community-boards/queens-cb-09/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -11353,6 +11547,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11396,6 +11591,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11409,8 +11605,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 134,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -11439,6 +11635,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11482,6 +11679,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11525,6 +11723,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11535,7 +11734,7 @@
       "display_name": "Queens Community Board 10",
       "path": "/community-boards/queens-cb-10/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -11579,6 +11778,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11622,6 +11822,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11635,8 +11836,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 144,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -11665,6 +11866,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11708,6 +11910,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11751,6 +11954,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11761,7 +11965,7 @@
       "display_name": "Queens Community Board 11",
       "path": "/community-boards/queens-cb-11/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -11805,6 +12009,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11848,6 +12053,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11861,8 +12067,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 72,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -11891,6 +12097,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11934,6 +12141,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -11977,6 +12185,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -11987,7 +12196,7 @@
       "display_name": "Queens Community Board 12",
       "path": "/community-boards/queens-cb-12/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -12031,6 +12240,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12074,6 +12284,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12087,8 +12298,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 54,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -12117,6 +12328,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12160,6 +12372,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12203,6 +12416,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12213,7 +12427,7 @@
       "display_name": "Queens Community Board 13",
       "path": "/community-boards/queens-cb-13/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -12257,6 +12471,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12300,6 +12515,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12313,8 +12529,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 38,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -12343,6 +12559,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12386,6 +12603,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12429,6 +12647,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12483,6 +12702,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12526,6 +12746,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12569,6 +12790,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12612,6 +12834,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12655,6 +12878,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12665,7 +12889,7 @@
       "display_name": "Staten Island Community Board 1",
       "path": "/community-boards/staten-island-cb-01/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -12709,6 +12933,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12752,6 +12977,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12765,8 +12991,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 304,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -12795,6 +13021,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12838,6 +13065,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12881,6 +13109,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -12891,7 +13120,7 @@
       "display_name": "Staten Island Community Board 2",
       "path": "/community-boards/staten-island-cb-02/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -12935,6 +13164,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12978,6 +13208,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -12991,8 +13222,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 64,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -13021,6 +13252,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13064,6 +13296,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13107,6 +13340,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
@@ -13117,7 +13351,7 @@
       "display_name": "Staten Island Community Board 3",
       "path": "/community-boards/staten-island-cb-03/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 5,
         "generated_at": "2026-08-15T00:28:03.699Z",
         "method": "community_board_constellation_v1"
@@ -13161,6 +13395,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13204,6 +13439,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13217,8 +13453,8 @@
           "target_kind": "meeting",
           "target_id": null,
           "target_name": "Meetings and hearings",
-          "count": 34,
-          "state": "matched",
+          "count": null,
+          "state": "unknown",
           "href": null,
           "canonical_href": null,
           "scope": {
@@ -13247,6 +13483,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13290,6 +13527,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         },
@@ -13333,6 +13571,7 @@
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
+          "derived_feature_rollup": null,
           "cross_spine_confidence": "unmatched",
           "cross_spine_explicit": false
         }
