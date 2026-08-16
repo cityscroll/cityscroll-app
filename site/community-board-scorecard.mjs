@@ -168,10 +168,10 @@ function stateLabel(state) {
     absent_in_pass: "Source not listed",
     indexed: "Meetings found",
     "checked-empty": "No published records found",
-    "unsupported-format": "Format not supported for this source",
-    unavailable: "Source could not be checked",
+    "unsupported-format": "Not ingested — source format not supported",
+    unavailable: "Not ingested — source could not be checked",
     stale: "Source check is out of date",
-    "not-yet-checked": "Source not checked yet",
+    "not-yet-checked": "Not ingested",
   }[state] || "Source status not measured";
 }
 
