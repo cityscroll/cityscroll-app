@@ -88,9 +88,11 @@ delivery, queue fan-out, watermarks, send counters, and search-health state adva
 Every email that would be eligible under the production queue/day-cap semantics is fully rendered
 and stored in D1. The private `/admin/digest-shadow` contract reports digest/item/watch counts,
 deltas from the prior send, rendered-preview metadata, and structured redlines (`code`, masked
-digest/watch id, reason, evidence). Render failures, historically-active watches going to zero,
+digest/watch id, reason, evidence). Render failures, historically-active evaluated watches going to zero,
 aggregate collapse/explosion, count/list mismatch, and malformed unsubscribe/context links all
 produce `NEEDS_ATTENTION` and HTTP 503.
+Schedule-skipped sections remain visible in watch counts through `evaluation_state` and
+`skip_reason`, but do not masquerade as source or query recall drops.
 
 The scheduled `digest-shadow-monitor.yml` polls after both rehearsal and delivery, and opens or
 updates a repair issue when the run is redlined, missing, stale, or has an open degraded-path
