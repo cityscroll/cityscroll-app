@@ -19,6 +19,7 @@
 import {
   CIVIC_TIME_SCHEMA_VERSION,
   isRegisteredEventKind,
+  sha256Hex,
   validateEnvelope,
 } from "./civic_time.mjs";
 
@@ -31,6 +32,8 @@ export const CIVIC_TIME_EVENT_WRITE_DEFAULT = "false";
 /** Narrow change-set seam consumed by civic-time selective rematerialization. */
 export const CIVIC_TIME_SOURCE_CHANGE_SCHEMA = "cityscroll.civic_time_source_change.v1";
 export const PASSPORT_RFX_REVISION_CHANGE_CLASS = "passport_rfx_revision";
+export const CIVIC_TIME_GRAPH_OBSERVATION_SCHEMA = "cityscroll.civic_time_graph_observation.v1";
+export const CIVIC_TIME_GRAPH_CASE_FAMILY = "procurement_notice";
 
 /** Required columns on civic_time_events (migration 0019 contract). */
 export const CIVIC_TIME_EVENT_COLUMNS = Object.freeze([
@@ -66,6 +69,29 @@ export const CIVIC_TIME_EVENT_INSERT_SQL = `INSERT OR IGNORE INTO civic_time_eve
    status, confidence, supersedes_event_id, source_field,
    envelope_json, written_at)
  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+export const CIVIC_TIME_GRAPH_OBSERVATION_COLUMNS = Object.freeze([
+  "observation_id",
+  "schema_version",
+  "case_family",
+  "root_ref",
+  "assertion_key",
+  "link_type",
+  "from_ref",
+  "to_ref",
+  "source_record_ref",
+  "source_revision",
+  "written_at",
+  "supersedes_observation_id",
+  "publication_tier",
+  "observation_json",
+]);
+
+export const CIVIC_TIME_GRAPH_OBSERVATION_INSERT_SQL = `INSERT OR IGNORE INTO civic_time_graph_observations
+  (observation_id, schema_version, case_family, root_ref, assertion_key,
+   link_type, from_ref, to_ref, source_record_ref, source_revision, written_at,
+   supersedes_observation_id, publication_tier, observation_json)
+ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
 /** Clock fields that must never be filled from another clock at write time. */
 export const WRITER_CLOCK_FIELDS = Object.freeze([
@@ -313,6 +339,83 @@ export function prepareCivicTimeEventWrite(event, writtenAt) {
   };
 }
 
+function graphLinkText(value, max = 320) {
+  return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+function canonicalGraphValue(value) {
+  if (Array.isArray(value)) return value.map(canonicalGraphValue);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.keys(value).sort()
+    .map((key) => [key, canonicalGraphValue(value[key])]));
+}
+
+/**
+ * Normalize one exact lifecycle notice→contract link into append-only graph
+ * history. Other relation families stay outside this bounded pilot.
+ */
+export function prepareCivicTimeGraphObservation(link, writtenAt, {
+  supersedesObservationId = null,
+} = {}) {
+  const type = graphLinkText(link?.type || link?.link_type, 80);
+  const from = graphLinkText(link?.from || link?.from_ref);
+  const to = graphLinkText(link?.to || link?.to_ref);
+  if (!["registered_as", "references_contract"].includes(type)) return null;
+  if (!/^notice:[^\s:]+$/.test(from) || !/^contract:[^\s:]+$/.test(to)) return null;
+
+  const written_at = clockOrNull(writtenAt);
+  if (!written_at || !Number.isFinite(Date.parse(written_at))) return null;
+  const evidence = link?.evidence && typeof link.evidence === "object" && !Array.isArray(link.evidence)
+    ? { ...link.evidence }
+    : {};
+  const assertion_key = `contract_identity|${from}`;
+  const source_record_ref = `lifecycle-link:${from}`;
+  const source_revision = `link:${sha256Hex(JSON.stringify(canonicalGraphValue({ type, from, to, evidence })))}`;
+  const observation_id = `ctg:${sha256Hex(`${assertion_key}\0${source_revision}`)}`;
+  const observation = {
+    observation_id,
+    schema_version: CIVIC_TIME_GRAPH_OBSERVATION_SCHEMA,
+    case_family: CIVIC_TIME_GRAPH_CASE_FAMILY,
+    root_ref: from,
+    assertion_key,
+    type,
+    from,
+    to,
+    method: "lifecycle_contract_exact_v1",
+    method_version: "1.0.0",
+    confidence: "strong",
+    written_at,
+    supersedes_observation_id: supersedesObservationId || null,
+    publication_tier: "deterministic",
+    provenance: {
+      source_system: graphLinkText(evidence.source, 120) || "contract_lifecycle",
+      source_record_id: source_record_ref,
+      source_fields: Object.keys(evidence).sort(),
+      basis: graphLinkText(evidence.basis, 160) || "lifecycle_contract_exact",
+      observed_at: null,
+    },
+  };
+  return {
+    observation,
+    binds: [
+      observation_id,
+      CIVIC_TIME_GRAPH_OBSERVATION_SCHEMA,
+      CIVIC_TIME_GRAPH_CASE_FAMILY,
+      from,
+      assertion_key,
+      type,
+      from,
+      to,
+      source_record_ref,
+      source_revision,
+      written_at,
+      supersedesObservationId || null,
+      "deterministic",
+      JSON.stringify(observation),
+    ],
+  };
+}
+
 /**
  * Runtime safety net: CREATE TABLE IF NOT EXISTS matching migration 0019.
  * Production deploys apply migrations; this covers local/test and skipped applies.
@@ -350,11 +453,78 @@ export async function ensureCivicTimeEventSchema(env) {
     "CREATE INDEX IF NOT EXISTS idx_civic_time_events_subject ON civic_time_events(subject_ref, event_kind)",
     "CREATE INDEX IF NOT EXISTS idx_civic_time_events_kind ON civic_time_events(event_kind)",
     "CREATE INDEX IF NOT EXISTS idx_civic_time_events_source ON civic_time_events(source_record_ref, source_revision)",
+    `CREATE TABLE IF NOT EXISTS civic_time_graph_observations (
+        observation_id             TEXT PRIMARY KEY,
+        schema_version             TEXT NOT NULL,
+        case_family                TEXT NOT NULL,
+        root_ref                   TEXT NOT NULL,
+        assertion_key              TEXT NOT NULL,
+        link_type                  TEXT NOT NULL,
+        from_ref                   TEXT NOT NULL,
+        to_ref                     TEXT NOT NULL,
+        source_record_ref          TEXT NOT NULL,
+        source_revision            TEXT NOT NULL,
+        written_at                 TEXT NOT NULL,
+        supersedes_observation_id  TEXT,
+        publication_tier           TEXT NOT NULL,
+        observation_json           TEXT NOT NULL
+      )`,
+    "CREATE INDEX IF NOT EXISTS idx_civic_time_graph_root ON civic_time_graph_observations(case_family, root_ref, written_at)",
+    "CREATE INDEX IF NOT EXISTS idx_civic_time_graph_assertion ON civic_time_graph_observations(root_ref, assertion_key, written_at)",
   ];
   for (const sql of statements) {
     await env.DB.prepare(sql).run();
   }
   return { ok: true };
+}
+
+/** Append exact lifecycle identity-link observations under the civic-time flag. */
+export async function writeCivicTimeGraphObservations(env, links, opts = {}) {
+  if (!civicTimeEventWriteEnabled(env)) {
+    return { written: 0, considered: 0, skipped: "flag-off", errors: 0 };
+  }
+  if (!env?.DB) {
+    return { written: 0, considered: 0, skipped: "no-db", errors: 0 };
+  }
+  const list = Array.isArray(links) ? links : [];
+  const writtenAt = opts.written_at || opts.now || new Date().toISOString();
+  let considered = 0;
+  let written = 0;
+  let errors = 0;
+  try {
+    await ensureCivicTimeEventSchema(env);
+  } catch {
+    return { written: 0, considered: list.length, skipped: "schema-error", errors: 1 };
+  }
+  for (const link of list) {
+    considered += 1;
+    const base = prepareCivicTimeGraphObservation(link, writtenAt);
+    if (!base) continue;
+    try {
+      const previous = await env.DB.prepare(
+        `SELECT observation_id
+           FROM civic_time_graph_observations
+          WHERE case_family = ? AND root_ref = ? AND assertion_key = ?
+          ORDER BY written_at DESC, observation_id DESC
+          LIMIT 1`,
+      ).bind(
+        base.observation.case_family,
+        base.observation.root_ref,
+        base.observation.assertion_key,
+      ).first();
+      const supersedes = previous?.observation_id !== base.observation.observation_id
+        ? previous?.observation_id || null
+        : null;
+      const prepared = prepareCivicTimeGraphObservation(link, writtenAt, {
+        supersedesObservationId: supersedes,
+      });
+      await env.DB.prepare(CIVIC_TIME_GRAPH_OBSERVATION_INSERT_SQL).bind(...prepared.binds).run();
+      written += 1;
+    } catch {
+      errors += 1;
+    }
+  }
+  return { written, considered, errors };
 }
 
 /**
@@ -428,5 +598,7 @@ export async function writeCivicTimeEvents(env, events, opts = {}) {
  */
 export async function writeLifecycleCivicEvents(env, lifecycle, opts = {}) {
   const events = Array.isArray(lifecycle?.civic_events) ? lifecycle.civic_events : [];
-  return writeCivicTimeEvents(env, events, opts);
+  const eventResult = await writeCivicTimeEvents(env, events, opts);
+  const graphResult = await writeCivicTimeGraphObservations(env, lifecycle?.subject_links, opts);
+  return { ...eventResult, graph_observations: graphResult };
 }
