@@ -1,4 +1,6 @@
 import { normalizeCrossSpineConfidence } from "./cross_spine_confidence.mjs";
+import { officialSourceLink } from "./affordance_grammar.mjs";
+import { residentOfficialSource } from "./provenance_disclosure.mjs";
 import { readerLabel, readerValue } from "./reader_surface_labels.mjs";
 
 /**
@@ -169,11 +171,13 @@ function normalizeEdgeProvenance(input = {}) {
     ?? input.cross_spine_confidence
     ?? provenance.cross_spine_confidence
     ?? null;
+  const sourceHref = readerValue(provenance.source_href ?? provenance.source_url ?? input.source_href);
   return Object.freeze({
     source_system: readerValue(provenance.source_system),
     source_record_id: readerValue(provenance.source_record_id),
     source_fields: readerValue(provenance.source_fields),
     join_method: readerValue(provenance.join_method ?? provenance.basis ?? input.join_method),
+    ...(sourceHref ? { source_href: sourceHref } : {}),
     observed_at: readerValue(provenance.observed_at ?? input.as_of),
     cross_spine_confidence: normalizeCrossSpineConfidence(rawConfidence) || "unmatched",
     cross_spine_explicit: input.cross_spine_explicit ?? rawConfidence != null,
@@ -446,9 +450,16 @@ function targetCopy(record) {
 }
 
 function provenanceValue(value) {
+  if (typeof value === "number" && !Number.isFinite(value)) return "";
   const readable = readerValue(value);
-  if (Array.isArray(readable)) return readable.map((item) => readerLabel(item, "")).filter(Boolean).join(", ");
-  return readerLabel(readable, "") || "";
+  if (Array.isArray(readable)) {
+    return readable
+      .map((item) => readerLabel(item, ""))
+      .filter((item) => item && !/^(?:nan|[+-]?infinity)(?:\s|$)/i.test(item))
+      .join(", ");
+  }
+  const valueLabel = readerLabel(readable, "") || "";
+  return /^(?:nan|[+-]?infinity)(?:\s|$)/i.test(valueLabel) ? "" : valueLabel;
 }
 
 function renderAsOfWidget(value) {
@@ -462,24 +473,22 @@ export function renderEdgeSummaryProvenance(record = {}) {
   const confidence = normalizeCrossSpineConfidence(record.cross_spine_confidence)
     || provenance.cross_spine_confidence
     || "unmatched";
-  const publicFields = [
-    ["Relation", record.relation_label || record.edge_type],
-    ["Source", provenance.source_system],
-  ].map(([label, value]) => {
+  const publicFields = [["Relation", record.relation_label || record.edge_type]].map(([label, value]) => {
     const rendered = provenanceValue(value);
     return rendered ? `<div class="edge-summary-provenance-row"><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(rendered)}</dd></div>` : "";
   }).join("");
-  const technicalFields = [
-    ["Source record", provenance.source_record_id],
-    ["Source fields", provenance.source_fields],
-    ["Join method", provenance.join_method],
-  ].map(([label, value]) => {
-    const rendered = provenanceValue(value);
-    return rendered ? `<div class="edge-summary-provenance-row"><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(rendered)}</dd></div>` : "";
-  }).join("");
+  const source = residentOfficialSource({
+    sourceSystem: provenance.source_system,
+    sourceRecordId: provenance.source_record_id,
+    sourceHref: record.source?.canonical_href || provenance.source_href,
+    label: record.source?.name || provenance.source_system,
+  });
+  const sourceLink = source
+    ? `<p class="edge-summary-source">${officialSourceLink({ href: source.href, label: source.label, className: "edge-summary-source-link", escape: escapeHTML })}</p>`
+    : "";
   const asOf = renderAsOfWidget(provenance.observed_at || record.as_of);
   const confidenceCopy = record.cross_spine_explicit ? crossSpineReaderLabel(confidence) : "";
-  return `<details class="edge-summary-provenance edge-summary-provenance-${escapeHTML(confidence)}" data-edge-provenance="1" data-cross-spine-confidence="${escapeHTML(confidence)}"><summary>Connection details</summary>${confidenceCopy ? `<p>${escapeHTML(confidenceCopy)}</p>` : ""}${asOf}${publicFields ? `<dl>${publicFields}</dl>` : ""}${technicalFields ? `<details class="edge-summary-technical-details"><summary>Technical details</summary><dl>${technicalFields}</dl></details>` : ""}</details>`;
+  return `<details class="edge-summary-provenance edge-summary-provenance-${escapeHTML(confidence)}" data-edge-provenance="1" data-cross-spine-confidence="${escapeHTML(confidence)}"><summary>Connection details</summary>${confidenceCopy ? `<p>${escapeHTML(confidenceCopy)}</p>` : ""}${asOf}${publicFields ? `<dl>${publicFields}</dl>` : ""}${sourceLink}</details>`;
 }
 
 function recordLabel(record, targetKind) {

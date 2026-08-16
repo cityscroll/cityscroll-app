@@ -240,6 +240,10 @@ test("edge summaries disclose cross-spine review without linking or filling null
     count: 1,
     state: "matched",
     href: "/browse/meetings/",
+    source: {
+      name: "NYC Council Legistar",
+      href: "https://nyc.legistar.com/",
+    },
     cross_spine: { confidence: "review" },
     provenance: {
       source_system: "legistar",
@@ -258,8 +262,9 @@ test("edge summaries disclose cross-spine review without linking or filling null
   assert.match(html, /data-cross-spine-confidence="review"/);
   assert.match(html, /edge-summary-confidence-review"[^>]*>Needs review</);
   assert.doesNotMatch(html, /Unavailable|compare evidence|does not choose a winner or merge identities/);
-  assert.match(renderEdgeSummaryProvenance(record), /<dt>Source<\/dt><dd>NYC Council Legistar<\/dd>/);
-  assert.doesNotMatch(renderEdgeSummaryProvenance(record), /Source record|Source fields/);
+  assert.match(renderEdgeSummaryProvenance(record), /href="https:\/\/nyc\.legistar\.com\/"/);
+  assert.match(renderEdgeSummaryProvenance(record), />NYC Council Legistar<span aria-hidden="true">↗<\/span>/);
+  assert.doesNotMatch(renderEdgeSummaryProvenance(record), /Source record|Source fields|Join method|Technical details/);
 });
 
 test("shared reader labels humanize raw relations and omit debug provenance by default", () => {
@@ -285,15 +290,14 @@ test("shared reader labels humanize raw relations and omit debug provenance by d
   const html = renderEdgeSummaryRail([record]);
   assert.match(html, /voted on/);
   assert.doesNotMatch(html, /Unavailable|boro_cd|coundist|edge-summary-provenance|compare evidence/);
-  assert.match(renderEdgeSummaryProvenance(record), /borough and community district/);
-  assert.match(renderEdgeSummaryProvenance(record), /Council District/);
-  assert.match(renderEdgeSummaryProvenance(record), /Technical details/);
+  assert.match(renderEdgeSummaryProvenance(record), /voted on/);
+  assert.doesNotMatch(renderEdgeSummaryProvenance(record), /borough and community district|Council District|Technical details|Source record|Source fields|Join method/);
 });
 
 test("connection evidence is readable, finite, and keeps raw provenance opt-in", () => {
   const html = renderEdgeProvenanceInspector({
     claim_id: "staffing:exam:7002",
-    label: "Administrative Housing Development Specialist",
+    label: "NaN Administrative Housing Development Specialist",
     relation: "certified_to_agency",
     object_href: "/exams/7002/",
     how: {
@@ -304,7 +308,7 @@ test("connection evidence is readable, finite, and keeps raw provenance opt-in",
       source_system: { available: true, value: "socrata" },
       source_record_id: { available: true, value: "a9md-ynri:exam:7002:agency:816" },
       source_fields: { available: true, value: ["exam_no", "list_agency_code"] },
-      observed_at: { available: true, value: "2026-08-06" },
+      observed_at: { available: true, value: Number.NaN },
     },
     cross_spine: { confidence: "unmatched", explicit: false },
     share_href: "/agencies/health-and-mental-hygiene/?claim=staffing%3Aexam%3A7002",
@@ -312,8 +316,9 @@ test("connection evidence is readable, finite, and keeps raw provenance opt-in",
 
   assert.doesNotMatch(html, /NaN|Exact match|Evidence details|Join method|Share this claim|>unmatched</);
   assert.match(html, /Matched by a published record/);
+  assert.match(html, />Related record<\/a>/);
   assert.match(html, /Matched using the agency code in the published staffing record/);
-  assert.match(html, /NYC Open Data/);
-  assert.match(html, /Technical details/);
-  assert.match(html, /a9md-ynri:exam:7002:agency:816/);
+  assert.match(html, /href="https:\/\/data\.cityofnewyork\.us\/d\/a9md-ynri"/);
+  assert.match(html, />NYC Open Data<span aria-hidden="true">↗<\/span>/);
+  assert.doesNotMatch(html, /Technical details|Source record|Source fields|Matching method|Link record|Resolution run|a9md-ynri:exam:7002:agency:816|exam_no|list_agency_code/);
 });
