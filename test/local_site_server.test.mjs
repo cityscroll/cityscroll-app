@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -25,9 +26,10 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(server, /def _static_document\(/);
   assert.match(server, /if self\._static_document\(route, query\):/);
   assert.match(server, /def publish_ready\(/);
-  assert.match(server, /probe_base\(base\)/);
+  assert.match(server, /probe_base\(base, timeout_seconds=args\.readiness_timeout\)/);
   assert.match(server, /urllib\.error\.URLError/);
   assert.match(server, /READINESS_TIMEOUT_SECONDS/);
+  assert.match(server, /--readiness-timeout/);
   assert.match(server, /connection refused/);
 
   const source = read("tools/preflight-required-checks.sh");
@@ -43,10 +45,18 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.doesNotMatch(functional, /http\.server 8000|lsof -tiTCP:8000/);
 
   const ci = read(".github/workflows/ci.yml");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
+  const readiness = read("tools/a11y_server_readiness.sh");
   const build = ci.indexOf("uses: ./.github/actions/build-site");
-  const serve = ci.indexOf("tools/local_site_server.py --directory _site --port 0");
-  assert.ok(build >= 0 && build < serve, "CI must build the deploy artifact before serving it");
-  assert.match(ci, /tools\/local_site_server\.py --directory _site --port 0 --ready-file/);
+  const runShard = ci.indexOf("tools/run_a11y_ci_shard.sh");
+  assert.ok(build >= 0 && build < runShard, "CI must build the deploy artifact before running shards");
+  assert.match(shardRunner, /tools\/local_site_server\.py[\s\\]*\n\s*--directory _site[\s\\]*\n\s*--port 0/);
+  assert.match(shardRunner, /--ready-file "\$ready_file"/);
+  assert.match(shardRunner, /A11Y_SERVER_READINESS_TIMEOUT_SECONDS:-30/);
+  assert.match(shardRunner, /A11Y_SERVER_READINESS_GRACE_SECONDS:-15/);
+  assert.match(shardRunner, /--readiness-timeout "\$server_readiness_timeout_seconds"/);
+  assert.match(shardRunner, /a11y_readiness_outer_timeout/);
+  assert.match(shardRunner, /a11y_wait_for_local_site/);
   assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}/);
   assert.doesNotMatch(
     ci,
@@ -57,23 +67,85 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(ci, /- name: Download shared verified site artifact\n\s+if: success\(\)/);
   assert.match(ci, /- name: Verify shared site artifact checksums\n\s+if: success\(\)/);
   assert.match(ci, /- name: Run isolated accessibility shard\n\s+if: success\(\)/);
-  assert.match(ci, /readiness_url=\"\$\{local_base\}index\.html\"/);
-  assert.match(ci, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*\"\$readiness_url\"/);
-  assert.match(ci, /HTTP 404/);
-  assert.match(ci, /server_log=/);
-  assert.match(ci, /for _ in \{1\.\.120\}/);
-  assert.doesNotMatch(ci, /tools\/local_site_server\.py --directory _site --port 8000/);
-  assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory _site/);
+  assert.match(readiness, /readiness_url="\$\{A11Y_READY_BASE\}index\.html"/);
+  assert.match(readiness, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*"\$readiness_url"/);
+  assert.match(readiness, /HTTP 404/);
+  assert.match(readiness, /outer_timeout <= inner_timeout/);
+  assert.match(readiness, /SECONDS \+ outer_timeout/);
+  assert.match(shardRunner, /server_log=/);
+  assert.doesNotMatch(shardRunner, /tools\/local_site_server\.py[\s\S]*?--port 8000/);
+  assert.doesNotMatch(`${shardRunner}\n${readiness}`, /python3 -m http\.server 8000 --directory _site/);
 });
 
-test("accessibility aggregate waits for complete shard results without a second artifact lookup", () => {
-  const ci = read(".github/workflows/ci.yml");
-  const aggregate = ci.slice(ci.indexOf("  a11y-pr:\n"), ci.indexOf("  browser-pr-site:\n"));
-  const shards = ci.slice(ci.indexOf("  a11y-pr-shard:\n"), ci.indexOf("  reading-level:\n"));
+test("outer readiness wait accepts publication near the scaled inner deadline", async (t) => {
+  const temp = mkdtempSync(join(tmpdir(), "crol-a11y-readiness-"));
+  const ready = join(temp, "ready");
+  const probeError = join(temp, "probe-error.log");
+  const serverLog = join(temp, "server.log");
+  writeFileSync(serverLog, "", "utf8");
 
-  assert.match(aggregate, /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard\]/);
-  assert.match(aggregate, /needs\.a11y-pr-shard\.result != 'success'[\s\S]*?exit 1/);
-  assert.match(aggregate, /needs\.a11y-pr-shard\.result == 'success'/);
+  const server = createServer((request, response) => {
+    if (request.url === "/index.html") {
+      response.writeHead(200, { "content-type": "text/html" });
+      response.end("<!doctype html><title>ready</title>");
+      return;
+    }
+    response.writeHead(404);
+    response.end();
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  t.after(async () => {
+    await new Promise((resolve) => server.close(resolve));
+    rmSync(temp, { recursive: true, force: true });
+  });
+
+  const address = server.address();
+  const base = `http://127.0.0.1:${address.port}/`;
+  const script = [
+    "set -euo pipefail",
+    "source tools/a11y_server_readiness.sh",
+    'outer="$(a11y_readiness_outer_timeout 1 1)"',
+    '[[ "$outer" == "2" ]]',
+    "if a11y_readiness_outer_timeout 1 0 >/dev/null 2>&1; then exit 9; fi",
+    'a11y_wait_for_local_site "$1" "$2" "$3" "$4" "$outer"',
+    'printf "%s" "$A11Y_READY_BASE"',
+  ].join("\n");
+  const child = spawn(
+    "bash",
+    ["-c", script, "readiness-test", ready, probeError, serverLog, String(process.pid)],
+    { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] },
+  );
+  const stdout = [];
+  const stderr = [];
+  child.stdout.on("data", (chunk) => stdout.push(chunk));
+  child.stderr.on("data", (chunk) => stderr.push(chunk));
+  setTimeout(() => writeFileSync(ready, `${base}\n`, "utf8"), 750);
+
+  const exitCode = await new Promise((resolve) => child.once("close", resolve));
+  assert.equal(exitCode, 0, Buffer.concat(stderr).toString());
+  assert.equal(Buffer.concat(stdout).toString(), base);
+});
+
+test("accessibility aggregate accepts only a green matrix and a green routes-focus attempt", () => {
+  const ci = read(".github/workflows/ci.yml");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
+  const aggregate = ci.slice(ci.indexOf("  a11y-pr:\n"), ci.indexOf("  browser-pr-site:\n"));
+  const shards = ci.slice(ci.indexOf("  a11y-pr-shard:\n"), ci.indexOf("  a11y-routes-focus-primary:\n"));
+  const routes = ci.slice(ci.indexOf("  a11y-routes-focus-primary:\n"), ci.indexOf("  reading-level:\n"));
+
+  assert.match(
+    aggregate,
+    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
+  );
+  assert.match(
+    aggregate,
+    /needs\.a11y-pr-shard\.result != 'success' \|\| \(needs\.a11y-routes-focus-primary\.result != 'success' && needs\.a11y-routes-focus-retry\.result != 'success'\)[\s\S]*?exit 1/,
+  );
+  assert.match(
+    aggregate,
+    /needs\.a11y-pr-shard\.result == 'success' && \(needs\.a11y-routes-focus-primary\.result == 'success' \|\| needs\.a11y-routes-focus-retry\.result == 'success'\)/,
+  );
+  assert.match(aggregate, /Routes-focus recovered on its one fresh-runner retry/);
   assert.doesNotMatch(
     aggregate,
     /actions\/download-artifact|github\.run_attempt|a11y-pr-shard-\*-logs/,
@@ -83,12 +155,53 @@ test("accessibility aggregate waits for complete shard results without a second 
   assert.match(shards, /fail-fast:\s*false/);
   assert.match(
     shards,
-    /matrix:\s*\n\s*shard:\s*\[browser-a11y, routes-focus, language-layout, rendered-census\]/,
+    /matrix:\s*\n\s*shard:\s*\[browser-a11y, language-layout, rendered-census\]/,
   );
-  assert.match(shards, /name: a11y-pr-shard-\$\{\{ matrix\.shard \}\}-logs-\$\{\{ github\.run_id \}\}/);
+  assert.doesNotMatch(shards, /shard:\s*\[[^\]]*routes-focus/);
+  assert.match(
+    shards,
+    /name: a11y-pr-shard-\$\{\{ matrix\.shard \}\}-primary-logs-\$\{\{ github\.run_id \}\}/,
+  );
   assert.doesNotMatch(shards, /a11y-pr-shard[^\n]*github\.run_attempt/);
   assert.match(shards, /if-no-files-found:\s*error/);
   assert.match(shards, /overwrite:\s*true/);
+
+  assert.match(routes, /a11y-routes-focus-primary:[\s\S]*?runs-on: ubuntu-latest/);
+  assert.match(
+    routes,
+    /a11y-routes-focus-primary:[\s\S]*?Fail when the shared site artifact is unavailable[\s\S]*?needs\.browser-pr-site\.result != 'success'[\s\S]*?exit 1/,
+  );
+  assert.match(
+    routes,
+    /a11y-routes-focus-retry:[\s\S]*?needs\.a11y-routes-focus-primary\.result == 'failure'[\s\S]*?runs-on: ubuntu-latest/,
+  );
+  assert.match(routes, /tools\/run_a11y_ci_shard\.sh routes-focus primary/);
+  assert.match(routes, /tools\/run_a11y_ci_shard\.sh routes-focus fresh-runner-retry/);
+  assert.match(routes, /a11y-pr-shard-routes-focus-primary-logs-\$\{\{ github\.run_id \}\}/);
+  assert.match(
+    routes,
+    /a11y-pr-shard-routes-focus-fresh-runner-retry-logs-\$\{\{ github\.run_id \}\}/,
+  );
+  assert.doesNotMatch(routes, /continue-on-error/);
+
+  assert.match(
+    shardRunner,
+    /# Keep axe and its final assertion outside the functional retry wrapper\.\n\s*python3 test\/functional\/11_accessibility\.py/,
+  );
+  assert.doesNotMatch(
+    shardRunner,
+    /run_a11y_functional_check\.sh[^\n]*11_accessibility\.py/,
+    "axe must remain a direct assertion rather than a retried functional check",
+  );
+
+  const aggregateGreen = (matrix, primary, retry) => (
+    matrix === "success" && (primary === "success" || retry === "success")
+  );
+  assert.equal(aggregateGreen("success", "success", "skipped"), true, "normal primary pass");
+  assert.equal(aggregateGreen("success", "failure", "success"), true, "fresh-runner recovery");
+  assert.equal(aggregateGreen("success", "failure", "failure"), false, "both routes attempts fail");
+  assert.equal(aggregateGreen("failure", "success", "skipped"), false, "a non-route shard fails");
+  assert.equal(aggregateGreen("success", "failure", "skipped"), false, "retry is missing");
 });
 
 test("performance interaction waits for the canonical Contracts document URL", () => {
