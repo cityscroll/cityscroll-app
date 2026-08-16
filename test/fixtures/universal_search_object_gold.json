@@ -12,6 +12,7 @@
       "case_ids": [
         "mosquito-procurement",
         "unknown-observation",
+        "city-record-rule",
         "law-derived-mandate",
         "city-record-meeting",
         "community-board-meeting",
@@ -56,6 +57,26 @@
         "domain": null,
         "canonical_href": "/notices/unknown-001",
         "source_observation_refs": ["notice:unknown-001"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "city-record-rule",
+      "source_observation": {
+        "request_id": "20260728026",
+        "short_title": "Proposed Rule - Rule relating to Incomplete Inspections",
+        "title": "Proposed Rule - Rule relating to Incomplete Inspections",
+        "section": "Other Public Notices",
+        "type_of_notice_description": "Public Hearings",
+        "agency_name": "Buildings"
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "rulemaking:notice:20260728026",
+        "object_type": "rulemaking",
+        "domain": "rules",
+        "canonical_href": "/browse/rules/?q=20260728026",
+        "source_observation_refs": ["notice:20260728026"],
         "coverage_state": "matched"
       }
     },
@@ -166,8 +187,8 @@
     {
       "producer": "rules",
       "domain": "rules",
-      "state": "empty",
-      "reason": "producer_available_no_query_matches"
+      "state": "matched",
+      "reason": "query_matches_canonical_objects"
     },
     {
       "producer": "shared_meetings",

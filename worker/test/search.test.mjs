@@ -60,6 +60,12 @@ const ROWS = [
     noticeType: "Notice", title: "Pesticides and Mosquito Control Products", description: "E-PIN: 81626S0021001.",
     date: "2026-07-17", haystack: "pesticides mosquito control contract award 81626S0021001",
   },
+  {
+    id: "20260728026", section: "Agency Rules", agency: "Buildings",
+    noticeType: "Public Hearings", title: "Proposed Rule - Rule relating to Incomplete Inspections",
+    description: "A public hearing on incomplete inspections.",
+    date: "2026-08-04", haystack: "proposed rule incomplete inspections public hearing",
+  },
 ];
 
 test("GET /search returns ranked validated SearchDocument records from the FTS5 mirror", async () => {
@@ -156,6 +162,39 @@ test("the ranked City Record shape projects an exact contract award before prese
       canonical_href: "/browse/contracts/?mode=award&q=81626S0021001",
       outcome: "indexed",
       source_observation_refs: ["notice:20260710020"],
+    });
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("the search route emits rules only from the bounded rule projection", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    const response = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=incomplete"),
+      { DB },
+      {},
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.results.length, 1);
+    assert.deepEqual({
+      object_ref: body.results[0].object_ref,
+      object_type: body.results[0].object_type,
+      domain: body.results[0].domain,
+      canonical_href: body.results[0].canonical_href,
+      process_role: body.results[0].process_role,
+      method: body.results[0].classification.method,
+      source_observation_refs: body.results[0].source_observation_refs,
+    }, {
+      object_ref: "rulemaking:notice:20260728026",
+      object_type: "rulemaking",
+      domain: "rules",
+      canonical_href: "/browse/rules/?q=20260728026",
+      process_role: "public_process",
+      method: "canonical_rule_projection",
+      source_observation_refs: ["notice:20260728026"],
     });
   } finally {
     sqlite.close();

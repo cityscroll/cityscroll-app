@@ -1,0 +1,48 @@
+{
+  "schema": "cityscroll.architecture.reconciliation.v1",
+  "status": "healthy",
+  "outcomes": {
+    "additions": [],
+    "removals": [],
+    "contradictions": [],
+    "superseded_adrs": [],
+    "rationale_required": []
+  },
+  "proposals": [],
+  "source_nulls": [
+    {
+      "path": "bindings.environments.production.r2_buckets",
+      "value": null
+    },
+    {
+      "path": "bindings.environments.beta.analytics_engine_datasets",
+      "value": null
+    },
+    {
+      "path": "bindings.environments.beta.queues.producers",
+      "value": null
+    },
+    {
+      "path": "bindings.environments.beta.queues.consumers",
+      "value": null
+    },
+    {
+      "path": "bindings.environments.beta.d1_databases",
+      "value": null
+    },
+    {
+      "path": "bindings.environments.beta.kv_namespaces",
+      "value": null
+    },
+    {
+      "path": "bindings.environments.beta.r2_buckets",
+      "value": null
+    }
+  ],
+  "generated_at": "2026-08-16T05:23:43Z",
+  "facts": {
+    "path": "architecture/generated/facts.json",
+    "artifact_current": true,
+    "regenerated_commit": "c80ba2cbcad6743bbe2ec0eac689d284e82e8b13"
+  }
+}
