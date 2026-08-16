@@ -95,10 +95,14 @@ function decisionTarget(value, label) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error(`${label} must be a decision target`);
   }
-  return {
+  const target = {
     kind: cleanKind(value.kind, `${label}.kind`),
     id: cleanToken(value.id, `${label}.id`),
   };
+  if (value.assertion_id) {
+    target.assertion_id = cleanToken(value.assertion_id, `${label}.assertion_id`);
+  }
+  return target;
 }
 
 function normalizedReferences(value, label) {
@@ -448,6 +452,9 @@ export function buildProvenanceGraph(input = {}) {
     const assertion = targetAssertions.get(targetKey(decision.target));
     if (!assertion) {
       throw new Error(`decision ${decision.id} target ${decision.target.kind}:${decision.target.id} has no assertion`);
+    }
+    if (decision.target.assertion_id && decision.target.assertion_id !== assertion.id) {
+      throw new Error(`decision ${decision.id} targets stale assertion ${decision.target.assertion_id}`);
     }
     addEdge(edges, edgeKeys, "shaped_by", assertion, decision);
     addEdge(

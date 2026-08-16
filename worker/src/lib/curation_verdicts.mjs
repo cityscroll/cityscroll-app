@@ -33,7 +33,7 @@ function parseJson(value, fallback) {
   }
 }
 
-function rowToReceipt(row) {
+export function curationVerdictFromRow(row) {
   if (!row) return null;
   return {
     id: row.id,
@@ -51,7 +51,8 @@ function rowToReceipt(row) {
   };
 }
 
-function receiptInsert(db, receipt) {
+/** Prepare the receipt insert so an authoritative command can batch it atomically. */
+export function curationVerdictInsert(db, receipt) {
   return db.prepare(
     `INSERT INTO curation_verdict_receipt
        (id, schema_version, actor, decision, target_kind, target_id, target_json,
@@ -85,7 +86,7 @@ export async function appendCurationVerdict(db, input, opts = {}) {
   });
   if (receipt.error) return receipt;
 
-  await receiptInsert(db, receipt).run();
+  await curationVerdictInsert(db, receipt).run();
   return receipt;
 }
 
@@ -102,5 +103,5 @@ export async function readCurationVerdicts(db, targetIds = []) {
       WHERE schema_version = ? AND target_id IN (${placeholders})
       ORDER BY created_at ASC, rowid ASC`,
   ).bind(CURATION_VERDICT_SCHEMA_VERSION, ...ids).all();
-  return (result?.results || []).map(rowToReceipt).filter(Boolean);
+  return (result?.results || []).map(curationVerdictFromRow).filter(Boolean);
 }
