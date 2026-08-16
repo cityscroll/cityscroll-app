@@ -192,8 +192,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `node tools/audit_scheduler_ownership.mjs --check`. The targeted Actions files are
   manual migration markers only; do not restore their schedules or issue loops.
 - Elder merge-slot policy (oldest ready PR reservation) is `tools/elder_merge_slot.mjs` +
-  `elder_slot` in `tools/merge_queue_policy.json`. The one-auto-merge seat cap itself
-  lives outside this repo and should call that policy before seating a younger PR.
+  `elder_slot` in `tools/merge_queue_policy.json`. GitHub owns the single native train and its
+  five-entry ceiling; an external seater may feed that train but does not define another cap.
+  Refresh the repository-owned removal evidence with
+  `node tools/report_merge_queue_ejections.mjs --write`.
 
 ## Shared node-page layout (static documents)
 
