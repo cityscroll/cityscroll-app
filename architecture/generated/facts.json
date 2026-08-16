@@ -4,8 +4,8 @@
     "name": "tools/build_architecture_facts.mjs",
     "version": "1.0.0"
   },
-  "generated_at": "2026-08-16T05:23:43Z",
-  "commit": "c80ba2cbcad6743bbe2ec0eac689d284e82e8b13",
+  "generated_at": "2026-08-16T06:07:32Z",
+  "commit": "4c6fe019773c59fd853abe0320bd8b38c168af7e",
   "source_paths": [
     "entity_resolution",
     "ontology/live_inventory.mjs",
