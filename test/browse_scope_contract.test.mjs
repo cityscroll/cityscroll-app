@@ -154,6 +154,8 @@ test("production Property evidence publishes one strict project-agency-vendor in
   const sourceRow = payload.property_rows.find((row) => row.request_id === "20170516111");
   assert.ok(sourceRow, "the evidence subject is a real Property source row");
   assert.deepEqual(sourceRow.entity_refs_all, bundle.refs);
+  assert.deepEqual(sourceRow.assertion_ids, bundle.assertion_ids);
+  assert.equal(sourceRow.assertion_inspect_href, bundle.assertion_inspect_href);
 
   const params = new URLSearchParams({
     facet: JSON.stringify({ entity_refs_all: bundle.refs }),
@@ -164,6 +166,7 @@ test("production Property evidence publishes one strict project-agency-vendor in
   assert.deepEqual(view.rows.map((row) => `notice:${row.request_id}`), [bundle.subject_ref]);
   assert.deepEqual(view.scope.refs.map((item) => item.ref), bundle.refs);
   assert.equal(bundle.browse_scope.result_count, view.total);
+  assert.match(renderBrowseView(view), new RegExp(`href="${bundle.assertion_inspect_href.replace(/[?]/g, "\\?")}"[^>]*>Inspect evidence graph</a>`));
 });
 
 test("contracts conformance: a three-way typed scope is an all-ref intersection with removable chips", () => {

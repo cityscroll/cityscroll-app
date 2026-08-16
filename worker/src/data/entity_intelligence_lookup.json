@@ -369928,7 +369928,10 @@
             "layer": "property_cross_domain_v1",
             "review_state": "accepted",
             "reviewed_at": "2026-08-16",
-            "relevant_time": "2017-05-19T00:00:00.000"
+            "relevant_time": "2017-05-19T00:00:00.000",
+            "assertion_key": "project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:parcel_links_project:70726f6a6563743a50323031364b30313835",
+            "assertion_id": "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:parcel_links_project:70726f6a6563743a50323031364b30313835:v1",
+            "assertion_href": "/assertions/assertion%3Aproject_agency_vendor%3A636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265%3Aparcel_links_project%3A70726f6a6563743a50323031364b30313835%3Av1/"
           },
           {
             "type": "published_by_agency",
@@ -369952,7 +369955,10 @@
             "layer": "cross_domain_object_link_v2",
             "review_state": "accepted",
             "reviewed_at": "2026-08-16",
-            "relevant_time": "2017-05-19T00:00:00.000"
+            "relevant_time": "2017-05-19T00:00:00.000",
+            "assertion_key": "project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:published_by_agency:6167656e63793a69643a686f7573696e672d707265736572766174696f6e2d616e642d646576656c6f706d656e74",
+            "assertion_id": "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:published_by_agency:6167656e63793a69643a686f7573696e672d707265736572766174696f6e2d616e642d646576656c6f706d656e74:v1",
+            "assertion_href": "/assertions/assertion%3Aproject_agency_vendor%3A636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265%3Apublished_by_agency%3A6167656e63793a69643a686f7573696e672d707265736572766174696f6e2d616e642d646576656c6f706d656e74%3Av1/"
           },
           {
             "type": "named_developer",
@@ -369978,9 +369984,18 @@
               "role": "Developer",
               "evidence_summary": "The notice identifies JEMB Albee Square LLC as the developer receiving the disposition area from the sponsor under a contract of sale."
             },
-            "layer": "project_agency_vendor_evidence_v1"
+            "layer": "project_agency_vendor_evidence_v1",
+            "assertion_key": "project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:named_developer:76656e646f723a7374656d3a4a454d42253230414c424545253230535155415245",
+            "assertion_id": "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:named_developer:76656e646f723a7374656d3a4a454d42253230414c424545253230535155415245:v1",
+            "assertion_href": "/assertions/assertion%3Aproject_agency_vendor%3A636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265%3Anamed_developer%3A76656e646f723a7374656d3a4a454d42253230414c424545253230535155415245%3Av1/"
           }
         ],
+        "assertion_ids": [
+          "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:parcel_links_project:70726f6a6563743a50323031364b30313835:v1",
+          "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:published_by_agency:6167656e63793a69643a686f7573696e672d707265736572766174696f6e2d616e642d646576656c6f706d656e74:v1",
+          "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:named_developer:76656e646f723a7374656d3a4a454d42253230414c424545253230535155415245:v1"
+        ],
+        "assertion_inspect_href": "/assertions/?subject=notice%3A20170516111",
         "browse_scope": {
           "lens": "property",
           "entity_refs_all": [
@@ -369993,7 +370008,8 @@
           "result_subject_refs": [
             "notice:20170516111"
           ],
-          "href": "/browse/property/?facet=%7B%22entity_refs_all%22%3A%5B%22project%3AP2016K0185%22%2C%22agency%3Aid%3Ahousing-preservation-and-development%22%2C%22vendor%3Astem%3AJEMB%2520ALBEE%2520SQUARE%22%5D%7D"
+          "href": "/browse/property/?facet=%7B%22entity_refs_all%22%3A%5B%22project%3AP2016K0185%22%2C%22agency%3Aid%3Ahousing-preservation-and-development%22%2C%22vendor%3Astem%3AJEMB%2520ALBEE%2520SQUARE%22%5D%7D",
+          "evidence_href": "/assertions/?subject=notice%3A20170516111"
         }
       }
     ],

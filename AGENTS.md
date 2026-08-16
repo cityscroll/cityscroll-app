@@ -73,6 +73,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   uncertain candidates in `shadow_edges` only; verify the frozen relation gates with
   `node tools/cross_spine_eval.mjs --check-policy` and cover public omission in
   `worker/test/public_relationship_graph.test.mjs`.
+- **Public assertion traversal:** `site/assertion_inspector.mjs` hydrates accepted production
+  bundles into the versioned `entity_resolution/provenance_graph.mjs` read model and serves the
+  resident-safe `/assertions/` subject and immutable assertion targets through
+  `site/pages_edge.mjs`. Stamp entry links only from admitted source rows; incomplete,
+  provisional, or probabilistic edges stay out of links and verified totals. Production proof:
+  `test/assertion_inspector.test.mjs` plus `test/browse_scope_contract.test.mjs`.
 - **Notice mandate backlinks:** public-only reverse index of mandate → notice edges for
   `/notices/<id>`. SPA-safe renderer `site/notice_mandate_backlinks.mjs` (no bridge/ER
   imports); build-time index `tools/lib/notice_mandate_backlinks_index.mjs` →
