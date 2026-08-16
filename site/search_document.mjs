@@ -43,6 +43,16 @@ const DOMAIN_TO_LANE = Object.freeze({
   property: "property",
   zoning: "zoning",
 });
+const DOMAIN_LANE_TO_FAMILY = Object.freeze({
+  contracts: "contracts",
+  rules: "rules",
+  meetings: "meetings",
+  people: "people-organizations",
+  places: "people-organizations",
+  staffing: "exams",
+  property: "land",
+  zoning: "land",
+});
 const PLACE_KEYS = Object.freeze([
   ["boro", "Borough"],
   ["cd", "Community district"],
@@ -127,7 +137,21 @@ function renderResult(record) {
   return template.content.firstElementChild;
 }
 
-function renderResults(root, results) {
+function appendFamilyReceipt(body, family) {
+  if (!family) return;
+  const receipt = document.createElement("p");
+  receipt.className = "topic-search-lane-source";
+  receipt.textContent = [
+    clean(family.source, 240),
+    family.as_of ? `as of ${clean(family.as_of, 160)}` : null,
+    "Keyword search",
+  ].filter(Boolean).join(" · ");
+  body.append(receipt);
+}
+
+function renderResults(root, payload) {
+  const results = Array.isArray(payload?.results) ? payload.results : [];
+  const families = new Map((payload?.lanes || []).map((family) => [family?.id, family]));
   const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
   for (const record of results) {
     const lane = searchResultLane(record);
@@ -138,11 +162,22 @@ function renderResults(root, results) {
     const items = grouped[lane];
     const elements = laneElements(root, lane);
     if (!elements.body) continue;
+    const family = families.get(DOMAIN_LANE_TO_FAMILY[lane]);
     elements.status.textContent = items.length ? `${items.length} result${items.length === 1 ? "" : "s"}` : "No matches";
     elements.body.className = "topic-search-lane-body";
     elements.body.replaceChildren();
     if (!items.length) {
-      elements.body.textContent = "No matching records in this group.";
+      if (family?.status === "unknown") {
+        elements.status.textContent = "Unavailable";
+        elements.body.classList.add("is-error");
+        elements.body.textContent = "This source could not be checked right now.";
+      } else if (family?.status === "not_covered") {
+        elements.status.textContent = "Not covered";
+        elements.body.textContent = "Keyword search is not available for this family yet.";
+      } else {
+        elements.body.textContent = "No keyword matches in this snapshot.";
+      }
+      appendFamilyReceipt(elements.body, family);
       continue;
     }
     const list = document.createElement("div");
@@ -152,6 +187,7 @@ function renderResults(root, results) {
       if (rendered) list.append(rendered);
     }
     elements.body.append(list);
+    appendFamilyReceipt(elements.body, family);
   }
 }
 
@@ -201,7 +237,7 @@ async function loadResults(root, query) {
   for (const lane of LANES) setLaneState(root, lane, "Loading", "Searching public records…", "is-loading");
   try {
     const payload = await fetchSearchResults(query);
-    renderResults(root, payload.results);
+    renderResults(root, payload);
     renderCoverage(root, payload.coverage);
   } catch {
     for (const lane of LANES) setLaneState(root, lane, "Unavailable", "Search is unavailable right now. Please try again.", "is-error");
