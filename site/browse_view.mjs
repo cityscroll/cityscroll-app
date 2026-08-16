@@ -1,7 +1,12 @@
 import { entityHref, parseEntityRef } from "./entity_pivot.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
-import { constellationLink, staticFact } from "./affordance_grammar.mjs";
+import {
+  constellationLink,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+  staticFact,
+} from "./affordance_grammar.mjs";
 import { scopeFromRouteHash, emptyScope } from "./scope_v0.mjs";
 import {
   buildContextualSuggestions,
@@ -18,6 +23,7 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
+import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import {
   communityBoardDisambiguation,
   parseCommunityBoardQuery,
@@ -1149,9 +1155,20 @@ export function renderBrowseView(view) {
       : boardId
         ? `<span class="browse-community-board-reference" data-community-board-state="${esc(boardEdge?.status || "unknown")}">Hosted by ${esc(boardName || "community board")}</span>`
         : "";
+    const interaction = view.facet === "rules"
+      ? rulesCardInteractionProjection({ request_id: rowId(view.facet, row), title })
+      : null;
+    const titleMarkup = view.facet === "rules"
+      ? renderObjectCardTitle(interaction, { escape: esc })
+      : href
+        ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc })
+        : `<span lang="en" dir="ltr">${esc(title)}</span>`;
+    const copyMarkup = view.facet === "rules"
+      ? renderObjectCardCopy(interaction, { label: "Copy link", escape: esc })
+      : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
       ${actionMarkup}
-      <h3>${href ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc }) : `<span lang="en" dir="ltr">${esc(title)}</span>`}</h3>
+      <h3>${titleMarkup}</h3>${copyMarkup}
       <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${meetingSourceDetails}
     </article>`;
