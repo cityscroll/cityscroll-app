@@ -40,6 +40,10 @@ test("warrant class maps exact publisher methods and keeps tentative probabilist
     warrantClassForEdge({ method: "unknown_method_xyz", confidence: "strong" }).id,
     "not_yet_classified",
   );
+  assert.equal(
+    warrantClassForEdge({ method: "mandate_meeting_subject_temporal_v2", confidence: "strong" }).id,
+    "probabilistic",
+  );
 });
 
 test("identity stance labels standable publisher and linkage connections", () => {
