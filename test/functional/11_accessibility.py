@@ -329,9 +329,9 @@ def run_index_states(pw, lang, viewport, failures):
     page.click('.tabbtn[data-tab="money"]')
     _wait_for_browse_route(page, "money")
     wait_for_locator(page.locator("#list .row").first, label="money notice row")
-    # Click the non-link title region. At wide widths the row center can land on its
-    # agency pivot and navigate away instead of opening the retained detail pane.
-    page.click("#list .row .rtitle")
+    # The title now opens the canonical notice document. Click stable non-interactive
+    # PIN metadata to exercise the row's separate retained-preview behavior.
+    page.click("#list .row .pin")
     wait_for_locator(page.locator("#noticeview, #detail").first, label="money notice detail")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures,

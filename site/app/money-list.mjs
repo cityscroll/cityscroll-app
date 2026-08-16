@@ -3,7 +3,12 @@ import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
 import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_links.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
-import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import {
+  installFilterChipNavigation,
+  objectCardInteractionProjection,
+  renderObjectCardActionRail,
+  renderObjectCardPrimitives,
+} from "../affordance_grammar.mjs";
 import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
 import {
   filterMoneySnapshot,
@@ -397,13 +402,41 @@ function moneyListPrimaryAction(r, today=todayISO()){
     };
   }catch(_e){ return null; }
 }
-function moneyListPrimaryActionHTML(r, today=todayISO()){
+function moneyListInteractionProjection(r, today=todayISO()){
+  const requestId=String(r?.request_id||"").trim();
   const presentation=moneyListPrimaryAction(r,today);
-  if(!presentation) return "";
-  const label=t(presentation.label_key);
-  const title=noticeDisplayTitle(r);
-  const attrs=presentation.external?` ${EXT_ATTRS}`:"";
-  return `<a class="act primary money-row-action" data-money-row-action="${presentation.kind}" data-action-delivery="${presentation.action.delivery}" href="${escUiHtml(presentation.href)}"${attrs}>${escUiHtml(label)}<span class="sr-only" lang="en" dir="ltr"> — ${escUiHtml(title)}</span>${presentation.external?extSR():""}</a>`;
+  const kineticActions=presentation ? [{
+    label:t(presentation.label_key),
+    href:presentation.href,
+    kind:presentation.action.type,
+    context_ready:true,
+    primary:true,
+  }] : [];
+  return objectCardInteractionProjection({
+    target:requestId ? {
+      href:`/notices/${encodeURIComponent(requestId)}`,
+      label:noticeDisplayTitle(r),
+    } : null,
+    kinetic_actions:kineticActions,
+  });
+}
+function moneyListPrimaryActionHTML(r, today=todayISO()){
+  return renderObjectCardActionRail(moneyListInteractionProjection(r,today),{
+    heading:t("next_action_heading"),
+    escape:escUiHtml,
+    newTabLabel:t("ext_link_new_tab_sr"),
+  });
+}
+function moneyListCardInteractionsHTML(r, titleMarkup, today=todayISO()){
+  const projection=moneyListInteractionProjection(r,today);
+  return renderObjectCardPrimitives(projection,{
+    escape:escUiHtml,
+    titleMarkup,
+    titleClassName:"ui-object-card-title rtitle",
+    copyLabel:t("copy_link"),
+    actionHeading:t("next_action_heading"),
+    newTabLabel:t("ext_link_new_tab_sr"),
+  });
 }
 function moneyRowHTML(r, i, terms){
   const isAward = r.type_of_notice_description === "Award";
@@ -413,14 +446,13 @@ function moneyRowHTML(r, i, terms){
   const title = noticeDisplayTitle(r), ev = resultMatchEvidence(title, matchText(r), terms);
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
   const actionLocationChip=globalThis.MoneyActionLocations?.moneyActionLocationChipHTML?.(r,{t,esc:escUiHtml})||"";
-  const primaryAction=moneyListPrimaryActionHTML(r);
+  const interactions=moneyListCardInteractionsHTML(r,digTitleHTML(title,ev));
   const agencyMention=listEntityMentionHTML({kind:"agency",value:r.agency_name,escape:escUiHtml,relation:"publishes_record"});
   const vendorMention=r.vendor_name?listEntityMentionHTML({kind:"vendor",value:r.vendor_name,escape:escUiHtml,relation:"named_vendor"}):"";
   const projectMention=r.project_id?listEntityMentionHTML({kind:"project",value:r.project_id,label:r.project_name||r.project_id,escape:escUiHtml,relation:"names_project"}):"";
   return `<article class="money-row-card">
-      ${primaryAction}
       <div class="row" data-i="${i}" tabindex="0" role="group">
-      <p class="rtitle">${digTitleHTML(title, ev)}</p>
+      ${interactions||`<p class="rtitle">${digTitleHTML(title,ev)}</p>`}
       <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${agencyMention}</span>${vendorMention?` · ${vendorMention}`:""}${projectMention?` · ${projectMention}`:""} · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
@@ -551,7 +583,10 @@ function renderList(autoSelect){
       if(rmeta) rmeta.insertAdjacentHTML("afterend", chips);
     });
   }).catch(()=>{});
-  document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>select(+el.dataset.i, el, event.isTrusted)));
+  document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>{
+    if(event.target.closest?.("a,button")) return;
+    select(+el.dataset.i, el, event.isTrusted);
+  }));
   if(autoSelect===false&&keepId){
     const idx=currentRows.findIndex(r=>r&&r.request_id===keepId);
     if(idx>=0){
@@ -700,6 +735,8 @@ globalThis.filterStillOpenMoneyNotices = filterStillOpenMoneyNotices;
 globalThis.moneyActiveFilterChip = moneyActiveFilterChip;
 globalThis.moneyListPrimaryAction = moneyListPrimaryAction;
 globalThis.moneyListPrimaryActionHTML = moneyListPrimaryActionHTML;
+globalThis.moneyListInteractionProjection = moneyListInteractionProjection;
+globalThis.moneyListCardInteractionsHTML = moneyListCardInteractionsHTML;
 globalThis.moneyRowIsClosed = moneyRowIsClosed;
 globalThis.moneyRowHTML = moneyRowHTML;
 globalThis.paintMoneyRows = paintMoneyRows;
