@@ -109,9 +109,16 @@ def run(page, downloads: pathlib.Path):
     group.locator("summary").click()
     names = group.locator(".staffing-hire-group-names li")
     assert names.count() == 62
-    first_link = names.first.locator("a")
-    assert "WORKER,01" in first_link.inner_text()
-    assert first_link.get_attribute("href") == "https://a856-cityrecord.nyc.gov/RequestDetail/990001"
+    first_title = names.first.locator(".staffing-appointment-title")
+    assert "WORKER,01" in first_title.inner_text()
+    assert first_title.locator('[aria-hidden="true"]').text_content() == "◆"
+    assert first_title.get_attribute("href") == "/notices/990001"
+    first_copy = names.first.locator("[data-object-card-copy]")
+    assert first_copy.is_visible()
+    assert first_copy.get_attribute("data-object-card-copy").endswith("/notices/990001")
+    first_source = names.first.locator(".staffing-appointment-source")
+    assert first_source.get_attribute("href") == "https://a856-cityrecord.nyc.gov/RequestDetail/990001"
+    assert "↗" in first_source.inner_text()
 
     with page.expect_download() as csv_info:
         page.locator('[data-export-csv="people"]').first.click()
@@ -148,10 +155,15 @@ def run(page, downloads: pathlib.Path):
     assert labels == [
         "NAME", "TITLE CODE", "AGENCY", "EFFECTIVE", "SALARY", "POSTED",
     ], labels
-    assert row.locator("a").count() == 1, "the record link must not wrap the whole row"
-    assert row.locator(".staffing-hire-person-field a").get_attribute("href") == (
+    assert row.locator("a").count() == 2, "internal title and official source must not wrap the whole row"
+    assert row.locator(".staffing-hire-person-field a").get_attribute("href") == "/notices/990001"
+    assert row.locator("[data-object-card-copy]").get_attribute("data-object-card-copy").endswith(
+        "/notices/990001"
+    )
+    assert row.locator(".staffing-appointment-source").get_attribute("href") == (
         "https://a856-cityrecord.nyc.gov/RequestDetail/990001"
     )
+    assert "↗" in row.locator(".staffing-appointment-source").inner_text()
 
 
 def main():

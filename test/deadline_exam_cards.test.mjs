@@ -188,7 +188,8 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.match(html, /isInterestArea/);
   // Card structure: deadline lead appears before the title block in the template.
   const cardFnStart = html.indexOf("function careerCardHTML(exam)");
-  const cardFn = html.slice(cardFnStart, cardFnStart + 6500);
+  const cardFnEnd = html.indexOf("function careerInterestContextHTML()", cardFnStart);
+  const cardFn = html.slice(cardFnStart, cardFnEnd);
   assert.ok(cardFn.includes("career-deadline-lead"));
   assert.ok(
     cardFn.indexOf("career-deadline-lead") < cardFn.indexOf("career-card-title"),

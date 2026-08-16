@@ -1,3 +1,11 @@
+import {
+  objectCardInteractionProjection,
+  officialSourceLink,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+} from "./affordance_grammar.mjs";
+import { noticeDocumentPath } from "./notice_permalink.mjs";
+
 /**
  * Lens-neutral small-multiples collapse for exact displayed-field repetition.
  *
@@ -102,6 +110,7 @@ function rawRow(entry) {
  * Consolidated group entries are intentionally opaque; individual entries are
  * checked with the same exact displayed-field contract used by the grouper.
  */
+
 export function repeatedSameExceptFindings(entries, options = {}) {
   const rows = (Array.isArray(entries) ? entries : []).map(rawRow).filter(Boolean);
   const { buckets, config } = bucketsFor(rows, options);
@@ -124,8 +133,33 @@ export function groupStaffingAppointments(rows) {
   return groupSameExcept(rows, { fields: STAFFING_FIELDS, except: ["person"], threshold: 3 });
 }
 
+function staffingAppointmentInteractions(item, helpers) {
+  const { t, escUiHtml, REQ_URL, canonicalOrigin = "https://cityscroll.org" } = helpers;
+  const label = item.person || "—";
+  const projection = objectCardInteractionProjection({
+    target: { href: noticeDocumentPath(item.request_id), label },
+    external_handoffs: [{
+      href: REQ_URL(item.request_id),
+      label: t("staffing_view_notice"),
+      kind: "official_source",
+    }],
+    canonicalOrigin,
+  });
+  const handoff = projection.external_handoffs[0];
+  return {
+    title: renderObjectCardTitle(projection, { className: "ui-object-card-title staffing-appointment-title", escape: escUiHtml }) || escUiHtml(label),
+    copy: renderObjectCardCopy(projection, { label: t("copy_link_btn"), escape: escUiHtml }),
+    source: handoff ? officialSourceLink({
+      ...handoff,
+      className: "staffing-appointment-source",
+      escape: escUiHtml,
+      newTabLabel: t("ext_link_new_tab_sr"),
+    }) : "",
+  };
+}
+
 export function staffingAppointmentGroupHTML(entry, helpers) {
-  const { t, escUiHtml, fmtNumber, money, fdt, fdate, REQ_URL, EXT_ATTRS, extSR, listEntityMentionHTML } = helpers;
+  const { t, escUiHtml, fmtNumber, money, fdt, fdate, listEntityMentionHTML } = helpers;
   const item = entry.members[0];
   const members = [...entry.members].sort((a, b) => a.person.localeCompare(b.person));
   const date = (value) => {
@@ -154,7 +188,10 @@ export function staffingAppointmentGroupHTML(entry, helpers) {
     item.title_code ? `<span class="staffing-hire-fact">${escUiHtml(t("staffing_title_code", { code: item.title_code }))}</span>` : "",
     item.published_at ? `<span class="staffing-hire-date">${escUiHtml(t("staffing_appointment_group_posted", { date: fdate(item.published_at) }))}</span>` : "",
   ].filter(Boolean).join("");
-  const names = members.map(member => `<li data-request-id="${escUiHtml(member.request_id)}"><a href="${REQ_URL(member.request_id)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(member.person)}</span>${extSR()}</a></li>`).join("");
+  const names = members.map(member => {
+    const interaction = staffingAppointmentInteractions(member, helpers);
+    return `<li data-request-id="${escUiHtml(member.request_id)}"><span lang="en" dir="ltr">${interaction.title}</span><div class="staffing-appointment-controls">${interaction.copy}${interaction.source}</div></li>`;
+  }).join("");
   return `<article class="staffing-hire-group" data-kind="same-except-group" data-group-count="${entry.count}">
     <div class="staffing-hire-group-head"><h4><span lang="en" dir="ltr">${escUiHtml(role)}</span> — ${escUiHtml(summary)}</h4><div class="staffing-hire-group-facts">${facts}</div></div>
     <details><summary>${escUiHtml(t("staffing_appointment_group_names", { n: fmtNumber(entry.count) }))}</summary><ul class="staffing-hire-group-names">${names}</ul></details>
@@ -162,7 +199,7 @@ export function staffingAppointmentGroupHTML(entry, helpers) {
 }
 
 export function createStaffingConsolidationUI(helpers) {
-  const { t, escUiHtml, money, fdate, REQ_URL, EXT_ATTRS, extSR, listEntityMentionHTML } = helpers;
+  const { t, escUiHtml, money, fdate, listEntityMentionHTML } = helpers;
   const agencyHTML = (item) => typeof listEntityMentionHTML === "function"
     ? listEntityMentionHTML({kind:"agency",value:item.agency,label:item.agency || "—",escape:escUiHtml,relation:"appoints_staff"})
     : escUiHtml(item.agency || "—");
@@ -182,7 +219,8 @@ export function createStaffingConsolidationUI(helpers) {
       const field = (label, value, className = "") => `<div class="staffing-hire-field${className ? ` ${className}` : ""}"><dt>${escUiHtml(label)}</dt><dd>${value}</dd></div>`;
       const titleCode = `<span class="staffing-hire-code" lang="en" dir="ltr">${escUiHtml(item.title_code || empty)}</span>`
         + (role ? `<span class="staffing-hire-role" lang="en" dir="ltr">${escUiHtml(role)}</span>` : "");
-      const person = `<a href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(item.person || empty)}</span>${extSR()}</a>`;
+      const interaction = staffingAppointmentInteractions(item, helpers);
+      const person = `<span lang="en" dir="ltr">${interaction.title}</span>`;
       return `<article class="staffing-hire-row" data-kind="hire">
         <dl class="staffing-hire-fields">
           ${field(t("person_name_label"), person, "staffing-hire-person-field")}
@@ -192,6 +230,7 @@ export function createStaffingConsolidationUI(helpers) {
           ${field(t("staffing_salary", { amount: "" }).trim(), salary || empty)}
           ${field(t("staffing_appointment_group_posted", { date: "" }).trim(), item.published_at ? fdate(item.published_at) : empty)}
         </dl>
+        <div class="staffing-appointment-controls">${interaction.copy}${interaction.source}</div>
       </article>`;
     },
     groupHTML: entry => staffingAppointmentGroupHTML(entry, helpers),

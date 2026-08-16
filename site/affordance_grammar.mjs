@@ -144,8 +144,16 @@ export function constellationLink({ href, label, labelMarkup = null, count = nul
 }
 
 /** Authoritative external record: new tab, neutral dotted underline, trailing arrow. */
-export function officialSourceLink({ href, label, className = "", attributes = {}, escape = esc } = {}) {
-  return `<a class="ui-official-source-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}" target="_blank" rel="noopener noreferrer"${dataAttributes(attributes, escape)}>${escape(label)}<span aria-hidden="true">↗</span></a>`;
+export function officialSourceLink({
+  href,
+  label,
+  className = "",
+  attributes = {},
+  escape = esc,
+  newTabLabel = "",
+} = {}) {
+  const announcement = newTabLabel ? `<span class="sr-only"> ${escape(newTabLabel)}</span>` : "";
+  return `<a class="ui-official-source-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}" target="_blank" rel="noopener noreferrer"${dataAttributes(attributes, escape)}>${escape(label)}<span aria-hidden="true">↗</span>${announcement}</a>`;
 }
 
 /** Kinetic off-site handoff: visible arrow plus accessible new-tab disclosure. */
@@ -183,9 +191,14 @@ export function renderObjectCardTitle(projection, { className = "ui-object-card-
   });
 }
 
-export function renderObjectCardCopy(projection, { className = "ui-object-card-copy", label = "Copy link", escape = esc } = {}) {
+export function renderObjectCardCopy(projection, {
+  className = "ui-object-card-copy",
+  label = "Copy link",
+  attributes = {},
+  escape = esc,
+} = {}) {
   if (!projection?.copy_target) return "";
-  return `<button type="button" class="${escape(className)}" data-object-card-copy="${escape(projection.copy_target)}" aria-live="polite">${escape(label)}</button>`;
+  return `<button type="button" class="${escape(className)}" data-object-card-copy="${escape(projection.copy_target)}" aria-live="polite"${dataAttributes(attributes, escape)}>${escape(label)}</button>`;
 }
 
 export function renderObjectCardRelations(projection, { escape = esc } = {}) {
