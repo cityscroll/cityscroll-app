@@ -71,6 +71,35 @@ test("a zero-item watch with trailing item history redlines", () => {
   assert.equal(warning.evidence.trailing_max_item_count, 3);
 });
 
+test("a schedule-skipped weekly watch does not masquerade as a recall drop", () => {
+  const sections = [{
+    sub: "sub:we***",
+    previewId: "watch:weekly",
+    lens: "money",
+    new: 0,
+    forecasts: 0,
+    skipped: "weekly",
+  }];
+  const history = [{
+    day: "2026-08-07",
+    totalNotices: 25,
+    sentCount: 1,
+    entries: [{ id: "acct:we***", sections: [{ sub: "sub:we***", new: 1, forecasts: 0 }] }],
+  }];
+  const out = summary([result({ id: "acct:we***", count: 0, html: itemHtml(0), sections })], history);
+
+  assert.equal(out.redlines.find((item) => item.code === "historical_watch_zero"), undefined);
+  assert.deepEqual(out.per_watch_item_counts[0], {
+    digest_id: "acct:we***",
+    watch_id: "watch:weekly",
+    lens: "money",
+    item_count: 0,
+    evaluation_state: "skipped",
+    skip_reason: "weekly",
+  });
+  assert.equal(out.previews[0].watch_counts[0].skip_reason, "weekly");
+});
+
 test("aggregate item-count collapse versus trailing average redlines", () => {
   const history = [20, 24, 16].map((total, index) => ({ day: `2026-08-0${3 - index}`, totalNotices: total, entries: [] }));
   const out = summary([result({ count: 1 })], history);
