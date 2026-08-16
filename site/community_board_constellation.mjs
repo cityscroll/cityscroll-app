@@ -384,10 +384,10 @@ function sourceMarkup(row) {
   const state = {
     indexed: "Records found in the checked source",
     "checked-empty": "Checked; no dated records found",
-    "unsupported-format": "This source format is not yet supported",
-    unavailable: "Source could not be checked",
+    "unsupported-format": "Not ingested — source format not supported",
+    unavailable: "Not ingested — source could not be checked",
     stale: "Source needs a fresh check",
-    "not-yet-checked": "Source is listed and awaiting a check",
+    "not-yet-checked": "Not ingested",
     not_yet_ingested: "Source available",
     absent_in_pass: "Source not listed",
   }[row.state] || "Source observed";

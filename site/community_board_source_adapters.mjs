@@ -18,6 +18,13 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
     max_bytes: 2_000_000,
     contract: "explicit HTML index with linked PDF/DOC/DOCX records; record IDs and dates come from explicit attributes or labels",
   }),
+  nyc_official_calendar_v1: Object.freeze({
+    id: "nyc_official_calendar_v1",
+    formats: Object.freeze(["html", "nyc_official_calendar"]),
+    record_kinds: Object.freeze(["event"]),
+    max_bytes: 2_000_000,
+    contract: "NYC-hosted community-board calendar HTML; each event requires an explicit heading, publisher date, and page-declared calendar year",
+  }),
   google_calendar_v1: Object.freeze({
     id: "google_calendar_v1",
     formats: Object.freeze(["ics", "google_calendar"]),
@@ -158,6 +165,14 @@ function explicitUrl(source) {
 function adapterId(source) {
   const requested = clean(source?.adapter || source?.adapter_id || source?.adapter_kind, 80);
   if (requested) return ADAPTER_ALIASES[requested] || requested;
+  const role = clean(source?.role || source?.source_role || source?.source_type, 80).toLowerCase();
+  const publisherKind = clean(source?.publisher_kind, 80).toLowerCase();
+  const url = explicitUrl(source);
+  if (role === "upcoming_meetings" && publisherKind === "nyc_official"
+    && clean(source?.format, 200).toLowerCase() === "explicit board calendar"
+    && /^https:\/\/www\d?\.nyc\.gov\/site\/.+\.page(?:$|[?#])/i.test(url || "")) {
+    return "nyc_official_calendar_v1";
+  }
   const format = clean(source?.format, 200).toLowerCase();
   if (/airtable/.test(format)) return "airtable_v1";
   if (/ical|i-calendar|google calendar/.test(format)) return "google_calendar_v1";
@@ -425,6 +440,100 @@ export function parseHtmlPdfSource(html, source = {}, options = {}) {
   });
 }
 
+function explicitCalendarDate(value, pageYear) {
+  const withYear = monthDate(value);
+  if (withYear) return withYear;
+  const match = clean(value, 500).match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\b/i);
+  if (!match || !/^20\d{2}$/.test(String(pageYear || ""))) return null;
+  const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(match[1].toLowerCase()) + 1;
+  return iso(`${pageYear}-${month}-${match[2]}`);
+}
+
+function calendarStartAt(date, value) {
+  const time = clean(value, 500).match(/\b(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)\b/i);
+  if (!date || !time) return null;
+  let hour = Number(time[1]);
+  const minute = Number(time[2] || 0);
+  const meridiem = time[3].replace(/\./g, "").toLowerCase();
+  if (hour < 1 || hour > 12 || minute > 59) return null;
+  if (meridiem === "pm" && hour !== 12) hour += 12;
+  if (meridiem === "am" && hour === 12) hour = 0;
+  const zone = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    timeZoneName: "longOffset",
+    hour: "2-digit",
+  }).formatToParts(new Date(`${date}T12:00:00Z`)).find((part) => part.type === "timeZoneName")?.value;
+  const offset = String(zone || "").match(/^GMT([+-]\d{2}:\d{2})$/)?.[1];
+  return offset ? `${date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00${offset}` : null;
+}
+
+function htmlLines(value) {
+  return String(value || "").split(/<br\b[^>]*>/i).map((part) => plain(part, 800)).filter(Boolean);
+}
+
+function calendarVenue(lines = []) {
+  const first = lines[0] || "";
+  const afterSeparator = first.match(/\s--\s(.+)$/)?.[1];
+  if (afterSeparator) return clean(afterSeparator, 500);
+  const next = lines[1] || "";
+  return /^(?:limited seating|this is|members of|online|registration|by phone|you must)/i.test(next)
+    ? null
+    : clean(next, 500) || null;
+}
+
+function calendarRecordId(source, date, title) {
+  const slug = clean(title, 300).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 120);
+  const boardId = clean(source?.board_id || source?.body_id, 100);
+  return boardId && date && slug ? `nyc-calendar:${boardId}:${date}:${slug}` : null;
+}
+
+export function parseNycOfficialCalendarSource(html, source = {}, options = {}) {
+  const descriptor = { ...source, adapter: "nyc_official_calendar_v1" };
+  const sourceUrl = explicitUrl(descriptor);
+  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, {
+    parser: "nyc_official_calendar_v1",
+    observed_at: options.observedAt,
+  });
+  if (!sourceUrl || !clean(descriptor.board_id || descriptor.body_id, 100)) return [];
+  const pageYear = String(html || "").match(/Calendar\s+of\s+Meetings[\s\S]{0,120}?\b(20\d{2})\b/i)?.[1] || null;
+  const found = [...jsonLdEvents(html, descriptor, receipt)];
+  const calendarHtml = String(html || "").match(/<div\b[^>]*\babout-description\b[^>]*>([\s\S]*?)<\/div>/i)?.[1]
+    || String(html || "");
+  const headings = /<h3\b[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3\b|$)/gi;
+  for (const match of calendarHtml.matchAll(headings)) {
+    const title = plain(match[1], 500);
+    const paragraph = match[2].match(/<p\b[^>]*>([\s\S]*?)<\/p>/i)?.[1] || "";
+    const lines = htmlLines(paragraph);
+    const logistics = lines[0] || "";
+    const date = explicitCalendarDate(logistics, pageYear);
+    const startAt = calendarStartAt(date, logistics);
+    const recordId = calendarRecordId(descriptor, date, title);
+    if (!title || !date || !startAt || !recordId) continue;
+    const participation = eventPageParticipation(match[2], sourceUrl);
+    found.push(record(descriptor, {
+      record_kind: "event",
+      record_id: recordId,
+      board_id: descriptor.board_id || descriptor.body_id,
+      date,
+      start_at: startAt,
+      category: descriptor.role || descriptor.source_role || "upcoming_meetings",
+      title,
+      address: calendarVenue(lines),
+      mode: participation.remote_join_url ? "hybrid" : "not-stated",
+      participation: { ...participation, emails: [], phones: [], source_url: sourceUrl },
+      format: "html",
+      record_url: sourceUrl,
+    }, receipt));
+  }
+  const seen = new Set();
+  return found.filter((row) => row.record_id && row.date).filter((row) => {
+    const key = `${row.record_kind}:${row.record_id}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function unfoldIcs(value) {
   return String(value || "").replace(/\r?\n[ \t]/g, "");
 }
@@ -553,6 +662,7 @@ export function parseVideoRecordSource(payload, source = {}, options = {}) {
 export function parseCommunityBoardSource(payload, source = {}, options = {}) {
   const adapter = adapterId(source);
   if (adapter === "html_pdf_v1") return parseHtmlPdfSource(payload, source, options);
+  if (adapter === "nyc_official_calendar_v1") return parseNycOfficialCalendarSource(payload, source, options);
   if (adapter === "google_calendar_v1") return parseGoogleCalendarSource(payload, source, options);
   if (adapter === "airtable_v1") return parseAirtableSource(payload, source, options);
   if (adapter === "video_record_v1") return parseVideoRecordSource(payload, source, options);
@@ -567,30 +677,37 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
   if (!contract || !url || typeof fetchImpl !== "function") {
     return { records: [], receipt: normalizeObservedReceipt({ ...baseReceipt, reason: "source_contract_unavailable" }, source) };
   }
-  try {
-    const response = await fetchImpl(url, { method: "GET", credentials: "omit", redirect: "follow" });
-    const contentType = response?.headers?.get?.("content-type") || null;
-    const bytes = response?.arrayBuffer
-      ? await response.arrayBuffer()
-      : new TextEncoder().encode(await response.text()).buffer;
-    const length = bytes.byteLength;
-    const receipt = normalizeObservedReceipt({
-      ...baseReceipt,
-      status: response.ok && length <= limit ? "ok" : "unknown",
-      fetch_status: String(response.status || ""),
-      content_type: contentType,
-      content_length: length,
-      reason: !response.ok ? "http_error" : length > limit ? "byte_limit_exceeded" : null,
-    }, source);
-    if (!response.ok || length > limit) return { records: [], receipt };
-    const text = new TextDecoder().decode(bytes);
-    return { records: parseCommunityBoardSource(text, source, { observedAt, receipt }), receipt };
-  } catch (error) {
-    return {
-      records: [],
-      receipt: normalizeObservedReceipt({ ...baseReceipt, reason: clean(error?.name || "fetch_error", 80) }, source),
-    };
+  const fetchUrls = [url];
+  if (adapterId(source) === "nyc_official_calendar_v1" && /^https:\/\/www\.nyc\.gov\//i.test(url)) {
+    fetchUrls.push(url.replace(/^https:\/\/www\.nyc\.gov\//i, "https://www1.nyc.gov/"));
   }
+  let lastReceipt = null;
+  for (const fetchUrl of fetchUrls) {
+    try {
+      const response = await fetchImpl(fetchUrl, { method: "GET", credentials: "omit", redirect: "follow" });
+      const contentType = response?.headers?.get?.("content-type") || null;
+      const bytes = response?.arrayBuffer
+        ? await response.arrayBuffer()
+        : new TextEncoder().encode(await response.text()).buffer;
+      const length = bytes.byteLength;
+      const text = new TextDecoder().decode(bytes);
+      const accessDenied = /<h1>\s*Access Denied\s*<\/h1>/i.test(text);
+      const receipt = normalizeObservedReceipt({
+        ...baseReceipt,
+        status: response.ok && length <= limit && !accessDenied ? "ok" : "unknown",
+        fetch_status: String(response.status || ""),
+        content_type: contentType,
+        content_length: length,
+        reason: !response.ok ? "http_error" : length > limit ? "byte_limit_exceeded" : accessDenied ? "access_denied" : null,
+      }, source);
+      lastReceipt = receipt;
+      if (!response.ok || length > limit || accessDenied) continue;
+      return { records: parseCommunityBoardSource(text, source, { observedAt, receipt }), receipt };
+    } catch (error) {
+      lastReceipt = normalizeObservedReceipt({ ...baseReceipt, reason: clean(error?.name || "fetch_error", 80) }, source);
+    }
+  }
+  return { records: [], receipt: lastReceipt || normalizeObservedReceipt({ ...baseReceipt, reason: "fetch_error" }, source) };
 }
 
 export function sourceRecordStatus(record, { asOf = new Date().toISOString(), maxAgeDays = 120 } = {}) {
@@ -606,6 +723,7 @@ export function sourceRecordStatus(record, { asOf = new Date().toISOString(), ma
 
 export const normalizeSourceRecord = record;
 export const parseHtmlPdfIndex = parseHtmlPdfSource;
+export const parseNycOfficialCalendarRecords = parseNycOfficialCalendarSource;
 export const parseGoogleCalendarRecords = parseGoogleCalendarSource;
 export const parseAirtableRecords = parseAirtableSource;
 export const parseVideoRecords = parseVideoRecordSource;

@@ -161,8 +161,8 @@ test("board institution pages and the Meetings lens publish the same canonical m
   const residentHtml = documents.map(([, html]) => html.replace(/<script[\s\S]*?<\/script>/gi, " ")).join("\n");
   assert.match(residentHtml, /Source details/);
   assert.match(residentHtml, /Checked; no dated records found/);
-  assert.match(residentHtml, /Source could not be checked/);
-  assert.match(residentHtml, /Source is listed and awaiting a check/);
+  assert.match(residentHtml, /source could not be checked/i);
+  assert.match(residentHtml, /Not ingested/);
   assert.doesNotMatch(residentHtml, /checked-empty|not-yet-checked|unsupported-format|source_stale/);
 
   const staleEdge = communityBoardMeetingEdgeFromSourceRow(meetingIndex.rows[0], {
@@ -186,6 +186,7 @@ test("board institution pages and the Meetings lens publish the same canonical m
 
   for (const [boardId, rows] of Object.entries(meetingIndex.by_board)) {
     const expectedIds = rows.map((row) => row.meeting_id).sort();
+    const promotedRows = rows.filter((row) => row.publisher_identifier);
     const scopeHref = communityBoardScopeHref("meetings", boardId);
     const scopeParams = new URLSearchParams(scopeHref.split("?", 2)[1] || "");
     const boardSummary = lookup.by_id[boardId].edge_summary
@@ -194,7 +195,7 @@ test("board institution pages and the Meetings lens publish the same canonical m
     const scoped = buildBrowseView("meetings", { rows: shared.rows }, scopeParams, { limit: 1000 });
     const sourceNativeScoped = buildBrowseView("meetings", { rows: meetingIndex.rows }, scopeParams, { limit: 1000 });
 
-    assert.equal(boardSummary.count, expectedIds.length, `${boardId} board count`);
+    assert.equal(boardSummary.count, promotedRows.length || null, `${boardId} board count`);
     assert.deepEqual(sourceNativeScoped.rows.map((row) => row.meeting_id).sort(), expectedIds, `${boardId} source-native Meetings scope`);
     assert.ok(expectedIds.every((id) => scoped.rows.some((row) => row.meeting_id === id)), `${boardId} shared Meetings scope`);
     for (const row of rows) {
@@ -202,13 +203,18 @@ test("board institution pages and the Meetings lens publish the same canonical m
         asOf: meetingIndex.generated_at,
         sourceRoleState: "indexed",
       });
-      assert.equal(communityBoardMeetingEdgeAccepted(edge), true, `${row.meeting_id} accepted edge`);
-      assert.equal(edge.href, `/meetings/${encodeURIComponent(row.meeting_id)}`);
+      const accepted = Boolean(row.publisher_identifier);
+      assert.equal(communityBoardMeetingEdgeAccepted(edge), accepted, `${row.meeting_id} edge publication`);
+      assert.equal(edge.href, accepted ? `/meetings/${encodeURIComponent(row.meeting_id)}` : null);
       assert.equal(edge.provenance?.observed_receipt?.status, "ok");
-      assert.deepEqual(edge.join?.evidence, ["exact_board_identity", "exact_date", "publisher_identifier"]);
+      if (accepted) {
+        assert.deepEqual(edge.join?.evidence, ["exact_board_identity", "exact_date", "publisher_identifier"]);
+      } else {
+        assert.equal(edge.reason, "publisher_identifier_missing");
+      }
     }
-    for (const meetingId of expectedIds) {
-      assert.match(boardHtml, new RegExp(`/meetings/${encodeURIComponent(meetingId)}`), `${boardId} canonical meeting link`);
+    for (const row of promotedRows) {
+      assert.match(boardHtml, new RegExp(`/meetings/${encodeURIComponent(row.meeting_id)}`), `${boardId} canonical meeting link`);
     }
   }
 });
