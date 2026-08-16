@@ -179,6 +179,7 @@ export function warrantClassForEdge(input = {}) {
     || method.includes("probabilistic")
     || method.includes("similarity")
     || method.includes("token")
+    || method.includes("mandate_meeting_subject_temporal")
     || method.includes("conventional_v2")
   ) {
     return WARRANT_CLASSES.probabilistic;

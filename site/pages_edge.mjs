@@ -11,6 +11,7 @@ import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
 import {
   findMandateById,
   noticeEvidenceForMandate,
+  relatedCivicEdgesForMandate,
   renderMandateDocument,
 } from "./mandate_document.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
@@ -600,17 +601,21 @@ async function handleNotice(request, env, id) {
 }
 
 async function handleMandate(request, env, id) {
-  const [lookupResponse, backlinksResponse] = await Promise.all([
+  const [lookupResponse, backlinksResponse, conformanceResponse] = await Promise.all([
     staticAsset(env, request, "/data/agency_obligations_lookup.json"),
     staticAsset(env, request, "/data/notice_mandate_backlinks_lookup.json"),
+    staticAsset(env, request, "/data/process_conformance_lookup.json"),
   ]);
   let lookup = null;
   let backlinks = null;
+  let conformance = null;
   try { lookup = lookupResponse.ok ? await lookupResponse.json() : null; } catch (_error) { lookup = null; }
   try { backlinks = backlinksResponse.ok ? await backlinksResponse.json() : null; } catch (_error) { backlinks = null; }
+  try { conformance = conformanceResponse.ok ? await conformanceResponse.json() : null; } catch (_error) { conformance = null; }
   const row = findMandateById(lookup, id);
   const html = row ? renderMandateDocument(row, {
     noticeEvidence: noticeEvidenceForMandate(backlinks, id),
+    relatedEdges: relatedCivicEdgesForMandate(conformance, id),
   }) : "";
   if (!html) {
     return new Response(

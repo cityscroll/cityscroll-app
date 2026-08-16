@@ -85,6 +85,10 @@ function genericEdge(row, edgeType) {
     claim_id: clean(claim?.claim_id, 240) || null,
     claim_inspect_href: publicHref(claim?.inspect_href || claim?.share_href),
     warrant_class: clean(claim?.how?.warrant_class, 80) || null,
+    method: clean(row?.edge?.method || row?.method || claim?.how?.method?.value, 160) || null,
+    confidence: clean(row?.edge?.confidence || claim?.confidence?.band, 80) || null,
+    publication_tier: clean(row?.edge_policy?.tier || row?.publication_tier, 80) || null,
+    provenance: claim?.schema === "cityscroll.graph_edge_provenance.v1" ? claim : null,
   };
 }
 

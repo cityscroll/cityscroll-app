@@ -9117,6 +9117,78 @@
       "share_path": "/agencies/city-council/#mandates-conformance",
       "candidate_corpus_size": 6,
       "observations": {
+        "53810-016": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "report",
+            "deadline_date": "2015-04-20"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "53810-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": "2015-05-04"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "56951-007": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "74312-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "53810-013": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -9128,24 +9200,6 @@
             "label": "Report, study, or plan publication or filing",
             "deliverable_type": "report",
             "deadline_date": "2015-04-07"
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "53810-016": {
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "reports",
-          "data_as_of": "2026-08-12",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "report_or_study",
-            "label": "Report, study, or plan publication or filing",
-            "deliverable_type": "report",
-            "deadline_date": "2015-04-20"
           },
           "observed_record": null,
           "match": null,
@@ -11355,6 +11409,24 @@
           "adjudication": "not_adjudicated",
           "method": "mandate_expected_vs_observed_v1"
         },
+        "64103-001": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "program",
+            "deadline_date": "2020-01-15"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "53583-002": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -12511,6 +12583,24 @@
       "share_path": "/agencies/comptroller/#mandates-conformance",
       "candidate_corpus_size": 3,
       "observations": {
+        "67052-010": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "56484-003": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -13237,6 +13327,24 @@
       "share_path": "/agencies/consumer-and-worker-protection/#mandates-conformance",
       "candidate_corpus_size": 19,
       "observations": {
+        "75928-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "57287-018": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -16177,6 +16285,24 @@
       "share_path": "/agencies/correction/#mandates-conformance",
       "candidate_corpus_size": 0,
       "observations": {
+        "69580-024": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "54114-001": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -22853,6 +22979,42 @@
       "share_path": "/agencies/environmental-protection/#mandates-conformance",
       "candidate_corpus_size": 2,
       "observations": {
+        "74605-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "program",
+            "deadline_date": "2025-08-26"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "56761-014": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "52314-001": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -23412,24 +23574,6 @@
           "method": "mandate_expected_vs_observed_v1"
         },
         "56761-013": {
-          "status": "expected_not_yet_observed",
-          "observation_state": "not_yet_observed",
-          "category": "rules",
-          "data_as_of": "2026-08-12",
-          "label": "Expected; no matching evidence in current sources",
-          "expected_event": {
-            "kind": "rule_filing",
-            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
-            "deliverable_type": "rulemaking",
-            "deadline_date": null
-          },
-          "observed_record": null,
-          "match": null,
-          "is_compliance_verdict": false,
-          "adjudication": "not_adjudicated",
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "56761-014": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
           "category": "rules",
@@ -29018,6 +29162,42 @@
       "share_path": "/agencies/health-and-mental-hygiene/#mandates-conformance",
       "candidate_corpus_size": 6,
       "observations": {
+        "53410-008": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "61116-001": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "54963-003": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -33751,6 +33931,38 @@
       "share_path": "/agencies/homeless-services/#mandates-conformance",
       "candidate_corpus_size": 0,
       "observations": {
+        "66056-006": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "other",
+            "deadline_date": "2021-12-07"
+          },
+          "observed_record": {
+            "request_id": "20210820102",
+            "label": "Contract CT1-071-20228800271",
+            "when": "2021-08-26",
+            "href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800271",
+            "signal_kind": "procurement_contract",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_agency_scope_authority_exact_v1"
+        },
         "69363-001": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -34573,7 +34785,95 @@
             "to": "contract:CT1-071-20228800236",
             "claim_id": "mandate-contracts:66056-006:CT1-071-20228800236",
             "claim_inspect_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800236",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_agency_scope_authority_exact_v1",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-contracts:66056-006:CT1-071-20228800236",
+              "kind": "graph_edge_claim",
+              "subject_ref": "66056-006:CT1-071-20228800236",
+              "root_ref": "agency:id:homeless-services",
+              "category_id": "mandate-contracts",
+              "relation": "implemented by contract",
+              "label": "Contract CT1-071-20228800236",
+              "object_href": "#notice/20211029113",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "passport-public-contracts"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "passport-public-contracts:ct:CT1-071-20228800236"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "epin",
+                    "pin",
+                    "short_title"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "07115P0248001R002"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "07/01/2021"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "mandate_agency_scope_authority_exact_v1"
+                },
+                "source_excerpt": {
+                  "available": false
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_agency_scope_authority_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": null
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": false
+                },
+                "resolution_run_id": {
+                  "available": false
+                },
+                "next": null,
+                "missing_fields": [
+                  "source_excerpt",
+                  "entity_link_id",
+                  "resolution_run_id"
+                ]
+              },
+              "inspect_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800236",
+              "share_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800236"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -34616,7 +34916,95 @@
             "to": "contract:CT1-071-20228800127",
             "claim_id": "mandate-contracts:66056-006:CT1-071-20228800127",
             "claim_inspect_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800127",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_agency_scope_authority_exact_v1",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-contracts:66056-006:CT1-071-20228800127",
+              "kind": "graph_edge_claim",
+              "subject_ref": "66056-006:CT1-071-20228800127",
+              "root_ref": "agency:id:homeless-services",
+              "category_id": "mandate-contracts",
+              "relation": "implemented by contract",
+              "label": "Contract CT1-071-20228800127",
+              "object_href": "#notice/20210727108",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "passport-public-contracts"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "passport-public-contracts:ct:CT1-071-20228800127"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "epin",
+                    "pin",
+                    "short_title"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "07117P8281KXLR001"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "07/01/2021"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "mandate_agency_scope_authority_exact_v1"
+                },
+                "source_excerpt": {
+                  "available": false
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_agency_scope_authority_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": null
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": false
+                },
+                "resolution_run_id": {
+                  "available": false
+                },
+                "next": null,
+                "missing_fields": [
+                  "source_excerpt",
+                  "entity_link_id",
+                  "resolution_run_id"
+                ]
+              },
+              "inspect_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800127",
+              "share_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800127"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -34659,7 +35047,95 @@
             "to": "contract:CT1-071-20228800271",
             "claim_id": "mandate-contracts:66056-006:CT1-071-20228800271",
             "claim_inspect_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800271",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_agency_scope_authority_exact_v1",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-contracts:66056-006:CT1-071-20228800271",
+              "kind": "graph_edge_claim",
+              "subject_ref": "66056-006:CT1-071-20228800271",
+              "root_ref": "agency:id:homeless-services",
+              "category_id": "mandate-contracts",
+              "relation": "implemented by contract",
+              "label": "Contract CT1-071-20228800271",
+              "object_href": "#notice/20210820102",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "passport-public-contracts"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "passport-public-contracts:ct:CT1-071-20228800271"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "epin",
+                    "pin",
+                    "short_title"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "07117P8271KXLR001"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "07/01/2021"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "mandate_agency_scope_authority_exact_v1"
+                },
+                "source_excerpt": {
+                  "available": false
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_agency_scope_authority_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": null
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": false
+                },
+                "resolution_run_id": {
+                  "available": false
+                },
+                "next": null,
+                "missing_fields": [
+                  "source_excerpt",
+                  "entity_link_id",
+                  "resolution_run_id"
+                ]
+              },
+              "inspect_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800271",
+              "share_href": "/agencies/homeless-services/?claim=mandate-contracts%3A66056-006%3ACT1-071-20228800271"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -34739,6 +35215,24 @@
       "share_path": "/agencies/housing-preservation-and-development/#mandates-conformance",
       "candidate_corpus_size": 5,
       "observations": {
+        "67595-001": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "57287-003": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -39417,6 +39911,42 @@
       "share_path": "/agencies/information-technology-and-telecommunications/#mandates-conformance",
       "candidate_corpus_size": 1,
       "observations": {
+        "53927-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "data publication",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "72178-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "63487-003": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -40415,6 +40945,120 @@
       "share_path": "/agencies/landmarks-preservation-commission/#mandates-conformance",
       "candidate_corpus_size": 14,
       "observations": {
+        "54431-001": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-12",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-04-17",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "54431-002": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-12",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-04-17",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "54431-003": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "zoning",
+          "data_as_of": "2026-08-12",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "land_use_action",
+            "label": "Land-use or zoning action",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": null,
+            "label": "Lithuanian Alliance Building (LP-2695)",
+            "when": "2026-04-17",
+            "href": "/#land?project=2026M0445",
+            "signal_kind": "land_use_action",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "54431-004": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "54431-005": {
           "status": "enrichment_pending",
           "observation_state": "data_incomplete",
@@ -40463,7 +41107,92 @@
             "to": "project:2026K0443",
             "claim_id": "entity-link:procedure-path:mandate:54431-001:project:2026k0443:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026k0443%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-001:project:2026k0443:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026K0443",
+              "root_ref": "mandate:54431-001",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Public School 15 Annex (LP-2696)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026K0443"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-20"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Public School 15 Annex (LP-2696)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-001:landmark_designation+entity-link:project-procedure:2026k0443:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026k0443%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026k0443%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40506,7 +41235,92 @@
             "to": "project:2026M0444",
             "claim_id": "entity-link:procedure-path:mandate:54431-001:project:2026m0444:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026m0444%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-001:project:2026m0444:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0444",
+              "root_ref": "mandate:54431-001",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Church of Saint Mary (LP-2694)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026M0444"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Church of Saint Mary (LP-2694)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-001:landmark_designation+entity-link:project-procedure:2026m0444:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026m0444%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026m0444%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40549,7 +41363,92 @@
             "to": "project:2026M0445",
             "claim_id": "entity-link:procedure-path:mandate:54431-001:project:2026m0445:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026m0445%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-001:project:2026m0445:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0445",
+              "root_ref": "mandate:54431-001",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Lithuanian Alliance Building (LP-2695)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026M0445"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Lithuanian Alliance Building (LP-2695)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-001:landmark_designation+entity-link:project-procedure:2026m0445:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026m0445%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-001%3Aproject%3A2026m0445%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40592,7 +41491,92 @@
             "to": "project:2026K0443",
             "claim_id": "entity-link:procedure-path:mandate:54431-002:project:2026k0443:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026k0443%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-002:project:2026k0443:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026K0443",
+              "root_ref": "mandate:54431-002",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Public School 15 Annex (LP-2696)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026K0443"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-20"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Public School 15 Annex (LP-2696)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-002:landmark_designation+entity-link:project-procedure:2026k0443:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026k0443%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026k0443%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40635,7 +41619,92 @@
             "to": "project:2026M0444",
             "claim_id": "entity-link:procedure-path:mandate:54431-002:project:2026m0444:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026m0444%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-002:project:2026m0444:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0444",
+              "root_ref": "mandate:54431-002",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Church of Saint Mary (LP-2694)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026M0444"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Church of Saint Mary (LP-2694)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-002:landmark_designation+entity-link:project-procedure:2026m0444:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026m0444%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026m0444%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40678,7 +41747,92 @@
             "to": "project:2026M0445",
             "claim_id": "entity-link:procedure-path:mandate:54431-002:project:2026m0445:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026m0445%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-002:project:2026m0445:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0445",
+              "root_ref": "mandate:54431-002",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Lithuanian Alliance Building (LP-2695)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026M0445"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Lithuanian Alliance Building (LP-2695)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-002:landmark_designation+entity-link:project-procedure:2026m0445:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026m0445%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-002%3Aproject%3A2026m0445%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40721,7 +41875,92 @@
             "to": "project:2026K0443",
             "claim_id": "entity-link:procedure-path:mandate:54431-003:project:2026k0443:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026k0443%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-003:project:2026k0443:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026K0443",
+              "root_ref": "mandate:54431-003",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Public School 15 Annex (LP-2696)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026K0443"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-20"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Public School 15 Annex (LP-2696)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-003:landmark_designation+entity-link:project-procedure:2026k0443:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026k0443%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026k0443%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40764,7 +42003,92 @@
             "to": "project:2026M0444",
             "claim_id": "entity-link:procedure-path:mandate:54431-003:project:2026m0444:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026m0444%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-003:project:2026m0444:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0444",
+              "root_ref": "mandate:54431-003",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Church of Saint Mary (LP-2694)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026M0444"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Church of Saint Mary (LP-2694)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-003:landmark_designation+entity-link:project-procedure:2026m0444:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026m0444%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026m0444%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -40807,7 +42131,92 @@
             "to": "project:2026M0445",
             "claim_id": "entity-link:procedure-path:mandate:54431-003:project:2026m0445:landmark_designation",
             "claim_inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026m0445%3Alandmark_designation",
-            "warrant_class": "exact"
+            "warrant_class": "exact",
+            "method": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1",
+            "confidence": "strong",
+            "publication_tier": null,
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "entity-link:procedure-path:mandate:54431-003:project:2026m0445:landmark_designation",
+              "kind": "graph_edge_claim",
+              "subject_ref": "project:2026M0445",
+              "root_ref": "mandate:54431-003",
+              "category_id": "mandate-land-use",
+              "relation": "composed land use procedure path",
+              "label": "Lithuanian Alliance Building (LP-2695)",
+              "object_href": null,
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "warehouse"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "warehouse:2026M0445"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "project_id",
+                    "actions"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "HI · Non-ULURP"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-04-17"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "publisher_action_code+closed_procedure_vocabulary:land_use_procedure_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Lithuanian Alliance Building (LP-2695)"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_procedure_kind_exact_v1+project_procedure_action_code_exact_v1"
+                },
+                "warrant_class": "exact",
+                "warrant_label": "Matched by a published record",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "strong_link",
+                "identity_label": "Strong connection",
+                "standable": true,
+                "counts_as_verified_total": true
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-procedure:54431-003:landmark_designation+entity-link:project-procedure:2026m0445:landmark_designatio"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-land-use:landmarks-preservation-commission:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026m0445%3Alandmark_designation",
+              "share_href": "/agencies/landmarks-preservation-commission/?claim=entity-link%3Aprocedure-path%3Amandate%3A54431-003%3Aproject%3A2026m0445%3Alandmark_designation"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -41540,14 +42949,50 @@
         "69344-002": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
-          "category": "reports",
+          "category": "contracts",
           "data_as_of": "2026-08-12",
           "label": "Expected; no matching evidence in current sources",
           "expected_event": {
-            "kind": "report_or_study",
-            "label": "Report, study, or plan publication or filing",
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
             "deliverable_type": "report",
             "deadline_date": "2023-12-01"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "69344-003": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "data publication",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "76347-003": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "program",
+            "deadline_date": null
           },
           "observed_record": null,
           "match": null,
@@ -42056,6 +43501,24 @@
       "share_path": "/agencies/office-of-the-mayor/#mandates-conformance",
       "candidate_corpus_size": 2,
       "observations": {
+        "67686-005": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "53810-007": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -45662,6 +47125,24 @@
       "share_path": "/agencies/parks-and-recreation/#mandates-conformance",
       "candidate_corpus_size": 5,
       "observations": {
+        "52114-001": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "68613-002": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -50886,7 +52367,211 @@
           "method": "mandate_expected_vs_observed_v1"
         }
       },
-      "edge_observations": []
+      "edge_observations": [
+        {
+          "conformance_id": "64116-001:rules:rulemaking:notice:20260605008",
+          "mandate_id": "64116-001",
+          "edge_type": "requires_rule_filing",
+          "edge": {
+            "type": "requires_rule_filing",
+            "from": "mandate:64116-001",
+            "to": "rulemaking:notice:20260605008",
+            "method": "mandate_rule_citation_topic_token_v1",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "evidence": {
+              "agency_exact": true,
+              "expected_event_match": true,
+              "topic_overlap": [
+                "commercial",
+                "waste",
+                "zones",
+                "requirements"
+              ],
+              "rule_body_overlap": [
+                "commercial",
+                "waste",
+                "zones",
+                "requirements"
+              ],
+              "citation_law_match": true,
+              "citation_law_overlap": [
+                "nyc-charter:753",
+                "section:753"
+              ],
+              "temporal_compatible": true,
+              "negative_evidence": [],
+              "negative_evidence_free": true,
+              "topic_score": 4,
+              "publication_eligible": true,
+              "publication_tier": "public_inferred",
+              "policy_gate": {
+                "version": "cross_spine_edge_policy_v2",
+                "gold_version": "cross_spine_gold_v3",
+                "min_precision": 0.9
+              }
+            },
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-rules:64116-001:rulemaking:notice:20260605008",
+              "kind": "graph_edge_claim",
+              "subject_ref": "64116-001:rulemaking:notice:20260605008",
+              "root_ref": "mandate:64116-001",
+              "category_id": "mandate-rules",
+              "relation": "requires rule filing",
+              "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
+              "object_href": "/notices/20260605008",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "city_record"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "city_record:20260605008"
+                },
+                "source_href": {
+                  "available": true,
+                  "value": "/notices/20260605008"
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "short_title",
+                    "rule_evidence.body_topic_keys",
+                    "rule_evidence.citation_keys",
+                    "start_date"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "nyc-charter:753, section:753"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-11"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "mandate_rule_citation_topic_token_v1"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_rule_citation_topic_token_v1"
+                },
+                "warrant_class": "probabilistic",
+                "warrant_label": "Record-linkage match",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "confirmed",
+                "explicit": true
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "possible_link",
+                "identity_label": "Record-linkage connection",
+                "standable": true,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": false
+                },
+                "resolution_run_id": {
+                  "available": false
+                },
+                "next": null,
+                "missing_fields": [
+                  "entity_link_id",
+                  "resolution_run_id"
+                ]
+              },
+              "inspect_href": "/agencies/sanitation/?claim=mandate-rules%3A64116-001%3Arulemaking%3Anotice%3A20260605008",
+              "share_href": "/agencies/sanitation/?claim=mandate-rules%3A64116-001%3Arulemaking%3Anotice%3A20260605008"
+            },
+            "claim_id": "mandate-rules:64116-001:rulemaking:notice:20260605008",
+            "claim_inspect_href": "/agencies/sanitation/?claim=mandate-rules%3A64116-001%3Arulemaking%3Anotice%3A20260605008",
+            "warrant_class": "probabilistic"
+          },
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "rules",
+          "data_as_of": "2026-08-12",
+          "label": "Evidence found",
+          "expected_event": {
+            "kind": "rule_filing",
+            "label": "Agency Rules filing (proposal, hearing, adoption, or notice)",
+            "deliverable_type": "rulemaking",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": "20260605008",
+            "label": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
+            "when": "2026-06-11",
+            "href": "/notices/20260605008",
+            "signal_kind": "rule_filing",
+            "lifecycle_status": "adopted",
+            "lifecycle_label": "Adopted",
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "method": "topic_token_overlap_v1",
+            "score": 4,
+            "shared_tokens": [
+              "commercial",
+              "waste",
+              "zones",
+              "requirements"
+            ],
+            "publication": "public_inferred",
+            "evidence": {
+              "agency_exact": true,
+              "expected_event_match": true,
+              "topic_overlap": [
+                "commercial",
+                "waste",
+                "zones",
+                "requirements"
+              ],
+              "rule_body_overlap": [
+                "commercial",
+                "waste",
+                "zones",
+                "requirements"
+              ],
+              "citation_law_match": true,
+              "citation_law_overlap": [
+                "nyc-charter:753",
+                "section:753"
+              ],
+              "temporal_compatible": true,
+              "negative_evidence": [],
+              "negative_evidence_free": true,
+              "topic_score": 4,
+              "publication_eligible": true,
+              "publication_tier": "public_inferred",
+              "policy_gate": {
+                "version": "cross_spine_edge_policy_v2",
+                "gold_version": "cross_spine_gold_v3",
+                "min_precision": 0.9
+              }
+            }
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        }
+      ]
     },
     "small-business-services": {
       "agency_id": "small-business-services",
@@ -52079,6 +53764,24 @@
       "share_path": "/agencies/taxi-and-limousine-commission/#mandates-conformance",
       "candidate_corpus_size": 2,
       "observations": {
+        "52169-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "52169-003": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -53316,6 +55019,56 @@
       "share_path": "/agencies/transportation/#mandates-conformance",
       "candidate_corpus_size": 12,
       "observations": {
+        "68103-008": {
+          "status": "observed",
+          "observation_state": "appeared",
+          "category": "meetings",
+          "data_as_of": "2026-08-12",
+          "label": "Appeared",
+          "expected_event": {
+            "kind": "public_hearing",
+            "label": "Public meeting or hearing",
+            "deliverable_type": "other",
+            "deadline_date": null
+          },
+          "observed_record": {
+            "request_id": "20260605006",
+            "label": "DINING OUT NYC PUBLIC HEARING",
+            "when": "2026-06-25",
+            "href": "/notices/20260605006",
+            "signal_kind": "public_hearing",
+            "lifecycle_status": null,
+            "lifecycle_label": null,
+            "effective_date": null,
+            "adoption_date": null
+          },
+          "match": {
+            "shared_tokens": [],
+            "publication": null,
+            "evidence": null
+          },
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "61991-002": {
+          "status": "expected_not_yet_observed",
+          "observation_state": "not_yet_observed",
+          "category": "contracts",
+          "data_as_of": "2026-08-12",
+          "label": "Expected; no matching evidence in current sources",
+          "expected_event": {
+            "kind": "procurement_contract",
+            "label": "Contract award or registration",
+            "deliverable_type": "other",
+            "deadline_date": "2020-10-15"
+          },
+          "observed_record": null,
+          "match": null,
+          "is_compliance_verdict": false,
+          "adjudication": "not_adjudicated",
+          "method": "mandate_expected_vs_observed_v1"
+        },
         "55661-004": {
           "status": "expected_not_yet_observed",
           "observation_state": "not_yet_observed",
@@ -55524,7 +57277,95 @@
             "to": "notice:20260716009",
             "claim_id": "mandate-meetings:notice:20260716009",
             "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260716009",
-            "warrant_class": "not_yet_classified"
+            "warrant_class": "probabilistic",
+            "method": "mandate_meeting_subject_temporal_v2",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-meetings:notice:20260716009",
+              "kind": "graph_edge_claim",
+              "subject_ref": "notice:20260716009",
+              "root_ref": "mandate:68103-008",
+              "category_id": "mandate-meetings",
+              "relation": "requires public hearing",
+              "label": "Dining Out NYC Public Hearing",
+              "object_href": "/notices/20260716009",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "city_record"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "city_record:20260716009"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "type_of_notice_description",
+                    "matter_subject.subject_tokens",
+                    "short_title",
+                    "event_date"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "cafe, modification"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-08-06"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+event_kind+matter_body_subject+temporal"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "Dining Out NYC Public Hearing"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_meeting_subject_temporal_v2"
+                },
+                "warrant_class": "probabilistic",
+                "warrant_label": "Record-linkage match",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "possible_link",
+                "identity_label": "Record-linkage connection",
+                "standable": true,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-meeting:68103-008:20260716009"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026-08-07t23:52:53.226z"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260716009",
+              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260716009"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -55567,7 +57408,95 @@
             "to": "notice:20260605007",
             "claim_id": "mandate-meetings:notice:20260605007",
             "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605007",
-            "warrant_class": "not_yet_classified"
+            "warrant_class": "probabilistic",
+            "method": "mandate_meeting_subject_temporal_v2",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-meetings:notice:20260605007",
+              "kind": "graph_edge_claim",
+              "subject_ref": "notice:20260605007",
+              "root_ref": "mandate:68103-008",
+              "category_id": "mandate-meetings",
+              "relation": "requires public hearing",
+              "label": "DINING OUT NYC PUBLIC HEARING",
+              "object_href": "/notices/20260605007",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "city_record"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "city_record:20260605007"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "type_of_notice_description",
+                    "matter_subject.subject_tokens",
+                    "short_title",
+                    "event_date"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "cafe, petition"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-07-02"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+event_kind+matter_body_subject+temporal"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "DINING OUT NYC PUBLIC HEARING"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_meeting_subject_temporal_v2"
+                },
+                "warrant_class": "probabilistic",
+                "warrant_label": "Record-linkage match",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "possible_link",
+                "identity_label": "Record-linkage connection",
+                "standable": true,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-meeting:68103-008:20260605007"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026-08-07t23:52:53.226z"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605007",
+              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605007"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
@@ -55610,7 +57539,95 @@
             "to": "notice:20260605006",
             "claim_id": "mandate-meetings:notice:20260605006",
             "claim_inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605006",
-            "warrant_class": "not_yet_classified"
+            "warrant_class": "probabilistic",
+            "method": "mandate_meeting_subject_temporal_v2",
+            "confidence": "strong",
+            "publication_tier": "public_inferred",
+            "provenance": {
+              "schema": "cityscroll.graph_edge_provenance.v1",
+              "method": "graph_edge_provenance_v1",
+              "claim_id": "mandate-meetings:notice:20260605006",
+              "kind": "graph_edge_claim",
+              "subject_ref": "notice:20260605006",
+              "root_ref": "mandate:68103-008",
+              "category_id": "mandate-meetings",
+              "relation": "requires public hearing",
+              "label": "DINING OUT NYC PUBLIC HEARING",
+              "object_href": "/notices/20260605006",
+              "where": {
+                "source_system": {
+                  "available": true,
+                  "value": "city_record"
+                },
+                "source_record_id": {
+                  "available": true,
+                  "value": "city_record:20260605006"
+                },
+                "source_href": {
+                  "available": false
+                },
+                "source_fields": {
+                  "available": true,
+                  "value": [
+                    "agency_name",
+                    "type_of_notice_description",
+                    "matter_subject.subject_tokens",
+                    "short_title",
+                    "event_date"
+                  ]
+                },
+                "input_value": {
+                  "available": true,
+                  "value": "cafe, petition"
+                },
+                "observed_at": {
+                  "available": true,
+                  "value": "2026-06-25"
+                },
+                "basis": {
+                  "available": true,
+                  "value": "agency+event_kind+matter_body_subject+temporal"
+                },
+                "source_excerpt": {
+                  "available": true,
+                  "value": "DINING OUT NYC PUBLIC HEARING"
+                }
+              },
+              "how": {
+                "method": {
+                  "available": true,
+                  "value": "mandate_meeting_subject_temporal_v2"
+                },
+                "warrant_class": "probabilistic",
+                "warrant_label": "Record-linkage match",
+                "decision": "auto_link"
+              },
+              "cross_spine": {
+                "confidence": "unmatched",
+                "explicit": false
+              },
+              "confidence": {
+                "band": "strong",
+                "identity_stance": "possible_link",
+                "identity_label": "Record-linkage connection",
+                "standable": true,
+                "counts_as_verified_total": false
+              },
+              "enrichment": {
+                "entity_link_id": {
+                  "available": true,
+                  "value": "entity-link:mandate-meeting:68103-008:20260605006"
+                },
+                "resolution_run_id": {
+                  "available": true,
+                  "value": "resolution-run:mandate-meeting:transportation:2026-08-02t10:22:34.003z-2026-08-05t10:40:50.286z-2026-08-07t23:52:53.226z"
+                },
+                "next": null,
+                "missing_fields": []
+              },
+              "inspect_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605006",
+              "share_href": "/agencies/transportation/?claim=mandate-meetings%3Anotice%3A20260605006"
+            }
           },
           "status": "observed",
           "observation_state": "appeared",
