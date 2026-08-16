@@ -61,6 +61,18 @@ const ROWS = [
     date: "2026-07-17", haystack: "pesticides mosquito control contract award 81626S0021001",
   },
   {
+    id: "20260807032", section: "Public Comment on Contract Awards", agency: "Police Department",
+    noticeType: "Notice", title: "Fixed Wing aircraft program management support services.",
+    description: "The NYPD proposed contract has E-PIN: 05626S0012.",
+    date: "2026-08-14", haystack: "fixed wing aircraft police contract 05626S0012",
+  },
+  {
+    id: "20260731016", section: "Public Comment on Contract Awards", agency: "Police Department",
+    noticeType: "Notice", title: "Fire Alarm Maintenance and Repair for Manhattan and Bronx",
+    description: "The NYPD proposed contract has E-PIN: 05626W0023001.",
+    date: "2026-08-07", haystack: "fire alarm maintenance repair police contract 05626W0023001",
+  },
+  {
     id: "20260728026", section: "Agency Rules", agency: "Buildings",
     noticeType: "Public Hearings", title: "Proposed Rule - Rule relating to Incomplete Inspections",
     description: "A public hearing on incomplete inspections.",
@@ -80,8 +92,10 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
     );
     assert.equal(response.status, 200);
     const body = await response.json();
-    assert.equal(body.results.length, 1);
-    assert.deepEqual(Object.keys(body.results[0]).sort(), [
+    assert.ok(body.results.length >= 1);
+    const target = body.results.find((result) => result.object_ref === "notice:20260729004");
+    assert.ok(target);
+    assert.deepEqual(Object.keys(target).sort(), [
       "canonical_href",
       "classification",
       "coverage_state",
@@ -99,15 +113,15 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
       "title",
     ].sort());
     assert.deepEqual({
-      schema: body.results[0].schema,
-      object_ref: body.results[0].object_ref,
-      object_type: body.results[0].object_type,
-      domain: body.results[0].domain,
-      canonical_href: body.results[0].canonical_href,
-      title: body.results[0].title,
-      summary: body.results[0].summary,
-      source_observation_refs: body.results[0].source_observation_refs,
-      outcome: body.results[0].outcome,
+      schema: target.schema,
+      object_ref: target.object_ref,
+      object_type: target.object_type,
+      domain: target.domain,
+      canonical_href: target.canonical_href,
+      title: target.title,
+      summary: target.summary,
+      source_observation_refs: target.source_observation_refs,
+      outcome: target.outcome,
     }, {
       schema: "cityscroll.search_document.v1",
       object_ref: "notice:20260729004",
@@ -147,14 +161,15 @@ test("the ranked City Record shape projects an exact contract award before prese
     const response = await worker.fetch(new Request("https://api.cityscroll.org/search?q=mosquito"), { DB }, {});
     assert.equal(response.status, 200);
     const body = await response.json();
-    assert.equal(body.results.length, 1);
+    const target = body.results.find((result) => result.object_ref === "procurement:81626S0021001");
+    assert.ok(target);
     assert.deepEqual({
-      object_ref: body.results[0].object_ref,
-      object_type: body.results[0].object_type,
-      domain: body.results[0].domain,
-      canonical_href: body.results[0].canonical_href,
-      outcome: body.results[0].outcome,
-      source_observation_refs: body.results[0].source_observation_refs,
+      object_ref: target.object_ref,
+      object_type: target.object_type,
+      domain: target.domain,
+      canonical_href: target.canonical_href,
+      outcome: target.outcome,
+      source_observation_refs: target.source_observation_refs,
     }, {
       object_ref: "procurement:81626S0021001",
       object_type: "procurement",
@@ -163,6 +178,29 @@ test("the ranked City Record shape projects an exact contract award before prese
       outcome: "indexed",
       source_observation_refs: ["notice:20260710020"],
     });
+    assert.ok(body.results.some((result) => (
+      result.provenance.producer === "contract_award_search_document.v1"
+      && /mosquito/i.test(result.search_text)
+    )), "the complete retained OCP award corpus is federated into the real route");
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("current contract PINs remain findable through D1 even before the award warehouse refreshes", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    for (const pin of ["05626S0012", "05626W0023001"]) {
+      const response = await worker.fetch(new Request(`https://api.cityscroll.org/search?q=${pin}`), { DB }, {});
+      assert.equal(response.status, 200, pin);
+      const body = await response.json();
+      const document = body.results.find((result) => result.object_ref === `procurement:${pin}`);
+      assert.ok(document, pin);
+      assert.equal(document.domain, "contracts", pin);
+      assert.equal(document.object_type, "procurement", pin);
+      assert.equal(document.process_role, "award", pin);
+      assert.equal(document.provenance.browse_record.pin, pin);
+    }
   } finally {
     sqlite.close();
   }
