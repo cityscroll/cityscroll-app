@@ -3209,7 +3209,13 @@
         "project:P2016K0185",
         "agency:id:housing-preservation-and-development",
         "vendor:stem:JEMB%20ALBEE%20SQUARE"
-      ]
+      ],
+      "assertion_ids": [
+        "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:parcel_links_project:70726f6a6563743a50323031364b30313835:v1",
+        "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:published_by_agency:6167656e63793a69643a686f7573696e672d707265736572766174696f6e2d616e642d646576656c6f706d656e74:v1",
+        "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:named_developer:76656e646f723a7374656d3a4a454d42253230414c424545253230535155415245:v1"
+      ],
+      "assertion_inspect_href": "/assertions/?subject=notice%3A20170516111"
     },
     {
       "domain": "property",

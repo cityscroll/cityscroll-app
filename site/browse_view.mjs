@@ -1260,6 +1260,10 @@ export function renderBrowseView(view) {
     const detailMarkup = civicObject && row.detail
       ? `<p class="browse-static-detail">${esc(row.detail)}</p>`
       : "";
+    const assertionInspectHref = String(row.assertion_inspect_href || "").trim();
+    const assertionMarkup = /^\/assertions\/(?:\?subject=[A-Za-z0-9%._:-]+|[A-Za-z0-9%._:-]+\/?)$/.test(assertionInspectHref)
+      ? `<p class="browse-record-evidence"><a href="${esc(assertionInspectHref)}">Inspect evidence graph</a></p>`
+      : "";
     const civicObjectAttributes = civicObject
       ? ` data-civic-object-kind="${esc(civicObject.kind || "record")}" data-civic-object-id="${esc(civicObject.id || "")}"`
       : "";
@@ -1271,6 +1275,7 @@ export function renderBrowseView(view) {
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[typedMetadata, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${detailMarkup}
+      ${assertionMarkup}
       ${meetingSourceDetails}
       ${calendarCoverageMarkup}
     </article>`;

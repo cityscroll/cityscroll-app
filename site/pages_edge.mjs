@@ -25,6 +25,11 @@ import {
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
 import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
+import {
+  buildPublicAssertionGraph,
+  hydratePublicAssertionInspector,
+  renderAssertionInspectorDocument,
+} from "./assertion_inspector.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -70,6 +75,21 @@ function safeMeeting(pathname) {
 function safeMandate(pathname) {
   const match = pathname.match(/^\/mandates\/([A-Za-z0-9][A-Za-z0-9._-]{0,79})\/?$/);
   return match ? match[1] : null;
+}
+
+function assertionTarget(url) {
+  const match = url.pathname.match(/^\/assertions\/([^/?#]{1,700})\/?$/);
+  if (match) {
+    try {
+      const assertionId = decodeURIComponent(match[1]);
+      return assertionId.length <= 512 ? { assertion_id: assertionId } : null;
+    } catch {
+      return null;
+    }
+  }
+  if (!/^\/assertions\/?$/.test(url.pathname)) return null;
+  const subjectRef = String(url.searchParams.get("subject") || "").trim();
+  return subjectRef && subjectRef.length <= 320 ? { subject_ref: subjectRef } : null;
 }
 
 function safeExamNumber(pathname) {
@@ -129,6 +149,7 @@ function entityDocument(pathname) {
 
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
+  if (assertionTarget(url)) return "assertion";
   if (safeId(url.pathname)) return "notice";
   if (safeMandate(url.pathname)) return "mandate";
   if (safeMeeting(url.pathname)) return "meeting";
@@ -139,6 +160,41 @@ export function edgeRequestKind(urlValue) {
   if (browseFacet(url.pathname) || browseConcept(url.pathname) || browseObject(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   return "asset";
+}
+
+async function handleAssertion(request, env, selector) {
+  const snapshot = await staticAsset(env, request, "/data/entity_intelligence_lookup.json");
+  let view = null;
+  if (snapshot.ok) {
+    try {
+      const projection = buildPublicAssertionGraph(await snapshot.json());
+      view = hydratePublicAssertionInspector(projection, selector);
+    } catch (_error) {
+      view = null;
+    }
+  }
+  if (!view) {
+    return new Response(
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Assertion not found · CityScroll</title></head><body><main><h1>Assertion not found</h1><p><a href=\"/browse/\">Browse civic records</a></p></main></body></html>",
+      {
+        status: 404,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "public, max-age=60, s-maxage=60",
+          "X-Content-Type-Options": "nosniff",
+        },
+      },
+    );
+  }
+  const html = renderAssertionInspectorDocument(view, { currentHref: request.url });
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD"
+    ? new Response(null, { status: 200, headers })
+    : new Response(html, { status: 200, headers });
 }
 
 async function handleMeeting(request, env, meetingId) {
@@ -758,6 +814,8 @@ export default {
     if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
     if (!['GET', 'HEAD'].includes(request.method)) return new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
     const url = new URL(request.url);
+    const assertion = assertionTarget(url);
+    if (assertion) return handleAssertion(request, env, assertion);
     const id = safeId(url.pathname);
     if (id) return handleNotice(request, env, id);
     const mandateId = safeMandate(url.pathname);

@@ -11,6 +11,10 @@ import {
   resolveAgencySubject,
   resolveVendorSubject,
 } from "./object_links.mjs";
+import {
+  projectAgencyVendorAssertionIdentity,
+  projectAgencyVendorSubjectInspectorHref,
+} from "./project_agency_vendor_assertions.mjs";
 
 export const PROJECT_AGENCY_VENDOR_EVIDENCE_VERSION = "project_agency_vendor_evidence_v1";
 export const REVIEWED_PUBLISHER_ROLE_METHOD = "reviewed_publisher_role_v1";
@@ -159,13 +163,19 @@ export function buildProjectAgencyVendorEvidence({
       reviewedEdge(resolved.projectEdge, candidate),
       reviewedEdge(resolved.agencyEdge, candidate),
       vendorEdge(candidate, resolved.vendor),
-    ];
+    ].map((edge) => ({
+      ...edge,
+      ...projectAgencyVendorAssertionIdentity(candidate, edge),
+    }));
+    const assertionInspectHref = projectAgencyVendorSubjectInspectorHref(candidate.subject_ref);
     bundles.push({
       evidence_id: clean(candidate.evidence_id),
       subject_ref: clean(candidate.subject_ref),
       label: clean(resolved.propertyRow.short_title) || resolved.requestId,
       refs,
       edges,
+      assertion_ids: edges.map((edge) => edge.assertion_id),
+      assertion_inspect_href: assertionInspectHref,
       browse_scope: {
         lens: "property",
         entity_refs_all: refs,
@@ -173,6 +183,7 @@ export function buildProjectAgencyVendorEvidence({
         result_count: 1,
         result_subject_refs: [clean(candidate.subject_ref)],
         href: browseHref(refs),
+        evidence_href: assertionInspectHref,
       },
     });
   }
@@ -239,24 +250,43 @@ export function attachProjectAgencyVendorBrowseRefs(
 ) {
   const refsByRequestId = new Map((evidence?.bundles || []).map((bundle) => [
     bundle.subject_ref.replace(/^notice:/, ""),
-    bundle.refs,
+    {
+      refs: bundle.refs,
+      assertion_ids: bundle.assertion_ids || [],
+      assertion_inspect_href: bundle.assertion_inspect_href || null,
+    },
   ]));
   const previousRefsByRequestId = new Map((previousEvidence?.bundles || []).map((bundle) => [
     bundle.subject_ref.replace(/^notice:/, ""),
     new Set(bundle.refs),
   ]));
   return propertyRows.map((row) => {
-    const refs = refsByRequestId.get(clean(row?.request_id));
+    const attachment = refsByRequestId.get(clean(row?.request_id));
+    const refs = attachment?.refs;
     const previousRefs = previousRefsByRequestId.get(clean(row?.request_id)) || new Set();
     const retained = (row.entity_refs_all || []).filter((ref) => !previousRefs.has(ref));
-    if (!refs && retained.length === (row.entity_refs_all || []).length) return row;
+    const hadManagedInspector = Boolean(row.assertion_inspect_href || row.assertion_ids?.length);
+    if (!refs && retained.length === (row.entity_refs_all || []).length && !hadManagedInspector) return row;
     if (!refs && !retained.length) {
-      const { entity_refs_all: _managedRefs, ...withoutManagedRefs } = row;
+      const {
+        entity_refs_all: _managedRefs,
+        assertion_ids: _assertionIds,
+        assertion_inspect_href: _assertionInspectHref,
+        ...withoutManagedRefs
+      } = row;
       return withoutManagedRefs;
     }
-    return {
+    const next = {
       ...row,
       entity_refs_all: [...new Set([...retained, ...(refs || [])])],
     };
+    if (attachment) {
+      next.assertion_ids = [...attachment.assertion_ids];
+      next.assertion_inspect_href = attachment.assertion_inspect_href;
+    } else {
+      delete next.assertion_ids;
+      delete next.assertion_inspect_href;
+    }
+    return next;
   });
 }
