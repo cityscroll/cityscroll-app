@@ -114,3 +114,12 @@ export {
   promoteCrossSpineEdgePolicy,
   isCrossSpineCandidate,
 } from "./edge_policy.mjs";
+
+export {
+  PROJECT_AGENCY_VENDOR_EVIDENCE_VERSION,
+  REVIEWED_PUBLISHER_ROLE_METHOD,
+  REVIEWED_PUBLISHER_ROLE_METHOD_VERSION,
+  buildProjectAgencyVendorEvidence,
+  mergeProjectAgencyVendorSubjectIndex,
+  attachProjectAgencyVendorBrowseRefs,
+} from "./project_agency_vendor_evidence.mjs";

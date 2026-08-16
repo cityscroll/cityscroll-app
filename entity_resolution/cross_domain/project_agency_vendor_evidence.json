@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "policy_version": "project_agency_vendor_evidence_v1",
+  "candidates": [
+    {
+      "evidence_id": "city-record-20170516111-albee-square",
+      "subject_ref": "notice:20170516111",
+      "review_state": "accepted",
+      "reviewed_at": "2026-08-16",
+      "relevant_time": "2017-05-19T00:00:00.000",
+      "source_record": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170516111",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20170516111"
+      },
+      "agency": {
+        "name": "Housing Preservation and Development",
+        "ref": "agency:id:housing-preservation-and-development"
+      },
+      "vendor": {
+        "name": "JEMB Albee Square LLC",
+        "ref": "vendor:stem:JEMB%20ALBEE%20SQUARE",
+        "role": "Developer",
+        "source_fields": [
+          "additional_description_1"
+        ],
+        "basis": "explicit_developer_role_and_conveyance",
+        "evidence_summary": "The notice identifies JEMB Albee Square LLC as the developer receiving the disposition area from the sponsor under a contract of sale."
+      },
+      "project": {
+        "ref": "project:P2016K0185",
+        "bbl": "3001460042"
+      }
+    }
+  ]
+}

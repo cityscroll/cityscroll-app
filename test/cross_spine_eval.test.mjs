@@ -16,6 +16,7 @@ import {
 } from "../tools/cross_spine_eval.mjs";
 import { buildConstellationErAccuracyReceipt } from "../tools/build_constellation_er_accuracy_receipt.mjs";
 import { LAND_USE_PROCEDURE_KINDS } from "../worker/src/lib/subject_registry.mjs";
+import { buildProjectAgencyVendorEvidence } from "../entity_resolution/cross_domain/index.mjs";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const GOLD_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v3.jsonl");
@@ -25,6 +26,10 @@ const HARNESS_PATH = resolve(ROOT, "tools/cross_spine_eval.mjs");
 const BUILD_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v3.mjs");
 const BUILD_V2_PATH = resolve(ROOT, "tools/build_cross_spine_gold_v2.mjs");
 const ACCURACY_RECEIPT_PATH = resolve(ROOT, "docs/evidence/ebcg-er-accuracy/receipt.json");
+const PROJECT_AGENCY_VENDOR_REGISTRY = resolve(
+  ROOT,
+  "entity_resolution/cross_domain/project_agency_vendor_evidence.json",
+);
 
 function fixtureRow(id, relation, label, leftGroup, rightGroup, features) {
   return {
@@ -114,6 +119,51 @@ test("constellation accuracy receipt records improvements and provisional cohort
   assert.equal(receipt.held_out_metrics.false_split, 0);
   assert.ok(receipt.public_total_contract.agency_mandates.provisional_rows_excluded > 0);
   assert.ok(receipt.publication_gate.provisional_cross_spine_candidates.evidence_only > 0);
+});
+
+test("reviewed production evidence materializes one provenance-complete three-ref bundle", () => {
+  const registry = JSON.parse(readFileSync(PROJECT_AGENCY_VENDOR_REGISTRY, "utf8"));
+  const property = JSON.parse(readFileSync(
+    resolve(ROOT, "site/data/property_domain_observations.json"),
+    "utf8",
+  ));
+  const propertyCrossDomain = JSON.parse(readFileSync(
+    resolve(ROOT, "site/data/property_cross_domain_lookup.json"),
+    "utf8",
+  ));
+  const evidence = buildProjectAgencyVendorEvidence({
+    registry,
+    propertyRows: property.property_rows,
+    propertyCrossDomain,
+  });
+
+  assert.equal(evidence.public_bundle_count, 1);
+  assert.equal(evidence.receipt.admitted_count, 1);
+  assert.equal(evidence.receipt.invalid_accepted_candidates_excluded, 0);
+  const [bundle] = evidence.bundles;
+  assert.equal(bundle.subject_ref, "notice:20170516111");
+  assert.deepEqual(bundle.refs, [
+    "project:P2016K0185",
+    "agency:id:housing-preservation-and-development",
+    "vendor:stem:JEMB%20ALBEE%20SQUARE",
+  ]);
+  assert.deepEqual(bundle.edges.map((edge) => edge.type), [
+    "parcel_links_project",
+    "published_by_agency",
+    "named_developer",
+  ]);
+  for (const edge of bundle.edges) {
+    assert.equal(edge.confidence, "strong");
+    assert.equal(edge.review_state, "accepted");
+    assert.match(edge.method, /_v1$/);
+    assert.ok(edge.method_version);
+    assert.ok(edge.relevant_time);
+    assert.ok(edge.provenance.source_record_id);
+    assert.match(edge.provenance.source_url, /^https:\/\//);
+  }
+  assert.equal(bundle.edges[0].bbl, "3001460042");
+  assert.equal(bundle.browse_scope.strict_all_ref, true);
+  assert.equal(bundle.browse_scope.result_count, 1);
 });
 
 test("topic normalization review reports precision, coverage, and adversarial abstention", () => {

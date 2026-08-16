@@ -108,7 +108,7 @@ test("browse scope conformance: every registered lens filters when given fixture
   }
 });
 
-test("default Browse inventories exact non-property secondary refs without changing Property", () => {
+test("default Browse inventories exact secondary refs without adding notice or PIN refs to Property", () => {
   const expectedSecondaryKinds = {
     contracts: new Set(["notice", "pin"]),
     staffing: new Set(["notice"]),
@@ -135,7 +135,35 @@ test("default Browse inventories exact non-property secondary refs without chang
     .edgeInventory
     .map((edge) => edge.ref);
   assert.ok(propertyRefs.some((ref) => ref.startsWith("bbl:")), "Property still exposes parcel refs");
+  assert.ok(propertyRefs.some((ref) => ref.startsWith("project:")), "Property exposes a reviewed project ref");
+  assert.ok(propertyRefs.some((ref) => ref.startsWith("vendor:")), "Property exposes a reviewed vendor ref");
   assert.equal(propertyRefs.some((ref) => ref.startsWith("notice:") || ref.startsWith("pin:")), false);
+});
+
+test("production Property evidence publishes one strict project-agency-vendor intersection", () => {
+  const intelligence = JSON.parse(fs.readFileSync(
+    "site/data/entity_intelligence_lookup.json",
+    "utf8",
+  ));
+  assert.equal(intelligence.project_agency_vendor.public_bundle_count, 1);
+  const [bundle] = intelligence.project_agency_vendor.bundles;
+  assert.equal(bundle.browse_scope.strict_all_ref, true);
+  assert.equal(bundle.refs.length, 3);
+
+  const payload = readPayload("property");
+  const sourceRow = payload.property_rows.find((row) => row.request_id === "20170516111");
+  assert.ok(sourceRow, "the evidence subject is a real Property source row");
+  assert.deepEqual(sourceRow.entity_refs_all, bundle.refs);
+
+  const params = new URLSearchParams({
+    facet: JSON.stringify({ entity_refs_all: bundle.refs }),
+  });
+  const view = buildBrowseView("property", payload, params, { limit: 1000 });
+  assert.equal(view.scope.mode, "applied");
+  assert.equal(view.total, 1);
+  assert.deepEqual(view.rows.map((row) => `notice:${row.request_id}`), [bundle.subject_ref]);
+  assert.deepEqual(view.scope.refs.map((item) => item.ref), bundle.refs);
+  assert.equal(bundle.browse_scope.result_count, view.total);
 });
 
 test("contracts conformance: a three-way typed scope is an all-ref intersection with removable chips", () => {
