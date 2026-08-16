@@ -140,7 +140,7 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
-  outputs.push(output("browse/exams", buildBrowseAliasDocument(shell, "exams", payloads.staffing)));
+  outputs.push(output("browse/exams", buildBrowseAliasDocument(shell, "exams", { ...payloads.staffing, ...staffingExams })));
   const conceptSources = {
     people,
     committees,

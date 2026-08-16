@@ -1,11 +1,11 @@
-import { createIncrementalList } from "./incremental_list.mjs";
 import {
   browseListParams,
   browseListShareSearch,
   filterConfiguredBrowseRows,
   PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
 } from "./browse_list_contract.mjs";
-import { renderPeopleOrganizationRow } from "./browse_concept_view.mjs";
+import { renderBrowseView } from "./browse_view.mjs";
+import { buildPeopleListBrowseView } from "./browse_reuse_surfaces.mjs";
 
 const root = document.querySelector("[data-people-organizations]");
 const input = root?.querySelector("[data-people-organizations-search]");
@@ -13,6 +13,7 @@ const type = root?.querySelector("[data-people-organizations-type]");
 const summary = root?.querySelector("[data-people-organizations-search-summary]");
 const empty = root?.querySelector("[data-people-organizations-no-results]");
 const list = root?.querySelector("[data-people-organizations-list]");
+const more = root?.querySelector("[data-people-organizations-more]");
 const modelScript = root?.querySelector("[data-people-organizations-model]");
 
 function readModel() {
@@ -40,6 +41,7 @@ if (root && input && type && summary && empty && list) {
   const initialSummary = summary.textContent;
   let activeRows = allRows;
   let filtered = [];
+  let shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
 
   function updateSummary({ shownCount = null } = {}) {
     const { query, facet } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
@@ -56,20 +58,6 @@ if (root && input && type && summary && empty && list) {
     }
   }
 
-  const incremental = createIncrementalList({
-    container: list,
-    initialPageSize: PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize,
-    pageSize: PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.pageSize,
-    getItems: () => filtered,
-    renderItems: (rows) => rows.map(renderPeopleOrganizationRow).join(""),
-    renderEmpty: () => "",
-    renderMore: (remaining) => `Show more (${remaining.toLocaleString("en-US")})`,
-    moreId: "people-organizations-more",
-    moreClass: "people-org-more",
-    moreElement: "li",
-    onMore: ({ shown }) => updateSummary({ shownCount: shown.length }),
-  });
-
   function render({ reset = false, canonicalize = false } = {}) {
     filtered = filterConfiguredBrowseRows(allRows, location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     activeRows = filtered;
@@ -78,11 +66,17 @@ if (root && input && type && summary && empty && list) {
     const { query } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (input.value !== query) input.value = query;
     if (canonicalize) updateShareState();
+    if (reset) shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
     list.dataset.browseListStatus = model.generated_at ? (allRows.length ? "published" : "empty") : "unknown";
-    const result = reset ? incremental.reset(filtered) : incremental.render({ items: filtered });
-    updateSummary();
+    list.innerHTML = renderBrowseView(buildPeopleListBrowseView(model, location.search, { limit: shownLimit }));
+    const shownCount = Math.min(shownLimit, filtered.length);
+    if (more) {
+      const remaining = Math.max(0, filtered.length - shownCount);
+      more.hidden = remaining === 0;
+      more.textContent = remaining ? `Show more (${remaining.toLocaleString("en-US")})` : "Show more";
+    }
+    updateSummary({ shownCount });
     empty.hidden = filtered.length !== 0;
-    return result;
   }
 
   input.addEventListener("input", () => {
@@ -92,6 +86,10 @@ if (root && input && type && summary && empty && list) {
   type.addEventListener("change", () => {
     updateShareState();
     render({ reset: true });
+  });
+  more?.addEventListener("click", () => {
+    shownLimit += PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.pageSize;
+    render();
   });
   root.querySelector("[data-people-organizations-search-form]")?.addEventListener("submit", (event) => event.preventDefault());
   render({ canonicalize: true });
