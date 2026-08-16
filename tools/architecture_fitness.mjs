@@ -9,11 +9,11 @@ import { dirname, join, normalize, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import dependencyCruiserConfig from "../.dependency-cruiser.mjs";
+import { buildFacts } from "./build_architecture_facts.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_EXTENSIONS = new Set([".cjs", ".js", ".mjs"]);
 const SKIP_DIRECTORIES = new Set([".git", "node_modules", ".venv", ".venv-playwright"]);
-const FACTS_PATH = join(ROOT, "architecture", "generated", "facts.json");
 const MODEL_PATH = join(ROOT, "architecture", "workspace.dsl");
 
 function walkFiles(root, current = root, files = []) {
@@ -205,7 +205,7 @@ function formatDrift(report) {
   return lines;
 }
 
-export function runArchitectureFitness({ root = ROOT, factsPath = FACTS_PATH, modelPath = MODEL_PATH } = {}) {
+export function runArchitectureFitness({ root = ROOT, facts = buildFacts(), modelPath = MODEL_PATH } = {}) {
   const edges = buildImportGraph(root);
   const violations = evaluateDependencyRules(edges);
   const errors = violations.filter((violation) => violation.severity === "error");
@@ -213,11 +213,11 @@ export function runArchitectureFitness({ root = ROOT, factsPath = FACTS_PATH, mo
   if (warnings.length) console.warn(formatViolations(warnings).join("\n"));
   if (errors.length) throw new Error(formatViolations(errors).join("\n"));
 
-  if (!existsSync(factsPath) || !existsSync(modelPath)) {
-    throw new Error(`declared-model drift inputs missing: facts=${factsPath} model=${modelPath}`);
+  if (!existsSync(modelPath)) {
+    throw new Error(`declared-model drift input missing: model=${modelPath}`);
   }
   const report = checkDeclaredModelDrift({
-    facts: JSON.parse(readFileSync(factsPath, "utf8")),
+    facts,
     modelText: readFileSync(modelPath, "utf8"),
   });
   const drift = formatDrift(report);

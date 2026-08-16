@@ -2,15 +2,30 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
+import { buildFacts } from "../tools/build_architecture_facts.mjs";
 import {
   apparentSupersededAdrs,
+  buildReport,
   parseAdr,
   parseWorkspace,
   reconcileArchitecture,
 } from "../tools/reconcile_architecture.mjs";
 
 const modelText = readFileSync(new URL("../architecture/workspace.dsl", import.meta.url), "utf8");
-const facts = JSON.parse(readFileSync(new URL("../architecture/generated/facts.json", import.meta.url), "utf8"));
+const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
+
+test("fresh repository facts reconcile with the C4 model and ADRs", () => {
+  const report = buildReport({ facts });
+  assert.equal(report.status, "healthy");
+  assert.deepEqual(report.outcomes.additions, []);
+  assert.deepEqual(report.outcomes.removals, []);
+  assert.deepEqual(report.outcomes.contradictions, []);
+  assert.deepEqual(report.outcomes.superseded_adrs, []);
+  assert.deepEqual(report.facts, {
+    source: "generated_in_memory",
+    regenerated_commit: "test-commit",
+  });
+});
 
 test("parses stable C4 declarations and relationships", () => {
   const model = parseWorkspace(modelText);
