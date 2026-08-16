@@ -28,6 +28,12 @@ import {
   renderCivicTimeLedgerPanel,
   renderNoticeBitemporalHistory,
 } from "../site/civic_time_ledger.mjs";
+import {
+  CIVIC_TIME_COMPOSED_GRAPH_SCHEMA,
+  CIVIC_TIME_GRAPH_AS_OF_RECEIPT_SCHEMA,
+  buildCivicTimeComposedGraphHistory,
+  projectCivicTimeComposedGraphAsOf,
+} from "../site/civic_time_composed_graph.mjs";
 import { buildCivicTimeSourceChange } from "../worker/src/lib/civic_time_writer.mjs";
 import {
   buildAgencyConstellationView,
@@ -431,6 +437,145 @@ test("PASSPort revision rematerializes only registered civic-time derived rows",
     invalidated_derived_rows: [affectedRef],
   });
   assert.deepEqual(receipt.recomputed[0].features, ["notice_bitemporal_history", "derived_feature_rollup"]);
+});
+
+test("procurement notice graph answers retained belief time without rewriting corrected history", () => {
+  const firstDue = {
+    event_id: "passport-due-v1",
+    subject_ref: "notice:20260707026",
+    event_kind: "procurement.solicitation_due",
+    source_record_ref: "passport-rfx:81026B0003",
+    source_revision: "rfx:81026B0003:due:2026-08-18",
+    materializer_name: "money-lifecycle",
+    materializer_version: "3",
+    valid_at: "2026-08-18",
+    observed_at: "2026-08-10T09:00:00.000Z",
+    processed_at: "2026-08-10T12:00:00.000Z",
+    written_at: "2026-08-10T12:01:00.000Z",
+  };
+  const correctedDue = {
+    ...firstDue,
+    event_id: "passport-due-v2",
+    source_revision: "rfx:81026B0003:due:2026-08-25",
+    materializer_version: "4",
+    valid_at: "2026-08-25",
+    observed_at: "2026-08-12T09:00:00.000Z",
+    processed_at: "2026-08-12T12:00:00.000Z",
+    written_at: "2026-08-12T12:01:00.000Z",
+    supersedes_event_id: firstDue.event_id,
+  };
+  const registeredAward = {
+    event_id: "checkbook-registration-v1",
+    subject_ref: "contract:CT81026B0003",
+    event_kind: "procurement.award_registered",
+    source_record_ref: "checkbook:CT81026B0003",
+    source_revision: "checkbook:CT81026B0003:registered:2026-08-09",
+    materializer_name: "money-lifecycle",
+    materializer_version: "3",
+    valid_at: "2026-08-09",
+    observed_at: "2026-08-10T09:00:00.000Z",
+    processed_at: "2026-08-10T12:00:00.000Z",
+    written_at: "2026-08-10T12:01:00.000Z",
+  };
+  const history = buildCivicTimeComposedGraphHistory({
+    rootRef: "notice:20260707026",
+    eventRows: [firstDue, correctedDue, registeredAward],
+    identityObservationRows: [{
+      observation_id: "notice-contract-v1",
+      case_family: "procurement_notice",
+      root_ref: "notice:20260707026",
+      assertion_key: "registered-contract",
+      written_at: "2026-08-10T12:01:00.000Z",
+      type: "registered_as",
+      from: "notice:20260707026",
+      to: "contract:CT81026B0003",
+      method: "pin_exact_lifecycle_v1",
+      confidence: "strong",
+      provenance: {
+        source_system: "passport",
+        source_record_id: "passport-rfx:81026B0003",
+        source_fields: ["epin", "contract_id"],
+        basis: "registered_contract_exact",
+        observed_at: "2026-08-10T09:00:00.000Z",
+      },
+    }],
+  });
+
+  const beforeCorrection = projectCivicTimeComposedGraphAsOf(history, {
+    beliefTime: "2026-08-11T23:59:59.999Z",
+    processingTime: "2026-08-16T10:00:00.000Z",
+  });
+  const afterCorrection = projectCivicTimeComposedGraphAsOf(history, {
+    beliefTime: "2026-08-13T23:59:59.999Z",
+    processingTime: "2026-08-16T10:00:00.000Z",
+  });
+
+  assert.equal(beforeCorrection.schema, CIVIC_TIME_COMPOSED_GRAPH_SCHEMA);
+  assert.equal(beforeCorrection.receipt.schema, CIVIC_TIME_GRAPH_AS_OF_RECEIPT_SCHEMA);
+  assert.equal(beforeCorrection.receipt.temporal_contract, "cityscroll.civic_time_ledger.v1");
+  assert.equal(beforeCorrection.receipt.belief_time, "2026-08-11T23:59:59.999Z");
+  assert.equal(beforeCorrection.receipt.processing_time, "2026-08-16T10:00:00.000Z");
+  assert.equal(beforeCorrection.receipt.processing_time_used_for_membership, false);
+  assert.equal(beforeCorrection.receipt.axes.system.owner, "observation");
+  assert.equal(beforeCorrection.receipt.axes.valid.owner, "civic");
+
+  const beforeObligation = beforeCorrection.objects.find((object) => object.object_type === "procurement_obligation");
+  const afterObligation = afterCorrection.objects.find((object) => object.object_type === "procurement_obligation");
+  assert.equal(beforeObligation.valid_interval.at, "2026-08-18");
+  assert.equal(beforeObligation.provenance.source_revision, firstDue.source_revision);
+  assert.equal(afterObligation.valid_interval.at, "2026-08-25");
+  assert.equal(afterObligation.provenance.source_revision, correctedDue.source_revision);
+  assert.equal(
+    beforeCorrection.objects.find((object) => object.object_type === "procurement_event")?.subject_ref,
+    "contract:CT81026B0003",
+    "the accepted identity link brings the contract event into the composed case",
+  );
+  assert.equal(beforeCorrection.edges.find((edge) => edge.type === "registered_as")?.to, "contract:CT81026B0003");
+  assert.ok(beforeCorrection.edges.every((edge) => edge.provenance?.schema === "cityscroll.graph_edge_provenance.v1"));
+  assert.equal(history.events[0].valid_at, "2026-08-18", "prior retained belief stays unchanged");
+  assert.equal(history.events.length, 3, "projection does not compact retained correction history");
+});
+
+test("composed graph never promotes a provisional identity link through as-of projection", () => {
+  const base = {
+    case_family: "procurement_notice",
+    root_ref: "notice:20260707026",
+    events: [],
+    identity_link_history: [
+      {
+        observation_id: "contract-link-v1",
+        assertion_key: "registered-contract",
+        written_at: "2026-08-10T12:01:00.000Z",
+        type: "registered_as",
+        from: "notice:20260707026",
+        to: "contract:CT81026B0003",
+        method: "pin_exact_lifecycle_v1",
+        confidence: "strong",
+        provenance: { source_system: "passport", source_record_id: "passport-rfx:81026B0003" },
+      },
+      {
+        observation_id: "contract-link-v2-provisional",
+        assertion_key: "registered-contract",
+        supersedes_observation_id: "contract-link-v1",
+        written_at: "2026-08-12T12:01:00.000Z",
+        type: "registered_as",
+        from: "notice:20260707026",
+        to: "contract:CT81026B9999",
+        method: "pin_exact_lifecycle_v1",
+        confidence: "strong",
+        publication_tier: "evidence_only",
+        provisional: true,
+        provenance: { source_system: "passport", source_record_id: "passport-rfx:81026B9999" },
+      },
+    ],
+  };
+
+  const before = projectCivicTimeComposedGraphAsOf(base, { beliefTime: "2026-08-11" });
+  const after = projectCivicTimeComposedGraphAsOf(base, { beliefTime: "2026-08-13" });
+  assert.equal(before.edges.find((edge) => edge.type === "registered_as")?.to, "contract:CT81026B0003");
+  assert.equal(after.edges.some((edge) => edge.type === "registered_as"), false);
+  assert.equal(after.objects.some((object) => object.object_ref === "contract:CT81026B9999"), false);
+  assert.equal(after.receipt.counts.omitted_provisional_edges, 1);
 });
 
 test("unregistered changes stay unknown and an empty registry stays empty", () => {
