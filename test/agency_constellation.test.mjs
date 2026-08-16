@@ -27,6 +27,7 @@ import { reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_i
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
 import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
+import { renderEdgeProvenanceInspector } from "../site/graph_edge_provenance.mjs";
 import { buildAgencyObligationsLookup } from "../site/agency_obligations.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
@@ -430,6 +431,25 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   assert.match(html, /Copy link to this connection/);
   assert.match(html, new RegExp(`claim=${encodeURIComponent(claimId).replace(/%/g, "%")}`));
   assert.doesNotMatch(html, /fabricat/i);
+
+  for (const claim of view.claims) {
+    const disclosure = renderEdgeProvenanceInspector(claim, { open: true });
+    assert.match(disclosure, /class="ui-official-source-link edge-prov-source-link"/, claim.claim_id);
+    assert.doesNotMatch(
+      disclosure,
+      /NaN|Source record|Source fields|Matching method|Link record|Resolution run|Technical details/,
+      claim.claim_id,
+    );
+    const sourceRecord = claim.where?.source_record_id?.value;
+    if (sourceRecord && /[:_]/.test(sourceRecord)) {
+      assert.doesNotMatch(disclosure, new RegExp(sourceRecord.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), claim.claim_id);
+    }
+    for (const field of claim.where?.source_fields?.value || []) {
+      if (field.includes("_")) {
+        assert.doesNotMatch(disclosure, new RegExp(field.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), claim.claim_id);
+      }
+    }
+  }
 });
 
 test("tentative edges stay off the public list rather than shipping with hedges", () => {
