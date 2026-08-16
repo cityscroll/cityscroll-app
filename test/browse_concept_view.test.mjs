@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buildBrowseConceptLanding, renderBrowseConceptLanding } from "../site/browse_concept_view.mjs";
+import {
+  buildBrowseConceptLanding,
+  renderBrowseConceptLanding,
+  renderPeopleOrganizationRow,
+} from "../site/browse_concept_view.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 
 const geography = {
@@ -76,15 +80,32 @@ test("People + organizations builds one typed list and never joins a notice name
   assert.match(board.place_href, /^\/near-you\//);
 });
 
-test("People + organizations gives every row a unique typed h3 heading", () => {
+test("People + organizations gives every row a unique resident-facing h3 heading", () => {
   const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", {
     people: { by_person_id: { "7801": { person_id: "7801", person_name: "Christopher Marte", terms: [{ office_id: "office-1", term_start: "2024-01-01" }] } } },
     hires: { notices: [{ request_id: "984089", agency_name: "Parks", additional_description_1: "Employee Name: MARTE, CHRISTOPHER" }] },
   }));
-  const headings = [...html.matchAll(/<h3>(.*?)<\/h3>/g)].map((match) => match[1].replace(/<[^>]+>/g, ""));
+  const headings = [...html.matchAll(/<h3[^>]*>(.*?)<\/h3>/g)].map((match) => match[1].replace(/<[^>]+>/g, ""));
   assert.equal(new Set(headings).size, headings.length);
-  assert.ok(headings.some((heading) => heading.includes("Official · official:7801")));
+  assert.ok(headings.some((heading) => heading.includes("Official · Christopher Marte")));
   assert.ok(headings.some((heading) => heading.includes("Exact-person appointment · appointment:7801:office-1:2024-01-01")));
+});
+
+test("official rows present one name and type without publication or internal-id noise", () => {
+  const html = renderPeopleOrganizationRow({
+    kind: "official",
+    id: "official:425",
+    label: "Adolfo Carrion",
+    href: "/officials/425/",
+    relation_state: "published",
+    detail: "Official profile",
+    search_text: "Adolfo Carrion official council member",
+  });
+  const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+  assert.equal(visibleText, "Official · Adolfo Carrion");
+  assert.doesNotMatch(visibleText, /Published|Official profile|official:425/);
+  assert.equal((visibleText.match(/Official/g) || []).length, 1);
 });
 
 test("People + organizations keeps concept and unified-list headings unique", () => {

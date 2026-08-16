@@ -10,6 +10,7 @@ import {
   measureOfficialCoverage,
   officialConnectionScopeHash,
   renderOfficialCoverageHTML,
+  renderOfficialDecisionTrailHTML,
 } from "../site/official_connections.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
 
@@ -128,6 +129,26 @@ test("official reader label omits promotion thresholds and audit methodology", (
   });
   assert.match(html, /Published votes linked to this official|Official decision constellation/);
   assert.doesNotMatch(html, /Coverage gate|promotion|retention|committed cohort|<progress/i);
+});
+
+test("official profiles keep published votes inline without a Meetings-scope detour", () => {
+  const bag = lookup.by_person_id["7801"];
+  const view = buildOfficialConnectionView(bag, lookup.coverage, { scope: CrolScope });
+  const html = renderOfficialDecisionTrailHTML(view, {
+    formatDate: (value) => value,
+    escapeHtml: (value) => String(value),
+    translate: (key) => key,
+    votesTableHTML: (votes) => `<table data-inline-vote-count="${votes.length}"></table>`,
+  });
+  const entitiesSource = readFileSync(
+    new URL("../site/app/entities.mjs", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(html, /official-decision-trail/);
+  assert.match(html, /data-inline-vote-count="[1-9]\d*"/);
+  assert.match(entitiesSource, /renderOfficialDecisionTrailHTML\(officialView/);
+  assert.doesNotMatch(entitiesSource, /official-view-all|official_view_all_scope/);
 });
 
 test("official scope links round-trip the exact person identity and votes_on relation", () => {
