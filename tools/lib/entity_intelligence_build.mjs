@@ -25,6 +25,8 @@ import {
   observationFromPropertyRow,
   buildIntelligenceCorpus,
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
+  buildProjectAgencyVendorEvidence,
+  mergeProjectAgencyVendorSubjectIndex,
 } from "../../entity_resolution/cross_domain/index.mjs";
 import { vendorStem } from "../../entity_resolution/normalizers/vendor_stem.mjs";
 import { buildEpinIndex, joinPinToEpin } from "../../worker/src/lib/passport_join.mjs";
@@ -982,6 +984,18 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     loadJsonIfExists(path.join(root, "warehouse/receipts/proof/wh04_er_batch_latest.json")) || {},
     procurementSpine,
   );
+  const propertyDoc = loadJsonIfExists(
+    path.join(root, "site/data/property_domain_observations.json"),
+  ) || {};
+  const projectAgencyVendor = buildProjectAgencyVendorEvidence({
+    registry: loadJsonIfExists(
+      path.join(root, "entity_resolution/cross_domain/project_agency_vendor_evidence.json"),
+    ) || {},
+    propertyRows: propertyDoc.property_rows || [],
+    propertyCrossDomain: loadJsonIfExists(
+      path.join(root, "site/data/property_cross_domain_lookup.json"),
+    ) || {},
+  });
 
   // Prefer a multi-domain demo that includes live people when present; else Parks;
   // else the first multi-domain entity.
@@ -995,7 +1009,10 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
   // when people is empty on other roots.
   const demoEntity = withPeople || parks || multi[0] || null;
 
-  const bySubjectRef = buildSubjectEntityIndex(corpus);
+  const bySubjectRef = mergeProjectAgencyVendorSubjectIndex(
+    buildSubjectEntityIndex(corpus),
+    projectAgencyVendor,
+  );
   return {
     schema_version: 1,
     phase: "cross-domain-object-links",
@@ -1022,6 +1039,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     entities: corpus.entities,
     by_ref: corpus.by_ref,
     by_subject_ref: bySubjectRef,
+    project_agency_vendor: projectAgencyVendor,
     vendor_footprint: vendorFootprint,
     procurement_spine: {
       schema_version: 1,
@@ -1046,6 +1064,8 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/meetings_domain_observations.json",
         "site/data/people_domain_observations.json",
         "site/data/property_domain_observations.json",
+        "site/data/property_cross_domain_lookup.json",
+        "entity_resolution/cross_domain/project_agency_vendor_evidence.json",
         "site/data/franchise_domain_observations.json",
       ],
       methods: [
@@ -1058,6 +1078,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "checkbook_payment_v1",
         "exact_bbl_v1",
         "disposition_owner_label_v1",
+        "reviewed_publisher_role_v1",
         "rules_agency_issued_v1",
         "meetings_agency_hosts_v1",
         "people_votes_as_official_v1",
@@ -1095,6 +1116,7 @@ export function slimDocForWorker(doc) {
     verified_demo: doc.verified_demo,
     by_ref: doc.by_ref,
     by_subject_ref: doc.by_subject_ref,
+    project_agency_vendor: doc.project_agency_vendor,
     vendor_footprint: footprint,
     procurement_spine: doc.procurement_spine,
     // Compact entity list for /entity-intelligence?list=1

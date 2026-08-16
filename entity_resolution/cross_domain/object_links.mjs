@@ -105,6 +105,11 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
     domains: Object.freeze(["property"]),
     registry: true,
   },
+  named_developer: {
+    description: "Property disposition notice explicitly names the project developer",
+    domains: Object.freeze(["property"]),
+    registry: false,
+  },
   sits_on_parcel: {
     description: "Property notice or land project sits on an exact BBL",
     domains: Object.freeze(["property", "land"]),
