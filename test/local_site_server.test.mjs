@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -25,9 +26,10 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(server, /def _static_document\(/);
   assert.match(server, /if self\._static_document\(route, query\):/);
   assert.match(server, /def publish_ready\(/);
-  assert.match(server, /probe_base\(base\)/);
+  assert.match(server, /probe_base\(base, timeout_seconds=args\.readiness_timeout\)/);
   assert.match(server, /urllib\.error\.URLError/);
   assert.match(server, /READINESS_TIMEOUT_SECONDS/);
+  assert.match(server, /--readiness-timeout/);
   assert.match(server, /connection refused/);
 
   const source = read("tools/preflight-required-checks.sh");
@@ -44,11 +46,17 @@ test("full preflight and CI use the route-aware server without touching existing
 
   const ci = read(".github/workflows/ci.yml");
   const shardRunner = read("tools/run_a11y_ci_shard.sh");
+  const readiness = read("tools/a11y_server_readiness.sh");
   const build = ci.indexOf("uses: ./.github/actions/build-site");
   const runShard = ci.indexOf("tools/run_a11y_ci_shard.sh");
   assert.ok(build >= 0 && build < runShard, "CI must build the deploy artifact before running shards");
   assert.match(shardRunner, /tools\/local_site_server\.py[\s\\]*\n\s*--directory _site[\s\\]*\n\s*--port 0/);
   assert.match(shardRunner, /--ready-file "\$ready_file"/);
+  assert.match(shardRunner, /A11Y_SERVER_READINESS_TIMEOUT_SECONDS:-30/);
+  assert.match(shardRunner, /A11Y_SERVER_READINESS_GRACE_SECONDS:-15/);
+  assert.match(shardRunner, /--readiness-timeout "\$server_readiness_timeout_seconds"/);
+  assert.match(shardRunner, /a11y_readiness_outer_timeout/);
+  assert.match(shardRunner, /a11y_wait_for_local_site/);
   assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}/);
   assert.doesNotMatch(
     ci,
@@ -59,13 +67,63 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(ci, /- name: Download shared verified site artifact\n\s+if: success\(\)/);
   assert.match(ci, /- name: Verify shared site artifact checksums\n\s+if: success\(\)/);
   assert.match(ci, /- name: Run isolated accessibility shard\n\s+if: success\(\)/);
-  assert.match(shardRunner, /readiness_url="\$\{local_base\}index\.html"/);
-  assert.match(shardRunner, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*"\$readiness_url"/);
-  assert.match(shardRunner, /HTTP 404/);
+  assert.match(readiness, /readiness_url="\$\{A11Y_READY_BASE\}index\.html"/);
+  assert.match(readiness, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*"\$readiness_url"/);
+  assert.match(readiness, /HTTP 404/);
+  assert.match(readiness, /outer_timeout <= inner_timeout/);
+  assert.match(readiness, /SECONDS \+ outer_timeout/);
   assert.match(shardRunner, /server_log=/);
-  assert.match(shardRunner, /for _ in \{1\.\.120\}/);
   assert.doesNotMatch(shardRunner, /tools\/local_site_server\.py[\s\S]*?--port 8000/);
-  assert.doesNotMatch(shardRunner, /python3 -m http\.server 8000 --directory _site/);
+  assert.doesNotMatch(`${shardRunner}\n${readiness}`, /python3 -m http\.server 8000 --directory _site/);
+});
+
+test("outer readiness wait accepts publication near the scaled inner deadline", async (t) => {
+  const temp = mkdtempSync(join(tmpdir(), "crol-a11y-readiness-"));
+  const ready = join(temp, "ready");
+  const probeError = join(temp, "probe-error.log");
+  const serverLog = join(temp, "server.log");
+  writeFileSync(serverLog, "", "utf8");
+
+  const server = createServer((request, response) => {
+    if (request.url === "/index.html") {
+      response.writeHead(200, { "content-type": "text/html" });
+      response.end("<!doctype html><title>ready</title>");
+      return;
+    }
+    response.writeHead(404);
+    response.end();
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  t.after(async () => {
+    await new Promise((resolve) => server.close(resolve));
+    rmSync(temp, { recursive: true, force: true });
+  });
+
+  const address = server.address();
+  const base = `http://127.0.0.1:${address.port}/`;
+  const script = [
+    "set -euo pipefail",
+    "source tools/a11y_server_readiness.sh",
+    'outer="$(a11y_readiness_outer_timeout 1 1)"',
+    '[[ "$outer" == "2" ]]',
+    "if a11y_readiness_outer_timeout 1 0 >/dev/null 2>&1; then exit 9; fi",
+    'a11y_wait_for_local_site "$1" "$2" "$3" "$4" "$outer"',
+    'printf "%s" "$A11Y_READY_BASE"',
+  ].join("\n");
+  const child = spawn(
+    "bash",
+    ["-c", script, "readiness-test", ready, probeError, serverLog, String(process.pid)],
+    { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] },
+  );
+  const stdout = [];
+  const stderr = [];
+  child.stdout.on("data", (chunk) => stdout.push(chunk));
+  child.stderr.on("data", (chunk) => stderr.push(chunk));
+  setTimeout(() => writeFileSync(ready, `${base}\n`, "utf8"), 750);
+
+  const exitCode = await new Promise((resolve) => child.once("close", resolve));
+  assert.equal(exitCode, 0, Buffer.concat(stderr).toString());
+  assert.equal(Buffer.concat(stdout).toString(), base);
 });
 
 test("accessibility aggregate accepts only a green matrix and a green routes-focus attempt", () => {

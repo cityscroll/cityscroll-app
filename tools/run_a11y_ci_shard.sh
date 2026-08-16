@@ -18,6 +18,14 @@ esac
 
 : "${RUNNER_TEMP:?RUNNER_TEMP must be set}"
 NO_DISCLAIMER_SLOP_MODE="${NO_DISCLAIMER_SLOP_MODE:-warn}"
+server_readiness_timeout_seconds="${A11Y_SERVER_READINESS_TIMEOUT_SECONDS:-30}"
+server_readiness_grace_seconds="${A11Y_SERVER_READINESS_GRACE_SECONDS:-15}"
+source tools/a11y_server_readiness.sh
+outer_readiness_timeout_seconds="$(
+  a11y_readiness_outer_timeout \
+    "$server_readiness_timeout_seconds" \
+    "$server_readiness_grace_seconds"
+)"
 artifact_dir="$RUNNER_TEMP/a11y-pr-shard-${shard}-${attempt}-logs"
 shard_log="$artifact_dir/a11y-pr-${shard}-${attempt}.log"
 started_epoch="$(date +%s)"
@@ -59,49 +67,16 @@ python3 tools/local_site_server.py \
   --directory _site \
   --port 0 \
   --ready-file "$ready_file" \
+  --readiness-timeout "$server_readiness_timeout_seconds" \
   >"$server_log" 2>&1 &
 server_pid=$!
-server_up=0
-last_probe="ready file not published"
-for _ in {1..120}; do
-  if [[ -s "$ready_file" ]]; then
-    IFS= read -r local_base < "$ready_file"
-    readiness_url="${local_base}index.html"
-    probe_status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --connect-timeout 1 --max-time 5 "$readiness_url" 2>"$probe_error" || true)"
-    if [[ "$probe_status" =~ ^2[0-9][0-9]$ ]]; then
-      server_up=1
-      break
-    elif [[ "$probe_status" == "404" ]]; then
-      echo "local site server returned HTTP 404 for readiness path (artifact is serving, but the probe path is missing): $readiness_url" >&2
-      cat "$probe_error" >&2 2>/dev/null || true
-      cat "$server_log" >&2 2>/dev/null || true
-      exit 1
-    elif [[ "$probe_status" == "000" || -z "$probe_status" ]]; then
-      if grep -Eqi 'connection refused' "$probe_error" 2>/dev/null; then
-        last_probe="connection refused for $readiness_url"
-      elif grep -Eqi 'timed out|timeout' "$probe_error" 2>/dev/null; then
-        last_probe="connection timed out for $readiness_url"
-      else
-        last_probe="connection failed for $readiness_url"
-      fi
-    else
-      last_probe="HTTP $probe_status from $readiness_url"
-    fi
-  fi
-  if ! kill -0 "$server_pid" 2>/dev/null; then
-    echo "local site server exited before becoming ready ($last_probe)" >&2
-    cat "$probe_error" >&2 2>/dev/null || true
-    cat "$server_log" >&2 2>/dev/null || true
-    exit 1
-  fi
-  sleep 0.25
-done
-if [[ "$server_up" != "1" ]]; then
-  echo "timed out after 30s waiting for the local site server ($last_probe)" >&2
-  cat "$probe_error" >&2 2>/dev/null || true
-  cat "$server_log" >&2 2>/dev/null || true
-  exit 1
-fi
+a11y_wait_for_local_site \
+  "$ready_file" \
+  "$probe_error" \
+  "$server_log" \
+  "$server_pid" \
+  "$outer_readiness_timeout_seconds"
+local_base="$A11Y_READY_BASE"
 export CROL_BASE="$local_base"
 export A11Y_LOG_DIR="$artifact_dir/functional-checks"
 echo "local site ready at $CROL_BASE"
