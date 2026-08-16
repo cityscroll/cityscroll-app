@@ -162,7 +162,7 @@ function setExportBandVisibility(count, bandId, overflowId){
 }
 function busyList(sel, n){
   const el = $(sel); if(!el) return;
-  if(el.querySelector(".row, .fcard")) el.classList.add("busy");
+  if(el.querySelector(".row,.fcard,.browse-static-record")) el.classList.add("busy");
   else el.innerHTML = listSkeleton(n);
 }
 function unbusy(sel){ const el = $(sel); if(el) el.classList.remove("busy"); }
