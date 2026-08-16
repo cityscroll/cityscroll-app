@@ -801,7 +801,8 @@ jobs:
       - name: Run isolated accessibility shard
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         env:
-          NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'warn' }}
+          # The resident-surface sweep is clean, so new unreviewed disclaimer copy fails closed.
+          NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'block' }}
         run: tools/run_a11y_ci_shard.sh "${{ matrix.shard }}" primary
       - name: Upload shard result evidence
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
