@@ -14,7 +14,6 @@ class FakePlaywrightTimeoutError(Exception):
 
 
 playwright = types.ModuleType("playwright")
-playwright.__path__ = []
 sync_api = types.ModuleType("playwright.sync_api")
 sync_api.Locator = object
 sync_api.Page = object
