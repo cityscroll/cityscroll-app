@@ -116,10 +116,17 @@ export {
 } from "./evaluation/index.mjs";
 
 export {
+  CURATION_EFFECT_VERSION,
+  CURATION_PROVISIONAL_STATE,
+  CURATION_REVIEW_POLICY_VERSION,
+  CURATION_VERDICT,
+  CURATION_VERDICT_SCHEMA_VERSION,
   INVESTIGATION_WORKSPACE_VERSION,
   REVIEW_VERSION,
   REVIEW_DECISION,
+  buildCurationVerdictReceipt,
   buildInvestigationWorkspace,
+  projectCurationVerdictState,
   toReviewItem,
   toReviewItems,
 } from "./review/index.mjs";

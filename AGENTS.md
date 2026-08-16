@@ -2851,6 +2851,17 @@ precision. Materialize the graph slice only when usefulness ≥30% and precision
 Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 `node warehouse/scripts/checkbook_spending.mjs --check`.
 
+## Entity-resolution curation verdicts
+
+- `entity_resolution/review/curation_verdicts.mjs` owns the fixed append-only
+  verdict receipt and current-state projection. D1 persistence and accepted-edge
+  effects live in `worker/src/lib/curation_verdicts.mjs` with migration
+  `0021_curation_verdicts.sql`; only policy-satisfied ACCEPT receipts may write or
+  promote an `entity_link`. REJECT, REVIEW, and withheld ACCEPT remain provisional.
+  Public ER serializers are allowlisted and must not expose these receipt payloads.
+  Focused proof: `test/review_action_export.test.mjs` and
+  `test/entity_resolution_shadow_monitor.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
