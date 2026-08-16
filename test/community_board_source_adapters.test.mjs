@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS,
   fetchCommunityBoardSource,
+  parseNycOfficialCalendarSource,
   parseAirtableSource,
   parseGoogleCalendarSource,
   parseHtmlPdfSource,
@@ -16,13 +17,47 @@ const receipt = { status: "ok", observed_at: "2026-08-14T12:00:00Z" };
 
 test("each heterogeneous source has a bounded explicit adapter contract", () => {
   assert.deepEqual(Object.keys(COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS).sort(), [
-    "airtable_v1", "google_calendar_v1", "html_pdf_v1", "video_record_v1",
+    "airtable_v1", "google_calendar_v1", "html_pdf_v1", "nyc_official_calendar_v1", "video_record_v1",
   ]);
   for (const contract of Object.values(COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS)) {
     assert.ok(contract.max_bytes > 0);
     assert.ok(contract.contract);
     assert.ok(contract.record_kinds.length);
   }
+});
+
+test("NYC official-calendar adapter preserves explicit event logistics without inferring outcomes", () => {
+  const records = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <h2>Calendar of Meetings &ndash; August 2026</h2>
+      <h3>CB 3 Public Hearing - FY 2028 Budget Priorities</h3>
+      <p>Monday, September 21 at 6:30pm -- Community Board 3 Office, 59 East 4th Street<br>
+        <strong>Registration Link: <a href="https://www.zoomgov.com/webinar/register/example">Register</a></strong>
+      </p>
+      <p>Help assess the needs of the community.</p>
+      <h3>Community Board 3, Full Board Meeting</h3>
+      <p>Tuesday, September 29, 2026 - 6:30pm<br>PS 20 - 166 Essex Street</p>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "manhattan-cb-03",
+    body_name: "Manhattan Community Board 3",
+    url: "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
+  }, { receipt });
+
+  assert.deepEqual(records.map((row) => row.date), ["2026-09-21", "2026-09-29"]);
+  assert.equal(records[0].start_at, "2026-09-21T18:30:00-04:00");
+  assert.equal(records[0].address, "Community Board 3 Office, 59 East 4th Street");
+  assert.equal(records[0].participation.remote_join_url, "https://www.zoomgov.com/webinar/register/example");
+  assert.equal(records[1].start_at, "2026-09-29T18:30:00-04:00");
+  assert.equal(records[1].address, "PS 20 - 166 Essex Street");
+  assert.deepEqual(records[1].participation.links, []);
+  assert.ok(records.every((row) => row.record_kind === "event"));
+  assert.ok(records.every((row) => row.observed_receipt.parser === "nyc_official_calendar_v1"));
+  assert.ok(records.every((row) => !Object.hasOwn(row, "vote") && !Object.hasOwn(row, "outcome")));
 });
 
 test("HTML/PDF adapter keeps explicit source and publisher fields", () => {
@@ -193,4 +228,31 @@ test("fetch contract is bounded and records inaccessible sources as unknown", as
   assert.deepEqual(sourceRecordStatus({ observed_receipt: { status: "ok", observed_at: "2026-01-01T00:00:00Z" } }, {
     asOf: "2026-08-14T00:00:00Z", maxAgeDays: 30,
   }), { state: "unknown", reason: "source_stale" });
+});
+
+test("NYC calendar fetch retries the official www1 alias after an edge denial", async () => {
+  const calls = [];
+  const page = `<div class="about-description"><h2>Calendar of Meetings - August 2026</h2><h3>Full Board Meeting</h3><p>Tuesday, September 29, 2026 - 6:30pm<br>PS 20 - 166 Essex Street</p></div>`;
+  const result = await fetchCommunityBoardSource({
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "manhattan-cb-03",
+    url: "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
+  }, {
+    observedAt: "2026-08-16T12:00:00Z",
+    fetchImpl: async (url) => {
+      calls.push(url);
+      const ok = calls.length === 2;
+      const bytes = new TextEncoder().encode(ok ? page : "<h1>Access Denied</h1>");
+      return { ok, status: ok ? 200 : 403, headers: { get: () => "text/html" }, arrayBuffer: async () => bytes.buffer };
+    },
+  });
+  assert.deepEqual(calls, [
+    "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
+    "https://www1.nyc.gov/site/manhattancb3/calendar/calendar.page",
+  ]);
+  assert.equal(result.records.length, 1);
+  assert.equal(result.records[0].date, "2026-09-29");
+  assert.equal(result.receipt.source_url, "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page");
 });

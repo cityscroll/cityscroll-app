@@ -108,14 +108,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/borough_scope_links.test.mjs` and `test/hearing_widening.test.mjs`.
 - **Community-board meeting index:** `site/data/community_board_meeting_index.json` is the
   bounded source-native event read model, refreshed by
-  `node tools/build_community_board_meeting_index.mjs`. It currently contains only explicit
-  Schema.org Event records (55 events across 9 of 59 boards); every row carries a source receipt
-  and an unjoined `cityscroll.community_board_source_join.v1` result. Static Browse builds merge
-  the rows in `tools/build_primary_documents.mjs`; the Meetings client appends the same artifact
-  in `site/app/feed-actions.mjs`. Expand coverage only with an adapter that preserves explicit
-  publisher identity/date evidence. Minutes are a separate typed source role from meetings;
+  `node tools/build_community_board_meeting_index.mjs`. It contains explicit Schema.org Event
+  records plus reviewed NYC-hosted calendar entries from `nyc_official_calendar_v1`; that adapter
+  activates only for a source classified as an `explicit board calendar` and requires a heading,
+  publisher date/time, and page-declared year. When the page has no publisher event ID, retain the
+  meeting card but keep its `hosts_meeting` graph edge held. Every row carries a source receipt and
+  an unjoined `cityscroll.community_board_source_join.v1` result. Static Browse builds merge the
+  rows in `tools/build_primary_documents.mjs`; the Meetings client appends the same artifact in
+  `site/app/feed-actions.mjs`. Minutes are a separate typed source role from meetings;
   Manhattan CB6's image-linked Airtable archive is recorded as `airtable_v1` and browser-required,
   so the source link is public while records remain un-ingested until an explicit fetch is available.
+  Focused proof: `test/community_board_source_adapters.test.mjs` and
+  `test/cb_minutes_gap_report.test.mjs`.
 - **Shared meeting object:** `site/meeting_object_contract.mjs` is the narrow waist for City
   Record and community-board meeting producers. IDs are source-qualified (`meeting:<system>:<key>`)
   and preserve publisher keys; `/meetings/{meeting_id}` is canonical while City Record notice

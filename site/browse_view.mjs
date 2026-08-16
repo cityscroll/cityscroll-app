@@ -1188,6 +1188,18 @@ export function renderBrowseView(view) {
     const meetingSourceDetails = sourceHandoff
       ? `<div class="ui-object-card-handoffs">${officialSourceLink({ href: sourceHandoff.href, label: sourceHandoff.label, escape: esc })}</div>`
       : "";
+    const calendarReceipt = row.meeting_origin === "official_community_board_calendar"
+      ? row.observed_receipt || row.source_provenance?.observed_receipt || null
+      : null;
+    const calendarObserved = calendarReceipt?.observed_at
+      ? renderedDate(String(calendarReceipt.observed_at).slice(0, 10))
+      : null;
+    const calendarParserStatus = calendarReceipt?.status === "ok" && calendarReceipt?.parser
+      ? "Parser OK"
+      : "Parser status unavailable";
+    const calendarCoverageMarkup = calendarReceipt
+      ? `<p class="browse-calendar-coverage" data-calendar-parser-status="${calendarReceipt.status === "ok" && calendarReceipt.parser ? "ok" : "unknown"}">${calendarObserved ? `Calendar observed ${calendarObserved}` : "Calendar observation date unavailable"} · ${esc(calendarParserStatus)}</p>`
+      : "";
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity
       ? renderEntityPivotLink({
@@ -1232,6 +1244,7 @@ export function renderBrowseView(view) {
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${meetingSourceDetails}
+      ${calendarCoverageMarkup}
     </article>`;
   };
   const cards = boardSearch?.ambiguous && view.communityBoardGroups?.length
