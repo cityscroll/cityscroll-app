@@ -4,8 +4,14 @@ import { readFileSync } from "node:fs";
 import actionRegistry from "../site/action_registry.js";
 import { noticeDisplayTitle } from "../site/display_title.mjs";
 import { solicitationResponseContextReady } from "../site/solicitation_response_context.mjs";
+import {
+  objectCardInteractionProjection,
+  renderObjectCardActionRail,
+  renderObjectCardPrimitives,
+} from "../site/affordance_grammar.mjs";
 
 const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
+const historySource = readFileSync(new URL("../site/app/money-history.mjs", import.meta.url), "utf8");
 const openSnapshot = JSON.parse(readFileSync(new URL("./fixtures/money_action_field_cases.json", import.meta.url), "utf8"));
 const awardSnapshot = JSON.parse(readFileSync(new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 const OPEN_SOLICITATION = openSnapshot.rows.find((row) => row.request_id === "20260624023");
@@ -13,32 +19,51 @@ const EXPIRED_SOLICITATION = openSnapshot.rows.find((row) => row.request_id === 
 const GUIDE_ONLY_SOLICITATION = openSnapshot.rows.find((row) => row.request_id === "20260603042");
 const SOURCE_BACKED_AWARD = awardSnapshot.rows.find((row) => row.request_id === "20260723031");
 
-function extractFunction(name) {
-  const start = source.indexOf(`function ${name}(`);
+function extractSourceFunction(contents, name) {
+  const start = contents.indexOf(`function ${name}(`);
   assert.notEqual(start, -1, `${name} must exist`);
   let depth = 0;
   let opened = false;
-  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
-    if (source[i] === "{") { depth += 1; opened = true; }
-    else if (source[i] === "}" && opened && --depth === 0) return source.slice(start, i + 1);
+  for (let i = contents.indexOf("{", start); i < contents.length; i += 1) {
+    if (contents[i] === "{") { depth += 1; opened = true; }
+    else if (contents[i] === "}" && opened && --depth === 0) return contents.slice(start, i + 1);
   }
   throw new Error(`unbalanced function ${name}`);
 }
 
-const { moneyListPrimaryAction, moneyListPrimaryActionHTML } = new Function(
-  "t", "todayISO", "cleanText", "escUiHtml", "EXT_ATTRS", "extSR", "noticeDisplayTitle", "solicitationResponseContextReady",
+function extractFunction(name) {
+  return extractSourceFunction(source, name);
+}
+
+const {
+  moneyListPrimaryAction,
+  moneyListPrimaryActionHTML,
+  moneyListInteractionProjection,
+  moneyListCardInteractionsHTML,
+} = new Function(
+  "t", "todayISO", "escUiHtml", "noticeDisplayTitle", "solicitationResponseContextReady",
+  "objectCardInteractionProjection", "renderObjectCardActionRail", "renderObjectCardPrimitives",
   `${extractFunction("moneyListPrimaryAction")}
+   ${extractFunction("moneyListInteractionProjection")}
    ${extractFunction("moneyListPrimaryActionHTML")}
-   return { moneyListPrimaryAction, moneyListPrimaryActionHTML };`,
+   ${extractFunction("moneyListCardInteractionsHTML")}
+   return { moneyListPrimaryAction, moneyListPrimaryActionHTML, moneyListInteractionProjection, moneyListCardInteractionsHTML };`,
 )(
-  (key) => ({ respond_lbl: "Respond", award_guide_heading: "Follow this award", untitled_notice: "Untitled notice" })[key] || key,
+  (key) => ({
+    respond_lbl: "Respond",
+    award_guide_heading: "Follow this award",
+    untitled_notice: "Untitled notice",
+    copy_link: "Copy link",
+    next_action_heading: "What can I do now?",
+    ext_link_new_tab_sr: "(opens in new tab)",
+  })[key] || key,
   () => "2026-08-04",
-  (value) => String(value || "").replace(/<[^>]*>/g, "").trim(),
   (value) => String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"),
-  'target="_blank" rel="noopener noreferrer"',
-  () => '<span class="sr-only"> (opens in new tab)</span>',
   noticeDisplayTitle,
   solicitationResponseContextReady,
+  objectCardInteractionProjection,
+  renderObjectCardActionRail,
+  renderObjectCardPrimitives,
 );
 
 const priorActions = globalThis.CrolActions;
@@ -78,8 +103,9 @@ test("open solicitation reuses the registry destination and exposes one named pr
   assert.match(result.href, /passport|a0333-passportpublic/i);
 
   const html = moneyListPrimaryActionHTML(OPEN_SOLICITATION, "2026-08-04");
-  assert.equal((html.match(/data-money-row-action=/g) || []).length, 1);
-  assert.match(html, />Respond<span class="sr-only"[^>]*> — 85726B0060-2600042 - Tub Grinder - Parks<\/span>/);
+  assert.match(html, /<h3>What can I do now\?<\/h3>/);
+  assert.match(html, /class="ui-external-action primary"/);
+  assert.match(html, />Respond<span aria-hidden="true">↗<\/span>/);
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);
 });
 
@@ -123,8 +149,44 @@ test("adapter delegates interpretation to noticeActionMatter and compileActionRa
   assert.doesNotMatch(adapter, /passport|checkbook|isupplier|due_date|notice_text/i);
 });
 
-test("Money row keeps action and detail selector as sibling controls in action-first order", () => {
+test("Money row keeps the whole row as a selector while shared controls remain native controls", () => {
   const rowSource = extractFunction("moneyRowHTML");
-  assert.match(rowSource, /<article class="money-row-card">\s*\$\{primaryAction\}\s*<div class="row"/);
-  assert.doesNotMatch(rowSource, /<div class="row"[^>]*>\s*\$\{primaryAction\}/);
+  assert.match(rowSource, /<article class="money-row-card">\s*<div class="row"/);
+  assert.match(rowSource, /\$\{interactions\|\|/);
+  assert.doesNotMatch(rowSource, /<a\b[^>]*class="money-row-card"/);
+});
+
+test("Contracts rows adopt the shared object-card interaction grammar", () => {
+  const projection = moneyListInteractionProjection(OPEN_SOLICITATION, "2026-08-04");
+  assert.equal(projection.target.href, "/notices/20260624023");
+  assert.equal(projection.copy_target, "https://cityscroll.org/notices/20260624023");
+  assert.deepEqual(projection.kinetic_actions.map((action) => action.label), ["Respond"]);
+
+  const html = moneyListCardInteractionsHTML(OPEN_SOLICITATION, "<mark>Tub Grinder</mark>", "2026-08-04");
+  assert.match(html, /class="ui-constellation-link ui-object-card-title rtitle"[^>]*href="\/notices\/20260624023"/);
+  assert.match(html, /<span aria-hidden="true">◆<\/span><mark>Tub Grinder<\/mark>/);
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/notices\/20260624023"[^>]*>Copy link<\/button>/);
+  assert.match(html, /<h3>What can I do now\?<\/h3>/);
+  assert.match(html, />Respond<span aria-hidden="true">↗<\/span>/);
+});
+
+test("context-incomplete Contracts rows keep title and Copy but omit Respond and its rail", () => {
+  const row = {
+    request_id: "20260815001",
+    short_title: "Neighborhood food services",
+    type_of_notice_description: "Solicitation",
+    selection_method_description: "Request for Proposals",
+  };
+  const html = moneyListCardInteractionsHTML(row, "Neighborhood food services", "2026-08-04");
+  assert.match(html, /href="\/notices\/20260815001"/);
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/notices\/20260815001"/);
+  assert.doesNotMatch(html, /Respond|ui-object-card-action-rail|What can I do now/);
+});
+
+test("the Contracts preview reuses the row projection for its linked title and canonical Copy target", () => {
+  const heading = extractSourceFunction(historySource, "solicitationContextHeadingHTML");
+  const detail = extractSourceFunction(historySource, "renderDetail");
+  assert.match(heading, /globalThis\.moneyListInteractionProjection\?\.\(r\)/);
+  assert.match(heading, /renderObjectCardTitle\(projection/);
+  assert.match(detail, /detailProjection\?\.copy_target\|\|noticeLink\(r\.request_id\)/);
 });

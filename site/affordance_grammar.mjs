@@ -137,9 +137,10 @@ export function objectCardInteractionProjection({
 }
 
 /** Internal graph travel: same-tab, blue, solid underline, leading node glyph. */
-export function constellationLink({ href, label, count = null, className = "", current = false, attributes = {}, escape = esc } = {}) {
+export function constellationLink({ href, label, labelMarkup = null, count = null, className = "", current = false, attributes = {}, escape = esc } = {}) {
   const countMarkup = count == null ? "" : `<span class="ct">${escape(count)}</span>`;
-  return `<a class="ui-constellation-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}"${current ? ' aria-current="page"' : ""}${dataAttributes(attributes, escape)}><span aria-hidden="true">◆</span>${escape(label)}${countMarkup}</a>`;
+  const renderedLabel = labelMarkup == null ? escape(label) : String(labelMarkup);
+  return `<a class="ui-constellation-link${className ? ` ${escape(className)}` : ""}" href="${escape(href)}"${current ? ' aria-current="page"' : ""}${dataAttributes(attributes, escape)}><span aria-hidden="true">◆</span>${renderedLabel}${countMarkup}</a>`;
 }
 
 /** Authoritative external record: new tab, neutral dotted underline, trailing arrow. */
@@ -170,11 +171,12 @@ export function externalActionLink({
   return `<a class="${classes}" href="${escape(href)}"${tabAttrs}${dataAttributes(attributes, escape)}>${escape(label)}${glyph}${announcement}</a>`;
 }
 
-export function renderObjectCardTitle(projection, { className = "ui-object-card-title", escape = esc } = {}) {
+export function renderObjectCardTitle(projection, { className = "ui-object-card-title", labelMarkup = null, escape = esc } = {}) {
   if (!projection?.target) return "";
   return constellationLink({
     href: projection.target.href,
     label: projection.target.label,
+    labelMarkup,
     current: projection.target.current,
     className,
     escape,
@@ -211,12 +213,19 @@ export function renderObjectCardActionRail(projection, {
 }
 
 /** Render the shared primitives as a fragment; the owning row remains a non-anchor selector. */
-export function renderObjectCardPrimitives(projection, { escape = esc } = {}) {
+export function renderObjectCardPrimitives(projection, {
+  escape = esc,
+  titleMarkup = null,
+  titleClassName = "ui-object-card-title",
+  copyLabel = "Copy link",
+  actionHeading = "What can I do now?",
+  newTabLabel = "(opens in new tab)",
+} = {}) {
   if (!projection?.target) return "";
   const handoffs = (projection.external_handoffs || []).map((handoff) => handoff.kind === "official_source"
     ? officialSourceLink({ href: handoff.href, label: handoff.label, escape })
     : externalActionLink({ href: handoff.href, label: handoff.label, primary: handoff.primary, escape }));
-  return `<div class="ui-object-card-interactions"><div class="ui-object-card-primary">${renderObjectCardTitle(projection, { escape })}${renderObjectCardCopy(projection, { escape })}</div>${renderObjectCardRelations(projection, { escape })}${handoffs.length ? `<div class="ui-object-card-handoffs">${handoffs.join("")}</div>` : ""}${renderObjectCardActionRail(projection, { escape })}</div>`;
+  return `<div class="ui-object-card-interactions"><div class="ui-object-card-primary">${renderObjectCardTitle(projection, { escape, labelMarkup: titleMarkup, className: titleClassName })}${renderObjectCardCopy(projection, { escape, label: copyLabel })}</div>${renderObjectCardRelations(projection, { escape })}${handoffs.length ? `<div class="ui-object-card-handoffs">${handoffs.join("")}</div>` : ""}${renderObjectCardActionRail(projection, { escape, heading: actionHeading, newTabLabel })}</div>`;
 }
 
 /** Copy one projected canonical URL and expose the result through the focused button. */
