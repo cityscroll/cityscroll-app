@@ -2760,6 +2760,11 @@ both the live and restored databases.
   (gitignored): `node tools/build_agency_obligations.mjs --input <our.json>`.
   Committed public artifact: `site/data/agency_obligations_lookup.json`.
   Fixture: `test/fixtures/agency_obligations/our_sample.json` (`--fixture`).
+- Retained zero-obligation laws retry through
+  `tools/law_mandates/retained_retry.mjs`; fidelity labels are automated,
+  source-grounded provenance rather than a publication gate. Build the public
+  run receipt with `node tools/law_mandates/build_retained_retry_evidence.mjs`.
+  Focused proof: `node --test test/mandates_pipeline.test.mjs`.
 - Free watch (world-state, not document keyword match):
   public `lens: "mandates"` (+ legacy `obligations` alias/redirect) +
   `{ agency_id, agency }` via `agencyObligationsFollowHref` → Following /
