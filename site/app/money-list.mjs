@@ -16,11 +16,13 @@ import {
   moneyMethodFacet,
   moneySnapshotRows,
 } from "../resident_snapshot_queries.mjs";
+import { mergeContractSearchRows } from "../contract_search_bridge.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
 const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null;
+const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
   return moneyActionLocationToolsPromise||=import("../money_action_location_ui.mjs").then(module=>(globalThis.MoneyActionLocations=module)).catch(()=>null);
@@ -111,6 +113,20 @@ function loadMoneyResidentSnapshot(){
 }
 async function residentMoneyRows(){
   return moneySnapshotRows(await loadMoneyResidentSnapshot());
+}
+async function loadContractSearchDocuments(query){
+  const key=String(query||"").replace(/\s+/g," ").trim().slice(0,240);
+  if(!key) return [];
+  if(!contractSearchDocumentPromises.has(key)){
+    contractSearchDocumentPromises.set(key,workerFetch(`/search?q=${encodeURIComponent(key)}`,null,SLOW_MS)
+      .then(async response=>{
+        if(!response.ok) throw new Error(`HTTP ${response.status}`);
+        const payload=await response.json();
+        return Array.isArray(payload?.results)?payload.results:[];
+      })
+      .catch(()=>[]));
+  }
+  return contractSearchDocumentPromises.get(key);
 }
 function isDefaultMoneySearchState({mode, agency, kw, methodSel, closingWeek, minAmount, sort, nlResolved}={}){
   const nl=nlResolved&&typeof nlResolved==="object"?nlResolved:{};
@@ -299,9 +315,13 @@ async function search(){
     const snapshot=defaultSearch
       ? await loadMoneyDefaultSnapshot()
       : await loadMoneyResidentSnapshot();
-    const snapshotRows=defaultSearch
+    const retainedRows=defaultSearch
       ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
       : moneySnapshotRows(snapshot);
+    const searchDocuments=(kw&&(mode==="award"||mode==="archive"))
+      ? await loadContractSearchDocuments(kw)
+      : [];
+    const snapshotRows=mergeContractSearchRows(retainedRows,searchDocuments);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,sort,today:todayISO(),weekEnd:weekOutISO(),
