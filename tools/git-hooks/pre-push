@@ -14,11 +14,20 @@ fi
 cd "$ROOT"
 
 PREFLIGHT="$ROOT/tools/preflight-required-checks.sh"
+A11Y_RUNNER="$ROOT/tools/with_local_a11y_python.sh"
 if [[ ! -x "$PREFLIGHT" ]]; then
   if [[ -f "$PREFLIGHT" ]]; then
     chmod +x "$PREFLIGHT" || true
   else
     echo "pre-push: missing $PREFLIGHT" >&2
+    exit 1
+  fi
+fi
+if [[ ! -x "$A11Y_RUNNER" ]]; then
+  if [[ -f "$A11Y_RUNNER" ]]; then
+    chmod +x "$A11Y_RUNNER" || true
+  else
+    echo "pre-push: missing $A11Y_RUNNER" >&2
     exit 1
   fi
 fi
@@ -71,9 +80,9 @@ if [[ -n "${PREPUSH_EXTRA_ARGS:-}" ]]; then
 fi
 # "${args[@]}" is unbound under set -u when the array is empty (bash 3.2+/set -u).
 if ((${#args[@]})); then
-  preflight_cmd=("$PREFLIGHT" "${args[@]}")
+  preflight_cmd=("$A11Y_RUNNER" "$PREFLIGHT" "${args[@]}")
 else
-  preflight_cmd=("$PREFLIGHT")
+  preflight_cmd=("$A11Y_RUNNER" "$PREFLIGHT")
 fi
 if ! "${preflight_cmd[@]}"; then
   echo "" >&2
