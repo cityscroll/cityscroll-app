@@ -18,6 +18,14 @@ const BOROUGH_CODES = Object.freeze({
   SI: "Staten Island",
 });
 
+const COMMUNITY_DISTRICT_CODES = Object.freeze({
+  bronx: { borough: "Bronx", prefix: "X" },
+  brooklyn: { borough: "Brooklyn", prefix: "K" },
+  manhattan: { borough: "Manhattan", prefix: "M" },
+  queens: { borough: "Queens", prefix: "Q" },
+  "staten-island": { borough: "Staten Island", prefix: "R" },
+});
+
 function clean(value) {
   return String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
 }
@@ -68,6 +76,16 @@ export function communityBoardIdFromEvidence(evidence, { borough = null } = {}) 
 export function communityBoardPageHref(value, options = {}) {
   const id = canonicalId(value) || communityBoardIdFromEvidence(value, options);
   return id ? `/community-boards/${encodeURIComponent(id)}/` : null;
+}
+
+/** Resolve an exact board id to its community-district place route. */
+export function communityBoardPlaceHref(value) {
+  const id = canonicalId(value);
+  const match = id?.match(/^(.+)-cb-(\d{2})$/);
+  const district = match ? COMMUNITY_DISTRICT_CODES[match[1]] : null;
+  if (!district) return null;
+  const communityDistrict = `${district.prefix}${match[2]}`;
+  return `/near-you/#map?level=community_district&parent=${encodeURIComponent(district.borough)}&id=${encodeURIComponent(communityDistrict)}&lens=meetings`;
 }
 
 export function resolvedCommunityBoardId(value, options = {}) {

@@ -268,6 +268,27 @@ test("city record meeting renders materialized notice fields without fetching", 
   assert.match(html, /href="\/notices\/20260820001"/);
 });
 
+test("meeting detail keeps machine tokens and source HTML out of reader text", () => {
+  const communityBoard = renderMeetingDocument({
+    meeting_id: "meeting:community_board:https://example.test/cb10/health",
+    source_system: "community_board",
+    title: "Health and Human Services Committee",
+    type_of_notice_description: "upcoming_meetings",
+    section_name: "Community Board Meetings",
+  });
+  assert.match(communityBoard, /<dd>Upcoming meeting<\/dd>/);
+  assert.doesNotMatch(communityBoard, /upcoming_meetings/);
+
+  const cityRecord = renderMeetingDocument({
+    meeting_id: "meeting:city_record:20260810053",
+    source_system: "city_record",
+    title: "Design Commission Meeting Agenda",
+    additional_description_1: "<p>Design Commission Meeting Agenda&nbsp;</p><p>Public testimony is welcome.</p>",
+  });
+  assert.match(cityRecord, /Design Commission Meeting Agenda Public testimony is welcome\./);
+  assert.doesNotMatch(cityRecord, /&lt;\/?p&gt;/);
+});
+
 test("malformed event dates do not offer a broken calendar download", () => {
   const html = renderMeetingDocument({
     meeting_id: "meeting:community_board:event-bad-date",

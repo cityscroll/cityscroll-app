@@ -12,6 +12,7 @@ import {
   communityBoardScopeHref,
   communityBoardRows,
 } from "../site/community_board_scope_links.mjs";
+import { communityBoardPlaceHref } from "../site/community_board_links.mjs";
 import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
 
 const shared = JSON.parse(fs.readFileSync(new URL(
@@ -110,6 +111,33 @@ test("static Browse carries board peers, canonical links, origin, and exact boar
   const html = renderBrowseView(view);
   assert.match(html, /\/meetings\/meeting%3Acommunity_board%3A/);
   assert.match(html, /Community board source observed/);
-  assert.match(html, /Hosted by /);
-  assert.doesNotMatch(html, /href="\/community-boards\/[^" ]+"/);
+  assert.match(html, /hosted by community board/i);
+  assert.match(html, /href="\/community-boards\/[^" ]+"/);
+});
+
+test("community-board cards link their exact host institution with the internal-object grammar", () => {
+  const board = meeting({
+    meeting_id: "meeting:community_board:https://example.test/cb10/health",
+    source_system: "community_board",
+    request_id: null,
+    publisher_identifier: "https://example.test/cb10/health",
+    source_url: "https://example.test/cb10/health",
+    board_id: "manhattan-cb-10",
+    board_name: "Manhattan Community Board 10",
+    institution_refs: { agency_ref: null, board_ref: "community-board:manhattan-cb-10" },
+    entity_refs_all: ["community-board:manhattan-cb-10"],
+    meeting_origin: "community_board_source_observed",
+  });
+  const view = buildBrowseView("meetings", { rows: [board] }, new URLSearchParams(), { limit: 10 });
+  const html = renderBrowseView(view);
+  assert.match(html, /href="\/community-boards\/manhattan-cb-10\/"/);
+  assert.match(html, /<span aria-hidden="true">◆<\/span>Manhattan Community Board 10/);
+  assert.equal((html.match(/Community board source observed/g) || []).length, 1);
+});
+
+test("an exact community-board affected area resolves to the existing district place route", () => {
+  assert.equal(
+    communityBoardPlaceHref("manhattan-cb-10"),
+    "/near-you/#map?level=community_district&parent=Manhattan&id=M10&lens=meetings",
+  );
 });
