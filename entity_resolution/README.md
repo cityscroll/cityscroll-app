@@ -23,6 +23,7 @@ surface. **Not an HTTP microservice.**
 | `eval/` | Versioned gold, metrics CLIs, authority fixtures, and audit receipts (keep paths stable) |
 | `review/` | Human review queue shaping + reviewed alias registry; LLM alias proposals remain PROPOSED until clerk review |
 | `publication/` | Allowlist serializers that enforce the public sensitivity boundary |
+| `provenance_graph.mjs` | Pure versioned assertion/evidence/decision/actor read model over append-only ER records |
 | `index.mjs` | Package root public exports |
 
 Worker call sites that historically imported `worker/src/lib/normalize.mjs` keep
@@ -54,6 +55,23 @@ import { vendorStem } from "../../entity_resolution/normalizers/index.mjs";
 
 Taxonomy ADR: `docs/adr/entity-resolution-taxonomy.md` (link-not-merge).  
 Schema sketch (unapplied): `docs/entity-resolution/schema-sketch.sql`.
+
+## Evidence-bearing provenance read model
+
+`provenance_graph.mjs` projects a bounded adjacency list from immutable source
+evidence, resolution artifacts, and curation receipts. It is not a graph database
+and does not write storage. An assertion has a semantic `assertion_key` plus an
+immutable versioned id (`assertion:<key>:v<version>`). During the compatibility
+slice, `decision_target` maps that identity to the existing review-pair target;
+the pair id is not treated as the assertion id.
+
+The private `provenanceForAssertion` walk retains ordered decision receipts,
+actors, reversals, and historical materializations. `publicProvenanceProjection`
+is a separate allowlist: it exposes the assertion's coarse warrant class and
+publisher-native source identity only. It omits internal source-record ids,
+snapshot hashes, resolution/link ids, raw snapshots, review state, receipts,
+actors, notes, and policy reasons. Focused proof:
+`node --test test/evidence_bearing_provenance_graph.test.mjs`.
 
 ## Extract criteria (when an HTTP service would be justified)
 
