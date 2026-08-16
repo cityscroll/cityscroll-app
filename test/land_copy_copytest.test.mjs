@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const i18nSrc = readFileSync(join(ROOT, "..", "site", "i18n.js"), "utf8");
 const indexSrc = SITE_SOURCE;
+const landSrc = readFileSync(join(ROOT, "..", "site", "app", "land.mjs"), "utf8");
+const feedActionsSrc = readFileSync(join(ROOT, "..", "site", "app", "feed-actions.mjs"), "utf8");
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const en = new Function(
   "window",
@@ -105,4 +107,50 @@ test("Land methodology lives once in progressive disclosure, outside list and em
     indexSrc.indexOf("async function geocode(")
   );
   assert.doesNotMatch(list, /zap_explainer_html|zap_project_index_html|no_zap/);
+});
+
+test("Land list and preview adopt the shared object-card interaction grammar", () => {
+  assert.match(landSrc, /objectCardInteractionProjection/);
+  assert.match(landSrc, /renderObjectCardTitle/);
+  assert.match(landSrc, /renderObjectCardCopy/);
+  assert.match(landSrc, /function landObjectCardProjection\(/);
+
+  const projection = landSrc.slice(
+    landSrc.indexOf("function landObjectCardProjection("),
+    landSrc.indexOf("function landRowHTML("),
+  );
+  assert.match(projection, /new URL\(href,\s*location\.origin\)/);
+  assert.match(projection, /href=`\$\{target\.pathname\}\$\{target\.search\}\$\{target\.hash\}`/);
+
+  const row = landSrc.slice(
+    landSrc.indexOf("function landRowHTML("),
+    landSrc.indexOf("function landRenderList("),
+  );
+  assert.match(row, /landObjectCardProjection\(r,\s*title\)/);
+  assert.match(row, /renderObjectCardTitle\(interaction/);
+  assert.match(row, /renderObjectCardCopy\(interaction/);
+
+  const detail = landSrc.slice(
+    landSrc.indexOf("async function landSelect("),
+    landSrc.indexOf("function renderLandEntryNotFound("),
+  );
+  assert.match(detail, /landObjectCardProjection\(r,\s*displayTitle\)/);
+  assert.match(detail, /<h2[^>]*>\$\{renderObjectCardTitle\(interaction/);
+  assert.match(detail, /landPermalinkActionHTML\(r\)/);
+  assert.match(detail, /externalActionLink\(\{[\s\S]*?zap\.planning\.nyc\.gov\/projects/);
+  assert.doesNotMatch(detail, /zap\.planning\.nyc\.gov\/projects\/\$\{r\.project_id\}"\s+\$\{?EXT_ATTRS/);
+
+  const permalinkAction = landSrc.slice(
+    landSrc.indexOf("function landPermalinkActionHTML("),
+    landSrc.indexOf("async function landSelect("),
+  );
+  assert.match(permalinkAction, /landObjectCardProjection\(r,\s*landProjectDisplayTitle\(r\)\)/);
+  assert.match(permalinkAction, /renderObjectCardCopy\(interaction/);
+  assert.match(permalinkAction, /qrButtonHTML\("landqr",\s*"act"\)/);
+
+  const landRail = feedActionsSrc.slice(
+    feedActionsSrc.indexOf("function paintLandActionRail("),
+    feedActionsSrc.indexOf("function landOutcomeFirstPaintHTML("),
+  );
+  assert.match(landRail, /actionRailHTML\(actions,\s*\{\s*externalActionRenderer:\s*externalActionLink\s*\}\)/);
 });
