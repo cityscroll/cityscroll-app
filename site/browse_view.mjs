@@ -450,22 +450,26 @@ function isoDay(value) {
 }
 
 function rowId(facet, row) {
+  if (row?.civic_object?.id) return row.civic_object.id;
   if (facet === "zoning") return row.project_id || null;
   if (facet === "meetings") return row.meeting_id || row.request_id || null;
-  return row.request_id || null;
+  return row.request_id || row.id || null;
 }
 
 function rowTitle(facet, row) {
+  if (row?.civic_object?.label) return row.civic_object.label;
   if (facet === "zoning") return row.project_name || row.project_id;
-  return row.short_title || row.title || row.request_id;
+  return row.short_title || row.title || row.label || row.request_id;
 }
 
 function rowAgency(facet, row) {
+  if (row?.civic_object) return row.browse_agency_name || null;
   if (facet === "zoning") return row.primary_applicant || null;
   return row.agency_name || row.agency || null;
 }
 
 function rowDate(facet, row) {
+  if (row?.civic_object) return row.date || null;
   if (facet === "contracts") return row.due_date || row.start_date;
   if (facet === "meetings") return row.event_date || row.start_date;
   return row.start_date || row.event_date || null;
@@ -654,6 +658,7 @@ function rowMatchesCouncilDistrict(row, council) {
 }
 
 function rowHref(facet, row) {
+  if (row?.civic_object?.href) return row.civic_object.href;
   const id = rowId(facet, row);
   if (!id) return null;
   if (facet === "zoning") return `/browse/zoning/#land/${encodeURIComponent(id)}`;
@@ -694,9 +699,11 @@ function meetingDateMatchesWindow(row, value, asOf) {
   return date <= end.toISOString().slice(0, 10);
 }
 
-function liveOnlyFilters(params) {
+function liveOnlyFilters(params, handledFilters = []) {
+  const handled = new Set(handledFilters);
   const liveOnly = [];
   for (const [key] of params) {
+    if (handled.has(key)) continue;
     if (KNOWN_SCOPE_FILTER_KEYS.has(key)) continue;
     if (DOCUMENT_FILTERS.has(key) || EDGE_FILTERS.has(key)) continue;
     liveOnly.push(key);
@@ -871,7 +878,9 @@ export function buildBrowseEdgeSummary(view) {
 }
 
 export function buildBrowseView(facet, payload = {}, params = new URLSearchParams(), options = {}) {
-  const config = BROWSE_FACETS[facet];
+  // Route aliases and concept sections may adapt their typed rows into this
+  // established view without registering another top-level source facet.
+  const config = options.config || BROWSE_FACETS[facet];
   if (!config) return null;
   const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
   const query = String(search.get("q") || "").trim().toLocaleLowerCase();
@@ -881,11 +890,13 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const status = String(search.get("status") || "").trim();
   const communityDistrict = String(search.get("cd") || search.get("community_district") || "").trim();
   const councilDistrict = String(search.get("council") || "").trim();
-  const asOf = payload.open_as_of || payload.generated_at || payload.retrieved_at || null;
+  const asOf = options.asOf || payload.open_as_of || payload.generated_at || payload.retrieved_at || null;
   const requestedAsOf = isoDay(search.get("as_of"));
   const meetingWhen = facet === "meetings" ? String(search.get("when") || "") : "";
   const meetingProcess = facet === "meetings" ? String(search.get("process") || "") : "";
-  const rows = Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
+  const rows = Array.isArray(options.rows)
+    ? options.rows
+    : Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
   const limit = Number.isFinite(options.limit) ? Math.max(1, Math.floor(options.limit)) : 40;
   const scopeState = scopeFromFacetParams(facet, search);
   const connectionRelation = String(scopeState.parsed?.facets?.values?.connection_relation || "").trim();
@@ -990,7 +1001,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     requestedAsOf,
     asOfMismatch: Boolean(requestedAsOf && isoDay(asOf) && requestedAsOf !== isoDay(asOf)),
     scopeSearch: search.toString(),
-    liveOnlyFilters: liveOnlyFilters(search),
+    liveOnlyFilters: liveOnlyFilters(search, options.handledFilters),
     hasQuery: [...search].some(([key]) => !DOCUMENT_FILTERS.has(key)),
     contextualSuggestions,
     communityBoardQuery,
@@ -1227,10 +1238,27 @@ export function renderBrowseView(view) {
       : boardId
         ? `<span class="browse-community-board-reference" data-community-board-state="${esc(boardEdge?.status || "unknown")}">Hosted by ${esc(boardName || "community board")}</span>`
         : "";
-    return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
+    const civicObject = row?.civic_object;
+    const typedMetadata = civicObject && row.show_civic_metadata !== false
+      ? [
+        civicObject.kind_label || civicObject.kind,
+        row.relation_state ? String(row.relation_state).replaceAll("-", " ") : "",
+      ].filter(Boolean).map((label) => staticFact({ label, className: "browse-object-fact", escape: esc })).join(" · ")
+      : "";
+    const detailMarkup = civicObject && row.detail
+      ? `<p class="browse-static-detail">${esc(row.detail)}</p>`
+      : "";
+    const civicObjectAttributes = civicObject
+      ? ` data-civic-object-kind="${esc(civicObject.kind || "record")}" data-civic-object-id="${esc(civicObject.id || "")}"`
+      : "";
+    const peopleListAttributes = view.facet === "people-list"
+      ? ` id="people-row-${esc(String(civicObject?.id || "").replace(/[^A-Za-z0-9_-]/g, "-"))}" data-people-organization-row data-row-kind="${esc(civicObject?.kind || "")}" data-relation-state="${esc(row.relation_state || "unknown")}" data-search-text="${esc(row.search_text || "")}"${row.body_id ? ` data-board-projection="organization" data-body-id="${esc(row.body_id)}"` : ""}`
+      : "";
+    return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
-      <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
+      <p class="browse-static-meta">${[typedMetadata, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
+      ${detailMarkup}
       ${meetingSourceDetails}
     </article>`;
   };
