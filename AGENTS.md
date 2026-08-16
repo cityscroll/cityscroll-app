@@ -2928,10 +2928,11 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 ## Entity-resolution curation verdicts
 
 - `entity_resolution/review/curation_verdicts.mjs` owns the fixed append-only
-  verdict receipt and current-state projection. D1 persistence and accepted-edge
-  effects live in `worker/src/lib/curation_verdicts.mjs` with migration
-  `0021_curation_verdicts.sql`; only policy-satisfied ACCEPT receipts may write or
-  promote an `entity_link`. REJECT, REVIEW, and withheld ACCEPT remain provisional.
+  verdict receipt and current-state projection. D1 persistence in
+  `worker/src/lib/curation_verdicts.mjs` with migration `0021_curation_verdicts.sql`
+  is receipt-only: policy-satisfied ACCEPT/REJECT decisions become immutable gold
+  candidates through `tools/export_review_actions_to_gold.mjs`, never direct
+  `entity_link` writes or promotions. REVIEW and policy-withheld decisions remain provisional.
   Public ER serializers are allowlisted and must not expose these receipt payloads.
   Focused proof: `test/review_action_export.test.mjs` and
   `test/entity_resolution_shadow_monitor.test.mjs`.

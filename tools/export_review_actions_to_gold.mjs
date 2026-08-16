@@ -25,10 +25,11 @@ function publicPath(path) {
 function usage(message) {
   if (message) console.error(`error: ${message}`);
   console.error(`Usage:
-  node tools/export_review_actions_to_gold.mjs --fixtures [--out-dir <dir>] [--gold-version vN]
+  node tools/export_review_actions_to_gold.mjs --fixtures [--check] [--out-dir <dir>] [--gold-version vN]
 
 Options:
   --fixtures                 use the committed characterization fixture
+  --check                    validate the export without writing files
   --input <path.json>        alternate fixture with a top-level "rows" array
   --out-dir <directory>      write candidates.jsonl + receipt.json (default: stdout only)
   --gold-version vN          target gold series label in the receipt (default v-next)
@@ -40,6 +41,7 @@ Options:
 function parseArgs(argv) {
   const args = {
     fixtures: false,
+    check: false,
     input: null,
     outDir: null,
     goldVersion: "v-next",
@@ -51,6 +53,7 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--fixtures") args.fixtures = true;
+    else if (arg === "--check") args.check = true;
     else if (arg === "--json") args.json = true;
     else if (arg === "--input") args.input = argv[++i];
     else if (arg === "--out-dir") args.outDir = argv[++i];
@@ -92,6 +95,10 @@ function main(argv = process.argv.slice(2)) {
   }
   const loaded = loadRows(args);
   if (!loaded) return;
+  if (args.check && args.outDir) {
+    usage("--check cannot be combined with --out-dir");
+    return;
+  }
 
   const exported = exportReviewActionsToGoldCases(loaded.rows, {
     goldVersion: args.goldVersion,
@@ -99,6 +106,22 @@ function main(argv = process.argv.slice(2)) {
   });
   exported.receipt.input_path = publicPath(loaded.path);
   exported.receipt.fixture_mode = true;
+
+  if (args.check) {
+    const formatted = formatReviewActionGoldJsonl(exported.cases, exported.receipt);
+    const lines = formatted.trimEnd().split("\n");
+    const meta = JSON.parse(lines[0]);
+    if (
+      meta.kind !== "review_action_gold_candidates"
+      || meta.case_count !== exported.cases.length
+      || lines.length !== exported.cases.length + 1
+      || meta.payload_sha256 !== exported.receipt.payload_sha256
+    ) {
+      console.error("error: gold candidate export invariant failed");
+      process.exitCode = 1;
+      return;
+    }
+  }
 
   if (args.outDir) {
     const outDir = resolve(args.outDir);
