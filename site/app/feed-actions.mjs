@@ -17,6 +17,12 @@ import {
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { communityBoardPageHref, communityBoardPlaceHref } from "../community_board_links.mjs";
+import {
+  communityBoardIdFromRow,
+  communityBoardSearchPresentation,
+  communityBoardShortLabel,
+  rankCommunityBoardRows,
+} from "../community_board_search.mjs";
 import { domainRows } from "../resident_snapshot_queries.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
@@ -283,6 +289,9 @@ function hearingViewFilter(){
     agency:$("#meetingsagency").value,
     keyword:$("#meetingskw").value.trim(),
     communityBoard:activeCommunityBoardRef(),
+    communityDistrict:meetingsCommunityDistrict||null,
+    councilDistrict:meetingsCouncilDistrict||null,
+    contextSource:"route",
     ...hearingFilter(),
   };
 }
@@ -327,7 +336,7 @@ function renderMeetingsAgencyScope(records){
 function hearingFilterKey(filter){
   return JSON.stringify([
     filter.when, filter.agency, filter.communityBoard, filter.keyword, filter.borough,
-    filter.locationScope, filter.neighborhood,
+    filter.communityDistrict, filter.councilDistrict, filter.locationScope, filter.neighborhood,
   ]);
 }
 function hearingWidenedShown(scope){
@@ -353,19 +362,35 @@ function hearingCommunityBoardDisambiguationHTML(filter){
     ? hearingCommunityBoardQuery(filter.keyword)
     : null;
   if(!query?.ambiguous) return "";
-  const boards=[
-    ["Bronx","bronx"],["Brooklyn","brooklyn"],["Manhattan","manhattan"],
-    ["Queens","queens"],["Staten Island","staten-island"],
-  ];
-  const links=boards.map(([borough,slug])=>{
-    const id=slug+"-cb-"+String(query.number).padStart(2,"0");
-    const label=escUiHtml(borough+" Community Board "+query.number);
-    return "<li><a href=\"/browse/people/?board="+encodeURIComponent(id)+"#community-boards\">"+label+"</a></li>";
+  const selectedBodyId=String(filter.communityBoard||"").replace(/^community-board:/,"");
+  const presentation=communityBoardSearchPresentation(query,{
+    borough:filter.borough,
+    communityDistrict:filter.communityDistrict,
+    selectedBodyId,
+    source:selectedBodyId?"user":filter.contextSource,
+  });
+  const current=location.hash.startsWith("#meetings")
+    ? location.hash : (globalThis.serializeState?.()||"#meetings");
+  const links=presentation.choices.map(choice=>{
+    const href=communityBoardScopeTools?.communityBoardScopeHref?.("meetings",choice.bodyId,current)
+      || choice.institutionHref;
+    const currentAttr=choice.preferred?' aria-current="true"':"";
+    return `<li><a href="${escUiHtml(href)}"${currentAttr}>${escUiHtml(choice.shortLabel||choice.label)}</a></li>`;
   }).join("");
+  const heading=presentation.defaultBodyId
+    ? t("meetings_board_default_heading",{board:presentation.defaultLabel})
+    : t("meetings_board_disambiguation_heading",{number:query.number});
+  const copy=presentation.defaultBodyId
+    ? t(presentation.defaultSource==="user_choice"
+      ? "meetings_board_choice_copy"
+      : "meetings_board_default_copy")
+    : t("meetings_board_disambiguation_copy",{number:query.number});
+  const choices=presentation.defaultBodyId
+    ? `<details><summary>${escUiHtml(t("meetings_board_choose_another",{number:query.number}))}</summary><ul>${links}</ul></details>`
+    : `<ul>${links}</ul>`;
   return "<div class=\"note meetings-board-disambiguation\" role=\"status\" data-community-board-disambiguation>"
-    +"<p><strong>"+escUiHtml(t("meetings_board_disambiguation_heading",{number:query.number}))+
-    "</strong> "+escUiHtml(t("meetings_board_disambiguation_copy",{number:query.number}))+
-    "</p><ul>"+links+"</ul></div>";
+    +"<p><strong>"+escUiHtml(heading)+"</strong> "+escUiHtml(copy)+
+    "</p>"+choices+"</div>";
 }
 function hearingCommunityBoardPivotHTML(){
   return "<p class=\"meetings-board-institution-pivot\"><a href=\"/browse/people/#community-boards\">"+
@@ -375,13 +400,26 @@ async function loadPastHearings(filter){
   const cacheKey=JSON.stringify([filter.agency,filter.keyword]);
   if(hearingPastCache.has(cacheKey)) return hearingPastCache.get(cacheKey);
   const query=String(filter.keyword||"").toLowerCase();
+  const boardQuery=typeof hearingCommunityBoardQuery==="function"
+    ? hearingCommunityBoardQuery(filter.keyword)
+    : null;
   const records=(hearingAll||[]).filter(row=>
     String(row.event_date||"").slice(0,10)<todayISO()
     && (!filter.agency||row.agency_name===filter.agency)
-    && (!query||matchText(row).toLowerCase().includes(query))
+    && (!query||(boardQuery
+      ? hearingMatchesCommunityBoard(row,boardQuery)
+      : matchText(row).toLowerCase().includes(query)))
   ).map(normalizeHearingRow);
   hearingPastCache.set(cacheKey,records);
   return records;
+}
+function mergeHearingRows(current,past){
+  const seen=new Set((current||[]).map(row=>row.meeting_id||row.request_id).filter(Boolean));
+  return (current||[]).concat((past||[]).filter(row=>{
+    const id=row.meeting_id||row.request_id;
+    if(!id||seen.has(id)) return false;
+    seen.add(id); return true;
+  }));
 }
 function hearingSafeURL(value){
   try{ const url=new URL(value); return url.protocol==="https:"||url.protocol==="http:" ? url.toString() : null; }
@@ -1298,10 +1336,10 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const boardEdge=communityBoardEdgeTools?.communityBoardMeetingEdgeFromRow(record);
   const boardId=boardEdge?.from?.replace(/^community-board:/,"")
     || record.institution_refs?.board_ref?.replace(/^community-board:/,"")
-    || record.board_id;
+    || record.board_id
+    || communityBoardIdFromRow(record);
   const boardHref=boardEdge?.board_href||communityBoardPageHref(boardId);
-  const boardName=record.board_name||boardEdge?.board_name
-    || (boardId?`Community Board ${boardId.replace(/^[a-z-]+-cb-/i,"")}`:"");
+  const boardName=record.board_name||boardEdge?.board_name||communityBoardShortLabel(boardId)||"";
   const exactBoardReference=record.source_system==="community_board"
     && record.board_id===boardId
     && record.institution_refs?.board_ref===`community-board:${boardId}`;
@@ -1426,7 +1464,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ? `<div class="hfact"><b>${t("who_affected_label")}</b><span>${escUiHtml(record.affects.map(value=>t(value)).join(" · "))}</span></div>`
     : "";
   const factsHTML=`${areaFact}${venueFact}${affectsFact}`;
-  return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
+  return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}"${boardId?` data-community-board-id="${escUiHtml(boardId)}"`:""}>
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       ${processLine}
       <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
@@ -1444,6 +1482,14 @@ function renderHearingGroup(scope, entries, terms=[]){
   const label=scope==="local"?"local_hearings_group":scope==="citywide"?"citywide_hearings_group":"unlocated_hearings_group";
   const noteText=scope==="citywide"?t("citywide_hearings_note"):"";
   return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("")}`;
+}
+function renderHearingBoardGroup(group,terms=[]){
+  if(!group?.rows?.length) return "";
+  const preferred=group.preferred?` <span class="tag open">${escUiHtml(t("meetings_board_context_match"))}</span>`:"";
+  return `<section class="meetings-board-group" data-community-board-group="${escUiHtml(group.bodyId||"unresolved")}">
+    <h2 class="hearinggroup">${escUiHtml(group.label)}${preferred}</h2>
+    ${group.rows.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("")}
+  </section>`;
 }
 function updateMeetingsMoreFiltersState(){
   const badge=$("#meetings-filter-badge");
@@ -1468,25 +1514,41 @@ async function renderHearingExplorer(options){
   const seq=++hearingRenderSeq;
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
-  let records=await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
+  const boardQuery=typeof hearingCommunityBoardQuery==="function"
+    ? hearingCommunityBoardQuery(filter.keyword)
+    : null;
+  const ambiguousBoardSearch=!!boardQuery?.ambiguous;
+  const searchFilter=ambiguousBoardSearch
+    ? {...filter,borough:null,locationScope:null,neighborhood:null,communityBoard:""}
+    : filter;
+  let records=ambiguousBoardSearch
+    ? (hearingAll||[])
+    : await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
   renderMeetingsAgencyScope(hearingAll||[]);
   renderMeetingsBoardScope(hearingAll||[],seq);
-  let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
+  let selection=chooseHearingScope(records,searchFilter,todayISO(),allowWidening);
   // The retained shared read model contains the supported past and current windows.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
   if(needsPast){
     try{
-      const past=await loadPastHearings(filter);
+      const past=await loadPastHearings(searchFilter);
       if(seq!==hearingRenderSeq) return;
-      records=await filterFeedRowsToDistrictBag("meetings",records.concat(past));
+      const merged=mergeHearingRows(records,past);
+      records=ambiguousBoardSearch
+        ? merged
+        : await filterFeedRowsToDistrictBag("meetings",merged);
       renderMeetingsAgencyScope(hearingAll||[]);
       renderMeetingsBoardScope(hearingAll||[],seq);
-      selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
+      selection=chooseHearingScope(records,searchFilter,todayISO(),allowWidening);
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
   if(seq!==hearingRenderSeq) return;
   const rows=selection.rows;
   const terms=filter.keyword?[filter.keyword]:[];
+  if(ambiguousBoardSearch && !communityBoardScopeTools){
+    await communityBoardScopeToolsLoad();
+    if(seq!==hearingRenderSeq) return;
+  }
   const widening=$("#meetingswidening");
   widening.innerHTML=hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
   const remove=widening.querySelector("[data-remove-widening]");
@@ -1554,6 +1616,22 @@ async function renderHearingExplorer(options){
     }));
   }
 
+  let boardRanking=null;
+  if(ambiguousBoardSearch){
+    boardRanking=rankCommunityBoardRows(entries,{
+      query:boardQuery,
+      context:{
+        borough:filter.borough,
+        communityDistrict:filter.communityDistrict,
+        source:filter.contextSource,
+      },
+      selectedBodyId:String(filter.communityBoard||"").replace(/^community-board:/,""),
+      today:now,
+      rowForIdentity:entry=>entry?.primary,
+    });
+    entries=boardRanking.rows;
+  }
+
   // Export/print still want notice rows (primaries + members of visible entries).
   setExportBandVisibility(entries.length, "meetings-export-band", "meetings-export-overflow");
   const visibleRows=[];
@@ -1583,14 +1661,18 @@ async function renderHearingExplorer(options){
   setMeetingsResultCount(uniqueRows.length);
   const el=$("#meetingsfeed");
   if(!entries.length){
-    widening.innerHTML="";
+    widening.innerHTML=ambiguousBoardSearch
+      ? hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML()
+      : "";
     el.innerHTML="";
     announce(t("meetings_entries_announce",{n:0})); return;
   }
   const groupByPlace=tools&&typeof tools.meetingsPlaceGroupEnabled==="function"
     ? tools.meetingsPlaceGroupEnabled(meetingsPlaceGroupSel)
     : meetingsPlaceGroupSel==="place";
-  if(groupByPlace){
+  if(boardRanking){
+    el.innerHTML=boardRanking.groups.map(group=>renderHearingBoardGroup(group,terms)).join("");
+  } else if(groupByPlace){
     const byPlace=tools&&tools.groupMeetingsByPlace
       ? tools.groupMeetingsByPlace(entries)
       : { local:entries.filter(e=>(e.place_scope||"unlocated")==="local"),
