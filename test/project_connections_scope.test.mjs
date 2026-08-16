@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -278,6 +279,31 @@ test("project pivot adds a third typed ref without changing the opened money len
     "vendor:stem:MAKE%20IT%20ZESTY",
   ]);
   assert.deepEqual(CrolScope.watchFromScope(parsed, { lens: "money" }).filter.entity_refs_all, parsed.facets.values.entity_refs_all);
+});
+
+test("production bundle carries its project into an already-constrained money scope", () => {
+  const intelligence = JSON.parse(readFileSync("site/data/entity_intelligence_lookup.json", "utf8"));
+  const [bundle] = intelligence.project_agency_vendor.bundles;
+  const projectRef = bundle.refs.find((ref) => ref.startsWith("project:"));
+  const carriedRefs = bundle.refs.filter((ref) => ref !== projectRef);
+  const current = CrolScope.emptyScope();
+  current.facets.domains = ["money"];
+  current.facets.values.entity_refs_all = carriedRefs;
+  current.topic.query = "housing";
+
+  const composed = projectApplyScopeHash(
+    { project_ref: projectRef },
+    CrolScope.routeHashFromScope(current, { surface: "money" }),
+    { scope: CrolScope },
+  );
+  const parsed = CrolScope.scopeFromRouteHash(composed);
+  assert.deepEqual(parsed.facets.domains, ["money"]);
+  assert.deepEqual(new Set(parsed.facets.values.entity_refs_all), new Set(bundle.refs));
+  assert.equal(parsed.topic.query, "housing");
+  assert.deepEqual(
+    CrolScope.watchFromScope(parsed, { lens: "money" }).filter.entity_refs_all,
+    parsed.facets.values.entity_refs_all,
+  );
 });
 
 test("project parcels carry a reader-friendly BBL label", () => {
