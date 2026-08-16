@@ -4,12 +4,13 @@ import { renderCommitteeLocalConstellationHTML } from "./committee_memberships.m
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import {
   buildPeopleOrganizationsReadModel,
-  relationStateLabel,
 } from "./people_organizations_read_model.mjs";
 import {
   browseListState,
   PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
 } from "./browse_list_contract.mjs";
+import { renderBrowseView } from "./browse_view.mjs";
+import { buildPeopleListBrowseView } from "./browse_reuse_surfaces.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
@@ -217,57 +218,9 @@ function rowKindCountLabel(kind, count) {
   return `${Number(count).toLocaleString("en-US")} ${labels[kind] || `${rowKindLabel(kind).toLowerCase()}${count === 1 ? "" : "s"}`}`;
 }
 
-function renderPersonRowLink(row) {
-  if (!row.href) return esc(row.label);
-  return link(row.href, row.label, "people-org-row-link");
-}
-
-function peopleOrganizationRowHeading(row) {
-  return `${row.label} · ${rowKindLabel(row.kind)} · ${row.id}`;
-}
-
-function renderOfficialRow(row) {
-  return `<li class="people-org-row" id="people-row-${esc(row.id.replace(/[^A-Za-z0-9_-]/g, "-"))}" data-people-organization-row data-row-kind="official" data-relation-state="${esc(row.relation_state)}" data-search-text="${esc(row.search_text)}">
-    <h3 class="people-org-official-heading"><span class="people-org-kind">${esc(rowKindLabel(row.kind))}</span><span aria-hidden="true"> · </span>${renderPersonRowLink(row)}</h3>
-  </li>`;
-}
-
-function renderCommitteeMembers(row) {
-  if (!row.members?.length) return "";
-  return `<p class="people-org-row-related"><span>Exact-person members:</span> ${row.members.map((member) => {
-    const label = member.href
-      ? link(member.href, member.person_name, "people-org-person-link")
-      : esc(member.person_name);
-    return `<span data-person-id="${esc(member.person_id)}">${label}</span>`;
-  }).join(", ")}</p>`;
-}
-
-function renderBoardRelations(row) {
-  if (!row.organization_relations?.length) return "";
-  return `<div class="people-org-row-relations" aria-label="Community board relation status">${row.organization_relations.map((relation) =>
-    `<span>${esc(relation.label)} · ${esc(relationStateLabel(relation.state))}</span>`).join("")}</div>`;
-}
-
 export function renderPeopleOrganizationRow(row) {
-  if (row.kind === "official") return renderOfficialRow(row);
-  const place = row.kind === "community-board" && row.place_href
-    ? `<a class="people-org-place-link" href="${esc(row.place_href)}">Discover this place in Near you</a>`
-    : "";
-  const notice = row.kind === "notice-only-hire" && row.source_record_id
-    ? `<span class="people-org-row-source">Notice ${esc(row.source_record_id)}</span>`
-    : "";
-  const boardStatus = row.kind === "community-board"
-    ? `<div class="people-org-row-status-rail" aria-label="Board record status"><span>Board identity · Published</span><span>District coverage · ${esc(row.district ? "Published" : "Unknown")}</span></div>`
-    : "";
-  const boardAttributes = row.kind === "community-board"
-    ? ` data-board-projection="organization" data-body-id="${esc(row.body_id)}"`
-    : "";
-  return `<li class="people-org-row" id="people-row-${esc(row.id.replace(/[^A-Za-z0-9_-]/g, "-"))}"${boardAttributes} data-people-organization-row data-row-kind="${esc(row.kind)}" data-relation-state="${esc(row.relation_state)}" data-search-text="${esc(row.search_text)}">
-    <div class="people-org-row-top"><span class="people-org-kind">${esc(rowKindLabel(row.kind))}</span><span class="people-org-state people-org-state-${esc(row.relation_state)}">${esc(relationStateLabel(row.relation_state))}</span></div>
-    <h3>${renderPersonRowLink({ ...row, label: peopleOrganizationRowHeading(row) })}</h3>
-    <p class="people-org-row-detail">${esc(row.detail)}${row.agency ? ` · ${esc(row.agency)}` : ""}${row.date ? ` · ${esc(row.date)}` : ""}</p>
-    ${notice}${boardStatus}${row.kind === "committee" ? renderCommitteeMembers(row) : ""}${row.kind === "community-board" ? renderBoardRelations(row) : ""}${place}
-  </li>`;
+  const shared = renderBrowseView(buildPeopleListBrowseView({ rows: [row] }, new URLSearchParams(), { limit: 1 }));
+  return shared.match(/<article class="browse-static-record[^"]*"[\s\S]*?<\/article>/)?.[0] || "";
 }
 
 function renderPeopleOrganizationsList(model) {
@@ -275,7 +228,6 @@ function renderPeopleOrganizationsList(model) {
   if (!rows.length) return "";
   const config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG;
   const state = browseListState(model, new URLSearchParams(), config);
-  const initialRows = rows.slice(0, config.initialPageSize);
   const countSummary = Object.entries(model?.counts || {})
     .filter(([, count]) => Number(count) > 0)
     .map(([kind, count]) => rowKindCountLabel(kind, count))
@@ -305,8 +257,9 @@ function renderPeopleOrganizationsList(model) {
       </select>
       <p class="people-org-search-summary" aria-live="polite" data-people-organizations-search-summary>${esc(countSummary)}</p>
     </form>
-    <ul class="people-org-row-list" aria-live="polite" data-people-organizations-list data-browse-list-status="${esc(state.status)}">${initialRows.map(renderPeopleOrganizationRow).join("")}</ul>
+    <div class="people-org-row-list" aria-live="polite" data-people-organizations-list data-browse-list-status="${esc(state.status)}">${renderBrowseView(buildPeopleListBrowseView(model, new URLSearchParams(), { limit: config.initialPageSize }))}</div>
     <p class="empty people-org-no-results" data-people-organizations-no-results hidden>No matching people or organizations in this published snapshot.</p>
+    <button type="button" class="people-org-more" id="people-organizations-more" data-people-organizations-more${rows.length > config.initialPageSize ? "" : " hidden"}>Show more</button>
     <script type="application/json" data-people-organizations-model>${modelJson}</script>
   </section>`;
 }

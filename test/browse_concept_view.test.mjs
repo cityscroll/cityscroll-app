@@ -103,7 +103,8 @@ test("official rows present one name and type without publication or internal-id
   });
   const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
-  assert.equal(visibleText, "Official · Adolfo Carrion");
+  assert.match(visibleText, /Official · Adolfo Carrion/);
+  assert.match(visibleText, /Copy link/);
   assert.doesNotMatch(visibleText, /Published|Official profile|official:425/);
   assert.equal((visibleText.match(/Official/g) || []).length, 1);
 });

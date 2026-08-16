@@ -10,6 +10,7 @@ import { migrateLegacyUrl } from "./route_migration.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
 import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
+import { buildExamsAliasBrowseView } from "./browse_reuse_surfaces.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -206,6 +207,9 @@ export function buildBrowseAliasDocument(shell, aliasId, targetPayload) {
     '<h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1" data-i18n="career_browser_heading">Find an exam you can act on</h2>',
     '<h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1">Civil-service exams</h2>',
   );
+  if (aliasId === "exams" && Array.isArray(targetPayload?.exams)) {
+    html = replaceElementContent(html, "career-results", renderBrowseView(buildExamsAliasBrowseView(targetPayload)));
+  }
   return html;
 }
 
