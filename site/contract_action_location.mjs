@@ -9,6 +9,7 @@
 import { normalizeAddress, plainText } from "./location_extract.mjs";
 import { resolveDistricts } from "./council_district_lookup.mjs";
 import { ACTION_LOCATION_FACET_KEYS } from "./action_location_keys.mjs";
+import { BOROUGHS, boroughScopeLinksHTML } from "./borough_scope_links.mjs";
 import {
   communityDistrictKey,
   councilDistrictKey,
@@ -287,6 +288,48 @@ export function rowMatchesContractActionFilter(row, filter = {}) {
 }
 
 /**
+ * Count row-level borough edges from the response-logistics projection.
+ * Duplicate addresses in one notice count once per borough. Unsupported and
+ * unresolved geography remains coverage, never a clickable place claim.
+ */
+export function contractActionBoroughInventory(doc, filter = {}) {
+  const rows = Array.isArray(doc?.rows) ? doc.rows : [];
+  const constrained = Boolean(filter.basis || filter.community_district || filter.council_district);
+  const counts = new Map(BOROUGHS.map((borough) => [borough, 0]));
+  let located = 0;
+  let uncovered = 0;
+
+  for (const row of rows) {
+    const locations = (Array.isArray(row?.locations) ? row.locations : []).filter((location) => {
+      if (!ACTION_LOCATION_BASIS_LABELS[location?.basis]) return false;
+      if (location.is_place_of_performance === true) return false;
+      if (filter.basis && location.basis !== filter.basis) return false;
+      if (filter.community_district && location.community_district !== filter.community_district) return false;
+      if (filter.council_district && String(location.council_district) !== String(filter.council_district)) return false;
+      return true;
+    });
+    if (constrained && !locations.length) continue;
+    const boroughs = new Set(locations
+      .map((location) => BOROUGHS.find((borough) => borough === location.borough))
+      .filter(Boolean));
+    if (!boroughs.size) {
+      uncovered += 1;
+      continue;
+    }
+    located += 1;
+    for (const borough of boroughs) counts.set(borough, counts.get(borough) + 1);
+  }
+
+  return {
+    options: BOROUGHS
+      .map((id) => ({ id, count: counts.get(id) || 0 }))
+      .filter((option) => option.count > 0),
+    located,
+    uncovered,
+  };
+}
+
+/**
  * Paint join-backed community / council district facet rails (and keep the
  * hidden selects in registry-key sync for share/routing state).
  * Unknown location stamps are omitted — fail closed, never inferred.
@@ -313,10 +356,33 @@ export function fillContractActionLocationSelects(doc, options = {}) {
   syncHidden("#moneycd", communityDistrictKey);
   syncHidden("#moneycouncil", councilDistrictKey);
 
-  return paintDistrictFacetRails(doc, {
+  const basisControl = documentRef.querySelector?.("#moneylocationbasis")?.value || "";
+  const boroughInventory = contractActionBoroughInventory(doc, {
+    basis: ["submission_address", "pre_bid_venue", "document_pickup"].includes(basisControl)
+      ? basisControl
+      : "",
+    community_district: documentRef.querySelector?.("#moneycd")?.value || "",
+    council_district: documentRef.querySelector?.("#moneycouncil")?.value || "",
+  });
+  const boroughRail = documentRef.querySelector?.("#money-borough-rail");
+  if (boroughRail) {
+    boroughRail.innerHTML = boroughScopeLinksHTML({
+      surface: "money",
+      selected: documentRef.querySelector?.("#moneyboro")?.value || "",
+      currentHash: options.currentHash,
+      options: boroughInventory.options,
+      total: boroughInventory.located,
+      uncoveredCount: boroughInventory.uncovered,
+      t: options.t,
+      escape: options.escape,
+    });
+  }
+
+  const districts = paintDistrictFacetRails(doc, {
     ...options,
     documentRef,
     communityDistrict: documentRef.querySelector("#moneycd")?.value || "",
     councilDistrict: documentRef.querySelector("#moneycouncil")?.value || "",
   });
+  return { ...districts, borough: boroughInventory };
 }

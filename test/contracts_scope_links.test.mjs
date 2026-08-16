@@ -6,6 +6,11 @@ import {
   moneyClosingWeekHash,
   moneyLocationBasisHref,
 } from "../site/money_scope_links.mjs";
+import { boroughScopeLinksHTML } from "../site/borough_scope_links.mjs";
+import {
+  contractActionBoroughInventory,
+  rowMatchesContractActionFilter,
+} from "../site/contract_action_location.mjs";
 import { districtFacetRailHTML } from "../site/district_scope_facets.mjs";
 import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
 
@@ -31,6 +36,85 @@ test("Contracts exposes the four remaining controls as typed filter chips", () =
   assert.match(section, /class="ui-filter-chip"[^>]+id="closingweek"[^>]+[^>]*aria-pressed="(?:true|false)"/);
   assert.doesNotMatch(section, /<select[^>]+id="moneycd"(?![^>]*hidden)/);
   assert.doesNotMatch(section, /<select[^>]+id="moneycouncil"(?![^>]*hidden)/);
+  assert.match(section, /id="money-borough-rail"/);
+  assert.doesNotMatch(section, /<select[^>]+id="moneyboro"/);
+});
+
+test("Contracts borough links come only from basis-labeled response locations", () => {
+  const inventory = contractActionBoroughInventory({ rows: [
+    { request_id: "one", locations: [
+      { basis: "submission_address", basis_label: "Located by submission address", borough: "Manhattan", is_place_of_performance: false },
+      { basis: "submission_address", basis_label: "Located by submission address", borough: "Manhattan", is_place_of_performance: false },
+    ] },
+    { request_id: "two", locations: [
+      { basis: "pre_bid_venue", basis_label: "Located by pre-bid venue", borough: "Bronx", is_place_of_performance: false },
+    ] },
+    { request_id: "uncovered", locations: [] },
+  ] });
+
+  assert.deepEqual(inventory.options, [
+    { id: "Manhattan", count: 1 },
+    { id: "Bronx", count: 1 },
+  ]);
+  assert.equal(inventory.located, 2);
+  assert.equal(inventory.uncovered, 1);
+  assert.deepEqual(
+    contractActionBoroughInventory({ rows: [
+      { locations: [{ basis: "submission_address", borough: "Manhattan", is_place_of_performance: false }] },
+      { locations: [{ basis: "pre_bid_venue", borough: "Bronx", is_place_of_performance: false }] },
+    ] }, { basis: "pre_bid_venue" }).options,
+    [{ id: "Bronx", count: 1 }],
+  );
+
+  const rail = boroughScopeLinksHTML({
+    surface: "money",
+    selected: "Manhattan",
+    currentHash: baseHash,
+    options: inventory.options,
+    total: inventory.located,
+    uncoveredCount: inventory.uncovered,
+  });
+  assert.match(rail, /data-borough-scope-link="Manhattan"/);
+  assert.match(rail, /data-borough-scope-link="Bronx"/);
+  assert.doesNotMatch(rail, /data-borough-scope-link="Brooklyn"/);
+  assert.match(rail, /data-borough-scope-uncovered="1"/);
+  const bronxHref = rail.match(/data-borough-scope-link="Bronx"[^>]+data-filter-href="([^"]+)"/)?.[1]
+    .replaceAll("&amp;", "&");
+  const bronxScope = scopeFromRouteHash(bronxHref);
+  assert.deepEqual(bronxScope.place.boroughs, ["Bronx"]);
+  assert.deepEqual(bronxScope.place.community_districts, ["M01"]);
+  assert.deepEqual(bronxScope.place.council_districts, ["1"]);
+  assert.deepEqual(bronxScope.facets.agencies, ["Housing Authority"]);
+  assert.equal(bronxScope.facets.values.actionBasis, "submission_address");
+  assert.equal(bronxScope.facets.values.mode, "allrfp");
+  assert.equal(bronxScope.facets.values.method, "RFP");
+  assert.equal(bronxScope.facets.values.sort, "newest");
+  assert.equal(bronxScope.time_window.preset, "closing:week");
+  assert.match(rail, /data-borough-map-pivot="money"/);
+  assert.doesNotMatch(rail, /data-borough-map-pivot="money"[^>]+data-near-you-link/);
+  assert.match(rail, /href="\/near-you\/\?v=0&amp;lens=money&amp;q=bridge&amp;agency=Housing\+Authority&amp;boro=Manhattan&amp;cd=M01&amp;council=1&amp;basis=contract_action_address/);
+});
+
+test("every advertised Contracts borough is the exact non-empty response-location subset", () => {
+  const payload = JSON.parse(readFileSync(
+    new URL("../site/data/contract_action_address_locations.json", import.meta.url),
+    "utf8",
+  ));
+  const inventory = contractActionBoroughInventory(payload);
+  assert.ok(inventory.options.length > 0);
+  for (const option of inventory.options) {
+    const matches = payload.rows.filter((row) => rowMatchesContractActionFilter(row, {
+      borough: option.id,
+    }));
+    assert.equal(matches.length, option.count, `${option.id} advertises its exact row count`);
+    assert.ok(matches.length > 0, `${option.id} is non-empty`);
+    assert.ok(matches.length < inventory.located, `${option.id} is a strict subset`);
+    assert.ok(matches.every((row) => row.locations.some((location) => (
+      location.borough === option.id
+      && location.is_place_of_performance === false
+      && Boolean(location.basis_label)
+    ))), `${option.id} retains basis-labeled response-location evidence`);
+  }
 });
 
 test("location basis links re-emit the shared scope and retain unrelated facets", () => {

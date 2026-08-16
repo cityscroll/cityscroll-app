@@ -216,6 +216,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## Main site module boundaries
 
+- **Contracts response-place scope:** Borough links come only from positive-count,
+  basis-labeled rows in `site/contract_action_location.mjs`; they describe submission,
+  pre-bid, or document-pickup logistics, never performance geography. Keep copied
+  Contracts hashes and the Near You pivot on the same scope through
+  `site/borough_scope_links.mjs`. Focused proof: `test/contracts_scope_links.test.mjs`.
 - **Universal search contract:** `site/search_document_contract.mjs` is the pure admission
   boundary for source-independent SearchDocuments. Object types and product domains are separate
   closed vocabularies; only validated canonical object routes can be `indexed`, while retained
