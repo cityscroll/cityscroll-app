@@ -3,7 +3,6 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
-  mandateObjectTarget,
   projectNoticeObjectTarget,
 } from "../site/notice_object_links.mjs";
 import {
@@ -13,6 +12,7 @@ import {
 } from "../site/meeting_object_contract.mjs";
 import { materializeMeetingSearchDocument } from "../site/meeting_search_producer.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
+import { projectMandateSearchDocuments } from "../site/universal_search_mandate_producer.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { publicSearchResult } from "../worker/src/search.mjs";
 
@@ -79,8 +79,36 @@ function expectedFromProjection(row, projection) {
 
 function lawDerivedMandate(row) {
   const quote = verifyQuote(row.verbatim_quote, row.law_text);
-  if (!row.quote_verified || !quote.verified || !row.matter_id) return null;
-  return mandateObjectTarget(row);
+  const quoteVerified = row.quote_verified === true && quote.verified;
+  const projection = projectMandateSearchDocuments({
+    schema: "cityscroll.agency_obligations.v1",
+    method: "enacted_law_mandate_extract_v1",
+    certification_basis: "auto_certified_quote_verify_v1",
+    source_receipt: {
+      extraction: "independent_enacted_law_backfill",
+      law_count: 1,
+      mandate_count: 1,
+    },
+    by_agency: {
+      fixture: {
+        obligations: [{
+          ...row,
+          obligation_id: row.mandate_id,
+          source: {
+            matter_id: row.matter_id,
+            legistar_url: row.source_href,
+            citation: row.citation,
+          },
+          certification: {
+            status: quoteVerified ? "auto_certified" : "auto_candidate",
+            basis: "auto_certified_quote_verify_v1",
+            quote_verified: quoteVerified,
+          },
+        }],
+      },
+    },
+  });
+  return projection.documents[0] || null;
 }
 
 test("gold fixture separates retrieval quality from civic-object correctness", () => {
@@ -128,6 +156,7 @@ test("mosquito notice is a procurement object on the canonical Contracts route",
   assert.equal(projection.target.id, "81626S0021001");
   assert.notEqual(projection.target.kind, "mandate");
   assert.notEqual(row.expected.domain, "mandates");
+  assert.equal(lawDerivedMandate(row.source_observation), null);
   assert.notEqual(projection.target.href, projection.evidence.href);
 });
 
@@ -158,13 +187,14 @@ test("City Record rules originate in the bounded rule projection", () => {
 
 test("mandates originate in quote-verified law; notices remain separate evidence", () => {
   const row = goldCase("law-derived-mandate");
-  const target = lawDerivedMandate(row.source_observation);
-  assert.ok(target);
-  assert.equal(target.kind, row.expected.object_type);
-  assert.equal(target.href, row.expected.canonical_href);
-  assert.deepEqual(row.expected.source_observation_refs, ["law:66056"]);
-  assert.deepEqual(row.expected.notice_evidence_refs, ["notice:20210820102"]);
-  assert.notDeepEqual(row.expected.notice_evidence_refs, row.expected.source_observation_refs);
+  const document = lawDerivedMandate(row.source_observation);
+  assert.ok(document);
+  assert.equal(document.object_type, row.expected.object_type);
+  assert.equal(document.domain, row.expected.domain);
+  assert.equal(document.canonical_href, row.expected.canonical_href);
+  assert.deepEqual(document.source_observation_refs, ["law:66056"]);
+  assert.deepEqual(document.provenance.notice_evidence_refs, ["notice:20210820102"]);
+  assert.notDeepEqual(document.provenance.notice_evidence_refs, document.source_observation_refs);
 
   assert.equal(lawDerivedMandate({ ...row.source_observation, quote_verified: false }), null);
   assert.equal(lawDerivedMandate({
