@@ -9,7 +9,16 @@ import {
   hireMatchesAgencyScope,
   staffingAgencyScopePresentation,
 } from "../staffing_agency_scope.mjs";
-import { filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
+import {
+  filterChip,
+  installFilterChipNavigation,
+  objectCardInteractionProjection,
+  officialSourceLink,
+  renderObjectCardActionRail,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+  staticFact,
+} from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { createIncrementalList } from "../incremental_list.mjs";
 import {
@@ -21,7 +30,7 @@ import {
 let SameConsolidation=null;
 let sameConsolidationPromise=null;
 function loadSameConsolidation(){
-  return sameConsolidationPromise||(sameConsolidationPromise=import("../same_consolidation.mjs").then(module=>SameConsolidation=module.createStaffingConsolidationUI({t,escUiHtml,fmtNumber,money,fdt,fdate,REQ_URL,EXT_ATTRS,extSR,listEntityMentionHTML})));
+  return sameConsolidationPromise||(sameConsolidationPromise=import("../same_consolidation.mjs").then(module=>SameConsolidation=module.createStaffingConsolidationUI({t,escUiHtml,fmtNumber,money,fdt,fdate,REQ_URL,listEntityMentionHTML,canonicalOrigin:location.origin})));
 }
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null;
@@ -692,16 +701,12 @@ function careerUtilizationHTML(exam){
 function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
   const openBand=CrolStaffing.openWindowBand(exam,careerToday());
-  const title=escUiHtml(exam.title);
   const titleFamily=CrolStaffing.titleCodeFamilyView
     ? CrolStaffing.titleCodeFamilyView(exam)
     : null;
   const selected=careerSelected===exam.exam_number;
   const countdown=careerCountdownText(exam,status);
   const feeSalary=CrolStaffing.examFeeSalaryView(exam);
-  const notice=exam.notice_url
-    ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
-    : `<a class="act" href="${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
   // Prefer a build-time OASys NOE deep link; otherwise label the browse landing honestly.
   const applyUrl=(window.CrolActions && CrolActions.examApplyUrl)
     ? CrolActions.examApplyUrl(exam)
@@ -710,8 +715,39 @@ function careerCardHTML(exam){
     ? CrolActions.examApplyIsDeep(applyUrl)
     : (exam.application_handoff_mode==="deep" || /\/noe\?examId=\d+/i.test(String(applyUrl||"")));
   const applyLabel=applyDeep?t("career_apply_oasys"):t("career_apply_oasys_browse");
-  const apply=status==="open"
-    ? `<a class="act primary" href="${escUiHtml(applyUrl)}" ${EXT_ATTRS} data-oasys-handoff="${applyDeep?"deep":"landing"}">${applyLabel}${extSR()}</a>`:"";
+  const noticeUrl=exam.notice_url || CrolStaffing.DCAS_OPEN_COMPETITIVE_URL;
+  const noticeLabel=exam.notice_url?t("career_read_noe"):t("career_official_schedule");
+  const examHref=new URL(CrolStaffing.examUrl(exam.exam_number)).pathname;
+  const interaction=objectCardInteractionProjection({
+    target:{href:examHref,label:exam.title},
+    external_handoffs:[{href:noticeUrl,label:noticeLabel,kind:"official_source"}],
+    kinetic_actions:status==="open"
+      ? [{
+        href:applyUrl,
+        label:applyLabel,
+        kind:"apply",
+        context_ready:true,
+        primary:true,
+        attributes:{"data-oasys-handoff":applyDeep?"deep":"landing"},
+      }]
+      : [],
+    canonicalOrigin:location.origin,
+  });
+  const notice=interaction.external_handoffs[0]
+    ? officialSourceLink({...interaction.external_handoffs[0],className:["act","career-official-handoff"].join(" "),escape:escUiHtml,newTabLabel:t("ext_link_new_tab_sr")})
+    : "";
+  const titleLink=renderObjectCardTitle(interaction,{className:["ui-object-card-title","career-object-title"].join(" "),escape:escUiHtml});
+  const copyLink=renderObjectCardCopy(interaction,{
+    className:["ui-object-card-copy","act"].join(" "),
+    label:t("copy_link_btn"),
+    attributes:{"data-career-copy":exam.exam_number},
+    escape:escUiHtml,
+  });
+  const actionRail=renderObjectCardActionRail(interaction,{
+    heading:t("next_action_heading"),
+    escape:escUiHtml,
+    newTabLabel:t("ext_link_new_tab_sr"),
+  });
   const gapClass=feeSalary.class || (feeSalary.kind==="not_published"?"not_published":"not_yet_ingested");
   const diffLeads=careerDiffLeadsHTML(exam, feeSalary);
   const feeText=careerMoney(feeSalary.fee ?? exam.fee, gapClass);
@@ -753,7 +789,7 @@ function careerCardHTML(exam){
       ${countdown?`<span class="career-deadline-countdown">${countdown}</span>`:""}
     </div>
     <div class="career-card-head">
-      <p class="career-card-title"><a href="${escUiHtml(CrolStaffing.examUrl(exam.exam_number, location.origin))}" lang="en" dir="ltr">${title}</a></p>
+      <p class="career-card-title" lang="en" dir="ltr">${titleLink}</p>
       <span class="career-exam-number">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
     </div>
     ${titleFamily?`<p class="career-title-code-family" data-title-code-confidence="${escUiHtml(titleFamily.confidence)}" lang="en" dir="ltr"><span>${escUiHtml(titleFamily.label)}</span>${titleFamily.marker?` <span class="career-confidence-marker" data-confidence-marker="${escUiHtml(titleFamily.marker)}">inferred</span>`:""}: <code>${escUiHtml(titleFamily.code)}</code></p>`:""}
@@ -771,8 +807,8 @@ function careerCardHTML(exam){
         : null;
       return examProcessSpineHTML(spine, exam, phaseView)+careerOutcomeHTML(exam,{spineMounted:!!spine})+careerUtilizationHTML(exam);
     })():""}
-    <div class="actions">${apply}${notice}
-      ${expanded?`<button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>`:""}
+    ${actionRail}
+    <div class="actions">${copyLink}${notice}
       ${careerSelected===exam.exam_number?routeBackHTML("#people?view=guide",t("career_back_all"),"act"):""}
     </div>
   </article>`;
@@ -877,12 +913,6 @@ function updateStaffingMoreFiltersState(){
     updateHash();
   });
 }
-function bindCareerCopyButtons(){
-  $("#career-results").querySelectorAll("[data-career-copy]").forEach(button=>button.addEventListener("click",()=>{
-    const link=CrolStaffing.examUrl(button.dataset.careerCopy,location.origin+location.pathname);
-    copyText(link,button);
-  }));
-}
 function ensureCareerIncrementalList(){
   if(careerIncrementalList) return careerIncrementalList;
   careerIncrementalList=createIncrementalList({
@@ -895,7 +925,6 @@ function ensureCareerIncrementalList(){
     renderMore:remaining=>t("career_show_more",{n:fmtNumber(remaining)}),
     moreId:"career-more",
     moreClass:"career-more",
-    onMore:()=>bindCareerCopyButtons(),
   });
   return careerIncrementalList;
 }
@@ -949,7 +978,6 @@ function renderCareerGuide(){
   if(countEl) countEl.textContent=exams.length?t("results_count",{n:fmtNumber(exams.length)}):"";
   careerRenderItems=exams;
   ensureCareerIncrementalList().render({items:exams});
-  bindCareerCopyButtons();
 }
 function applyCareerRouteFilters(){
   if(!careerRouteFilters) return;
