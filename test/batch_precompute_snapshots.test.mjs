@@ -226,6 +226,11 @@ test("index modules use money and staffing default snapshots on first paint", ()
   assert.match(src, /data\/money_default_open\.json/);
   assert.match(src, /loadMoneyDefaultSnapshot/);
   assert.match(src, /isDefaultMoneySearchState/);
+  assert.match(src, /isDefaultMoneySearchState\([\s\S]*?loadMoneyDefaultSnapshot\(\)/, "default Contracts reads the compact daily snapshot");
+  assert.match(src, /lineageRows:snapshotRows/, "default Contracts reuses its loaded snapshot for list enrichment");
+  assert.match(src, /loadChain\(r,precomputedRows\)/, "automatic Contracts detail reuses the compact snapshot for lineage");
+  assert.match(src, /loadAgencyStats\(r\.agency_name,null,precomputedRows\)/, "automatic Contracts detail reuses the compact snapshot for agency totals");
+  assert.match(src, /\.browse-static-record/, "snapshot hydration preserves build-rendered Contracts cards while loading");
   assert.match(src, /data\/money_procurement_agencies\.json/);
   assert.match(src, /data\/staffing_default_hires\.json/);
   assert.match(src, /loadStaffingHiresSnapshot/);

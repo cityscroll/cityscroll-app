@@ -170,11 +170,12 @@ function wireNearMatchReveal(el, near){
   if(body) body.innerHTML = nearMatchHTML(near);
 }
 
-async function loadAgencyStats(agency, variants){
+async function loadAgencyStats(agency, variants, precomputedRows=null){
   try{
     const names = Array.isArray(variants) && variants.length ? variants : [agency];
     const accepted=new Set(names.map(String));
-    const rows=(await globalThis.residentMoneyRows?.()||[]).filter(row=>
+    const sourceRows=Array.isArray(precomputedRows)?precomputedRows:(await globalThis.residentMoneyRows?.()||[]);
+    const rows=sourceRows.filter(row=>
       accepted.has(String(row.agency_name||"")) && row.type_of_notice_description==="Award" &&
       Number(row.contract_amount)>0 && Number(row.contract_amount)<MONEY_HONESTY_CAP
     );

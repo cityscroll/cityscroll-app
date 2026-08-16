@@ -62,6 +62,9 @@ test("primary navigation is four real document links on every promoted shell", (
   ];
   assert.match(root, /class="browse-child-nav"/);
   assert.match(root, /Civic objects/);
+  const civicObjectNav = root.match(/<nav class="tabs browse-child-tabs" aria-label="Civic objects">[\s\S]*?<\/nav>/)?.[0] || "";
+  assert.ok(civicObjectNav, "the root chooser keeps its civic-object navigation");
+  assert.doesNotMatch(civicObjectNav, /class="tabbtn active"|aria-current="page"/, "the root chooser has no preselected civic object");
   for (const [label, route, tab] of routes) {
     assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${tab}"`), `${label} keeps a canonical Browse destination`);
   }
