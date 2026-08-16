@@ -28,6 +28,69 @@ def assert_active_civic_object(page, href):
     assert page.locator("#tab-people").get_attribute("aria-labelledby") == active.get_attribute("id")
 
 
+def assert_shared_exam_card_grammar(page):
+    cards = page.locator("#career-results .career-card")
+    assert cards.count() >= 3
+
+    # Exams must inherit the Staffing renderer rather than assembling an
+    # alias-specific card. Each visible card opens and copies one canonical
+    # CityScroll exam record and marks its official source as off-site.
+    for index in range(3):
+        card = cards.nth(index)
+        title = card.locator("a.ui-object-card-title")
+        copy = card.locator("button.ui-object-card-copy")
+        source = card.locator("a.career-official-handoff")
+        expect(title).to_be_visible()
+        expect(copy).to_be_visible()
+        expect(source).to_be_visible()
+        assert title.locator('[aria-hidden="true"]').inner_text() == "◆"
+        assert title.get_attribute("href").startswith("/exams/")
+        assert copy.inner_text().strip() == "Copy link"
+        expected_copy = page.evaluate(
+            "href => new URL(href, location.origin).href",
+            title.get_attribute("href"),
+        )
+        assert copy.get_attribute("data-object-card-copy") == expected_copy
+        assert "↗" in source.inner_text()
+        assert page.evaluate(
+            "href => new URL(href, location.origin).origin !== location.origin",
+            source.get_attribute("href"),
+        )
+
+    # Apply is kinetic only while its filing window is open. The shared action
+    # style must also retain WCAG-AA text contrast; this guards the previously
+    # reported black-on-blue button regression.
+    open_card = page.locator("#career-results .career-card[data-status='open']").first
+    expect(open_card).to_be_visible()
+    apply = open_card.locator(".ui-object-card-action-rail a.ui-external-action.primary")
+    expect(apply).to_be_visible()
+    assert "↗" in apply.inner_text()
+    contrast = apply.evaluate(
+        """element => {
+          const parse = value => (value.match(/[\\d.]+/g) || []).slice(0, 3).map(Number);
+          const luminance = value => {
+            const rgb = parse(value).map(channel => {
+              const normalized = channel / 255;
+              return normalized <= 0.04045
+                ? normalized / 12.92
+                : ((normalized + 0.055) / 1.055) ** 2.4;
+            });
+            return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+          };
+          const style = getComputedStyle(element);
+          const foreground = luminance(style.color);
+          const background = luminance(style.backgroundColor);
+          return (Math.max(foreground, background) + 0.05)
+            / (Math.min(foreground, background) + 0.05);
+        }"""
+    )
+    assert contrast >= 4.5, f"Apply action contrast must be WCAG AA, got {contrast:.2f}:1"
+
+    upcoming = page.locator("#career-results .career-card[data-status='upcoming']").first
+    expect(upcoming).to_be_visible()
+    assert upcoming.locator(".ui-object-card-action-rail").count() == 0
+
+
 def run(page):
     install_routes(page)
 
@@ -46,11 +109,13 @@ def run(page):
     expect(page.locator("#tab-exams")).to_be_hidden()
     assert page.locator("#tab-people.active").count() == 1
     assert page.locator("#career-guide").is_visible()
+    expect(page.locator("#staffing-ledger")).to_be_hidden()
     assert page.locator("#staffing-ledger").get_attribute("hidden") == ""
     assert page.locator("#career-browser-heading").inner_text() == "Civil-service exams"
     assert page.locator("#career-guide .career-kicker").first.text_content().strip() == "Exams"
     assert page.locator("#career-result-count").inner_text().strip()
     assert page.locator("#career-source").inner_text().strip()
+    assert_shared_exam_card_grammar(page)
 
     # Search is the Staffing guide input, but its state stays on the Exams URL.
     page.locator("#career-query").fill("Police Officer")
@@ -118,6 +183,7 @@ def run(page):
     assert_active_civic_object(page, "/browse/people/")
     assert page.locator("#staffing-ledger").get_attribute("hidden") is None
     assert page.locator("#career-browser-heading").inner_text() == "Find an exam you can act on"
+    assert_shared_exam_card_grammar(page)
 
 
 def main():
