@@ -28,6 +28,21 @@ const BOROUGH_ALIASES = new Map([
   ["richmond county", "Staten Island"],
 ]);
 
+const COMMUNITY_DISTRICT_BOROUGHS = Object.freeze({
+  X: "Bronx",
+  K: "Brooklyn",
+  M: "Manhattan",
+  Q: "Queens",
+  R: "Staten Island",
+});
+
+const GENERAL_LOCATION_SOURCES = new Set([
+  "geoip",
+  "ip",
+  "ip_guess",
+  "network",
+]);
+
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
@@ -69,6 +84,19 @@ export function communityBoardInstitutionHref(bodyId) {
     : "/browse/people/#community-boards";
 }
 
+function normalizedBodyId(value) {
+  const id = clean(value).toLocaleLowerCase().replace(/^community-board:/, "");
+  return /^[a-z]+(?:-[a-z]+)*-cb-\d{2}$/.test(id) ? id : null;
+}
+
+export function communityBoardShortLabel(value) {
+  const id = normalizedBodyId(value);
+  const match = id?.match(/^([a-z]+(?:-[a-z]+)*)-cb-(\d{2})$/);
+  if (!match) return null;
+  const borough = COMMUNITY_BOARD_BOROUGHS.find((row) => row.slug === match[1])?.name;
+  return borough ? `${borough} CB${Number(match[2])}` : null;
+}
+
 function communityBoardLabels(row) {
   const area = row?.affected_area;
   const values = [
@@ -87,9 +115,27 @@ export function communityBoardIdsFromRow(row) {
   }))];
 }
 
+/** Resolve an already-published row identity without inferring one from title similarity. */
+export function communityBoardIdFromRow(row) {
+  const direct = [
+    row?.board_id,
+    row?.body_id,
+    row?.institution_refs?.board_ref,
+    ...(Array.isArray(row?.entity_refs_all) ? row.entity_refs_all : []),
+  ].map(normalizedBodyId).find(Boolean);
+  if (direct) return direct;
+  const affected = communityBoardIdsFromRow(row)[0];
+  if (affected) return affected;
+  const named = parseCommunityBoardQuery(row?.board_name);
+  return named?.borough ? communityBoardBodyId(named.number, named.borough) : null;
+}
+
 export function rowMatchesCommunityBoardQuery(row, query) {
   if (!query) return false;
-  const ids = communityBoardIdsFromRow(row);
+  const ids = [...new Set([
+    ...communityBoardIdsFromRow(row),
+    communityBoardIdFromRow(row),
+  ].filter(Boolean))];
   const target = query.borough
     ? communityBoardBodyId(query.number, query.borough)
     : null;
@@ -111,4 +157,119 @@ export function communityBoardDisambiguation(query) {
       institutionHref: communityBoardInstitutionHref(bodyId),
     };
   });
+}
+
+function selectedCandidate(query, value) {
+  const id = normalizedBodyId(value);
+  return id && id.endsWith(`-cb-${String(query?.number).padStart(2, "0")}`) ? id : null;
+}
+
+/**
+ * Turn an ambiguous board query plus explicit civic context into a visible default.
+ * Network/IP location is deliberately excluded: it is not a resident-supplied civic identity.
+ */
+export function communityBoardSearchPresentation(query, context = {}) {
+  const choices = communityBoardDisambiguation(query);
+  if (!query?.ambiguous || choices.length === 0) {
+    return { defaultBodyId: null, defaultLabel: null, defaultSource: null, choices };
+  }
+
+  const selectedBodyId = selectedCandidate(query, context.selectedBodyId || context.communityBoard);
+  let defaultBodyId = selectedBodyId;
+  let defaultSource = selectedBodyId ? "user_choice" : null;
+  const source = clean(context.source).toLocaleLowerCase();
+  if (!defaultBodyId && !GENERAL_LOCATION_SOURCES.has(source)) {
+    const district = clean(context.communityDistrict || context.community_district || context.cd).toUpperCase();
+    const match = district.match(/^([XKMQR])(\d{2})$/);
+    if (match && Number(match[2]) === query.number) {
+      defaultBodyId = communityBoardBodyId(query.number, COMMUNITY_DISTRICT_BOROUGHS[match[1]]);
+    }
+    if (!defaultBodyId && context.borough) {
+      defaultBodyId = communityBoardBodyId(query.number, context.borough);
+    }
+    if (defaultBodyId) defaultSource = "place_context";
+  }
+
+  return {
+    defaultBodyId,
+    defaultLabel: communityBoardShortLabel(defaultBodyId),
+    defaultSource,
+    choices: choices.map((choice) => ({
+      ...choice,
+      shortLabel: communityBoardShortLabel(choice.bodyId),
+      preferred: choice.bodyId === defaultBodyId,
+    })),
+  };
+}
+
+function rowTimeBand(row, today) {
+  const status = clean(row?.status || row?.lifecycle_stage || row?.process_stage).toLocaleLowerCase();
+  if (["open", "upcoming", "scheduled", "agenda"].includes(status)) return 0;
+  if (["past", "closed", "archived"].includes(status)) return 2;
+  const date = clean(row?.event_date || row?.date).slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return 1;
+  return date >= today ? 0 : 2;
+}
+
+/** Stable board grouping and ranking. It changes presentation order only; no row is removed. */
+export function rankCommunityBoardRows(rows = [], {
+  query = null,
+  context = {},
+  selectedBodyId = null,
+  today = new Date().toISOString().slice(0, 10),
+  rowForIdentity = (row) => row,
+} = {}) {
+  const presentation = communityBoardSearchPresentation(query, {
+    ...context,
+    selectedBodyId: selectedBodyId || context.selectedBodyId,
+  });
+  const boroughOrder = new Map(COMMUNITY_BOARD_BOROUGHS.map((borough, index) => [borough.slug, index]));
+  const prepared = (Array.isArray(rows) ? rows : []).map((value, index) => {
+    const row = rowForIdentity(value) || {};
+    const bodyId = communityBoardIdFromRow(row);
+    const slug = bodyId?.replace(/-cb-\d{2}$/, "") || "";
+    const band = rowTimeBand(row, today);
+    const date = clean(row?.event_date || row?.date).slice(0, 10);
+    return { value, row, bodyId, band, date, index, boroughOrder: boroughOrder.get(slug) ?? 99 };
+  });
+  const groupFacts = new Map();
+  for (const item of prepared) {
+    const key = item.bodyId || "unresolved";
+    const existing = groupFacts.get(key) || { bestBand: 99, boroughOrder: item.boroughOrder };
+    existing.bestBand = Math.min(existing.bestBand, item.band);
+    groupFacts.set(key, existing);
+  }
+  const groupOrder = [...groupFacts.entries()].sort(([leftId, left], [rightId, right]) => {
+    const leftPreferred = leftId === presentation.defaultBodyId ? 0 : 1;
+    const rightPreferred = rightId === presentation.defaultBodyId ? 0 : 1;
+    return leftPreferred - rightPreferred
+      || left.bestBand - right.bestBand
+      || left.boroughOrder - right.boroughOrder
+      || leftId.localeCompare(rightId);
+  }).map(([id]) => id);
+  const groupIndex = new Map(groupOrder.map((id, index) => [id, index]));
+  prepared.sort((left, right) => {
+    const leftGroup = left.bodyId || "unresolved";
+    const rightGroup = right.bodyId || "unresolved";
+    const groupDifference = groupIndex.get(leftGroup) - groupIndex.get(rightGroup);
+    if (groupDifference) return groupDifference;
+    if (left.band !== right.band) return left.band - right.band;
+    if (left.date !== right.date) {
+      return left.band === 2 ? right.date.localeCompare(left.date) : left.date.localeCompare(right.date);
+    }
+    return left.index - right.index;
+  });
+  const groups = groupOrder.map((bodyId) => ({
+    bodyId: bodyId === "unresolved" ? null : bodyId,
+    label: bodyId === "unresolved"
+      ? `CB${query?.number || ""} · borough not specified`
+      : communityBoardShortLabel(bodyId),
+    preferred: bodyId === presentation.defaultBodyId,
+    rows: prepared.filter((item) => (item.bodyId || "unresolved") === bodyId).map((item) => item.value),
+  }));
+  return {
+    ...presentation,
+    rows: prepared.map((item) => item.value),
+    groups,
+  };
 }

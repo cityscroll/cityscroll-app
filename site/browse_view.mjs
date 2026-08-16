@@ -25,11 +25,16 @@ import {
   communityBoardMeetingEdgeFromRow,
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { communityBoardScopeHref } from "./community_board_scope_links.mjs";
 import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import {
   communityBoardDisambiguation,
+  communityBoardIdFromRow,
+  communityBoardSearchPresentation,
+  communityBoardShortLabel,
   parseCommunityBoardQuery,
+  rankCommunityBoardRows,
   rowMatchesCommunityBoardQuery,
 } from "./community_board_search.mjs";
 
@@ -882,14 +887,18 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const scopeState = scopeFromFacetParams(facet, search);
   const connectionRelation = String(scopeState.parsed?.facets?.values?.connection_relation || "").trim();
   const applicability = scopeApplicability(facet, rows, scopeState);
+  const ambiguousBoardSearch = facet === "meetings" && communityBoardQuery?.ambiguous;
+  const selectedBoardId = ambiguousBoardSearch
+    ? scopeState.refs.find((item) => item.kind === "community-board")?.id || null
+    : null;
   const matchedBase = rows.filter((row) => {
     const text = corpus(row);
     if (communityBoardQuery ? !rowMatchesCommunityBoardQuery(row, communityBoardQuery) : query && !text.includes(query)) return false;
     if (agency && !rowAgencyFilterMatches(row, facet, agency)) return false;
-    if (borough && !rowMatchesBorough(facet, row, borough)) return false;
+    if (!ambiguousBoardSearch && borough && !rowMatchesBorough(facet, row, borough)) return false;
     if (status && !rowMatchesStatus(row, status)) return false;
-    if (communityDistrict && !rowMatchesCommunityDistrict(row, communityDistrict)) return false;
-    if (councilDistrict && !rowMatchesCouncilDistrict(row, councilDistrict)) return false;
+    if (!ambiguousBoardSearch && communityDistrict && !rowMatchesCommunityDistrict(row, communityDistrict)) return false;
+    if (!ambiguousBoardSearch && councilDistrict && !rowMatchesCouncilDistrict(row, councilDistrict)) return false;
     if (facet === "contracts" && !matchesClosing(row, search.get("closing"), asOf)) return false;
     if (facet === "meetings" && !meetingDateMatchesWindow(row, meetingWhen, asOf)) return false;
     if (facet === "meetings" && meetingProcess
@@ -897,9 +906,35 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     if (!rowMatchesConnectionRelation(facet, connectionRelation)) return false;
     return true;
   });
+  const effectiveScopeRefs = ambiguousBoardSearch
+    ? scopeState.refs.filter((item) => item.kind !== "community-board")
+    : scopeState.refs;
+  const effectiveScopeKinds = ambiguousBoardSearch
+    ? applicability.supportedRequestedKinds.filter((kind) => kind !== "community-board")
+    : applicability.supportedRequestedKinds;
   const matched = scopeState.hasScopeFacet && applicability.canApplyScope
-    ? matchedBase.filter((row) => rowMatchesScopeRefs(row, facet, scopeState.refs, applicability.supportedRequestedKinds))
+    ? effectiveScopeRefs.length
+      ? matchedBase.filter((row) => rowMatchesScopeRefs(row, facet, effectiveScopeRefs, effectiveScopeKinds))
+      : matchedBase
     : matchedBase;
+  const boardRanking = ambiguousBoardSearch
+    ? rankCommunityBoardRows(matched, {
+      query: communityBoardQuery,
+      context: { borough, communityDistrict, source: "route" },
+      selectedBodyId: selectedBoardId,
+      today: isoDay(asOf) || undefined,
+    })
+    : null;
+  const rankedRows = boardRanking?.rows || matched;
+  const visibleRows = rankedRows.slice(0, limit);
+  const visibleBoardRanking = ambiguousBoardSearch
+    ? rankCommunityBoardRows(visibleRows, {
+      query: communityBoardQuery,
+      context: { borough, communityDistrict, source: "route" },
+      selectedBodyId: selectedBoardId,
+      today: isoDay(asOf) || undefined,
+    })
+    : null;
   const requestedKinds = new Set(scopeState.refs.map((item) => item.kind));
   const supportedRequestedKinds = [...requestedKinds].filter((kind) => applicability.supportedKinds.has(kind));
   const unsupportedKinds = [...requestedKinds].filter((kind) => !applicability.supportedKinds.has(kind));
@@ -947,7 +982,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     total: matched.length,
     scope: scopeSummary,
     preScopeTotal: matchedBase.length,
-    rows: matched.slice(0, limit),
+    rows: visibleRows,
     asOf: isoDay(asOf),
     requestedAsOf,
     asOfMismatch: Boolean(requestedAsOf && isoDay(asOf) && requestedAsOf !== isoDay(asOf)),
@@ -957,6 +992,8 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     contextualSuggestions,
     communityBoardQuery,
     communityBoardDisambiguation: communityBoardDisambiguation(communityBoardQuery),
+    communityBoardPresentation: boardRanking,
+    communityBoardGroups: visibleBoardRanking?.groups || [],
     edgeInventory: edgeInventory.edgeInventory,
     edgePairs: edgeInventory.edgePairs,
   };
@@ -1090,13 +1127,20 @@ export function renderBrowseView(view) {
     className: "browse-edge-summary",
   });
   const boardSearch = view.communityBoardQuery;
-  const boardChoices = (view.communityBoardDisambiguation || []).map((board) =>
-    `<li><a href="${esc(board.institutionHref)}">${esc(board.label)}</a></li>`).join("");
+  const boardPresentation = view.communityBoardPresentation
+    || communityBoardSearchPresentation(boardSearch);
+  const boardChoices = (boardPresentation.choices || []).map((board) => {
+    const scopedHash = communityBoardScopeHref("meetings", board.bodyId, `#meetings${view.scopeSearch ? `?${view.scopeSearch}` : ""}`);
+    const queryAt = scopedHash.indexOf("?");
+    const href = `/browse/meetings/${queryAt >= 0 ? `?${scopedHash.slice(queryAt + 1)}` : ""}`;
+    const current = board.preferred ? ` aria-current="true"` : "";
+    return `<li><a href="${esc(href)}"${current}>${esc(board.shortLabel || board.label)}</a></li>`;
+  }).join("");
   const boardDisambiguation = boardSearch?.ambiguous
     ? `<section class="browse-board-disambiguation" data-community-board-disambiguation aria-labelledby="browse-board-disambiguation-heading">
-        <h2 id="browse-board-disambiguation-heading">Which community board ${esc(boardSearch.number)}?</h2>
-        <p>Every borough has a Community Board ${esc(boardSearch.number)}. Choose the board institution to continue.</p>
-        <ul>${boardChoices}</ul>
+        <h2 id="browse-board-disambiguation-heading">${boardPresentation.defaultLabel ? `Showing ${esc(boardPresentation.defaultLabel)} first` : `Which CB${esc(boardSearch.number)}?`}</h2>
+        <p>${boardPresentation.defaultLabel ? (boardPresentation.defaultSource === "user_choice" ? "Based on your choice. All five borough boards remain visible." : "Based on your current place context. All five borough boards remain visible.") : "All five borough boards stay visible. Choose which one appears first."}</p>
+        ${boardPresentation.defaultLabel ? `<details><summary>Choose another CB${esc(boardSearch.number)}</summary><ul>${boardChoices}</ul></details>` : `<ul>${boardChoices}</ul>`}
       </section>`
     : "";
   const boardInstitutionPivot = view.facet === "meetings"
@@ -1104,7 +1148,7 @@ export function renderBrowseView(view) {
     : "";
   const browseRoute = `${view.config.route}${view.scopeSearch ? `?${view.scopeSearch}` : ""}`;
   const traversal = renderTraversalPath(traversalFromHref(browseRoute), { currentHref: browseRoute });
-  const cards = view.rows.map((row) => {
+  const renderCard = (row) => {
     const href = rowHref(view.facet, row);
     const title = rowTitle(view.facet, row) || "Untitled record";
     const agency = rowAgency(view.facet, row);
@@ -1160,10 +1204,10 @@ export function renderBrowseView(view) {
     const boardEdge = view.facet === "meetings" ? communityBoardMeetingEdgeFromRow(row) : null;
     const boardId = boardEdge?.from?.replace(/^community-board:/, "")
       || row.institution_refs?.board_ref?.replace(/^community-board:/, "")
-      || row.board_id;
+      || row.board_id
+      || communityBoardIdFromRow(row);
     const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
-    const boardName = row.board_name || boardEdge?.board_name
-      || (boardId ? `Community Board ${boardId.replace(/^[a-z-]+-cb-/, "")}` : null);
+    const boardName = row.board_name || boardEdge?.board_name || communityBoardShortLabel(boardId);
     const exactBoardReference = row.source_system === "community_board"
       && row.board_id === boardId
       && row.institution_refs?.board_ref === `community-board:${boardId}`;
@@ -1180,13 +1224,19 @@ export function renderBrowseView(view) {
       : boardId
         ? `<span class="browse-community-board-reference" data-community-board-state="${esc(boardEdge?.status || "unknown")}">Hosted by ${esc(boardName || "community board")}</span>`
         : "";
-    return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
+    return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${meetingSourceDetails}
     </article>`;
-  }).join("");
+  };
+  const cards = boardSearch?.ambiguous && view.communityBoardGroups?.length
+    ? view.communityBoardGroups.map((group) => `<section class="browse-community-board-group" data-community-board-group="${esc(group.bodyId || "unresolved")}">
+        <h2>${esc(group.label)}${group.preferred ? " · context match" : ""}</h2>
+        ${group.rows.map(renderCard).join("")}
+      </section>`).join("")
+    : view.rows.map(renderCard).join("");
   const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}" data-as-of="${esc(view.asOf || "")}" data-requested-as-of="${esc(view.requestedAsOf || "")}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
