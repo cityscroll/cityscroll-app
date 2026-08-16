@@ -17,6 +17,7 @@
         "city-record-meeting",
         "community-board-meeting",
         "parks-agency",
+        "canonical-person",
         "attachment-enrichment"
       ]
     }
@@ -183,6 +184,42 @@
       }
     },
     {
+      "id": "canonical-person",
+      "source_observation": {
+        "person_id": "7801",
+        "official_id": "official:7801",
+        "person_name": "Christopher Marte",
+        "names": ["Christopher Marte"],
+        "name_keys": ["CHRISTOPHER MARTE", "CHRIS MARTE"],
+        "district": "1",
+        "terms": [
+          {
+            "term_start": "2026-01-01",
+            "term_end": "2029-12-31",
+            "office_id": "5827",
+            "district": "1",
+            "name": "Christopher Marte"
+          }
+        ],
+        "current_term": {
+          "term_start": "2026-01-01",
+          "term_end": "2029-12-31",
+          "office_id": "5827",
+          "district": "1",
+          "name": "Christopher Marte"
+        }
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "person:7801",
+        "object_type": "person",
+        "domain": "people",
+        "canonical_href": "/officials/7801/",
+        "source_observation_refs": ["nyc_council_members:council-member:7801:2026-01-01"],
+        "coverage_state": "matched"
+      }
+    },
+    {
       "id": "attachment-enrichment",
       "source_observation": {
         "request_id": "20260710020",
@@ -223,6 +260,12 @@
       "domain": "meetings",
       "state": "partial",
       "reason": "one_or_more_registered_sources_incomplete"
+    },
+    {
+      "producer": "people",
+      "domain": "people",
+      "state": "matched",
+      "reason": "person_hub_corpus_indexed"
     },
     {
       "producer": "law_mandates",
