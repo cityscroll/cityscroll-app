@@ -5,8 +5,16 @@ import {
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
-import { officialSourceLink } from "../affordance_grammar.mjs";
+import {
+  constellationLink,
+  externalActionLink,
+  officialSourceLink,
+  renderObjectCardActionRail,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+} from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
+import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import { domainRows } from "../resident_snapshot_queries.mjs";
 
@@ -1245,10 +1253,6 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const past=!!record.event_date&&String(record.event_date).slice(0,10)<todayISO().slice(0,10);
   const sourceUrl=hearingSafeURL(record.source_url);
   const nativeSource=record.source_system==="community_board";
-  const meetingHref=record.meeting_id
-    ? `/meetings/${encodeURIComponent(record.meeting_id)}`
-    : (record.request_id ? `#notice/${encodeURIComponent(record.request_id)}` : sourceUrl);
-  const noticeHref=meetingHref;
   const processStage=entry.process_stage||null;
   const processLabel=meetingStageLabel(processStage);
   const agency=entry.agency||record.agency||null;
@@ -1264,12 +1268,15 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const boardHref=boardEdge?.board_href||communityBoardPageHref(boardId);
   const boardName=record.board_name||boardEdge?.board_name
     || (boardId?`Community Board ${boardId.replace(/^[a-z-]+-cb-/i,"")}`:"");
-  const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${sourceUrl
-    ? `<a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${escUiHtml(meetingOriginLabel(origin))}${extSR()}</a>`
-    : escUiHtml(meetingOriginLabel(origin))}</span>`;
+  const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${escUiHtml(meetingOriginLabel(origin))}</span>`;
   const boardPivot=boardId
     ? (boardEdge&&communityBoardEdgeTools?.communityBoardMeetingEdgeAccepted(boardEdge)&&boardHref
-      ? `<a class="tag place community-board-meeting-pivot" href="${escUiHtml(boardHref)}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</a>`
+      ? constellationLink({
+        href:boardHref,
+        label:t("meetings_hosted_by_board", { board: boardName }),
+        className:["tag","place","community-board-meeting-pivot"].join(" "),
+        escape:escUiHtml,
+      })
       : `<span class="tag place community-board-meeting-pivot" data-community-board-state="${escUiHtml(boardEdge?.status||"unknown")}">${escUiHtml(t("meetings_hosted_by_board", { board: boardName }))}</span>`)
     : "";
   const processLine=`<div class="meetings-process-line">
@@ -1279,29 +1286,34 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ${boardPivot}
     ${originChip}
   </div>`;
-  // Next-action lead: concrete attend / join / testimony when data supports it.
-  const actionKey=entry.action_key||"meeting_action_open_notice";
-  let actionLeadText=t(actionKey);
-  if(actionKey==="meeting_action_attend_dated" && record.event_date){
-    actionLeadText=t("meeting_action_attend_dated",{date:fdt(record.event_date)});
-  }
-  const actionLead=`<div class="meetings-action-lead">${escUiHtml(actionLeadText)}</div>`;
-  // Primary kinetic destination: the shared meeting document; source and
-  // participation links stay as secondary classified links.
   const participation=entry.participation||record.participation||{};
-  const primaryAction=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
-  const secondaryActions=[];
-  if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("meetings_action_agency_profile")}</a>`);
-  const participationAction=participationLinksHTML({ participation });
-  if(participationAction) secondaryActions.push(participationAction);
+  const participationActions=[];
+  const publishedParticipation=((participation.links||[]).map(link=>({
+    href:hearingSafeURL(link.url),
+    label:String(link.label||""),
+  })).find(link=>link.href))||null;
+  if(publishedParticipation){
+    const join=/\bjoin\b/i.test(publishedParticipation.label);
+    const ida=/ida meetings/i.test(publishedParticipation.label);
+    participationActions.push({
+      label:t(join?"join_online":(ida?"ida_meetings_page":"participation_link")),
+      href:publishedParticipation.href,
+      kind:join?"join":"participate",
+      primary:true,
+      context_ready:true,
+    });
+  }
   (participation.emails||[]).slice(0,1).forEach(email=>{
-    secondaryActions.push(`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`);
+    participationActions.push({
+      label:t("email_in_notice"),
+      href:`mailto:${encodeURIComponent(email)}`,
+      kind:"testify",
+      primary:!publishedParticipation,
+      context_ready:true,
+    });
   });
   const meetingKey=record.meeting_id||record.request_id||"";
-  secondaryActions.push(`<button class="act" type="button" data-link="${meetingKey}">${t("copy_link_btn")}</button>`);
-  if(record.event_date) secondaryActions.push(`<button class="act" type="button" data-ev="meetings:${meetingKey}">${t("calendar_ics")}</button>`);
   const venue=record.venue||{};
-  if(venue.address) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`);
   const cardMatter={
     kind:"hearing",
     lifecycle_stage:past?"past":null,
@@ -1332,6 +1344,39 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     if(chips) siblingsHtml=`<div class="meetings-siblings">${t("meetings_siblings_label")}: ${chips}</div>`;
   }
   const title=noticeDisplayTitle({title:entry.title||record.decides||record.title,request_id:record.request_id},t("now_event_meeting"));
+  const interaction=meetingsCardInteractionProjection({
+    meeting_id:record.meeting_id,
+    request_id:record.request_id,
+    title,
+    source_url:sourceUrl,
+    source_label:meetingOriginLabel(origin),
+    participation_actions:participationActions,
+    guide_html:cardAttendPack,
+    guide_source_backed:!!cardAttendPack,
+  });
+  const interactionTitle=renderObjectCardTitle(interaction,{escape:escUiHtml});
+  const interactionCopy=renderObjectCardCopy(interaction,{label:t("copy_link_btn"),escape:escUiHtml});
+  const officialHandoffs=(interaction.external_handoffs||[]).map(handoff=>officialSourceLink({
+    href:handoff.href,
+    label:handoff.label,
+    className:"meetings-official-source",
+    escape:escUiHtml,
+  })).join("");
+  const actionRail=renderObjectCardActionRail(interaction,{
+    heading:t("next_action_heading"),
+    escape:escUiHtml,
+    newTabLabel:t("ext_link_new_tab_sr"),
+  });
+  const utilities=[];
+  if(record.event_date) utilities.push(`<button class="act" type="button" data-ev="meetings:${escUiHtml(meetingKey)}">${t("calendar_ics")}</button>`);
+  if(venue.address) utilities.push(externalActionLink({
+    href:`https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}`,
+    label:t("map_venue"),
+    className:"meetings-map-link",
+    escape:escUiHtml,
+    newTabLabel:t("ext_link_new_tab_sr"),
+  }));
+  const utilityHTML=utilities.length?`<div class="factions meetings-card-utilities">${utilities.join("")}</div>`:"";
   const ev=resultMatchEvidence(title, matchText(record), terms);
   const areaText=hearingAreaText(record);
   const areaHTML=hearingAreaHTML(record);
@@ -1349,14 +1394,14 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       ${processLine}
-      ${actionLead}
-      <div class="ftitle"><a href="${noticeHref}">${excerptHtml(title,400)}</a></div>
+      <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
       ${siblingsHtml}
       ${factsHTML?`<div class="hfacts">${factsHTML}</div>`:""}
       ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
       ${digEvidenceHTML(ev)}
-      <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
-      ${cardAttendPack}
+      ${officialHandoffs?`<div class="ui-object-card-handoffs">${officialHandoffs}</div>`:""}
+      ${actionRail}
+      ${utilityHTML}
     </article>`;
 }
 function renderHearingGroup(scope, entries, terms=[]){
