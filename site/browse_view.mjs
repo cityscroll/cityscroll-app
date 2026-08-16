@@ -3,6 +3,7 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
 import {
   constellationLink,
+  officialSourceLink,
   renderObjectCardCopy,
   renderObjectCardTitle,
   staticFact,
@@ -16,6 +17,7 @@ import { normalizeEdgeSummaryRecords, renderEdgeSummaryRail, renderEntityPivotLi
 import { renderTraversalPath, traversalFromHref } from "./traversal_path.mjs";
 import { renderWalkEntry } from "./walk_entry.mjs";
 import { meetingCanonicalHref } from "./meeting_object_contract.mjs";
+import { meetingsCardInteractionProjection } from "./meetings_card_interaction.mjs";
 import { meetingProcessStage } from "./meetings_explorer.mjs";
 import {
   communityBoardMeetingEdgeAccepted,
@@ -1111,14 +1113,31 @@ export function renderBrowseView(view) {
       ? `<p class="browse-record-action"><span class="browse-record-action-label">${esc(actionTime.label)}</span> ${renderedDate(actionTime.date)}</p>`
       : "";
     const place = rowPlace(view.facet, row);
-    const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board"
+    const interaction = view.facet === "meetings"
+      ? meetingsCardInteractionProjection({
+        meeting_id: row.meeting_id,
+        request_id: row.request_id,
+        title,
+        source_url: row.source_url,
+        source_label: meetingOriginLabel(row.meeting_origin),
+      })
+      : view.facet === "rules"
+        ? rulesCardInteractionProjection({ request_id: rowId(view.facet, row), title })
+        : null;
+    const titleMarkup = interaction
+      ? renderObjectCardTitle(interaction, { escape: esc })
+      : href
+        ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc })
+        : `<span lang="en" dir="ltr">${esc(title)}</span>`;
+    const copyMarkup = interaction
+      ? renderObjectCardCopy(interaction, { label: "Copy link", escape: esc })
+      : "";
+    const sourceHandoff = interaction?.external_handoffs?.[0];
+    const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board" && !sourceHandoff
       ? staticFact({ label: meetingOriginLabel(row.meeting_origin), className: "browse-source-fact", escape: esc })
       : "";
-    const meetingSourceAttrs = row.source_record_id || row.source_receipt?.observed_at
-      ? ` data-source-record-id="${esc(row.source_record_id || "")}" data-source-receipt-at="${esc(row.source_receipt?.observed_at || "")}"`
-      : "";
-    const meetingSourceDetails = view.facet === "meetings" && (row.source_url || row.source_record || row.source_receipt)
-      ? `<details class="meeting-source-details"${meetingSourceAttrs}><summary>Source details</summary>${row.source_url ? `<a href="${esc(row.source_url)}">Official source</a>` : ""}</details>`
+    const meetingSourceDetails = sourceHandoff
+      ? `<div class="ui-object-card-handoffs">${officialSourceLink({ href: sourceHandoff.href, label: sourceHandoff.label, escape: esc })}</div>`
       : "";
     const agencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
     const agencyMarkup = agencyIdentity
@@ -1155,20 +1174,9 @@ export function renderBrowseView(view) {
       : boardId
         ? `<span class="browse-community-board-reference" data-community-board-state="${esc(boardEdge?.status || "unknown")}">Hosted by ${esc(boardName || "community board")}</span>`
         : "";
-    const interaction = view.facet === "rules"
-      ? rulesCardInteractionProjection({ request_id: rowId(view.facet, row), title })
-      : null;
-    const titleMarkup = view.facet === "rules"
-      ? renderObjectCardTitle(interaction, { escape: esc })
-      : href
-        ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc })
-        : `<span lang="en" dir="ltr">${esc(title)}</span>`;
-    const copyMarkup = view.facet === "rules"
-      ? renderObjectCardCopy(interaction, { label: "Copy link", escape: esc })
-      : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
       ${actionMarkup}
-      <h3>${titleMarkup}</h3>${copyMarkup}
+      ${interaction ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${meetingSourceDetails}
     </article>`;
