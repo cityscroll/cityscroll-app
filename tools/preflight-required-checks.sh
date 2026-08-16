@@ -312,8 +312,14 @@ fi
 if [[ "$RUN_FULL" == "1" ]]; then
   run_banner "Accessibility + language gate (axe on every PR)" "CI-equivalent full accessibility + stray-English runtime" \
     "Python playwright + test/functional/*"
-  if ! python3 -c 'import playwright' >/dev/null 2>&1; then
-    run_and_fail python3 -m pip install playwright
+  playwright_requirement="$(<.github/actions/setup-playwright/requirements.txt)"
+  playwright_version="${playwright_requirement#playwright==}"
+  if ! python3 -c \
+    'import importlib.metadata, sys; sys.exit(importlib.metadata.version("playwright") != sys.argv[1])' \
+    "${playwright_version}" >/dev/null 2>&1; then
+    echo "Full browser preflight requires the pinned Playwright environment." >&2
+    echo "Run 'make setup-a11y' once, then use 'make a11y'." >&2
+    exit 2
   fi
   run_and_fail python3 -m playwright install --with-deps chromium
   if node tools/home_cold_load.mjs; then
