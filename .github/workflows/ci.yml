@@ -680,41 +680,12 @@ jobs:
           exit 1
       - name: Report all accessibility shards green
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success'
-        run: echo "All accessibility and language shards passed."
-      - name: Download shard timing receipts
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success'
-        uses: actions/download-artifact@v4
-        with:
-          pattern: a11y-pr-shard-*-logs-${{ github.run_id }}-${{ github.run_attempt }}
-          path: a11y-pr-timings
-          merge-multiple: true
-      - name: Report aggregate wall span
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success'
         run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-          import os
-          import pathlib
-          import statistics
-
-          expected = {"browser-a11y", "routes-focus", "language-layout", "rendered-census"}
-          receipts = sorted(pathlib.Path("a11y-pr-timings").glob("*.timing.json"))
-          parsed = [json.loads(path.read_text(encoding="utf-8")) for path in receipts]
-          actual = {item["shard"] for item in parsed}
-          missing = sorted(expected - actual)
-          if missing or actual != expected:
-              raise SystemExit(f"missing or unexpected shard timing receipts: missing={missing}, actual={sorted(actual)}")
-          spans = [item["duration_seconds"] for item in parsed]
-          wall_span = max(item["finished_epoch"] for item in parsed) - min(item["started_epoch"] for item in parsed)
-          message = (
-              f"Sharded accessibility wall span: {wall_span}s; "
-              f"shard p50={statistics.median(spans):.1f}s, p95={max(spans):.1f}s."
-          )
-          print(message)
-          with pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as summary:
-              summary.write(f"### Accessibility shard timing\n\n{message}\n")
-          PY
+          # `needs` does not resolve until every matrix child and its final artifact
+          # upload step completes. Keep the required verdict on that job result: a
+          # second artifact-list query here is eventually consistent and can make a
+          # successful matrix stale-red, especially after a failed-job-only rerun.
+          echo "All accessibility and language shards passed and published evidence."
 
   # Build once so accessibility and performance shards test the exact same generated artifact.
   browser-pr-site:
@@ -927,13 +898,16 @@ jobs:
               exit 1
               ;;
           esac
-      - name: Upload uniquely named shard logs and timing
+      - name: Upload shard result evidence
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: a11y-pr-shard-${{ matrix.shard }}-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          # Evidence publication is part of the shard result. Stable run-scoped names
+          # survive failed-job-only reruns; a full shard rerun replaces its own receipt.
+          name: a11y-pr-shard-${{ matrix.shard }}-logs-${{ github.run_id }}
           path: ${{ runner.temp }}/a11y-pr-shard-${{ matrix.shard }}-logs
-          if-no-files-found: warn
+          if-no-files-found: error
+          overwrite: true
           retention-days: 7
 
   # readable-or-else (github.com/jimdc/readable-or-else): ratchet-mode reading-level gate
