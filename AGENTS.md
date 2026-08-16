@@ -14,6 +14,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   appeared edge. Focused proof: `test/process_conformance.test.mjs` plus the
   three mandate bridge tests.
 
+- **Agency procurement conformance:** `site/agency_lifecycle_conformance.mjs` aggregates the
+  bounded case envelopes from `site/procurement_event_log.mjs` into expected stages, observed
+  traces, stage completeness, and method-labeled deviation counts. Publication is fail-closed
+  when a case key or event clock is incomplete. Refresh the committed lookup with
+  `node tools/build_agency_lifecycle_conformance.mjs`; focused proof remains in
+  `test/process_conformance.test.mjs`.
+
 - Committee traversal exposes `public_reverse_edges` from the same accepted
   `member_of` observation in `site/committee_graph.mjs`; browse renders the
   exact-ID `has member` pivot, while held/empty/unknown graph states stay

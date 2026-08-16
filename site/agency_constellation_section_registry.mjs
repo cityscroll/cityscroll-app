@@ -1,5 +1,6 @@
 import { asOfSection } from "./agency_constellation_sections/as_of.mjs";
 import { contractsSection } from "./agency_constellation_sections/contracts.mjs";
+import { agencyLifecycleConformanceSection } from "./agency_constellation_sections/agency_lifecycle_conformance.mjs";
 import { meetingsSection } from "./agency_constellation_sections/meetings.mjs";
 import { mandateContractsSection } from "./agency_constellation_sections/mandate_contracts.mjs";
 import { mandatePredictionsSection } from "./agency_constellation_sections/mandate_predictions.mjs";
@@ -23,6 +24,7 @@ const registeredSections = [
   mandateLandUseSection,
   contractsSection,
   vendorsSection,
+  agencyLifecycleConformanceSection,
   meetingsSection,
   rulesSection,
   processConformanceSection,
