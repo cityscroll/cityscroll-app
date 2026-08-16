@@ -360,26 +360,24 @@ function render(facts) {
 
 function main() {
   const check = process.argv.includes("--check");
-  let generatedAt = process.env.ARCHITECTURE_FACTS_GENERATED_AT || null;
-  let commit = null;
-  if (check && existsSync(OUTPUT)) {
-    try {
-      const existing = JSON.parse(readFileSync(OUTPUT, "utf8"));
-      generatedAt = existing.generated_at || generatedAt;
-      commit = existing.commit || commit;
-    } catch {
-      // The comparison below reports the malformed or stale artifact.
-    }
-  }
-  const facts = buildFacts({ generatedAt: generatedAt || gitCommitTimestamp() || new Date().toISOString(), commit: commit || gitCommit() });
+  const stdout = process.argv.includes("--stdout");
+  const facts = buildFacts({
+    generatedAt: process.env.ARCHITECTURE_FACTS_GENERATED_AT || gitCommitTimestamp() || new Date().toISOString(),
+    commit: gitCommit(),
+  });
   const rendered = render(facts);
   if (check) {
-    if (!existsSync(OUTPUT) || readFileSync(OUTPUT, "utf8") !== rendered) {
-      console.error(`${OUTPUT} is stale; run node tools/build_architecture_facts.mjs`);
+    const repeated = render(buildFacts({ generatedAt: facts.generated_at, commit: facts.commit }));
+    if (rendered !== repeated) {
+      console.error("architecture facts are not deterministic");
       process.exitCode = 1;
       return;
     }
-    console.log("architecture facts are current");
+    console.log("architecture facts generate deterministically in memory");
+    return;
+  }
+  if (stdout) {
+    process.stdout.write(rendered);
     return;
   }
   mkdirSync(dirname(OUTPUT), { recursive: true });

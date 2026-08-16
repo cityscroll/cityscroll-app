@@ -14,6 +14,7 @@ on:
       - "tools/build_architecture_facts.mjs"
       - "tools/reconcile_architecture.mjs"
       - ".github/workflows/architecture-reconciliation.yml"
+  merge_group:
   schedule:
     - cron: "17 6 * * *"
   workflow_dispatch:
@@ -33,4 +34,12 @@ jobs:
         with:
           node-version: "22"
       - name: Check architecture reconciliation
-        run: node tools/reconcile_architecture.mjs --check --no-write
+        run: node tools/reconcile_architecture.mjs --check --output-dir "$RUNNER_TEMP/architecture-evidence"
+      - name: Upload short-lived architecture evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-evidence-${{ github.event_name }}-${{ github.sha }}
+          path: ${{ runner.temp }}/architecture-evidence
+          if-no-files-found: ignore
+          retention-days: 3
