@@ -4,6 +4,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { landProjectDisplayTitle } from "../../site/display_title.mjs";
+import {
+  objectCardInteractionProjection,
+  renderObjectCardCopy,
+} from "../../site/affordance_grammar.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const src = SITE_SOURCE;
@@ -61,21 +66,45 @@ const locationStub = {
   origin: "https://cityscroll.org",
   pathname: "/",
 };
+const escUiHtml = (value) => String(value ?? "")
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&#39;");
+
+function loadLandPermalinkTools(location) {
+  return new Function(
+    "location",
+    "t",
+    "qrButtonHTML",
+    "currentLanguageURL",
+    "landProjectDisplayTitle",
+    "objectCardInteractionProjection",
+    "renderObjectCardCopy",
+    "escUiHtml",
+    extractDecl("landLink")
+      + extractFn("parseLandHashSegment")
+      + extractFn("landObjectCardProjection")
+      + extractFn("landPermalinkActionHTML")
+      + "\nreturn { landLink, parseLandHashSegment, landPermalinkActionHTML };",
+  )(
+    location,
+    (key) => ({ copy_link: "Copy link" })[key] || key,
+    () => "",
+    (url) => url,
+    landProjectDisplayTitle,
+    objectCardInteractionProjection,
+    renderObjectCardCopy,
+    escUiHtml,
+  );
+}
 
 const {
   landLink,
   parseLandHashSegment,
   landPermalinkActionHTML,
-} = new Function(
-  "location",
-  "t",
-  "qrButtonHTML",
-  "currentLanguageURL",
-  extractDecl("landLink")
-    + extractFn("parseLandHashSegment")
-    + extractFn("landPermalinkActionHTML")
-    + "\nreturn { landLink, parseLandHashSegment, landPermalinkActionHTML };",
-)(locationStub, (key) => ({ copy_link: "Copy link" })[key] || key, () => "", (url) => url);
+} = loadLandPermalinkTools(locationStub);
 
 test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(parseLandHashSegment(ALLEN_STREET.project_id), ALLEN_STREET.project_id);
@@ -92,7 +121,18 @@ test("#land/<project_id> continues to resolve and lands on the Land tab label", 
 
 test("the Land detail exposes the same Copy link action shape as notice details", () => {
   const html = landPermalinkActionHTML(ALLEN_STREET);
-  assert.match(html, /<button class="act" type="button" id="landcopy">Copy link<\/button>/);
+  assert.match(html, /class="ui-object-card-copy"/);
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/#land\/2023M0452"/);
+  assert.match(html, />Copy link<\/button>/);
+});
+
+test("local preview origins still project the canonical public Land permalink", () => {
+  const localTools = loadLandPermalinkTools({
+    origin: "http://127.0.0.1:4173",
+    pathname: "/browse/zoning/",
+  });
+  const html = localTools.landPermalinkActionHTML(ALLEN_STREET);
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/browse\/zoning\/#land\/2023M0452"/);
 });
 
 test("malformed land ids fail soft instead of throwing or entering the detail query", () => {
@@ -122,14 +162,12 @@ test("cold-open loader fetches the exact real project and selects it in the exis
     "#lstatus": { value: "all" },
   };
   const row = { dataset: { i: "0" } };
-  const calls = { showTab: [], api: [], selected: [] };
+  const calls = { showTab: [], selected: [] };
 
   const { showLandEntry } = new Function(
     "fixture",
     `
       let landLoaded=false, landBanner="", landBorough="", lRows=[], landSelectionSeq=0;
-      const ZAP="https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
-      const ZAP_SELECT="project_id,project_name";
       const t=key => key === "rezonings_heading" ? "Rezonings" : key;
       const $=selector => elements[selector];
       const elements=fixture.elements;
@@ -141,10 +179,11 @@ test("cold-open loader fetches the exact real project and selects it in the exis
       const applyActiveHistoryRouteScroll=()=>{};
       const busyList=()=>{};
       const unbusy=()=>{};
+      const clearLandDetail=()=>{};
       const listSkeleton=()=>"<div class=\\"empty skel\\"></div>";
       const staleGuard=()=>()=>false;
       const renderLandEntryNotFound=id => fixture.notFound.push(id);
-      const api=async (url, params) => { fixture.calls.api.push({url, params}); return fixture.rows; };
+      const loadLandProjectsSnapshot=async () => fixture.rows;
       const landRenderList=()=>{};
       const landSelect=async (i, el) => fixture.calls.selected.push({i, el});
       ${extractFn("showLandEntry")}
@@ -160,9 +199,6 @@ test("cold-open loader fetches the exact real project and selects it in the exis
   await showLandEntry(ALLEN_STREET.project_id);
 
   assert.deepEqual(calls.showTab, ["land"]);
-  assert.equal(calls.api.length, 1);
-  assert.equal(calls.api[0].url, "https://data.cityofnewyork.us/resource/hgx4-8ukb.json");
-  assert.equal(calls.api[0].params.$where, "project_id='2023M0452'");
   assert.deepEqual(calls.selected, [{ i: 0, el: row }]);
 });
 
@@ -172,8 +208,6 @@ test("unknown but well-formed project ids return to the Zoning collection withou
     "fixture",
     `
       let landLoaded=false, landBanner="", lRows=[], landSelectionSeq=0;
-      const ZAP="zap";
-      const ZAP_SELECT="project_id,project_name";
       const t=key => key;
       const $=()=>({innerHTML:"",textContent:"",value:"",querySelector:()=>null});
       const showTab=()=>{};
@@ -182,10 +216,11 @@ test("unknown but well-formed project ids return to the Zoning collection withou
       const setLandResultCount=()=>{};
       const busyList=()=>{};
       const unbusy=()=>{};
+      const clearLandDetail=()=>{};
       const listSkeleton=()=>"<div class=\\"empty skel\\"></div>";
       const staleGuard=()=>()=>false;
       const renderLandEntryNotFound=id => fixture.notFound.push(id);
-      const api=async () => [];
+      const loadLandProjectsSnapshot=async () => [];
       const landRenderList=()=>{};
       const landSelect=async ()=>{};
       ${extractFn("showLandEntry")}
