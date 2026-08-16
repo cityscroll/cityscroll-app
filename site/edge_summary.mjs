@@ -1,6 +1,6 @@
 import { normalizeCrossSpineConfidence } from "./cross_spine_confidence.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
-import { residentOfficialSource } from "./graph_edge_provenance.mjs";
+import { residentOfficialSource } from "./provenance_disclosure.mjs";
 import { readerLabel, readerValue } from "./reader_surface_labels.mjs";
 
 /**

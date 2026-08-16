@@ -3,6 +3,10 @@ import {
   normalizeCrossSpineConfidence,
 } from "./cross_spine_confidence.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import {
+  provenanceDisclosureValue,
+  residentOfficialSource,
+} from "./provenance_disclosure.mjs";
 import { readerLabel, readerValue } from "./reader_surface_labels.mjs";
 
 /**
@@ -105,80 +109,6 @@ function connectionHowCopy(claim) {
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
-
-const NONFINITE_COPY = /^(?:nan|[+-]?infinity)(?:\s|$)/i;
-const OFFICIAL_SOURCE_HOSTS = new Set([
-  "a856-cityrecord.nyc.gov",
-  "data.cityofnewyork.us",
-  "nyc.legistar.com",
-  "passport.cityofnewyork.us",
-  "www.checkbooknyc.com",
-]);
-const OFFICIAL_SOURCE_DEFAULTS = Object.freeze({
-  city_record: Object.freeze({ label: "City Record notice", href: "https://a856-cityrecord.nyc.gov/" }),
-  warehouse: Object.freeze({ label: "City Record notice", href: "https://data.cityofnewyork.us/d/dg92-zbpx" }),
-  socrata: Object.freeze({ label: "NYC Open Data", href: "https://data.cityofnewyork.us/" }),
-  legistar: Object.freeze({ label: "NYC Council Legistar", href: "https://nyc.legistar.com/" }),
-  enacted_local_law: Object.freeze({ label: "Source law", href: "https://nyc.legistar.com/" }),
-  passport: Object.freeze({ label: "PASSPort Public", href: "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public" }),
-  checkbook: Object.freeze({ label: "Checkbook NYC", href: "https://www.checkbooknyc.com/" }),
-});
-
-function availableValue(field) {
-  const raw = field && typeof field === "object" && Object.prototype.hasOwnProperty.call(field, "available")
-    ? (field.available === false ? null : field.value)
-    : field;
-  if (Array.isArray(raw)) {
-    const values = raw.map((entry) => availableValue(entry)).filter((entry) => entry != null);
-    return values.length ? values : null;
-  }
-  if (typeof raw === "number" && !Number.isFinite(raw)) return null;
-  const readable = readerValue(raw);
-  if (typeof readable === "string" && NONFINITE_COPY.test(readable)) return null;
-  return readable;
-}
-
-function trustedOfficialHref(value) {
-  const raw = availableValue(value);
-  if (!raw) return null;
-  try {
-    const url = new URL(String(raw));
-    return url.protocol === "https:" && OFFICIAL_SOURCE_HOSTS.has(url.hostname.toLowerCase())
-      ? url.href
-      : null;
-  } catch {
-    return null;
-  }
-}
-
-/** Resident-facing official source label and URL; raw record keys never leave this projection. */
-export function residentOfficialSource({
-  sourceSystem = null,
-  sourceRecordId = null,
-  sourceHref = null,
-  objectHref = null,
-  label = null,
-} = {}) {
-  const system = String(availableValue(sourceSystem) || "").trim().toLowerCase();
-  const recordId = String(availableValue(sourceRecordId) || "").trim();
-  const fallback = OFFICIAL_SOURCE_DEFAULTS[system] || null;
-  let href = trustedOfficialHref(sourceHref) || trustedOfficialHref(objectHref);
-
-  const noticeId = recordId.match(/(?:^|:)(\d{11})$/)?.[1] || null;
-  if (!href && noticeId && ["city_record", "warehouse"].includes(system)) {
-    href = `https://a856-cityrecord.nyc.gov/RequestDetail/${noticeId}`;
-  }
-  const datasetId = recordId.match(/^([a-z0-9]{4}-[a-z0-9]{4})(?::|$)/i)?.[1] || null;
-  if (!href && datasetId && system === "socrata") {
-    href = `https://data.cityofnewyork.us/d/${datasetId}`;
-  }
-  href ||= fallback?.href || null;
-  if (!href) return null;
-  return Object.freeze({
-    href,
-    label: readerLabel(availableValue(label), null) || fallback?.label || "Official source",
-  });
-}
 
 const MISSING = Object.freeze({
   available: false,
@@ -590,7 +520,7 @@ export function summarizeCategoryWarrants(items = []) {
 }
 
 function renderFieldRow(label, field) {
-  const readable = availableValue(field);
+  const readable = provenanceDisclosureValue(field);
   if (readable == null || readable === "") return "";
   const display = Array.isArray(readable)
     ? readable.map((entry) => readerLabel(entry, "")).filter(Boolean)
@@ -602,7 +532,7 @@ function renderFieldRow(label, field) {
 }
 
 function renderProvenanceAsOf(field) {
-  const readable = availableValue(field);
+  const readable = provenanceDisclosureValue(field);
   if (readable == null || readable === "") return "";
   const date = esc(readable);
   return `<span class="edge-prov-as-of" aria-label="Data as of ${date}">as of ${date}</span>`;
@@ -652,7 +582,7 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
     ? claim.cross_spine.confidence
     : "unmatched";
   const openAttr = open ? " open" : "";
-  const objectLabel = readerLabel(availableValue(claim.label), "Related record");
+  const objectLabel = readerLabel(provenanceDisclosureValue(claim.label), "Related record");
   const objectLink = claim.object_href
     ? `<a href="${esc(claim.object_href)}">${esc(objectLabel)}</a>`
     : `<strong>${esc(objectLabel)}</strong>`;
