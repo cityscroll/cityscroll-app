@@ -18,7 +18,12 @@
         "community-board-meeting",
         "parks-agency",
         "canonical-person",
-        "attachment-enrichment"
+        "attachment-enrichment",
+        "vendor-entity",
+        "committee-entity",
+        "community-board-entity",
+        "civil-service-exam",
+        "parcel-entity"
       ]
     }
   },
@@ -238,6 +243,219 @@
         "domain": "contracts",
         "canonical_href": "/browse/contracts/?mode=award&q=81626S0021001",
         "source_observation_refs": ["notice:20260710020"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "vendor-entity",
+      "source_observation": {
+        "ref": "vendor:stem:AECOM",
+        "lookup": {
+          "schema_version": 1,
+          "version": "cross_domain_object_link_v2",
+          "generated_at": "2026-08-12T16:01:38.473Z"
+        },
+        "dossier": {
+          "root": {
+            "kind": "vendor",
+            "ref": "vendor:stem:AECOM",
+            "stem": "AECOM",
+            "display_name": "AECOM USA Inc"
+          },
+          "links": [
+            {
+              "type": "named_vendor",
+              "to": "vendor:stem:AECOM",
+              "confidence": "strong",
+              "method": "vendor_stem_v1",
+              "provenance": {
+                "source_record_id": "passport-public-contracts:ct:CT1-850-20258800001"
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "vendor:stem:AECOM",
+        "object_type": "vendor",
+        "domain": "contracts",
+        "canonical_href": "/vendors/AECOM/",
+        "source_observation_refs": [
+          "passport-public-contracts:ct:CT1-850-20258800001"
+        ],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "committee-entity",
+      "source_observation": {
+        "lookup": {
+          "schema": "cityscroll.committee_graph.v1",
+          "generated_at": "2026-08-12T14:37:51Z",
+          "publication": "published",
+          "gate": {
+            "gate": {
+              "publication_allowed": true
+            }
+          },
+          "observations": [
+            {
+              "committee_id": "committee:17",
+              "body_id": "17",
+              "body_name": "Committee on Land Use",
+              "source_row_hash": "committee-gold-17"
+            }
+          ]
+        },
+        "node": {
+          "id": "committee:17",
+          "type": "committee",
+          "name": "Committee on Land Use",
+          "properties": {
+            "body_id": "17",
+            "body_name": "Committee on Land Use"
+          }
+        }
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "committee:17",
+        "object_type": "committee",
+        "domain": "meetings",
+        "canonical_href": "/committees/17/",
+        "source_observation_refs": [
+          "nyc_legistar_office_records:committee-gold-17"
+        ],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "community-board-entity",
+      "source_observation": {
+        "board_id": "brooklyn-cb-03",
+        "lookup": {
+          "schema": "cityscroll.community_board_constellation.v1",
+          "method": "community_board_constellation_v1",
+          "generated_at": "2026-08-13"
+        },
+        "row": {
+          "body_id": "brooklyn-cb-03",
+          "display_name": "Brooklyn Community Board 3",
+          "path": "/community-boards/brooklyn-cb-03/",
+          "summary": {
+            "matched_categories": 2,
+            "category_count": 5
+          },
+          "edge_summary": []
+        }
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "community-board:brooklyn-cb-03",
+        "object_type": "community_board",
+        "domain": "places",
+        "canonical_href": "/community-boards/brooklyn-cb-03/",
+        "source_observation_refs": [
+          "community_board_registry:brooklyn-cb-03"
+        ],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "civil-service-exam",
+      "source_observation": {
+        "artifact": {
+          "schema_version": 6,
+          "generated_at": "2026-08-03",
+          "data_current_as_of": "2026-07-22",
+          "sources": []
+        },
+        "exam": {
+          "exam_number": "7016",
+          "title": "Emergency Medical Specialist - EMT",
+          "title_code": "53053",
+          "schedule_status": "scheduled",
+          "sources": [
+            "dcas-annual-schedule"
+          ]
+        }
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "exam:7016",
+        "object_type": "civil_service_exam",
+        "domain": "staffing",
+        "canonical_href": "/exams/7016/",
+        "source_observation_refs": [
+          "dcas-annual-schedule:exam:7016"
+        ],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "parcel-entity",
+      "source_observation": {
+        "bbl": "3017910019",
+        "cross_domain": {
+          "schema_version": 1,
+          "version": "property_cross_domain_v1",
+          "generated_at": "2026-08-06T00:05:16.576Z",
+          "provenance": {
+            "methods": [
+              "exact_bbl_v1"
+            ]
+          }
+        },
+        "row": {
+          "bbl": "3017910019",
+          "parcel_ref": "bbl:3017910019",
+          "status": "matched",
+          "property_notices": [
+            {
+              "request_id": "20241112003",
+              "method": "exact_bbl_v1"
+            }
+          ],
+          "land_projects": [],
+          "ll48": {
+            "items": []
+          }
+        },
+        "resident_snapshot": {
+          "schema_version": 1,
+          "generated_at": "2026-08-02T18:47:20.520Z",
+          "properties": [
+            {
+              "request_id": "20241112003",
+              "property_location": {
+                "bbls": [
+                  "3017910019"
+                ],
+                "addresses": [
+                  {
+                    "label": "123 Fulton Street",
+                    "borough": "Brooklyn",
+                    "bbl": "3017910019"
+                  }
+                ]
+              },
+              "disposition_join_keys": [
+                "bbl:3017910019"
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "bbl:3017910019",
+        "object_type": "parcel",
+        "domain": "property",
+        "canonical_href": "/parcels/3017910019/",
+        "source_observation_refs": [
+          "notice:20241112003"
+        ],
         "coverage_state": "matched"
       }
     }
