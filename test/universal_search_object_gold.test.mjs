@@ -14,6 +14,10 @@ import { materializeMeetingSearchDocument } from "../site/meeting_search_produce
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { projectMandateSearchDocuments } from "../site/universal_search_mandate_producer.mjs";
 import { projectAgencySearchDocument } from "../site/agency_search_producer.mjs";
+import {
+  materializePeopleSearchDocument,
+  rankPeopleSearchDocuments,
+} from "../site/people_search_producer.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { publicSearchResult } from "../worker/src/search.mjs";
 
@@ -136,7 +140,10 @@ for (const row of GOLD.cases) {
     assert.ok(expected.object_ref, "canonical identity");
     assert.ok(expected.object_type, "object type");
     assert.ok(Object.hasOwn(expected, "domain"), "product domain projection");
-    assert.match(expected.canonical_href, /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/)/);
+    assert.match(
+      expected.canonical_href,
+      /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/|officials\/)/,
+    );
     assert.ok(expected.source_observation_refs.length > 0, "source provenance");
     assert.ok(COVERAGE_STATES.has(expected.coverage_state), "registered coverage state");
     if (SUBSTANTIVE_TYPES.has(expected.object_type)) {
@@ -268,6 +275,24 @@ test("agency gold case uses the canonical agency read-model projection", () => {
   assertGoldContract({ ...result.document, coverage_state: "matched" }, row.expected);
   assert.equal(result.document.classification.method, "canonical_agency_read_model");
   assert.equal(result.document.provenance.producer, "agency_search_document.v1");
+});
+
+test("canonical people retain exact identity, aliases, provenance, and their profile route", () => {
+  const row = goldCase("canonical-person");
+  const document = materializePeopleSearchDocument(row.source_observation, {
+    sourceContract: "uvw5-9znb",
+    retrievedAt: "2026-08-11T19:21:19.284Z",
+    sourcePromoted: true,
+  });
+
+  assertGoldContract(document, row.expected);
+  assert.equal(document.object_ref, row.expected.object_ref);
+  assert.equal(document.classification.method, "exact_person_hub_projection");
+  assert.equal(document.provenance.lifecycle.state, "active");
+  assert.deepEqual(
+    rankPeopleSearchDocuments([document], "Chris Marte").map((hit) => hit.object_ref),
+    [row.expected.object_ref],
+  );
 });
 
 for (const coverage of GOLD.coverage) {
