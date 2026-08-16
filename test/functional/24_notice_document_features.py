@@ -10,9 +10,13 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import sys
 from urllib.parse import urlsplit
 
 from playwright.sync_api import Browser, BrowserContext, Page, Route, sync_playwright
+
+sys.path.insert(0, str(Path(__file__).parent / "assets"))
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
@@ -411,11 +415,15 @@ def main() -> None:
             wait_until="load",
             timeout=30000,
         )
-        property_page.locator("#nactions .next-action-rail").wait_for(state="visible", timeout=10000)
+        wait_for_locator(
+            property_page.locator("#nactions .next-action-rail"),
+            timeout=30_000,
+            label="property notice actions",
+        )
         assert_no_connected_mandate_absence(property_page)
 
         biography = property_page.locator("#npropertyxd [data-parcel-biography='1']")
-        biography.wait_for(state="visible", timeout=10000)
+        wait_for_locator(biography, timeout=30_000, label="notice parcel biography")
         document_structure = assert_structured_property_sections(property_page)
         assert "observed parcel biography" in biography.inner_text().lower()
         assert biography.locator("[data-parcel-biography-domain]").count() == 5
@@ -458,10 +466,18 @@ def main() -> None:
         assert parcel_pivot.is_visible()
         assert "entity_refs_all" in (parcel_pivot.get_attribute("href") or "")
         parcel_pivot.click()
+        wait_for_function(
+            property_page,
+            """() => location.pathname === "/browse/property/"
+                && new URLSearchParams(location.search).has("facet")
+                && document.querySelector("#tab-property.tabpane.active")""",
+            timeout=30_000,
+            label="parcel biography scoped route",
+        )
         scoped_biography = property_page.locator(
             "#parcel-biography-panel [data-parcel-biography='1'][data-parcel-ref='bbl:1020260015']"
         )
-        scoped_biography.wait_for(state="visible", timeout=10000)
+        wait_for_locator(scoped_biography, timeout=30_000, label="scoped parcel biography")
         assert "entity_refs_all" in property_page.url
         property_context.close()
 
