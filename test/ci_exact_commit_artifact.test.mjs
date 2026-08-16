@@ -8,6 +8,10 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => readFileSync(join(ROOT, path), "utf8");
+const ISOLATED_GIT_ENV = { ...process.env };
+for (const name of Object.keys(ISOLATED_GIT_ENV)) {
+  if (name.startsWith("GIT_")) delete ISOLATED_GIT_ENV[name];
+}
 
 test("shared browser artifact is exact-input cached and every consumer verifies it", () => {
   const workflow = read(".github/workflows/ci.yml");
@@ -45,15 +49,16 @@ test("artifact identity verifies digest, tree, lockfile, tool, and derived build
   mkdirSync(join(directory, "_site"));
   writeFileSync(join(directory, "worker/package-lock.json"), "{\"lockfileVersion\":3}\n");
   writeFileSync(join(directory, "_site/index.html"), "<!doctype html><title>Exact</title>\n");
-  execFileSync("git", ["init", "--quiet"], { cwd: directory });
-  execFileSync("git", ["config", "user.name", "CI Artifact Test"], { cwd: directory });
-  execFileSync("git", ["config", "user.email", "ci-artifact@example.invalid"], { cwd: directory });
-  execFileSync("git", ["add", "worker/package-lock.json"], { cwd: directory });
-  execFileSync("git", ["commit", "--quiet", "-m", "Add lockfile"], { cwd: directory });
+  const git = (...args) => execFileSync("git", args, { cwd: directory, env: ISOLATED_GIT_ENV });
+  git("init", "--quiet");
+  git("config", "user.name", "CI Artifact Test");
+  git("config", "user.email", "ci-artifact@example.invalid");
+  git("add", "worker/package-lock.json");
+  git("commit", "--quiet", "-m", "Add lockfile");
 
   const tool = join(ROOT, "tools/site_artifact_identity.mjs");
-  execFileSync(process.execPath, [tool, "stamp"], { cwd: directory });
-  execFileSync(process.execPath, [tool, "verify"], { cwd: directory });
+  execFileSync(process.execPath, [tool, "stamp"], { cwd: directory, env: ISOLATED_GIT_ENV });
+  execFileSync(process.execPath, [tool, "verify"], { cwd: directory, env: ISOLATED_GIT_ENV });
   const manifest = JSON.parse(readFileSync(join(directory, "_site.identity.json"), "utf8"));
   assert.match(manifest.commit_sha, /^[a-f0-9]{40}$/);
   assert.match(manifest.tree_sha, /^[a-f0-9]{40}$/);
@@ -69,13 +74,21 @@ test("artifact identity verifies digest, tree, lockfile, tool, and derived build
   assert.match(manifest.site.checksum_manifest_sha256, /^[a-f0-9]{64}$/);
 
   writeFileSync(join(directory, "_site/index.html"), "tampered\n");
-  const tampered = spawnSync(process.execPath, [tool, "verify"], { cwd: directory, encoding: "utf8" });
+  const tampered = spawnSync(process.execPath, [tool, "verify"], {
+    cwd: directory,
+    encoding: "utf8",
+    env: ISOLATED_GIT_ENV,
+  });
   assert.notEqual(tampered.status, 0);
   assert.match(tampered.stderr, /checksum mismatch/);
 
   writeFileSync(join(directory, "_site/index.html"), "<!doctype html><title>Exact</title>\n");
   writeFileSync(join(directory, "worker/package-lock.json"), "{\"lockfileVersion\":2}\n");
-  const wrongLock = spawnSync(process.execPath, [tool, "verify"], { cwd: directory, encoding: "utf8" });
+  const wrongLock = spawnSync(process.execPath, [tool, "verify"], {
+    cwd: directory,
+    encoding: "utf8",
+    env: ISOLATED_GIT_ENV,
+  });
   assert.notEqual(wrongLock.status, 0);
   assert.match(wrongLock.stderr, /build_input_identity mismatch|lockfile identity mismatch/);
 });
