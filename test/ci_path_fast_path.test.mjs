@@ -71,12 +71,13 @@ test("performance path filter excludes site/data and includes chrome assets", ()
 
 test("merge-group path classification evaluates the queued tree against its base", () => {
   const ci = read(".github/workflows/ci.yml");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
   assert.match(ci, /\n  merge_group:/);
   assert.match(
     ci,
     /base:\s*\$\{\{\s*github\.event_name\s*==\s*'pull_request'[\s\S]*github\.event\.merge_group\.base_sha/,
   );
-  assert.match(ci, /Inline-to-module rendered DOM equivalence gate/);
+  assert.match(shardRunner, /Inline-to-module rendered DOM equivalence gate/);
   assert.match(ci, /Aggregate the complete raw sample set/);
 });
 
@@ -97,6 +98,7 @@ test("browser jobs use the Playwright cache composite action", () => {
 
 test("runtime multi-locale stray-English is not a CI job; static lint is the gate", () => {
   const ci = read(".github/workflows/ci.yml");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
   assert.doesNotMatch(ci, /name:\s*Stray-English guard \(runtime, fixtures\)/);
   assert.doesNotMatch(ci, /i18n-guard:/);
   assert.doesNotMatch(ci, /test\/functional\/13_stray_english\.py/);
@@ -105,7 +107,7 @@ test("runtime multi-locale stray-English is not a CI job; static lint is the gat
   assert.match(ci, /Stray-English static lint/);
   assert.match(ci, /test\/standards\/stray_english\.py/);
   // Cheap locale companions stay under a11y (not the 7-min matrix).
-  assert.match(ci, /15_rtl\.py/);
+  assert.match(shardRunner, /15_rtl\.py/);
   const policy = JSON.parse(read("tools/merge_queue_policy.json"));
   assert.ok(
     !policy.required_status_checks.includes("Stray-English guard (runtime, fixtures)"),

@@ -32,6 +32,8 @@ const PR_GATE_JOBS = [
   "a11y-pr",
   "browser-pr-site",
   "a11y-pr-shard",
+  "a11y-routes-focus-primary",
+  "a11y-routes-focus-retry",
   "reading-level",
   "performance-serial",
   "performance-shard",
@@ -75,18 +77,28 @@ test("ci.yml PR-gate jobs never set CROL_BASE (or equivalent) to a production or
 test("a11y-pr shard demo-link contract uses the local site server and remains required", () => {
   const ci = read(".github/workflows/ci.yml");
   const a11y = extractJob(ci, "a11y-pr-shard");
+  const routesPrimary = extractJob(ci, "a11y-routes-focus-primary");
+  const routesRetry = extractJob(ci, "a11y-routes-focus-retry");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
   assert.ok(a11y, "expected a11y-pr-shard job");
-  assert.match(a11y, /export CROL_BASE="\$local_base"/);
-  assert.match(a11y, /python3 test\/functional\/20_demo_links\.py/);
+  assert.ok(routesPrimary, "expected routes-focus primary job");
+  assert.ok(routesRetry, "expected routes-focus retry job");
+  assert.match(a11y, /tools\/run_a11y_ci_shard\.sh/);
+  assert.match(routesPrimary, /tools\/run_a11y_ci_shard\.sh routes-focus primary/);
+  assert.match(routesRetry, /tools\/run_a11y_ci_shard\.sh routes-focus fresh-runner-retry/);
+  assert.match(shardRunner, /export CROL_BASE="\$local_base"/);
+  assert.match(shardRunner, /python3 test\/functional\/20_demo_links\.py/);
   // Exactly one demo-links.py invocation in the shard matrix (local only).
-  const runs = a11y.match(/python3 test\/functional\/20_demo_links\.py/g) || [];
-  assert.equal(runs.length, 1, "a11y-pr-shard should run demo-links once against local origin");
-  const demoStep = a11y.slice(a11y.indexOf("- name: Run isolated accessibility shard"));
+  const runs = shardRunner.match(/python3 test\/functional\/20_demo_links\.py/g) || [];
+  assert.equal(runs.length, 1, "the routes-focus shard should run demo-links once against local origin");
   assert.doesNotMatch(
-    demoStep,
+    `${a11y}\n${routesPrimary}\n${routesRetry}\n${shardRunner}`,
     /continue-on-error:/,
     "the local demo-link contract must remain required on every CI event",
   );
+  for (const origin of PROD_ORIGINS) {
+    assert.doesNotMatch(shardRunner, new RegExp(origin.replace(/\./g, "\\.")));
+  }
 });
 
 test("scheduled cutover-regression owns live production demo-link monitoring", () => {

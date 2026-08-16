@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const CI_PATH = join(ROOT, ".github", "workflows", "ci.yml");
 const PREFLIGHT_PATH = join(ROOT, "tools", "preflight-required-checks.sh");
+const A11Y_SHARD_RUNNER_PATH = join(ROOT, "tools", "run_a11y_ci_shard.sh");
 // Source: the required validation graph declared in .github/workflows/ci.yml. The Unit
 // aggregate owns the required status context; its matrix owns the hosted Unit commands.
 const REQUIRED_JOBS = ["unit-family", "a11y-pr-shard", "reading-level"];
@@ -88,13 +89,18 @@ function parityKey(command) {
   return command;
 }
 
-function hostedCommands(source) {
+function hostedCommands(source, a11yShardRunnerSource = "") {
   const commands = [];
   for (const job of REQUIRED_JOBS) {
     for (const block of runBlocks(jobBlock(source, job))) {
       for (const command of joinShellContinuations(block).map(normalize)) {
         if (isValidationCommand(command)) commands.push({ job, command });
       }
+    }
+  }
+  for (const command of joinShellContinuations(a11yShardRunnerSource).map(normalize)) {
+    if (isValidationCommand(command)) {
+      commands.push({ job: "a11y-shard-runner", command });
     }
   }
   return commands;
@@ -120,8 +126,8 @@ function localCommands(source) {
   return commands;
 }
 
-export function compareRequiredCheckParity({ ciSource, preflightSource }) {
-  const hosted = hostedCommands(ciSource);
+export function compareRequiredCheckParity({ ciSource, preflightSource, a11yShardRunnerSource = "" }) {
+  const hosted = hostedCommands(ciSource, a11yShardRunnerSource);
   const local = new Set(localCommands(preflightSource).map(parityKey));
   const missing = hosted.filter(({ command }) => !local.has(parityKey(command)));
   const duplicateHosted = hosted
@@ -144,6 +150,7 @@ function main() {
   const result = compareRequiredCheckParity({
     ciSource: readFileSync(CI_PATH, "utf8"),
     preflightSource: readFileSync(PREFLIGHT_PATH, "utf8"),
+    a11yShardRunnerSource: readFileSync(A11Y_SHARD_RUNNER_PATH, "utf8"),
   });
   if (result.duplicateHosted.length) {
     throw new Error(`duplicate validation commands in required CI jobs: ${result.duplicateHosted.join(", ")}`);

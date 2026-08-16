@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import errno
 import functools
+import math
 import os
 import threading
 import time
@@ -104,6 +105,13 @@ def port_number(value: str) -> int:
     return port
 
 
+def positive_seconds(value: str) -> float:
+    seconds = float(value)
+    if not math.isfinite(seconds) or seconds <= 0:
+        raise argparse.ArgumentTypeError("timeout must be greater than zero")
+    return seconds
+
+
 def publish_ready(path: Path, base: str) -> None:
     """Publish the origin only after the server has passed its HTTP probe."""
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
@@ -170,6 +178,12 @@ def main() -> int:
         help="local port; 0 asks the operating system for an available port",
     )
     parser.add_argument("--ready-file", type=Path)
+    parser.add_argument(
+        "--readiness-timeout",
+        type=positive_seconds,
+        default=READINESS_TIMEOUT_SECONDS,
+        help="seconds allowed for the server's internal HTTP readiness probe",
+    )
     args = parser.parse_args()
 
     handler = functools.partial(QuietHandler, directory=args.directory)
@@ -179,7 +193,7 @@ def main() -> int:
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
     try:
-        probe_base(base)
+        probe_base(base, timeout_seconds=args.readiness_timeout)
         if args.ready_file:
             publish_ready(args.ready_file, base)
         print(base, flush=True)
