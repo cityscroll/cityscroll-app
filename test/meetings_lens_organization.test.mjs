@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const feedSource = readFileSync(new URL("../site/app/feed-actions.mjs", import.meta.url), "utf8");
 const meetingsSource = readFileSync(new URL("../site/app/meetings.mjs", import.meta.url), "utf8");
+const i18nSource = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 
 function extractFunction(source, name) {
   const start = source.indexOf(`function ${name}(`);
@@ -135,6 +136,26 @@ test("Meeting cards render the agency constellation pivot exactly once", () => {
   assert.equal(agencyPivots.length, 1);
   assert.match(card, /<span class="tag place">\$\{pivotA\(agencyHref\(agency\), agency\)\}<\/span>/);
   assert.doesNotMatch(card, /\$\{agency\?" · "\+pivotA\(agencyHref\(agency\),agency\):""\}/);
+});
+
+test("Meeting cards consume the shared interaction grammar without duplicating navigation", () => {
+  const card = extractFunction(feedSource, "meetingsExplorerCardHTML");
+  assert.match(card, /meetingsCardInteractionProjection\(/);
+  assert.match(card, /renderObjectCardTitle\(/);
+  assert.match(card, /renderObjectCardCopy\(/);
+  assert.match(card, /renderObjectCardActionRail\(/);
+  assert.match(card, /officialSourceLink\(/);
+  assert.match(card, /externalActionLink\(/);
+  assert.match(card, /constellationLink\(\{[\s\S]*?className:\["tag","place","community-board-meeting-pivot"\]\.join\(" "\)/);
+  assert.doesNotMatch(card, /compactCardActions\(|data-link=|const primaryAction=/);
+  for (const key of [
+    "hearing_guide_join_step_html",
+    "hearing_guide_materials_step_html",
+    "hearing_guide_signup_step_html",
+    "hearing_guide_testimony_step_html",
+  ]) {
+    assert.match(i18nSource, new RegExp(`${key}:[^\\n]+aria-hidden=\\\\"true\\\\">↗`), `${key} keeps a visible handoff glyph`);
+  }
 });
 
 test("Meetings lens chrome consumes the shared design-language tokens", () => {

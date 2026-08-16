@@ -327,7 +327,9 @@ test("unscoped meetings omit the per-notice related-record rail", () => {
   const view = buildBrowseView("meetings", meetings);
   const html = renderBrowseView(view);
   assert.doesNotMatch(html, /class="browse-edge-summary"/);
-  assert.ok(html.length < 60_000, "unscoped meetings first paint remains bounded: " + html.length + " bytes");
+  // The 40-row first paint now includes one canonical title, Copy control, and
+  // classified source handoff per row; keep that additive grammar under 75 KB.
+  assert.ok(html.length < 75_000, "unscoped meetings first paint remains bounded: " + html.length + " bytes");
 });
 
 test("captain six scope URLs with DCWP exhibit explicit scope/empty state by lens", () => {
