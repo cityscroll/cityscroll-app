@@ -88,8 +88,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Notice/object link targets:** `site/notice_object_links.mjs` is the projection narrow waist:
   notices remain publication evidence, stable E-PIN award notices target the exact procurement
   scope, and `/mandates/<id>` is emitted only after the warrant + subject + action +
-  trigger/deadline gate passes. `site/mandate_document.mjs` resolves those exact IDs and renders
-  inverse notice-evidence links. Focused proof: `test/notice_object_links.test.mjs` and
+  trigger/deadline gate passes. `site/mandate_document.mjs` resolves those exact IDs and projects
+  provenance-complete, standable contract/rule/meeting rows from
+  `site/data/process_conformance_lookup.json`; evidence-only and incomplete edges stay absent.
+  Focused proof: `test/notice_object_links.test.mjs`, `test/process_conformance.test.mjs`, and
   `test/mandate_graph_neighbors.test.mjs`.
 - **Land-use procedure nodes:** the closed `land_use_procedure_v1` vocabulary lives in
   `worker/src/lib/subject_registry.mjs`. `site/mandate_land_use_bridge.mjs` composes
