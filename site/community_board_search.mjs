@@ -53,7 +53,7 @@ function normalizeBorough(value) {
 
 export function parseCommunityBoardQuery(value) {
   const query = clean(value);
-  const match = query.match(/\bcommunity\s+board\s*(?:no\.?\s*|#\s*)?(\d{1,2})\b/i);
+  const match = query.match(/\b(?:community\s+board|cb)\s*(?:no\.?\s*|#\s*)?(\d{1,2})\b/i);
   if (!match) return null;
   const number = Number(match[1]);
   if (!Number.isInteger(number) || number < 1 || number > 18) return null;
