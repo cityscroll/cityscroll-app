@@ -11,8 +11,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `appeared` / `not_yet_observed` / `data_incomplete` projection and one
   data-as-of. `tools/build_process_conformance.mjs` materializes accepted edge
   claims in `edge_observations`; keep claim-inspector links attached to every
-  appeared edge. Focused proof: `test/process_conformance.test.mjs` plus the
-  three mandate bridge tests.
+  appeared edge. The report detector treats an extracted deadline as the first
+  cycle only for an explicit repeated cadence; agency and topic evidence remain
+  required for later-cycle filings. Focused proof: `test/process_conformance.test.mjs`
+  plus the three mandate bridge tests.
 
 - **Agency procurement conformance:** `site/agency_lifecycle_conformance.mjs` aggregates the
   bounded case envelopes from `site/procurement_event_log.mjs` into expected stages, observed

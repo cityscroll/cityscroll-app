@@ -469,6 +469,47 @@ test("rejects a strong subject match when the notice is implausibly late", () =>
   assert.equal(observation.observed_record, null);
 });
 
+test("recurring report mandates accept later filing cycles without matching unrelated reports", () => {
+  const mandate = {
+    agency_id: "buildings",
+    agency_name: "Buildings",
+    duty_text: "Publish an annual building safety report",
+    deliverable_type: "report",
+    recurrence: "annual",
+    deadline: { computed_date: "2020-12-31" },
+  };
+  const filing = normalizeObservationCandidate({
+    agency_id: "buildings",
+    agency_name: "Buildings",
+    request_id: "20260115001",
+    short_title: "Annual Building Safety Report 2025",
+    start_date: "2026-01-15T00:00:00.000",
+    signal_kind: "report_or_study",
+    domain: "reports",
+  });
+  const unrelated = normalizeObservationCandidate({
+    agency_id: "buildings",
+    agency_name: "Buildings",
+    request_id: "20260115002",
+    short_title: "Annual Elevator Maintenance Report 2025",
+    start_date: "2026-01-15T00:00:00.000",
+    signal_kind: "report_or_study",
+    domain: "reports",
+  });
+
+  const observed = resolveMandateObservation(mandate, [unrelated, filing], {
+    asOf: "2026-08-16",
+  });
+  assert.equal(observed.status, OBSERVATION_STATUS.OBSERVED);
+  assert.equal(observed.observed_record.request_id, filing.request_id);
+
+  const unrelatedOnly = resolveMandateObservation(mandate, [unrelated], {
+    asOf: "2026-08-16",
+  });
+  assert.equal(unrelatedOnly.status, OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED);
+  assert.equal(unrelatedOnly.observed_record, null);
+});
+
 test("resolveMandateObservation never emits compliance verdicts", () => {
   const observed = resolveMandateObservation(
     {
