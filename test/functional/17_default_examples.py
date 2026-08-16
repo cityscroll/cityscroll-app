@@ -132,8 +132,19 @@ def people_opens_on_a_populated_example(pw):
         actual_focus = page.evaluate("document.activeElement?.id")
         if tab == "property":
             # Property is reached through the Land + property group's existing
-            # child route. Its static document does not own SPA tab focus.
-            goto_and_wait_for_app(page, f"{BASE}#money", timeout=30000)
+            # child route. Its static document does not own SPA tab focus. Return
+            # through Money's canonical document rather than the legacy #money
+            # redirect: app readiness on that temporary document can resolve before
+            # its replacement navigation and overwrite the next tab click.
+            goto_and_wait_for_app(page, f"{BASE}browse/contracts/", timeout=30000)
+            wait_for_route_state(
+                page,
+                "/browse/contracts/",
+                tab="money",
+                require_focus=True,
+                timeout=CI_WAIT_TIMEOUT_MS,
+                label="Money reset route",
+            )
         elif tab == "people":
             if actual_focus != heading:
                 failures.append(f"{tab} entry focus landed on {actual_focus!r}, not {heading!r}")
