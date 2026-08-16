@@ -3,6 +3,7 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
 import {
   constellationLink,
+  objectCardInteractionProjection,
   officialSourceLink,
   renderObjectCardCopy,
   renderObjectCardTitle,
@@ -647,7 +648,7 @@ function rowMatchesCouncilDistrict(row, council) {
 function rowHref(facet, row) {
   const id = rowId(facet, row);
   if (!id) return null;
-  if (facet === "zoning") return `/#land/${encodeURIComponent(id)}`;
+  if (facet === "zoning") return `/browse/zoning/#land/${encodeURIComponent(id)}`;
   if (facet === "meetings") return meetingCanonicalHref(row.meeting_id || id);
   return `/notices/${encodeURIComponent(id)}`;
 }
@@ -1123,15 +1124,16 @@ export function renderBrowseView(view) {
       })
       : view.facet === "rules"
         ? rulesCardInteractionProjection({ request_id: rowId(view.facet, row), title })
-        : null;
-    const titleMarkup = interaction
-      ? renderObjectCardTitle(interaction, { escape: esc })
-      : href
-        ? constellationLink({ href, label: title, className: "browse-record-link", escape: esc })
-        : `<span lang="en" dir="ltr">${esc(title)}</span>`;
-    const copyMarkup = interaction
-      ? renderObjectCardCopy(interaction, { label: "Copy link", escape: esc })
-      : "";
+        : objectCardInteractionProjection({ target: href ? { href, label: title } : null });
+    const titleMarkup = interaction.target
+      ? renderObjectCardTitle(interaction, {
+        className: ["rules", "meetings"].includes(view.facet)
+          ? "ui-object-card-title"
+          : "browse-record-link ui-object-card-title",
+        escape: esc,
+      })
+      : `<span lang="en" dir="ltr">${esc(title)}</span>`;
+    const copyMarkup = renderObjectCardCopy(interaction, { label: "Copy link", escape: esc });
     const sourceHandoff = interaction?.external_handoffs?.[0];
     const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board" && !sourceHandoff
       ? staticFact({ label: meetingOriginLabel(row.meeting_origin), className: "browse-source-fact", escape: esc })
@@ -1176,7 +1178,7 @@ export function renderBrowseView(view) {
         : "";
     return `<article class="browse-static-record" data-record-id="${esc(rowId(view.facet, row) || "")}" data-meeting-origin="${esc(row.meeting_origin || "")}">
       ${actionMarkup}
-      ${interaction ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
+      ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${meetingSourceDetails}
     </article>`;
