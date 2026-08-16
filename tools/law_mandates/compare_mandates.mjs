@@ -3,8 +3,8 @@ import { isAbsolute, relative, resolve } from "node:path";
 
 import { escapeHtml, sanitizeText } from "./sanitize.mjs";
 
-export const COMPARATOR_SCHEMA_VERSION = "mandate-differential-review-v1";
-export const TRUST_RULE = "Resolve disagreements by re-reading the fetched statute text; do not prefer either extractor.";
+export const COMPARATOR_SCHEMA_VERSION = "mandate-differential-self-check-v2";
+export const TRUST_RULE = "Treat differences as automated extractor diagnostics; fidelity is established only against fetched statute text.";
 
 function clean(value, max = 2000) { return sanitizeText(value, max); }
 
@@ -70,7 +70,7 @@ export function compareMandates(ourPayload, referencePayload, { generatedAt = ne
   const ours = mattersFromPayload(ourPayload);
   const reference = mattersFromPayload(referencePayload);
   const matterIds = [...new Set([...ours.keys(), ...reference.keys()])].sort();
-  const queue = [];
+  const comparisons = [];
   for (const matterId of matterIds) {
     const ourRows = ours.get(matterId) || [];
     const referenceRows = reference.get(matterId) || [];
@@ -92,33 +92,43 @@ export function compareMandates(ourPayload, referencePayload, { generatedAt = ne
         if (left !== right) fieldLevelDisagreements.push({ key, field, our: clean(fieldValue(ourRow, field), 500), reference: clean(fieldValue(referenceRow, field), 500) });
       }
     }
-    const needsReview = ourOnly.length || referenceOnly.length || fieldLevelDisagreements.length;
+    const mismatch = ourOnly.length || referenceOnly.length || fieldLevelDisagreements.length;
     const statute = statuteSource(ourPayload, matterId);
-    queue.push({
-      queue_id: `mandate-diff:${matterId}`,
+    comparisons.push({
+      comparison_id: `mandate-diff:${matterId}`,
       matter_id: matterId,
-      state: needsReview ? "needs_review" : "agreement",
+      state: mismatch ? "fidelity_mismatch" : "agreement",
       title: `Independent mandate comparison for matter ${matterId}`,
       agreement_set: agreementSet,
       our_only: ourOnly,
       reference_only: referenceOnly,
       field_level_disagreements: fieldLevelDisagreements,
       evidence: { matter_id: matterId, statute },
-      review_instruction: TRUST_RULE,
+      diagnostic_rule: TRUST_RULE,
       source_urls: [statute.url].filter(Boolean),
-      caveat: "This queue compares extractors; it is not a legal conclusion and neither extractor is authoritative.",
+      caveat: "This comparison is an extractor self-check, not a legal conclusion or a publication gate.",
+      human_gate_required: false,
     });
   }
   return {
     schema_version: COMPARATOR_SCHEMA_VERSION,
     generated_at: generatedAt,
-    status: "candidate_compilation_for_future_review",
+    status: "automated_extractor_self_check",
     public_surfaces_changed: false,
     operative_links_enabled: false,
-    methodology: { keyed_by: "file_number_or_matter_id", compared_fields: ["agency", "deadline", "deliverable_type"], human_review_required: true, trust_rule: TRUST_RULE },
-    queue,
-    candidates: queue,
-    receipt: { matter_count: queue.length, agreement_count: queue.filter((item) => item.state === "agreement").length, review_count: queue.filter((item) => item.state === "needs_review").length },
+    human_gate_required: false,
+    methodology: { keyed_by: "file_number_or_matter_id", compared_fields: ["agency", "deadline", "deliverable_type"], human_review_required: false, trust_rule: TRUST_RULE },
+    comparisons,
+    // Compatibility alias for existing private analysis scripts. These are
+    // diagnostics, not tasks awaiting an accept/reject decision.
+    queue: comparisons,
+    candidates: comparisons,
+    receipt: {
+      matter_count: comparisons.length,
+      agreement_count: comparisons.filter((item) => item.state === "agreement").length,
+      mismatch_count: comparisons.filter((item) => item.state === "fidelity_mismatch").length,
+      review_count: 0,
+    },
   };
 }
 
@@ -143,4 +153,8 @@ async function main(argv) {
 
 if (import.meta.url === `file://${process.argv[1]}`) main(process.argv).catch((error) => { console.error(error.message); process.exitCode = 1; });
 
-export const reviewQueueHtml = (review) => review.queue.map((item) => `<article><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.review_instruction)}</p></article>`).join("\n");
+export const selfCheckHtml = (result) => result.comparisons.map((item) => `<article><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.diagnostic_rule)}</p></article>`).join("\n");
+
+// Backward-compatible export name for private tooling; the rendered content
+// is explicitly a self-check and never an accept/reject surface.
+export const reviewQueueHtml = selfCheckHtml;
