@@ -184,6 +184,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## Main site module boundaries
 
+- **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
+  `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
+  external-handoff, and context-gated action-rail render primitives. Source adapters retain
+  evidence and readiness ownership; lens renderers map those decisions into this projection
+  rather than reclassifying them. `site/app/core.mjs` installs delegated Copy behavior and
+  publishes the localized external-action renderer. Focused proof:
+  `test/affordance_grammar_drift.test.mjs`.
 - **Typed edge summaries:** `site/edge_summary.mjs` is the shared normalization and rail renderer
   for Browse intersections, agency constellation categories, vendor footprints, and bounded
   mandate previews. Producers own read-model counts and scoped hrefs; keep `matched`, `empty`,

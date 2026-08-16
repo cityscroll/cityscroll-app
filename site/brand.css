@@ -46,6 +46,9 @@
   --color-caution: var(--cs-caution);
   --color-success: var(--cs-success);
   --color-danger: var(--cs-danger);
+  /* White on brand navy is 10.4:1; kinetic handoffs must never inherit dark text. */
+  --ui-external-action-bg: var(--cs-brand-navy);
+  --ui-external-action-fg: var(--cs-white);
   /* Map labels cross a continuous light-to-dark choropleth; pure ink guarantees AA at its midpoint. */
   --color-map-label-dark: #000000;
 
@@ -97,6 +100,12 @@
 .ui-constellation-link:hover{text-decoration-thickness:2.5px}
 .ui-official-source-link.ui-official-source-link{display:inline-flex;align-items:baseline;gap:.3em;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-text,#171a21);box-shadow:none;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .ui-official-source-link:hover{text-decoration-style:solid}
+.ui-external-action.ui-external-action.ui-external-action{display:inline-flex;align-items:center;justify-content:center;gap:.38em;min-height:44px;padding:10px 13px;border:1px solid var(--ui-external-action-bg);border-radius:7px;background:var(--ui-external-action-bg);color:var(--ui-external-action-fg);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);text-decoration:none;cursor:pointer}
+.ui-external-action.ui-external-action.ui-external-action:hover{background:#102563;border-color:#102563;color:var(--ui-external-action-fg)}
+.ui-external-action.ui-external-action.ui-external-action:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}
+.ui-object-card-primary,.ui-object-card-relations,.ui-object-card-handoffs,.ui-object-card-action-list{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.ui-object-card-copy{min-height:44px;padding:7px 11px;border:1px solid var(--color-border-strong,#7a828f);border-radius:7px;background:var(--color-surface,#fff);color:var(--color-text,#12181f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer}
+.ui-object-card-copy:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}
 /* gap separates label text from .ct count; do not rely on a whitespace text node (flex collapses it). */
 .ui-filter-chip.ui-filter-chip{display:inline-flex;align-items:center;justify-content:center;gap:.35em;min-height:44px;padding:6px 11px;border:1px solid var(--color-action,#1b3a8f);border-radius:999px;background:transparent;color:var(--color-action,#1b3a8f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer;text-decoration:none}
 .ui-filter-chip[aria-pressed="true"]{background:var(--color-action,#1b3a8f);color:var(--color-surface,#fff)}
