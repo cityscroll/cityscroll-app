@@ -13,6 +13,7 @@ import {
 import { materializeMeetingSearchDocument } from "../site/meeting_search_producer.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { projectMandateSearchDocuments } from "../site/universal_search_mandate_producer.mjs";
+import { projectAgencySearchDocument } from "../site/agency_search_producer.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { publicSearchResult } from "../worker/src/search.mjs";
 
@@ -135,7 +136,7 @@ for (const row of GOLD.cases) {
     assert.ok(expected.object_ref, "canonical identity");
     assert.ok(expected.object_type, "object type");
     assert.ok(Object.hasOwn(expected, "domain"), "product domain projection");
-    assert.match(expected.canonical_href, /^\/(?:browse\/|contracts\/|mandates\/|meetings\/|notices\/)/);
+    assert.match(expected.canonical_href, /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/)/);
     assert.ok(expected.source_observation_refs.length > 0, "source provenance");
     assert.ok(COVERAGE_STATES.has(expected.coverage_state), "registered coverage state");
     if (SUBSTANTIVE_TYPES.has(expected.object_type)) {
@@ -245,6 +246,28 @@ test("meeting dedup uses exact canonical identity, never title and date", () => 
     "meeting:community_board:event-abc-123",
   ]);
   assert.equal(new Set(readModel.rows.map((row) => `${row.title}|${row.event_date}`)).size, 1);
+});
+
+test("agency gold case uses the canonical agency read-model projection", () => {
+  const row = goldCase("parks-agency");
+  const result = projectAgencySearchDocument(
+    row.source_observation.agency_id,
+    row.source_observation,
+    {
+      lookup: {
+        schema: "cityscroll.agency_constellation.v1",
+        method: "agency_constellation_v1",
+        er_match_basis: "agency_canonical_v1",
+        generated_at: "2026-08-15T12:00:00Z",
+        aliases: {},
+        provenance: { intelligence_generated_at: "2026-08-15T10:00:00Z" },
+      },
+    },
+  );
+  assert.equal(result.outcome, "indexed");
+  assertGoldContract({ ...result.document, coverage_state: "matched" }, row.expected);
+  assert.equal(result.document.classification.method, "canonical_agency_read_model");
+  assert.equal(result.document.provenance.producer, "agency_search_document.v1");
 });
 
 for (const coverage of GOLD.coverage) {
