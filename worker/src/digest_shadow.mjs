@@ -74,6 +74,8 @@ function currentWatchCounts(results) {
           historical_id: section.sub || section.watch || section.queryLabel || "unknown",
           lens: section.lens || null,
           item_count: finiteCount(section.new) + finiteCount(section.forecasts),
+          evaluation_state: section.skipped ? "skipped" : "evaluated",
+          skip_reason: section.skipped || null,
         });
       }
     } else {
@@ -83,6 +85,8 @@ function currentWatchCounts(results) {
         historical_id: result.sub || result.watch || "unknown",
         lens: result.lens || null,
         item_count: finiteCount(result.new) + finiteCount(result.forecasts),
+        evaluation_state: result.skipped ? "skipped" : "evaluated",
+        skip_reason: result.skipped || null,
       });
     }
   }
@@ -135,11 +139,15 @@ export function buildDigestShadowSummary({
         watch_id: section.previewId || section.sub || section.watch || section.queryLabel || "unknown",
         lens: section.lens || null,
         item_count: finiteCount(section.new) + finiteCount(section.forecasts),
+        evaluation_state: section.skipped ? "skipped" : "evaluated",
+        skip_reason: section.skipped || null,
       }))
       : [{
         watch_id: result.previewId || result.sub || result.watch || "unknown",
         lens: result.lens || null,
         item_count: finiteCount(result.new) + finiteCount(result.forecasts),
+        evaluation_state: result.skipped ? "skipped" : "evaluated",
+        skip_reason: result.skipped || null,
       }],
   }));
   const totalItems = previews.reduce((sum, preview) => sum + preview.item_count, 0);
@@ -185,7 +193,7 @@ export function buildDigestShadowSummary({
   const historicMax = historicalWatchMaximum(history);
   for (const watch of watchCounts) {
     const previousMax = historicMax.get(watch.historical_id) || 0;
-    if (watch.item_count === 0 && previousMax > 0) {
+    if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previousMax > 0) {
       redlines.push(redline(
         "historical_watch_zero",
         watch.digest_id,
