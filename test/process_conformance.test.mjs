@@ -37,6 +37,13 @@ import {
   PROCUREMENT_EXPECTED_PROCESS,
   buildProcurementEventLogEnvelope,
 } from "../site/procurement_event_log.mjs";
+import {
+  AGENCY_LIFECYCLE_CONFORMANCE_METHOD,
+  AGENCY_LIFECYCLE_CONFORMANCE_SCHEMA,
+  buildAgencyLifecycleConformanceView,
+  renderAgencyLifecycleConformance,
+} from "../site/agency_lifecycle_conformance.mjs";
+import { buildAgencyLifecycleConformanceLookup } from "../tools/build_agency_lifecycle_conformance.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PARKS = "parks-and-recreation";
@@ -124,6 +131,118 @@ test("procurement deviation classification follows the time-ordered observed tra
   ]);
   assert.equal(envelope.deviation.class, PROCUREMENT_DEVIATION_CLASS.OUT_OF_ORDER_TRACE);
   assert.equal(envelope.deviation.is_legal_noncompliance, false);
+});
+
+test("agency procurement lifecycle compares expected stages with traces and aggregates deviations", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const cases = fixture.cases.slice(0, 2).map((row) => buildProcurementEventLogEnvelope(row));
+  const view = buildAgencyLifecycleConformanceView({
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    lifecycle_id: "procurement",
+    lifecycle_label: "Procurement lifecycle",
+    cases,
+  });
+
+  assert.equal(view.schema, AGENCY_LIFECYCLE_CONFORMANCE_SCHEMA);
+  assert.equal(view.method, AGENCY_LIFECYCLE_CONFORMANCE_METHOD);
+  assert.equal(view.status, "matched");
+  assert.equal(view.slice_label, "Transportation · Procurement lifecycle");
+  assert.equal(view.data_as_of, "2026-08-15");
+  assert.equal(view.case_count, 2);
+  assert.deepEqual(view.expected_stages.map((stage) => stage.id), [
+    "solicitation",
+    "bid_deadline",
+    "award",
+    "registration",
+    "payment",
+  ]);
+  assert.ok(view.stage_completeness.every((stage) => stage.observed_cases === 2));
+  assert.deepEqual(view.deviation_counts, {
+    conforming: 2,
+    missing_open_data: 0,
+    out_of_order_trace: 0,
+  });
+
+  const html = renderAgencyLifecycleConformance(view);
+  assert.match(html, /Transportation · Procurement lifecycle/);
+  assert.match(html, /Expected stages/);
+  assert.match(html, /Observed traces/);
+  assert.match(html, /Solicitation published/);
+  assert.match(html, /2 of 2 cases/);
+  assert.match(html, /Method: expected-stage replay of joined public timestamps/);
+  assert.match(html, /Data as of 2026-08-15/);
+  assert.doesNotMatch(html, /legal|compliance verdict|disclaimer|pipeline|detector/i);
+});
+
+test("agency lifecycle stays held when case identity or event clocks are incomplete", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const complete = buildProcurementEventLogEnvelope(fixture.cases[0]);
+  const missingIdentity = { ...complete, case_id: null };
+  const missingClock = {
+    ...complete,
+    event_log: complete.event_log.map((event, index) => (
+      index === 0 ? { ...event, clock: null } : event
+    )),
+  };
+  const view = buildAgencyLifecycleConformanceView({
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    lifecycle_id: "procurement",
+    lifecycle_label: "Procurement lifecycle",
+    cases: [missingIdentity, missingClock],
+  });
+
+  assert.equal(view.status, "data_incomplete");
+  assert.deepEqual(view.incomplete_fields, ["case_identity", "event_clock"]);
+  assert.equal(view.case_count, null);
+  assert.equal(view.deviation_counts, null);
+  assert.equal(renderAgencyLifecycleConformance(view), "");
+});
+
+test("agency constellation renders a complete procurement lifecycle slice", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const lifecycle = buildAgencyLifecycleConformanceView({
+    agency_id: "transportation",
+    agency_name: "Transportation",
+    cases: fixture.cases.slice(0, 2).map((row) => buildProcurementEventLogEnvelope(row)),
+  });
+  const view = buildAgencyConstellationView("transportation", {
+    agency_lifecycle_conformance: { by_agency: { transportation: lifecycle } },
+    generated_at: "2026-08-15T00:00:00Z",
+  });
+
+  assert.equal(view.agency_lifecycle_conformance.status, "matched");
+  const html = renderAgencyConstellationDocument(view);
+  assert.match(html, /id="procurement-lifecycle-conformance"/);
+  assert.match(html, /Transportation · Procurement lifecycle/);
+  assert.match(html, /Expected stages/);
+  assert.match(html, /Observed traces/);
+});
+
+test("committed agency lifecycle lookup is reproducible and excludes synthetic cases", () => {
+  const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
+  const expected = buildAgencyLifecycleConformanceLookup(fixture);
+  const committed = JSON.parse(readFileSync(
+    join(ROOT, "site/data/agency_lifecycle_conformance_lookup.json"),
+    "utf8",
+  ));
+
+  assert.deepEqual(committed, expected);
+  assert.equal(committed.by_agency.transportation.case_count, 2);
+  assert.ok(committed.by_agency.transportation.cases.every((row) => (
+    !row.case_id.includes("fixture:")
+  )));
+  const awards = JSON.parse(readFileSync(
+    join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"),
+    "utf8",
+  )).rows;
+  for (const row of committed.by_agency.transportation.cases) {
+    const requestId = row.case_id.replace(/^notice:/, "");
+    const source = awards.find((award) => String(award.request_id) === requestId);
+    assert.equal(source?.agency_name, "Transportation");
+    assert.equal(source?.start_date, row.event_log[0]?.occurred_at);
+  }
 });
 
 test("content tokens drop stopwords and keep topic words", () => {

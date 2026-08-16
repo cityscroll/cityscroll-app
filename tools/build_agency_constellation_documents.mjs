@@ -47,6 +47,7 @@ function loadSources() {
   const staffingExamsPath = join(SITE, "data/staffing_exams.json");
   const obligationsPath = join(SITE, "data/agency_obligations_lookup.json");
   const processConformancePath = join(SITE, "data/process_conformance_lookup.json");
+  const agencyLifecycleConformancePath = join(SITE, "data/agency_lifecycle_conformance_lookup.json");
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const moneyOpenPath = join(SITE, "data/money_default_open.json");
@@ -66,6 +67,7 @@ function loadSources() {
     staffing_exams: existsSync(staffingExamsPath) ? readJson(staffingExamsPath) : null,
     obligations: existsSync(obligationsPath) ? readJson(obligationsPath) : null,
     process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
+    agency_lifecycle_conformance: existsSync(agencyLifecycleConformancePath) ? readJson(agencyLifecycleConformancePath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
