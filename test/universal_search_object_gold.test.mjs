@@ -144,6 +144,17 @@ test("unknown publisher observations fail closed without a substantive lane", ()
   assert.equal(current.domain, null);
 });
 
+test("City Record rules originate in the bounded rule projection", () => {
+  const row = goldCase("city-record-rule");
+  const current = publicSearchResult(row.source_observation);
+  assertGoldContract(current, row.expected);
+  assert.equal(current.outcome, "indexed");
+  assert.equal(current.classification.method, "canonical_rule_projection");
+  assert.equal(current.process_role, "public_process");
+  assert.match(current.classification.basis, /rules_domain_observations/);
+  assert.deepEqual(current.provenance.evidence_hrefs, ["/notices/20260728026"]);
+});
+
 test("mandates originate in quote-verified law; notices remain separate evidence", () => {
   const row = goldCase("law-derived-mandate");
   const target = lawDerivedMandate(row.source_observation);
@@ -231,7 +242,7 @@ test("canonical adapter resolves semantic type before search presentation", () =
   const current = publicSearchResult(row.source_observation);
   assertGoldContract(current, row.expected);
   assert.equal(current.outcome, "indexed");
-  assert.equal(current.classification.method, "canonical_object_projection");
+  assert.equal(current.classification.method, "canonical_procurement_projection");
   assert.deepEqual(current.provenance.evidence_hrefs, ["/notices/20260710020"]);
   assert.notEqual(current.canonical_href, current.provenance.evidence_hrefs[0]);
 });

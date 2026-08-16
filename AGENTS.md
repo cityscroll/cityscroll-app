@@ -198,6 +198,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   own classification. The City Record adapter is `worker/src/search.mjs`, and the search client
   groups only registered domains from `site/search_document.mjs`. Focused proof:
   `test/search_document_contract.test.mjs` plus `test/universal_search_object_gold.test.mjs`.
+- **City Record search producers:** `site/city_record_search_producers.mjs` adapts exact award
+  identifiers through `site/notice_object_links.mjs` and admits rules only from the bounded
+  `site/data/rules_domain_observations.json` projection. Publisher sections never assign a search
+  type; misses retain evidence-only receipts. Materialized attachment text may expand search text
+  but cannot change the object projection. Focused proof:
+  `test/universal_search_crol_producers.test.mjs` plus `worker/test/search.test.mjs`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain
