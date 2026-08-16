@@ -15,6 +15,8 @@ import {
   attachMoneyCivicEvents,
 } from "../src/lib/civic_time.mjs";
 import {
+  CIVIC_TIME_GRAPH_OBSERVATION_COLUMNS,
+  CIVIC_TIME_GRAPH_OBSERVATION_SCHEMA,
   CIVIC_TIME_SOURCE_CHANGE_SCHEMA,
   CIVIC_TIME_EVENT_COLUMNS,
   CIVIC_TIME_EVENT_WRITE_DEFAULT,
@@ -25,14 +27,17 @@ import {
   civicTimeEventWriteEnabled,
   clockOrNull,
   ensureCivicTimeEventSchema,
+  prepareCivicTimeGraphObservation,
   prepareCivicTimeEventWrite,
   writeCivicTimeEvents,
+  writeCivicTimeGraphObservations,
   writeLifecycleCivicEvents,
 } from "../src/lib/civic_time_writer.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "../..");
 const MIGRATION_PATH = join(__dirname, "../migrations/0019_civic_time_events.sql");
+const GRAPH_MIGRATION_PATH = join(__dirname, "../migrations/0023_civic_time_graph_observations.sql");
 const WRANGLER_PATH = join(__dirname, "../wrangler.toml");
 
 /** Minimal D1-shaped adapter over node:sqlite. */
@@ -102,6 +107,19 @@ test("migration 0019 defines civic_time_events with required columns", () => {
   const cols = tableColumns(db, "civic_time_events");
   for (const col of CIVIC_TIME_EVENT_COLUMNS) {
     assert.ok(cols.includes(col), `civic_time_events missing column ${col}`);
+  }
+  db.close();
+});
+
+test("migration 0023 defines append-only composed graph observations", () => {
+  const sql = readFileSync(GRAPH_MIGRATION_PATH, "utf8");
+  assert.match(sql, /CREATE TABLE IF NOT EXISTS civic_time_graph_observations/);
+
+  const db = new DatabaseSync(":memory:");
+  db.exec(sql);
+  const cols = tableColumns(db, "civic_time_graph_observations");
+  for (const col of CIVIC_TIME_GRAPH_OBSERVATION_COLUMNS) {
+    assert.ok(cols.includes(col), `civic_time_graph_observations missing column ${col}`);
   }
   db.close();
 });
@@ -398,6 +416,73 @@ test("mapMoneyLifecycleToCivic + writer: flag on stores adapter output", async (
       assert.notEqual(row.valid_at, row.observed_at);
     }
   }
+  db.close();
+});
+
+test("lifecycle writer retains exact notice-contract link corrections as graph history", async () => {
+  const db = new DatabaseSync(":memory:");
+  const env = { DB: d1FromSqlite(db), [CIVIC_TIME_EVENT_WRITE_FLAG]: "true" };
+  const firstLink = {
+    type: "registered_as",
+    from: "notice:20260707026",
+    to: "contract:CT81026B0003",
+    evidence: {
+      basis: "lifecycle_registered_join",
+      source: "checkbook-contracts",
+      request_id: "20260707026",
+      contract_id: "CT81026B0003",
+    },
+  };
+  const correctedLink = {
+    ...firstLink,
+    to: "contract:CT81026B9999",
+    evidence: { ...firstLink.evidence, contract_id: "CT81026B9999" },
+  };
+
+  const prepared = prepareCivicTimeGraphObservation(firstLink, "2026-08-10T12:01:00.000Z");
+  assert.equal(prepared.observation.schema_version, CIVIC_TIME_GRAPH_OBSERVATION_SCHEMA);
+  assert.equal(prepared.observation.publication_tier, "deterministic");
+  assert.equal(prepared.observation.method, "lifecycle_contract_exact_v1");
+  assert.equal(prepared.observation.provenance.source_record_id, "lifecycle-link:notice:20260707026");
+  assert.equal(
+    prepareCivicTimeGraphObservation({
+      ...firstLink,
+      evidence: {
+        contract_id: "CT81026B0003",
+        request_id: "20260707026",
+        source: "checkbook-contracts",
+        basis: "lifecycle_registered_join",
+      },
+    }, "2026-08-10T12:01:00.000Z").observation.observation_id,
+    prepared.observation.observation_id,
+    "source identity is stable across evidence-key order",
+  );
+
+  const first = await writeCivicTimeGraphObservations(env, [firstLink], {
+    written_at: "2026-08-10T12:01:00.000Z",
+  });
+  const corrected = await writeCivicTimeGraphObservations(env, [correctedLink], {
+    written_at: "2026-08-12T12:01:00.000Z",
+  });
+  assert.equal(first.written, 1);
+  assert.equal(corrected.written, 1);
+
+  const rows = db.prepare(
+    "SELECT observation_id, to_ref, written_at, supersedes_observation_id, observation_json FROM civic_time_graph_observations ORDER BY written_at",
+  ).all();
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].to_ref, "contract:CT81026B0003");
+  assert.equal(rows[1].to_ref, "contract:CT81026B9999");
+  assert.equal(rows[1].supersedes_observation_id, rows[0].observation_id);
+  assert.equal(JSON.parse(rows[0].observation_json).to, "contract:CT81026B0003");
+
+  const rejected = await writeCivicTimeGraphObservations(env, [{
+    type: "named_vendor",
+    from: "notice:20260707026",
+    to: "vendor:name:possible",
+  }], { written_at: "2026-08-13T12:01:00.000Z" });
+  assert.equal(rejected.written, 0, "bounded writer must not retain unclassified link families");
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM civic_time_graph_observations").get().n, 2);
   db.close();
 });
 

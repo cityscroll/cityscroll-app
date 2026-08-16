@@ -299,6 +299,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   drives system-axis as-of. Unregistered dependencies stay `unknown`. Theory and correction/as-of semantics live in
   `docs/adr/civic-time-event-contract.md`. Focused proof:
   `worker/test/civic_time_writer.test.mjs` and `test/civic_time_ledger.test.mjs`.
+- **Composed graph belief time:** `site/civic_time_composed_graph.mjs` is the bounded
+  `procurement_notice` bitemporal reader over retained event and typed identity-link history.
+  It selects the latest observation before applying the public edge gate, so a corrected
+  provisional link cannot revive or upgrade an older public edge. Receipts keep belief and
+  processing time separate and reuse the four-clock map in `site/civic_time_ledger.mjs`.
+  Focused proof: `test/civic_time_ledger.test.mjs`.
 
 - Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.
   `site/index.html` owns markup/CSS, `site/app/main.mjs` owns ordered loading, and application
