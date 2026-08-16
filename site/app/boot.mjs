@@ -578,12 +578,15 @@ bindLocationControl($("#meetingslocation"), {
   },
 });
 
-["property","rules","meetings"].forEach(k=>{
+["property","rules"].forEach(k=>{
   $("#"+k+"kw").addEventListener("keydown",e=>{ if(e.key==="Enter") loadSection(k); });
   $("#"+k+"kw").addEventListener("input", debounce(()=>loadSection(k), 500));
   const w=$("#"+k+"when"); if(w) w.addEventListener("change",()=>loadSection(k));
   const ag=$("#"+k+"agency"); if(ag) ag.addEventListener("change",()=>loadSection(k));
 });
+$("#meetingskw").addEventListener("keydown",e=>{ if(e.key==="Enter") loadSection("meetings"); });
+$("#meetingswhen").addEventListener("change",()=>loadSection("meetings"));
+$("#meetingsagency").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsboro").addEventListener("change",()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); },500));

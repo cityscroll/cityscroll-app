@@ -63,3 +63,15 @@ test("watch-preset code and data load only when Alerts is active", () => {
   assert.doesNotMatch(boot, /^if\(typeof initWatchTemplates/m);
   assert.match(boot, /#tab-alerts\.active/);
 });
+
+test("Meetings Ask conflicts render two choices instead of replacing query state", () => {
+  assert.match(SITE_SOURCE, /function queryConflictHTML/);
+  assert.match(SITE_SOURCE, /data-query-conflict-choice="keep_current"/);
+  assert.match(SITE_SOURCE, /data-query-conflict-choice="use_proposed"/);
+  assert.match(SITE_SOURCE, /composeLensQueryState\("meetings"/);
+});
+
+test("Meetings standard search commits on submit, not an unlabeled live debounce", () => {
+  assert.match(boot, /#meetingskw"\)\.addEventListener\("keydown"/);
+  assert.doesNotMatch(boot, /#meetingskw"\)\.addEventListener\("input"\s*,\s*debounce/);
+});

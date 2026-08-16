@@ -766,6 +766,33 @@ function renderSearchComponents(lens, options){
   renderNLQPresets();
 }
 
+function currentMeetingsQueryFilter(){
+  const hash=serializeState();
+  const filter=searchFilterFromHash("meetings",hash)||{};
+  const query=new URLSearchParams((hash.split("?")[1]||""));
+  // The default week view is presentation state, not an explicit clause. An Ask time
+  // proposal may replace it without manufacturing a conflict.
+  if(!query.has("when")) delete filter.when;
+  return filter;
+}
+
+function queryConflictHTML(composed){
+  const conflict=composed.conflicts[0];
+  return `<div class="nlunderstood-weak query-conflict" role="alert"><p>${t("query_conflict_prompt")}</p><div class="chiprow"><button type="button" class="mini" data-query-conflict-choice="keep_current">${t("query_conflict_keep",{value:nlqEscape(conflict.current)})}</button><button type="button" class="mini" data-query-conflict-choice="use_proposed">${t("query_conflict_use",{value:nlqEscape(conflict.proposed)})}</button></div></div>`;
+}
+
+function bindQueryConflict(root, composed, label){
+  root.querySelectorAll("[data-query-conflict-choice]").forEach(button=>button.addEventListener("click",async()=>{
+    root.querySelectorAll("button").forEach(candidate=>{ candidate.disabled=true; });
+    const state=composed.choices[button.dataset.queryConflictChoice];
+    const filter=lensQueryStateFilter(state);
+    const hash=buildSearchDeepLink("meetings",filter);
+    await NL.meetings.apply(filter);
+    root.innerHTML="";
+    renderSearchComponents("meetings",{hash,label});
+  }));
+}
+
 async function nlTranslateLens(lens, opts){
   const inpSel=(opts&&opts.inputSel)||("#nlq-"+lens);
   const text=(opts&&opts.text!=null)?opts.text:($(inpSel)?.value.trim()||"");
@@ -781,9 +808,20 @@ async function nlTranslateLens(lens, opts){
   const inputFilter={...f};
   if(["land","property","rules","meetings"].includes(lens)) inputFilter.keywords=stripImpliedKeywords(lens, f.keywords);
   const contextual=context?.lensSearchState?.(inputFilter, lens, buildSearchDeepLink);
-  const linkFilter=contextual?.filter||inputFilter;
+  let linkFilter=contextual?.filter||inputFilter;
+  if(lens==="meetings"){
+    const composed=composeLensQueryState("meetings",currentMeetingsQueryFilter(),linkFilter);
+    if(composed.conflicts.length){
+      const root=$("#nltrans-meetings");
+      root.innerHTML=queryConflictHTML(composed);
+      bindQueryConflict(root,composed,text);
+      if(btn) btn.disabled=false;
+      return;
+    }
+    linkFilter=lensQueryStateFilter(composed.state);
+  }
   const deepLink=buildSearchDeepLink(lens, linkFilter);
-  const carriedDeepLink=contextual?.hash||deepLink;
+  const carriedDeepLink=lens==="meetings"?deepLink:(contextual?.hash||deepLink);
   await NL[lens].apply(linkFilter);
   if(chips.length) $("#nltrans-"+lens).innerHTML="";
   renderSearchComponents(lens, {hash:carriedDeepLink, label:text});

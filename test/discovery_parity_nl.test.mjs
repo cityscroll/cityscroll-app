@@ -15,7 +15,12 @@ import {
   extractStaffingGuide,
   extractClosingWeek,
 } from "../site/nl_parse.js";
-import { buildMoneyDeepLink, buildSearchDeepLink } from "../site/nl_deeplink.js";
+import {
+  buildMoneyDeepLink,
+  buildSearchDeepLink,
+  composeLensQueryState,
+  lensQueryStateFilter,
+} from "../site/nl_deeplink.js";
 import { SUGGESTION_POOL, FALLBACK_INDICES } from "../worker/src/lib/suggestions.mjs";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -75,6 +80,50 @@ test("meetings: this week and action phrasing map to when=week", () => {
     buildSearchDeepLink("meetings", { when: "week", keywords: [] }),
     "#meetings?when=week",
   );
+});
+
+test("meetings: Ask adds time to the standard text clause and carried M03 place", () => {
+  const composed = composeLensQueryState("meetings", {
+    keywords: ["community board 3"],
+    borough: "Manhattan",
+    communityDistrict: "M03",
+  }, {
+    when: "upcoming",
+    keywords: [],
+  });
+
+  assert.deepEqual(composed.conflicts, []);
+  assert.equal(composed.state.text, "community board 3");
+  assert.deepEqual(composed.state.place, {
+    borough: "Manhattan",
+    communityDistrict: "M03",
+    councilDistrict: null,
+    neighborhood: null,
+    locationScope: null,
+  });
+  assert.equal(composed.state.facets.when, "upcoming");
+  assert.equal(
+    buildSearchDeepLink("meetings", lensQueryStateFilter(composed.state)),
+    "#meetings?q=community+board+3&when=upcoming&boro=Manhattan&cd=M03",
+  );
+});
+
+test("meetings: a conflicting Ask place produces explicit keep/use choices", () => {
+  const composed = composeLensQueryState("meetings", {
+    keywords: ["Manhattan"],
+  }, {
+    borough: "Bronx",
+    when: "upcoming",
+    keywords: [],
+  });
+
+  assert.deepEqual(composed.conflicts.map((conflict) => conflict.field), ["place"]);
+  assert.equal(composed.conflicts[0].current, "Manhattan");
+  assert.equal(composed.conflicts[0].proposed, "Bronx");
+  assert.equal(composed.choices.keep_current.text, "Manhattan");
+  assert.equal(composed.choices.keep_current.place.borough, null);
+  assert.equal(composed.choices.use_proposed.text, "");
+  assert.equal(composed.choices.use_proposed.place.borough, "Bronx");
 });
 
 test("people: open competitive exams maps to career guide deep link", () => {
