@@ -242,6 +242,8 @@ run_and_fail python3 test/standards/heading_punctuation.py
 run_and_fail python3 test/standards/genai_disclosure.py
 run_and_fail python3 test/standards/nl_input_clarity.py
 run_and_fail python3 test/standards/demo_links.py
+run_and_fail python3 test/functional/a11y_gate_test.py
+run_and_fail python3 test/functional/ci_waits_test.py
 
 run_banner "Unit tests (site + worker)" "Beta preview alias contract" \
   "node tools/check_beta_review_contract.mjs"
