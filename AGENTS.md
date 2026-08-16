@@ -108,6 +108,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   and preserve publisher keys; `/meetings/{meeting_id}` is canonical while City Record notice
   URLs remain compatibility links. Keep title/date-only identity and board-name-as-agency
   substitutions out of new meeting rows. Focused proof: `test/meeting_object_contract.test.mjs`.
+- **Meeting process profiles:** `site/meeting_process_profile.mjs` keeps observed event/publication
+  facts separate from versioned normative expectations. Past dates, generic meeting types, and
+  participation links never prove held/agenda state; community-board and unknown families remain
+  descriptive and emit no rulemaking role. Focused proof: `test/meeting_process_profile.test.mjs`.
 - **Shared meeting read model:** `site/shared_meeting_read_model.mjs` combines the two
   source-qualified producers with one freshness envelope. `tools/build_primary_documents.mjs`
   materializes `site/data/shared_meeting_read_model.json`; Pages edge resolves

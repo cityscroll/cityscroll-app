@@ -1,10 +1,10 @@
 /**
  * Meetings domain explorer — list ontology over the public hearing arc.
  *
- * Elevates the Meetings lens on process stage, next-action keys, and entity
+ * Elevates the Meetings lens on observed stage, next-action keys, and entity
  * links. Place-based local / citywide / unlocated grouping is opt-in (not the
  * default wall): near-me and affected-area filters are the primary place path.
- *   1. Lifecycle timeline — process stages scheduled → agenda → held → outcomes
+ *   1. Observed timeline — scheduled / agenda / held / outcomes facts
  *   2. Next-action keys — attend / testify / join when notice text publishes them
  *   3. Cross-domain entity links — agency + place + optional matter refs
  *
@@ -13,9 +13,15 @@
  * non-Council process spine remains site/non_council_hearing_spine.mjs.
  */
 
-export const MEETINGS_EXPLORER_SCHEMA_VERSION = 1;
+import {
+  meetingObservedState,
+  meetingProcessProjection,
+  observedMeetingStage,
+} from "./meeting_process_profile.mjs";
 
-/** Ordered process stages for one public hearing / meeting notice (ops ontology). */
+export const MEETINGS_EXPLORER_SCHEMA_VERSION = 2;
+
+/** Ordered observed stages for one public hearing / meeting notice. */
 export const MEETING_PROCESS_PHASES = Object.freeze([
   "scheduled",
   "agenda",
@@ -50,7 +56,7 @@ export const MEETING_PROCESS_META = Object.freeze({
   },
 });
 
-/** Process-stage filter chips for the Meetings domain rail. */
+/** Observed-stage filter chips for the Meetings domain rail. */
 export const MEETINGS_PROCESS_STAGES = Object.freeze([
   ["all", "stage_all"],
   ["scheduled", "meeting_stage_scheduled"],
@@ -104,45 +110,21 @@ export function meetingNoticeHaystack(record) {
 }
 
 /**
- * True when the notice (or participation bag) signals published agenda / materials.
- * Grounded in ingested body / type only — never invents a Legistar agenda.
+ * True only when the record carries an observed agenda publication.
  * @param {object} record
  */
 export function hasAgendaSignal(record) {
-  if (!record || typeof record !== "object") return false;
-  const type = clean(record.notice_type) || "";
-  if (/^meeting$/i.test(type)) return true;
-  const links = record.participation?.links;
-  if (Array.isArray(links) && links.some((l) => l && l.url)) return true;
-  // Explicit agenda package language in the notice body / title.
-  const hay = meetingNoticeHaystack(record);
-  if (/\bagenda\b/i.test(hay)) return true;
-  if (/\bcalendar\b/i.test(hay) && /\b(items?|matters?)\b/i.test(hay)) return true;
-  return false;
+  return meetingObservedState(record).publications.agenda.state === "observed";
 }
 
 /**
- * True when the notice (or stamped join) signals outcomes / minutes / votes.
- * Prefers server-stamped meeting_outcomes when present; otherwise body signals only.
+ * True when minutes or an outcome publication is observed.
  * @param {object} record
  */
 export function hasOutcomesSignal(record) {
-  if (!record || typeof record !== "object") return false;
-  if (record.meeting_outcomes_matched === true) return true;
-  if (record.outcomes_available === true) return true;
-  const join = record.meeting_outcomes?.join || record.outcomes_join || null;
-  if (join && join.matched) return true;
-  if (record.council_event && (record.council_event.event_id || record.council_event.event_url)) {
-    return true;
-  }
-  // Past notices that publish minutes / vote language (non-Council path).
-  const hay = meetingNoticeHaystack(record);
-  if (/\bminutes\b/i.test(hay)) return true;
-  if (/\b(roll[\s-]?call|vote tally|voting results?)\b/i.test(hay)) return true;
-  // Documents bag from a stamped outcomes join.
-  const docs = record.event_documents || record.documents;
-  if (Array.isArray(docs) && docs.some((d) => d && d.url)) return true;
-  return false;
+  const publications = meetingObservedState(record).publications;
+  return publications.minutes.state === "observed"
+    || publications.outcome.state === "observed";
 }
 
 /**
@@ -164,25 +146,16 @@ export function hasParticipationLink(record) {
 }
 
 /**
- * Process stage for one hearing record (null when no event date).
+ * Explorer stage derived only from observed facts. The date anchor remains in
+ * the signature for compatibility, but chronology cannot prove an event held.
  * @param {object} record
  * @param {object} [opts]
  * @param {string|null} [opts.now] — ISO day anchor (tests)
  * @returns {string|null}
  */
 export function meetingProcessStage(record, opts = {}) {
-  const day = isoDate(record?.event_date);
-  if (!day) return null;
-  const now = isoDate(opts.now) || isoDate(new Date().toISOString().slice(0, 10));
-  const past = now && day < now;
-  if (!past) {
-    // Upcoming: agenda materials published → agenda; else scheduled.
-    if (hasAgendaSignal(record)) return "agenda";
-    return "scheduled";
-  }
-  // Past: outcomes/minutes when grounded; otherwise held.
-  if (hasOutcomesSignal(record)) return "outcomes";
-  return "held";
+  void opts;
+  return observedMeetingStage(meetingObservedState(record));
 }
 
 /**
@@ -402,6 +375,7 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
       }
       const primary = pickPrimaryHearing(members) || row;
       const processStage = entryCurrentProcessStage(members, opts);
+      const processProjection = meetingProcessProjection(primary);
       const participation = unionParticipation(members);
       const primaryWithPart = {
         ...primary,
@@ -430,6 +404,11 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
         primary: primaryWithPart,
         members,
         notice_count: members.length,
+        meeting_family: processProjection.meeting_family,
+        process_profile: processProjection.process_profile,
+        observed_state: processProjection.observed,
+        normative_expectations: processProjection.normative_expectations,
+        process_role: processProjection.process_role,
         process_stage: processStage,
         process_filter: processStage || "unstaged",
         action_key: meetingProcessActionKey(processStage, primaryWithPart),
@@ -460,6 +439,7 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
       }
       const primary = pickPrimaryHearing(members) || row;
       const processStage = entryCurrentProcessStage(members, opts);
+      const processProjection = meetingProcessProjection(primary);
       const participation = unionParticipation(members);
       const primaryWithPart = {
         ...primary,
@@ -488,6 +468,11 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
         primary: primaryWithPart,
         members,
         notice_count: members.length,
+        meeting_family: processProjection.meeting_family,
+        process_profile: processProjection.process_profile,
+        observed_state: processProjection.observed,
+        normative_expectations: processProjection.normative_expectations,
+        process_role: processProjection.process_role,
         process_stage: processStage,
         process_filter: processStage || "unstaged",
         action_key: meetingProcessActionKey(processStage, primaryWithPart),
@@ -512,7 +497,8 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
     if (row.request_id) emitted.add(`rid:${row.request_id}`);
 
     // Singleton hearing card
-    const processStage = meetingProcessStage(row, opts);
+    const processProjection = meetingProcessProjection(row);
+    const processStage = processProjection.observed_stage;
     entries.push({
       kind: "notice",
       schema_version: MEETINGS_EXPLORER_SCHEMA_VERSION,
@@ -520,6 +506,11 @@ export function buildMeetingsExplorerEntries(hearings, opts = {}) {
       primary: row,
       members: [row],
       notice_count: 1,
+      meeting_family: processProjection.meeting_family,
+      process_profile: processProjection.process_profile,
+      observed_state: processProjection.observed,
+      normative_expectations: processProjection.normative_expectations,
+      process_role: processProjection.process_role,
       process_stage: processStage,
       process_filter: processStage || "unstaged",
       action_key: meetingProcessActionKey(processStage, row),

@@ -7,6 +7,8 @@
  * creates one.
  */
 
+import { resolveMeetingFamily } from "./meeting_process_profile.mjs";
+
 export const MEETING_OBJECT_SCHEMA = "cityscroll.meeting_object.v1";
 
 export const MEETING_SOURCE_SYSTEMS = Object.freeze([
@@ -181,6 +183,7 @@ export function normalizeMeetingObject(row = {}) {
     address: venue?.address || row.address,
     venue_name: venue?.name || row.venue_name,
   };
+  const meetingFamily = resolveMeetingFamily(row);
 
   return {
     ...retainedNoticeFields(row),
@@ -192,6 +195,7 @@ export function normalizeMeetingObject(row = {}) {
     title: optionalText(row.title || row.short_title) || "Meeting",
     event_date: optionalText(row.event_date || row.date),
     event_end: optionalText(row.event_end || row.end_at),
+    meeting_family: meetingFamily,
     venue,
     participation: normalizeParticipation(row.participation),
     committee: normalizeCommittee(row.committee),
