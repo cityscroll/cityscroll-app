@@ -267,6 +267,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   SearchDocuments on `/officials/<id>/`. Only its declared name, alias, role, agency, and district
   fields enter retrieval; unresolved rows fail closed and corpus coverage stays explicit. Focused
   proof: `test/universal_search_people_producer.test.mjs` plus the universal object gold test.
+- **Cross-lens search ranking:** `site/universal_search_federator.mjs` is the pure rank-and-merge
+  boundary over notices plus the seven entity indexes. Lens providers retain retrieval and match-
+  evidence ownership; federation validates immutable SearchDocuments, calibrates local BM25 order,
+  preserves observation refs on match edges, and reports empty, unavailable, and unindexed lenses
+  distinctly. Focused proof: `test/universal_search_cross_lens_ranking.test.mjs`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain
