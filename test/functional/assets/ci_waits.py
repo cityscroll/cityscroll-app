@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from typing import Any
 
@@ -10,6 +11,22 @@ from playwright.sync_api import Locator, Page, TimeoutError as PlaywrightTimeout
 
 DEFAULT_WAIT_TIMEOUT_MS = 45_000
 DEFAULT_WAIT_ATTEMPTS = 2
+
+ROUTE_STATE_DEFAULTS = {
+    "pathname": None,
+    "search": None,
+    "hash": None,
+    "document_ready_state": None,
+    "active_pane_id": None,
+    "expected_pane_active": False,
+    "expected_heading_connected": False,
+    "expected_heading_id": None,
+    "expected_heading_class": None,
+    "expected_heading_focused": False,
+    "active_element_id": None,
+    "active_element_class": None,
+    "route_module_ready": None,
+}
 
 
 def _retry_message(label: str, attempt: int, attempts: int) -> None:
@@ -140,6 +157,56 @@ def wait_for_url(
     )
 
 
+def route_state_snapshot(
+    page: Page,
+    expected_path: str,
+    *,
+    tab: str | None = None,
+    require_focus: bool = False,
+) -> dict[str, Any]:
+    """Read route metadata for a timeout receipt without collecting page content."""
+    observed = page.evaluate(
+        """({expectedPath, tab, requireFocus}) => {
+            const expectedPane = tab ? document.getElementById(`tab-${tab}`) : null;
+            const activePane = document.querySelector(".tabpane.active");
+            const heading = expectedPane?.querySelector(".lens-entry-heading") || null;
+            const activeElement = document.activeElement;
+            const className = (element) => (
+                typeof element?.className === "string" ? element.className : null
+            );
+            let routeModuleReady = null;
+            try {
+                if (tab && typeof globalThis.CrolRouteModules?.isReady === "function") {
+                    routeModuleReady = Boolean(globalThis.CrolRouteModules.isReady(tab));
+                }
+            } catch (_error) {
+                routeModuleReady = null;
+            }
+            return {
+                pathname: location.pathname,
+                search: location.search,
+                hash: location.hash,
+                document_ready_state: document.readyState,
+                active_pane_id: activePane?.id || null,
+                expected_pane_active: Boolean(expectedPane?.classList.contains("active")),
+                expected_heading_connected: Boolean(heading?.isConnected),
+                expected_heading_id: heading?.id || null,
+                expected_heading_class: className(heading),
+                expected_heading_focused: Boolean(heading && activeElement === heading),
+                active_element_id: activeElement?.id || null,
+                active_element_class: className(activeElement),
+                route_module_ready: routeModuleReady,
+            };
+        }""",
+        {
+            "expectedPath": expected_path,
+            "tab": tab,
+            "requireFocus": require_focus,
+        },
+    )
+    return {**ROUTE_STATE_DEFAULTS, **(observed or {})}
+
+
 def wait_for_route_state(
     page: Page,
     expected_path: str,
@@ -156,30 +223,58 @@ def wait_for_route_state(
     tab) the expected pane and heading are active. Focus is included when the
     caller needs the complete tab-entry contract.
     """
-    wait_for_function(
-        page,
-        """({expectedPath, tab, requireFocus}) => {
-            if (location.pathname !== expectedPath
-                || location.search !== ""
-                || location.hash !== ""
-                || document.readyState === "loading") return false;
-            if (!tab) return true;
-            const pane = document.querySelector(`#tab-${tab}.tabpane.active`);
-            const heading = pane?.querySelector(".lens-entry-heading");
-            return Boolean(
-                pane && heading?.isConnected
-                && (!requireFocus || document.activeElement === heading)
-            );
-        }""",
-        arg={
-            "expectedPath": expected_path,
-            "tab": tab,
-            "requireFocus": require_focus,
-        },
-        timeout=timeout,
-        attempts=1,
-        label=label,
-    )
+    try:
+        wait_for_function(
+            page,
+            """({expectedPath, tab, requireFocus}) => {
+                if (location.pathname !== expectedPath
+                    || location.search !== ""
+                    || location.hash !== ""
+                    || document.readyState === "loading") return false;
+                if (!tab) return true;
+                const pane = document.querySelector(`#tab-${tab}.tabpane.active`);
+                const heading = pane?.querySelector(".lens-entry-heading");
+                return Boolean(
+                    pane && heading?.isConnected
+                    && (!requireFocus || document.activeElement === heading)
+                );
+            }""",
+            arg={
+                "expectedPath": expected_path,
+                "tab": tab,
+                "requireFocus": require_focus,
+            },
+            timeout=timeout,
+            attempts=1,
+            label=label,
+        )
+    except PlaywrightTimeoutError:
+        actual = dict(ROUTE_STATE_DEFAULTS)
+        snapshot_error = None
+        try:
+            actual.update(
+                route_state_snapshot(
+                    page,
+                    expected_path,
+                    tab=tab,
+                    require_focus=require_focus,
+                )
+            )
+        except Exception as error:  # Preserve the route timeout as the failing assertion.
+            snapshot_error = f"{type(error).__name__}: {error}"
+        receipt = {
+            "event": "route_state_timeout",
+            "label": label,
+            "expected": {
+                "pathname": expected_path,
+                "tab": tab,
+                "require_focus": require_focus,
+            },
+            "actual": actual,
+            "snapshot_error": snapshot_error,
+        }
+        print(f"ROUTE_STATE_TIMEOUT {json.dumps(receipt, sort_keys=True)}", flush=True)
+        raise
 
 
 def click_and_wait_for_url(

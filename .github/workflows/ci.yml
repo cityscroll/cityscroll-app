@@ -294,6 +294,9 @@ jobs:
       - name: Accessibility gate regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/a11y_gate_test.py
+      - name: Route timeout diagnostics regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 test/functional/ci_waits_test.py
 
       - name: Site unit tests
         if: matrix.family == 'site-node'

@@ -115,6 +115,7 @@ def people_opens_on_a_populated_example(pw):
         ("meetings", ""),
     ):
         expected_path = f"/browse/{ {'money':'contracts','people':'staffing','land':'zoning'}.get(tab, tab) }/"
+        step("TRACE", "route transition", f"{tab} -> {expected_path}")
         if tab == "property":
             goto_and_wait_for_app(page, f"{BASE}browse/property/", timeout=30000)
             wait_for_route_state(
