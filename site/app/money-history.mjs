@@ -207,6 +207,7 @@ async function loadExternalAward(params){
 
 import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
 import { noticeDisplayTitle } from "../display_title.mjs";
+import { renderObjectCardTitle } from "../affordance_grammar.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1020,16 +1021,19 @@ function noticeAgencyBar(stats, agencyName, barClass){
   </div>`;
 }
 function solicitationContextHeadingHTML(r){
-  if(!solicitationResponseContextReady(r)) return "";
+  const ready=solicitationResponseContextReady(r);
   const section = tSection(r.section_name || "Procurement");
   const context = [
     r.type_of_notice_description,
     section,
     r.agency_name ? pivotA(agencyHref(r.agency_name), r.agency_name) : "",
   ].filter(Boolean).join(" · ");
-  return `<header class="notice-context-heading" data-solicitation-context-ready="true">
+  const projection=globalThis.moneyListInteractionProjection?.(r);
+  const linkedTitle=renderObjectCardTitle(projection,{className:"money-detail-object-title",escape:escUiHtml})
+    || escUiHtml(noticeDisplayTitle(r));
+  return `<header class="notice-context-heading"${ready?' data-solicitation-context-ready="true"':""}>
     <div class="ftype" style="margin-bottom:6px">${context}</div>
-    <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(noticeDisplayTitle(r))}</h2>
+    <h2 class="rolename" lang="en" dir="ltr">${linkedTitle}</h2>
   </header>`;
 }
 function renderDetail(r, chain, stats, loadContext = true){
@@ -1071,7 +1075,8 @@ function renderDetail(r, chain, stats, loadContext = true){
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
-  const detailURL=noticeLink(r.request_id);
+  const detailProjection=globalThis.moneyListInteractionProjection?.(r);
+  const detailURL=detailProjection?.copy_target||noticeLink(r.request_id);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(detailURL, dc));
   bindQRShare($("#dqr"), detailURL);
   const dx = $("#dxlsx"); if(dx && !pending) dx.addEventListener("click", ()=>exportNoticeXlsx(r, chain));
