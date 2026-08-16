@@ -547,9 +547,9 @@
     },
     {
       "id": "alerts-watch-templates",
-      "url": "following/",
+      "url": "following/?tab=packs",
       "feature": "ready-made-watch-sets",
-      "description": "Open Following with ready-made watch sets below the personal controls.",
+      "description": "Open Following on the ready-made watch sets tab.",
       "expectations": {
         "visible": [
           {
@@ -759,7 +759,7 @@
       "id": "alerts-builder",
       "url": "following/",
       "feature": "alert-builder",
-      "description": "Open Following with create-first watch controls and saved-watch management below.",
+      "description": "Open Following on the create-first watch controls.",
       "expectations": {
         "visible": [
           {
@@ -768,9 +768,6 @@
           {
             "selector": "[data-following-subscribe-panel]",
             "text": "Pick a topic or place to see matches."
-          },
-          {
-            "selector": "[data-personal-watch-list]"
           }
         ],
         "notVisible": [
@@ -783,7 +780,7 @@
     },
     {
       "id": "alerts-rollup-prefs",
-      "url": "following/",
+      "url": "following/?tab=watches",
       "feature": "alerts-rollup-prefs",
       "localOnly": true,
       "description": "Show the saved-watch management surface on Following.",
