@@ -26,9 +26,9 @@ import {
 import { readPossiblySamePairs } from "./lib/possibly_same.mjs";
 import {
   FALSE_SPLIT_EVIDENCE_VERSION,
-  appendFalseSplitDisposition,
   readFalseSplitDispositions,
 } from "./lib/false_split_evidence.mjs";
+import { commitCurationReviewCommand } from "./lib/curation_review_command.mjs";
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
 import { timingSafeEqualString } from "./lib/secret_compare.mjs";
@@ -261,7 +261,8 @@ export async function handleAdminFeedback(req, env) {
 }
 
 // GET/POST /admin/possibly-same?key=… — desk evidence for candidate vendor pairs.
-// POST appends a disposition audit event; it never mutates source records or entity links.
+// POST commits one idempotent disposition + verdict command; it never mutates
+// source records or entity links.
 export async function handleAdminPossiblySame(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
@@ -286,22 +287,33 @@ export async function handleAdminPossiblySame(req, env) {
     }
     body.review_session ||= requestUrl.searchParams.get("review_session")
       || req.headers.get("X-Review-Session") || "";
+    body.command_id ||= req.headers.get("Idempotency-Key") || "";
     const pair = pairs.find((candidate) => candidate.id === String(body?.pair_id || ""));
-    let event;
+    let result;
     try {
-      event = await appendFalseSplitDisposition(env.DB, pair, body);
+      result = await commitCurationReviewCommand(env.DB, pair, body);
     } catch {
-      return json({ error: "disposition-write-failed" }, 503);
+      return json({ error: "curation-command-write-failed" }, 503);
     }
-    if (event.error) return json({ error: event.error }, event.error === "pair-not-found" ? 404 : 400);
-    // Fail-soft product action log: desk evidence remains authoritative; logging never blocks review.
-    const reviewAction = reviewActionFromDisposition(event);
-    if (reviewAction) await appendActionLog(env, reviewAction, { id: event.id });
+    if (result.error) {
+      const status = result.error === "pair-not-found"
+        ? 404
+        : result.error === "idempotency-key-conflict"
+          ? 409
+          : result.error === "atomic-batch-required"
+            ? 503
+            : 400;
+      return json({ error: result.error }, status);
+    }
+    // The privacy-safe log is a fail-soft projection of the committed command,
+    // never a peer authority whose failure can split the curation result.
+    const reviewAction = reviewActionFromDisposition(result.event);
+    if (reviewAction) await appendActionLog(env, reviewAction, { id: result.event.id });
     if ((req.headers.get("accept") || "").includes("application/json")) {
-      return json({ event }, 201);
+      return json(result, result.command.replayed ? 200 : 201);
     }
     const target = new URL(req.url);
-    target.searchParams.set("saved", event.id);
+    target.searchParams.set("saved", result.event.id);
     return new Response(null, { status: 303, headers: { Location: target.toString(), "Cache-Control": "no-store" } });
   }
 
@@ -449,7 +461,9 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}, currentUrl
     return `${url.pathname}${url.search}`;
   };
   const session = new URL(currentUrl).searchParams.get("review_session") || "";
-  const cards = items.map((item) => `<article class="pair" data-pair-id="${escapeHtml(item.id)}">
+  const cards = items.map((item) => {
+    const commandId = crypto.randomUUID();
+    return `<article class="pair" data-pair-id="${escapeHtml(item.id)}">
     <p class="eyebrow">${escapeHtml(item.label)}</p>
     <h2>${escapeHtml(item.left.name)} <span aria-hidden="true">↔</span> ${escapeHtml(item.right.name)}</h2>
     <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)} · information gain ${escapeHtml(item.review_priority?.information_gain ?? "—")}</p>
@@ -460,16 +474,17 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}, currentUrl
     ${comparisonFeaturesHtml(item.evidence)}
     <p class="note">This is a review lead, not a finding. Confirm identity from the underlying records before taking action.</p>
     <section><h3>Disposition history</h3>${dispositionHistoryHtml(eventsByPair[item.id] || [])}</section>
-    <form method="post"><input type="hidden" name="pair_id" value="${escapeHtml(item.id)}"><input type="hidden" name="review_session" value="${escapeHtml(session)}">
+    <form method="post"><input type="hidden" name="command_id" value="${escapeHtml(commandId)}"><input type="hidden" name="pair_id" value="${escapeHtml(item.id)}"><input type="hidden" name="review_session" value="${escapeHtml(session)}">
       <label>Operator <input name="actor" required maxlength="120" autocomplete="username"></label>
       <label>Evidence note <textarea name="note" maxlength="2000" aria-label="Evidence note for ${escapeHtml(item.id)}"></textarea></label>
       <fieldset><legend>Append disposition</legend>
         <button name="decision" value="same">Same</button>
         <button name="decision" value="different">Different</button>
         <button name="decision" value="defer">Defer</button></fieldset>
-      <small>Saving appends a ${FALSE_SPLIT_EVIDENCE_VERSION} audit event. It does not change entity links.</small>
+      <small>Saving atomically appends immutable disposition and verdict receipts. It does not change entity links.</small>
     </form>
-  </article>`).join("\n");
+  </article>`;
+  }).join("\n");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Possibly same vendors</title>
     <style>body{font:16px system-ui,sans-serif;max-width:1120px;margin:40px auto;padding:0 20px;color:#17202a;background:#f6f3ed}.pair{background:white;border:1px solid #d8d2c8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px #0000000d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#795548;font-weight:700}.pair h2{font-size:22px;margin:8px 0}.score{color:#40566a;font-family:ui-monospace,monospace}.records{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.record{min-width:0;background:#f5f7f8;padding:14px;border-radius:8px}.pair dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pair dl div{min-width:0}.pair dt{font-size:12px;color:#687783}.pair dd{margin:4px 0 0;overflow-wrap:anywhere}.pair table{width:100%;border-collapse:collapse;font-size:13px}.pair th,.pair td{text-align:left;vertical-align:top;border-top:1px solid #d8dfe3;padding:6px;overflow-wrap:anywhere}.pair th{width:35%}.evidence-rail{margin:18px 0;padding:16px;border:1px solid #d8b36a;border-radius:10px;background:#fffaf0}.field-conflict{padding:12px 0;border-top:1px solid #ead8b6}.field-conflict h4{margin:0 0 8px}.assertions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;list-style:none;padding:0}.assertion,.interpretation{min-width:0;padding:12px;border-radius:7px}.assertion{background:#fff;border:1px solid #ded7ca}.assertion strong,.assertion-value,.assertion small,.interpretation strong{display:block;overflow-wrap:anywhere}.assertion-value{margin:6px 0;font:600 15px ui-monospace,monospace}.assertion small{color:#687783}.interpretation{margin-top:10px;background:#eaf3f7;border-left:4px solid #39788f}.evidence-label{display:inline-block;margin-bottom:6px;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.assertion-label{background:#f1e9d9;color:#604a25}.interpretation-label{background:#cfe5ee;color:#194f64}.interpretation p{margin-bottom:0}.note{border-left:3px solid #d39b36;padding-left:10px}.pair input,.pair textarea{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}.pair textarea{min-height:70px}.pair fieldset{border:0;padding:0;margin:8px 0}.pair button{padding:8px 14px;margin:4px 6px 4px 0}.history time,.history small{display:block;color:#687783}.empty,.empty-history{padding:18px;background:#fff;border-radius:12px}@media(max-width:720px){.records,.pair dl,.assertions{grid-template-columns:1fr}}</style></head><body>
     <header><p class="eyebrow">Authenticated desk review</p><h1>Possibly same vendors</h1><p>These candidate pairs are surfaced for human review. Dispositions are an append-only evidence trail; records are not combined or exposed in the public site.</p></header>
@@ -523,6 +538,7 @@ export function renderInvestigationWorkspacePage(workspace, eventsByPair = {}, c
   backUrl.searchParams.delete("pair");
   backUrl.searchParams.delete("saved");
   const selectedEvents = eventsByPair[workspace.id] || [];
+  const commandId = crypto.randomUUID();
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Private evidence workspace</title>
     <style>body{font:16px system-ui,sans-serif;max-width:1220px;margin:36px auto;padding:0 20px;color:#17202a;background:#f2eee6}a{color:#175f78}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:#795548;font-weight:750}.scope{max-width:760px}.summary{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.summary span{background:#e3ddd1;border-radius:999px;padding:7px 11px;font:600 13px ui-monospace,monospace}.source-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start}.source-rail{min-width:0;background:#fff;border-top:5px solid #8c6a3e;border-radius:10px;padding:18px;box-shadow:0 2px 8px #0000000d}.source-rail>h2{text-transform:capitalize;margin-top:0}.record{min-width:0;background:#f6f7f7;padding:14px;border-radius:8px;margin-top:12px}.record h3{font-size:16px}.record dl,.comparison dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.record dl div,.comparison dl div{min-width:0}.record dt,.comparison dt{font-size:12px;color:#687783}.record dd,.comparison dd{margin:4px 0 0;overflow-wrap:anywhere}.record table{width:100%;border-collapse:collapse;font-size:13px}.record th,.record td{text-align:left;vertical-align:top;border-top:1px solid #d8dfe3;padding:6px;overflow-wrap:anywhere}.record th{width:35%}.assertion-section,.comparison-section,.decision{margin-top:24px}.workspace-assertion,.comparison,.decision{background:#fff;border:1px solid #d8d2c8;border-radius:10px;padding:18px;margin:12px 0}.assertions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px;list-style:none;padding:0}.assertion{min-width:0;padding:12px;border:1px solid #ded7ca;border-radius:7px}.assertion strong,.assertion-value,.assertion small{display:block;overflow-wrap:anywhere}.assertion-value{margin:6px 0;font:600 15px ui-monospace,monospace}.assertion small{color:#687783}.interpretations{background:#eaf3f7;border-left:4px solid #39788f;padding:12px 12px 12px 34px}.evidence-label{display:inline-block;margin-bottom:6px;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.assertion-label{background:#f1e9d9;color:#604a25}.interpretation-label{background:#cfe5ee;color:#194f64}.history time,.history small{display:block;color:#687783}.decision input,.decision textarea{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}.decision textarea{min-height:80px}.decision fieldset{border:0;padding:0}.decision button{padding:8px 14px;margin-right:6px}@media(max-width:620px){.record dl,.comparison dl{grid-template-columns:1fr}}</style></head><body>
     <nav><a href="${escapeHtml(`${backUrl.pathname}${backUrl.search}`)}">← Candidate tray</a></nav>
@@ -535,11 +551,11 @@ export function renderInvestigationWorkspacePage(workspace, eventsByPair = {}, c
         ${workspace.assertions.map(workspaceAssertionRailHtml).join("") || '<p>No cross-source assertion conflicts are recorded for this case.</p>'}</section>
       <section class="comparison-section" aria-labelledby="comparisons"><h2 id="comparisons">Candidate comparisons</h2>
         ${workspace.comparisons.map((comparison) => workspaceDispositionHtml(comparison, eventsByPair[comparison.id] || [])).join("")}</section>
-      <form class="decision" method="post"><h2>Append a disposition for the selected pair</h2><input type="hidden" name="pair_id" value="${escapeHtml(workspace.id)}">
+      <form class="decision" method="post"><h2>Append a disposition for the selected pair</h2><input type="hidden" name="command_id" value="${escapeHtml(commandId)}"><input type="hidden" name="pair_id" value="${escapeHtml(workspace.id)}">
         <label>Operator <input name="actor" required maxlength="120" autocomplete="username"></label>
         <label>Evidence note <textarea name="note" maxlength="2000"></textarea></label>
         <fieldset><legend>Disposition</legend><button name="decision" value="same">Same</button><button name="decision" value="different">Different</button><button name="decision" value="defer">Defer</button></fieldset>
-        <small>Saving appends an immutable evidence event. It does not change entity links or source assertions.</small>
+        <small>Saving atomically appends immutable disposition and verdict receipts. It does not change entity links or source assertions.</small>
         ${selectedEvents.length ? `<p>${selectedEvents.length} prior event${selectedEvents.length === 1 ? "" : "s"} for this pair.</p>` : ""}</form>
     </main></body></html>`;
 }

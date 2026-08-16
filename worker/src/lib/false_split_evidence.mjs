@@ -31,7 +31,8 @@ export function evidenceSnapshot(pair) {
   };
 }
 
-export async function appendFalseSplitDisposition(db, pair, input, opts = {}) {
+/** Build the authoritative disposition row without writing it. */
+export function buildFalseSplitDisposition(pair, input, opts = {}) {
   const parsed = dispositionInput(input);
   if (parsed.error) return parsed;
   if (!pair || pair.id !== parsed.pairId) return { error: "pair-not-found" };
@@ -39,33 +40,64 @@ export async function appendFalseSplitDisposition(db, pair, input, opts = {}) {
   const eventId = opts.id || crypto.randomUUID();
   const snapshot = evidenceSnapshot(pair);
   snapshot.review_session = parsed.sessionId || null;
-  await db.prepare(
-    `INSERT INTO false_split_disposition_event
-       (id, pair_id, left_record_id, right_record_id, actor, decision, note,
-        evidence_version, evidence_json, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).bind(
-    eventId,
-    pair.id,
-    pair.left.source_record_id,
-    pair.right.source_record_id,
-    parsed.actor,
-    parsed.decision,
-    parsed.note || null,
-    FALSE_SPLIT_EVIDENCE_VERSION,
-    JSON.stringify(snapshot),
-    createdAt,
-  ).run();
   return {
     id: eventId,
     pair_id: pair.id,
+    left_record_id: pair.left.source_record_id,
+    right_record_id: pair.right.source_record_id,
     actor: parsed.actor,
     decision: parsed.decision,
     note: parsed.note,
     review_session: parsed.sessionId || null,
     evidence_version: FALSE_SPLIT_EVIDENCE_VERSION,
+    evidence_json: JSON.stringify(snapshot),
     created_at: createdAt,
   };
+}
+
+/** Prepare the insert so a higher-level command can include it in one D1 batch. */
+export function falseSplitDispositionInsert(db, event) {
+  return db.prepare(
+    `INSERT INTO false_split_disposition_event
+       (id, pair_id, left_record_id, right_record_id, actor, decision, note,
+        evidence_version, evidence_json, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).bind(
+    event.id,
+    event.pair_id,
+    event.left_record_id,
+    event.right_record_id,
+    event.actor,
+    event.decision,
+    event.note || null,
+    event.evidence_version,
+    event.evidence_json,
+    event.created_at,
+  );
+}
+
+export function publicFalseSplitDisposition(event) {
+  let reviewSession = event.review_session;
+  if (reviewSession === undefined) {
+    try { reviewSession = JSON.parse(event.evidence_json || "{}").review_session || null; } catch { reviewSession = null; }
+  }
+  return {
+    id: event.id,
+    pair_id: event.pair_id,
+    actor: event.actor,
+    decision: event.decision,
+    note: event.note,
+    review_session: reviewSession,
+    evidence_version: event.evidence_version,
+    created_at: event.created_at,
+  };
+}
+
+export async function appendFalseSplitDisposition(db, pair, input, opts = {}) {
+  const event = buildFalseSplitDisposition(pair, input, opts);
+  if (event.error) return event;
+  await falseSplitDispositionInsert(db, event).run();
+  return publicFalseSplitDisposition(event);
 }
 
 export async function readFalseSplitDispositions(db, pairIds = []) {
