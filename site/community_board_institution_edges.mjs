@@ -7,6 +7,7 @@ export {
   buildCommunityBoardMeetingEdge,
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromRow,
+  communityBoardMeetingEdgeFromSourceRow,
   joinCommunityBoardSourceRecord,
   joinCommunityBoardSourceRecords,
   materializeCommunityBoardMeetingEdge,
