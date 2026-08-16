@@ -1,0 +1,157 @@
+{
+  "schema": "cityscroll.agency_lifecycle_conformance.v1.lookup",
+  "method": "bounded_expected_trace_replay_v1+agency_aggregate_v1",
+  "generated_at": "2026-08-15T00:00:00.000Z",
+  "agency_count": 1,
+  "by_agency": {
+    "transportation": {
+      "schema": "cityscroll.agency_lifecycle_conformance.v1",
+      "method": "bounded_expected_trace_replay_v1+agency_aggregate_v1",
+      "source_method": "bounded_expected_trace_replay_v1",
+      "agency_id": "transportation",
+      "agency_name": "Transportation",
+      "lifecycle_id": "procurement",
+      "lifecycle_label": "Procurement lifecycle",
+      "slice_label": "Transportation · Procurement lifecycle",
+      "status": "matched",
+      "incomplete_fields": [],
+      "data_as_of": "2026-08-15",
+      "case_count": 2,
+      "cases": [
+        {
+          "case_id": "notice:20260710007",
+          "observed_trace": [
+            "award"
+          ],
+          "event_log": [
+            {
+              "case_id": "notice:20260710007",
+              "activity": "award",
+              "activity_label": "Award published",
+              "occurred_at": "2026-07-16",
+              "clock": "publication",
+              "source": {
+                "system": "City Record Online",
+                "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710007",
+                "record_id": "20260710007"
+              }
+            }
+          ],
+          "deviation": {
+            "class": "missing_open_data",
+            "missing_activities": [
+              "solicitation",
+              "bid_deadline",
+              "registration",
+              "payment"
+            ],
+            "data_as_of": "2026-08-15",
+            "is_legal_noncompliance": false,
+            "adjudication": "not_adjudicated"
+          }
+        },
+        {
+          "case_id": "notice:20260714006",
+          "observed_trace": [
+            "award"
+          ],
+          "event_log": [
+            {
+              "case_id": "notice:20260714006",
+              "activity": "award",
+              "activity_label": "Award published",
+              "occurred_at": "2026-07-20",
+              "clock": "publication",
+              "source": {
+                "system": "City Record Online",
+                "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714006",
+                "record_id": "20260714006"
+              }
+            }
+          ],
+          "deviation": {
+            "class": "missing_open_data",
+            "missing_activities": [
+              "solicitation",
+              "bid_deadline",
+              "registration",
+              "payment"
+            ],
+            "data_as_of": "2026-08-15",
+            "is_legal_noncompliance": false,
+            "adjudication": "not_adjudicated"
+          }
+        }
+      ],
+      "expected_stages": [
+        {
+          "id": "solicitation",
+          "label": "Solicitation published",
+          "clock": "publication"
+        },
+        {
+          "id": "bid_deadline",
+          "label": "Bid deadline",
+          "clock": "deadline"
+        },
+        {
+          "id": "award",
+          "label": "Award published",
+          "clock": "publication"
+        },
+        {
+          "id": "registration",
+          "label": "Contract registered",
+          "clock": "registration"
+        },
+        {
+          "id": "payment",
+          "label": "Payment issued",
+          "clock": "payment"
+        }
+      ],
+      "stage_completeness": [
+        {
+          "id": "solicitation",
+          "label": "Solicitation published",
+          "observed_cases": 0,
+          "total_cases": 2,
+          "rate": 0
+        },
+        {
+          "id": "bid_deadline",
+          "label": "Bid deadline",
+          "observed_cases": 0,
+          "total_cases": 2,
+          "rate": 0
+        },
+        {
+          "id": "award",
+          "label": "Award published",
+          "observed_cases": 2,
+          "total_cases": 2,
+          "rate": 1
+        },
+        {
+          "id": "registration",
+          "label": "Contract registered",
+          "observed_cases": 0,
+          "total_cases": 2,
+          "rate": 0
+        },
+        {
+          "id": "payment",
+          "label": "Payment issued",
+          "observed_cases": 0,
+          "total_cases": 2,
+          "rate": 0
+        }
+      ],
+      "deviation_counts": {
+        "conforming": 0,
+        "missing_open_data": 2,
+        "out_of_order_trace": 0
+      }
+    }
+  }
+}
