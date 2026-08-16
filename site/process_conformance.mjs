@@ -590,12 +590,22 @@ export function evaluateRuleEvidence(mandate, candidate, { expectedKind = "rule_
 /** Backward-compatible name for callers that treat evaluation as scoring. */
 export const scoreMandateRuleEvidence = evaluateRuleEvidence;
 
-function candidateWithinDeadlinePlausibility(candidate, deadlineDate) {
+function isRepeatedCadence(value) {
+  const recurrence = clean(value, 80).toLowerCase();
+  return /^(?:annual|yearly|quarterly|monthly|biennial)$/.test(recurrence)
+    || /^every\s+(?:\d+|one|two|three|four|five)\s+years?$/.test(recurrence);
+}
+
+function candidateWithinDeadlinePlausibility(candidate, deadlineDate, { recurrence = null } = {}) {
   if (!deadlineDate || !candidate?.when) return true;
   const deadlineMs = Date.parse(`${deadlineDate}T12:00:00Z`);
   const candidateMs = Date.parse(`${candidate.when}T12:00:00Z`);
   if (!Number.isFinite(deadlineMs) || !Number.isFinite(candidateMs)) return true;
   const daysAfterDeadline = Math.floor((candidateMs - deadlineMs) / 86_400_000);
+  // The extracted deadline is the first statutory cycle. A later filing remains
+  // temporally plausible for an explicitly recurring mandate; topic and agency
+  // evidence still have to establish that it is the same report series.
+  if (daysAfterDeadline > 0 && isRepeatedCadence(recurrence)) return true;
   return daysAfterDeadline <= MAX_POST_DEADLINE_PLAUSIBILITY_DAYS;
 }
 
@@ -648,7 +658,9 @@ export function resolveMandateObservation(mandate, candidates = [], { asOf = nul
   let best = null;
   for (const candidate of candidates) {
     if (!candidateFitsExpected(candidate, expected.kind)) continue;
-    if (!candidateWithinDeadlinePlausibility(candidate, deadlineDate)) continue;
+    if (!candidateWithinDeadlinePlausibility(candidate, deadlineDate, {
+      recurrence: expected.kind === "report_or_study" ? mandate?.recurrence : null,
+    })) continue;
     const match = scoreTopicMatch(duty, candidate);
     if (match.score <= 0) continue;
     const evidence = expected.kind === "rule_filing"
