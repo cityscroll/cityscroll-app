@@ -69,6 +69,17 @@ export function subjectRefForActionObject(object = {}) {
  */
 export function reviewActionFromDisposition(disposition, opts = {}) {
   if (!disposition || typeof disposition !== "object") return null;
+  // Reject, rather than ignore, any attempt to smuggle an operative link effect
+  // through the desk-to-action-log boundary.
+  if ([
+    "edge",
+    "public_edge",
+    "entity_link",
+    "canonical_entity_id",
+    "source_record_id",
+    "provisional_edge_id",
+    "supersedes_link_id",
+  ].some((key) => Object.hasOwn(disposition, key))) return null;
   const decision = actionLogDecisionFromDisposition(disposition.decision);
   if (!decision) return null;
   const pairId = String(disposition.pair_id || disposition.object_id || "").trim();

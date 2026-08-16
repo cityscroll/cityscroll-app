@@ -20,17 +20,20 @@ desk `defer`). Action-log writes are fail-soft and never block the desk mutation
 ## Export review actions toward gold
 
 Confirmed same/different review actions can be exported into gold-ready candidates without
-overwriting any versioned gold file:
+overwriting any versioned gold file. A desk decision cannot contain or apply an `entity_link`
+mutation; policy-satisfied verdict receipts are immutable candidate inputs for the same export:
 
 ```bash
 node tools/export_review_actions_to_gold.mjs --fixtures
-node tools/export_review_actions_to_gold.mjs --fixtures --out-dir /tmp/review-action-export
+node tools/export_review_actions_to_gold.mjs --fixtures --check
+node tools/export_review_actions_to_gold.mjs --fixtures --out-dir review-action-export
 ```
 
 Pure model: `entity_resolution/eval/review_action_export.mjs`. Fixture:
 `entity_resolution/eval/fixtures/review_actions_v0.json`. Characterization:
 `node --test test/review_action_export.test.mjs`. Promotion into a new `gold_vN.jsonl` still
 uses the clerical-audit append-only path; this export only materializes candidates + a receipt.
+Operative links may be produced only by a later versioned policy rerun over promoted gold.
 
 Migration: `worker/migrations/0010_action_log.sql`. Writer and schema contract:
 `worker/src/lib/action_log.mjs`. Characterization:
