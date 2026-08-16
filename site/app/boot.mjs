@@ -32,7 +32,7 @@ let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
-["#mode","#agency","#sort","#minamt","#moneyboro","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", search));
+["#mode","#agency","#sort","#minamt","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", search));
 $("#moneylocationbasis").addEventListener("change",async()=>{
   if($("#moneylocationbasis").value) await initializeMoneyLocationFilters();
   search();
@@ -40,13 +40,8 @@ $("#moneylocationbasis").addEventListener("change",async()=>{
 $("#money-more-filters").addEventListener("toggle",async(event)=>{
   if(event.target.open) await initializeMoneyLocationFilters();
 });
-// District facet chips are join-backed hypertext (shareable scope hashes). Hash
-// navigation owns selection; map-pivot links leave the Contracts surface.
-$("#moneyboro").addEventListener("change",async()=>{
-  if($("#moneylocationbasis")?.value || $("#moneycd")?.value || $("#moneycouncil")?.value){
-    await initializeMoneyLocationFilters();
-  }
-});
+// Location facet chips are join-backed hypertext (shareable scope hashes).
+// Hash navigation owns selection; Near You pivots leave the Contracts surface.
 $("#closingweek").addEventListener("click", (event)=>{
   if(!closingWeek) return;
   event.preventDefault();

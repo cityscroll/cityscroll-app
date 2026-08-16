@@ -148,6 +148,8 @@ test("a committed multi-basis record does not infer an unrelated response basis"
 
 test("district facet rails paint only registry-resolvable keys from resolved locations", () => {
   const selects = {
+    "#moneyboro": { value: "" },
+    "#moneylocationbasis": { value: "" },
     "#moneycd": {
       value: "",
       options: [],
@@ -174,6 +176,7 @@ test("district facet rails paint only registry-resolvable keys from resolved loc
     },
   };
   const rails = {
+    "#money-borough-rail": { innerHTML: "" },
     "#moneycd-facets": { innerHTML: "" },
     "#moneycouncil-facets": { innerHTML: "" },
   };
@@ -181,11 +184,11 @@ test("district facet rails paint only registry-resolvable keys from resolved loc
     querySelector: (selector) => selects[selector] || rails[selector] || null,
   };
   fillContractActionLocationSelects({ rows: [{ locations: [
-    { community_district: "M01", council_district: "1" },
-    { community_district: "M01", council_district: "1" },
-    { community_district: "K02", council_district: "33" },
+    { basis: "submission_address", basis_label: "Located by submission address", is_place_of_performance: false, borough: "Manhattan", community_district: "M01", council_district: "1" },
+    { basis: "submission_address", basis_label: "Located by submission address", is_place_of_performance: false, borough: "Manhattan", community_district: "M01", council_district: "1" },
+    { basis: "submission_address", basis_label: "Located by submission address", is_place_of_performance: false, borough: "Brooklyn", community_district: "K02", council_district: "33" },
     // Fail closed: label without borough, and non-registry council id, never become chips.
-    { community_district: "Community District 4", council_district: "99" },
+    { basis: "submission_address", basis_label: "Located by submission address", is_place_of_performance: false, borough: "Brooklyn", community_district: "Community District 4", council_district: "99" },
   ] }] }, { documentRef, councilLabel: (value) => `Council ${value}` });
   assert.deepEqual(
     selects["#moneycd"].options.map((option) => option.value).filter(Boolean),
@@ -202,4 +205,7 @@ test("district facet rails paint only registry-resolvable keys from resolved loc
   assert.doesNotMatch(rails["#moneycouncil-facets"].innerHTML, /data-district-id="99"/);
   assert.match(rails["#moneycd-facets"].innerHTML, /#money\?basis=contract_action_address&amp;cd=K02/);
   assert.match(rails["#moneycouncil-facets"].innerHTML, /district-map-pivot/);
+  assert.match(rails["#money-borough-rail"].innerHTML, /data-borough-scope-link="Manhattan"/);
+  assert.match(rails["#money-borough-rail"].innerHTML, /data-borough-scope-link="Brooklyn"/);
+  assert.doesNotMatch(rails["#money-borough-rail"].innerHTML, /data-borough-scope-link="Queens"/);
 });
