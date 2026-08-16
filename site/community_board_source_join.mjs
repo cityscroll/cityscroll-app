@@ -295,6 +295,58 @@ export function communityBoardMeetingEdgeFromRow(row = {}) {
   return null;
 }
 
+/**
+ * Recover the institution edge from a source-native meeting row. The row is
+ * already a source-qualified meeting object, but the relation still passes
+ * the same board/date/publisher/receipt gate as a cross-source observation.
+ */
+export function communityBoardMeetingEdgeFromSourceRow(row = {}, options = {}) {
+  const carried = communityBoardMeetingEdgeFromRow(row);
+  const sourceRoleAccepted = options.sourceRoleState == null || options.sourceRoleState === "indexed";
+  if (carried && sourceRoleAccepted) return carried;
+  if (carried) return {
+    ...carried,
+    status: "held",
+    promoted: false,
+    reason: `source_role_${options.sourceRoleState}`,
+    canonical_href: null,
+    href: null,
+    evidence: [],
+  };
+  if (row?.source_system !== "community_board") return null;
+  const sourceRecord = {
+    board_id: row.board_id,
+    body_id: row.board_id,
+    source_url: row.source_url || row.source_provenance?.source_url || null,
+    source_record_id: row.source_record_id || row.record_id || null,
+    record_id: row.record_id || row.source_record_id || null,
+    date: row.event_date || row.date || null,
+    publisher_identifier: row.publisher_identifier || row.source_record_id || row.record_id || null,
+    title: row.title || row.short_title || null,
+    observed_receipt: row.observed_receipt
+      || row.source_receipt
+      || row.source_provenance?.observed_receipt
+      || null,
+  };
+  const observedJoin = joinCommunityBoardSourceRecord(row, sourceRecord, options);
+  const join = sourceRoleAccepted ? observedJoin : {
+    ...observedJoin,
+    status: "unknown",
+    official: false,
+    reason: `source_role_${options.sourceRoleState}`,
+    join: {
+      ...observedJoin.join,
+      matched: false,
+      reason: `source_role_${options.sourceRoleState}`,
+    },
+  };
+  return promoteCommunityBoardHostsMeetingEdge({
+    meeting: row,
+    source_record: sourceRecord,
+    join,
+  }, options);
+}
+
 export function communityBoardMeetingEdgeAccepted(edge = {}) {
   return edge?.promoted === true || edge?.status === "promoted" || edge?.status === "official";
 }
