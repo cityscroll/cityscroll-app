@@ -560,6 +560,21 @@ test("Browse edge filtering is semantic and uses a copy-free live-filter loading
   assert.doesNotMatch(html, /Bronx tree care/);
 });
 
+test("build-rendered Rules cards preserve the canonical title and Copy link before hydration", () => {
+  const html = renderBrowseView(buildBrowseView("rules", {
+    rows: [{
+      request_id: "20260804030",
+      short_title: "Emergency surcharge filing rule",
+      agency_name: "Finance",
+      start_date: "2026-08-05",
+    }],
+  }));
+
+  assert.match(html, /class="ui-constellation-link ui-object-card-title"[^>]*href="\/notices\/20260804030"[^>]*><span aria-hidden="true">◆<\/span>Emergency surcharge filing rule/);
+  assert.match(html, /class="ui-object-card-copy"[^>]*data-object-card-copy="https:\/\/cityscroll\.org\/notices\/20260804030"[^>]*>Copy link<\/button>/);
+  assert.doesNotMatch(html, /ui-object-card-action-rail|What can I do now/);
+});
+
 test("Browse record cards lead with typed action time and keep undated rows title-led", () => {
   assert.deepEqual(
     browseActionTime("contracts", { due_date: "2026-08-09T10:30:00.000" }),

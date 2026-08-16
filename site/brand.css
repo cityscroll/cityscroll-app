@@ -106,6 +106,11 @@
 .ui-object-card-primary,.ui-object-card-relations,.ui-object-card-handoffs,.ui-object-card-action-list{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
 .ui-object-card-copy{min-height:44px;padding:7px 11px;border:1px solid var(--color-border-strong,#7a828f);border-radius:7px;background:var(--color-surface,#fff);color:var(--color-text,#12181f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer}
 .ui-object-card-copy:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}
+.rules-fcard .ui-object-card-primary{align-items:flex-start;justify-content:space-between}
+.rules-fcard .ui-object-card-title{font-weight:700;font-size:15px;line-height:1.3}
+.rules-fcard .ui-object-card-handoffs{margin-top:6px}
+.rules-fcard .ui-object-card-action-rail{margin-top:10px;padding-top:10px;border-top:1px solid var(--rule)}
+.rules-fcard .ui-object-card-action-rail h3{margin:0 0 7px;font:700 13px/1.3 var(--font-interface,ui-sans-serif,system-ui,sans-serif);color:var(--color-text,#12181f)}
 /* gap separates label text from .ct count; do not rely on a whitespace text node (flex collapses it). */
 .ui-filter-chip.ui-filter-chip{display:inline-flex;align-items:center;justify-content:center;gap:.35em;min-height:44px;padding:6px 11px;border:1px solid var(--color-action,#1b3a8f);border-radius:999px;background:transparent;color:var(--color-action,#1b3a8f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer;text-decoration:none}
 .ui-filter-chip[aria-pressed="true"]{background:var(--color-action,#1b3a8f);color:var(--color-surface,#fff)}

@@ -1,10 +1,16 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
-import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import {
+  installFilterChipNavigation,
+  officialSourceLink,
+  renderObjectCardActionRail,
+  renderObjectCardCopy,
+  renderObjectCardTitle,
+} from "../affordance_grammar.mjs";
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
-import { officialSourceLink } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
+import { rulesCardInteractionProjection } from "../rules_card_interaction.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -44,8 +50,6 @@ function rulesExplorerTools(){
   return rulesExplorerToolsPromise;
 }
 const RULES_PHASE_IDS=["proposal","public_process","adoption","effective"];
-const RULE_COMMENT_FACT_KEY="comment-deadline";
-const RULE_HEARING_FACT_KEY="hearing-date";
 const RULES_PHASE_LABEL_KEYS={
   proposal:"rule_phase_proposal",
   public_process:"rule_phase_public_process",
@@ -64,61 +68,45 @@ function rulesExplorerCardHTML(entry, terms){
   const fineStage=entry.fine_stage||null;
   const title=entry.title||cleanText(r.short_title)||"";
   const mev=resultMatchEvidence(title, matchText(r), terms);
-  const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const agency=entry.agency||r.agency_name||"";
   const agencyMention=agency?listEntityMentionHTML({kind:"agency",value:agency,escape:escUiHtml,relation:"publishes_record"}):"";
   const scopeHtml=excerptHtml(entry.excerpt||r.additional_description_1,200);
   const processLine=`<div class="rules-process-line">
     <span class="tag open" data-card-fact="stage:${escUiHtml(processStage||"unstaged")}">${escUiHtml(processLabel)}</span>
   </div>`;
-  // Next-action lead: concrete comment / hearing when data supports it; honest open-notice otherwise.
-  const actionKey=entry.action_key||"rule_action_open_notice";
-  let actionLeadText=t(actionKey);
-  if(actionKey==="rule_action_comment" && entry.comment_by_date){
-    actionLeadText=t("rule_comment_btn",{date:ruleDateLabel(entry.comment_by_date)});
-  } else if(actionKey==="rule_action_attend_hearing" && entry.hearing_date){
-    actionLeadText=t("rule_action_attend_hearing_dated",{date:ruleDateLabel(entry.hearing_date)});
-  }
-  const primaryFact=actionKey==="rule_action_comment"&&entry.comment_by_date
-    ? `${RULE_COMMENT_FACT_KEY}:${entry.comment_by_date}`
-    : actionKey==="rule_action_attend_hearing"&&entry.hearing_date
-      ? `${RULE_HEARING_FACT_KEY}:${entry.hearing_date}`
-      : "";
-  const primaryFactAttr=primaryFact?` data-card-fact="${escUiHtml(primaryFact)}"`:"";
-  // Primary kinetic destination: comment portal while open; else official rule page; else notice.
-  // Separate template branches so link_targets can classify each href expression (never mix
-  // in-app #notice with external NYC Rules into one ${escUiHtml(primaryHref)} slot).
-  const wantCommentPrimary=fineStage==="comment-open" && !!(entry.comment_url||entry.rule_url);
-  const wantRulePrimary=!wantCommentPrimary && !!entry.rule_url && (
-    fineStage==="hearing"
-    || processStage==="public_process"
-    || fineStage==="adopted"
-    || fineStage==="effective"
-    || processStage==="adoption"
-    || processStage==="effective"
-    || processStage==="proposal"
-  );
-  let acts="";
-  if(wantCommentPrimary && entry.comment_url){
-    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.comment_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
-  } else if(wantCommentPrimary && entry.rule_url){
-    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
-  } else if(wantRulePrimary){
-    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
-  } else {
-    acts=`<a class="act primary"${primaryFactAttr} href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
-  }
-  const primaryAction=acts;
-  // The notice route carries the official record link; cards do not repeat it as a
-  // reflexive source action. Keep a source link only when the rule page itself is useful.
-  const secondaryActions=[];
-  // Secondary official rule page when primary was the comment portal (not already the rule URL).
-  if(entry.rule_url && !(wantRulePrimary || (wantCommentPrimary && !entry.comment_url))){
-    secondaryActions.push(officialSourceLink({ href: entry.rule_url, label: t("rule_event_official_source"), className: "act", escape: escUiHtml }));
-  }
-  secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
+  const commentLabel=entry.comment_by_date
+    ? `${t("rule_comment_btn")} · ${ruleDateLabel(entry.comment_by_date)}`
+    : t("rule_comment_btn");
+  const hearingLabel=entry.hearing_date
+    ? `${t("rule_action_attend_hearing_dated")} · ${ruleDateLabel(entry.hearing_date)}`
+    : t("rule_action_attend_hearing_dated");
+  const interaction=rulesCardInteractionProjection({
+    request_id:r.request_id,
+    title,
+    fine_stage:fineStage,
+    rule_url:entry.rule_url,
+    comment_url:entry.comment_url,
+    comment_by_date:entry.comment_by_date,
+    hearing_date:entry.hearing_date,
+    comment_label:commentLabel,
+    hearing_label:hearingLabel,
+    official_source_label:t("rule_event_official_source"),
+  });
+  const interactionTitle=renderObjectCardTitle(interaction,{escape:escUiHtml});
+  const interactionCopy=renderObjectCardCopy(interaction,{label:t("copy_link_btn"),escape:escUiHtml});
+  const actionRail=renderObjectCardActionRail(interaction,{
+    heading:t("next_action_heading"),
+    escape:escUiHtml,
+    newTabLabel:t("ext_link_new_tab_sr"),
+  });
+  const officialHandoffs=(interaction.external_handoffs||[]).map(handoff=>officialSourceLink({
+    href:handoff.href,
+    label:handoff.label,
+    className:"rules-official-source",
+    escape:escUiHtml,
+  })).join("");
   const ev=r.event_date;
-  if(ev) secondaryActions.push(`<button class="act" type="button" data-ev="rules:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
+  const dateUtility=ev?`<div class="factions"><button class="act" type="button" data-ev="rules:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button></div>`:"";
   // Sibling notices for multi-notice rulemakings (entity links across City Record rows).
   let siblingsHtml="";
   if(entry.kind==="rulemaking" && (entry.sibling_notices||[]).length>1){
@@ -135,12 +123,14 @@ function rulesExplorerCardHTML(entry, terms){
   return `<div class="fcard rules-fcard" data-request-id="${escUiHtml(r.request_id||"")}" data-rulemaking-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
       <div class="ftype">${r.type_of_notice_description||""}${agencyMention?" · "+agencyMention:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${processLine}
-      <div class="ftitle"><a href="${noticeHref}">${digTitleHTML(title, mev)}</a></div>
+      <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
       ${siblingsHtml}
       ${rulePlaceChips(r._ruleLocation)}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
       ${digEvidenceHTML(mev)}
-      <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
+      ${officialHandoffs?`<div class="ui-object-card-handoffs">${officialHandoffs}</div>`:""}
+      ${actionRail}
+      ${dateUtility}
     </div>`;
 }
 let rulesActionBandToolsPromise=null;
