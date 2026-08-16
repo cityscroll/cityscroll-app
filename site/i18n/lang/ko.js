@@ -118,6 +118,8 @@
     meetings_none_upcoming: "예정된 회의 없음",
     show_exact_search: "정확한 검색 보기",
     past_tag: "지난 일정",
+    meetings_no_upcoming_matches: "예정된 일치 항목 없음",
+    meetings_past_matches_heading: "지난 일치 항목",
     no_hearings_after_widening: "검색 범위를 넓혀 보세요. 이 검색에는 예정된 회의나 최근 지난 회의 중 일치하는 항목이 없습니다.",
     footer_notices: "100만 건 이상의 공고",
     sugg_money_0: "50만 달러 이상의 건설 계약",

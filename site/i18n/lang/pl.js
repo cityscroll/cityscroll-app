@@ -126,6 +126,8 @@
     meetings_none_upcoming: "brak nadchodzących",
     show_exact_search: "Pokaż dokładne wyszukiwanie",
     past_tag: "Minione",
+    meetings_no_upcoming_matches: "Brak nadchodzących wyników",
+    meetings_past_matches_heading: "Minione wyniki",
     no_hearings_after_widening: "Rozszerz wyszukiwanie. To wyszukiwanie nie ma pasujących nadchodzących ani niedawno zakończonych spotkań.",
     footer_notices: "ponad 1 mln ogłoszeń",
     sugg_money_0: "kontrakty budowlane powyżej 500 tys. USD",
