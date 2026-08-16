@@ -266,6 +266,8 @@ const STRINGS = {
     meetings_none_upcoming: "none upcoming",
     show_exact_search: "Show exact search",
     past_tag: "Past",
+    meetings_no_upcoming_matches: "No upcoming matches",
+    meetings_past_matches_heading: "Past matches",
     no_hearings_after_widening: "Try a broader search. This search has no matching upcoming or recent past meetings.",
     footer_notices: "1M+ notices",
     sugg_money_0: "construction contracts over $500k",

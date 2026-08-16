@@ -120,6 +120,8 @@
     meetings_none_upcoming: "کوئی آنے والی نہیں",
     show_exact_search: "عین تلاش دکھائیں",
     past_tag: "گزشتہ",
+    meetings_no_upcoming_matches: "کوئی آئندہ مماثلت نہیں",
+    meetings_past_matches_heading: "گزشتہ مماثلتیں",
     no_hearings_after_widening: "تلاش کو وسیع کریں۔ اس تلاش میں آنے والی یا حالیہ گزشتہ کوئی مماثل میٹنگ نہیں ہے۔",
     footer_notices: "10 لاکھ سے زیادہ نوٹسز",
     sugg_money_0: "$500k سے زیادہ کے تعمیراتی ٹھیکے",

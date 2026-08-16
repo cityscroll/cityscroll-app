@@ -122,6 +122,8 @@
     meetings_none_upcoming: "aucune à venir",
     show_exact_search: "Afficher la recherche exacte",
     past_tag: "Passé",
+    meetings_no_upcoming_matches: "Aucun résultat à venir",
+    meetings_past_matches_heading: "Résultats passés",
     no_hearings_after_widening: "Élargissez la recherche. Cette recherche ne correspond à aucune réunion à venir ou passée récente.",
     footer_notices: "plus d'un million d'avis",
     sugg_money_0: "contrats de construction de plus de 500 000 $",

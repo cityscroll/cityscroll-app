@@ -344,7 +344,7 @@ function hearingWidenedShown(scope){
   return t(key);
 }
 function hearingWidenedNone(selection){
-  const scope=selection.scope==="past"?"upcoming":selection.requested;
+  const scope=selection.requested;
   const key=scope==="week"?"meetings_none_week":scope==="month"?"meetings_none_month":"meetings_none_upcoming";
   return t(key);
 }
@@ -1483,11 +1483,12 @@ function renderHearingGroup(scope, entries, terms=[]){
   const noteText=scope==="citywide"?t("citywide_hearings_note"):"";
   return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("")}`;
 }
-function renderHearingBoardGroup(group,terms=[]){
+function renderHearingBoardGroup(group,terms=[],headingTag="h2"){
   if(!group?.rows?.length) return "";
+  const heading=headingTag==="h3"?"h3":"h2";
   const preferred=group.preferred?` <span class="tag open">${escUiHtml(t("meetings_board_context_match"))}</span>`:"";
   return `<section class="meetings-board-group" data-community-board-group="${escUiHtml(group.bodyId||"unresolved")}">
-    <h2 class="hearinggroup">${escUiHtml(group.label)}${preferred}</h2>
+    <${heading} class="hearinggroup">${escUiHtml(group.label)}${preferred}</${heading}>
     ${group.rows.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("")}
   </section>`;
 }
@@ -1562,9 +1563,12 @@ async function renderHearingExplorer(options){
   if(seq!==hearingRenderSeq) return;
   const now=todayISO();
   let entries=[];
+  let pastEntries=[];
   if(tools && tools.buildMeetingsExplorerEntries){
     entries=tools.buildMeetingsExplorerEntries(rows,{ now });
     entries=tools.filterMeetingsExplorerEntries(entries,{ process:meetingsProcessSel, now });
+    pastEntries=tools.buildMeetingsExplorerEntries(selection.pastRows||[],{ now });
+    pastEntries=tools.filterMeetingsExplorerEntries(pastEntries,{ process:meetingsProcessSel, now });
     // Rail counts from the place/time-filtered set (before process chip).
     const base=tools.buildMeetingsExplorerEntries(rows,{ now });
     const pc=tools.countMeetingsProcessStages(base);
@@ -1614,9 +1618,25 @@ async function renderHearingExplorer(options){
       participation:record.participation||{},
       sibling_notices:[],
     }));
+    pastEntries=(selection.pastRows||[]).map(record=>({
+      kind:"notice",
+      primary:record,
+      members:[record],
+      notice_count:1,
+      process_stage:null,
+      process_filter:"unstaged",
+      action_key:"meeting_action_open_notice",
+      agency:record.agency||null,
+      title:record.decides||record.title||null,
+      place_scope:record.affected_area&&record.affected_area.scope||"unlocated",
+      matched_phases:[],
+      participation:record.participation||{},
+      sibling_notices:[],
+    }));
   }
 
   let boardRanking=null;
+  let pastBoardRanking=null;
   if(ambiguousBoardSearch){
     boardRanking=rankCommunityBoardRows(entries,{
       query:boardQuery,
@@ -1630,13 +1650,28 @@ async function renderHearingExplorer(options){
       rowForIdentity:entry=>entry?.primary,
     });
     entries=boardRanking.rows;
+    if(pastEntries.length){
+      pastBoardRanking=rankCommunityBoardRows(pastEntries,{
+        query:boardQuery,
+        context:{
+          borough:filter.borough,
+          communityDistrict:filter.communityDistrict,
+          source:filter.contextSource,
+        },
+        selectedBodyId:String(filter.communityBoard||"").replace(/^community-board:/,""),
+        today:now,
+        rowForIdentity:entry=>entry?.primary,
+      });
+      pastEntries=pastBoardRanking.rows;
+    }
   }
 
   // Export/print still want notice rows (primaries + members of visible entries).
-  setExportBandVisibility(entries.length, "meetings-export-band", "meetings-export-overflow");
+  const visibleEntries=entries.concat(pastEntries);
+  setExportBandVisibility(visibleEntries.length, "meetings-export-band", "meetings-export-overflow");
   const visibleRows=[];
   feedRows.meetings={};
-  for(const e of entries){
+  for(const e of visibleEntries){
     for(const m of e.members||[e.primary]){
       const meetingKey=m?.meeting_id||m?.request_id;
       if(meetingKey){
@@ -1660,29 +1695,31 @@ async function renderHearingExplorer(options){
   // cardinality as district_items rather than the number of rendered cards.
   setMeetingsResultCount(uniqueRows.length);
   const el=$("#meetingsfeed");
-  if(!entries.length){
-    widening.innerHTML=ambiguousBoardSearch
-      ? hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML()
-      : "";
-    el.innerHTML="";
-    announce(t("meetings_entries_announce",{n:0})); return;
-  }
   const groupByPlace=tools&&typeof tools.meetingsPlaceGroupEnabled==="function"
     ? tools.meetingsPlaceGroupEnabled(meetingsPlaceGroupSel)
     : meetingsPlaceGroupSel==="place";
-  if(boardRanking){
-    el.innerHTML=boardRanking.groups.map(group=>renderHearingBoardGroup(group,terms)).join("");
-  } else if(groupByPlace){
-    const byPlace=tools&&tools.groupMeetingsByPlace
-      ? tools.groupMeetingsByPlace(entries)
-      : { local:entries.filter(e=>(e.place_scope||"unlocated")==="local"),
-          citywide:entries.filter(e=>(e.place_scope||"unlocated")==="citywide"),
-          unlocated:entries.filter(e=>(e.place_scope||"unlocated")==="unlocated") };
-    el.innerHTML=["local","citywide","unlocated"].map(scope=>renderHearingGroup(scope, byPlace[scope]||[],terms)).join("");
-  } else {
+  const renderEntryCollection=(collection,ranking,nested=false)=>{
+    if(ranking) return ranking.groups.map(group=>renderHearingBoardGroup(group,terms,nested?"h3":"h2")).join("");
+    if(groupByPlace){
+      const byPlace=tools&&tools.groupMeetingsByPlace
+        ? tools.groupMeetingsByPlace(collection)
+        : { local:collection.filter(e=>(e.place_scope||"unlocated")==="local"),
+            citywide:collection.filter(e=>(e.place_scope||"unlocated")==="citywide"),
+            unlocated:collection.filter(e=>(e.place_scope||"unlocated")==="unlocated") };
+      return ["local","citywide","unlocated"].map(scope=>renderHearingGroup(scope, byPlace[scope]||[],terms)).join("");
+    }
     // Default: single chronological list (near-me / borough filters own place navigation).
-    el.innerHTML=entries.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("");
-  }
+    return collection.map(entry=>meetingsExplorerCardHTML(entry,terms)).join("");
+  };
+  const separatesPast=selection.requested!=="past"&&selection.requested!=="all";
+  const emptyUpcomingHTML=separatesPast&&!entries.length
+    ? `<h2 class="hearinggroup" data-meetings-time-group="upcoming">${escUiHtml(t("meetings_no_upcoming_matches"))}</h2>`
+    : "";
+  const primaryHTML=renderEntryCollection(entries,boardRanking);
+  const pastHTML=separatesPast&&pastEntries.length
+    ? `<h2 class="hearinggroup" data-meetings-time-group="past">${escUiHtml(t("meetings_past_matches_heading"))}</h2>${renderEntryCollection(pastEntries,pastBoardRanking,true)}`
+    : "";
+  el.innerHTML=emptyUpcomingHTML+primaryHTML+pastHTML;
   el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>{
     const record=feedRows.meetings[button.dataset.link] || null;
     copyText(record?.meeting_id

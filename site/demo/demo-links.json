@@ -233,10 +233,18 @@
     {
       "id": "meetings-ida-widening",
       "url": "#meetings?q=IDA&when=upcoming",
-      "feature": "meeting-result-widening",
-      "description": "Show a recent IDA meeting when no upcoming meeting matches the search.",
+      "feature": "meeting-recency-bands",
+      "description": "Keep the upcoming IDA result band empty and offer recent past matches separately.",
       "expectations": {
         "visible": [
+          {
+            "selector": "#meetingsfeed [data-meetings-time-group=\"upcoming\"]",
+            "text": "No upcoming matches"
+          },
+          {
+            "selector": "#meetingsfeed [data-meetings-time-group=\"past\"]",
+            "text": "Past matches"
+          },
           {
             "selector": "#meetingsfeed .fcard",
             "text": "IDA"
@@ -263,8 +271,7 @@
         ],
         "banner": {
           "selector": "#meetingswidening .widening-note",
-          "visible": true,
-          "text": "Showing recent past meetings for \u201cIDA\u201d (none upcoming)."
+          "visible": false
         }
       }
     },

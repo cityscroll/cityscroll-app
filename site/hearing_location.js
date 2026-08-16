@@ -404,15 +404,14 @@ function hearingDateWindowEnd(today, windowName) {
 }
 
 // Progressive query relaxation for time-scoped hearing searches. Every rung preserves
-// agency, subject, and affected-area filters; only the date window changes. The caller
-// supplies past rows when it reaches the final rung, so normal upcoming views keep their
-// one-request path.
+// agency, subject, and affected-area filters; only the upcoming date window changes.
+// Past rows are a separate result band and are never promoted into an upcoming band.
 function hearingScopeLadder(requested) {
   if (requested === "all") return ["all"];
-  if (requested === "week") return ["week", "month", "upcoming", "past"];
-  if (requested === "month") return ["month", "upcoming", "past"];
+  if (requested === "week") return ["week", "month", "upcoming"];
+  if (requested === "month") return ["month", "upcoming"];
   if (requested === "past") return ["past"];
-  return ["upcoming", "past"];
+  return ["upcoming"];
 }
 function hearingRowsInScope(records, filter, scope, today) {
   var start = String(today).slice(0, 10);
@@ -467,14 +466,17 @@ function hearingMatchesCommunityBoardScope(record, value) {
 function chooseHearingScope(records, filter, today, allowWidening) {
   var requested = filter.when || "upcoming";
   var ladder = allowWidening === false ? [requested] : hearingScopeLadder(requested);
+  var pastRows = requested !== "all" && requested !== "past" && allowWidening !== false
+    ? hearingRowsInScope(records, filter, "past", today)
+    : [];
   for (var i = 0; i < ladder.length; i++) {
     var scope = ladder[i];
     var rows = hearingRowsInScope(records, filter, scope, today);
     if (rows.length) {
-      return { requested: requested, scope: scope, widened: scope !== requested, rows: rows };
+      return { requested: requested, scope: scope, widened: scope !== requested, rows: rows, pastRows: pastRows };
     }
   }
-  return { requested: requested, scope: requested, widened: false, rows: [] };
+  return { requested: requested, scope: requested, widened: false, rows: [], pastRows: pastRows };
 }
 
 if (typeof module !== "undefined" && module.exports !== undefined) {
