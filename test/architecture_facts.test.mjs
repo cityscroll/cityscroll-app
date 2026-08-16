@@ -2,9 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-import { dispatchRoutes, parseBindings, parseCrons, parseRoutes } from "../tools/build_architecture_facts.mjs";
+import { buildFacts, dispatchRoutes, parseBindings, parseCrons, parseRoutes } from "../tools/build_architecture_facts.mjs";
 
-const facts = JSON.parse(readFileSync(new URL("../architecture/generated/facts.json", import.meta.url), "utf8"));
+const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
 const wrangler = readFileSync(new URL("../worker/wrangler.toml", import.meta.url), "utf8");
 const worker = readFileSync(new URL("../worker/src/worker.mjs", import.meta.url), "utf8");
 
