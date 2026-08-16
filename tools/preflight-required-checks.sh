@@ -384,6 +384,8 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/24_notice_document_features.py
   run_and_fail python3 test/functional/14_focus_visible.py
   run_and_fail python3 test/functional/16_external_links.py
+  run_and_fail python3 test/functional/30_browse_interaction_grammar.py
+  run_and_fail python3 tools/capture_browse_interaction_grammar.py --verify-only
   run_banner "Accessibility + language gate (axe on every PR)" "Label-coverage census" \
     "python3 test/standards/label_coverage.py"
   run_and_fail python3 test/standards/label_coverage.py

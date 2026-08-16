@@ -114,8 +114,15 @@ test("object-card projection keeps title, copy, relation, and handoff semantics 
 });
 
 test("external actions show the visible handoff glyph and preserve protocol-appropriate navigation", () => {
-  const http = externalActionLink({ href: "https://example.gov/apply", label: "Apply in OASys", primary: true });
+  const http = externalActionLink({
+    href: "https://example.gov/apply",
+    label: "Apply in OASys",
+    primary: true,
+    ariaLabel: "Apply in OASys — OASys",
+    title: "OASys",
+  });
   assert.match(http, /class="ui-external-action primary"/);
+  assert.match(http, /aria-label="Apply in OASys — OASys" title="OASys"/);
   assert.match(http, /target="_blank" rel="noopener noreferrer"/);
   assert.match(http, /Apply in OASys<span aria-hidden="true">↗<\/span><span class="sr-only"> \(opens in new tab\)<\/span>/);
 

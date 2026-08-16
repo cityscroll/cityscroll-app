@@ -1,0 +1,217 @@
+{
+  "assertions": [
+    "canonical internal title with leading diamond",
+    "always-visible Copy link matching the title target",
+    "visible arrow on off-site handoffs",
+    "context-qualified action rails",
+    "WCAG AA text contrast for card buttons"
+  ],
+  "captures": [
+    {
+      "canonical_target": "/notices/20260714015",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/contracts-390.png",
+      "lens": "contracts",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 280,
+        "width": 344
+      },
+      "route": "/browse/contracts/",
+      "selector": "#list .money-row-card",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "canonical_target": "/notices/20260714015",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/contracts-1440.png",
+      "lens": "contracts",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 279,
+        "width": 378
+      },
+      "route": "/browse/contracts/",
+      "selector": "#list .money-row-card",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "canonical_target": "/exams/7312/",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/staffing-390.png",
+      "lens": "staffing",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 939,
+        "width": 346
+      },
+      "route": "/browse/staffing/",
+      "selector": "#career-results .career-card",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "canonical_target": "/exams/7312/",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/staffing-1440.png",
+      "lens": "staffing",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 750,
+        "width": 532
+      },
+      "route": "/browse/staffing/",
+      "selector": "#career-results .career-card",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "canonical_target": "/browse/zoning/#land/P2026K0001",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/land-390.png",
+      "lens": "land",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 1571,
+        "width": 346
+      },
+      "route": "/browse/zoning/",
+      "selector": "#land-results-grid",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "canonical_target": "/browse/zoning/#land/P2026K0001",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/land-1440.png",
+      "lens": "land",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 663,
+        "width": 1076
+      },
+      "route": "/browse/zoning/",
+      "selector": "#land-results-grid",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "canonical_target": "/notices/20260701009",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/rules-390.png",
+      "lens": "rules",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 250,
+        "width": 346
+      },
+      "route": "/browse/rules/",
+      "selector": "#rulesfeed .rules-fcard",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "canonical_target": "/notices/20260701009",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/rules-1440.png",
+      "lens": "rules",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 366,
+        "width": 350
+      },
+      "route": "/browse/rules/",
+      "selector": "#rulesfeed .rules-fcard",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "canonical_target": "/meetings/meeting%3Acity_record%3A20260701005",
+      "cards_inspected": 1,
+      "file": "docs/screenshots/browse-interaction-grammar/meetings-390.png",
+      "lens": "meetings",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 693,
+        "width": 346
+      },
+      "route": "/browse/meetings/",
+      "selector": "#meetingsfeed .meetings-fcard",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "canonical_target": "/meetings/meeting%3Acity_record%3A20260701005",
+      "cards_inspected": 1,
+      "file": "docs/screenshots/browse-interaction-grammar/meetings-1440.png",
+      "lens": "meetings",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 653,
+        "width": 350
+      },
+      "route": "/browse/meetings/",
+      "selector": "#meetingsfeed .meetings-fcard",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "canonical_target": "/exams/7312/",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/exams-390.png",
+      "lens": "exams",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 939,
+        "width": 346
+      },
+      "route": "/browse/exams/",
+      "selector": "#career-results .career-card",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "canonical_target": "/exams/7312/",
+      "cards_inspected": 3,
+      "file": "docs/screenshots/browse-interaction-grammar/exams-1440.png",
+      "lens": "exams",
+      "phase": "hydrated",
+      "pixel_size": {
+        "height": 750,
+        "width": 532
+      },
+      "route": "/browse/exams/",
+      "selector": "#career-results .career-card",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    }
+  ],
+  "schema": "cityscroll.browse-interaction-grammar-capture.v1",
+  "source": "Hermetic local browser fixtures"
+}
