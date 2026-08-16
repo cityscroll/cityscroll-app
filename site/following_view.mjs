@@ -418,7 +418,6 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
   const registry = normalizeWatchTemplateRegistry(templateRegistry);
   const frequency = cleanFrequency(input.frequency);
   const ruleSentence = composeWatchRuleSentence(watch.lens, watch.filter, { frequency });
-  const citywide = isCitywideWatchScope(watch.filter);
   const graphContext = buildFollowingGraphContext({ ...watch, frequency });
   return {
     schema: "cityscroll.following_view.v1",
@@ -430,8 +429,6 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     previewError: input.previewError || null,
     scopeSummary: scopeSummary(watch.lens, watch.filter),
     ruleSentence,
-    citywide,
-    citywideDailyWarn: citywide && frequency === "daily" && requested,
     graphContext,
     templates: registry.templates,
     followingUrl: followingUrlFromWatch(watch, {
@@ -530,12 +527,8 @@ function topicPlacePickersHtml(view) {
 
 function ruleLineHtml(view) {
   if (!view.requested) return "";
-  const warn = view.citywideDailyWarn
-    ? `<p class="following-warning" data-following-citywide-warn role="status">This daily watch covers the whole city. Quiet days stay quiet. A match in any borough can email you. Pick a place or choose weekly to cut noise.</p>`
-    : "";
   return `<div class="following-rule" data-following-rule-panel>
     <p class="following-rule-line" data-following-rule-line>${esc(view.ruleSentence)}</p>
-    ${warn}
   </div>`;
 }
 
@@ -597,7 +590,7 @@ function subscribeHtml(view) {
     return `<section class="following-subscribe" data-following-subscribe-panel>
       <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
       <p>Pick a topic or place to see matches.</p>
-      <p class="following-note" data-following-delivery-help>No new matches means no email. That is on purpose. After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
+      <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
     </section>`;
   }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
@@ -611,7 +604,7 @@ function subscribeHtml(view) {
       <button type="submit">Email me this watch</button>
       <p id="following-confirm-note">We send one link first. Click it to start the watch.</p>
       <p id="following-delivery-help" class="following-note" data-following-delivery-help>
-        No new matches means no email. That is on purpose. After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.
+        After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.
       </p>
       <p data-following-submit-status role="status" aria-live="polite"></p>
     </form>
@@ -661,7 +654,7 @@ function controlsHtml(view) {
     <button type="submit">See matches</button>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>
-  ${view.requested ? "" : ruleLineHtml({ ...view, requested: true, ruleSentence: composeWatchRuleSentence(view.lens, view.filter), citywideDailyWarn: false })}`;
+  ${view.requested ? "" : ruleLineHtml({ ...view, requested: true, ruleSentence: composeWatchRuleSentence(view.lens, view.filter) })}`;
 }
 
 function personalSectionHtml(view) {
@@ -722,7 +715,6 @@ export function renderFollowingBody(view) {
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
-    data-msg-citywide-daily-warn="This daily watch covers the whole city. Quiet days stay quiet. A match in any borough can email you. Pick a place or choose weekly to cut noise."
     data-following-lens="${esc(view.lens)}"
     data-following-filter="${esc(JSON.stringify(view.filter))}">
     <section class="following-hero">

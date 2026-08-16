@@ -1,8 +1,5 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
-import {
-  composeWatchRuleSentence,
-  isCitywideWatchScope,
-} from "../following_view.mjs";
+import { composeWatchRuleSentence } from "../following_view.mjs";
 
 const root = document.querySelector("[data-following-root]");
 const msg = (name) => root?.dataset[name] || "";
@@ -103,20 +100,6 @@ function updateRuleLine() {
   for (const label of root.querySelectorAll("[data-following-identity-cadence]")) {
     label.textContent = cadenceLabel;
   }
-  const citywideDaily = isCitywideWatchScope(filter) && frequency === "daily";
-  for (const panel of root.querySelectorAll("[data-following-rule-panel]")) {
-    let warn = panel.querySelector("[data-following-citywide-warn]");
-    if (citywideDaily && !warn) {
-      warn = document.createElement("p");
-      warn.className = "following-warning";
-      warn.dataset.followingCitywideWarn = "true";
-      warn.setAttribute("role", "status");
-      warn.textContent = msg("msgCitywideDailyWarn");
-      panel.append(warn);
-    } else if (!citywideDaily && warn) {
-      warn.remove();
-    }
-  }
   const subFreq = root.querySelector("[data-following-subscribe-freq]");
   if (subFreq) subFreq.value = frequency;
   // Keep cadence card selection styling in brand tokens.
@@ -161,6 +144,31 @@ function setTab(tab) {
   if (workspace) workspace.hidden = tab !== "create";
 }
 
+function requestedTab(fallback) {
+  const hash = (location.hash || "").replace(/^#/, "");
+  if (hash === "your-following" || hash === "watches") return "watches";
+  if (hash === "create" || hash === "packs") return hash;
+  const queryTab = new URLSearchParams(location.search).get("tab");
+  if (queryTab === "watches" || queryTab === "create" || queryTab === "packs") return queryTab;
+  return fallback;
+}
+
+function wireTabs(defaultTab = "create", { reset = false } = {}) {
+  const tabs = root?.querySelector("[data-following-tabs]");
+  if (!tabs) return;
+  tabs.hidden = false;
+  if (!tabs.dataset.wired) {
+    tabs.dataset.wired = "true";
+    for (const button of tabs.querySelectorAll("[data-following-tab]")) {
+      button.addEventListener("click", () => setTab(button.dataset.followingTab));
+    }
+  }
+  if (reset || !tabs.dataset.selected) {
+    setTab(requestedTab(defaultTab));
+    tabs.dataset.selected = "true";
+  }
+}
+
 function promotePersonalWhenWatches() {
   if (!root) return;
   const count = watchCountFromPersonal();
@@ -175,10 +183,6 @@ function promotePersonalWhenWatches() {
     personal.dataset.followingPersonalMode = personal.classList.contains("following-personal--demoted")
       ? "demoted"
       : "secondary";
-    if (tabs) tabs.hidden = true;
-    for (const panel of root.querySelectorAll("[data-following-panel]")) panel.hidden = false;
-    const workspace = root.querySelector("[data-following-panel-workspace]");
-    if (workspace) workspace.hidden = false;
     return;
   }
 
@@ -217,17 +221,7 @@ function promotePersonalWhenWatches() {
     else if (packs) create.after(packs);
   }
   if (tabs) {
-    tabs.hidden = false;
-    if (!tabs.dataset.wired) {
-      tabs.dataset.wired = "true";
-      for (const button of tabs.querySelectorAll("[data-following-tab]")) {
-        button.addEventListener("click", () => setTab(button.dataset.followingTab));
-      }
-    }
-    const hash = (location.hash || "").replace(/^#/, "");
-    if (hash === "create") setTab("create");
-    else if (hash === "packs") setTab("packs");
-    else setTab("watches");
+    wireTabs("watches", { reset: true });
   }
   wirePersonalForms();
   duplicateWarning();
@@ -360,6 +354,7 @@ function wireSubscribe() {
 
 if (root) {
   installFilterChipNavigation(root);
+  wireTabs("create");
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();
   wireRefineLive();

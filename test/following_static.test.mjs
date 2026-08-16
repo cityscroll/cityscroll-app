@@ -237,8 +237,10 @@ test("composeWatchRuleSentence makes refine conjunction visible", () => {
     requested: true,
     matchCount: 0,
   }, templates);
-  assert.equal(citywideDaily.citywideDailyWarn, true);
-  assert.match(renderFollowingDocument(citywideDaily), /covers the whole city/);
+  const citywideHtml = renderFollowingDocument(citywideDaily);
+  assert.doesNotMatch(citywideHtml, /covers the whole city|Pick a place or choose weekly to cut noise/);
+  assert.doesNotMatch(citywideHtml, /No new matches means no email\. That is on purpose\./);
+  assert.doesNotMatch(citywideHtml, /data-msg-citywide-daily-warn|data-following-citywide-warn/);
 });
 
 test("Following preview items use digItem-shaped phase, next step, and deep link", () => {
