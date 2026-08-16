@@ -76,10 +76,11 @@ def wait_for_app_ready(
     *,
     timeout: int = DEFAULT_WAIT_TIMEOUT_MS,
 ) -> None:
-    """Wait for the app boot contract, rather than the document load event."""
+    """Wait for the completed app boot contract, not an early imported symbol."""
     wait_for_function(
         page,
         """() => document.readyState !== "loading"
+            && document.body?.dataset.appReady === "true"
             && typeof globalThis.showTab === "function"
             && globalThis.CrolRouteModules !== undefined""",
         timeout=timeout,

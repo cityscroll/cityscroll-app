@@ -308,7 +308,7 @@ jobs:
         run: node tools/no_live_external_reads.mjs --check
       - name: Preset snapshot receipt is internally consistent
         if: matrix.family == 'site-node'
-        run: node tools/validate_presets.mjs --check --offline
+        run: node tools/validate_presets.mjs --check
 
       - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
         if: matrix.family == 'contract'
