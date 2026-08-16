@@ -7,6 +7,10 @@ import {
   boroughScopeHref,
   boroughScopeLinksHTML,
 } from "../site/borough_scope_links.mjs";
+import {
+  communityBoardSearchPresentation,
+  parseCommunityBoardQuery,
+} from "../site/community_board_search.mjs";
 
 const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const propertyTimedCases = JSON.parse(readFileSync(
@@ -63,4 +67,34 @@ test("the four in-scope surfaces retire their borough selects", () => {
     assert.match(index, new RegExp(`id="${id}"`));
   }
   assert.doesNotMatch(index, /id="(?:lboro|propertyboro|rulesboro)"/);
+});
+
+test("bare CB3 uses explicit M03 context as a visible, overridable default", () => {
+  const query = parseCommunityBoardQuery("community board 3");
+  const presentation = communityBoardSearchPresentation(query, {
+    communityDistrict: "M03",
+    source: "route",
+  });
+
+  assert.equal(presentation.defaultBodyId, "manhattan-cb-03");
+  assert.equal(presentation.defaultLabel, "Manhattan CB3");
+  assert.equal(presentation.choices.length, 5);
+  assert.equal(presentation.choices.find((choice) => choice.bodyId === "manhattan-cb-03")?.preferred, true);
+
+  const override = communityBoardSearchPresentation(query, {
+    communityDistrict: "M03",
+    selectedBodyId: "bronx-cb-03",
+    source: "user",
+  });
+  assert.equal(override.defaultBodyId, "bronx-cb-03");
+  assert.equal(override.defaultLabel, "Bronx CB3");
+});
+
+test("bare CB3 stays tied without civic context and ignores a general IP guess", () => {
+  const query = parseCommunityBoardQuery("community board 3");
+  assert.equal(communityBoardSearchPresentation(query).defaultBodyId, null);
+  assert.equal(communityBoardSearchPresentation(query, {
+    borough: "Manhattan",
+    source: "ip",
+  }).defaultBodyId, null);
 });

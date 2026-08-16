@@ -98,6 +98,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `cityscroll.community_board_source_join.v1` contract (`exact_board_date_publisher_identifier`);
   the older exact body/date/matter gate remains separate for decision details. Unjoined notices
   stay on their City Record/unknown surface.
+- **Ambiguous community-board search:** `site/community_board_search.mjs` is the shared static/live
+  projection for bare-number chooser state, explicit civic-context defaults, canonical card labels,
+  and stable rank-without-hiding order. Bare `community board 3` keeps all five borough candidates;
+  a place context or exact board choice changes group order rather than filtering alternates. Keep
+  `site/browse_view.mjs` and `site/app/feed-actions.mjs` on that projection. Focused proof:
+  `test/borough_scope_links.test.mjs` and `test/hearing_widening.test.mjs`.
 - **Community-board meeting index:** `site/data/community_board_meeting_index.json` is the
   bounded source-native event read model, refreshed by
   `node tools/build_community_board_meeting_index.mjs`. It currently contains only explicit
