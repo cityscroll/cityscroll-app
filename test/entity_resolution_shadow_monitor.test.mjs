@@ -11,6 +11,10 @@ import {
   buildShadowMonitorReceipt,
   compareShadowMonitorReceipts,
 } from "../entity_resolution/evaluation/shadow_monitoring.mjs";
+import {
+  DESK_ONLY_ENTITY_RESOLUTION_FIELDS,
+  serializePublicEntityLink,
+} from "../entity_resolution/publication/index.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FIXTURE = join(ROOT, "entity_resolution/eval/fixtures/shadow_monitoring_v0.json");
@@ -119,4 +123,35 @@ test("CLI fixture mode prints stable signal keys and validates the receipt", () 
   assert.match(result.stdout, /^contradiction_rate=0\.25$/m);
   assert.match(result.stdout, /^source_freshness_status=measured$/m);
   assert.doesNotMatch(result.stdout, /INSERT|UPDATE|DELETE|public route/i);
+});
+
+test("public entity-link serialization excludes backstage verdict payloads", () => {
+  const serialized = serializePublicEntityLink({
+    canonical_entity_id: "vendor:hntb",
+    source_system: "city_record",
+    source_system_id: "20260623008",
+    confidence: 0.99,
+    actor: "desk:fixture-1",
+    curation_receipt_id: "verdict-accept-001",
+    curation_verdict: "ACCEPT",
+    review_policy: { status: "satisfied" },
+    reversible_effect: { operation: "materialize_edge" },
+    evidence_json: JSON.stringify({ internal: true }),
+  });
+  assert.deepEqual(serialized, {
+    entity_id: "vendor:hntb",
+    source: { system: "city_record", id: "20260623008" },
+    link_confidence: { status: "strong", basis: "entity_link" },
+  });
+  const payload = JSON.stringify(serialized);
+  for (const privateField of [
+    "actor",
+    "curation_receipt_id",
+    "curation_verdict",
+    "review_policy",
+    "reversible_effect",
+  ]) {
+    assert.ok(DESK_ONLY_ENTITY_RESOLUTION_FIELDS.includes(privateField));
+    assert.equal(payload.includes(privateField), false);
+  }
 });

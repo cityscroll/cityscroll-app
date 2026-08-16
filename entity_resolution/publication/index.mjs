@@ -29,6 +29,11 @@ export const DESK_ONLY_ENTITY_RESOLUTION_FIELDS = Object.freeze([
   "review_status",
   "reviewer",
   "notes",
+  "actor",
+  "curation_receipt_id",
+  "curation_verdict",
+  "review_policy",
+  "reversible_effect",
 ]);
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
