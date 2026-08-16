@@ -16,7 +16,7 @@ import {
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
-import { communityBoardPageHref } from "../community_board_links.mjs";
+import { communityBoardPageHref, communityBoardPlaceHref } from "../community_board_links.mjs";
 import { domainRows } from "../resident_snapshot_queries.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
@@ -1236,7 +1236,7 @@ function hearingAreaHTML(record){
     ...(area.project_names||[]),
   ].filter(Boolean);
   return [...new Set(values)].map(value=>{
-    const href=communityBoardPageHref(value);
+    const href=communityBoardPlaceHref(value)||communityBoardPageHref(value);
     return href
       ? `<a class="community-board-reference" href="${escUiHtml(href)}">${escUiHtml(value)}</a>`
       : escUiHtml(value);
@@ -1302,9 +1302,11 @@ function meetingsExplorerCardHTML(entry, terms=[]){
   const boardHref=boardEdge?.board_href||communityBoardPageHref(boardId);
   const boardName=record.board_name||boardEdge?.board_name
     || (boardId?`Community Board ${boardId.replace(/^[a-z-]+-cb-/i,"")}`:"");
-  const originChip=`<span class="tag source" data-meeting-origin="${escUiHtml(origin)}">${escUiHtml(meetingOriginLabel(origin))}</span>`;
+  const exactBoardReference=record.source_system==="community_board"
+    && record.board_id===boardId
+    && record.institution_refs?.board_ref===`community-board:${boardId}`;
   const boardPivot=boardId
-    ? (boardEdge&&communityBoardEdgeTools?.communityBoardMeetingEdgeAccepted(boardEdge)&&boardHref
+    ? ((communityBoardEdgeTools?.communityBoardMeetingEdgeAccepted(boardEdge)||exactBoardReference)&&boardHref
       ? constellationLink({
         href:boardHref,
         label:t("meetings_hosted_by_board", { board: boardName }),
@@ -1318,7 +1320,6 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:""}
     ${boardPivot}
-    ${originChip}
   </div>`;
   const participation=entry.participation||record.participation||{};
   const participationActions=[];

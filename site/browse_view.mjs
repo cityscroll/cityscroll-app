@@ -1164,7 +1164,11 @@ export function renderBrowseView(view) {
     const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
     const boardName = row.board_name || boardEdge?.board_name
       || (boardId ? `Community Board ${boardId.replace(/^[a-z-]+-cb-/, "")}` : null);
-    const boardMarkup = boardId && boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref
+    const exactBoardReference = row.source_system === "community_board"
+      && row.board_id === boardId
+      && row.institution_refs?.board_ref === `community-board:${boardId}`;
+    const boardMarkup = boardId && boardHref
+      && (communityBoardMeetingEdgeAccepted(boardEdge) || exactBoardReference)
       ? renderEntityPivotLink({
         relation_label: "hosted by community board",
         target_kind: "community-board",
