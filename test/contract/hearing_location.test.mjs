@@ -111,6 +111,15 @@ test("community-board search treats a bare number as a cross-borough query", () 
   assert.equal(hearingMatchesCommunityBoard(row, hearingCommunityBoardQuery("Brooklyn community board 3")), false);
 });
 
+test("community-board search accepts the resident shorthand CB3", () => {
+  const row = {
+    affected_area: { community_boards: ["Community Board 3, Bronx"] },
+  };
+  assert.equal(hearingCommunityBoardQuery("CB3").ambiguous, true);
+  assert.equal(hearingMatchesCommunityBoard(row, hearingCommunityBoardQuery("CB3")), true);
+  assert.equal(hearingCommunityBoardQuery("Manhattan CB3").borough, "Manhattan");
+});
+
 test("participation and audience clues are extracted only when the notice supplies them", () => {
   const contact = ["example", "example.com"].join("@");
   const rule = normalizeHearing({
