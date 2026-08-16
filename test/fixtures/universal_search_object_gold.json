@@ -16,6 +16,7 @@
         "law-derived-mandate",
         "city-record-meeting",
         "community-board-meeting",
+        "parks-agency",
         "attachment-enrichment"
       ]
     }
@@ -151,6 +152,33 @@
         "domain": "meetings",
         "canonical_href": "/meetings/meeting%3Acommunity_board%3Aevent-abc-123",
         "source_observation_refs": ["community_board:event-abc-123"],
+        "coverage_state": "matched"
+      }
+    },
+    {
+      "id": "parks-agency",
+      "source_observation": {
+        "agency_id": "parks-and-recreation",
+        "subject_ref": "agency:id:parks-and-recreation",
+        "display_name": "Department of Parks and Recreation",
+        "path": "/agencies/parks-and-recreation/",
+        "matched_categories": 2,
+        "categories": {
+          "contracts": { "status": "matched", "count": 2, "method": "agency_browse_snapshot_v1" },
+          "rules": { "status": "matched", "count": 4, "method": "agency_canonical_v1" }
+        },
+        "edge_summary": [
+          { "state": "matched", "label": "Contracts: published by this agency" },
+          { "state": "matched", "label": "Rules: issued rule" }
+        ]
+      },
+      "expected": {
+        "outcome": "indexed",
+        "object_ref": "agency:id:parks-and-recreation",
+        "object_type": "agency",
+        "domain": "people",
+        "canonical_href": "/agencies/parks-and-recreation/",
+        "source_observation_refs": ["agency_constellation:parks-and-recreation"],
         "coverage_state": "matched"
       }
     },

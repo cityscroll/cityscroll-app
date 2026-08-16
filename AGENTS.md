@@ -213,6 +213,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `meeting_id` values, retains publisher keys and receipts in provenance, derives `process_role`
   from meeting profiles, and carries City Record/community-board coverage separately from hits.
   Focused proof: `test/universal_search_meeting_producer.test.mjs`.
+- **Agency search producer:** `site/agency_search_producer.mjs` projects the bounded agency
+  constellation lookup into canonical `agency` SearchDocuments and carries matched constellation
+  labels only as lexical recall fields. Identity classification stays producer-owned; reviewed
+  unresolved labels remain unclassified, relation states stay in provenance, and corpus coverage
+  is explicit. Focused proof: `test/universal_search_agency_producer.test.mjs`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain
