@@ -23,6 +23,7 @@ import { projectCommitteeSearchDocument } from "../site/committee_search_produce
 import { projectBoardSearchDocument } from "../site/board_search_producer.mjs";
 import { projectExamSearchDocument } from "../site/exam_search_producer.mjs";
 import { projectParcelSearchDocument } from "../site/parcel_search_producer.mjs";
+import { projectContractAwardSearchDocument } from "../site/contract_award_search_producer.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { publicSearchResult } from "../worker/src/search.mjs";
 
@@ -175,6 +176,32 @@ test("mosquito notice is a procurement object on the canonical Contracts route",
   assert.notEqual(row.expected.domain, "mandates");
   assert.equal(lawDerivedMandate(row.source_observation), null);
   assert.notEqual(projection.target.href, projection.evidence.href);
+});
+
+test("the award-census producer preserves the mosquito gold object's type and route", () => {
+  const gold = goldCase("mosquito-procurement");
+  const pin = gold.expected.object_ref.replace(/^procurement:/, "");
+  const result = projectContractAwardSearchDocument({
+    request_id: "ocp-mosquito-gold",
+    start_date: "2026-07-17",
+    agency_name: "Health and Mental Hygiene",
+    type_of_notice_description: "Award",
+    short_title: "Pesticides and Mosquito Control Products",
+    pin,
+    vendor_name: "Clarke Mosquito Control Products, Inc.",
+  }, {
+    lookup: {
+      schema_version: 1,
+      source: "ocp-recent-contract-awards",
+      materialized_at: "2026-08-05T10:40:50.286Z",
+    },
+  });
+  assert.equal(result.outcome, "indexed");
+  assert.equal(result.document.object_ref, gold.expected.object_ref);
+  assert.equal(result.document.object_type, gold.expected.object_type);
+  assert.equal(result.document.domain, gold.expected.domain);
+  assert.equal(result.document.canonical_href, gold.expected.canonical_href);
+  assert.deepEqual(result.document.source_observation_refs, ["ocp_award:ocp-mosquito-gold"]);
 });
 
 test("unknown publisher observations fail closed without a substantive lane", () => {

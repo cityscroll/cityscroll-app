@@ -254,6 +254,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   type; misses retain evidence-only receipts. Materialized attachment text may expand search text
   but cannot change the object projection. Focused proof:
   `test/universal_search_crol_producers.test.mjs` plus `worker/test/search.test.mjs`.
+- **Contract award search producer:** `site/contract_award_search_producer.mjs` projects the full
+  retained OCP award materialization into exact-PIN procurement SearchDocuments; optional place or
+  relation evidence is additive metadata, never corpus admission. Worker Search federates that
+  historical census with current D1 City Record objects, and `site/contract_search_bridge.mjs`
+  restores those validated hits to keyword-scoped Browse awards beyond the bounded default
+  resident snapshot. Focused proof: `test/universal_search_contract_award_producer.test.mjs`,
+  `test/contract_search_bridge.test.mjs`, and `worker/test/search.test.mjs`.
 - **Meeting search producer:** `site/meeting_search_producer.mjs` projects the shared two-source
   meeting read model into canonical Meeting SearchDocuments. It deduplicates only exact
   `meeting_id` values, retains publisher keys and receipts in provenance, derives `process_role`
