@@ -208,6 +208,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   type; misses retain evidence-only receipts. Materialized attachment text may expand search text
   but cannot change the object projection. Focused proof:
   `test/universal_search_crol_producers.test.mjs` plus `worker/test/search.test.mjs`.
+- **Meeting search producer:** `site/meeting_search_producer.mjs` projects the shared two-source
+  meeting read model into canonical Meeting SearchDocuments. It deduplicates only exact
+  `meeting_id` values, retains publisher keys and receipts in provenance, derives `process_role`
+  from meeting profiles, and carries City Record/community-board coverage separately from hits.
+  Focused proof: `test/universal_search_meeting_producer.test.mjs`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain
