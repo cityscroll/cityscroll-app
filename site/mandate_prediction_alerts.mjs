@@ -21,6 +21,7 @@ import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { agencyObligationsFollowHref } from "./agency_obligations.mjs";
 import {
   mandateMatterEdgeFromRow,
+  mandateScopedLinksFromRecord,
   normalizeMandateGraphNeighbors,
   renderMandateRowGraphActions,
 } from "./mandate_graph_neighbors.mjs";
@@ -44,6 +45,19 @@ export const PREDICTABLE_DELIVERABLES = Object.freeze([...DETECTABLE_DELIVERABLE
 export const MANDATE_PREDICTION_COPY = Object.freeze({
   lead:
     "Expected public-record events for this agency’s rulemaking and report mandates, timed from each duty’s statutory deadline and recurrence.",
+});
+
+/** Closed resident vocabulary for the evidence-relative scenario branch. */
+export const MANDATE_SCENARIO_OBSERVATION_STATE = Object.freeze({
+  APPEARED: "appeared",
+  NOT_YET_OBSERVED: "not_yet_observed",
+  DATA_INCOMPLETE: "data_incomplete",
+});
+
+export const MANDATE_SCENARIO_OBSERVATION_LABEL = Object.freeze({
+  [MANDATE_SCENARIO_OBSERVATION_STATE.APPEARED]: "Appeared",
+  [MANDATE_SCENARIO_OBSERVATION_STATE.NOT_YET_OBSERVED]: "Not yet observed",
+  [MANDATE_SCENARIO_OBSERVATION_STATE.DATA_INCOMPLETE]: "Data incomplete",
 });
 
 /** Alert bands aligned with cityscroll.prediction.v0 product vocabulary. */
@@ -216,6 +230,76 @@ export function isPredictableDeliverable(deliverableType) {
   return isDetectableDeliverable(deliverableType);
 }
 
+function scenarioObservation(observation = null, dataAsOf = null) {
+  const status = clean(observation?.status, 80) || null;
+  const record = observation?.observed_record || null;
+  let state = MANDATE_SCENARIO_OBSERVATION_STATE.DATA_INCOMPLETE;
+  if (status === OBSERVATION_STATUS.OBSERVED && record) {
+    state = MANDATE_SCENARIO_OBSERVATION_STATE.APPEARED;
+  } else if (status === OBSERVATION_STATUS.ON_TRACK
+    || status === OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED) {
+    state = MANDATE_SCENARIO_OBSERVATION_STATE.NOT_YET_OBSERVED;
+  }
+  return {
+    state,
+    label: MANDATE_SCENARIO_OBSERVATION_LABEL[state],
+    data_as_of: validDate(dataAsOf || observation?.data_as_of),
+    record,
+  };
+}
+
+function scenarioNextBranch(observation, sourceHref = null) {
+  if (observation.state === MANDATE_SCENARIO_OBSERVATION_STATE.APPEARED) {
+    return {
+      kind: "open_appeared_record",
+      label: "Open the appeared record.",
+      href: clean(observation.record?.href, 400) || null,
+    };
+  }
+  if (observation.state === MANDATE_SCENARIO_OBSERVATION_STATE.NOT_YET_OBSERVED) {
+    return {
+      kind: "watch_expected_event",
+      label: "Watch for the expected event.",
+      href: null,
+    };
+  }
+  return {
+    kind: "review_source_law",
+    label: sourceHref
+      ? "Review the source law above and check again as records are added."
+      : "Check again as records are added.",
+    href: null,
+  };
+}
+
+function withScenario(prediction, observation = null, dataAsOf = null) {
+  const observed = scenarioObservation(observation, dataAsOf);
+  return {
+    ...prediction,
+    observation_status: observation?.status || null,
+    observation_state: observed.state,
+    observation_data_as_of: observed.data_as_of,
+    observed_record: observed.record,
+    scenario: {
+      premise: {
+        text: prediction.duty_text,
+        citation: prediction.citation,
+        warrant_href: prediction.source_href,
+        matter_id: prediction.matter_id,
+      },
+      prediction: {
+        event_kind: prediction.expected_event?.kind || null,
+        event_label: prediction.expected_event?.label || null,
+        deadline: prediction.expected_deadline,
+        recurrence: prediction.recurrence,
+      },
+      observation: observed,
+      next_branch: scenarioNextBranch(observed, prediction.source_href),
+    },
+    compliance_verdict: null,
+  };
+}
+
 /**
  * Build one prediction row from a mandate obligation.
  * Returns null when the mandate is not a predictable deliverable or has no standable window.
@@ -249,7 +333,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
   if (!resolved) {
     if (!opts.includeCadenceOnly) return null;
     if (cadence === "one-time" || cadence === "ongoing") return null;
-    return {
+    return withScenario({
       mandate_id: mandateId,
       obligation_id: mandateId,
       matter_id: matter?.matter_id || null,
@@ -280,10 +364,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
         enrichment: "pending_richer_prediction",
       },
       alert_id: `obligation:${mandateId}:cadence:${cadence}`,
-      observation_status: opts.observation?.status || null,
-      observed_record: opts.observation?.observed_record || null,
-      compliance_verdict: null,
-    };
+    }, opts.observation, opts.observation?.data_as_of);
   }
 
   const expectedDeadline = resolved.expected_deadline;
@@ -296,7 +377,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
     p90: expectedDeadline,
   };
 
-  return {
+  return withScenario({
     mandate_id: mandateId,
     obligation_id: mandateId,
     matter_id: matter?.matter_id || null,
@@ -327,10 +408,7 @@ export function buildMandatePrediction(row = {}, opts = {}) {
     },
     // Cycle identity: each resolved deadline is one digest fire.
     alert_id: `obligation:${mandateId}:${expectedDeadline}`,
-    observation_status: opts.observation?.status || null,
-    observed_record: opts.observation?.observed_record || null,
-    compliance_verdict: null,
-  };
+  }, opts.observation, opts.observation?.data_as_of);
 }
 
 /**
@@ -363,9 +441,21 @@ export function buildAgencyMandatePredictionsView(agencyIdOrName, sources = {}) 
   const predictable = allMandates.filter((row) => isPredictableDeliverable(row?.deliverable_type));
 
   const confById = new Map();
+  const confRank = {
+    [OBSERVATION_STATUS.OBSERVED]: 0,
+    [OBSERVATION_STATUS.ON_TRACK]: 1,
+    [OBSERVATION_STATUS.EXPECTED_NOT_YET_OBSERVED]: 2,
+    [OBSERVATION_STATUS.ENRICHMENT_PENDING]: 3,
+    [OBSERVATION_STATUS.EVIDENCE_ONLY]: 4,
+  };
   for (const item of sources.conformanceItems || []) {
     const mid = item?.mandate_id || item?.obligation_id;
-    if (mid) confById.set(mid, item);
+    if (!mid) continue;
+    const prior = confById.get(mid);
+    if (!prior || (confRank[item?.observation?.status] ?? 9)
+      < (confRank[prior?.observation?.status] ?? 9)) {
+      confById.set(mid, item);
+    }
   }
 
   const today = validDate(sources.todayISO) || new Date().toISOString().slice(0, 10);
@@ -380,16 +470,13 @@ export function buildAgencyMandatePredictionsView(agencyIdOrName, sources = {}) 
   const predictions = [];
   for (const row of predictable) {
     const conf = confById.get(row.obligation_id) || null;
-    const obs = conf?.observation || null;
-    // Only attach a standable observed filing — other conformance statuses
-    // belong on the expected-vs-observed surface, not the prediction branch.
-    const standableObs = obs?.status === OBSERVATION_STATUS.OBSERVED && obs?.observed_record
-      ? obs
+    const obs = conf?.observation
+      ? { ...conf.observation, data_as_of: conf.data_as_of || conf.observation.data_as_of || null }
       : null;
     const pred = buildMandatePrediction(row, {
       todayISO: today,
       includeCadenceOnly,
-      observation: standableObs,
+      observation: obs,
     });
     if (pred) predictions.push(pred);
   }
@@ -636,6 +723,11 @@ export function renderMandatePredictionsSection(view) {
   const list = (view.predictions || []).length
     ? `<ul class="node-record-list mandate-predictions-list" data-bridge-side="predicted-events">${
       view.predictions.map((item) => {
+        const scenario = item.scenario || withScenario(item, {
+          status: item.observation_status,
+          observed_record: item.observed_record,
+          data_as_of: item.observation_data_as_of || view.as_of,
+        }, item.observation_data_as_of || view.as_of).scenario;
         const eventLabel = item.expected_event?.label || item.deliverable_type;
         const recurrenceContext = rolledForwardContext(item);
         const windowLine = item.expected_deadline
@@ -645,29 +737,37 @@ export function renderMandatePredictionsSection(view) {
           : (item.recurrence && item.recurrence !== "one-time"
             ? `${item.recurrence.replace(/_/g, " ")} cycle`
             : null);
-        const meta = [
-          eventLabel,
-          windowLine,
-          item.prediction_band_label,
-          item.deliverable_type,
-          item.citation,
-        ].filter(Boolean).map(esc).join(" · ");
-        // Per-row: Source law only (predictions are not yet observed edges).
-        // Agency-wide browse chips stay in section chrome — never on every card.
-        const neighbors = renderMandateRowGraphActions({
+        // The warrant stays attached to the premise. An appeared public record
+        // is a separate, typed mandate-scoped edge in the next branch.
+        const warrant = renderMandateRowGraphActions({
           source_href: item.source_href,
           matter_id: item.matter_id,
-          prefer: item.deliverable_type === "rulemaking" ? "rules" : "contracts",
           escape: esc,
         });
+        const observedLinks = mandateScopedLinksFromRecord(scenario.observation.record, {
+          kind: item.expected_event?.kind,
+        });
+        const appearedRecord = observedLinks.map((link) => `<a class="agency-edge-link" href="${esc(link.href)}" data-mandate-scoped="1"${link.relation ? ` data-mandate-edge="${esc(link.relation)}"` : ""}${link.target_kind ? ` data-target-kind="${esc(link.target_kind)}"` : ""}${link.link_role ? ` data-link-role="${esc(link.link_role)}"` : ""}>${esc(link.label)}</a>`).join(" · ");
         const chip = item.prediction_band_label
           ? `<span class="mandate-pred-chip mandate-pred-${esc(item.prediction_band || "far")}" data-prediction-band="${esc(item.prediction_band || "")}">${esc(item.prediction_band_label)}</span>`
           : (item.deadline_source === "cadence_only"
             ? `<span class="mandate-pred-chip mandate-pred-cadence" data-prediction-band="cadence">Recurring</span>`
             : "");
-        return `<li class="node-record mandate-prediction" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="${esc(item.deliverable_type)}" data-expected-event-kind="${esc(item.expected_event?.kind || "")}"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${item.expected_deadline ? ` data-expected-deadline="${esc(item.expected_deadline)}"` : ""}${item.prediction_band ? ` data-prediction-band="${esc(item.prediction_band)}"` : ""}>
-          <div class="node-record-main">${chip}${esc(item.duty_text)}</div>
-          <span class="muted node-muted">${meta}${neighbors}</span>
+        const observationAsOf = scenario.observation.data_as_of
+          ? ` · through ${esc(scenario.observation.data_as_of)}`
+          : "";
+        const nextBranch = scenario.observation.state === MANDATE_SCENARIO_OBSERVATION_STATE.APPEARED
+          ? `${esc(scenario.next_branch.label)}${appearedRecord ? ` · ${appearedRecord}` : ""}`
+          : scenario.observation.state === MANDATE_SCENARIO_OBSERVATION_STATE.NOT_YET_OBSERVED
+            ? (view.follow_href
+              ? `<a class="agency-edge-link" href="${esc(view.follow_href)}">${esc(scenario.next_branch.label)}</a>`
+              : esc(scenario.next_branch.label))
+            : esc(scenario.next_branch.label);
+        return `<li class="node-record mandate-prediction mandate-scenario" data-mandate-id="${esc(item.mandate_id)}" data-deliverable-type="${esc(item.deliverable_type)}" data-expected-event-kind="${esc(item.expected_event?.kind || "")}"${item.matter_id ? ` data-matter-id="${esc(item.matter_id)}"` : ""}${item.expected_deadline ? ` data-expected-deadline="${esc(item.expected_deadline)}"` : ""}${item.prediction_band ? ` data-prediction-band="${esc(item.prediction_band)}"` : ""}>
+          <div class="mandate-scenario-part"><strong>Premise</strong><span>${esc(scenario.premise.text)}${item.citation ? ` · ${esc(item.citation)}` : ""}${warrant}</span></div>
+          <div class="mandate-scenario-part"><strong>Prediction</strong><span>${chip}${esc(eventLabel)}${windowLine ? ` · ${esc(windowLine)}` : ""}${item.deliverable_type ? ` · ${esc(item.deliverable_type)}` : ""}</span></div>
+          <div class="mandate-scenario-part"><strong>Observation</strong><span class="mandate-scenario-observation" data-observation-state="${esc(scenario.observation.state)}">${esc(scenario.observation.label)}${observationAsOf}</span></div>
+          <div class="mandate-scenario-part"><strong>Next branch</strong><span>${nextBranch}</span></div>
         </li>`;
       }).join("")
     }</ul>`
@@ -721,6 +821,27 @@ export const MANDATE_PREDICTION_STYLE = `
 }
 .mandate-prediction-alerts .mandate-pred-overdue {
   background: color-mix(in srgb, #666 12%, transparent);
+}
+.mandate-prediction-alerts .mandate-scenario {
+  display: grid;
+  gap: 0.65rem;
+}
+.mandate-prediction-alerts .mandate-scenario-part {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.28fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  min-width: 0;
+}
+.mandate-prediction-alerts .mandate-scenario-part > strong {
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+@media (max-width: 36rem) {
+  .mandate-prediction-alerts .mandate-scenario-part {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.2rem;
+  }
 }
 `;
 
