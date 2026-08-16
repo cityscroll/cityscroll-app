@@ -148,6 +148,7 @@ test("Meeting cards consume the shared interaction grammar without duplicating n
   assert.match(card, /externalActionLink\(/);
   assert.match(card, /constellationLink\(\{[\s\S]*?className:\["tag","place","community-board-meeting-pivot"\]\.join\(" "\)/);
   assert.doesNotMatch(card, /compactCardActions\(|data-link=|const primaryAction=/);
+  assert.doesNotMatch(card, /originChip/, "provenance belongs only to the official source handoff");
   for (const key of [
     "hearing_guide_join_step_html",
     "hearing_guide_materials_step_html",

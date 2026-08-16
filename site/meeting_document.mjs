@@ -9,6 +9,7 @@ import {
 import { joinCommunityBoardSourceRecord } from "./community_board_source_join.mjs";
 import { meetingCalendarHasEventTime } from "./hearing_attend_pack.mjs";
 import { recognizedMeetingUrl } from "./hearing_logistics.mjs";
+import { cleanNoticeText } from "./text_clean.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -24,6 +25,22 @@ const clean = (value, max = 500) => String(value ?? "")
   .replace(/\s+/g, " ")
   .trim()
   .slice(0, max);
+
+function readerText(value, max = 500) {
+  return cleanNoticeText(value).slice(0, max);
+}
+
+function readerEnum(value, labels = {}) {
+  const text = readerText(value, 120);
+  if (!text) return null;
+  const token = text.toLowerCase();
+  if (labels[token]) return labels[token];
+  if (/^[a-z0-9]+(?:_[a-z0-9]+)+$/i.test(text)) {
+    const words = text.replaceAll("_", " ").toLowerCase();
+    return words[0].toUpperCase() + words.slice(1);
+  }
+  return text;
+}
 
 function date(value) {
   const match = clean(value, 80).match(/^(\d{4}-\d{2}(?:-\d{2})?)/);
@@ -490,14 +507,22 @@ export function renderMeetingDocument(record = {}) {
     ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
     : "";
   const participationRows = participationDetails(record);
-  const meetingMode = clean(record.venue?.mode, 80);
+  const meetingMode = readerEnum(record.venue?.mode, {
+    "in_person": "In person",
+    "in-person": "In person",
+    "hybrid": "Hybrid",
+    "virtual": "Virtual",
+  });
   const participationSection = participationRows.length || meetingMode
     ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
     : "";
   const noticeMeta = [
-    ["Type", record.type_of_notice_description],
-    ["Section", record.section_name],
-  ].filter(([, value]) => clean(value, 240));
+    ["Type", readerEnum(record.type_of_notice_description, {
+      upcoming_meetings: "Upcoming meeting",
+      public_hearings: "Public hearing",
+    })],
+    ["Section", readerText(record.section_name, 240)],
+  ].filter(([, value]) => value);
   const noticeBody = [
     ["Description", record.additional_description_1],
     ["Additional description", record.additional_description_2],
@@ -505,12 +530,12 @@ export function renderMeetingDocument(record = {}) {
     ["Other information", record.other_info_1],
     ["Other information", record.other_info_2],
     ["Other information", record.other_info_3],
-  ].filter(([, value]) => clean(value, 6_000));
+  ].map(([label, value]) => [label, readerText(value, 6_000)]).filter(([, value]) => value);
   const noticeDetailsSection = noticeMeta.length || noticeBody.length
     ? `<section class="node-section civic-object-section meeting-section meeting-notice-details"><h2>Notice details</h2>${noticeMeta.length ? `<dl>${noticeMeta.map(([label, value]) => `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`).join("")}</dl>` : ""}${noticeBody.map(([label, value]) => `<div class="meeting-notice-block"><h3>${esc(label)}</h3><p>${esc(value)}</p></div>`).join("")}</section>`
     : "";
-  const description = clean(record.description, 6_000);
-  const descriptionSection = description && !noticeBody.length && description !== clean(title, 6_000)
+  const description = readerText(record.description, 6_000);
+  const descriptionSection = description && !noticeBody.length && description !== readerText(title, 6_000)
     ? `<section class="node-section civic-object-section meeting-section meeting-description"><h2>About this meeting</h2><p>${esc(description)}</p></section>`
     : "";
   const contactRows = [
