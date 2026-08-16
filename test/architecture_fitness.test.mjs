@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
+import { buildFacts } from "../tools/build_architecture_facts.mjs";
 import {
   checkDeclaredModelDrift,
   evaluateDependencyRules,
@@ -10,7 +11,7 @@ import {
 } from "../tools/architecture_fitness.mjs";
 
 const modelText = readFileSync(new URL("../architecture/workspace.dsl", import.meta.url), "utf8");
-const facts = JSON.parse(readFileSync(new URL("../architecture/generated/facts.json", import.meta.url), "utf8"));
+const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
 
 test("current generated facts cover the declared active C4 containers", () => {
   const report = checkDeclaredModelDrift({ facts, modelText });

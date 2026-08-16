@@ -16,14 +16,13 @@ import {
   readFileSync,
   writeFileSync,
 } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const FACTS_PATH = join(ROOT, "architecture", "generated", "facts.json");
+const DEFAULT_OUTPUT_DIR = join(ROOT, "architecture", "generated");
 const MODEL_PATH = join(ROOT, "architecture", "workspace.dsl");
 const ADR_DIR = join(ROOT, "docs", "adr");
-const RECEIPT_PATH = join(ROOT, "architecture", "generated", "reconciliation.json");
 
 const RESOURCE_TARGETS = [
   { modelId: "d1_notices", section: "d1_databases", binding: "DB" },
@@ -65,10 +64,6 @@ const DOMAIN_TARGETS = [
     observed: (facts) => Boolean(facts.ontology?.registry?.schema),
   },
 ];
-
-function readJson(path) {
-  return JSON.parse(readFileSync(path, "utf8"));
-}
 
 function quotedStrings(line) {
   return [...line.matchAll(/"((?:\\.|[^"\\])*)"/g)].map((match) =>
@@ -158,21 +153,6 @@ function normalizeForComparison(value, key = null) {
   }
   if (key === "generated_at" || key === "commit") return undefined;
   return value;
-}
-
-function normalizeFactsForArtifact(value, path = "") {
-  if (Array.isArray(value)) return value.map((item) => normalizeFactsForArtifact(item, path));
-  if (value && typeof value === "object") {
-    return Object.fromEntries(Object.entries(value)
-      .filter(([key]) => !(path === "" && (key === "generated_at" || key === "commit")))
-      .sort(([left], [right]) => left.localeCompare(right))
-      .map(([key, item]) => [key, normalizeFactsForArtifact(item, path ? `${path}.${key}` : key)]));
-  }
-  return value;
-}
-
-function factsArtifactEqual(left, right) {
-  return JSON.stringify(normalizeFactsForArtifact(left)) === JSON.stringify(normalizeFactsForArtifact(right));
 }
 
 function factArrayKey(value) {
@@ -405,25 +385,19 @@ function collectSourceNulls(facts) {
   return nulls;
 }
 
-function buildReport({ root = ROOT, factsPath = FACTS_PATH, modelPath = MODEL_PATH, adrDir = ADR_DIR } = {}) {
-  const baselineFacts = readJson(factsPath);
-  const generatedFacts = buildFacts({
-    generatedAt: baselineFacts.generated_at ?? null,
-    commit: baselineFacts.commit ?? null,
-  });
+function buildReport({ root = ROOT, facts = buildFacts(), baselineFacts = facts, modelPath = MODEL_PATH, adrDir = ADR_DIR } = {}) {
   const report = reconcileArchitecture({
-    facts: generatedFacts,
+    facts,
     baselineFacts,
     model: parseWorkspace(readFileSync(modelPath, "utf8")),
     adrs: loadAdrs(adrDir, root),
   });
   return {
     ...report,
-    generated_at: generatedFacts.generated_at,
+    generated_at: facts.generated_at,
     facts: {
-      path: relative(root, factsPath).split("\\").join("/"),
-      artifact_current: factsArtifactEqual(baselineFacts, generatedFacts),
-      regenerated_commit: generatedFacts.commit,
+      source: "generated_in_memory",
+      regenerated_commit: facts.commit,
     },
   };
 }
@@ -432,28 +406,27 @@ function render(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
+function optionValue(argv, name) {
+  const index = argv.indexOf(name);
+  if (index === -1) return null;
+  const value = argv[index + 1];
+  if (!value || value.startsWith("--")) throw new Error(`${name} requires a path`);
+  return value;
+}
+
 function main() {
-  const args = new Set(process.argv.slice(2));
+  const argv = process.argv.slice(2);
+  const args = new Set(argv);
   const check = args.has("--check");
   const noWrite = args.has("--no-write");
-  const report = buildReport();
-
-  if (!report.facts.artifact_current) {
-    report.outcomes.contradictions.push(issue("contradiction", "architecture/generated/facts.json", {
-      declared: "committed facts artifact",
-      observed: "regenerated facts differ",
-    }));
-    report.status = "drift";
-    report.proposals.push(proposalFor(report.outcomes.contradictions.at(-1)));
-  }
+  const outputDir = resolve(ROOT, optionValue(argv, "--output-dir") || DEFAULT_OUTPUT_DIR);
+  const facts = buildFacts();
+  const report = buildReport({ facts });
 
   if (!noWrite) {
-    mkdirSync(dirname(RECEIPT_PATH), { recursive: true });
-    writeFileSync(RECEIPT_PATH, render(report));
-    if (!check) {
-      mkdirSync(dirname(FACTS_PATH), { recursive: true });
-      writeFileSync(FACTS_PATH, render(buildFacts()));
-    }
+    mkdirSync(outputDir, { recursive: true });
+    writeFileSync(join(outputDir, "facts.json"), render(facts));
+    writeFileSync(join(outputDir, "reconciliation.json"), render(report));
   }
 
   process.stdout.write(render(report));

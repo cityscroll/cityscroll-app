@@ -5,6 +5,10 @@ __pycache__/
 docs/data-source-graph.json
 docs/data-source-graph.html
 
+# Architecture evidence is generated at verification time and uploaded from CI.
+architecture/generated/facts.json
+architecture/generated/reconciliation.json
+
 # Agency constellation HTML (build/deploy artifact only).
 # Built by tools/build_agency_constellation_documents.mjs during
 # tools/build_cloudflare_pages.mjs — never commit per-agency pages.
