@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.zap_project_source_records_proof.v1",
+  "observed_on": "2026-08-16",
+  "materialize": true,
+  "counts": {
+    "input_rows": 231,
+    "retained": 231,
+    "joined": 231,
+    "edges": 231,
+    "verified_edges": 231
+  },
+  "usefulness": 1,
+  "precision": 1,
+  "verification_receipt": "site/data/zap_project_sources/verification_receipts/zap_projects_source_records_2026-08-16.json"
+}

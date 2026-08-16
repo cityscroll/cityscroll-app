@@ -6,35 +6,35 @@
     "stale_after_days": 2,
     "before": {
       "covered": 5,
-      "total": 18,
-      "rate": 0.2778,
+      "total": 19,
+      "rate": 0.2632,
       "basis": "historical adapter-ready (dual_write.before === complete)"
     },
     "after": {
-      "covered": 12,
-      "total": 18,
-      "rate": 0.6667,
+      "covered": 13,
+      "total": 19,
+      "rate": 0.6842,
       "basis": "live source_records: dual_write.after === complete requires row_count > 0"
     },
     "by_status": {
-      "complete": 12,
+      "complete": 13,
       "partial": 1,
       "stale": 0,
       "empty-declared-live": 1,
       "gap": 4
     },
     "populated": {
-      "covered": 13,
-      "total": 18,
-      "rate": 0.7222
+      "covered": 14,
+      "total": 19,
+      "rate": 0.7368
     },
     "adapter_ready": {
       "before": 5,
-      "after": 14,
-      "total": 18,
-      "rate_after": 0.7778
+      "after": 15,
+      "total": 19,
+      "rate_after": 0.7895
     },
-    "basis": "Live completeness is derived from production D1 source_records counts, host retention receipts, and recency (person-hub constellation remeasured 2026-08-11; ULURP recommendation feeds retained 2026-08-12; production D1 streams still stamped 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. Person-hub constellation (Council Members, eLobbyist, CFB) dual-write + host retention landed 2026-08-11. PASSPort contracts/RFx, Checkbook, Legistar events/items/votes, and ULURP recommendation feeds dual-write adapters populate source_records. Legistar attachments remain empty-declared-live. City Record dual-write is partial. NYCHA, ABO, doing-business, and NYCIDA remain gaps."
+    "basis": "Live completeness is derived from production D1 source_records counts, host retention receipts, and recency (person-hub constellation remeasured 2026-08-11; ULURP recommendation feeds retained 2026-08-12; ZAP project corpus retained 2026-08-16; production D1 streams still stamped 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. Person-hub constellation (Council Members, eLobbyist, CFB), ZAP projects, PASSPort contracts/RFx, Checkbook, Legistar events/items/votes, and ULURP recommendation feeds populate source_records. Legistar attachments remain empty-declared-live. City Record dual-write is partial. NYCHA, ABO, doing-business, and NYCIDA remain gaps."
   },
   "sources": [
     {
@@ -582,6 +582,38 @@
       },
       "fixture": "worker/test/ulurp_recommendation_rows_source_records.test.mjs",
       "replay_test": "worker/test/ulurp_recommendation_rows_source_records.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "zap-projects",
+      "source_system": "zap-projects",
+      "importer": "tools/retain_zap_project_source_records.mjs",
+      "identity_entities": [
+        "project",
+        "applicant",
+        "agency",
+        "vendor",
+        "ULURP"
+      ],
+      "stable_source_key": "project_id",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": {
+        "flag": "ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE",
+        "before": "gap",
+        "after": "complete",
+        "adapter": "ready",
+        "default": "off",
+        "fail_soft": true
+      },
+      "live_observation": {
+        "status": "complete",
+        "row_count": 231,
+        "latest_ingested_at": "2026-08-16T12:00:00.000Z",
+        "measured_at": "2026-08-16T12:00:00.000Z",
+        "note": "Host retention of all 231 real rows in the committed hgx4-8ukb ZAP project materialization plus daily-prewarm dual-write adapter. Exact project source anchors produced 231 provenance-complete existing graph edges at 100% usefulness and 100% contract precision without changing public totals. Receipt: site/data/zap_project_sources/verification_receipts/zap_projects_source_records_2026-08-16.json."
+      },
+      "fixture": "worker/test/zap_project_source_records.test.mjs",
+      "replay_test": "worker/test/zap_project_source_records.test.mjs",
       "known_gap": null
     }
   ]

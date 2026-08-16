@@ -566,8 +566,12 @@ test("coverage separates product materialization from immutable source-record co
     "zap-projects",
     "zap-bbl",
   ]);
+  const stillNotDeclared = new Set([
+    "ocp-recent-contract-awards",
+    "zap-bbl",
+  ]);
 
-  for (const sourceId of expectedMaterialized) {
+  for (const sourceId of stillNotDeclared) {
     const contract = source_contracts.contracts.find((entry) => entry.id === sourceId);
     const state = normalizeSourceState({ contract, coverage: null });
     assert.equal(state.acquisition_status, "live");
@@ -582,9 +586,21 @@ test("coverage separates product materialization from immutable source-record co
     assert.equal(card.evidence.source_state.source_records_coverage.status, "not-declared");
   }
 
+  const zapContract = source_contracts.contracts.find((entry) => entry.id === "zap-projects");
+  const zapCoverage = source_coverage.sources.find((entry) => entry.id === "zap-projects");
+  const zapState = normalizeSourceState({ contract: zapContract, coverage: zapCoverage });
+  assert.equal(zapState.acquisition_status, "live");
+  assert.equal(zapState.product_delivery_tier, "edge-materialized");
+  assert.equal(zapState.warehouse_snapshot.status, "materialized");
+  assert.equal(zapState.source_records_coverage.status, "complete");
+  assert.equal(zapState.source_records_coverage.row_count, 231);
+  assert.ok(!result.cards.some((entry) =>
+    entry.evidence?.source_id === "zap-projects"
+    && /^Add immutable observation coverage:/.test(entry.title)));
+
   assert.ok(!result.cards.some((card) => /^Ingest declared source:/.test(card.title)));
   assert.equal(result.metrics.product_materialized >= expectedMaterialized.size, true);
-  assert.equal(result.metrics.source_records_not_declared >= expectedMaterialized.size, true);
+  assert.equal(result.metrics.source_records_not_declared >= stillNotDeclared.size, true);
 });
 
 test("cross-source-consistency emits open disagreements and spine failures", () => {

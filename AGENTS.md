@@ -668,6 +668,12 @@ node tools/build_zap_warehouse_lookup.mjs --fixture --bench
 # receipt: warehouse/receipts/proof/wh05_zap_lookup_speed.json
 ```
 
+ZAP project observations are shadow-dual-written from the daily outcome prewarm
+under `ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE`; the stable source key is the exact
+publisher `project_id`, matching graph provenance `zap-projects:<project_id>`.
+Host proof: `node tools/retain_zap_project_source_records.mjs --check`. Public
+edge totals never read or count the shadow rows.
+
 **WH-05 Doing Business serve:** materialize Doing Business Search Entities into
 `site/data/doing_business_warehouse_lookup.json` (+ Worker twin). Replaces live
 multi-page SODA in `attachDoingBusiness` for materialization hits; live SODA
