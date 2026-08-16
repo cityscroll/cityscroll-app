@@ -3,6 +3,7 @@ import {
   subscriptionFromScope,
 } from "./scope_v0.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import { parseEntityRef } from "./entity_pivot.mjs";
 
 export const CONTEXTUAL_SUGGESTION_LIMIT = 3;
 
@@ -86,6 +87,11 @@ function approved(suggestion, destinationCheck) {
   return typeof destinationCheck !== "function" || destinationCheck(suggestion) !== false;
 }
 
+function destinationKindScore(refs) {
+  const kinds = new Set(uniqueRefs(refs).map((ref) => parseEntityRef(ref)?.kind).filter(Boolean));
+  return Number(kinds.has("project") && kinds.has("agency") && kinds.has("vendor"));
+}
+
 /** Production guard for pivots whose URL is currently only a route claim. */
 export function productionDestinationCheck(suggestion) {
   if (suggestion?.kind !== "pivot") return true;
@@ -142,6 +148,48 @@ export function buildContextualSuggestions({
     if (approved(follow, checkDestination)) suggestions.push(follow);
   }
 
+  const combination = (Array.isArray(edgePairs) ? edgePairs : [])
+    .map((item) => {
+      const refs = uniqueRefs(item?.refs);
+      const destinationRefs = uniqueRefs([...currentRefs, ...refs]);
+      return {
+        ...item,
+        refs,
+        destinationRefs,
+        typedDestinationCount: destinationRefs.filter((ref) => parseEntityRef(ref)).length,
+        count: Number(item?.count) || 0,
+        labels: Array.isArray(item?.labels) ? item.labels.map((label) => clean(label)) : [],
+      };
+    })
+    .filter((item) => item.refs.length >= 2 && item.count > 0 && item.refs.every((ref) => !currentRefs.includes(ref)))
+    .sort((left, right) => (
+      destinationKindScore(right.destinationRefs) - destinationKindScore(left.destinationRefs)
+      || right.typedDestinationCount - left.typedDestinationCount
+      || right.count - left.count
+      || left.refs.join("|").localeCompare(right.refs.join("|"))
+    ))[0];
+  let combinationSuggestion = null;
+  if (combination) {
+    const labels = combination.labels.length >= 2
+      ? combination.labels
+      : ["this connection", "another connection"];
+    const threeWay = combination.typedDestinationCount >= 3;
+    combinationSuggestion = {
+      kind: threeWay ? "three-way" : "intersection",
+      label: threeWay
+        ? `Open with ${labels[0]} and ${labels[1]}`
+        : `Open ${labels[0]} and ${labels[1]} intersection`,
+      href: browseScopeHref(safeRoute, search, combination.destinationRefs),
+      count: combination.count,
+      refs: combination.destinationRefs,
+    };
+    // A valid three-way continuation is the highest-value constrained move.
+    // Place it before single-edge pivots so the bounded card limit cannot hide it.
+    if (threeWay && approved(combinationSuggestion, checkDestination)) {
+      suggestions.push(combinationSuggestion);
+    }
+  }
+
   const intersect = inventory[0];
   if (intersect) {
     const suggestion = {
@@ -167,25 +215,9 @@ export function buildContextualSuggestions({
     if (approved(suggestion, checkDestination)) suggestions.push(suggestion);
   }
 
-  const pair = (Array.isArray(edgePairs) ? edgePairs : [])
-    .map((item) => ({
-      ...item,
-      refs: uniqueRefs(item?.refs),
-      count: Number(item?.count) || 0,
-      labels: Array.isArray(item?.labels) ? item.labels.map((label) => clean(label)) : [],
-    }))
-    .filter((item) => item.refs.length >= 2 && item.count > 0 && item.refs.every((ref) => !currentRefs.includes(ref)))
-    .sort((left, right) => right.count - left.count || left.refs.join("|").localeCompare(right.refs.join("|")))[0];
-  if (pair) {
-    const labels = pair.labels.length >= 2 ? pair.labels : ["this connection", "another connection"];
-    const suggestion = {
-      kind: "three-way",
-      label: `Open with ${labels[0]} and ${labels[1]}`,
-      href: browseScopeHref(safeRoute, search, [...currentRefs, ...pair.refs]),
-      count: pair.count,
-      refs: [...currentRefs, ...pair.refs],
-    };
-    if (approved(suggestion, checkDestination)) suggestions.push(suggestion);
+  if (combinationSuggestion?.kind === "intersection"
+      && approved(combinationSuggestion, checkDestination)) {
+    suggestions.push(combinationSuggestion);
   }
 
   return suggestions.slice(0, Math.max(0, Math.min(CONTEXTUAL_SUGGESTION_LIMIT, Number(max) || CONTEXTUAL_SUGGESTION_LIMIT)));
