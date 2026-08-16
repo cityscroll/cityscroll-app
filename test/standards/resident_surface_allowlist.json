@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.resident_surface_allowlist.v1",
+  "exceptions": [
+    {
+      "id": "api-reference-contract-identifiers",
+      "category": "implementation_schema",
+      "terms": [
+        "agency_name",
+        "canonical_id",
+        "canonical_name",
+        "create_watch",
+        "get_notice",
+        "preview_watch",
+        "raw_string",
+        "request_id",
+        "search_notices"
+      ],
+      "surface_family": "reference",
+      "surface_kind": "default_document",
+      "content_mode": "default_reader",
+      "surface": "built:api.html",
+      "reason": "The API reference presents these exact request, response, and operation names as public code contracts."
+    }
+  ]
+}
