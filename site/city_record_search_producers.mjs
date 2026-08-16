@@ -188,6 +188,23 @@ function attachmentEvidenceRefs(observation, id) {
   return [...new Set(refs)];
 }
 
+function procurementBrowseRecord(observation, produced, id, title) {
+  if (produced?.object?.object_type !== "procurement") return null;
+  const pin = compactText([produced.object.object_ref], 320).replace(/^procurement:/, "");
+  if (!pin) return null;
+  return {
+    request_id: id,
+    start_date: compactText([observation.start_date || observation.date], 40) || null,
+    agency_name: compactText([observation.agency_name || observation.agency], 240) || null,
+    type_of_notice_description: "Award",
+    short_title: title,
+    pin,
+    contract_amount: compactText([observation.contract_amount], 80) || null,
+    vendor_name: compactText([observation.vendor_name || observation.vendor], 240) || null,
+    source_system: "city_record",
+  };
+}
+
 /** Produce an admitted SearchDocument after canonical object classification. */
 export function materializeCityRecordSearchDocument(observation = {}, options = {}) {
   const produced = projectCityRecordSearchObject(observation, options);
@@ -256,6 +273,9 @@ export function materializeCityRecordSearchDocument(observation = {}, options = 
       evidence_hrefs: produced.evidence_hrefs,
       search_text_sources: searchTextSources,
       attachment_evidence_refs: attachmentRefs,
+      browse_record: evidenceOnly
+        ? null
+        : procurementBrowseRecord(observation, produced, id, title),
     },
   }, { outcome: produced.outcome });
   if (!admitted.document) return null;
