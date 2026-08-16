@@ -202,7 +202,10 @@ const BROWSE_SCOPE_POLICY = Object.freeze({
   },
   staffing: { agencyField: "agency_name", entityRefFields: ["request_id"] },
   zoning: { agencyField: "primary_applicant", entityRefFields: ["project_id"] },
-  property: { agencyField: "agency_name", entityRefFields: ["disposition_subject_ref", "disposition_join_keys"] },
+  property: {
+    agencyField: "agency_name",
+    entityRefFields: ["entity_refs_all", "disposition_subject_ref", "disposition_join_keys"],
+  },
   rules: { agencyField: "agency_name", entityRefFields: ["request_id"] },
   meetings: { agencyField: "agency_name", entityRefFields: ["entity_refs_all", "meeting_id", "request_id", "zap_project_ids"] },
 });

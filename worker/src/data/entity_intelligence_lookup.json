@@ -361504,6 +361504,16 @@
         "entity_ref": "agency:id:housing-preservation-and-development",
         "relation": "published_by_agency",
         "confidence": "strong"
+      },
+      {
+        "entity_ref": "project:P2016K0185",
+        "relation": "parcel_links_project",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:JEMB%20ALBEE%20SQUARE",
+        "relation": "named_developer",
+        "confidence": "strong"
       }
     ],
     "notice:20170707110": [
@@ -369854,7 +369864,9 @@
       "site/data/meetings_domain_observations.json",
       "site/data/people_domain_observations.json",
       "site/data/property_domain_observations.json",
-      "site/data/franchise_domain_observations.json"
+      "site/data/franchise_domain_observations.json",
+      "site/data/property_cross_domain_lookup.json",
+      "entity_resolution/cross_domain/project_agency_vendor_evidence.json"
     ],
     "methods": [
       "agency_canonical_v1",
@@ -369871,8 +369883,127 @@
       "people_votes_as_official_v1",
       "exact_ulurp_token_v1",
       "zap_project_ref_v1",
-      "franchise_party_stem_v1"
+      "franchise_party_stem_v1",
+      "reviewed_publisher_role_v1"
     ],
     "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people/franchise. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus, franchise party stem (named_franchisee). Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Franchise densifies from FCRC / joint concession notices with confident firm counterparties only. Empty domains are explicit per entity."
+  },
+  "project_agency_vendor": {
+    "schema_version": 1,
+    "policy_version": "project_agency_vendor_evidence_v1",
+    "public_bundle_count": 1,
+    "bundles": [
+      {
+        "evidence_id": "city-record-20170516111-albee-square",
+        "subject_ref": "notice:20170516111",
+        "label": "Albee Square",
+        "refs": [
+          "project:P2016K0185",
+          "agency:id:housing-preservation-and-development",
+          "vendor:stem:JEMB%20ALBEE%20SQUARE"
+        ],
+        "edges": [
+          {
+            "type": "parcel_links_project",
+            "from": "notice:20170516111",
+            "to": "project:P2016K0185",
+            "domain": "property",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "method_version": "1.0.0",
+            "bbl": "3001460042",
+            "provenance": {
+              "source_system": "zap-bbl",
+              "source_record_id": "zap-bbl:P2016K0185:3001460042",
+              "source_fields": [
+                "bbl",
+                "project_id"
+              ],
+              "basis": "exact_bbl",
+              "source_url": "https://zap.planning.nyc.gov/projects/P2016K0185",
+              "input_value": "3001460042",
+              "via_parcel": "bbl:3001460042",
+              "property_request_id": "20170516111"
+            },
+            "layer": "property_cross_domain_v1",
+            "review_state": "accepted",
+            "reviewed_at": "2026-08-16",
+            "relevant_time": "2017-05-19T00:00:00.000"
+          },
+          {
+            "type": "published_by_agency",
+            "from": "notice:20170516111",
+            "to": "agency:id:housing-preservation-and-development",
+            "domain": "property",
+            "confidence": "strong",
+            "method": "agency_canonical_v1",
+            "method_version": "1",
+            "provenance": {
+              "source_system": "city_record",
+              "source_record_id": "city_record:20170516111",
+              "source_fields": [
+                "agency_name"
+              ],
+              "basis": "property_agency_name",
+              "observed_at": "2017-06-21T10:00:00.000",
+              "input_value": "Housing Preservation and Development",
+              "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20170516111"
+            },
+            "layer": "cross_domain_object_link_v2",
+            "review_state": "accepted",
+            "reviewed_at": "2026-08-16",
+            "relevant_time": "2017-05-19T00:00:00.000"
+          },
+          {
+            "type": "named_developer",
+            "from": "notice:20170516111",
+            "to": "vendor:stem:JEMB%20ALBEE%20SQUARE",
+            "domain": "property",
+            "confidence": "strong",
+            "method": "reviewed_publisher_role_v1",
+            "method_version": "1.0.0",
+            "review_state": "accepted",
+            "reviewed_at": "2026-08-16",
+            "relevant_time": "2017-05-19T00:00:00.000",
+            "provenance": {
+              "source_system": "city_record",
+              "source_record_id": "city_record:20170516111",
+              "source_fields": [
+                "additional_description_1"
+              ],
+              "basis": "explicit_developer_role_and_conveyance",
+              "observed_at": "2017-05-19T00:00:00.000",
+              "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20170516111",
+              "input_value": "JEMB Albee Square LLC",
+              "role": "Developer",
+              "evidence_summary": "The notice identifies JEMB Albee Square LLC as the developer receiving the disposition area from the sponsor under a contract of sale."
+            },
+            "layer": "project_agency_vendor_evidence_v1"
+          }
+        ],
+        "browse_scope": {
+          "lens": "property",
+          "entity_refs_all": [
+            "project:P2016K0185",
+            "agency:id:housing-preservation-and-development",
+            "vendor:stem:JEMB%20ALBEE%20SQUARE"
+          ],
+          "strict_all_ref": true,
+          "result_count": 1,
+          "result_subject_refs": [
+            "notice:20170516111"
+          ],
+          "href": "/browse/property/?facet=%7B%22entity_refs_all%22%3A%5B%22project%3AP2016K0185%22%2C%22agency%3Aid%3Ahousing-preservation-and-development%22%2C%22vendor%3Astem%3AJEMB%2520ALBEE%2520SQUARE%22%5D%7D"
+        }
+      }
+    ],
+    "receipt": {
+      "candidate_count": 1,
+      "admitted_count": 1,
+      "provisional_candidates_excluded": 0,
+      "invalid_accepted_candidates_excluded": 0,
+      "excluded": [],
+      "publication_rule": "accepted review state plus standable project, agency, and vendor edges"
+    }
   }
 }
