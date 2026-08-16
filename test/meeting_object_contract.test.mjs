@@ -86,6 +86,7 @@ test("both producers preserve their exact source key in one shared object shape"
     assert.ok("source_url" in record && "source_system" in record);
     assert.ok("meeting_origin" in record && "source_receipt" in record);
     assert.ok("join_status" in record && "institution_refs" in record);
+    assert.ok("meeting_family" in record);
   }
 
   assert.equal(cityRecord.meeting_id, meetingIdForSource("city_record", "20260814001"));
@@ -95,6 +96,17 @@ test("both producers preserve their exact source key in one shared object shape"
   assert.equal(board.institution_refs.agency_ref, null);
   assert.equal(board.institution_refs.board_ref, "community-board:brooklyn-cb-06");
   assert.equal(board.join_status, "unknown");
+  assert.equal(cityRecord.meeting_family, "descriptive_meeting_v0");
+  assert.equal(board.meeting_family, "community_board_meeting_v0");
+});
+
+test("explicit rulemaking family survives canonical meeting normalization", () => {
+  const record = normalizeCityRecordMeeting({
+    request_id: "20260814003",
+    meeting_family: "agency_rulemaking_hearing",
+    event_date: "2026-08-20",
+  });
+  assert.equal(record.meeting_family, "agency_rulemaking_hearing");
 });
 
 test("City Record notice fields stay on the normalized materialized meeting", () => {
