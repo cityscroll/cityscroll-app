@@ -24,6 +24,8 @@ import {
   meetingsAgencyName,
   pickPrimaryHearing,
 } from "../site/meetings_explorer.mjs";
+import { renderObjectCardActionRail } from "../site/affordance_grammar.mjs";
+import { meetingsCardInteractionProjection } from "../site/meetings_card_interaction.mjs";
 
 const NOW = "2026-08-02";
 
@@ -366,4 +368,43 @@ test("pickPrimaryHearing prefers local scope; meetingsAgencyName cleans agency",
     hearing({ event_date: "2026-07-01" }),
     hearing({ event_date: "2026-08-20", notice_type: "Meeting" }),
   ], { now: NOW }), "held");
+});
+
+test("meeting card interactions separate canonical navigation from published participation", () => {
+  const passive = meetingsCardInteractionProjection({
+    meeting_id: "meeting:city_record:20260801001",
+    request_id: "20260801001",
+    title: "Harbor access hearing",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260801001",
+    source_label: "Official source",
+  });
+  assert.equal(passive.target.href, "/meetings/meeting%3Acity_record%3A20260801001");
+  assert.equal(passive.copy_target, "https://cityscroll.org/meetings/meeting%3Acity_record%3A20260801001");
+  assert.deepEqual(passive.kinetic_actions, []);
+  assert.equal(renderObjectCardActionRail(passive), "");
+  assert.equal(passive.external_handoffs[0].kind, "official_source");
+
+  const participatory = meetingsCardInteractionProjection({
+    meeting_id: "meeting:community_board:harbor",
+    title: "Harbor committee meeting",
+    participation_actions: [
+      { label: "Join online", href: "https://meet.example.gov/harbor", kind: "join", context_ready: true },
+      { label: "Email listed in notice", href: "mailto:testimony@example.gov", kind: "testify", context_ready: true },
+    ],
+    guide_html: "<details><summary>How to participate</summary><p>Published meeting instructions.</p></details>",
+    guide_source_backed: true,
+  });
+  assert.deepEqual(participatory.kinetic_actions.map((action) => action.kind), ["join", "testify"]);
+  const rail = renderObjectCardActionRail(participatory);
+  assert.match(rail, /Join online<span aria-hidden="true">↗<\/span>/);
+  assert.match(rail, /Email listed in notice<span aria-hidden="true">↗<\/span>/);
+  assert.match(rail, /How to participate/);
+
+  const unbackedGuide = meetingsCardInteractionProjection({
+    request_id: "20260801002",
+    title: "Meeting without published instructions",
+    guide_html: "<p>Generic advice.</p>",
+    guide_source_backed: false,
+  });
+  assert.equal(renderObjectCardActionRail(unbackedGuide), "");
 });

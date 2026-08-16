@@ -575,6 +575,24 @@ test("build-rendered Rules cards preserve the canonical title and Copy link befo
   assert.doesNotMatch(html, /ui-object-card-action-rail|What can I do now/);
 });
 
+test("build-rendered Meeting cards expose the shared canonical title, Copy, and source grammar", () => {
+  const html = renderBrowseView(buildBrowseView("meetings", {
+    rows: [{
+      meeting_id: "meeting:community_board:harbor-committee",
+      source_system: "community_board",
+      title: "Harbor committee meeting",
+      event_date: "2026-08-20",
+      source_url: "https://example.gov/meetings/harbor",
+      meeting_origin: "community_board_source_observed",
+    }],
+  }));
+
+  assert.match(html, /class="ui-constellation-link ui-object-card-title"[^>]*href="\/meetings\/meeting%3Acommunity_board%3Aharbor-committee"[^>]*><span aria-hidden="true">◆<\/span>Harbor committee meeting/);
+  assert.match(html, /class="ui-object-card-copy"[^>]*data-object-card-copy="https:\/\/cityscroll\.org\/meetings\/meeting%3Acommunity_board%3Aharbor-committee"[^>]*>Copy link<\/button>/);
+  assert.match(html, /class="ui-official-source-link"[^>]*href="https:\/\/example\.gov\/meetings\/harbor"[^>]*>Community board source observed<span aria-hidden="true">↗<\/span>/);
+  assert.doesNotMatch(html, /ui-object-card-action-rail|What can I do now/);
+});
+
 test("Browse record cards lead with typed action time and keep undated rows title-led", () => {
   assert.deepEqual(
     browseActionTime("contracts", { due_date: "2026-08-09T10:30:00.000" }),
