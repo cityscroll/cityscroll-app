@@ -7,6 +7,7 @@ const PROVENANCE_DISCLOSURE_OFFICIAL_HOSTS = new Set([
   "nyc.legistar.com",
   "passport.cityofnewyork.us",
   "www.checkbooknyc.com",
+  "zap.planning.nyc.gov",
 ]);
 const PROVENANCE_DISCLOSURE_SOURCE_DEFAULTS = Object.freeze({
   city_record: Object.freeze({ label: "City Record notice", href: "https://a856-cityrecord.nyc.gov/" }),
@@ -16,6 +17,7 @@ const PROVENANCE_DISCLOSURE_SOURCE_DEFAULTS = Object.freeze({
   enacted_local_law: Object.freeze({ label: "Source law", href: "https://nyc.legistar.com/" }),
   passport: Object.freeze({ label: "PASSPort Public", href: "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public" }),
   checkbook: Object.freeze({ label: "Checkbook NYC", href: "https://www.checkbooknyc.com/" }),
+  "zap-bbl": Object.freeze({ label: "Official project", href: "https://zap.planning.nyc.gov/" }),
 });
 
 export function provenanceDisclosureValue(field) {

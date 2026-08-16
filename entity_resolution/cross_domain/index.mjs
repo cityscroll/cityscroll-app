@@ -123,3 +123,8 @@ export {
   mergeProjectAgencyVendorSubjectIndex,
   attachProjectAgencyVendorBrowseRefs,
 } from "./project_agency_vendor_evidence.mjs";
+
+export {
+  projectAgencyVendorAssertionIdentity,
+  projectAgencyVendorSubjectInspectorHref,
+} from "./project_agency_vendor_assertions.mjs";
