@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
+import { buildScorecard, renderScorecardPage } from "../site/community-board-scorecard.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url)));
 const receipt = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json", import.meta.url)));
 const report = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/cb_minutes_gap_report.json", import.meta.url)));
+const inventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
+const meetingIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
 
 test("CB minutes report is a complete deterministic expected-set projection", () => {
   assert.equal(registry.sources.filter((row) => row.body_type === "community_board").length, 59);
@@ -37,4 +41,29 @@ test("collect rows have receipt-backed URL evidence", () => {
     assert.match(probe.fetched_at, /^\d{4}-\d{2}-\d{2}T/);
     assert.match(probe.content_sha256, /^[a-f0-9]{64}$/);
   }
+});
+
+test("Manhattan CB3 official-calendar observations enter Meetings with visible coverage receipts", () => {
+  const rows = meetingIndex.rows.filter((row) => row.board_id === "manhattan-cb-03"
+    && ["2026-09-21", "2026-09-29"].includes(String(row.event_date).slice(0, 10)));
+  assert.deepEqual(rows.map((row) => String(row.event_date).slice(0, 10)), ["2026-09-21", "2026-09-29"]);
+  assert.ok(rows.every((row) => row.meeting_origin === "official_community_board_calendar"));
+  assert.ok(rows.every((row) => row.source_url === "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page"));
+  assert.ok(rows.every((row) => row.observed_receipt?.status === "ok"));
+  assert.ok(rows.every((row) => row.observed_receipt?.parser === "nyc_official_calendar_v1"));
+  assert.ok(rows.every((row) => row.publisher_identifier === null));
+  assert.ok(rows.every((row) => !Object.hasOwn(row, "vote") && !Object.hasOwn(row, "outcome")));
+
+  const html = renderBrowseView(buildBrowseView("meetings", { generated_at: meetingIndex.generated_at, rows }));
+  assert.match(html, /Official community board calendar/);
+  assert.match(html, /Calendar observed/);
+  assert.match(html, /Parser OK/);
+  assert.match(html, /https:\/\/www\.nyc\.gov\/site\/manhattancb3\/calendar\/calendar\.page/);
+});
+
+test("boards without ingested calendar rows are labeled not ingested", () => {
+  const scorecard = buildScorecard({ registry, sourceInventory: inventory, meetingIndex });
+  const html = renderScorecardPage(scorecard);
+  assert.ok(meetingIndex.receipts.some((row) => row.role === "upcoming_meetings" && row.state === "not-yet-checked"));
+  assert.match(html, /Not ingested/);
 });

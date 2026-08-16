@@ -150,7 +150,9 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt) {
     event_end: record.end_at || null,
     source_url: sourceUrl,
     source_receipt: record.observed_receipt,
-    meeting_origin: "community_board_source_observed",
+    meeting_origin: record.observed_receipt?.parser === "nyc_official_calendar_v1"
+      ? "official_community_board_calendar"
+      : "community_board_source_observed",
     board_id: board.id,
     venue: record.address || record.venue_name ? {
       name: record.venue_name || null,
@@ -326,7 +328,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     policy: {
       source_inventory: "site/data/non_council_outcome_sources/board_source_inventory.json",
       source_urls_are_explicit: true,
-      adapter_scope: "HTML sources with explicit Schema.org Event records",
+      adapter_scope: "Explicit Schema.org Event records and NYC-hosted community-board calendar entries",
       no_title_or_date_inference: true,
       unjoined_records_are_not_official: true,
       exact_join_method: JOIN_METHOD,
