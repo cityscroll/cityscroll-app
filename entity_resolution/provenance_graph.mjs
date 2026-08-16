@@ -1,4 +1,6 @@
 import {
+  CURATION_PROVISIONAL_STATE,
+  CURATION_VERDICT,
   CURATION_VERDICT_SCHEMA_VERSION,
   projectCurationVerdictState,
 } from "./review/curation_verdicts.mjs";
@@ -228,19 +230,19 @@ function normalizeDecision(receipt, index) {
   };
 }
 
-function materializationFromDecision(decision) {
-  const edge = decision.receipt?.reversible_effect?.edge;
-  if (!edge) return null;
-  const id = cleanToken(edge.id, `${decision.id}.reversible_effect.edge.id`);
-  const payload = clone(edge);
+function normalizeEntityLink(raw, index) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error(`entity_links[${index}] must be an object`);
+  }
+  const id = cleanToken(raw.id, `entity_links[${index}].id`);
+  const materialized_by_decision_id = raw.materialized_by_decision_id
+    ? cleanToken(raw.materialized_by_decision_id, `${id}.materialized_by_decision_id`)
+    : null;
+  const payload = clone(raw);
   delete payload.id;
   delete payload.node_type;
-  return {
-    ...payload,
-    node_type: "entity_link",
-    id,
-    materialized_by_decision_id: decision.id,
-  };
+  delete payload.materialized_by_decision_id;
+  return { ...payload, node_type: "entity_link", id, materialized_by_decision_id };
 }
 
 function addUniqueNode(index, nodes, node) {
@@ -361,10 +363,12 @@ export function buildProvenanceGraph(input = {}) {
     .sort((left, right) => left.timestamp.localeCompare(right.timestamp) || left.id.localeCompare(right.id));
   const explicitActors = (Array.isArray(input.actors) ? input.actors : [])
     .map(normalizeActor);
+  const entityLinks = (Array.isArray(input.entity_links) ? input.entity_links : [])
+    .map(normalizeEntityLink);
 
   const nodes = [];
   const nodeIndex = new Map();
-  for (const node of [...assertions, ...evidence, ...explicitActors, ...decisions]) {
+  for (const node of [...assertions, ...evidence, ...explicitActors, ...decisions, ...entityLinks]) {
     addUniqueNode(nodeIndex, nodes, node);
   }
 
@@ -378,18 +382,32 @@ export function buildProvenanceGraph(input = {}) {
         attestation: "self_asserted",
       });
     }
-    const materialization = materializationFromDecision(decision);
-    if (materialization) addUniqueNode(nodeIndex, nodes, materialization);
   }
 
-  const targetAssertions = new Map();
+  const supersededIds = new Set(assertions
+    .map((assertion) => assertion.supersedes_assertion_id)
+    .filter(Boolean));
+  const assertionsByTarget = new Map();
   for (const assertion of assertions) {
     if (!assertion.decision_target) continue;
     const key = targetKey(assertion.decision_target);
-    if (targetAssertions.has(key)) {
-      throw new Error(`decision target ${assertion.decision_target.kind}:${assertion.decision_target.id} maps to multiple assertion versions`);
+    if (!assertionsByTarget.has(key)) assertionsByTarget.set(key, []);
+    assertionsByTarget.get(key).push(assertion);
+  }
+  const targetAssertions = new Map();
+  for (const [key, group] of assertionsByTarget) {
+    const label = `${group[0].decision_target.kind}:${group[0].decision_target.id}`;
+    if (new Set(group.map((assertion) => assertion.assertion_key)).size > 1) {
+      throw new Error(`decision target ${label} maps to multiple assertion keys`);
     }
-    targetAssertions.set(key, assertion);
+    const currentVersions = group.filter((assertion) => !supersededIds.has(assertion.id));
+    if (!currentVersions.length) {
+      throw new Error(`decision target ${label} has no current assertion version`);
+    }
+    if (currentVersions.length > 1) {
+      throw new Error(`decision target ${label} maps to multiple current assertion versions`);
+    }
+    targetAssertions.set(key, currentVersions[0]);
   }
 
   const edges = [];
@@ -458,8 +476,21 @@ export function buildProvenanceGraph(input = {}) {
         { node_type: "decision", id: decision.reverses_decision_id },
       );
     }
-    const materialization = materializationFromDecision(decision);
-    if (materialization) addEdge(edges, edgeKeys, "materialized_as", assertion, materialization);
+  }
+
+  for (const link of entityLinks) {
+    if (!link.materialized_by_decision_id) continue;
+    const decision = decisions.find((candidate) => candidate.id === link.materialized_by_decision_id);
+    if (!decision) {
+      throw new Error(`entity_link ${link.id} references unknown decision ${link.materialized_by_decision_id}`);
+    }
+    if (
+      decision.decision !== CURATION_VERDICT.ACCEPT
+      || decision.receipt?.reversible_effect?.operation !== "export_gold_candidate"
+    ) {
+      throw new Error(`entity_link ${link.id} must be materialized by an exporting ACCEPT decision`);
+    }
+    addEdge(edges, edgeKeys, "materialized_as", targetAssertions.get(targetKey(decision.target)), link);
   }
 
   nodes.sort((left, right) => refKey(left).localeCompare(refKey(right)));
@@ -468,17 +499,30 @@ export function buildProvenanceGraph(input = {}) {
     || refKey(left.to).localeCompare(refKey(right.to)));
 
   const current_assertions = assertions.map((assertion) => {
-    const history = decisions
-      .filter((decision) => targetKey(decision.target) === targetKey(assertion.decision_target || { kind: "none", id: "none" }))
-      .map((decision) => decision.receipt);
-    const current = projectCurationVerdictState(history, assertion.decision_target?.id || "");
+    const target = assertion.decision_target;
+    const history = target
+      ? decisions
+        .filter((decision) => targetKey(decision.target) === targetKey(target))
+        .map((decision) => decision.receipt)
+      : [];
+    const current = projectCurationVerdictState(history, target?.id || "");
+    const routed = Boolean(target) && targetAssertions.get(targetKey(target)) === assertion;
+    const activeDecision = current.active_receipt_id
+      ? decisions.find((decision) => decision.id === current.active_receipt_id)
+      : null;
+    const active = routed
+      && current.state === CURATION_PROVISIONAL_STATE.GOLD_CANDIDATE
+      && activeDecision?.decision === CURATION_VERDICT.ACCEPT;
+    const materialized = active
+      ? entityLinks.find((link) => link.materialized_by_decision_id === current.active_receipt_id)
+      : null;
     return {
       assertion_id: assertion.id,
       state: current.state,
-      active: current.state === "accepted" && Boolean(current.edge),
+      active,
       decision_count: current.receipt_count,
       active_decision_id: current.active_receipt_id,
-      materialized_entity_link_id: current.edge?.id || null,
+      materialized_entity_link_id: materialized?.id || null,
     };
   });
 

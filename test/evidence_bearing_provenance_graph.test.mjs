@@ -34,17 +34,13 @@ function receiptInput(overrides = {}) {
     actor: ACTOR_ID,
     decision: "ACCEPT",
     target: {
-      kind: "entity_link",
+      kind: "entity_pair",
       id: HNTB.pair_id,
       edge_family: "vendor_identity",
-      edge: {
-        id: "link-curated-001",
-        source_record_id: HNTB.evidence.left.source_record_id,
-        canonical_entity_id: "vendor:hntb",
-        method: "curation_accept",
-        matcher_version: "conventional_v2",
-        resolution_run_id: RUN_ID,
-        evidence: { pair_id: HNTB.pair_id },
+      gold_candidate: {
+        entity_type: "vendor",
+        left: HNTB.evidence.left,
+        right: HNTB.evidence.right,
       },
     },
     evidence_refs: [HNTB.evidence.left, HNTB.evidence.right].map((record) => ({
@@ -84,7 +80,7 @@ function graphInput({ includeReversal = true, omitEvidenceId = null } = {}) {
   const reversed = buildCurationVerdictReceipt(receiptInput({
     id: "verdict-reverse-001",
     decision: "REJECT",
-    target: { kind: "entity_link", id: HNTB.pair_id },
+    target: { kind: "entity_pair", id: HNTB.pair_id },
     review_policy: {
       version: CURATION_REVIEW_POLICY_VERSION,
       status: "not_applicable",
@@ -124,10 +120,18 @@ function graphInput({ includeReversal = true, omitEvidenceId = null } = {}) {
         id: record.source_record_id,
       })),
       produced_by_refs: [{ kind: "resolution_run", id: RUN_ID }],
-      decision_target: { kind: "entity_link", id: HNTB.pair_id },
+      decision_target: { kind: "entity_pair", id: HNTB.pair_id },
     }],
     evidence,
     decisions: includeReversal ? [accepted, reversed] : [accepted],
+    entity_links: [{
+      id: "link-curated-001",
+      materialized_by_decision_id: accepted.id,
+      canonical_entity_id: "vendor:hntb",
+      method: "curation_accept",
+      matcher_version: "conventional_v2",
+      resolution_run_id: RUN_ID,
+    }],
     actors: [{
       id: ACTOR_ID,
       actor_kind: "curator",
@@ -147,7 +151,7 @@ test("versioned assertion identity is deterministic and separate from the review
   assert.equal(assertion.assertion_key, ASSERTION_KEY);
   assert.equal(assertion.version, "1");
   assert.deepEqual(assertion.decision_target, {
-    kind: "entity_link",
+    kind: "entity_pair",
     id: HNTB.pair_id,
   });
   assert.notEqual(assertion.id, assertion.decision_target.id);
@@ -210,13 +214,14 @@ test("assertion provenance walks to exact observations, run evidence, ordered de
 test("reversing REJECT removes the accepted link only from current state and preserves history", () => {
   const acceptedGraph = buildProvenanceGraph(graphInput({ includeReversal: false }));
   const accepted = provenanceForAssertion(acceptedGraph, ASSERTION_ID);
-  assert.equal(accepted.current.state, "accepted");
+  assert.equal(accepted.current.state, "gold_candidate");
   assert.equal(accepted.current.active, true);
+  assert.equal(accepted.current.active_decision_id, "verdict-accept-001");
   assert.equal(accepted.current.materialized_entity_link_id, "link-curated-001");
 
   const reversedGraph = buildProvenanceGraph(graphInput());
   const reversed = provenanceForAssertion(reversedGraph, ASSERTION_ID);
-  assert.equal(reversed.current.state, "rejected");
+  assert.equal(reversed.current.state, "reject_withheld");
   assert.equal(reversed.current.active, false);
   assert.equal(reversed.current.materialized_entity_link_id, null);
   assert.deepEqual(reversed.decisions.map((node) => node.id), [
@@ -239,6 +244,45 @@ test("dangling evidence and mismatched assertion identities fail contract valida
   assert.throws(
     () => buildProvenanceGraph(mismatched),
     /assertion_id must equal assertion:vendor_identity:pair-hntb-truncation:v1/,
+  );
+});
+
+test("superseding versions share the compatibility decision_target and route decisions to the current version", () => {
+  const input = graphInput();
+  const v2Id = versionedAssertionId(ASSERTION_KEY, 2);
+  input.assertions.push({
+    ...input.assertions[0],
+    assertion_id: v2Id,
+    version: 2,
+    supersedes_assertion_id: ASSERTION_ID,
+  });
+  const graph = buildProvenanceGraph(input);
+
+  const current = provenanceForAssertion(graph, v2Id);
+  assert.deepEqual(current.decisions.map((node) => node.id), [
+    "verdict-accept-001",
+    "verdict-reverse-001",
+  ]);
+  assert.deepEqual(current.materializations.map((node) => node.id), ["link-curated-001"]);
+  const superseded = provenanceForAssertion(graph, ASSERTION_ID);
+  assert.deepEqual(superseded.decisions, []);
+  assert.equal(superseded.current.active, false);
+  assert.equal(
+    graph.edges.some((edge) => edge.edge_type === "supersedes"
+      && edge.from.id === v2Id
+      && edge.to.id === ASSERTION_ID),
+    true,
+  );
+
+  const conflicting = graphInput();
+  conflicting.assertions.push({
+    ...conflicting.assertions[0],
+    assertion_key: "other_claim:pair-hntb-truncation",
+    assertion_id: "",
+  });
+  assert.throws(
+    () => buildProvenanceGraph(conflicting),
+    /maps to multiple assertion keys/,
   );
 });
 
@@ -268,7 +312,8 @@ test("public projection is allowlisted to warrant and source evidence without re
     HNTB.evidence.right.source_record_id,
     "link-curated-001",
     RUN_ID,
-    "rejected",
+    "reject_withheld",
+    "gold_candidate",
   ]) {
     assert.equal(encoded.includes(privateValue), false, `public projection leaked ${privateValue}`);
   }
