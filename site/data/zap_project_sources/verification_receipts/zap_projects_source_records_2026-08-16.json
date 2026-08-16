@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.zap_project_source_records_verification.v1",
+  "observed_on": "2026-08-16",
+  "observed_at_utc": "2026-08-16T12:00:00.000Z",
+  "source": {
+    "id": "zap-projects",
+    "dataset_id": "hgx4-8ukb",
+    "resource": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json",
+    "materialized_at": "2026-08-02T10:22:34.003Z",
+    "row_count": 231
+  },
+  "counts": {
+    "input_rows": 231,
+    "retained": 231,
+    "joined": 231,
+    "edges": 231,
+    "verified_edges": 231
+  },
+  "blocked": {
+    "missing_identity_or_evidence": 0,
+    "duplicate_source_ids": 0
+  },
+  "measurement": {
+    "usefulness": {
+      "joined": 231,
+      "total": 231,
+      "rate": 1,
+      "floor": 0.3,
+      "denominator": "retained ZAP project source records",
+      "numerator": "records anchoring at least one graph edge by exact project source id"
+    },
+    "precision": {
+      "true_positives": 231,
+      "false_positives": 0,
+      "attempts": 231,
+      "rate": 1,
+      "floor": 0.95,
+      "basis": "exact project_id source anchor plus source/method/confidence/time provenance"
+    }
+  },
+  "gates": {
+    "usefulness_floor": 0.3,
+    "precision_floor": 0.95,
+    "usefulness_cleared": true,
+    "precision_cleared": true,
+    "materialize": true
+  },
+  "materialize": true,
+  "ratchet": {
+    "mode": "shadow_source_records_only",
+    "public_edge_totals_changed": false,
+    "admitted_edges": "existing graph links with complete source/method/confidence/time provenance",
+    "rejected_edges": "missing publisher project identity or missing provenance contract fields"
+  },
+  "candidate_inventory": {
+    "already_dual_written": [
+      "nyc-council-members",
+      "city-clerk-elobbyist",
+      "cfb-campaign-contributions"
+    ],
+    "landed_here": "zap-projects",
+    "remaining_not_yet_dual_written": []
+  }
+}
