@@ -55,9 +55,14 @@ const ROWS = [
     noticeType: "Award", title: "Repository Firewall", description: "Agency budget object code for a current contract.",
     date: "2026-08-10", haystack: "repository firewall agency budget object code current contract award",
   },
+  {
+    id: "20260710020", section: "Public Comment on Contract Awards", agency: "Health and Mental Hygiene",
+    noticeType: "Notice", title: "Pesticides and Mosquito Control Products", description: "E-PIN: 81626S0021001.",
+    date: "2026-07-17", haystack: "pesticides mosquito control contract award 81626S0021001",
+  },
 ];
 
-test("GET /search returns ranked public result records from the FTS5 mirror", async () => {
+test("GET /search returns ranked validated SearchDocument records from the FTS5 mirror", async () => {
   const { sqlite, DB } = database(ROWS);
   try {
     const response = await worker.fetch(
@@ -70,13 +75,43 @@ test("GET /search returns ranked public result records from the FTS5 mirror", as
     assert.equal(response.status, 200);
     const body = await response.json();
     assert.equal(body.results.length, 1);
-    assert.deepEqual(Object.keys(body.results[0]).sort(), ["href", "id", "snippet", "title", "type"]);
-    assert.deepEqual(body.results[0], {
-      id: "20260729004",
+    assert.deepEqual(Object.keys(body.results[0]).sort(), [
+      "canonical_href",
+      "classification",
+      "coverage_state",
+      "domain",
+      "object_ref",
+      "object_type",
+      "outcome",
+      "process_role",
+      "provenance",
+      "schema",
+      "search_text",
+      "source_family",
+      "source_observation_refs",
+      "summary",
+      "title",
+    ].sort());
+    assert.deepEqual({
+      schema: body.results[0].schema,
+      object_ref: body.results[0].object_ref,
+      object_type: body.results[0].object_type,
+      domain: body.results[0].domain,
+      canonical_href: body.results[0].canonical_href,
+      title: body.results[0].title,
+      summary: body.results[0].summary,
+      source_observation_refs: body.results[0].source_observation_refs,
+      outcome: body.results[0].outcome,
+    }, {
+      schema: "cityscroll.search_document.v1",
+      object_ref: "notice:20260729004",
+      object_type: "unclassified",
+      domain: null,
+      canonical_href: "/notices/20260729004",
       title: "Subcommittee on Zoning and Franchises meeting",
-      type: "meetings",
-      snippet: "Public zoning hearing.",
-      href: "/notices/20260729004",
+      summary: "Public zoning hearing.",
+      source_observation_refs: ["notice:20260729004"],
+      outcome: "evidence_only",
     });
     assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://cityscroll.org");
   } finally {
@@ -92,8 +127,36 @@ test("common civic terms return relevant records through the same FTS route", as
       assert.equal(response.status, 200, query);
       const body = await response.json();
       assert.ok(body.results.length > 0, query);
-      assert.ok(body.results.some((result) => `${result.title} ${result.snippet || ""}`.toLowerCase().includes(query)), query);
+      assert.ok(body.results.some((result) => result.search_text.toLowerCase().includes(query)), query);
+      assert.ok(body.results.every((result) => result.object_type !== "mandate"), query);
     }
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("the ranked City Record shape projects an exact contract award before presentation", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    const response = await worker.fetch(new Request("https://api.cityscroll.org/search?q=mosquito"), { DB }, {});
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.results.length, 1);
+    assert.deepEqual({
+      object_ref: body.results[0].object_ref,
+      object_type: body.results[0].object_type,
+      domain: body.results[0].domain,
+      canonical_href: body.results[0].canonical_href,
+      outcome: body.results[0].outcome,
+      source_observation_refs: body.results[0].source_observation_refs,
+    }, {
+      object_ref: "procurement:81626S0021001",
+      object_type: "procurement",
+      domain: "contracts",
+      canonical_href: "/browse/contracts/?mode=award&q=81626S0021001",
+      outcome: "indexed",
+      source_observation_refs: ["notice:20260710020"],
+    });
   } finally {
     sqlite.close();
   }
