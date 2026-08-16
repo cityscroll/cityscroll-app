@@ -2937,6 +2937,18 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Focused proof: `test/review_action_export.test.mjs` and
   `test/entity_resolution_shadow_monitor.test.mjs`.
 
+## Evidence-bearing provenance read model (EBCG Card 1)
+
+- `entity_resolution/provenance_graph.mjs` is the pure in-process assertion →
+  evidence → decision → actor read model over the append-only ER records above —
+  not a graph database, migration, route, or writer. Assertion identity is the
+  immutable `assertion:<key>:v<version>`; the existing review-pair receipt target
+  attaches only through the compatibility `decision_target` mapping — never treat
+  the pair id as the assertion id. Public exposure goes only through
+  `publicProvenanceProjection`; decisions, actors, receipts, and internal ids stay
+  private. Contract details: `entity_resolution/README.md`. Verify:
+  `node --test test/evidence_bearing_provenance_graph.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

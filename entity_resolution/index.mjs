@@ -131,6 +131,19 @@ export {
   toReviewItems,
 } from "./review/index.mjs";
 
+export {
+  PROVENANCE_EDGE_TYPES,
+  PROVENANCE_GRAPH_SCHEMA_VERSION,
+  PROVENANCE_NODE_TYPES,
+  PROVENANCE_PUBLIC_SCHEMA_VERSION,
+  buildProvenanceGraph,
+  provenanceForAssertion,
+  publicProvenanceProjection,
+  validateProvenanceGraph,
+  versionedAssertionId,
+  walkProvenance,
+} from "./provenance_graph.mjs";
+
 // Node-only alias proposal tooling is part of the package API, but must remain
 // outside the Worker entrypoint graph. Keep this export explicit so a Worker
 // import of the desk review helpers cannot pull filesystem dependencies into
