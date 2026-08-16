@@ -130,7 +130,7 @@ async function postCodexModel({ model, prompt, repoRoot }) {
   });
 }
 
-async function postModel(options, prompt) {
+export async function postModel(options, prompt) {
   return options.rail === "codex"
     ? postCodexModel({ model: options.model, prompt, repoRoot: options.repoRoot })
     : postHttpModel({ endpoint: options.endpoint, model: options.model, prompt });
@@ -154,7 +154,7 @@ async function settledConcurrent(items, concurrency, fn) {
   return results;
 }
 
-async function probeRail(options) {
+export async function probeRail(options) {
   const content = await postModel(options, "Return only the JSON object {\"rail_ok\":true} and do not inspect or modify files.");
   const parsed = JSON.parse(String(content).replace(/^```json\s*/iu, "").replace(/\s*```$/u, ""));
   if (parsed?.rail_ok !== true) throw new Error("model_probe_invalid_json");
@@ -419,11 +419,22 @@ async function runComparator(options, manifest, our) {
   const referencePath = assertReferencePathOutsideRepo(options.reference, options.repoRoot);
   const reference = await readJson(referencePath);
   const review = compareMandates(our, reference, { generatedAt: stamp() });
-  const disagreements = review.queue.filter((item) => item.state === "needs_review");
-  const filed = { schema_version: "mandate-clerk-review-queue-v1", filed_at: stamp(), status: "filed_for_clerk_review", receipt: { disagreement_count: disagreements.length, agreement_count: review.receipt.agreement_count, matter_count: review.receipt.matter_count }, queue: disagreements };
-  await atomicWrite(join(options.outputDir, "review_queue.json"), review);
-  await atomicWrite(join(options.outputDir, "clerk_review_queue.json"), filed);
-  await journalBatch({ script: options.journalScript, what: `filed clerk review queue (${disagreements.length} disagreements)`, why: "differential comparison against private oracle", undo: `remove ${options.outputDir}/review_queue.json and clerk_review_queue.json` });
+  const mismatches = review.comparisons.filter((item) => item.state === "fidelity_mismatch");
+  const filed = {
+    schema_version: "mandate-differential-self-check-receipt-v1",
+    generated_at: stamp(),
+    status: "automated_extractor_self_check",
+    human_gate_required: false,
+    receipt: {
+      mismatch_count: mismatches.length,
+      disagreement_count: mismatches.length,
+      agreement_count: review.receipt.agreement_count,
+      matter_count: review.receipt.matter_count,
+    },
+  };
+  await atomicWrite(join(options.outputDir, "differential_self_check.json"), review);
+  await atomicWrite(join(options.outputDir, "differential_self_check_receipt.json"), filed);
+  await journalBatch({ script: options.journalScript, what: `recorded mandate differential self-check (${mismatches.length} mismatches)`, why: "retain automated extraction diagnostics against the private comparison corpus", undo: `remove ${options.outputDir}/differential_self_check.json and differential_self_check_receipt.json` });
   return { review, filed };
 }
 
