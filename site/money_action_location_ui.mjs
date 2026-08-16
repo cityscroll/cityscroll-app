@@ -1,5 +1,6 @@
 import { fillContractActionLocationSelects, rowMatchesContractActionFilter } from "./contract_action_location.mjs";
 import { communityDistrictKey, councilDistrictKey } from "./district_scope_facets.mjs";
+import { moneyActionLocationHash } from "./money_scope_links.mjs";
 
 const DATA_URL = "data/contract_action_address_locations.json";
 let payloadPromise = null;
@@ -10,10 +11,12 @@ function loadPayload() {
 export async function initializeMoneyLocationFilters({ t, scope = null }) {
   const payload = await loadPayload();
   fillContractActionLocationSelects(payload, {
+    t,
     councilLabel: (value) => t("council_district_short", { n: value }),
     anyLabel: t("money_district_any"),
     mapPivotLabel: t("money_district_map_pivot"),
     scope,
+    currentHash: scope ? moneyActionLocationHash(scope) : "",
   });
 }
 
