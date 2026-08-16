@@ -66,6 +66,31 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory _site/);
 });
 
+test("accessibility aggregate waits for complete shard results without a second artifact lookup", () => {
+  const ci = read(".github/workflows/ci.yml");
+  const aggregate = ci.slice(ci.indexOf("  a11y-pr:\n"), ci.indexOf("  browser-pr-site:\n"));
+  const shards = ci.slice(ci.indexOf("  a11y-pr-shard:\n"), ci.indexOf("  reading-level:\n"));
+
+  assert.match(aggregate, /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard\]/);
+  assert.match(aggregate, /needs\.a11y-pr-shard\.result != 'success'[\s\S]*?exit 1/);
+  assert.match(aggregate, /needs\.a11y-pr-shard\.result == 'success'/);
+  assert.doesNotMatch(
+    aggregate,
+    /actions\/download-artifact|github\.run_attempt|a11y-pr-shard-\*-logs/,
+    "the verdict must not race an eventually consistent artifact-list query",
+  );
+
+  assert.match(shards, /fail-fast:\s*false/);
+  assert.match(
+    shards,
+    /matrix:\s*\n\s*shard:\s*\[browser-a11y, routes-focus, language-layout, rendered-census\]/,
+  );
+  assert.match(shards, /name: a11y-pr-shard-\$\{\{ matrix\.shard \}\}-logs-\$\{\{ github\.run_id \}\}/);
+  assert.doesNotMatch(shards, /a11y-pr-shard[^\n]*github\.run_attempt/);
+  assert.match(shards, /if-no-files-found:\s*error/);
+  assert.match(shards, /overwrite:\s*true/);
+});
+
 test("performance interaction waits for the canonical Contracts document URL", () => {
   const source = read("test/performance/verify.py");
   assert.match(source, /location\.pathname === "\/browse\/contracts\/"/);
