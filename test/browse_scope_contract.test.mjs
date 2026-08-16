@@ -317,9 +317,55 @@ test("community-board search disambiguates a bare number and keeps board 3 resul
   assert.equal(view.total, 2);
   assert.equal(view.communityBoardDisambiguation.length, 5);
   const html = renderBrowseView(view);
-  assert.match(html, /Which community board 3\?/);
-  assert.match(html, /\/browse\/people\/\?board=bronx-cb-03#community-boards/);
+  assert.match(html, /Which CB3\?/);
+  assert.match(html, /community-board%3Abronx-cb-03/);
   assert.match(html, /Browse community boards as institutions/);
+});
+
+test("community-board context ranks all candidates instead of filtering alternate boroughs", () => {
+  const payload = {
+    generated_at: "2026-08-16T12:00:00Z",
+    rows: [
+      {
+        request_id: "bronx-cb-03-past",
+        short_title: "Bronx Community Board 3 archived hearing",
+        board_id: "bronx-cb-03",
+        board_name: "Bronx Community Board 3",
+        event_date: "2025-11-12",
+      },
+      {
+        request_id: "manhattan-cb-03-next",
+        short_title: "Manhattan Community Board 3 full-board meeting",
+        board_id: "manhattan-cb-03",
+        board_name: "Manhattan Community Board 3",
+        event_date: "2026-09-29",
+      },
+      {
+        request_id: "queens-cb-03-next",
+        short_title: "Queens Community Board 3 public hearing",
+        board_id: "queens-cb-03",
+        board_name: "Queens Community Board 3",
+        event_date: "2026-09-21",
+      },
+    ],
+  };
+  const view = buildBrowseView(
+    "meetings",
+    payload,
+    new URLSearchParams("q=community+board+3&when=all&boro=Manhattan&cd=M03"),
+    { limit: 20 },
+  );
+  assert.equal(view.total, 3);
+  assert.equal(view.communityBoardPresentation.defaultBodyId, "manhattan-cb-03");
+  assert.deepEqual(view.rows.map((row) => row.request_id), [
+    "manhattan-cb-03-next",
+    "queens-cb-03-next",
+    "bronx-cb-03-past",
+  ]);
+  const html = renderBrowseView(view);
+  assert.match(html, /Showing Manhattan CB3 first/);
+  assert.match(html, /Choose another CB3/);
+  assert.equal((html.match(/data-community-board-id=/g) || []).length, 3);
 });
 
 test("unscoped meetings omit the per-notice related-record rail", () => {

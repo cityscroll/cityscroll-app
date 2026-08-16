@@ -3,6 +3,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
+import {
+  parseCommunityBoardQuery,
+  rankCommunityBoardRows,
+} from "../site/community_board_search.mjs";
 
 const require = createRequire(import.meta.url);
 const { chooseHearingScope } = require("../site/hearing_location.js");
@@ -70,4 +74,46 @@ test("all-date map drills retain undated members from the stamped corpus", () =>
   const result = chooseHearingScope(records, { when: "all" }, TODAY);
   assert.equal(result.scope, "all");
   assert.deepEqual(result.rows.map((row) => row.request_id), ["dated", "undated"]);
+});
+
+test("CB3 ranking keeps every borough while putting context-matching upcoming rows first", () => {
+  const rows = [
+    {
+      request_id: "bronx-archived",
+      board_id: "bronx-cb-03",
+      board_name: "Bronx Community Board 3",
+      event_date: "2025-11-12",
+    },
+    {
+      request_id: "manhattan-upcoming",
+      board_id: "manhattan-cb-03",
+      board_name: "Manhattan Community Board 3",
+      event_date: "2026-09-29",
+    },
+    {
+      request_id: "queens-upcoming",
+      board_id: "queens-cb-03",
+      board_name: "Queens Community Board 3",
+      event_date: "2026-09-21",
+    },
+  ];
+  const result = rankCommunityBoardRows(rows, {
+    query: parseCommunityBoardQuery("community board 3"),
+    context: { communityDistrict: "M03", source: "route" },
+    today: "2026-08-16",
+  });
+
+  assert.deepEqual(result.rows.map((row) => row.request_id), [
+    "manhattan-upcoming",
+    "queens-upcoming",
+    "bronx-archived",
+  ]);
+  assert.deepEqual(result.groups.map((group) => group.label), [
+    "Manhattan CB3",
+    "Queens CB3",
+    "Bronx CB3",
+  ]);
+  assert.equal(result.rows.length, rows.length, "ranking must not hide alternate boroughs");
+  assert.match(indexSource, /data-community-board-group/);
+  assert.match(indexSource, /meetings_board_default_heading/);
 });
