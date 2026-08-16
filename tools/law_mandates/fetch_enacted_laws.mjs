@@ -58,7 +58,8 @@ function sha256(value) {
 function attachmentKind(attachment = {}) {
   attachment ||= {};
   const type = String(attachment.content_type || "").toLowerCase();
-  const url = String(attachment.url || attachment.MatterAttachmentHyperlink || "").toLowerCase();
+  const url = [attachment.url, attachment.MatterAttachmentHyperlink, attachment.name, attachment.MatterAttachmentName]
+    .filter(Boolean).join(" ").toLowerCase();
   if (type.includes("wordprocessingml") || /\.docx(?:$|\?)/u.test(url)) return "docx";
   if (type.includes("msword") || /\.doc(?:$|\?)/u.test(url)) return "doc";
   if (type.includes("pdf") || /\.pdf(?:$|\?)/u.test(url)) return "pdf";
@@ -93,7 +94,7 @@ function decodeAttachmentBytes(data, kind) {
       encoding: "buffer",
       maxBuffer: 20_000_000,
     });
-    if (result.status === 0 && result.stdout.length) return result.stdout.toString("utf8").trim().slice(0, 50_000) || null;
+    if (result.status === 0 && result.stdout.length) return result.stdout.toString("utf8").trim().slice(0, 120_000) || null;
     return null;
   };
   if (kind === "doc") return decodeWithTextutil();
@@ -130,10 +131,17 @@ function decodeAttachmentBytes(data, kind) {
 
 export async function fetchAttachmentText(attachment, fetchImpl = fetch) {
   const url = attachment?.url || attachment?.MatterAttachmentHyperlink;
-  const kind = attachmentKind(attachment);
-  if (!url || !kind) return null;
-  const response = await fetchImpl(url, { headers: { Accept: "*/*" } });
+  if (!url) return null;
+  const response = await fetchImpl(url, {
+    headers: { Accept: "*/*" },
+    signal: AbortSignal.timeout(30_000),
+  });
   if (!response?.ok) return null;
+  const kind = attachmentKind(attachment) || attachmentKind({
+    content_type: response.headers?.get?.("content-type") || "",
+    url: response.headers?.get?.("content-disposition") || "",
+  });
+  if (!kind) return null;
   const contentLength = Number(response.headers?.get?.("content-length") || 0);
   const maxBytes = kind === "docx" ? 20_000_000 : 5_000_000;
   if (contentLength > maxBytes) return null;
@@ -194,6 +202,26 @@ export async function repairCachedLawTexts({ cacheDir = DEFAULT_LAW_CACHE_DIR, o
   return { law_count: files.length, repaired, skipped, failed, failed_count: failed.length, source_kind: "matter_attachment_text" };
 }
 
+const HTML_ENTITY_MAP = Object.freeze({
+  amp: "&", apos: "'", bull: "•", copy: "©", deg: "°", hellip: "…",
+  laquo: "«", ldquo: "“", lsquo: "‘", mdash: "—", middot: "·", nbsp: " ",
+  ndash: "–", quot: '"', raquo: "»", rdquo: "”", reg: "®", rsquo: "’", sect: "§",
+});
+
+function decodeHtmlEntities(value) {
+  return String(value ?? "").replace(/&(#(?:x[0-9a-f]+|\d+)|[a-z]+);/giu, (entity, key) => {
+    if (key[0] === "#") {
+      const numeric = key[1]?.toLowerCase() === "x"
+        ? Number.parseInt(key.slice(2), 16)
+        : Number.parseInt(key.slice(1), 10);
+      return Number.isInteger(numeric) && numeric >= 0 && numeric <= 0x10ffff
+        ? String.fromCodePoint(numeric)
+        : entity;
+    }
+    return HTML_ENTITY_MAP[key.toLowerCase()] ?? entity;
+  });
+}
+
 function decodeHtmlText(value) {
   return String(value ?? "")
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/giu, "")
@@ -204,10 +232,56 @@ function decodeHtmlText(value) {
     .replace(/&amp;/giu, "&")
     .replace(/&quot;/giu, '"')
     .replace(/&#39;|&apos;/giu, "'")
+    .replace(/&[a-z#][a-z0-9#]*;/giu, (entity) => decodeHtmlEntities(entity))
     .replace(/\n[ \t]+/gu, "\n")
     .replace(/[ \t]+/gu, " ")
     .replace(/\n{3,}/gu, "\n\n")
     .trim();
+}
+
+/**
+ * Isolate the enacted bill text embedded in a public Legistar detail page.
+ * Metadata, attachments, history, and comments are deliberately excluded so
+ * extraction and quote verification share the same statute-only source span.
+ */
+export function lawTextFromLegistarDetailHtml(html) {
+  const source = String(html ?? "");
+  const marker = /<div\s+id=["']ctl00_ContentPlaceHolder1_divText["'][^>]*>/iu.exec(source);
+  if (!marker) return null;
+  const start = marker.index + marker[0].length;
+  const endMarker = /<div\s+id=["']ctl00_ContentPlaceHolder1_pagePublicComments["'][^>]*>/giu;
+  endMarker.lastIndex = start;
+  const end = endMarker.exec(source)?.index ?? -1;
+  if (end <= start) return null;
+  const text = decodeHtmlText(source.slice(start, end));
+  return text.length >= 40 ? text : null;
+}
+
+/** Select the strongest enacted-text attachment named on a detail page. */
+export function finalLawAttachmentFromLegistarDetailHtml(html, detailUrl) {
+  const source = String(html ?? "");
+  const marker = /<span\s+id=["']ctl00_ContentPlaceHolder1_lblAttachments2["'][^>]*>/iu.exec(source);
+  if (!marker) return null;
+  const start = marker.index + marker[0].length;
+  const end = source.indexOf("</span>", start);
+  if (end <= start) return null;
+  const anchors = [...source.slice(start, end).matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/giu)]
+    .map((match) => {
+      const name = decodeHtmlText(match[2]);
+      try {
+        return { name, url: new URL(decodeHtmlEntities(match[1]), detailUrl).href };
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean)
+    .filter((row) => !/^summary\b/iu.test(row.name));
+  const rank = (name) => /\(final\)/iu.test(name) ? 0
+    : /^local law\s+\d+/iu.test(name) ? 1
+      : /^proposed\s+int\./iu.test(name) ? 2
+        : /^int\./iu.test(name) ? 3
+          : 9;
+  return anchors.sort((left, right) => rank(left.name) - rank(right.name))[0] || null;
 }
 
 /** Read an HTML/text Legistar report when MatterText* is not populated. */
