@@ -315,6 +315,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## CI path fast paths and merge queue
 
+- Performance uses a fan-out/fan-in contract: `test/performance/verify.py` shards only raw
+  sample collection, while `test/performance/performance_contract.py` is the single p95 reducer
+  used by serial and aggregate paths. `test/performance/aggregate.py` must receive the exact
+  0–19 sample index set for every fixture/viewport before emitting the stable `results.json`;
+  serial/parallel wall spans and contention comparisons belong in the separate `pilot.json`.
 - Required checks always report a conclusion (never stay missing). Fast paths:
   `changelog_only` (the machine changelog data file) and `docs_only` (`tools/docs-only-path-guard.sh`)
   skip the full unit suite; non-frontend PRs skip browser a11y / reading-level

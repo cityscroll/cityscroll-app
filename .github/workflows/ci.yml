@@ -445,16 +445,151 @@ jobs:
           fi
           printf '%s\n' "${changed_paths[@]}" | bash tools/internal-path-guard.sh
 
-  performance:
-    name: Performance budgets (20-sample p95)
-    # Not required by merge rules (see tools/merge_queue_policy.json). Always reports
-    # a conclusion so the check name never stays missing; the 20-sample measure runs
-    # only when `perf` paths change (site chrome/assets + budget harness). Data-only
-    # under site/data, worker-only, and docs take the success fast path (~seconds).
-    needs: [changes, unit]
+  # The serial control and deterministic raw-sample matrix consume the same verified
+  # site artifact. The control is evidence only; the aggregate below owns the budget gate.
+  performance-serial:
+    name: Performance serial baseline (pilot)
+    needs: [changes, unit, browser-pr-site]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    steps:
+      - name: Performance serial fast path
+        if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.perf != 'true' || needs.unit.result != 'success'
+        run: echo "No serial performance baseline is needed for this path set."
+      - name: Fail when the shared site artifact is unavailable
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result != 'success'
+        run: |
+          echo "The shared verified browser site artifact job did not succeed: ${{ needs.browser-pr-site.result }}"
+          exit 1
+      - uses: actions/checkout@v4
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        with:
+          persist-credentials: false
+      - name: Download shared verified site artifact
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: browser-pr-site-${{ github.run_id }}
+          path: .
+      - name: Verify shared site artifact checksums
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        run: sha256sum --strict -c _site.sha256
+      - uses: ./.github/actions/setup-playwright
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        with:
+          playwright-version: "1.58.0"
+      - name: Run serial 20-sample control
+        id: serial-control
+        continue-on-error: true
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        run: |
+          set -euo pipefail
+          receipt_dir="$RUNNER_TEMP/performance-serial"
+          mkdir -p "$receipt_dir"
+          started_epoch="$(date +%s)"
+          status=0
+          python3 test/performance/verify.py \
+            --budgets performance-budgets.json \
+            --fixtures test/performance/fixtures \
+            --site-root _site \
+            --samples 20 \
+            --output "$receipt_dir/serial-results.json" || status=$?
+          finished_epoch="$(date +%s)"
+          python3 - "$receipt_dir/serial-timing.json" "$started_epoch" "$finished_epoch" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          path = pathlib.Path(sys.argv[1])
+          started = int(sys.argv[2])
+          finished = int(sys.argv[3])
+          path.write_text(json.dumps({
+              "started_epoch": started,
+              "finished_epoch": finished,
+              "duration_seconds": finished - started,
+          }, indent=2) + "\n", encoding="utf-8")
+          PY
+          exit "$status"
+      - name: Preserve serial baseline and wall span
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-serial-${{ github.run_id }}
+          path: ${{ runner.temp }}/performance-serial
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 1
+
+  performance-shard:
+    name: Performance raw samples (shard ${{ matrix.shard }})
+    needs: [changes, unit, browser-pr-site]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Performance shard fast path
+        if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.perf != 'true' || needs.unit.result != 'success'
+        run: echo "No performance samples are needed for this path set."
+      - name: Fail when the shared site artifact is unavailable
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result != 'success'
+        run: |
+          echo "The shared verified browser site artifact job did not succeed: ${{ needs.browser-pr-site.result }}"
+          exit 1
+      - uses: actions/checkout@v4
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        with:
+          persist-credentials: false
+      - name: Download shared verified site artifact
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: browser-pr-site-${{ github.run_id }}
+          path: .
+      - name: Verify shared site artifact checksums
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        run: sha256sum --strict -c _site.sha256
+      - uses: ./.github/actions/setup-playwright
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        with:
+          playwright-version: "1.58.0"
+      - name: Collect deterministic raw sample shard
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        run: |
+          set -euo pipefail
+          receipt_dir="$RUNNER_TEMP/performance-shard-${{ matrix.shard }}"
+          mkdir -p "$receipt_dir"
+          python3 test/performance/verify.py \
+            --budgets performance-budgets.json \
+            --fixtures test/performance/fixtures \
+            --site-root _site \
+            --samples 20 \
+            --shard-index "${{ matrix.shard }}" \
+            --shard-count 4 \
+            --output "$receipt_dir/shard-${{ matrix.shard }}.json"
+      - name: Preserve raw sample shard
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-raw-${{ matrix.shard }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/performance-shard-${{ matrix.shard }}
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 1
+
+  performance:
+    name: Performance budgets (20-sample p95)
+    # This aggregate remains outside merge rules (see tools/merge_queue_policy.json).
+    # It reports a conclusion on every path set and calculates p95 only after all 20
+    # raw samples are present; shard percentiles are never calculated or averaged.
+    needs: [changes, unit, browser-pr-site, performance-serial, performance-shard]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Non-perf path set or unit-failed — report success
         if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.perf != 'true' || needs.unit.result != 'success'
@@ -467,33 +602,55 @@ jobs:
             echo "Skipping 20-sample performance budget (unit_full=${{ needs.changes.outputs.unit_full }}, perf=${{ needs.changes.outputs.perf }}, frontend=${{ needs.changes.outputs.frontend }})."
           fi
           echo "Reporting success for 'Performance budgets (20-sample p95)' without measuring."
-
+      - name: Fail when performance pilot inputs are unavailable
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && (needs.browser-pr-site.result != 'success' || needs.performance-serial.result != 'success' || needs.performance-shard.result != 'success')
+        run: |
+          echo "Performance inputs are incomplete: site=${{ needs.browser-pr-site.result }}, serial=${{ needs.performance-serial.result }}, shards=${{ needs.performance-shard.result }}"
+          exit 1
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
-      - uses: ./.github/actions/setup-playwright
-        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+      - name: Download raw sample shards
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+        uses: actions/download-artifact@v4
         with:
-          playwright-version: "1.58.0"
-      - name: Build static performance documents
-        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
-        run: node tools/build_primary_documents.mjs
-      - name: Run deterministic performance contract
-        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+          pattern: performance-raw-*-${{ github.run_id }}
+          path: ${{ runner.temp }}/performance-shards
+          merge-multiple: true
+      - name: Download serial baseline
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: performance-serial-${{ github.run_id }}
+          path: ${{ runner.temp }}/performance-serial
+      - name: Aggregate the complete raw sample set
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         run: |
-          python3 test/performance/verify.py \
+          python3 test/performance/aggregate.py \
             --budgets performance-budgets.json \
-            --fixtures test/performance/fixtures \
-            --site-root site \
-            --samples 20
-      - name: Preserve raw performance samples
+            --shards-dir "$RUNNER_TEMP/performance-shards" \
+            --serial-results "$RUNNER_TEMP/performance-serial/serial-results.json" \
+            --serial-timing "$RUNNER_TEMP/performance-serial/serial-timing.json" \
+            --output test/performance/artifacts/results.json \
+            --pilot-output test/performance/artifacts/pilot.json \
+            --summary-file "$GITHUB_STEP_SUMMARY"
+      - name: Preserve aggregated performance samples
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: performance-samples
           path: test/performance/artifacts/results.json
           if-no-files-found: error
+          overwrite: true
+      - name: Preserve parallelism pilot receipt
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-parallelism-pilot
+          path: test/performance/artifacts/pilot.json
+          if-no-files-found: error
+          overwrite: true
 
   # w7-01: promotes the axe gate + language gate to every PR. The required job below
   # keeps its existing public name, while the browser/reader checks run in parallel behind
@@ -559,38 +716,38 @@ jobs:
               summary.write(f"### Accessibility shard timing\n\n{message}\n")
           PY
 
-  # Build once so all browser shards test the exact same generated public artifact.
-  a11y-pr-site:
-    name: Accessibility + language site artifact
+  # Build once so accessibility and performance shards test the exact same generated artifact.
+  browser-pr-site:
+    name: Shared browser site artifact
     needs: [changes, unit]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Accessibility artifact fast path
-        if: always() && (needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success')
-        run: echo "No frontend accessibility artifact is needed for this path set."
+      - name: Browser artifact fast path
+        if: always() && (needs.changes.outputs.unit_full != 'true' || (needs.changes.outputs.frontend != 'true' && needs.changes.outputs.perf != 'true') || needs.unit.result != 'success')
+        run: echo "No browser site artifact is needed for this path set."
       - uses: actions/checkout@v4
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: always() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
         with:
           persist-credentials: false
       - name: Build verified site artifact
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: always() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
         uses: ./.github/actions/build-site
       - name: Verify site artifact checksums
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: always() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
         run: |
           set -euo pipefail
           test -d _site
           find _site -type f -print0 | sort -z | xargs -0 sha256sum > _site.sha256
           test -s _site.sha256
       - name: Upload shared verified site artifact
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: always() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
         uses: actions/upload-artifact@v4
         with:
           # Keep the handoff stable when "rerun failed jobs" advances run_attempt
           # without rerunning this already-successful producer job.
-          name: a11y-pr-site-${{ github.run_id }}
+          name: browser-pr-site-${{ github.run_id }}
           path: |
             _site
             _site.sha256
@@ -602,7 +759,7 @@ jobs:
   # required, so queue admission sees one all-green verdict while every shard remains visible.
   a11y-pr-shard:
     name: Accessibility + language shard (${{ matrix.shard }})
-    needs: [changes, unit, a11y-pr-site]
+    needs: [changes, unit, browser-pr-site]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -615,16 +772,16 @@ jobs:
         if: always() && (needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success')
         run: echo "No frontend accessibility shard is needed for this path set."
       - name: Fail when the shared site artifact is unavailable
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result != 'success'
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result != 'success'
         run: |
-          echo "The shared verified accessibility site artifact job did not succeed: ${{ needs.a11y-pr-site.result }}"
+          echo "The shared verified browser site artifact job did not succeed: ${{ needs.browser-pr-site.result }}"
           exit 1
       - uses: actions/checkout@v4
-        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         with:
           persist-credentials: false
       - name: Prepare uniquely named shard evidence directory
-        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         run: |
           set -euo pipefail
           artifact_dir="$RUNNER_TEMP/a11y-pr-shard-${{ matrix.shard }}-logs"
@@ -632,18 +789,18 @@ jobs:
           date +%s > "$RUNNER_TEMP/a11y-pr-${{ matrix.shard }}-started_epoch"
           date -u +%Y-%m-%dT%H:%M:%SZ > "$RUNNER_TEMP/a11y-pr-${{ matrix.shard }}-started_iso"
       - name: Download shared verified site artifact
-        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: actions/download-artifact@v4
         with:
-          name: a11y-pr-site-${{ github.run_id }}
+          name: browser-pr-site-${{ github.run_id }}
           path: .
       - name: Verify shared site artifact checksums
-        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         run: sha256sum --strict -c _site.sha256
       - uses: ./.github/actions/setup-playwright
-        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
       - name: Run isolated accessibility shard
-        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         env:
           NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'warn' }}
         run: |
@@ -771,7 +928,7 @@ jobs:
               ;;
           esac
       - name: Upload uniquely named shard logs and timing
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-site.result == 'success'
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: a11y-pr-shard-${{ matrix.shard }}-logs-${{ github.run_id }}-${{ github.run_attempt }}

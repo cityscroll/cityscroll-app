@@ -48,11 +48,11 @@ test("performance job is perf-path-gated and always reports a conclusion", () =>
   // Heavy steps must not use the broad frontend filter alone.
   assert.doesNotMatch(
     body,
-    /Run deterministic performance contract[\s\S]*?outputs\.frontend == 'true'/,
+    /Aggregate the complete raw sample set[\s\S]*?outputs\.frontend == 'true'/,
   );
   assert.match(
     body,
-    /Run deterministic performance contract[\s\S]*?outputs\.perf == 'true'/,
+    /Aggregate the complete raw sample set[\s\S]*?outputs\.perf == 'true'/,
   );
 });
 
@@ -77,7 +77,7 @@ test("merge-group path classification evaluates the queued tree against its base
     /base:\s*\$\{\{\s*github\.event_name\s*==\s*'pull_request'[\s\S]*github\.event\.merge_group\.base_sha/,
   );
   assert.match(ci, /Inline-to-module rendered DOM equivalence gate/);
-  assert.match(ci, /Run deterministic performance contract/);
+  assert.match(ci, /Aggregate the complete raw sample set/);
 });
 
 test("browser jobs use the Playwright cache composite action", () => {

@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import functools
 import gzip
 import json
-import math
 from pathlib import Path
 import sys
 import threading
@@ -15,6 +15,12 @@ import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 from urllib.parse import parse_qs, urlparse
+
+PERFORMANCE_DIR = Path(__file__).resolve().parent
+if str(PERFORMANCE_DIR) not in sys.path:
+    sys.path.insert(0, str(PERFORMANCE_DIR))
+
+from performance_contract import METRIC_KEYS, reduce_results
 
 from playwright.sync_api import (
     Browser,
@@ -31,16 +37,6 @@ DEFAULT_BUDGETS = ROOT / "performance-budgets.json"
 DEFAULT_FIXTURES = ROOT / "test" / "performance" / "fixtures"
 DEFAULT_OUTPUT = ROOT / "test" / "performance" / "artifacts" / "results.json"
 DEFAULT_SITE_ROOT = ROOT / "site"
-METRIC_KEYS = {
-    "ttfbMs",
-    "fcpMs",
-    "lcpMs",
-    "cls",
-    "wireBytes",
-    "visualResponseMs",
-    "settledMs",
-    "eventDurationMs",
-}
 LAND_OUTCOME_WAIT_TIMEOUT_MS = 45_000
 LAND_OUTCOME_WAIT_ATTEMPTS = 2
 
@@ -97,6 +93,16 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--site-root", type=Path, default=DEFAULT_SITE_ROOT)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--shard-index",
+        type=int,
+        help="Collect one deterministic zero-based sample shard without reducing p95",
+    )
+    parser.add_argument(
+        "--shard-count",
+        type=int,
+        help="Total deterministic sample shards (requires --shard-index)",
+    )
     return parser.parse_args()
 
 
@@ -136,20 +142,6 @@ def validate_contract(budgets: dict[str, Any], fixture_dir: Path) -> None:
         missing = required - set(fixture)
         if missing:
             raise SystemExit(f"{fixture_path} is missing keys: {sorted(missing)}")
-
-
-def quantile(values: list[float], probability: float) -> float:
-    if not values:
-        raise ValueError("cannot calculate a quantile without samples")
-    ordered = sorted(values)
-    if len(ordered) == 1:
-        return ordered[0]
-    position = (len(ordered) - 1) * probability
-    lower = math.floor(position)
-    upper = math.ceil(position)
-    if lower == upper:
-        return ordered[lower]
-    return ordered[lower] + (ordered[upper] - ordered[lower]) * (position - lower)
 
 
 def fulfill_json(route: Route, value: object, delay_ms: int = 0) -> None:
@@ -567,23 +559,29 @@ def main() -> int:
     samples = args.samples or budgets["statistics"]["samples"]
     if samples < 1:
         raise SystemExit("--samples must be at least 1")
-    quantile_probability = float(budgets["statistics"]["quantile"])
     warmups = int(budgets["statistics"]["warmupSamples"])
+
+    shard_requested = args.shard_index is not None or args.shard_count is not None
+    if shard_requested and (args.shard_index is None or args.shard_count is None):
+        raise SystemExit("--shard-index and --shard-count must be provided together")
+    if shard_requested and args.shard_count < 1:
+        raise SystemExit("--shard-count must be at least 1")
+    if shard_requested and not 0 <= args.shard_index < args.shard_count:
+        raise SystemExit("--shard-index must be between zero and shard-count minus one")
+    sample_indexes = (
+        list(range(args.shard_index, samples, args.shard_count))
+        if shard_requested
+        else list(range(samples))
+    )
+    if not sample_indexes:
+        raise SystemExit("the selected shard owns no samples")
 
     fixture_names = [args.fixture] if args.fixture else list(budgets["fixtures"])
     if any(name not in budgets["fixtures"] for name in fixture_names):
         raise SystemExit(f"unknown fixture: {args.fixture}")
 
-    results: dict[str, Any] = {
-        "version": 1,
-        "statistics": {
-            "quantile": quantile_probability,
-            "samples": samples,
-            "warmupSamples": warmups,
-        },
-        "runs": [],
-    }
-    failures: list[str] = list()
+    started_epoch = time.time()
+    collected_runs: list[dict[str, Any]] = []
 
     with StaticServer(site_root) as base_url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -598,99 +596,105 @@ def main() -> int:
                 raw: list[dict[str, Any]] = list()
                 wire_inventories: list[list[dict[str, Any]]] = list()
                 unexpected: set[str] = set()
-                for index in range(warmups + samples):
+                shard_samples: list[dict[str, Any]] = list()
+                for index in range(warmups + len(sample_indexes)):
                     sample, sample_unexpected = measure(
                         browser, fixture_name, base_url, viewport, fixture, site_root
                     )
                     unexpected.update(sample_unexpected)
                     if index >= warmups:
                         wire_files = sample.pop("wireFiles", None)
-                        if wire_files is not None:
-                            wire_inventories.append(wire_files)
-                        raw.append(sample)
+                        sample_index = sample_indexes[index - warmups]
+                        if shard_requested:
+                            shard_samples.append(
+                                {
+                                    "index": sample_index,
+                                    "sample": sample,
+                                    "wireFiles": wire_files,
+                                }
+                            )
+                        else:
+                            if wire_files is not None:
+                                wire_inventories.append(wire_files)
+                            raw.append(sample)
                     if (index + 1) % 5 == 0:
                         print(
                             f"progress {fixture_name} [{viewport_name}] "
-                            f"{min(index + 1, warmups + samples)}/{warmups + samples}",
+                            f"{min(index + 1, warmups + len(sample_indexes))}/"
+                            f"{warmups + len(sample_indexes)}",
                             flush=True,
                         )
-
-                summary: dict[str, float] = dict()
-                for metric in METRIC_KEYS:
-                    values = [
-                        float(sample[metric])
-                        for sample in raw
-                        if metric in sample and isinstance(sample[metric], (int, float))
-                    ]
-                    if values:
-                        summary[metric] = quantile(values, quantile_probability)
-                invariant_passed = all(sample.get("invariant", 1) == 1 for sample in raw)
-                run_failures: list[str] = list()
-                wire_files = wire_inventories[0] if wire_inventories else None
-                if "wireBytes" in budget and len(wire_inventories) != len(raw):
-                    run_failures.append(
-                        "wire file inventory was not captured for every measured sample"
+                if shard_requested:
+                    collected_runs.append(
+                        {
+                            "fixture": fixture_name,
+                            "viewport": viewport_name,
+                            "samples": shard_samples,
+                            "unexpected": sorted(unexpected),
+                        }
                     )
-                elif wire_files is not None and any(
-                    inventory != wire_files for inventory in wire_inventories[1:]
-                ):
-                    run_failures.append(
-                        "wire file inventory changed across measured samples"
+                else:
+                    collected_runs.append(
+                        {
+                            "fixture": fixture_name,
+                            "viewport": viewport_name,
+                            "samples": raw,
+                            "unexpected": sorted(unexpected),
+                            "wireInventories": wire_inventories,
+                        }
                     )
-                if budget.get("invariant") and not invariant_passed:
-                    state = next(
-                        (sample.get("state") for sample in raw if sample.get("invariant") != 1),
-                        {},
-                    )
-                    run_failures.append(
-                        f"invariant {budget['invariant']} failed with state {json.dumps(state, sort_keys=True)}"
-                    )
-                for metric, ceiling in budget.items():
-                    if metric not in METRIC_KEYS:
-                        continue
-                    if args.assert_metric and metric != args.assert_metric:
-                        continue
-                    measured = summary.get(metric)
-                    if measured is None:
-                        run_failures.append(f"{metric} was not measured")
-                    elif measured > float(ceiling):
-                        run_failures.append(
-                            f"{metric} p95 {measured:.3f} exceeds {float(ceiling):.3f}"
-                        )
-                if unexpected:
-                    run_failures.append(
-                        "unexpected external requests: " + ", ".join(sorted(unexpected))
-                    )
-                status = "PASS" if not run_failures else "FAIL"
-                print(
-                    f"{status} {fixture_name} [{viewport_name}] "
-                    + ", ".join(f"{key}={value:.3f}" for key, value in sorted(summary.items()))
-                )
-                for failure in run_failures:
-                    print(f"  {failure}", file=sys.stderr)
-                failures.extend(
-                    f"{fixture_name} [{viewport_name}]: {failure}" for failure in run_failures
-                )
-                run_result = {
-                    "fixture": fixture_name,
-                    "viewport": viewport_name,
-                    "status": status,
-                    "budget": budget,
-                    "p95": summary,
-                    "samples": raw,
-                    "failures": run_failures,
-                }
-                if wire_files is not None:
-                    run_result["wireFiles"] = wire_files
-                results["runs"].append(run_result)
         browser.close()
 
-    results["status"] = "FAIL" if failures else "PASS"
-    results["failures"] = failures
+    finished_epoch = time.time()
+    if shard_requested:
+        results = {
+            "version": 1,
+            "statistics": {
+                "quantile": float(budgets["statistics"]["quantile"]),
+                "samples": samples,
+                "warmupSamples": warmups,
+            },
+            "shard": {
+                "index": args.shard_index,
+                "count": args.shard_count,
+                "sampleIndexes": sample_indexes,
+            },
+            "runs": collected_runs,
+            "timing": {
+                "started_epoch": started_epoch,
+                "finished_epoch": finished_epoch,
+                "duration_seconds": finished_epoch - started_epoch,
+                "started_at": datetime.fromtimestamp(
+                    started_epoch, timezone.utc
+                ).isoformat(),
+                "finished_at": datetime.fromtimestamp(
+                    finished_epoch, timezone.utc
+                ).isoformat(),
+            },
+        }
+    else:
+        statistics_config = {
+            **budgets["statistics"],
+            "samples": samples,
+        }
+        results = reduce_results(
+            budgets,
+            statistics_config,
+            collected_runs,
+            args.assert_metric,
+            report=True,
+        )
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(results, indent=2, allow_nan=False) + "\n")
+    if shard_requested:
+        print(
+            f"Raw shard {args.shard_index + 1}/{args.shard_count}: {args.output} "
+            f"({len(sample_indexes)} of {samples} samples per run)"
+        )
+        return 0
     print(f"Raw results: {args.output}")
-    return 1 if failures else 0
+    return 1 if results["failures"] else 0
 
 
 if __name__ == "__main__":

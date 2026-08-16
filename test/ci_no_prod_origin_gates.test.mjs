@@ -30,9 +30,11 @@ function extractJob(workflow, jobId) {
 const PR_GATE_JOBS = [
   "unit",
   "a11y-pr",
-  "a11y-pr-site",
+  "browser-pr-site",
   "a11y-pr-shard",
   "reading-level",
+  "performance-serial",
+  "performance-shard",
   "performance",
   "functional",
 ];
