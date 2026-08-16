@@ -88,6 +88,87 @@ test("buildMandatePrediction names expected event and window without compliance"
   assert.doesNotMatch(JSON.stringify(pred), /non-compliance|violat|missed filing|may not/i);
 });
 
+test("scenario projection keeps premise, prediction, observation, and next branch together", () => {
+  const makeMandate = (id, duty) => ({
+    obligation_id: id,
+    matter_id: id.replace(/\D/g, "") || "1",
+    agency_id: PARKS,
+    agency_name: "Department of Parks and Recreation",
+    duty_text: duty,
+    deliverable_type: "report",
+    deadline: { computed_date: "2029-10-01" },
+    recurrence: "one-time",
+    citation: `Administrative Code § ${id}`,
+    source: { legistar_url: `https://example.test/law/${id}` },
+  });
+  const view = buildAgencyMandatePredictionsView(PARKS, {
+    obligationsLookup: {
+      by_agency: {
+        [PARKS]: {
+          obligations: [
+            makeMandate("appeared-1", "Publish the appeared report."),
+            makeMandate("waiting-2", "Publish the pending report."),
+            makeMandate("unknown-3", "Publish the report with incomplete source coverage."),
+          ],
+        },
+      },
+    },
+    conformanceItems: [
+      {
+        mandate_id: "appeared-1",
+        data_as_of: TODAY,
+        observation: {
+          status: "observed",
+          observed_record: {
+            href: "/notices/appeared-record",
+            label: "Published annual report",
+            signal_kind: "report_or_study",
+          },
+        },
+      },
+      {
+        mandate_id: "waiting-2",
+        data_as_of: TODAY,
+        observation: { status: "on_track", observed_record: null },
+      },
+      {
+        mandate_id: "unknown-3",
+        data_as_of: TODAY,
+        observation: { status: "enrichment_pending", observed_record: null },
+      },
+    ],
+    todayISO: TODAY,
+  });
+
+  assert.deepEqual(
+    Object.fromEntries(view.predictions.map((item) => [
+      item.mandate_id,
+      item.scenario.observation.state,
+    ])),
+    {
+      "appeared-1": "appeared",
+      "unknown-3": "data_incomplete",
+      "waiting-2": "not_yet_observed",
+    },
+  );
+  assert.ok(view.predictions.every((item) => item.scenario.premise.text === item.duty_text));
+  assert.ok(view.predictions.every((item) => item.scenario.prediction.event_kind === "report_or_study"));
+
+  const html = renderMandatePredictionsSection(view);
+  for (const part of ["Premise", "Prediction", "Observation", "Next branch"]) {
+    assert.equal((html.match(new RegExp(`>${part}<`, "g")) || []).length, 3);
+  }
+  assert.match(html, /data-observation-state="appeared"[^>]*>Appeared\b/);
+  assert.match(html, /data-observation-state="not_yet_observed"[^>]*>Not yet observed\b/);
+  assert.match(html, /data-observation-state="data_incomplete"[^>]*>Data incomplete\b/);
+  assert.match(html, /href="\/notices\/appeared-record"/);
+  assert.match(html, /data-mandate-edge="report_or_study"/);
+  assert.equal((html.match(/data-mandate-edge="source_law"/g) || []).length, 3);
+  assert.doesNotMatch(html, /compliance|violation|violated|failed to comply/i);
+  assert.doesNotMatch(html, /<(?:svg|canvas)\b|role="img"/i);
+  assert.doesNotMatch(html, />◆</);
+});
+
 test("rolled-forward annual predictions name the next occurrence and prior years", () => {
   assert.ok(obligations, "agency_obligations_lookup.json required");
   const view = buildAgencyMandatePredictionsView(DHMH, {
