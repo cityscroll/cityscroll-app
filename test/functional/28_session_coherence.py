@@ -152,8 +152,12 @@ def check_following(browser: Browser, recognized: bool) -> None:
         "#your-following, #create, #packs",
         "nodes => nodes.map(node => node.id)",
     )
-    assert order == ["your-following", "create", "packs"], order
-    assert page.locator("#create").is_visible(), "public creation flow must remain available"
+    expected_order = (
+        ["your-following", "create", "packs"]
+        if recognized
+        else ["create", "your-following", "packs"]
+    )
+    assert order == expected_order, order
     if recognized:
         assert page.locator("[data-watch-action]").count() == 3
         assert page.locator('[data-watch-action] select[name="freq"]').count() == 1
@@ -161,8 +165,28 @@ def check_following(browser: Browser, recognized: bool) -> None:
             action = form.get_attribute("action") or ""
             assert action == "https://cityscroll.org/prefs", action
             assert "token=" not in action
+        page.get_by_role("tab", name="Create a watch").click()
+        assert page.locator("#create").is_visible(), "recognized readers lost the public creation flow"
     else:
+        assert page.locator("#create").is_visible(), "public creation flow must remain available"
         assert page.locator("[data-watch-action]").count() == 0
+        page.get_by_role("tab", name="Your watches").click()
+        assert page.locator("#your-following").is_visible(), "signed-out watches tab did not reveal its access state"
+        assert page.get_by_text("Open a CityScroll email to see your watches.").is_visible()
+        assert page.get_by_role("tab", name="Your watches").get_attribute("aria-selected") == "true"
+        assert not page.locator("#create").is_visible()
+        assert not page.locator("[data-following-panel-workspace]").is_visible()
+
+        page.get_by_role("tab", name="Watch sets").click()
+        assert page.locator("#packs").is_visible(), "signed-out watch sets tab did not reveal the public sets"
+        assert page.get_by_role("tab", name="Watch sets").get_attribute("aria-selected") == "true"
+        assert not page.locator("#your-following").is_visible()
+        assert not page.locator("[data-following-panel-workspace]").is_visible()
+
+        page.get_by_role("tab", name="Create a watch").click()
+        assert page.locator("#create").is_visible()
+        assert page.locator("[data-following-panel-workspace]").is_visible()
+        assert page.get_by_role("tab", name="Create a watch").get_attribute("aria-selected") == "true"
     page.close()
 
 

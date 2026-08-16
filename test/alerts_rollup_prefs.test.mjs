@@ -122,7 +122,7 @@ test("public demo contract opens the top-level watch manager in Following", () =
   const entry = demo.entries.find((row) => row.id === "alerts-rollup-prefs");
   assert.ok(entry, "demo-links must include alerts-rollup-prefs");
   assert.equal(entry.feature, "alerts-rollup-prefs");
-  assert.equal(entry.url, "following/");
+  assert.equal(entry.url, "following/?tab=watches");
   assert.equal(entry.expectations.pathname, "/following/");
   assert.ok(entry.expectations.visible.some((loc) => loc.selector === "#your-following" && loc.text === "Your watches"));
   assert.ok(entry.expectations.visible.some((loc) => loc.selector === "[data-personal-watch-list]"));
