@@ -303,7 +303,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `sections.project_connections` unavailable. The client retries the alternate Worker host for an
   incomplete 200 and otherwise renders an honest unavailable card. Keep the Pages readiness gate,
   the post-deploy API smoke (`node tools/project_connections_smoke.mjs`), and the focused browser
-  smoke (`python3 test/functional/27_project_connections_live.py`) together.
+  smoke (`python3 test/functional/27_project_connections_live.py`) together. Production deploy
+  workflows pin the browser smoke to committed warehouse canary `2022M0258`; the scheduled
+  cutover monitor keeps the script's live-fallback default. Guard the split in
+  `test/project_connections_smoke.test.mjs` so source-data drift cannot mask a successful deploy.
 - Following is static-first at `site/following/index.html` and edge-rendered at `GET /following`
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
   its summary, preview count, results, and `/subscribe` form. Create flow: live conjunction rule
