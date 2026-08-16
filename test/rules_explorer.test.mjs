@@ -31,6 +31,8 @@ import {
   isConfidentMultiNoticeRulemaking,
   stitchRulemakingRecord,
 } from "../site/rules_phase_spine.mjs";
+import { renderObjectCardActionRail } from "../site/affordance_grammar.mjs";
+import { rulesCardInteractionProjection } from "../site/rules_card_interaction.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RULES_APP_SOURCE = readFileSync(join(ROOT, "site/app/rules.mjs"), "utf8");
@@ -492,6 +494,56 @@ test("entryCurrentProcessStage prefers the latest matched process phase", () => 
   assert.ok(phase === "adoption" || phase === "public_process");
 });
 
+test("Rules card interactions gate kinetic actions on dated official context", () => {
+  const unstaged = rulesCardInteractionProjection({
+    request_id: "20260728026",
+    title: "Incomplete inspections",
+    fine_stage: "unknown",
+  });
+  assert.equal(unstaged.target.href, "/notices/20260728026");
+  assert.equal(unstaged.copy_target, "https://cityscroll.org/notices/20260728026");
+  assert.deepEqual(unstaged.kinetic_actions, []);
+  assert.equal(renderObjectCardActionRail(unstaged), "");
+
+  const undatedComment = rulesCardInteractionProjection({
+    request_id: "20260301011",
+    title: "Natural gas detectors",
+    fine_stage: "comment-open",
+    rule_url: "https://rules.cityofnewyork.us/?p=gas",
+    comment_url: "https://rules.cityofnewyork.us/?p=gas#comment",
+  });
+  assert.deepEqual(undatedComment.kinetic_actions, []);
+  assert.equal(renderObjectCardActionRail(undatedComment), "");
+
+  const comment = rulesCardInteractionProjection({
+    request_id: "20260301011",
+    title: "Natural gas detectors",
+    fine_stage: "comment-open",
+    rule_url: "https://rules.cityofnewyork.us/?p=gas",
+    comment_url: "https://rules.cityofnewyork.us/?p=gas#comment",
+    comment_by_date: "2026-05-01",
+    comment_label: "Comment · May 1, 2026",
+  });
+  assert.equal(comment.kinetic_actions[0].kind, "comment");
+  assert.equal(comment.kinetic_actions[0].attributes["data-card-fact"], "comment-deadline:2026-05-01");
+  assert.equal(comment.external_handoffs[0].kind, "official_source");
+  const commentRail = renderObjectCardActionRail(comment);
+  assert.match(commentRail, /data-card-fact="comment-deadline:2026-05-01"/);
+  assert.match(commentRail, /Comment · May 1, 2026<span aria-hidden="true">↗<\/span>/);
+
+  const hearing = rulesCardInteractionProjection({
+    request_id: "20260415011",
+    title: "Natural gas detector hearing",
+    fine_stage: "hearing",
+    rule_url: "https://rules.cityofnewyork.us/?p=gas",
+    hearing_date: "2026-04-20",
+    hearing_label: "Follow hearing · April 20, 2026",
+  });
+  assert.equal(hearing.kinetic_actions[0].kind, "attend");
+  assert.equal(hearing.kinetic_actions[0].attributes["data-card-fact"], "hearing-date:2026-04-20");
+  assert.deepEqual(hearing.external_handoffs, [], "the action destination is not duplicated as a source handoff");
+});
+
 test("public Rules domain presents chain membership as an ordinary facet", () => {
   const index = SITE_SOURCE;
   assert.equal((index.match(/id="rulesprocessrail"/g) || []).length, 1);
@@ -517,9 +569,14 @@ test("public Rules domain presents chain membership as an ordinary facet", () =>
   assert.doesNotMatch(cardTemplate, /ruleStageChip\(/);
   assert.doesNotMatch(cardTemplate, /rules-action-lead/);
   assert.match(cardTemplate, /data-card-fact/);
+  assert.match(cardTemplate, /rulesCardInteractionProjection\(/);
+  assert.match(cardTemplate, /renderObjectCardTitle\(/);
+  assert.match(cardTemplate, /renderObjectCardCopy\(/);
+  assert.match(cardTemplate, /renderObjectCardActionRail\(/);
+  assert.doesNotMatch(cardTemplate, /compactCardActions|data-link=|rule_action_open_notice/);
   const processLineTemplate = cardTemplate.slice(
     cardTemplate.indexOf('const processLine='),
-    cardTemplate.indexOf('// Next-action lead'),
+    cardTemplate.indexOf('const commentLabel='),
   );
   assert.match(processLineTemplate, /class="rules-process-line"/);
   assert.match(processLineTemplate, /class="tag open"/);

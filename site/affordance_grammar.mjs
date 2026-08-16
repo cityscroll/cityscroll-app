@@ -96,7 +96,15 @@ function normalizeAffordanceKineticAction(action, canonicalOrigin) {
   const kind = affordanceText(action?.kind || action?.type).toLowerCase();
   if (!label || !href || !kind || action?.context_ready !== true || AFFORDANCE_NAVIGATION_ONLY_ACTION_KINDS.has(kind)) return null;
   if (affordanceDestinationKind(href, canonicalOrigin) === "missing") return null;
-  return Object.freeze({ label, href, kind: kind || "kinetic", primary: action?.primary !== false });
+  return Object.freeze({
+    label,
+    href,
+    kind: kind || "kinetic",
+    primary: action?.primary !== false,
+    attributes: action?.attributes && typeof action.attributes === "object"
+      ? Object.freeze({ ...action.attributes })
+      : Object.freeze({}),
+  });
 }
 
 /**
@@ -185,12 +193,18 @@ export function renderObjectCardRelations(projection, { escape = esc } = {}) {
   return relations.length ? `<div class="ui-object-card-relations">${relations.join("")}</div>` : "";
 }
 
-export function renderObjectCardActionRail(projection, { heading = "What can I do now?", escape = esc } = {}) {
+export function renderObjectCardActionRail(projection, {
+  heading = "What can I do now?",
+  escape = esc,
+  newTabLabel = "(opens in new tab)",
+} = {}) {
   const actions = (projection?.kinetic_actions || []).map((action) => externalActionLink({
     href: action.href,
     label: action.label,
     primary: action.primary,
+    attributes: action.attributes,
     escape,
+    newTabLabel,
   }));
   if (!actions.length && !projection?.guide) return "";
   return `<section class="ui-object-card-action-rail"><h3>${escape(heading)}</h3>${actions.length ? `<div class="ui-object-card-action-list">${actions.join("")}</div>` : ""}${projection?.guide?.html || ""}</section>`;
