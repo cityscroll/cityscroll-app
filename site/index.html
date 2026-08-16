@@ -1669,9 +1669,10 @@
                 <label for="agency" data-i18n="agency_label">Agency</label>
                 <select id="agency"><option value="" data-i18n="all_agencies_loading">All agencies — loading…</option></select>
               </div>
-              <div class="field">
-                <label for="moneyboro" data-i18n="borough_label">Borough</label>
-                <select id="moneyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option></select>
+              <div class="field borough-scope-field">
+                <div class="field-label" id="moneyboro-label" data-i18n="borough_label">Borough</div>
+                <div id="money-borough-rail" role="group" aria-labelledby="moneyboro-label"></div>
+                <input type="hidden" id="moneyboro" value="">
               </div>
               <div class="field money-district-facet" data-district-facet="community">
                 <div class="field-label" id="moneycd-label" data-i18n="money_community_district_label">Community district</div>

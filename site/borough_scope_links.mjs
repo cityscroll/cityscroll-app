@@ -8,7 +8,7 @@
 
 import { nearYouUrlFromScope } from "./near_you_scope.mjs";
 import { scopeFromRouteHash } from "./scope_v0.mjs";
-import { constellationLink, filterChip } from "./affordance_grammar.mjs";
+import { constellationLink, filterChip, staticFact } from "./affordance_grammar.mjs";
 
 export const BOROUGH_SCOPE_LINKS_SCHEMA = "cityscroll.borough_scope_links.v1";
 export const BOROUGHS = Object.freeze([
@@ -19,9 +19,9 @@ export const BOROUGHS = Object.freeze([
   "Staten Island",
 ]);
 
-const SURFACE_ALIASES = Object.freeze({ zoning: "land" });
-const SURFACES = new Set(["land", "property", "rules"]);
-const GEOGRAPHIC_MAP_SURFACES = new Set(["land", "property"]);
+const SURFACE_ALIASES = Object.freeze({ contracts: "money", zoning: "land" });
+const SURFACES = new Set(["money", "land", "property", "rules"]);
+const GEOGRAPHIC_MAP_SURFACES = new Set(["money", "land", "property"]);
 
 function clean(value) {
   if (value == null) return "";
@@ -90,6 +90,9 @@ function labelFor(id, t) {
  * @param {string} [opts.selected]
  * @param {string} [opts.currentHash]
  * @param {boolean} [opts.includeCitywide]
+ * @param {{id: string, count: number}[]} [opts.options] — positive-count borough inventory
+ * @param {number} [opts.total] — count for the clear/all chip
+ * @param {number} [opts.uncoveredCount] — rows without a supported borough edge
  * @param {(key: string) => string} [opts.t]
  * @param {(value: string) => string} [opts.escape]
  */
@@ -99,13 +102,22 @@ export function boroughScopeLinksHTML(opts = {}) {
   const currentHash = opts.currentHash || globalThis.location?.hash || `#${surface}`;
   const escape = typeof opts.escape === "function" ? opts.escape : escapeHtml;
   const t = typeof opts.t === "function" ? opts.t : (key) => key;
-  const ids = ["", ...BOROUGHS, ...(opts.includeCitywide ? ["citywide"] : [])];
+  const optionCounts = Array.isArray(opts.options)
+    ? new Map(opts.options
+      .map((item) => [clean(item?.id), Number(item?.count)])
+      .filter(([id, count]) => BOROUGHS.includes(id) && Number.isFinite(count) && count > 0))
+    : null;
+  const supported = optionCounts
+    ? BOROUGHS.filter((borough) => optionCounts.has(borough))
+    : BOROUGHS;
+  const ids = ["", ...supported, ...(opts.includeCitywide ? ["citywide"] : [])];
   const links = ids.map((id) => {
     const active = selected === id;
     const href = boroughScopeHref(surface, id, currentHash);
     const edge = `${surface}.borough.${id || "all"}`;
     return filterChip({
       label: labelFor(id, t),
+      count: id ? optionCounts?.get(id) ?? null : Number(opts.total) || null,
       pressed: active,
       className: `borough-scope-link${active ? " on" : ""}`,
       attributes: {
@@ -116,6 +128,15 @@ export function boroughScopeLinksHTML(opts = {}) {
       escape,
     });
   }).join("");
+  const uncoveredCount = Number(opts.uncoveredCount) || 0;
+  const uncovered = uncoveredCount > 0
+    ? `<span data-borough-scope-uncovered="${escape(uncoveredCount)}">${staticFact({
+      label: t("map_bucket_unlocated"),
+      count: uncoveredCount,
+      className: "borough-scope-uncovered",
+      escape,
+    })}</span>`
+    : "";
   const mapHref = boroughMapPivotHref(surface, selected, currentHash);
   const mapEdge = `${surface}.map.borough.${selected || "all"}`;
   const map = GEOGRAPHIC_MAP_SURFACES.has(surface)
@@ -126,13 +147,16 @@ export function boroughScopeLinksHTML(opts = {}) {
       attributes: {
         "data-borough-map-pivot": surface,
         "data-scope-edge": mapEdge,
-        "data-near-you-link": "",
+        // The Contracts rail already composes its exact response-location
+        // scope. Letting the generic lens synchronizer rewrite this href
+        // creates a second owner that can momentarily drop the logistics basis.
+        ...(surface === "money" ? {} : { "data-near-you-link": "" }),
         "data-lens": surface,
       },
       escape,
     })
     : "";
-  return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}</div>${map}`;
+  return `<div class="borough-scope-links" data-borough-scope="${escape(surface)}" role="group" aria-label="${escape(t("borough_label"))}">${links}${uncovered}</div>${map}`;
 }
 
 export function normalizeBoroughScope(value) {
