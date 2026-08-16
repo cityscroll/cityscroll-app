@@ -65,13 +65,15 @@ test("Meetings keeps search and stage visible while secondary controls stay in o
   assert.match(meetingsSection, /id="meetings-filter-badge" hidden/);
 });
 
-test("Meetings paints an exact count and keeps absent results unpainted", () => {
+test("Meetings paints an exact count and labels an empty upcoming result band", () => {
   const render = extractFunction(feedSource, "renderHearingExplorer");
   const count = extractFunction(feedSource, "setMeetingsResultCount");
   const filters = extractFunction(feedSource, "updateMeetingsMoreFiltersState");
   assert.match(render, /setMeetingsResultCount\(uniqueRows\.length\)/);
   assert.match(count, /results_count/);
-  assert.match(render, /if\(!entries\.length\)\{[\s\S]*?el\.innerHTML="";/);
+  assert.match(render, /emptyUpcomingHTML=separatesPast&&!entries\.length/);
+  assert.match(render, /meetings_no_upcoming_matches/);
+  assert.match(render, /meetings_past_matches_heading/);
   assert.match(filters, /meetingswhen/);
   assert.match(filters, /meetingsboro/);
   assert.match(filters, /meetingsneighborhood/);
@@ -115,7 +117,7 @@ test("Meeting search cards use the shared bounded match-evidence renderer", () =
   assert.match(group, /meetingsExplorerCardHTML\(entry,terms\)/);
   assert.match(render, /const terms=filter\.keyword\?\[filter\.keyword\]:\[\]/);
   assert.match(render, /renderHearingGroup\(scope, byPlace\[scope\]\|\|\[\],terms\)/);
-  assert.match(render, /entries\.map\(entry=>meetingsExplorerCardHTML\(entry,terms\)\)/);
+  assert.match(render, /collection\.map\(entry=>meetingsExplorerCardHTML\(entry,terms\)\)/);
 });
 
 test("Meetings keeps the community-board institution pivot visible after hydration", () => {

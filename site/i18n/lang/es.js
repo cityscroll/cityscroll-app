@@ -118,6 +118,8 @@
     meetings_none_upcoming: "ninguna próxima",
     show_exact_search: "Mostrar búsqueda exacta",
     past_tag: "Pasado",
+    meetings_no_upcoming_matches: "No hay coincidencias próximas",
+    meetings_past_matches_heading: "Coincidencias anteriores",
     no_hearings_after_widening: "Amplíe la búsqueda. Esta búsqueda no tiene reuniones próximas ni recientes ya celebradas que coincidan.",
     footer_notices: "más de un millón de avisos",
     sugg_money_0: "contratos de construcción de más de $500k",

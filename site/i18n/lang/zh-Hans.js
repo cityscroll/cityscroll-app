@@ -118,6 +118,8 @@
     meetings_none_upcoming: "\u6ca1\u6709\u5373\u5c06\u4e3e\u884c\u7684\u4f1a\u8bae",
     show_exact_search: "\u663e\u793a\u7cbe\u786e\u641c\u7d22",
     past_tag: "\u5df2\u7ed3\u675f",
+    meetings_no_upcoming_matches: "\u6ca1\u6709\u5373\u5c06\u4e3e\u884c\u7684\u5339\u914d\u9879",
+    meetings_past_matches_heading: "\u8fc7\u53bb\u7684\u5339\u914d\u9879",
     no_hearings_after_widening: "\u8bf7\u6269\u5927\u641c\u7d22\u8303\u56f4\u3002\u6b64\u641c\u7d22\u5728\u5373\u5c06\u4e3e\u884c\u548c\u8fd1\u671f\u5df2\u7ed3\u675f\u7684\u4f1a\u8bae\u4e2d\u5747\u65e0\u5339\u914d\u9879\u3002",
     footer_notices: "100 万+ 条通告",
     sugg_money_0: "50 万美元以上的建筑合同",
