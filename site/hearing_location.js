@@ -144,7 +144,7 @@ function hearingCommunityBoardSignals(text) {
 }
 function hearingCommunityBoardQuery(value) {
   var query = hearingPlainText(value);
-  var match = /\bcommunity\s+board\s*(?:no\.?\s*|#\s*)?(\d{1,2})\b/i.exec(query);
+  var match = /\b(?:community\s+board|cb)\s*(?:no\.?\s*|#\s*)?(\d{1,2})\b/i.exec(query);
   if (!match) return null;
   var number = Number(match[1]);
   if (!isFinite(number) || number < 1 || number > 18) return null;
