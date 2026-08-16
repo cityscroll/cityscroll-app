@@ -57,15 +57,9 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(shardRunner, /--readiness-timeout "\$server_readiness_timeout_seconds"/);
   assert.match(shardRunner, /a11y_readiness_outer_timeout/);
   assert.match(shardRunner, /a11y_wait_for_local_site/);
-  assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}/);
-  assert.doesNotMatch(
-    ci,
-    /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/,
-    "failed-job reruns must reuse the verified artifact from the original attempt",
-  );
-  assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}[\s\S]*?overwrite: true/);
-  assert.match(ci, /- name: Download shared verified site artifact\n\s+if: success\(\)/);
-  assert.match(ci, /- name: Verify shared site artifact checksums\n\s+if: success\(\)/);
+  assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
+  assert.match(ci, /- name: Restore and verify exact-input site artifact\n\s+if: success\(\)/);
+  assert.match(ci, /uses: \.\/\.github\/actions\/use-site-artifact/);
   assert.match(ci, /- name: Run isolated accessibility shard\n\s+if: success\(\)/);
   assert.match(readiness, /readiness_url="\$\{A11Y_READY_BASE\}index\.html"/);
   assert.match(readiness, /curl --silent --show-error[^\n]*--connect-timeout 1[^\n]*"\$readiness_url"/);

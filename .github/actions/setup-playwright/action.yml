@@ -1,39 +1,42 @@
 name: Setup Playwright Chromium
 description: >-
-  Install Playwright for Python with a durable browser cache so a11y, stray-English,
-  and performance jobs do not re-download Chromium every run.
+  Install the repository-pinned Playwright for Python with revision-keyed dependency
+  and browser caches, and report setup timing for both cache outcomes.
+outputs:
+  cache-hit:
+    description: Whether the exact Playwright browser cache revision was restored.
+    value: ${{ steps.pw-cache.outputs.cache-hit }}
+  duration-seconds:
+    description: Total elapsed setup time in seconds.
+    value: ${{ steps.timing.outputs.duration-seconds }}
 inputs:
   python-version:
     description: Python version for actions/setup-python
     required: false
     default: "3.12"
-  playwright-version:
-    description: Pin when the job needs a specific playwright package
-    required: false
-    default: ""
 runs:
   using: composite
   steps:
+    - name: Start Playwright setup timing
+      id: started
+      shell: bash
+      run: echo "epoch=$(date +%s)" >> "$GITHUB_OUTPUT"
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
+        cache: pip
+        cache-dependency-path: .github/actions/setup-playwright/requirements.txt
     - name: Cache Playwright browsers
       uses: actions/cache@v4
       id: pw-cache
       with:
         path: ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ inputs.playwright-version != '' && inputs.playwright-version || 'latest' }}-v1
-        restore-keys: |
-          ${{ runner.os }}-playwright-
+        key: ${{ runner.os }}-python-${{ inputs.python-version }}-playwright-${{ hashFiles('.github/actions/setup-playwright/requirements.txt', '.github/actions/setup-playwright/action.yml') }}
     - name: Install Playwright package and Chromium
       shell: bash
       run: |
         set -euo pipefail
-        if [ -n "${{ inputs.playwright-version }}" ]; then
-          pip install "playwright==${{ inputs.playwright-version }}"
-        else
-          pip install playwright
-        fi
+        python -m pip install --requirement "$GITHUB_ACTION_PATH/requirements.txt"
         # Always ensure the Chromium build is present (cache hit skips the large
         # download). System deps via apt are only needed when the browser cache
         # missed — re-running `install --with-deps` on every job can burn the
@@ -42,3 +45,22 @@ runs:
         if [ "${{ steps.pw-cache.outputs.cache-hit }}" != "true" ]; then
           playwright install-deps chromium
         fi
+    - name: Record Playwright setup timing
+      id: timing
+      if: always()
+      shell: bash
+      run: |
+        set -euo pipefail
+        finished_epoch="$(date +%s)"
+        duration_seconds="$((finished_epoch - ${{ steps.started.outputs.epoch }}))"
+        if [ "${{ steps.pw-cache.outputs.cache-hit }}" = "true" ]; then
+          cache_result=hit
+        else
+          cache_result=miss
+        fi
+        echo "duration-seconds=${duration_seconds}" >> "$GITHUB_OUTPUT"
+        {
+          echo "### Playwright setup timing"
+          echo
+          echo "Cache ${cache_result}: ${duration_seconds}s (Python ${{ inputs.python-version }}, pinned requirements)."
+        } >> "$GITHUB_STEP_SUMMARY"

@@ -85,13 +85,20 @@ test("browser jobs use the Playwright cache composite action", () => {
   const ci = read(".github/workflows/ci.yml");
   assert.match(ci, /\.\/\.github\/actions\/setup-playwright/);
   const action = read(".github/actions/setup-playwright/action.yml");
+  const requirements = read(".github/actions/setup-playwright/requirements.txt");
   assert.match(action, /actions\/cache@v4/);
   assert.match(action, /~\/\.cache\/ms-playwright/);
+  assert.match(action, /cache-dependency-path: \.github\/actions\/setup-playwright\/requirements\.txt/);
+  assert.match(action, /hashFiles\('\.github\/actions\/setup-playwright\/requirements\.txt', '\.github\/actions\/setup-playwright\/action\.yml'\)/);
+  assert.doesNotMatch(action, /restore-keys:/);
+  assert.equal(requirements.trim(), "playwright==1.58.0");
   // Browser binary always; system deps only on cache miss so a11y does not burn
   // its budget re-running apt fonts on every warm runner.
   assert.match(action, /playwright install chromium/);
   assert.match(action, /steps\.pw-cache\.outputs\.cache-hit/);
   assert.match(action, /playwright install-deps chromium/);
+  assert.match(action, /Playwright setup timing/);
+  assert.match(action, /Cache \$\{cache_result\}: \$\{duration_seconds\}s/);
   // Cold Playwright install + multi-gate axe suite needs headroom above 10m.
   assert.match(ci, /a11y-pr:[\s\S]*?timeout-minutes:\s*20/);
 });

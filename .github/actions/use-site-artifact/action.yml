@@ -1,0 +1,92 @@
+name: Use verified site artifact
+description: Restore the exact run artifact or exact-input cache, rebuild on a miss, and verify every identity field.
+
+inputs:
+  artifact-name:
+    description: Run- and attempt-qualified artifact name.
+    required: true
+
+outputs:
+  source:
+    description: Whether the verified site came from the run artifact, exact-input cache, or a local rebuild.
+    value: ${{ steps.final.outputs.source }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node for artifact identity
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: Calculate exact build-input identity
+      id: identity
+      shell: bash
+      run: node tools/site_artifact_identity.mjs identity --commit-sha "$GITHUB_SHA" --github-output "$GITHUB_OUTPUT"
+    - name: Download run-attempt site artifact
+      id: download
+      continue-on-error: true
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: .
+    - name: Validate downloaded site artifact
+      id: artifact
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ "${{ steps.download.outcome }}" = "success" ] && \
+           node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"; then
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+        else
+          rm -rf _site _site.sha256 _site.identity.json
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+        fi
+    - name: Restore exact-input site cache
+      id: site-cache
+      if: steps.artifact.outputs.ready != 'true'
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          _site
+          _site.sha256
+          _site.identity.json
+        key: browser-pr-site-${{ runner.os }}-${{ steps.identity.outputs.build-input-identity }}
+    - name: Validate exact-input site cache
+      id: cached
+      if: steps.artifact.outputs.ready != 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ "${{ steps.site-cache.outputs.cache-hit }}" = "true" ] && \
+           node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"; then
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+        else
+          rm -rf _site _site.sha256 _site.identity.json
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+        fi
+    - name: Rebuild site after artifact and cache miss
+      if: steps.artifact.outputs.ready != 'true' && steps.cached.outputs.ready != 'true'
+      uses: ./.github/actions/build-site
+    - name: Stamp rebuilt site identity
+      if: steps.artifact.outputs.ready != 'true' && steps.cached.outputs.ready != 'true'
+      shell: bash
+      run: node tools/site_artifact_identity.mjs stamp --commit-sha "$GITHUB_SHA"
+    - name: Verify site digest and exact build identity
+      id: final
+      shell: bash
+      run: |
+        set -euo pipefail
+        node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"
+        if [ "${{ steps.artifact.outputs.ready }}" = "true" ]; then
+          source=artifact
+        elif [ "${{ steps.cached.outputs.ready }}" = "true" ]; then
+          source=cache
+        else
+          source=rebuild
+        fi
+        echo "source=${source}" >> "$GITHUB_OUTPUT"
+        {
+          echo "### Site artifact reuse"
+          echo
+          echo "Verified source: ${source}; identity: ${{ steps.identity.outputs.build-input-identity }}."
+        } >> "$GITHUB_STEP_SUMMARY"
