@@ -13,6 +13,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/agency_lifecycle_conformance.mjs` | Pure agency-scoped procurement comparison over case-keyed event logs: expected stages, observed traces, stage completeness, evidence-relative deviation counts, and the case-identity/clock publication hold. |
 | `site/pages_edge.mjs` | Pages request router for edge-rendered Browse queries and notice permalinks. `site/_worker.js` is the deployment entry; Stats routes are explicitly excluded. |
 | `site/meeting_outcomes_static.mjs` | Pure compaction and first-paint rendering for the daily per-notice Council outcome snapshot, including an explicit honest-absent state. |
+| `site/meeting_process_profile.mjs` | Pure meeting-family profile boundary: source-backed event/publication observations stay separate from versioned normative expectations; unknown and community-board families remain descriptive. |
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |
