@@ -328,11 +328,11 @@ test("unscoped meetings omit the per-notice related-record rail", () => {
   const html = renderBrowseView(view);
   assert.doesNotMatch(html, /class="browse-edge-summary"/);
   // The 40-row first paint now includes one canonical title, Copy control, and
-  // classified source handoff per row; keep that additive grammar under 75 KB.
-  assert.ok(html.length < 75_000, "unscoped meetings first paint remains bounded: " + html.length + " bytes");
+  // classified source handoff per row; keep that additive grammar under 80 KB.
+  assert.ok(html.length < 80_000, "unscoped meetings first paint remains bounded: " + html.length + " bytes");
 });
 
-test("captain six scope URLs with DCWP exhibit explicit scope/empty state by lens", () => {
+test("six scope URLs with DCWP exhibit explicit scope/empty state by lens", () => {
   const target = "consumer-and-worker-protection";
   const targetName = resolveAgencyIdentity(target).canonical_name;
   for (const facet of Object.keys(BROWSE_FACETS)) {

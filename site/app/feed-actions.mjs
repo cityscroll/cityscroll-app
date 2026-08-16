@@ -6,6 +6,7 @@ import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mj
 import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import {
+  affordanceDestinationKind,
   constellationLink,
   externalActionLink,
   officialSourceLink,
@@ -530,6 +531,29 @@ function actionRailLabel(action){
   if(vars.date&&/^\d{4}-\d{2}-\d{2}/.test(String(vars.date))) vars.date=fdate(vars.date)||vars.date;
   return t(action.label_key,vars);
 }
+function decorateGuideExternalHandoffs(html){
+  const template=document.createElement("template");
+  template.innerHTML=String(html||"");
+  template.content.querySelectorAll("a[href]").forEach(anchor=>{
+    const kind=affordanceDestinationKind(anchor.getAttribute("href"));
+    if(!["external","protocol_handoff"].includes(kind)) return;
+    anchor.classList.add("ui-external-action");
+    if(kind==="external"){
+      anchor.target="_blank";
+      anchor.rel="noopener noreferrer";
+    }
+    const existing=[...anchor.children].some(child=>
+      child.getAttribute("aria-hidden")==="true"&&child.textContent.trim()==="↗"
+    );
+    if(existing) return;
+    const glyph=document.createElement("span");
+    glyph.setAttribute("aria-hidden","true");
+    glyph.textContent="↗";
+    const announcement=[...anchor.children].find(child=>child.classList.contains("sr-only"));
+    anchor.insertBefore(glyph,announcement||null);
+  });
+  return template.innerHTML;
+}
 function actionRailGuideHTML(actions){
   const action=actions.find(item=>item.guide);
   const guide=action&&action.guide;
@@ -916,13 +940,13 @@ function actionRailGuideHTML(actions){
   const renderedSteps=guide.system==="property_reader_actions"
     ? `<div class="property-action-sections">${steps.filter(Boolean).join("")}</div>`
     : `<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>`;
-  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}${renderedSteps}${guideExtra}</details>`;
+  return decorateGuideExternalHandoffs(`<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}${renderedSteps}${guideExtra}</details>`);
 }
 // Deliberately dormant until there is a concrete, decision-useful question for the
 // aggregate. Flip this one flag to re-enable the existing component and analytics.
 const ACTION_OUTCOME_PROMPT_ENABLED = false;
 
-function actionRailHTML(actions,{externalActionRenderer=null}={}){
+function actionRailHTML(actions,{externalActionRenderer=externalActionLink}={}){
   let primaryUsed=false;
   const items=actions.map((action,index)=>{
     const label=actionRailLabel(action);
@@ -948,18 +972,17 @@ function actionRailHTML(actions,{externalActionRenderer=null}={}){
       }
       const primary=primaryUsed?"":" primary"; primaryUsed=true;
       const accessible=`${label} — ${action.destination_label}`;
-      if(externalActionRenderer){
-        return externalActionRenderer({
-          href:action.destination,
-          label,
-          primary:!!primary,
-          className:"act",
-          attributes:{"data-action-outcome-index":index},
-          escape:escUiHtml,
-          newTabLabel:t("ext_link_new_tab_sr"),
-        });
-      }
-      return `<a class="act${primary}" aria-label="${escUiHtml(accessible)}" title="${escUiHtml(action.destination_label)}" href="${escUiHtml(action.destination)}" data-action-outcome-index="${index}" ${EXT_ATTRS}>${label}${extSR()}</a>`;
+      return externalActionRenderer({
+        href:action.destination,
+        label,
+        primary:!!primary,
+        className:"act",
+        ariaLabel:accessible,
+        title:action.destination_label,
+        attributes:{"data-action-outcome-index":index},
+        escape:escUiHtml,
+        newTabLabel:t("ext_link_new_tab_sr"),
+      });
     }
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
     // Local watch (and other local navigations): use the action destination when present
