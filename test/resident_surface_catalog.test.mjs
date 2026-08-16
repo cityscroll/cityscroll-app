@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const SCRIPT = join("test", "standards", "rendered_schema_vocabulary.py");
+const SCRIPT = join("test", "standards", "resident_surface_catalog.py");
 
 function run(args) {
   return spawnSync("python3", [SCRIPT, ...args], { encoding: "utf8" });
