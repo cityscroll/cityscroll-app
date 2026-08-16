@@ -226,6 +226,12 @@ function peopleOrganizationRowHeading(row) {
   return `${row.label} · ${rowKindLabel(row.kind)} · ${row.id}`;
 }
 
+function renderOfficialRow(row) {
+  return `<li class="people-org-row" id="people-row-${esc(row.id.replace(/[^A-Za-z0-9_-]/g, "-"))}" data-people-organization-row data-row-kind="official" data-relation-state="${esc(row.relation_state)}" data-search-text="${esc(row.search_text)}">
+    <h3 class="people-org-official-heading"><span class="people-org-kind">${esc(rowKindLabel(row.kind))}</span><span aria-hidden="true"> · </span>${renderPersonRowLink(row)}</h3>
+  </li>`;
+}
+
 function renderCommitteeMembers(row) {
   if (!row.members?.length) return "";
   return `<p class="people-org-row-related"><span>Exact-person members:</span> ${row.members.map((member) => {
@@ -243,6 +249,7 @@ function renderBoardRelations(row) {
 }
 
 export function renderPeopleOrganizationRow(row) {
+  if (row.kind === "official") return renderOfficialRow(row);
   const place = row.kind === "community-board" && row.place_href
     ? `<a class="people-org-place-link" href="${esc(row.place_href)}">Discover this place in Near you</a>`
     : "";

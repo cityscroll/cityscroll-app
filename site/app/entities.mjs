@@ -315,7 +315,6 @@ async function showOfficial(personId, opts){
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
         ${noticeLink}
-        ${officialView?.view_all_href ? `<a class="act official-view-all" href="${escUiHtml(officialView.view_all_href)}">${t("official_view_all_scope")}</a>` : ""}
         <a class="view" href="${agencyHref("City Council")}">${t("official_city_council_profile")}</a>
       </div>
     </div>
