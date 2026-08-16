@@ -367,7 +367,9 @@ and at least 30 distinct retained roll-call events. The current coverage block
 is materialized in `site/data/person_votes_lookup.json` by
 `site/official_connections.mjs`; below the gate, reader copy must remain
 “published roll calls in this corpus.” Exact `entity:official:<person_id>` plus
-`votes_on` owns composed scope. Never promote name-derived officials.
+`votes_on` owns composed scope. The official profile renders its precomputed
+decision trail inline; do not send readers to a Meetings scope to see those
+votes. Never promote name-derived officials.
 Refresh snapshots: `node tools/build_rules_meetings_domain_observations.mjs`
 (extracts ULURP/ZAP keys from body at build time — raw body is not committed)
 then rebuild entity intelligence.

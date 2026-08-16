@@ -378,7 +378,7 @@ with sync_playwright() as pw:
          "gc-05 project scope survives reload", json.dumps({"url": scoped_url, **round_trip})[:260])
     p6.close()
 
-    # ---------- bounded official decision trail + composable vote scope ----------
+    # ---------- bounded official decision trail stays on the official page ----------
     p7 = ctx.new_page()
     p7.goto(BASE + "#official/7801", timeout=30000)
     p7.wait_for_selector('#official-skim [data-official-reader-label]', timeout=30000)
@@ -387,22 +387,19 @@ with sync_playwright() as pw:
       events:document.querySelectorAll('.official-decision-trail .official-event').length,
       confidence:[...document.querySelectorAll('.official-decision-trail tbody tr')]
         .every(row=>row.dataset.linkConfidence==='strong' && row.dataset.relation==='votes_on'),
-      href:document.querySelector('.official-view-all')?.getAttribute('href') || ''
+      voteRows:document.querySelectorAll('.official-decision-trail tbody tr').length,
+      meetingsVoteDetours:[...document.querySelectorAll('a[href^="#meetings?"]')]
+        .filter(link=>link.getAttribute('href').includes('connection_relation=votes_on')).length,
+      route:location.hash
     }))()""")
-    scoped = p7.evaluate("""(() => {
-      const href=document.querySelector('.official-view-all').getAttribute('href');
-      const s=CrolScope.scopeFromRouteHash(href);
-      return {domains:s.facets.domains, refs:s.facets.values.entity_refs_all,
-        relation:s.facets.values.connection_relation};
-    })()""")
     step(
         "OK" if "Published votes linked to this official" in coverage["text"]
         and coverage["events"] >= 1 and coverage["confidence"]
-        and coverage["href"].startswith("#meetings?")
-        and scoped == {"domains":["meetings"], "refs":["entity:official:7801"],
-                       "relation":"votes_on"} else "FAIL",
-        "gc-06 official coverage hold and decision scope",
-        json.dumps({"coverage":coverage, "scope":scoped}),
+        and coverage["voteRows"] >= 1
+        and coverage["meetingsVoteDetours"] == 0
+        and coverage["route"].startswith("#official/7801") else "FAIL",
+        "gc-06 official coverage and inline decision trail",
+        json.dumps({"coverage":coverage}),
     )
     p7.screenshot(path=SHOT + "official-coverage.png", full_page=True)
     p7.close()
