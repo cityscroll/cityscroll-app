@@ -58,6 +58,8 @@ function membershipKey(left, right) {
 function labelFromDecision(decision) {
   const cleanDecision = clean(decision).toLowerCase();
   if (cleanDecision === "same" || cleanDecision === "different") return cleanDecision;
+  if (cleanDecision === "accept") return "same";
+  if (cleanDecision === "reject") return "different";
   return null;
 }
 
@@ -67,6 +69,18 @@ function labelFromDecision(decision) {
  */
 export function normalizeReviewActionRow(row = {}) {
   if (!row || typeof row !== "object") return null;
+  const curationReceipt = row.schema_version === "cityscroll.curation-verdict.v1";
+  if (curationReceipt && (
+    row.reversible_effect?.operation !== "export_gold_candidate"
+    || row.reversible_effect?.status !== "candidate"
+  )) {
+    return {
+      status: "skipped",
+      reason: "not_gold_candidate",
+      action_id: clean(row.id) || null,
+      pair_id: clean(row.target?.id) || null,
+    };
+  }
   const metadata = parseObject(row.metadata || row.metadata_json);
   const evidence = parseObject(row.evidence || row.evidence_json);
   const decision = labelFromDecision(
@@ -74,11 +88,12 @@ export function normalizeReviewActionRow(row = {}) {
     || metadata.decision
     || row.action_decision,
   );
-  const left = goldSideFromRecord(row.left || evidence.left || {});
-  const right = goldSideFromRecord(row.right || evidence.right || {});
+  const candidate = row.target?.gold_candidate || {};
+  const left = goldSideFromRecord(row.left || evidence.left || candidate.left || {});
+  const right = goldSideFromRecord(row.right || evidence.right || candidate.right || {});
   const actionId = clean(row.action_id || row.id);
-  const pairId = clean(row.pair_id || row.object_id || evidence.pair_id);
-  const ts = clean(row.ts || row.created_at || row.reviewed_at);
+  const pairId = clean(row.pair_id || row.object_id || evidence.pair_id || row.target?.id);
+  const ts = clean(row.ts || row.created_at || row.reviewed_at || row.timestamp);
   if (!actionId || !pairId || !left || !right) {
     return {
       status: "skipped",
@@ -103,8 +118,9 @@ export function normalizeReviewActionRow(row = {}) {
     pair_id: pairId,
     decision,
     ts: ts || null,
-    method: clean(row.method || row.method_name || "false_split_desk") || "false_split_desk",
-    method_version: clean(row.method_version || "v1") || "v1",
+    method: clean(row.method || row.method_name || (curationReceipt ? "curation_verdict" : "false_split_desk"))
+      || "false_split_desk",
+    method_version: clean(row.method_version || (curationReceipt ? row.rule_version : "v1")) || "v1",
     left,
     right,
   };

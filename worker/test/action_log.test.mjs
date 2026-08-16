@@ -106,6 +106,16 @@ test("desk dispositions map to privacy-safe review actions", () => {
   const encoded = JSON.stringify(action);
   assert.equal(encoded.includes("desk-actor"), false);
   assert.equal(encoded.includes("should never"), false);
+
+  assert.equal(reviewActionFromDisposition({
+    id: "disp-direct-edge",
+    pair_id: "pair-abc",
+    decision: "same",
+    edge: {
+      source_record_id: "city_record:20260623008:hash-l",
+      canonical_entity_id: "vendor:hntb",
+    },
+  }), null);
 });
 
 test("append writes one queryable row with method lineage", async () => {

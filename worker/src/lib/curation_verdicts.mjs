@@ -1,4 +1,6 @@
-// D1 storage seam for append-only entity-resolution curation verdicts.
+// D1 storage seam for append-only entity-resolution gold-candidate verdicts.
+// This module is receipt-only by construction; operative links are produced by
+// a later versioned policy run, never by a desk decision.
 
 import {
   CURATION_VERDICT_SCHEMA_VERSION,
@@ -74,46 +76,7 @@ function receiptInsert(db, receipt) {
   );
 }
 
-function edgeInsert(db, edge, receipt) {
-  return db.prepare(
-    `INSERT INTO entity_link
-       (id, source_record_id, canonical_entity_id, decision, confidence, method,
-        matcher_version, evidence_json, resolution_run_id, review_status,
-        supersedes_link_id, supersession_reason, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).bind(
-    edge.id,
-    edge.source_record_id,
-    edge.canonical_entity_id,
-    edge.decision,
-    edge.confidence,
-    edge.method,
-    edge.matcher_version,
-    JSON.stringify(edge.evidence || {}),
-    edge.resolution_run_id,
-    edge.review_status,
-    edge.supersedes_link_id,
-    edge.supersession_reason,
-    receipt.timestamp,
-  );
-}
-
-function supersessionInsert(db, edge, receipt) {
-  return db.prepare(
-    `INSERT INTO entity_link_supersession
-       (id, superseding_link_id, superseded_link_id, reason, resolution_run_id, created_at)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-  ).bind(
-    `curation-sup:${receipt.id}`,
-    edge.id,
-    edge.supersedes_link_id,
-    edge.supersession_reason,
-    edge.resolution_run_id,
-    receipt.timestamp,
-  );
-}
-
-/** Append one verdict and its allowed edge effect as a single D1 batch. */
+/** Append one verdict receipt. No entity-link writer is reachable from this seam. */
 export async function appendCurationVerdict(db, input, opts = {}) {
   if (!db) return { error: "no-store" };
   const receipt = buildCurationVerdictReceipt(input, {
@@ -122,17 +85,7 @@ export async function appendCurationVerdict(db, input, opts = {}) {
   });
   if (receipt.error) return receipt;
 
-  const statements = [receiptInsert(db, receipt)];
-  const edge = receipt.reversible_effect.edge;
-  if (edge) {
-    statements.push(edgeInsert(db, edge, receipt));
-    if (edge.supersedes_link_id) statements.push(supersessionInsert(db, edge, receipt));
-  }
-  if (statements.length > 1 && typeof db.batch !== "function") {
-    return { error: "atomic-batch-required" };
-  }
-  if (typeof db.batch === "function") await db.batch(statements);
-  else await statements[0].run();
+  await receiptInsert(db, receipt).run();
   return receipt;
 }
 

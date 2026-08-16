@@ -1,11 +1,11 @@
-// Append-only curation verdict receipts for entity-resolution edges.
+// Append-only curation verdict receipts for entity-resolution gold candidates.
 //
 // This module is deliberately storage- and transport-neutral. A verdict is an
-// immutable ontology action; current state is projected from the receipt log.
-// Public serializers do not consume this shape.
+// immutable evaluation input; current state is projected from the receipt log.
+// A desk verdict never contains or applies a public entity-link mutation.
 
 export const CURATION_VERDICT_SCHEMA_VERSION = "cityscroll.curation-verdict.v1";
-export const CURATION_EFFECT_VERSION = "cityscroll.curation-effect.v1";
+export const CURATION_EFFECT_VERSION = "cityscroll.curation-effect.v2";
 export const CURATION_REVIEW_POLICY_VERSION = "curation_review_policy_v1";
 
 export const CURATION_VERDICT = Object.freeze({
@@ -15,8 +15,9 @@ export const CURATION_VERDICT = Object.freeze({
 });
 
 export const CURATION_PROVISIONAL_STATE = Object.freeze({
+  GOLD_CANDIDATE: "gold_candidate",
   ACCEPT_WITHHELD: "accept_withheld",
-  REJECTED: "rejected",
+  REJECT_WITHHELD: "reject_withheld",
   REVIEW: "review",
 });
 
@@ -57,44 +58,64 @@ function normalizedEvidenceRefs(value) {
   return refs;
 }
 
-function normalizedEdge(value) {
+function normalizedGoldSide(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
-  const id = cleanToken(value.id);
-  const sourceRecordId = cleanToken(value.source_record_id);
-  const canonicalEntityId = cleanToken(value.canonical_entity_id);
-  if (!id || !sourceRecordId || !canonicalEntityId) return null;
-  const confidence = value.confidence == null ? null : Number(value.confidence);
-  if (confidence != null && (!Number.isFinite(confidence) || confidence < 0 || confidence > 1)) {
-    return null;
-  }
-  const edge = {
-    id,
-    source_record_id: sourceRecordId,
-    canonical_entity_id: canonicalEntityId,
-    confidence,
-    method: cleanToken(value.method) || "curation_accept",
-    matcher_version: cleanToken(value.matcher_version),
-    resolution_run_id: cleanToken(value.resolution_run_id) || null,
-    supersedes_link_id: cleanToken(value.supersedes_link_id) || null,
+  const sourceSystem = cleanKind(value.source_system);
+  const nativeKey = clean(
+    value.native_key
+    || value.source_system_id
+    || value.native_record_id?.split(":").slice(1).join(":")
+    || value.source_record_id?.split(":")[1],
+  );
+  const displayName = clean(value.display_name || value.vendor_name);
+  if (!sourceSystem || !cleanToken(nativeKey) || !displayName) return null;
+  const side = {
+    source_system: sourceSystem,
+    native_key: nativeKey,
+    display_name: displayName,
   };
-  if (value.evidence && typeof value.evidence === "object" && !Array.isArray(value.evidence)) {
-    edge.evidence = structuredClone(value.evidence);
-  }
-  return edge;
+  const attrs = {};
+  const pin = clean(value.pin || value.observed_fields?.pin || value.attrs?.pin);
+  const epin = clean(value.epin || value.observed_fields?.epin || value.attrs?.epin);
+  if (pin) attrs.pin = pin;
+  if (epin) attrs.epin = epin;
+  if (Object.keys(attrs).length) side.attrs = attrs;
+  return side;
+}
+
+function normalizedGoldCandidate(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const left = normalizedGoldSide(value.left);
+  const right = normalizedGoldSide(value.right);
+  if (!left || !right) return null;
+  return {
+    entity_type: cleanKind(value.entity_type) || "vendor",
+    left,
+    right,
+  };
+}
+
+function hasDirectEdgeIntent(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const kind = clean(value.kind).toLowerCase().replace(/_/g, "-");
+  return kind === "entity-link"
+    || Object.hasOwn(value, "edge")
+    || Object.hasOwn(value, "public_edge")
+    || Object.hasOwn(value, "entity_link")
+    || Object.hasOwn(value, "provisional_edge_id")
+    || Object.hasOwn(value, "supersedes_link_id");
 }
 
 function normalizedTarget(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const kind = cleanKind(value.kind);
   const id = cleanToken(value.id);
-  if (!kind || !id) return null;
+  if (kind !== "entity_pair" || !id) return null;
   const target = { kind, id };
   const family = cleanKind(value.edge_family);
   if (family) target.edge_family = family;
-  const provisionalEdgeId = cleanToken(value.provisional_edge_id);
-  if (provisionalEdgeId) target.provisional_edge_id = provisionalEdgeId;
-  const edge = normalizedEdge(value.edge);
-  if (edge) target.edge = edge;
+  const goldCandidate = normalizedGoldCandidate(value.gold_candidate);
+  if (goldCandidate) target.gold_candidate = goldCandidate;
   return target;
 }
 
@@ -107,15 +128,16 @@ function policyFor(input, decision, target, evidenceRefs, modelVersion, ruleVers
     .filter(Boolean))];
   const missing = [];
 
-  if (decision === CURATION_VERDICT.ACCEPT) {
+  if (decision === CURATION_VERDICT.ACCEPT || decision === CURATION_VERDICT.REJECT) {
     if (requestedStatus !== "satisfied") missing.push("review_policy_unsatisfied");
-    if (!target?.edge) missing.push("materializable_edge_missing");
+    if (!target?.gold_candidate) missing.push("gold_candidate_missing");
     if (!evidenceRefs.length) missing.push("evidence_refs_missing");
     if (!modelVersion) missing.push("model_version_missing");
     if (!ruleVersion) missing.push("rule_version_missing");
   }
 
-  const status = decision === CURATION_VERDICT.ACCEPT
+  const adjudicated = decision === CURATION_VERDICT.ACCEPT || decision === CURATION_VERDICT.REJECT;
+  const status = adjudicated
     ? (missing.length ? "unsatisfied" : "satisfied")
     : (requestedStatus === "satisfied" ? "not_applicable" : requestedStatus || "not_applicable");
   return {
@@ -134,48 +156,38 @@ function effectFor(receipt) {
     reverses_receipt_id: receipt.id,
   };
 
-  if (decision !== CURATION_VERDICT.ACCEPT || policy.status !== "satisfied") {
-    const provisionalState = decision === CURATION_VERDICT.REJECT
-      ? CURATION_PROVISIONAL_STATE.REJECTED
-      : decision === CURATION_VERDICT.REVIEW
-        ? CURATION_PROVISIONAL_STATE.REVIEW
+  const goldLabel = decision === CURATION_VERDICT.ACCEPT
+    ? "same"
+    : decision === CURATION_VERDICT.REJECT
+      ? "different"
+      : null;
+  if (!goldLabel || policy.status !== "satisfied") {
+    const provisionalState = decision === CURATION_VERDICT.REVIEW
+      ? CURATION_PROVISIONAL_STATE.REVIEW
+      : decision === CURATION_VERDICT.REJECT
+        ? CURATION_PROVISIONAL_STATE.REJECT_WITHHELD
         : CURATION_PROVISIONAL_STATE.ACCEPT_WITHHELD;
     return {
       version: CURATION_EFFECT_VERSION,
-      status: decision === CURATION_VERDICT.ACCEPT ? "withheld" : "applied",
+      status: goldLabel ? "withheld" : "applied",
       operation: "retain_provisional",
       provisional_state: provisionalState,
-      edge: null,
       reversible: true,
       reverses_receipt_id: reversesReceiptId,
       undo,
     };
   }
 
-  const suppliedEdge = target.edge;
-  const supersedesLinkId = target.provisional_edge_id || suppliedEdge.supersedes_link_id || null;
-  const evidence = {
-    ...(suppliedEdge.evidence || {}),
-    curation: {
-      receipt_id: receipt.id,
-      evidence_refs: receipt.evidence_refs,
-      model_version: receipt.model_version,
-      rule_version: receipt.rule_version,
-    },
-  };
   return {
     version: CURATION_EFFECT_VERSION,
-    status: "applied",
-    operation: supersedesLinkId ? "promote_edge" : "materialize_edge",
-    provisional_state: null,
-    edge: {
-      ...suppliedEdge,
-      matcher_version: suppliedEdge.matcher_version || receipt.model_version,
-      decision: "reviewed_link",
-      review_status: "accepted",
-      evidence,
-      supersedes_link_id: supersedesLinkId,
-      supersession_reason: supersedesLinkId ? "curation_accept" : null,
+    status: "candidate",
+    operation: "export_gold_candidate",
+    provisional_state: CURATION_PROVISIONAL_STATE.GOLD_CANDIDATE,
+    gold_candidate: {
+      action_id: receipt.id,
+      pair_id: target.id,
+      label: goldLabel,
+      export_method: "review_action_export_v1",
     },
     reversible: true,
     reverses_receipt_id: reversesReceiptId,
@@ -189,6 +201,7 @@ function effectFor(receipt) {
  */
 export function buildCurationVerdictReceipt(input = {}, opts = {}) {
   if (!input || typeof input !== "object" || Array.isArray(input)) return { error: "invalid-input" };
+  if (hasDirectEdgeIntent(input.target)) return { error: "direct-edge-mutation-forbidden" };
   const id = cleanToken(opts.id || input.id);
   const actor = cleanToken(input.actor);
   const decision = clean(input.decision).toUpperCase();
@@ -246,9 +259,9 @@ export function projectCurationVerdictState(receipts = [], targetId = "") {
   }
   const active = matching.at(-1);
   return {
-    state: active.reversible_effect?.provisional_state || "accepted",
+    state: active.reversible_effect?.provisional_state || "not_exportable",
     receipt_count: matching.length,
     active_receipt_id: active.id,
-    edge: active.reversible_effect?.edge || null,
+    edge: null,
   };
 }

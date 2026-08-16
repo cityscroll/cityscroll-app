@@ -1,4 +1,4 @@
--- Append-only backstage curation verdicts for entity-resolution edges.
+-- Append-only backstage curation verdicts for entity-resolution gold candidates.
 -- Public readers do not query this relation.
 
 CREATE TABLE IF NOT EXISTS curation_verdict_receipt (
