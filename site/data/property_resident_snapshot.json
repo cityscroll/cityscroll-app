@@ -3204,6 +3204,11 @@
         "taxlot:brooklyn:146/43",
         "taxlot:brooklyn:146/46",
         "taxlot:brooklyn:146/47"
+      ],
+      "entity_refs_all": [
+        "project:P2016K0185",
+        "agency:id:housing-preservation-and-development",
+        "vendor:stem:JEMB%20ALBEE%20SQUARE"
       ]
     },
     {

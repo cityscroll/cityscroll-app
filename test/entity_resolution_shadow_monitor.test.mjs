@@ -15,6 +15,11 @@ import {
   DESK_ONLY_ENTITY_RESOLUTION_FIELDS,
   serializePublicEntityLink,
 } from "../entity_resolution/publication/index.mjs";
+import {
+  attachProjectAgencyVendorBrowseRefs,
+  buildProjectAgencyVendorEvidence,
+  mergeProjectAgencyVendorSubjectIndex,
+} from "../entity_resolution/cross_domain/index.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FIXTURE = join(ROOT, "entity_resolution/eval/fixtures/shadow_monitoring_v0.json");
@@ -154,4 +159,54 @@ test("public entity-link serialization excludes backstage verdict payloads", () 
     assert.ok(DESK_ONLY_ENTITY_RESOLUTION_FIELDS.includes(privateField));
     assert.equal(payload.includes(privateField), false);
   }
+});
+
+test("provisional project-agency-vendor candidates stay out of public bundles and pivots", () => {
+  const registry = JSON.parse(readFileSync(
+    join(ROOT, "entity_resolution/cross_domain/project_agency_vendor_evidence.json"),
+    "utf8",
+  ));
+  const property = JSON.parse(readFileSync(
+    join(ROOT, "site/data/property_domain_observations.json"),
+    "utf8",
+  ));
+  const propertyCrossDomain = JSON.parse(readFileSync(
+    join(ROOT, "site/data/property_cross_domain_lookup.json"),
+    "utf8",
+  ));
+  const accepted = buildProjectAgencyVendorEvidence({
+    registry,
+    propertyRows: property.property_rows,
+    propertyCrossDomain,
+  });
+  const publishedIndex = mergeProjectAgencyVendorSubjectIndex({}, accepted);
+  const publishedRows = attachProjectAgencyVendorBrowseRefs(property.property_rows, accepted);
+
+  registry.candidates[0].review_state = "provisional";
+  const evidence = buildProjectAgencyVendorEvidence({
+    registry,
+    propertyRows: property.property_rows,
+    propertyCrossDomain,
+  });
+  const demotedIndex = mergeProjectAgencyVendorSubjectIndex(
+    publishedIndex,
+    evidence,
+    accepted,
+  );
+  const demotedRows = attachProjectAgencyVendorBrowseRefs(
+    publishedRows,
+    evidence,
+    accepted,
+  );
+
+  assert.equal(evidence.public_bundle_count, 0);
+  assert.deepEqual(evidence.bundles, []);
+  assert.equal(evidence.receipt.provisional_candidates_excluded, 1);
+  assert.deepEqual(evidence.receipt.excluded[0].reasons, ["review_state_not_accepted"]);
+  assert.equal(JSON.stringify(evidence).includes("JEMB%20ALBEE%20SQUARE"), false);
+  assert.equal(demotedIndex["notice:20170516111"], undefined);
+  assert.equal(
+    demotedRows.find((row) => row.request_id === "20170516111").entity_refs_all,
+    undefined,
+  );
 });
