@@ -1,13 +1,21 @@
+import { isSafeSearchCanonicalRoute } from "./search_document_contract.mjs";
+
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
 const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
 const SEARCH_API_FALLBACK_ORIGIN = "https://crol-worker.crol-worker.workers.dev";
 const LANES = Object.freeze(["contracts", "rules", "meetings", "obligations"]);
-const LANE_LABELS = Object.freeze({
+const DOMAIN_LANES = Object.freeze({
   contracts: "Contracts",
   rules: "Rules",
   meetings: "Meetings",
-  obligations: "Mandates",
+  mandates: "Mandates",
+});
+const DOMAIN_TO_LANE = Object.freeze({
+  contracts: "contracts",
+  rules: "rules",
+  meetings: "meetings",
+  mandates: "obligations",
 });
 const PLACE_KEYS = Object.freeze([
   ["boro", "Borough"],
@@ -77,12 +85,15 @@ function setLaneState(root, lane, statusText, bodyText, className = "") {
   }
 }
 
-function resultLink(record) {
-  const id = clean(record?.id, 80);
-  const href = typeof record?.href === "string" && record.href.startsWith("/notices/")
-    ? record.href
-    : `/notices/${encodeURIComponent(id)}`;
-  return { id, href };
+export function searchResultHref(record) {
+  const href = clean(record?.canonical_href, 600);
+  return isSafeSearchCanonicalRoute(href, { evidenceOnly: record?.outcome === "evidence_only" })
+    ? href
+    : null;
+}
+
+export function searchResultLane(record) {
+  return DOMAIN_TO_LANE[record?.domain] || null;
 }
 
 function renderResult(record) {
@@ -91,21 +102,22 @@ function renderResult(record) {
   article.dataset.searchResult = "";
   const heading = document.createElement("h4");
   const link = document.createElement("a");
-  const target = resultLink(record);
-  link.href = target.href;
-  link.textContent = clean(record?.title) || `Notice ${target.id}`;
+  const target = searchResultHref(record);
+  if (!target) return null;
+  link.href = target;
+  link.textContent = clean(record?.title) || "Public record";
   heading.append(link);
   article.append(heading);
 
   const type = document.createElement("p");
   type.className = "topic-search-result-type";
-  type.textContent = LANE_LABELS[record?.type] || "Public record";
+  type.textContent = DOMAIN_LANES[record?.domain] || "Public record";
   article.append(type);
 
-  if (record?.snippet) {
+  if (record?.summary) {
     const snippet = document.createElement("p");
     snippet.className = "topic-search-result-snippet";
-    snippet.textContent = clean(record.snippet, 320);
+    snippet.textContent = clean(record.summary, 320);
     article.append(snippet);
   }
   return article;
@@ -114,7 +126,8 @@ function renderResult(record) {
 function renderResults(root, results) {
   const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
   for (const record of results) {
-    const lane = grouped[record?.type] ? record.type : "obligations";
+    const lane = searchResultLane(record);
+    if (!lane || !searchResultHref(record)) continue;
     grouped[lane].push(record);
   }
   for (const lane of LANES) {
@@ -127,7 +140,10 @@ function renderResults(root, results) {
     if (!items.length) continue;
     const list = document.createElement("div");
     list.className = "topic-search-results";
-    for (const record of items) list.append(renderResult(record));
+    for (const record of items) {
+      const rendered = renderResult(record);
+      if (rendered) list.append(rendered);
+    }
     elements.body.append(list);
   }
 }
@@ -194,5 +210,7 @@ function render() {
   void loadResults(root, query);
 }
 
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render, { once: true });
-else render();
+if (typeof document !== "undefined") {
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render, { once: true });
+  else render();
+}

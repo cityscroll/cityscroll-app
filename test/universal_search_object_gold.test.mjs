@@ -138,8 +138,10 @@ test("unknown publisher observations fail closed without a substantive lane", ()
   assert.equal(row.expected.domain, null);
 
   const current = publicSearchResult(row.source_observation);
-  assert.equal(current.type, "obligations", "reproduces the current fail-open default");
-  assert.notEqual(current.type, row.expected.object_type);
+  assertGoldContract(current, row.expected);
+  assert.equal(current.outcome, "evidence_only");
+  assert.equal(current.classification.method, "fail_closed");
+  assert.equal(current.domain, null);
 });
 
 test("mandates originate in quote-verified law; notices remain separate evidence", () => {
@@ -224,26 +226,18 @@ test("attachment text may add recall but cannot change type, domain, route, cove
   assertGoldContract(expectedFromProjection(row, enrichedProjection), row.expected);
 });
 
-test("current adapter mismatch is semantic and deterministic, not live-data drift", () => {
+test("canonical adapter resolves semantic type before search presentation", () => {
   const row = goldCase("mosquito-procurement");
   const current = publicSearchResult(row.source_observation);
-  assert.deepEqual(current, {
-    id: "20260710020",
-    title: "Pesticides and Mosquito Control Products",
-    type: "obligations",
-    snippet: null,
-    href: "/notices/20260710020",
-  });
-  assert.equal(row.expected.object_type, "procurement");
-  assert.equal(row.expected.canonical_href, "/browse/contracts/?mode=award&q=81626S0021001");
+  assertGoldContract(current, row.expected);
+  assert.equal(current.outcome, "indexed");
+  assert.equal(current.classification.method, "canonical_object_projection");
+  assert.deepEqual(current.provenance.evidence_hrefs, ["/notices/20260710020"]);
+  assert.notEqual(current.canonical_href, current.provenance.evidence_hrefs[0]);
 });
 
-// Enable these assertions with cityscroll-universal-search/us-00-contract-fail-closed.
-// They intentionally fail against the current notice-shaped adapter.
 for (const id of ["mosquito-procurement", "unknown-observation"]) {
-  test(`pending canonical SearchDocument adapter: ${id}`, {
-    skip: "Enable with cityscroll-universal-search/us-00-contract-fail-closed",
-  }, () => {
+  test(`canonical SearchDocument adapter: ${id}`, () => {
     const row = goldCase(id);
     assertGoldContract(publicSearchResult(row.source_observation), row.expected);
   });
