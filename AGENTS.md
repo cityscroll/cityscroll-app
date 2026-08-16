@@ -218,6 +218,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   labels only as lexical recall fields. Identity classification stays producer-owned; reviewed
   unresolved labels remain unclassified, relation states stay in provenance, and corpus coverage
   is explicit. Focused proof: `test/universal_search_agency_producer.test.mjs`.
+- **People search producer:** `site/people_search_producer.mjs` projects the promoted
+  `person_hub_lookup` through exact Council Member/Legistar PersonIds into canonical `person`
+  SearchDocuments on `/officials/<id>/`. Only its declared name, alias, role, agency, and district
+  fields enter retrieval; unresolved rows fail closed and corpus coverage stays explicit. Focused
+  proof: `test/universal_search_people_producer.test.mjs` plus the universal object gold test.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain
