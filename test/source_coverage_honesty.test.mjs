@@ -191,12 +191,12 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
   const result = validateSourceCoverageMatrix(matrix);
   assert.equal(result.ok, true, result.errors.join("; "));
   // Remeasured 2026-08-12: PASSPort + Legistar + Checkbook + person-hub
-  // constellation + ULURP recommendation retention populate source_records (complete 12/18).
+  // constellation + ULURP recommendation + ZAP retention populate source_records (complete 13/19).
   // Attachments stay empty-declared-live.
-  assert.equal(result.measurement.after.covered, 12);
+  assert.equal(result.measurement.after.covered, 13);
   assert.equal(result.measurement.by_status["empty-declared-live"], 1);
   assert.equal(result.measurement.by_status.partial, 1);
-  assert.equal(result.measurement.by_status.complete, 12);
+  assert.equal(result.measurement.by_status.complete, 13);
   assert.equal(result.measurement.by_status.gap, 4);
   for (const id of [
     "passport-public-contracts",
@@ -209,6 +209,7 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
     "cfb-campaign-contributions",
     "ulurp-recommendation-pdfs",
     "ulurp-recommendations",
+    "zap-projects",
   ]) {
     const row = matrix.sources.find((s) => s.id === id);
     assert.equal(row?.dual_write?.after, "complete", id);
@@ -221,7 +222,7 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
     { cwd: ROOT, encoding: "utf8" },
   );
   assert.equal(check.status, 0, check.stderr || check.stdout);
-  assert.match(check.stdout, /live 12\/18 complete/);
+  assert.match(check.stdout, /live 13\/19 complete/);
   assert.match(check.stdout, /empty-declared-live=1/);
 });
 
