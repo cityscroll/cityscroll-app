@@ -11,6 +11,7 @@ import {
   normalizeCityRecordMeeting,
   normalizeCommunityBoardMeeting,
 } from "../site/meeting_object_contract.mjs";
+import { materializeMeetingSearchDocument } from "../site/meeting_search_producer.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { verifyQuote } from "../tools/law_mandates/quote_verify.mjs";
 import { publicSearchResult } from "../worker/src/search.mjs";
@@ -188,6 +189,11 @@ test("source-qualified meetings retain provenance and their own canonical routes
     assert.ok(meeting.source_keys.length > 0, id);
     assert.ok(meeting.publisher_identifier, id);
     assert.notEqual(row.expected.canonical_href, `/notices/${meeting.publisher_identifier}`, id);
+
+    const document = materializeMeetingSearchDocument(meeting);
+    assertGoldContract(document, row.expected);
+    assert.equal(document.object_ref, meeting.meeting_id, id);
+    assert.deepEqual(document.provenance.source_keys, meeting.source_keys, id);
   }
 });
 
