@@ -72,8 +72,9 @@ says notice `20260707026` is due on 2026-08-18; the next source revision says 20
 and points back with `supersedes_event_id`. The current valid-time projection uses the
 corrected due day without deleting the earlier envelope. A future two-axis reader can use
 the ledger write boundary to recover either what was retained before the correction or
-what was retained after it. The public one-axis projection cannot answer that historical
-knowledge question and does not claim to.
+what was retained after it. The bounded composed-graph reader described below now answers
+that question for procurement notices. The public constellation `as_of` control remains a
+one-axis valid/publication projection and does not claim a historical-knowledge answer.
 
 ### Clocks (never invent)
 
@@ -201,6 +202,21 @@ evidence returns `unknown`; an empty registry remains explicitly `empty`.
 This is incremental view maintenance over the existing civic-time event and
 derived-feature freshness contracts. It adds no database, scheduler, cache, or
 parallel materialization service.
+
+### Composed graph belief-time pilot
+
+`site/civic_time_composed_graph.mjs` adds one bounded query over the retained
+`procurement_notice` case family. It consumes this ledger's four-clock mapping and the
+shared subject-link and edge-provenance contracts. At a requested belief time it selects
+the latest retained event revision and identity-link observation, while preserving each
+selected object's civic-valid interval. Its receipt records belief time separately from
+query processing time; processing time never controls membership.
+
+Corrections are append-only. Querying before the retained PASSPort correction returns the
+earlier response deadline, while querying after it returns the corrected deadline without
+modifying the earlier envelope. Identity-link versions are selected before the public
+publication gate runs, so a later provisional or evidence-only observation removes the
+public edge instead of falling back to, or visually upgrading, an older accepted link.
 
 ### Non-goals
 
