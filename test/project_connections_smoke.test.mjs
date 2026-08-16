@@ -76,5 +76,14 @@ test("production deploys gate API readiness before Pages and verify the rendered
     assert.match(workflow, /project_connections_smoke\.mjs/);
     assert.match(workflow, /setup-playwright/);
     assert.match(workflow, /27_project_connections_live\.py/);
+    const browserSmoke = workflow.match(
+      /      - name: Post-deploy project-connections browser smoke[\s\S]*?(?=\n      - name:|$)/,
+    )?.[0];
+    assert.ok(browserSmoke, "expected the post-deploy browser smoke step");
+    assert.match(
+      browserSmoke,
+      /CROL_PROJECT_CONNECTIONS_ID:\s*"2022M0258"/,
+      "deploy smoke must use the committed warehouse canary instead of a live-fallback record",
+    );
   }
 });
