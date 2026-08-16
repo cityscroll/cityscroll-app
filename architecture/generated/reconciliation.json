@@ -39,10 +39,10 @@
       "value": null
     }
   ],
-  "generated_at": "2026-08-16T07:44:06Z",
+  "generated_at": "2026-08-16T11:57:03Z",
   "facts": {
     "path": "architecture/generated/facts.json",
     "artifact_current": true,
-    "regenerated_commit": "8008dc908eebfda5f97a74ff12f1647314e25fb5"
+    "regenerated_commit": "5fd07e098a6dc36a86a2ed127628292ecf6be5eb"
   }
 }
