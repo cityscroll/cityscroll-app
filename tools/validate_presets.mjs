@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-// Validate task shortcuts and rotating suggestions against the same live datasets their
-// destination views use. `--write` refreshes the committed receipt and rotating-suggestion
-// fallbacks; `--check` replays the receipt's resolved filters against current data and fails
-// on drift.
+// Validate task shortcuts and rotating suggestions. `--write` refreshes the committed receipt
+// and rotating-suggestion fallbacks from publisher data; `--check` validates only that committed
+// snapshot and its checked-in consumers, so required checks never depend on publisher uptime.
 //
 // Homepage scenario-route anchors were removed (owner noise cut). Scenario hashes still live
 // in the receipt and demo-links catalog for deep-link validation; this tool no longer rewrites
@@ -30,7 +29,8 @@ const RECEIPT = join(ROOT, "site", "data", "preset-validation.json");
 const WORKER_SUGGESTIONS = join(ROOT, "worker", "src", "lib", "suggestions.mjs");
 const WRITE = process.argv.includes("--write");
 const CHECK = process.argv.includes("--check");
-const OFFLINE = process.argv.includes("--offline");
+const OFFLINE_FLAG = process.argv.includes("--offline");
+const SNAPSHOT_ONLY = CHECK;
 const NL_BASE = (process.env.CROL_WORKER_URL || "https://api.cityscroll.org").replace(/\/+$/, "");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -470,15 +470,15 @@ async function main() {
   // Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
   // upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
   // fail-closed gate into a flaky one.
-  if (OFFLINE && !CHECK) throw new Error("--offline requires --check");
-  if (OFFLINE && !validScenarioSnapshot(previous?.scenarios)) {
+  if (OFFLINE_FLAG && !CHECK) throw new Error("--offline requires --check");
+  if (SNAPSHOT_ONLY && !validScenarioSnapshot(previous?.scenarios)) {
     throw new Error("committed preset scenario receipt is missing or malformed");
   }
-  if (OFFLINE && !validSuggestionSnapshot(previous?.suggestions)) {
+  if (SNAPSHOT_ONLY && !validSuggestionSnapshot(previous?.suggestions)) {
     throw new Error("committed preset suggestion receipt is missing or malformed");
   }
-  const scenarios = OFFLINE ? previous.scenarios : await validateScenarios(previous);
-  const suggestions = OFFLINE
+  const scenarios = SNAPSHOT_ONLY ? previous.scenarios : await validateScenarios(previous);
+  const suggestions = SNAPSHOT_ONLY
     ? previous.suggestions
     : await validateSuggestions(previous?.suggestions, previous?.dataDate);
   let html = await readFile(INDEX, "utf8");
@@ -504,7 +504,7 @@ async function main() {
     }
     console.log(
       `preset validation green for ${Object.keys(scenarios).length} shortcuts and ` +
-        `${suggestions.candidates.length} suggestions (${OFFLINE ? `snapshot ${previous.dataDate}` : TODAY})`,
+        `${suggestions.candidates.length} suggestions (${SNAPSHOT_ONLY ? `snapshot ${previous.dataDate}` : TODAY})`,
     );
   } else {
     for (const [id, selected] of Object.entries(scenarios)) html = replaceRoute(html, id, selected);

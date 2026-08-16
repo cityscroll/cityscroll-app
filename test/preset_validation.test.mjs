@@ -143,8 +143,10 @@ test("a hand-edited fallback remains ineligible for CI refresh", () => {
 });
 
 test("required CI validates the committed preset receipt without publisher access", () => {
-  assert.match(ciSource, /node tools\/validate_presets\.mjs --check --offline/);
+  assert.match(ciSource, /node tools\/validate_presets\.mjs --check/);
   assert.doesNotMatch(ciSource, /PRESET_BASE_SHA|validate_presets\.mjs --write/);
+  assert.match(validatorSource, /const SNAPSHOT_ONLY = CHECK/);
+  assert.match(validatorSource, /const scenarios = SNAPSHOT_ONLY \? previous\.scenarios/);
 });
 
 test("live SODA fetch retries with exponential backoff on transient timeouts", () => {

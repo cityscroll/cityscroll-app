@@ -31,7 +31,7 @@ summary: >-
   A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
   and an owner-triggered pointer to one exact reviewed commit without changing
   the stable GitHub Pages host.
-updated: 2026-08-15
+updated: 2026-08-16
 sources:
   - README.md
   - site/index.html
@@ -104,7 +104,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 46ae00e3ff6d16549aefed3c8b3d72d2488fe0fed24e2eaca7d267208d6a111b
+sources_hash: 36dafedc9070ef82f058d3e74305bcc482ffce72cc65a6692649b9c5ce5ba87c
 ---
 
 # crol-list — architecture
