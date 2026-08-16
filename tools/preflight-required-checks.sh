@@ -267,8 +267,8 @@ run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
 run_and_fail node --test test/*.test.mjs
 run_banner "Unit tests (site + worker)" "Preset snapshot receipt is internally consistent" \
-  "node tools/validate_presets.mjs --check --offline"
-run_and_fail node tools/validate_presets.mjs --check --offline
+  "node tools/validate_presets.mjs --check"
+run_and_fail node tools/validate_presets.mjs --check
 run_and_fail node --test test/contract/*.test.mjs
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \

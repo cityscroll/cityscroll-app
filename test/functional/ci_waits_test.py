@@ -23,7 +23,7 @@ sys.modules["playwright.sync_api"] = sync_api
 
 ASSETS = pathlib.Path(__file__).parent / "assets"
 sys.path.insert(0, str(ASSETS))
-from ci_waits import ROUTE_STATE_DEFAULTS, wait_for_route_state  # noqa: E402
+from ci_waits import ROUTE_STATE_DEFAULTS, wait_for_app_ready, wait_for_route_state  # noqa: E402
 
 
 class TimedOutPage:
@@ -54,7 +54,24 @@ class TimedOutPage:
         }
 
 
+class ReadyPage:
+    def __init__(self):
+        self.expression = None
+
+    def wait_for_function(self, expression, *, arg, timeout):
+        self.expression = expression
+        self.arguments = (arg, timeout)
+
+
 class RouteStateReceiptTest(unittest.TestCase):
+    def test_app_readiness_waits_for_the_completed_boot_barrier(self):
+        page = ReadyPage()
+
+        wait_for_app_ready(page, timeout=321)
+
+        self.assertIn('document.body?.dataset.appReady === "true"', page.expression)
+        self.assertEqual(page.arguments, (None, 321))
+
     def test_timeout_emits_bounded_metadata_then_reraises(self):
         page = TimedOutPage()
         output = io.StringIO()

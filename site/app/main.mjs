@@ -91,6 +91,10 @@ await import("./boot.mjs");
 // privacy instrumentation ran. Module loading is deferred, so re-apply the same form mask after
 // boot to preserve that ordering guarantee.
 globalThis.CROLClarity?.applyInputMasking(document);
+// Browser checks and route consumers need a completion barrier, not merely the
+// presence of functions imported near the start of the graph. Without this
+// marker, a click can race the first applyHash() and be overwritten by boot.
+document.body?.setAttribute("data-app-ready", "true");
 }
 
 if (isNeutralHome) {
