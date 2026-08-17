@@ -85,6 +85,15 @@ test("map drill-throughs carry the shared scope into server-owned area documents
   assert.match(pure, /scope=virtual|locationScope === "virtual"/);
 });
 
+test("location matching resolves one exact target before adopting page state", () => {
+  assert.match(island, /async function locationTargetHref\(preferred, fallback\)/);
+  assert.match(island, /const boroughDocument = await fetchNearYouDocument\(boroughHref\)/);
+  assert.doesNotMatch(island, /await adoptDocument\(boroughLink\.href\)/);
+  assert.match(island, /messageLocationMatched/);
+  assert.match(island, /messageLocationUpdateFailed/);
+  assert.match(near, /data-message-location-update-failed="Location matched \{district\}, but the page could not update\./);
+});
+
 test("contract response geography is visibly distinct from performance geography", () => {
   const activity = JSON.parse(readFileSync(new URL("../site/data/district_activity.json", import.meta.url), "utf8"));
   const layer = activity.basis_layers.contract_action_address;

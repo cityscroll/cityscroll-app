@@ -10,6 +10,36 @@ import { resolveDistricts } from "../council_district_lookup.mjs";
 import { nearYouUrlFromMapHash } from "../near_you_scope_runtime.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
+const NEAR_YOU_STRING_DATASETS = Object.freeze({
+  all_boroughs: "translationAllBoroughs",
+  borough_label: "translationBoroughLabel",
+  context_strip_lbl: "translationContextStripLabel",
+});
+
+function installNearYouLocalization() {
+  if (typeof globalThis.t !== "function") {
+    globalThis.t = (key, values = {}) => {
+      let value = root?.dataset[NEAR_YOU_STRING_DATASETS[key]] || key;
+      for (const [name, replacement] of Object.entries(values)) {
+        value = value.replaceAll(`{${name}}`, replacement);
+      }
+      return value;
+    };
+  }
+  if (typeof globalThis.applyStrings !== "function") {
+    globalThis.applyStrings = () => {
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        if (node.children.length === 0) node.textContent = globalThis.t(node.dataset.i18n);
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach((node) => {
+        node.setAttribute("aria-label", globalThis.t(node.dataset.i18nAria));
+      });
+    };
+  }
+}
+
+installNearYouLocalization();
+
 const wired = new WeakSet();
 let currentViewBox = null;
 
@@ -37,12 +67,20 @@ function setLinked(id, on) {
   for (const node of linkedPair(id)) node.classList.toggle("is-linked", on);
 }
 
-async function adoptDocument(href, { replaceHistory = false } = {}) {
+async function fetchNearYouDocument(href) {
   const response = await fetch(href, { headers: { Accept: "text/html" } });
   if (!response.ok) throw new Error(`near-you-response-${response.status}`);
   const next = new DOMParser().parseFromString(await response.text(), "text/html");
   const incoming = next.querySelector("[data-near-you-root]");
   if (!incoming) throw new Error("near-you-document-root-missing");
+  return { href: response.url || href, incoming, next };
+}
+
+async function adoptDocument(href, { replaceHistory = false } = {}) {
+  const prepared = await fetchNearYouDocument(href);
+  const { incoming, next } = prepared;
+  // Resolve optional synchronization dependencies before committing any page state.
+  const placeContext = await import("./place-context.mjs");
   const currentMast = document.querySelector(".document-mast");
   const incomingMast = next.querySelector(".document-mast");
   if (currentMast && incomingMast) currentMast.replaceWith(document.importNode(incomingMast, true));
@@ -68,7 +106,6 @@ async function adoptDocument(href, { replaceHistory = false } = {}) {
   if (title) document.title = title;
   const updateHistory = replaceHistory ? history.replaceState : history.pushState;
   updateHistory.call(history, { nearYou: true }, "", href);
-  const placeContext = await import("./place-context.mjs");
   placeContext.sync();
   wireIsland();
   root.querySelector("#near-results-heading")?.focus?.({ preventScroll: true });
@@ -161,6 +198,22 @@ function boroughFromCommunity(id) {
   return ({ M: "Manhattan", X: "Bronx", K: "Brooklyn", Q: "Queens", R: "Staten Island" })[String(id || "")[0]] || null;
 }
 
+function areaHref(container, id, baseHref) {
+  if (!container || !id) return null;
+  const link = container.querySelector(`[data-map-area="${CSS.escape(id)}"]`);
+  const href = link?.getAttribute("href");
+  return href ? new URL(href, baseHref).toString() : null;
+}
+
+async function locationTargetHref(preferred, fallback) {
+  const direct = areaHref(root, preferred, location.href);
+  if (direct) return direct;
+  const boroughHref = areaHref(root, fallback, location.href);
+  if (!boroughHref || !preferred) return boroughHref;
+  const boroughDocument = await fetchNearYouDocument(boroughHref);
+  return areaHref(boroughDocument.incoming, preferred, boroughDocument.href);
+}
+
 function wireGeolocation() {
   const button = root.querySelector("[data-use-location]");
   if (!button || wired.has(button)) return;
@@ -173,31 +226,34 @@ function wireGeolocation() {
     button.disabled = true;
     status(copy("messageLocationFinding"));
     navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+      let preferred = null;
+      let fallback = null;
+      let href = null;
       try {
         const response = await fetch(new URL("../data/district_boundaries.json", import.meta.url));
         const layer = response.ok ? await response.json() : null;
         const found = resolveDistricts(coords.latitude, coords.longitude, layer);
-        const preferred = root.dataset.level === "council_district"
+        preferred = root.dataset.level === "council_district"
           ? found.council_district
           : found.community_district;
-        const fallback = boroughFromCommunity(found.community_district);
-        let link = preferred
-          ? root.querySelector(`[data-map-area="${CSS.escape(preferred)}"]`)
-          : null;
-        if (!link && fallback) {
-          const boroughLink = root.querySelector(`[data-map-area="${CSS.escape(fallback)}"]`);
-          if (boroughLink && preferred) {
-            await adoptDocument(boroughLink.href);
-            link = root.querySelector(`[data-map-area="${CSS.escape(preferred)}"]`);
-          } else {
-            link = boroughLink;
-          }
-        }
-        if (!link) throw new Error("district-missing");
-        await adoptDocument(link.href);
-        status(copy("messageLocationMatched", { district: preferred || fallback }));
+        fallback = boroughFromCommunity(found.community_district);
+        href = await locationTargetHref(preferred, fallback);
       } catch {
         status(copy("messageLocationUnmatched"));
+        button.disabled = false;
+        return;
+      }
+      if (!href) {
+        status(copy("messageLocationUnmatched"));
+        button.disabled = false;
+        return;
+      }
+      const district = preferred || fallback;
+      try {
+        await adoptDocument(href);
+        status(copy("messageLocationMatched", { district }));
+      } catch {
+        status(copy("messageLocationUpdateFailed", { district }));
       } finally {
         button.disabled = false;
       }
