@@ -11,6 +11,13 @@
 set -u
 cd "$(dirname "$0")/../.." || exit 1   # repo root
 
+if [ -z "${CROL_BASE:-}" ]; then
+  if ! tools/prepare_functional_site.sh; then
+    echo "failed to prepare primary static documents" >&2
+    exit 1
+  fi
+fi
+
 SERVER_PID=""
 SERVER_READY_FILE=""
 if [ -z "${CROL_BASE:-}" ]; then
