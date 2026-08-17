@@ -173,6 +173,11 @@ def main():
             install_routes(bare)
             bare.goto(base + "#exam", wait_until="load")
             wait_for_url(bare, "**/browse/exams/", label="bare exam route forwarding")
+            wait_for_function(
+                bare,
+                "() => document.body.dataset.appReady === 'true'",
+                label="bare exam route application ready",
+            )
             assert bare.locator("#tab-exams").evaluate(
                 "element => element.classList.contains('active')"
             ), "the bare #exam compatibility route should resolve by intent to Exams"
