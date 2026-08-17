@@ -50,6 +50,17 @@ test("fitness rules report source, target, and rule name", () => {
   }]);
 });
 
+test("People and Exams owner modules cannot import each other", () => {
+  const violations = evaluateDependencyRules([
+    { from: "site/people_organizations_surface.mjs", to: "site/exams_surface.mjs" },
+    { from: "site/exams_surface.mjs", to: "site/people_organizations_surface.mjs" },
+  ]);
+  assert.deepEqual(violations.map(({ rule }) => rule), [
+    "people-owner-must-not-import-exams-owner",
+    "exams-owner-must-not-import-people-owner",
+  ]);
+});
+
 test("C4 parser retains declared containers and relationships", () => {
   const model = parseC4Model(modelText);
   assert.ok(model.elements.some((element) => element.id === "browser_site" && element.type === "container"));
