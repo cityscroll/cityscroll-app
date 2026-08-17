@@ -3,13 +3,17 @@ import {
   browseListState,
   PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
 } from "./browse_list_contract.mjs";
+import {
+  EXAMS_SURFACE,
+  PEOPLE_ORGANIZATIONS_SURFACE,
+} from "./browse_surface_contracts.mjs";
 
 export const EXAMS_ALIAS_BROWSE_VIEW = Object.freeze({
-  tab: "people",
-  label: "Exams",
-  route: "/browse/exams/",
+  tab: EXAMS_SURFACE.compatibility.runtimeTab,
+  label: EXAMS_SURFACE.label,
+  route: EXAMS_SURFACE.route,
   countLabel: "civil-service exams",
-  description: "Civil-service exam schedules, applications, eligible lists, and published outcomes.",
+  description: EXAMS_SURFACE.description,
   sources: "DCAS exam schedules · published exam records",
   rowsKey: "rows",
 });
@@ -17,7 +21,7 @@ export const EXAMS_ALIAS_BROWSE_VIEW = Object.freeze({
 export const PEOPLE_LIST_BROWSE_VIEW = Object.freeze({
   tab: "browse",
   label: "People and organizations",
-  route: "/browse/people/",
+  route: PEOPLE_ORGANIZATIONS_SURFACE.route,
   countLabel: "typed civic objects",
   description: "Officials, agencies, vendors, committees, community boards, and published appointments.",
   sources: "Person hub · committee graph · agency constellation",

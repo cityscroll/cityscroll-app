@@ -1,5 +1,5 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
-import { browseRouteAlias } from "../browse_route_aliases.mjs";
+import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT, browseRouteAlias } from "../browse_route_aliases.mjs";
 import {
   externalActionLink as renderExternalActionLink,
   installObjectCardCopyLinks,
@@ -373,9 +373,8 @@ function showTab(name, push){
 }
 
 const BROWSE_CONCEPT_DOCUMENT_PATHS = new Set([
-  "/browse/people",
+  ...BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT,
   "/browse/places",
-  "/browse/staffing",
 ]);
 
 function isBrowseConceptDocumentLink(href){

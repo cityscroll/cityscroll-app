@@ -9,6 +9,11 @@ import { aliasHash, browseRouteAlias } from "../browse_route_aliases.mjs";
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 import {
+  BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT,
+  BROWSE_DOCUMENT_FACET_HASHES_COMPAT,
+  STAFFING_SURFACE,
+} from "../browse_surface_contracts.mjs";
+import {
   focusOfficialProfileSection,
   officialProfileSectionRoute,
 } from "../official_profile_navigation.mjs";
@@ -17,17 +22,14 @@ import {
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
    hash grammar remains as an internal adapter for controls and retained item routes. */
 const DOCUMENT_FACET_HASHES=Object.freeze({
-  contracts:"money",staffing:"people",zoning:"land",property:"property",rules:"rules",meetings:"meetings",
+  contracts:"money",...BROWSE_DOCUMENT_FACET_HASHES_COMPAT,zoning:"land",property:"property",rules:"rules",meetings:"meetings",
 });
 // These are static Browse documents, not SPA panes. Keep this closed route list
 // aligned with BROWSE_CONCEPTS without importing the renderer into the inline
 // reconstruction path.
 const DOCUMENT_CONCEPT_ROUTES=new Map([
-  ["people","people"],
+  ...BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT,
   ["places","places"],
-  // /browse/staffing/ is the retained document route for the unified
-  // People + organizations surface. Exams own /browse/exams/ separately.
-  ["staffing","people"],
 ]);
 function documentRouteRaw(){
   const path=location.pathname.replace(/\/+$/,"")||"/";
@@ -225,7 +227,7 @@ function serializeState(){
     // route; otherwise a tab switch must mint the clean Staffing document URL.
     const guideRouteMarker = ["view", "guide"].join("=");
     const explicitGuideRoute = location.hash.includes(guideRouteMarker)
-      || (location.pathname === "/browse/staffing/" && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1])
+      || (location.pathname === STAFFING_SURFACE.route && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1])
       || Boolean(browseRouteAlias(location.pathname));
     if(explicitGuideRoute){
       const facetState=globalThis.careerFacetState || {};

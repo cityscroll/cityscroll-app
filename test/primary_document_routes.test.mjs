@@ -20,6 +20,7 @@ import { encodeTraversalPath } from "../site/traversal_path.mjs";
 import { primaryDocumentOutputs, sharedMeetingOutputs } from "../tools/build_primary_documents.mjs";
 import { buildBrowseAliasDocument } from "../site/primary_document_view.mjs";
 import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
+import { BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT } from "../site/browse_surface_contracts.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
@@ -944,7 +945,7 @@ test("client island preserves static Browse concept documents", () => {
   const routing = read("../site/app/routing.mjs");
   const core = read("../site/app/core.mjs");
   assert.match(routing, /DOCUMENT_CONCEPT_ROUTES/);
-  assert.match(routing, /\["staffing","people"\]/);
+  assert.equal(new Map(BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT).get("staffing"), "people");
   assert.match(routing, /browse-concept\//);
   assert.match(routing, /if\(raw\.startsWith\("browse-concept\/"\)\) return true/);
   assert.match(core, /BROWSE_CONCEPT_DOCUMENT_PATHS/);
