@@ -3064,6 +3064,10 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 - `site/precomputed_address_geocoder.mjs` is the exact full-address → BBL read boundary over the 64-shard official PAD artifact in `site/data/address-index/`. Only real and vanity PAD ranges are admitted; pseudo-addresses, ambiguity, and misses stay `unknown`. Refresh with `node tools/build_geocoder_address_index.mjs --from-live`; verify the complete committed snapshot with `--check` and `test/geocoder_snapshot.test.mjs`.
 
+## Suggested-query destination certification
+
+- Contracts “Try asking” candidates are certified through `site/suggestion_destination.mjs`, which replays the canonical route over the same resident snapshot, keyword SearchDocuments, and final Money filters as `site/app/money-list.mjs`. Both the daily worker receipt and `tools/validate_presets.mjs` fallback must carry the destination route, corpus clocks, and final count; proxy-only Money counts are not display-eligible. Focused proof: `test/suggestion_destination.test.mjs` and `worker/test/suggestions.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

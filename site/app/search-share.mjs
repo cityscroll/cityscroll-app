@@ -854,7 +854,7 @@ async function nlTranslateLens(lens, opts){
 }
 
 const NL_SUGGESTIONS_FALLBACK = {
-  money: [0, 1, 2, 3, 4, 5, 6, 7],
+  money: [3, 4, 5, 6],
   people: [1, 3],
   land: [0, 1, 2, 3, 4],
   property: [0, 1, 2, 4],
@@ -863,9 +863,19 @@ const NL_SUGGESTIONS_FALLBACK = {
   alerts: [0, 1, 2, 3],
 };
 let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
+let NL_SUGGESTIONS_MIN_RESULTS = null;
 
 function currentSuggestionIndices(lens){
-  const validated = NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens];
+  let validated = NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens];
+  if(lens==="money" && validated){
+    validated=validated.filter(candidate=>{
+      const destination=candidate?.destination;
+      return destination?.schema==="cityscroll.money_suggestion_destination.v1"
+        && String(destination.route||"").startsWith("/browse/contracts/")
+        && Number(destination.finalCount)===Number(candidate.count)
+        && Number(candidate.count)>=Number(NL_SUGGESTIONS_MIN_RESULTS||0);
+    });
+  }
   if(validated && validated.length) return validated.map(c=>c.idx);
   return NL_SUGGESTIONS_FALLBACK[lens] || [];
 }
@@ -948,7 +958,11 @@ async function loadValidatedSuggestions(){
     const r = await workerFetch("/suggestions", null, 6000);
     if(r && r.ok){
       const data = await r.json();
-      if(data && data.byLens){ NL_SUGGESTIONS_VALIDATED = data.byLens; rerenderAllSuggestions(); }
+      if(data && data.byLens){
+        NL_SUGGESTIONS_VALIDATED = data.byLens;
+        NL_SUGGESTIONS_MIN_RESULTS = Number(data.minResults)||null;
+        rerenderAllSuggestions();
+      }
     }
   }catch(e){ /* stays on the static fallback */ }
 }

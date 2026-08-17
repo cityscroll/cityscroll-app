@@ -21,6 +21,8 @@ import {
   SUGGESTION_POOL,
   suggestionCountParams,
 } from "../worker/src/lib/suggestions.mjs";
+import moneyResidentSnapshot from "../site/data/money_resident_snapshot.json" with { type: "json" };
+import { certifyMoneySuggestionDestination } from "../site/suggestion_destination.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const INDEX = join(ROOT, "site", "index.html");
@@ -297,6 +299,23 @@ function isUnresolvedSuggestionError(error) {
 }
 
 async function countSuggestion(candidate, filter) {
+  if (candidate.lens === "money" && !filter?.route) {
+    const keyword = Array.isArray(filter?.keywords) ? filter.keywords.filter(Boolean).join(" ") : "";
+    const usesKeywordSearch = keyword && !filter?.closingWeek && (
+      filter?.noticeType === "award"
+      || (!filter?.noticeType && (filter?.minAmount || filter?.maxAmount))
+    );
+    const searchPayload = usesKeywordSearch
+      ? await fetchJSON(`${NL_BASE}/search?q=${encodeURIComponent(keyword)}`)
+      : null;
+    const destination = certifyMoneySuggestionDestination({
+      filter,
+      snapshot: moneyResidentSnapshot,
+      searchPayload,
+      today: TODAY,
+    });
+    return { count: Number(destination?.finalCount) || 0, destination };
+  }
   const query = suggestionCountParams(candidate.lens, filter, TODAY);
   if (!query) return 0;
   if (typeof query.readRows === "function") {
@@ -319,6 +338,17 @@ async function mapLimit(items, limit, fn) {
   return results;
 }
 
+function fruitfulRouteFaithfulSuggestionIndices(candidates, minResults) {
+  const byLens = fruitfulSuggestionIndices(candidates, minResults);
+  byLens.money = (byLens.money || []).filter((idx) => {
+    const candidate = candidates.find((item) => item.lens === "money" && item.idx === idx);
+    return candidate?.destination?.schema === "cityscroll.money_suggestion_destination.v1"
+      && candidate.destination.route?.startsWith("/browse/contracts/")
+      && Number(candidate.destination.finalCount) === Number(candidate.count);
+  });
+  return byLens;
+}
+
 export async function validateLiveSuggestions(previous, {
   check = CHECK,
   resolve = resolveSuggestion,
@@ -333,11 +363,19 @@ export async function validateLiveSuggestions(previous, {
     if (check && (!prior || prior.text !== candidate.text)) {
       throw new Error(`suggestion receipt is missing or stale for ${candidate.lens}:${candidate.idx}`);
     }
-    if (check) return { candidate: { ...candidate, filter: prior.filter, count: await count(candidate, prior.filter) } };
+    if (check) {
+      const measured = await count(candidate, prior.filter);
+      const countValue = typeof measured === "object" ? measured.count : measured;
+      const destination = typeof measured === "object" ? measured.destination : prior.destination;
+      return { candidate: { ...candidate, filter: prior.filter, count: countValue, ...(destination ? { destination } : {}) } };
+    }
 
     try {
       const filter = await resolve(candidate);
-      return { candidate: { ...candidate, filter, count: await count(candidate, filter) } };
+      const measured = await count(candidate, filter);
+      const countValue = typeof measured === "object" ? measured.count : measured;
+      const destination = typeof measured === "object" ? measured.destination : null;
+      return { candidate: { ...candidate, filter, count: countValue, ...(destination ? { destination } : {}) } };
     } catch (error) {
       if (!isUnresolvedSuggestionError(error)) throw error;
       if (!prior?.filter || !Number.isFinite(Number(prior.count))) {
@@ -347,8 +385,17 @@ export async function validateLiveSuggestions(previous, {
           { cause: error },
         );
       }
+      if (candidate.lens === "money" && !prior.filter.route) {
+        const measured = await count(candidate, prior.filter);
+        const countValue = typeof measured === "object" ? measured.count : measured;
+        const destination = typeof measured === "object" ? measured.destination : null;
+        return {
+          candidate: { ...candidate, filter: prior.filter, count: countValue, ...(destination ? { destination } : {}) },
+          retained: `${candidate.lens}:${candidate.idx}`,
+        };
+      }
       return {
-        candidate: { ...candidate, filter: prior.filter, count: prior.count },
+        candidate: { ...candidate, filter: prior.filter, count: prior.count, ...(prior.destination ? { destination: prior.destination } : {}) },
         retained: `${candidate.lens}:${candidate.idx}`,
       };
     }
@@ -359,16 +406,18 @@ export async function validateLiveSuggestions(previous, {
     warn(`TRANSIENT preset suggestion resolution gap; retaining inherited candidates: ${retained.join(", ")}`);
   }
   if (retained.length / SUGGESTION_POOL.length >= REFRESH_UNRESOLVED_FRACTION) {
-    if (!validSuggestionSnapshot(previous)) {
+    const migratedByLens = fruitfulRouteFaithfulSuggestionIndices(candidates, PRESET_MIN_RESULTS);
+    const migrated = { minResults: PRESET_MIN_RESULTS, byLens: migratedByLens, candidates };
+    if (!validSuggestionSnapshot(migrated)) {
       throw new Error("cannot retain inherited suggestions after a broad resolver outage; receipt is invalid");
     }
     warn(
-      `TRANSIENT preset suggestion outage; retaining the inherited fallback wholesale ` +
-        `(${retained.length}/${SUGGESTION_POOL.length} candidates unresolved)`,
+      `TRANSIENT preset suggestion outage; retaining inherited filters with route-faithful recounts ` +
+      `(${retained.length}/${SUGGESTION_POOL.length} candidates unresolved)`,
     );
-    return previous;
+    return migrated;
   }
-  const byLens = fruitfulSuggestionIndices(candidates, PRESET_MIN_RESULTS);
+  const byLens = fruitfulRouteFaithfulSuggestionIndices(candidates, PRESET_MIN_RESULTS);
   for (const lens of ["money", "people", "land", "property", "rules", "meetings", "alerts"]) {
     if ((byLens[lens] || []).length < 1) throw new Error(`no fruitful rotating suggestion remains for ${lens}`);
   }
@@ -393,7 +442,12 @@ function validSuggestionSnapshot(snapshot) {
             typeof candidate.text === "string" &&
             candidate.filter &&
             typeof candidate.filter === "object" &&
-            Number.isFinite(Number(candidate.count)),
+            Number.isFinite(Number(candidate.count)) &&
+            (candidate.lens !== "money" || candidate.filter.route || (
+              candidate.destination?.schema === "cityscroll.money_suggestion_destination.v1" &&
+              candidate.destination.route?.startsWith("/browse/contracts/") &&
+              Number(candidate.destination.finalCount) === Number(candidate.count)
+            )),
         );
       }) &&
       snapshot.byLens &&
