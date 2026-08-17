@@ -3,6 +3,10 @@ import {
   renderUniversalSearchResultHtml,
 } from "./universal_search_relevance_ux.mjs";
 import { renderUniversalSearchCoverageHtml } from "./universal_search_coverage_receipt.mjs";
+import {
+  buildSearchLensHandoff,
+  searchLaneActionLabel,
+} from "./search_lens_handoff.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -10,14 +14,11 @@ const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
 const SEARCH_API_FALLBACK_ORIGIN = "https://crol-worker.crol-worker.workers.dev";
 const LANES = Object.freeze([
   "contracts",
+  "people-organizations",
+  "land",
   "rules",
   "meetings",
-  "obligations",
-  "people",
-  "places",
-  "staffing",
-  "property",
-  "zoning",
+  "exams",
 ]);
 // Stable resident labels are also inspected by entity surfaces that hand
 // results into Search; keep the product-domain vocabulary centralized here.
@@ -109,6 +110,7 @@ function laneElements(root, lane) {
     section,
     status: section?.querySelector(".topic-search-lane-status"),
     body: section?.querySelector(".topic-search-lane-body"),
+    action: section?.querySelector("[data-search-lane-action]"),
   };
 }
 
@@ -118,6 +120,10 @@ function setLaneState(root, lane, statusText, bodyText, className = "") {
   if (elements.body) {
     elements.body.className = `topic-search-lane-body${className ? ` ${className}` : ""}`;
     elements.body.textContent = bodyText;
+  }
+  if (elements.action) {
+    elements.action.replaceChildren();
+    elements.action.hidden = true;
   }
 }
 
@@ -149,21 +155,47 @@ function appendFamilyReceipt(body, family) {
   body.append(receipt);
 }
 
+function uiText(key, vars = {}) {
+  if (typeof globalThis.t === "function") return globalThis.t(key, vars);
+  if (key === "search_handoff_open_lane") return `Open ${vars.lens} results`;
+  return key;
+}
+
+function appendLaneAction(elements, familyId, payload) {
+  const handoff = buildSearchLensHandoff(familyId, payload, location.href);
+  if (!elements.action || !handoff) return;
+  const anchor = document.createElement("a");
+  anchor.className = "act topic-search-lane-link";
+  anchor.href = handoff.href;
+  anchor.textContent = uiText("search_handoff_open_lane", {
+    lens: searchLaneActionLabel(familyId),
+  });
+  anchor.dataset.searchHandoffSchema = handoff.schema;
+  anchor.dataset.searchHandoffFamily = familyId;
+  const sourceRef = handoff.edge_provenance?.source_observation_ref;
+  if (sourceRef) anchor.dataset.sourceObservationRef = sourceRef;
+  elements.action.replaceChildren(anchor);
+  elements.action.hidden = false;
+}
+
 function renderResults(root, payload) {
   const results = Array.isArray(payload?.results) ? payload.results : [];
   const families = new Map((payload?.lanes || []).map((family) => [family?.id, family]));
   const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
   for (const record of results) {
     const lane = searchResultLane(record);
-    if (!lane || !searchResultHref(record)) continue;
-    grouped[lane].push(record);
+    const familyId = DOMAIN_LANE_TO_FAMILY[lane];
+    if (!familyId || !searchResultHref(record)) continue;
+    grouped[familyId].push(record);
   }
-  for (const lane of LANES) {
-    const items = grouped[lane];
-    const elements = laneElements(root, lane);
+  for (const familyId of LANES) {
+    const family = families.get(familyId);
+    const familyCards = Array.isArray(family?.cards) ? family.cards : [];
+    const items = familyCards.length ? familyCards : grouped[familyId];
+    const elements = laneElements(root, familyId);
     if (!elements.body) continue;
-    const family = families.get(DOMAIN_LANE_TO_FAMILY[lane]);
-    elements.status.textContent = items.length ? `${items.length} result${items.length === 1 ? "" : "s"}` : "No matches";
+    const count = Number.isInteger(family?.count) ? family.count : items.length;
+    elements.status.textContent = count ? `${count} result${count === 1 ? "" : "s"}` : "No matches";
     elements.body.className = "topic-search-lane-body";
     elements.body.replaceChildren();
     if (!items.length) {
@@ -178,6 +210,7 @@ function renderResults(root, payload) {
         elements.body.textContent = "No keyword matches in this snapshot.";
       }
       appendFamilyReceipt(elements.body, family);
+      appendLaneAction(elements, familyId, payload);
       continue;
     }
     const list = document.createElement("div");
@@ -188,7 +221,12 @@ function renderResults(root, payload) {
     }
     elements.body.append(list);
     appendFamilyReceipt(elements.body, family);
+    appendLaneAction(elements, familyId, payload);
   }
+  const selected = clean(new URLSearchParams(location.search).get("lane"), 80);
+  root.querySelectorAll("[data-search-lane]").forEach((section) => {
+    section.classList.toggle("is-returned-lane", section.dataset.searchLane === selected);
+  });
 }
 
 function renderCoverage(root, coverage) {

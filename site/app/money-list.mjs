@@ -208,7 +208,7 @@ function renderMoneyActiveFilters(){
     noticeType:filter.noticeType, agency:filter.agency, keywords:filter.keywords,
     minAmount:filter.minAmount, ...moneyNlResolved,
   });
-  box.innerHTML=interpretedSearchRowHTML("money", filter, items.map(moneyActiveFilterChip));
+  box.innerHTML=(globalThis.searchHandoffArrivalHTML?.("money")||"")+interpretedSearchRowHTML("money", filter, items.map(moneyActiveFilterChip));
   const scopeChip=routeScopeFacetChip();
   if(scopeChip) box.insertAdjacentHTML("beforeend",`<div class="active-scope-state" role="status">${scopeChip}</div>`);
   const locationSummary=globalThis.MoneyActionLocations?.moneyLocationFilterSummaryHTML?.(moneyLocationFilter,{t,esc:escUiHtml});

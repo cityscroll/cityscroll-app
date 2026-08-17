@@ -260,6 +260,7 @@ function searchLane(id, title, description) {
   return `<section class="topic-search-lane" data-search-lane="${esc(id)}" aria-labelledby="search-lane-${esc(id)}">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-${esc(id)}">${esc(title)}</h3><p>${esc(description)}</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>`;
 }
 
@@ -281,12 +282,7 @@ export function renderSearchDocument() {
       ${searchLane("land", "Land", "Zoning and land-use projects.")}
       ${searchLane("rules", "Rules", "Published rulemaking records.")}
       ${searchLane("meetings", "Meetings", "Public meetings and decisions.")}
-      ${searchLane("obligations", "Mandates", "Published duties and requirements.")}
-      ${searchLane("people", "People and organizations", "Officials, agencies, and civic organizations.")}
-      ${searchLane("places", "Community boards", "Borough-qualified community boards.")}
-      ${searchLane("staffing", "Civil-service exams", "Publisher-identified exams and schedules.")}
-      ${searchLane("property", "Properties", "Exact property records and addresses.")}
-      ${searchLane("zoning", "Land use", "Projects and review records.")}
+      ${searchLane("exams", "Exams", "Publisher-identified civil-service exams and schedules.")}
     </div>
   </div>`;
 }

@@ -726,6 +726,14 @@
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
+  .search-handoff-arrival{display:block;margin-block-end:var(--space-3)}
+  .search-handoff-arrival-title{margin:0 0 var(--space-2)}
+  .search-handoff-arrival-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2)}
+  .search-handoff-arrival-actions .qchip{margin:0}
+  .search-handoff-topic a{display:inline-flex;align-items:center;justify-content:center;min-inline-size:24px;min-block-size:24px;margin-inline-start:4px;color:inherit;font-weight:800;text-decoration:none}
+  .search-handoff-back{font-weight:700}
+  .search-handoff-evidence{margin:var(--space-2) 0 0;max-inline-size:78ch;font-size:13px;line-height:1.5;text-transform:none;letter-spacing:0}
+  .search-handoff-evidence.is-unavailable{color:var(--ink-soft)}
   .lens-resultbar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap;margin:var(--space-3) 0 var(--space-1)}
   .lens-count{font:600 13px/1.3 var(--font-sc);letter-spacing:.02em;color:var(--ink-soft)}
   .lens-count:empty{display:none}
@@ -1634,46 +1642,32 @@
       <section class="topic-search-lane" data-search-lane="contracts" aria-labelledby="search-lane-contracts">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-contracts">Contracts</h3><p>Public contract opportunities and awards.</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>
       <section class="topic-search-lane" data-search-lane="people-organizations" aria-labelledby="search-lane-people-organizations">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-people-organizations">People + organizations</h3><p>Officials, people, agencies, and public bodies.</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>
       <section class="topic-search-lane" data-search-lane="land" aria-labelledby="search-lane-land">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-land">Land</h3><p>Zoning and land-use projects.</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>
       <section class="topic-search-lane" data-search-lane="rules" aria-labelledby="search-lane-rules">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-rules">Rules</h3><p>Published rulemaking records.</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>
       <section class="topic-search-lane" data-search-lane="meetings" aria-labelledby="search-lane-meetings">
     <header class="topic-search-lane-head"><div><h3 id="search-lane-meetings">Meetings</h3><p>Public meetings and decisions.</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>
-      <section class="topic-search-lane" data-search-lane="obligations" aria-labelledby="search-lane-obligations">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-obligations">Mandates</h3><p>Published duties and requirements.</p></div><span class="topic-search-lane-status">Waiting</span></header>
+      <section class="topic-search-lane" data-search-lane="exams" aria-labelledby="search-lane-exams">
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-exams">Exams</h3><p>Publisher-identified civil-service exams and schedules.</p></div><span class="topic-search-lane-status">Waiting</span></header>
     <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="people" aria-labelledby="search-lane-people">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-people">People and organizations</h3><p>Officials, agencies, and civic organizations.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="places" aria-labelledby="search-lane-places">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-places">Community boards</h3><p>Borough-qualified community boards.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="staffing" aria-labelledby="search-lane-staffing">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-staffing">Civil-service exams</h3><p>Publisher-identified exams and schedules.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="property" aria-labelledby="search-lane-property">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-property">Properties</h3><p>Exact property records and addresses.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="zoning" aria-labelledby="search-lane-zoning">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-zoning">Land use</h3><p>Projects and review records.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <div class="topic-search-lane-action" data-search-lane-action hidden></div>
   </section>
     </div>
   </div></div>
