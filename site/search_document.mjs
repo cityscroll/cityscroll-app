@@ -418,6 +418,74 @@ function renderSemanticResults(root, response) {
   }
 }
 
+function renderCombinedResults(root, response, keywordPayload) {
+  root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
+  root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
+  const method = root.querySelector("[data-search-method-value]");
+  if (method) {
+    method.textContent = [
+      tr("topic_search_passage_matches", null, "Source-passage matches"),
+      tr("topic_search_keyword_fallback", null, "Keyword matches"),
+    ].join(" · ");
+  }
+  const semanticCoverage = root.querySelector("[data-semantic-coverage]");
+  if (semanticCoverage) {
+    semanticCoverage.hidden = false;
+    semanticCoverage.textContent = tr(
+      "topic_search_bounded_coverage",
+      { date: response.corpus.observed_on || response.index.observed_on || "—" },
+      "Results cover a bounded source set observed {date}.",
+    );
+  }
+  renderCoverage(root, keywordPayload?.coverage);
+
+  const families = new Map((keywordPayload?.lanes || []).map((family) => [family?.id, family]));
+  const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
+  for (const record of keywordPayload?.results || []) {
+    const lane = searchResultLane(record);
+    if (!lane || !searchResultHref(record)) continue;
+    grouped[lane].push(record);
+  }
+
+  for (const group of response.groups) {
+    const elements = semanticLaneElements(root, group.id);
+    if (!elements.body || !elements.status) continue;
+    const semanticHrefs = new Set(group.candidates
+      .map((candidate) => candidate.source.canonical_href)
+      .filter(Boolean));
+    const keywordResults = grouped[group.id].filter((record) => (
+      !semanticHrefs.has(searchResultHref(record))
+    ));
+    const count = group.candidates.length + keywordResults.length;
+    elements.body.className = "topic-search-lane-body";
+    elements.body.setAttribute("aria-busy", "false");
+    elements.body.replaceChildren();
+    elements.status.textContent = count === 1
+      ? tr("one_result", null, "1 result")
+      : count
+        ? tr("results_count", { n: count }, "{n} results")
+        : tr("topic_search_no_matches_status", null, "No matches");
+    if (!count) {
+      elements.body.textContent = tr(
+        "topic_search_bounded_empty",
+        null,
+        "No matches in this bounded source set.",
+      );
+      appendFamilyReceipt(elements.body, families.get(group.id));
+      continue;
+    }
+    const list = document.createElement("div");
+    list.className = "topic-search-results";
+    group.candidates.forEach((candidate) => list.append(renderSemanticCandidate(candidate)));
+    for (const record of keywordResults) {
+      const rendered = renderResult(record, keywordPayload);
+      if (rendered) list.append(rendered);
+    }
+    elements.body.append(list);
+    appendFamilyReceipt(elements.body, families.get(group.id));
+  }
+}
+
 function renderLegacyResults(root, payload) {
   root.querySelector("[data-semantic-lanes]")?.setAttribute("hidden", "");
   root.querySelector("[data-keyword-lanes]")?.removeAttribute("hidden");
@@ -513,42 +581,53 @@ async function loadResults(root, query) {
       "is-loading",
     );
   }
-  try {
-    const payload = await fetchSearchResults(query);
-    const semantic = normalizeSemanticCandidateResponse(payload, { expectedQuery: query });
-    if (semantic.state === "typed") {
-      if (!semantic.groups.some((group) => group.candidates.length)) {
-        try {
-          const keywordPayload = await fetchKeywordResults(query);
-          if (keywordPayload.results.length) {
-            lastResponse = { state: "legacy", payload: keywordPayload };
-            renderLegacyResults(root, keywordPayload);
-            return;
-          }
-        } catch {
-          // The typed bounded-empty response remains valid when keyword search is unavailable.
-        }
-      }
-      renderSemanticResults(root, semantic);
-      lastResponse = semantic;
-      return;
-    }
-    if (Array.isArray(payload?.results)) {
-      lastResponse = { state: "legacy", payload };
-      renderLegacyResults(root, payload);
-      return;
-    }
-    throw new Error("untyped candidate response");
-  } catch {
-    for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
-      setSemanticLaneState(
-        root,
-        family,
-        tr("topic_search_unavailable_status", null, "Unavailable"),
-        tr("could_not_reach", null, "The latest CityScroll snapshot is unavailable. Retry."),
-        "is-error",
-      );
-    }
+  const [candidateAttempt, keywordAttempt] = await Promise.allSettled([
+    fetchSearchResults(query),
+    fetchKeywordResults(query),
+  ]);
+  const candidatePayload = candidateAttempt.status === "fulfilled" ? candidateAttempt.value : null;
+  const keywordPayload = keywordAttempt.status === "fulfilled" ? keywordAttempt.value : null;
+  const semantic = candidatePayload
+    ? normalizeSemanticCandidateResponse(candidatePayload, { expectedQuery: query })
+    : null;
+  const candidateLegacy = Array.isArray(candidatePayload?.results) ? candidatePayload : null;
+  const hasSemanticResults = semantic?.state === "typed"
+    && semantic.groups.some((group) => group.candidates.length);
+  const hasKeywordResults = Boolean(keywordPayload?.results.length);
+
+  if (semantic?.state === "typed" && hasSemanticResults && hasKeywordResults) {
+    lastResponse = { state: "combined", semantic, keyword: keywordPayload };
+    renderCombinedResults(root, semantic, keywordPayload);
+    return;
+  }
+  if (keywordPayload && hasKeywordResults) {
+    lastResponse = { state: "legacy", payload: keywordPayload };
+    renderLegacyResults(root, keywordPayload);
+    return;
+  }
+  if (semantic?.state === "typed") {
+    renderSemanticResults(root, semantic);
+    lastResponse = semantic;
+    return;
+  }
+  if (candidateLegacy) {
+    lastResponse = { state: "legacy", payload: candidateLegacy };
+    renderLegacyResults(root, candidateLegacy);
+    return;
+  }
+  if (keywordPayload) {
+    lastResponse = { state: "legacy", payload: keywordPayload };
+    renderLegacyResults(root, keywordPayload);
+    return;
+  }
+  for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
+    setSemanticLaneState(
+      root,
+      family,
+      tr("topic_search_unavailable_status", null, "Unavailable"),
+      tr("could_not_reach", null, "The latest CityScroll snapshot is unavailable. Retry."),
+      "is-error",
+    );
   }
 }
 
@@ -556,6 +635,9 @@ let lastResponse = null;
 
 function repaintResults(root) {
   if (lastResponse?.state === "typed") renderSemanticResults(root, lastResponse);
+  else if (lastResponse?.state === "combined") {
+    renderCombinedResults(root, lastResponse.semantic, lastResponse.keyword);
+  }
   else if (lastResponse?.state === "legacy") {
     renderLegacyResults(root, lastResponse.payload);
   }
