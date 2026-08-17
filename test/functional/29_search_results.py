@@ -91,6 +91,15 @@ MEETING_FALLBACK = typed_result(
     href="/meetings/meeting%3Acity_record%3Afixture-meeting",
 )
 
+MOSQUITO_FALLBACK = typed_result(
+    "mosquito",
+    title="Mosquito control products",
+    object_type="procurement",
+    domain="contracts",
+    lens="notices",
+    href="/browse/contracts/?mode=award&q=mosquito",
+)
+
 POLICE_CONTRACT_SNAPSHOT = {
     "schema_version": 1,
     "delivery_tier": "resident-snapshot",
@@ -201,17 +210,22 @@ def fallback_payload(results, query):
 def candidate_response(query, passage_text=None):
     candidates = []
     if passage_text:
-        source_id = "city_record_notice:20260715041"
-        passage_id = f"{source_id}:p0001"
-        candidates.append({
+        sources = [("20260715041", "rules")]
+        if query == "police":
+            sources.append(("20260723022", "meetings"))
+        for native_id, civic_object_family in sources:
+            source_id = f"city_record_notice:{native_id}"
+            passage_id = f"{source_id}:p0001"
+            candidates.append({
             "candidate_id": passage_id,
+            "civic_object_family": civic_object_family,
             "source": {
                 "id": source_id,
                 "family": "city_record_notice",
-                "native_id": "20260715041",
+                "native_id": native_id,
                 "title": passage_text.split("\n", 1)[0],
-                "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
-                "canonical_href": "/notices/20260715041",
+                "url": f"https://a856-cityrecord.nyc.gov/RequestDetail/{native_id}",
+                "canonical_href": f"/notices/{native_id}",
             },
             "passage": {
                 "id": passage_id,
@@ -224,7 +238,7 @@ def candidate_response(query, passage_text=None):
             "hard_scope_state": "matched",
             "coverage_state": "partial",
             "freshness": {"state": "observed", "observed_on": "2026-08-04"},
-        })
+            })
     return {
         "schema": "cityscroll.semantic_retrieval.candidate_response.v1",
         "query": query,
@@ -232,13 +246,13 @@ def candidate_response(query, passage_text=None):
         "corpus": {
             "schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
             "manifest_version": 1,
-            "manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88",
+            "manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
             "content_sha256": "b" * 64,
             "observed_on": "2026-08-04",
         },
         "index": {
             "schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
-            "version": "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226",
+            "version": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e",
             "corpus_sha256": "d" * 64,
             "observed_on": "2026-08-04",
         },
@@ -267,8 +281,15 @@ def main():
                     return
             json_response(route, candidate_response(query))
 
+        def keyword_search_api(route):
+            query = parse_qs(urlparse(route.request.url).query).get("q", [""])[0].lower()
+            results = [MOSQUITO_FALLBACK] if query == "mosquito" else []
+            json_response(route, fallback_payload(results, query))
+
         page.route("https://api.cityscroll.org/search/candidates?*", search_api)
         page.route("https://crol-worker.crol-worker.workers.dev/search/candidates?*", search_api)
+        page.route("https://api.cityscroll.org/search?*", keyword_search_api)
+        page.route("https://crol-worker.crol-worker.workers.dev/search?*", keyword_search_api)
         page.route(
             "**/data/money_resident_snapshot.json",
             lambda route: json_response(route, POLICE_CONTRACT_SNAPSHOT),
@@ -294,6 +315,20 @@ def main():
             source_link = results.first.locator("a[href^='https://a856-cityrecord.nyc.gov/']")
             assert source_link.count() == 1
             assert source_link.get_attribute("target") == "_blank"
+            if term == "police":
+                assert page.locator(
+                    '[data-semantic-family="rules"] [data-semantic-candidate]'
+                ).count() == 1
+                assert page.locator(
+                    '[data-semantic-family="meetings"] [data-semantic-candidate]'
+                ).count() == 1
+                assert page.locator('[data-semantic-family="city_record_notice"]').count() == 0
+
+        page.goto(f"{BASE}/search/?q=mosquito", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_selector('[data-search-lane="contracts"] [data-search-result]')
+        mosquito = page.locator('[data-search-lane="contracts"] [data-search-result]').first
+        assert "Mosquito control products" in (mosquito.text_content() or "")
+        assert mosquito.locator("mark").text_content().lower() == "mosquito"
 
         fallback_cases = [
             ("fallback", LEGACY_FALLBACK, "/browse/contracts/?", "Opened Contracts", "contracts"),

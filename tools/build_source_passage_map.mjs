@@ -12,6 +12,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CORPUS = join(ROOT, "warehouse/experiments/semantic-layer-trial/corpus.json");
+const CLASSIFICATION_MANIFEST = join(ROOT, "warehouse/experiments/semantic-layer-trial/source_manifest.json");
 const OUTPUT = join(ROOT, "warehouse/experiments/semantic-layer-trial/source_passage_map.json");
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -28,7 +29,12 @@ function serializeMap(map) {
 
 export function buildAndWriteSourcePassageMap({ check = false } = {}) {
   const corpusText = readFileSync(CORPUS, "utf8");
-  const map = buildSourcePassageMap(JSON.parse(corpusText), { corpusSha256: sha256(corpusText) });
+  const classificationManifestText = readFileSync(CLASSIFICATION_MANIFEST, "utf8");
+  const map = buildSourcePassageMap(JSON.parse(corpusText), {
+    corpusSha256: sha256(corpusText),
+    classificationManifest: JSON.parse(classificationManifestText),
+    classificationManifestSha256: sha256(classificationManifestText),
+  });
   const serialized = serializeMap(map);
   if (check) {
     if (!existsSync(OUTPUT)) throw new Error("source passage map is missing; rebuild it without --check");

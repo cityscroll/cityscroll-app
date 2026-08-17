@@ -269,10 +269,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   universal-search domain lanes.
 - **Semantic topic-search consumer:** `site/semantic_topic_search.mjs` is the fail-closed adapter
   for `cityscroll.semantic_retrieval.candidate_response.v1`. It verifies the sr1 corpus and sr2
-  passage receipts, rejects public scores and unsafe evidence, and groups only by the three
-  declared source families; never infer a civic lens or jurisdiction from passage text. The
-  `/search/` renderer keeps the legacy keyword response as the endpoint-owned fallback. Focused
-  proof: `test/semantic_topic_search.test.mjs` and `test/functional/29_search_results.py`.
+  passage receipts, rejects public scores and unsafe evidence, retains the three source families
+  as provenance, and groups presentation by the six source-backed civic-object families declared
+  in `warehouse/experiments/semantic-layer-trial/source_manifest.json`; never infer a civic lens or
+  jurisdiction from passage text. The `/search/` renderer uses the legacy keyword response when
+  the typed semantic result is empty or the candidate endpoint falls back. Focused proof:
+  `test/semantic_topic_search.test.mjs` and `test/functional/29_search_results.py`.
 - **Typed search handoff:** `site/search_lens_handoff.mjs` carries a selected SearchDocument into
   its established Browse route through scope v0. Keep raw and normalized topic terms separate,
   preserve place/time and structured entity context, and render only source-provided evidence

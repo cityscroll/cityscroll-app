@@ -39,6 +39,7 @@ test("published corpus manifest types every real retained source", () => {
     assert.equal(family.coverage.state, "partial");
     assert.ok(family.coverage.boundary);
     assert.deepEqual(family.passage_fields, ["title", "text"]);
+    assert.deepEqual(family.civic_object_fields, ["civic_object_family"]);
     assert.deepEqual(family.geography_fields, ["body_id"]);
     assert.deepEqual(family.date_fields, ["published_at", "event_date"]);
     assert.equal(family.freshness_receipt.state, "observed");
@@ -49,6 +50,7 @@ test("published corpus manifest types every real retained source", () => {
   for (const record of manifest.records) {
     assert.ok(corpusKeys.has(record.source_record_id));
     assert.match(record.source_url, /^https:\/\//);
+    assert.ok(["land", "rules", "meetings"].includes(record.civic_object_family));
     assert.equal(record.coverage_state, "partial");
     assert.equal(record.freshness_receipt.observed_on, corpus.observed_on);
     assert.equal(record.passage.text_state, "retained");
@@ -118,7 +120,14 @@ test("invalid input rows are retained as typed drop receipts with reasons", () =
       },
     ],
   };
-  const manifest = buildCorpusManifest(corpus, { selection: corpus.selection });
+  const manifest = buildCorpusManifest(corpus, {
+    selection: corpus.selection,
+    civic_object_groups: [{
+      id: "rules",
+      source_family: "city_record_notice",
+      source_native_ids: ["kept"],
+    }],
+  });
 
   assert.equal(manifest.record_count, 1);
   assert.equal(manifest.dropped_record_count, 2);

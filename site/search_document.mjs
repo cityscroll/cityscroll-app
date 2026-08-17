@@ -5,7 +5,7 @@ import {
 import {
   SEMANTIC_CANDIDATE_METHOD,
   SEMANTIC_CANDIDATE_RESPONSE_SCHEMA,
-  SEMANTIC_TOPIC_FAMILIES,
+  SEMANTIC_CIVIC_OBJECT_FAMILIES,
   normalizeSemanticCandidateResponse,
   topicCandidateTitle,
 } from "./semantic_topic_search.mjs";
@@ -431,7 +431,7 @@ function renderInitialState(root, query) {
   const method = root.querySelector("[data-search-method-value]");
   if (method) method.textContent = tr("topic_search_passage_matches", null, "Source-passage matches");
   const instruction = tr("topic_search_enter", null, "Enter a topic to search public records.");
-  for (const family of SEMANTIC_TOPIC_FAMILIES) {
+  for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
       root,
       family,
@@ -472,9 +472,35 @@ async function fetchSearchResults(query) {
   throw lastError || new Error("search unavailable");
 }
 
+async function fetchKeywordResults(query) {
+  let lastError = null;
+  for (const origin of apiOrigins()) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), SEARCH_TIMEOUT_MS);
+    try {
+      const response = await fetch(`${origin}/search?q=${encodeURIComponent(query)}`, {
+        headers: { Accept: "application/json" },
+        signal: controller.signal,
+      });
+      if (response.ok) {
+        const payload = await response.json();
+        if (!payload || !Array.isArray(payload.results)) throw new Error("invalid keyword search response");
+        return payload;
+      }
+      if (response.status !== 404 && response.status < 500) throw new Error(`search HTTP ${response.status}`);
+      lastError = new Error(`search HTTP ${response.status}`);
+    } catch (error) {
+      lastError = error;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw lastError || new Error("keyword search unavailable");
+}
+
 async function loadResults(root, query) {
   if (!query) return;
-  for (const family of SEMANTIC_TOPIC_FAMILIES) {
+  for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
       root,
       family,
@@ -487,6 +513,18 @@ async function loadResults(root, query) {
     const payload = await fetchSearchResults(query);
     const semantic = normalizeSemanticCandidateResponse(payload, { expectedQuery: query });
     if (semantic.state === "typed") {
+      if (!semantic.groups.some((group) => group.candidates.length)) {
+        try {
+          const keywordPayload = await fetchKeywordResults(query);
+          if (keywordPayload.results.length) {
+            lastResponse = { state: "legacy", payload: keywordPayload };
+            renderLegacyResults(root, keywordPayload);
+            return;
+          }
+        } catch {
+          // The typed bounded-empty response remains valid when keyword search is unavailable.
+        }
+      }
       renderSemanticResults(root, semantic);
       lastResponse = semantic;
       return;
@@ -498,7 +536,7 @@ async function loadResults(root, query) {
     }
     throw new Error("untyped candidate response");
   } catch {
-    for (const family of SEMANTIC_TOPIC_FAMILIES) {
+    for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
       setSemanticLaneState(
         root,
         family,

@@ -5,6 +5,11 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  SEMANTIC_CIVIC_OBJECT_FAMILIES,
+  buildSemanticCivicObjectIndex,
+} from "../warehouse/lib/semantic_civic_object_groups.mjs";
+
 export const CORPUS_MANIFEST_SCHEMA = "cityscroll.semantic_retrieval.corpus_manifest.v1";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -63,7 +68,7 @@ function droppedRecord(row, reason) {
   };
 }
 
-function recordFromRow(row, observedOn) {
+function recordFromRow(row, observedOn, civicObjectIndex) {
   const family = String(row?.kind || "").trim();
   if (!Object.hasOwn(FAMILY_SPECS, family)) {
     return { dropped: droppedRecord(row, "unsupported_source_family") };
@@ -80,11 +85,17 @@ function recordFromRow(row, observedOn) {
     return { dropped: droppedRecord(row, "content_checksum_mismatch") };
   }
   const publishedAt = sourcePublishedAt(row);
+  const recordId = sourceRecordId(family, nativeId);
+  const civicObjectFamily = civicObjectIndex.get(recordId);
+  if (!civicObjectFamily) {
+    throw new Error(`semantic source is missing civic object classification: ${recordId}`);
+  }
   return {
     record: {
-      source_record_id: sourceRecordId(family, nativeId),
+      source_record_id: recordId,
       source_family: family,
       source_native_id: nativeId,
+      civic_object_family: civicObjectFamily,
       source_url: sourceUrl,
       source_system: String(row?.source?.system || "").trim() || null,
       passage: {
@@ -126,6 +137,7 @@ function familySummary(family, records, droppedRecords, corpus, selectionManifes
       source_url_field: "source.url",
     },
     passage_fields: ["title", "text"],
+    civic_object_fields: ["civic_object_family"],
     geography_fields: ["body_id"],
     date_fields: ["published_at", "event_date"],
     coverage: {
@@ -155,6 +167,7 @@ export function buildCorpusManifest(corpus, selectionManifest, {
 } = {}) {
   if (!Array.isArray(corpus?.documents)) throw new Error("corpus manifest requires a documents array");
   const observedOn = String(corpus?.observed_on || "").trim() || null;
+  const civicObjectIndex = buildSemanticCivicObjectIndex(selectionManifest);
   const rows = [...corpus.documents].sort((left, right) => compareText(
     `${String(left?.kind || "")}:${String(left?.id || "")}:${JSON.stringify(left)}`,
     `${String(right?.kind || "")}:${String(right?.id || "")}:${JSON.stringify(right)}`,
@@ -164,7 +177,7 @@ export function buildCorpusManifest(corpus, selectionManifest, {
   const seenRecordIds = new Set();
 
   for (const row of rows) {
-    const result = recordFromRow(row, observedOn);
+    const result = recordFromRow(row, observedOn, civicObjectIndex);
     if (result.dropped) {
       droppedRecords.push(result.dropped);
       continue;
@@ -231,6 +244,7 @@ export function buildCorpusManifest(corpus, selectionManifest, {
     dropped_records: droppedRecords,
     corpus_sha256: canonicalSha256(records.map((record) => ({
       source_record_id: record.source_record_id,
+      civic_object_family: record.civic_object_family,
       source_url: record.source_url,
       content_sha256: record.passage.content_sha256,
     }))),
@@ -288,7 +302,8 @@ export function validateCorpusManifest(manifest) {
       throw new Error(`invalid or duplicate source record ${record.source_record_id || "unknown"}`);
     }
     if (!validSourceUrl(record.source_url)) throw new Error(`invalid source URL ${record.source_record_id}`);
-    if (record.coverage_state !== "partial"
+    if (!SEMANTIC_CIVIC_OBJECT_FAMILIES.includes(record.civic_object_family)
+        || record.coverage_state !== "partial"
         || record.freshness_receipt?.observed_on !== manifest.observed_on
         || record.passage?.text_state !== "retained"
         || !/^[a-f0-9]{64}$/.test(String(record.passage?.content_sha256 || ""))
@@ -320,6 +335,7 @@ export function validateCorpusManifest(manifest) {
 
   const expectedCorpusSha256 = canonicalSha256(manifest.records.map((record) => ({
     source_record_id: record.source_record_id,
+    civic_object_family: record.civic_object_family,
     source_url: record.source_url,
     content_sha256: record.passage.content_sha256,
   })));

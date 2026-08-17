@@ -110,6 +110,7 @@ test("missing source text stays unknown and cannot manufacture graph identities"
     documents: [{
       id: "missing-text",
       kind: "city_record_notice",
+      civic_object_family: "rules",
       title: "Source record without retained text",
       published_at: null,
       source: {

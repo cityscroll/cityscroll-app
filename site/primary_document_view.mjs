@@ -260,10 +260,11 @@ export function buildBrowseConceptDocument(shell, kind, sources, options = {}) {
 
 function searchLane(id, title, { description = "", semantic = false, titleKey = "" } = {}) {
   const laneAttribute = semantic ? `data-semantic-family="${esc(id)}"` : `data-search-lane="${esc(id)}"`;
+  const headingId = `search-${semantic ? "semantic-" : ""}lane-${esc(id)}`;
   const i18nAttribute = titleKey ? ` data-i18n="${esc(titleKey)}"` : "";
   const descriptionHtml = description ? `<p>${esc(description)}</p>` : "";
-  return `<section class="topic-search-lane" ${laneAttribute} aria-labelledby="search-lane-${esc(id)}">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-${esc(id)}"${i18nAttribute}>${esc(title)}</h3>${descriptionHtml}</div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+  return `<section class="topic-search-lane" ${laneAttribute} aria-labelledby="${headingId}">
+    <header class="topic-search-lane-head"><div><h3 id="${headingId}"${i18nAttribute}>${esc(title)}</h3>${descriptionHtml}</div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
     <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>`;
 }
@@ -271,7 +272,7 @@ function searchLane(id, title, { description = "", semantic = false, titleKey = 
 export function renderSearchDocument() {
   return `<div class="topic-search-document" data-search-document>
     <p class="topic-search-kicker" data-i18n="search_label">Search</p>
-    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What are you looking for?</h2><p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by their published source.</p></header>
+    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What are you looking for?</h2><p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p></header>
     <form class="topic-search-form" method="get" action="/search/" data-search-form>
       <label for="search-query" data-i18n="topic_search_heading">What are you looking for?</label>
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
@@ -280,10 +281,13 @@ export function renderSearchDocument() {
     <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status"><p><strong>Coverage details appear with keyword fallback results.</strong><span>Fallback search reports which public-record collections took part.</span></p></section>
     <div class="topic-search-method" aria-label="How results match" data-i18n-aria="topic_search_method_label"><span data-i18n="topic_search_method_label">How results match</span><strong data-search-method-value data-i18n="topic_search_passage_matches">Source-passage matches</strong></div>
     <p class="topic-search-coverage" data-semantic-coverage hidden></p>
-    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by source" data-i18n-aria="topic_search_results_aria">
-      ${searchLane("city_record_notice", "City Record notices", { semantic: true, titleKey: "topic_search_family_notices" })}
-      ${searchLane("attachment_text", "Source attachments", { semantic: true, titleKey: "topic_search_family_attachments" })}
-      ${searchLane("community_board_minutes", "Community board minutes", { semantic: true, titleKey: "topic_search_family_minutes" })}
+    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by civic object" data-i18n-aria="topic_search_results_aria">
+      ${searchLane("contracts", "Contracts", { semantic: true, titleKey: "tab_money" })}
+      ${searchLane("people-organizations", "People + organizations", { semantic: true })}
+      ${searchLane("land", "Land", { semantic: true })}
+      ${searchLane("rules", "Rules", { semantic: true, titleKey: "tab_rules" })}
+      ${searchLane("meetings", "Meetings", { semantic: true, titleKey: "tab_meetings" })}
+      ${searchLane("exams", "Exams", { semantic: true })}
     </div>
     <div class="topic-search-lanes" data-keyword-lanes aria-label="Search result types" hidden>
       ${searchLane("contracts", "Contracts", { description: "Public contract opportunities and awards.", titleKey: "tab_money" })}
