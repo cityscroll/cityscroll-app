@@ -2,11 +2,20 @@
 
 import json
 import os
+from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
+AXE = Path(__file__).parent / "assets" / "axe.min.js"
+
+
+def assert_axe_green(page, state):
+    page.add_script_tag(path=str(AXE))
+    violations = page.evaluate("async () => (await axe.run(document)).violations")
+    blocking = [row for row in violations if row.get("impact") in {"critical", "serious"}]
+    assert not blocking, (state, [(row["id"], row["impact"]) for row in blocking])
 
 def typed_result(term, *, title, object_type, domain, lens, href, state="active"):
     observation_ref = f"fixture:{object_type}:{term}"
@@ -90,6 +99,54 @@ def json_response(route, body):
     route.fulfill(status=200, content_type="application/json", body=json.dumps(body))
 
 
+SEARCH_LENSES = [
+    "notices", "people", "agencies", "vendors", "committees",
+    "community_boards", "exams", "parcels",
+]
+
+
+def search_payload(results, incomplete=False):
+    counts = {lens: 0 for lens in SEARCH_LENSES}
+    for result in results:
+        counts[result.get("lens", "notices")] += 1
+    by_lens = {
+        lens: {
+            "lens": lens,
+            "participated": not (incomplete and lens == "people"),
+            "state": "not_indexed" if incomplete and lens == "people" else ("matched" if count else "empty"),
+            "reason": "fixture_lens_missing" if incomplete and lens == "people" else None,
+            "matched_count": None if incomplete and lens == "people" else count,
+            "candidate_count": None if incomplete and lens == "people" else count,
+            "invalid_candidate_count": None if incomplete and lens == "people" else 0,
+            "indexed_count": None if incomplete and lens == "people" else 1,
+            "as_of": None if incomplete and lens == "people" else "2026-08-15T12:00:00Z",
+            "source": "functional fixture",
+            "method": "fixture_exact_v1",
+        }
+        for lens, count in counts.items()
+    }
+    observed = sum(counts.values())
+    return {
+        "results": results,
+        "coverage": {
+            "schema": "cityscroll.universal_search_coverage.v1",
+            "all_lenses_participated": not incomplete,
+            "complete_count": None if incomplete else observed,
+            "observed_count": observed,
+            "total_matches": observed,
+            "returned_count": observed,
+            "by_entity_type": {},
+            "incomplete_lenses": ["people"] if incomplete else [],
+            "snapshot": {
+                "state": "incomplete" if incomplete else "complete",
+                "as_of": None if incomplete else "2026-08-15T12:00:00Z",
+                "as_of_by_lens": {lens: row["as_of"] for lens, row in by_lens.items()},
+            },
+            "by_lens": by_lens,
+        },
+    }
+
+
 def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -99,9 +156,9 @@ def main():
             query = route.request.url.split("q=", 1)[-1].lower()
             for term, results in SEARCH_FIXTURES.items():
                 if term in query:
-                    json_response(route, {"results": results})
+                    json_response(route, search_payload(results))
                     return
-            json_response(route, {"results": []})
+            json_response(route, search_payload([], incomplete=True))
 
         page.route("https://api.cityscroll.org/search?*", search_api)
         page.route("https://crol-worker.crol-worker.workers.dev/search?*", search_api)
@@ -125,6 +182,10 @@ def main():
             expected_state = expected[0]["ranking"]["lifecycle_state"]
             assert results.first.get_attribute("data-lifecycle-state") == expected_state
             assert results.first.locator(".topic-search-result-status").text_content().lower() == expected_state
+            coverage = page.locator("[data-search-coverage]")
+            assert coverage.get_attribute("data-coverage-state") == "complete"
+            assert coverage.locator("strong").first.text_content().startswith("1 match across")
+            assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
             assert page.evaluate(
                 "el => el.scrollWidth <= el.clientWidth",
                 results.first.element_handle(),
@@ -132,6 +193,7 @@ def main():
             link = results.first.locator("a").first
             link.focus()
             assert link.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
+            assert_axe_green(page, f"complete coverage: {term}")
 
         page.goto(f"{BASE}/search/?q=zzzz-no-match", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_function(
@@ -140,6 +202,11 @@ def main():
         )
         assert page.locator("[data-search-result]").count() == 0
         assert "No matching" in (page.locator("[data-search-lane]").first.text_content() or "")
+        coverage = page.locator("[data-search-coverage]")
+        assert coverage.get_attribute("data-coverage-state") == "incomplete"
+        assert "Search coverage is incomplete" in (coverage.text_content() or "")
+        assert "0 matches across all" not in (coverage.text_content() or "")
+        assert_axe_green(page, "incomplete coverage")
 
         print("PASS: search renders relevant common-term records and an honest empty state")
         browser.close()

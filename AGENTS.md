@@ -294,6 +294,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   and active/archive status without reclassifying the source row. `site/search_document.mjs` owns
   browser grouping and route hydration. Focused proof:
   `test/universal_search_relevance_ux.test.mjs` and `test/functional/29_search_results.py`.
+- **Universal search coverage receipt:** `site/universal_search_federator.mjs` owns observed versus
+  complete counts, per-lens and per-entity-type counts, snapshot boundaries, and explicit partial,
+  stale, unavailable, or unindexed states. `site/universal_search_coverage_receipt.mjs` is the
+  resident-facing projection; `site/search_document.mjs` must render the API receipt rather than
+  recounting results. The committed person, agency, and vendor fixtures are CI ratchets in
+  `test/universal_search_coverage_guard.test.mjs`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain

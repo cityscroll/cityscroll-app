@@ -2,6 +2,7 @@ import {
   relevanceResultHref,
   renderUniversalSearchResultHtml,
 } from "./universal_search_relevance_ux.mjs";
+import { renderUniversalSearchCoverageHtml } from "./universal_search_coverage_receipt.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -154,6 +155,15 @@ function renderResults(root, results) {
   }
 }
 
+function renderCoverage(root, coverage) {
+  const template = document.createElement("template");
+  template.innerHTML = renderUniversalSearchCoverageHtml(coverage);
+  const next = template.content.firstElementChild;
+  const current = root.querySelector("[data-search-coverage]");
+  if (current) current.replaceWith(next);
+  else root.querySelector(".topic-search-method")?.before(next);
+}
+
 function renderInitialState(root, query) {
   for (const lane of LANES) {
     setLaneState(root, "" + lane, "Waiting", query ? "Searching public records…" : "Enter a topic to search public records.");
@@ -173,7 +183,7 @@ async function fetchSearchResults(query) {
       if (response.ok) {
         const payload = await response.json();
         if (!payload || !Array.isArray(payload.results)) throw new Error("invalid search response");
-        return payload.results;
+        return payload;
       }
       if (response.status !== 404 && response.status < 500) throw new Error(`search HTTP ${response.status}`);
       lastError = new Error(`search HTTP ${response.status}`);
@@ -190,7 +200,9 @@ async function loadResults(root, query) {
   if (!query) return;
   for (const lane of LANES) setLaneState(root, lane, "Loading", "Searching public records…", "is-loading");
   try {
-    renderResults(root, await fetchSearchResults(query));
+    const payload = await fetchSearchResults(query);
+    renderResults(root, payload.results);
+    renderCoverage(root, payload.coverage);
   } catch {
     for (const lane of LANES) setLaneState(root, lane, "Unavailable", "Search is unavailable right now. Please try again.", "is-error");
   }
@@ -213,6 +225,7 @@ function render() {
   const form = root.querySelector("[data-search-form]");
   if (form) preservePlaceFields(form);
   renderInitialState(root, query);
+  if (!query) renderCoverage(root, null);
   void loadResults(root, query);
 }
 

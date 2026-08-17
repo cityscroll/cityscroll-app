@@ -18,6 +18,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |
+| `site/universal_search_federator.mjs` | Pure cross-lens rank/merge plus the machine coverage receipt: observed/complete counts, per-lens and entity-type counts, snapshot boundaries, and incomplete-lens states. `site/universal_search_coverage_receipt.mjs` projects that receipt into resident copy consumed by `site/search_document.mjs`. |
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
 | `site/app/land.mjs` | Land search/detail/map, static-first ZAP outcomes with optional freshness enhancement, ULURP timeline, notice-to-ZAP joins, and the route-lazy project constellation. The pure `site/project_connections.mjs` adapter requires exact project IDs/BBLs, preserves confidence labels, and composes project scopes without another store. |
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, stamped district-bag filtering, hearing explorer, and notice/land action rails. |
