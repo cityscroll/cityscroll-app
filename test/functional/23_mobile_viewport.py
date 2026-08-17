@@ -12,8 +12,6 @@ import functools
 import http.server
 import os
 from pathlib import Path
-import shutil
-import subprocess
 import sys
 import threading
 
@@ -47,24 +45,6 @@ SURFACES = (
     ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
     ("reader action", "#notice/20260701099", "#noticeview .panel"),
 )
-
-GENERATED_PRIMARY_DOCUMENT_DIRS = (
-    ROOT / "site" / "browse",
-    ROOT / "site" / "now",
-)
-
-
-def materialize_primary_documents() -> tuple[Path, ...]:
-    """Build the static-first routes this gate exercises, then report new output dirs."""
-    created = tuple(path for path in GENERATED_PRIMARY_DOCUMENT_DIRS if not path.exists())
-    subprocess.run(
-        ["node", "tools/build_primary_documents.mjs"],
-        cwd=ROOT,
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
-    return created
-
 
 def rendered_target_failures(page: Page) -> list[dict]:
     return page.evaluate(
@@ -339,7 +319,6 @@ def main() -> None:
     global BASE
     server = None
     thread = None
-    created_primary_document_dirs = materialize_primary_documents()
     try:
         if not BASE:
             handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
@@ -355,8 +334,6 @@ def main() -> None:
             if thread:
                 thread.join(timeout=5)
             server.server_close()
-        for path in created_primary_document_dirs:
-            shutil.rmtree(path)
 
 
 if __name__ == "__main__":
