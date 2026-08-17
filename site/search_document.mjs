@@ -155,6 +155,10 @@ function renderResult(record, payload) {
   const destination = searchDestinationForResult(record);
   const href = buildSearchLensHandoffHref(record, payload, location.search);
   if (destination && href) {
+    if (destination.surface === "money") {
+      const primary = card.querySelector("h4 a[href]");
+      if (primary) primary.href = href;
+    }
     const action = document.createElement("p");
     action.className = "topic-search-result-handoff";
     const link = document.createElement("a");

@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   bblsForProject,
+  contractIdentityFromFacetValues,
   filterLandSnapshot,
   filterMoneySnapshot,
   moneyMethodFacet,
@@ -38,6 +39,24 @@ test("Money snapshot filtering matches a once-encoded vendor stem exactly", () =
     mode: "award",
     entityRefs: ["vendor:stem:P T II CONTRACTING"],
   }).map((row) => row.request_id), ["1", "2"]);
+});
+
+test("Money snapshot filtering treats a contract handoff as exact identity, not a keyword", () => {
+  const identity = contractIdentityFromFacetValues({
+    contract_identity: {
+      object_ref: "procurement:05626S0013001",
+      source_observation_ref: "notice:20260730029",
+    },
+  });
+  const rows = [
+    { request_id: "target", pin: "05626S0013001", type_of_notice_description: "Award", short_title: "PhotoManager maintenance" },
+    { request_id: "other", pin: "05626P0001", type_of_notice_description: "Solicitation", short_title: "Software platform" },
+  ];
+  assert.deepEqual(filterMoneySnapshot(rows, {
+    mode: "archive",
+    keyword: "software",
+    contractObjectRef: identity.object_ref,
+  }).map((row) => row.request_id), ["target"]);
 });
 
 test("Land snapshot resolves blocks and exact project BBLs without source egress", () => {

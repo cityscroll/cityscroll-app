@@ -61,6 +61,12 @@ const ROWS = [
     date: "2026-07-17", haystack: "pesticides mosquito control contract award 81626S0021001",
   },
   {
+    id: "20260730029", section: "Public Comment on Contract Awards", agency: "Police Department",
+    noticeType: "Notice", title: "Maintenance, support services, software assurance for PhotoManager",
+    description: "The NYPD proposed contract has E-PIN: 05626S0013001.",
+    date: "2026-08-06", haystack: "maintenance support services software assurance photomanager nypd",
+  },
+  {
     id: "20260807032", section: "Public Comment on Contract Awards", agency: "Police Department",
     noticeType: "Notice", title: "Fixed Wing aircraft program management support services.",
     description: "The NYPD proposed contract has E-PIN: 05626S0012.",
@@ -138,6 +144,53 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
       outcome: "evidence_only",
     });
     assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://cityscroll.org");
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("GET /search resolves one contract by exact object and source observation refs", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    const params = new URLSearchParams({
+      object_ref: "procurement:05626S0013001",
+      source_ref: "notice:20260730029",
+    });
+    const response = await worker.fetch(
+      new Request(`https://api.cityscroll.org/search?${params}`, {
+        headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
+      }),
+      { DB },
+      {},
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.match_mode, "exact_object_ref");
+    assert.deepEqual(body.results.map((document) => document.object_ref), [
+      "procurement:05626S0013001",
+    ]);
+
+    const mismatch = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?object_ref=procurement%3A05626S0013001&source_ref=notice%3A20260731016", {
+        headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
+      }),
+      { DB },
+      {},
+    );
+    assert.equal(mismatch.status, 200);
+    assert.deepEqual((await mismatch.json()).results, []);
+
+    const award = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?object_ref=procurement%3A02EA43001R0X00&source_ref=ocp_award%3A20030520019", {
+        headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
+      }),
+      { DB },
+      {},
+    );
+    assert.equal(award.status, 200);
+    assert.deepEqual((await award.json()).results.map((document) => document.object_ref), [
+      "procurement:02EA43001R0X00",
+    ]);
   } finally {
     sqlite.close();
   }

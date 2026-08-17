@@ -278,8 +278,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - **Typed search handoff:** `site/search_lens_handoff.mjs` carries a selected SearchDocument into
   its established Browse route through scope v0. Keep raw and normalized topic terms separate,
   preserve place/time and structured entity context, and render only source-provided evidence
-  offsets at the destination; unavailable evidence stays explicit. Query edits must remove stale
-  handoff evidence, and Back uses the stored Search lane. Focused proof:
+  offsets at the destination; unavailable evidence stays explicit. Contract handoffs use the
+  exact object/source-observation pair in the mixed archive, not a PIN-shaped keyword query;
+  `worker/src/search.mjs` resolves that pair before `site/app/money-list.mjs` filters the row.
+  Query edits must remove stale handoff identity and evidence, and Back uses the stored Search
+  lane. Focused proof:
   `test/search_lens_handoff.test.mjs`, `test/scope_v0.test.mjs`, and
   `test/functional/29_search_results.py`.
 - **Entity SearchDocument producers:** `site/{vendor,committee,board,exam,parcel}_search_producer.mjs`
