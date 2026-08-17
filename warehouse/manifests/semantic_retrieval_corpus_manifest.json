@@ -13,7 +13,7 @@
     },
     "selection": {
       "path": "warehouse/experiments/semantic-layer-trial/source_manifest.json",
-      "sha256": "108b5288196fb67b9a5a6ce74005c8881401263c6ceb884691dc8434c426f077"
+      "sha256": "448927729b69aa619f555497ed89d304da94ba504869631900b46ad074679168"
     }
   },
   "coverage": {
@@ -36,6 +36,9 @@
       "passage_fields": [
         "title",
         "text"
+      ],
+      "civic_object_fields": [
+        "civic_object_family"
       ],
       "geography_fields": [
         "body_id"
@@ -70,6 +73,9 @@
         "title",
         "text"
       ],
+      "civic_object_fields": [
+        "civic_object_family"
+      ],
       "geography_fields": [
         "body_id"
       ],
@@ -103,6 +109,9 @@
         "title",
         "text"
       ],
+      "civic_object_fields": [
+        "civic_object_family"
+      ],
       "geography_fields": [
         "body_id"
       ],
@@ -130,6 +139,7 @@
       "source_record_id": "attachment_text:20240515016%23attachment-37470",
       "source_family": "attachment_text",
       "source_native_id": "20240515016#attachment-37470",
+      "civic_object_family": "land",
       "source_url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
       "source_system": "NYC City Record attachment",
       "passage": {
@@ -156,6 +166,7 @@
       "source_record_id": "city_record_notice:20150714108",
       "source_family": "city_record_notice",
       "source_native_id": "20150714108",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20150714108",
       "source_system": "NYC City Record",
       "passage": {
@@ -182,6 +193,7 @@
       "source_record_id": "city_record_notice:20180926111",
       "source_family": "city_record_notice",
       "source_native_id": "20180926111",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20180926111",
       "source_system": "NYC City Record",
       "passage": {
@@ -208,6 +220,7 @@
       "source_record_id": "city_record_notice:20250328003",
       "source_family": "city_record_notice",
       "source_native_id": "20250328003",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250328003",
       "source_system": "NYC City Record",
       "passage": {
@@ -234,6 +247,7 @@
       "source_record_id": "city_record_notice:20250909023",
       "source_family": "city_record_notice",
       "source_native_id": "20250909023",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250909023",
       "source_system": "NYC City Record",
       "passage": {
@@ -260,6 +274,7 @@
       "source_record_id": "city_record_notice:20260106033",
       "source_family": "city_record_notice",
       "source_native_id": "20260106033",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033",
       "source_system": "NYC City Record",
       "passage": {
@@ -286,6 +301,7 @@
       "source_record_id": "city_record_notice:20260213014",
       "source_family": "city_record_notice",
       "source_native_id": "20260213014",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014",
       "source_system": "NYC City Record",
       "passage": {
@@ -312,6 +328,7 @@
       "source_record_id": "city_record_notice:20260213015",
       "source_family": "city_record_notice",
       "source_native_id": "20260213015",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015",
       "source_system": "NYC City Record",
       "passage": {
@@ -338,6 +355,7 @@
       "source_record_id": "city_record_notice:20260428027",
       "source_family": "city_record_notice",
       "source_native_id": "20260428027",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027",
       "source_system": "NYC City Record",
       "passage": {
@@ -364,6 +382,7 @@
       "source_record_id": "city_record_notice:20260429022",
       "source_family": "city_record_notice",
       "source_native_id": "20260429022",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260429022",
       "source_system": "NYC City Record",
       "passage": {
@@ -390,6 +409,7 @@
       "source_record_id": "city_record_notice:20260430008",
       "source_family": "city_record_notice",
       "source_native_id": "20260430008",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260430008",
       "source_system": "NYC City Record",
       "passage": {
@@ -416,6 +436,7 @@
       "source_record_id": "city_record_notice:20260430025",
       "source_family": "city_record_notice",
       "source_native_id": "20260430025",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260430025",
       "source_system": "NYC City Record",
       "passage": {
@@ -442,6 +463,7 @@
       "source_record_id": "city_record_notice:20260504027",
       "source_family": "city_record_notice",
       "source_native_id": "20260504027",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504027",
       "source_system": "NYC City Record",
       "passage": {
@@ -468,6 +490,7 @@
       "source_record_id": "city_record_notice:20260504036",
       "source_family": "city_record_notice",
       "source_native_id": "20260504036",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036",
       "source_system": "NYC City Record",
       "passage": {
@@ -494,6 +517,7 @@
       "source_record_id": "city_record_notice:20260504037",
       "source_family": "city_record_notice",
       "source_native_id": "20260504037",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037",
       "source_system": "NYC City Record",
       "passage": {
@@ -520,6 +544,7 @@
       "source_record_id": "city_record_notice:20260504038",
       "source_family": "city_record_notice",
       "source_native_id": "20260504038",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038",
       "source_system": "NYC City Record",
       "passage": {
@@ -546,6 +571,7 @@
       "source_record_id": "city_record_notice:20260504039",
       "source_family": "city_record_notice",
       "source_native_id": "20260504039",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039",
       "source_system": "NYC City Record",
       "passage": {
@@ -572,6 +598,7 @@
       "source_record_id": "city_record_notice:20260506005",
       "source_family": "city_record_notice",
       "source_native_id": "20260506005",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506005",
       "source_system": "NYC City Record",
       "passage": {
@@ -598,6 +625,7 @@
       "source_record_id": "city_record_notice:20260506007",
       "source_family": "city_record_notice",
       "source_native_id": "20260506007",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506007",
       "source_system": "NYC City Record",
       "passage": {
@@ -624,6 +652,7 @@
       "source_record_id": "city_record_notice:20260506019",
       "source_family": "city_record_notice",
       "source_native_id": "20260506019",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019",
       "source_system": "NYC City Record",
       "passage": {
@@ -650,6 +679,7 @@
       "source_record_id": "city_record_notice:20260506027",
       "source_family": "city_record_notice",
       "source_native_id": "20260506027",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027",
       "source_system": "NYC City Record",
       "passage": {
@@ -676,6 +706,7 @@
       "source_record_id": "city_record_notice:20260507003",
       "source_family": "city_record_notice",
       "source_native_id": "20260507003",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260507003",
       "source_system": "NYC City Record",
       "passage": {
@@ -702,6 +733,7 @@
       "source_record_id": "city_record_notice:20260508032",
       "source_family": "city_record_notice",
       "source_native_id": "20260508032",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260508032",
       "source_system": "NYC City Record",
       "passage": {
@@ -728,6 +760,7 @@
       "source_record_id": "city_record_notice:20260512003",
       "source_family": "city_record_notice",
       "source_native_id": "20260512003",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003",
       "source_system": "NYC City Record",
       "passage": {
@@ -754,6 +787,7 @@
       "source_record_id": "city_record_notice:20260512015",
       "source_family": "city_record_notice",
       "source_native_id": "20260512015",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512015",
       "source_system": "NYC City Record",
       "passage": {
@@ -780,6 +814,7 @@
       "source_record_id": "city_record_notice:20260512030",
       "source_family": "city_record_notice",
       "source_native_id": "20260512030",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512030",
       "source_system": "NYC City Record",
       "passage": {
@@ -806,6 +841,7 @@
       "source_record_id": "city_record_notice:20260512035",
       "source_family": "city_record_notice",
       "source_native_id": "20260512035",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512035",
       "source_system": "NYC City Record",
       "passage": {
@@ -832,6 +868,7 @@
       "source_record_id": "city_record_notice:20260512040",
       "source_family": "city_record_notice",
       "source_native_id": "20260512040",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512040",
       "source_system": "NYC City Record",
       "passage": {
@@ -858,6 +895,7 @@
       "source_record_id": "city_record_notice:20260512047",
       "source_family": "city_record_notice",
       "source_native_id": "20260512047",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512047",
       "source_system": "NYC City Record",
       "passage": {
@@ -884,6 +922,7 @@
       "source_record_id": "city_record_notice:20260513026",
       "source_family": "city_record_notice",
       "source_native_id": "20260513026",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513026",
       "source_system": "NYC City Record",
       "passage": {
@@ -910,6 +949,7 @@
       "source_record_id": "city_record_notice:20260514002",
       "source_family": "city_record_notice",
       "source_native_id": "20260514002",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002",
       "source_system": "NYC City Record",
       "passage": {
@@ -936,6 +976,7 @@
       "source_record_id": "city_record_notice:20260515002",
       "source_family": "city_record_notice",
       "source_native_id": "20260515002",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515002",
       "source_system": "NYC City Record",
       "passage": {
@@ -962,6 +1003,7 @@
       "source_record_id": "city_record_notice:20260515003",
       "source_family": "city_record_notice",
       "source_native_id": "20260515003",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003",
       "source_system": "NYC City Record",
       "passage": {
@@ -988,6 +1030,7 @@
       "source_record_id": "city_record_notice:20260519037",
       "source_family": "city_record_notice",
       "source_native_id": "20260519037",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037",
       "source_system": "NYC City Record",
       "passage": {
@@ -1014,6 +1057,7 @@
       "source_record_id": "city_record_notice:20260519042",
       "source_family": "city_record_notice",
       "source_native_id": "20260519042",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519042",
       "source_system": "NYC City Record",
       "passage": {
@@ -1040,6 +1084,7 @@
       "source_record_id": "city_record_notice:20260519043",
       "source_family": "city_record_notice",
       "source_native_id": "20260519043",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519043",
       "source_system": "NYC City Record",
       "passage": {
@@ -1066,6 +1111,7 @@
       "source_record_id": "city_record_notice:20260519048",
       "source_family": "city_record_notice",
       "source_native_id": "20260519048",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519048",
       "source_system": "NYC City Record",
       "passage": {
@@ -1092,6 +1138,7 @@
       "source_record_id": "city_record_notice:20260521002",
       "source_family": "city_record_notice",
       "source_native_id": "20260521002",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521002",
       "source_system": "NYC City Record",
       "passage": {
@@ -1118,6 +1165,7 @@
       "source_record_id": "city_record_notice:20260521021",
       "source_family": "city_record_notice",
       "source_native_id": "20260521021",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521021",
       "source_system": "NYC City Record",
       "passage": {
@@ -1144,6 +1192,7 @@
       "source_record_id": "city_record_notice:20260522005",
       "source_family": "city_record_notice",
       "source_native_id": "20260522005",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522005",
       "source_system": "NYC City Record",
       "passage": {
@@ -1170,6 +1219,7 @@
       "source_record_id": "city_record_notice:20260522007",
       "source_family": "city_record_notice",
       "source_native_id": "20260522007",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
       "source_system": "NYC City Record",
       "passage": {
@@ -1196,6 +1246,7 @@
       "source_record_id": "city_record_notice:20260522008",
       "source_family": "city_record_notice",
       "source_native_id": "20260522008",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522008",
       "source_system": "NYC City Record",
       "passage": {
@@ -1222,6 +1273,7 @@
       "source_record_id": "city_record_notice:20260527036",
       "source_family": "city_record_notice",
       "source_native_id": "20260527036",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527036",
       "source_system": "NYC City Record",
       "passage": {
@@ -1248,6 +1300,7 @@
       "source_record_id": "city_record_notice:20260528031",
       "source_family": "city_record_notice",
       "source_native_id": "20260528031",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528031",
       "source_system": "NYC City Record",
       "passage": {
@@ -1274,6 +1327,7 @@
       "source_record_id": "city_record_notice:20260601006",
       "source_family": "city_record_notice",
       "source_native_id": "20260601006",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601006",
       "source_system": "NYC City Record",
       "passage": {
@@ -1300,6 +1354,7 @@
       "source_record_id": "city_record_notice:20260602003",
       "source_family": "city_record_notice",
       "source_native_id": "20260602003",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602003",
       "source_system": "NYC City Record",
       "passage": {
@@ -1326,6 +1381,7 @@
       "source_record_id": "city_record_notice:20260602045",
       "source_family": "city_record_notice",
       "source_native_id": "20260602045",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045",
       "source_system": "NYC City Record",
       "passage": {
@@ -1352,6 +1408,7 @@
       "source_record_id": "city_record_notice:20260603044",
       "source_family": "city_record_notice",
       "source_native_id": "20260603044",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
       "source_system": "NYC City Record",
       "passage": {
@@ -1378,6 +1435,7 @@
       "source_record_id": "city_record_notice:20260605008",
       "source_family": "city_record_notice",
       "source_native_id": "20260605008",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
       "source_system": "NYC City Record",
       "passage": {
@@ -1404,6 +1462,7 @@
       "source_record_id": "city_record_notice:20260605045",
       "source_family": "city_record_notice",
       "source_native_id": "20260605045",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605045",
       "source_system": "NYC City Record",
       "passage": {
@@ -1430,6 +1489,7 @@
       "source_record_id": "city_record_notice:20260605058",
       "source_family": "city_record_notice",
       "source_native_id": "20260605058",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
       "source_system": "NYC City Record",
       "passage": {
@@ -1456,6 +1516,7 @@
       "source_record_id": "city_record_notice:20260609003",
       "source_family": "city_record_notice",
       "source_native_id": "20260609003",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
       "source_system": "NYC City Record",
       "passage": {
@@ -1482,6 +1543,7 @@
       "source_record_id": "city_record_notice:20260610003",
       "source_family": "city_record_notice",
       "source_native_id": "20260610003",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610003",
       "source_system": "NYC City Record",
       "passage": {
@@ -1508,6 +1570,7 @@
       "source_record_id": "city_record_notice:20260610007",
       "source_family": "city_record_notice",
       "source_native_id": "20260610007",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610007",
       "source_system": "NYC City Record",
       "passage": {
@@ -1534,6 +1597,7 @@
       "source_record_id": "city_record_notice:20260612002",
       "source_family": "city_record_notice",
       "source_native_id": "20260612002",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612002",
       "source_system": "NYC City Record",
       "passage": {
@@ -1560,6 +1624,7 @@
       "source_record_id": "city_record_notice:20260612028",
       "source_family": "city_record_notice",
       "source_native_id": "20260612028",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028",
       "source_system": "NYC City Record",
       "passage": {
@@ -1586,6 +1651,7 @@
       "source_record_id": "city_record_notice:20260612036",
       "source_family": "city_record_notice",
       "source_native_id": "20260612036",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612036",
       "source_system": "NYC City Record",
       "passage": {
@@ -1612,6 +1678,7 @@
       "source_record_id": "city_record_notice:20260612037",
       "source_family": "city_record_notice",
       "source_native_id": "20260612037",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612037",
       "source_system": "NYC City Record",
       "passage": {
@@ -1638,6 +1705,7 @@
       "source_record_id": "city_record_notice:20260616058",
       "source_family": "city_record_notice",
       "source_native_id": "20260616058",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616058",
       "source_system": "NYC City Record",
       "passage": {
@@ -1664,6 +1732,7 @@
       "source_record_id": "city_record_notice:20260617003",
       "source_family": "city_record_notice",
       "source_native_id": "20260617003",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003",
       "source_system": "NYC City Record",
       "passage": {
@@ -1690,6 +1759,7 @@
       "source_record_id": "city_record_notice:20260617037",
       "source_family": "city_record_notice",
       "source_native_id": "20260617037",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617037",
       "source_system": "NYC City Record",
       "passage": {
@@ -1716,6 +1786,7 @@
       "source_record_id": "city_record_notice:20260617039",
       "source_family": "city_record_notice",
       "source_native_id": "20260617039",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039",
       "source_system": "NYC City Record",
       "passage": {
@@ -1742,6 +1813,7 @@
       "source_record_id": "city_record_notice:20260617040",
       "source_family": "city_record_notice",
       "source_native_id": "20260617040",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617040",
       "source_system": "NYC City Record",
       "passage": {
@@ -1768,6 +1840,7 @@
       "source_record_id": "city_record_notice:20260617042",
       "source_family": "city_record_notice",
       "source_native_id": "20260617042",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617042",
       "source_system": "NYC City Record",
       "passage": {
@@ -1794,6 +1867,7 @@
       "source_record_id": "city_record_notice:20260618004",
       "source_family": "city_record_notice",
       "source_native_id": "20260618004",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618004",
       "source_system": "NYC City Record",
       "passage": {
@@ -1820,6 +1894,7 @@
       "source_record_id": "city_record_notice:20260618032",
       "source_family": "city_record_notice",
       "source_native_id": "20260618032",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618032",
       "source_system": "NYC City Record",
       "passage": {
@@ -1846,6 +1921,7 @@
       "source_record_id": "city_record_notice:20260618036",
       "source_family": "city_record_notice",
       "source_native_id": "20260618036",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036",
       "source_system": "NYC City Record",
       "passage": {
@@ -1872,6 +1948,7 @@
       "source_record_id": "city_record_notice:20260618037",
       "source_family": "city_record_notice",
       "source_native_id": "20260618037",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618037",
       "source_system": "NYC City Record",
       "passage": {
@@ -1898,6 +1975,7 @@
       "source_record_id": "city_record_notice:20260618040",
       "source_family": "city_record_notice",
       "source_native_id": "20260618040",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618040",
       "source_system": "NYC City Record",
       "passage": {
@@ -1924,6 +2002,7 @@
       "source_record_id": "city_record_notice:20260618050",
       "source_family": "city_record_notice",
       "source_native_id": "20260618050",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
       "source_system": "NYC City Record",
       "passage": {
@@ -1950,6 +2029,7 @@
       "source_record_id": "city_record_notice:20260622072",
       "source_family": "city_record_notice",
       "source_native_id": "20260622072",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622072",
       "source_system": "NYC City Record",
       "passage": {
@@ -1976,6 +2056,7 @@
       "source_record_id": "city_record_notice:20260623006",
       "source_family": "city_record_notice",
       "source_native_id": "20260623006",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006",
       "source_system": "NYC City Record",
       "passage": {
@@ -2002,6 +2083,7 @@
       "source_record_id": "city_record_notice:20260623048",
       "source_family": "city_record_notice",
       "source_native_id": "20260623048",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048",
       "source_system": "NYC City Record",
       "passage": {
@@ -2028,6 +2110,7 @@
       "source_record_id": "city_record_notice:20260623060",
       "source_family": "city_record_notice",
       "source_native_id": "20260623060",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060",
       "source_system": "NYC City Record",
       "passage": {
@@ -2054,6 +2137,7 @@
       "source_record_id": "city_record_notice:20260624001",
       "source_family": "city_record_notice",
       "source_native_id": "20260624001",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001",
       "source_system": "NYC City Record",
       "passage": {
@@ -2080,6 +2164,7 @@
       "source_record_id": "city_record_notice:20260624002",
       "source_family": "city_record_notice",
       "source_native_id": "20260624002",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624002",
       "source_system": "NYC City Record",
       "passage": {
@@ -2106,6 +2191,7 @@
       "source_record_id": "city_record_notice:20260624005",
       "source_family": "city_record_notice",
       "source_native_id": "20260624005",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005",
       "source_system": "NYC City Record",
       "passage": {
@@ -2132,6 +2218,7 @@
       "source_record_id": "city_record_notice:20260624032",
       "source_family": "city_record_notice",
       "source_native_id": "20260624032",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624032",
       "source_system": "NYC City Record",
       "passage": {
@@ -2158,6 +2245,7 @@
       "source_record_id": "city_record_notice:20260624035",
       "source_family": "city_record_notice",
       "source_native_id": "20260624035",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624035",
       "source_system": "NYC City Record",
       "passage": {
@@ -2184,6 +2272,7 @@
       "source_record_id": "city_record_notice:20260624036",
       "source_family": "city_record_notice",
       "source_native_id": "20260624036",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624036",
       "source_system": "NYC City Record",
       "passage": {
@@ -2210,6 +2299,7 @@
       "source_record_id": "city_record_notice:20260625034",
       "source_family": "city_record_notice",
       "source_native_id": "20260625034",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034",
       "source_system": "NYC City Record",
       "passage": {
@@ -2236,6 +2326,7 @@
       "source_record_id": "city_record_notice:20260625040",
       "source_family": "city_record_notice",
       "source_native_id": "20260625040",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040",
       "source_system": "NYC City Record",
       "passage": {
@@ -2262,6 +2353,7 @@
       "source_record_id": "city_record_notice:20260626034",
       "source_family": "city_record_notice",
       "source_native_id": "20260626034",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034",
       "source_system": "NYC City Record",
       "passage": {
@@ -2288,6 +2380,7 @@
       "source_record_id": "city_record_notice:20260626035",
       "source_family": "city_record_notice",
       "source_native_id": "20260626035",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626035",
       "source_system": "NYC City Record",
       "passage": {
@@ -2314,6 +2407,7 @@
       "source_record_id": "city_record_notice:20260626036",
       "source_family": "city_record_notice",
       "source_native_id": "20260626036",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036",
       "source_system": "NYC City Record",
       "passage": {
@@ -2340,6 +2434,7 @@
       "source_record_id": "city_record_notice:20260629003",
       "source_family": "city_record_notice",
       "source_native_id": "20260629003",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003",
       "source_system": "NYC City Record",
       "passage": {
@@ -2366,6 +2461,7 @@
       "source_record_id": "city_record_notice:20260629046",
       "source_family": "city_record_notice",
       "source_native_id": "20260629046",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629046",
       "source_system": "NYC City Record",
       "passage": {
@@ -2392,6 +2488,7 @@
       "source_record_id": "city_record_notice:20260630005",
       "source_family": "city_record_notice",
       "source_native_id": "20260630005",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005",
       "source_system": "NYC City Record",
       "passage": {
@@ -2418,6 +2515,7 @@
       "source_record_id": "city_record_notice:20260701025",
       "source_family": "city_record_notice",
       "source_native_id": "20260701025",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701025",
       "source_system": "NYC City Record",
       "passage": {
@@ -2444,6 +2542,7 @@
       "source_record_id": "city_record_notice:20260706036",
       "source_family": "city_record_notice",
       "source_native_id": "20260706036",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036",
       "source_system": "NYC City Record",
       "passage": {
@@ -2470,6 +2569,7 @@
       "source_record_id": "city_record_notice:20260706041",
       "source_family": "city_record_notice",
       "source_native_id": "20260706041",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
       "source_system": "NYC City Record",
       "passage": {
@@ -2496,6 +2596,7 @@
       "source_record_id": "city_record_notice:20260706044",
       "source_family": "city_record_notice",
       "source_native_id": "20260706044",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044",
       "source_system": "NYC City Record",
       "passage": {
@@ -2522,6 +2623,7 @@
       "source_record_id": "city_record_notice:20260707004",
       "source_family": "city_record_notice",
       "source_native_id": "20260707004",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004",
       "source_system": "NYC City Record",
       "passage": {
@@ -2548,6 +2650,7 @@
       "source_record_id": "city_record_notice:20260707021",
       "source_family": "city_record_notice",
       "source_native_id": "20260707021",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021",
       "source_system": "NYC City Record",
       "passage": {
@@ -2574,6 +2677,7 @@
       "source_record_id": "city_record_notice:20260707022",
       "source_family": "city_record_notice",
       "source_native_id": "20260707022",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
       "source_system": "NYC City Record",
       "passage": {
@@ -2600,6 +2704,7 @@
       "source_record_id": "city_record_notice:20260707025",
       "source_family": "city_record_notice",
       "source_native_id": "20260707025",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707025",
       "source_system": "NYC City Record",
       "passage": {
@@ -2626,6 +2731,7 @@
       "source_record_id": "city_record_notice:20260707029",
       "source_family": "city_record_notice",
       "source_native_id": "20260707029",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707029",
       "source_system": "NYC City Record",
       "passage": {
@@ -2652,6 +2758,7 @@
       "source_record_id": "city_record_notice:20260708002",
       "source_family": "city_record_notice",
       "source_native_id": "20260708002",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
       "source_system": "NYC City Record",
       "passage": {
@@ -2678,6 +2785,7 @@
       "source_record_id": "city_record_notice:20260708015",
       "source_family": "city_record_notice",
       "source_native_id": "20260708015",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015",
       "source_system": "NYC City Record",
       "passage": {
@@ -2704,6 +2812,7 @@
       "source_record_id": "city_record_notice:20260708018",
       "source_family": "city_record_notice",
       "source_native_id": "20260708018",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018",
       "source_system": "NYC City Record",
       "passage": {
@@ -2730,6 +2839,7 @@
       "source_record_id": "city_record_notice:20260709020",
       "source_family": "city_record_notice",
       "source_native_id": "20260709020",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709020",
       "source_system": "NYC City Record",
       "passage": {
@@ -2756,6 +2866,7 @@
       "source_record_id": "city_record_notice:20260709028",
       "source_family": "city_record_notice",
       "source_native_id": "20260709028",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028",
       "source_system": "NYC City Record",
       "passage": {
@@ -2782,6 +2893,7 @@
       "source_record_id": "city_record_notice:20260710032",
       "source_family": "city_record_notice",
       "source_native_id": "20260710032",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032",
       "source_system": "NYC City Record",
       "passage": {
@@ -2808,6 +2920,7 @@
       "source_record_id": "city_record_notice:20260710033",
       "source_family": "city_record_notice",
       "source_native_id": "20260710033",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710033",
       "source_system": "NYC City Record",
       "passage": {
@@ -2834,6 +2947,7 @@
       "source_record_id": "city_record_notice:20260713006",
       "source_family": "city_record_notice",
       "source_native_id": "20260713006",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
       "source_system": "NYC City Record",
       "passage": {
@@ -2860,6 +2974,7 @@
       "source_record_id": "city_record_notice:20260713032",
       "source_family": "city_record_notice",
       "source_native_id": "20260713032",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713032",
       "source_system": "NYC City Record",
       "passage": {
@@ -2886,6 +3001,7 @@
       "source_record_id": "city_record_notice:20260714001",
       "source_family": "city_record_notice",
       "source_native_id": "20260714001",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001",
       "source_system": "NYC City Record",
       "passage": {
@@ -2912,6 +3028,7 @@
       "source_record_id": "city_record_notice:20260714002",
       "source_family": "city_record_notice",
       "source_native_id": "20260714002",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714002",
       "source_system": "NYC City Record",
       "passage": {
@@ -2938,6 +3055,7 @@
       "source_record_id": "city_record_notice:20260714024",
       "source_family": "city_record_notice",
       "source_native_id": "20260714024",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024",
       "source_system": "NYC City Record",
       "passage": {
@@ -2964,6 +3082,7 @@
       "source_record_id": "city_record_notice:20260714029",
       "source_family": "city_record_notice",
       "source_native_id": "20260714029",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029",
       "source_system": "NYC City Record",
       "passage": {
@@ -2990,6 +3109,7 @@
       "source_record_id": "city_record_notice:20260715002",
       "source_family": "city_record_notice",
       "source_native_id": "20260715002",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002",
       "source_system": "NYC City Record",
       "passage": {
@@ -3016,6 +3136,7 @@
       "source_record_id": "city_record_notice:20260715005",
       "source_family": "city_record_notice",
       "source_native_id": "20260715005",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715005",
       "source_system": "NYC City Record",
       "passage": {
@@ -3042,6 +3163,7 @@
       "source_record_id": "city_record_notice:20260715041",
       "source_family": "city_record_notice",
       "source_native_id": "20260715041",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
       "source_system": "NYC City Record",
       "passage": {
@@ -3068,6 +3190,7 @@
       "source_record_id": "city_record_notice:20260715045",
       "source_family": "city_record_notice",
       "source_native_id": "20260715045",
+      "civic_object_family": "rules",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715045",
       "source_system": "NYC City Record",
       "passage": {
@@ -3094,6 +3217,7 @@
       "source_record_id": "city_record_notice:20260716009",
       "source_family": "city_record_notice",
       "source_native_id": "20260716009",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009",
       "source_system": "NYC City Record",
       "passage": {
@@ -3120,6 +3244,7 @@
       "source_record_id": "city_record_notice:20260716022",
       "source_family": "city_record_notice",
       "source_native_id": "20260716022",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
       "source_system": "NYC City Record",
       "passage": {
@@ -3146,6 +3271,7 @@
       "source_record_id": "city_record_notice:20260716025",
       "source_family": "city_record_notice",
       "source_native_id": "20260716025",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025",
       "source_system": "NYC City Record",
       "passage": {
@@ -3172,6 +3298,7 @@
       "source_record_id": "city_record_notice:20260721023",
       "source_family": "city_record_notice",
       "source_native_id": "20260721023",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721023",
       "source_system": "NYC City Record",
       "passage": {
@@ -3198,6 +3325,7 @@
       "source_record_id": "city_record_notice:20260723005",
       "source_family": "city_record_notice",
       "source_native_id": "20260723005",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005",
       "source_system": "NYC City Record",
       "passage": {
@@ -3224,6 +3352,7 @@
       "source_record_id": "city_record_notice:20260723022",
       "source_family": "city_record_notice",
       "source_native_id": "20260723022",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723022",
       "source_system": "NYC City Record",
       "passage": {
@@ -3250,6 +3379,7 @@
       "source_record_id": "city_record_notice:20260723030",
       "source_family": "city_record_notice",
       "source_native_id": "20260723030",
+      "civic_object_family": "meetings",
       "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
       "source_system": "NYC City Record",
       "passage": {
@@ -3276,6 +3406,7 @@
       "source_record_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes",
       "source_family": "community_board_minutes",
       "source_native_id": "queens-cb-08:2026-06-10:minutes",
+      "civic_object_family": "meetings",
       "source_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf",
       "source_system": "Queens Community Board 8",
       "passage": {
@@ -3300,6 +3431,6 @@
     }
   ],
   "dropped_records": [],
-  "corpus_sha256": "11c4f47620f6a961e19d64a0fba12b3ef513416ebeb3bacc302512cb9be0eca0",
-  "manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88"
+  "corpus_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81",
+  "manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f"
 }

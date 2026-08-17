@@ -2,20 +2,29 @@
  * Pure admission boundary for the front-door semantic topic-search shell.
  *
  * The candidate endpoint owns retrieval and scope. This adapter verifies its
- * versioned evidence envelope, then groups only by sr1 source family. It never
- * assigns a civic lens, jurisdiction, relationship, or public score.
+ * versioned evidence envelope, then groups candidates by their source-backed
+ * civic object family. It never infers a civic lens from passage text or emits
+ * a jurisdiction, relationship, or public score.
  */
 
 export const SEMANTIC_CANDIDATE_RESPONSE_SCHEMA = "cityscroll.semantic_retrieval.candidate_response.v1";
 export const SEMANTIC_CANDIDATE_METHOD = "lexical_fallback_v1";
 export const SEMANTIC_CORPUS_SCHEMA = "cityscroll.semantic_retrieval.corpus_manifest.v1";
 export const SEMANTIC_PASSAGE_INDEX_SCHEMA = "cityscroll.semantic_retrieval.source_passage_map.v1";
-export const SEMANTIC_CORPUS_MANIFEST_SHA256 = "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88";
-export const SEMANTIC_PASSAGE_INDEX_VERSION = "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226";
+export const SEMANTIC_CORPUS_MANIFEST_SHA256 = "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f";
+export const SEMANTIC_PASSAGE_INDEX_VERSION = "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e";
 export const SEMANTIC_TOPIC_FAMILIES = Object.freeze([
   "city_record_notice",
   "attachment_text",
   "community_board_minutes",
+]);
+export const SEMANTIC_CIVIC_OBJECT_FAMILIES = Object.freeze([
+  "contracts",
+  "people-organizations",
+  "land",
+  "rules",
+  "meetings",
+  "exams",
 ]);
 
 const MAX_QUERY_LENGTH = 240;
@@ -74,6 +83,7 @@ function invalid(reason) {
 function normalizedCandidate(candidate, responseMethod) {
   if (!candidate || typeof candidate !== "object" || hasBannedPublicField(candidate)) return null;
   const family = clean(candidate.source?.family, 80);
+  const civicObjectFamily = clean(candidate.civic_object_family, 80);
   const sourceId = clean(candidate.source?.id, 300);
   const sourceUrl = String(candidate.source?.url || "").trim();
   const sourceTitle = clean(candidate.source?.title, 500) || null;
@@ -97,6 +107,7 @@ function normalizedCandidate(candidate, responseMethod) {
   const searchableText = `${sourceTitle || ""}\n${passageText || ""}`.toLocaleLowerCase("en-US");
 
   if (!SEMANTIC_TOPIC_FAMILIES.includes(family)
+      || !SEMANTIC_CIVIC_OBJECT_FAMILIES.includes(civicObjectFamily)
       || !sourceId.startsWith(`${family}:`)
       || !safeHttpUrl(sourceUrl)
       || !passageId.startsWith(`${sourceId}:`)
@@ -116,6 +127,7 @@ function normalizedCandidate(candidate, responseMethod) {
 
   return freeze({
     candidate_id: candidateId,
+    civic_object_family: civicObjectFamily,
     source: {
       id: sourceId,
       family,
@@ -185,8 +197,8 @@ export function normalizeSemanticCandidateResponse(payload, { expectedQuery = ""
 
   const candidates = payload.candidates.map((candidate) => normalizedCandidate(candidate, method));
   if (candidates.some((candidate) => !candidate)) return invalid("candidate");
-  const groups = SEMANTIC_TOPIC_FAMILIES.map((family) => {
-    const familyCandidates = candidates.filter((candidate) => candidate.source.family === family);
+  const groups = SEMANTIC_CIVIC_OBJECT_FAMILIES.map((family) => {
+    const familyCandidates = candidates.filter((candidate) => candidate.civic_object_family === family);
     return freeze({
       id: family,
       state: familyCandidates.length ? "matched" : "bounded_empty",

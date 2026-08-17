@@ -5,7 +5,7 @@ import test from "node:test";
 import {
   SEMANTIC_CANDIDATE_METHOD,
   SEMANTIC_CANDIDATE_RESPONSE_SCHEMA,
-  SEMANTIC_TOPIC_FAMILIES,
+  SEMANTIC_CIVIC_OBJECT_FAMILIES,
   normalizeSemanticCandidateResponse,
   topicCandidateTitle,
 } from "../site/semantic_topic_search.mjs";
@@ -24,6 +24,7 @@ function realCandidate(sourceRecordId = "city_record_notice:20260715041") {
     : searchableText.match(/[a-z0-9]+/)?.[0];
   return {
     candidate_id: passage.candidate_id,
+    civic_object_family: source.civic_object_family,
     source: {
       id: source.source_record_id,
       family: source.source_family,
@@ -72,7 +73,7 @@ function response(candidates = [realCandidate()]) {
   };
 }
 
-test("topic search accepts the versioned sr5 envelope and groups real sources without lens inference", () => {
+test("topic search accepts the versioned sr5 envelope and groups source-backed civic objects", () => {
   const normalized = normalizeSemanticCandidateResponse(response(), {
     expectedQuery: "energy conservation",
   });
@@ -80,19 +81,17 @@ test("topic search accepts the versioned sr5 envelope and groups real sources wi
   assert.equal(normalized.state, "typed");
   assert.equal(normalized.method, SEMANTIC_CANDIDATE_METHOD);
   assert.equal(normalized.corpus.manifest_sha256, manifest.manifest_sha256);
-  assert.deepEqual(normalized.groups.map((group) => group.id), SEMANTIC_TOPIC_FAMILIES);
-  assert.equal(normalized.groups[0].id, "city_record_notice");
-  assert.equal(normalized.groups[0].candidates.length, 1);
-  assert.equal(normalized.groups[1].state, "bounded_empty");
-  assert.equal(normalized.groups[2].state, "bounded_empty");
-  assert.equal(normalized.groups[0].candidates[0].source.url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041");
-  assert.equal(normalized.groups[0].candidates[0].source.canonical_href, "/notices/20260715041");
-  assert.deepEqual(normalized.groups[0].candidates[0].matched_terms, ["energy"]);
-  assert.equal(topicCandidateTitle(normalized.groups[0].candidates[0]), "Amendments to Rules Relating to the Energy Conservation Code");
-  assert.equal(Object.hasOwn(normalized.groups[0].candidates[0], "civic_object_family"), false);
+  assert.deepEqual(normalized.groups.map((group) => group.id), SEMANTIC_CIVIC_OBJECT_FAMILIES);
+  const rules = normalized.groups.find((group) => group.id === "rules");
+  assert.equal(rules.candidates.length, 1);
+  assert.equal(rules.candidates[0].source.url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041");
+  assert.equal(rules.candidates[0].source.canonical_href, "/notices/20260715041");
+  assert.deepEqual(rules.candidates[0].matched_terms, ["energy"]);
+  assert.equal(topicCandidateTitle(rules.candidates[0]), "Amendments to Rules Relating to the Energy Conservation Code");
+  assert.equal(rules.candidates[0].civic_object_family, "rules");
 });
 
-test("topic search keeps all three manifest families distinct", () => {
+test("topic search keeps source provenance while clustering by civic object", () => {
   const candidates = [
     realCandidate("city_record_notice:20260715041"),
     realCandidate("attachment_text:20240515016%23attachment-37470"),
@@ -102,11 +101,40 @@ test("topic search keeps all three manifest families distinct", () => {
     expectedQuery: "energy conservation",
   });
   assert.deepEqual(
-    normalized.groups.map((group) => [group.id, group.candidates.length]),
+    normalized.groups.filter((group) => group.candidates.length).map((group) => [
+      group.id,
+      group.candidates.map((candidate) => candidate.source.family),
+    ]),
     [
-      ["city_record_notice", 1],
-      ["attachment_text", 1],
-      ["community_board_minutes", 1],
+      ["land", ["attachment_text"]],
+      ["rules", ["city_record_notice"]],
+      ["meetings", ["community_board_minutes"]],
+    ],
+  );
+});
+
+test("semantic City Record candidates stay clustered by civic object", () => {
+  const rule = {
+    ...realCandidate("city_record_notice:20260715041"),
+    civic_object_family: "rules",
+  };
+  const meeting = {
+    ...realCandidate("city_record_notice:20260723022"),
+    civic_object_family: "meetings",
+  };
+  const normalized = normalizeSemanticCandidateResponse(response([rule, meeting]), {
+    expectedQuery: "energy conservation",
+  });
+
+  assert.equal(normalized.state, "typed");
+  assert.deepEqual(
+    normalized.groups.filter((group) => group.candidates.length).map((group) => [
+      group.id,
+      group.candidates.map((candidate) => candidate.source.native_id),
+    ]),
+    [
+      ["rules", ["20260715041"]],
+      ["meetings", ["20260723022"]],
     ],
   );
 });
@@ -128,6 +156,10 @@ test("topic search fails closed on stale, mismatched, unsafe, or scored candidat
     response([{
       ...realCandidate(),
       source: { ...realCandidate().source, family: "rules" },
+    }]),
+    response([{
+      ...realCandidate(),
+      civic_object_family: "not-a-civic-object",
     }]),
     response([{
       ...realCandidate(),
@@ -153,7 +185,7 @@ test("a retained passage is required; unavailable text carries an explicit evide
   const normalized = normalizeSemanticCandidateResponse(response([missingText]), {
     expectedQuery: "energy conservation",
   });
-  const candidate = normalized.groups[0].candidates[0];
+  const candidate = normalized.groups.find((group) => group.id === "rules").candidates[0];
   assert.equal(candidate.passage.text, null);
   assert.equal(candidate.evidence_limit, "Source passage text is unavailable for this candidate.");
 });

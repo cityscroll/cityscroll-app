@@ -2,6 +2,7 @@ import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { handleSearch } from "./search.mjs";
 import corpusManifest from "../../warehouse/manifests/semantic_retrieval_corpus_manifest.json" with { type: "json" };
 import sourcePassageMap from "../../warehouse/experiments/semantic-layer-trial/source_passage_map.json" with { type: "json" };
+import { SEMANTIC_CIVIC_OBJECT_FAMILIES } from "../../warehouse/lib/semantic_civic_object_groups.mjs";
 
 export const SEMANTIC_CANDIDATE_RESPONSE_SCHEMA = "cityscroll.semantic_retrieval.candidate_response.v1";
 export const SEMANTIC_CANDIDATE_METHOD = "lexical_fallback_v1";
@@ -29,6 +30,15 @@ function assertRuntimeArtifacts() {
   }
   if (sourcePassageMap.source_count !== corpusManifest.record_count) {
     throw new Error("typed candidate corpus and passage index counts differ");
+  }
+  const manifestRecords = new Map(
+    corpusManifest.records.map((record) => [record.source_record_id, record]),
+  );
+  for (const source of sourcePassageMap.sources) {
+    const record = manifestRecords.get(source.source_record_id);
+    if (!record || record.civic_object_family !== source.civic_object_family) {
+      throw new Error("typed candidate civic object classification differs across artifacts");
+    }
   }
 }
 
@@ -107,6 +117,7 @@ function canonicalSourceHref(source) {
 function publicCandidate(passage, source, record, matchedTerms) {
   return {
     candidate_id: passage.candidate_id,
+    civic_object_family: record.civic_object_family,
     source: {
       id: source.source_record_id,
       family: source.source_family,
@@ -160,6 +171,7 @@ function assertPublicCandidateResponse(result, request) {
     if (!candidate?.candidate_id
         || !candidate.source?.id
         || !SOURCE_FAMILIES.has(candidate.source.family)
+        || !SEMANTIC_CIVIC_OBJECT_FAMILIES.includes(candidate.civic_object_family)
         || !/^https?:\/\//.test(candidate.source.url || "")
         || !candidate.passage?.id
         || candidate.method !== SEMANTIC_CANDIDATE_METHOD
@@ -171,6 +183,8 @@ function assertPublicCandidateResponse(result, request) {
         || !matchesScope(record, request.filters)
         || candidate.candidate_id !== passage.candidate_id
         || candidate.source.id !== source.source_record_id
+        || candidate.civic_object_family !== source.civic_object_family
+        || candidate.civic_object_family !== record.civic_object_family
         || candidate.source.url !== source.source_url
         || candidate.source.canonical_href !== canonicalSourceHref(source)
         || JSON.stringify(candidate.matched_terms) !== JSON.stringify(expectedTerms)

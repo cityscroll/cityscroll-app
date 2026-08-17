@@ -1,5 +1,10 @@
 import { createHash } from "node:crypto";
 
+import {
+  SEMANTIC_CIVIC_OBJECT_FAMILIES,
+  buildSemanticCivicObjectIndex,
+} from "./semantic_civic_object_groups.mjs";
+
 export const SOURCE_PASSAGE_MAP_SCHEMA = "cityscroll.semantic_retrieval.source_passage_map.v1";
 export const SOURCE_PASSAGE_MAX_CHARS = 1_200;
 export const SOURCE_PASSAGE_OVERLAP_CHARS = 200;
@@ -95,21 +100,35 @@ function passagesFor(document, sourceRecordIdValue) {
   return passages;
 }
 
-export function buildSourcePassageMap(corpus, { corpusSha256 = null } = {}) {
+export function buildSourcePassageMap(corpus, {
+  corpusSha256 = null,
+  classificationManifest = null,
+  classificationManifestSha256 = null,
+} = {}) {
   if (!Array.isArray(corpus?.documents)) throw new Error("source passage map requires corpus documents");
 
   const sources = [];
   const passages = [];
   const sourceIds = new Set();
+  const civicObjectIndex = classificationManifest
+    ? buildSemanticCivicObjectIndex(classificationManifest)
+    : new Map();
   for (const document of corpus.documents) {
     const recordId = sourceRecordId(document);
     if (sourceIds.has(recordId)) throw new Error(`duplicate typed source record ${recordId}`);
     sourceIds.add(recordId);
     const sourcePassages = passagesFor(document, recordId);
+    const civicObjectFamily = String(
+      civicObjectIndex.get(recordId) || document?.civic_object_family || "",
+    ).trim();
+    if (!SEMANTIC_CIVIC_OBJECT_FAMILIES.includes(civicObjectFamily)) {
+      throw new Error(`source passage record ${recordId} requires a civic object family`);
+    }
     sources.push({
       source_record_id: recordId,
       source_native_id: String(document.id),
       source_family: String(document.kind),
+      civic_object_family: civicObjectFamily,
       source_system: String(document?.source?.system || "").trim() || null,
       source_url: sourceUrl(document),
       title: String(document?.title || "").trim() || null,
@@ -132,6 +151,7 @@ export function buildSourcePassageMap(corpus, { corpusSha256 = null } = {}) {
     observed_on: String(corpus?.observed_on || "").trim() || null,
     corpus_schema: String(corpus?.schema || "").trim() || null,
     corpus_sha256: corpusSha256,
+    classification_manifest_sha256: classificationManifestSha256,
     chunking: {
       boundary_semantics: "zero_based_half_open",
       boundary_unit: "utf16_code_unit",
@@ -151,6 +171,10 @@ export function buildSourcePassageMap(corpus, { corpusSha256 = null } = {}) {
 
 export function validateSourcePassageMap(map) {
   if (map?.schema !== SOURCE_PASSAGE_MAP_SCHEMA) throw new Error("source passage map schema mismatch");
+  if (map.classification_manifest_sha256 != null
+      && !/^[a-f0-9]{64}$/.test(map.classification_manifest_sha256)) {
+    throw new Error("source passage map classification receipt is invalid");
+  }
   if (!Array.isArray(map.sources) || !Array.isArray(map.passages)) {
     throw new Error("source passage map requires source and passage arrays");
   }
@@ -166,7 +190,11 @@ export function validateSourcePassageMap(map) {
     if (!source.source_record_id || sources.has(source.source_record_id)) {
       throw new Error(`duplicate or missing source record ${source.source_record_id || "unknown"}`);
     }
-    if (!source.source_family || !source.source_native_id) throw new Error("typed source identity is incomplete");
+    if (!source.source_family
+        || !source.source_native_id
+        || !SEMANTIC_CIVIC_OBJECT_FAMILIES.includes(source.civic_object_family)) {
+      throw new Error("typed source identity is incomplete");
+    }
     sourceUrl({ id: source.source_native_id, source: { url: source.source_url } });
     if (!new Set(["partial", "complete", "unknown"]).has(source.coverage?.state)) {
       throw new Error(`invalid coverage state for ${source.source_record_id}`);
