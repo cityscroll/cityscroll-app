@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.semantic_retrieval.offline_embedding_receipt.v1",
+  "receipt_version": 1,
+  "authorization": {
+    "runtime_semantic_retrieval": false,
+    "public_search_mode": "lexical",
+    "use": "offline_evaluation_only"
+  },
+  "model": {
+    "id": "cityscroll/hashed-ngram-tfidf",
+    "revision": "hashed_ngram_tfidf_v0",
+    "implementation": "warehouse/lib/attachment_embeddings.mjs",
+    "dimensions": 256,
+    "normalization": "l2",
+    "configuration": {
+      "feature_space": "signed_fnv1a_word_and_character_ngrams",
+      "weighting": "corpus_idf_with_augmented_term_frequency",
+      "maximum_input_characters": 12000,
+      "document_chunk_characters": 1800,
+      "document_chunk_overlap_characters": 200,
+      "vector_number_format": "decimal_float_8"
+    }
+  },
+  "inputs": {
+    "corpus_manifest_schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
+    "corpus_manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88",
+    "corpus_content_sha256": "11c4f47620f6a961e19d64a0fba12b3ef513416ebeb3bacc302512cb9be0eca0",
+    "corpus_receipt_sha256": "66c16c80898d20b79f27d376687039efffca1a7335a11f8fb2b69d1db15c1b0a",
+    "source_passage_map_schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
+    "source_passage_map_sha256": "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226"
+  },
+  "row_counts": {
+    "input": 238,
+    "embedded": 238,
+    "dropped": 0
+  },
+  "dropped_reason_counts": {},
+  "active_artifact": {
+    "state": "active",
+    "artifact_version": "v1-7b49654e45bb7429",
+    "artifact_path": "warehouse/embeddings/semantic_retrieval/v1-7b49654e45bb7429.json",
+    "artifact_sha256": "4786e9aa4593154118ead0df368715308aafc380bea103c3cc8cf9f923b06eae"
+  },
+  "previous_good_artifact": {
+    "state": "bootstrap_known_good",
+    "artifact_version": "v1-7b49654e45bb7429",
+    "artifact_path": "warehouse/embeddings/semantic_retrieval/v1-7b49654e45bb7429.json",
+    "artifact_sha256": "4786e9aa4593154118ead0df368715308aafc380bea103c3cc8cf9f923b06eae"
+  },
+  "refresh_publication": {
+    "strategy": "content_addressed_artifact_then_atomic_pointer_swap",
+    "failure_behavior": "Leave the active receipt and prior artifact unchanged.",
+    "lexical_search_dependency": false
+  },
+  "receipt_sha256": "c702b0a02f154ddfb23104fc6a4c597ddf4098d68b45f520a8c77ff44cdb0ba9"
+}

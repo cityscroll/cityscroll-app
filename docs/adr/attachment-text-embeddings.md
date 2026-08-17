@@ -117,3 +117,16 @@ Until then, (b) is the honest fit for precompute-first.
 | `site/data/attachment_related_notices.json` | Static product edges |
 | `worker/src/data/attachment_related_notices.json` | Worker twin |
 | `warehouse/receipts/proof/att_t3_attachment_embeddings_latest.json` | Proof receipt |
+
+## Bounded semantic-corpus artifact
+
+The later semantic-retrieval corpus uses the same local, deterministic
+`hashed_ngram_tfidf_v0` model with its full configuration pinned in the build
+receipt. `tools/build_offline_embedding_artifact.mjs` reads the typed corpus
+manifest and source-passage map, writes a content-addressed offline artifact,
+then atomically swaps the active receipt. A failed refresh therefore leaves the
+last known-good artifact selected and cannot affect lexical search.
+
+This artifact is engineering evidence for offline evaluation. It does not
+authorize query-time embeddings, change public ranking, or create civic graph
+relationships.
