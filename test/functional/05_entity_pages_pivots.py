@@ -482,7 +482,7 @@ with sync_playwright() as pw:
     step("OK", "regression: closing-week", "")
     strip = page.evaluate("!!document.getElementById('homeCta')")
     step("OK" if strip else "FAIL", "regression: today strip", "")
-    page.goto(BASE + "browse/staffing/", timeout=30000)
+    page.goto(BASE + "browse/exams/", timeout=30000)
     page.wait_for_selector("#career-interest-facets [data-career-facet]", timeout=15000)
     interest_chips = page.locator("#career-interest-facets [data-career-facet]")
     page.locator('[data-career-facet="people:interest:public-safety"]').click()

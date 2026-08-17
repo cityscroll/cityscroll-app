@@ -1,4 +1,4 @@
-"""End-to-end parity for the Exams URL alias to the Staffing exam guide."""
+"""End-to-end separation of People + organizations from the Exams alias."""
 
 from __future__ import annotations
 
@@ -94,6 +94,18 @@ def assert_shared_exam_card_grammar(page):
 def run(page):
     install_routes(page)
 
+    # The home civic-object chooser reaches the unified People + organizations
+    # document, whose visible rows cover both people and organization types.
+    page.goto(BASE, wait_until="domcontentloaded", timeout=30_000)
+    page.locator(".browse-child-tabs [href='/browse/people/']").click()
+    page.wait_for_url(f"{BASE}browse/people/", timeout=30_000)
+    people = page.locator("[data-browse-concept='people']")
+    wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="People + organizations list")
+    expect(people).to_be_visible()
+    expect(people.locator('[data-civic-object-kind="official"]').first).to_be_visible()
+    assert people.locator("#people-organizations-type option[value='agency']").count() == 1
+    expect(page.locator("#career-guide")).to_be_hidden()
+
     # Exams owns a document route even though its interaction contract is
     # implemented by the Staffing guide. The Browse nav must perform a native
     # navigation instead of exposing the retired inline #tab-exams splash.
@@ -174,16 +186,19 @@ def run(page):
     assert page.locator("#staffing-more-filters").get_attribute("open") == ""
     page.keyboard.press("Escape")
 
-    # Leaving the alias through its shared parent opens Staffing rather than
-    # trapping the click on the Exams URL.
+    # Leaving the alias through its shared parent keeps the retained Staffing
+    # URL, but renders the unified People + organizations document rather than
+    # leaking the Exams guide into that route.
     page.locator(".browse-child-tabs [href='/browse/people/']").click()
     page.wait_for_url(f"{BASE}browse/staffing/", timeout=30_000)
-    wait_for_guide(page)
+    people = page.locator("[data-browse-concept='people']")
+    wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="Staffing People + organizations list")
     assert page.locator("body").get_attribute("data-browse-route-alias") is None
     assert_active_civic_object(page, "/browse/people/")
-    assert page.locator("#staffing-ledger").get_attribute("hidden") is None
-    assert page.locator("#career-browser-heading").inner_text() == "Find an exam you can act on"
-    assert_shared_exam_card_grammar(page)
+    expect(people).to_be_visible()
+    expect(people.locator('[data-civic-object-kind="official"]').first).to_be_visible()
+    assert people.locator("#people-organizations-type option[value='agency']").count() == 1
+    expect(page.locator("#career-guide")).to_be_hidden()
 
 
 def main():

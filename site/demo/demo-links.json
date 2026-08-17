@@ -399,10 +399,11 @@
     },
     {
       "id": "scenario-city-career",
-      "url": "#people?view=guide",
+      "url": "browse/exams/",
       "feature": "scenario-city-career",
       "description": "Start the city-career path with exams that are open for applications.",
       "expectations": {
+        "pathname": "/browse/exams/",
         "visible": [
           {
             "selector": "#career-results .career-card[data-status]"
@@ -417,18 +418,18 @@
     },
     {
       "id": "staffing-route-alias",
-      "url": "#staffing?lang=es&view=guide&role=Engineer%20Civil&window=open",
+      "url": "#staffing?lang=es&q=Rodriguez&type=official",
       "feature": "staffing-route-alias",
-      "description": "Forward the legacy Staffing fragment while preserving its guide filters.",
+      "description": "Forward the legacy Staffing fragment into the unified People + organizations document.",
       "expectations": {
         "visible": [
           {
-            "selector": "#career-guide"
+            "selector": "[data-browse-concept=\"people\"] [data-civic-object-kind=\"official\"]"
           }
         ],
         "notVisible": [
           {
-            "selector": "#career-results .loading"
+            "selector": "#career-guide"
           }
         ]
       }

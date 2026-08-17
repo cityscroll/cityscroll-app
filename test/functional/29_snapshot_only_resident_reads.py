@@ -27,7 +27,11 @@ FIRST_PARTY_API_PATTERNS = (
 )
 SURFACES = (
     ("contracts", "/browse/contracts/", "#list .row"),
-    ("staffing", "/browse/staffing/", "#career-results .career-card, #staffing-notice-list .staffing-hire-row"),
+    (
+        "people + organizations",
+        "/browse/staffing/",
+        "[data-browse-concept='people'] [data-people-organizations-list] .people-org-row",
+    ),
     ("zoning", "/browse/zoning/", "#llist .row"),
     ("property", "/browse/property/?view=archive", "#propertyfeed .fcard, #propertyfeed .property-cluster"),
     ("rules", "/browse/rules/", "#rulesfeed .fcard"),

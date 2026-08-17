@@ -31,7 +31,11 @@ SURFACES = (
     # The root is a neutral topic entry; Contracts is covered on its canonical
     # document route so this fixture waits for the intended source-backed list.
     ("contracts", "browse/contracts/#money", "#list .row"),
-    ("staffing", "#people?view=guide", "#career-results .career-card, #staffing-notice-list .staffing-hire-row"),
+    (
+        "people + organizations",
+        "browse/staffing/",
+        "[data-browse-concept='people'] [data-civic-object-kind='official']",
+    ),
     ("property", "#property", "#propertyfeed .fcard"),
     ("rules", "#rules", "#rulesfeed .fcard"),
     ("meetings", "#meetings", "#meetingsfeed .fcard"),
@@ -144,6 +148,25 @@ def run(base: str) -> None:
                 label=f"{name} mobile document settled",
             )
             assert_mobile_surface(page, name)
+
+            if name == "people + organizations":
+                contract = page.evaluate(
+                    """() => ({
+                      concept: document.querySelector('[data-browse-concept="people"]')?.dataset.browseConcept,
+                      officials: document.querySelectorAll('[data-civic-object-kind="official"]').length,
+                      organizationOption: Boolean(document.querySelector('#people-organizations-type option[value="agency"]')),
+                      examsAlias: Boolean(document.querySelector('[data-browse-route-alias="exams"]')),
+                      examsGuideVisible: (() => {
+                        const guide = document.querySelector('#career-guide');
+                        return Boolean(guide && guide.getClientRects().length);
+                      })(),
+                    })"""
+                )
+                assert contract["concept"] == "people", contract
+                assert contract["officials"] > 0, contract
+                assert contract["organizationOption"], contract
+                assert not contract["examsAlias"], contract
+                assert not contract["examsGuideVisible"], contract
 
             if name == "near you":
                 contract = page.evaluate(
