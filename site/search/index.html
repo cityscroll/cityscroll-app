@@ -1587,7 +1587,7 @@
     <section class="home-topic-entry" data-home-topic-entry aria-labelledby="home-topic-heading">
       <p class="home-topic-kicker"><span class="tag method" data-i18n="search_label">Search</span></p>
       <h2 id="home-topic-heading" data-i18n="topic_search_heading">What are you looking for?</h2>
-      <p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by their published source.</p>
+      <p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p>
       <form class="home-topic-form" method="get" action="/search/">
         <label for="home-topic-query" data-i18n="topic_search_heading">What are you looking for?</label>
         <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
@@ -1630,7 +1630,7 @@
   <div class="wrap">
     <div id="browseview"><div class="topic-search-document" data-search-document>
     <p class="topic-search-kicker" data-i18n="search_label">Search</p>
-    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What are you looking for?</h2><p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by their published source.</p></header>
+    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What are you looking for?</h2><p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p></header>
     <form class="topic-search-form" method="get" action="/search/" data-search-form>
       <label for="search-query" data-i18n="topic_search_heading">What are you looking for?</label>
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
@@ -1639,17 +1639,29 @@
     <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status"><p><strong>Coverage details appear with keyword fallback results.</strong><span>Fallback search reports which public-record collections took part.</span></p></section>
     <div class="topic-search-method" aria-label="How results match" data-i18n-aria="topic_search_method_label"><span data-i18n="topic_search_method_label">How results match</span><strong data-search-method-value data-i18n="topic_search_passage_matches">Source-passage matches</strong></div>
     <p class="topic-search-coverage" data-semantic-coverage hidden></p>
-    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by source" data-i18n-aria="topic_search_results_aria">
-      <section class="topic-search-lane" data-semantic-family="city_record_notice" aria-labelledby="search-lane-city_record_notice">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-city_record_notice" data-i18n="topic_search_family_notices">City Record notices</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by civic object" data-i18n-aria="topic_search_results_aria">
+      <section class="topic-search-lane" data-semantic-family="contracts" aria-labelledby="search-semantic-lane-contracts">
+    <header class="topic-search-lane-head"><div><h3 id="search-semantic-lane-contracts" data-i18n="tab_money">Contracts</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
     <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
-      <section class="topic-search-lane" data-semantic-family="attachment_text" aria-labelledby="search-lane-attachment_text">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-attachment_text" data-i18n="topic_search_family_attachments">Source attachments</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+      <section class="topic-search-lane" data-semantic-family="people-organizations" aria-labelledby="search-semantic-lane-people-organizations">
+    <header class="topic-search-lane-head"><div><h3 id="search-semantic-lane-people-organizations">People + organizations</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
     <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
-      <section class="topic-search-lane" data-semantic-family="community_board_minutes" aria-labelledby="search-lane-community_board_minutes">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-community_board_minutes" data-i18n="topic_search_family_minutes">Community board minutes</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+      <section class="topic-search-lane" data-semantic-family="land" aria-labelledby="search-semantic-lane-land">
+    <header class="topic-search-lane-head"><div><h3 id="search-semantic-lane-land">Land</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
+  </section>
+      <section class="topic-search-lane" data-semantic-family="rules" aria-labelledby="search-semantic-lane-rules">
+    <header class="topic-search-lane-head"><div><h3 id="search-semantic-lane-rules" data-i18n="tab_rules">Rules</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
+  </section>
+      <section class="topic-search-lane" data-semantic-family="meetings" aria-labelledby="search-semantic-lane-meetings">
+    <header class="topic-search-lane-head"><div><h3 id="search-semantic-lane-meetings" data-i18n="tab_meetings">Meetings</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
+  </section>
+      <section class="topic-search-lane" data-semantic-family="exams" aria-labelledby="search-semantic-lane-exams">
+    <header class="topic-search-lane-head"><div><h3 id="search-semantic-lane-exams">Exams</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
     <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
     </div>

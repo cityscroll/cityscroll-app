@@ -6,6 +6,36 @@
     "attachment": "The committed T1 Cannonsville extraction.",
     "outcome_document": "The one same-body, same-date public minutes document already identified in the dated non-Council residual receipt."
   },
+  "civic_object_groups": [
+    {
+      "id": "rules",
+      "source_family": "city_record_notice",
+      "selection_list": "city_record_notice_ids",
+      "offset": 0,
+      "count": 60,
+      "first_source_native_id": "20260715005",
+      "last_source_native_id": "20260428027"
+    },
+    {
+      "id": "meetings",
+      "source_family": "city_record_notice",
+      "selection_list": "city_record_notice_ids",
+      "offset": 60,
+      "count": 60,
+      "first_source_native_id": "20260723022",
+      "last_source_native_id": "20150714108"
+    },
+    {
+      "id": "land",
+      "source_family": "attachment_text",
+      "source_native_ids": ["20240515016#attachment-37470"]
+    },
+    {
+      "id": "meetings",
+      "source_family": "community_board_minutes",
+      "source_native_ids": ["queens-cb-08:2026-06-10:minutes"]
+    }
+  ],
   "city_record_notice_ids": [
     "20260715005", "20260715041", "20260715045", "20260714024", "20260714029",
     "20260714002", "20260713006", "20260708018", "20260708002", "20260707025",
