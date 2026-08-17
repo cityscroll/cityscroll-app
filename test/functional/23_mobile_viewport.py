@@ -154,7 +154,6 @@ def run(base: str) -> None:
                       concept: document.querySelector('[data-browse-concept="people"]')?.dataset.browseConcept,
                       officials: document.querySelectorAll('[data-civic-object-kind="official"]').length,
                       organizationOption: Boolean(document.querySelector('#people-organizations-type option[value="agency"]')),
-                      examsAlias: Boolean(document.querySelector('[data-browse-route-alias="exams"]')),
                       examsGuideVisible: (() => {
                         const guide = document.querySelector('#career-guide');
                         return Boolean(guide && guide.getClientRects().length);
@@ -164,7 +163,6 @@ def run(base: str) -> None:
                 assert contract["concept"] == "people", contract
                 assert contract["officials"] > 0, contract
                 assert contract["organizationOption"], contract
-                assert not contract["examsAlias"], contract
                 assert not contract["examsGuideVisible"], contract
 
             if name == "near you":

@@ -5,12 +5,12 @@ import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
-import { aliasHash, browseRouteAlias } from "../browse_route_aliases.mjs";
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 import {
   BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT,
   BROWSE_DOCUMENT_FACET_HASHES_COMPAT,
+  EXAMS_SURFACE,
   STAFFING_SURFACE,
 } from "../browse_surface_contracts.mjs";
 import {
@@ -59,12 +59,13 @@ function documentRouteRaw(){
     if(!facet) return "browse";
     const concept=DOCUMENT_CONCEPT_ROUTES.get(facet);
     if(concept) return `browse-concept/${concept}`;
-    const alias=browseRouteAlias(path);
-    if(alias){
+    if(path===EXAMS_SURFACE.route.replace(/\/+$/, "")){
       const params=new URLSearchParams(location.search);
-      const canonical = globalThis.CrolRouteMigration?.canonicalizeBrowseUrl?.(`${path}${params.size?`?${params}`:""}`) || `${path}${params.size?`?${params}`:""}`;
-      const canonicalUrl = new URL(canonical, location.origin);
-      return aliasHash(alias, canonicalUrl.searchParams);
+      params.delete("lang"); params.delete("legacy");
+      const canonical=globalThis.CrolRouteMigration?.canonicalizeBrowseUrl?.(`${path}${params.size?`?${params}`:""}`) || `${path}${params.size?`?${params}`:""}`;
+      if(canonical!==`${path}${params.size?`?${params}`:""}`) history.replaceState(null,"",canonical);
+      const canonicalUrl=new URL(canonical,location.origin);
+      return `exams${canonicalUrl.searchParams.size?`?${canonicalUrl.searchParams}`:""}`;
     }
     const route=DOCUMENT_FACET_HASHES[facet];
     if(!route) return "";
@@ -83,18 +84,19 @@ function documentUrlForHash(hash){
   const mapped=CrolRouteMigration.migrateLegacyUrl(input);
   return mapped.migrated?mapped.target:null;
 }
-function aliasRouteUrlForHash(hash){
-  const alias=browseRouteAlias(location.pathname);
-  if(!alias) return null;
-  const raw=String(hash||"").replace(/^#/,""), [route, query=""] = raw.split("?",2);
-  if(route!==alias.targetTab) return null;
+function examsRouteUrlForHash(hash){
+  const path=location.pathname.replace(/\/+$/,"")||"/";
+  if(path!==EXAMS_SURFACE.route.replace(/\/+$/,"")) return null;
+  const raw=String(hash||"").replace(/^#/,"");
+  if(/^exam\/\d{4}$/.test(raw)) return `${EXAMS_SURFACE.route}#${raw}`;
+  const [route,query=""]=raw.split("?",2);
+  if(route!=="exams") return null;
   const params=new URLSearchParams(query);
-  if(params.get("view")!==alias.defaultView) return null;
   const language=new URLSearchParams(location.search).get("lang");
-  if(language) params.set("lang", language);
-  return `${alias.route}?${params}`;
+  if(language) params.set("lang",language);
+  return `${EXAMS_SURFACE.route}${params.size?`?${params}`:""}`;
 }
-function routeUrlForHash(hash){ return aliasRouteUrlForHash(hash)||documentUrlForHash(hash)||hash; }
+function routeUrlForHash(hash){ return examsRouteUrlForHash(hash)||documentUrlForHash(hash)||hash; }
 function routeFocusKey(){
   return location.hash
     ? routeUrlForHash(location.hash)
@@ -186,9 +188,8 @@ function carryWalk(hash, source=location.hash){
 function serializeState(){
   const tab = globalThis.activeViewTab?.();
   if(!tab) return location.hash || "#money"; // notice view keeps its own hash
-  // Preserve #exam/<id> while a deep-linked exam detail is selected. Rewriting to
-  // #people?view=guide would re-enter applyHash and clear careerSelected (list-only race).
-  if(tab === "people" && careerSelected && /^\d{4}$/.test(String(careerSelected))){
+  // The Exams document keeps its exact selected-card fragment during state rewrites.
+  if(tab === "exams" && careerSelected && /^\d{4}$/.test(String(careerSelected))){
     return "#exam/"+encodeURIComponent(String(careerSelected));
   }
   const q = new URLSearchParams();
@@ -212,40 +213,27 @@ function serializeState(){
       if(moneyLocationFilter.councilDistrict) q.set("council",moneyLocationFilter.councilDistrict);
     }
   } else if(tab === "people"){
-    const alias=browseRouteAlias(location.pathname);
-    if(alias){
-      q.set("view", alias.defaultView);
-      if($("#career-query").value.trim()) q.set("q", $("#career-query").value.trim());
-    }else{
-      if($("#staffing-query").value.trim()) q.set("q", $("#staffing-query").value.trim());
-      if(staffingFilters.role) q.set("role", staffingFilters.role);
-    }
-    if(staffingFilters.agency) q.set("agency", staffingFilters.agency);
-    // Declarative interest routing only: structured attributes the visitor chose, never a profile.
-    // The exam browser is the default Staffing entry and is always mounted. Only
-    // preserve guide filters when the visitor arrived through an explicit guide
-    // route; otherwise a tab switch must mint the clean Staffing document URL.
-    const guideRouteMarker = ["view", "guide"].join("=");
-    const explicitGuideRoute = location.hash.includes(guideRouteMarker)
-      || (location.pathname === STAFFING_SURFACE.route && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1])
-      || Boolean(browseRouteAlias(location.pathname));
-    if(explicitGuideRoute){
-      const facetState=globalThis.careerFacetState || {};
-      const interest=facetState.interest;
-      if(interest && interest !== "all" && CrolStaffing.isInterestArea(interest)) q.set("interest", interest);
-      const eligibility=$("#career-eligibility")?.value;
-      if(eligibility && eligibility !== "open_competitive") q.set("eligibility", eligibility);
-      const windowFilter=facetState.window;
-      if(windowFilter && windowFilter !== "actionable") q.set("window", windowFilter);
-      const format=facetState.format;
-      if(format && format !== "all") q.set("format", format);
-      const salaryBand=facetState.salary_band;
-      if(salaryBand && salaryBand !== "all") q.set("salary", salaryBand);
-      const feeLevel=facetState.fee_level;
-      if(feeLevel && feeLevel !== "all") q.set("fee", feeLevel);
-      const noExp=facetState.no_experience;
-      if(noExp && noExp !== "all") q.set("experience", noExp);
-    }
+    if($("#staffing-query").value.trim()) q.set("q",$("#staffing-query").value.trim());
+    if(staffingFilters.role) q.set("role",staffingFilters.role);
+    if(staffingFilters.agency) q.set("agency",staffingFilters.agency);
+  } else if(tab === "exams"){
+    if($("#career-query").value.trim()) q.set("q",$("#career-query").value.trim());
+    if(globalThis.examsAgencyScope) q.set("agency",globalThis.examsAgencyScope);
+    const facetState=globalThis.careerFacetState || {};
+    const interest=facetState.interest;
+    if(interest && interest!=="all" && CrolStaffing.isInterestArea(interest)) q.set("interest",interest);
+    const eligibility=$("#career-eligibility")?.value;
+    if(eligibility && eligibility!=="open_competitive") q.set("eligibility",eligibility);
+    const windowFilter=facetState.window;
+    if(windowFilter && windowFilter!=="actionable") q.set("window",windowFilter);
+    const format=facetState.format;
+    if(format && format!=="all") q.set("format",format);
+    const salaryBand=facetState.salary_band;
+    if(salaryBand && salaryBand!=="all") q.set("salary",salaryBand);
+    const feeLevel=facetState.fee_level;
+    if(feeLevel && feeLevel!=="all") q.set("fee",feeLevel);
+    const noExp=facetState.no_experience;
+    if(noExp && noExp!=="all") q.set("experience",noExp);
   } else if(tab === "land"){
     if(landBorough) q.set("boro", landBorough);
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
@@ -298,6 +286,9 @@ function serializeState(){
   }
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
+  // Scope v0 deliberately keeps its existing People/Staffing vocabulary until
+  // the final cutover slice. Exams owns its URL state directly in this slice.
+  if(tab==="exams") return carryWalk(rawHash);
   const scope=CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
   scope.facets.values=retainSearchHandoffForQuery(
     {...scope.facets.values,...activeRouteFacetValues},
@@ -1032,23 +1023,20 @@ function applyHash(){
       if(hasActionLocation) $("#mode").value="allrfp";
       showTab("money"); search();
     } else if(tab === "people"){
-      const examsAlias=browseRouteAlias(location.pathname);
-      const legacyExamRoute=q.get("type")==="exam";
-      // The old exam/appointment toggle now resolves to the action-first exam browser.
-      // The secondary ledger remains a hires-only historical view.
-      staffingFilters.query=examsAlias ? "" : q.get("q")||"";
-      staffingFilters.role=examsAlias ? "" : q.get("role")||"";
-      // Typed agency:id:* facets (document Browse URLs) must hydrate the same
-      // agency control as legacy ?agency= — otherwise offered scopes are lies.
+      staffingFilters.query=q.get("q")||"";
+      staffingFilters.role=q.get("role")||"";
       const scopedAgency=q.get("agency")||agencyFromRouteFacet(activeRouteFacetValues)||"";
       const agencyScopeChanged=staffingFilters.agency!==scopedAgency;
       staffingFilters.agency=scopedAgency;
       $("#staffing-query").value=staffingFilters.query;
-      $("#career-query").value=examsAlias ? q.get("q")||"" : "";
-      // A guide route is not an exam detail route — clear any prior #exam/ selection.
+      if(agencyScopeChanged && typeof globalThis.reloadStaffingForAgencyScope==="function"){
+        globalThis.reloadStaffingForAgencyScope();
+      }
+      showTab("people");
+      loadStaffingFeed();
+    } else if(tab === "exams"){
+      $("#career-query").value=q.get("q")||"";
       careerSelected=null;
-      // Declared structured attributes only (interest/eligibility/window/format facets).
-      // No identity profile.
       const interest=q.get("interest");
       const eligibility=q.get("eligibility");
       const windowFilter=q.get("window");
@@ -1060,41 +1048,18 @@ function applyHash(){
       const SALARY_OK=["under_45k","45k_60k","60k_80k","80k_plus","all"];
       const FEE_OK=["none","low","fee-bearing","mid","high","all"];
       const EXP_OK=["yes","no","all"];
-      if(
-        (interest && CrolStaffing.isInterestArea(interest))
-        || (eligibility && ["open_competitive","promotion","all"].includes(eligibility))
-        || (windowFilter && ["actionable","open","upcoming","closed","all"].includes(windowFilter))
-        || (format && FORMAT_OK.includes(format))
-        || (salaryBand && SALARY_OK.includes(salaryBand))
-        || (feeLevel && FEE_OK.includes(feeLevel))
-        || (noExperience && EXP_OK.includes(noExperience))
-      ){
-        careerRouteFilters={
-          interest: CrolStaffing.isInterestArea(interest)?interest:null,
-          eligibility: ["open_competitive","promotion","all"].includes(eligibility)?eligibility:null,
-          window: ["actionable","open","upcoming","all"].includes(windowFilter)?windowFilter:null,
-          format: FORMAT_OK.includes(format)?format:null,
-          salary_band: SALARY_OK.includes(salaryBand)?salaryBand:null,
-          fee_level: FEE_OK.includes(feeLevel)?feeLevel:null,
-          no_experience: EXP_OK.includes(noExperience)?noExperience:null,
-        };
-      } else if(q.get("view")==="guide" || legacyExamRoute){
-        // Explicit guide landing without filters: reset controls to defaults.
-        careerRouteFilters={
-          interest:null, eligibility:"open_competitive", window:"actionable",
-          format:"all", salary_band:"all", fee_level:"all", no_experience:"all",
-        };
-      }
-      // Agency scope reloads the appointment corpus (citywide snapshot is not
-      // agency-complete) and re-applies exam certification filtering.
-      if(agencyScopeChanged && typeof globalThis.reloadStaffingForAgencyScope==="function"){
-        globalThis.reloadStaffingForAgencyScope();
-      }
-      showTab("people");
-      const ledgerRoute=!!(staffingFilters.query||staffingFilters.role||staffingFilters.agency);
-      // Agency-scoped Staffing leads with appointments, not the citywide exam guide.
-      scrollStaffingView(legacyExamRoute?"guide":ledgerRoute?"notices":q.get("view"));
-      if(q.get("view")==="guide" || legacyExamRoute || careerRouteFilters || staffingFilters.agency) loadCareerGuide();
+      careerRouteFilters={
+        interest:CrolStaffing.isInterestArea(interest)?interest:null,
+        eligibility:["open_competitive","promotion","all"].includes(eligibility)?eligibility:null,
+        window:["actionable","open","upcoming","closed","all"].includes(windowFilter)?windowFilter:null,
+        format:FORMAT_OK.includes(format)?format:null,
+        salary_band:SALARY_OK.includes(salaryBand)?salaryBand:null,
+        fee_level:FEE_OK.includes(feeLevel)?feeLevel:null,
+        no_experience:EXP_OK.includes(noExperience)?noExperience:null,
+      };
+      setExamsAgencyScope(q.get("agency")||agencyFromRouteFacet(activeRouteFacetValues)||"");
+      showTab("exams");
+      loadCareerGuide();
     } else if(tab === "land"){
       landResolvedArea=null;
       landBorough = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";

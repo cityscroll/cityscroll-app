@@ -21,7 +21,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
         # The edge response supplies this shell in production. This browser test owns only
         # the enhancement island's focus behavior; response semantics have a separate gate.
         path = self.path.split("?", 1)[0]
-        if path.startswith(("/notices/", "/agencies/", "/vendors/", "/officials/")):
+        if path.startswith(("/notices/", "/agencies/", "/vendors/", "/officials/", "/browse/")):
             self.path = "/index.html"
         super().do_GET()
 
@@ -163,12 +163,23 @@ def main():
                 "() => location.hash === '#people?view=guide'",
                 label="bare exam route forwarding",
             )
+            assert bare.locator("#tab-people").evaluate(
+                "element => element.classList.contains('active')"
+            ), "the retained bare #exam forwarding should stay on its legacy target until migration"
+
+            bare.goto(base + "browse/exams/", wait_until="load")
+            wait_for_function(
+                bare,
+                "() => location.pathname === '/browse/exams/' "
+                "&& document.getElementById('tab-exams').classList.contains('active')",
+                label="dedicated Exams route activation",
+            )
             guide = bare.locator("#career-guide")
             wait_for_locator(guide, label="career guide")
             assert guide.evaluate(
                 "element => element.getBoundingClientRect().bottom > 0 "
                 "&& element.getBoundingClientRect().top < innerHeight"
-            ), "bare #exam did not land on the exam guide"
+            ), "the dedicated Exams route did not land on the exam guide"
 
             bare.evaluate("location.hash = '#matter'")
             wait_for_function(bare, "() => location.hash === '#money'", label="bare matter route forwarding")

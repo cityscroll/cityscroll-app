@@ -302,14 +302,14 @@ def run_index_states(pw, lang, viewport, failures):
     for tab in TABS:
         page.click(f'.tabbtn[data-tab="{tab}"]')
         if tab == "exams":
-            # Exams is a native document-route alias. The generic /browse/ wait is
+            # Exams is a native document route. The generic /browse/ wait is
             # already true on the preceding Meetings document and can audit stale DOM.
             wait_for_function(
                 page,
                 "() => location.pathname === '/browse/exams/' && location.hash === ''",
                 label="Exams document route",
             )
-            wait_for_locator(page.locator("#tab-people.active"), label="Exams guide pane")
+            wait_for_locator(page.locator("#tab-exams.active"), label="Exams guide pane")
         else:
             _wait_for_browse_route(page, tab)
         # The fixture deliberately blocks the Leaflet CDN. Expose the app-owned directional

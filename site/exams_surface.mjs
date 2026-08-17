@@ -1,9 +1,10 @@
 import { buildBrowseView } from "./browse_view.mjs";
 import { EXAMS_SURFACE } from "./browse_surface_contracts.mjs";
+import { buildOwnedBrowseDocument } from "./primary_document_view.mjs";
 
 export const EXAMS_BROWSE_ROW_KIND = "civil_service_exam";
 
-export const EXAMS_ALIAS_BROWSE_VIEW = Object.freeze({
+export const EXAMS_BROWSE_VIEW = Object.freeze({
   tab: EXAMS_SURFACE.compatibility.runtimeTab,
   label: EXAMS_SURFACE.label,
   route: EXAMS_SURFACE.route,
@@ -62,7 +63,7 @@ export function examBrowseRows(artifact = {}) {
   });
 }
 
-export function buildExamsAliasBrowseView(artifact = {}, params = new URLSearchParams(), options = {}) {
+export function buildExamsBrowseView(artifact = {}, params = new URLSearchParams(), options = {}) {
   const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
   const interest = String(search.get("interest") || "").trim();
   const window = String(search.get("window") || "").trim();
@@ -72,11 +73,18 @@ export function buildExamsAliasBrowseView(artifact = {}, params = new URLSearchP
     if (window === "actionable" && !["open", "upcoming"].includes(row.status)) return false;
     return true;
   });
-  return buildBrowseView("exams-alias", { rows }, search, {
-    config: EXAMS_ALIAS_BROWSE_VIEW,
+  return buildBrowseView("exams", { rows }, search, {
+    config: EXAMS_BROWSE_VIEW,
     rows,
     asOf: artifact.data_current_as_of || artifact.generated_at,
     limit: options.limit ?? 24,
     handledFilters: ["interest", "window"],
+  });
+}
+
+export function buildExamsDocument(shell, artifact = {}) {
+  return buildOwnedBrowseDocument(shell, EXAMS_SURFACE, {
+    container: "career-results",
+    view: buildExamsBrowseView(artifact),
   });
 }

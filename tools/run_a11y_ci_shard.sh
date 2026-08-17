@@ -91,7 +91,7 @@ case "$shard" in
     ;;
   routes-focus)
     tools/run_a11y_functional_check.sh hash-route-focus python3 test/functional/19_hash_route_focus.py
-    tools/run_a11y_functional_check.sh exams-route-alias python3 test/functional/29_exams_route_alias.py
+    tools/run_a11y_functional_check.sh exams-route python3 test/functional/29_exams_route.py
     # Inline-to-module rendered DOM equivalence gate
     tools/run_a11y_functional_check.sh module-dom-equivalence python3 test/functional/21_module_dom_equivalence.py
     tools/run_a11y_functional_check.sh notice-document-features python3 test/functional/24_notice_document_features.py

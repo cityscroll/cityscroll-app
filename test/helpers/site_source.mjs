@@ -6,6 +6,7 @@ export const SITE_MODULES = [
   "money-list.mjs",
   "money-history.mjs",
   "search-share.mjs",
+  "exams.mjs",
   "people.mjs",
   "land.mjs",
   "feed-actions.mjs",

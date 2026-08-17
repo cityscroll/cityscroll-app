@@ -6,7 +6,6 @@ import {
   BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT,
   BROWSE_DOCUMENT_FACET_HASHES_COMPAT,
   BROWSE_LEGACY_LENS_FACETS_COMPAT,
-  BROWSE_ROUTE_ALIASES_COMPAT,
   BROWSE_SURFACE_CONTRACTS,
   BROWSE_SURFACES,
   EXAMS_SURFACE,
@@ -16,14 +15,9 @@ import {
   browseSurfaceContractForRoute,
 } from "../site/browse_surface_contracts.mjs";
 import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
-import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
-import {
-  EXAMS_ALIAS_BROWSE_VIEW,
-} from "../site/exams_surface.mjs";
-import {
-  PEOPLE_LIST_BROWSE_VIEW,
-} from "../site/people_organizations_surface.mjs";
-import { BROWSE_FACETS } from "../site/browse_view.mjs";
+import { EXAMS_BROWSE_VIEW } from "../site/exams_surface.mjs";
+import { PEOPLE_LIST_BROWSE_VIEW } from "../site/people_organizations_surface.mjs";
+import { BROWSE_FACETS, BROWSE_OBJECTS } from "../site/browse_view.mjs";
 
 test("People, Staffing, and Exams have one unique surface owner each", () => {
   assert.deepEqual(Object.keys(BROWSE_SURFACE_CONTRACTS), [
@@ -54,19 +48,12 @@ test("People, Staffing, and Exams have one unique surface owner each", () => {
   assert.equal(browseSurfaceContractForRoute("/browse/contracts/"), null);
 });
 
-test("the temporary compatibility projection preserves current route and runtime behavior", () => {
-  assert.equal(BROWSE_ROUTE_ALIASES, BROWSE_ROUTE_ALIASES_COMPAT);
-  assert.deepEqual(BROWSE_ROUTE_ALIASES.exams, {
-    route: "/browse/exams/",
-    targetRoute: "/browse/staffing/",
-    targetFacet: "staffing",
-    targetTab: "people",
-    navigationTab: "exams",
-    defaultView: "guide",
-    corpus: "exams",
-    label: "Exams",
-    title: "Exams",
-    description: "Civil-service exam schedules, applications, eligible lists, and published outcomes.",
+test("Exams uses its declared document builder and browser controller", () => {
+  assert.deepEqual(EXAMS_SURFACE.compatibility, {
+    routeKey: "exams",
+    runtimeTab: "exams",
+    currentBuilder: EXAMS_SURFACE.builder,
+    currentController: EXAMS_SURFACE.controller,
   });
   assert.deepEqual(BROWSE_DOCUMENT_FACET_HASHES_COMPAT, { staffing: "people" });
   assert.deepEqual(BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT, [
@@ -85,6 +72,7 @@ test("the temporary compatibility projection preserves current route and runtime
   assert.equal(BROWSE_CONCEPTS.people.route, PEOPLE_ORGANIZATIONS_SURFACE.route);
   assert.equal(BROWSE_FACETS.staffing.route, STAFFING_SURFACE.route);
   assert.equal(PEOPLE_LIST_BROWSE_VIEW.route, PEOPLE_ORGANIZATIONS_SURFACE.route);
-  assert.equal(EXAMS_ALIAS_BROWSE_VIEW.route, EXAMS_SURFACE.route);
-  assert.equal(EXAMS_ALIAS_BROWSE_VIEW.tab, "people");
+  assert.equal(EXAMS_BROWSE_VIEW.route, EXAMS_SURFACE.route);
+  assert.equal(EXAMS_BROWSE_VIEW.tab, "exams");
+  assert.equal(BROWSE_OBJECTS.exams.route, EXAMS_SURFACE.route);
 });
