@@ -2,6 +2,13 @@ import {
   relevanceResultHref,
   renderUniversalSearchResultHtml,
 } from "./universal_search_relevance_ux.mjs";
+import {
+  SEMANTIC_CANDIDATE_METHOD,
+  SEMANTIC_CANDIDATE_RESPONSE_SCHEMA,
+  SEMANTIC_TOPIC_FAMILIES,
+  normalizeSemanticCandidateResponse,
+  topicCandidateTitle,
+} from "./semantic_topic_search.mjs";
 import { renderUniversalSearchCoverageHtml } from "./universal_search_coverage_receipt.mjs";
 
 const MAX_QUERY_LENGTH = 240;
@@ -103,6 +110,16 @@ function apiOrigins() {
   ])];
 }
 
+function tr(key, vars, fallback) {
+  const translated = window.t?.(key, vars);
+  if (translated && translated !== key) return translated;
+  if (!vars) return fallback;
+  return Object.entries(vars).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    fallback,
+  );
+}
+
 function laneElements(root, lane) {
   const section = root.querySelector(`[data-search-lane="${lane}"]`);
   return {
@@ -118,6 +135,25 @@ function setLaneState(root, lane, statusText, bodyText, className = "") {
   if (elements.body) {
     elements.body.className = `topic-search-lane-body${className ? ` ${className}` : ""}`;
     elements.body.textContent = bodyText;
+  }
+}
+
+function semanticLaneElements(root, family) {
+  const section = root.querySelector(`[data-semantic-family="${family}"]`);
+  return {
+    section,
+    status: section?.querySelector(".topic-search-lane-status"),
+    body: section?.querySelector(".topic-search-lane-body"),
+  };
+}
+
+function setSemanticLaneState(root, family, statusText, bodyText, className = "") {
+  const elements = semanticLaneElements(root, family);
+  if (elements.status) elements.status.textContent = statusText;
+  if (elements.body) {
+    elements.body.className = `topic-search-lane-body${className ? ` ${className}` : ""}`;
+    elements.body.textContent = bodyText;
+    elements.body.setAttribute("aria-busy", className === "is-loading" ? "true" : "false");
   }
 }
 
@@ -163,12 +199,16 @@ function renderResults(root, payload) {
     const elements = laneElements(root, lane);
     if (!elements.body) continue;
     const family = families.get(DOMAIN_LANE_TO_FAMILY[lane]);
-    elements.status.textContent = items.length ? `${items.length} result${items.length === 1 ? "" : "s"}` : "No matches";
+    elements.status.textContent = items.length === 1
+      ? tr("one_result", null, "1 result")
+      : items.length
+        ? tr("results_count", { n: items.length }, "{n} results")
+        : tr("topic_search_no_matches_status", null, "No matches");
     elements.body.className = "topic-search-lane-body";
     elements.body.replaceChildren();
     if (!items.length) {
       if (family?.status === "unknown") {
-        elements.status.textContent = "Unavailable";
+        elements.status.textContent = tr("topic_search_unavailable_status", null, "Unavailable");
         elements.body.classList.add("is-error");
         elements.body.textContent = "This source could not be checked right now.";
       } else if (family?.status === "not_covered") {
@@ -200,9 +240,136 @@ function renderCoverage(root, coverage) {
   else root.querySelector(".topic-search-method")?.before(next);
 }
 
+function sourceDataNode(tag, className, text) {
+  const node = document.createElement(tag);
+  node.className = className;
+  node.lang = "en";
+  node.dir = "ltr";
+  node.textContent = text;
+  return node;
+}
+
+function renderSemanticCandidate(candidate) {
+  const article = document.createElement("article");
+  article.className = "topic-search-result topic-search-semantic-result";
+  article.dataset.semanticCandidate = candidate.candidate_id;
+
+  const heading = document.createElement("h4");
+  heading.append(sourceDataNode("span", "topic-search-result-title", topicCandidateTitle(candidate)));
+  article.append(heading);
+
+  const rationale = document.createElement("p");
+  rationale.className = "topic-search-result-reason";
+  rationale.textContent = tr(
+    "topic_search_related_because",
+    null,
+    "Related because this source passage contains the topic words.",
+  );
+  article.append(rationale);
+
+  if (candidate.passage.text) {
+    article.append(sourceDataNode(
+      "blockquote",
+      "topic-search-result-passage",
+      clean(candidate.passage.text, 520),
+    ));
+  } else {
+    const limit = document.createElement("p");
+    limit.className = "topic-search-result-limit";
+    limit.textContent = tr(
+      "topic_search_evidence_limit",
+      null,
+      "Source passage text is unavailable for this candidate.",
+    );
+    article.append(limit);
+  }
+
+  const source = document.createElement("a");
+  source.className = "topic-search-result-source";
+  source.href = candidate.source.url;
+  source.target = "_blank";
+  source.rel = "noopener noreferrer";
+  source.append(document.createTextNode(tr("topic_search_official_source", null, "Official source")));
+  const arrow = document.createElement("span");
+  arrow.setAttribute("aria-hidden", "true");
+  arrow.textContent = "↗";
+  source.append(arrow);
+  article.append(source);
+  return article;
+}
+
+function renderSemanticResults(root, response) {
+  root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
+  root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
+  root.querySelector("[data-search-coverage]")?.setAttribute("hidden", "");
+  const method = root.querySelector("[data-search-method-value]");
+  if (method) {
+    method.textContent = response.method === SEMANTIC_CANDIDATE_METHOD
+      ? tr("topic_search_passage_matches", null, "Source-passage matches")
+      : tr("topic_search_related_matches", null, "Related topic matches");
+  }
+  const coverage = root.querySelector("[data-semantic-coverage]");
+  if (coverage) {
+    coverage.hidden = false;
+    coverage.textContent = tr(
+      "topic_search_bounded_coverage",
+      { date: response.corpus.observed_on || response.index.observed_on || "—" },
+      "Results cover a bounded source set observed {date}.",
+    );
+  }
+
+  for (const group of response.groups) {
+    const elements = semanticLaneElements(root, group.id);
+    if (!elements.body || !elements.status) continue;
+    elements.body.className = "topic-search-lane-body";
+    elements.body.setAttribute("aria-busy", "false");
+    elements.body.replaceChildren();
+    if (!group.candidates.length) {
+      elements.status.textContent = tr("topic_search_no_matches_status", null, "No matches");
+      elements.body.textContent = tr(
+        "topic_search_bounded_empty",
+        null,
+        "No matches in this bounded source set.",
+      );
+      continue;
+    }
+    elements.status.textContent = group.candidates.length === 1
+      ? tr("one_result", null, "1 result")
+      : tr("results_count", { n: group.candidates.length }, "{n} results");
+    const list = document.createElement("div");
+    list.className = "topic-search-results";
+    group.candidates.forEach((candidate) => list.append(renderSemanticCandidate(candidate)));
+    elements.body.append(list);
+  }
+}
+
+function renderLegacyResults(root, payload) {
+  root.querySelector("[data-semantic-lanes]")?.setAttribute("hidden", "");
+  root.querySelector("[data-keyword-lanes]")?.removeAttribute("hidden");
+  const method = root.querySelector("[data-search-method-value]");
+  if (method) method.textContent = tr("topic_search_keyword_fallback", null, "Keyword fallback");
+  const coverage = root.querySelector("[data-semantic-coverage]");
+  if (coverage) coverage.hidden = true;
+  renderResults(root, payload);
+  renderCoverage(root, payload?.coverage);
+}
+
 function renderInitialState(root, query) {
+  root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
+  root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
+  const method = root.querySelector("[data-search-method-value]");
+  if (method) method.textContent = tr("topic_search_passage_matches", null, "Source-passage matches");
+  const instruction = tr("topic_search_enter", null, "Enter a topic to search public records.");
+  for (const family of SEMANTIC_TOPIC_FAMILIES) {
+    setSemanticLaneState(
+      root,
+      family,
+      tr("topic_search_waiting", null, "Waiting"),
+      query ? tr("loading_data", null, "Loading…") : instruction,
+    );
+  }
   for (const lane of LANES) {
-    setLaneState(root, "" + lane, "Waiting", query ? "Searching public records…" : "Enter a topic to search public records.");
+    setLaneState(root, "" + lane, "Waiting", instruction);
   }
 }
 
@@ -212,14 +379,16 @@ async function fetchSearchResults(query) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), SEARCH_TIMEOUT_MS);
     try {
-      const response = await fetch(`${origin}/search?q=${encodeURIComponent(query)}`, {
+      const response = await fetch(`${origin}/search/candidates?q=${encodeURIComponent(query)}`, {
         headers: { Accept: "application/json" },
         signal: controller.signal,
       });
       if (response.ok) {
         const payload = await response.json();
-        if (!payload || !Array.isArray(payload.results)) throw new Error("invalid search response");
-        return payload;
+        if (payload?.schema === SEMANTIC_CANDIDATE_RESPONSE_SCHEMA || Array.isArray(payload?.results)) {
+          return payload;
+        }
+        throw new Error("invalid search response");
       }
       if (response.status !== 404 && response.status < 500) throw new Error(`search HTTP ${response.status}`);
       lastError = new Error(`search HTTP ${response.status}`);
@@ -234,13 +403,48 @@ async function fetchSearchResults(query) {
 
 async function loadResults(root, query) {
   if (!query) return;
-  for (const lane of LANES) setLaneState(root, lane, "Loading", "Searching public records…", "is-loading");
+  for (const family of SEMANTIC_TOPIC_FAMILIES) {
+    setSemanticLaneState(
+      root,
+      family,
+      tr("loading_data", null, "Loading…"),
+      tr("loading_data", null, "Loading…"),
+      "is-loading",
+    );
+  }
   try {
     const payload = await fetchSearchResults(query);
-    renderResults(root, payload);
-    renderCoverage(root, payload.coverage);
+    const semantic = normalizeSemanticCandidateResponse(payload, { expectedQuery: query });
+    if (semantic.state === "typed") {
+      renderSemanticResults(root, semantic);
+      lastResponse = semantic;
+      return;
+    }
+    if (Array.isArray(payload?.results)) {
+      lastResponse = { state: "legacy", payload };
+      renderLegacyResults(root, payload);
+      return;
+    }
+    throw new Error("untyped candidate response");
   } catch {
-    for (const lane of LANES) setLaneState(root, lane, "Unavailable", "Search is unavailable right now. Please try again.", "is-error");
+    for (const family of SEMANTIC_TOPIC_FAMILIES) {
+      setSemanticLaneState(
+        root,
+        family,
+        tr("topic_search_unavailable_status", null, "Unavailable"),
+        tr("could_not_reach", null, "The latest CityScroll snapshot is unavailable. Retry."),
+        "is-error",
+      );
+    }
+  }
+}
+
+let lastResponse = null;
+
+function repaintResults(root) {
+  if (lastResponse?.state === "typed") renderSemanticResults(root, lastResponse);
+  else if (lastResponse?.state === "legacy") {
+    renderLegacyResults(root, lastResponse.payload);
   }
 }
 
@@ -251,7 +455,13 @@ function render() {
   const heading = root.querySelector("#search-heading");
   const input = root.querySelector("#search-query");
   const context = root.querySelector("[data-search-place]");
-  if (heading) heading.textContent = query ? `Results for “${query}”` : "What are you looking for?";
+  if (query) heading?.removeAttribute("data-i18n");
+  const paintHeading = () => {
+    if (heading) heading.textContent = query
+      ? tr("topic_search_results_for", { query }, "Results for “{query}”")
+      : tr("topic_search_heading", null, "What are you looking for?");
+  };
+  paintHeading();
   if (input) input.value = query;
   const place = placeFromLocation();
   if (context && place) {
@@ -261,8 +471,14 @@ function render() {
   const form = root.querySelector("[data-search-form]");
   if (form) preservePlaceFields(form);
   renderInitialState(root, query);
-  if (!query) renderCoverage(root, null);
   void loadResults(root, query);
+  window.initSubpageLangSwitcher?.(() => {
+    paintHeading();
+    repaintResults(root);
+  });
+  // The language switcher paints static data-i18n text during initialization.
+  // Restore the query-bearing title afterward because it is runtime copy.
+  paintHeading();
 }
 
 if (typeof document !== "undefined") {
