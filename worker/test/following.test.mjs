@@ -56,7 +56,7 @@ test("the edge Following renderer previews the shared materialized meeting scope
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=meetings&filter=${filter}&freq=weekly&count=17`,
-  ));
+  ), {}, {}, { todayISO: "2026-08-10" });
   const html = await response.text();
 
   assert.equal(response.status, 200);

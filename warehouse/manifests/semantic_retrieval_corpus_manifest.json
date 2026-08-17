@@ -1,0 +1,3305 @@
+{
+  "schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
+  "manifest_version": 1,
+  "observed_on": "2026-08-04",
+  "authorization": {
+    "runtime_semantic_retrieval": false,
+    "scope": "offline_candidate_corpus"
+  },
+  "input_receipts": {
+    "corpus": {
+      "path": "warehouse/experiments/semantic-layer-trial/corpus.json",
+      "sha256": "66c16c80898d20b79f27d376687039efffca1a7335a11f8fb2b69d1db15c1b0a"
+    },
+    "selection": {
+      "path": "warehouse/experiments/semantic-layer-trial/source_manifest.json",
+      "sha256": "108b5288196fb67b9a5a6ce74005c8881401263c6ceb884691dc8434c426f077"
+    }
+  },
+  "coverage": {
+    "state": "partial",
+    "boundary": "Only the records enumerated below are included; this is not a complete publisher or CityScroll corpus."
+  },
+  "source_family_count": 3,
+  "record_count": 122,
+  "dropped_record_count": 0,
+  "dropped_reason_counts": {},
+  "source_families": [
+    {
+      "source_family": "attachment_text",
+      "type_version": 1,
+      "identity": {
+        "record_id_field": "id",
+        "record_id_format": "{source_family}:{percent_encoded_source_native_id}",
+        "source_url_field": "source.url"
+      },
+      "passage_fields": [
+        "title",
+        "text"
+      ],
+      "geography_fields": [
+        "body_id"
+      ],
+      "date_fields": [
+        "published_at",
+        "event_date"
+      ],
+      "coverage": {
+        "state": "partial",
+        "boundary": "The committed T1 Cannonsville extraction."
+      },
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "records_with_source_published_at": 1,
+        "source_published_at_min": "2024-05-15",
+        "source_published_at_max": "2024-05-15"
+      },
+      "record_count": 1,
+      "dropped_record_count": 0
+    },
+    {
+      "source_family": "city_record_notice",
+      "type_version": 1,
+      "identity": {
+        "record_id_field": "id",
+        "record_id_format": "{source_family}:{percent_encoded_source_native_id}",
+        "source_url_field": "source.url"
+      },
+      "passage_fields": [
+        "title",
+        "text"
+      ],
+      "geography_fields": [
+        "body_id"
+      ],
+      "date_fields": [
+        "published_at",
+        "event_date"
+      ],
+      "coverage": {
+        "state": "partial",
+        "boundary": "First 60 rows from each committed rules and meetings observation snapshot, then the dated 10-notice non-Council residual; duplicates removed while preserving order."
+      },
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "records_with_source_published_at": 120,
+        "source_published_at_min": "2015-07-16T00:00:00.000",
+        "source_published_at_max": "2026-07-31T00:00:00.000"
+      },
+      "record_count": 120,
+      "dropped_record_count": 0
+    },
+    {
+      "source_family": "community_board_minutes",
+      "type_version": 1,
+      "identity": {
+        "record_id_field": "id",
+        "record_id_format": "{source_family}:{percent_encoded_source_native_id}",
+        "source_url_field": "source.url"
+      },
+      "passage_fields": [
+        "title",
+        "text"
+      ],
+      "geography_fields": [
+        "body_id"
+      ],
+      "date_fields": [
+        "published_at",
+        "event_date"
+      ],
+      "coverage": {
+        "state": "partial",
+        "boundary": "The one same-body, same-date public minutes document already identified in the dated non-Council residual receipt."
+      },
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "records_with_source_published_at": 1,
+        "source_published_at_min": "2026-06-10",
+        "source_published_at_max": "2026-06-10"
+      },
+      "record_count": 1,
+      "dropped_record_count": 0
+    }
+  ],
+  "records": [
+    {
+      "source_record_id": "attachment_text:20240515016%23attachment-37470",
+      "source_family": "attachment_text",
+      "source_native_id": "20240515016#attachment-37470",
+      "source_url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+      "source_system": "NYC City Record attachment",
+      "passage": {
+        "title": "Description, maps, and volume report for timber and roundwood products from forest management project in the Cannonsville watershed basin.",
+        "text_state": "retained",
+        "content_sha256": "f352c4bc5813c428478b317c9df08c9426dd4ef8fee994c0d94901ed2539de61",
+        "character_count": 1549
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2024-05-15",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2024-05-15"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20150714108",
+      "source_family": "city_record_notice",
+      "source_native_id": "20150714108",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20150714108",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "STATEN ISLAND COMMUNITY BOARD 1 PUBLIC HEARING NOTIFICATION.",
+        "text_state": "retained",
+        "content_sha256": "86d2a75c095d585ae11c80571257ae3e5d3fc83988e6a9ac2b679cbac12c768c",
+        "character_count": 976
+      },
+      "geography": {
+        "body_id": "staten-island-cb-01"
+      },
+      "dates": {
+        "published_at": "2015-07-16T00:00:00.000",
+        "event_date": "2015-07-21T19:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2015-07-16T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20180926111",
+      "source_family": "city_record_notice",
+      "source_native_id": "20180926111",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20180926111",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "LAND USE PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "df2a4302791167170dbd76855a4caf3c936ce536aa54fa2be41d9dfc104c72bf",
+        "character_count": 1019
+      },
+      "geography": {
+        "body_id": "staten-island-cb-01"
+      },
+      "dates": {
+        "published_at": "2018-10-03T00:00:00.000",
+        "event_date": "2018-10-09T18:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2018-10-03T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20250328003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20250328003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250328003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "APRIL 9, 2025 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "650fdfcedbc27cc1c86cc49bb4d05611c3a54c875efc0c6c3fa8510f03a8532a",
+        "character_count": 542
+      },
+      "geography": {
+        "body_id": "manhattan-cb-06"
+      },
+      "dates": {
+        "published_at": "2025-04-03T00:00:00.000",
+        "event_date": "2025-04-09T19:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2025-04-03T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20250909023",
+      "source_family": "city_record_notice",
+      "source_native_id": "20250909023",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250909023",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "SEPTEMBER 30, 2025 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "4476e5625a1709d06a5c6fa28a14ebec7165aa2dfc939ba36437e15d84759589",
+        "character_count": 481
+      },
+      "geography": {
+        "body_id": "manhattan-cb-06"
+      },
+      "dates": {
+        "published_at": "2025-09-12T00:00:00.000",
+        "event_date": "2025-09-30T18:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2025-09-12T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260106033",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260106033",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Board of Correction Public Meeting",
+        "text_state": "retained",
+        "content_sha256": "88268a5fdca0169ca059f2d801090a8611a98ea0ef2442bce980c094fb5f6195",
+        "character_count": 1246
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-08T00:00:00.000",
+        "event_date": "2026-07-14T13:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260213014",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260213014",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BOARD MEETINGS",
+        "text_state": "retained",
+        "content_sha256": "71e3a4db178c3fb87aeb1d9281913cc3a088df26e7ea7324dcbd64e4c3150ae0",
+        "character_count": 4675
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-22T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260213015",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260213015",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BOARD MEETINGS",
+        "text_state": "retained",
+        "content_sha256": "71e3a4db178c3fb87aeb1d9281913cc3a088df26e7ea7324dcbd64e4c3150ae0",
+        "character_count": 4675
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-29T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260428027",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260428027",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260428027",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "CAPA Agenda FY'27",
+        "text_state": "retained",
+        "content_sha256": "a94be545fcdb7d714c4ca31ca65f8a2623476229e84a99b6790b0d90b2158342",
+        "character_count": 40
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-04T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-04T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260429022",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260429022",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260429022",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "MAY 4, 2026 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "73959bfca1d6876bed7774deb67afd2cc437ff3dbc343333f267514b7d15f468",
+        "character_count": 576
+      },
+      "geography": {
+        "body_id": "queens-cb-11"
+      },
+      "dates": {
+        "published_at": "2026-05-04T00:00:00.000",
+        "event_date": "2026-05-04T19:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-04T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260430008",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260430008",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260430008",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "HPD FY2027 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "8580cc5aafe3fb83ac6953c3e903d5257cf4342a286e47c8bb17823b4b09f5e9",
+        "character_count": 78
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-06T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-06T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260430025",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260430025",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260430025",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Rules Relating to Enforcement of Parking Requirements",
+        "text_state": "retained",
+        "content_sha256": "820f4a82fff6c68729cd63323da79fe7f2503c602292932bafafc6be62b3d235",
+        "character_count": 96
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-08T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260504027",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260504027",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504027",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Final Rule - Amendment of Rules regarding Gas Piping Inspection Entities",
+        "text_state": "retained",
+        "content_sha256": "c074d1b2c0b8417fc281ea71f6e1a22f89901ac0ecf93476bf4dc06d3c0abd8f",
+        "character_count": 95
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-11T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-11T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260504036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260504036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BOARD MEETINGS",
+        "text_state": "retained",
+        "content_sha256": "71e3a4db178c3fb87aeb1d9281913cc3a088df26e7ea7324dcbd64e4c3150ae0",
+        "character_count": 4675
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-06T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-06T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260504037",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260504037",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BOARD MEETINGS",
+        "text_state": "retained",
+        "content_sha256": "71e3a4db178c3fb87aeb1d9281913cc3a088df26e7ea7324dcbd64e4c3150ae0",
+        "character_count": 4675
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-13T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-13T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260504038",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260504038",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BOARD MEETINGS",
+        "text_state": "retained",
+        "content_sha256": "71e3a4db178c3fb87aeb1d9281913cc3a088df26e7ea7324dcbd64e4c3150ae0",
+        "character_count": 4675
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-20T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260504039",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260504039",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BOARD MEETINGS",
+        "text_state": "retained",
+        "content_sha256": "71e3a4db178c3fb87aeb1d9281913cc3a088df26e7ea7324dcbd64e4c3150ae0",
+        "character_count": 4675
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-27T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-27T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260506005",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260506005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506005",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "LPC FY 2027 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "78858eaa7fea910cf8d9fbf2d4047306a2ae10b7af0ca7335ce2469123216567",
+        "character_count": 76
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-13T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-13T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260506007",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260506007",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506007",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Proposed Amendment of Rules Relating to Applications Pursuant to RPTL §485-x",
+        "text_state": "retained",
+        "content_sha256": "e3405faf672c684295dd188c8cf9944ad4c462f8523503b386225ba3a1fdd9c2",
+        "character_count": 126
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-12T00:00:00.000",
+        "event_date": "2026-06-30T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-12T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260506019",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260506019",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506019",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
+        "text_state": "retained",
+        "content_sha256": "7fcb2d133ee9c6836b33b0a7c0c313ea5e018615c88450295836dc4b8856f28f",
+        "character_count": 110
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-12T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-12T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260506027",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260506027",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260506027",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+        "text_state": "retained",
+        "content_sha256": "e44d544ef52f9ad556060ef0ebac2dd6d4fccc4cbc73df9fb2734bf5653b787c",
+        "character_count": 126
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-14T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260507003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260507003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260507003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP FY 2027 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "be726280dda300dd45c285d07e945bcee695b472c6d99d56050a1f00b5ef2e87",
+        "character_count": 74
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-14T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260508032",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260508032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260508032",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Proposed Rules for rent guidelines for October 1, 2026 through September 30, 2027",
+        "text_state": "retained",
+        "content_sha256": "0f573e597bf4dbf917186ee1433244e77e0c73c571bfc00c26ee37203e9ea70b",
+        "character_count": 116
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-14T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260512003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260512003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "SBS Regulatory Agenda FY 2027",
+        "text_state": "retained",
+        "content_sha256": "7bc558371ab961e9e64359ee0edf5485b1db558be3bb3bc79fe0d81fef4b28d7",
+        "character_count": 66
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-18T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-18T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260512015",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260512015",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512015",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption: BSA adopts amendments to its Rules of Practice and Procedures, 2 R.C.N.Y., to implement Charter secs. 666-a and 668(d-1), and to make other conforming changes, pursuant to Charter secs.1043(a), 666, and 666-a.",
+        "text_state": "retained",
+        "content_sha256": "70d2717307fe03bdfc10e810de06d90215da697804e309d3eadc76a45c6c440d",
+        "character_count": 273
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-18T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-18T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260512030",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260512030",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512030",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
+        "text_state": "retained",
+        "content_sha256": "3b182fcd5ce03999cfa1b725830f1efd9c676141314661ae6714c9d85b8f0629",
+        "character_count": 148
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-19T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-19T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260512035",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260512035",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512035",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DSNY Proposed Rule Relating to Containerization Requirements for Buildings Containing 10 or More Dwelling Units",
+        "text_state": "retained",
+        "content_sha256": "c2ef9a152985316f7e46f8cdda67d69d84439e808c9f15f5cc3ada0e15e18c4c",
+        "character_count": 135
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-15T00:00:00.000",
+        "event_date": "2026-06-17T09:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260512040",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260512040",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512040",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "FY 2027 CCHR Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "0c42b6c8d2d90720b148b2640e3d2e1cf7e26b8ca3a0e9ff3bb72a0ca261d7e1",
+        "character_count": 70
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-18T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-18T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260512047",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260512047",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260512047",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Centralized Construction Mentor Program Rules",
+        "text_state": "retained",
+        "content_sha256": "87923490e6b5110d42d65256d917e9b1f156efa13f334fc4811eebad31541a09",
+        "character_count": 100
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-19T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-19T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260513026",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260513026",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260513026",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOA Home Improvement Contractor Disclosures",
+        "text_state": "retained",
+        "content_sha256": "629ac10acf9ed294fe0c0092af51438d3566b24a5f409eeefafef7f3d5910121",
+        "character_count": 92
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-20T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260514002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260514002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260514002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DPR Proposed Amendment of Rules Relating to Special Event Permits",
+        "text_state": "retained",
+        "content_sha256": "8857055cffc740f9fdfc5707d08c1d1fabf726a3c65c466f5048f311326247c6",
+        "character_count": 99
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-18T00:00:00.000",
+        "event_date": "2026-06-24T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-18T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260515002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260515002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "PPB FY27 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "65343c70340ccaa2e37c85b77056d82d83b3f3c0e512347692fc5227f37ef177",
+        "character_count": 64
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-20T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260515003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260515003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260515003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "MOCS FY27 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "55f0dcb43b4403e462e51b77b34c23feddd881536945e54e987a2d769c7a5300",
+        "character_count": 76
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-20T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260519037",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260519037",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519037",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCP FY2027 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "24230be9fee49274ecd51977e4c611c90a2ba8c6a640d335a664a4e411ce4ae8",
+        "character_count": 55
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-27T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-27T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260519042",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260519042",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519042",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Resolution of the Board of Health",
+        "text_state": "retained",
+        "content_sha256": "2d59421ff5c7b8895fdbe0fb3b72218e98ea1cd43d73881005196a9ff935f943",
+        "character_count": 72
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-21T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-21T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260519043",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260519043",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519043",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Proposed Amendment of Rules Relating to PACE Financing Program",
+        "text_state": "retained",
+        "content_sha256": "e9690f2d1556179630428a88ba2d9fa7b02047172ea28e369fc46a0cd0ca6531",
+        "character_count": 83
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-22T00:00:00.000",
+        "event_date": "2026-06-22T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260519048",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260519048",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260519048",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Amendment of Rules Regarding Termination of Pregnancy",
+        "text_state": "retained",
+        "content_sha256": "8324af04876bb6502e27d941442493e18787d23c0be1b65a8fc92b98feddc011",
+        "character_count": 92
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-27T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-27T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260521002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260521002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "FY 27 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "a498cd7ba1eeef2b22435badf28ed48f37ad1947696042a7a9d3b59225d99301",
+        "character_count": 61
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-29T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260521021",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260521021",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260521021",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Update to Parks List of Qualifying Documents for Disability Membership Fee",
+        "text_state": "retained",
+        "content_sha256": "1218c07fd3dfda90d1b21f953b2999cd4f8c3bb189ea5ba503b41e9e31fa95ee",
+        "character_count": 108
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-01T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-01T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260522005",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260522005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522005",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Adoption of Amendments to Fire Department Rule 3 RCNY 8400-02",
+        "text_state": "retained",
+        "content_sha256": "991e607b493c6a2d6873116d00062d8a86e2e8d7181783d2447f8d91392e129e",
+        "character_count": 90
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-29T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260522007",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260522007",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522007",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Further Amendment of Rules Relating to Vital Records",
+        "text_state": "retained",
+        "content_sha256": "10aca98f51f47adec4ed426cf4fc16ea3c1f3920daedee781a46dcde3fe15e21",
+        "character_count": 91
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-29T00:00:00.000",
+        "event_date": "2026-07-02T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260522008",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260522008",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260522008",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Amendment of Rules Relating to Lead Dust",
+        "text_state": "retained",
+        "content_sha256": "495e06ecb06e436918c9919c726e8364fb5694324c2ce397cb6cad72af55d1d0",
+        "character_count": 79
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-05-29T00:00:00.000",
+        "event_date": "2026-07-01T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-05-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260527036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260527036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260527036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "JUNE 10, 2026 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "8b461db73921dd16cb6b1ce3aac054e6503c733b3a4d500a986dfb8f1277a358",
+        "character_count": 728
+      },
+      "geography": {
+        "body_id": "queens-cb-08"
+      },
+      "dates": {
+        "published_at": "2026-06-04T00:00:00.000",
+        "event_date": "2026-06-10T19:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-04T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260528031",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260528031",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528031",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NOTICE IS HEREBY GIVEN that the following matter has been schedule for public hearing by Community Board:",
+        "text_state": "retained",
+        "content_sha256": "5e4d626be911066974d715809131a497fb02c750db69bce314b0531ff325ba46",
+        "character_count": 1037
+      },
+      "geography": {
+        "body_id": "brooklyn-cb-10"
+      },
+      "dates": {
+        "published_at": "2026-06-09T00:00:00.000",
+        "event_date": "2026-06-15T19:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-09T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260601006",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260601006",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601006",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "The New York City Loft Board hereby gives notice pursuant to the authority granted by Multiple Dwelling Law § 282 and New York City Charter § 1043 of the adoption of amendments to its rules in Title 29 of the Rules of the City of New York.",
+        "text_state": "retained",
+        "content_sha256": "daccf8e91a2b987bc7c0873c2bf6584b417ae8e6f2f20e24a6831fc5254ecc23",
+        "character_count": 263
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-08T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260602003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260602003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOH Unclaimed Restitution Fund",
+        "text_state": "retained",
+        "content_sha256": "db04aa804038e52a4afdb5fcf0340d2f0321e0c23053596d972ec748a0a7f607",
+        "character_count": 79
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-09T00:00:00.000",
+        "event_date": "2026-07-09T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-09T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260602045",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260602045",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260602045",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
+        "text_state": "retained",
+        "content_sha256": "7b6b41b881a2d8c820da8dd63eb5c63e1a77fdfca23d7ae8a28836f5b7bc8b9c",
+        "character_count": 111
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-09T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-09T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260603044",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260603044",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603044",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "JUNE 9, 2026 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "71acb6456b5c576121f3a59a007b84734ec4aa0c452b05e5b42d1c8e66cfae14",
+        "character_count": 1797
+      },
+      "geography": {
+        "body_id": "bronx-cb-06"
+      },
+      "dates": {
+        "published_at": "2026-06-08T00:00:00.000",
+        "event_date": "2026-06-09T18:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260605008",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260605008",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
+        "text_state": "retained",
+        "content_sha256": "d86b3fde343c3559077121f035fc368ba05242279051562c00e2f138fbcdd8c4",
+        "character_count": 129
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-11T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-11T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260605045",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260605045",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605045",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "JUNE 25, 2026 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "a7a666414ae4b0c38a8f23862efc259a287fb8ee13322dd55079145d0a250d1d",
+        "character_count": 946
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-18T00:00:00.000",
+        "event_date": "2026-06-25T18:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-18T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260605058",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260605058",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605058",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+        "text_state": "retained",
+        "content_sha256": "f706970d13e4f6a64d65a42cd8b2b422a2e89e77622a935a9ebbb7e69d370a5f",
+        "character_count": 103
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-09T00:00:00.000",
+        "event_date": "2026-07-09T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-09T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260609003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260609003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
+        "text_state": "retained",
+        "content_sha256": "53b0a40dacae7eb738d00e96c409e5d4ea8e33eaf44c74c02e0e54dd599c3a82",
+        "character_count": 118
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-16T00:00:00.000",
+        "event_date": "2026-07-16T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-16T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260610003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260610003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "June 17, 2026 Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "a556dd6427cb60fd402bd832b7ea7fec5b2fdbd95d0ab3898a359cdd3f15a71f",
+        "character_count": 1747
+      },
+      "geography": {
+        "body_id": "brooklyn-cb-18"
+      },
+      "dates": {
+        "published_at": "2026-06-15T00:00:00.000",
+        "event_date": "2026-06-17T19:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260610007",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260610007",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610007",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "JUNE 25, 2026 MEETING OF THE RENT GUIDELINES BOARD",
+        "text_state": "retained",
+        "content_sha256": "c573bc158119d899967415d8ef5177fa4e2aeca9bd92c72eb37beb526fdec5e2",
+        "character_count": 1365
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-18T00:00:00.000",
+        "event_date": "2026-06-25T19:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-18T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260612002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260612002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOA Protected Time Off Under the Earned Safe and Sick Time Act",
+        "text_state": "retained",
+        "content_sha256": "3843067f0a5f91ba409c279631ae584b8e185270fedaa503e4c7e95d8439d41c",
+        "character_count": 111
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-23T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-23T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260612028",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260612028",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Board of Standards and Appeals Public Hearing Notice",
+        "text_state": "retained",
+        "content_sha256": "79846a95b55cd4ccd51acb8e6cb141883386f102e7c2463a28eb0734cefabaac",
+        "character_count": 1425
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-22T00:00:00.000",
+        "event_date": "2026-07-13T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260612036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260612036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Design Commission Meeting Agenda, Monday, June 22, 2026",
+        "text_state": "retained",
+        "content_sha256": "00ea196d031dbcfdcc44db5aa6c3f92e59d17c2a9c121fa12232e84357861cce",
+        "character_count": 12245
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-17T00:00:00.000",
+        "event_date": "2026-06-22T09:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-17T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260612037",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260612037",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612037",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NYC Aging FY 2027 Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "2052285a50bde7bc0816695ebc9918a845476ba282b317bb62100f13abd62e76",
+        "character_count": 54
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-22T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260616058",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260616058",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616058",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NEW YORK CITY DEPARTMENT OF TRANSPORTATION",
+        "text_state": "retained",
+        "content_sha256": "8e543fd90a8d1b4d2e553f9c57d4b86dbd950a7accae71f7e34648aa8117b0d3",
+        "character_count": 86
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-01T00:00:00.000",
+        "event_date": "2026-07-22T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-01T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260617003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260617003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Citywide Public Input Sessions",
+        "text_state": "retained",
+        "content_sha256": "5214f0f79f8420332a7bedc7698293a7d7a346f9b655953272207a01956e6e74",
+        "character_count": 4192
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-24T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-24T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260617037",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260617037",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617037",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Taxi and Limousine Commission Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "3c48f89ca4ff63eb335a46a42241cd851f088e152429f43f7f1dbe9c3fe84627",
+        "character_count": 90
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-25T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-25T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260617039",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260617039",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
+        "text_state": "retained",
+        "content_sha256": "72223c645855d3bc263b4a5b16c50466ad130b8cb589dcc3018515dfb469b636",
+        "character_count": 94
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-25T00:00:00.000",
+        "event_date": "2026-07-01T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-25T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260617040",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260617040",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617040",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+        "text_state": "retained",
+        "content_sha256": "54088f72df451db9ed4965015a249ad736025a0785df72d9ba308477c4bb18bf",
+        "character_count": 8451
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-02T00:00:00.000",
+        "event_date": "2026-07-16T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-02T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260617042",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260617042",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617042",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "BUILD NYC RESOURCE CORPORATION - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+        "text_state": "retained",
+        "content_sha256": "152c15e27d0932c1e237da8e25c120df69cf8bae1a9e4612d216637bdd8fd455",
+        "character_count": 6046
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-02T00:00:00.000",
+        "event_date": "2026-07-16T00:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-02T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260618004",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260618004",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618004",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "FY2027 DOHMH Regulatory Agenda",
+        "text_state": "retained",
+        "content_sha256": "41ec46ad0fead3ce2ad43252847bacb55cd7517510c385b5a7f52c1ed4715c42",
+        "character_count": 69
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-25T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-25T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260618032",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260618032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618032",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "June 25, 2026 Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "0ce1efda97e591347d74c58f6a4cf244f80b66e8f2d558bb698d7023c5e04b1e",
+        "character_count": 3229
+      },
+      "geography": {
+        "body_id": "bronx-cb-01"
+      },
+      "dates": {
+        "published_at": "2026-06-23T00:00:00.000",
+        "event_date": "2026-06-25T18:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-23T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260618036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260618036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Proposed Amendment to 421-a(16) Workbook Rules",
+        "text_state": "retained",
+        "content_sha256": "8ac9dbcde93cfb5e00855d722c9f912fb1219abeb34ba7911aecc7d00761d77f",
+        "character_count": 96
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-26T00:00:00.000",
+        "event_date": "2026-08-04T14:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-26T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260618037",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260618037",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618037",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Queens Borough President Land Use Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "9599b9f7d1dc07932188c5fa1f5a568372b84933c0921112a6c9b1dd9bd08dc2",
+        "character_count": 4589
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-26T00:00:00.000",
+        "event_date": "2026-07-02T09:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-26T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260618040",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260618040",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618040",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "FOR ACQUISITION - portions of Block 3264, Lot 20; Block 3238, Lots 50, 52, and 126; and Block 3245, Lot 12",
+        "text_state": "retained",
+        "content_sha256": "0c9f4d871e6e46d97a4c93d145f6c5bb60c32931f414183787e195c21f300b71",
+        "character_count": 1453
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-26T00:00:00.000",
+        "event_date": "2026-08-12T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-26T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260618050",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260618050",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Brooklyn Borough President ULURP Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "1f1558e03d6601457fe2d6065f788feeaeca1f78af4e9b3eddf2167466521686",
+        "character_count": 2495
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-26T00:00:00.000",
+        "event_date": "2026-07-08T18:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-26T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260622072",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260622072",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622072",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOA Debt Collector Penalty Schedule",
+        "text_state": "retained",
+        "content_sha256": "213ab677bd9ca6fa57648091f1e8b7ab8b973431c68c26782783cd17e170c6ad",
+        "character_count": 84
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-29T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260623006",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260623006",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "July 14, 2026, Public Hearing Agenda CR",
+        "text_state": "retained",
+        "content_sha256": "f30897e7474769eef895d6c7519c9dffb2e6f5bef788e7e0b828645d851f75af",
+        "character_count": 102
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-29T00:00:00.000",
+        "event_date": "2026-07-14T09:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260623048",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260623048",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "JUNE 25, 2026 PUBLIC HEARING",
+        "text_state": "retained",
+        "content_sha256": "7d43462155c2e76f29007209feb48c12187866e4a135d3e681575d3f677fc200",
+        "character_count": 1800
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-24T00:00:00.000",
+        "event_date": "2026-06-25T18:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-24T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260623060",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260623060",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NYC Civic Engagement Commission Public Meeting",
+        "text_state": "retained",
+        "content_sha256": "a02cefa4f0e9fc64a4e88ab14ea9d30cab6a6cf3afaf85d5285f1ab4b8e2f6ab",
+        "character_count": 103
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-30T00:00:00.000",
+        "event_date": "2026-07-21T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-30T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260624001",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260624001",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "New York City Housing Authority Board Meeting",
+        "text_state": "retained",
+        "content_sha256": "6010829292d4e589600f5897f581b67be3d397a89ce55ca7a64935dff75d7a64",
+        "character_count": 2379
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-16T00:00:00.000",
+        "event_date": "2026-07-29T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-16T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260624002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260624002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "City Planning Commission Public Hearing Ad",
+        "text_state": "retained",
+        "content_sha256": "c6a852d30e3c1102fa8e83fb3691f1ce610a649262b31c1a651a41e922b2ff24",
+        "character_count": 96
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-30T00:00:00.000",
+        "event_date": "2026-07-15T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-30T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260624005",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260624005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Availability of Final Scope of Work, Completion of a Draft Environmental Impact Statement and Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "395dac6a7937cff8d1eba3fa237531e2691de71099714f9ca4e8d6d426edb6f6",
+        "character_count": 158
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-01T00:00:00.000",
+        "event_date": "2026-07-28T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-01T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260624032",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260624032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624032",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Rule Relating to Containerization Requirements for Buildings Containing 10 or More Dwelling Units",
+        "text_state": "retained",
+        "content_sha256": "cfea3905eacbd628e1c665001b477e2e84cc1ffaefbc6db332df0a124ba4322b",
+        "character_count": 143
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-01T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-01T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260624035",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260624035",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624035",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Office of the Comptroller Affordable Neighborhoods for New Yorkers Construction Wage Regulations - Adoption of Final 485-x Rules",
+        "text_state": "retained",
+        "content_sha256": "4c12edbd2d9c3bff758f097ed9805b73bdad07f711cb36925d04827d5789cbef",
+        "character_count": 153
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-06-30T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-30T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260624036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260624036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Dining Out NYC Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "1d68133db04e41df09d955179e98a5290977078dc714fbb48f0b82653d725646",
+        "character_count": 2252
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-01T00:00:00.000",
+        "event_date": "2026-07-16T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-01T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260625034",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260625034",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NYCHA Audit and Finance Committee Meeting.",
+        "text_state": "retained",
+        "content_sha256": "58359b81e31b329be1b1eca8e556930736131ef0209e6c66f6a9439165af1de7",
+        "character_count": 2154
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-01T00:00:00.000",
+        "event_date": "2026-07-15T14:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-01T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260625040",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260625040",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+        "text_state": "retained",
+        "content_sha256": "596c931f7c60204d6b2742e99314c35376e4ddfdca1716b3424877e0967d395d",
+        "character_count": 128
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-02T00:00:00.000",
+        "event_date": "2026-07-09T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-02T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260626034",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260626034",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
+        "text_state": "retained",
+        "content_sha256": "f3524e977d7f5f55ece4b99edaf613cc15d4833aba1766ba012968da9e7eb049",
+        "character_count": 112
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-06T00:00:00.000",
+        "event_date": "2026-08-05T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-06T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260626035",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260626035",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626035",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOA Cancellation of Subscriptions",
+        "text_state": "retained",
+        "content_sha256": "150812ab38197ec51b5bb93c4a03fb6cf24814ef906eddee15389b1a77a233bd",
+        "character_count": 82
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-08T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260626036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260626036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOH Junk Fees",
+        "text_state": "retained",
+        "content_sha256": "6dc1021f6bb24a2a5add9f30e4a996bd04bbc3934554a10c9be2f1e4e21068e4",
+        "character_count": 62
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-08T00:00:00.000",
+        "event_date": "2026-08-07T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260629003",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260629003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Correction: Board of Standards and Appeals Public Hearing Notice",
+        "text_state": "retained",
+        "content_sha256": "27ffe684194bc3039754c17bdcda6e7de468ba51208c52c796c91c6c60e85cb8",
+        "character_count": 1919
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-06T00:00:00.000",
+        "event_date": "2026-07-27T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-06T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260629046",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260629046",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629046",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NYC Workforce Development Board Executive Committee Meeting",
+        "text_state": "retained",
+        "content_sha256": "05a616bbf51a7812c858215984d9d3fb36c84c879ce71b7249701af5e7ab58e7",
+        "character_count": 441
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-06T00:00:00.000",
+        "event_date": "2026-07-08T09:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-06T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260630005",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260630005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "July 21, 2026, Public Hearing Agenda",
+        "text_state": "retained",
+        "content_sha256": "b7f8f06bb14047d453a9dc6b9baac62b9a112251f1c971cd892d1f737ee86ccb",
+        "character_count": 99
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-07T00:00:00.000",
+        "event_date": "2026-07-21T09:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-07T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260701025",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260701025",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701025",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Rules Relating to PACE Financing Program",
+        "text_state": "retained",
+        "content_sha256": "ce7d525586a39e8d16171623af81fc50f2d2f1f87e562ba375c7a407256125e2",
+        "character_count": 83
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-09T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-09T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260706036",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260706036",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+        "text_state": "retained",
+        "content_sha256": "54fa973b1b1a4e0b26f584fd42ee360f050f12e8cb40c215d7237ca037c1d31f",
+        "character_count": 141
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-08T00:00:00.000",
+        "event_date": "2026-07-14T10:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-08T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260706041",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260706041",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption: City-Owned Bicycle Racks",
+        "text_state": "retained",
+        "content_sha256": "02cd850a85e2a7c43fd2122f39ff9661069efb22d127da107c37992e384924bc",
+        "character_count": 72
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-14T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260706044",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260706044",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
+        "text_state": "retained",
+        "content_sha256": "3fbc46bb757dc08f7b7687c3b3b56ea36b5ed8f5d9324fa963978f1129c55f49",
+        "character_count": 118
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-13T00:00:00.000",
+        "event_date": "2026-08-13T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-13T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260707004",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260707004",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "July 28, 2026, Public Hearing Agenda",
+        "text_state": "retained",
+        "content_sha256": "a264678651935ce3341ecd392d1696752848d7760216ea4756b60a69c5e5c738",
+        "character_count": 99
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-14T00:00:00.000",
+        "event_date": "2026-07-28T09:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260707021",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260707021",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
+        "text_state": "retained",
+        "content_sha256": "3ab450b24d7f93b2cae906af5195279bdd79ac397bac62f3f35d4aaf8746e6a9",
+        "character_count": 95
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-15T00:00:00.000",
+        "event_date": "2026-07-21T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260707022",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260707022",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+        "text_state": "retained",
+        "content_sha256": "ac55512de818e77655b7189e73bdc8aa098676a02387edc1a400d6e40064be10",
+        "character_count": 129
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-16T00:00:00.000",
+        "event_date": "2026-07-22T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-16T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260707025",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260707025",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707025",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Final Rule - Amendment of Rules relating to Sidewalk Sheds",
+        "text_state": "retained",
+        "content_sha256": "5c6384c0cd9f2d13ee579abb2a82cb4662e1a9405d26b2ad7b851ce6d9539476",
+        "character_count": 81
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-14T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260707029",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260707029",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707029",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "City Planning Commission Public Hearing Ad",
+        "text_state": "retained",
+        "content_sha256": "c6a852d30e3c1102fa8e83fb3691f1ce610a649262b31c1a651a41e922b2ff24",
+        "character_count": 96
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-15T00:00:00.000",
+        "event_date": "2026-07-29T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260708002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260708002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+        "text_state": "retained",
+        "content_sha256": "9dfcdaf19ec7fc8a43f80d80a300e3d66e965c7dbe5b46a75688afc91840f5ca",
+        "character_count": 141
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-15T00:00:00.000",
+        "event_date": "2026-08-25T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260708015",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260708015",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "EEPC COMMISSION MEETING #289",
+        "text_state": "retained",
+        "content_sha256": "d1a9ecf1e3c4ecf5d9f7a9ff2840f1ac2867b70ec67211dbb332e7c599861eea",
+        "character_count": 95
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-15T00:00:00.000",
+        "event_date": "2026-07-30T10:15:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260708018",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260708018",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708018",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
+        "text_state": "retained",
+        "content_sha256": "8e67e177b1eb7f69aed6aacb85fad1f13d4a44d8ed2da4e75841a6358d7c0c9c",
+        "character_count": 1142
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-15T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-15T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260709020",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260709020",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709020",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "FOR ACQUISTION - Block 5308 Lot 50",
+        "text_state": "retained",
+        "content_sha256": "2dcfdc47ea9db265f751d3e74bc7b75b2e01401041050d361dcb1f943e71feee",
+        "character_count": 1279
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-24T00:00:00.000",
+        "event_date": "2026-09-09T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-24T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260709028",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260709028",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+        "text_state": "retained",
+        "content_sha256": "39004ffefbe8d03401e2778a9a1f856a27f7aae0e97ae6c6b8fff3fb6648ff62",
+        "character_count": 2410
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-16T00:00:00.000",
+        "event_date": "2026-08-10T14:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-16T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260710032",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260710032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "FCRC AUGUST PUBLIC MEETING",
+        "text_state": "retained",
+        "content_sha256": "543e7c3bbb334b6ed28be4f6937a32463aab9814fb0dcde41881d02b3c84b6cc",
+        "character_count": 735
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-24T00:00:00.000",
+        "event_date": "2026-08-12T14:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-24T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260710033",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260710033",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710033",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+        "text_state": "retained",
+        "content_sha256": "d53e92236403c258125c79738dc56d736e79ad8abb88aca7517860f9e28ba3e5",
+        "character_count": 116
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-14T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-14T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260713006",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260713006",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+        "text_state": "retained",
+        "content_sha256": "29047f3d05a09a76982a2fd0dab80e15f47b025ebdde4768bc8f681b0a238444",
+        "character_count": 95
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-20T00:00:00.000",
+        "event_date": "2026-08-19T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260713032",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260713032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713032",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Design Commission Meeting Agenda, Monday, July 20, 2026",
+        "text_state": "retained",
+        "content_sha256": "9f81b6ebd2ff61f7c861d107bce46b48492834f97ab3f52020c5ff09b52e504d",
+        "character_count": 8760
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-16T00:00:00.000",
+        "event_date": "2026-07-20T09:40:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-16T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260714001",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260714001",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "August 4, 2026, Public Hearing Agenda CR",
+        "text_state": "retained",
+        "content_sha256": "6d4e2a208e9b4b90b8539eb841b762c253e8043ef20869e42db4249eda6daff1",
+        "character_count": 103
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-22T00:00:00.000",
+        "event_date": "2026-08-04T09:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260714002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260714002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board",
+        "text_state": "retained",
+        "content_sha256": "e9cebe74de0e678a2baf56fb781e3dfc8d8be5378b35903b30455ca4f3e52711",
+        "character_count": 138
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-20T00:00:00.000",
+        "event_date": "2026-09-09T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260714024",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260714024",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714024",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
+        "text_state": "retained",
+        "content_sha256": "7476d21baf432e2251466edf38002f7e763b5282b30c83feaa033c38af2b4492",
+        "character_count": 100
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-22T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260714029",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260714029",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+        "text_state": "retained",
+        "content_sha256": "e74b0a18ffe19449b2419d0c5c87b23d4995e695fd699bb9065767e91493162f",
+        "character_count": 154
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-22T00:00:00.000",
+        "event_date": "2026-09-01T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260715002",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260715002",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Final Meeting of the Commission on Government Efficiency",
+        "text_state": "retained",
+        "content_sha256": "ef75457b326e910a5cd551b48b6d79e8d8912eb617b27508e4ad66bc906e3de8",
+        "character_count": 1744
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-20T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-20T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260715005",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260715005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715005",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "2026 RGB Orders and Explanatory Statements and Findings",
+        "text_state": "retained",
+        "content_sha256": "886d01941a19a4c61d553ca458b892ee9f7b2b5e98b65010be31ceca457b6825",
+        "character_count": 90
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-24T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-24T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260715041",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260715041",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Amendments to Rules Relating to the Energy Conservation Code",
+        "text_state": "retained",
+        "content_sha256": "cc7553a257a230047dfd48e696ec3ec30df195f9db609f78b3db2a4e8d548f3f",
+        "character_count": 83
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-23T00:00:00.000",
+        "event_date": "2026-08-27T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-23T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260715045",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260715045",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715045",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Change of Effective Date for SHIELD rules",
+        "text_state": "retained",
+        "content_sha256": "6dbd7c359917e40f67e84c8d513435946598ad548688f30bb6ff2b350b0207c1",
+        "character_count": 95
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-22T00:00:00.000",
+        "event_date": null
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260716009",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260716009",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Dining Out NYC Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "d4f66bd31d9289f6ca35c7640092cacad360bd1ee35aa949f6fe04a43364c4c6",
+        "character_count": 2331
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-22T00:00:00.000",
+        "event_date": "2026-08-06T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-22T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260716022",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260716022",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+        "text_state": "retained",
+        "content_sha256": "2c0e09a60558811f71d9b1a00e21a7390703783704f338b486dfd4343a65e3d3",
+        "character_count": 3994
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-24T00:00:00.000",
+        "event_date": "2026-08-10T14:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-24T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260716025",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260716025",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "New York City Environmental Control Board Meeting August 6, 2026",
+        "text_state": "retained",
+        "content_sha256": "62aca69de92ced56877bd09f58f178bc3c8d0f8e6590bb95f21a0a9b799b8323",
+        "character_count": 693
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-23T00:00:00.000",
+        "event_date": "2026-08-06T09:30:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-23T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260721023",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260721023",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721023",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "City Planning Commission Public Hearing",
+        "text_state": "retained",
+        "content_sha256": "62ef1e6f2e201b77216759ee2eeb5a2599f3174ca51423a0bd581b0b2150c4e4",
+        "character_count": 93
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-29T00:00:00.000",
+        "event_date": "2026-08-12T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260723005",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260723005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Dining Out NYC Public Hearings",
+        "text_state": "retained",
+        "content_sha256": "bb8d24bf166926a084bf70be81b5d6ca52cc748d84a440d812e104167b22860c",
+        "character_count": 995
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-29T00:00:00.000",
+        "event_date": "2026-08-13T11:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-29T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260723022",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260723022",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723022",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "511 West 171",
+        "text_state": "retained",
+        "content_sha256": "2667f364c4a8e2e88615cf0d58fba29e827d596bf21d6c98e6c6636077f74ce0",
+        "character_count": 3131
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-31T00:00:00.000",
+        "event_date": "2026-09-09T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-31T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "city_record_notice:20260723030",
+      "source_family": "city_record_notice",
+      "source_native_id": "20260723030",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+      "source_system": "NYC City Record",
+      "passage": {
+        "title": "Board of Standards and Appeals Public Hearing Notice",
+        "text_state": "retained",
+        "content_sha256": "e455e5003d8f2428bc5a9b01e2724824fa7c844748f70637f3cd956d6ea23f19",
+        "character_count": 2263
+      },
+      "geography": {
+        "body_id": null
+      },
+      "dates": {
+        "published_at": "2026-07-27T00:00:00.000",
+        "event_date": "2026-08-10T10:00:00.000"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-07-27T00:00:00.000"
+      }
+    },
+    {
+      "source_record_id": "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes",
+      "source_family": "community_board_minutes",
+      "source_native_id": "queens-cb-08:2026-06-10:minutes",
+      "source_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf",
+      "source_system": "Queens Community Board 8",
+      "passage": {
+        "title": "Minutes of Community Board 8 meeting held on June 10, 2026",
+        "text_state": "retained",
+        "content_sha256": "2a252571062a493af0040ca1766996b30b372a2926d1253a40ff0ce53cd05eec",
+        "character_count": 20664
+      },
+      "geography": {
+        "body_id": "queens-cb-08"
+      },
+      "dates": {
+        "published_at": "2026-06-10",
+        "event_date": "2026-06-10"
+      },
+      "coverage_state": "partial",
+      "freshness_receipt": {
+        "state": "observed",
+        "observed_on": "2026-08-04",
+        "source_published_at": "2026-06-10"
+      }
+    }
+  ],
+  "dropped_records": [],
+  "corpus_sha256": "11c4f47620f6a961e19d64a0fba12b3ef513416ebeb3bacc302512cb9be0eca0",
+  "manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88"
+}
