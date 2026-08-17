@@ -68,9 +68,11 @@ test("the Browse bridge rejects evidence-only notices and inconsistent contract 
 
 test("the Contracts award query path augments the bounded resident snapshot from universal search", () => {
   const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
-  assert.match(source, /workerFetch\(`\/search\?q=\$\{encodeURIComponent\(key\)\}`/);
+  assert.match(source, /params\.set\("object_ref",identity\.object_ref\)/);
+  assert.match(source, /params\.set\("source_ref",identity\.source_observation_ref\)/);
+  assert.match(source, /workerFetch\(`\/search\?\$\{key\}`/);
   assert.match(source, /const retrievalQuery=kw\|\|scopedVendorStem/);
-  assert.match(source, /excludeSpecial,entityRefs,sort/);
+  assert.match(source, /contractObjectRef:contractIdentity\?\.object_ref\|\|""/);
   assert.match(source, /mergeContractSearchRows\(retainedRows,searchDocuments\)/);
 });
 
