@@ -99,7 +99,12 @@ function lexicalRank(passage, source, terms, phrase) {
   return rank;
 }
 
-function publicCandidate(passage, source, record) {
+function canonicalSourceHref(source) {
+  if (source.source_family !== "city_record_notice" || !source.source_native_id) return null;
+  return `/notices/${encodeURIComponent(source.source_native_id)}`;
+}
+
+function publicCandidate(passage, source, record, matchedTerms) {
   return {
     candidate_id: passage.candidate_id,
     source: {
@@ -107,6 +112,7 @@ function publicCandidate(passage, source, record) {
       family: source.source_family,
       native_id: source.source_native_id,
       url: source.source_url,
+      canonical_href: canonicalSourceHref(source),
       title: source.title || null,
     },
     passage: {
@@ -116,6 +122,7 @@ function publicCandidate(passage, source, record) {
       boundary: passage.boundary,
     },
     method: SEMANTIC_CANDIDATE_METHOD,
+    matched_terms: [...matchedTerms],
     hard_scope_state: "matched",
     coverage_state: record.coverage_state,
     freshness: source.freshness,
@@ -149,6 +156,7 @@ function assertPublicCandidateResponse(result, request) {
     const passage = PASSAGES.get(candidate?.passage?.id);
     const source = passage ? PASSAGE_SOURCES.get(passage.source_record_id) : null;
     const record = passage ? MANIFEST_RECORDS.get(passage.source_record_id) : null;
+    const expectedTerms = lexicalTokens(request.query);
     if (!candidate?.candidate_id
         || !candidate.source?.id
         || !SOURCE_FAMILIES.has(candidate.source.family)
@@ -164,6 +172,8 @@ function assertPublicCandidateResponse(result, request) {
         || candidate.candidate_id !== passage.candidate_id
         || candidate.source.id !== source.source_record_id
         || candidate.source.url !== source.source_url
+        || candidate.source.canonical_href !== canonicalSourceHref(source)
+        || JSON.stringify(candidate.matched_terms) !== JSON.stringify(expectedTerms)
         || candidate.passage.text !== passage.text) {
       throw new Error("typed candidate is incomplete");
     }
@@ -225,7 +235,7 @@ export function retrieveTypedCandidates({ query, filters = {}, limit = DEFAULT_R
       boundary: corpusManifest.coverage.boundary,
     },
     candidates: ranked.slice(0, boundedLimit).map(({ passage, source, record }) => (
-      publicCandidate(passage, source, record)
+      publicCandidate(passage, source, record, terms)
     )),
   };
 }
