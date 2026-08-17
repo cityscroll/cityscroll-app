@@ -305,9 +305,12 @@ export function renderUniversalSearchResultHtml(record = {}) {
   const summaryHtml = view.summary
     ? `<p class="topic-search-result-snippet">${escapeHtml(view.summary)}</p>`
     : "";
+  const statusHtml = view.lifecycle.state === "unknown"
+    ? ""
+    : `<span class="topic-search-result-status is-${escapeHtml(view.lifecycle.group)}">${escapeHtml(view.lifecycle.label)}</span>`;
   return `<article class="topic-search-result is-${escapeHtml(view.lifecycle.group)}" data-search-result data-search-entity-type="${escapeHtml(view.entity_type)}" data-search-lens="${escapeHtml(view.lens)}" data-lifecycle-state="${escapeHtml(view.lifecycle.state)}">
     <h4><a href="${escapeHtml(view.href)}">${titleHtml}</a></h4>
-    <p class="topic-search-result-meta"><span class="topic-search-result-type">${escapeHtml(view.entity_type_label)}</span><span class="topic-search-result-lens">${escapeHtml(view.lens_label)}</span><span class="topic-search-result-status is-${escapeHtml(view.lifecycle.group)}">${escapeHtml(view.lifecycle.label)}</span></p>
+    <p class="topic-search-result-meta"><span class="topic-search-result-type">${escapeHtml(view.entity_type_label)}</span><span class="topic-search-result-lens">${escapeHtml(view.lens_label)}</span>${statusHtml}</p>
     <p class="topic-search-result-evidence" data-match-field="${escapeHtml(view.evidence.field)}"><span class="topic-search-result-reason">${escapeHtml(view.evidence.reason)}</span><span>${highlightEvidenceHtml(view.evidence)}</span></p>
     ${summaryHtml}
   </article>`;
