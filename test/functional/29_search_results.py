@@ -69,6 +69,7 @@ SEMANTIC_FIXTURES = {
     "budget": "City budget hearing\nPublic hearing on the agency budget.",
     "contract": "Subscription security contract\nA current contract award.",
     "hearing": "Public hearing\nA public hearing and meeting notice.",
+    "late": "Administrative notice\n" + ("Background context. " * 45) + "Late matching evidence.",
 }
 
 LEGACY_FALLBACK = typed_result(
@@ -89,6 +90,25 @@ MEETING_FALLBACK = typed_result(
     lens="notices",
     href="/meetings/meeting%3Acity_record%3Afixture-meeting",
 )
+
+POLICE_CONTRACT_SNAPSHOT = {
+    "schema_version": 1,
+    "delivery_tier": "resident-snapshot",
+    "generated_at": "2026-08-15T19:35:39.293Z",
+    "count": 1,
+    "rows": [{
+        "request_id": "20260701043",
+        "start_date": "2026-07-08T00:00:00.000",
+        "agency_name": "Police Department",
+        "type_of_notice_description": "Solicitation",
+        "category_description": "Services (other than human services)",
+        "short_title": "05626P0001-Paid Detail Application and Software Platform",
+        "pin": "05626P0001",
+        # Keep the real production-shaped record open as this clock-independent fixture ages.
+        "due_date": "2099-08-19T16:00:00.000",
+        "selection_method_description": "Competitive Sealed Proposals",
+    }],
+}
 
 
 def json_response(route, body):
@@ -191,6 +211,7 @@ def candidate_response(query, passage_text=None):
                 "native_id": "20260715041",
                 "title": passage_text.split("\n", 1)[0],
                 "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+                "canonical_href": "/notices/20260715041",
             },
             "passage": {
                 "id": passage_id,
@@ -199,6 +220,7 @@ def candidate_response(query, passage_text=None):
                 "boundary": {"start": 0, "end": len(passage_text)},
             },
             "method": "lexical_fallback_v1",
+            "matched_terms": [query],
             "hard_scope_state": "matched",
             "coverage_state": "partial",
             "freshness": {"state": "observed", "observed_on": "2026-08-04"},
@@ -247,6 +269,10 @@ def main():
 
         page.route("https://api.cityscroll.org/search/candidates?*", search_api)
         page.route("https://crol-worker.crol-worker.workers.dev/search/candidates?*", search_api)
+        page.route(
+            "**/data/money_resident_snapshot.json",
+            lambda route: json_response(route, POLICE_CONTRACT_SNAPSHOT),
+        )
 
         for term, passage_text in SEMANTIC_FIXTURES.items():
             page.goto(f"{BASE}/search/?q={term}", wait_until="domcontentloaded", timeout=30000)
@@ -260,6 +286,11 @@ def main():
             assert term.lower() in text.lower(), (term, text)
             assert "Related because" in text
             assert passage_text.split("\n", 1)[0] in text
+            primary_link = results.first.locator("h4 a[href='/notices/20260715041']")
+            assert primary_link.count() == 1
+            marks = results.first.locator(".topic-search-result-passage mark")
+            assert marks.count() >= 1
+            assert term.lower() in [mark.lower() for mark in marks.all_text_contents()]
             source_link = results.first.locator("a[href^='https://a856-cityrecord.nyc.gov/']")
             assert source_link.count() == 1
             assert source_link.get_attribute("target") == "_blank"
@@ -310,6 +341,14 @@ def main():
                 f"/search/?q={query}"
             )
             assert_axe_green(page, f"typed handoff: {opened_copy}")
+
+        page.goto(f"{BASE}/browse/contracts/?q=police", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_selector(".money-row-card [data-match-evidence] mark", timeout=30000)
+        contract = page.locator(".money-row-card").first
+        assert contract.locator("a[href='/notices/20260701043']").count() == 1
+        assert contract.locator("[data-match-evidence] mark").text_content().lower() == "police"
+        assert "Police Department" in (contract.locator("[data-match-evidence]").text_content() or "")
+        assert_axe_green(page, "Contracts agency-field match evidence")
 
         page.goto(f"{BASE}/search/?q=police&lang=es", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_selector("[data-semantic-candidate]")
