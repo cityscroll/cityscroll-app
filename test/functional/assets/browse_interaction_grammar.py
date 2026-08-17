@@ -268,6 +268,31 @@ def _assert_button_contrast(page, lens: Lens) -> None:
     assert checked > 0, f"{lens.name}: no visible shared card controls were contrast-tested"
 
 
+def _assert_people_preview_layout(page, lens: Lens) -> None:
+    if lens.slug != "people":
+        return
+    metrics = page.locator("[data-people-organizations-list]").evaluate(
+        """element => {
+          const wrapper = element.querySelector(':scope > .browse-build-view');
+          const cards = [...element.querySelectorAll(':scope > .browse-build-view > .people-org-row')]
+            .slice(0, 3);
+          const outer = element.getBoundingClientRect();
+          const inner = wrapper?.getBoundingClientRect();
+          return {
+            outerWidth: outer.width,
+            innerWidth: inner?.width || 0,
+            cardColumns: new Set(cards.map(card => Math.round(card.getBoundingClientRect().left))).size,
+          };
+        }"""
+    )
+    assert metrics["innerWidth"] >= metrics["outerWidth"] * 0.95, (
+        f"{lens.name}: shared preview wrapper is not full width: {metrics}"
+    )
+    assert metrics["cardColumns"] >= 2, (
+        f"{lens.name}: desktop preview cards remain stuck in one left column: {metrics}"
+    )
+
+
 def assert_lens_grammar(page, lens: Lens, *, verify_clipboard: bool = True) -> dict[str, object]:
     cards = page.locator(lens.card_selector)
     assert cards.count() > 0, f"{lens.name}: no cards rendered"
@@ -330,6 +355,7 @@ def assert_lens_grammar(page, lens: Lens, *, verify_clipboard: bool = True) -> d
     _assert_external_handoffs(page, lens)
     _assert_action_context(page, lens)
     _assert_button_contrast(page, lens)
+    _assert_people_preview_layout(page, lens)
 
     if verify_clipboard:
         first_copy = cards.first.locator("button.ui-object-card-copy")
