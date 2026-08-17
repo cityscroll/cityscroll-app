@@ -10,7 +10,7 @@ import { migrateLegacyUrl } from "./route_migration.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
 import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
-import { buildExamsAliasBrowseView } from "./browse_reuse_surfaces.mjs";
+import { buildExamsAliasBrowseView } from "./exams_surface.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)

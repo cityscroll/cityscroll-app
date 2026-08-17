@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-08-11T19:21:19.284Z",
+  "rows": [
+    {
+      "kind": "official",
+      "id": "official:7801",
+      "label": "Christopher Marte",
+      "href": "/officials/7801/",
+      "relation_state": "published",
+      "detail": "Official profile",
+      "search_text": "Christopher Marte official council member"
+    },
+    {
+      "kind": "agency",
+      "id": "agency:dcas",
+      "label": "Department of Citywide Administrative Services",
+      "href": "/agencies/dcas/",
+      "relation_state": "published",
+      "detail": "Agency profile",
+      "search_text": "Department of Citywide Administrative Services DCAS agency"
+    },
+    {
+      "kind": "civil_service_exam",
+      "id": "exam:7016",
+      "label": "Clerical Associate",
+      "href": "/exams/7016/",
+      "search_text": "Clerical Associate exam"
+    }
+  ]
+}

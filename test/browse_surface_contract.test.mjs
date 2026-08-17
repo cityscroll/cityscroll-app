@@ -19,8 +19,10 @@ import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
 import {
   EXAMS_ALIAS_BROWSE_VIEW,
+} from "../site/exams_surface.mjs";
+import {
   PEOPLE_LIST_BROWSE_VIEW,
-} from "../site/browse_reuse_surfaces.mjs";
+} from "../site/people_organizations_surface.mjs";
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
 
 test("People, Staffing, and Exams have one unique surface owner each", () => {

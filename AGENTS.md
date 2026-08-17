@@ -70,9 +70,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   in `site/browse_view.mjs` (`rowBoroughs` / `rowMatchesBorough`).
 - **People/Staffing/Exams surface identity:** `site/browse_surface_contracts.mjs` is the sole
   registry for their public route and logical builder/controller owners. Its compatibility
-  exports deliberately preserve the current shared People runtime until the owner modules are
-  split; new routing or view maps must derive from that adapter rather than restating these
-  identities. Focused proof: `test/browse_surface_contract.test.mjs`.
+  exports deliberately preserve the current shared People runtime during the incremental cutover;
+  new routing or view maps must derive from that adapter rather than restating these identities.
+  Pure People and Exams rows, filters, and view builders live separately in
+  `site/people_organizations_surface.mjs` and `site/exams_surface.mjs`; the architecture fitness
+  gate prohibits owner-to-owner imports. Focused proof: `test/browse_surface_contract.test.mjs`
+  and `test/browse_view_reuse.test.mjs`.
 - Place-scoped Property routes use `site/property_scope_fallback.mjs`: if the scoped current
   view is empty but the same scope has closed records, the route opens the archive view so a
   valid place link does not present a misleading empty result. Coverage is in
