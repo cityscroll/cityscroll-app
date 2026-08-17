@@ -15,6 +15,7 @@ import {
   moneyLineageRows,
   moneyMethodFacet,
   moneySnapshotRows,
+  vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
 import { mergeContractSearchRows } from "../contract_search_bridge.mjs";
 
@@ -318,13 +319,18 @@ async function search(){
     const retainedRows=defaultSearch
       ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
       : moneySnapshotRows(snapshot);
-    const searchDocuments=(kw&&(mode==="award"||mode==="archive"))
-      ? await loadContractSearchDocuments(kw)
+    const entityRefs=Array.isArray(globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES?.entity_refs_all)
+      ? globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES.entity_refs_all
+      : [];
+    const scopedVendorStem=vendorStemsFromEntityRefs(entityRefs)[0]||"";
+    const retrievalQuery=kw||scopedVendorStem;
+    const searchDocuments=(retrievalQuery&&(mode==="award"||mode==="archive"))
+      ? await loadContractSearchDocuments(retrievalQuery)
       : [];
     const snapshotRows=mergeContractSearchRows(retainedRows,searchDocuments);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
-      excludeSpecial,sort,today:todayISO(),weekEnd:weekOutISO(),
+      excludeSpecial,entityRefs,sort,today:todayISO(),weekEnd:weekOutISO(),
       monthEnd:months?addMonthsISO(todayISO(),months):null,
     };
     const facetRows=filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});
