@@ -8,13 +8,13 @@
   ],
   "captures": [
     {
-      "canonical_target": "/notices/20260714015",
+      "canonical_target": "/notices/20260521015",
       "cards_inspected": 3,
       "file": "docs/screenshots/browse-interaction-grammar/contracts-390.png",
       "lens": "contracts",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 280,
+        "height": 303,
         "width": 344
       },
       "route": "/browse/contracts/",
@@ -25,13 +25,13 @@
       }
     },
     {
-      "canonical_target": "/notices/20260714015",
+      "canonical_target": "/notices/20260521015",
       "cards_inspected": 3,
       "file": "docs/screenshots/browse-interaction-grammar/contracts-1440.png",
       "lens": "contracts",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 279,
+        "height": 280,
         "width": 378
       },
       "route": "/browse/contracts/",
@@ -42,34 +42,34 @@
       }
     },
     {
-      "canonical_target": "/exams/7312/",
+      "canonical_target": "/officials/425/",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/staffing-390.png",
-      "lens": "staffing",
+      "file": "docs/screenshots/browse-interaction-grammar/people-390.png",
+      "lens": "people",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 939,
-        "width": 346
+        "height": 109,
+        "width": 308
       },
-      "route": "/browse/staffing/",
-      "selector": "#career-results .career-card",
+      "route": "/browse/people/",
+      "selector": "[data-people-organizations-list] .people-org-row",
       "viewport": {
         "height": 844,
         "width": 390
       }
     },
     {
-      "canonical_target": "/exams/7312/",
+      "canonical_target": "/officials/425/",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/staffing-1440.png",
-      "lens": "staffing",
+      "file": "docs/screenshots/browse-interaction-grammar/people-1440.png",
+      "lens": "people",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 750,
-        "width": 532
+        "height": 80,
+        "width": 340
       },
-      "route": "/browse/staffing/",
-      "selector": "#career-results .career-card",
+      "route": "/browse/people/",
+      "selector": "[data-people-organizations-list] .people-org-row",
       "viewport": {
         "height": 1000,
         "width": 1440
@@ -150,7 +150,7 @@
       "lens": "meetings",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 693,
+        "height": 668,
         "width": 346
       },
       "route": "/browse/meetings/",
@@ -167,7 +167,7 @@
       "lens": "meetings",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 653,
+        "height": 627,
         "width": 350
       },
       "route": "/browse/meetings/",
@@ -184,7 +184,7 @@
       "lens": "exams",
       "phase": "hydrated",
       "pixel_size": {
-        "height": 939,
+        "height": 940,
         "width": 346
       },
       "route": "/browse/exams/",

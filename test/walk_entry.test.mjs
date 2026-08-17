@@ -37,7 +37,7 @@ test("walk entry renders an origin chip and measured family states", () => {
     placeLabel: "Manhattan · CD M03",
     families: [
       { id: "land", label: "Land", count: 12, href: "/browse/zoning/", status: "available" },
-      { id: "people", label: "People", count: null, href: "/browse/staffing/", status: "unknown" },
+      { id: "people", label: "People", count: null, href: "/browse/people/", status: "unknown" },
       { id: "rules", label: "Rules", count: 0, href: "/browse/rules/", status: "empty" },
     ],
   });

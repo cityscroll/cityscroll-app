@@ -175,7 +175,7 @@ test("the exam guide paints core rows independently of optional spine enrichment
 
 test("Exams owns its guide and Staffing keeps the appointment ledger reachable", () => {
   const exams = html.slice(html.indexOf('id="tab-exams"'), html.indexOf('id="tab-alerts"'));
-  const staffing = html.slice(html.indexOf('id="tab-people"'), html.indexOf('id="tab-land"'));
+  const staffing = html.slice(html.indexOf('id="tab-staffing"'), html.indexOf('id="tab-land"'));
   assert.match(exams, /<div class="career-guide" id="career-guide">/);
   assert.doesNotMatch(staffing, /id="career-guide"/);
   assert.match(staffing, /id="staffing-feed"/);
@@ -183,7 +183,7 @@ test("Exams owns its guide and Staffing keeps the appointment ledger reachable",
   assert.match(staffing, /id="staffing-role-filters"/);
   assert.match(staffing, /id="staffing-agency-filters"/);
   assert.match(staffing, /id="staffing-notice-list"/);
-  assert.match(staffing, /<details class="staffing-ledger" id="staffing-ledger">/);
+  assert.match(staffing, /<details class="staffing-ledger" id="staffing-ledger" open>/);
 });
 
 test("actionable exam titles connect Staffing role rows to exact exam details", () => {

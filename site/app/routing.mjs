@@ -8,10 +8,9 @@ import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.m
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 import {
-  BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT,
-  BROWSE_DOCUMENT_FACET_HASHES_COMPAT,
   EXAMS_SURFACE,
   STAFFING_SURFACE,
+  browseSurfaceContract,
 } from "../browse_surface_contracts.mjs";
 import {
   focusOfficialProfileSection,
@@ -22,13 +21,13 @@ import {
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
    hash grammar remains as an internal adapter for controls and retained item routes. */
 const DOCUMENT_FACET_HASHES=Object.freeze({
-  contracts:"money",...BROWSE_DOCUMENT_FACET_HASHES_COMPAT,zoning:"land",property:"property",rules:"rules",meetings:"meetings",
+  contracts:"money",staffing:STAFFING_SURFACE.surfaceId,zoning:"land",property:"property",rules:"rules",meetings:"meetings",
 });
 // These are static Browse documents, not SPA panes. Keep this closed route list
 // aligned with BROWSE_CONCEPTS without importing the renderer into the inline
 // reconstruction path.
 const DOCUMENT_CONCEPT_ROUTES=new Map([
-  ...BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT,
+  ["people","people"],
   ["places","places"],
 ]);
 function documentRouteRaw(){
@@ -59,7 +58,7 @@ function documentRouteRaw(){
     if(!facet) return "browse";
     const concept=DOCUMENT_CONCEPT_ROUTES.get(facet);
     if(concept) return `browse-concept/${concept}`;
-    if(path===EXAMS_SURFACE.route.replace(/\/+$/, "")){
+    if(path===EXAMS_SURFACE.canonicalRoute.replace(/\/+$/, "")){
       const params=new URLSearchParams(location.search);
       params.delete("lang"); params.delete("legacy");
       const canonical=globalThis.CrolRouteMigration?.canonicalizeBrowseUrl?.(`${path}${params.size?`?${params}`:""}`) || `${path}${params.size?`?${params}`:""}`;
@@ -86,15 +85,15 @@ function documentUrlForHash(hash){
 }
 function examsRouteUrlForHash(hash){
   const path=location.pathname.replace(/\/+$/,"")||"/";
-  if(path!==EXAMS_SURFACE.route.replace(/\/+$/,"")) return null;
+  if(path!==EXAMS_SURFACE.canonicalRoute.replace(/\/+$/,"")) return null;
   const raw=String(hash||"").replace(/^#/,"");
-  if(/^exam\/\d{4}$/.test(raw)) return `${EXAMS_SURFACE.route}#${raw}`;
+  if(/^exam\/\d{4}$/.test(raw)) return `${EXAMS_SURFACE.canonicalRoute}#${raw}`;
   const [route,query=""]=raw.split("?",2);
   if(route!=="exams") return null;
   const params=new URLSearchParams(query);
   const language=new URLSearchParams(location.search).get("lang");
   if(language) params.set("lang",language);
-  return `${EXAMS_SURFACE.route}${params.size?`?${params}`:""}`;
+  return `${EXAMS_SURFACE.canonicalRoute}${params.size?`?${params}`:""}`;
 }
 function routeUrlForHash(hash){ return examsRouteUrlForHash(hash)||documentUrlForHash(hash)||hash; }
 function routeFocusKey(){
@@ -186,7 +185,10 @@ function carryWalk(hash, source=location.hash){
 }
 
 function serializeState(){
-  const tab = globalThis.activeViewTab?.();
+  const routeSurface = browseSurfaceContract(document.body?.dataset?.browseSurface);
+  const tab = routeSurface?.surfaceId === STAFFING_SURFACE.surfaceId
+    ? STAFFING_SURFACE.surfaceId
+    : globalThis.activeViewTab?.();
   if(!tab) return location.hash || "#money"; // notice view keeps its own hash
   // The Exams document keeps its exact selected-card fragment during state rewrites.
   if(tab === "exams" && careerSelected && /^\d{4}$/.test(String(careerSelected))){
@@ -212,7 +214,7 @@ function serializeState(){
       if(moneyLocationFilter.communityDistrict) q.set("cd",moneyLocationFilter.communityDistrict);
       if(moneyLocationFilter.councilDistrict) q.set("council",moneyLocationFilter.councilDistrict);
     }
-  } else if(tab === "people"){
+  } else if(tab === STAFFING_SURFACE.surfaceId){
     if($("#staffing-query").value.trim()) q.set("q",$("#staffing-query").value.trim());
     if(staffingFilters.role) q.set("role",staffingFilters.role);
     if(staffingFilters.agency) q.set("agency",staffingFilters.agency);
@@ -286,9 +288,9 @@ function serializeState(){
   }
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
-  // Scope v0 deliberately keeps its existing People/Staffing vocabulary until
-  // the final cutover slice. Exams owns its URL state directly in this slice.
-  if(tab==="exams") return carryWalk(rawHash);
+  // Staffing and Exams own their canonical query grammars. Scope v0 keeps its
+  // stable wire vocabulary behind the surface/source identity adapter.
+  if(tab===STAFFING_SURFACE.surfaceId || tab===EXAMS_SURFACE.surfaceId) return carryWalk(rawHash);
   const scope=CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
   scope.facets.values=retainSearchHandoffForQuery(
     {...scope.facets.values,...activeRouteFacetValues},
@@ -525,7 +527,7 @@ function bareCollectionHash(raw){
   const route=raw.endsWith("/")?raw.slice(0,-1):raw;
   return {
     notice:"#money",
-    exam:"#people?view=guide",
+    exam:"#exams",
     land:"#land",
     vendor:"#money",
     agency:"#money",
@@ -535,15 +537,6 @@ function bareCollectionHash(raw){
     "task/what-will-change":"#task/what-will-change",
     task:"#money",
   }[route]||null;
-}
-
-// Readers still use the former Staffing lens name in hand-written and shared URLs.
-// Normalize only the route token so every query parameter survives byte-for-byte; generated
-// links continue to use the canonical People namespace.
-function canonicalInputRoute(raw){
-  const qi=raw.indexOf("?");
-  const route=qi<0?raw:raw.slice(0,qi);
-  return route==="staffing"?"people"+raw.slice(route.length):raw;
 }
 
 // Item routes are a same-document SPA navigation, so their visible Back control should traverse
@@ -562,7 +555,7 @@ function itemRouteFallbackHash(hash){
   if(!safe) return null;
   const raw=safe.slice(1), path=raw.split("?",1)[0];
   if(/^notice\/[^/]+$/.test(path)) return "#money";
-  if(/^exam\/[^/]+$/.test(path)) return "#people?view=guide";
+  if(/^exam\/[^/]+$/.test(path)) return "#exams";
   if(/^land\/[^/]+$/.test(path)) return "#land";
   if(/^(?:vendor|agency|matter)\/[^/]+$/.test(path)) return "#money";
   if(/^investigation\/shared\/[^/]+$/.test(path)) return "#investigation";
@@ -908,16 +901,10 @@ function applyHash(){
   const resultCountReceipt=Number(activeRouteFacetValues.result_count_receipt);
   globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=Number.isInteger(resultCountReceipt)&&resultCountReceipt>=0
     ?resultCountReceipt:null;
-  const canonicalRaw=canonicalInputRoute(raw);
-  const normalizedInputAlias=canonicalRaw!==raw;
-  if(normalizedInputAlias){
-    raw=canonicalRaw;
-    history.replaceState(routeHistoryState({entry:{hash:"#"+raw,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash("#"+raw));
-  }
   if(raw==="alerts"||raw.startsWith("alerts" + "?")) return forwardLegacyAlertsToFollowing(raw);
   if(raw==="map"||raw.startsWith("map" + "?")) return forwardLegacyMapToNearYou(raw);
   const scopeSurface=raw.split("?",1)[0];
-  const scope=!normalizedInputAlias&&["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
+  const scope=["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
     ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
   if(scope){
     const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
@@ -980,7 +967,9 @@ function applyHash(){
   focusedItemRouteHash="";
   if(raw === "investigation"){ showInvestigation(); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
-  if(tab === "notice" || tab === "entity" || tab === "task" || !document.getElementById("tab-"+tab)) return false;
+  const ownedSurface=browseSurfaceContract(tab);
+  const paneTab=ownedSurface?.surfaceId||tab;
+  if(tab === "notice" || tab === "entity" || tab === "task" || !document.getElementById("tab-"+paneTab)) return false;
   const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
   hashLock = true;
   try{
@@ -1022,7 +1011,7 @@ function applyHash(){
       };
       if(hasActionLocation) $("#mode").value="allrfp";
       showTab("money"); search();
-    } else if(tab === "people"){
+    } else if(tab === STAFFING_SURFACE.surfaceId){
       staffingFilters.query=q.get("q")||"";
       staffingFilters.role=q.get("role")||"";
       const scopedAgency=q.get("agency")||agencyFromRouteFacet(activeRouteFacetValues)||"";
@@ -1032,7 +1021,7 @@ function applyHash(){
       if(agencyScopeChanged && typeof globalThis.reloadStaffingForAgencyScope==="function"){
         globalThis.reloadStaffingForAgencyScope();
       }
-      showTab("people");
+      showTab(STAFFING_SURFACE.surfaceId);
       loadStaffingFeed();
     } else if(tab === "exams"){
       $("#career-query").value=q.get("q")||"";

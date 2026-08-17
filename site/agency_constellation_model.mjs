@@ -135,8 +135,9 @@ export const AGENCY_CONSTELLATION_CATEGORIES = Object.freeze([
     id: "staffing",
     domain: "staffing",
     label: "Staffing exams",
-    browse_facet: "staffing",
-    surface: "people",
+    browse_facet: "exams",
+    surface: "exams",
+    source_domain: "staffing",
     relation: "certified_to_agency",
   }),
 ]);
@@ -195,7 +196,10 @@ export function agencyCategoryBrowseHref(id, categoryId, { language = "en", asOf
   const category = AGENCY_CONSTELLATION_CATEGORIES.find((entry) => entry.id === categoryId);
   if (!category) return "";
   if (category.id === "vendors") return agencyCategoryBrowseHref(id, "contracts", { language });
-  const scope = agencyConstellationScope(id, { language, domain: category.surface });
+  const scope = agencyConstellationScope(id, {
+    language,
+    domain: category.source_domain || category.surface,
+  });
   scope.facets.values.connection_relation = category.relation;
   if (category.id === "contracts") scope.facets.values.mode = mode || "open";
   return appendBrowseQuery(

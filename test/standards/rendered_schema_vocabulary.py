@@ -69,6 +69,7 @@ DOCUMENT_ROUTES = (
     "browse/places/",
     "browse/contracts/",
     "browse/staffing/",
+    "browse/exams/",
     "browse/zoning/",
     "browse/property/",
     "browse/rules/",

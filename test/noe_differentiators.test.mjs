@@ -239,7 +239,7 @@ test("exam facet links use exact record keys without offering unpublished values
   assert.equal(examFacetHref({}, "format", "unknown"), "");
   assert.equal(
     examFacetHref({ window: "open", interest: "all" }, "format", "multiple_choice"),
-    "#people?view=guide&window=open&format=multiple_choice",
+    "/browse/exams/?window=open&format=multiple_choice",
   );
   const interestHref = examFacetHref({
     interest: "all",
@@ -251,12 +251,14 @@ test("exam facet links use exact record keys without offering unpublished values
   }, "interest", "technology-science");
   assert.equal(
     interestHref,
-    "#people?view=guide&interest=technology-science&eligibility=promotion&window=open&salary=45k_60k&fee=none&experience=yes",
+    "/browse/exams/?interest=technology-science&eligibility=promotion&window=open&salary=45k_60k&fee=none&experience=yes",
   );
+  const interestQuery = new URL(interestHref, "https://cityscroll.org").search;
+  const stableWire = `#people${interestQuery}`;
   assert.equal(
-    routeHashFromScope(scopeFromRouteHash(interestHref), { surface: "people" }),
-    interestHref,
-    "interest links reopen the same canonical scope with other facets intact",
+    routeHashFromScope(scopeFromRouteHash(stableWire), { surface: "people" }),
+    stableWire,
+    "the existing scope-v0 filter wire stays stable behind the Exams route adapter",
   );
 });
 

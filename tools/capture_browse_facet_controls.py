@@ -14,7 +14,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "browse-facet-controls"
 VIEWPORTS = ((390, 844), (1440, 1000))
-ROUTES = (("staffing", "/browse/staffing/", ".career-browser"), ("rules", "/browse/rules/", "#tab-rules .wrap"))
+ROUTES = (("exams", "/browse/exams/", ".career-browser"), ("rules", "/browse/rules/", "#tab-rules .wrap"))
 
 
 def capture(browser, base: str, phase: str) -> None:
@@ -26,7 +26,7 @@ def capture(browser, base: str, phase: str) -> None:
             if name == "rules" and page.locator(".filtertoggle").is_visible():
                 page.locator(".filtertoggle").click()
             if phase == "after":
-                if name == "staffing":
+                if name == "exams":
                     page.wait_for_selector("#career-eligibility-facets button", timeout=20_000)
                 else:
                     page.wait_for_selector('[data-cardinality-facet="large"] .facet-typeahead-input', state="attached", timeout=20_000)

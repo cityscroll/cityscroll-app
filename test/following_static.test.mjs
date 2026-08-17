@@ -196,7 +196,7 @@ test("Following owns its enhancement island and unrelated routes do not load ale
   const loader = readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8");
   const following = readFileSync(new URL("../site/following/index.html", import.meta.url), "utf8");
   const home = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
-  const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+  const people = readFileSync(new URL("../site/app/staffing.mjs", import.meta.url), "utf8");
 
   assert.doesNotMatch(loader, /import\("\.\/alerts\.mjs"\)/);
   assert.doesNotMatch(home, /app\/alerts\.mjs/);

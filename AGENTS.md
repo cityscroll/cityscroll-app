@@ -69,14 +69,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   are first-class. Property/browse borough filtering reads structured place bags
   in `site/browse_view.mjs` (`rowBoroughs` / `rowMatchesBorough`).
 - **People/Staffing/Exams surface identity:** `site/browse_surface_contracts.mjs` is the sole
-  registry for their public route and logical builder/controller owners. Its compatibility
-  exports preserve the remaining People/Staffing runtime during the incremental cutover; Exams
-  now builds from `site/exams_surface.mjs` and hydrates through `site/app/exams.mjs` on its own pane.
-  New routing or view maps must derive from the registry rather than restating these identities.
-  Pure People and Exams rows, filters, and view builders live separately in
-  `site/people_organizations_surface.mjs` and `site/exams_surface.mjs`; the architecture fitness
-  gate prohibits owner-to-owner imports. Focused proof: `test/browse_surface_contract.test.mjs`
-  and `test/browse_view_reuse.test.mjs`.
+  registry for their public route, source domain, navigation family, and logical
+  builder/controller owners. Their independent row/view owners are
+  `site/people_organizations_surface.mjs`, `site/staffing_surface.mjs`, and
+  `site/exams_surface.mjs`; Staffing and Exams hydrate through their matching `site/app/`
+  controllers. Legacy hashes translate by intent only in `site/route_migration.mjs`; never add an
+  active-runtime alias between owners. Focused proof: `test/browse_surface_contract.test.mjs`,
+  `test/primary_document_routes.test.mjs`, and `test/route_migration.test.mjs`.
 - Place-scoped Property routes use `site/property_scope_fallback.mjs`: if the scoped current
   view is empty but the same scope has closed records, the route opens the archive view so a
   valid place link does not present a misleading empty result. Coverage is in

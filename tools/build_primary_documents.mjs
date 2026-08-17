@@ -13,10 +13,11 @@ import {
   buildSearchDocument,
 } from "../site/primary_document_view.mjs";
 import { buildExamsDocument } from "../site/exams_surface.mjs";
+import { buildStaffingDocument } from "../site/staffing_surface.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
-import { EXAMS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
+import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -30,7 +31,7 @@ function output(path, content) {
 }
 
 function surfaceOutputPath(surface) {
-  return surface.route.replace(/^\/+|\/+$/g, "");
+  return surface.canonicalRoute.replace(/^\/+|\/+$/g, "");
 }
 
 function cityRecordMeetingRows() {
@@ -111,8 +112,6 @@ export function primaryDocumentOutputs() {
   const places = json("/data/community_board_geography_lookup.json");
   const hires = json("/data/staffing_default_hires.json");
   outputs.push(output("browse", buildBrowseLandingDocument(shell, payloads, {
-    staffingExamCount: Array.isArray(staffingExams.exams) ? staffingExams.exams.length : 0,
-    staffingExamAsOf: staffingExams.data_current_as_of,
     groupMetrics: {
       money: { facts: [
         { value: awards.row_count, label: "awards" },
@@ -135,11 +134,15 @@ export function primaryDocumentOutputs() {
         { value: meetings.row_count, label: "meeting rows" },
         { value: outcomes.present_count, label: "outcome snapshots" },
       ] },
-      "people-organizations": { facts: [
-        { value: people.person_count, label: "people" },
-        { value: committees.observations?.length ?? null, label: "committee edges" },
-        { value: agencies.agency_count, label: "agencies" },
-      ] },
+      "people-organizations": {
+        count: people.person_count ?? null,
+        countLabel: "people",
+        facts: [
+          { value: people.person_count, label: "people" },
+          { value: committees.observations?.length ?? null, label: "committee edges" },
+          { value: agencies.agency_count, label: "agencies" },
+        ],
+      },
       places: { facts: [
         { value: places.inventory?.boards_inventoried ?? null, label: "boards" },
         { value: places.receipt?.pair_count ?? null, label: "district intersections" },
@@ -156,14 +159,14 @@ export function primaryDocumentOutputs() {
     hires,
   };
   for (const kind of Object.keys(BROWSE_CONCEPTS)) {
-    outputs.push(output(`browse/${kind}`, buildBrowseConceptDocument(shell, kind, conceptSources)));
+    const document = kind === "people"
+      ? buildBrowseConceptDocument(shell, kind, conceptSources, { surface: PEOPLE_ORGANIZATIONS_SURFACE })
+      : buildBrowseConceptDocument(shell, kind, conceptSources);
+    outputs.push(output(`browse/${kind}`, document));
   }
   for (const [facet, payload] of Object.entries(payloads)) {
     if (facet === "staffing") {
-      outputs.push(output(surfaceOutputPath(STAFFING_SURFACE), buildBrowseConceptDocument(shell, "people", conceptSources, {
-        route: STAFFING_SURFACE.route,
-        title: "Staffing",
-      })));
+      outputs.push(output(surfaceOutputPath(STAFFING_SURFACE), buildStaffingDocument(shell, payload)));
       continue;
     }
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), {

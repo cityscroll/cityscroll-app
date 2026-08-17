@@ -5,9 +5,9 @@ import { buildOwnedBrowseDocument } from "./primary_document_view.mjs";
 export const EXAMS_BROWSE_ROW_KIND = "civil_service_exam";
 
 export const EXAMS_BROWSE_VIEW = Object.freeze({
-  tab: EXAMS_SURFACE.compatibility.runtimeTab,
+  tab: EXAMS_SURFACE.navigationFamily,
   label: EXAMS_SURFACE.label,
-  route: EXAMS_SURFACE.route,
+  route: EXAMS_SURFACE.canonicalRoute,
   countLabel: "civil-service exams",
   description: EXAMS_SURFACE.description,
   sources: "DCAS exam schedules · published exam records",

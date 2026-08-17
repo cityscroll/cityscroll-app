@@ -311,18 +311,20 @@ test("agency scope carries across category browse URLs", () => {
   const contracts = agencyCategoryBrowseHref(PARKS, "contracts");
   const meetings = agencyCategoryBrowseHref(PARKS, "meetings");
   const rules = agencyCategoryBrowseHref(PARKS, "rules");
-  const staffing = agencyCategoryBrowseHref(PARKS, "staffing");
+  const exams = agencyCategoryBrowseHref(PARKS, "staffing");
 
   assert.match(contracts, /^\/browse\/contracts\//);
   assert.match(meetings, /^\/browse\/meetings\//);
   assert.match(rules, /^\/browse\/rules\//);
-  assert.match(staffing, /^\/browse\/staffing\//);
+  assert.match(exams, /^\/browse\/exams\//);
 
-  for (const href of [contracts, meetings, rules, staffing]) {
+  for (const href of [contracts, meetings, rules, exams]) {
     const url = new URL(href, "https://cityscroll.org");
     const facet = JSON.parse(url.searchParams.get("facet") || "{}");
     assert.deepEqual(facet.entity_refs_all, ["agency:id:parks-and-recreation"]);
   }
+  const examUrl = new URL(exams, "https://cityscroll.org");
+  assert.equal(JSON.parse(examUrl.searchParams.get("facet")).connection_relation, "certified_to_agency");
 
   const scope = CrolScope.scopeFromRouteHash(
     `#money?${new URL(contracts, "https://cityscroll.org").search.slice(1)}`,

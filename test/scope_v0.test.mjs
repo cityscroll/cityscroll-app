@@ -35,6 +35,26 @@ test("scope v0 has one inspectable contract and no mutable store", () => {
   assert.equal("subscription" in scope, false);
 });
 
+test("Browse scope identity keeps source domains distinct from surface owners", async () => {
+  const { browseScopeIdentity } = await import("../site/scope_v0.mjs");
+  assert.deepEqual(browseScopeIdentity("people-organizations"), {
+    surfaceId: "people-organizations",
+    sourceDomain: "people",
+  });
+  assert.deepEqual(browseScopeIdentity("staffing"), {
+    surfaceId: "staffing",
+    sourceDomain: "staffing",
+  });
+  assert.deepEqual(browseScopeIdentity("exams"), {
+    surfaceId: "exams",
+    sourceDomain: "staffing",
+  });
+  assert.notEqual(
+    browseScopeIdentity("exams").surfaceId,
+    browseScopeIdentity("exams").sourceDomain,
+  );
+});
+
 test("search and applied facets round-trip through the same scope axes", () => {
   const hash = "#meetings?agency=Transportation&q=dining&when=month&boro=Brooklyn&neighborhood=Red+Hook&process=scheduled";
   const scope = scopeFromRouteHash(hash, { language: "zh-Hans" });

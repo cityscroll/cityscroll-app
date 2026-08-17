@@ -131,7 +131,7 @@ test("the committed appointment census preserves every person while reducing rep
 });
 
 test("the People renderer uses the shared grouping utility and keeps exports on raw rows", () => {
-  const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+  const people = readFileSync(new URL("../site/app/staffing.mjs", import.meta.url), "utf8");
   const consolidation = readFileSync(new URL("../site/same_consolidation.mjs", import.meta.url), "utf8");
   const exports = readFileSync(new URL("../site/app/search-share.mjs", import.meta.url), "utf8");
 

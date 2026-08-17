@@ -7,7 +7,7 @@ import {
   groupStaffingAppointments,
 } from "../site/same_consolidation.mjs";
 
-const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+const people = readFileSync(new URL("../site/app/staffing.mjs", import.meta.url), "utf8");
 const exams = readFileSync(new URL("../site/app/exams.mjs", import.meta.url), "utf8");
 
 function appointment(overrides = {}) {
