@@ -472,9 +472,8 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(peopleHtml, /Bronx Community Board 1/);
   assert.match(peopleHtml, /href="\/community-boards\/bronx-cb-01\/"/);
   assert.match(peopleHtml, /data-body-id="bronx-cb-01"/);
-  assert.match(peopleHtml, /District coverage · Published/);
-  assert.match(peopleHtml, /Members · Unknown/);
-  assert.match(peopleHtml, /Hosted meetings · Unknown/);
+  assert.match(peopleHtml, /Covers Bronx Community District 1\./);
+  assert.doesNotMatch(peopleHtml, /Community District X01|· (?:Published|Unknown)|browse-concept-status-rail/);
   assert.doesNotMatch(peopleHtml, /href="\/committees\//);
 
   const places = buildBrowseConceptLanding("places", {

@@ -96,6 +96,7 @@ export function peopleBrowseRows(model = {}) {
       ...row,
       detail: kind === "official" && row.detail === "Official profile" ? "" : row.detail,
       show_civic_metadata: kind !== "official",
+      show_relation_state: kind !== "community-board",
       civic_object: {
         kind,
         kind_label: kind === "official" ? "" : kindLabel,
