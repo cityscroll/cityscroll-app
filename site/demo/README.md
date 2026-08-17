@@ -1,8 +1,11 @@
 # Demo link contract
 
 `demo-links.json` is the public, executable list of routes used to demonstrate CityScroll. Each
-entry states what a visitor should see and what must not appear. The browser regression suite
-generates one test from every entry, so adding a route does not require another test function.
+entry states what a visitor should see and what must not appear. Its `capabilities.entryIds`
+selection is the curated source for the authenticated desk `/capabilities` page; the desk joins
+those IDs back to the URL, feature, description, and executable expectations in this file. The
+browser regression suite generates one test from every entry, so adding a route does not require
+another test function.
 
 ## Entry fields
 
@@ -12,6 +15,7 @@ generates one test from every entry, so adding a route does not require another 
 | `url` | Hash route opened from `index.html`. |
 | `feature` | Stable feature grouping used by other public surfaces. |
 | `localOnly` | Optional. When `true`, the browser contract runs only against the local fixture server, not production `cityscroll.org`. Use for routes that ship in the same PR and are not live on the public host yet. |
+| `productionOnly` | Optional. When `true`, the route depends on changing live data and is exercised by `tools/verify_capability_permalinks.py`, not the local fixture server. |
 | `description` | One-line public description of the demonstrated capability. |
 | `expectations.visible` | CSS selectors that must be visible; optional `text` narrows the match. |
 | `expectations.notVisible` | CSS selectors or selector-and-text matches that must not be visible. |
@@ -41,4 +45,13 @@ The complete machine-readable format is in `demo-links.schema.json`.
    python3 test/functional/20_demo_links.py
    ```
 
-The browser test uses deterministic local fixtures. It does not depend on current API results.
+8. Before adding an ID to `capabilities.entryIds`, prove every selected production permalink is
+   live, populated, and showing its stated feature:
+
+   ```sh
+   python3 tools/verify_capability_permalinks.py
+   ```
+
+The general browser test uses deterministic local fixtures. The capability checker is deliberately
+live: it rejects HTTP failures, absent expected content, visible forbidden states, blank shells,
+and common empty-result copy.

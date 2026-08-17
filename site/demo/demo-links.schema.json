@@ -2,16 +2,19 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cityscroll.org/demo/demo-links.schema.json",
   "title": "CityScroll demo links",
-  "description": "Public demo routes and the browser-visible behavior each route preserves.",
+  "description": "Public demo routes, the curated desk capability selection, and the browser-visible behavior each route preserves.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "schemaVersion", "entries"],
+  "required": ["$schema", "schemaVersion", "capabilities", "entries"],
   "properties": {
     "$schema": {
       "const": "./demo-links.schema.json"
     },
     "schemaVersion": {
-      "const": 1
+      "const": 2
+    },
+    "capabilities": {
+      "$ref": "#/$defs/capabilities"
     },
     "entries": {
       "type": "array",
@@ -22,6 +25,27 @@
     }
   },
   "$defs": {
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["updatedOn", "entryIds"],
+      "properties": {
+        "updatedOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "entryIds": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        }
+      }
+    },
     "entry": {
       "type": "object",
       "additionalProperties": false,
@@ -55,6 +79,10 @@
         "postDeployOnly": {
           "type": "boolean",
           "description": "When true, local fixture coverage runs normally, while production coverage requires explicit scheduled selection after deployment."
+        },
+        "productionOnly": {
+          "type": "boolean",
+          "description": "When true, the route is an already-live production capability whose changing public data is verified by the capability permalink checker instead of local fixtures."
         },
         "expectations": {
           "$ref": "#/$defs/expectations"

@@ -1347,7 +1347,10 @@ declared only in `site/data/gap_taxonomy.json` under `partnership_blocked_source
 downstream authenticated-desk consumers should regenerate from `data-source-graph-dir`
 after updating their crol-list revision. This repository does not deploy the desk.
 Public capability summary for third parties lives in root `README.md`; the desk
-`/capabilities` board is a separate private-team surface.
+`/capabilities` board is a separate private-team surface. Its ordered, public-link input is
+`site/demo/demo-links.json#capabilities`: downstream desk builds join those stable IDs to the
+same entries' URLs, rationales, and browser expectations. Verify every selected production URL
+with `python3 tools/verify_capability_permalinks.py` before publishing a refresh.
 
 When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register. After landing a source or stamping `join_measurement`, run `depot_rederive.mjs` so realized coverage, candidate crosswalks, and the ranked queue stay current.
 

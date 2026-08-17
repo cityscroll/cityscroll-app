@@ -1,6 +1,23 @@
 {
   "$schema": "./demo-links.schema.json",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
+  "capabilities": {
+    "updatedOn": "2026-08-17",
+    "entryIds": [
+      "graph-walk-agency-vendor-award",
+      "semantic-search-housing",
+      "agency-parks-mandates-predictions",
+      "agency-parks-connection-evidence",
+      "notice-sanitation-connected-mandate",
+      "official-marte-votes",
+      "committee-higher-education-members",
+      "people-organizations-directory",
+      "staffing-appointments",
+      "exam-caseworker-7016",
+      "prime-sub-outreach-award",
+      "alerts-watch-templates"
+    ]
+  },
   "entries": [
     {
       "id": "notice-cannonsville-attachment",
@@ -143,7 +160,7 @@
       "id": "exam-caseworker-7016",
       "url": "exams/7016/",
       "feature": "civil-service-exam-detail",
-      "description": "Open the Caseworker exam with qualifications, fees, dates, and official actions.",
+      "description": "Exams now resolve as standalone civic documents; Caseworker 7016 combines its filing window, fee, salary, qualifications, and official actions.",
       "expectations": {
         "pathname": "/exams/7016/",
         "visible": [
@@ -420,7 +437,7 @@
       "id": "staffing-appointments",
       "url": "#staffing?lang=es&role=Engineer",
       "feature": "staffing-appointments",
-      "description": "Forward the legacy Staffing fragment into the appointments document.",
+      "description": "Staffing now has its own appointments document, separate from people profiles and exams; live hires retain agency, title, salary, and source links.",
       "expectations": {
         "visible": [
           {
@@ -553,7 +570,7 @@
       "id": "alerts-watch-templates",
       "url": "following/?tab=packs",
       "feature": "ready-made-watch-sets",
-      "description": "Open Following on the ready-made watch sets tab.",
+      "description": "Following turns curated multi-filter watch sets into one-click, results-backed subscriptions; this opens the packs without requiring an account.",
       "expectations": {
         "visible": [
           {
@@ -656,9 +673,6 @@
         "notVisible": [
           {
             "selector": "#noticeview .empty"
-          },
-          {
-            "selector": "#noticeview .loading"
           }
         ],
         "focus": "#noticeview .route-item"
@@ -996,7 +1010,7 @@
       "id": "official-marte-votes",
       "url": "#official/7801?notice=20260706036&event=22526",
       "feature": "official-person-votes",
-      "description": "Council member Christopher Marte roll-call votes from densified Legistar by_person (hearing scope + recent across matters).",
+      "description": "One official profile joins roll-call votes to exact committee memberships, turning a person record into a two-way Council graph entry point.",
       "expectations": {
         "visible": [
           {
@@ -1006,6 +1020,10 @@
           {
             "selector": "#official-skim .official-vote-table",
             "text": "Vote"
+          },
+          {
+            "selector": ".official-committee-memberships a[href^='/committees/']",
+            "text": "member of"
           }
         ],
         "notVisible": [
@@ -1020,7 +1038,7 @@
       "id": "prime-sub-outreach-award",
       "url": "#notice/20231222103",
       "feature": "prime-sub-outreach",
-      "description": "Award notice prime snapshot: vendor, agency, dollars, industry, and possible subcontract window \u2014 no goal-gap apology.",
+      "description": "An award notice becomes a contract-chain snapshot: prime vendor, agency, value, industry, and likely subcontracting window stay together.",
       "postDeployOnly": true,
       "expectations": {
         "visible": [
@@ -1266,7 +1284,7 @@
       "id": "agency-parks-mandates-predictions",
       "url": "agencies/parks-and-recreation/",
       "feature": "mandate-prediction-alerts",
-      "description": "Parks expected mandate events: rulemaking and report duties timed from statutory deadline and recurrence for earlier-stage alerts.",
+      "description": "Parks turns statutory deadlines and recurrence into expected rule or report events with watch links, joining law, evidence, time, and alerts.",
       "expectations": {
         "pathname": "/agencies/parks-and-recreation/",
         "visible": [
@@ -1285,6 +1303,189 @@
         "notVisible": [
           {
             "selector": "#entityview"
+          }
+        ]
+      }
+    },
+    {
+      "id": "graph-walk-agency-vendor-award",
+      "url": "notices/20231222103?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5IiwiaWQiOiJob21lbGVzcy1zZXJ2aWNlcyIsIm5hbWUiOiJIb21lbGVzcyBTZXJ2aWNlcyIsImhyZWYiOiIvYWdlbmNpZXMvaG9tZWxlc3Mtc2VydmljZXMvIn0sInJlbGF0aW9uIjoiYXdhcmRlZCB0byIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwicmVsYXRpb24iOiJyZWNlaXZlZCBhd2FyZCIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJub3RpY2UiLCJpZCI6IjIwMjMxMjIyMTAzIiwibmFtZSI6IlNoZWx0ZXIgc2VydmljZXMgYXdhcmQiLCJocmVmIjoiL25vdGljZXMvMjAyMzEyMjIxMDMifSwic2NvcGUiOm51bGx9XX0",
+      "feature": "shareable-civic-graph-walk",
+      "description": "A shareable URL reconstructs a two-hop walk from Homeless Services through its awardee to the award notice, making graph navigation portable.",
+      "productionOnly": true,
+      "expectations": {
+        "pathname": "/notices/20231222103",
+        "visible": [
+          {
+            "selector": ".traversal-path[data-traversal-hop-count='2']",
+            "text": "Housing Options & Geriatric Association Resources"
+          },
+          {
+            "selector": "#nsuboutreach .sub-outreach-detail",
+            "text": "Prime award snapshot"
+          },
+          {
+            "selector": "#nsuboutreach [data-field='prime']",
+            "text": "Prime vendor"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": ".traversal-path-held"
+          },
+          {
+            "selector": "#noticeview .empty"
+          }
+        ]
+      }
+    },
+    {
+      "id": "semantic-search-housing",
+      "url": "search/?q=housing",
+      "feature": "semantic-cross-source-search",
+      "description": "One concept query returns cited passages across Rules and Meetings while preserving six typed lanes instead of flattening civic objects.",
+      "productionOnly": true,
+      "expectations": {
+        "pathname": "/search/",
+        "visible": [
+          {
+            "selector": "[data-semantic-family='rules'] [data-semantic-candidate]",
+            "text": "Related because"
+          },
+          {
+            "selector": "[data-semantic-family='meetings'] [data-semantic-candidate]",
+            "text": "Related because"
+          },
+          {
+            "selector": ".topic-search-lanes:not([hidden])"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": ".topic-search-lane-body.is-error"
+          },
+          {
+            "selector": "[data-semantic-family='rules'] .topic-search-empty"
+          },
+          {
+            "selector": "[data-semantic-family='meetings'] .topic-search-empty"
+          }
+        ]
+      }
+    },
+    {
+      "id": "agency-parks-connection-evidence",
+      "url": "agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021",
+      "feature": "evidence-bearing-graph-edge",
+      "description": "This permalink opens the warrant behind a Parks-to-rule edge: source, relation, match basis, and as-of time make the graph claim inspectable.",
+      "productionOnly": true,
+      "expectations": {
+        "pathname": "/agencies/parks-and-recreation/",
+        "visible": [
+          {
+            "selector": ".edge-prov-inspector[open]",
+            "text": "How this connection was made"
+          },
+          {
+            "selector": ".edge-prov-inspector[open]",
+            "text": "issued rule"
+          },
+          {
+            "selector": ".edge-prov-inspector[open] a[href*='a856-cityrecord.nyc.gov']"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": ".edge-prov-inspector[open] .empty"
+          }
+        ]
+      }
+    },
+    {
+      "id": "notice-sanitation-connected-mandate",
+      "url": "notices/20260605008",
+      "feature": "notice-mandate-pivot",
+      "description": "A rule notice pivots to the law that required it, its agency, and a mandate watch; publication evidence becomes a traversable civic object.",
+      "productionOnly": true,
+      "expectations": {
+        "pathname": "/notices/20260605008",
+        "visible": [
+          {
+            "selector": "[data-connected-mandate='1']",
+            "text": "Connected mandate"
+          },
+          {
+            "selector": "a[href='/mandates/64116-001']"
+          },
+          {
+            "selector": "[data-mandate-watch='1']",
+            "text": "Watch this mandate"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#noticeview .empty"
+          },
+          {
+            "selector": "#noticeview .loading"
+          }
+        ]
+      }
+    },
+    {
+      "id": "committee-higher-education-members",
+      "url": "committees/15/",
+      "feature": "committee-reverse-edges",
+      "description": "An exact Legistar BodyId resolves to a committee document with member reverse edges to official profiles, supporting traversal in both directions.",
+      "productionOnly": true,
+      "expectations": {
+        "pathname": "/committees/15/",
+        "visible": [
+          {
+            "selector": "[data-node-document='1'][data-committee-id='15']",
+            "text": "Committee on Higher Education"
+          },
+          {
+            "selector": "a[href='/officials/7801/']",
+            "text": "Christopher Marte"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": ".committee-document .empty"
+          },
+          {
+            "selector": ".committee-document .loading"
+          }
+        ]
+      }
+    },
+    {
+      "id": "people-organizations-directory",
+      "url": "browse/people/",
+      "feature": "typed-people-organizations",
+      "description": "People and organizations keeps officials, agencies, vendors, committees, and boards distinct with canonical links, separate from jobs and exams.",
+      "productionOnly": true,
+      "expectations": {
+        "pathname": "/browse/people/",
+        "visible": [
+          {
+            "selector": "[data-build-rendered='browse'][data-browse-facet='people-list']"
+          },
+          {
+            "selector": "[data-browse-facet='people-list'] [data-record-id]"
+          },
+          {
+            "selector": "a[href='/officials/7801/']",
+            "text": "Christopher Marte"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "[data-browse-facet='people-list'] .empty"
+          },
+          {
+            "selector": "[data-browse-facet='people-list'] .loading"
           }
         ]
       }
