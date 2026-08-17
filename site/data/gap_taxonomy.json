@@ -902,11 +902,11 @@
       "id": "nyc-geosearch",
       "name": "NYC GeoSearch",
       "source_contract_id": "nyc-geosearch",
-      "status": "live-only",
+      "status": "landed",
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://geosearch.planninglabs.nyc/",
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "nyc-jobs-postings",
@@ -916,6 +916,16 @@
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/kpav-sd4t",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "nyc-property-address-directory",
+      "name": "NYC Property Address Directory",
+      "source_contract_id": "nyc-property-address-directory",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/bc8t-ecyu",
       "delivery_tier": "inline-at-build"
     },
     {
@@ -3528,8 +3538,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-15",
-    "source_contracts_fingerprint": "7f0f68e10c50571c908d5fc4d5ea817878cf19676bd21766c6c1a943a82ffea8",
+    "observed_on": "2026-08-17",
+    "source_contracts_fingerprint": "a85508f43258bfbe34dc4994f2736ebd64ae1140b9fd4ef44e83e98f7448b96b",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 84,
     "class_changes": 0,

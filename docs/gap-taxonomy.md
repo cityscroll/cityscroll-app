@@ -202,4 +202,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `7f0f68e10c50…` · materialized 11 · candidates 84 · class changes 0.
+Last refresh fingerprint: `a85508f43258…` · materialized 11 · candidates 84 · class changes 0.

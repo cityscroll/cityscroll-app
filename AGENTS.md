@@ -3050,6 +3050,10 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   private. Contract details: `entity_resolution/README.md`. Verify:
   `node --test test/evidence_bearing_provenance_graph.test.mjs`.
 
+## Snapshot-only citywide address geocoder
+
+- `site/precomputed_address_geocoder.mjs` is the exact full-address → BBL read boundary over the 64-shard official PAD artifact in `site/data/address-index/`. Only real and vanity PAD ranges are admitted; pseudo-addresses, ambiguity, and misses stay `unknown`. Refresh with `node tools/build_geocoder_address_index.mjs --from-live`; verify the complete committed snapshot with `--check` and `test/geocoder_snapshot.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

@@ -69,17 +69,18 @@ def main() -> None:
             body = page.locator("body").inner_text()
             assert "Could not reach NYC Open Data" not in body, name
             assert "No se pudo conectar a NYC Open Data" not in body, name
+            if name == "zoning":
+                page.locator("#lkw").fill("1 Centre Street, New York, NY 10007")
+                with page.expect_response("**/data/address-index/manifest.json", timeout=10_000) as response_info:
+                    page.locator("#lkw").press("Enter")
+                assert response_info.value.ok
+                page.locator("#llist:not(.busy)").wait_for(state="visible", timeout=30_000)
             page.close()
 
         browser.close()
 
-    unexpected = [
-        item for item in attempted_publishers
-        if not (item[0] == "zoning" and item[1].startswith("https://geosearch.planninglabs.nyc/"))
-    ]
-    assert unexpected == [], unexpected
-    assert len(attempted_publishers) <= 1, attempted_publishers
-    print("PASS: resident lenses rendered with publisher APIs blocked; only exact geocoder decision debt was attempted")
+    assert attempted_publishers == [], attempted_publishers
+    print("PASS: resident lenses and arbitrary-address geocoding rendered with zero publisher egress")
 
 
 if __name__ == "__main__":

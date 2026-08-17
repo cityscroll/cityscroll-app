@@ -1206,11 +1206,34 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "nyc-property-address-directory",
+      "name": "NYC Property Address Directory",
+      "owner": "NYC Department of City Planning",
+      "status": "build-time",
+      "scope": "citywide real and vanity address ranges",
+      "kind": "html",
+      "landing_page": "https://data.cityofnewyork.us/d/bc8t-ecyu",
+      "publisher_cadence": "Quarterly",
+      "product_freshness": "Checked daily; a source-hash change rebuilds the versioned 64-shard snapshot.",
+      "used_for": "Exact full-address to BBL resolution without request-time publisher calls.",
+      "code_references": [
+        {
+          "path": "tools/build_geocoder_address_index.mjs",
+          "contains": "bc8t-ecyu"
+        },
+        {
+          "path": "site/precomputed_address_geocoder.mjs",
+          "contains": "nyc_dcp_pad_snapshot"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "nyc-geosearch",
       "name": "NYC GeoSearch",
       "owner": "NYC Department of City Planning",
       "status": "live",
-      "scope": "runtime",
+      "scope": "scheduled source enrichment",
       "kind": "geosearch",
       "endpoint": "https://geosearch.planninglabs.nyc/v2/search",
       "landing_page": "https://geosearch.planninglabs.nyc/",
@@ -1220,11 +1243,11 @@
         "properties.borough"
       ],
       "publisher_cadence": "No upstream data timestamp is published",
-      "product_freshness": "Queried live; the verifier checks availability and response shape, not underlying data age.",
-      "used_for": "Address, neighborhood, borough, and BBL resolution.",
+      "product_freshness": "Scheduled materializers query the service; resident reads consume retained outputs.",
+      "used_for": "Build-time geocoding of bounded hearing and contract-action snapshots.",
       "code_references": [
         {
-          "path": "site/app/land.mjs",
+          "path": "tools/build_contract_action_locations.mjs",
           "contains": "geosearch.planninglabs.nyc/v2/search"
         },
         {
@@ -1232,7 +1255,7 @@
           "contains": "geosearch.planninglabs.nyc/v2/search"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "community-district-boundaries",
