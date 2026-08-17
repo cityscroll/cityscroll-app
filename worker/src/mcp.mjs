@@ -3,6 +3,7 @@
 //
 // Tools give AI assistants the same capabilities the site offers people:
 //   search_notices / get_notice  — the D1 notices mirror (no model call, cheap)
+//   retrieve_cited_passages      — typed source passages only (no model call, cheap)
 //   preview_watch                — plain English → lens filter → live results (LLM, metered)
 //   create_watch                 — plain English → DOUBLE-OPT-IN confirm email (LLM, metered)
 // No list/delete tools: watch management stays behind the emailed unsubscribe links,
@@ -21,10 +22,22 @@ import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { signToken } from "optin-token";
 import { sendConfirm } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
+import {
+  CITED_RETRIEVAL_OUTPUT_SCHEMA,
+  retrieveCitedPassages,
+} from "./cited_retrieval.mjs";
+import { SEMANTIC_SOURCE_FAMILIES } from "./semantic_candidates.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const CONFIRM_TTL = 24 * 3600;
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+function validIsoDate(value) {
+  if (!ISO_DATE.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+}
 
 const TOOLS = [
   {
@@ -52,6 +65,23 @@ const TOOLS = [
       properties: { request_id: { type: "string" } },
       required: ["request_id"],
     },
+  },
+  {
+    name: "retrieve_cited_passages",
+    description: "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        query: { type: "string", minLength: 1, maxLength: 240, description: "The resident's original search terms." },
+        source_family: { type: "string", enum: SEMANTIC_SOURCE_FAMILIES },
+        body_id: { type: "string", maxLength: 120, description: "Exact civic body identifier." },
+        published_from: { type: "string", format: "date" },
+        published_to: { type: "string", format: "date" },
+        limit: { type: "integer", minimum: 1, maximum: 20, default: 10 },
+      },
+      required: ["query"],
+    },
+    outputSchema: CITED_RETRIEVAL_OUTPUT_SCHEMA,
   },
   {
     name: "preview_watch",
@@ -156,6 +186,49 @@ async function callTool(env, req, name, args) {
       const row = await env.DB.prepare("SELECT * FROM notices WHERE request_id = ?").bind(id).first();
       if (!row) return text(`No notice ${id} in the mirror. Full record: https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`);
       return text(JSON.stringify(toRecord(row), null, 1));
+    }
+    case "retrieve_cited_passages": {
+      if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {
+        return toolError("Cited passage retrieval is unavailable right now.");
+      }
+      const query = String(args.query || "").trim();
+      if (!query) return toolError("query is required.");
+      if (query.length > 240) return toolError("query must be 240 characters or fewer.");
+      const sourceFamily = String(args.source_family || "").trim() || null;
+      if (sourceFamily && !SEMANTIC_SOURCE_FAMILIES.includes(sourceFamily)) {
+        return toolError("source_family is not part of the cited retrieval corpus.");
+      }
+      const bodyId = String(args.body_id || "").trim() || null;
+      if (bodyId && bodyId.length > 120) return toolError("body_id must be 120 characters or fewer.");
+      const publishedFrom = String(args.published_from || "").trim() || null;
+      const publishedTo = String(args.published_to || "").trim() || null;
+      if (publishedFrom && !validIsoDate(publishedFrom)) return toolError("published_from must be a date.");
+      if (publishedTo && !validIsoDate(publishedTo)) return toolError("published_to must be a date.");
+      if (publishedFrom && publishedTo && publishedFrom > publishedTo) {
+        return toolError("published_from must not be after published_to.");
+      }
+      const rawLimit = args.limit == null ? 10 : Number(args.limit);
+      if (!Number.isInteger(rawLimit) || rawLimit < 1 || rawLimit > 20) {
+        return toolError("limit must be a whole number from 1 through 20.");
+      }
+      const result = retrieveCitedPassages({
+        query,
+        filters: {
+          source_family: sourceFamily,
+          body_id: bodyId,
+          published_from: publishedFrom,
+          published_to: publishedTo,
+        },
+        limit: rawLimit,
+      });
+      const count = result.citations.length;
+      return {
+        content: [{
+          type: "text",
+          text: `Returned ${count} source passage${count === 1 ? "" : "s"}. Use the structured citations for source text and links.`,
+        }],
+        structuredContent: result,
+      };
     }
     case "preview_watch": {
       const lens = String(args.lens || "");

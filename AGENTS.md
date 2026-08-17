@@ -4,6 +4,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- **Cited semantic retrieval:** `worker/src/cited_retrieval.mjs` is the
+  retrieval-only adapter from `worker/src/semantic_candidates.mjs` into the
+  versioned MCP `retrieve_cited_passages` structured output. A citation is
+  `matched` only when candidate, source-passage map, and corpus-manifest IDs
+  agree exactly; missing evidence remains `unknown`, and the contract never
+  emits answers or civic relationships. Focused proof:
+  `worker/test/cited_retrieval.test.mjs` and `worker/test/mcp.test.mjs`.
+
 - **Mandate category conformance:** `site/mandate_category_conformance.mjs` is the
   adapter from the meeting, contract, and land-use bridge read models into the
   shared `site/process_conformance.mjs` surface. Relation-specific bridges still
