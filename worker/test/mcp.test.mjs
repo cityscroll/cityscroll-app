@@ -42,12 +42,68 @@ const ROW = {
   start_date: "2026-07-01", due_date: null, due_year: null, document_urls: "[]", n_documents: 0,
 };
 
-test("initialize + tools/list expose the four tools", async () => {
+test("initialize + tools/list expose retrieval and action tools", async () => {
   const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
   const init = await (await handleMcp(post({ jsonrpc: "2.0", id: 1, method: "initialize" }), env)).json();
   assert.equal(init.result.serverInfo.name, "crol-list");
   const list = await (await handleMcp(post({ jsonrpc: "2.0", id: 2, method: "tools/list" }), env)).json();
-  assert.deepEqual(list.result.tools.map((t) => t.name), ["search_notices", "get_notice", "preview_watch", "create_watch"]);
+  assert.deepEqual(list.result.tools.map((t) => t.name), [
+    "search_notices",
+    "get_notice",
+    "retrieve_cited_passages",
+    "preview_watch",
+    "create_watch",
+  ]);
+  const cited = list.result.tools.find(({ name }) => name === "retrieve_cited_passages");
+  assert.equal(cited.outputSchema.properties.schema.const, "cityscroll.semantic_retrieval.cited_passage_response.v1");
+});
+
+test("retrieve_cited_passages returns source-only structured citations", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
+  const response = await (await handleMcp(post({
+    jsonrpc: "2.0", id: 21, method: "tools/call",
+    params: {
+      name: "retrieve_cited_passages",
+      arguments: { query: "energy conservation", source_family: "city_record_notice", limit: 3 },
+    },
+  }), env)).json();
+
+  assert.match(response.result.content[0].text, /1 source passage\./);
+  assert.equal(
+    response.result.structuredContent.schema,
+    "cityscroll.semantic_retrieval.cited_passage_response.v1",
+  );
+  assert.equal(response.result.structuredContent.query, "energy conservation");
+  assert.equal(response.result.structuredContent.retrieval.method, "lexical_fallback_v1");
+  assert.equal(response.result.structuredContent.citations.length, 1);
+  assert.ok(response.result.structuredContent.citations.every(({ exact_join_evidence: evidence }) => (
+    evidence.state === "matched"
+  )));
+  assert.doesNotMatch(
+    JSON.stringify(response.result.structuredContent),
+    /(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)/i,
+  );
+});
+
+test("retrieve_cited_passages rejects invalid scope and respects the candidate kill switch", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
+  const invalid = await (await handleMcp(post({
+    jsonrpc: "2.0", id: 22, method: "tools/call",
+    params: {
+      name: "retrieve_cited_passages",
+      arguments: { query: "energy", source_family: "invented_source" },
+    },
+  }), env)).json();
+  assert.equal(invalid.result.isError, true);
+  assert.match(invalid.result.content[0].text, /not part of the cited retrieval corpus/);
+
+  const disabled = await (await handleMcp(post({
+    jsonrpc: "2.0", id: 23, method: "tools/call",
+    params: { name: "retrieve_cited_passages", arguments: { query: "energy" } },
+  }), { ...env, SEMANTIC_CANDIDATES_ENABLED: "false" })).json();
+  assert.equal(disabled.result.isError, true);
+  assert.match(disabled.result.content[0].text, /unavailable right now/);
+  assert.equal(disabled.result.structuredContent, undefined);
 });
 
 test("search_notices returns formatted mirror results", async () => {
