@@ -31,9 +31,12 @@ const COVERAGE_STATES = new Set([
   "matched",
   "empty",
   "partial",
+  "stale",
   "not_indexed",
   "provider_unavailable",
 ]);
+
+const COMPLETE_COVERAGE_STATES = new Set(["matched", "empty"]);
 
 const TYPE_WEIGHTS = Object.freeze({
   procurement: 1,
@@ -335,6 +338,48 @@ function rounded(value) {
   return Number(value.toFixed(6));
 }
 
+function coverageReceipt(coverageByLens, merged) {
+  const rows = Object.values(coverageByLens);
+  const observedCount = rows.reduce((sum, row) => (
+    sum + (row.matched_count ?? 0)
+  ), 0);
+  const incompleteLenses = UNIVERSAL_SEARCH_LENS_IDS.filter((lensId) => {
+    const row = coverageByLens[lensId];
+    const hasCorpusReceipt = row.indexed_count !== null || row.as_of !== null;
+    return !COMPLETE_COVERAGE_STATES.has(row.state)
+      || row.matched_count === null
+      || !hasCorpusReceipt;
+  });
+  const asOfByLens = Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lensId) => (
+    [lensId, coverageByLens[lensId].as_of]
+  )));
+  const completeAsOfValues = [...new Set(rows.map((row) => row.as_of).filter(Boolean))];
+  const isComplete = incompleteLenses.length === 0;
+  const byEntityType = {};
+  for (const { winner } of merged) {
+    const objectType = winner.document.object_type;
+    byEntityType[objectType] = (byEntityType[objectType] || 0) + 1;
+  }
+
+  return {
+    schema: UNIVERSAL_SEARCH_COVERAGE_SCHEMA,
+    all_lenses_participated: rows.every((row) => row.participated),
+    complete_count: isComplete ? observedCount : null,
+    observed_count: observedCount,
+    total_matches: merged.length,
+    by_entity_type: Object.fromEntries(Object.entries(byEntityType).sort(([left], [right]) => (
+      left.localeCompare(right, "en-US")
+    ))),
+    incomplete_lenses: incompleteLenses,
+    snapshot: {
+      state: isComplete ? "complete" : "incomplete",
+      as_of: completeAsOfValues.length === 1 ? completeAsOfValues[0] : null,
+      as_of_by_lens: asOfByLens,
+    },
+    by_lens: coverageByLens,
+  };
+}
+
 /**
  * Query every registered lens concurrently and return one deterministic set.
  * Provider failures are isolated and represented in coverage; they never turn
@@ -398,18 +443,15 @@ export async function federateUniversalSearch({ query, lenses = {}, limit = 40 }
     });
   });
 
-  const coverageRows = Object.values(coverageByLens);
+  const coverage = coverageReceipt(coverageByLens, merged);
   return deepFreeze({
     schema: UNIVERSAL_SEARCH_FEDERATOR_SCHEMA,
     query: { normalized, tokens },
     ranking_policy: UNIVERSAL_SEARCH_RANKING_POLICY,
     results,
     coverage: {
-      schema: UNIVERSAL_SEARCH_COVERAGE_SCHEMA,
-      all_lenses_participated: coverageRows.every((row) => row.participated),
-      total_matches: merged.length,
+      ...coverage,
       returned_count: results.length,
-      by_lens: coverageByLens,
     },
   });
 }

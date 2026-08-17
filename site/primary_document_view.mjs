@@ -271,6 +271,7 @@ export function renderSearchDocument() {
       <p class="topic-search-note">Compare records, people, organizations, exams, and places without choosing a type first.</p>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
+    <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status"><p><strong>Coverage details appear with results.</strong><span>Search reports which public-record collections took part.</span></p></section>
     <div class="topic-search-method" aria-label="Search method"><span>Match method</span><strong>Keyword search</strong></div>
     <div class="topic-search-lanes" aria-label="Search result types">
       ${searchLane("contracts", "Contracts", "Public contract opportunities and awards.")}
