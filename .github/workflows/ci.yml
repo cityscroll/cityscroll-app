@@ -306,6 +306,9 @@ jobs:
       - name: Resident-read zero-egress architecture gate
         if: matrix.family == 'site-node'
         run: node tools/no_live_external_reads.mjs --check
+      - name: Citywide address snapshot integrity
+        if: matrix.family == 'site-node'
+        run: node tools/build_geocoder_address_index.mjs --check
       - name: Preset snapshot receipt is internally consistent
         if: matrix.family == 'site-node'
         run: node tools/validate_presets.mjs --check

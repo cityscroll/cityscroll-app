@@ -623,7 +623,7 @@ const STRINGS = {
     parcel_link_zola: "ZoLa zoning",
     parcel_link_acris: "ACRIS deeds",
     parcel_link_wow: "Who Owns What portfolio",
-    parcel_via_geosearch: "lot {bbl} via GeoSearch — verify the match",
+    parcel_via_pad_snapshot: "lot {bbl} from the CityScroll address snapshot — verify the match",
     parcel_via_notice_tax_lot: "lot {bbl} from this notice's tax-lot text — verify the match",
     community_district_short: "Community District {n}",
     council_district_short: "Council District {n}",
@@ -1307,6 +1307,7 @@ const STRINGS = {
     no_zap:            "No Zoning Application Portal (ZAP) rezonings",
     nothing_found_feed: "Nothing found. Try a broader search.",
     could_not_reach:   "The latest CityScroll snapshot is unavailable. Retry.",
+    address_snapshot_not_covered: "Address not found in the current CityScroll snapshot. No location match was used.",
     shared_meeting_read_model_unavailable: "The meetings snapshot is unavailable. Retry.",
 
     // Feed card actions

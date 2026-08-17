@@ -55,6 +55,7 @@ const commitSha = args["commit-sha"] || "";
 // Architecture fitness runs before any generated artifact. A production build
 // must never be the first place a resident live-data dependency is discovered.
 runNode(sourceDir, "no_live_external_reads.mjs", ["--check"]);
+runNode(sourceDir, "build_geocoder_address_index.mjs", ["--check"]);
 
 if (refresh) {
   runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--land-only"]);
