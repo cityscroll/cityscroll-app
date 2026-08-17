@@ -272,8 +272,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   passage receipts, rejects public scores and unsafe evidence, retains the three source families
   as provenance, and groups presentation by the six source-backed civic-object families declared
   in `warehouse/experiments/semantic-layer-trial/source_manifest.json`; never infer a civic lens or
-  jurisdiction from passage text. The `/search/` renderer uses the legacy keyword response when
-  the typed semantic result is empty or the candidate endpoint falls back. Focused proof:
+  jurisdiction from passage text. The `/search/` renderer queries passage and keyword retrieval
+  in parallel, then renders a deduplicated passage-first union; a bounded passage hit must never
+  suppress broader keyword-corpus recall. Focused proof:
   `test/semantic_topic_search.test.mjs` and `test/functional/29_search_results.py`.
 - **Typed search handoff:** `site/search_lens_handoff.mjs` carries a selected SearchDocument into
   its established Browse route through scope v0. Keep raw and normalized topic terms separate,
