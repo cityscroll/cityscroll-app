@@ -164,6 +164,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   the same bounded board snapshot, while the SPA falls back to the shared artifact rather than
   appending a second board fetch. Verify with
   `test/shared_meeting_read_model.test.mjs` and the focused meeting contract tests.
+- **Community-board meeting geography:** Near-you district activity reads the shared meeting
+  model and derives a source-qualified board meeting's community district from the published
+  `community-board → covers → community-district` edge in
+  `site/data/community_board_geography_lookup.json`. That ontology lookup precedes venue/address
+  geocoding; missing or conflicting board identity fails closed to the existing placement chain.
+  Focused proof: `test/location_derivation.test.mjs` and
+  `test/community_board_meeting_lens_parity.test.mjs`.
 - **City Record meeting notice materialization:** `site/data/meeting_notice_materialization.json`
   is the build-time rich notice input for current dated meetings. Its explicit predicate lives in
   `site/city_record_meeting.mjs`, and `tools/build_meeting_notice_materialization.mjs` refreshes it
