@@ -217,7 +217,9 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
   const config = BROWSE_FACETS[facet];
   if (!config) throw new Error(`Unknown Browse facet: ${facet}`);
   const route = options.route || (facet === "contracts" ? "/browse/" : `/browse/${facet}/`);
-  const view = buildBrowseView(facet, payload, params);
+  const view = buildBrowseView(facet, payload, params, {
+    semanticArtifact: options.semanticArtifact || null,
+  });
   let html = pageMetadata(shell, {
     title: `${config.label} · Browse · CityScroll`,
     description: `Browse NYC ${config.label.toLowerCase()} public records by agency, place, status, date, or keyword.`,

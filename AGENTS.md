@@ -2308,6 +2308,14 @@ is not the product surface — same list-ontology shape as
 Verify: `node --test test/rules_explorer.test.mjs test/rules_phase_spine.test.mjs`.
 Captures: `python3 tools/capture_rules_ops_ontology.py`.
 
+**Rules related-language lane:** `site/rules_semantic_lane.mjs` is the typed,
+versioned projection over the committed corpus manifest, reviewed retrieval
+receipt, source-passage map, and Rules snapshot. The artifact is rebuilt with
+`node tools/build_rules_semantic_lane.mjs`; runtime embeddings remain disabled,
+lexical results own duplicates, and agency/process/place/date constraints are
+hard publication gates. Focused proof: `test/rules_semantic_lane.test.mjs` plus
+the Rules case in `test/primary_document_routes.test.mjs`.
+
 **RSS egress (hard):** `worker/src/rules.mjs` must send `RULES_RSS_HEADERS`
 (`User-Agent` + RSS Accept) on `https://rules.cityofnewyork.us/feed/`. An empty or
 missing User-Agent gets Cloudflare HTTP 403 challenge HTML ("Just a moment…"), so
