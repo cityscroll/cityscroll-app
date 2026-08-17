@@ -1,5 +1,9 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
-import { BROWSE_LEGACY_LENS_FACETS_COMPAT } from "./browse_surface_contracts.mjs";
+import {
+  EXAMS_SURFACE,
+  PEOPLE_ORGANIZATIONS_SURFACE,
+  STAFFING_SURFACE,
+} from "./browse_surface_contracts.mjs";
 
 export const CANONICAL_ORIGIN = "https://cityscroll.org";
 
@@ -7,13 +11,15 @@ export const SELECTABLE_LANGS = Object.freeze([
   "en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur",
 ]);
 
-export const LEGACY_LENS_FACETS = Object.freeze({
-  money: "contracts",
-  ...BROWSE_LEGACY_LENS_FACETS_COMPAT,
-  land: "zoning",
-  property: "property",
-  rules: "rules",
-  meetings: "meetings",
+export const LEGACY_LENS_ROUTES = Object.freeze({
+  money: "/browse/contracts/",
+  people: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute,
+  staffing: STAFFING_SURFACE.canonicalRoute,
+  exams: EXAMS_SURFACE.canonicalRoute,
+  land: "/browse/zoning/",
+  property: "/browse/property/",
+  rules: "/browse/rules/",
+  meetings: "/browse/meetings/",
 });
 
 const COMMON_FILTERS = [
@@ -27,7 +33,7 @@ const COMMON_FILTERS = [
  */
 export function canonicalizeBrowseUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
   const url = safeUrl(value, origin);
-  const match = url.pathname.match(/^\/browse\/(contracts|staffing|zoning|property|rules|meetings|exams)\/?$/);
+  const match = url.pathname.match(/^\/browse\/(contracts|people|staffing|zoning|property|rules|meetings|exams)\/?$/);
   if (!match) return `${url.pathname}${url.search}`;
   const agency = String(url.searchParams.get("agency") || "").trim();
   if (!agency) return `${url.pathname}${url.search}`;
@@ -51,8 +57,9 @@ export function canonicalizeBrowseUrl(value, { origin = CANONICAL_ORIGIN } = {})
 
 export const LEGACY_ROUTE_PARAMETERS = Object.freeze({
   money: new Set([...COMMON_FILTERS, "mode", "sort", "min", "max", "category", "standard", "closing", "m", "basis", "actionBasis"]),
-  people: new Set([...COMMON_FILTERS, "type", "mode", "role", "view", "interest", "eligibility", "window", "format", "salary", "fee", "experience"]),
-  staffing: new Set([...COMMON_FILTERS, "type", "mode", "role", "view", "interest", "eligibility", "window", "format", "salary", "fee", "experience"]),
+  people: new Set([...COMMON_FILTERS, "type", "mode"]),
+  staffing: new Set([...COMMON_FILTERS, "role"]),
+  exams: new Set([...COMMON_FILTERS, "interest", "eligibility", "window", "format", "salary", "fee", "experience"]),
   land: new Set([...COMMON_FILTERS, "status", "attendance"]),
   property: new Set([...COMMON_FILTERS, "asset", "method", "price", "sort", "process", "stage", "view"]),
   rules: new Set([...COMMON_FILTERS, "process"]),
@@ -171,9 +178,14 @@ export function migrateLegacyUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
     };
   }
 
-  if (Object.hasOwn(LEGACY_LENS_FACETS, route)) {
-    const facet = LEGACY_LENS_FACETS[route];
-    const mapped = targetUrl(`/browse/${facet}/`, url, params, LEGACY_ROUTE_PARAMETERS[route]);
+  const intentRoute = route === "exam"
+    ? "exams"
+    : ["people", "staffing"].includes(route) && params.get("view") === "guide"
+      ? "exams"
+      : route;
+  if (intentRoute === "exams") params.delete("view");
+  if (Object.hasOwn(LEGACY_LENS_ROUTES, intentRoute)) {
+    const mapped = targetUrl(LEGACY_LENS_ROUTES[intentRoute], url, params, LEGACY_ROUTE_PARAMETERS[intentRoute]);
     return {
       linkClass: "lens view",
       ...mapped,

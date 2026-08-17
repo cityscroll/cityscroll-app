@@ -47,7 +47,7 @@ def main() -> None:
                     device_scale_factor=1,
                 )
                 install_routes(page)
-                page.goto(f"{base}/browse/staffing/", wait_until="load")
+                page.goto(f"{base}/browse/exams/", wait_until="load")
                 page.locator("#career-results .career-card").first.wait_for(state="visible")
                 guide = page.locator("#career-guide")
 
@@ -92,7 +92,7 @@ def main() -> None:
 
     result = {
         "stage": args.stage,
-        "route": "/browse/staffing/",
+        "route": "/browse/exams/",
         "captured_viewports": [width for width, _ in VIEWPORTS],
         "captures": captures,
         "failures": failures,

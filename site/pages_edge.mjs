@@ -326,8 +326,8 @@ export function renderExamUnavailable(examNumber) {
 <main id="main" class="panel route-item" data-edge-rendered="exam-unavailable" data-exam-number="${esc(id)}" tabindex="-1">
   <p class="ftype">Civil service exam</p>
   <h1 class="rolename">${esc(title)}</h1>
-  <p>This exam is not in the current staffing guide on CityScroll.</p>
-  <p><a href="/browse/staffing/">Browse staffing exams</a></p>
+  <p>This exam is not in the current exam guide on CityScroll.</p>
+  <p><a href="/browse/exams/">Browse exams</a></p>
 </main>
 </body>
 </html>`;

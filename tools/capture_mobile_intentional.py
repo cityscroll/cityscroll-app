@@ -22,7 +22,7 @@ PRODUCTION = "https://cityscroll.org/"
 VIEWPORTS = ((360, 800), (1280, 900))
 SURFACES = (
     ("contracts", "#money", "#list .row", "#tab-money .lens-intro"),
-    ("staffing", "#people?view=guide", "#staffing-ledger", "#staffing-feed"),
+    ("exams", "browse/exams/", "#career-guide", "#career-guide"),
     ("rules-stepper", "#notice/20260714029", ".rule-phase-stepper", ".rule-phase-stepper"),
     ("reader-action", "#notice/20260701099", "#noticeview .panel", "#noticeview .panel"),
     ("map", "#map", "#mapAreaList button", ".map-explore"),
@@ -54,10 +54,8 @@ def prepare(page: Page, name: str) -> None:
     if name == "contracts":
         ask = page.locator("#tab-money .ask-cityscroll")
         ask.evaluate("el => { el.open = true; }")
-    elif name == "staffing":
-        ledger = page.locator("#staffing-ledger")
-        if ledger.count():
-            ledger.evaluate("el => { el.open = true; }")
+    elif name == "exams":
+        page.locator("#staffing-more-filters").evaluate("el => { el.open = true; }")
     elif name == "reader-action":
         page.add_style_tag(
             content="#noticeview .panel > .note:last-child{display:none!important}"

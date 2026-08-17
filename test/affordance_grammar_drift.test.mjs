@@ -62,7 +62,7 @@ test("scope rails do not regress into navigational links styled as chips", () =>
     "site/property_disposition_facets_ui.mjs",
     "site/app/property.mjs",
     "site/app/entities.mjs",
-    "site/app/people.mjs",
+    "site/app/staffing.mjs",
   ];
   for (const file of files) {
     const source = read(file);

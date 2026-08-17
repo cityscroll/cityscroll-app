@@ -8,7 +8,7 @@ import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
 export const PEOPLE_LIST_BROWSE_VIEW = Object.freeze({
   tab: "browse",
   label: "People and organizations",
-  route: PEOPLE_ORGANIZATIONS_SURFACE.route,
+  route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute,
   countLabel: "typed civic objects",
   description: "Officials, agencies, vendors, committees, community boards, and published appointments.",
   sources: "Person hub · committee graph · agency constellation",

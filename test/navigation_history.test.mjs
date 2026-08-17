@@ -44,7 +44,7 @@ test("item routes declare deterministic collection fallbacks for cold deep links
     ].map(navigation.itemRouteFallbackHash),
     [
       "#money",
-      "#people?view=guide",
+      "#exams",
       "#land",
       "#money",
       "#money",

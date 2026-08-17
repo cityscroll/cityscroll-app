@@ -33,7 +33,7 @@ SURFACES = (
     ("contracts", "browse/contracts/#money", "#list .row"),
     (
         "people + organizations",
-        "browse/staffing/",
+        "browse/people/",
         "[data-browse-concept='people'] [data-civic-object-kind='official']",
     ),
     ("property", "#property", "#propertyfeed .fcard"),

@@ -91,8 +91,8 @@ def people_opens_on_a_populated_example(pw):
     if page.locator("#career-guide").is_visible():
         failures.append("bare #people exposed the exam guide")
     route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
-    if route != {"pathname": "/browse/staffing/", "search": "", "hash": ""}:
-        failures.append(f"bare #people did not forward to the clean Staffing route — got: {route!r}")
+    if route != {"pathname": "/browse/people/", "search": "", "hash": ""}:
+        failures.append(f"bare #people did not forward to the clean People route — got: {route!r}")
     if page.locator("#people-organizations-search").input_value():
         failures.append("bare #people unexpectedly requires or injects a people search")
 
@@ -189,7 +189,7 @@ def deep_link_still_overrides_the_default(pw):
     if rows.count() == 0 or any("RODRIGUEZ" not in row.inner_text().upper() for row in rows.all()):
         failures.append("the query permalink did not refine every unified people row to Rodriguez")
     route = page.evaluate("({ pathname: location.pathname, query: new URLSearchParams(location.search).get('q'), hash: location.hash })")
-    if route != {"pathname": "/browse/staffing/", "query": "RODRIGUEZ", "hash": ""}:
+    if route != {"pathname": "/browse/people/", "query": "RODRIGUEZ", "hash": ""}:
         failures.append(f"#people?q=RODRIGUEZ did not forward to its clean equivalent — got: {route!r}")
     browser.close()
     return failures

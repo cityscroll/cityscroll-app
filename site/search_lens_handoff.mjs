@@ -29,7 +29,7 @@ const DESTINATIONS = Object.freeze({
     family: "contracts", surface: "money", route: "/browse/contracts/", label: "Contracts",
   }),
   "people-organizations": Object.freeze({
-    family: "people-organizations", surface: PEOPLE_ORGANIZATIONS_SURFACE.surfaceId, route: PEOPLE_ORGANIZATIONS_SURFACE.route, label: PEOPLE_ORGANIZATIONS_SURFACE.label,
+    family: "people-organizations", surface: PEOPLE_ORGANIZATIONS_SURFACE.surfaceId, route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute, label: PEOPLE_ORGANIZATIONS_SURFACE.label,
   }),
   zoning: Object.freeze({
     family: "land", surface: "land", route: "/browse/zoning/", label: "Land",
@@ -44,7 +44,7 @@ const DESTINATIONS = Object.freeze({
     family: "meetings", surface: "meetings", route: "/browse/meetings/", label: "Meetings",
   }),
   exams: Object.freeze({
-    family: "exams", surface: "people", route: EXAMS_SURFACE.route, label: EXAMS_SURFACE.label,
+    family: "exams", surface: EXAMS_SURFACE.surfaceId, route: EXAMS_SURFACE.canonicalRoute, label: EXAMS_SURFACE.label,
   }),
 });
 
@@ -207,8 +207,6 @@ function destinationParams(record, response, sourceSearch, destination) {
     const type = PEOPLE_TYPES[clean(record?.object_type, 80)];
     if (type) params.set("type", type);
   }
-  if (destination === DESTINATIONS.exams) params.set("view", "guide");
-
   const facet = {
     ...(agencyRef ? { entity_refs_all: [agencyRef] } : {}),
     search_handoff: handoffEnvelope(record, response, destination, query),

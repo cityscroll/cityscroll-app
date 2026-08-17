@@ -651,7 +651,7 @@ function rerenderForLang(){
   if(tab!=="money") moneyLoaded=false;
   if(tab!=="land") landLoaded=false;
   if(tab==="money" && moneyLoaded) search();
-  else if(tab==="people") renderStaffingFeed();
+  else if(tab==="staffing") renderStaffingFeed();
   else if(tab==="exams"){
     populateCareerInterests(); renderCareerGuide();
   }

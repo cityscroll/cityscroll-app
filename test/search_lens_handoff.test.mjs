@@ -53,6 +53,10 @@ test("six search families map typed civic objects to their established destinati
     assert.equal(searchFamilyForResult(record), family);
     const href = new URL(buildSearchLensHandoffHref(record, response, "?q=mosquitos"), "https://cityscroll.org");
     assert.equal(href.pathname, pathname);
+    if (record.object_type === "civil_service_exam") {
+      assert.equal(JSON.parse(href.searchParams.get("facet")).search_handoff.destination.surface, "exams");
+      assert.equal(href.searchParams.has("view"), false);
+    }
   }
 });
 

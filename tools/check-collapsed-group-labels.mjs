@@ -105,7 +105,7 @@ export function auditUnconsolidatedRepeatedRows(root = ROOT) {
   });
   if (!repeats.length) return [];
 
-  const renderer = readFileSync(join(root, "site/app/people.mjs"), "utf8");
+  const renderer = readFileSync(join(root, "site/app/staffing.mjs"), "utf8");
   const consolidation = readFileSync(join(root, "site/same_consolidation.mjs"), "utf8");
   if (/loadSameConsolidation\(\)/.test(renderer)
       && /SameConsolidation\.group\(items\)/.test(renderer)
@@ -114,7 +114,7 @@ export function auditUnconsolidatedRepeatedRows(root = ROOT) {
       && /groupHTML:\s*entry\s*=>\s*staffingAppointmentGroupHTML/.test(consolidation)) {
     return [];
   }
-  return repeats.map((finding) => ({ ...finding, lens: "people", file: "site/app/people.mjs" }));
+  return repeats.map((finding) => ({ ...finding, lens: "staffing", file: "site/app/staffing.mjs" }));
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

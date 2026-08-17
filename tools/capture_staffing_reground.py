@@ -49,7 +49,7 @@ def main():
                 )
                 install_routes(page)
                 page.goto(base + "#people", wait_until="load")
-                page.locator("#tab-people").wait_for(state="visible")
+                page.locator("#tab-staffing").wait_for(state="visible")
                 page.wait_for_timeout(1000)
                 focus = "#career-guide" if args.stage == "after" else "#staffing-pathways"
 

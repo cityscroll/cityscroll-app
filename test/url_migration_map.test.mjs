@@ -26,9 +26,11 @@ test("finite legacy routes forward to canonical documents and preserve supported
     "/browse/property/?asset=seized_property",
   );
   assert.equal(
-    migrateLegacyUrl("/#staffing?lang=es&view=guide&role=Engineer%20Civil&window=open").target,
-    "/browse/staffing/?lang=es&view=guide&role=Engineer+Civil&window=open",
+    migrateLegacyUrl("/#staffing?lang=es&view=guide&window=open").target,
+    "/browse/exams/?lang=es&window=open",
   );
+  assert.equal(migrateLegacyUrl("/#people?q=Rodriguez").target, "/browse/people/?q=Rodriguez");
+  assert.equal(migrateLegacyUrl("/#staffing?role=Engineer").target, "/browse/staffing/?role=Engineer");
   assert.equal(migrateLegacyUrl("/#map?lens=property").target, "/near-you/?lens=property");
   assert.equal(migrateLegacyUrl("/#alerts").target, "/following/");
   assert.equal(migrateLegacyUrl("/#now").target, "/now/");

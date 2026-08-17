@@ -3,7 +3,7 @@
 import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
 
 export const PEOPLE_ORGANIZATIONS_BROWSE_CONFIG = Object.freeze({
-  route: PEOPLE_ORGANIZATIONS_SURFACE.route,
+  route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute,
   queryParam: "q",
   facetParam: "type",
   facetKey: "kind",

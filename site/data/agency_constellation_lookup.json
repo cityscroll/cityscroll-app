@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z",
+  "generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -137,8 +137,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -442,7 +442,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "68",
+              "total": "65",
               "materialized": "8",
               "dated": "6",
               "undated": "2",
@@ -501,8 +501,8 @@
           "target_name": "Staffing exams",
           "count": 20,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -777,8 +777,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -1141,8 +1141,8 @@
           "target_name": "Staffing exams",
           "count": 7,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministrative-trials-and-hearings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -1417,8 +1417,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -1728,7 +1728,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "29",
+              "total": "25",
               "materialized": "8",
               "dated": "2",
               "undated": "6",
@@ -1787,8 +1787,8 @@
           "target_name": "Staffing exams",
           "count": 8,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -2063,8 +2063,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -2421,8 +2421,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=Board+Meetings&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-meetings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=Board+Meetings&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-meetings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=Board+Meetings&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-meetings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=Board+Meetings&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-meetings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -2602,8 +2602,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -2972,8 +2972,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-correction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-correction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-correction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-correction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -3159,8 +3159,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -3458,7 +3458,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "58",
+              "total": "57",
               "materialized": "8",
               "dated": "1",
               "undated": "7",
@@ -3517,8 +3517,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-elections%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-elections%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-elections%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-elections%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -3698,8 +3698,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -4062,8 +4062,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=board-of-standards-and-appeals&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-standards-and-appeals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=board-of-standards-and-appeals&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-standards-and-appeals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=board-of-standards-and-appeals&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-standards-and-appeals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=board-of-standards-and-appeals&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aboard-of-standards-and-appeals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -4243,8 +4243,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -4601,8 +4601,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-bronx%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-bronx%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-bronx%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-bronx%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -4788,8 +4788,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -5146,8 +5146,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-brooklyn%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-brooklyn%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-brooklyn%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-brooklyn%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -5327,8 +5327,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -5685,8 +5685,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-queens%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-queens%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-queens%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aborough-president-queens%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -5843,42 +5843,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "published_by_agency": "1"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-28",
+                "end": "2026-07-28"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-28",
+              "latest_source": "published_record",
+              "age_days": "18",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -6189,7 +6195,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "234",
+              "total": "221",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -6248,8 +6254,8 @@
           "target_name": "Staffing exams",
           "count": 27,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -6524,8 +6530,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -6835,7 +6841,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "8",
+              "total": "7",
               "materialized": "7",
               "dated": "0",
               "undated": "7",
@@ -6867,7 +6873,7 @@
               "by_stage": {
                 "unknown": "7"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -6894,8 +6900,8 @@
           "target_name": "Staffing exams",
           "count": 2,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -7093,8 +7099,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -7398,7 +7404,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "73",
+              "total": "62",
               "materialized": "8",
               "dated": "1",
               "undated": "7",
@@ -7457,8 +7463,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acampaign-finance-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acampaign-finance-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acampaign-finance-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acampaign-finance-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -7638,8 +7644,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -7996,8 +8002,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=charter-revision-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acharter-revision-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -8177,8 +8183,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -8535,8 +8541,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Achief-medical-examiner%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -8805,8 +8811,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -9169,8 +9175,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-clerk%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-clerk%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-clerk%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-clerk%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -9321,42 +9327,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "published_by_agency": "1"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-23",
+                "end": "2026-07-23"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-23",
+              "latest_source": "published_record",
+              "age_days": "23",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -9655,10 +9667,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "24",
+              "total": "23",
               "materialized": "8",
-              "dated": "8",
-              "undated": "0",
+              "dated": "6",
+              "undated": "2",
               "by_state": {
                 "matched": "8"
               },
@@ -9669,13 +9681,13 @@
             "spans": {
               "valid": {
                 "start": "2014-05-19",
-                "end": "2021-08-29"
+                "end": "2015-05-04"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "2659",
+              "valid_days": "350",
               "observed_days": null
             },
             "lifecycle": {
@@ -9692,7 +9704,7 @@
             "freshness": {
               "reference_day": null,
               "snapshot_day": null,
-              "latest_day": "2021-08-29",
+              "latest_day": "2015-05-04",
               "latest_source": "published_record",
               "age_days": null,
               "max_age_days": null,
@@ -9714,8 +9726,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-council%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -9895,8 +9907,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -10212,7 +10224,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "9",
+              "total": "8",
               "materialized": "8",
               "dated": "1",
               "undated": "7",
@@ -10244,7 +10256,7 @@
               "by_stage": {
                 "unknown": "8"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -10271,8 +10283,8 @@
           "target_name": "Staffing exams",
           "count": 8,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -10514,8 +10526,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -10878,8 +10890,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=city-planning-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=city-planning-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=city-planning-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=city-planning-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -11059,8 +11071,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -11417,8 +11429,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=city-university&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-university%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=city-university&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-university%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=city-university&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-university%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=city-university&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-university%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -11569,46 +11581,46 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "5",
-              "materialized": "5",
-              "dated": "5",
+              "total": "4",
+              "materialized": "4",
+              "dated": "4",
               "undated": "0",
               "by_state": {
-                "matched": "5"
+                "matched": "4"
               },
               "by_relation": {
-                "published_by_agency": "5"
+                "published_by_agency": "4"
               }
             },
             "spans": {
               "valid": {
-                "start": "2026-04-28",
-                "end": "2026-07-14"
+                "start": "2026-02-25",
+                "end": "2026-07-16"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "77",
+              "valid_days": "141",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "5"
+                "unknown": "4"
               },
               "by_stage": {
-                "unknown": "5"
+                "unknown": "4"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-14",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-16",
               "latest_source": "published_record",
-              "age_days": "20",
+              "age_days": "30",
               "max_age_days": null,
               "status": "known"
             }
@@ -11915,7 +11927,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "72",
+              "total": "64",
               "materialized": "8",
               "dated": "4",
               "undated": "4",
@@ -11974,8 +11986,8 @@
           "target_name": "Staffing exams",
           "count": 35,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -12250,8 +12262,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -12620,8 +12632,8 @@
           "target_name": "Staffing exams",
           "count": 4,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -12819,8 +12831,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -13130,7 +13142,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "45",
+              "total": "36",
               "materialized": "8",
               "dated": "6",
               "undated": "2",
@@ -13189,8 +13201,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -13388,8 +13400,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -13746,8 +13758,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-racial-equity%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-racial-equity%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-racial-equity%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-racial-equity%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -13927,8 +13939,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -14285,8 +14297,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=community-boards&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommunity-boards%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=community-boards&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommunity-boards%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=community-boards&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommunity-boards%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=community-boards&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommunity-boards%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -14466,8 +14478,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -14783,7 +14795,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "37",
+              "total": "32",
               "materialized": "8",
               "dated": "0",
               "undated": "8",
@@ -14842,8 +14854,8 @@
           "target_name": "Staffing exams",
           "count": 11,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acomptroller%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -15118,8 +15130,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -15435,7 +15447,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "160",
+              "total": "149",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -15494,8 +15506,8 @@
           "target_name": "Staffing exams",
           "count": 12,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -15770,8 +15782,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -16075,7 +16087,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "205",
+              "total": "196",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -16134,8 +16146,8 @@
           "target_name": "Staffing exams",
           "count": 38,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -16410,8 +16422,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -16709,7 +16721,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "14",
+              "total": "7",
               "materialized": "7",
               "dated": "3",
               "undated": "4",
@@ -16741,7 +16753,7 @@
               "by_stage": {
                 "unknown": "7"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -16768,8 +16780,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acriminal-justice-coordinator%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acriminal-justice-coordinator%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acriminal-justice-coordinator%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acriminal-justice-coordinator%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -16949,8 +16961,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -17313,8 +17325,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -17554,46 +17566,46 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "3",
-              "materialized": "3",
-              "dated": "3",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
               "by_state": {
-                "matched": "3"
+                "matched": "1"
               },
               "by_relation": {
-                "published_by_agency": "3"
+                "published_by_agency": "1"
               }
             },
             "spans": {
               "valid": {
-                "start": "2026-06-04",
-                "end": "2026-07-10"
+                "start": "2026-07-15",
+                "end": "2026-07-15"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "36",
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "3"
+                "unknown": "1"
               },
               "by_stage": {
-                "unknown": "3"
+                "unknown": "1"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-10",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-15",
               "latest_source": "published_record",
-              "age_days": "24",
+              "age_days": "31",
               "max_age_days": null,
               "status": "known"
             }
@@ -17947,8 +17959,8 @@
           "target_name": "Staffing exams",
           "count": 25,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -18223,8 +18235,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -18575,8 +18587,8 @@
           "target_name": "Staffing exams",
           "count": 6,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-bronx-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-bronx-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-bronx-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-bronx-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -18762,8 +18774,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -19114,8 +19126,8 @@
           "target_name": "Staffing exams",
           "count": 11,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-kings-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-kings-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-kings-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-kings-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -19301,8 +19313,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -19659,8 +19671,8 @@
           "target_name": "Staffing exams",
           "count": 5,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-new-york-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -19935,8 +19947,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -20287,8 +20299,8 @@
           "target_name": "Staffing exams",
           "count": 2,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-queens-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -20474,8 +20486,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -20826,8 +20838,8 @@
           "target_name": "Staffing exams",
           "count": 2,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-richmond-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-richmond-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-richmond-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adistrict-attorney-richmond-county%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -20997,14 +21009,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2026-06-17",
-                "end": "2026-07-06"
+                "start": "2026-07-21",
+                "end": "2026-08-05"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "19",
+              "valid_days": "15",
               "observed_days": null
             },
             "lifecycle": {
@@ -21019,11 +21031,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-06",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-08-05",
               "latest_source": "published_record",
-              "age_days": "28",
+              "age_days": "10",
               "max_age_days": null,
               "status": "known"
             }
@@ -21371,8 +21383,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=economic-development-corporation&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeconomic-development-corporation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -21523,46 +21535,46 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
-              "dated": "1",
+              "total": "3",
+              "materialized": "3",
+              "dated": "3",
               "undated": "0",
               "by_state": {
-                "matched": "1"
+                "matched": "3"
               },
               "by_relation": {
-                "published_by_agency": "1"
+                "published_by_agency": "3"
               }
             },
             "spans": {
               "valid": {
-                "start": "2026-03-05",
-                "end": "2026-03-05"
+                "start": "2026-02-10",
+                "end": "2026-04-01"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": "50",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "3"
               },
               "by_stage": {
-                "unknown": "1"
+                "unknown": "3"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-03-05",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-04-01",
               "latest_source": "published_record",
-              "age_days": "151",
+              "age_days": "136",
               "max_age_days": null,
               "status": "known"
             }
@@ -21863,7 +21875,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "123",
+              "total": "107",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -21922,8 +21934,8 @@
           "target_name": "Staffing exams",
           "count": 35,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -22198,8 +22210,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -22562,8 +22574,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -22832,8 +22844,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -23190,8 +23202,8 @@
           "target_name": "Staffing exams",
           "count": 6,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemployees-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -23451,13 +23463,13 @@
             "spans": {
               "valid": {
                 "start": "2026-05-29",
-                "end": "2026-07-13"
+                "end": "2026-07-27"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "45",
+              "valid_days": "59",
               "observed_days": null
             },
             "lifecycle": {
@@ -23472,11 +23484,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-13",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-27",
               "latest_source": "published_record",
-              "age_days": "21",
+              "age_days": "19",
               "max_age_days": null,
               "status": "known"
             }
@@ -23783,7 +23795,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "128",
+              "total": "112",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -23842,8 +23854,8 @@
           "target_name": "Staffing exams",
           "count": 40,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -24118,8 +24130,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -24476,8 +24488,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?agency=equal-employment-practices-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aequal-employment-practices-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=equal-employment-practices-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aequal-employment-practices-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=equal-employment-practices-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aequal-employment-practices-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=equal-employment-practices-commission&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aequal-employment-practices-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -24634,42 +24646,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "published_by_agency": "1"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-17",
+                "end": "2026-07-17"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-17",
+              "latest_source": "published_record",
+              "age_days": "29",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -24980,7 +24998,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "147",
+              "total": "131",
               "materialized": "8",
               "dated": "6",
               "undated": "2",
@@ -25039,8 +25057,8 @@
           "target_name": "Staffing exams",
           "count": 17,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -25315,8 +25333,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -25673,8 +25691,8 @@
           "target_name": "Staffing exams",
           "count": 7,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinancial-information-services-agency%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -25898,48 +25916,42 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
-              "dated": "1",
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
               "undated": "0",
-              "by_state": {
-                "matched": "1"
-              },
-              "by_relation": {
-                "published_by_agency": "1"
-              }
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
-                "start": "2026-07-20",
-                "end": "2026-07-20"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "1"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-20",
-              "latest_source": "published_record",
-              "age_days": "14",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -26244,7 +26256,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "58",
+              "total": "50",
               "materialized": "8",
               "dated": "2",
               "undated": "6",
@@ -26303,8 +26315,8 @@
           "target_name": "Staffing exams",
           "count": 36,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -26579,8 +26591,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -26896,7 +26908,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "259",
+              "total": "232",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -26955,8 +26967,8 @@
           "target_name": "Staffing exams",
           "count": 32,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -27215,14 +27227,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2026-07-06",
-                "end": "2026-07-16"
+                "start": "2026-07-08",
+                "end": "2026-07-14"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "10",
+              "valid_days": "6",
               "observed_days": null
             },
             "lifecycle": {
@@ -27237,11 +27249,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-16",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-14",
               "latest_source": "published_record",
-              "age_days": "18",
+              "age_days": "32",
               "max_age_days": null,
               "status": "known"
             }
@@ -27542,7 +27554,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "46",
+              "total": "42",
               "materialized": "8",
               "dated": "6",
               "undated": "2",
@@ -27601,8 +27613,8 @@
           "target_name": "Staffing exams",
           "count": 15,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -27848,7 +27860,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "12",
+              "total": "8",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -27861,14 +27873,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2026-06-05",
-                "end": "2026-07-23"
+                "start": "2026-06-26",
+                "end": "2026-08-11"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "48",
+              "valid_days": "46",
               "observed_days": null
             },
             "lifecycle": {
@@ -27880,14 +27892,14 @@
               "by_stage": {
                 "unknown": "8"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-23",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-08-11",
               "latest_source": "published_record",
-              "age_days": "11",
+              "age_days": "4",
               "max_age_days": null,
               "status": "known"
             }
@@ -28241,8 +28253,8 @@
           "target_name": "Staffing exams",
           "count": 37,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -28399,48 +28411,42 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "2",
-              "materialized": "2",
-              "dated": "2",
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
               "undated": "0",
-              "by_state": {
-                "matched": "2"
-              },
-              "by_relation": {
-                "published_by_agency": "2"
-              }
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
-                "start": "2026-07-17",
-                "end": "2026-07-21"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "4",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "2"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "2"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-21",
-              "latest_source": "published_record",
-              "age_days": "13",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -28751,7 +28757,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "145",
+              "total": "132",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -28810,8 +28816,8 @@
           "target_name": "Staffing exams",
           "count": 22,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -29086,8 +29092,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -29391,7 +29397,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "102",
+              "total": "94",
               "materialized": "8",
               "dated": "7",
               "undated": "1",
@@ -29450,8 +29456,8 @@
           "target_name": "Staffing exams",
           "count": 28,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -29726,8 +29732,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -30031,7 +30037,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "5",
+              "total": "4",
               "materialized": "4",
               "dated": "1",
               "undated": "3",
@@ -30063,7 +30069,7 @@
               "by_stage": {
                 "unknown": "4"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -30090,8 +30096,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aindependent-budget-office%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aindependent-budget-office%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aindependent-budget-office%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aindependent-budget-office%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -30242,48 +30248,42 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
-              "dated": "1",
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
               "undated": "0",
-              "by_state": {
-                "matched": "1"
-              },
-              "by_relation": {
-                "published_by_agency": "1"
-              }
+              "by_state": {},
+              "by_relation": {}
             },
             "spans": {
               "valid": {
-                "start": "2026-06-25",
-                "end": "2026-06-25"
+                "start": null,
+                "end": null
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": null,
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "0"
               },
-              "by_stage": {
-                "unknown": "1"
-              },
+              "by_stage": {},
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-06-25",
-              "latest_source": "published_record",
-              "age_days": "39",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
               "max_age_days": null,
-              "status": "known"
+              "status": "unknown"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -30588,7 +30588,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "29",
+              "total": "24",
               "materialized": "8",
               "dated": "3",
               "undated": "5",
@@ -30647,8 +30647,8 @@
           "target_name": "Staffing exams",
           "count": 14,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -30923,8 +30923,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -31228,7 +31228,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "21",
+              "total": "19",
               "materialized": "8",
               "dated": "6",
               "undated": "2",
@@ -31287,8 +31287,8 @@
           "target_name": "Staffing exams",
           "count": 4,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -31497,8 +31497,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -31873,8 +31873,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -32072,8 +32072,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -32377,7 +32377,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "27",
+              "total": "20",
               "materialized": "8",
               "dated": "4",
               "undated": "4",
@@ -32436,8 +32436,8 @@
           "target_name": "Staffing exams",
           "count": 8,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -32679,8 +32679,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -32984,7 +32984,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "3",
+              "total": "2",
               "materialized": "2",
               "dated": "0",
               "undated": "2",
@@ -33016,7 +33016,7 @@
               "by_stage": {
                 "unknown": "2"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -33043,8 +33043,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -33269,8 +33269,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -33586,7 +33586,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "8",
+              "total": "6",
               "materialized": "6",
               "dated": "3",
               "undated": "3",
@@ -33618,7 +33618,7 @@
               "by_stage": {
                 "unknown": "6"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -33645,8 +33645,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-contract-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -33866,8 +33866,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -34224,8 +34224,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amayors-office-of-criminal-justice%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -34494,8 +34494,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -34846,8 +34846,8 @@
           "target_name": "Staffing exams",
           "count": 26,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -35033,8 +35033,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -35385,8 +35385,8 @@
           "target_name": "Staffing exams",
           "count": 6,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anew-york-city-police-pension-fund%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anew-york-city-police-pension-fund%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anew-york-city-police-pension-fund%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anew-york-city-police-pension-fund%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -35572,8 +35572,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -35936,8 +35936,8 @@
           "target_name": "Staffing exams",
           "count": 2,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -36130,14 +36130,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2026-06-22",
-                "end": "2026-07-27"
+                "start": "2026-06-26",
+                "end": "2026-08-07"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "35",
+              "valid_days": "42",
               "observed_days": null
             },
             "lifecycle": {
@@ -36152,11 +36152,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-27",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-08-07",
               "latest_source": "published_record",
-              "age_days": "7",
+              "age_days": "8",
               "max_age_days": null,
               "status": "known"
             }
@@ -36504,8 +36504,8 @@
           "target_name": "Staffing exams",
           "count": 2,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-health-hospitals%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -36691,8 +36691,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -37049,8 +37049,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-collective-bargaining%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-collective-bargaining%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-collective-bargaining%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-collective-bargaining%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -37230,8 +37230,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -37594,8 +37594,8 @@
           "target_name": "Staffing exams",
           "count": 4,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -37804,8 +37804,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -38162,8 +38162,8 @@
           "target_name": "Staffing exams",
           "count": 1,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-special-narcotics-prosecutor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -38361,8 +38361,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -38672,7 +38672,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "197",
+              "total": "174",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -38731,8 +38731,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-the-mayor%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -38972,42 +38972,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "2",
+              "materialized": "2",
+              "dated": "2",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "2"
+              },
+              "by_relation": {
+                "published_by_agency": "2"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-10",
+                "end": "2026-08-04"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "25",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "2"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "2"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-08-04",
+              "latest_source": "published_record",
+              "age_days": "11",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -39318,7 +39324,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "59",
+              "total": "53",
               "materialized": "8",
               "dated": "4",
               "undated": "4",
@@ -39377,8 +39383,8 @@
           "target_name": "Staffing exams",
           "count": 33,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -39653,8 +39659,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -40005,8 +40011,8 @@
           "target_name": "Staffing exams",
           "count": 3,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apayroll-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apayroll-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apayroll-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apayroll-administration%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -40163,46 +40169,46 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
-              "dated": "1",
+              "total": "2",
+              "materialized": "2",
+              "dated": "2",
               "undated": "0",
               "by_state": {
-                "matched": "1"
+                "matched": "2"
               },
               "by_relation": {
-                "published_by_agency": "1"
+                "published_by_agency": "2"
               }
             },
             "spans": {
               "valid": {
-                "start": "2026-07-09",
-                "end": "2026-07-09"
+                "start": "2026-07-08",
+                "end": "2026-08-14"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "0",
+              "valid_days": "37",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "2"
               },
               "by_stage": {
-                "unknown": "1"
+                "unknown": "2"
               },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": "2026-07-09",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-08-14",
               "latest_source": "published_record",
-              "age_days": "25",
+              "age_days": "1",
               "max_age_days": null,
               "status": "known"
             }
@@ -40509,7 +40515,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "133",
+              "total": "124",
               "materialized": "8",
               "dated": "5",
               "undated": "3",
@@ -40568,8 +40574,8 @@
           "target_name": "Staffing exams",
           "count": 61,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apolice-department%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -40844,8 +40850,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -41149,7 +41155,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "15",
+              "total": "13",
               "materialized": "8",
               "dated": "2",
               "undated": "6",
@@ -41208,8 +41214,8 @@
           "target_name": "Staffing exams",
           "count": 6,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -41484,8 +41490,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -41783,7 +41789,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "7",
+              "total": "5",
               "materialized": "5",
               "dated": "4",
               "undated": "1",
@@ -41815,7 +41821,7 @@
               "by_stage": {
                 "unknown": "5"
               },
-              "complete": "false"
+              "complete": "true"
             },
             "freshness": {
               "reference_day": null,
@@ -41842,8 +41848,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-advocate%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-advocate%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-advocate%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-advocate%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -42023,8 +42029,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -42381,8 +42387,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-design-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-design-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-design-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Apublic-design-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -42562,8 +42568,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -42926,8 +42932,8 @@
           "target_name": "Staffing exams",
           "count": 5,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -43125,8 +43131,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -43489,8 +43495,8 @@
           "target_name": "Staffing exams",
           "count": 0,
           "state": "empty",
-          "href": "/browse/staffing/?agency=rent-guidelines-board&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arent-guidelines-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?agency=rent-guidelines-board&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arent-guidelines-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?agency=rent-guidelines-board&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arent-guidelines-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=rent-guidelines-board&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arent-guidelines-board%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -43641,42 +43647,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "published_by_agency": "1"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-16",
+                "end": "2026-07-16"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-16",
+              "latest_source": "published_record",
+              "age_days": "30",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -43987,7 +43999,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "51",
+              "total": "46",
               "materialized": "8",
               "dated": "0",
               "undated": "8",
@@ -44046,8 +44058,8 @@
           "target_name": "Staffing exams",
           "count": 24,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -44322,8 +44334,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -44633,7 +44645,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "58",
+              "total": "54",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -44692,8 +44704,8 @@
           "target_name": "Staffing exams",
           "count": 4,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -44968,8 +44980,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -45326,8 +45338,8 @@
           "target_name": "Staffing exams",
           "count": 2,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atax-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atax-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atax-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atax-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -45513,8 +45525,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -45830,7 +45842,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "65",
+              "total": "61",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -45889,8 +45901,8 @@
           "target_name": "Staffing exams",
           "count": 5,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ataxi-and-limousine-commission%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -46165,8 +46177,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -46523,8 +46535,8 @@
           "target_name": "Staffing exams",
           "count": 8,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ateachers-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ateachers-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ateachers-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ateachers-retirement-system%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -46681,42 +46693,48 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
-              "dated": "0",
+              "total": "1",
+              "materialized": "1",
+              "dated": "1",
               "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "published_by_agency": "1"
+              }
             },
             "spans": {
               "valid": {
-                "start": null,
-                "end": null
+                "start": "2026-07-27",
+                "end": "2026-07-27"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": null,
+              "valid_days": "0",
               "observed_days": null
             },
             "lifecycle": {
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
-              "latest_day": null,
-              "latest_source": null,
-              "age_days": null,
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
+              "latest_day": "2026-07-27",
+              "latest_source": "published_record",
+              "age_days": "19",
               "max_age_days": null,
-              "status": "unknown"
+              "status": "known"
             }
           },
           "cross_spine_confidence": "unmatched",
@@ -47027,10 +47045,10 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "124",
+              "total": "116",
               "materialized": "8",
-              "dated": "8",
-              "undated": "0",
+              "dated": "7",
+              "undated": "1",
               "by_state": {
                 "matched": "8"
               },
@@ -47086,8 +47104,8 @@
           "target_name": "Staffing exams",
           "count": 39,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -47362,8 +47380,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -47714,8 +47732,8 @@
           "target_name": "Staffing exams",
           "count": 5,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atriborough-bridge-and-tunnel-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atriborough-bridge-and-tunnel-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atriborough-bridge-and-tunnel-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atriborough-bridge-and-tunnel-authority%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -47901,8 +47919,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-08-03",
-              "snapshot_day": "2026-08-03",
+              "reference_day": "2026-08-15",
+              "snapshot_day": "2026-08-15",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -48206,7 +48224,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "11",
+              "total": "10",
               "materialized": "8",
               "dated": "1",
               "undated": "7",
@@ -48265,8 +48283,8 @@
           "target_name": "Staffing exams",
           "count": 10,
           "state": "matched",
-          "href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
-          "canonical_href": "/browse/staffing/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
           "scope": {
             "facet": null,
             "universe": null,
@@ -48438,7 +48456,7 @@
     "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-    "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+    "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
     "vendor_rollup_as_of": "2026-08-05",
     "vendor_rollup_window_start": "2025-08-05",
     "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."

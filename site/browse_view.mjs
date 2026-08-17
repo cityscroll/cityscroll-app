@@ -26,7 +26,11 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { communityBoardScopeHref } from "./community_board_scope_links.mjs";
-import { EXAMS_SURFACE, STAFFING_SURFACE } from "./browse_surface_contracts.mjs";
+import {
+  EXAMS_SURFACE,
+  PEOPLE_ORGANIZATIONS_SURFACE,
+  STAFFING_SURFACE,
+} from "./browse_surface_contracts.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { renderRulesSemanticLane, resolveRulesSemanticLane } from "./rules_semantic_lane.mjs";
 import {
@@ -53,9 +57,9 @@ export const BROWSE_FACETS = Object.freeze({
     connectionRelation: "published_by_agency",
   },
   staffing: {
-    tab: STAFFING_SURFACE.compatibility.runtimeTab,
+    tab: STAFFING_SURFACE.navigationFamily,
     label: STAFFING_SURFACE.label,
-    route: STAFFING_SURFACE.route,
+    route: STAFFING_SURFACE.canonicalRoute,
     countLabel: "recent appointments",
     description: STAFFING_SURFACE.description,
     sources: "City Record · DCAS · Citywide Payroll",
@@ -114,7 +118,7 @@ export const BROWSE_FACETS = Object.freeze({
 // this closed route inventory without inheriting a runtime target.
 export const BROWSE_OBJECTS = Object.freeze({
   exams: Object.freeze({
-    route: EXAMS_SURFACE.route,
+    route: EXAMS_SURFACE.canonicalRoute,
     label: EXAMS_SURFACE.label,
     description: EXAMS_SURFACE.description,
   }),
@@ -137,11 +141,12 @@ export const BROWSE_GROUPS = Object.freeze([
   {
     id: "people-organizations",
     label: "People + organizations",
-    primaryFacet: STAFFING_SURFACE.compatibility.facet,
+    primaryFacet: null,
     description: "Officials, agencies, vendors, committees, and the relationships joining them.",
     sources: "Person hub · committee graph · agency constellation",
     children: [
-      { id: "jobs-exams", facet: "staffing", label: "Staffing" },
+      { id: "people-directory", route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute, label: "People + organizations", linkLabel: "Browse people and organizations" },
+      { id: "staffing", facet: "staffing", label: "Staffing", linkLabel: "Browse appointments" },
       { id: "vendors", label: "Vendors" },
       { id: "committees", label: "Committees" },
     ],
@@ -186,7 +191,7 @@ export const BROWSE_GROUPS = Object.freeze([
     description: "Civil-service exam schedules, applications, eligible lists, and outcomes.",
     sources: "DCAS exam schedules · published exam records",
     children: [
-      { id: "exams", label: "Exams", route: EXAMS_SURFACE.route, linkLabel: "Browse exams" },
+      { id: "exams", label: "Exams", route: EXAMS_SURFACE.canonicalRoute, linkLabel: "Browse exams" },
     ],
   },
 ]);
@@ -1058,11 +1063,9 @@ export function buildBrowseLanding(payloads = {}, options = {}) {
       asOf: primary?.asOf || null,
       facts: Array.isArray(metric.facts) ? metric.facts : null,
       children,
-      secondaryCount: group.id === "people-organizations" ? Number(options.staffingExamCount) || null : null,
-      secondaryAsOf: group.id === "people-organizations" ? isoDay(options.staffingExamAsOf) : null,
     };
   });
-  const dated = cards.flatMap((card) => [card.asOf, card.secondaryAsOf]).filter(Boolean).sort();
+  const dated = cards.map((card) => card.asOf).filter(Boolean).sort();
   return {
     cards,
     oldestSnapshot: dated[0] || null,
@@ -1090,12 +1093,8 @@ export function renderBrowseLanding(landing) {
     const childLinks = (card.children || []).map((child) => child.route
       ? constellationLink({
         href: child.route,
-        label: child.id === "jobs-exams" && card.secondaryCount
-          ? `${child.label} · ${card.secondaryCount.toLocaleString("en-US")} civil-service exams`
-          : child.linkLabel || `Browse ${child.label.toLowerCase()}`,
-        className: child.id === "jobs-exams" && card.secondaryCount
-          ? "browse-source-action browse-child-pill"
-          : "browse-source-action",
+        label: child.linkLabel || `Browse ${child.label.toLowerCase()}`,
+        className: "browse-source-action",
         escape: esc,
       })
       : `<span class="browse-child-pill" data-browse-child="${esc(child.id)}">${esc(child.label)}</span>`).join("");
