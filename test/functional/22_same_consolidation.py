@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Staffing same-except-name collapse, per-person reachability, and export census."""
+"""Appointment component collapse, per-person reachability, and export census.
+
+The public Staffing document now owns People + organizations. Exercise the
+retained appointment component through the committed legacy full-shell harness
+so this specialized UI contract cannot reclaim the primary Staffing route.
+"""
 from __future__ import annotations
 
 import functools
@@ -92,7 +97,8 @@ def install_staffing_routes(page):
 
 
 def run(page, downloads: pathlib.Path):
-    page.goto(page.url.split("#", 1)[0] + "#people?view=guide", wait_until="load")
+    page.wait_for_function("document.body.dataset.appReady === 'true'")
+    page.evaluate("showTab('people')")
     page.locator("#staffing-ledger").evaluate("el => { el.open = true; }")
     group = page.locator("#staffing-notice-list .staffing-hire-group")
     group.wait_for(state="visible")
@@ -179,7 +185,7 @@ def main():
             context = browser.new_context(accept_downloads=True)
             page = context.new_page()
             install_staffing_routes(page)
-            page.goto(base, wait_until="load")
+            page.goto(base + "#money", wait_until="load")
             run(page, ROOT / ".tmp-same-consolidation")
             browser.close()
     finally:
