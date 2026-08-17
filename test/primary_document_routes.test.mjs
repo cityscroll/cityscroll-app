@@ -450,6 +450,10 @@ test("People, Staffing, and Exams each render only their owned surface", () => {
   assert.match(people, /data-browse-concept="people"/);
   assert.match(people, /id="people-organizations-list"/);
   assert.doesNotMatch(people, /data-browse-facet="staffing"|data-browse-facet="exams"/);
+  const boardDirectory = people.match(/<section[^>]+id="community-boards"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.equal((boardDirectory.match(/class="browse-board-borough"/g) || []).length, 5);
+  assert.equal((boardDirectory.match(/href="\/community-boards\/[^"/]+\/"/g) || []).length, 59);
+  assert.doesNotMatch(boardDirectory, /Covers |Community District/);
 });
 
 test("People and Places landings use populated entity and geography indexes", () => {
@@ -478,8 +482,10 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(peopleHtml, /Bronx Community Board 1/);
   assert.match(peopleHtml, /href="\/community-boards\/bronx-cb-01\/"/);
   assert.match(peopleHtml, /data-body-id="bronx-cb-01"/);
-  assert.match(peopleHtml, /Covers Bronx Community District 1\./);
-  assert.doesNotMatch(peopleHtml, /Community District X01|· (?:Published|Unknown)|browse-concept-status-rail/);
+  const boardDirectory = peopleHtml.match(/<section[^>]+id="community-boards"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.match(boardDirectory, /Bronx community boards:/);
+  assert.match(boardDirectory, /aria-label="Bronx Community Board 1"[^>]*>1<\/a>/);
+  assert.doesNotMatch(boardDirectory, /Covers |Community District X01|· (?:Published|Unknown)|browse-concept-status-rail/);
   assert.match(peopleHtml, /href="\/committees\/1\/"/);
 
   const places = buildBrowseConceptLanding("places", {

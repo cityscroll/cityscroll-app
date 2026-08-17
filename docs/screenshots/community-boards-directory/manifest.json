@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "before_revision": "8bbd2861d7a5",
+  "route": "/browse/people/#community-boards",
+  "javascript": "disabled (no-JS document parity)",
+  "captures": [
+    {
+      "state": "before",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/community-boards-directory/before-390.png",
+      "board_links": 59,
+      "verbose_rows": 59,
+      "borough_rows": 0,
+      "covers_restatements": 59,
+      "section_height": 5272,
+      "overflow_px": 0
+    },
+    {
+      "state": "after",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/community-boards-directory/after-390.png",
+      "board_links": 59,
+      "verbose_rows": 0,
+      "borough_rows": 5,
+      "covers_restatements": 0,
+      "section_height": 546,
+      "overflow_px": 0
+    },
+    {
+      "state": "before",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "file": "docs/screenshots/community-boards-directory/before-1440.png",
+      "board_links": 59,
+      "verbose_rows": 59,
+      "borough_rows": 0,
+      "covers_restatements": 59,
+      "section_height": 5272,
+      "overflow_px": 0
+    },
+    {
+      "state": "after",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "file": "docs/screenshots/community-boards-directory/after-1440.png",
+      "board_links": 59,
+      "verbose_rows": 0,
+      "borough_rows": 5,
+      "covers_restatements": 0,
+      "section_height": 425,
+      "overflow_px": 0
+    }
+  ]
+}
