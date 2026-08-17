@@ -9,8 +9,6 @@ import { buildNowSurface } from "./now_surface.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
-import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
-import { buildExamsAliasBrowseView } from "./exams_surface.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -178,39 +176,22 @@ export function buildBrowseLandingDocument(shell, payloads, options = {}) {
   return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
 }
 
-export function buildBrowseAliasDocument(shell, aliasId, targetPayload) {
-  const alias = BROWSE_ROUTE_ALIASES[aliasId];
-  if (!alias) throw new Error(`Unknown Browse route alias: ${aliasId}`);
-  let html = buildBrowseDocument(shell, alias.targetFacet, targetPayload, new URLSearchParams(), {
-    route: alias.route,
-  });
-  html = pageMetadata(html, {
-    title: `${alias.title} · Browse · CityScroll`,
-    description: alias.description,
-    canonical: canonicalRoute(alias.route),
+export function buildOwnedBrowseDocument(shell, surface, { container, view }) {
+  let html = pageMetadata(shell, {
+    title: `${surface.title} · Browse · CityScroll`,
+    description: surface.description,
+    canonical: canonicalRoute(surface.route),
     primaryHref: "/browse/",
     primaryContext: "browse",
   });
+  html = activateTab(html, surface.compatibility.runtimeTab);
+  html = html.replace(`href="${surface.route}"`, `href="${surface.route}" aria-current="page"`);
   html = html.replace(
     '<body data-primary-context="browse"',
-    `<body data-primary-context="browse" data-browse-route-alias="${esc(aliasId)}" data-browse-route-alias-label="${esc(alias.label)}"`,
+    `<body data-primary-context="browse" data-browse-surface="${esc(surface.surfaceId)}"`,
   );
-  html = activateTabButton(html, alias.navigationTab);
-  const examsPane = findElementRange(html, "tab-exams");
-  html = `${html.slice(0, examsPane.openingStart)}${html.slice(examsPane.closingEnd)}`;
-  html = html.replace('<details class="staffing-ledger" id="staffing-ledger">', '<details class="staffing-ledger" id="staffing-ledger" hidden>');
-  html = html.replace(
-    '<p class="career-kicker" data-i18n="staffing_pathways_kicker">City careers</p>',
-    '<p class="career-kicker">Exams</p>',
-  );
-  html = html.replace(
-    '<h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1" data-i18n="career_browser_heading">Find an exam you can act on</h2>',
-    '<h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1">Civil-service exams</h2>',
-  );
-  if (aliasId === "exams" && Array.isArray(targetPayload?.exams)) {
-    html = replaceElementContent(html, "career-results", renderBrowseView(buildExamsAliasBrowseView(targetPayload)));
-  }
-  return html;
+  html = addRouteStyles(html, ["browse.css"]);
+  return replaceElementContent(html, container, renderBrowseView(view));
 }
 
 export function buildBrowseDocument(shell, facet, payload, params = new URLSearchParams(), options = {}) {

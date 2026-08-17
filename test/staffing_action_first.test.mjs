@@ -5,18 +5,21 @@ import test from "node:test";
 
 const html = SITE_SOURCE;
 
-test("staffing landing follows act now, coming up, then history", () => {
-  const guide = html.indexOf('<div class="career-guide" id="career-guide">');
-  const browser = html.indexOf('id="career-browser-heading"');
-  const ledger = html.indexOf('<details class="staffing-ledger" id="staffing-ledger">');
-  const appointments = html.indexOf('id="staffing-feed-heading"');
+test("Exams owns the action guide while Staffing retains its appointment ledger", () => {
+  const exams = html.slice(html.indexOf('id="tab-exams"'), html.indexOf('id="tab-alerts"'));
+  const staffing = html.slice(html.indexOf('id="tab-people"'), html.indexOf('id="tab-land"'));
+  const guide = exams.indexOf('<div class="career-guide" id="career-guide">');
+  const browser = exams.indexOf('id="career-browser-heading"');
+  const ledger = staffing.indexOf('<details class="staffing-ledger" id="staffing-ledger">');
+  const appointments = staffing.indexOf('id="staffing-feed-heading"');
 
-  assert.ok(guide >= 0, "the exam guide should be visible on the default Staffing route");
-  assert.ok(browser > guide, "the action browser should lead the visible exam guide");
-  assert.ok(ledger > browser, "the appointments ledger should follow the exam browser");
+  assert.ok(guide >= 0, "the exam guide should live on the Exams route");
+  assert.ok(browser > guide, "the action browser should lead the Exams guide");
+  assert.ok(ledger >= 0, "the Staffing route should retain the appointments ledger");
   assert.ok(appointments > ledger, "the personnel feed should live inside the collapsed ledger");
+  assert.doesNotMatch(staffing, /id="career-guide"/, "Staffing must not own the Exams guide");
   assert.doesNotMatch(
-    html.slice(ledger, appointments),
+    staffing.slice(ledger, appointments),
     /<details[^>]*\sopen(?:\s|>)/,
     "the appointments ledger should be collapsed by default",
   );

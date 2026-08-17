@@ -70,8 +70,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   in `site/browse_view.mjs` (`rowBoroughs` / `rowMatchesBorough`).
 - **People/Staffing/Exams surface identity:** `site/browse_surface_contracts.mjs` is the sole
   registry for their public route and logical builder/controller owners. Its compatibility
-  exports deliberately preserve the current shared People runtime during the incremental cutover;
-  new routing or view maps must derive from that adapter rather than restating these identities.
+  exports preserve the remaining People/Staffing runtime during the incremental cutover; Exams
+  now builds from `site/exams_surface.mjs` and hydrates through `site/app/exams.mjs` on its own pane.
+  New routing or view maps must derive from the registry rather than restating these identities.
   Pure People and Exams rows, filters, and view builders live separately in
   `site/people_organizations_surface.mjs` and `site/exams_surface.mjs`; the architecture fitness
   gate prohibits owner-to-owner imports. Focused proof: `test/browse_surface_contract.test.mjs`

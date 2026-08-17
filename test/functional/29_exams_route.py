@@ -1,4 +1,4 @@
-"""End-to-end separation of People + organizations from the Exams alias."""
+"""End-to-end proof of the dedicated Exams document and controller."""
 
 from __future__ import annotations
 
@@ -20,20 +20,20 @@ def wait_for_guide(page):
     wait_for_locator(page.locator("#career-results .career-card").first, timeout=45_000, label="Exams guide cards")
 
 
-def assert_active_civic_object(page, href):
+def assert_active_civic_object(page, href, pane):
     active = page.locator(".browse-child-tabs .tabbtn.active")
     assert active.count() == 1
     assert active.get_attribute("href") == href
-    assert active.get_attribute("aria-controls") == "tab-people"
-    assert page.locator("#tab-people").get_attribute("aria-labelledby") == active.get_attribute("id")
+    assert active.get_attribute("aria-controls") == pane
+    assert page.locator(f"#{pane}").get_attribute("aria-labelledby") == active.get_attribute("id")
 
 
 def assert_shared_exam_card_grammar(page):
     cards = page.locator("#career-results .career-card")
     assert cards.count() >= 3
 
-    # Exams must inherit the Staffing renderer rather than assembling an
-    # alias-specific card. Each visible card opens and copies one canonical
+    # Exams keeps the shared card grammar while owning its controller. Each
+    # visible card opens and copies one canonical
     # CityScroll exam record and marks its official source as off-site.
     for index in range(3):
         card = cards.nth(index)
@@ -106,9 +106,8 @@ def run(page):
     assert people.locator("#people-organizations-type option[value='agency']").count() == 1
     expect(page.locator("#career-guide")).to_be_hidden()
 
-    # Exams owns a document route even though its interaction contract is
-    # implemented by the Staffing guide. The Browse nav must perform a native
-    # navigation instead of exposing the retired inline #tab-exams splash.
+    # Exams owns its document, pane, and controller. Browse navigation performs
+    # a native navigation to that canonical surface.
     page.goto(f"{BASE}browse/contracts/", wait_until="domcontentloaded", timeout=30_000)
     page.wait_for_function("typeof window.showTab === 'function'")
     # Regression: the Exams nav item must keep its own route and highlight;
@@ -117,25 +116,24 @@ def run(page):
     page.wait_for_url(f"{BASE}browse/exams/", timeout=30_000)
     wait_for_guide(page)
     assert page.url.rstrip("/").endswith("/browse/exams")
-    assert_active_civic_object(page, "/browse/exams/")
-    expect(page.locator("#tab-exams")).to_be_hidden()
-    assert page.locator("#tab-people.active").count() == 1
+    assert_active_civic_object(page, "/browse/exams/", "tab-exams")
+    assert page.locator("#tab-exams.active").count() == 1
+    expect(page.locator("#tab-people")).to_be_hidden()
     assert page.locator("#career-guide").is_visible()
     expect(page.locator("#staffing-ledger")).to_be_hidden()
-    assert page.locator("#staffing-ledger").get_attribute("hidden") == ""
     assert page.locator("#career-browser-heading").inner_text() == "Civil-service exams"
     assert page.locator("#career-guide .career-kicker").first.text_content().strip() == "Exams"
     assert page.locator("#career-result-count").inner_text().strip()
     assert page.locator("#career-source").inner_text().strip()
     assert_shared_exam_card_grammar(page)
 
-    # Search is the Staffing guide input, but its state stays on the Exams URL.
+    # Search state stays on the canonical Exams URL.
     page.locator("#career-query").fill("Police Officer")
     page.wait_for_function("document.querySelectorAll('#career-results .career-card').length > 0")
     page.wait_for_timeout(500)
     route = page.evaluate("({ pathname: location.pathname, params: Object.fromEntries(new URLSearchParams(location.search)) })")
     assert route["pathname"] == "/browse/exams/", route
-    assert route["params"].get("view") == "guide", route
+    assert "view" not in route["params"], route
     assert route["params"].get("q") == "Police Officer", route
     assert page.locator("#career-query").input_value() == "Police Officer"
     page.reload(wait_until="domcontentloaded")
@@ -186,15 +184,13 @@ def run(page):
     assert page.locator("#staffing-more-filters").get_attribute("open") == ""
     page.keyboard.press("Escape")
 
-    # Leaving the alias through its shared parent keeps the retained Staffing
-    # URL, but renders the unified People + organizations document rather than
-    # leaking the Exams guide into that route.
+    # Leaving Exams for People opens the canonical People + organizations
+    # document without leaking Exams state into that route.
     page.locator(".browse-child-tabs [href='/browse/people/']").click()
-    page.wait_for_url(f"{BASE}browse/staffing/", timeout=30_000)
+    page.wait_for_url(f"{BASE}browse/people/", timeout=30_000)
     people = page.locator("[data-browse-concept='people']")
-    wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="Staffing People + organizations list")
-    assert page.locator("body").get_attribute("data-browse-route-alias") is None
-    assert_active_civic_object(page, "/browse/people/")
+    wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="People + organizations list")
+    assert_active_civic_object(page, "/browse/people/", "tab-people")
     expect(people).to_be_visible()
     expect(people.locator('[data-civic-object-kind="official"]').first).to_be_visible()
     assert people.locator("#people-organizations-type option[value='agency']").count() == 1

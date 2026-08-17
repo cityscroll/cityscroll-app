@@ -59,11 +59,10 @@ $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
 $("#career-eligibility").addEventListener("change",()=>{
-  careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide(); updateHash();
+  careerSelected=null; careerLimit=16; syncExamsModeUI(); renderCareerGuide(); updateHash();
 });
 $("#career-query").addEventListener("input",debounce(()=>{
-  careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide();
-  if(document.body?.dataset.browseRouteAlias === "exams") updateHash();
+  careerSelected=null; careerLimit=16; syncExamsModeUI(); renderCareerGuide(); updateHash();
 },200));
 
 $("#awatch").addEventListener("change", ()=>{
@@ -652,8 +651,9 @@ function rerenderForLang(){
   if(tab!=="money") moneyLoaded=false;
   if(tab!=="land") landLoaded=false;
   if(tab==="money" && moneyLoaded) search();
-  else if(tab==="people"){
-    populateCareerInterests(); renderCareerGuide(); renderStaffingFeed();
+  else if(tab==="people") renderStaffingFeed();
+  else if(tab==="exams"){
+    populateCareerInterests(); renderCareerGuide();
   }
   else if(tab==="land" && landLoaded){
     const raw=location.hash.slice(1);

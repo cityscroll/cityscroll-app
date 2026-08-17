@@ -18,9 +18,8 @@ import edgeWorker, { edgeRequestKind, isMeetingDocumentHtml, renderEdgeNotice, b
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { encodeTraversalPath } from "../site/traversal_path.mjs";
 import { primaryDocumentOutputs, sharedMeetingOutputs } from "../tools/build_primary_documents.mjs";
-import { buildBrowseAliasDocument } from "../site/primary_document_view.mjs";
-import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
-import { BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT } from "../site/browse_surface_contracts.mjs";
+import { buildExamsDocument } from "../site/exams_surface.mjs";
+import { BROWSE_DOCUMENT_CONCEPT_ROUTE_ENTRIES_COMPAT, EXAMS_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
@@ -393,16 +392,15 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(landing, /228 civil-service exams/);
   assert.match(landing, /Pick a civic object\. Follow the edges between people, places, agencies, contracts, and decisions\./);
   const exams = output("/site/browse/exams/index.html");
-  assert.match(exams, /data-browse-route-alias="exams"/);
-  assert.match(exams, /id="tab-people" class="tabpane active"/);
-  assert.match(exams, /class="tabbtn active" href="\/browse\/exams\/" data-tab="exams"/);
+  assert.match(exams, /data-browse-surface="exams"/);
+  assert.match(exams, /id="tab-exams" class="tabpane active"/);
+  assert.match(exams, /class="tabbtn active" href="\/browse\/exams\/" aria-current="page" data-tab="exams"/);
   assert.doesNotMatch(exams, /class="tabbtn active" href="\/browse\/people\/" data-tab="people"/);
   assert.match(exams, /id="career-guide"/);
   assert.match(exams, /id="career-results"/);
-  assert.match(exams, /id="staffing-ledger" hidden/);
-  assert.doesNotMatch(exams, /data-build-rendered="browse-exams"/);
+  assert.doesNotMatch(exams, /id="tab-people" class="tabpane active"/);
+  assert.match(exams, /data-build-rendered="browse" data-browse-facet="exams"/);
   assert.doesNotMatch(exams, /data-browse-object-family="exams"/);
-  assert.doesNotMatch(exams, /id="tab-exams"/);
   assert.doesNotMatch(exams, /Coming soon|data-browse-stub/);
 
   assert.match(landing, /<details class="browse-source-disclosure"><summary>Official data from…<\/summary>/);
@@ -438,11 +436,10 @@ test("Staffing renders People + organizations and stays distinct from Exams", ()
   assert.match(staffing, /data-civic-object-kind="official"/);
   assert.match(staffing, /<option value="agency">Agencies<\/option>/);
   assert.match(staffing, /id="vendors"/);
-  assert.doesNotMatch(staffing, /data-browse-route-alias="exams"/);
-  assert.doesNotMatch(staffing, /data-browse-facet="staffing"|data-browse-facet="exams-alias"/);
+  assert.doesNotMatch(staffing, /data-browse-facet="staffing"|data-browse-facet="exams"/);
 
-  assert.match(exams, /data-browse-route-alias="exams"/);
-  assert.match(exams, /data-browse-facet="exams-alias"/);
+  assert.match(exams, /data-browse-surface="exams"/);
+  assert.match(exams, /data-browse-facet="exams"/);
   assert.match(exams, /data-civic-object-kind="exam"/);
   assert.doesNotMatch(exams, /data-browse-concept="people"/);
 });
@@ -498,39 +495,21 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.ok(examsDocument, "the Exams document is generated");
   assert.match(examsDocument[1], /<title>Exams · Browse · CityScroll<\/title>/);
   assert.match(examsDocument[1], /rel="canonical" href="https:\/\/cityscroll\.org\/browse\/exams\/"/);
-  assert.match(examsDocument[1], /data-browse-route-alias="exams"/);
-  assert.match(examsDocument[1], /id="tab-people" class="tabpane active"/);
+  assert.match(examsDocument[1], /data-browse-surface="exams"/);
+  assert.match(examsDocument[1], /id="tab-exams" class="tabpane active"/);
   assert.match(examsDocument[1], /id="career-guide"/);
-  assert.match(examsDocument[1], /id="staffing-ledger" hidden/);
-  assert.doesNotMatch(examsDocument[1], /data-build-rendered="browse-exams"/);
-  assert.doesNotMatch(examsDocument[1], /id="tab-exams" class="tabpane active"/);
+  assert.match(examsDocument[1], /data-build-rendered="browse" data-browse-facet="exams"/);
+  assert.doesNotMatch(examsDocument[1], /id="tab-people" class="tabpane active"/);
 });
 
-test("Exams is one data-only alias to the Staffing guide", () => {
-  assert.deepEqual(Object.keys(BROWSE_ROUTE_ALIASES), ["exams"]);
-  const alias = BROWSE_ROUTE_ALIASES.exams;
-  assert.deepEqual({
-    route: alias.route,
-    targetRoute: alias.targetRoute,
-    targetFacet: alias.targetFacet,
-    targetTab: alias.targetTab,
-    navigationTab: alias.navigationTab,
-    defaultView: alias.defaultView,
-    corpus: alias.corpus,
-  }, {
-    route: "/browse/exams/",
-    targetRoute: "/browse/staffing/",
-    targetFacet: "staffing",
-    targetTab: "people",
-    navigationTab: "exams",
-    defaultView: "guide",
-    corpus: "exams",
-  });
+test("Exams builds directly from its surface owner", () => {
+  assert.equal(EXAMS_SURFACE.route, "/browse/exams/");
+  assert.equal(EXAMS_SURFACE.compatibility.runtimeTab, "exams");
   const shell = read("../site/index.html");
-  const html = buildBrowseAliasDocument(shell, "exams", { notices: [] });
+  const html = buildExamsDocument(shell, { exams: [] });
   assert.match(html, /id="career-guide"/);
-  assert.match(html, /data-browse-route-alias="exams"/);
-  assert.match(html, /id="staffing-ledger" hidden/);
+  assert.match(html, /data-browse-surface="exams"/);
+  assert.match(html, /id="tab-exams" class="tabpane active"/);
   assert.doesNotMatch(html, /data-browse-object-family="exams"/);
 });
 

@@ -31,7 +31,7 @@ PUBLIC_COPY_ROOTS = (
 PUBLIC_SUFFIXES = {".js", ".mjs", ".html", ".md"}
 
 RENDERER_CONTRACTS = {
-    "site/app/people.mjs": (
+    "site/app/exams.mjs": (
         'data-staffing-list-prediction="1"',
         'data-prediction-subject="eligible-list-establishment"',
         "data-prediction-value=",

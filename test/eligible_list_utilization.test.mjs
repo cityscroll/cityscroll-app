@@ -28,7 +28,7 @@ test("LL50 slice uses exact exam keys and preserves source-row provenance", () =
 
 test("staffing artifact and surface expose only strong LL50 edges", () => {
   const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
-  const source = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+  const source = readFileSync(new URL("../site/app/exams.mjs", import.meta.url), "utf8");
   assert.deepEqual(artifact.source_checks.eligible_list_utilization, {
     eligible: 228,
     linked: 98,

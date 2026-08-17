@@ -17,7 +17,7 @@ const money = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const map = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
-const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+const exams = readFileSync(new URL("../site/app/exams.mjs", import.meta.url), "utf8");
 
 test("notice detail mounts the action rail before summary/context chrome", () => {
   const start = routing.indexOf("box.innerHTML = `<div style=\"max-width:880px");
@@ -62,13 +62,14 @@ test("land and property phase spines disclose earlier stages under history", () 
   assert.match(property, /lifecycle_phase_show_history/);
 });
 
-test("staffing career browser exposes format as the primary rail with More filters", () => {
-  const section = html.slice(html.indexOf('class="career-browser"'), html.indexOf('id="staffing-ledger"'));
+test("Exams browser exposes format as the primary rail with More filters", () => {
+  const start = html.indexOf('class="career-browser"');
+  const section = html.slice(start, html.indexOf('<!-- ============ ALERTS', start));
   assert.match(section, /id="staffing-more-filters"/);
   assert.match(section, /id="career-format-facets"/);
   assert.ok(section.indexOf("career-toolbar") < section.indexOf("career-format-facets"));
   assert.match(section, /id="staffing-active-filters"/);
-  assert.match(people, /updateStaffingMoreFiltersState/);
+  assert.match(exams, /updateStaffingMoreFiltersState/);
 });
 
 test("Following handoff renders scope chips and count before the email field", () => {
