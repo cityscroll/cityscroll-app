@@ -1224,8 +1224,8 @@
             "selector": "#mandates-rules [data-bridge-side='rules']"
           },
           {
-            "selector": "nav[aria-label='Explore this agency']",
-            "text": "Browse agency Rules"
+            "selector": ".agency-connection-card[data-edge-type='issued_rule']",
+            "text": "Rules issued by this agency"
           }
         ],
         "notVisible": [

@@ -13,21 +13,6 @@ import {
   renderAgencyConstellationSections,
 } from "./agency_constellation_section_registry.mjs";
 import {
-  agencyMandatePredictionsPath,
-} from "./mandate_prediction_alerts.mjs";
-import {
-  agencyMandateReportsPath,
-} from "./mandate_reports_receipt.mjs";
-import {
-  agencyMandateRulesPath,
-} from "./mandate_rules_bridge.mjs";
-import {
-  mandateReportsNavLabel,
-  mandateRulesNavLabel,
-  normalizeMandateGraphNeighbors,
-} from "./mandate_graph_neighbors.mjs";
-import { agencyMandatesConformancePath } from "./process_conformance.mjs";
-import {
   gateNodePageRender,
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
@@ -41,10 +26,7 @@ import {
   normalizeAsOfDay,
   projectAgencyConstellationAsOf,
 } from "./civic_time_ledger.mjs";
-import { constellationLink } from "./affordance_grammar.mjs";
-import { renderEdgeSummaryRail } from "./edge_summary.mjs";
 import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
-import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -57,6 +39,88 @@ const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
 }[char]));
 
 const DEMO_AS_OF_DAY = "2024-06-01";
+
+const CONNECTION_PRESENTATION = Object.freeze({
+  published_by_agency: Object.freeze({ title: "Contracts", noun: "record", action: "View contracts", relation: "published by this agency" }),
+  top_vendor_by_award_12mo: Object.freeze({ title: "Top vendors", noun: "vendor", action: "View vendors", relation: "received awards from this agency" }),
+  hosts_meeting: Object.freeze({ title: "Meetings & hearings", noun: "meeting", action: "View meetings", relation: "involving this agency" }),
+  issued_rule: Object.freeze({ title: "Rules", noun: "rule", action: "View rules", relation: "issued by this agency" }),
+  statute_duty: Object.freeze({ title: "Statutory mandates", noun: "mandate", action: "View mandates", relation: "requirements assigned to this agency" }),
+  certified_to_agency: Object.freeze({ title: "Staffing exams", noun: "exam", action: "View staffing exams", relation: "certified to this agency" }),
+});
+
+const PRIMARY_RECORD_PRIORITY = Object.freeze([
+  "published_by_agency",
+  "hosts_meeting",
+  "issued_rule",
+  "certified_to_agency",
+  "top_vendor_by_award_12mo",
+  "statute_duty",
+]);
+
+function connectionPresentation(record) {
+  const configured = CONNECTION_PRESENTATION[record.edge_type] || {};
+  const title = configured.title || clean(record.target_name || record.label || "Connected records", 120);
+  const noun = configured.noun || "record";
+  return {
+    title,
+    noun,
+    action: configured.action || `View ${title.toLowerCase()}`,
+    relation: configured.relation || clean(record.relation_label || "connected with this agency", 180),
+  };
+}
+
+function recordCountLabel(record, noun) {
+  if (!Number.isInteger(record.count) || record.count < 0) return "";
+  return `${record.count.toLocaleString("en-US")} ${record.count === 1 ? noun : `${noun}s`}`;
+}
+
+function recordHref(record) {
+  return clean(record.canonical_href || record.href, 1200);
+}
+
+export function renderAgencyConnectionCards(records = []) {
+  const connected = records.filter((record) => record?.state === "matched" && recordHref(record));
+  if (!connected.length) return "";
+  const cards = connected.map((record) => {
+    const presentation = connectionPresentation(record);
+    const count = recordCountLabel(record, presentation.noun);
+    const href = recordHref(record);
+    return `<article class="agency-connection-card" data-edge-type="${esc(record.edge_type)}" data-edge-state="matched"${record.count == null ? "" : ` data-edge-count="${esc(record.count)}"`}>
+      <a class="agency-connection-link" href="${esc(href)}" aria-label="${esc(`${presentation.action}; ${count ? `${count}; ` : ""}${presentation.relation}`)}">
+        <span class="agency-connection-heading"><h3 class="agency-connection-title">${esc(presentation.title)}</h3>${count ? `<span class="agency-connection-count">${esc(count)}</span>` : ""}</span>
+        <p class="agency-connection-relation">${esc(presentation.relation)}</p>
+        <span class="agency-connection-action">${esc(presentation.action)} <span aria-hidden="true">→</span></span>
+      </a>
+    </article>`;
+  }).join("");
+  const count = connected.length;
+  return `<section class="agency-connections" aria-labelledby="agency-connections-heading">
+    <div class="agency-connections-heading">
+      <div><p class="agency-connections-kicker">Public relationships</p><h2 id="agency-connections-heading">Connected records</h2></div>
+      <p class="agency-connections-summary">${count} ${count === 1 ? "kind of connected record" : "kinds of connected records"}</p>
+    </div>
+    <div class="agency-connection-grid">${cards}</div>
+  </section>`;
+}
+
+function primaryRecordAction(records) {
+  const connected = records.filter((record) => record?.state === "matched" && recordHref(record));
+  const selected = PRIMARY_RECORD_PRIORITY
+    .map((edgeType) => connected.find((record) => record.edge_type === edgeType))
+    .find(Boolean) || connected[0];
+  if (!selected) return null;
+  return {
+    kind: "link",
+    label: connectionPresentation(selected).action,
+    href: recordHref(selected),
+    className: "civic-object-action",
+  };
+}
+
+function readerDay(value) {
+  return String(value || "").match(/\d{4}-\d{2}-\d{2}/)?.[0] || "";
+}
 
 export function agencyConstellationSharePath(viewPath, { claim = null, asOf = null } = {}) {
   const base = String(viewPath || "/");
@@ -88,79 +152,22 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const matched = displayView.summary.matched_categories;
   const lead = effectiveAsOf
     ? (matched
-      ? `Records dated on or before ${effectiveAsOf} · ${matched} of ${displayView.summary.category_count} categories.`
+      ? `${matched} ${matched === 1 ? "kind" : "kinds"} of connected public record dated on or before ${effectiveAsOf}.`
       : `No linked records dated on or before ${effectiveAsOf}.`)
     : (matched
-      ? `Public records connected with this agency across ${matched} of ${view.summary.category_count} categories.`
+      ? `Explore ${matched} ${matched === 1 ? "kind" : "kinds"} of public record connected with this agency.`
       : "Public records for this agency appear here when contracts, vendors, meetings, rules, mandates, or staffing exams join to its published identity.");
-  const kicker = effectiveAsOf
-    ? `Agency constellation · as of ${effectiveAsOf}`
-    : "Agency constellation";
-
-  const bridgeSource = displayView.mandates_rules || view.mandates_rules || null;
-  const reportsSource = displayView.mandates_reports || view.mandates_reports || null;
-  const predictionsSource = displayView.mandates_predictions || view.mandates_predictions || null;
-  const obligationsFollow = view.categories.find((category) => category.id === "obligations" && (category.items?.length || category.conformance))?.follow_href || "";
-  const mandatesHref = view.mandates_href || agencyMandatesConformancePath(view.canonical_id);
-  const mandatesRulesHref = view.mandates_rules_href || agencyMandateRulesPath(view.canonical_id);
-  const mandatesReportsHref = view.mandates_reports_href || agencyMandateReportsPath(view.canonical_id);
-  const mandatesPredictionsHref = view.mandates_predictions_href
-    || agencyMandatePredictionsPath(view.canonical_id);
-  const showMandatesRulesNav = bridgeSource?.status === "matched";
-  const showMandatesReportsNav = reportsSource?.status === "matched";
-  const showMandatesPredictionsNav = predictionsSource?.status === "matched";
-  // Honest nav: do not claim filing receipts / Rules activity edges when none.
-  const reportsNavLabel = mandateReportsNavLabel(reportsSource?.counts || {});
-  const rulesNavLabel = mandateRulesNavLabel(bridgeSource?.counts || {});
-  const actions = renderNodeActions([
-    { kind: "link", label: "Get updates about this agency's public records", href: view.follow_href, primary: true, className: "civic-object-action" },
-    mandatesHref
-      ? { kind: "link", label: "Legal duties and public records", href: mandatesHref, className: "civic-object-action" }
-      : null,
-    showMandatesPredictionsNav
-      ? { kind: "link", label: "Expected mandate events", href: mandatesPredictionsHref, className: "civic-object-action" }
-      : null,
-    showMandatesReportsNav
-      ? { kind: "link", label: reportsNavLabel, href: mandatesReportsHref, className: "civic-object-action" }
-      : null,
-    showMandatesRulesNav
-      ? { kind: "link", label: rulesNavLabel, href: mandatesRulesHref, className: "civic-object-action" }
-      : null,
-    obligationsFollow
-      ? { kind: "link", label: "Watch mandates and deadlines", href: obligationsFollow, className: "civic-object-action" }
-      : null,
+  const edgeSummary = buildAgencyEdgeSummary(displayView);
+  const secondaryActions = renderNodeActions([
+    { kind: "link", label: "Interactive profile", href: view.interactive_profile_href, className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
     { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
     { kind: "button", label: "Download JSON", attrs: { "data-object-export": "json" }, className: "civic-object-action" },
-  ].filter(Boolean), {
-    ariaLabel: "Document actions",
-    exportClass: "object_actions",
-    extraClass: "civic-object-actions",
+  ], {
+    ariaLabel: "More agency options",
+    exportClass: "object_utilities",
+    extraClass: "civic-object-actions agency-secondary-actions",
   });
-  const agencyBrowse = normalizeMandateGraphNeighbors(
-    view.mandates_rules?.graph_neighbors
-      || view.mandates_reports?.graph_neighbors
-      || view.mandates_predictions?.graph_neighbors
-      || view.mandates_conformance?.graph_neighbors
-      || {},
-  );
-  const exploreAgency = agencyBrowse
-    ? renderNodeActions([
-      agencyBrowse.rules_browse_href
-        ? { kind: "link", label: "Browse agency Rules", href: agencyBrowse.rules_browse_href, className: "civic-object-action" }
-        : null,
-      agencyBrowse.meetings_browse_href
-        ? { kind: "link", label: "Browse agency Meetings", href: agencyBrowse.meetings_browse_href, className: "civic-object-action" }
-        : null,
-      agencyBrowse.contracts_browse_href
-        ? { kind: "link", label: "Browse agency Contracts", href: agencyBrowse.contracts_browse_href, className: "civic-object-action" }
-        : null,
-    ].filter(Boolean), {
-      ariaLabel: "Explore this agency",
-      exportClass: "object_explore",
-      extraClass: "civic-object-actions agency-explore-actions",
-    })
-    : "";
   const sectionView = Object.freeze({
     view,
     displayView,
@@ -169,26 +176,29 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     showAsOf,
   });
   const sections = renderAgencyConstellationSections(sectionView);
-  const edgeSummary = buildAgencyEdgeSummary(displayView);
-  // Matched categories already have links in the nearby-records projection.
-  // Keep only honest unknown coverage rows here; empty categories are hidden
-  // rather than turning the overview into a list of absent relationships.
-  const overviewEdgeSummary = edgeSummary.filter((record) => record.state !== "matched" && record.state !== "empty");
-  const edgeRail = renderEdgeSummaryRail(overviewEdgeSummary, {
-    heading: "Connected records",
-    id: "agency-edge-summary-heading",
-    className: "agency-edge-summary",
+  const surfaceEdgeSummary = sections.includes('id="mandates-conformance"')
+    ? edgeSummary
+    : edgeSummary.map((record) => record.edge_type === "statute_duty"
+      ? { ...record, href: "#agency-statutory-mandates", canonical_href: "#agency-statutory-mandates" }
+      : record);
+  const primaryActions = renderNodeActions([
+    { kind: "link", label: "Follow this agency", href: view.follow_href, primary: true, className: "civic-object-action" },
+    primaryRecordAction(surfaceEdgeSummary),
+    { kind: "link", label: "Connection evidence", href: "#edge-provenance", className: "civic-object-action agency-evidence-action" },
+  ].filter(Boolean), {
+    ariaLabel: "Primary agency actions",
+    exportClass: "object_actions",
+    extraClass: "civic-object-actions agency-primary-actions",
   });
-  const localConstellation = renderLocalConstellationHTML(displayView.local_constellation, {
-    heading: "Nearby agency records",
-    id: "agency-local-constellation-heading",
-  });
+  const connectedRecords = renderAgencyConnectionCards(surfaceEdgeSummary);
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
-  const demoAsOfLink = showAsOf
-    ? ` · ${constellationLink({ href: asOfHref(view.path, DEMO_AS_OF_DAY), label: `As of ${DEMO_AS_OF_DAY}`, className: "agency-pivot-link", attributes: { "data-ctl-demo-as-of": "" }, escape: esc })}`
-    : "";
+  const updatedDay = readerDay(displayView.summary.generated_at || view.summary.generated_at);
+  const metadata = [
+    effectiveAsOf ? `Showing records as of ${effectiveAsOf}` : (updatedDay ? `Records updated ${updatedDay}` : ""),
+    showAsOf ? `<a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>As of ${DEMO_AS_OF_DAY}</a>` : "",
+  ].filter(Boolean).join(" <span aria-hidden=\"true\">·</span> ");
   return gateNodePageRender(`<!doctype html>
 <html lang="en">
 <head>
@@ -199,7 +209,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
-  <link rel="stylesheet" href="${esc(`${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}local_constellation.css`)}">
   <style>${agencyConstellationSectionStyles()}</style>
 </head>
 <body>
@@ -207,25 +216,16 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   ${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
   <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(effectiveAsOf || "")}" data-ctl-useful="${showAsOf ? "1" : "0"}">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
-    <header class="node-hero civic-object-hero" data-export-class="object_identity">
-      <p class="node-kicker civic-object-kicker">${esc(kicker)}</p>
+    <header class="node-hero civic-object-hero agency-constellation-hero" data-export-class="object_identity">
+      <p class="node-kicker civic-object-kicker">Agency constellation</p>
       <h1>${esc(title)}</h1>
       <p class="node-lede">${esc(lead)}</p>
-      <p class="node-pivot civic-object-pivot">
-        ${constellationLink({ href: view.scope_href, label: "Open this agency in Contracts", className: "agency-pivot-link", attributes: { "data-subject-ref": view.subject_ref }, escape: esc })}
-        · ${constellationLink({ href: mandatesHref, label: "Legal duties and public records", className: "agency-pivot-link", escape: esc })}
-        ${showMandatesPredictionsNav ? `· ${constellationLink({ href: mandatesPredictionsHref, label: "Expected mandate events", className: "agency-pivot-link", escape: esc })}` : ""}
-        ${showMandatesReportsNav ? `· ${constellationLink({ href: mandatesReportsHref, label: reportsNavLabel, className: "agency-pivot-link", escape: esc })}` : ""}
-        ${showMandatesRulesNav ? `· ${constellationLink({ href: mandatesRulesHref, label: rulesNavLabel, className: "agency-pivot-link", escape: esc })}` : ""}
-        · ${constellationLink({ href: view.interactive_profile_href, label: "Interactive profile", className: "agency-pivot-link", escape: esc })}
-        · ${constellationLink({ href: "#edge-provenance", label: "Connection evidence", className: "agency-pivot-link", escape: esc })}${demoAsOfLink}
-      </p>
+      ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>
-    ${edgeRail}
-    ${localConstellation}
-    ${actions}
-    ${exploreAgency}
+    ${primaryActions}
+    ${connectedRecords}
     ${sections}
+    ${secondaryActions}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
   <script id="civic-object-payload" type="application/json">${payload}</script>

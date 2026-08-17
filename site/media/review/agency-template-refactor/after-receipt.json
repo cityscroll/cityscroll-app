@@ -1,0 +1,77 @@
+{
+  "phase": "after",
+  "agencies": [
+    "citywide-administrative-services",
+    "parks-and-recreation",
+    "rent-guidelines-board",
+    "district-attorney-richmond-county"
+  ],
+  "viewports": [
+    390,
+    1440
+  ],
+  "frames": [
+    "site/media/review/agency-template-refactor/after-dcas-390.png",
+    "site/media/review/agency-template-refactor/after-dcas-1440.png",
+    "site/media/review/agency-template-refactor/after-staten-island-da-390.png",
+    "site/media/review/agency-template-refactor/after-staten-island-da-1440.png"
+  ],
+  "observations": [
+    {
+      "agency": "citywide-administrative-services",
+      "viewport": 390,
+      "primary_actions": 3,
+      "connection_cards": 5,
+      "h1_height": 65
+    },
+    {
+      "agency": "citywide-administrative-services",
+      "viewport": 1440,
+      "primary_actions": 3,
+      "connection_cards": 5,
+      "h1_height": 114
+    },
+    {
+      "agency": "parks-and-recreation",
+      "viewport": 390,
+      "primary_actions": 3,
+      "connection_cards": 6,
+      "h1_height": 65
+    },
+    {
+      "agency": "parks-and-recreation",
+      "viewport": 1440,
+      "primary_actions": 3,
+      "connection_cards": 6,
+      "h1_height": 57
+    },
+    {
+      "agency": "rent-guidelines-board",
+      "viewport": 390,
+      "primary_actions": 3,
+      "connection_cards": 2,
+      "h1_height": 33
+    },
+    {
+      "agency": "rent-guidelines-board",
+      "viewport": 1440,
+      "primary_actions": 3,
+      "connection_cards": 2,
+      "h1_height": 57
+    },
+    {
+      "agency": "district-attorney-richmond-county",
+      "viewport": 390,
+      "primary_actions": 3,
+      "connection_cards": 1,
+      "h1_height": 65
+    },
+    {
+      "agency": "district-attorney-richmond-county",
+      "viewport": 1440,
+      "primary_actions": 3,
+      "connection_cards": 1,
+      "h1_height": 57
+    }
+  ]
+}
