@@ -372,10 +372,11 @@ function showTab(name, push){
   }
 }
 
+import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT } from "../browse_surface_contracts.mjs";
+
 const BROWSE_CONCEPT_DOCUMENT_PATHS = new Set([
-  "/browse/people",
+  ...BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT,
   "/browse/places",
-  "/browse/staffing",
 ]);
 
 function isBrowseConceptDocumentLink(href){

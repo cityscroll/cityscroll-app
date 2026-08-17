@@ -13,14 +13,15 @@ import {
 } from "./browse_list_contract.mjs";
 import { renderBrowseView } from "./browse_view.mjs";
 import { buildPeopleListBrowseView } from "./browse_reuse_surfaces.mjs";
+import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
-    route: "/browse/people/",
-    tab: "people",
-    label: "People + organizations",
-    title: "People + organizations",
-    description: "Officials, vendors, committees, and community boards with published records.",
+    route: PEOPLE_ORGANIZATIONS_SURFACE.route,
+    tab: PEOPLE_ORGANIZATIONS_SURFACE.compatibility.concept,
+    label: PEOPLE_ORGANIZATIONS_SURFACE.label,
+    title: PEOPLE_ORGANIZATIONS_SURFACE.title,
+    description: PEOPLE_ORGANIZATIONS_SURFACE.description,
   },
   places: {
     route: "/browse/places/",

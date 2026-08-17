@@ -1,22 +1,11 @@
+import { BROWSE_ROUTE_ALIASES_COMPAT } from "./browse_surface_contracts.mjs";
+
 /**
  * Browse route aliases keep a public family URL on the runtime that already
  * owns its interaction contract. The alias is deliberately data-only: the
  * target view remains responsible for search, filters, rendering, and state.
  */
-export const BROWSE_ROUTE_ALIASES = Object.freeze({
-  exams: Object.freeze({
-    route: "/browse/exams/",
-    targetRoute: "/browse/staffing/",
-    targetFacet: "staffing",
-    targetTab: "people",
-    navigationTab: "exams",
-    defaultView: "guide",
-    corpus: "exams",
-    label: "Exams",
-    title: "Exams",
-    description: "Civil-service exam schedules, applications, eligible lists, and published outcomes.",
-  }),
-});
+export const BROWSE_ROUTE_ALIASES = BROWSE_ROUTE_ALIASES_COMPAT;
 
 export function browseRouteAlias(pathname) {
   const normalized = String(pathname || "").replace(/\/+$/, "") || "/";
