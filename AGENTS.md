@@ -257,6 +257,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `node tools/build_keyword_search_index.mjs`; the D1 notice mirror remains the Contracts/Rules
   source, while the client projects the flattened compatibility results through the registered
   universal-search domain lanes.
+- **Search-to-lens handoff:** `site/search_lens_handoff.mjs` is the versioned adapter from a
+  six-family result lane into the existing scope-v0 typed URL. It carries raw topic, normalized
+  terms, place/time, offset-backed evidence, and the return URL inside the existing `facet` state;
+  destination lenses render that carried evidence and never derive highlights from the raw query.
 - **Entity SearchDocument producers:** `site/{vendor,committee,board,exam,parcel}_search_producer.mjs`
   adapt the existing canonical read models into that contract and carry matched/empty/partial/
   not-indexed coverage. Vendor aliases are reviewed-registry-only; committee publication is gated;

@@ -50,6 +50,9 @@
 .topic-search-result-snippet mark{padding:0 .08em;background:#f5df9a;color:inherit}
 .topic-search-empty{margin:0;color:var(--ink-soft)}
 .topic-search-lane-source{margin:11px 0 0;padding-top:9px;border-top:1px solid var(--rule);color:var(--muted);font:11px/1.4 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
+.topic-search-lane-action{margin-block-start:14px}
+.topic-search-lane-link{display:inline-flex;min-block-size:44px;align-items:center}
+.topic-search-lane.is-returned-lane{outline:3px solid var(--color-focus,var(--oxblood));outline-offset:3px}
 @media(max-width:680px){
   .topic-search-document{padding-top:2px}
   .topic-search-lanes{grid-template-columns:minmax(0,1fr)}

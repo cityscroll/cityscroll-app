@@ -1,4 +1,8 @@
 import { walkEntryHref } from "../walk_entry.mjs";
+import {
+  parseSearchLensHandoff,
+  renderSearchHandoffArrivalHtml,
+} from "../search_lens_handoff.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -735,6 +739,12 @@ function searchLabelFromHash(lens, hash){
   return parts.join(" · ") || t("tab_"+lens);
 }
 
+function searchHandoffArrivalHTML(lens){
+  const handoff=parseSearchLensHandoff(globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES||{}, {surface:lens});
+  return handoff?renderSearchHandoffArrivalHtml(handoff,{t,escape:escUiHtml}):"";
+}
+globalThis.searchHandoffArrivalHTML=searchHandoffArrivalHTML;
+
 function documentSearchHash(lens){
   const facets={money:"contracts",people:"staffing",land:"zoning",property:"property",rules:"rules",meetings:"meetings"};
   const expected=facets[lens];
@@ -756,7 +766,7 @@ function renderSearchComponents(lens, options){
   const state=document.querySelector(`[data-search-state="${lens}"]`);
   const actions=document.querySelector(`[data-search-actions="${lens}"]`);
   if(state){
-    state.innerHTML=filter?interpretedSearchRowHTML(lens, filter):"";
+    state.innerHTML=searchHandoffArrivalHTML(lens)+(filter?interpretedSearchRowHTML(lens, filter):"");
     bindClearSearchState(lens, state);
   }
   if(actions){

@@ -3,6 +3,7 @@
 import json
 import os
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import sync_playwright
 
@@ -18,6 +19,8 @@ def assert_axe_green(page, state):
 
 def typed_result(term, *, title, object_type, domain, lens, href, state="active"):
     observation_ref = f"fixture:{object_type}:{term}"
+    mark_start = title.lower().index(term.lower())
+    mark_end = mark_start + len(term)
     return {
         "schema": "cityscroll.search_document.v1",
         "result_schema": "cityscroll.universal_search_result.v1",
@@ -41,6 +44,18 @@ def typed_result(term, *, title, object_type, domain, lens, href, state="active"
             "matched_term": term,
             "source_observation_ref": observation_ref,
         }],
+        "match_evidence": {
+            "field": "title",
+            "token_offsets": [0, 1],
+            "character_offsets": [mark_start, mark_end],
+            "matched_normalized_term": term,
+            "source_identifier": observation_ref,
+            "snippet": {
+                "text": title,
+                "mark_start": mark_start,
+                "mark_end": mark_end,
+            },
+        },
         "ranking": {"lifecycle_state": state},
         "edge_provenance": {
             "document_producer": "functional_fixture.v1",
@@ -117,7 +132,7 @@ SEARCH_LENSES = [
 ]
 
 
-def search_payload(rows, incomplete=False):
+def search_payload(rows, query, incomplete=False):
     counts = {lens: 0 for lens in SEARCH_LENSES}
     for result in rows:
         counts[result.get("lens", "notices")] += 1
@@ -140,7 +155,13 @@ def search_payload(rows, incomplete=False):
     observed = sum(counts.values())
     return {
         "schema": "cityscroll.keyword_search_response.v1",
+        "query": query,
         "match_mode": "keyword",
+        "resolved_term": {
+            "canonical_tokens": [query.lower()],
+            "structured_filters": {},
+            "alias_receipt": None,
+        },
         "lanes": [{
             "id": family,
             "status": "matched" if any(result_family(row) == family for row in rows) else "empty",
@@ -183,9 +204,9 @@ def main():
             query = route.request.url.split("q=", 1)[-1].lower()
             for term, results in SEARCH_FIXTURES.items():
                 if term in query:
-                    json_response(route, search_payload(results))
+                    json_response(route, search_payload(results, term))
                     return
-            json_response(route, search_payload([], incomplete=True))
+            json_response(route, search_payload([], "zzzz-no-match", incomplete=True))
 
         page.route("https://api.cityscroll.org/search?*", search_api)
         page.route("https://crol-worker.crol-worker.workers.dev/search?*", search_api)
@@ -213,6 +234,17 @@ def main():
             assert coverage.get_attribute("data-coverage-state") == "complete"
             assert coverage.locator("strong").first.text_content().startswith("1 match across")
             assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
+            assert page.locator("[data-search-lane]").count() == 6
+            lane_actions = page.locator("[data-search-lane-action] a[data-search-handoff-schema]")
+            assert lane_actions.count() == 6
+            family = result_family(expected[0])
+            action = page.locator(f'[data-search-lane="{family}"] [data-search-lane-action] a')
+            handoff_url = action.get_attribute("href")
+            assert handoff_url and f"q={term}" in handoff_url
+            facet = json.loads(parse_qs(urlparse(handoff_url).query)["facet"][0])
+            assert facet["search_handoff"]["raw_query"] == term
+            assert facet["search_handoff"]["normalized_terms"] == [term]
+            assert action.get_attribute("data-source-observation-ref") == expected[0]["source_observation_refs"][0]
             assert page.evaluate(
                 "el => el.scrollWidth <= el.clientWidth",
                 results.first.element_handle(),
@@ -221,6 +253,21 @@ def main():
             link.focus()
             assert link.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
             assert_axe_green(page, f"complete coverage: {term}")
+
+            if term == "zoning":
+                page.goto(f"{BASE}{handoff_url}", wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_function(
+                    "document.body.dataset.appReady === 'true' && document.querySelector('[data-search-handoff-schema]')",
+                    timeout=30000,
+                )
+                arrival = page.locator("[data-search-handoff-schema]").first
+                assert "Opened Meetings from topic search" in (arrival.text_content() or "")
+                assert arrival.locator("mark").text_content().lower() == "zoning"
+                assert arrival.get_attribute("data-source-observation-ref") == expected[0]["source_observation_refs"][0]
+                back_href = arrival.locator(".search-handoff-back").get_attribute("href")
+                assert back_href and "q=zoning" in back_href and "lane=meetings" in back_href
+                assert arrival.locator('[aria-label="Remove topic zoning"]').count() == 1
+                assert_axe_green(page, "Meetings handoff arrival")
 
         page.goto(f"{BASE}/search/?q=zzzz-no-match", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_function(
