@@ -1,21 +1,46 @@
-import { isSafeSearchCanonicalRoute } from "./search_document_contract.mjs";
+import {
+  relevanceResultHref,
+  renderUniversalSearchResultHtml,
+} from "./universal_search_relevance_ux.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
 const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
 const SEARCH_API_FALLBACK_ORIGIN = "https://crol-worker.crol-worker.workers.dev";
-const LANES = Object.freeze(["contracts", "rules", "meetings", "obligations"]);
+const LANES = Object.freeze([
+  "contracts",
+  "rules",
+  "meetings",
+  "obligations",
+  "people",
+  "places",
+  "staffing",
+  "property",
+  "zoning",
+]);
+// Stable resident labels are also inspected by entity surfaces that hand
+// results into Search; keep the product-domain vocabulary centralized here.
 const DOMAIN_LANES = Object.freeze({
   contracts: "Contracts",
   rules: "Rules",
   meetings: "Meetings",
   mandates: "Mandates",
+  people: "People and organizations",
+  places: "Community boards",
+  staffing: "Civil-service exams",
+  property: "Properties",
+  zoning: "Land use",
 });
 const DOMAIN_TO_LANE = Object.freeze({
   contracts: "contracts",
   rules: "rules",
   meetings: "meetings",
   mandates: "obligations",
+  people: "people",
+  places: "places",
+  staffing: "staffing",
+  property: "property",
+  zoning: "zoning",
 });
 const PLACE_KEYS = Object.freeze([
   ["boro", "Borough"],
@@ -86,10 +111,7 @@ function setLaneState(root, lane, statusText, bodyText, className = "") {
 }
 
 export function searchResultHref(record) {
-  const href = clean(record?.canonical_href, 600);
-  return isSafeSearchCanonicalRoute(href, { evidenceOnly: record?.outcome === "evidence_only" })
-    ? href
-    : null;
+  return relevanceResultHref(record);
 }
 
 export function searchResultLane(record) {
@@ -97,30 +119,11 @@ export function searchResultLane(record) {
 }
 
 function renderResult(record) {
-  const article = document.createElement("article");
-  article.className = "topic-search-result";
-  article.dataset.searchResult = "";
-  const heading = document.createElement("h4");
-  const link = document.createElement("a");
-  const target = searchResultHref(record);
-  if (!target) return null;
-  link.href = target;
-  link.textContent = clean(record?.title) || "Public record";
-  heading.append(link);
-  article.append(heading);
-
-  const type = document.createElement("p");
-  type.className = "topic-search-result-type";
-  type.textContent = DOMAIN_LANES[record?.domain] || "Public record";
-  article.append(type);
-
-  if (record?.summary) {
-    const snippet = document.createElement("p");
-    snippet.className = "topic-search-result-snippet";
-    snippet.textContent = clean(record.summary, 320);
-    article.append(snippet);
-  }
-  return article;
+  const html = renderUniversalSearchResultHtml(record);
+  if (!html) return null;
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  return template.content.firstElementChild;
 }
 
 function renderResults(root, results) {
@@ -137,7 +140,10 @@ function renderResults(root, results) {
     elements.status.textContent = items.length ? `${items.length} result${items.length === 1 ? "" : "s"}` : "No matches";
     elements.body.className = "topic-search-lane-body";
     elements.body.replaceChildren();
-    if (!items.length) continue;
+    if (!items.length) {
+      elements.body.textContent = "No matching records in this group.";
+      continue;
+    }
     const list = document.createElement("div");
     list.className = "topic-search-results";
     for (const record of items) {
