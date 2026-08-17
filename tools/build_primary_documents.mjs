@@ -62,6 +62,7 @@ function assertMeetingCoverage(readModel, cityRows) {
 export function primaryDocumentOutputs() {
   const shell = readFileSync(join(SITE, "index.html"), "utf8");
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  const rulesSemanticLane = json("/data/rules_semantic_lane.json");
   const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
   // Keep previously published meeting identities while the current, rich
   // notice materialization supplies the complete eligible window. The rich
@@ -153,7 +154,10 @@ export function primaryDocumentOutputs() {
     outputs.push(output(`browse/${kind}`, buildBrowseConceptDocument(shell, kind, conceptSources)));
   }
   for (const [facet, payload] of Object.entries(payloads)) {
-    outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), { route: `/browse/${facet}/` })));
+    outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), {
+      route: `/browse/${facet}/`,
+      semanticArtifact: facet === "rules" ? rulesSemanticLane : null,
+    })));
   }
   return outputs;
 }

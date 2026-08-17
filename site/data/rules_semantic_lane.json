@@ -1,0 +1,167 @@
+{
+  "schema": "cityscroll.rules_semantic_lane.v1",
+  "artifact_version": 1,
+  "generated_at": "2026-08-04",
+  "authorization": {
+    "runtime_semantic_retrieval": false,
+    "publication_scope": "precomputed_rules_related_language_pilot"
+  },
+  "corpus_manifest": {
+    "schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
+    "manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88",
+    "corpus_sha256": "11c4f47620f6a961e19d64a0fba12b3ef513416ebeb3bacc302512cb9be0eca0"
+  },
+  "passage_map": {
+    "schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
+    "map_sha256": "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226"
+  },
+  "coverage": {
+    "state": "partial",
+    "boundary": "Reviewed semantic-only wins that resolve to typed Rules records in the bounded corpus."
+  },
+  "candidate_count": 2,
+  "held_candidate_count": 3,
+  "candidates": [
+    {
+      "candidate_id": "rules-related-language:q01:20260707025",
+      "record_type": "rule",
+      "query": {
+        "query_id": "q01",
+        "text": "rules for keeping pedestrians safe around construction scaffolding"
+      },
+      "retrieval": {
+        "method": "reviewed_semantic_only",
+        "honest_label": "related_language_candidate",
+        "reviewed_on": "2026-08-04"
+      },
+      "rule": {
+        "request_id": "20260707025",
+        "title": "Final Rule - Amendment of Rules relating to Sidewalk Sheds",
+        "agency": "Buildings",
+        "canonical_url": "/notices/20260707025",
+        "process_stage": "adoption",
+        "lifecycle_status": "adopted",
+        "published_at": "2026-07-14",
+        "geography": {
+          "scope": "citywide",
+          "derivation": {
+            "methods": [
+              "rule_default_citywide"
+            ],
+            "confidence": 0.8,
+            "role": "citywide",
+            "evidence": [
+              "Agency Rules with no local scope phrase"
+            ]
+          },
+          "confidence_tier": "strong",
+          "source": "rule-scope"
+        }
+      },
+      "source": {
+        "source_record_id": "city_record_notice:20260707025",
+        "source_system": "NYC City Record",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707025",
+        "freshness": {
+          "state": "observed",
+          "observed_on": "2026-08-04",
+          "source_published_at": "2026-07-14T00:00:00.000"
+        }
+      },
+      "source_passage": {
+        "passage_id": "city_record_notice:20260707025:p0001",
+        "text_state": "retained",
+        "text": "Final Rule - Amendment of Rules relating to Sidewalk Sheds\nBuildings\nAgency Rules",
+        "boundary": {
+          "unit": "utf16_code_unit",
+          "start": 0,
+          "end": 81
+        },
+        "text_sha256": "5c6384c0cd9f2d13ee579abb2a82cb4662e1a9405d26b2ad7b851ce6d9539476"
+      },
+      "coverage": {
+        "state": "partial",
+        "boundary": "First 60 rows from each committed rules and meetings observation snapshot, then the dated 10-notice non-Council residual; duplicates removed while preserving order."
+      }
+    },
+    {
+      "candidate_id": "rules-related-language:q03:20260626035",
+      "record_type": "rule",
+      "query": {
+        "query_id": "q03",
+        "text": "how to end an automatically renewing service"
+      },
+      "retrieval": {
+        "method": "reviewed_semantic_only",
+        "honest_label": "related_language_candidate",
+        "reviewed_on": "2026-08-04"
+      },
+      "rule": {
+        "request_id": "20260626035",
+        "title": "DCWP NOA Cancellation of Subscriptions",
+        "agency": "Consumer and Worker Protection",
+        "canonical_url": "/notices/20260626035",
+        "process_stage": "unstaged",
+        "lifecycle_status": "notice",
+        "published_at": "2026-07-08",
+        "geography": {
+          "scope": "citywide",
+          "derivation": {
+            "methods": [
+              "rule_default_citywide"
+            ],
+            "confidence": 0.8,
+            "role": "citywide",
+            "evidence": [
+              "Agency Rules with no local scope phrase"
+            ]
+          },
+          "confidence_tier": "strong",
+          "source": "rule-scope"
+        }
+      },
+      "source": {
+        "source_record_id": "city_record_notice:20260626035",
+        "source_system": "NYC City Record",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626035",
+        "freshness": {
+          "state": "observed",
+          "observed_on": "2026-08-04",
+          "source_published_at": "2026-07-08T00:00:00.000"
+        }
+      },
+      "source_passage": {
+        "passage_id": "city_record_notice:20260626035:p0001",
+        "text_state": "retained",
+        "text": "DCWP NOA Cancellation of Subscriptions\nConsumer and Worker Protection\nAgency Rules",
+        "boundary": {
+          "unit": "utf16_code_unit",
+          "start": 0,
+          "end": 82
+        },
+        "text_sha256": "150812ab38197ec51b5bb93c4a03fb6cf24814ef906eddee15389b1a77a233bd"
+      },
+      "coverage": {
+        "state": "partial",
+        "boundary": "First 60 rows from each committed rules and meetings observation snapshot, then the dated 10-notice non-Council residual; duplicates removed while preserving order."
+      }
+    }
+  ],
+  "held_candidates": [
+    {
+      "query_id": "q20",
+      "source_native_id": "20260624036",
+      "reason": "not_typed_rule"
+    },
+    {
+      "query_id": "q20",
+      "source_native_id": "20260716009",
+      "reason": "not_typed_rule"
+    },
+    {
+      "query_id": "q24",
+      "source_native_id": "20260715002",
+      "reason": "not_typed_rule"
+    }
+  ]
+}

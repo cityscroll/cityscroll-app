@@ -22,6 +22,7 @@ import { buildBrowseAliasDocument } from "../site/primary_document_view.mjs";
 import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
+import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 
@@ -586,6 +587,39 @@ test("build-rendered Rules cards preserve the canonical title and Copy link befo
   assert.match(html, /class="ui-constellation-link ui-object-card-title"[^>]*href="\/notices\/20260804030"[^>]*><span aria-hidden="true">◆<\/span>Emergency surcharge filing rule/);
   assert.match(html, /class="ui-object-card-copy"[^>]*data-object-card-copy="https:\/\/cityscroll\.org\/notices\/20260804030"[^>]*>Copy link<\/button>/);
   assert.doesNotMatch(html, /ui-object-card-action-rail|What can I do now/);
+});
+
+test("build-rendered Rules search keeps lexical cards first and adds the reviewed related-language lane", () => {
+  const payload = JSON.parse(read("../site/data/rules_domain_observations.json"));
+  const query = new URLSearchParams({
+    q: "rules for keeping pedestrians safe around construction scaffolding",
+  });
+  const view = buildBrowseView("rules", payload, query, {
+    semanticArtifact: rulesSemanticLaneArtifact,
+  });
+  const html = renderBrowseView(view);
+
+  assert.equal(view.total, 0, "the existing exact lane remains unchanged");
+  assert.equal(view.semanticLane.state, "matched");
+  assert.match(html, /data-rules-semantic-lane="matched"/);
+  assert.match(html, /href="\/notices\/20260707025"/);
+  assert.match(html, /<blockquote[^>]*>Final Rule - Amendment of Rules relating to Sidewalk Sheds/);
+  assert.match(html, /data-record-type="rule"/);
+  assert.doesNotMatch(html, /semantic_score|0\.428851/);
+
+  const held = buildBrowseView("rules", payload, new URLSearchParams({
+    q: query.get("q"),
+    agency: "Consumer and Worker Protection",
+  }), { semanticArtifact: rulesSemanticLaneArtifact });
+  assert.equal(held.semanticLane.state, "held");
+  assert.doesNotMatch(renderBrowseView(held), /href="\/notices\/20260707025"/);
+
+  const lexical = buildBrowseView("rules", payload, new URLSearchParams({ q: "sidewalk sheds" }), {
+    semanticArtifact: rulesSemanticLaneArtifact,
+  });
+  assert.equal(lexical.total, 2);
+  assert.equal(lexical.semanticLane.state, "lexical_only");
+  assert.doesNotMatch(renderBrowseView(lexical), /data-rules-semantic-lane/);
 });
 
 test("build-rendered Meeting cards expose the shared canonical title, Copy, and source grammar", () => {

@@ -319,6 +319,18 @@ def run_index_states(pw, lang, viewport, failures):
         state = f"index.html [{lang}] [{viewport_name}] [tab:{tab}]"
         run_axe(page, state, failures, restore_url=BASE)
         run_focus_exposure(page, state, failures)
+        if tab == "rules":
+            page.locator("#ruleskw").fill(
+                "rules for keeping pedestrians safe around construction scaffolding"
+            )
+            page.evaluate("async () => { await globalThis.renderRulesExplorer(); }")
+            wait_for_locator(
+                page.locator('.rules-semantic-lane[data-rules-semantic-lane="matched"]'),
+                label="Rules related-language result",
+            )
+            semantic_state = f"index.html [{lang}] [{viewport_name}] [tab:rules-related-language]"
+            run_axe(page, semantic_state, failures, restore_url=BASE)
+            run_focus_exposure(page, semantic_state, failures)
 
     # Exams leaves the root shell by design. Return explicitly before exercising
     # the independent Money notice-detail state.

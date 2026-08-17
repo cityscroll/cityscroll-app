@@ -6,6 +6,7 @@ import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
+import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
 import {
@@ -719,7 +720,9 @@ async function handleBrowse(request, env, facet) {
     const dataResponse = await staticAsset(env, request, config.dataPath);
     if (!dataResponse.ok) return asset;
     const payload = await dataResponse.json();
-    const view = buildBrowseView(facet, payload, url.searchParams);
+    const view = buildBrowseView(facet, payload, url.searchParams, {
+      semanticArtifact: facet === "rules" ? rulesSemanticLaneArtifact : null,
+    });
     const response = rewrittenResponse(asset, 200, "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
     return new HTMLRewriter()
       .on(`#${config.container}`, { element(element) {
