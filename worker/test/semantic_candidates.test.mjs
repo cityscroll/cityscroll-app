@@ -79,6 +79,7 @@ test("typed candidate retrieval uses the committed manifest and exact source pas
   assert.ok(target);
   assert.deepEqual({
     candidate_id: target.candidate_id,
+    civic_object_family: target.civic_object_family,
     source_id: target.source.id,
     source_family: target.source.family,
     source_url: target.source.url,
@@ -90,6 +91,7 @@ test("typed candidate retrieval uses the committed manifest and exact source pas
     coverage_state: target.coverage_state,
   }, {
     candidate_id: "city_record_notice:20260715041:p0001",
+    civic_object_family: "rules",
     source_id: "city_record_notice:20260715041",
     source_family: "city_record_notice",
     source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",

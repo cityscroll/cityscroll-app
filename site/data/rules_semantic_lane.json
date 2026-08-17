@@ -8,12 +8,12 @@
   },
   "corpus_manifest": {
     "schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
-    "manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88",
-    "corpus_sha256": "11c4f47620f6a961e19d64a0fba12b3ef513416ebeb3bacc302512cb9be0eca0"
+    "manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
+    "corpus_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81"
   },
   "passage_map": {
     "schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
-    "map_sha256": "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226"
+    "map_sha256": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e"
   },
   "coverage": {
     "state": "partial",

@@ -23,11 +23,11 @@
   },
   "inputs": {
     "corpus_manifest_schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
-    "corpus_manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88",
-    "corpus_content_sha256": "11c4f47620f6a961e19d64a0fba12b3ef513416ebeb3bacc302512cb9be0eca0",
+    "corpus_manifest_sha256": "236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f",
+    "corpus_content_sha256": "fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81",
     "corpus_receipt_sha256": "66c16c80898d20b79f27d376687039efffca1a7335a11f8fb2b69d1db15c1b0a",
     "source_passage_map_schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
-    "source_passage_map_sha256": "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226"
+    "source_passage_map_sha256": "acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e"
   },
   "row_counts": {
     "input": 238,
@@ -37,12 +37,12 @@
   "dropped_reason_counts": {},
   "active_artifact": {
     "state": "active",
-    "artifact_version": "v1-7b49654e45bb7429",
-    "artifact_path": "warehouse/embeddings/semantic_retrieval/v1-7b49654e45bb7429.json",
-    "artifact_sha256": "4786e9aa4593154118ead0df368715308aafc380bea103c3cc8cf9f923b06eae"
+    "artifact_version": "v1-fa5fbc7d754800fb",
+    "artifact_path": "warehouse/embeddings/semantic_retrieval/v1-fa5fbc7d754800fb.json",
+    "artifact_sha256": "8f2ebb94a2061263549d55ab25c6ffe8258247902af38661dcfdee62feb1a4b6"
   },
   "previous_good_artifact": {
-    "state": "bootstrap_known_good",
+    "state": "previous_good",
     "artifact_version": "v1-7b49654e45bb7429",
     "artifact_path": "warehouse/embeddings/semantic_retrieval/v1-7b49654e45bb7429.json",
     "artifact_sha256": "4786e9aa4593154118ead0df368715308aafc380bea103c3cc8cf9f923b06eae"
@@ -52,5 +52,5 @@
     "failure_behavior": "Leave the active receipt and prior artifact unchanged.",
     "lexical_search_dependency": false
   },
-  "receipt_sha256": "c702b0a02f154ddfb23104fc6a4c597ddf4098d68b45f520a8c77ff44cdb0ba9"
+  "receipt_sha256": "97b0b514726a86d3e47c2e05aa983a4166c81b12c58e307f0ed808216b0fc89a"
 }
