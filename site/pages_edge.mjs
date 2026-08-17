@@ -25,6 +25,7 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
+import { buildCommitteeDocumentView, renderCommitteeDocument } from "./committee_document.mjs";
 import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
 import {
   buildPublicAssertionGraph,
@@ -113,6 +114,11 @@ function safeParcel(pathname) {
   return match ? match[1] : null;
 }
 
+function safeCommittee(pathname) {
+  const match = pathname.match(/^\/committees\/(\d+)\/?$/);
+  return match ? match[1] : null;
+}
+
 export function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
@@ -158,6 +164,7 @@ export function edgeRequestKind(urlValue) {
   if (safeMonitorPack(url.pathname)) return "monitor-pack";
   if (safeDistrictDigest(url.pathname)) return "district-digest";
   if (safeParcel(url.pathname)) return "parcel";
+  if (safeCommittee(url.pathname)) return "committee";
   if (browseFacet(url.pathname) || browseConcept(url.pathname) || browseObject(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   return "asset";
@@ -812,6 +819,44 @@ async function handleEntity(request, env, entity) {
   return transformed;
 }
 
+function committeeUnavailableResponse() {
+  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Committee record not found · CityScroll</title></head><body><main><h1>Committee record not found</h1><p><a href="/browse/people/">Browse people and organizations</a></p></main></body></html>`;
+  return new Response(body, {
+    status: 404,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=60, s-maxage=60",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+}
+
+async function handleCommittee(request, env, id) {
+  const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const [graphResponse, peopleResponse] = await Promise.all([
+    staticAsset(env, snapshotRequest, "/data/committee_graph_lookup.json"),
+    staticAsset(env, snapshotRequest, "/data/person_hub_lookup.json"),
+  ]);
+  if (!graphResponse.ok || !peopleResponse.ok) return committeeUnavailableResponse();
+  let view = null;
+  try {
+    const [graph, people] = await Promise.all([graphResponse.json(), peopleResponse.json()]);
+    view = buildCommitteeDocumentView(graph, people, id);
+  } catch (_error) {
+    view = null;
+  }
+  if (!view) return committeeUnavailableResponse();
+  const html = renderCommitteeDocument(view, { currentHref: request.url });
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD"
+    ? new Response(null, { status: 200, headers })
+    : new Response(html, { status: 200, headers });
+}
+
 export default {
   async fetch(request, env) {
     if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
@@ -839,6 +884,8 @@ export default {
       const canonical = /^\d{4}-\d{2}-\d{2}$/.test(asOf) ? `${path}?as_of=${asOf}` : path;
       return handleComposedObject(request, env, path, canonical);
     }
+    const committee = safeCommittee(url.pathname);
+    if (committee) return handleCommittee(request, env, committee);
     const browse = browseRoute(url.pathname);
     if (browse.kind === "facet") return handleBrowse(request, env, browse.facet);
     if (browse.kind === "concept") return handleBrowseConcept(request, env, browse.concept);

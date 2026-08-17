@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  buildOfficialLocalConstellation,
   buildLocalConstellation,
   LOCAL_CONSTELLATION_MAX_NODES,
   renderLocalConstellationHTML,
@@ -94,6 +95,22 @@ test("committee and place adapters use only published exact-key neighbors", () =
   const heldHtml = renderLocalConstellationHTML(held);
   assert.match(heldHtml, /Place connections for this district are not published yet\./);
   assert.doesNotMatch(heldHtml, /data-local-constellation-preview/);
+});
+
+test("official local connections omit duplicate committees and retain only linked meeting records", () => {
+  const view = buildOfficialLocalConstellation({
+    official: { ref: "entity:official:7801" },
+    events: [
+      { event_id: "event-1", notice_id: "20260801001", event_date: "2026-08-01" },
+      { event_id: "event-without-notice", notice_id: null, event_date: "2026-08-02" },
+    ],
+  }, [{ committee_id: "committee:5261", committee: "Land Use", href: "/committees/5261/" }], "7801", "A Member");
+  assert.equal(view.nodes.length, 1);
+  assert.equal(view.nodes[0].target_kind, "meeting");
+  assert.equal(view.nodes[0].href, "/notices/20260801001");
+  assert.equal(view.nodes[0].node_name, "Meeting notice · 2026-08-01");
+  assert.ok(view.nodes.every((node) => node.target_kind !== "committee"));
+  assert.ok(view.nodes.every((node) => node.href));
 });
 
 test("published place connections use district polygons and resident-safe copy", () => {

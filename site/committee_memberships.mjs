@@ -10,6 +10,11 @@ const clean = (value, max = 320) => String(value ?? "")
 
 export const COMMITTEE_MEMBERSHIP_SOURCE = "aabe-yfm9";
 
+export function committeeRecordHref(value) {
+  const id = clean(value).replace(/^committee:/, "");
+  return /^\d+$/.test(id) ? `/committees/${encodeURIComponent(id)}/` : null;
+}
+
 /** Build one committee's bounded neighborhood from the published exact-key graph. */
 export function buildCommitteeLocalConstellation(graph = {}, committeeId, people = {}) {
   const id = clean(committeeId).replace(/^committee:/, "");
@@ -53,7 +58,7 @@ export function renderCommitteeLocalConstellationHTML(graph, committeeId, people
 export function renderOfficialLocalConstellationHTML(officialView, committeeRows, id, name) {
   ensureLocalConstellationStylesheet();
   return renderLocalConstellationHTML(buildOfficialLocalConstellation(officialView, committeeRows, id, name), {
-    heading: "Nearby official records",
+    heading: "Published meeting records",
     id: "official-local-constellation-heading",
   });
 }
@@ -87,7 +92,7 @@ export function committeeRowsFromGraph(graph, committeeView = {}) {
       appointment_type: edge?.is_chair ? "Chair" : (clean(edge?.title) || "Membership"),
       start_date: clean(edge?.valid_from) || null,
       end_date: clean(edge?.valid_to) || null,
-      href: null,
+      href: committeeRecordHref(committeeId),
       edge_type: "member_of",
       relation_label: clean(edge?.relation_label) || "member of",
       provenance: edge?.provenance || null,
@@ -114,7 +119,7 @@ export function renderCommitteeMembershipsHTML(bag, { escapeHtml, translate } = 
       target_kind: "committee",
       target_id: row.committee_id || row.id || null,
       target_name: row.committee,
-      canonical_href: row.href || null,
+      canonical_href: row.href || committeeRecordHref(row.committee_id || row.id) || null,
       source: { kind: null, id: bag?.member_id || null, name: bag?.person_name || null, canonical_href: null },
       provenance: reverseEdge?.provenance ?? row.provenance ?? null,
       inverse_of: reverseEdge?.inverse_of || null,

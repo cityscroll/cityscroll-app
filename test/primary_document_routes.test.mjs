@@ -474,7 +474,7 @@ test("People and Places landings use populated entity and geography indexes", ()
   assert.match(peopleHtml, /data-body-id="bronx-cb-01"/);
   assert.match(peopleHtml, /Covers Bronx Community District 1\./);
   assert.doesNotMatch(peopleHtml, /Community District X01|· (?:Published|Unknown)|browse-concept-status-rail/);
-  assert.doesNotMatch(peopleHtml, /href="\/committees\//);
+  assert.match(peopleHtml, /href="\/committees\/1\/"/);
 
   const places = buildBrowseConceptLanding("places", {
     places: {
@@ -832,6 +832,7 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.equal(edgeRequestKind("https://cityscroll.org/agencies/design-and-construction/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/vendors/CAMBA/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/officials/7801/"), "entity");
+  assert.equal(edgeRequestKind("https://cityscroll.org/committees/5261/"), "committee");
   assert.equal(edgeRequestKind("https://cityscroll.org/stats.html"), "asset");
   assert.equal(edgeRequestKind("https://api.cityscroll.org/stats"), "asset");
   const routes = JSON.parse(read("../site/_routes.json"));
@@ -843,7 +844,63 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.ok(routes.include.includes("/agencies/*"));
   assert.ok(routes.include.includes("/vendors/*"));
   assert.ok(routes.include.includes("/officials/*"));
+  assert.ok(routes.include.includes("/committees/*"));
   assert.ok(routes.include.includes("/browse/*"));
+});
+
+test("canonical committee routes serve exact graph records with linked officials", async () => {
+  const graph = {
+    schema: "cityscroll.committee_graph.v1",
+    publication: "published",
+    generated_at: "2026-08-12T14:37:51Z",
+    nodes: [{
+      id: "committee:5261",
+      type: "committee",
+      name: "Subcommittee on Landmarks, Public Sitings and Dispositions",
+      properties: { body_id: "5261", body_name: "Subcommittee on Landmarks, Public Sitings and Dispositions" },
+    }],
+    public_edges: [{
+      type: "member_of",
+      from: "official:7801",
+      to: "committee:5261",
+      title: "Committee Member",
+      valid_from: "2024-01-18",
+      valid_to: "2025-12-31",
+    }],
+    public_reverse_edges: [{
+      type: "has_member",
+      from: "committee:5261",
+      to: "official:7801",
+    }],
+  };
+  const people = { by_person_id: { "7801": { person_id: "7801", person_name: "Christopher Marte" } } };
+  const env = {
+    ASSETS: {
+      async fetch(request) {
+        const path = new URL(request.url).pathname;
+        if (path === "/data/committee_graph_lookup.json") return Response.json(graph);
+        if (path === "/data/person_hub_lookup.json") return Response.json(people);
+        return new Response("missing", { status: 404 });
+      },
+    },
+  };
+  const response = await edgeWorker.fetch(
+    new Request("https://cityscroll.org/committees/5261/"),
+    env,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /data-civic-object-kind="committee"/);
+  assert.match(html, /Subcommittee on Landmarks, Public Sitings and Dispositions/);
+  assert.match(html, /href="\/officials\/7801\/"/);
+  assert.match(html, /href="\/browse\/people\/"/);
+  assert.doesNotMatch(html, /Provisional: destination not verified/);
+
+  const missing = await edgeWorker.fetch(
+    new Request("https://cityscroll.org/committees/9999/"),
+    env,
+  );
+  assert.equal(missing.status, 404);
 });
 
 test("Stats document and API keep their exact public endpoints with the reduced coverage contract", async () => {
