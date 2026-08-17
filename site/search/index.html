@@ -1575,13 +1575,12 @@
       <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
     </div>
     <section class="home-topic-entry" data-home-topic-entry aria-labelledby="home-topic-heading">
-      <p class="home-topic-kicker"><span class="tag method" data-i18n="search_label">Search</span> <span>Start with a topic</span></p>
-      <h2 id="home-topic-heading">What are you looking for?</h2>
-      <p>Search NYC records first, then decide which kind of public record to open.</p>
+      <p class="home-topic-kicker"><span class="tag method" data-i18n="search_label">Search</span></p>
+      <h2 id="home-topic-heading" data-i18n="topic_search_heading">What are you looking for?</h2>
+      <p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by their published source.</p>
       <form class="home-topic-form" method="get" action="/search/">
-        <label for="home-topic-query">Search NYC records</label>
-        <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency"><button type="submit">Search records</button></div>
-        <p class="home-topic-note">Compare Contracts, Rules, Meetings, and Mandates without choosing a type first.</p>
+        <label for="home-topic-query" data-i18n="topic_search_heading">What are you looking for?</label>
+        <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
       </form>
     </section>
     <div class="home-cta" id="homeCta">
@@ -1620,60 +1619,74 @@
 <section id="tab-browse" class="tabpane active">
   <div class="wrap">
     <div id="browseview"><div class="topic-search-document" data-search-document>
-    <p class="topic-search-kicker">Topic search</p>
-    <header class="topic-search-head"><h2 id="search-heading">What are you looking for?</h2><p>Search NYC records by topic before choosing a type of record.</p></header>
+    <p class="topic-search-kicker" data-i18n="search_label">Search</p>
+    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What are you looking for?</h2><p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by their published source.</p></header>
     <form class="topic-search-form" method="get" action="/search/" data-search-form>
-      <label for="search-query">What are you looking for?</label>
-      <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency"><button type="submit">Search records</button></div>
-      <p class="topic-search-note">Compare records, people, organizations, exams, and places without choosing a type first.</p>
+      <label for="search-query" data-i18n="topic_search_heading">What are you looking for?</label>
+      <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
-    <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status"><p><strong>Coverage details appear with results.</strong><span>Search reports which public-record collections took part.</span></p></section>
-    <div class="topic-search-method" aria-label="Search method"><span>Match method</span><strong>Keyword search</strong></div>
-    <div class="topic-search-lanes" aria-label="Search result types">
+    <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status"><p><strong>Coverage details appear with keyword fallback results.</strong><span>Fallback search reports which public-record collections took part.</span></p></section>
+    <div class="topic-search-method" aria-label="How results match" data-i18n-aria="topic_search_method_label"><span data-i18n="topic_search_method_label">How results match</span><strong data-search-method-value data-i18n="topic_search_passage_matches">Source-passage matches</strong></div>
+    <p class="topic-search-coverage" data-semantic-coverage hidden></p>
+    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by source" data-i18n-aria="topic_search_results_aria">
+      <section class="topic-search-lane" data-semantic-family="city_record_notice" aria-labelledby="search-lane-city_record_notice">
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-city_record_notice" data-i18n="topic_search_family_notices">City Record notices</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
+  </section>
+      <section class="topic-search-lane" data-semantic-family="attachment_text" aria-labelledby="search-lane-attachment_text">
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-attachment_text" data-i18n="topic_search_family_attachments">Source attachments</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
+  </section>
+      <section class="topic-search-lane" data-semantic-family="community_board_minutes" aria-labelledby="search-lane-community_board_minutes">
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-community_board_minutes" data-i18n="topic_search_family_minutes">Community board minutes</h3></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
+  </section>
+    </div>
+    <div class="topic-search-lanes" data-keyword-lanes aria-label="Search result types" hidden>
       <section class="topic-search-lane" data-search-lane="contracts" aria-labelledby="search-lane-contracts">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-contracts">Contracts</h3><p>Public contract opportunities and awards.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-contracts" data-i18n="tab_money">Contracts</h3><p>Public contract opportunities and awards.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="people-organizations" aria-labelledby="search-lane-people-organizations">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-people-organizations">People + organizations</h3><p>Officials, people, agencies, and public bodies.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-people-organizations">People + organizations</h3><p>Officials, people, agencies, and public bodies.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="land" aria-labelledby="search-lane-land">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-land">Land</h3><p>Zoning and land-use projects.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-land">Land</h3><p>Zoning and land-use projects.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="rules" aria-labelledby="search-lane-rules">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-rules">Rules</h3><p>Published rulemaking records.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-rules" data-i18n="tab_rules">Rules</h3><p>Published rulemaking records.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="meetings" aria-labelledby="search-lane-meetings">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-meetings">Meetings</h3><p>Public meetings and decisions.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-meetings" data-i18n="tab_meetings">Meetings</h3><p>Public meetings and decisions.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="obligations" aria-labelledby="search-lane-obligations">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-obligations">Mandates</h3><p>Published duties and requirements.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-obligations" data-i18n="topic_search_family_mandates">Mandates</h3><p>Published duties and requirements.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="people" aria-labelledby="search-lane-people">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-people">People and organizations</h3><p>Officials, agencies, and civic organizations.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-people">People and organizations</h3><p>Officials, agencies, and civic organizations.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="places" aria-labelledby="search-lane-places">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-places">Community boards</h3><p>Borough-qualified community boards.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-places">Community boards</h3><p>Borough-qualified community boards.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="staffing" aria-labelledby="search-lane-staffing">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-staffing">Civil-service exams</h3><p>Publisher-identified exams and schedules.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-staffing">Civil-service exams</h3><p>Publisher-identified exams and schedules.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="property" aria-labelledby="search-lane-property">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-property">Properties</h3><p>Exact property records and addresses.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-property">Properties</h3><p>Exact property records and addresses.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
       <section class="topic-search-lane" data-search-lane="zoning" aria-labelledby="search-lane-zoning">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-zoning">Land use</h3><p>Projects and review records.</p></div><span class="topic-search-lane-status">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status">Enter a topic to search public records.</div>
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-zoning">Land use</h3><p>Projects and review records.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
     </div>
   </div></div>

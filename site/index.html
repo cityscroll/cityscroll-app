@@ -1574,13 +1574,12 @@
       <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
     </div>
     <section class="home-topic-entry" data-home-topic-entry aria-labelledby="home-topic-heading">
-      <p class="home-topic-kicker"><span class="tag method" data-i18n="search_label">Search</span> <span>Start with a topic</span></p>
-      <h2 id="home-topic-heading">What are you looking for?</h2>
-      <p>Search NYC records first, then decide which kind of public record to open.</p>
+      <p class="home-topic-kicker"><span class="tag method" data-i18n="search_label">Search</span></p>
+      <h2 id="home-topic-heading" data-i18n="topic_search_heading">What are you looking for?</h2>
+      <p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by their published source.</p>
       <form class="home-topic-form" method="get" action="/search/">
-        <label for="home-topic-query">Search NYC records</label>
-        <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency"><button type="submit">Search records</button></div>
-        <p class="home-topic-note">Compare Contracts, Rules, Meetings, and Mandates without choosing a type first.</p>
+        <label for="home-topic-query" data-i18n="topic_search_heading">What are you looking for?</label>
+        <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
       </form>
     </section>
     <div class="home-cta" id="homeCta">

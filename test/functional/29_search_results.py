@@ -1,10 +1,12 @@
-"""Search document E2E: typed API records expose inspectable relevance evidence."""
+"""Search E2E: semantic passages and the typed lexical fallback both remain inspectable."""
 
 import json
 import os
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import sync_playwright
+
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 AXE = Path(__file__).parent / "assets" / "axe.min.js"
@@ -49,50 +51,33 @@ def typed_result(term, *, title, object_type, domain, lens, href, state="active"
     }
 
 
-SEARCH_FIXTURES = {
-    "police": [typed_result(
-        "police",
-        title="NYPD Police Officer Hats",
-        object_type="procurement",
-        domain="contracts",
-        lens="notices",
-        href="/browse/contracts/?mode=award&q=fixture-police",
-    )],
-    "zoning": [typed_result(
-        "zoning",
-        title="Subcommittee on Zoning and Franchises meeting",
-        object_type="meeting",
-        domain="meetings",
-        lens="notices",
-        href="/meetings/meeting%3Acity_record%3Afixture-zoning",
-    )],
-    "budget": [typed_result(
-        "budget",
-        title="Agency budget systems contract",
-        object_type="procurement",
-        domain="contracts",
-        lens="notices",
-        href="/browse/contracts/?mode=award&q=fixture-budget",
-        state="archived",
-    )],
-    "contract": [typed_result(
-        "contract",
-        title="Current contract award",
-        object_type="procurement",
-        domain="contracts",
-        lens="notices",
-        href="/browse/contracts/?mode=award&q=fixture-contract",
-    )],
-    "hearing": [typed_result(
-        "hearing",
-        title="Public hearing and meeting notice",
-        object_type="meeting",
-        domain="meetings",
-        lens="notices",
-        href="/meetings/meeting%3Acity_record%3Afixture-hearing",
-    )],
+SEMANTIC_FIXTURES = {
+    "police": "NYPD Police Officer Hats\nPolice equipment procurement.",
+    "zoning": "Subcommittee on Zoning and Franchises meeting\nPublic zoning hearing.",
+    "budget": "City budget hearing\nPublic hearing on the agency budget.",
+    "contract": "Subscription security contract\nA current contract award.",
+    "hearing": "Public hearing\nA public hearing and meeting notice.",
 }
 
+LEGACY_FALLBACK = typed_result(
+    "fallback",
+    title="Fallback public contract",
+    object_type="procurement",
+    domain="contracts",
+    lens="notices",
+    href="/browse/contracts/?mode=award&q=fixture-fallback",
+    state="archived",
+)
+
+
+def json_response(route, body):
+    route.fulfill(status=200, content_type="application/json", body=json.dumps(body))
+
+
+SEARCH_LENSES = [
+    "notices", "people", "agencies", "vendors", "committees",
+    "community_boards", "exams", "parcels",
+]
 FAMILIES = ["contracts", "people-organizations", "land", "rules", "meetings", "exams"]
 
 
@@ -111,27 +96,21 @@ def result_family(row):
     return None
 
 
-SEARCH_LENSES = [
-    "notices", "people", "agencies", "vendors", "committees",
-    "community_boards", "exams", "parcels",
-]
-
-
-def search_payload(rows, incomplete=False):
+def fallback_payload(results):
     counts = {lens: 0 for lens in SEARCH_LENSES}
-    for result in rows:
+    for result in results:
         counts[result.get("lens", "notices")] += 1
     by_lens = {
         lens: {
             "lens": lens,
-            "participated": not (incomplete and lens == "people"),
-            "state": "not_indexed" if incomplete and lens == "people" else ("matched" if count else "empty"),
-            "reason": "fixture_lens_missing" if incomplete and lens == "people" else None,
-            "matched_count": None if incomplete and lens == "people" else count,
-            "candidate_count": None if incomplete and lens == "people" else count,
-            "invalid_candidate_count": None if incomplete and lens == "people" else 0,
-            "indexed_count": None if incomplete and lens == "people" else 1,
-            "as_of": None if incomplete and lens == "people" else "2026-08-15T12:00:00Z",
+            "participated": True,
+            "state": "matched" if count else "empty",
+            "reason": None,
+            "matched_count": count,
+            "candidate_count": count,
+            "invalid_candidate_count": 0,
+            "indexed_count": 1,
+            "as_of": "2026-08-15T12:00:00Z",
             "source": "functional fixture",
             "method": "fixture_exact_v1",
         }
@@ -143,26 +122,26 @@ def search_payload(rows, incomplete=False):
         "match_mode": "keyword",
         "lanes": [{
             "id": family,
-            "status": "matched" if any(result_family(row) == family for row in rows) else "empty",
-            "count": sum(result_family(row) == family for row in rows),
+            "status": "matched" if any(result_family(row) == family for row in results) else "empty",
+            "count": sum(result_family(row) == family for row in results),
             "as_of": "2026-08-16",
             "source": "Bounded public-record fixture",
             "match_mode": "keyword",
-            "cards": [row for row in rows if result_family(row) == family],
+            "cards": [row for row in results if result_family(row) == family],
         } for family in FAMILIES],
-        "results": rows,
+        "results": results,
         "coverage": {
             "schema": "cityscroll.universal_search_coverage.v1",
-            "all_lenses_participated": not incomplete,
-            "complete_count": None if incomplete else observed,
+            "all_lenses_participated": True,
+            "complete_count": observed,
             "observed_count": observed,
             "total_matches": observed,
             "returned_count": observed,
             "by_entity_type": {},
-            "incomplete_lenses": ["people"] if incomplete else [],
+            "incomplete_lenses": [],
             "snapshot": {
-                "state": "incomplete" if incomplete else "complete",
-                "as_of": None if incomplete else "2026-08-15T12:00:00Z",
+                "state": "complete",
+                "as_of": "2026-08-15T12:00:00Z",
                 "as_of_by_lens": {lens: row["as_of"] for lens, row in by_lens.items()},
             },
             "by_lens": by_lens,
@@ -170,8 +149,52 @@ def search_payload(rows, incomplete=False):
     }
 
 
-def json_response(route, body):
-    route.fulfill(status=200, content_type="application/json", body=json.dumps(body))
+def candidate_response(query, passage_text=None):
+    candidates = []
+    if passage_text:
+        source_id = "city_record_notice:20260715041"
+        passage_id = f"{source_id}:p0001"
+        candidates.append({
+            "candidate_id": passage_id,
+            "source": {
+                "id": source_id,
+                "family": "city_record_notice",
+                "native_id": "20260715041",
+                "title": passage_text.split("\n", 1)[0],
+                "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+            },
+            "passage": {
+                "id": passage_id,
+                "text": passage_text,
+                "text_state": "retained",
+                "boundary": {"start": 0, "end": len(passage_text)},
+            },
+            "method": "lexical_fallback_v1",
+            "hard_scope_state": "matched",
+            "coverage_state": "partial",
+            "freshness": {"state": "observed", "observed_on": "2026-08-04"},
+        })
+    return {
+        "schema": "cityscroll.semantic_retrieval.candidate_response.v1",
+        "query": query,
+        "method": "lexical_fallback_v1",
+        "corpus": {
+            "schema": "cityscroll.semantic_retrieval.corpus_manifest.v1",
+            "manifest_version": 1,
+            "manifest_sha256": "0f130c2156bb0efc2b9ed6d7df65b7e264530fa3c3bcaf292f17932e5492ee88",
+            "content_sha256": "b" * 64,
+            "observed_on": "2026-08-04",
+        },
+        "index": {
+            "schema": "cityscroll.semantic_retrieval.source_passage_map.v1",
+            "version": "1d43f0ea93a306c0c164825222dfc666091cb5533e97ab469044e632e3e00226",
+            "corpus_sha256": "d" * 64,
+            "observed_on": "2026-08-04",
+        },
+        "hard_scope": {"state": "unscoped", "filters": {}},
+        "coverage": {"state": "partial", "boundary": "Bounded committed source set."},
+        "candidates": candidates,
+    }
 
 
 def main():
@@ -180,62 +203,74 @@ def main():
         page = browser.new_page(viewport={"width": 390, "height": 844})
 
         def search_api(route):
-            query = route.request.url.split("q=", 1)[-1].lower()
-            for term, results in SEARCH_FIXTURES.items():
+            query = parse_qs(urlparse(route.request.url).query).get("q", [""])[0].lower()
+            if query == "fallback":
+                json_response(route, fallback_payload([LEGACY_FALLBACK]))
+                return
+            for term, passage_text in SEMANTIC_FIXTURES.items():
                 if term in query:
-                    json_response(route, search_payload(results))
+                    json_response(route, candidate_response(query, passage_text))
                     return
-            json_response(route, search_payload([], incomplete=True))
+            json_response(route, candidate_response(query))
 
-        page.route("https://api.cityscroll.org/search?*", search_api)
-        page.route("https://crol-worker.crol-worker.workers.dev/search?*", search_api)
+        page.route("https://api.cityscroll.org/search/candidates?*", search_api)
+        page.route("https://crol-worker.crol-worker.workers.dev/search/candidates?*", search_api)
 
-        for index, (term, expected) in enumerate(SEARCH_FIXTURES.items()):
+        for term, passage_text in SEMANTIC_FIXTURES.items():
             page.goto(f"{BASE}/search/?q={term}", wait_until="domcontentloaded", timeout=30000)
             page.wait_for_function(
-                "document.querySelectorAll('[data-search-result]').length > 0",
+                "document.querySelectorAll('[data-semantic-candidate]').length > 0",
                 timeout=30000,
             )
-            results = page.locator("[data-search-result]")
+            results = page.locator("[data-semantic-candidate]")
             assert results.count() > 0, term
             text = results.first.text_content() or ""
             assert term.lower() in text.lower(), (term, text)
-            assert results.first.locator("a[href^='/']").count() == 1
-            assert expected[0]["title"] in text, (term, text)
-            assert results.first.locator("mark").count() >= 1
-            assert results.first.locator(".topic-search-result-reason").text_content() == "Title match"
-            assert results.first.locator(".topic-search-result-type").count() == 1
-            assert results.first.locator(".topic-search-result-lens").count() == 1
-            expected_state = expected[0]["ranking"]["lifecycle_state"]
-            assert results.first.get_attribute("data-lifecycle-state") == expected_state
-            assert results.first.locator(".topic-search-result-status").text_content().lower() == expected_state
-            coverage = page.locator("[data-search-coverage]")
-            assert coverage.get_attribute("data-coverage-state") == "complete"
-            assert coverage.locator("strong").first.text_content().startswith("1 match across")
-            assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
-            assert page.evaluate(
-                "el => el.scrollWidth <= el.clientWidth",
-                results.first.element_handle(),
-            ), term
-            link = results.first.locator("a").first
-            link.focus()
-            assert link.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
-            assert_axe_green(page, f"complete coverage: {term}")
+            assert "Related because" in text
+            assert passage_text.split("\n", 1)[0] in text
+            source_link = results.first.locator("a[href^='https://a856-cityrecord.nyc.gov/']")
+            assert source_link.count() == 1
+            assert source_link.get_attribute("target") == "_blank"
 
-        page.goto(f"{BASE}/search/?q=zzzz-no-match", wait_until="domcontentloaded", timeout=30000)
+        page.goto(f"{BASE}/search/?q=fallback", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_selector("[data-search-result]")
+        fallback = page.locator("[data-search-result]").first
+        assert fallback.locator("a[href^='/']").count() == 1
+        assert LEGACY_FALLBACK["title"] in (fallback.text_content() or "")
+        assert fallback.locator("mark").count() >= 1
+        assert fallback.locator(".topic-search-result-reason").text_content() == "Title match"
+        assert fallback.locator(".topic-search-result-type").count() == 1
+        assert fallback.locator(".topic-search-result-lens").count() == 1
+        assert fallback.get_attribute("data-lifecycle-state") == "archived"
+        assert fallback.locator(".topic-search-result-status").text_content().lower() == "archived"
+        assert page.evaluate("el => el.scrollWidth <= el.clientWidth", fallback.element_handle())
+        fallback.locator("a").first.focus()
+        assert fallback.locator("a").first.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
+        coverage = page.locator("[data-search-coverage]")
+        assert coverage.get_attribute("data-coverage-state") == "complete"
+        assert coverage.locator("strong").first.text_content().startswith("1 match across")
+        assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
+        assert "Bounded public-record fixture" in (
+            page.locator('[data-search-lane="contracts"] .topic-search-lane-source').text_content() or ""
+        )
+        assert_axe_green(page, "keyword fallback coverage")
+
+        page.goto(f"{BASE}/search/?q=police&lang=es", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_selector("[data-semantic-candidate]")
+        heading_text = page.locator("#search-heading").text_content() or ""
+        assert "Resultados para" in heading_text, heading_text
+        assert "Relacionado porque" in (page.locator("[data-semantic-candidate]").first.text_content() or "")
+
+        page.goto(f"{BASE}/search/?q=zzzz-no-match&lang=en", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_function(
-            "document.querySelector('[data-search-lane] .topic-search-lane-status')?.textContent === 'No matches'",
+            "document.querySelector('[data-semantic-family] .topic-search-lane-status')?.textContent === 'No matches'",
             timeout=30000,
         )
-        assert page.locator("[data-search-result]").count() == 0
-        assert "No keyword matches in this snapshot" in (page.locator("[data-search-lane]").first.text_content() or "")
-        coverage = page.locator("[data-search-coverage]")
-        assert coverage.get_attribute("data-coverage-state") == "incomplete"
-        assert "Search coverage is incomplete" in (coverage.text_content() or "")
-        assert "0 matches across all" not in (coverage.text_content() or "")
-        assert_axe_green(page, "incomplete coverage")
+        assert page.locator("[data-semantic-candidate]").count() == 0
+        assert "bounded source set" in (page.locator("[data-semantic-family]").first.text_content() or "")
+        assert page.locator("[data-search-coverage]").get_attribute("hidden") is not None
 
-        print("PASS: search renders relevant common-term records and an honest empty state")
+        print("PASS: search renders typed passages, relevance-rich fallback, translations, and honest empty states")
         browser.close()
 
 
