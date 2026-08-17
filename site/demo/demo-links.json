@@ -417,19 +417,22 @@
       }
     },
     {
-      "id": "staffing-route-alias",
-      "url": "#staffing?lang=es&q=Rodriguez&type=official",
-      "feature": "staffing-route-alias",
-      "description": "Forward the legacy Staffing fragment into the unified People + organizations document.",
+      "id": "staffing-appointments",
+      "url": "#staffing?lang=es&role=Engineer",
+      "feature": "staffing-appointments",
+      "description": "Forward the legacy Staffing fragment into the appointments document.",
       "expectations": {
         "visible": [
           {
-            "selector": "[data-browse-concept=\"people\"] [data-civic-object-kind=\"official\"]"
+            "selector": "#staffing-notice-list [data-record-id]"
           }
         ],
         "notVisible": [
           {
             "selector": "#career-guide"
+          },
+          {
+            "selector": "[data-browse-concept=\"people\"]"
           }
         ]
       }

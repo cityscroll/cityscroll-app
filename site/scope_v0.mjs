@@ -240,3 +240,14 @@ export function intersectScopes(leftInput, rightInput) {
   if (bottom) out.facets.values.match_none = true;
   return normalizeScope(out);
 }
+
+import { browseSurfaceContract } from "./browse_surface_contracts.mjs";
+
+/** Keep public surface ownership separate from the stable scope-v0 domain wire. */
+export function browseScopeIdentity(surfaceId) {
+  const surface = browseSurfaceContract(surfaceId);
+  return surface ? Object.freeze({
+    surfaceId: surface.surfaceId,
+    sourceDomain: surface.sourceDomain,
+  }) : null;
+}

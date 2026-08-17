@@ -12,7 +12,7 @@ test("Exams resolves directly to its canonical surface", () => {
   assert.equal(browseSurfaceContractForRoute("/browse/exams/"), EXAMS_SURFACE);
   assert.equal(browseSurfaceContractForRoute("/browse/exams"), EXAMS_SURFACE);
   assert.equal(browseSurfaceContractForRoute("/browse/staffing/"), STAFFING_SURFACE);
-  assert.equal(EXAMS_SURFACE.compatibility.runtimeTab, "exams");
+  assert.equal(EXAMS_SURFACE.navigationFamily, "exams");
 });
 
 test("the Exams document retains selected-card fragments on its public route", () => {

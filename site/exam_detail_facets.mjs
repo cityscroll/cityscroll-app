@@ -1,4 +1,5 @@
 import { emptyScope, routeHashFromScope } from "./scope_v0.mjs";
+import { EXAMS_SURFACE } from "./browse_surface_contracts.mjs";
 
 export const EXAM_FACETS = Object.freeze({
   eligibility: Object.freeze({ routeKey: "eligibility", values: ["open_competitive", "promotion"] }),
@@ -59,8 +60,7 @@ export function examFacetHref(filters, facet, value, { language = "en" } = {}) {
   const definition = EXAM_FACETS[facet];
   if (!definition || !value || value === UNKNOWN || (value !== "all" && !definition.values.includes(value))) return "";
   const scope = emptyScope(language);
-  scope.facets.domains = ["people"];
-  scope.facets.values.view = "guide";
+  scope.facets.domains = [EXAMS_SURFACE.sourceDomain];
   const current = filters && typeof filters === "object" ? filters : {};
   const currentValues = {
     interest: current.interest,
@@ -76,5 +76,14 @@ export function examFacetHref(filters, facet, value, { language = "en" } = {}) {
     scope.facets.values[key] = currentValue;
   }
   if (value !== "all") scope.facets.values[definition.routeKey] = value;
-  return routeHashFromScope(scope, { surface: "people" });
+  // Scope v0 keeps its stable field/value wire. The owner descriptor supplies
+  // the public route, so the source-domain name never chooses a surface.
+  const legacyWire = routeHashFromScope({ ...scope, facets: {
+    ...scope.facets,
+    domains: ["people"],
+  } }, { surface: "people" });
+  const query = legacyWire.includes("?") ? legacyWire.slice(legacyWire.indexOf("?") + 1) : "";
+  const params = new URLSearchParams(query);
+  if (language && language !== "en") params.set("lang", language);
+  return `${EXAMS_SURFACE.canonicalRoute}${params.size ? `?${params}` : ""}`;
 }

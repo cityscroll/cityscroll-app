@@ -90,9 +90,7 @@ function outcomeHTML(outcome) {
 }
 
 function examFacetDocumentHref(facet, value) {
-  const hash = examFacetHref({}, facet, value);
-  const query = String(hash).split("?", 2)[1] || "";
-  return `/browse/staffing/${query ? `?${query}` : ""}`;
+  return examFacetHref({}, facet, value);
 }
 
 function examFacetPivotsHTML(exam, today) {
@@ -259,7 +257,7 @@ export function renderExamDocument(exam, options = {}) {
 <link rel="canonical" href="${esc(canonical)}"><meta property="og:type" content="article"><meta property="og:site_name" content="CityScroll"><meta property="og:title" content="${esc(title)} · Exam ${esc(id)} · CityScroll"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets("/")}</head>
 <body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "exam-mast" })}
 <main id="main" class="node-document exam-document" data-exam-document="1" data-exam-number="${esc(id)}" data-subject-ref="${esc(examSubjectRef(id))}" data-document-rendered="true" data-node-document="1">
-  ${renderNodeBack({ href: "/browse/staffing/", label: "Back to Staffing and exams", extraClass: "exam-back" })}
+  ${renderNodeBack({ href: "/browse/exams/", label: "Back to Exams", extraClass: "exam-back" })}
   <header class="node-hero exam-hero" data-export-class="exam_identity">
     <p class="node-kicker exam-kicker">Civil-service exam</p><h1>${esc(title)}</h1>
     <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · ${DCAS_AGENCY_HREF ? constellationLink({ href: DCAS_AGENCY_HREF, label: "Published by DCAS", className: "exam-publisher-link", attributes: { "data-subject-ref": DCAS_AGENCY_REF }, escape: esc }) : "Published by DCAS"}</p>

@@ -136,7 +136,7 @@ function parsePersonnel(desc){
   };
 }
 
-// Bare #people and keyword searches use the same committed title projection.
+// Staffing keyword searches use the same committed title projection.
 let peopleDefaulted = false;
 let peopleDefaultExamplesPromise = null;
 async function defaultRoleTitle(){
@@ -157,7 +157,7 @@ async function applyPeopleDefault(){
   const title = await defaultRoleTitle();
   if(!title || $("#pkw").value.trim()) return; // no live data, or the user started typing while we waited
   $("#pkw").value = title;
-  hashLock = true; // an auto-picked example shouldn't decorate a fresh #people load (mirrors updateHash's money case)
+  hashLock = true; // an auto-picked example should not decorate a fresh Staffing load
   try{ await pSearch(); } finally { hashLock = false; }
 }
 

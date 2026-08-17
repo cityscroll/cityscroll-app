@@ -56,8 +56,8 @@ LENSES = (
     ),
     Lens(
         "People + organizations",
-        "staffing",
-        "browse/staffing/",
+        "people",
+        "browse/people/",
         "[data-people-organizations-list] .people-org-row",
         re.compile(r"^/(?:officials|agencies|vendors|committees|community-boards|notices)/[^/]+/?$"),
         "[data-people-organizations-list] .people-org-row",

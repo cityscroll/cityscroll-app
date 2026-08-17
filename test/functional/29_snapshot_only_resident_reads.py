@@ -29,7 +29,7 @@ SURFACES = (
     ("contracts", "/browse/contracts/", "#list .row"),
     (
         "people + organizations",
-        "/browse/staffing/",
+        "/browse/people/",
         "[data-browse-concept='people'] [data-people-organizations-list] .people-org-row",
     ),
     ("zoning", "/browse/zoning/", "#llist .row"),

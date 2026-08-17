@@ -10,7 +10,7 @@ and a screen-reader user is told before activating the link that it leaves the a
 
 The Exams document reuses the established exam renderer. Its official-source links carry the
 same new-tab treatment, so opening a publisher record does not discard the list's search and
-filters. The separate Staffing route remains the People + organizations document.
+filters. The separate Staffing route owns appointments and never substitutes the People directory.
 
 Broadened ruling (crol-extlinks2-y8): the product owner extended the new-tab treatment from a
 named allowlist (City Record / PASSPort / Checkbook NYC / NYC Open Data) to EVERY external
@@ -118,17 +118,19 @@ with sync_playwright() as pw:
     else:
         step("OK", '"Find this RFx in PASSPort" opens in a new tab', f"rel={info['rel']!r}")
 
-    # --- Staffing is People + organizations, while Exams owns exam-source handoffs --------
+    # --- Staffing owns appointments, while Exams owns exam-source handoffs ----------------
     page.goto(f"{BASE}browse/staffing/", wait_until="domcontentloaded", timeout=30000)
     wait_for_url(page, f"{BASE}browse/staffing/", label="staffing document route")
     wait_for_locator(
-        page.locator('[data-browse-concept="people"] [data-civic-object-kind="official"]').first,
-        label="Staffing People + organizations content",
+        page.locator("#staffing-notice-list .staffing-hire-row[data-kind='hire']").first,
+        label="Staffing appointment content",
     )
-    if page.locator("#career-guide").is_visible():
-        failures.append("Staffing route exposed the exam guide instead of People + organizations")
+    if page.locator('[data-browse-concept="people"]').is_visible():
+        failures.append("Staffing route exposed the People directory instead of appointments")
+    elif page.locator("#career-guide").is_visible():
+        failures.append("Staffing route exposed the exam guide instead of appointments")
     else:
-        step("OK", "Staffing stays on People + organizations", "exam guide hidden")
+        step("OK", "Staffing owns appointments", "People directory and exam guide hidden")
 
     page.goto(f"{BASE}browse/exams/", wait_until="domcontentloaded", timeout=30000)
     wait_for_url(page, f"{BASE}browse/exams/", label="Exams document route")

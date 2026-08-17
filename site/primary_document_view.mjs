@@ -180,12 +180,15 @@ export function buildOwnedBrowseDocument(shell, surface, { container, view }) {
   let html = pageMetadata(shell, {
     title: `${surface.title} · Browse · CityScroll`,
     description: surface.description,
-    canonical: canonicalRoute(surface.route),
+    canonical: canonicalRoute(surface.canonicalRoute),
     primaryHref: "/browse/",
     primaryContext: "browse",
   });
-  html = activateTab(html, surface.compatibility.runtimeTab);
-  html = html.replace(`href="${surface.route}"`, `href="${surface.route}" aria-current="page"`);
+  // Runtime ownership follows the unique surface ID. navigationFamily only
+  // selects the visual group in the Browse navigation.
+  html = activateTab(html, surface.surfaceId);
+  html = activateTabButton(html, surface.navigationFamily);
+  html = html.replace(`href="${surface.canonicalRoute}"`, `href="${surface.canonicalRoute}" aria-current="page"`);
   html = html.replace(
     '<body data-primary-context="browse"',
     `<body data-primary-context="browse" data-browse-surface="${esc(surface.surfaceId)}"`,
@@ -233,6 +236,12 @@ export function buildBrowseConceptDocument(shell, kind, sources, options = {}) {
   html = activateTab(html, "browse");
   html = html.replace(`class="tabbtn" href="${config.route}"`, `class="tabbtn active" href="${config.route}"`);
   html = addRouteStyles(html, ["browse.css", "local_constellation.css"]);
+  if (options.surface) {
+    html = html.replace(
+      '<body data-primary-context="browse"',
+      `<body data-primary-context="browse" data-browse-surface="${esc(options.surface.surfaceId)}"`,
+    );
+  }
   const rendered = replaceElementContent(html, "browseview", renderBrowseConceptLanding(buildBrowseConceptLanding(kind, sources)));
   return kind === "people"
     ? rendered.replace("</body>", '<script type="module" src="/people_organizations.mjs"></script>\n</body>')

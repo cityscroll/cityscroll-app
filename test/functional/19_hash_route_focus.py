@@ -81,35 +81,49 @@ def main():
             page = browser.new_page(viewport={"width": 1440, "height": 900})
             install_routes(page)
             page.goto(base + "#notice/20260701099", wait_until="load")
+            wait_for_url(page, "**/notices/20260701099", label="notice document forwarding")
+            assert_item_landing(page, "#noticeview .route-item")
+            page.close()
 
-            in_page_routes = (
-                ("#notice/20260701099", "#noticeview .route-item"),
-                ("#land/P2026K0001", "#land-item-card"),
-                (
-                    # This harness serves the SPA shell for /agencies/ so the
-                    # enhancement island can own focus (production edge uses the
-                    # static constellation document for the same path without ?tab=).
-                    "#agency/Housing%20Preservation%20and%20Development",
-                    "#entityview .route-item",
-                ),
-                ("#matter/8502026HP0001", "#entityview .route-item"),
+            # Compatibility translation is an ingress boundary: canonical
+            # documents own their fragments and never re-enter the legacy hash
+            # runtime. Exercise each document-forwarded legacy route from root.
+            agency = browser.new_page(viewport={"width": 1440, "height": 900})
+            install_routes(agency)
+            agency.goto(
+                base + "#agency/Housing%20Preservation%20and%20Development",
+                wait_until="load",
             )
-            for route, selector in in_page_routes:
-                page.evaluate("route => { location.hash = route; }", route)
-                if route.startswith("#agency/"):
-                    wait_for_url(page, "**/agencies/housing-preservation-and-development/", label="agency document forwarding")
-                assert_item_landing(page, selector)
+            wait_for_url(
+                agency,
+                "**/agencies/housing-preservation-and-development/",
+                label="agency document forwarding",
+            )
+            assert_item_landing(agency, "#entityview .route-item")
+            agency.close()
 
+            # Retained item hashes remain same-document routes and continue to
+            # preserve focus through Back/Forward history.
+            page = browser.new_page(viewport={"width": 1440, "height": 900})
+            install_routes(page)
+            page.goto(base + "#matter/8502026HP0001", wait_until="load")
+            assert_item_landing(page, "#entityview .route-item")
+            page.evaluate("location.hash = '#land/P2026K0001'")
+            assert_item_landing(page, "#land-item-card")
             page.go_back()
-            wait_for_url(page, "**/agencies/housing-preservation-and-development/", label="history back to agency")
+            wait_for_function(
+                page,
+                "() => location.hash === '#matter/8502026HP0001'",
+                label="history back to matter",
+            )
             assert_item_landing(page, "#entityview .route-item")
             page.go_forward()
             wait_for_function(
                 page,
-                "() => location.hash === '#matter/8502026HP0001'",
-                label="history forward to matter",
+                "() => location.hash === '#land/P2026K0001'",
+                label="history forward to land",
             )
-            assert_item_landing(page, "#entityview .route-item")
+            assert_item_landing(page, "#land-item-card")
             page.close()
 
             initial_matter = browser.new_page(viewport={"width": 390, "height": 844})
@@ -158,14 +172,15 @@ def main():
             bare = browser.new_page(viewport={"width": 1440, "height": 900})
             install_routes(bare)
             bare.goto(base + "#exam", wait_until="load")
+            wait_for_url(bare, "**/browse/exams/", label="bare exam route forwarding")
             wait_for_function(
                 bare,
-                "() => location.hash === '#people?view=guide'",
-                label="bare exam route forwarding",
+                "() => document.body.dataset.appReady === 'true'",
+                label="bare exam route application ready",
             )
-            assert bare.locator("#tab-people").evaluate(
+            assert bare.locator("#tab-exams").evaluate(
                 "element => element.classList.contains('active')"
-            ), "the retained bare #exam forwarding should stay on its legacy target until migration"
+            ), "the bare #exam compatibility route should resolve by intent to Exams"
 
             bare.goto(base + "browse/exams/", wait_until="load")
             wait_for_function(

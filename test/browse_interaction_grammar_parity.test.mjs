@@ -61,8 +61,8 @@ test("build-rendered Browse cards keep the shared title and Copy grammar before 
 });
 
 test("Exams declares its own renderer and browser owner", () => {
-  assert.equal(EXAMS_SURFACE.route, "/browse/exams/");
+  assert.equal(EXAMS_SURFACE.canonicalRoute, "/browse/exams/");
   assert.equal(EXAMS_SURFACE.builder, "exams-document");
   assert.equal(EXAMS_SURFACE.controller, "exams-browser");
-  assert.equal(EXAMS_SURFACE.compatibility.runtimeTab, "exams");
+  assert.equal(EXAMS_SURFACE.navigationFamily, "exams");
 });

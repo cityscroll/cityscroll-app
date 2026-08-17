@@ -119,7 +119,7 @@ test("unmatched /exams/:id never falls through to the contracts SPA shell", asyn
   assert.match(missingBody, /Exam 1194/);
   assert.doesNotMatch(missingBody, /track RFPs, rezonings, meetings/);
   assert.doesNotMatch(missingBody, /Contracts list|data-tab="money"|open RFPs/);
-  assert.match(missingBody, /href="\/browse\/staffing\/"/);
+  assert.match(missingBody, /href="\/browse\/exams\/"/);
 
   const present = await edgeWorker.fetch(new Request("https://cityscroll.org/exams/7013/"), env);
   assert.equal(present.status, 200);
@@ -134,6 +134,6 @@ test("renderExamUnavailable is a self-contained not-found document", () => {
   assert.match(html, /data-edge-rendered="exam-unavailable"/);
   assert.match(html, /data-exam-number="1194"/);
   assert.match(html, /Exam 1194/);
-  assert.match(html, /href="\/browse\/staffing\/"/);
+  assert.match(html, /href="\/browse\/exams\/"/);
   assert.doesNotMatch(html, /data-tab="money"|Contracts list/);
 });
