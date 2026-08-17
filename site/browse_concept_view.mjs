@@ -150,7 +150,7 @@ function renderBoardOrganizations(geography) {
     byBorough.get(board.borough).push(board);
   }
   return `<ul class="browse-concept-list browse-board-organization-list">${[...byBorough.entries()].map(([borough, boroughBoards]) => {
-    const links = boroughBoards.map((board) => `<a class="browse-board-number-link" href="${esc(board.institutionHref)}" aria-label="${esc(board.name)}" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">${esc(board.number)}</a>`).join("");
+    const links = boroughBoards.map((board) => `<a class="browse-board-number-link" href="${esc(board.institutionHref)}" aria-label="${esc(board.name)}" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">${esc(board.number)}</a>`).join(" ");
     return `<li class="browse-board-borough">
       <h3>${esc(borough)} community boards:</h3>
       <span class="browse-board-number-links">${links}</span>
