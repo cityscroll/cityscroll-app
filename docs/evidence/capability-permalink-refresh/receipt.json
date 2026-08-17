@@ -1,0 +1,119 @@
+{
+  "schema": "cityscroll.capability_permalink_refresh.v1",
+  "observed_on": "2026-08-17",
+  "desk_route": {
+    "requested": "https://desk.cityscroll.org/capabilities",
+    "observed_status": 302,
+    "observed_destination": "Cloudflare Access sign-in with /capabilities retained as redirect_url",
+    "source": "site/demo/demo-links.json#capabilities",
+    "public_artifact": "https://cityscroll.org/demo/demo-links.json"
+  },
+  "before_after": {
+    "before": "The executable demo manifest had 44 accumulated routes but no bounded, ordered capability selection for the desk; the prior receipt recorded the capability board as separate private-team data.",
+    "after": "Schema version 2 provides an ordered 12-entry capability selection, product rationales, and executable production-only assertions without exposing the authenticated desk in public captures."
+  },
+  "verification": {
+    "command": "python3 tools/verify_capability_permalinks.py",
+    "verified_at": "2026-08-17T22:56:17.416247Z",
+    "base": "https://cityscroll.org",
+    "browser": "headless Chromium via Playwright",
+    "gates": [
+      "HTTP response below 400",
+      "expected production pathname",
+      "capability-specific visible selectors and text",
+      "no configured empty/loading state",
+      "no known empty-shell copy",
+      "no uncaught page errors"
+    ],
+    "verified_count": 12,
+    "entries": [
+      {
+        "id": "graph-walk-agency-vendor-award",
+        "permalink": "site/demo/demo-links.json#entry:graph-walk-agency-vendor-award",
+        "rationale": "A shareable URL reconstructs a two-hop walk from Homeless Services through its awardee to the award notice, making graph navigation portable.",
+        "observed": "200; active 2-hop traversal path; award prime snapshot"
+      },
+      {
+        "id": "semantic-search-housing",
+        "permalink": "https://cityscroll.org/search/?q=housing",
+        "rationale": "One concept query returns cited passages across Rules and Meetings while preserving six typed lanes instead of flattening civic objects.",
+        "observed": "200; one Rules candidate; nine Meetings candidates"
+      },
+      {
+        "id": "agency-parks-mandates-predictions",
+        "permalink": "https://cityscroll.org/agencies/parks-and-recreation/",
+        "rationale": "Parks turns statutory deadlines and recurrence into expected rule or report events with watch links, joining law, evidence, time, and alerts.",
+        "observed": "200; expected mandate events and watch action"
+      },
+      {
+        "id": "agency-parks-connection-evidence",
+        "permalink": "https://cityscroll.org/agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021",
+        "rationale": "This permalink opens the warrant behind a Parks-to-rule edge: source, relation, match basis, and as-of time make the graph claim inspectable.",
+        "observed": "200; open evidence inspector; issued-rule relation; City Record source"
+      },
+      {
+        "id": "notice-sanitation-connected-mandate",
+        "permalink": "https://cityscroll.org/notices/20260605008",
+        "rationale": "A rule notice pivots to the law that required it, its agency, and a mandate watch; publication evidence becomes a traversable civic object.",
+        "observed": "200; connected mandate 64116-001; watch action"
+      },
+      {
+        "id": "official-marte-votes",
+        "permalink": "https://cityscroll.org/officials/7801/?event=22526&notice=20260706036",
+        "rationale": "One official profile joins roll-call votes to exact committee memberships, turning a person record into a two-way Council graph entry point.",
+        "observed": "200; six vote rows; committee member-of links"
+      },
+      {
+        "id": "committee-higher-education-members",
+        "permalink": "https://cityscroll.org/committees/15/",
+        "rationale": "An exact Legistar BodyId resolves to a committee document with member reverse edges to official profiles, supporting traversal in both directions.",
+        "observed": "200; Committee on Higher Education; Christopher Marte reverse edge"
+      },
+      {
+        "id": "people-organizations-directory",
+        "permalink": "https://cityscroll.org/browse/people/",
+        "rationale": "People and organizations keeps officials, agencies, vendors, committees, and boards distinct with canonical links, separate from jobs and exams.",
+        "observed": "200; 16 typed records; canonical official links"
+      },
+      {
+        "id": "staffing-appointments",
+        "permalink": "https://cityscroll.org/browse/staffing/?lang=es&role=Engineer",
+        "rationale": "Staffing now has its own appointments document, separate from people profiles and exams; live hires retain agency, title, salary, and source links.",
+        "observed": "200; 40 appointment records"
+      },
+      {
+        "id": "exam-caseworker-7016",
+        "permalink": "https://cityscroll.org/exams/7016/",
+        "rationale": "Exams now resolve as standalone civic documents; Caseworker 7016 combines its filing window, fee, salary, qualifications, and official actions.",
+        "observed": "200; Caseworker; fee, salary, and actions"
+      },
+      {
+        "id": "prime-sub-outreach-award",
+        "permalink": "https://cityscroll.org/notices/20231222103",
+        "rationale": "An award notice becomes a contract-chain snapshot: prime vendor, agency, value, industry, and likely subcontracting window stay together.",
+        "observed": "200; prime award snapshot and vendor"
+      },
+      {
+        "id": "alerts-watch-templates",
+        "permalink": "https://cityscroll.org/following/?tab=packs",
+        "rationale": "Following turns curated multi-filter watch sets into one-click, results-backed subscriptions; this opens the packs without requiring an account.",
+        "observed": "200; three watch-set packs"
+      }
+    ]
+  },
+  "rejected_candidates": [
+    {
+      "candidate": "vendor footprint pages",
+      "reason": "Live candidates rendered No awards on record or never produced the vendor-footprint section."
+    },
+    {
+      "candidate": "Parks-scoped Staffing",
+      "reason": "The scoped production route rendered zero appointments."
+    },
+    {
+      "candidate": "agency-to-mandate-to-notice walk",
+      "reason": "The current traversal route policy held the mandate hop instead of reconstructing an active walk."
+    }
+  ],
+  "captures": []
+}
