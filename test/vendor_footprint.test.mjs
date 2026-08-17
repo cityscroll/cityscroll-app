@@ -13,6 +13,7 @@ import { pivotDestinationCompatibility } from "../site/pivot_destination_compati
 import { scopeFromRouteHash } from "../site/scope_v0.mjs";
 
 const REF = "vendor:stem:ACME";
+const SPACED_REF = "vendor:stem:P%20T%20II%20CONTRACTING";
 
 test("coverage reverse-index keys are stable and do not expose vendor refs", () => {
   const key = vendorCoverageKey(REF);
@@ -168,13 +169,14 @@ test("vendor footprint renders populated groups and strong objects only", () => 
 });
 
 test("view-all links compose a typed vendor constraint through scope v0", () => {
-  const href = vendorFootprintScopeHref(REF, "awards", { query: "Acme & Co.", resultCount: 2 });
+  const href = vendorFootprintScopeHref(SPACED_REF, "awards", { query: "P T II CONTRACTING", resultCount: 16 });
   assert.match(href, /^\/browse\/contracts\/\?mode=award&/);
+  assert.doesNotMatch(href, /%2520/);
   const params = new URLSearchParams(new URL(href, "https://cityscroll.org").search);
-  assert.equal(params.get("q"), "Acme & Co.");
+  assert.equal(params.has("q"), false);
   assert.deepEqual(JSON.parse(params.get("facet")), {
-    entity_refs_all: [REF],
-    result_count_receipt: 2,
+    entity_refs_all: ["vendor:stem:P T II CONTRACTING"],
+    result_count_receipt: 16,
   });
   assert.equal(vendorFootprintScopeHref(REF, "franchise"), "");
 });
@@ -197,16 +199,14 @@ test("zero confirmed links surface populated name-mention counts without methodo
   assert.doesNotMatch(html, /vendor-footprint-scope/);
 });
 
-test("an empty footprint paints every supported family honestly", () => {
+test("an empty footprint omits zero-connection categories without disclaimer slop", () => {
   const html = renderVendorFootprintHTML({
     root: { kind: "vendor", ref: REF, display_name: "Acme" },
     domains: {},
     vendor_footprint: { section_counts: {} },
   });
-  assert.match(html, /data-footprint-section="awards"/);
-  assert.match(html, /data-footprint-section="franchise"/);
-  assert.match(html, /No meetings or hearings linked yet/);
-  assert.doesNotMatch(html, /Empty in this scoped materialization|current materialization|none in this materialization/i);
+  assert.doesNotMatch(html, /data-footprint-section=/);
+  assert.doesNotMatch(html, /No .* linked yet|No related records|Empty in this scoped materialization|current materialization|none in this materialization/i);
 });
 
 test("promotion removes qualifier labels but never admits tentative rows", () => {

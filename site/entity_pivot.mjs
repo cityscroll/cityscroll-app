@@ -11,7 +11,9 @@ import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identit
 import { cleanNoticeText } from "./text_clean.mjs";
 import { bblReaderLabel } from "./bbl_reader.mjs";
 import { constellationLink } from "./affordance_grammar.mjs";
+import { vendorStem } from "./vendor_stem.mjs";
 export { reconcileAgencyIdentity, resolveAgencyIdentity };
+export { vendorStem };
 
 const clean = (value, max = 320) =>
   String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
@@ -149,17 +151,6 @@ export function entityFromHref(href, label = "") {
       };
     })(),
   };
-}
-
-function vendorStem(value) {
-  const suffix = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
-  let stem = clean(value).toUpperCase().replace(/[.,'’&]/g, " ").replace(/\s+/g, " ").trim();
-  let previous;
-  do {
-    previous = stem;
-    stem = stem.replace(suffix, "").trim();
-  } while (stem !== previous && stem.length > 3);
-  return stem;
 }
 
 /**

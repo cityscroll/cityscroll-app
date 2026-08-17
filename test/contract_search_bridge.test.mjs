@@ -6,6 +6,8 @@ import {
   contractSearchDocumentToMoneyRow,
   mergeContractSearchRows,
 } from "../site/contract_search_bridge.mjs";
+import { searchContractAwardDocuments } from "../site/contract_award_search_producer.mjs";
+import { filterMoneySnapshot } from "../site/resident_snapshot_queries.mjs";
 
 function cityRecordDocument(pin, requestId, title) {
   return {
@@ -67,6 +69,23 @@ test("the Browse bridge rejects evidence-only notices and inconsistent contract 
 test("the Contracts award query path augments the bounded resident snapshot from universal search", () => {
   const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
   assert.match(source, /workerFetch\(`\/search\?q=\$\{encodeURIComponent\(key\)\}`/);
-  assert.match(source, /kw&&\(mode==="award"\|\|mode==="archive"\)/);
+  assert.match(source, /const retrievalQuery=kw\|\|scopedVendorStem/);
+  assert.match(source, /excludeSpecial,entityRefs,sort/);
   assert.match(source, /mergeContractSearchRows\(retainedRows,searchDocuments\)/);
+});
+
+test("the spaced vendor pivot returns all 16 retained P&T II awards in-window", () => {
+  const lookup = JSON.parse(readFileSync(
+    new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url),
+    "utf8",
+  ));
+  const documents = searchContractAwardDocuments(lookup, "P T II CONTRACTING", { limit: 100 }).documents;
+  const rows = mergeContractSearchRows([], documents);
+  const matched = filterMoneySnapshot(rows, {
+    mode: "award",
+    entityRefs: ["vendor:stem:P T II CONTRACTING"],
+    limit: rows.length,
+  });
+  assert.equal(matched.length, 16);
+  assert.ok(matched.every((row) => /P\s*&\s*T II Contracting/i.test(row.vendor_name)));
 });
