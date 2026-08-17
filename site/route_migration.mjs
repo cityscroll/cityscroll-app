@@ -1,4 +1,5 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { BROWSE_LEGACY_LENS_FACETS_COMPAT } from "./browse_surface_contracts.mjs";
 
 export const CANONICAL_ORIGIN = "https://cityscroll.org";
 
@@ -8,8 +9,7 @@ export const SELECTABLE_LANGS = Object.freeze([
 
 export const LEGACY_LENS_FACETS = Object.freeze({
   money: "contracts",
-  people: "staffing",
-  staffing: "staffing",
+  ...BROWSE_LEGACY_LENS_FACETS_COMPAT,
   land: "zoning",
   property: "property",
   rules: "rules",

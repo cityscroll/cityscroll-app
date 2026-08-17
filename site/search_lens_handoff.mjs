@@ -6,6 +6,11 @@
  * envelope and carries navigation context only: it is not a civic assertion.
  */
 
+import {
+  EXAMS_SURFACE,
+  PEOPLE_ORGANIZATIONS_SURFACE,
+} from "./browse_surface_contracts.mjs";
+
 export const SEARCH_LENS_HANDOFF_SCHEMA = "cityscroll.search_lens_handoff.v1";
 
 const MAX_FACET_LENGTH = 2_000;
@@ -24,7 +29,7 @@ const DESTINATIONS = Object.freeze({
     family: "contracts", surface: "money", route: "/browse/contracts/", label: "Contracts",
   }),
   "people-organizations": Object.freeze({
-    family: "people-organizations", surface: "people-organizations", route: "/browse/people/", label: "People + organizations",
+    family: "people-organizations", surface: PEOPLE_ORGANIZATIONS_SURFACE.surfaceId, route: PEOPLE_ORGANIZATIONS_SURFACE.route, label: PEOPLE_ORGANIZATIONS_SURFACE.label,
   }),
   zoning: Object.freeze({
     family: "land", surface: "land", route: "/browse/zoning/", label: "Land",
@@ -39,7 +44,7 @@ const DESTINATIONS = Object.freeze({
     family: "meetings", surface: "meetings", route: "/browse/meetings/", label: "Meetings",
   }),
   exams: Object.freeze({
-    family: "exams", surface: "people", route: "/browse/exams/", label: "Exams",
+    family: "exams", surface: "people", route: EXAMS_SURFACE.route, label: EXAMS_SURFACE.label,
   }),
 });
 
