@@ -1,0 +1,66 @@
+{
+  "phase": "after",
+  "desktop": {
+    "document_height": 17046,
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "switch_display": "flex",
+    "switch_rect": {
+      "top": 1553.84375,
+      "height": 36
+    },
+    "results_rect": {
+      "top": 1597.84375,
+      "height": 13968.546875
+    },
+    "map_rect": {
+      "top": 15566.390625,
+      "height": 941.03125
+    },
+    "active_surface": null,
+    "after_map_action": {
+      "document_height": 3078,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "switch_display": "flex",
+      "switch_rect": {
+        "top": 1553.84375,
+        "height": 36
+      },
+      "results_rect": {
+        "top": 1194,
+        "height": 0
+      },
+      "map_rect": {
+        "top": 1597.84375,
+        "height": 941.03125
+      },
+      "active_surface": "map"
+    }
+  },
+  "mobile": {
+    "document_height": 4564,
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "switch_display": "flex",
+    "switch_rect": {
+      "top": 2906.796875,
+      "height": 36
+    },
+    "results_rect": {
+      "top": 2503,
+      "height": 0
+    },
+    "map_rect": {
+      "top": 2950.796875,
+      "height": 1024.59375
+    },
+    "active_surface": "map"
+  }
+}
