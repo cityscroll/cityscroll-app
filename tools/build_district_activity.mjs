@@ -22,7 +22,9 @@ const PATHS = {
   boundaries: join(ROOT, "site/data/district_boundaries.json"),
   zap: join(ROOT, "site/data/zap_projects_warehouse_lookup.json"),
   property: join(ROOT, "site/data/property_domain_observations.json"),
-  meetings: join(ROOT, "site/data/meetings_domain_observations.json"),
+  meetings: join(ROOT, "site/data/shared_meeting_read_model.json"),
+  meetingLocations: join(ROOT, "site/data/meetings_domain_observations.json"),
+  communityBoardGeography: join(ROOT, "site/data/community_board_geography_lookup.json"),
   rules: join(ROOT, "site/data/rules_domain_observations.json"),
   // Prefer densified money domain observations (OCP awards + open RFPs with
   // place stamps). Fall back to the slim OCP warehouse lookup when missing.
@@ -45,16 +47,31 @@ function loadInputs() {
   const zap = loadJson(PATHS.zap);
   const property = loadJson(PATHS.property);
   const meetings = loadJson(PATHS.meetings);
+  const meetingLocations = loadJson(PATHS.meetingLocations);
+  const communityBoardGeography = loadJson(PATHS.communityBoardGeography);
   const rules = loadJson(PATHS.rules);
   const money = loadJson(PATHS.money) || loadJson(PATHS.moneyFallback);
   const contractActions = loadJson(PATHS.contractActions);
   const mandateBacklinksLookup = loadJson(PATHS.mandateBacklinks);
 
+  const locationByRequestId = new Map((meetingLocations?.rows || [])
+    .filter((row) => row?.request_id)
+    .map((row) => [String(row.request_id), row.affected_area || null]));
+  const meetingRows = (meetings?.rows || []).map((row) => {
+    const fallback = locationByRequestId.get(String(row?.request_id || ""));
+    const current = row?.affected_area;
+    if (current?.scope !== "unlocated" || current?.unlocated_reason || !fallback?.unlocated_reason) {
+      return row;
+    }
+    return { ...row, affected_area: { ...current, unlocated_reason: fallback.unlocated_reason } };
+  });
+
   return {
     boundaries,
     zapRows: Array.isArray(zap?.rows) ? zap.rows : [],
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
-    meetingsRows: Array.isArray(meetings?.rows) ? meetings.rows : [],
+    meetingsRows: meetingRows,
+    communityBoardGeography,
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],
@@ -73,10 +90,11 @@ function loadInputs() {
         stamp_value: property?.generated_at || null,
       },
       meetings: {
-        path: "data/meetings_domain_observations.json",
+        corpus: "shared_meeting_read_model",
+        path: "data/shared_meeting_read_model.json",
         collection: "rows",
-        stamp_field: "retrieved_at",
-        stamp_value: meetings?.retrieved_at || null,
+        stamp_field: "generated_at",
+        stamp_value: meetings?.generated_at || null,
       },
       rules: {
         path: "data/rules_domain_observations.json",
@@ -185,7 +203,7 @@ function check(doc) {
       ? sourceDoc[corpus.collection]
       : [];
     const sourceIds = new Set(sourceRows
-      .map((row) => String(row?.request_id || row?.project_id || row?.id || ""))
+      .map((row) => String(row?.request_id || row?.project_id || row?.id || row?.meeting_id || ""))
       .filter((id) => id && !/^FIX\d+/i.test(id)));
     if ((doc.sources?.[lens]?.indexed || 0) !== (doc.sources?.[lens]?.counted || 0)) {
       throw new Error(`${lens} item index does not cover its counted corpus`);

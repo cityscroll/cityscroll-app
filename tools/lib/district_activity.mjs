@@ -55,6 +55,10 @@ import {
   makeSubjectLink,
 } from "../../worker/src/lib/subject_registry.mjs";
 import { buildNearYouExplanationCandidates } from "../../site/near_you_explanation_path.mjs";
+import {
+  communityBoardIdForMeeting,
+  communityDistrictIdFromBoardOntology,
+} from "../../site/community_board_geography.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
 
@@ -94,6 +98,9 @@ function compactRecordBasis(lens, slots) {
   if (slots.some((slot) => isCitywidePlacement(slot))) {
     return { basis: "Citywide", confidence, method: method || "citywide" };
   }
+  if (method === "community_board_ontology") {
+    return { basis: "Community board district", confidence, method };
+  }
   if (["agency_hq", "vendor_address", "vendor_place"].includes(method) || confidence === "weak") {
     return { basis: "Weak fallback", confidence: "weak", method };
   }
@@ -127,6 +134,7 @@ export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
   "civic_address_pip",
   "classic_affected_area",
   "community_board",
+  "community_board_ontology",
   "coordinates_pip",
   "hearing_matter",
   "matter_address",
@@ -197,12 +205,15 @@ function geographySubjectNodes() {
 
 /** Compact public facts embedded beside the exact membership index for static rendering. */
 export function compactDistrictRecord(lens, row = {}, slots = []) {
-  const id = compactText(row.request_id || row.project_id || row.id, 80);
+  const meetingId = compactText(row.meeting_id, 1000);
+  const id = compactText(row.request_id || row.project_id || row.id || meetingId, 1000);
   if (!id) return null;
-  const type = compactText(
-    row.type_of_notice_description || row.public_status || row.project_status || "Record",
-    100,
-  );
+  const type = lens === "meetings" && row.source_system === "community_board"
+    ? "Community board meeting"
+    : compactText(
+      row.type_of_notice_description || row.public_status || row.project_status || "Record",
+      100,
+    );
   const fallbackTitle = lens === "money" && row.pin
     ? `${type || "Contract"} ${compactText(row.pin, 80)}`
     : `${type || lens} ${id}`;
@@ -227,7 +238,11 @@ export function compactDistrictRecord(lens, row = {}, slots = []) {
     basis: place.basis,
     confidence: place.confidence,
     basis_method: place.method,
-    route: lens === "land" ? `/#land/${encodeURIComponent(id)}` : `/#notice/${encodeURIComponent(id)}`,
+    route: lens === "land"
+      ? `/#land/${encodeURIComponent(id)}`
+      : lens === "meetings" && meetingId && !row.request_id
+        ? `/meetings/${encodeURIComponent(meetingId)}`
+        : `/#notice/${encodeURIComponent(id)}`,
   };
   if (lens === "meetings") {
     record.meeting_origin = normalizeMeetingOrigin(row);
@@ -603,6 +618,23 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
  * @param {{ cdCouncilIndex?: object|null }} [opts]
  */
 export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
+  const boardId = communityBoardIdForMeeting(row);
+  const boardDistrict = communityDistrictIdFromBoardOntology(
+    boardId,
+    opts.communityBoardGeography,
+  );
+  if (boardDistrict) {
+    return [{
+      borough: boroughFromCommunityId(boardDistrict),
+      community: boardDistrict,
+      council: opts.cdCouncilIndex?.[boardDistrict] || null,
+      method: "community_board_ontology",
+      source_method: "board_covers_district",
+      confidence: 1,
+      confidence_tier: "strong",
+    }];
+  }
+
   const stamped = row?.affected_area || row?.place || row?._location || null;
   let area;
   let meta = {
@@ -1180,13 +1212,21 @@ export function buildDistrictActivity(opts = {}) {
   const sources = {
     land: { corpus: "zap_projects_warehouse_lookup", counted: 0, located: 0, by_method: Object.create(null) },
     property: { corpus: "property_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
-    meetings: { corpus: "meetings_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
+    meetings: {
+      corpus: opts.districtCorpora?.meetings?.corpus || "meetings_domain_observations",
+      counted: 0,
+      located: 0,
+      by_method: Object.create(null),
+    },
     rules: { corpus: "rules_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
     money: { corpus: "money_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
   };
   const geographyMemberships = new Map();
 
   function itemSubjectRef(lens, itemId) {
+    if (lens === "meetings" && String(itemId || "").startsWith("meeting:")) {
+      return formatSubjectRef("meeting", String(itemId).slice("meeting:".length));
+    }
     return formatSubjectRef(lens === "land" ? "project" : "notice", itemId);
   }
 
@@ -1445,7 +1485,10 @@ export function buildDistrictActivity(opts = {}) {
     placeSlots("property", placements, itemId);
   }
 
-  const placeOpts = { cdCouncilIndex };
+  const placeOpts = {
+    cdCouncilIndex,
+    communityBoardGeography: opts.communityBoardGeography || null,
+  };
 
   // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
   for (const row of opts.meetingsRows || []) {

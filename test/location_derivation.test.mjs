@@ -30,6 +30,9 @@ const boundaries = JSON.parse(
 const neighborhoodGazetteer = JSON.parse(
   readFileSync(new URL("../site/data/neighborhood_gazetteer.json", import.meta.url), "utf8"),
 );
+const communityBoardGeography = JSON.parse(
+  readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url), "utf8"),
+);
 
 test("borough-of phrases catch disposition geography, not held-in venue rooms", () => {
   const matter = boroughOfPhrases(
@@ -83,6 +86,47 @@ test("golden: 511 West 171 disposition is Bronx matter (not unlocated)", () => {
   const slots = meetingPlacementsFromRow(row, boundaries);
   assert.ok(slots.some((s) => s.borough === "Bronx"));
   assert.ok(slots[0].confidence >= 0.8);
+});
+
+test("community-board meetings derive their district from the published board ontology", () => {
+  const meetingId = "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/full-board/2026-09-02/";
+  const row = {
+    meeting_id: meetingId,
+    source_system: "community_board",
+    board_id: "manhattan-cb-10",
+    institution_refs: { board_ref: "community-board:manhattan-cb-10" },
+    title: "Manhattan Community Board 10 full-board meeting",
+    affected_area: {
+      scope: "local",
+      boroughs: [],
+      community_districts: [],
+      community_boards: [],
+      addresses: [{ label: "209 Joralemon Street" }],
+    },
+  };
+
+  const slots = meetingPlacementsFromRow(row, boundaries, { communityBoardGeography });
+  assert.deepEqual(slots.map(({ borough, community, method, source_method }) => ({
+    borough, community, method, source_method,
+  })), [{
+    borough: "Manhattan",
+    community: "M10",
+    method: "community_board_ontology",
+    source_method: "board_covers_district",
+  }]);
+
+  const activity = buildDistrictActivity({
+    boundaries,
+    communityBoardGeography,
+    meetingsRows: [row],
+    builtAt: "2026-08-17T12:00:00.000Z",
+  });
+  assert.deepEqual(activity.district_items.by_level.community_district.M10.meetings, [meetingId]);
+  assert.equal(activity.records.meetings[meetingId].route, `/meetings/${encodeURIComponent(meetingId)}`);
+  assert.equal(activity.records.meetings[meetingId].type, "Community board meeting");
+  assert.ok(activity.geography_subjects.public_edges.some((edge) =>
+    edge.from === meetingId && edge.to === "community-district:M10"
+      && edge.evidence.placement_method === "community_board_ontology"));
 });
 
 test("golden: WNYC Transmitter Park title is Brooklyn matter", () => {

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 1413,
-  "public_edges": 1402,
+  "polygon_memberships": 1598,
+  "public_edges": 1587,
   "evidence_only_edges": 11,
   "reconciled": true,
   "by_lens": {
@@ -60,20 +60,25 @@
       }
     },
     "meetings": {
-      "polygon_memberships": 240,
-      "public_edges": 240,
+      "polygon_memberships": 425,
+      "public_edges": 425,
       "evidence_only_edges": 0,
       "reconciled": true,
       "by_method": {
-        "civic_address_pip": {
-          "public": 120,
+        "community_board_ontology": {
+          "public": 169,
           "evidence_only": 0,
-          "total": 120
+          "total": 169
+        },
+        "civic_address_pip": {
+          "public": 126,
+          "evidence_only": 0,
+          "total": 126
         },
         "matter_body_borough": {
-          "public": 19,
+          "public": 18,
           "evidence_only": 0,
-          "total": 19
+          "total": 18
         },
         "cd_centroid_council": {
           "public": 66,
@@ -86,14 +91,19 @@
           "total": 9
         },
         "matter_title_place": {
-          "public": 20,
+          "public": 17,
           "evidence_only": 0,
-          "total": 20
+          "total": 17
         },
         "venue_column": {
           "public": 6,
           "evidence_only": 0,
           "total": 6
+        },
+        "stamped": {
+          "public": 14,
+          "evidence_only": 0,
+          "total": 14
         }
       }
     },
@@ -136,7 +146,7 @@
       "land": 3,
       "property": 0,
       "rules": 97,
-      "meetings": 12,
+      "meetings": 15,
       "money": 42
     },
     "virtual": {
@@ -156,7 +166,7 @@
   },
   "note": "Each polygon membership has exactly one routed located_in candidate. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-08-13T19:08:16.763Z",
+  "built_at": "2026-08-17T22:29:30.400Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,
