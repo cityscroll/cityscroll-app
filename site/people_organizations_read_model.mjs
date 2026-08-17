@@ -217,11 +217,12 @@ function committeeRows(graph = {}, people = {}) {
   const byCommittee = new Map();
   for (const node of Array.isArray(graph.nodes) ? graph.nodes : []) {
     if (node?.type !== "committee" || !clean(node.id) || !clean(node.name)) continue;
+    const committeeId = clean(node.id).replace(/^committee:/, "");
     byCommittee.set(node.id, {
       kind: "committee",
       id: node.id,
       label: clean(node.name),
-      href: "/browse/people/#people-row-committee-" + encodeURIComponent(clean(node.id).replace(/^committee:/, "")),
+      href: /^\d+$/.test(committeeId) ? `/committees/${encodeURIComponent(committeeId)}/` : null,
       entity_ref: node.id,
       relation_state: published ? "empty" : "unknown",
       detail: published ? "Committee identity published · no exact member edge in this snapshot" : "Committee relation coverage unknown",
