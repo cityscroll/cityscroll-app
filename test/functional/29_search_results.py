@@ -100,6 +100,36 @@ MOSQUITO_FALLBACK = typed_result(
     href="/browse/contracts/?mode=award&q=mosquito",
 )
 
+PROPOSED_CONTRACT = typed_result(
+    "software",
+    title="Maintenance, support services, software assurance for PhotoManager",
+    object_type="procurement",
+    domain="contracts",
+    lens="notices",
+    href="/browse/contracts/?mode=award&q=05626S0013001",
+    state="archived",
+)
+PROPOSED_CONTRACT.update({
+    "object_ref": "procurement:05626S0013001",
+    "process_role": "award",
+    "source_observation_refs": ["notice:20260730029"],
+    "provenance": {
+        "producer": "city_record_search_document.v1",
+        "browse_record": {
+            "request_id": "20260730029",
+            "start_date": "2026-08-06",
+            "agency_name": "Police Department",
+            "type_of_notice_description": "Award",
+            "short_title": "Maintenance, support services, software assurance for PhotoManager",
+            "pin": "05626S0013001",
+            "source_system": "city_record",
+        },
+        "lifecycle": {"state": "archived"},
+    },
+})
+PROPOSED_CONTRACT["match_fields"][0]["source_observation_ref"] = "notice:20260730029"
+PROPOSED_CONTRACT["match_evidence"]["source_identifier"] = "notice:20260730029"
+
 POLICE_CONTRACT_SNAPSHOT = {
     "schema_version": 1,
     "delivery_tier": "resident-snapshot",
@@ -282,8 +312,21 @@ def main():
             json_response(route, candidate_response(query))
 
         def keyword_search_api(route):
-            query = parse_qs(urlparse(route.request.url).query).get("q", [""])[0].lower()
-            results = [MOSQUITO_FALLBACK] if query == "mosquito" else []
+            params = parse_qs(urlparse(route.request.url).query)
+            query = params.get("q", [""])[0].lower()
+            if params.get("object_ref") == ["procurement:05626S0013001"]:
+                assert params.get("source_ref") == ["notice:20260730029"]
+                json_response(route, {
+                    "schema": "cityscroll.exact_search_response.v1",
+                    "match_mode": "exact_object_ref",
+                    "results": [PROPOSED_CONTRACT],
+                })
+                return
+            results = (
+                [MOSQUITO_FALLBACK] if query == "mosquito"
+                else [PROPOSED_CONTRACT] if query == "software"
+                else []
+            )
             json_response(route, fallback_payload(results, query))
 
         page.route("https://api.cityscroll.org/search/candidates?*", search_api)
@@ -329,6 +372,27 @@ def main():
         mosquito = page.locator('[data-search-lane="contracts"] [data-search-result]').first
         assert "Mosquito control products" in (mosquito.text_content() or "")
         assert mosquito.locator("mark").text_content().lower() == "mosquito"
+
+        page.goto(f"{BASE}/search/?q=software", wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_selector('[data-search-lane="contracts"] [data-search-result]')
+        proposed = page.locator('[data-search-lane="contracts"] [data-search-result]').first
+        handoff = proposed.locator("[data-search-handoff]")
+        handoff_href = handoff.get_attribute("href")
+        parsed_handoff = urlparse(handoff_href)
+        handoff_params = parse_qs(parsed_handoff.query)
+        assert handoff_params["mode"] == ["archive"]
+        identity = json.loads(handoff_params["facet"][0])["contract_identity"]
+        assert identity == {
+            "object_ref": "procurement:05626S0013001",
+            "source_observation_ref": "notice:20260730029",
+        }
+        assert proposed.locator("h4 a").get_attribute("href") == handoff_href
+        handoff.click()
+        page.locator("#list .money-row-card").first.wait_for(state="visible", timeout=30000)
+        contract_list = page.locator("#list").inner_text()
+        assert "Maintenance, support services, software assurance for PhotoManager" in contract_list
+        assert "PIN 05626S0013001" in contract_list
+        assert "Nothing found" not in contract_list
 
         fallback_cases = [
             ("fallback", LEGACY_FALLBACK, "/browse/contracts/?", "Opened Contracts", "contracts"),
