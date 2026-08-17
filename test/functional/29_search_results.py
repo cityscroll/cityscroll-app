@@ -70,6 +70,9 @@ SEMANTIC_FIXTURES = {
     "contract": "Subscription security contract\nA current contract award.",
     "hearing": "Public hearing\nA public hearing and meeting notice.",
     "late": "Administrative notice\n" + ("Background context. " * 45) + "Late matching evidence.",
+    "rat": "Resource Corporation meeting\nThe lexical passage match is incidental.",
+    "pest": "Dr. Pestesi spoke at the meeting\nThe lexical passage match is a name.",
+    "rodent": "Rodent prevention meeting\nPublic discussion of rodent control.",
 }
 
 LEGACY_FALLBACK = typed_result(
@@ -91,14 +94,22 @@ MEETING_FALLBACK = typed_result(
     href="/meetings/meeting%3Acity_record%3Afixture-meeting",
 )
 
-MOSQUITO_FALLBACK = typed_result(
-    "mosquito",
-    title="Mosquito control products",
-    object_type="procurement",
-    domain="contracts",
-    lens="notices",
-    href="/browse/contracts/?mode=award&q=mosquito",
-)
+TOPICAL_RECALL_RESULTS = {
+    term: typed_result(
+        term,
+        title=title,
+        object_type="procurement",
+        domain="contracts",
+        lens="notices",
+        href=f"/browse/contracts/?mode=award&q={term}",
+    )
+    for term, title in {
+        "rat": "Rat control services",
+        "pest": "Pest control services",
+        "rodent": "Rodent burrow treatment services",
+        "mosquito": "Mosquito control products",
+    }.items()
+}
 
 PROPOSED_CONTRACT = typed_result(
     "software",
@@ -323,7 +334,7 @@ def main():
                 })
                 return
             results = (
-                [MOSQUITO_FALLBACK] if query == "mosquito"
+                [TOPICAL_RECALL_RESULTS[query]] if query in TOPICAL_RECALL_RESULTS
                 else [PROPOSED_CONTRACT] if query == "software"
                 else []
             )
@@ -372,6 +383,19 @@ def main():
         mosquito = page.locator('[data-search-lane="contracts"] [data-search-result]').first
         assert "Mosquito control products" in (mosquito.text_content() or "")
         assert mosquito.locator("mark").text_content().lower() == "mosquito"
+
+        for query in ("rat", "pest", "rodent"):
+            page.goto(f"{BASE}/search/?q={query}", wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_selector(f'[data-semantic-family="contracts"] [data-search-result]')
+            assert page.locator("[data-semantic-candidate]").count() > 0
+            method = page.locator("[data-search-method-value]").text_content() or ""
+            assert "Source-passage matches" in method
+            assert "Keyword fallback" in method
+            keyword = page.locator(
+                '[data-semantic-family="contracts"] [data-search-result]'
+            ).first
+            assert TOPICAL_RECALL_RESULTS[query]["title"] in (keyword.text_content() or "")
+            assert keyword.locator("mark").text_content().lower() == query
 
         page.goto(f"{BASE}/search/?q=software", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_selector('[data-search-lane="contracts"] [data-search-result]')
