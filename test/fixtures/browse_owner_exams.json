@@ -1,0 +1,21 @@
+{
+  "data_current_as_of": "2026-08-14",
+  "exams": [
+    {
+      "exam_number": "7016",
+      "title": "Clerical Associate",
+      "eligibility": "open_competitive",
+      "application_start": "2026-08-01",
+      "application_end": "2026-08-31",
+      "interest_area": "administration-finance"
+    },
+    {
+      "exam_number": "7017",
+      "title": "Computer Associate",
+      "eligibility": "promotion",
+      "application_start": "2026-06-01",
+      "application_end": "2026-06-30",
+      "interest_area": "technology-data"
+    }
+  ]
+}

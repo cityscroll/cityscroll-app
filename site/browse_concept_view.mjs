@@ -12,7 +12,7 @@ import {
   PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
 } from "./browse_list_contract.mjs";
 import { renderBrowseView } from "./browse_view.mjs";
-import { buildPeopleListBrowseView } from "./browse_reuse_surfaces.mjs";
+import { buildPeopleListBrowseView } from "./people_organizations_surface.mjs";
 import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
