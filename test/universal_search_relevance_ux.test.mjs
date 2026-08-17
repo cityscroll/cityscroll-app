@@ -104,6 +104,16 @@ test("active and archived source states remain visible and archived evidence sta
   assert.match(archived, /href="\/agencies\/parks-and-recreation\/"/);
 });
 
+test("unknown source state omits the no-value status chip", () => {
+  const html = renderUniversalSearchResultHtml(agencyResult({
+    ranking: {},
+    provenance: {},
+  }));
+
+  assert.match(html, /data-lifecycle-state="unknown"/);
+  assert.doesNotMatch(html, /topic-search-result-status|Status not available/);
+});
+
 test("highlighting escapes query and source text before adding fixed mark elements", () => {
   const hostile = '<img src=x onerror="alert(1)">';
   const highlighted = highlightLiteralHtml(`Before ${hostile} after`, hostile);
