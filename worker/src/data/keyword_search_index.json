@@ -3,11 +3,11 @@
   "generated_at": "2026-08-15T19:35:39.293Z",
   "match_mode": "keyword",
   "families": {
-    "people-organizations": {
-      "source": "NYC Council people and CityScroll agency profiles",
-      "as_of": "2026-08-15T19:35:39.293Z",
-      "source_row_count": 297,
-      "indexed_count": 296,
+    "people": {
+      "source": "NYC Council person profiles",
+      "as_of": "2026-08-11T19:21:19.284Z",
+      "source_row_count": 215,
+      "indexed_count": 215,
       "coverage": [
         {
           "producer": "people",
@@ -17,16 +17,6 @@
           "source_count": 215,
           "indexed_count": 215,
           "rejected_count": 0
-        },
-        {
-          "producer": "agency_search_document.v1",
-          "object_type": "agency",
-          "domain": "people",
-          "state": "partial",
-          "reason": "some_agency_entries_not_indexed",
-          "total_count": 82,
-          "indexed_count": 81,
-          "not_indexed_count": 1
         }
       ],
       "documents": [
@@ -6392,7 +6382,27 @@
           },
           "outcome": "indexed",
           "coverage_state": "matched"
-        },
+        }
+      ]
+    },
+    "people-organizations": {
+      "source": "CityScroll agency profiles",
+      "as_of": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z",
+      "source_row_count": 82,
+      "indexed_count": 81,
+      "coverage": [
+        {
+          "producer": "agency_search_document.v1",
+          "object_type": "agency",
+          "domain": "people",
+          "state": "partial",
+          "reason": "some_agency_entries_not_indexed",
+          "total_count": 82,
+          "indexed_count": 81,
+          "not_indexed_count": 1
+        }
+      ],
+      "documents": [
         {
           "schema": "cityscroll.search_document.v1",
           "object_ref": "agency:id:administration-for-childrens-services",
@@ -6418,7 +6428,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6452,7 +6462,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6486,7 +6496,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6520,7 +6530,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6554,7 +6564,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6588,7 +6598,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6622,7 +6632,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6656,7 +6666,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6690,7 +6700,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6724,7 +6734,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6758,7 +6768,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6792,7 +6802,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6826,7 +6836,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6860,7 +6870,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6894,7 +6904,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6928,7 +6938,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6962,7 +6972,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -6996,7 +7006,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7030,7 +7040,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7064,7 +7074,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7098,7 +7108,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7132,7 +7142,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7166,7 +7176,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7200,7 +7210,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7234,7 +7244,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7268,7 +7278,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7302,7 +7312,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7336,7 +7346,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7370,7 +7380,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7404,7 +7414,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7438,7 +7448,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7472,7 +7482,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7506,7 +7516,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7540,7 +7550,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7574,7 +7584,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7608,7 +7618,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7642,7 +7652,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7676,7 +7686,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7710,7 +7720,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7744,7 +7754,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7778,7 +7788,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7812,7 +7822,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7846,7 +7856,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7880,7 +7890,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7914,7 +7924,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7948,7 +7958,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -7982,7 +7992,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8016,7 +8026,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8050,7 +8060,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8084,7 +8094,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8118,7 +8128,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8152,7 +8162,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8186,7 +8196,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8220,7 +8230,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8254,7 +8264,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8288,7 +8298,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8322,7 +8332,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8356,7 +8366,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8390,7 +8400,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8424,7 +8434,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8458,7 +8468,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8492,7 +8502,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8526,7 +8536,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8560,7 +8570,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8594,7 +8604,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8628,7 +8638,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8662,7 +8672,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8696,7 +8706,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8730,7 +8740,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8764,7 +8774,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8798,7 +8808,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8832,7 +8842,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8866,7 +8876,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8900,7 +8910,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8934,7 +8944,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -8968,7 +8978,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -9002,7 +9012,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -9036,7 +9046,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -9070,7 +9080,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -9104,7 +9114,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
@@ -9138,7 +9148,7 @@
               "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
               "certification_generated_at": "2026-08-06T00:00:00Z",
               "obligations_generated_at": "2026-08-07T23:52:53.226Z",
-              "process_conformance_generated_at": "2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
               "vendor_rollup_as_of": "2026-08-05",
               "vendor_rollup_window_start": "2025-08-05",
               "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
