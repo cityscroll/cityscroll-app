@@ -43,14 +43,43 @@ test("People + organizations exposes a board institution projection", () => {
   assert.match(html, /data-board-projection="organization"/);
   assert.match(html, /data-body-id="bronx-cb-01"/);
   assert.match(html, /href="\/community-boards\/bronx-cb-01\/"/);
-  assert.match(html, /Covers Bronx Community District 1\./);
-  assert.doesNotMatch(html, /Community District X01|· (?:Published|Unknown)|browse-concept-status-rail/);
+  const directory = html.match(/<section[^>]+id="community-boards"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.match(directory, /Bronx community boards:/);
+  assert.match(directory, /aria-label="Bronx Community Board 1"[^>]*>1<\/a>/);
+  assert.doesNotMatch(directory, /Covers |Community District|· (?:Published|Unknown)|browse-concept-status-rail/);
   assert.match(html, /id="people-organizations-list"/);
   assert.doesNotMatch(html, /id="officials"|id="vendors"|id="committees"/);
   assert.match(html, /id="community-boards"/);
   assert.doesNotMatch(html, /Published official profiles\.|Vendor profiles from award records\.|Published committee records\./);
   assert.match(html, /Public bodies serving New York City districts\./);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
+});
+
+test("Community boards directory groups numbered institution links by borough", () => {
+  const places = {
+    nodes: [
+      ["bronx-cb-01", "Bronx", 1],
+      ["bronx-cb-02", "Bronx", 2],
+      ["brooklyn-cb-01", "Brooklyn", 1],
+    ].map(([bodyId, borough, district]) => ({
+      id: `community-board:${bodyId}`,
+      type: "community-board",
+      name: `${borough} Community Board ${district}`,
+      properties: { body_id: bodyId, borough, district },
+    })),
+    public_edges: [],
+  };
+  const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", { places }));
+  const section = html.match(/<section[^>]+id="community-boards"[\s\S]*?<\/section>/)?.[0] || "";
+
+  assert.equal((section.match(/class="browse-board-borough"/g) || []).length, 2);
+  assert.match(section, /Bronx community boards/);
+  assert.match(section, /Brooklyn community boards/);
+  assert.equal((section.match(/href="\/community-boards\/(?:bronx-cb-0[12]|brooklyn-cb-01)\/"/g) || []).length, 3);
+  assert.match(section, /aria-label="Bronx Community Board 1"[^>]*>1<\/a>/);
+  assert.match(section, /aria-label="Bronx Community Board 2"[^>]*>2<\/a>/);
+  assert.match(section, /aria-label="Brooklyn Community Board 1"[^>]*>1<\/a>/);
+  assert.doesNotMatch(section, /Covers |Community District|>Bronx Community Board 1<|>Brooklyn Community Board 1</);
 });
 
 test("committee cards list members once without graph-edge labels", () => {
