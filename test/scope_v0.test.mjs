@@ -56,6 +56,36 @@ test("search and applied facets round-trip through the same scope axes", () => {
   assert.equal(facets.process, "scheduled");
 });
 
+test("typed search handoff remains inside the canonical route scope", () => {
+  const handoff = {
+    schema: "cityscroll.search_lens_handoff.v1",
+    raw_query: "mosquitos",
+    normalized_terms: ["mosquito"],
+    family: "meetings",
+    record_ref: "meeting:city_record:20260816001",
+    evidence: {
+      status: "matched",
+      field: "description",
+      source_identifier: "city-record:20260816001",
+      snippet: {
+        text: "A hearing about mosquito control in Brooklyn.",
+        mark_start: 16,
+        mark_end: 24,
+      },
+    },
+    search_params: { q: "mosquitos", boro: "Brooklyn", when: "month" },
+    destination: { surface: "meetings", pathname: "/browse/meetings/" },
+  };
+  const facet = encodeURIComponent(JSON.stringify({ search_handoff: handoff }));
+  const original = `#meetings?q=mosquitos&boro=Brooklyn&when=month&facet=${facet}`;
+  const scope = scopeFromRouteHash(original);
+
+  assert.deepEqual(scope.facets.values.search_handoff, handoff);
+  const replay = routeHashFromScope(scope, { surface: "meetings" });
+  assert.deepEqual(scopeFromRouteHash(replay), scope);
+  assert.equal(new URLSearchParams(replay.split("?", 2)[1]).get("q"), "mosquitos");
+});
+
 test("every current browse lens preserves its existing route grammar", () => {
   const routes = [
     "#money?mode=award&agency=Buildings&q=roofing&sort=amount&min=1000000&max=5000000&category=Construction&months=3&standard=1&m=sealed_bid",

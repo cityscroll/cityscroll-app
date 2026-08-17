@@ -364,17 +364,16 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(search, /data-keyword-lanes[^>]*hidden/);
   for (const lane of [
     "Contracts",
+    "People + organizations",
+    "Land",
     "Rules",
     "Meetings",
-    "Mandates",
-    "People and organizations",
-    "Community boards",
-    "Civil-service exams",
-    "Properties",
-    "Land use",
+    "Exams",
   ]) {
-    assert.match(search, new RegExp(`<h3[^>]*>${lane}<\\/h3>`));
+    const escapedLane = lane.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(search, new RegExp(`<h3[^>]*>${escapedLane}<\\/h3>`));
   }
+  assert.equal((search.match(/data-search-lane=/g) || []).length, 6);
   assert.match(search, /name="q"[^>]+maxlength="240"/);
   assert.doesNotMatch(search, /app\/main\.mjs/);
   assert.match(search, /search_document\.mjs/);
