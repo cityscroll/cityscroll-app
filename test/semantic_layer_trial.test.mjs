@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -15,6 +17,13 @@ import {
   resolveSourcePassageCandidate,
   validateSourcePassageMap,
 } from "../warehouse/lib/source_passage_map.mjs";
+import {
+  OFFLINE_EMBEDDING_ARTIFACT_SCHEMA,
+  OFFLINE_EMBEDDING_MODEL,
+  buildOfflineEmbeddingArtifact,
+  validateOfflineEmbeddingArtifact,
+} from "../warehouse/lib/offline_embedding_artifact.mjs";
+import { publishOfflineEmbeddingArtifact } from "../tools/build_offline_embedding_artifact.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TRIAL = join(ROOT, "warehouse/experiments/semantic-layer-trial");
@@ -129,6 +138,113 @@ test("missing source text stays unknown and cannot manufacture graph identities"
   }
 });
 
+test("offline embedding artifact is typed, pinned, normalized, and tied to the corpus manifest", () => {
+  const manifest = readJson(join(ROOT, "warehouse/manifests/semantic_retrieval_corpus_manifest.json"));
+  const passageMap = readJson(join(TRIAL, "source_passage_map.json"));
+  const artifact = buildOfflineEmbeddingArtifact(manifest, passageMap);
+
+  assert.equal(artifact.schema, OFFLINE_EMBEDDING_ARTIFACT_SCHEMA);
+  assert.equal(artifact.authorization.runtime_semantic_retrieval, false);
+  assert.equal(artifact.model.id, OFFLINE_EMBEDDING_MODEL.id);
+  assert.equal(artifact.model.revision, OFFLINE_EMBEDDING_MODEL.revision);
+  assert.equal(artifact.model.dimensions, 256);
+  assert.equal(artifact.model.normalization, "l2");
+  assert.equal(artifact.inputs.corpus_manifest_sha256, manifest.manifest_sha256);
+  assert.equal(artifact.inputs.source_passage_map_sha256, passageMap.map_sha256);
+  assert.equal(artifact.input_row_count, passageMap.passage_count);
+  assert.equal(artifact.embedded_row_count, passageMap.passage_count);
+  assert.equal(artifact.dropped_row_count, 0);
+  assert.equal(validateOfflineEmbeddingArtifact(artifact), artifact);
+
+  for (const row of artifact.rows) {
+    assert.match(row.candidate_id, /^[^:]+:.+:p\d{4}$/);
+    assert.equal(row.vector.length, artifact.model.dimensions);
+    const norm = Math.sqrt(row.vector.reduce((sum, value) => sum + value * value, 0));
+    assert.ok(Math.abs(norm - 1) < 1e-5, `${row.candidate_id} is not L2-normalized`);
+  }
+
+  const reordered = buildOfflineEmbeddingArtifact(manifest, {
+    ...passageMap,
+    passages: [...passageMap.passages].reverse(),
+  });
+  assert.equal(reordered.artifact_sha256, artifact.artifact_sha256);
+});
+
+test("offline embedding artifact records dropped passage reasons", () => {
+  const manifest = {
+    schema: "cityscroll.semantic_retrieval.corpus_manifest.v1",
+    manifest_sha256: "a".repeat(64),
+    input_receipts: { corpus: { sha256: "b".repeat(64) } },
+    records: [{ source_record_id: "city_record_notice:kept" }],
+  };
+  const passageMap = {
+    schema: "cityscroll.semantic_retrieval.source_passage_map.v1",
+    map_sha256: "c".repeat(64),
+    passages: [
+      {
+        candidate_id: "city_record_notice:kept:p0001",
+        passage_id: "city_record_notice:kept:p0001",
+        source_record_id: "city_record_notice:kept",
+        source_family: "city_record_notice",
+        text_state: "retained",
+        text: "A retained public passage",
+        text_sha256: createHash("sha256").update("A retained public passage").digest("hex"),
+      },
+      {
+        candidate_id: "city_record_notice:kept:p0002",
+        passage_id: "city_record_notice:kept:p0002",
+        source_record_id: "city_record_notice:kept",
+        source_family: "city_record_notice",
+        text_state: "unknown",
+        text: null,
+        text_sha256: null,
+      },
+      {
+        candidate_id: "city_record_notice:outside:p0001",
+        passage_id: "city_record_notice:outside:p0001",
+        source_record_id: "city_record_notice:outside",
+        source_family: "city_record_notice",
+        text_state: "retained",
+        text: "Outside the manifest",
+        text_sha256: createHash("sha256").update("Outside the manifest").digest("hex"),
+      },
+    ],
+  };
+
+  const artifact = buildOfflineEmbeddingArtifact(manifest, passageMap);
+  assert.equal(artifact.embedded_row_count, 1);
+  assert.equal(artifact.dropped_row_count, 2);
+  assert.deepEqual(artifact.dropped_reason_counts, {
+    source_not_in_manifest: 1,
+    text_not_retained: 1,
+  });
+});
+
+test("failed embedding refresh preserves the prior-good pointer and lexical site", () => {
+  const directory = mkdtempSync(join(tmpdir(), "cityscroll-offline-embedding-"));
+  const manifest = readJson(join(ROOT, "warehouse/manifests/semantic_retrieval_corpus_manifest.json"));
+  const passageMap = readJson(join(TRIAL, "source_passage_map.json"));
+  const lexicalBefore = readFileSync(join(ROOT, "site/index.html"));
+  try {
+    const first = publishOfflineEmbeddingArtifact({ manifest, passageMap, outputDirectory: directory });
+    const receiptBefore = readFileSync(first.receiptPath);
+    const artifactBefore = readFileSync(first.artifactPath);
+
+    assert.throws(() => publishOfflineEmbeddingArtifact({
+      manifest: { ...manifest, manifest_sha256: "f".repeat(64) },
+      passageMap,
+      outputDirectory: directory,
+      beforePointerSwap() { throw new Error("injected refresh failure"); },
+    }), /injected refresh failure/);
+
+    assert.deepEqual(readFileSync(first.receiptPath), receiptBefore);
+    assert.deepEqual(readFileSync(first.artifactPath), artifactBefore);
+    assert.deepEqual(readFileSync(join(ROOT, "site/index.html")), lexicalBefore);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("corpus sanitization is idempotent and diagnostics identify the exact failure", () => {
   const raw = "meeting number (access code) 26373696969 and password retained-value";
   const first = redactForPublication(raw);
@@ -199,4 +315,11 @@ test("offline checks validate without model dependencies or network access", () 
     { cwd: ROOT, encoding: "utf8" },
   );
   assert.equal(passageMapCheck.status, 0, passageMapCheck.stderr);
+
+  const embeddingArtifactCheck = spawnSync(
+    process.execPath,
+    [join(ROOT, "tools/build_offline_embedding_artifact.mjs"), "--check"],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(embeddingArtifactCheck.status, 0, embeddingArtifactCheck.stderr || embeddingArtifactCheck.stdout);
 });
