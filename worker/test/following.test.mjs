@@ -10,6 +10,9 @@ import { sessionPayload } from "../src/lib/session.mjs";
 
 const SIGNING_FIXTURE = "example-token-placeholder";
 const TEST_EMAIL = ["reader", "example.com"].join("@");
+const FIXTURE_NOW = new Date("2026-08-10T12:00:00.000Z");
+const FIXTURE_TODAY = FIXTURE_NOW.toISOString().slice(0, 10);
+const FIXTURE_UPCOMING_MEETING = new Date(FIXTURE_NOW.getTime() + 2 * 86400000).toISOString();
 
 function kv() {
   const values = new Map();
@@ -31,7 +34,7 @@ function previewFetch(url) {
       request_id: "20260805001",
       short_title: "Queens curb redesign hearing",
       agency_name: "Transportation",
-      event_date: "2026-08-12T18:00:00.000",
+      event_date: FIXTURE_UPCOMING_MEETING,
       section_name: "Public Hearings and Meetings",
     },
   ]), { status: 200, headers: { "Content-Type": "application/json" } }));
@@ -56,7 +59,7 @@ test("the edge Following renderer previews the shared materialized meeting scope
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=meetings&filter=${filter}&freq=weekly&count=17`,
-  ), {}, {}, { todayISO: "2026-08-10" });
+  ), {}, {}, { todayISO: FIXTURE_TODAY });
   const html = await response.text();
 
   assert.equal(response.status, 200);
@@ -82,7 +85,7 @@ test("the edge Following renderer preserves typed route facets in the watch form
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=money&filter=${filter}`,
-  ), {}, {}, { fetchImpl: previewFetch });
+  ), {}, {}, { fetchImpl: previewFetch, todayISO: FIXTURE_TODAY });
   const html = await response.text();
 
   assert.equal(response.status, 200);
