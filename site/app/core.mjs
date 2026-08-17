@@ -372,6 +372,21 @@ function showTab(name, push){
   }
 }
 
+const BROWSE_CONCEPT_DOCUMENT_PATHS = new Set([
+  "/browse/people",
+  "/browse/places",
+  "/browse/staffing",
+]);
+
+function isBrowseConceptDocumentLink(href){
+  try{
+    const path=new URL(href,location.href).pathname.replace(/\/+$/,"")||"/";
+    return BROWSE_CONCEPT_DOCUMENT_PATHS.has(path);
+  }catch(_error){
+    return false;
+  }
+}
+
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
   const activeAlias=browseRouteAlias(location.pathname);
   if(activeAlias?.targetTab===b.dataset.tab){
@@ -382,6 +397,7 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
   // A route alias reuses another pane's runtime, so a same-name compatibility
   // pane must not steal the click. Its canonical document route owns navigation.
   if(browseRouteAlias(new URL(b.href, location.href).pathname)) return;
+  if(isBrowseConceptDocumentLink(b.href)) return;
   // Some civic-object links are document routes without an SPA pane (for example
   // the static People and Places concept landings). Let those anchors navigate so
   // the document route and its server-rendered content remain authoritative.

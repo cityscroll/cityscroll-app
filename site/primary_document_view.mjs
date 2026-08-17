@@ -234,13 +234,15 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
   return replaceElementContent(html, config.container, renderBrowseView(view));
 }
 
-export function buildBrowseConceptDocument(shell, kind, sources) {
+export function buildBrowseConceptDocument(shell, kind, sources, options = {}) {
   const config = BROWSE_CONCEPTS[kind];
   if (!config) throw new Error(`Unknown Browse concept: ${kind}`);
+  const route = options.route || config.route;
+  const title = options.title || config.title;
   let html = pageMetadata(shell, {
-    title: `${config.title} · Browse · CityScroll`,
-    description: config.description,
-    canonical: canonicalRoute(config.route),
+    title: `${title} · Browse · CityScroll`,
+    description: options.description || config.description,
+    canonical: canonicalRoute(route),
     primaryHref: "/browse/",
     primaryContext: "browse",
   });

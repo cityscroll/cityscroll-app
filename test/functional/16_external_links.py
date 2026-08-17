@@ -8,9 +8,9 @@ either replaced the app in place. AFTER, both carry target="_blank" rel="noopene
 plus a visually-hidden "opens in new tab" marking, so the tab stays open behind the new one
 and a screen-reader user is told before activating the link that it leaves the app.
 
-The Staffing rebuild replaced salary-band search results with a posting-first appointment
-feed. Its City Record links carry the same new-tab treatment, so opening a source record does
-not discard the list's search and filters.
+The Exams document reuses the established exam renderer. Its official-source links carry the
+same new-tab treatment, so opening a publisher record does not discard the list's search and
+filters. The separate Staffing route remains the People + organizations document.
 
 Broadened ruling (crol-extlinks2-y8): the product owner extended the new-tab treatment from a
 named allowlist (City Record / PASSPort / Checkbook NYC / NYC Open Data) to EVERY external
@@ -24,7 +24,7 @@ negative control is replaced with two new ones: an in-app hash link (unchanged) 
 own api.cityscroll.org link (CityScroll's own resource, must never acquire target="_blank").
 
 This gate proves it on real rendered output: the notice-detail links (City Record, PASSPort)
-and the Staffing feed's City Record link get the new-tab treatment, the broadened case (the
+and the Exams guide's official-source link get the new-tab treatment, the broadened case (the
 Open Contracting guide, previously same-tab) now also gets it, an ordinary in-app link does not
 regress into acquiring target="_blank", and CityScroll's own api.cityscroll.org link stays
 same-tab.
@@ -36,7 +36,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
-from ci_waits import wait_for_function, wait_for_locator, wait_for_url  # noqa: E402
+from ci_waits import wait_for_locator, wait_for_url  # noqa: E402
 from i18n_fixtures import install_routes, NOTICE_PERMALINK_ROW  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
@@ -118,33 +118,40 @@ with sync_playwright() as pw:
     else:
         step("OK", '"Find this RFx in PASSPort" opens in a new tab', f"rel={info['rel']!r}")
 
-    # --- Staffing feed source record -------------------------------------------------------
+    # --- Staffing is People + organizations, while Exams owns exam-source handoffs --------
     page.goto(f"{BASE}browse/staffing/", wait_until="domcontentloaded", timeout=30000)
     wait_for_url(page, f"{BASE}browse/staffing/", label="staffing document route")
-    staffing_link = page.locator(
-        '#staffing-notice-list a[href*="a856-cityrecord.nyc.gov"]'
-    ).first
-    wait_for_function(
-        page,
-        "() => document.querySelectorAll('#staffing-notice-list a[href*=\"a856-cityrecord.nyc.gov\"]').length > 0",
-        label="staffing source link",
+    wait_for_locator(
+        page.locator('[data-browse-concept="people"] [data-civic-object-kind="official"]').first,
+        label="Staffing People + organizations content",
     )
-    if staffing_link.count() != 1:
-        failures.append("Staffing feed: expected a City Record link on the newest appointment")
+    if page.locator('[data-browse-route-alias="exams"]').count() != 0:
+        failures.append("Staffing route exposed the Exams alias instead of People + organizations")
+    elif page.locator("#career-guide").is_visible():
+        failures.append("Staffing route exposed the exam guide instead of People + organizations")
     else:
-        info = staffing_link.evaluate("""el => ({
+        step("OK", "Staffing stays on People + organizations", "exam guide hidden")
+
+    page.goto(f"{BASE}browse/exams/", wait_until="domcontentloaded", timeout=30000)
+    wait_for_url(page, f"{BASE}browse/exams/", label="Exams document route")
+    exams_link = page.locator("#career-results .career-card a.career-official-handoff").first
+    wait_for_locator(exams_link, label="Exams official-source link")
+    if exams_link.count() != 1:
+        failures.append("Exams guide: expected an official-source link on the first exam")
+    else:
+        info = exams_link.evaluate("""el => ({
             target: el.getAttribute("target"),
             rel: el.getAttribute("rel"),
             srText: (el.querySelector(".sr-only") || {}).textContent || null,
         })""")
         if info["target"] != "_blank":
-            failures.append(f'Staffing feed City Record link: target={info["target"]!r}, want "_blank"')
+            failures.append(f'Exams official-source link: target={info["target"]!r}, want "_blank"')
         elif not info["rel"] or "noopener" not in info["rel"] or "noreferrer" not in info["rel"]:
-            failures.append(f'Staffing feed City Record link: rel={info["rel"]!r}, want noopener+noreferrer')
+            failures.append(f'Exams official-source link: rel={info["rel"]!r}, want noopener+noreferrer')
         elif not info["srText"] or not info["srText"].strip():
-            failures.append("Staffing feed City Record link: no accessible new-tab marking (.sr-only child)")
+            failures.append("Exams official-source link: no accessible new-tab marking (.sr-only child)")
         else:
-            step("OK", "Staffing feed source opens in a new tab", f"rel={info['rel']!r}")
+            step("OK", "Exams official source opens in a new tab", f"rel={info['rel']!r}")
 
     # --- Control: an in-app link must NOT regress into acquiring target="_blank" -----------
     # The footer's "My investigation" link (#investigation) is present on every page load —

@@ -154,6 +154,13 @@ export function primaryDocumentOutputs() {
     outputs.push(output(`browse/${kind}`, buildBrowseConceptDocument(shell, kind, conceptSources)));
   }
   for (const [facet, payload] of Object.entries(payloads)) {
+    if (facet === "staffing") {
+      outputs.push(output("browse/staffing", buildBrowseConceptDocument(shell, "people", conceptSources, {
+        route: "/browse/staffing/",
+        title: "Staffing",
+      })));
+      continue;
+    }
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), {
       route: `/browse/${facet}/`,
       semanticArtifact: facet === "rules" ? rulesSemanticLane : null,

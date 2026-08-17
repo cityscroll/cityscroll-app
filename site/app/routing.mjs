@@ -17,7 +17,13 @@ const DOCUMENT_FACET_HASHES=Object.freeze({
 // These are static Browse documents, not SPA panes. Keep this closed route list
 // aligned with BROWSE_CONCEPTS without importing the renderer into the inline
 // reconstruction path.
-const DOCUMENT_CONCEPT_ROUTES=new Set(["people","places"]);
+const DOCUMENT_CONCEPT_ROUTES=new Map([
+  ["people","people"],
+  ["places","places"],
+  // /browse/staffing/ is the retained document route for the unified
+  // People + organizations surface. Exams own /browse/exams/ separately.
+  ["staffing","people"],
+]);
 function documentRouteRaw(){
   const path=location.pathname.replace(/\/+$/,"")||"/";
   const notice=path.match(/^\/notices\/([A-Za-z0-9_-]{1,80})$/);
@@ -44,7 +50,8 @@ function documentRouteRaw(){
   if(browse){
     const facet=browse[1];
     if(!facet) return "browse";
-    if(DOCUMENT_CONCEPT_ROUTES.has(facet)) return `browse-concept/${facet}`;
+    const concept=DOCUMENT_CONCEPT_ROUTES.get(facet);
+    if(concept) return `browse-concept/${concept}`;
     const alias=browseRouteAlias(path);
     if(alias){
       const params=new URLSearchParams(location.search);

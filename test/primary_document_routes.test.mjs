@@ -399,6 +399,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.doesNotMatch(exams, /data-browse-object-family="exams"/);
   assert.doesNotMatch(exams, /id="tab-exams"/);
   assert.doesNotMatch(exams, /Coming soon|data-browse-stub/);
+
   assert.match(landing, /<details class="browse-source-disclosure"><summary>Official data from…<\/summary>/);
   assert.doesNotMatch(landing, /every source|source view|source lenses/i);
   assert.deepEqual(detectNodePageCruft(landing), []);
@@ -411,10 +412,34 @@ test("Browse landing and every bounded child are exact build outputs with useful
   }
   for (const facet of Object.keys(BROWSE_FACETS)) {
     const html = output(`/site/browse/${facet}/index.html`);
-    assert.match(html, new RegExp(`data-browse-facet="${facet}"`));
+    if (facet === "staffing") assert.match(html, /data-browse-concept="people"/);
+    else assert.match(html, new RegExp(`data-browse-facet="${facet}"`));
     assert.match(html, /data-record-id=/);
     assert.doesNotMatch(html, /data-build-rendered="browse"[\s\S]{0,200}<span class="loading"/);
   }
+});
+
+test("Staffing renders People + organizations and stays distinct from Exams", () => {
+  const outputs = primaryDocumentOutputs();
+  const output = (suffix) => outputs.find(([path]) => path.endsWith(suffix))?.[1] || "";
+  const staffing = output("/site/browse/staffing/index.html");
+  const exams = output("/site/browse/exams/index.html");
+
+  assert.match(staffing, /<title>Staffing · Browse · CityScroll<\/title>/);
+  assert.match(staffing, /rel="canonical" href="https:\/\/cityscroll\.org\/browse\/staffing\/"/);
+  assert.match(staffing, /id="tab-browse" class="tabpane active"/);
+  assert.match(staffing, /data-build-rendered="browse-concept" data-browse-concept="people"/);
+  assert.match(staffing, /id="people-organizations-list"/);
+  assert.match(staffing, /data-civic-object-kind="official"/);
+  assert.match(staffing, /<option value="agency">Agencies<\/option>/);
+  assert.match(staffing, /id="vendors"/);
+  assert.doesNotMatch(staffing, /data-browse-route-alias="exams"/);
+  assert.doesNotMatch(staffing, /data-browse-facet="staffing"|data-browse-facet="exams-alias"/);
+
+  assert.match(exams, /data-browse-route-alias="exams"/);
+  assert.match(exams, /data-browse-facet="exams-alias"/);
+  assert.match(exams, /data-civic-object-kind="exam"/);
+  assert.doesNotMatch(exams, /data-browse-concept="people"/);
 });
 
 test("People and Places landings use populated entity and geography indexes", () => {
@@ -859,7 +884,10 @@ test("client island preserves static Browse concept documents", () => {
   const routing = read("../site/app/routing.mjs");
   const core = read("../site/app/core.mjs");
   assert.match(routing, /DOCUMENT_CONCEPT_ROUTES/);
+  assert.match(routing, /\["staffing","people"\]/);
   assert.match(routing, /browse-concept\//);
   assert.match(routing, /if\(raw\.startsWith\("browse-concept\/"\)\) return true/);
+  assert.match(core, /BROWSE_CONCEPT_DOCUMENT_PATHS/);
+  assert.match(core, /if\(isBrowseConceptDocumentLink\(b\.href\)\) return/);
   assert.match(core, /if\(!document\.getElementById\(`tab-\$\{b\.dataset\.tab\}`\)\) return;/);
 });
