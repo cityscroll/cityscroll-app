@@ -15,6 +15,7 @@ await import("./money-list.mjs");
 let moneyHistoryPromise;
 globalThis.ensureMoneyHistory = () => moneyHistoryPromise ||= import("./money-history.mjs");
 await import("./search-share.mjs");
+await import("./exams.mjs");
 await import("./people.mjs");
 await import("./land.mjs");
 await import("./feed-actions.mjs");

@@ -747,7 +747,7 @@
           "contains": "eligibleListUtilization"
         },
         {
-          "path": "site/app/people.mjs",
+          "path": "site/app/exams.mjs",
           "contains": "eligible_list_utilization"
         }
       ],
@@ -1584,7 +1584,7 @@
           "contains": "examOutcomeView"
         },
         {
-          "path": "site/app/people.mjs",
+          "path": "site/app/exams.mjs",
           "contains": "careerOutcomeHTML"
         }
       ],

@@ -8,11 +8,11 @@ import { BROWSE_CONCEPTS } from "../site/browse_concept_view.mjs";
 import {
   buildBrowseDocument,
   buildBrowseLandingDocument,
-  buildBrowseAliasDocument,
   buildBrowseConceptDocument,
   buildNowDocument,
   buildSearchDocument,
 } from "../site/primary_document_view.mjs";
+import { buildExamsDocument } from "../site/exams_surface.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
@@ -146,7 +146,7 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
-  outputs.push(output(surfaceOutputPath(EXAMS_SURFACE), buildBrowseAliasDocument(shell, "exams", { ...payloads.staffing, ...staffingExams })));
+  outputs.push(output(surfaceOutputPath(EXAMS_SURFACE), buildExamsDocument(shell, staffingExams)));
   const conceptSources = {
     people,
     committees,

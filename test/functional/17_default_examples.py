@@ -88,8 +88,6 @@ def people_opens_on_a_populated_example(pw):
     )
     if page.locator('#people-organizations-type option[value="agency"]').count() != 1:
         failures.append("bare #people did not expose organizations alongside people")
-    if page.locator('[data-browse-route-alias="exams"]').count() != 0:
-        failures.append("bare #people resolved to the Exams alias")
     if page.locator("#career-guide").is_visible():
         failures.append("bare #people exposed the exam guide")
     route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")

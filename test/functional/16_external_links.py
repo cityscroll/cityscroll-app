@@ -125,9 +125,7 @@ with sync_playwright() as pw:
         page.locator('[data-browse-concept="people"] [data-civic-object-kind="official"]').first,
         label="Staffing People + organizations content",
     )
-    if page.locator('[data-browse-route-alias="exams"]').count() != 0:
-        failures.append("Staffing route exposed the Exams alias instead of People + organizations")
-    elif page.locator("#career-guide").is_visible():
+    if page.locator("#career-guide").is_visible():
         failures.append("Staffing route exposed the exam guide instead of People + organizations")
     else:
         step("OK", "Staffing stays on People + organizations", "exam guide hidden")

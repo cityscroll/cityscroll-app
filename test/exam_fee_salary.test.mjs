@@ -182,9 +182,10 @@ test("applyNoeDensifyRecord never overwrites structured fee and multi-exam numbe
 test("#exam deep-link preserves detail hash and paints detail shell before list", () => {
   assert.match(html, /function showExam\s*\(/);
   assert.match(html, /function paintExamDetailShell\s*\(/);
-  assert.match(html, /Preserve #exam\/<id>/);
+  assert.match(html, /exact selected-card fragment/);
   assert.match(html, /careerSelected && \/\^\\d\{4\}\$\//);
-  assert.match(html, /feed\.hidden\s*=\s*examDetail/);
+  assert.match(html, /results\.innerHTML=`<article class="career-card selected route-item"/);
+  assert.match(html, /showTab\("exams"\)/);
   assert.match(html, /data-exam-loading/);
   // serializeState must not rewrite an open exam detail into #people?view=guide.
   assert.match(html, /return "#exam\/"\+encodeURIComponent/);

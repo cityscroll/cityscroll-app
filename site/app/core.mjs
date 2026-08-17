@@ -1,5 +1,4 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
-import { browseRouteAlias } from "../browse_route_aliases.mjs";
 import {
   externalActionLink as renderExternalActionLink,
   installObjectCardCopyLinks,
@@ -329,10 +328,8 @@ function showTab(name, push){
   }
   pendingRouteModuleTab=null;
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
-  const routeAlias=browseRouteAlias(location.pathname);
-  const navigationTab=routeAlias?.targetTab===name ? routeAlias.navigationTab : name;
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
-  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === navigationTab));
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
   syncTabAria();
   focusLensHeading(name);
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
@@ -346,9 +343,8 @@ function showTab(name, push){
     if(controls) controls.classList.add("open");
     if(toggle && toggle.classList.contains("filtertoggle")) toggle.setAttribute("aria-expanded","true");
   }
-  if(name==="people"){
-    loadCareerGuide(); loadStaffingFeed();
-  }
+  if(name==="people") loadStaffingFeed();
+  if(name==="exams") loadCareerGuide();
   if(name==="property"){
     const panel=$("#tax-lien-sale-panel");
     if(panel){
@@ -372,11 +368,12 @@ function showTab(name, push){
   }
 }
 
-import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT } from "../browse_surface_contracts.mjs";
+import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT, EXAMS_SURFACE } from "../browse_surface_contracts.mjs";
 
 const BROWSE_CONCEPT_DOCUMENT_PATHS = new Set([
   ...BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT,
   "/browse/places",
+  EXAMS_SURFACE.route.replace(/\/+$/, ""),
 ]);
 
 function isBrowseConceptDocumentLink(href){
@@ -389,15 +386,6 @@ function isBrowseConceptDocumentLink(href){
 }
 
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
-  const activeAlias=browseRouteAlias(location.pathname);
-  if(activeAlias?.targetTab===b.dataset.tab){
-    e.preventDefault();
-    location.assign(currentLanguageURL(activeAlias.targetRoute));
-    return;
-  }
-  // A route alias reuses another pane's runtime, so a same-name compatibility
-  // pane must not steal the click. Its canonical document route owns navigation.
-  if(browseRouteAlias(new URL(b.href, location.href).pathname)) return;
   if(isBrowseConceptDocumentLink(b.href)) return;
   // Some civic-object links are document routes without an SPA pane (for example
   // the static People and Places concept landings). Let those anchors navigate so
@@ -410,19 +398,16 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
 /* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */
 (function(){
   const nav=document.querySelector(".tabs"); if(!nav) return;
-  const routeAlias=browseRouteAlias(location.pathname);
   nav.setAttribute("role","tablist"); nav.setAttribute("aria-label", t("tablist_label"));
   document.querySelectorAll(".tabbtn").forEach(b=>{
-    const controlledTab=routeAlias?.navigationTab===b.dataset.tab ? routeAlias.targetTab : b.dataset.tab;
-    b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+controlledTab);
+    b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+b.dataset.tab);
   });
   document.querySelectorAll(".tabpane").forEach(p=>{
     // #tab-notice/#tab-entity have no corresponding .tabbtn (reached only via permalink/pivot,
     // never the tablist) — role=tabpanel with no owning tab is an orphan per WAI-ARIA APG, so
     // they get no tab role at all rather than a false aria-labelledby.
     const paneTab=p.id.slice(4);
-    const labelTab=routeAlias?.targetTab===paneTab ? routeAlias.navigationTab : paneTab;
-    const btn=document.getElementById("tabbtn-"+labelTab);
+    const btn=document.getElementById("tabbtn-"+paneTab);
     if(btn){ p.setAttribute("role","tabpanel"); p.setAttribute("aria-labelledby", btn.id); }
   });
   nav.addEventListener("keydown", e=>{

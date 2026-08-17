@@ -1859,96 +1859,7 @@
 <!-- ============ PEOPLE ============ -->
 <section id="tab-people" class="tabpane">
   <div class="wrap">
-    <div class="career-guide" id="career-guide">
-      <section class="career-browser" aria-labelledby="career-browser-heading">
-        <div class="career-browser-head">
-          <div>
-            <p class="career-kicker" data-i18n="staffing_pathways_kicker">City careers</p>
-            <h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1" data-i18n="career_browser_heading">Find an exam you can act on</h2>
-          </div>
-          <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
-        </div>
-        <div class="lens-toolbar career-toolbar" id="career-toolbar">
-          <div class="field kw">
-            <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
-            <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder">
-          </div>
-          <div class="lens-toolbar-actions">
-            <details class="utility-overflow lens-more-filters" id="staffing-more-filters">
-              <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="staffing-filter-badge" hidden></span></summary>
-              <div class="utility-overflow-content lens-more-content">
-                <div class="lens-controls-grid career-more-grid">
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
-                    <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
-                    <div id="career-interest-context"></div>
-                  </div>
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</span>
-                    <div id="career-eligibility-facets" class="career-facet-links" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
-                    <select id="career-eligibility" hidden aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label">
-                      <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
-                      <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
-                      <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
-                    </select>
-                  </div>
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
-                    <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
-                  </div>
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-salary-band-facets-label" data-i18n="career_salary_band_label">Starting salary</span>
-                    <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary" role="group" aria-labelledby="career-salary-band-facets-label"></div>
-                  </div>
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-fee-level-facets-label" data-i18n="career_fee_level_label">Application fee</span>
-                    <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee" role="group" aria-labelledby="career-fee-level-facets-label"></div>
-                  </div>
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
-                    <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
-                  </div>
-                </div>
-              </div>
-            </details>
-            <button type="button" class="watchbtn" data-lens="people" data-i18n="watch_this_search">Follow this search</button>
-          </div>
-        </div>
-        <div class="career-rail-label lens-primary-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</div>
-        <div id="career-format-facets" class="career-facet-links lens-primary-rail" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
-        <div class="lens-search-state" id="staffing-active-filters" data-search-state="people"></div>
-        <div class="lens-resultbar career-resultbar" id="career-resultbar">
-          <span class="lens-count" id="career-result-count" aria-live="polite"></span>
-        </div>
-        <div class="career-source" id="career-source" role="status">
-          <span data-i18n="career_loading">Loading the DCAS exam guide…</span>
-        </div>
-        <div class="career-results" id="career-results" aria-live="polite"></div>
-      </section>
 
-      <div class="career-intro">
-        <details class="career-how" id="career-how-details">
-          <summary data-i18n="staffing_exam_help">Learn about exams</summary>
-          <div class="career-how-body">
-            <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
-              <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
-              <div class="career-fact"><b id="career-upcoming-count">—</b><span data-i18n="career_upcoming_count_label">open-competitive exams scheduled next</span></div>
-              <div class="career-fact"><b data-i18n="career_no_account_fact">No account here</b><span data-i18n="career_no_account_label">Applications happen in the City's OASys system</span></div>
-            </div>
-            <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
-            <section aria-labelledby="career-how-heading">
-              <h3 class="career-section-heading" id="career-how-heading" data-i18n="career_how_heading">What a civil-service exam does</h3>
-              <div class="career-steps">
-                <div class="career-step"><b data-i18n="career_step1_title">Find an exam</b><span data-i18n="career_step1_body">Open-competitive exams are available to anyone who meets the requirements.</span></div>
-                <div class="career-step"><b data-i18n="career_step2_title">Read the NOE</b><span data-i18n="career_step2_body">The Notice of Examination is the official guide to the job, qualifications, fee, and test.</span></div>
-                <div class="career-step"><b data-i18n="career_step3_title">Apply in the window</b><span data-i18n="career_step3_body">Create an OASys account, submit the application, and request a fee waiver if you qualify.</span></div>
-                <div class="career-step"><b data-i18n="career_step4_title">Join the eligible list</b><span data-i18n="career_step4_body">If you pass, your score places you on a list agencies use when they hire for that title.</span></div>
-              </div>
-            </section>
-          </div>
-        </details>
-      </div>
-    </div>
 
     <details class="staffing-ledger" id="staffing-ledger">
       <summary data-i18n="staffing_history_summary">Appointment record</summary>
@@ -2298,15 +2209,96 @@
 <section id="tab-exams" class="tabpane">
   <div class="wrap">
     <div id="examsview">
-      <div class="browse-concept-landing" data-browse-object-family="exams">
-        <p class="now-kicker"><a href="/browse/">Browse</a> · Exams</p>
-        <header class="browse-landing-head"><h1>Exams</h1><p>Civil-service exam records and application details.</p></header>
-        <section class="browse-concept-section" aria-labelledby="browse-exams-heading">
-          <h2 id="browse-exams-heading">Civil-service exams</h2>
-          <p>Open the Exams document to browse the current snapshot of exam schedules, applications, eligible lists, and published outcomes.</p>
-          <p class="browse-concept-actions"><a class="browse-concept-link" href="/browse/exams/">Browse exams</a></p>
-        </section>
+<div class="career-guide" id="career-guide">
+      <section class="career-browser" aria-labelledby="career-browser-heading">
+        <div class="career-browser-head">
+          <div>
+            <p class="career-kicker">Exams</p>
+            <h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1">Civil-service exams</h2>
+          </div>
+          <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
+        </div>
+        <div class="lens-toolbar career-toolbar" id="career-toolbar">
+          <div class="field kw">
+            <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
+            <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder">
+          </div>
+          <div class="lens-toolbar-actions">
+            <details class="utility-overflow lens-more-filters" id="staffing-more-filters">
+              <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="staffing-filter-badge" hidden></span></summary>
+              <div class="utility-overflow-content lens-more-content">
+                <div class="lens-controls-grid career-more-grid">
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
+                    <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
+                    <div id="career-interest-context"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</span>
+                    <div id="career-eligibility-facets" class="career-facet-links" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
+                    <select id="career-eligibility" hidden aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label">
+                      <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
+                      <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
+                      <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
+                    </select>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
+                    <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-salary-band-facets-label" data-i18n="career_salary_band_label">Starting salary</span>
+                    <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary" role="group" aria-labelledby="career-salary-band-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-fee-level-facets-label" data-i18n="career_fee_level_label">Application fee</span>
+                    <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee" role="group" aria-labelledby="career-fee-level-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
+                    <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
+                  </div>
+                </div>
+              </div>
+            </details>
+            <button type="button" class="watchbtn" data-lens="people" data-i18n="watch_this_search">Follow this search</button>
+          </div>
+        </div>
+        <div class="career-rail-label lens-primary-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</div>
+        <div id="career-format-facets" class="career-facet-links lens-primary-rail" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
+        <div class="lens-search-state" id="staffing-active-filters" data-search-state="people"></div>
+        <div class="lens-resultbar career-resultbar" id="career-resultbar">
+          <span class="lens-count" id="career-result-count" aria-live="polite"></span>
+        </div>
+        <div class="career-source" id="career-source" role="status">
+          <span data-i18n="career_loading">Loading the DCAS exam guide…</span>
+        </div>
+        <div class="career-results" id="career-results" aria-live="polite"></div>
+      </section>
+
+      <div class="career-intro">
+        <details class="career-how" id="career-how-details">
+          <summary data-i18n="staffing_exam_help">Learn about exams</summary>
+          <div class="career-how-body">
+            <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
+              <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
+              <div class="career-fact"><b id="career-upcoming-count">—</b><span data-i18n="career_upcoming_count_label">open-competitive exams scheduled next</span></div>
+              <div class="career-fact"><b data-i18n="career_no_account_fact">No account here</b><span data-i18n="career_no_account_label">Applications happen in the City's OASys system</span></div>
+            </div>
+            <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
+            <section aria-labelledby="career-how-heading">
+              <h3 class="career-section-heading" id="career-how-heading" data-i18n="career_how_heading">What a civil-service exam does</h3>
+              <div class="career-steps">
+                <div class="career-step"><b data-i18n="career_step1_title">Find an exam</b><span data-i18n="career_step1_body">Open-competitive exams are available to anyone who meets the requirements.</span></div>
+                <div class="career-step"><b data-i18n="career_step2_title">Read the NOE</b><span data-i18n="career_step2_body">The Notice of Examination is the official guide to the job, qualifications, fee, and test.</span></div>
+                <div class="career-step"><b data-i18n="career_step3_title">Apply in the window</b><span data-i18n="career_step3_body">Create an OASys account, submit the application, and request a fee waiver if you qualify.</span></div>
+                <div class="career-step"><b data-i18n="career_step4_title">Join the eligible list</b><span data-i18n="career_step4_body">If you pass, your score places you on a list agencies use when they hire for that title.</span></div>
+              </div>
+            </section>
+          </div>
+        </details>
       </div>
+    </div>
     </div>
   </div>
 </section>

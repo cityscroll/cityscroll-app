@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
-import { BROWSE_ROUTE_ALIASES } from "../site/browse_route_aliases.mjs";
+import { EXAMS_SURFACE } from "../site/browse_surface_contracts.mjs";
 
 
 const FIRST_PAINT_FIXTURES = Object.freeze([
@@ -60,19 +60,9 @@ test("build-rendered Browse cards keep the shared title and Copy grammar before 
   }
 });
 
-test("Exams declares Staffing as its sole renderer before hydration and in the browser", () => {
-  assert.deepEqual(
-    {
-      route: BROWSE_ROUTE_ALIASES.exams.route,
-      targetFacet: BROWSE_ROUTE_ALIASES.exams.targetFacet,
-      targetTab: BROWSE_ROUTE_ALIASES.exams.targetTab,
-      defaultView: BROWSE_ROUTE_ALIASES.exams.defaultView,
-    },
-    {
-      route: "/browse/exams/",
-      targetFacet: "staffing",
-      targetTab: "people",
-      defaultView: "guide",
-    },
-  );
+test("Exams declares its own renderer and browser owner", () => {
+  assert.equal(EXAMS_SURFACE.route, "/browse/exams/");
+  assert.equal(EXAMS_SURFACE.builder, "exams-document");
+  assert.equal(EXAMS_SURFACE.controller, "exams-browser");
+  assert.equal(EXAMS_SURFACE.compatibility.runtimeTab, "exams");
 });
