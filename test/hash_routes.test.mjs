@@ -16,22 +16,14 @@ function extractFn(name) {
   throw new Error(`unbalanced braces extracting ${name}`);
 }
 
-const { bareCollectionHash, canonicalInputRoute } = new Function(
-  `${extractFn("bareCollectionHash")}; ${extractFn("canonicalInputRoute")}; return { bareCollectionHash, canonicalInputRoute };`,
+const { bareCollectionHash } = new Function(
+  `${extractFn("bareCollectionHash")}; return { bareCollectionHash };`,
 )();
 
-test("staffing input routes normalize to People without changing query parameters", () => {
-  assert.equal(
-    canonicalInputRoute("staffing?lang=es&view=guide&role=Engineer%20Civil&window=open"),
-    "people?lang=es&view=guide&role=Engineer%20Civil&window=open",
-  );
-  assert.equal(canonicalInputRoute("staffing"), "people");
-  assert.equal(canonicalInputRoute("people?lang=zh&q=planner"), "people?lang=zh&q=planner");
-  assert.equal(canonicalInputRoute("staffing/legacy"), "staffing/legacy");
-
+test("legacy route aliases do not enter the active runtime", () => {
   const applyHash = extractFn("applyHash");
-  assert.match(applyHash, /canonicalInputRoute\(raw\)/);
-  assert.match(applyHash, /history\.replaceState[\s\S]*"#"\+raw/);
+  assert.doesNotMatch(source, /function canonicalInputRoute|normalizedInputAlias/);
+  assert.match(applyHash, /browseSurfaceContract\(tab\)/);
 });
 
 test("every item route has an intentional bare collection destination", () => {
@@ -50,7 +42,7 @@ test("every item route has an intentional bare collection destination", () => {
     },
     {
       notice: "#money",
-      exam: "#people?view=guide",
+      exam: "#exams",
       land: "#land",
       vendor: "#money",
       agency: "#money",

@@ -91,7 +91,7 @@ test("routing hydrates people agency from typed entity_refs_all facet (source co
   const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
   assert.match(routing, /agencyFromRouteFacet\(activeRouteFacetValues\)/);
   assert.match(routing, /reloadStaffingForAgencyScope/);
-  const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+  const people = readFileSync(new URL("../site/app/staffing.mjs", import.meta.url), "utf8");
   const exams = readFileSync(new URL("../site/app/exams.mjs", import.meta.url), "utf8");
   assert.doesNotMatch(people, /sodaAgencyNameClause/);
   assert.match(exams, /filterExamsByAgencyScope/);

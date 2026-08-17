@@ -386,7 +386,7 @@ const NL = {
                (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"" ],
     apply:f=>{
       if(f.view==="guide"){
-        location.hash="#people?view=guide";
+        location.assign("/browse/exams/");
         return;
       }
       if(f.lookupType){ $("#pmode").value=f.lookupType; $("#pmode").dispatchEvent(new Event("change")); }
@@ -979,7 +979,7 @@ function deactivateAskSearch(lens){
 }
 
 function injectNLBoxes(){
-  const tabs={people:["#tab-people",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules","#rules-toolbar"],meetings:["#tab-meetings","#meetings-toolbar"],alerts:["#tab-alerts",".grid"]};
+  const tabs={people:["#tab-staffing",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules","#rules-toolbar"],meetings:["#tab-meetings","#meetings-toolbar"],alerts:["#tab-alerts",".grid"]};
   Object.entries(tabs).forEach(([lens,[sel,anchorSel]])=>{
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;

@@ -211,7 +211,7 @@ def verify_after(browser, base_url: str, width: int, height: int) -> None:
     page.emulate_media(media="print")
     assert page.locator("header.masthead").evaluate("el=>getComputedStyle(el).display") == "none"
     assert page.locator("#tab-money .export-actions").evaluate("el=>getComputedStyle(el).display") == "none"
-    assert page.locator("#tab-people").evaluate("el=>getComputedStyle(el).display") == "none"
+    assert page.locator("#tab-staffing").evaluate("el=>getComputedStyle(el).display") == "none"
     assert page.locator("#list").evaluate("el=>getComputedStyle(el).maxHeight") == "none"
     page.evaluate("scrollTo(0,0)")
     print_path = OUTPUT / f"print-{width}.png"

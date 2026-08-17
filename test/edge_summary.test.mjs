@@ -168,9 +168,10 @@ test("agency category totals produce the same typed records used by the rail", (
         id: "staffing",
         label: "Staffing exams",
         relation: "certified_to_agency",
-        status: "not_yet_ingested",
-        count: 0,
-        browse_facet: "staffing",
+        status: "matched",
+        count: 2,
+        browse_facet: "exams",
+        view_all_href: "/browse/exams/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
       },
     ],
   });
@@ -178,11 +179,13 @@ test("agency category totals produce the same typed records used by the rail", (
   assert.deepEqual(records.map((record) => [record.target_kind, record.count, record.state]), [
     ["contract", 6, "matched"],
     ["rule", 0, "empty"],
-    ["exam", null, "unknown"],
+    ["exam", 2, "matched"],
   ]);
   assert.match(records[0].href, /mode=open/);
   assert.match(records[0].href, /as_of=2026-08-11/);
   assert.equal(records[2].source_id, "parks-and-recreation");
+  assert.match(records[2].href, /^\/browse\/exams\//);
+  assert.match(records[2].href, /certified_to_agency/);
 });
 
 test("Browse intersections expose the same typed edge contract", () => {

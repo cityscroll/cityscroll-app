@@ -20,12 +20,15 @@ def wait_for_guide(page):
     wait_for_locator(page.locator("#career-results .career-card").first, timeout=45_000, label="Exams guide cards")
 
 
-def assert_active_civic_object(page, href, pane):
+def assert_active_civic_object(page, href, pane=None):
     active = page.locator(".browse-child-tabs .tabbtn.active")
     assert active.count() == 1
     assert active.get_attribute("href") == href
-    assert active.get_attribute("aria-controls") == pane
-    assert page.locator(f"#{pane}").get_attribute("aria-labelledby") == active.get_attribute("id")
+    if pane:
+        assert active.get_attribute("aria-controls") == pane
+        assert page.locator(f"#{pane}").get_attribute("aria-labelledby") == active.get_attribute("id")
+    else:
+        assert active.get_attribute("aria-controls") is None
 
 
 def assert_shared_exam_card_grammar(page):
@@ -106,6 +109,30 @@ def run(page):
     assert people.locator("#people-organizations-type option[value='agency']").count() == 1
     expect(page.locator("#career-guide")).to_be_hidden()
 
+    # Staffing owns the appointments document and controller. It shares the
+    # People navigation family visually, but never substitutes the directory.
+    page.goto(f"{BASE}browse/staffing/", wait_until="domcontentloaded", timeout=30_000)
+    wait_for_locator(
+        page.locator("#staffing-notice-list .staffing-hire-row[data-kind='hire']").first,
+        timeout=45_000,
+        label="Staffing appointment rows",
+    )
+    assert page.locator("body").get_attribute("data-browse-surface") == "staffing"
+    assert_active_civic_object(page, "/browse/people/")
+    assert page.locator("#tab-staffing.active").count() == 1
+    expect(page.locator("#staffing-feed")).to_be_visible()
+    expect(page.locator("#people-organizations-list")).to_be_hidden()
+    expect(page.locator("#career-guide")).to_be_hidden()
+    page.locator("#staffing-query").fill("Engineer")
+    page.wait_for_timeout(500)
+    staffing_route = page.evaluate(
+        "({ pathname: location.pathname, q: new URLSearchParams(location.search).get('q') })"
+    )
+    assert staffing_route == {"pathname": "/browse/staffing/", "q": "Engineer"}
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_function("document.querySelector('#staffing-query')?.value === 'Engineer'")
+    assert page.locator("#staffing-query").input_value() == "Engineer"
+
     # Exams owns its document, pane, and controller. Browse navigation performs
     # a native navigation to that canonical surface.
     page.goto(f"{BASE}browse/contracts/", wait_until="domcontentloaded", timeout=30_000)
@@ -118,7 +145,7 @@ def run(page):
     assert page.url.rstrip("/").endswith("/browse/exams")
     assert_active_civic_object(page, "/browse/exams/", "tab-exams")
     assert page.locator("#tab-exams.active").count() == 1
-    expect(page.locator("#tab-people")).to_be_hidden()
+    expect(page.locator("#tab-staffing")).to_be_hidden()
     assert page.locator("#career-guide").is_visible()
     expect(page.locator("#staffing-ledger")).to_be_hidden()
     assert page.locator("#career-browser-heading").inner_text() == "Civil-service exams"
@@ -190,7 +217,7 @@ def run(page):
     page.wait_for_url(f"{BASE}browse/people/", timeout=30_000)
     people = page.locator("[data-browse-concept='people']")
     wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="People + organizations list")
-    assert_active_civic_object(page, "/browse/people/", "tab-people")
+    assert_active_civic_object(page, "/browse/people/")
     expect(people).to_be_visible()
     expect(people.locator('[data-civic-object-kind="official"]').first).to_be_visible()
     assert people.locator("#people-organizations-type option[value='agency']").count() == 1

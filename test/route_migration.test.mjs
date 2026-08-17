@@ -9,8 +9,15 @@ test("legacy fragment mappings remain finite and preserve language through docs"
   assert.equal(migrateLegacyUrl("/index.html#notice/20240515016").target, "/notices/20240515016");
   assert.equal(migrateLegacyUrl("/#notice/20240515016?w=%7B%22lens%22%3A%22money%22%7D&focus=follow-the-dollars").target,
     "/notices/20240515016?w=%7B%22lens%22%3A%22money%22%7D&focus=follow-the-dollars");
-  assert.equal(migrateLegacyUrl("/#staffing?lang=es&view=guide&role=Engineer%20Civil&window=open").target,
-    "/browse/staffing/?lang=es&view=guide&role=Engineer+Civil&window=open");
+  assert.equal(migrateLegacyUrl("/#people").target, "/browse/people/");
+  assert.equal(migrateLegacyUrl("/#staffing").target, "/browse/staffing/");
+  assert.equal(migrateLegacyUrl("/#staffing?lang=es&view=guide&window=open").target,
+    "/browse/exams/?lang=es&window=open");
+  assert.equal(migrateLegacyUrl("/#exam").target, "/browse/exams/");
+  assert.equal(migrateLegacyUrl("/#people?view=guide&interest=technology-science").target,
+    "/browse/exams/?interest=technology-science");
+  assert.equal(migrateLegacyUrl("/#exams?eligibility=promotion").target,
+    "/browse/exams/?eligibility=promotion");
 });
 
 test("legacy borough scope links still normalize across list lenses", () => {
@@ -24,6 +31,15 @@ test("unsupported legacy scope keys are surfaced explicitly", () => {
   const mapped = migrateLegacyUrl("/#notice/20240515016?q=air&retiredMode=secret");
   assert.equal(mapped.target, "/notices/20240515016?legacy=unsupported-filter");
   assert.deepEqual(mapped.unsupported, ["q", "retiredMode"]);
+});
+
+test("mixed People, Staffing, and Exams filters fail closed on their intended surface", () => {
+  assert.equal(migrateLegacyUrl("/#people?role=Engineer").target,
+    "/browse/people/?legacy=unsupported-filter");
+  assert.equal(migrateLegacyUrl("/#staffing?interest=technology-science").target,
+    "/browse/staffing/?legacy=unsupported-filter");
+  assert.equal(migrateLegacyUrl("/#staffing?view=guide&role=Engineer").target,
+    "/browse/exams/?legacy=unsupported-filter");
 });
 
 test("browse agency aliases normalize to one typed facet serialization", () => {

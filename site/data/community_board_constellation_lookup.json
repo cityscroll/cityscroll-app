@@ -11,7 +11,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -242,7 +242,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -473,7 +473,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -704,7 +704,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -935,7 +935,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1166,7 +1166,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1285,6 +1285,7 @@
             "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -1390,7 +1391,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1621,7 +1622,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1852,7 +1853,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2083,7 +2084,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2314,7 +2315,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2545,7 +2546,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2776,7 +2777,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3007,7 +3008,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3238,7 +3239,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3469,7 +3470,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3700,7 +3701,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3931,7 +3932,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4162,7 +4163,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4393,7 +4394,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4624,7 +4625,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4855,7 +4856,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5086,7 +5087,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5205,6 +5206,7 @@
             "source_record_id": "https://www.brooklyncb11.org/event/transportation-committee-6/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://www.brooklyncb11.org/event/transportation-committee-6/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -5310,7 +5312,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5541,7 +5543,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5772,7 +5774,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6003,7 +6005,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6234,7 +6236,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6465,7 +6467,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6584,6 +6586,7 @@
             "source_record_id": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://cbbrooklyn.cityofnewyork.us/cb17/event/cb17-parks-beautification-committee-health-wellness-at-paerdagat-park/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -6689,7 +6692,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6920,7 +6923,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7039,6 +7042,7 @@
             "source_record_id": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-11/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -7144,7 +7148,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7263,6 +7267,7 @@
             "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/meeting-canceled-traffic-and-transportation-jeannine-kiely-chair-janet-liff-vice-chair/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -7368,7 +7373,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7466,7 +7471,7 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-08-10:cannabis-control-task-force",
           "target_name": "Meetings and hearings",
           "count": null,
           "state": "unknown",
@@ -7485,16 +7490,9 @@
           "provenance": {
             "source_system": null,
             "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7599,7 +7597,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7718,6 +7716,7 @@
             "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-66/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -7823,7 +7822,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8054,7 +8053,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8285,7 +8284,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8516,7 +8515,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8747,7 +8746,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8978,7 +8977,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9097,6 +9096,7 @@
             "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3/2026-07-28/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -9202,7 +9202,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9433,7 +9433,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9552,6 +9552,7 @@
             "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://cbmanhattan.cityofnewyork.us/cb12/calendar/committee-of-the-whole-2/",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -9657,7 +9658,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9888,7 +9889,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10119,7 +10120,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10350,7 +10351,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10581,7 +10582,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10812,7 +10813,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11043,7 +11044,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11274,7 +11275,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11505,7 +11506,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11736,7 +11737,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11967,7 +11968,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12198,7 +12199,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12429,7 +12430,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12660,7 +12661,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12891,7 +12892,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -13122,7 +13123,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -13353,7 +13354,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-15T00:28:03.699Z",
+        "generated_at": "2026-08-16T18:52:14.024Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [

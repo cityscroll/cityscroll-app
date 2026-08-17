@@ -329,7 +329,8 @@ function showTab(name, push){
   pendingRouteModuleTab=null;
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
-  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
+  const navigationFamily=navigationFamilyForTab(name);
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === navigationFamily));
   syncTabAria();
   focusLensHeading(name);
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
@@ -343,7 +344,6 @@ function showTab(name, push){
     if(controls) controls.classList.add("open");
     if(toggle && toggle.classList.contains("filtertoggle")) toggle.setAttribute("aria-expanded","true");
   }
-  if(name==="people") loadStaffingFeed();
   if(name==="exams") loadCareerGuide();
   if(name==="property"){
     const panel=$("#tax-lien-sale-panel");
@@ -368,25 +368,33 @@ function showTab(name, push){
   }
 }
 
-import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT, EXAMS_SURFACE } from "../browse_surface_contracts.mjs";
+import { BROWSE_SURFACES } from "../browse_surface_contracts.mjs";
 
-const BROWSE_CONCEPT_DOCUMENT_PATHS = new Set([
-  ...BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT,
+const BROWSE_NAVIGATION_FAMILY = new Map(BROWSE_SURFACES.map(surface=>[
+  surface.surfaceId,
+  surface.navigationFamily,
+]));
+
+function navigationFamilyForTab(name){
+  return BROWSE_NAVIGATION_FAMILY.get(name)||name;
+}
+
+const OWNED_BROWSE_DOCUMENT_PATHS = new Set([
+  ...BROWSE_SURFACES.map(surface=>surface.canonicalRoute.replace(/\/+$/, "")),
   "/browse/places",
-  EXAMS_SURFACE.route.replace(/\/+$/, ""),
 ]);
 
-function isBrowseConceptDocumentLink(href){
+function isOwnedBrowseDocumentLink(href){
   try{
     const path=new URL(href,location.href).pathname.replace(/\/+$/,"")||"/";
-    return BROWSE_CONCEPT_DOCUMENT_PATHS.has(path);
+    return OWNED_BROWSE_DOCUMENT_PATHS.has(path);
   }catch(_error){
     return false;
   }
 }
 
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
-  if(isBrowseConceptDocumentLink(b.href)) return;
+  if(isOwnedBrowseDocumentLink(b.href)) return;
   // Some civic-object links are document routes without an SPA pane (for example
   // the static People and Places concept landings). Let those anchors navigate so
   // the document route and its server-rendered content remain authoritative.
@@ -400,7 +408,11 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
   const nav=document.querySelector(".tabs"); if(!nav) return;
   nav.setAttribute("role","tablist"); nav.setAttribute("aria-label", t("tablist_label"));
   document.querySelectorAll(".tabbtn").forEach(b=>{
-    b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+b.dataset.tab);
+    b.id="tabbtn-"+b.dataset.tab;
+    b.setAttribute("role","tab");
+    const pane=document.getElementById("tab-"+b.dataset.tab);
+    if(pane) b.setAttribute("aria-controls",pane.id);
+    else b.removeAttribute("aria-controls");
   });
   document.querySelectorAll(".tabpane").forEach(p=>{
     // #tab-notice/#tab-entity have no corresponding .tabbtn (reached only via permalink/pivot,

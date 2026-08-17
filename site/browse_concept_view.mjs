@@ -17,8 +17,8 @@ import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
 
 export const BROWSE_CONCEPTS = Object.freeze({
   people: {
-    route: PEOPLE_ORGANIZATIONS_SURFACE.route,
-    tab: PEOPLE_ORGANIZATIONS_SURFACE.compatibility.concept,
+    route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute,
+    tab: PEOPLE_ORGANIZATIONS_SURFACE.navigationFamily,
     label: PEOPLE_ORGANIZATIONS_SURFACE.label,
     title: PEOPLE_ORGANIZATIONS_SURFACE.title,
     description: PEOPLE_ORGANIZATIONS_SURFACE.description,

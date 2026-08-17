@@ -7,27 +7,27 @@ const html = SITE_SOURCE;
 
 test("Exams owns the action guide while Staffing retains its appointment ledger", () => {
   const exams = html.slice(html.indexOf('id="tab-exams"'), html.indexOf('id="tab-alerts"'));
-  const staffing = html.slice(html.indexOf('id="tab-people"'), html.indexOf('id="tab-land"'));
+  const staffing = html.slice(html.indexOf('id="tab-staffing"'), html.indexOf('id="tab-land"'));
   const guide = exams.indexOf('<div class="career-guide" id="career-guide">');
   const browser = exams.indexOf('id="career-browser-heading"');
-  const ledger = staffing.indexOf('<details class="staffing-ledger" id="staffing-ledger">');
+  const ledger = staffing.indexOf('<details class="staffing-ledger" id="staffing-ledger" open>');
   const appointments = staffing.indexOf('id="staffing-feed-heading"');
 
   assert.ok(guide >= 0, "the exam guide should live on the Exams route");
   assert.ok(browser > guide, "the action browser should lead the Exams guide");
   assert.ok(ledger >= 0, "the Staffing route should retain the appointments ledger");
-  assert.ok(appointments > ledger, "the personnel feed should live inside the collapsed ledger");
+  assert.ok(appointments > ledger, "the personnel feed should live inside the Staffing owner");
   assert.doesNotMatch(staffing, /id="career-guide"/, "Staffing must not own the Exams guide");
-  assert.doesNotMatch(
+  assert.match(
     staffing.slice(ledger, appointments),
     /<details[^>]*\sopen(?:\s|>)/,
-    "the appointments ledger should be collapsed by default",
+    "the dedicated Staffing surface should expose appointments by default",
   );
   assert.doesNotMatch(html, /id="staffing-upcoming-list"/, "the duplicate exam teaser is removed");
 });
 
 test("the secondary personnel archive has a positive, durable label", () => {
-  const ledgerStart = html.indexOf('<details class="staffing-ledger" id="staffing-ledger">');
+  const ledgerStart = html.indexOf('<details class="staffing-ledger" id="staffing-ledger" open>');
   const ledgerEnd = html.indexOf("</details>", ledgerStart);
   const ledger = html.slice(ledgerStart, ledgerEnd);
 
