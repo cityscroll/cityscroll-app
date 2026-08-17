@@ -17,7 +17,9 @@ import {
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromSourceRow,
 } from "../site/community_board_institution_edges.mjs";
-import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
+import { routeHashFromScope, scopeFromLensState, scopeFromRouteHash } from "../site/scope_v0.mjs";
+import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
+import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { buildCommunityBoardConstellationMaterialization } from "../tools/build_community_board_constellation_documents.mjs";
 
 const shared = JSON.parse(fs.readFileSync(new URL(
@@ -26,6 +28,14 @@ const shared = JSON.parse(fs.readFileSync(new URL(
 ), "utf8"));
 const meetingIndex = JSON.parse(fs.readFileSync(new URL(
   "../site/data/community_board_meeting_index.json",
+  import.meta.url,
+), "utf8"));
+const districtActivity = JSON.parse(fs.readFileSync(new URL(
+  "../site/data/district_activity.json",
+  import.meta.url,
+), "utf8"));
+const districtBoundaries = JSON.parse(fs.readFileSync(new URL(
+  "../site/data/district_boundaries.json",
   import.meta.url,
 ), "utf8"));
 
@@ -142,6 +152,25 @@ test("community-board cards link their exact host institution with the internal-
   assert.match(html, /href="\/community-boards\/manhattan-cb-10\/"/);
   assert.match(html, /<span aria-hidden="true">◆<\/span>Manhattan Community Board 10/);
   assert.equal((html.match(/Community board source observed/g) || []).length, 1);
+});
+
+test("Near You M10 includes CB10 meetings through ontology-derived district membership", () => {
+  const cb10Ids = meetingIndex.by_board["manhattan-cb-10"].map((row) => row.meeting_id).sort();
+  const indexed = districtActivity.district_items.by_level.community_district.M10.meetings;
+  assert.deepEqual(indexed.filter((id) => cb10Ids.includes(id)).sort(), cb10Ids);
+  assert.ok(cb10Ids.every((id) =>
+    districtActivity.records.meetings[id]?.basis_method === "community_board_ontology"));
+  assert.ok(cb10Ids.every((id) => districtActivity.geography_subjects.public_edges.some((edge) =>
+    edge.from === id && edge.to === "community-district:M10"
+      && edge.evidence?.source_method === "board_covers_district")));
+
+  const scope = scopeWithPlace(scopeFromLensState("meetings", { when: "all" }), {
+    borough: "Manhattan",
+    communityDistrict: "M10",
+  });
+  const view = buildNearYouViewModel(scope, districtActivity, districtBoundaries);
+  assert.ok(cb10Ids.every((id) => view.results.ids.includes(id)));
+  assert.equal(view.results.records.filter((row) => cb10Ids.includes(row.id)).length, cb10Ids.length);
 });
 
 test("board institution pages and the Meetings lens publish the same canonical meeting IDs", () => {

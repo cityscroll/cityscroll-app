@@ -126,6 +126,12 @@ test("Meetings keeps the community-board institution pivot visible after hydrati
   assert.match(feedSource, /meetings_board_institution_pivot/);
 });
 
+test("Meeting affected-area board links open the board records surface", () => {
+  const area = extractFunction(feedSource, "hearingAreaHTML");
+  assert.match(area, /const href=communityBoardPageHref\(value\)/);
+  assert.doesNotMatch(area, /communityBoardPlaceHref\(value\)/);
+});
+
 test("Community-board scope controls stay off the initial app module path", () => {
   assert.doesNotMatch(feedSource, /from "\.\.\/community_board_scope_links\.mjs"/);
   assert.match(feedSource, /communityBoardScopeToolsPromise=import\("\.\.\/community_board_scope_links\.mjs"\)/);

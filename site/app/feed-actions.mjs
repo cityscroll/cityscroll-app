@@ -16,7 +16,7 @@ import {
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
-import { communityBoardPageHref, communityBoardPlaceHref } from "../community_board_links.mjs";
+import { communityBoardPageHref } from "../community_board_links.mjs";
 import {
   communityBoardIdFromRow,
   communityBoardSearchPresentation,
@@ -1274,7 +1274,7 @@ function hearingAreaHTML(record){
     ...(area.project_names||[]),
   ].filter(Boolean);
   return [...new Set(values)].map(value=>{
-    const href=communityBoardPlaceHref(value)||communityBoardPageHref(value);
+    const href=communityBoardPageHref(value);
     return href
       ? `<a class="community-board-reference" href="${escUiHtml(href)}">${escUiHtml(value)}</a>`
       : escUiHtml(value);

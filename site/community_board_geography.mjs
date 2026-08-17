@@ -34,6 +34,32 @@ export const COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES = Object.freeze([
 ]);
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+const BOARD_ID = /^[a-z]+(?:-[a-z]+)*-cb-\d{2}$/;
+
+/** Resolve the exact institution identity carried by a meeting row. */
+export function communityBoardIdForMeeting(row = {}) {
+  const ref = clean(row?.institution_refs?.board_ref).toLowerCase();
+  const refId = ref.match(/^community-board:([a-z]+(?:-[a-z]+)*-cb-\d{2})$/)?.[1] || null;
+  const direct = clean(row?.board_id).toLowerCase();
+  const directId = BOARD_ID.test(direct) ? direct : null;
+  if (refId && directId && refId !== directId) return null;
+  return refId || directId;
+}
+
+/**
+ * Resolve a board's district only through its published `covers` edge.
+ * Board-number parsing and address geocoding are deliberately outside this
+ * ontology lookup.
+ */
+export function communityDistrictIdFromBoardOntology(boardId, geography = {}) {
+  const id = clean(boardId).toLowerCase().replace(/^community-board:/, "");
+  if (!BOARD_ID.test(id) || geography?.gate?.publication_allowed !== true) return null;
+  const matches = new Set((Array.isArray(geography.public_edges) ? geography.public_edges : [])
+    .filter((edge) => edge?.type === "covers" && edge.from === `community-board:${id}`)
+    .map((edge) => clean(edge.to).match(/^community-district:([MXKQR]\d{2})$/)?.[1] || null)
+    .filter(Boolean));
+  return matches.size === 1 ? [...matches][0] : null;
+}
 
 export function communityDistrictIdForBoard(row = {}) {
   const prefix = BOROUGH_PREFIX[clean(row.borough)];

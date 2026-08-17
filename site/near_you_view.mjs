@@ -52,6 +52,7 @@ const PLACEMENT_METHOD_LABELS = Object.freeze({
   civic_address_pip: "matched by civic address",
   classic_affected_area: "matched by affected area",
   community_board: "matched by community board area",
+  community_board_ontology: "matched by community board district",
   coordinates_pip: "matched by coordinates",
   citywide: "citywide placement",
   citywide_phrase: "matched by citywide notice language",
