@@ -6,7 +6,6 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 AXE = Path(__file__).parent / "assets" / "axe.min.js"
 
@@ -94,9 +93,22 @@ SEARCH_FIXTURES = {
     )],
 }
 
+FAMILIES = ["contracts", "people-organizations", "land", "rules", "meetings", "exams"]
 
-def json_response(route, body):
-    route.fulfill(status=200, content_type="application/json", body=json.dumps(body))
+
+def result_family(row):
+    domain = row.get("domain")
+    if domain == "contracts":
+        return "contracts"
+    if domain in {"people", "places"}:
+        return "people-organizations"
+    if domain in {"zoning", "property"}:
+        return "land"
+    if domain in {"rules", "meetings"}:
+        return domain
+    if domain == "staffing":
+        return "exams"
+    return None
 
 
 SEARCH_LENSES = [
@@ -105,9 +117,9 @@ SEARCH_LENSES = [
 ]
 
 
-def search_payload(results, incomplete=False):
+def search_payload(rows, incomplete=False):
     counts = {lens: 0 for lens in SEARCH_LENSES}
-    for result in results:
+    for result in rows:
         counts[result.get("lens", "notices")] += 1
     by_lens = {
         lens: {
@@ -127,7 +139,18 @@ def search_payload(results, incomplete=False):
     }
     observed = sum(counts.values())
     return {
-        "results": results,
+        "schema": "cityscroll.keyword_search_response.v1",
+        "match_mode": "keyword",
+        "lanes": [{
+            "id": family,
+            "status": "matched" if any(result_family(row) == family for row in rows) else "empty",
+            "count": sum(result_family(row) == family for row in rows),
+            "as_of": "2026-08-16",
+            "source": "Bounded public-record fixture",
+            "match_mode": "keyword",
+            "cards": [row for row in rows if result_family(row) == family],
+        } for family in FAMILIES],
+        "results": rows,
         "coverage": {
             "schema": "cityscroll.universal_search_coverage.v1",
             "all_lenses_participated": not incomplete,
@@ -147,6 +170,10 @@ def search_payload(results, incomplete=False):
     }
 
 
+def json_response(route, body):
+    route.fulfill(status=200, content_type="application/json", body=json.dumps(body))
+
+
 def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -163,7 +190,7 @@ def main():
         page.route("https://api.cityscroll.org/search?*", search_api)
         page.route("https://crol-worker.crol-worker.workers.dev/search?*", search_api)
 
-        for term, expected in SEARCH_FIXTURES.items():
+        for index, (term, expected) in enumerate(SEARCH_FIXTURES.items()):
             page.goto(f"{BASE}/search/?q={term}", wait_until="domcontentloaded", timeout=30000)
             page.wait_for_function(
                 "document.querySelectorAll('[data-search-result]').length > 0",
@@ -201,7 +228,7 @@ def main():
             timeout=30000,
         )
         assert page.locator("[data-search-result]").count() == 0
-        assert "No matching" in (page.locator("[data-search-lane]").first.text_content() or "")
+        assert "No keyword matches in this snapshot" in (page.locator("[data-search-lane]").first.text_content() or "")
         coverage = page.locator("[data-search-coverage]")
         assert coverage.get_attribute("data-coverage-state") == "incomplete"
         assert "Search coverage is incomplete" in (coverage.text_content() or "")

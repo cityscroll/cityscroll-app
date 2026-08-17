@@ -121,6 +121,38 @@ test("highlighting escapes query and source text before adding fixed mark elemen
   assert.match(html, /<mark>&lt;img src=x onerror=&quot;alert\(1\)&quot;&gt;<\/mark>/);
 });
 
+test("keyword cards mark only the exact source-backed offsets", () => {
+  const html = renderUniversalSearchResultHtml(agencyResult({
+    title: "Tidal planning record",
+    match_fields: [{ field: "title", matched_term: "ida" }],
+    match_evidence: {
+      field: "summary",
+      matched_normalized_term: "industrial development agency",
+      source_identifier: "agency_constellation:parks-and-recreation",
+      snippet: {
+        text: "Reviewed Industrial Development Agency record",
+        mark_start: 9,
+        mark_end: 38,
+      },
+    },
+  }));
+
+  assert.doesNotMatch(html, /T<mark>ida<\/mark>l/i);
+  assert.match(html, /Reviewed <mark>Industrial Development Agency<\/mark> record/);
+});
+
+test("ranked rows without a literal span say evidence is unavailable", () => {
+  const html = renderUniversalSearchResultHtml(agencyResult({
+    keyword_evidence: {
+      status: "unavailable",
+      message: "Keyword evidence unavailable for this source",
+    },
+  }));
+
+  assert.match(html, /Keyword evidence unavailable/);
+  assert.doesNotMatch(html, /<mark>/);
+});
+
 test("the compact card keeps one keyboard route plus visible type, reason, and status", () => {
   const html = renderUniversalSearchResultHtml(agencyResult());
   assert.equal((html.match(/<a /g) || []).length, 1);

@@ -277,7 +277,9 @@ export function renderSearchDocument() {
     <div class="topic-search-method" aria-label="Search method"><span>Match method</span><strong>Keyword search</strong></div>
     <div class="topic-search-lanes" aria-label="Search result types">
       ${searchLane("contracts", "Contracts", "Public contract opportunities and awards.")}
-      ${searchLane("rules", "Rules", "Published rules and mandates.")}
+      ${searchLane("people-organizations", "People + organizations", "Officials, people, agencies, and public bodies.")}
+      ${searchLane("land", "Land", "Zoning and land-use projects.")}
+      ${searchLane("rules", "Rules", "Published rulemaking records.")}
       ${searchLane("meetings", "Meetings", "Public meetings and decisions.")}
       ${searchLane("obligations", "Mandates", "Published duties and requirements.")}
       ${searchLane("people", "People and organizations", "Officials, agencies, and civic organizations.")}

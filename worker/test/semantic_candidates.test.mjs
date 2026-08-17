@@ -124,7 +124,7 @@ test("hard source, geography, and date filters apply before candidate ranking", 
   assert.ok(attachmentOnly.candidates.every((candidate) => candidate.source.family === "attachment_text"));
 });
 
-test("GET /search/candidates exposes typed candidates without changing GET /search", async () => {
+test("GET /search/candidates stays separate from the six-family keyword response", async () => {
   const { sqlite, DB } = database();
   try {
     const candidateResponse = await worker.fetch(new Request(
@@ -139,7 +139,12 @@ test("GET /search/candidates exposes typed candidates without changing GET /sear
       { DB },
       {},
     );
-    assert.deepEqual(Object.keys(await lexicalResponse.json()), ["results"]);
+    const lexical = await lexicalResponse.json();
+    assert.equal(lexical.schema, "cityscroll.keyword_search_response.v1");
+    assert.equal(lexical.match_mode, "keyword");
+    assert.equal(lexical.lanes.length, 6);
+    assert.ok(Array.isArray(lexical.results));
+    assert.equal(Object.hasOwn(lexical, "candidates"), false);
   } finally {
     sqlite.close();
   }
