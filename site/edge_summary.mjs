@@ -88,7 +88,7 @@ function canonicalHref(href, asOf) {
 }
 
 const VERIFIED_INTERNAL_ROUTES = [
-  /^\/(?:notices|agencies|vendors|officials)\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
+  /^\/(?:notices|agencies|vendors|officials|committees)\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
   /^\/meetings\/[A-Za-z0-9_%:/.~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
   /^\/browse\/(?:contracts|staffing|zoning|property|rules|meetings|people|places)\/?(?:\?.*)?(?:#.*)?$/,
   /^\/browse\/?(?:\?.*)?$/,
@@ -291,11 +291,10 @@ export function renderEntityPivotLink(pivotInput = {}, {
   ].join(" ");
   const body = `<span aria-hidden="true">◆</span>${escape(pivot.target_name || pivot.target_id || "Related record")}${showRelation ? ` <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>` : ""}`;
   if (pivot.status !== "accepted" || crossSpineBlocksLink) {
-    const reason = crossSpineBlocksLink
-      ? crossSpineReaderLabel(crossSpineConfidence)
-      : "Provisional: destination not verified";
+    const reason = crossSpineBlocksLink ? crossSpineReaderLabel(crossSpineConfidence) : "";
     const accessibleReason = crossSpineBlocksLink ? `; ${reason}` : "";
-    return `<span class="${escape(classes)} entity-pivot-held entity-pivot-cross-spine-${escape(crossSpineConfidence)}" ${attrs} aria-label="${escape(`${accessible}${accessibleReason}`)}">${body}<span class="entity-pivot-provisional">${escape(reason)}</span></span>`;
+    const reasonMarkup = reason ? `<span class="entity-pivot-provisional">${escape(reason)}</span>` : "";
+    return `<span class="${escape(classes)} entity-pivot-held entity-pivot-cross-spine-${escape(crossSpineConfidence)}" ${attrs} aria-label="${escape(`${accessible}${accessibleReason}`)}">${body}${reasonMarkup}</span>`;
   }
   return `<a class="${escape(classes)}" href="${escape(pivot.canonical_href)}" ${attrs} aria-label="${escape(accessible)}">${body}</a>`;
 }

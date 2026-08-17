@@ -1,5 +1,6 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
+import { focusOfficialProfileSection } from "../official_profile_navigation.mjs";
 
 const agencyHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("agency",cleanText(name)),label:cleanText(name)},{tab}) : "/agencies/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
 const vendorHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("vendor",cleanText(name)),label:cleanText(name)},{tab}) : "/vendors/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
@@ -311,7 +312,11 @@ async function showOfficial(personId, opts){
       ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
       ${committeeModule.renderOfficialLocalConstellationHTML(officialView, committeeBag, id, name)}
       ${influenceModule ? influenceModule.renderLobbyInfluenceHTML(lobbyBag, { escapeHtml:escUiHtml, translate:t }) : ""}
-      ${influenceModule ? influenceModule.renderCfbInfluenceHTML(cfbBag, { escapeHtml:escUiHtml }) : ""}
+      ${influenceModule ? influenceModule.renderCfbInfluenceHTML(cfbBag, {
+        escapeHtml:escUiHtml,
+        officialId:id,
+        hasVotes:Boolean(recentVotes.length || scopedVotes.length),
+      }) : ""}
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
         ${noticeLink}
@@ -319,7 +324,9 @@ async function showOfficial(personId, opts){
       </div>
     </div>
   </div>`;
-  focusItemRouteTarget(box.querySelector(".route-item"));
+  if(!focusOfficialProfileSection(box, opts?.focusId)){
+    focusItemRouteTarget(box.querySelector(".route-item"));
+  }
   applyActiveHistoryRouteScroll();
 }
 const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));

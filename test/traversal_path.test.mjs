@@ -62,11 +62,23 @@ test("appending hops preserves the shareable route and back returns one step", (
   assert.equal(traversalBackHref({ hops: [restored.hops[0]] }, second.href), "#official/7801");
 });
 
-test("unsupported hops remain visible as a held state with restart", () => {
+test("materialized committee hops remain active", () => {
   const result = appendTraversalHop("/committees/17/", {
     source: origin,
     relation: "committee membership",
     destination: { kind: "committee", id: "17", name: "Committee on Land Use", href: "/committees/17/" },
+  }, emptyTraversalPath());
+  assert.ok(result.href.includes("walk="));
+  const active = traversalFromHref(result.href);
+  assert.equal(active.status, "active");
+  assert.equal(active.hops[0].destination.href, "/committees/17/");
+});
+
+test("unsupported hops remain visible as a held state with restart", () => {
+  const result = appendTraversalHop("/unsupported/17/", {
+    source: origin,
+    relation: "committee membership",
+    destination: { kind: "committee", id: "17", name: "Committee on Land Use", href: "/unsupported/17/" },
   }, emptyTraversalPath());
   assert.ok(result.href.includes("walk="));
   const held = traversalFromHref(result.href);

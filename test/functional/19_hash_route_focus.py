@@ -120,6 +120,41 @@ def main():
             assert_item_landing(initial_matter, "#entityview .route-item")
             initial_matter.close()
 
+            official = browser.new_page(viewport={"width": 1440, "height": 900})
+            install_routes(official)
+            official.goto(base + "officials/7801/", wait_until="load")
+            wait_for_locator(official.locator('[data-official-walk="1"]'), label="official in-page navigation")
+            assert official.locator('.official-walk-link[href="/officials/7801/#official-lobby"]').count() == 1
+            assert official.locator('.official-walk-link[href="/officials/7801/#official-cfb"]').count() == 1
+            assert official.locator('.official-walk-link[href="/officials/7801/#official-skim"]').count() == 1
+            for section in ("official-lobby", "official-cfb", "official-skim"):
+                official.locator(f'.official-walk-link[href="/officials/7801/#{section}"]').click()
+                wait_for_function(
+                    official,
+                    "section => location.pathname === '/officials/7801/' "
+                    "&& location.hash === '#' + section "
+                    "&& document.getElementById(section) "
+                    "&& document.querySelector('#entityview .route-item')",
+                    arg=section,
+                    label=f"{section} stays on the official document",
+                )
+                assert official.locator(f"#{section}").evaluate(
+                    "element => element.getBoundingClientRect().bottom > 0 "
+                    "&& element.getBoundingClientRect().top < innerHeight"
+                ), f"{section} did not scroll into view"
+            assert official.locator('[data-route-back]').get_attribute("href") == "/browse/meetings/"
+            official.close()
+
+            paladino = browser.new_page(viewport={"width": 1440, "height": 900})
+            install_routes(paladino)
+            paladino.goto(base + "officials/7811/", wait_until="load")
+            wait_for_locator(paladino.locator('.official-committee-memberships'), label="Paladino committee memberships")
+            assert paladino.locator('.official-committee-memberships a[href^="/committees/"]').count() > 0
+            assert "Provisional: destination not verified" not in paladino.locator("#entityview").inner_text()
+            assert paladino.locator('.official-walk-link[href$="#official-skim"]').count() == 0
+            assert paladino.locator('.local-constellation').count() == 0
+            paladino.close()
+
             bare = browser.new_page(viewport={"width": 1440, "height": 900})
             install_routes(bare)
             bare.goto(base + "#exam", wait_until="load")

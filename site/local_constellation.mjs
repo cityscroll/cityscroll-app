@@ -185,13 +185,7 @@ export function buildLocalConstellation(input = {}, { limit = LOCAL_CONSTELLATIO
   });
 }
 
-export function buildOfficialLocalConstellation(officialView, committeeInput, id, name) {
-  const committeeRows = Array.isArray(committeeInput)
-    ? committeeInput
-    : (Array.isArray(committeeInput?.rows) ? committeeInput.rows : []);
-  const committeeState = Array.isArray(committeeInput)
-    ? null
-    : committeeInput?.graph_state || null;
+export function buildOfficialLocalConstellation(officialView, _committeeInput, id, name) {
   return buildLocalConstellation({
     kind: "official",
     subject_ref: officialView?.official?.ref || `entity:official:${id}`,
@@ -199,29 +193,16 @@ export function buildOfficialLocalConstellation(officialView, committeeInput, id
     subject_name: name,
     source: null,
     provenance: { method: "official_connections_v1" },
-    availability_state: committeeState,
-    neighbors: [
-      ...(officialView?.events || []).map((event) => ({
-        edge_type: "votes_on",
-        relation_label: "votes_on",
-        target_kind: "meeting",
-        target_id: event.notice_id || event.event_id || null,
-        target_name: event.notice_id || event.event_id || null,
-        href: event.notice_id ? `#notice/${encodeURIComponent(event.notice_id)}` : null,
-        state: event.notice_id ? "matched" : "unknown",
-        provenance: null,
-      })),
-      ...(Array.isArray(committeeRows) ? committeeRows : []).map((row) => ({
-        edge_type: row.edge_type || "committee_membership",
-        relation_label: row.relation_label || (row.edge_type === "member_of" ? "member of" : "committee membership"),
-        target_kind: "committee",
-        target_id: row.committee_id || row.id || null,
-        target_name: row.committee || null,
-        href: null,
-        state: row.committee_id ? "matched" : "unknown",
-        provenance: row.provenance || null,
-      })),
-    ],
+    neighbors: (officialView?.events || []).filter((event) => event?.notice_id).map((event) => ({
+      edge_type: "votes_on",
+      relation_label: "Published roll-call vote",
+      target_kind: "meeting",
+      target_id: event.notice_id,
+      target_name: event.event_date ? `Meeting notice · ${event.event_date}` : "Meeting notice",
+      href: `/notices/${encodeURIComponent(event.notice_id)}`,
+      state: "matched",
+      provenance: null,
+    })),
   });
 }
 
