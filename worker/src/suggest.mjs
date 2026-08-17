@@ -3,14 +3,15 @@
 // runSuggestionValidation(env): called from the 13:00 UTC scheduled handler, after the D1
 // ingest step (see worker.mjs). For each SUGGESTION_POOL candidate it resolves the candidate's
 // text into a filter the EXACT same way a real chip click would (parseLensFilter — the same
-// NL→filter core /nl itself calls), then counts today's live matches via
-// suggestionCountParams(). Candidates clearing MIN_SUGGESTION_RESULTS are stored, grouped by
-// lens, in ALERT_STATE KV alongside the other cron products under
+// NL→filter core /nl itself calls). Contracts list candidates are then replayed through the
+// exact resident snapshot + keyword-search merge + final route filters; other lens adapters
+// retain their own counters. Candidates clearing MIN_SUGGESTION_RESULTS are stored, grouped
+// by lens, in ALERT_STATE KV alongside the other cron products under
 // SUGGESTIONS_KV_KEY, so index.html's suggestion chips only ever render a query proven to
 // return real results today.
 //
 // Fail-soft, two layers: one candidate's resolve/count failure is caught and skipped (logged),
-// not fatal to the run; and if the WHOLE run comes back with nothing validated at all (Socrata
+// not fatal to the run; and if the WHOLE run comes back with nothing validated at all (a source
 // or the Anthropic API down, say), the previous KV value is left untouched rather than
 // overwritten with an empty set — a transient outage must never blank out yesterday's good
 // chips (see the field-evidence comment on SUGGESTION_POOL in lib/suggestions.mjs).
@@ -23,6 +24,9 @@ import { computeLineageSignal, lineageChainKey, lineageDedupeKey, lineageBatchCl
 import { vendorStem } from "./lib/compile.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { checkAdminKey } from "./admin.mjs";
+import { handleSearch } from "./search.mjs";
+import moneyResidentSnapshot from "../../site/data/money_resident_snapshot.json" with { type: "json" };
+import { certifyMoneySuggestionDestination } from "../../site/suggestion_destination.mjs";
 
 export const SUGGESTIONS_KV_KEY = "suggestions:validated";
 
@@ -87,9 +91,42 @@ async function enrichCandidate(env, lens, filter, todayISO) {
   return { lineageRich, forecastBearing };
 }
 
-async function validateCandidate(env, candidate, todayISO) {
+async function defaultMoneyDestination(env, filter, todayISO) {
+  const keywords = Array.isArray(filter?.keywords) ? filter.keywords.filter(Boolean).join(" ") : "";
+  const usesKeywordSearch = keywords && !filter?.closingWeek && (
+    filter?.noticeType === "award"
+    || (!filter?.noticeType && (filter?.minAmount || filter?.maxAmount))
+  );
+  let searchPayload = null;
+  if (usesKeywordSearch) {
+    const request = new Request(`https://api.cityscroll.org/search?q=${encodeURIComponent(keywords)}`, {
+      headers: { origin: "https://cityscroll.org" },
+    });
+    const response = await handleSearch(request, env);
+    if (response.ok) searchPayload = await response.json();
+  }
+  return certifyMoneySuggestionDestination({
+    filter,
+    snapshot: moneyResidentSnapshot,
+    searchPayload,
+    today: todayISO,
+  });
+}
+
+async function validateCandidate(env, candidate, todayISO, { moneyDestination = defaultMoneyDestination } = {}) {
   const resolved = await parseLensFilter(env, candidate.lens, candidate.text);
   if (resolved.degraded) return null;
+  if (candidate.lens === "money") {
+    if (resolved.filter?.route) return null; // no exact resident-list destination adapter
+    const destination = await moneyDestination(env, resolved.filter, todayISO);
+    const n = Number(destination?.finalCount) || 0;
+    if (n < MIN_SUGGESTION_RESULTS) return { lens: candidate.lens, idx: candidate.idx, count: n, destination };
+    let enrichment = { lineageRich: false, forecastBearing: false };
+    try {
+      enrichment = await enrichCandidate(env, candidate.lens, resolved.filter, todayISO);
+    } catch (e) { /* base destination result still stands */ }
+    return { lens: candidate.lens, idx: candidate.idx, count: n, destination, ...enrichment };
+  }
   const q = suggestionCountParams(candidate.lens, resolved.filter, todayISO);
   if (!q) return null;
   let n;
@@ -111,21 +148,27 @@ async function validateCandidate(env, candidate, todayISO) {
   return { lens: candidate.lens, idx: candidate.idx, count: n, ...enrichment };
 }
 
-export async function runSuggestionValidation(env) {
+export async function runSuggestionValidation(env, options = {}) {
   const todayISO = new Date().toISOString().slice(0, 10);
   const byLens = {};
 
   for (const candidate of SUGGESTION_POOL) {
     let result;
     try {
-      result = await validateCandidate(env, candidate, todayISO);
+      result = await validateCandidate(env, candidate, todayISO, options);
     } catch (e) {
       console.error("suggestion validation error:", candidate.lens, candidate.idx, String(e?.message || e));
       continue;
     }
     if (!result || result.count < MIN_SUGGESTION_RESULTS) continue;
     if (!byLens[result.lens]) byLens[result.lens] = [];
-    byLens[result.lens].push({ idx: result.idx, count: result.count, lineageRich: !!result.lineageRich, forecastBearing: !!result.forecastBearing });
+    byLens[result.lens].push({
+      idx: result.idx,
+      count: result.count,
+      ...(result.destination ? { destination: result.destination } : {}),
+      lineageRich: !!result.lineageRich,
+      forecastBearing: !!result.forecastBearing,
+    });
   }
 
   if (!Object.keys(byLens).length) {

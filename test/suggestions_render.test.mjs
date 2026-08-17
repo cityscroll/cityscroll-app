@@ -64,14 +64,14 @@ const {
 } = new Function(
   "t",
   extractConstBlock("NL_SUGGESTIONS_FALLBACK") +
-  "let NL_SUGGESTIONS_VALIDATED = null;" +
+  "let NL_SUGGESTIONS_VALIDATED = null; let NL_SUGGESTIONS_MIN_RESULTS = null;" +
   extractFn("currentSuggestionIndices") +
   extractFn("currentSuggestionMeta") +
   extractFn("pickSuggestions") +
   src.match(/^const LINEAGE_GUARANTEE_MIN = .*$/m)[0] +
   extractFn("pickSuggestionsGuaranteed") +
   extractFn("trychipHTML") +
-  "function setValidated(v){ NL_SUGGESTIONS_VALIDATED = v; }" +
+  "function setValidated(v,min=3){ NL_SUGGESTIONS_VALIDATED = v; NL_SUGGESTIONS_MIN_RESULTS = min; }" +
   "return { pickSuggestions, currentSuggestionIndices, currentSuggestionMeta, pickSuggestionsGuaranteed, trychipHTML, setValidated, NL_SUGGESTIONS_FALLBACK, LINEAGE_GUARANTEE_MIN };"
 )((key) => ({ sugg_lineage_hint: "Includes contracts with award history", sugg_forecast_hint: "Includes contracts with forecast data" }[key] || key));
 
@@ -114,8 +114,16 @@ test("currentSuggestionIndices: before the worker responds, money uses the build
 });
 
 test("currentSuggestionIndices: once the worker's validated set arrives, it wins over the static fallback", () => {
-  setValidated({ money: [{ idx: 0, count: 57 }, { idx: 4, count: 12 }] });
+  setValidated({ money: [
+    { idx: 0, count: 57, destination: { schema: "cityscroll.money_suggestion_destination.v1", route: "/browse/contracts/?mode=award", finalCount: 57 } },
+    { idx: 4, count: 12, destination: { schema: "cityscroll.money_suggestion_destination.v1", route: "/browse/contracts/?q=school", finalCount: 12 } },
+  ] });
   assert.deepEqual(currentSuggestionIndices("money"), [0, 4]);
+});
+
+test("currentSuggestionIndices: rejects legacy Money proxy counts without a route-faithful destination receipt", () => {
+  setValidated({ money: [{ idx: 0, count: 4955 }] });
+  assert.deepEqual(currentSuggestionIndices("money"), NL_SUGGESTIONS_FALLBACK.money);
 });
 
 test("currentSuggestionIndices: an empty validated array for a lens still falls back to static (an all-fruitless day must not blank the chips)", () => {

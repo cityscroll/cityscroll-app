@@ -58,7 +58,7 @@ test("CI refresh is allowed only for inherited fallback drift", () => {
   );
 });
 
-test("refresh retains an inherited candidate when live resolution is temporarily unavailable", async () => {
+test("refresh retains an inherited Money filter but route-faithfully recounts it when resolution is unavailable", async () => {
   const retainedKey = "money:0";
   const candidatesByLens = SUGGESTION_POOL.reduce((byLens, candidate) => {
     (byLens[candidate.lens] ||= []).push(candidate);
@@ -71,6 +71,11 @@ test("refresh retains an inherited candidate when live resolution is temporarily
       ...candidate,
       filter: { candidate: `${candidate.lens}:${candidate.idx}` },
       count: 7,
+      ...(candidate.lens === "money" ? { destination: {
+        schema: "cityscroll.money_suggestion_destination.v1",
+        route: "/browse/contracts/",
+        finalCount: 7,
+      } } : {}),
     })),
   };
   for (const [lens, candidates] of Object.entries(previous.byLens)) {
@@ -86,12 +91,19 @@ test("refresh retains an inherited candidate when live resolution is temporarily
       }
       return { candidate: `${candidate.lens}:${candidate.idx}` };
     },
-    count: async () => 5,
+    count: async (candidate) => candidate.lens === "money"
+      ? { count: 5, destination: {
+        schema: "cityscroll.money_suggestion_destination.v1",
+        route: "/browse/contracts/",
+        finalCount: 5,
+      } }
+      : 5,
     warn: (message) => warnings.push(message),
   });
   const retained = refreshed.candidates.find((candidate) => `${candidate.lens}:${candidate.idx}` === retainedKey);
   assert.deepEqual(retained.filter, previous.candidates[0].filter);
-  assert.equal(retained.count, previous.candidates[0].count);
+  assert.equal(retained.count, 5);
+  assert.equal(retained.destination.finalCount, 5);
   assert.deepEqual(refreshed.byLens.money, previous.byLens.money);
   assert.match(warnings[0], /money:0/);
 });
@@ -110,6 +122,11 @@ test("a broad resolver outage retains the inherited fallback wholesale", async (
       ...candidate,
       filter: { candidate: `${candidate.lens}:${candidate.idx}` },
       count: 7,
+      ...(candidate.lens === "money" ? { destination: {
+        schema: "cityscroll.money_suggestion_destination.v1",
+        route: "/browse/contracts/",
+        finalCount: 7,
+      } } : {}),
     })),
   };
   const warnings = [];
@@ -117,13 +134,18 @@ test("a broad resolver outage retains the inherited fallback wholesale", async (
     resolve: async () => {
       throw Object.assign(new Error("resolver unavailable"), { code: "PRESET_SUGGESTION_UNRESOLVED" });
     },
-    count: async () => {
-      throw new Error("inherited candidates should not be recounted");
+    count: async (candidate) => {
+      if (candidate.lens !== "money") throw new Error("non-Money inherited candidates should not be recounted");
+      return { count: 7, destination: {
+        schema: "cityscroll.money_suggestion_destination.v1",
+        route: "/browse/contracts/",
+        finalCount: 7,
+      } };
     },
     warn: (message) => warnings.push(message),
   });
-  assert.equal(retained, previous);
-  assert.match(warnings.at(-1), /retaining the inherited fallback wholesale/);
+  assert.deepEqual(retained, previous);
+  assert.match(warnings.at(-1), /retaining inherited filters with route-faithful recounts/);
 });
 
 test("a hand-edited fallback remains ineligible for CI refresh", () => {
