@@ -88,6 +88,21 @@ export function communityBoardPlaceHref(value) {
   return `/near-you/#map?level=community_district&parent=${encodeURIComponent(district.borough)}&id=${encodeURIComponent(communityDistrict)}&lens=meetings`;
 }
 
+/** Human name for an exact community-district key; raw product codes stay out of copy. */
+export function communityDistrictDisplayName({ borough, district, id } = {}) {
+  const name = boroughName(borough);
+  const expectedPrefix = Object.values(COMMUNITY_DISTRICT_CODES)
+    .find((entry) => entry.borough === name)?.prefix;
+  const coded = clean(id).toUpperCase().match(/^([XKMQR])(\d{2})$/)?.slice(1);
+  const explicitNumber = Number(district);
+  const number = Number.isInteger(explicitNumber) && explicitNumber >= 1 && explicitNumber <= 18
+    ? explicitNumber
+    : coded?.[0] === expectedPrefix ? Number(coded[1]) : null;
+  return name && Number.isInteger(number) && number >= 1 && number <= 18
+    ? `${name} Community District ${number}`
+    : null;
+}
+
 export function resolvedCommunityBoardId(value, options = {}) {
   return canonicalId(value) || communityBoardIdFromEvidence(value, options);
 }

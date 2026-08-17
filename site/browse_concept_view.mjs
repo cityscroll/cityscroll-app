@@ -1,7 +1,9 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
-import { renderCommitteeLocalConstellationHTML } from "./committee_memberships.mjs";
-import { communityBoardPageHref } from "./community_board_links.mjs";
+import {
+  communityBoardPageHref,
+  communityDistrictDisplayName,
+} from "./community_board_links.mjs";
 import {
   buildPeopleOrganizationsReadModel,
 } from "./people_organizations_read_model.mjs";
@@ -32,18 +34,6 @@ export const BROWSE_CONCEPTS = Object.freeze({
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[char]));
-
-const ORGANIZATION_RELATION_LABELS = Object.freeze({
-  has_member: "Members",
-  member_of: "Board roles",
-  hosts_meeting: "Hosted meetings",
-  issues_recommendation: "Recommendations",
-});
-const DEFAULT_ORGANIZATION_RELATIONS = Object.freeze(Object.keys(ORGANIZATION_RELATION_LABELS).map((type) => ({
-  type,
-  label: ORGANIZATION_RELATION_LABELS[type],
-  state: "unknown",
-})));
 
 function link(href, label, className = "browse-concept-link") {
   return `<a class="${className}" href="${esc(href)}">${esc(label)}</a>`;
@@ -141,9 +131,9 @@ function renderCommittees(graph, people) {
         source: { kind: "committee", id: committee.id, name: committee.name, canonical_href: null },
         provenance: member.edge?.provenance ?? null,
         inverse_of: member.edge?.inverse_of ?? null,
-      }, { escape: esc })).join(", ")}.`
+      }, { escape: esc, showRelation: false })).join(", ")}.`
       : "";
-    return `<li><strong>${esc(committee.name)}.</strong>${members ? ` <span class="browse-concept-meta">${members}</span>` : ""}${renderCommitteeLocalConstellationHTML(graph, committee.id, people)}</li>`;
+    return `<li><strong>${esc(committee.name)}.</strong>${members ? ` <span class="browse-concept-meta">${members}</span>` : ""}</li>`;
   }).join("")}</ul>`;
 }
 
@@ -151,20 +141,14 @@ function renderBoardOrganizations(geography) {
   const boards = boardItems(geography);
   if (!boards.length) return "";
   return `<ul class="browse-concept-list browse-board-organization-list">${boards.map((board) => {
-    const relationStatus = board.organizationRelations
-      .map((relation) => `<span>${esc(ORGANIZATION_RELATION_LABELS[relation.type] || relation.label || "Board records")} · Unknown</span>`)
-      .join("");
-    const coverage = board.communityDistrict
-      ? `Covers ${board.borough} Community District ${board.communityDistrict}.`
-      : "District coverage not listed.";
+    const coverageName = communityDistrictDisplayName({
+      borough: board.borough,
+      district: board.district,
+      id: board.communityDistrict,
+    });
     return `<li class="browse-board-organization" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">
       <h3>${link(board.institutionHref, board.name)}</h3>
-      <p class="browse-concept-meta">${esc(coverage)}</p>
-      <div class="browse-concept-status-rail" aria-label="Board record status">
-        <span>Board identity · Published</span>
-        <span>District coverage · ${board.communityDistrict ? "Published" : "Unknown"}</span>
-        ${relationStatus}
-      </div>
+      ${coverageName ? `<p class="browse-concept-meta">${esc(`Covers ${coverageName}.`)}</p>` : ""}
     </li>`;
   }).join("")}</ul>`;
 }
@@ -182,7 +166,6 @@ function boardItems(geography = {}) {
       district: node.properties?.district,
       communityDistrict: districtByBoard.get(node.id) || null,
       institutionHref: communityBoardPageHref(node.properties?.body_id || String(node.id || "").replace(/^community-board:/, "")),
-      organizationRelations: node.properties?.identity?.projections?.organization?.relation_families || DEFAULT_ORGANIZATION_RELATIONS,
     }))
     .sort((left, right) => left.borough.localeCompare(right.borough) || Number(left.district) - Number(right.district));
 }

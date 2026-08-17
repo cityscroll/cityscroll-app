@@ -1267,7 +1267,9 @@ export function renderBrowseView(view) {
     const typedMetadata = civicObject && row.show_civic_metadata !== false
       ? [
         civicObject.kind_label || civicObject.kind,
-        row.relation_state ? String(row.relation_state).replaceAll("-", " ") : "",
+        row.show_relation_state !== false && row.relation_state
+          ? String(row.relation_state).replaceAll("-", " ")
+          : "",
       ].filter(Boolean).map((label) => staticFact({ label, className: "browse-object-fact", escape: esc })).join(" · ")
       : "";
     const detailMarkup = civicObject && row.detail

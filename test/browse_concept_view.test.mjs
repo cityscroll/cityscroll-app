@@ -43,18 +43,37 @@ test("People + organizations exposes a board institution projection", () => {
   assert.match(html, /data-board-projection="organization"/);
   assert.match(html, /data-body-id="bronx-cb-01"/);
   assert.match(html, /href="\/community-boards\/bronx-cb-01\/"/);
-  assert.match(html, /Covers Bronx Community District X01\./);
-  assert.match(html, /Board identity · Published/);
-  assert.match(html, /District coverage · Published/);
-  assert.match(html, /Members · Unknown/);
-  assert.match(html, /Hosted meetings · Unknown/);
-  assert.match(html, /Recommendations · Unknown/);
+  assert.match(html, /Covers Bronx Community District 1\./);
+  assert.doesNotMatch(html, /Community District X01|· (?:Published|Unknown)|browse-concept-status-rail/);
   assert.match(html, /id="people-organizations-list"/);
   assert.doesNotMatch(html, /id="officials"|id="vendors"|id="committees"/);
   assert.match(html, /id="community-boards"/);
   assert.doesNotMatch(html, /Published official profiles\.|Vendor profiles from award records\.|Published committee records\./);
   assert.match(html, /Public bodies serving New York City districts\./);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
+});
+
+test("committee cards list members once without graph-edge labels", () => {
+  const people = { by_person_id: {
+    "7801": { person_id: "7801", person_name: "Christopher Marte" },
+    "5259": { person_id: "5259", person_name: "Gale A. Brewer" },
+  } };
+  const committees = {
+    publication: "published",
+    nodes: [{ id: "committee:1", type: "committee", name: "Committee on Housing" }],
+    public_edges: [
+      { type: "member_of", from: "official:7801", to: "committee:1" },
+      { type: "member_of", from: "official:5259", to: "committee:1" },
+    ],
+  };
+  const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", { people, committees }));
+  const section = html.match(/<section[^>]+id="committees"[\s\S]*?<\/section>/)?.[0] || "";
+  const visibleText = section.replace(/<[^>]+>/g, " ").replace(/◆/g, "").replace(/\s+/g, " ").replace(/\s+([,.])/g, "$1").trim();
+
+  assert.match(visibleText, /Committee on Housing\. Members: Christopher Marte, Gale A\. Brewer\./);
+  assert.doesNotMatch(visibleText, /has member|member of|Local connections|connected records/i);
+  assert.equal((section.match(/href="\/officials\/(?:5259|7801)\/"/g) || []).length, 2);
+  assert.equal((section.match(/data-pivot-relation-label="has member"/g) || []).length, 2);
 });
 
 test("People + organizations builds one typed list and never joins a notice name to an official", () => {
@@ -78,6 +97,12 @@ test("People + organizations builds one typed list and never joins a notice name
   assert.deepEqual(committee.members.map((member) => member.person_id), ["7801"]);
   const board = model.rows.find((row) => row.kind === "community-board");
   assert.match(board.place_href, /^\/near-you\//);
+  assert.equal(board.district, "X01", "the exact join key remains in the read model");
+  assert.equal(board.detail, "Covers Bronx Community District 1.");
+  assert.ok(board.organization_relations.every((relation) => relation.state === "unknown"));
+  const boardHtml = renderPeopleOrganizationRow(board);
+  const boardVisibleText = boardHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  assert.doesNotMatch(boardVisibleText, /Community District X01|\bpublished\b|\bunknown\b/i);
 });
 
 test("People + organizations gives every row a unique resident-facing h3 heading", () => {

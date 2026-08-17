@@ -257,7 +257,11 @@ function targetDisplay(pivot) {
 }
 
 /** Render one typed pivot; held edges remain visible text with no fabricated link. */
-export function renderEntityPivotLink(pivotInput = {}, { className = "", escape = escapeHTML } = {}) {
+export function renderEntityPivotLink(pivotInput = {}, {
+  className = "",
+  escape = escapeHTML,
+  showRelation = true,
+} = {}) {
   const pivot = normalizeEntityPivot(pivotInput);
   const crossSpineConfidence = normalizeCrossSpineConfidence(
     pivotInput.cross_spine_confidence || pivotInput.cross_spine,
@@ -266,7 +270,9 @@ export function renderEntityPivotLink(pivotInput = {}, { className = "", escape 
     ?? (pivotInput.cross_spine_confidence != null || pivotInput.cross_spine != null);
   const crossSpineBlocksLink = crossSpineExplicit && crossSpineConfidence !== "confirmed";
   const sourceName = pivot.source?.name || pivot.source?.kind || "this record";
-  const accessible = `${pivot.relation_label}: ${targetDisplay(pivot)}; from ${sourceName}`;
+  const accessible = showRelation
+    ? `${pivot.relation_label}: ${targetDisplay(pivot)}; from ${sourceName}`
+    : (pivot.target_name || pivot.target_id || "Related record");
   const classes = ["ui-constellation-link", className].filter(Boolean).join(" ");
   const attrs = [
     `data-pivot-schema="${escape(ENTITY_PIVOT_SCHEMA)}"`,
@@ -283,7 +289,7 @@ export function renderEntityPivotLink(pivotInput = {}, { className = "", escape 
     ...(pivotInput.link_confidence ? [`data-link-confidence="${escape(pivotInput.link_confidence)}"`] : []),
     `data-cross-spine-confidence="${escape(crossSpineConfidence)}"`,
   ].join(" ");
-  const body = `<span aria-hidden="true">◆</span>${escape(pivot.target_name || pivot.target_id || "Related record")} <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>`;
+  const body = `<span aria-hidden="true">◆</span>${escape(pivot.target_name || pivot.target_id || "Related record")}${showRelation ? ` <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>` : ""}`;
   if (pivot.status !== "accepted" || crossSpineBlocksLink) {
     const reason = crossSpineBlocksLink
       ? crossSpineReaderLabel(crossSpineConfidence)
