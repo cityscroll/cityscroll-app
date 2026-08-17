@@ -299,6 +299,10 @@ function isUnresolvedSuggestionError(error) {
 async function countSuggestion(candidate, filter) {
   const query = suggestionCountParams(candidate.lens, filter, TODAY);
   if (!query) return 0;
+  if (typeof query.readRows === "function") {
+    const rows = await query.readRows();
+    return Array.isArray(rows) ? rows.length : 0;
+  }
   return countQuery(query.url, query.params);
 }
 

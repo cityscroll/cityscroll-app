@@ -154,6 +154,9 @@ export function suggestionCountParams(lens, filter, todayISO) {
 
   const compiled = compileSub(sub, todayISO);
   if (!compiled) return null;
+  if (typeof compiled.readRows === "function") {
+    return { url: null, params: {}, readRows: compiled.readRows };
+  }
   const params = { ...compiled.params, "$select": "count(1) as n" };
   delete params["$order"];
   delete params["$limit"];
