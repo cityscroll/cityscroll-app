@@ -59,7 +59,7 @@ AXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "axe.mi
 # Public content pages only. data.html and changelog.html are handoff shells that
 # client-side location.replace to About/API; axe on those races mid-navigation
 # ("Execution context was destroyed") and the destinations are already covered.
-PAGES = ["about.html", "stats.html", "api.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
+PAGES = ["about.html", "stats.html", "api.html", "standards.html", "near-you/index.html", "following/index.html", "search/index.html"]  # Source: public site/ pages.
 # w9-01: landmark-one-main/region were standing moderate findings (no <main>, no <footer>
 # landmark) on every page. Now that every page has both, ratchet these specific rule ids
 # into the failing set regardless of impact, so the fix stays guarded even though the rule

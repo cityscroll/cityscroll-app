@@ -257,6 +257,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `node tools/build_keyword_search_index.mjs`; the D1 notice mirror remains the Contracts/Rules
   source, while the client projects the flattened compatibility results through the registered
   universal-search domain lanes.
+- **Semantic topic-search consumer:** `site/semantic_topic_search.mjs` is the fail-closed adapter
+  for `cityscroll.semantic_retrieval.candidate_response.v1`. It verifies the sr1 corpus and sr2
+  passage receipts, rejects public scores and unsafe evidence, and groups only by the three
+  declared source families; never infer a civic lens or jurisdiction from passage text. The
+  `/search/` renderer keeps the legacy keyword response as the endpoint-owned fallback. Focused
+  proof: `test/semantic_topic_search.test.mjs` and `test/functional/29_search_results.py`.
 - **Entity SearchDocument producers:** `site/{vendor,committee,board,exam,parcel}_search_producer.mjs`
   adapt the existing canonical read models into that contract and carry matched/empty/partial/
   not-indexed coverage. Vendor aliases are reviewed-registry-only; committee publication is gated;
