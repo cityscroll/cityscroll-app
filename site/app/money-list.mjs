@@ -11,6 +11,7 @@ import {
 } from "../affordance_grammar.mjs";
 import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
 import {
+  contractIdentityFromFacetValues,
   filterMoneySnapshot,
   moneyLineageRows,
   moneyMethodFacet,
@@ -115,11 +116,18 @@ function loadMoneyResidentSnapshot(){
 async function residentMoneyRows(){
   return moneySnapshotRows(await loadMoneyResidentSnapshot());
 }
-async function loadContractSearchDocuments(query){
-  const key=String(query||"").replace(/\s+/g," ").trim().slice(0,240);
-  if(!key) return [];
+async function loadContractSearchDocuments(query, identity=null){
+  const lexical=String(query||"").replace(/\s+/g," ").trim().slice(0,240);
+  const params=new URLSearchParams();
+  if(identity){
+    params.set("object_ref",identity.object_ref);
+    params.set("source_ref",identity.source_observation_ref);
+  }else if(lexical){
+    params.set("q",lexical);
+  }else return [];
+  const key=params.toString();
   if(!contractSearchDocumentPromises.has(key)){
-    contractSearchDocumentPromises.set(key,workerFetch(`/search?q=${encodeURIComponent(key)}`,null,SLOW_MS)
+    contractSearchDocumentPromises.set(key,workerFetch(`/search?${key}`,null,SLOW_MS)
       .then(async response=>{
         if(!response.ok) throw new Error(`HTTP ${response.status}`);
         const payload=await response.json();
@@ -319,18 +327,20 @@ async function search(){
     const retainedRows=defaultSearch
       ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
       : moneySnapshotRows(snapshot);
-    const entityRefs=Array.isArray(globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES?.entity_refs_all)
-      ? globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES.entity_refs_all
+    const activeFacetValues=globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES||{};
+    const entityRefs=Array.isArray(activeFacetValues.entity_refs_all)
+      ? activeFacetValues.entity_refs_all
       : [];
+    const contractIdentity=contractIdentityFromFacetValues(activeFacetValues);
     const scopedVendorStem=vendorStemsFromEntityRefs(entityRefs)[0]||"";
     const retrievalQuery=kw||scopedVendorStem;
-    const searchDocuments=(retrievalQuery&&(mode==="award"||mode==="archive"))
-      ? await loadContractSearchDocuments(retrievalQuery)
+    const searchDocuments=((contractIdentity||retrievalQuery)&&(mode==="award"||mode==="archive"))
+      ? await loadContractSearchDocuments(retrievalQuery,contractIdentity)
       : [];
     const snapshotRows=mergeContractSearchRows(retainedRows,searchDocuments);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
-      excludeSpecial,entityRefs,sort,today:todayISO(),weekEnd:weekOutISO(),
+      excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
       monthEnd:months?addMonthsISO(todayISO(),months):null,
     };
     const facetRows=filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});

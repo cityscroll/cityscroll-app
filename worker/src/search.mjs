@@ -1,5 +1,5 @@
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
-import { searchNotices } from "./lib/notices.mjs";
+import { searchNotices, toRecord } from "./lib/notices.mjs";
 import rulesDomainObservations from "../../site/data/rules_domain_observations.json" with { type: "json" };
 import ocpAwardLookup from "./data/ocp_awards_warehouse_lookup.json" with { type: "json" };
 import keywordSearchIndex from "./data/keyword_search_index.json" with { type: "json" };
@@ -45,6 +45,17 @@ function cleanQuery(value) {
 
 const RULE_PROJECTION_INDEX = buildCityRecordRuleProjectionIndex(rulesDomainObservations);
 
+function exactContractRefs(url) {
+  const objectRef = cleanQuery(url.searchParams.get("object_ref"));
+  const sourceRef = cleanQuery(url.searchParams.get("source_ref"));
+  if (!objectRef && !sourceRef) return null;
+  if (
+    !/^procurement:[A-Za-z0-9][A-Za-z0-9._/-]{4,159}$/.test(objectRef)
+    || !/^(?:notice|ocp_award):[A-Za-z0-9_-]{1,80}$/.test(sourceRef)
+  ) return Object.freeze({ invalid: true });
+  return Object.freeze({ objectRef, sourceRef });
+}
+
 export function publicSearchResult(record, { ruleIndex = RULE_PROJECTION_INDEX } = {}) {
   return materializeCityRecordSearchDocument({
     ...record,
@@ -52,6 +63,27 @@ export function publicSearchResult(record, { ruleIndex = RULE_PROJECTION_INDEX }
     type_of_notice_description: record?.type_of_notice_description || record?.notice_type,
     description: record?.description || record?.snippet,
   }, { ruleIndex });
+}
+
+async function exactContractDocuments(env, refs) {
+  if (!refs || refs.invalid) return [];
+  let document = null;
+  if (refs.sourceRef.startsWith("notice:") && env?.DB) {
+    const requestId = refs.sourceRef.slice("notice:".length);
+    const row = await env.DB.prepare("SELECT * FROM notices WHERE request_id = ?")
+      .bind(requestId)
+      .first();
+    if (row) document = publicSearchResult(toRecord(row));
+  } else if (refs.sourceRef.startsWith("ocp_award:")) {
+    const pin = refs.objectRef.slice("procurement:".length);
+    document = searchContractAwardDocuments(ocpAwardLookup, pin, { limit: 10 }).documents
+      .find((candidate) => candidate.source_observation_refs.includes(refs.sourceRef)) || null;
+  }
+  return document?.outcome === "indexed"
+    && document.object_ref === refs.objectRef
+    && document.source_observation_refs.includes(refs.sourceRef)
+    ? [document]
+    : [];
 }
 
 /** Prefer richer current City Record objects, then add retained award recall and notice evidence. */
@@ -367,7 +399,20 @@ export async function handleSearch(request, env) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
 
-  const query = cleanQuery(new URL(request.url).searchParams.get("q"));
+  const url = new URL(request.url);
+  const exactRefs = exactContractRefs(url);
+  if (exactRefs) {
+    if (exactRefs.invalid) return json({ ok: false, reason: "invalid-exact-refs" }, 400, cors);
+    const results = await exactContractDocuments(env, exactRefs);
+    return json({
+      schema: "cityscroll.exact_search_response.v1",
+      match_mode: "exact_object_ref",
+      object_ref: exactRefs.objectRef,
+      source_ref: exactRefs.sourceRef,
+      results,
+    }, 200, cors, "public, max-age=60, stale-while-revalidate=300");
+  }
+  const query = cleanQuery(url.searchParams.get("q"));
   if (!query) return json({ ok: false, reason: "missing-query" }, 400, cors);
   const resolved = resolveKeywordQuery(query);
   const dynamic = await noticeSearchLanes(env, resolved);

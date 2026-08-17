@@ -38,6 +38,24 @@ const response = {
   },
 };
 
+const proposedContract = {
+  object_ref: "procurement:05626S0013001",
+  object_type: "procurement",
+  domain: "contracts",
+  process_role: "award",
+  source_observation_refs: ["notice:20260730029"],
+  match_evidence: {
+    field: "title",
+    matched_normalized_term: "software",
+    source_identifier: "notice:20260730029",
+    snippet: {
+      text: "Maintenance, support services, software assurance",
+      mark_start: 30,
+      mark_end: 38,
+    },
+  },
+};
+
 test("six search families map typed civic objects to their established destination", () => {
   const cases = [
     [{ domain: "contracts", object_type: "procurement" }, "contracts", "/browse/contracts/"],
@@ -85,6 +103,25 @@ test("typed handoff preserves raw and normalized topic, C1 place, C2 time, and e
   assert.equal(parsed.destination.surface, "meetings");
   assert.deepEqual(parsed.normalized_terms, ["mosquito"]);
   assert.deepEqual(parsed.evidence.snippet, meeting.match_evidence.snippet);
+});
+
+test("a contract handoff selects the clicked object by identity in the mixed archive", () => {
+  const href = buildSearchLensHandoffHref(
+    proposedContract,
+    { ...response, query: "software", resolved_term: { ...response.resolved_term, canonical_tokens: ["software"] } },
+    "?q=software",
+  );
+  const url = new URL(href, "https://cityscroll.org");
+  const facet = JSON.parse(url.searchParams.get("facet"));
+
+  assert.equal(url.pathname, "/browse/contracts/");
+  assert.equal(url.searchParams.get("mode"), "archive");
+  assert.equal(url.searchParams.get("q"), "software");
+  assert.deepEqual(facet.contract_identity, {
+    object_ref: "procurement:05626S0013001",
+    source_observation_ref: "notice:20260730029",
+  });
+  assert.equal(facet.search_handoff.record_ref, "procurement:05626S0013001");
 });
 
 test("a reviewed agency resolution becomes a typed entity constraint", () => {
@@ -166,8 +203,13 @@ test("missing source evidence is explicit and never guessed from the raw query",
 });
 
 test("editing the destination topic drops stale handoff evidence from canonical scope state", () => {
-  const href = buildSearchLensHandoffHref(meeting, response, "?q=mosquitos");
+  const href = buildSearchLensHandoffHref(proposedContract, {
+    ...response,
+    query: "software",
+    resolved_term: { ...response.resolved_term, canonical_tokens: ["software"] },
+  }, "?q=software");
   const facet = JSON.parse(new URL(href, "https://cityscroll.org").searchParams.get("facet"));
-  assert.ok(retainSearchHandoffForQuery(facet, "mosquitos").search_handoff);
+  assert.ok(retainSearchHandoffForQuery(facet, "software").contract_identity);
   assert.equal(retainSearchHandoffForQuery(facet, "rats").search_handoff, undefined);
+  assert.equal(retainSearchHandoffForQuery(facet, "rats").contract_identity, undefined);
 });

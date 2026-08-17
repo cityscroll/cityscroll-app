@@ -172,6 +172,20 @@ function carriedEvidence(record = {}) {
   return Object.freeze({ status: "unavailable" });
 }
 
+function contractIdentity(record = {}) {
+  if (clean(record?.domain, 80) !== "contracts" || clean(record?.object_type, 80) !== "procurement") {
+    return null;
+  }
+  const objectRef = clean(record?.object_ref, 320);
+  if (!/^procurement:[A-Za-z0-9][A-Za-z0-9._/-]{4,159}$/.test(objectRef)) return null;
+  const sourceObservationRef = (Array.isArray(record?.source_observation_refs)
+    ? record.source_observation_refs : [])
+    .map((ref) => clean(ref, 240))
+    .find((ref) => /^(?:notice|ocp_award):[A-Za-z0-9_-]{1,80}$/.test(ref));
+  if (!sourceObservationRef) return null;
+  return Object.freeze({ object_ref: objectRef, source_observation_ref: sourceObservationRef });
+}
+
 function handoffEnvelope(record, response, destination, query) {
   return Object.freeze({
     schema: SEARCH_LENS_HANDOFF_SCHEMA,
@@ -207,8 +221,11 @@ function destinationParams(record, response, sourceSearch, destination) {
     const type = PEOPLE_TYPES[clean(record?.object_type, 80)];
     if (type) params.set("type", type);
   }
+  const exactContract = destination === DESTINATIONS.contracts ? contractIdentity(record) : null;
+  if (exactContract) params.set("mode", "archive");
   const facet = {
     ...(agencyRef ? { entity_refs_all: [agencyRef] } : {}),
+    ...(exactContract ? { contract_identity: exactContract } : {}),
     search_handoff: handoffEnvelope(record, response, destination, query),
   };
   const encoded = JSON.stringify(facet);
@@ -296,7 +313,10 @@ export function parseSearchLensHandoff(search = "") {
 
 export function retainSearchHandoffForQuery(values = {}, query = "") {
   const next = values && typeof values === "object" && !Array.isArray(values) ? { ...values } : {};
-  if (clean(next.search_handoff?.raw_query) !== clean(query)) delete next.search_handoff;
+  if (clean(next.search_handoff?.raw_query) !== clean(query)) {
+    delete next.search_handoff;
+    delete next.contract_identity;
+  }
   return next;
 }
 
