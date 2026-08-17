@@ -207,11 +207,11 @@
     },
     {
       "id": "exam-guide",
-      "url": "#exam",
+      "url": "browse/exams/",
       "feature": "civil-service-exam-guide",
       "description": "Open the civil-service exam guide from the short collection route.",
       "expectations": {
-        "hash": "#people?view=guide",
+        "pathname": "/browse/exams/",
         "visible": [
           {
             "selector": "#career-guide"

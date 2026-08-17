@@ -3,10 +3,9 @@
  * share People/Staffing/Exams plumbing.
  *
  * `builder` and `controller` are logical owner ids, not module specifiers.
- * Slice 1 makes those owners and routes unique while the temporary
- * compatibility projection preserves the existing builders, panes, hashes,
- * and output byte-for-byte. Later slices replace that projection with the
- * dedicated implementations named by the contracts.
+ * The contracts keep route, builder, and browser ownership one-to-one while
+ * the remaining compatibility fields describe only the surfaces that have
+ * not completed their cutover.
  */
 
 function surfaceContract(descriptor) {
@@ -62,12 +61,9 @@ export const EXAMS_SURFACE = surfaceContract({
   description: "Civil-service exam schedules, applications, eligible lists, and published outcomes.",
   compatibility: {
     routeKey: "exams",
-    runtimeTab: "people",
-    navigationTab: "exams",
-    defaultView: "guide",
-    corpus: "exams",
-    currentBuilder: "browse-alias:exams",
-    currentController: "people",
+    runtimeTab: "exams",
+    currentBuilder: "exams-document",
+    currentController: "exams-browser",
   },
 });
 
@@ -92,23 +88,6 @@ export function browseSurfaceContractForRoute(pathname) {
   const route = String(pathname || "").replace(/\/+$/, "") || "/";
   return SURFACE_BY_ROUTE.get(route) || null;
 }
-
-// Temporary anti-corruption layer: old route/runtime identities are derived
-// from the contracts here rather than being re-declared by each consumer.
-export const BROWSE_ROUTE_ALIASES_COMPAT = Object.freeze({
-  exams: Object.freeze({
-    route: EXAMS_SURFACE.route,
-    targetRoute: STAFFING_SURFACE.route,
-    targetFacet: STAFFING_SURFACE.compatibility.facet,
-    targetTab: EXAMS_SURFACE.compatibility.runtimeTab,
-    navigationTab: EXAMS_SURFACE.compatibility.navigationTab,
-    defaultView: EXAMS_SURFACE.compatibility.defaultView,
-    corpus: EXAMS_SURFACE.compatibility.corpus,
-    label: EXAMS_SURFACE.label,
-    title: EXAMS_SURFACE.title,
-    description: EXAMS_SURFACE.description,
-  }),
-});
 
 export const BROWSE_DOCUMENT_FACET_HASHES_COMPAT = Object.freeze({
   [STAFFING_SURFACE.compatibility.routeKey]: STAFFING_SURFACE.compatibility.runtimeHash,

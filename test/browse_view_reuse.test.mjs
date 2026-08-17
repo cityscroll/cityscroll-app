@@ -5,7 +5,8 @@ import test from "node:test";
 
 import { renderBrowseView } from "../site/browse_view.mjs";
 import {
-  buildExamsAliasBrowseView,
+  buildExamsBrowseView,
+  buildExamsDocument,
   examBrowseRows,
   EXAMS_BROWSE_ROW_KIND,
 } from "../site/exams_surface.mjs";
@@ -14,7 +15,6 @@ import {
   peopleBrowseRows,
 } from "../site/people_organizations_surface.mjs";
 import { buildBrowseConceptLanding, renderBrowseConceptLanding } from "../site/browse_concept_view.mjs";
-import { buildBrowseAliasDocument } from "../site/primary_document_view.mjs";
 
 const shell = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const peopleFixture = JSON.parse(readFileSync(new URL("fixtures/browse_owner_people.json", import.meta.url), "utf8"));
@@ -22,7 +22,7 @@ const examsFixture = JSON.parse(readFileSync(new URL("fixtures/browse_owner_exam
 
 const digest = (html) => createHash("sha256").update(html).digest("hex");
 
-test("Exams alias adapts real exam rows to the established Browse view", () => {
+test("Exams owner adapts real exam rows to the established Browse view", () => {
   const artifact = {
     data_current_as_of: "2026-08-14",
     exams: [{
@@ -34,8 +34,8 @@ test("Exams alias adapts real exam rows to the established Browse view", () => {
       interest_area: "administration-finance",
     }],
   };
-  const html = renderBrowseView(buildExamsAliasBrowseView(artifact));
-  assert.match(html, /data-build-rendered="browse" data-browse-facet="exams-alias"/);
+  const html = renderBrowseView(buildExamsBrowseView(artifact));
+  assert.match(html, /data-build-rendered="browse" data-browse-facet="exams"/);
   assert.match(html, /data-civic-object-kind="exam" data-civic-object-id="7016"/);
   assert.match(html, /href="\/exams\/7016\/"/);
   assert.match(html, /Clerical Associate/);
@@ -77,16 +77,16 @@ test("Exams owner produces and filters only civil_service_exam rows", () => {
   assert.equal(rows.length, 2);
   assert.ok(rows.every((row) => row.kind === EXAMS_BROWSE_ROW_KIND));
 
-  const interestView = buildExamsAliasBrowseView(examsFixture, new URLSearchParams({ interest: "technology-data" }));
+  const interestView = buildExamsBrowseView(examsFixture, new URLSearchParams({ interest: "technology-data" }));
   assert.deepEqual(interestView.rows.map((row) => row.kind), [EXAMS_BROWSE_ROW_KIND]);
   assert.equal(interestView.rows[0].civic_object.id, "7017");
 
-  const actionableView = buildExamsAliasBrowseView(examsFixture, new URLSearchParams({ window: "actionable" }));
+  const actionableView = buildExamsBrowseView(examsFixture, new URLSearchParams({ window: "actionable" }));
   assert.deepEqual(actionableView.rows.map((row) => row.civic_object.id), ["7016"]);
 });
 
 test("owner extraction preserves representative Browse HTML byte for byte", () => {
-  const examsHtml = renderBrowseView(buildExamsAliasBrowseView({
+  const examsHtml = renderBrowseView(buildExamsBrowseView({
     data_current_as_of: "2026-08-14",
     exams: [{
       exam_number: "7016",
@@ -110,14 +110,14 @@ test("owner extraction preserves representative Browse HTML byte for byte", () =
     }],
   }));
 
-  assert.equal(Buffer.byteLength(examsHtml), 1486);
-  assert.equal(digest(examsHtml), "4a969864dbbff9e70025217e5fffba95ba9218a2b0d1570c35f0ae32b90e62c7");
+  assert.equal(Buffer.byteLength(examsHtml), 1480);
+  assert.equal(digest(examsHtml), "5f79b2f6f5baeb64e2262cfc0a49f16f580339065db2daf72279707d426caf37");
   assert.equal(Buffer.byteLength(peopleHtml), 1518);
   assert.equal(digest(peopleHtml), "232f44470302f878416e34f1b97a5ec22d3c5561b2d7757fb78a31435cf5c542");
 });
 
 test("visible Exams and People first paint both contain the shared Browse view", () => {
-  const exams = buildBrowseAliasDocument(shell, "exams", {
+  const exams = buildExamsDocument(shell, {
     data_current_as_of: "2026-08-14",
     exams: [{ exam_number: "7016", title: "Clerical Associate" }],
     notices: [],

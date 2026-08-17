@@ -51,9 +51,9 @@ test("unresolved agency names remain visible as plain text", () => {
   assert.doesNotMatch(html, /href="[^"]*Unresolved|data-agency-entity-link="[^"]*unresolved/i);
 });
 
-test("Staffing keeps non-geographic actions out and renders eligibility as a chip group", () => {
-  const staffing = shell.slice(shell.indexOf('id="tab-people"'), shell.indexOf('id="tab-land"'));
-  assert.doesNotMatch(staffing, /data-near-you-link|See on map/);
-  assert.match(staffing, /id="career-eligibility-facets"[^>]*role="group"/);
-  assert.match(staffing, /id="career-eligibility" hidden aria-hidden="true" tabindex="-1"/);
+test("Exams keeps non-geographic actions out and renders eligibility as a chip group", () => {
+  const exams = shell.slice(shell.indexOf('id="tab-exams"'), shell.indexOf('id="tab-alerts"'));
+  assert.doesNotMatch(exams, /data-near-you-link|See on map/);
+  assert.match(exams, /id="career-eligibility-facets"[^>]*role="group"/);
+  assert.match(exams, /id="career-eligibility" hidden aria-hidden="true" tabindex="-1"/);
 });

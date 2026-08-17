@@ -173,17 +173,17 @@ test("the exam guide paints core rows independently of optional spine enrichment
   assert.match(loader, /careerLoadPromise=null/);
 });
 
-test("the Staffing landing leads with exams and keeps the appointment ledger reachable", () => {
-  const feed = html.indexOf('id="staffing-feed"');
-  const guide = html.indexOf('id="career-guide"');
-  assert.ok(guide >= 0, "Staffing needs a first-class exam guide");
-  assert.ok(feed > guide, "the appointment ledger must follow the exam guide");
-  assert.match(html, /id="staffing-query"/);
-  assert.match(html, /id="staffing-role-filters"/);
-  assert.match(html, /id="staffing-agency-filters"/);
-  assert.match(html, /id="staffing-notice-list"/);
-  assert.match(html, /<details class="staffing-ledger" id="staffing-ledger">/);
-  assert.match(html, /<div class="career-guide" id="career-guide">/);
+test("Exams owns its guide and Staffing keeps the appointment ledger reachable", () => {
+  const exams = html.slice(html.indexOf('id="tab-exams"'), html.indexOf('id="tab-alerts"'));
+  const staffing = html.slice(html.indexOf('id="tab-people"'), html.indexOf('id="tab-land"'));
+  assert.match(exams, /<div class="career-guide" id="career-guide">/);
+  assert.doesNotMatch(staffing, /id="career-guide"/);
+  assert.match(staffing, /id="staffing-feed"/);
+  assert.match(staffing, /id="staffing-query"/);
+  assert.match(staffing, /id="staffing-role-filters"/);
+  assert.match(staffing, /id="staffing-agency-filters"/);
+  assert.match(staffing, /id="staffing-notice-list"/);
+  assert.match(staffing, /<details class="staffing-ledger" id="staffing-ledger">/);
 });
 
 test("actionable exam titles connect Staffing role rows to exact exam details", () => {

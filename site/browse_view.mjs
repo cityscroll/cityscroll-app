@@ -26,7 +26,6 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { communityBoardScopeHref } from "./community_board_scope_links.mjs";
-import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
 import { EXAMS_SURFACE, STAFFING_SURFACE } from "./browse_surface_contracts.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { renderRulesSemanticLane, resolveRulesSemanticLane } from "./rules_semantic_lane.mjs";
@@ -111,10 +110,15 @@ export const BROWSE_FACETS = Object.freeze({
   },
 });
 
-// Object-family routes can be aliases to an existing, QA'd runtime. Keep this
-// export for route inventories and callers that already use the object-family
-// vocabulary; the alias record itself lives in one configuration object.
-export const BROWSE_OBJECTS = BROWSE_ROUTE_ALIASES;
+// Object-family routes remain distinct from source facets. Pages edge uses
+// this closed route inventory without inheriting a runtime target.
+export const BROWSE_OBJECTS = Object.freeze({
+  exams: Object.freeze({
+    route: EXAMS_SURFACE.route,
+    label: EXAMS_SURFACE.label,
+    description: EXAMS_SURFACE.description,
+  }),
+});
 
 // Civic-object navigation is a presentation taxonomy. The facet ids and routes
 // above remain the content and URL contract for every existing Browse view.
@@ -880,7 +884,7 @@ export function buildBrowseEdgeSummary(view) {
 }
 
 export function buildBrowseView(facet, payload = {}, params = new URLSearchParams(), options = {}) {
-  // Route aliases and concept sections may adapt their typed rows into this
+  // Object-family and concept sections may adapt their typed rows into this
   // established view without registering another top-level source facet.
   const config = options.config || BROWSE_FACETS[facet];
   if (!config) return null;

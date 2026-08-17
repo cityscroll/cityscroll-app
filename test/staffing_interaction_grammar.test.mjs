@@ -8,6 +8,7 @@ import {
 } from "../site/same_consolidation.mjs";
 
 const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
+const exams = readFileSync(new URL("../site/app/exams.mjs", import.meta.url), "utf8");
 
 function appointment(overrides = {}) {
   return {
@@ -52,10 +53,10 @@ const helpers = {
   listEntityMentionHTML: () => '<a class="ui-constellation-link" href="/agencies/board-of-election-poll-workers/"><span aria-hidden="true">◆</span>Board of Election Poll Workers</a>',
 };
 
-test("Staffing exam cards consume the shared object-card grammar", () => {
-  const start = people.indexOf("function careerCardHTML(exam)");
-  const end = people.indexOf("function careerInterestContextHTML()", start);
-  const card = people.slice(start, end);
+test("Exams cards consume the shared object-card grammar", () => {
+  const start = exams.indexOf("function careerCardHTML(exam)");
+  const end = exams.indexOf("function careerInterestContextHTML()", start);
+  const card = exams.slice(start, end);
 
   assert.match(card, /objectCardInteractionProjection\(/);
   assert.match(card, /renderObjectCardTitle\(/);

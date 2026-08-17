@@ -215,7 +215,7 @@ test("source contract documents the exam_number join and card surfaces", () => {
   assert.match(contract.used_for, /exam cards/i);
   assert.equal(contract.delivery_tier, "inline-at-build");
   assert.ok(contract.code_references.some((ref) => ref.path === "staffing.js"));
-  assert.ok(contract.code_references.some((ref) => ref.path === "site/app/people.mjs"));
+  assert.ok(contract.code_references.some((ref) => ref.path === "site/app/exams.mjs"));
 });
 
 test("contracted outcome source freshness must fail after staleness window", () => {
