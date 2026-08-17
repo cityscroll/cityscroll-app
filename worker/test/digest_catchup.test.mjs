@@ -27,7 +27,7 @@ class MockKV {
 }
 
 const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
-const DAY = () => new Date().toISOString().slice(0, 10);
+const TEST_NOW = "2026-08-10T13:00:00.000Z";
 
 function makeDb() {
   const sqlite = new DatabaseSync(":memory:");
@@ -141,7 +141,7 @@ test("catch-up evaluates a non-date meetings predicate without a lastsent date f
     }]);
   });
   try {
-    const result = await runCatchUpDigests(env, { subKeys: [key] });
+    const result = await runCatchUpDigests(env, { subKeys: [key], now: TEST_NOW });
     assert.equal(result.live, false);
     assert.equal(result.sentThisRun, 0);
     assert.equal(result.receipt.enqueued, 1);
@@ -170,7 +170,7 @@ test("catch-up enqueues distinct land identities by project_id", async () => {
     ]);
   });
   try {
-    const result = await runCatchUpDigests(env, { subKeys: [key] });
+    const result = await runCatchUpDigests(env, { subKeys: [key], now: TEST_NOW });
     assert.equal(result.receipt.enqueued, 2);
     assert.equal(result.results[0].sections[0].new, 2);
     assert.equal(resendCalls, 0);
@@ -193,8 +193,8 @@ test("catch-up reruns are idempotent and do not drain the outbox", async () => {
     return Response.json([{ project_id: "P-1", project_name: "One" }]);
   });
   try {
-    const first = await runCatchUpDigests(env, { subKeys: [key] });
-    const second = await runCatchUpDigests(env, { subKeys: [key] });
+    const first = await runCatchUpDigests(env, { subKeys: [key], now: TEST_NOW });
+    const second = await runCatchUpDigests(env, { subKeys: [key], now: TEST_NOW });
     assert.equal(first.receipt.enqueued, 1);
     assert.equal(second.receipt.enqueued, 0);
     assert.equal(second.results[0].sections[0].enqueued, 0);
@@ -228,7 +228,7 @@ test("catch-up surfaces partial_error and failed sections instead of complete", 
     }]);
   });
   try {
-    const result = await runCatchUpDigests(env, { subKeys: [goodKey] });
+    const result = await runCatchUpDigests(env, { subKeys: [goodKey], now: TEST_NOW });
     assert.equal(result.status, "partial_error");
     assert.equal(result.results[0].complete, false);
     const sections = result.results[0].sections;
@@ -251,7 +251,7 @@ test("catch-up reports all-source failure as failed", async () => {
     return Response.json([]);
   });
   try {
-    const result = await runCatchUpDigests(env, { subKeys: [key] });
+    const result = await runCatchUpDigests(env, { subKeys: [key], now: TEST_NOW });
     assert.equal(result.status, "failed");
     assert.equal(result.results[0].status, "failed");
     assert.equal(result.results[0].complete, false);
@@ -268,7 +268,7 @@ test("catch-up receipt: written with mode 'catch_up' and readable", async () => 
   seedSub(env, key, { lens: "land", filter: { status: "all", keywords: [] }, lastsent: "2026-08-09" });
   const restore = withFetch(() => Response.json([]));
   try {
-    await runCatchUpDigests(env, { subKeys: [key] });
+    await runCatchUpDigests(env, { subKeys: [key], now: TEST_NOW });
     const receipt = await readCatchUpReceipt(env);
     assert.ok(receipt);
     assert.equal(receipt.mode, "catch_up");
