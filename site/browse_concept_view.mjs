@@ -121,6 +121,10 @@ function renderCommittees(graph, people) {
   const items = committeeItems(graph, people);
   if (!items.length) return "";
   return `<ul class="browse-concept-list browse-committee-list">${items.slice(0, 5).map((committee) => {
+    const committeeId = String(committee.id || "").replace(/^committee:/, "");
+    const committeeName = /^\d+$/.test(committeeId)
+      ? link(`/committees/${encodeURIComponent(committeeId)}/`, committee.name)
+      : esc(committee.name);
     const members = committee.members.length
       ? `Members: ${committee.members.map((member) => renderEntityPivotLink({
         relation_label: "has member",
@@ -133,7 +137,7 @@ function renderCommittees(graph, people) {
         inverse_of: member.edge?.inverse_of ?? null,
       }, { escape: esc, showRelation: false })).join(", ")}.`
       : "";
-    return `<li><strong>${esc(committee.name)}.</strong>${members ? ` <span class="browse-concept-meta">${members}</span>` : ""}</li>`;
+    return `<li><strong>${committeeName}.</strong>${members ? ` <span class="browse-concept-meta">${members}</span>` : ""}</li>`;
   }).join("")}</ul>`;
 }
 

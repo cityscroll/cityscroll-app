@@ -125,7 +125,7 @@ test("influence panels omit empty bags and avoid methodology cruft", () => {
   const html = renderCfbInfluenceHTML({ donors: [] }, { escapeHtml: (v) => String(v) });
   assert.match(html, /data-lobby-status="linked"/);
   assert.match(html, /Example Org/);
-  assert.match(html, /data-official-walk="1"/);
+  assert.doesNotMatch(html, /data-official-walk="1"|Published roll-call votes/);
   assert.doesNotMatch(html, /usefulness|precision|gate|fmf3/i);
 
   const facts = renderPersonHubFactsHTML({
@@ -144,13 +144,25 @@ test("renderOfficialWalkHTML links only sections that exist", () => {
     hasLobby: true,
     hasCfb: true,
     hasVotes: true,
+    officialId: "7801",
   });
   assert.match(html, /data-official-walk="1"/);
-  assert.match(html, /#official-lobby/);
-  assert.match(html, /#official-cfb/);
-  assert.match(html, /#official-skim/);
+  assert.match(html, /href="\/officials\/7801\/#official-lobby"/);
+  assert.match(html, /href="\/officials\/7801\/#official-cfb"/);
+  assert.match(html, /href="\/officials\/7801\/#official-skim"/);
   assert.match(html, /Lobbying clients/);
   assert.match(html, /Published roll-call votes/);
+});
+
+test("the staged influence renderer never invents a roll-call destination", () => {
+  renderLobbyInfluenceHTML({ edges: [{ from_org_display: "Example Org" }] });
+  const html = renderCfbInfluenceHTML({
+    contribution_count: 1,
+    donors: [{ donor_display: "Example Donor", amount_total: 25 }],
+  }, { hasVotes: false, officialId: "7811" });
+  assert.match(html, /href="\/officials\/7811\/#official-lobby"/);
+  assert.match(html, /href="\/officials\/7811\/#official-cfb"/);
+  assert.doesNotMatch(html, /official-skim|Published roll-call votes/);
 });
 
 test("committed influence lookups expose measurement blocks", () => {

@@ -6,6 +6,8 @@
  * outside the site/ document root.
  */
 
+import { officialProfileSectionHref } from "./official_profile_navigation.mjs";
+
 const clean = (value, max = 400) =>
   String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 
@@ -34,15 +36,19 @@ export function renderPersonHubFactsHTML(hubBag, { escapeHtml } = {}) {
  */
 export function renderOfficialWalkHTML(opts = {}) {
   const parts = [];
-  if (opts.hasLobby) parts.push(["#official-lobby", "Lobbying clients"]);
-  if (opts.hasCfb) parts.push(["#official-cfb", "Campaign finance"]);
+  if (opts.hasLobby) parts.push(["official-lobby", "Lobbying clients"]);
+  if (opts.hasCfb) parts.push(["official-cfb", "Campaign finance"]);
   // Votes live on the existing official panel root (no eager entities id stamp).
-  if (opts.hasVotes) parts.push(["#official-skim", "Published roll-call votes"]);
+  if (opts.hasVotes) parts.push(["official-skim", "Published roll-call votes"]);
   if (parts.length < 2) return "";
   const links = parts
-    .map(([href, label], i) =>
+    .map(([sectionId, label], i) => {
+      const href = officialProfileSectionHref(opts.officialId, sectionId) || `#${sectionId}`;
+      return (
       `${i ? '<span class="official-walk-sep" aria-hidden="true"> → </span>' : ""}`
-      + `<a class="official-walk-link" href="${href}">${label}</a>`)
+      + `<a class="official-walk-link" href="${href}" data-official-section-link="${sectionId}">${label}</a>`
+      );
+    })
     .join("");
   return `<nav class="official-walk" data-official-walk="1" aria-label="On this page">`
     + `<div class="chain-h" id="official-walk-heading">On this page</div>`
@@ -57,6 +63,7 @@ export function renderOfficialInfluenceChrome({
   lobbyBag = null,
   cfbBag = null,
   hasVotes = false,
+  officialId = null,
   escapeHtml,
   translate,
 } = {}) {
@@ -64,7 +71,7 @@ export function renderOfficialInfluenceChrome({
   const hasCfb = Array.isArray(cfbBag?.donors) && cfbBag.donors.length > 0
     || Number(cfbBag?.contribution_count) > 0;
   return (
-    renderOfficialWalkHTML({ hasLobby, hasCfb, hasVotes })
+    renderOfficialWalkHTML({ hasLobby, hasCfb, hasVotes, officialId })
     + lobbySectionHTML(lobbyBag, { escapeHtml, translate })
     + cfbSectionHTML(cfbBag, { escapeHtml })
   );
@@ -142,7 +149,8 @@ export function renderCfbInfluenceHTML(bag, opts = {}) {
   const walk = renderOfficialWalkHTML({
     hasLobby,
     hasCfb,
-    hasVotes: hasLobby || hasCfb,
+    hasVotes: opts.hasVotes === true,
+    officialId: opts.officialId,
   });
   return walk
     + lobbySectionHTML(lobbyBag, { escapeHtml, translate })

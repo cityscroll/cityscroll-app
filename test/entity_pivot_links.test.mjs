@@ -98,8 +98,8 @@ test("edge-summary normalization reuses the pivot payload and preserves scoped d
   assert.equal(record.scope.as_of, "2026-08-11");
 });
 
-test("unsupported destinations are held and the closure assertion fails instead of fabricating a URL", () => {
-  const held = normalizeEntityPivot({
+test("materialized committee destinations are accepted and resident links stay free of provisional copy", () => {
+  const accepted = normalizeEntityPivot({
     relation_label: "committee membership",
     target_kind: "committee",
     target_id: "5261",
@@ -107,14 +107,30 @@ test("unsupported destinations are held and the closure assertion fails instead 
     canonical_href: "/committees/5261/",
     source: source("official", "7801", "Member", "/officials/7801/"),
   });
+  assert.equal(accepted.status, "accepted");
+  assert.equal(accepted.canonical_href, "/committees/5261/");
+  const html = renderEntityPivotLink(accepted);
+  assert.match(html, /href="\/committees\/5261\/"/);
+  assert.match(html, /data-pivot-status="accepted"/);
+  assert.doesNotMatch(html, /Provisional: destination not verified/);
+  assert.equal(assertEntityPivotClosure([{ canonical_href: "/committees/5261/" }]), true);
+});
+
+test("held destinations never expose internal verification copy to residents", () => {
+  const held = normalizeEntityPivot({
+    relation_label: "committee membership",
+    target_kind: "committee",
+    target_id: "unresolved",
+    target_name: "Unresolved committee",
+    canonical_href: "/made-up-route/unresolved",
+    source: source("official", "7801", "Member", "/officials/7801/"),
+  });
   assert.equal(held.status, "held");
-  assert.equal(held.canonical_href, null);
   const html = renderEntityPivotLink(held);
-  assert.doesNotMatch(html, /href="\/committees\/5261\//);
   assert.match(html, /data-pivot-status="held"/);
-  assert.match(html, /Provisional: destination not verified/);
+  assert.doesNotMatch(html, /destination not verified/i);
   assert.throws(
-    () => assertEntityPivotClosure([{ canonical_href: "/committees/5261/" }]),
+    () => assertEntityPivotClosure([{ canonical_href: "/made-up-route/unresolved" }]),
     /route closure failed/,
   );
 });
@@ -143,8 +159,8 @@ test("destination resolution prefers a verified object and falls back to a verif
     {
       verified: true,
       reason: null,
-      href: "/browse/meetings/?facet=agency",
-      kind: "scope",
+      href: "/committees/5261/",
+      kind: "object",
     },
   );
   assert.deepEqual(

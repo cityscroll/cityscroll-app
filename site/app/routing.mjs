@@ -8,6 +8,10 @@ import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.m
 import { aliasHash, browseRouteAlias } from "../browse_route_aliases.mjs";
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
+import {
+  focusOfficialProfileSection,
+  officialProfileSectionRoute,
+} from "../official_profile_navigation.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -880,6 +884,18 @@ async function showTaskFirst(task, id){
 
 function applyHash(){
   setNoticeCompactCta(false);
+  const officialSection=officialProfileSectionRoute(location);
+  if(officialSection){
+    const current=document.querySelector(`[data-official-id="${officialSection.officialId}"]`);
+    if(current&&focusOfficialProfileSection(current,officialSection.sectionId)) return true;
+    const params=new URLSearchParams(location.search);
+    showOfficial(officialSection.officialId,{
+      noticeId:params.get("notice"),
+      eventId:params.get("event"),
+      focusId:officialSection.sectionId,
+    });
+    return true;
+  }
   const incoming = location.hash.slice(1)||documentRouteRaw();
   const slashPos = incoming.indexOf("/");
   let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;

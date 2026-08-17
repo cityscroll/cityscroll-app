@@ -34,9 +34,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Committee traversal exposes `public_reverse_edges` from the same accepted
   `member_of` observation in `site/committee_graph.mjs`; browse renders the
   exact-ID `has member` pivot, while held/empty/unknown graph states stay
-  non-linking. Keep committee target routes closed until a verified route is
-  materialized. Focused proof: `test/committee_graph.test.mjs`,
-  `test/committee_memberships.test.mjs`, and `test/official_connections_scope.test.mjs`.
+  non-linking. Exact published BodyIds resolve through the edge-rendered
+  `/committees/<id>/` document in `site/committee_document.mjs`; official profiles and the
+  People directory may link only to that closed route. Focused proof:
+  `test/committee_graph.test.mjs`, `test/committee_memberships.test.mjs`,
+  `test/official_profile_committee_graph.test.mjs`, and `test/primary_document_routes.test.mjs`.
 
 - Community-board `hosts_meeting` edges live beside the exact source join in
   `site/community_board_source_join.mjs` (re-exported by

@@ -25,13 +25,17 @@ test("committee memberships join only exact member_id values", () => {
 
 test("committee membership panel shows populated rows and omits gap and methodology copy", () => {
   const html = renderCommitteeMembershipsHTML({
-    rows: [{ committee: "Land Use", appointment_type: "Member", start_date: "2024-01-01", end_date: "2025-12-31" }],
+    member_id: "7801",
+    person_name: "Christopher Marte",
+    rows: [{ committee_id: "5261", committee: "Land Use", appointment_type: "Member", start_date: "2024-01-01", end_date: "2025-12-31" }],
     coverage: { eligible_rows: 5358, linked_rows: 308, row_rate: 0.0575 },
     vintage: "2026-08-05",
   }, { translate: (key, values = {}) => `${key}:${JSON.stringify(values)}`, escapeHtml: (value) => String(value) });
   assert.match(html, /data-membership-status="linked"/);
   assert.match(html, /Land Use/);
-  assert.doesNotMatch(html, /coverage|cohort|source|vintage|5358|308|5\.8%/i);
+  assert.match(html, /href="\/committees\/5261\/"/);
+  assert.doesNotMatch(html, /Provisional: destination not verified/);
+  assert.doesNotMatch(html, /coverage|cohort|vintage|5358|308|5\.8%/i);
   assert.equal(renderCommitteeMembershipsHTML({ rows: [] }), "");
 });
 
@@ -49,6 +53,7 @@ test("committee reverse coverage is exact-key and stays quiet when the graph has
     rows: [{ committee_id: "5261", committee: "Land Use", appointment_type: "Member" }],
     reverse_edges: [],
   });
-  assert.doesNotMatch(html, /href=/);
+  assert.match(html, /href="\/committees\/5261\/"/);
   assert.doesNotMatch(html, /Reverse coverage unavailable/);
+  assert.doesNotMatch(html, /Provisional: destination not verified/);
 });
